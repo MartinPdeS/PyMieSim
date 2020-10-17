@@ -1,6 +1,6 @@
 from numpy import linspace, meshgrid, pi, array, mod
 
-from src.functions.converts import rad2deg, deg2rad
+from miecoupling.src.functions.converts import rad2deg, deg2rad
 
 
 class Meshes(object):
@@ -53,9 +53,12 @@ class Angle(object):
 
         self.Radian = deg2rad(input)
 
-        self.DegreeMod = mod(self.Degree,360)
+        self.DegreeMod = self.Degree#mod(self.Degree,180)
 
-        self.RadianMod = mod(self.Radian, 2*pi)
+        self.RadianMod = self.Degree#mod(self.Radian, pi)
+
+
+
 
     @property
     def Degree(self):

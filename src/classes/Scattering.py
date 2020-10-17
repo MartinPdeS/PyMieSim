@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import PyMieScatt
 
-from src.functions.converts import rad2deg, deg2rad
-from src.classes.Fields import Field
-from src.classes.Meshes import Meshes
-from src.classes.Plots import S1S2Plot
+from miecoupling.src.functions.converts import rad2deg, deg2rad
+from miecoupling.src.classes.Fields import Field
+from miecoupling.src.classes.Meshes import Meshes
+from miecoupling.src.classes.Plots import S1S2Plot
 
 global i
 i = complex(0, 1)
@@ -43,7 +43,13 @@ class Scatterer(object):
 
     """
 
-    def __init__(self, diameter, wavelength, index, npts):
+    def __init__(self,
+                 diameter: float,
+                 wavelength: float,
+                 index: float,
+                 npts: int = 201,
+                 ThetaBound: list = [-180, 180],
+                 PhiBound: list = [-180, 180]):
 
         self.diameter = diameter
 
@@ -53,103 +59,38 @@ class Scatterer(object):
 
         self.npts = npts
 
-        self.Full = Meshes(ThetaBound=[0, 360],
-                           PhiBound=[0, 360],
+        self.Full = Meshes(ThetaBound=ThetaBound,
+                           PhiBound=PhiBound,
                            npts=npts)
 
         self.computeS1S2()
 
+
     def PlotFields(self):
 
-        ax0, ax1, ax2 = self.GenFigure()
-
-        S1 = self.GenS1Plot(ax0)
-
-        S2 = self.GenS2Plot(ax1)
-
-        SPF = self.Make3DField(ax2)
-
-        plt.show()
+        SPF = self.Make3DField()
 
         Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Full)
 
-    def GenS1Plot(self, axe):
-        """Generate the polar subplot for S1.
 
-        Parameters
-        ----------
-        axe : type
-            subplot axe for S1.
-
-        """
-
-        data = (np.abs(self.S1))
-
-
-        return data
-
-
-    def GenS2Plot(self, axe):
-        """Generate the polar subplot for S2.
-
-        Parameters
-        ----------
-        axe : type
-            subplot axe for S2.
-
-        """
-        data = (np.abs(self.S2))
-        axe.plot(self.Full.PhiVec.Radian,
-                 data,
-                 'k')
-
-        axe.fill_between(self.Full.PhiVec.Radian,
-                         0,
-                         data,
-                         color='C1',
-                         alpha=0.4)
-
-        return data
-
-
-    def Make3DField(self, axe):
+    def Make3DField(self,):
 
         Theta = np.linspace(0, 2*np.pi, self.npts)
 
         Phi = np.linspace(0, np.pi, self.npts)
 
-        FuncSPF = interp.interp2d(self.Field.Meshes.ThetaVec.Radian,
-                                  self.Field.Meshes.PhiVec.Radian,
+        FuncSPF = interp.interp2d(self.Field.ThetaVec.Radian,
+                                  self.Field.PhiVec.Radian,
                                   self.Field.SPF,
                                   kind='cubic')
 
-        SPF = FuncSPF(Theta, Phi)
 
-        PHI, THETA = np.meshgrid(Theta, Phi)
+        SPF = FuncSPF(self.Field.ThetaVec.Radian, self.Field.PhiVec.Radian)
 
-        PHI, THETA = THETA, PHI
 
-        X = SPF * np.sin(PHI) * np.cos(THETA)
-        Y = SPF * np.sin(PHI) * np.sin(THETA)
-        Z = SPF * np.cos(PHI)
-
-        axe.plot_surface(Y,
-                         X,
-                         Z,
-                         rstride=3,
-                         cstride=3,
-                         linewidth=0.5,
-                         cmap=cm.bone,
-                         antialiased=False,
-                         alpha=1)
-
-        axe.set_xlabel('X direction')
-        axe.set_ylabel('Y direction')
-        axe.set_zlabel('Z direction')
-        norm = np.sqrt(np.max(X**2+Y**2))
-
-        axe.set_xlim([-norm, norm])
-        axe.set_ylim([-norm, norm])
+        X = SPF * np.sin(self.Field.PhiMesh.Radian) * np.cos(self.Field.ThetaMesh.Radian)
+        Y = SPF * np.sin(self.Field.PhiMesh.Radian) * np.sin(self.Field.ThetaMesh.Radian)
+        Z = SPF * np.cos(self.Field.PhiMesh.Radian)
 
         return [X, Y, Z]
 
@@ -172,6 +113,7 @@ class Scatterer(object):
             self.S2.append(S2)
 
 
+
     def GenField(self, PolarizationAngle=0):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
@@ -188,9 +130,9 @@ class Scatterer(object):
 
             self.Polarization = Polarization
 
-            Parallel = np.outer(self.S1, np.sin(self.Full.PhiVec.Radian+Polarization))
+            Parallel = np.outer(self.S1, np.sin(self.Full.ThetaVec.Radian+np.pi/2))
 
-            Perpendicular = np.outer(self.S2, np.cos(self.Full.PhiVec.Radian+Polarization))
+            Perpendicular = np.outer(self.S2, np.cos(self.Full.ThetaVec.Radian+np.pi/2))
 
         elif PolarizationAngle is None:
 
@@ -200,62 +142,12 @@ class Scatterer(object):
 
             Perpendicular = np.outer(self.S2, np.ones(self.npts)/np.sqrt(2))
 
+
         self.Field = Field(Perpendicular=Perpendicular,
                            Parallel=Parallel,
                            Meshes=self.Full
                            )
 
-    def GenFigure(self):
 
-        fig = plt.figure(figsize=(15, 5))
-
-        ax0 = fig.add_subplot(131, projection='polar')
-        ax1 = fig.add_subplot(132, projection='polar')
-        ax2 = fig.add_subplot(133, projection='3d')
-
-        ax0.set_title(r'$S_1$ [logscale]')
-        ax1.set_title(r'$S_2$ [logscale]')
-        ax2.set_title(r'3D Phase function Polarization: {0}'.format(self.Polarization))
-
-        return ax0, ax1, ax2
-
-    def SampleField(self, ThetaBound, PhiBound, npts=100, ThetaPol=0):
-
-        FuncParallelReal = interp.interp2d(self.Field.Meshes.ThetaVec.Degree,
-                                           self.Field.Meshes.PhiVec.Degree,
-                                           np.real(self.Field.Parallel),
-                                           kind='cubic')
-
-        FuncParallelImage = interp.interp2d(self.Field.Meshes.ThetaVec.Degree,
-                                            self.Field.Meshes.PhiVec.Degree,
-                                            np.imag(self.Field.Parallel),
-                                            kind='cubic')
-
-        FuncPerpendicularReal = interp.interp2d(self.Field.Meshes.ThetaVec.Degree,
-                                                self.Field.Meshes.PhiVec.Degree,
-                                                np.real(self.Field.Perpendicular),
-                                                kind='cubic')
-
-        FuncPerpendicularImage = interp.interp2d(self.Field.Meshes.ThetaVec.Degree,
-                                                 self.Field.Meshes.PhiVec.Degree,
-                                                 np.imag(self.Field.Perpendicular),
-                                                 kind='cubic')
-
-        self.SampleMesh = Meshes(ThetaBound=ThetaBound,
-                                 PhiBound=PhiBound,
-                                 npts=npts)
-
-        Perpendicular = FuncPerpendicularReal(self.SampleMesh.ThetaVec.DegreeMod, self.SampleMesh.PhiVec.DegreeMod)\
-            + i * FuncPerpendicularImage(self.SampleMesh.ThetaVec.DegreeMod,
-                                         self.SampleMesh.PhiVec.DegreeMod)
-
-        Parallel = FuncParallelReal(self.SampleMesh.ThetaVec.DegreeMod, self.SampleMesh.PhiVec.DegreeMod)\
-            + i * FuncParallelImage(self.SampleMesh.ThetaVec.DegreeMod,
-                                    self.SampleMesh.PhiVec.DegreeMod)
-
-        self.Sample = Field(Perpendicular=Perpendicular,
-                            Parallel=Parallel,
-                            Meshes=self.SampleMesh
-                            )
 
     # -

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 
-from src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
+from miecoupling.src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
 
 
 class mode(object):
@@ -80,6 +80,10 @@ class mode(object):
         Fourier /= self.shift_grid
 
         Fourier = np.fft.fftshift(Fourier)
+
+        norm = np.sum(np.abs(Fourier))
+
+        Fourier /= norm
 
         return Field, Fourier
 

@@ -24,22 +24,33 @@ Mode = mode(fiber=Fiber,
 
 Mode.magnificate(magnification=2.)
 
-#Mode.PlotFields()
+Mode.PlotFields()
 
-Scat = Scatterer(diameter=500e-9,
+Scat = Scatterer(diameter=1500e-9,
                  wavelength=400e-9,
                  index=1.4,
-                 npts=200,
-                 ThetaBound=[-20,20],
-                 PhiBound=[-20,20])
+
+                 npts=200)
 
 
 
 Scat.GenField(PolarizationAngle=0)
 
-#Scat.PlotFields()
 
-Scat.Field.PlotStokes(RectangleTheta=[-5,5], RectanglePhi=[-5,5])
+
+Scat.PlotFields()
+
+
+Scat.SampleField(ThetaBound=[-180,180],
+                 PhiBound=[-180, 180],
+                 npts=npts)
+
+Scat.Field.PlotStokes(RectangleTheta=[-20,20], RectanglePhi=[-20,20])
+
+
+#Scat.Sample.PlotStokes()
+
+res = PointFieldCoupling(Mode.Fourier, Scat.Sample.Total)
 
 
 

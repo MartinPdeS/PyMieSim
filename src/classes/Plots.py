@@ -64,4 +64,6 @@ class S1S2Plot(object):
         self.ax2.set_xlim([-norm, norm])
         self.ax2.set_ylim([-norm, norm])
 
+
+
         plt.show()

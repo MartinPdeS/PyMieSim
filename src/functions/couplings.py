@@ -6,11 +6,7 @@ def PointFieldCoupling(Field0, Field1):
 
     Field0, Field1 = np.array(Field0), np.array(Field1)
 
-    #plt.imshow(np.real(Field1))
-    #plt.colorbar()
-    #plt.show()
-
-    return np.sum(np.abs(Field0*Field1)**2)
+    return np.abs(np.sum(Field0*Field1)**2)
 
 
 def MeanFieldCoupling(Field0, Field1):
