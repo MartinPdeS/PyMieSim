@@ -31,4 +31,7 @@ def Direct2Angle(DirectVec, k):
 
     AngleVec = AngleVec* 180/np.pi
 
+    if np.nan in AngleVec:
+        raise Exception('Error in angle definition!')
+
     return AngleVec

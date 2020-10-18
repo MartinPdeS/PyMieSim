@@ -1,20 +1,19 @@
-import fibermodes
+
 import numpy as np
+from miecoupling.src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 
-from miecoupling.src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
+class Detector(object):
 
+    def __init__(self,
+                 size,
+                 wavelength,
+                 npts):
 
-class mode(object):
+        self._coupling = 'Intensity'
 
-    def __init__(self, fiber, LPmode, wavelength, npts, magnification=1):
-
-        self._coupling = 'Amplitude'
-
-        self.mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *LPmode)
-
-        self.fiber = fiber
+        self.size = size
 
         self.wavelength = wavelength
 
@@ -22,31 +21,13 @@ class mode(object):
 
         self.npts = npts
 
-        self.magnification = magnification
+        self.DirectVec = np.linspace(-1.5*size/2, 1.5*size/2, self.npts)
 
         self.GenShift()
-
-        self.DirectVec = np.linspace(-self.fiber.MaxDirect, self.fiber.MaxDirect, self.npts)
 
         self.GenMeshes()
 
         self.Field, self.Fourier = self.GenField()
-
-
-    def GenShift(self):
-
-        phase_shift = np.exp(-complex(0, 1)*np.pi*np.arange(self.npts)*(self.npts-1)/self.npts)
-
-        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
-
-        self.shift_grid = shift_grid * shift_grid.T
-
-
-    def magnificate(self, magnification):
-
-        self.DirectVec /= magnification
-
-        self.GenMeshes()
 
 
     def GenMeshes(self):
@@ -66,32 +47,37 @@ class mode(object):
         self.AngleBound = [self.AngleVec[0], self.AngleVec[-1]]
 
 
+    def GenShift(self):
+
+        phase_shift = np.exp(-complex(0, 1)*np.pi*np.arange(self.npts)*(self.npts-1)/self.npts)
+
+        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+        self.shift_grid = shift_grid * shift_grid.T
+
+
+    def magnificate(self, magnification):
+
+        self.DirectVec /= magnification
+
+        self.GenMeshes()
+
+
     def GenField(self):
 
-        Field = fibermodes.field.Field(self.fiber.source,
-                                       self.mode,
-                                       fibermodes.Wavelength(self.wavelength),
-                                       self.DirectVec[0],
-                                       np=self.npts)
+        Field = np.zeros([self.npts, self.npts])
 
-        Field = Field.Ex()
+        index = int(np.round(self.npts/4))
+
+        Field[index:3*index, index:3*index] = 1
 
         norm = np.sum(np.abs(Field))
 
         Field /= norm
 
-        Fourier = np.fft.fft2(Field)
-
-        Fourier /= self.shift_grid
-
-        Fourier = np.fft.fftshift(Fourier)
-
-        norm = np.sum(np.abs(Fourier))
-
-        Fourier /= norm
+        Fourier = Field
 
         return Field, Fourier
-
 
 
     def GenFigure(self):
@@ -129,7 +115,7 @@ class mode(object):
 
         im1 = ax1.pcolormesh(self.AngleVec,
                              self.AngleVec,
-                             np.imag(self.Fourier),
+                             self.Fourier,
                              shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -159,3 +145,18 @@ class mode(object):
         ax2.fill_between(self.RadVec, min(data), data, color='C0', alpha=0.4)
 
         plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --

@@ -49,7 +49,9 @@ class Scatterer(object):
                  index: float,
                  npts: int = 201,
                  ThetaBound: list = [-180, 180],
-                 PhiBound: list = [-180, 180]):
+                 ThetaOffset: float = 0,
+                 PhiBound: list = [-180, 180],
+                 PhiOffset: float = 0):
 
         self.diameter = diameter
 
@@ -59,45 +61,36 @@ class Scatterer(object):
 
         self.npts = npts
 
-        self.Full = Meshes(ThetaBound=ThetaBound,
-                           PhiBound=PhiBound,
+        self.Meshes = Meshes(ThetaBound=np.array(ThetaBound)+ThetaOffset,
+                           PhiBound=np.array(PhiBound)+PhiOffset,
                            npts=npts)
 
         self.computeS1S2()
 
+        self.GenField(PolarizationAngle=0)
+
 
     def PlotFields(self):
 
-        SPF = self.Make3DField()
+        SPF = self.Make3DField(self.Field.SPF)
 
-        Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Full)
-
-
-    def Make3DField(self,):
-
-        Theta = np.linspace(0, 2*np.pi, self.npts)
-
-        Phi = np.linspace(0, np.pi, self.npts)
-
-        FuncSPF = interp.interp2d(self.Field.ThetaVec.Radian,
-                                  self.Field.PhiVec.Radian,
-                                  self.Field.SPF,
-                                  kind='cubic')
+        Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Meshes)
 
 
-        SPF = FuncSPF(self.Field.ThetaVec.Radian, self.Field.PhiVec.Radian)
+    def Make3DField(self, item):
 
+        X = item * np.sin(self.Field.PhiMesh.Radian) * np.cos(self.Field.ThetaMesh.Radian)
 
-        X = SPF * np.sin(self.Field.PhiMesh.Radian) * np.cos(self.Field.ThetaMesh.Radian)
-        Y = SPF * np.sin(self.Field.PhiMesh.Radian) * np.sin(self.Field.ThetaMesh.Radian)
-        Z = SPF * np.cos(self.Field.PhiMesh.Radian)
+        Y = item * np.sin(self.Field.PhiMesh.Radian) * np.sin(self.Field.ThetaMesh.Radian)
+
+        Z = item * np.cos(self.Field.PhiMesh.Radian)
 
         return [X, Y, Z]
 
 
     def computeS1S2(self):
 
-        MuList = np.cos(self.Full.PhiVec.Radian)
+        MuList = np.cos(self.Meshes.PhiVec.Radian)
 
         self.S1, self.S2 = [], []
 
@@ -130,9 +123,9 @@ class Scatterer(object):
 
             self.Polarization = Polarization
 
-            Parallel = np.outer(self.S1, np.sin(self.Full.ThetaVec.Radian+np.pi/2))
+            Parallel = np.outer(self.S1, np.sin(self.Meshes.ThetaVec.Radian))
 
-            Perpendicular = np.outer(self.S2, np.cos(self.Full.ThetaVec.Radian+np.pi/2))
+            Perpendicular = np.outer(self.S2, np.cos(self.Meshes.ThetaVec.Radian))
 
         elif PolarizationAngle is None:
 
@@ -145,7 +138,7 @@ class Scatterer(object):
 
         self.Field = Field(Perpendicular=Perpendicular,
                            Parallel=Parallel,
-                           Meshes=self.Full
+                           Meshes=self.Meshes
                            )
 
 

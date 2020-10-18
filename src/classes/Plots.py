@@ -22,7 +22,7 @@ class S1S2Plot(object):
         self.ax2.set_title(r'3D Phase function')
 
 
-        data = (np.abs(self.S1))
+        data = np.abs(self.S1)
         self.ax0.plot(self.Mesh.PhiVec.Radian,
                  data,
                  'k')
@@ -35,7 +35,7 @@ class S1S2Plot(object):
 
 
 
-        data = (np.abs(self.S2))
+        data = np.abs(self.S2)
         self.ax1.plot(self.Mesh.PhiVec.Radian,
                  data,
                  'k')

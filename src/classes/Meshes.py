@@ -40,9 +40,6 @@ class Meshes(object):
         #self.ThetaAngleMesh, self.PhiAngleMesh = rad2deg(self.ThetaRadMesh), rad2deg(self.PhiRadMesh)
 
 
-
-
-
 class Angle(object):
 
     def __init__(self, input):
@@ -53,9 +50,9 @@ class Angle(object):
 
         self.Radian = deg2rad(input)
 
-        self.DegreeMod = self.Degree#mod(self.Degree,180)
+        self.DegreeMod = mod(self.Degree,180)
 
-        self.RadianMod = self.Degree#mod(self.Radian, pi)
+        self.RadianMod = mod(self.Radian, pi)
 
 
 

@@ -2,11 +2,27 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def PointFieldCoupling(Field0, Field1):
+def PointFieldCoupling(Detector, Source, Mesh):
 
-    Field0, Field1 = np.array(Field0), np.array(Field1)
+    if Detector._coupling == 'Amplitude':
 
-    return np.abs(np.sum(Field0*Field1)**2)
+        temp = Detector.Field * Source * np.sin(Mesh.PhiMesh.Radian+np.pi/2)
+
+        temp = np.sum(temp)**2
+
+        temp = np.abs(temp)
+
+        return temp
+
+    elif Detector._coupling == 'Intensity':
+
+        temp = np.abs(Source) * Detector.Field * np.sin(Mesh.PhiMesh.Radian)
+
+        temp = np.sum(temp)
+
+        return temp
+
+
 
 
 def MeanFieldCoupling(Field0, Field1):
