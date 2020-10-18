@@ -7,9 +7,10 @@ import matplotlib.ticker as tick
 class Detector(object):
 
     def __init__(self,
-                 size,
-                 wavelength,
-                 npts):
+                 size: float = 50e-6,
+                 shape: str='square',
+                 wavelength: float = 1e-6,
+                 npts: int = 101):
 
         self._coupling = 'Intensity'
 
@@ -27,7 +28,7 @@ class Detector(object):
 
         self.GenMeshes()
 
-        self.Field, self.Fourier = self.GenField()
+        self.Field, self.Fourier = self.GenField(shape=shape)
 
 
     def GenMeshes(self):
@@ -63,15 +64,36 @@ class Detector(object):
         self.GenMeshes()
 
 
-    def GenField(self):
+    def GenField(self, shape):
 
         Field = np.zeros([self.npts, self.npts])
 
-        index = int(np.round(self.npts/4))
+        gridX, gridY = np.meshgrid(self.DirectVec, self.DirectVec)
 
-        Field[index:3*index, index:3*index] = 1
 
-        norm = np.sum(np.abs(Field))
+        if shape == 'square':
+
+            gridX[np.abs(gridX) > self.size/2] = 100
+
+            gridY[np.abs(gridY) > self.size/2] = 100
+
+            grid = gridX + gridY
+
+            Field[grid < 50] = 1
+
+            Field[grid >= 50] = 0
+
+
+        if shape == 'circle':
+
+            grid = np.sqrt((gridX)**2 + (gridY)**2)
+
+            Field[grid > self.size/2] = 0
+
+            Field[grid <= self.size/2] = 1
+
+
+        norm = np.sum(np.abs(Field).flatten())
 
         Field /= norm
 

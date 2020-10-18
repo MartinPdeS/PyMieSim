@@ -13,11 +13,12 @@ from miecoupling.src.functions.couplings import PointFieldCoupling
 
 npts = 201
 
-Detector = Detector(size      = 50e-6,
-                   wavelength = 400e-9,
-                   npts       = npts)
+Detector = Detector(size       = 50e-6,
+                    wavelength = 400e-9,
+                    shape      = 'circle',
+                    npts       = npts)
 
-Detector.magnificate(magnification=1.5)
+#Detector.magnificate(magnification=1.5)
 
 Detector.PlotFields()
 

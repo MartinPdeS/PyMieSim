@@ -25,7 +25,7 @@ LP01 = mode(fiber      = Fiber,
             npts       = npts,
             )
 
-Mode.PlotFields()
+LP01.PlotFields()
 
 Scat = Scatterer(diameter    = 100e-9,
                  wavelength  = 400e-9,
@@ -35,6 +35,8 @@ Scat = Scatterer(diameter    = 100e-9,
                  ThetaOffset = 0,
                  PhiBound    = [-180,180],
                  PhiOffset   = 10)
+
+
 
 
 

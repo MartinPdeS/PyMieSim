@@ -6,19 +6,16 @@ For different scatterer diameters.
 _________________________________________________________
 """
 
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 from progress.bar import Bar
-
 from miecoupling.src.classes.Detector import Detector
 from miecoupling.src.classes.Scattering import Scatterer
 from miecoupling.src.functions.couplings import PointFieldCoupling
 
 npts=101
 
-Detector = Detector(size      = 50e-6,
+Detector = Detector(size       = 50e-6,
                     wavelength = 400e-9,
                     npts       = npts)
 

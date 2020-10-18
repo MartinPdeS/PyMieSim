@@ -12,14 +12,14 @@ class fiber(object):
 
         factory = fibermodes.FiberFactory()
 
-        factory.addLayer(name='core',
-                radius=core_radius,
-                material='Fixed',
-                geometry = "StepIndex",
-                index=1.4489)
+        factory.addLayer(name     = 'core',
+                         radius   = core_radius,
+                         material = 'Fixed',
+                         geometry = "StepIndex",
+                         index    = 1.4489)
 
-        factory.addLayer(name='cladding',
-                         material='Fixed',
-                         index=1)
+        factory.addLayer(name     = 'cladding',
+                         material = 'Fixed',
+                         index    = 1)
 
         self.source = factory[0]

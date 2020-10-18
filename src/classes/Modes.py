@@ -8,7 +8,12 @@ from miecoupling.src.functions.converts import rad2deg, deg2rad, Angle2Direct, D
 
 class mode(object):
 
-    def __init__(self, fiber, LPmode, wavelength, npts, magnification=1):
+    def __init__(self,
+                 fiber,
+                 LPmode,
+                 wavelength: float,
+                 npts: int = 101,
+                 magnification: float = 1.):
 
         self._coupling = 'Amplitude'
 
@@ -42,7 +47,8 @@ class mode(object):
         self.shift_grid = shift_grid * shift_grid.T
 
 
-    def magnificate(self, magnification):
+    def magnificate(self,
+                    magnification):
 
         self.DirectVec /= magnification
 
@@ -140,6 +146,7 @@ class mode(object):
                             format=tick.FormatStrFormatter('%.1e'))
 
         cbar.ax.tick_params(labelsize='small')
+
         cbar.ax.locator_params(nbins=3)
 
         cbar = fig.colorbar(im1,

@@ -1,11 +1,14 @@
 from numpy import linspace, meshgrid, pi, array, mod
-
+import numpy as np
 from miecoupling.src.functions.converts import rad2deg, deg2rad
 
 
 class Meshes(object):
 
-    def __init__(self, npts, ThetaBound=[0,0], PhiBound=[0,360]):
+    def __init__(self,
+                 npts: int = 101,
+                 ThetaBound: list = [0,0],
+                 PhiBound: list = [0,360]):
 
         self.npts = npts
 
@@ -26,8 +29,6 @@ class Meshes(object):
 
         self.PhiVec = Angle( linspace(*self.PhiBound.Degree, self.npts) )
 
-        #self.ThetaRadVec, self.PhiRadVec = deg2rad(self.ThetaAngleVec), deg2rad(self.PhiAngleVec)
-
 
     def MakeMeshes(self):
 
@@ -36,8 +37,6 @@ class Meshes(object):
         self.ThetaMesh = Angle(self.ThetaMesh)
 
         self.PhiMesh = Angle(self.PhiMesh)
-
-        #self.ThetaAngleMesh, self.PhiAngleMesh = rad2deg(self.ThetaRadMesh), rad2deg(self.PhiRadMesh)
 
 
 class Angle(object):
@@ -55,14 +54,15 @@ class Angle(object):
         self.RadianMod = mod(self.Radian, pi)
 
 
-
-
     @property
     def Degree(self):
         return self._Degree
 
     @Degree.setter
     def Degree(self, Degree):
+        Degree = np.array(Degree)
+        if (Degree < -180).any():
+            raise Exception( 'Angle must defined between -180 to 180' )
         self._Degree = Degree
 
 
