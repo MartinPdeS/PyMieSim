@@ -15,7 +15,7 @@ requirements = [ 'numpy',
                 'matplotlib',
                 'PyMieScatt',
                 'progress',
-                'https://github.com/cbrunet/fibermodes.git#egg=package-1.0']
+                'repo @ https://github.com/cbrunet/fibermodes.git#egg=package-1.0']
 
 setup_dict = dict(
       description='Coupled mode modlisation for fiber optic coupler',
@@ -26,7 +26,7 @@ setup_dict = dict(
       packages=find_packages(),
       py_modules = [],
       install_requires = requirements,
-      dependency_links=['https://github.com/cbrunet/fibermodes.git#egg=package-0.2.0'],
+      #dependency_links=['https://github.com/cbrunet/fibermodes.git#egg=package-0.2.0'],
       license = 'Full private, no reproduction authorized',
       #url='https://gitlab.com/PolyMtlLFO/SuPyModes',
       long_description=open('README.md').read(),
