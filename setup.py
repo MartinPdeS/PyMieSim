@@ -11,7 +11,11 @@ except ImportError:
     sys.exit(1)
 
 
-requirements = [ 'numpy', 'matplotlib', 'PyMieScatt', 'progress']
+requirements = [ 'numpy',
+                'matplotlib',
+                'PyMieScatt',
+                'progress',
+                'https://github.com/cbrunet/fibermodes.git#egg=package-1.0']
 
 setup_dict = dict(
       description='Coupled mode modlisation for fiber optic coupler',
