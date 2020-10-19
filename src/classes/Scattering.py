@@ -70,9 +70,9 @@ class Scatterer(object):
         self.GenField(PolarizationAngle=0)
 
 
-    def PlotFields(self):
+    def PlotS1S2(self):
 
-        SPF = self.Make3DField(self.Field.SPF)
+        SPF = self.3DField(self.Field.SPF)
 
         Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Meshes)
 

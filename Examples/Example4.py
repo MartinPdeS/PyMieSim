@@ -37,7 +37,7 @@ Scat = Scatterer(diameter      = 500e-9,
 
 Scat.GenField(PolarizationAngle=0)
 
-Scat.PlotFields()
+Scat.PlotS1S2()
 
 Scat.Field.PlotStokes(RectangleTheta=[-20,20], RectanglePhi=[-20,20])
 

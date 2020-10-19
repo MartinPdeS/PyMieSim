@@ -2,7 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def PointFieldCoupling(Detector, Source, Mesh):
+def PointFieldCoupling(Detector,
+                       Source,
+                       Mesh):
+
 
     if Detector._coupling == 'Amplitude':
 

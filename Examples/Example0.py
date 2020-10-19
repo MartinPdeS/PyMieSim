@@ -40,7 +40,7 @@ Scat = Scatterer(diameter    = 100e-9,
 
 
 
-Scat.PlotFields()
+Scat.PlotS1S2()
 
 Scat.Field.PlotStokes(RectangleTheta=[-5,5], RectanglePhi=[-5,5])
 

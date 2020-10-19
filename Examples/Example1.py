@@ -31,11 +31,14 @@ Scat = Scatterer(diameter      = 500e-9,
                  PhiBound      = [-180,180],
                  PhiOffset     = 0)
 
-Scat.PlotFields()
+Scat.PlotS1S2()
 
-Scat.Field.PlotStokes(RectangleTheta=[-5,5], RectanglePhi=[-5,5])
+Scat.Field.PlotStokes(RectangleTheta = [-5,5],
+                      RectanglePhi   = [-5,5])
 
-PointFieldCoupling(Detector=Detector, Source=Scat.Field.Parallel, Mesh=Scat.Meshes)
+PointFieldCoupling(Detector = Detector,
+                   Source   = Scat.Field.Parallel,
+                   Mesh     = Scat.Meshes)
 
 
 
