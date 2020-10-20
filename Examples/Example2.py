@@ -10,12 +10,11 @@ _________________________________________________________
 
 import matplotlib.pyplot as plt
 import numpy as np
-from progress.bar import Bar
-
-from miecoupling.src.classes.Fiber import fiber
-from miecoupling.src.classes.Modes import mode
-from miecoupling.src.classes.Scattering import Scatterer
-from miecoupling.src.functions.couplings import PointFieldCoupling
+from tqdm import tqdm
+from src.classes.Fiber import fiber
+from src.classes.Modes import mode
+from src.classes.Scattering import Scatterer
+from src.functions.couplings import PointFieldCoupling
 
 npts=101
 
@@ -41,30 +40,29 @@ LP01.magnificate(magnification=2.)
 
 LP11.magnificate(magnification=2.)
 
-DiameterList = np.linspace(100,9000,2) * 1e-9
+DiameterList = np.linspace(100,9000,50) * 1e-9
 
 CouplingLP01, CouplingLP11 = [], []
 
-with Bar('Processing...', max = len(DiameterList)) as bar:
-    for Diameter in DiameterList:
+for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:"):
 
-        Scat = Scatterer(diameter    = Diameter,
-                         wavelength  = 400e-9,
-                         index       = 1.4,
-                         npts        = 101,
-                         ThetaBound  = [-20,20],
-                         ThetaOffset = 0,
-                         PhiBound    = [-20,20],
-                         PhiOffset   = 10)
+    Scat = Scatterer(diameter    = Diameter,
+                     wavelength  = 400e-9,
+                     index       = 1.4,
+                     npts        = 101,
+                     ThetaBound  = [-20,20],
+                     ThetaOffset = 0,
+                     PhiBound    = [-20,20],
+                     PhiOffset   = 10)
 
-        CouplingLP01.append( PointFieldCoupling(Detector = LP01,
-                                                Source   = Scat.Field.Parallel,
-                                                Mesh     = Scat.Meshes) )
+    CouplingLP01.append( PointFieldCoupling(Detector = LP01,
+                                            Source   = Scat.Field.Parallel,
+                                            Mesh     = Scat.Meshes) )
 
-        CouplingLP11.append( PointFieldCoupling(Detector = LP11,
-                                                Source   = Scat.Field.Parallel,
-                                                Mesh     = Scat.Meshes) )
-        bar.next()
+    CouplingLP11.append( PointFieldCoupling(Detector = LP11,
+                                            Source   = Scat.Field.Parallel,
+                                            Mesh     = Scat.Meshes) )
+
 
 
 

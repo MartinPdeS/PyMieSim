@@ -5,9 +5,9 @@ Scattering Parallel Field coupling with en-face detector
 _________________________________________________________
 """
 
-from miecoupling.src.classes.Detector import Detector
-from miecoupling.src.classes.Scattering import Scatterer
-from miecoupling.src.functions.couplings import PointFieldCoupling
+from src.classes.Detector import Detector
+from src.classes.Scattering import Scatterer
+from src.functions.couplings import PointFieldCoupling
 
 
 

@@ -1,6 +1,6 @@
 from numpy import linspace, meshgrid, pi, array, mod
 import numpy as np
-from miecoupling.src.functions.converts import rad2deg, deg2rad
+from src.functions.converts import rad2deg, deg2rad
 
 
 class Meshes(object):

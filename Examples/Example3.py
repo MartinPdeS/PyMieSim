@@ -8,10 +8,10 @@ _________________________________________________________
 
 import matplotlib.pyplot as plt
 import numpy as np
-from progress.bar import Bar
-from miecoupling.src.classes.Detector import Detector
-from miecoupling.src.classes.Scattering import Scatterer
-from miecoupling.src.functions.couplings import PointFieldCoupling
+from tqdm import tqdm
+from src.classes.Detector import Detector
+from src.classes.Scattering import Scatterer
+from src.functions.couplings import PointFieldCoupling
 
 npts=101
 
@@ -23,27 +23,26 @@ Detector.magnificate(magnification=1.5)
 
 Detector.PlotFields()
 
-DiameterList = np.linspace(100,9000,2) * 1e-9
+DiameterList = np.linspace(100,9000,50) * 1e-9
 
 Coupling = []
 
-with Bar('Processing...', max = len(DiameterList)) as bar:
-    for Diameter in DiameterList:
+for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:"):
 
-        Scat = Scatterer(diameter    = Diameter,
-                         wavelength  = 400e-9,
-                         index       = 1.4,
-                         npts        = 101,
-                         ThetaBound  = [-20,20],
-                         ThetaOffset = 0,
-                         PhiBound    = [-20,20],
-                         PhiOffset   = 10)
+    Scat = Scatterer(diameter    = Diameter,
+                     wavelength  = 400e-9,
+                     index       = 1.4,
+                     npts        = 101,
+                     ThetaBound  = [-20,20],
+                     ThetaOffset = 0,
+                     PhiBound    = [-20,20],
+                     PhiOffset   = 10)
 
-        Coupling.append( PointFieldCoupling(Detector     = Detector,
-                                                Source   = Scat.Field.Parallel,
-                                                Mesh     = Scat.Meshes) )
+    Coupling.append( PointFieldCoupling(Detector     = Detector,
+                                            Source   = Scat.Field.Parallel,
+                                            Mesh     = Scat.Meshes) )
 
-        bar.next()
+
 
 
 

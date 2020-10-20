@@ -15,6 +15,7 @@ requirements = [ 'numpy',
                 'matplotlib',
                 'PyMieScatt',
                 'progress',
+                'tqdm',
                 'fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=0.2.0'
                 ]
 

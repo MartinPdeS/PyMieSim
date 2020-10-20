@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 
-from miecoupling.src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
+from src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
 
 
 class mode(object):
