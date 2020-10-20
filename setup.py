@@ -15,7 +15,7 @@ requirements = [ 'numpy',
                 'matplotlib',
                 'PyMieScatt',
                 'progress',
-                'repo @ https://github.com/cbrunet/fibermodes.git#egg=package-1.0']
+                'repo @ https://github.com/cbrunet/fibermodes.git#egg=repo-0.2.0']
 
 setup_dict = dict(
       description='Coupled mode modlisation for fiber optic coupler',
