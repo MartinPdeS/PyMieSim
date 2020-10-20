@@ -72,7 +72,7 @@ class Scatterer(object):
 
     def PlotS1S2(self):
 
-        SPF = self.3DField(self.Field.SPF)
+        SPF = self.Make3DField(self.Field.SPF)
 
         Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Meshes)
 
