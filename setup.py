@@ -15,6 +15,7 @@ requirements = [ 'numpy',
                 'matplotlib',
                 'PyMieScatt',
                 'progress',
+                'fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=0.2.0'
                 ]
 
 setup_dict = dict(
@@ -26,7 +27,6 @@ setup_dict = dict(
       packages=find_packages(),
       py_modules = [],
       install_requires = requirements,
-      dependency_links=['https://github.com/cbrunet/fibermodes.git'],
       license = 'Full private, no reproduction authorized',
       url='https://gitlab.com/PolyMtlLFO/SuPyModes',
       long_description=open('README.md').read(),
