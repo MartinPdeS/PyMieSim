@@ -1,0 +1,4 @@
+PyMieScatt
+matplotlib
+numpy
+progress

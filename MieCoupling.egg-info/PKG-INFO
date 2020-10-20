@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: MieCoupling
+Version: 0.1
+Summary: Coupled mode modlisation for fiber optic coupler
+Home-page: https://gitlab.com/PolyMtlLFO/SuPyModes
+Author: Martin Poinsinet de Sivry
+Author-email: Martin.poinsinet.de.sivry@gmail.com
+License: Full private, no reproduction authorized
+Description: UNKNOWN
+Platform: Linux
+Platform: Max OSX

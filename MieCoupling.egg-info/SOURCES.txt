@@ -1,0 +1,17 @@
+README.md
+setup.py
+MieCoupling.egg-info/PKG-INFO
+MieCoupling.egg-info/SOURCES.txt
+MieCoupling.egg-info/dependency_links.txt
+MieCoupling.egg-info/requires.txt
+MieCoupling.egg-info/top_level.txt
+src/__init__.py
+src/run.py
+src/classes/Detector.py
+src/classes/Fiber.py
+src/classes/Fields.py
+src/classes/Meshes.py
+src/classes/Modes.py
+src/classes/Plots.py
+src/classes/Scattering.py
+src/classes/__init__.py
