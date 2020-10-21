@@ -8,7 +8,7 @@ class Detector(object):
 
     def __init__(self,
                  size: float = 50e-6,
-                 shape: str='square',
+                 shape: str = 'circle',
                  wavelength: float = 1e-6,
                  npts: int = 101):
 
@@ -47,6 +47,10 @@ class Detector(object):
 
         self.AngleBound = [self.AngleVec[0], self.AngleVec[-1]]
 
+        self.ThetaBound = [self.AngleVec[0], self.AngleVec[-1]]
+
+        self.PhiBound = self.ThetaBound
+
 
     def GenShift(self):
 
@@ -64,7 +68,7 @@ class Detector(object):
         self.GenMeshes()
 
 
-    def GenField(self, shape):
+    def GenField(self, shape: str = 'circle'):
 
         Field = np.zeros([self.npts, self.npts])
 
@@ -158,6 +162,7 @@ class Detector(object):
                             format=tick.FormatStrFormatter('%.1e'))
 
         cbar.ax.tick_params(labelsize='small')
+
         cbar.ax.locator_params(nbins=3)
 
         data = (np.abs(self.Fourier)[self.npts//2])

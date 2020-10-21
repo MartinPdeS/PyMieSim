@@ -23,7 +23,7 @@ Detector.magnificate(magnification=1.5)
 
 Detector.PlotFields()
 
-DiameterList = np.linspace(100,9000,50) * 1e-9
+DiameterList = np.linspace(100,3000,150) * 1e-9
 
 Coupling = []
 
@@ -33,14 +33,14 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:")
                      wavelength  = 400e-9,
                      index       = 1.4,
                      npts        = 101,
-                     ThetaBound  = [-20,20],
+                     ThetaBound  = Detector.ThetaBound,
                      ThetaOffset = 0,
-                     PhiBound    = [-20,20],
-                     PhiOffset   = 10)
+                     PhiBound    = Detector.PhiBound,
+                     PhiOffset   = 0)
 
     Coupling.append( PointFieldCoupling(Detector     = Detector,
-                                            Source   = Scat.Field.Parallel,
-                                            Mesh     = Scat.Meshes) )
+                                        Source   = Scat.Field.Parallel,
+                                        Mesh     = Scat.Meshes) )
 
 
 

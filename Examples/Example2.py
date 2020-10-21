@@ -40,20 +40,20 @@ LP01.magnificate(magnification=2.)
 
 LP11.magnificate(magnification=2.)
 
-DiameterList = np.linspace(100,9000,50) * 1e-9
+DiameterList = np.linspace(100,1000,50) * 1e-9
 
 CouplingLP01, CouplingLP11 = [], []
 
-for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:"):
+for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress"):
 
     Scat = Scatterer(diameter    = Diameter,
                      wavelength  = 400e-9,
                      index       = 1.4,
                      npts        = 101,
-                     ThetaBound  = [-20,20],
+                     ThetaBound  = LP01.ThetaBound,
                      ThetaOffset = 0,
-                     PhiBound    = [-20,20],
-                     PhiOffset   = 10)
+                     PhiBound    = LP01.PhiBound,
+                     PhiOffset   = 0)
 
     CouplingLP01.append( PointFieldCoupling(Detector = LP01,
                                             Source   = Scat.Field.Parallel,

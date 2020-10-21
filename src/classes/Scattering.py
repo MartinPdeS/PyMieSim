@@ -61,9 +61,9 @@ class Scatterer(object):
 
         self.npts = npts
 
-        self.Meshes = Meshes(ThetaBound=np.array(ThetaBound)+ThetaOffset,
-                           PhiBound=np.array(PhiBound)+PhiOffset,
-                           npts=npts)
+        self.Meshes = Meshes(ThetaBound = np.array(ThetaBound) + ThetaOffset,
+                             PhiBound   = np.array(PhiBound) + PhiOffset,
+                             npts       = npts)
 
         self.computeS1S2()
 
@@ -96,7 +96,7 @@ class Scatterer(object):
 
         for mu in MuList:
 
-            SizeParam = np.pi*self.diameter/self.wavelength
+            SizeParam = np.pi * self.diameter / self.wavelength
 
             S1, S2 = PyMieScatt.MieS1S2(self.index,
                                         SizeParam,
@@ -136,9 +136,9 @@ class Scatterer(object):
             Perpendicular = np.outer(self.S2, np.ones(self.npts)/np.sqrt(2))
 
 
-        self.Field = Field(Perpendicular=Perpendicular,
-                           Parallel=Parallel,
-                           Meshes=self.Meshes
+        self.Field = Field(Perpendicular  = Perpendicular,
+                           Parallel       = Parallel,
+                           Meshes         = self.Meshes
                            )
 
 

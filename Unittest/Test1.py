@@ -1,0 +1,69 @@
+
+"""
+_________________________________________________________
+First Unittest: uniform phase function for solid angle
+should results to a known results.
+_________________________________________________________
+"""
+
+import numpy as np
+from src.classes.Fiber import fiber
+from src.classes.Modes import mode
+from src.classes.Scattering import Scatterer
+from src.functions.couplings import PointFieldCoupling
+
+npts=201
+
+Fiber = fiber(core_radius = 4.2e-6,
+              core_index  = 1.4456,
+              clad_radius = 20.5e-6,
+              clad_index  = 1.4444)
+
+LP11 = mode(fiber      = Fiber,
+            LPmode     = (2, 1),
+            wavelength = 400e-9,
+            npts       = npts,
+            )
+
+
+DiameterList = np.linspace(100,1000,50) * 1e-9
+
+CouplingLP01, CouplingLP11 = [], []
+
+Scat = Scatterer(diameter    = 500e-9,
+                 wavelength  = 400e-9,
+                 index       = 1.4,
+                 npts        = npts,
+                 ThetaBound  = LP11.ThetaBound,
+                 ThetaOffset = 0,
+                 PhiBound    = LP11.PhiBound,
+                 PhiOffset   = 0
+                 )
+
+Coupling = PointFieldCoupling(Detector = LP11,
+                              Source   = np.ones( np.shape( Scat.Field.Parallel ) ),  #Uniforme sphere
+                              Mesh     = Scat.Meshes
+                              )
+
+
+TheoVal, Delta = 0.0, 0.05   # Theoretical value is 0
+
+
+print('Bound angle:\n \t Theta -> {0}\n \t Phi -> {1}\n'.format(LP11.ThetaBound, LP11.PhiBound))
+
+print('Coupling -> {0}, \nTheoretical -> {1}'.format(Coupling, TheoVal))
+
+if 0.127646 - Delta < Coupling < 0.127646 + Delta:
+    print('Unittest 0: Passed!')
+else:
+    raise Exception('Unittest 0: Failed!')
+
+
+
+
+
+
+
+
+
+# -

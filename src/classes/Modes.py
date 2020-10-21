@@ -69,7 +69,9 @@ class mode(object):
 
         self.DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
-        self.AngleBound = [self.AngleVec[0], self.AngleVec[-1]]
+        self.ThetaBound = [self.AngleVec[0], self.AngleVec[-1]]
+
+        self.PhiBound = self.ThetaBound
 
 
     def GenField(self):

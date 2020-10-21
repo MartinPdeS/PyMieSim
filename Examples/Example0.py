@@ -26,9 +26,9 @@ LP01 = mode(fiber      = Fiber,
 
 LP01.PlotFields()
 
-Scat = Scatterer(diameter    = 100e-9,
+Scat = Scatterer(diameter    = 200e-9,
                  wavelength  = 400e-9,
-                 index       = 1.4,
+                 index       = 1.5,
                  npts        = 200,
                  ThetaBound  = [-180,180],
                  ThetaOffset = 0,
@@ -41,7 +41,8 @@ Scat = Scatterer(diameter    = 100e-9,
 
 Scat.PlotS1S2()
 
-Scat.Field.PlotStokes(RectangleTheta=[-5,5], RectanglePhi=[-5,5])
+Scat.Field.PlotStokes(RectangleTheta=[-5,5],
+                      RectanglePhi=[-5,5])
 
 
 
