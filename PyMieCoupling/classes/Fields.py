@@ -86,8 +86,8 @@ class Field(object):
         fig, ax0, ax1 = self.GenStokesFig()
 
         im0 = ax0.pcolormesh(
-                             self.PhiVec.Degree,
-                             self.ThetaVec.Degree,
+                             self.Phi.Vector.Degree,
+                             self.Theta.Vector.Degree,
                              self.Stokes[0].T,
                              shading='auto'
                              )
@@ -98,8 +98,8 @@ class Field(object):
 
         n=8
         im1 = ax0.quiver(
-                         self.PhiMesh.Degree[::n, ::n],
-                         self.ThetaMesh.Degree[::n, ::n],
+                         self.Phi.Mesh.Degree[::n, ::n],
+                         self.Theta.Mesh.Degree[::n, ::n],
                          self.Stokes[2][::n, ::n],
                          self.Stokes[1][::n, ::n],
                          units='width',
@@ -111,8 +111,8 @@ class Field(object):
 
 
         im2 = ax1.pcolormesh(
-                             self.PhiVec.Degree,
-                             self.ThetaVec.Degree,
+                             self.Phi.Vector.Degree,
+                             self.Theta.Vector.Degree,
                              self.Stokes[3].T,
                              shading='auto'
                              )
@@ -122,8 +122,8 @@ class Field(object):
         cbar.ax.locator_params(nbins=3)
 
         ax1.quiver(
-                   self.PhiMesh.Degree[::n, ::n],
-                   self.ThetaMesh.Degree[::n, ::n],
+                   self.Phi.Mesh.Degree[::n, ::n],
+                   self.Theta.Mesh.Degree[::n, ::n],
                    self.Stokes[2][::n, ::n],
                    self.Stokes[1][::n, ::n],
                    units='width',

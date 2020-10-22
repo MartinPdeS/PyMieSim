@@ -14,9 +14,9 @@ class Meshes(object):
 
         ThetaBound, PhiBound = array(ThetaBound), array(PhiBound)
 
-        self.ThetaBound = Angle(ThetaBound)
+        self.Theta, self.Phi = _Angle(), _Angle()
 
-        self.PhiBound = Angle(PhiBound)
+        self.Theta.Boundary, self.Phi.Boundary = Angle(ThetaBound), Angle(PhiBound)
 
         self.MakeVec()
 
@@ -24,34 +24,35 @@ class Meshes(object):
 
 
     def MakeVec(self):
+        self.Theta.Vector = Angle( linspace(*self.Theta.Boundary.Degree, self.npts) )
 
-        self.ThetaVec = Angle( linspace(*self.ThetaBound.Degree, self.npts) )
-
-        self.PhiVec = Angle( linspace(*self.PhiBound.Degree, self.npts) )
+        self.Phi.Vector = Angle( linspace(*self.Phi.Boundary.Degree, self.npts) )
 
 
     def MakeMeshes(self):
+        ThetaMesh, PhiMesh = meshgrid(self.Theta.Vector.Degree, self.Phi.Vector.Degree)
 
-        self.ThetaMesh, self.PhiMesh = meshgrid(self.ThetaVec.Degree, self.PhiVec.Degree)
+        self.Theta.Mesh, self.Phi.Mesh = Angle(ThetaMesh), Angle(PhiMesh)
 
-        self.ThetaMesh = Angle(self.ThetaMesh)
 
-        self.PhiMesh = Angle(self.PhiMesh)
+class _Angle(object):
+
+    def __init__(self):
+        self.Boundary = None
+        self.Vector = None
+        self.Mesh = None
 
 
 class Angle(object):
 
     def __init__(self, input):
-
-        input = array(input)
-
-        self.Degree = input
+        self.Degree = np.array(input)
 
         self.Radian = deg2rad(input)
 
-        self.DegreeMod = mod(self.Degree,180)
+        self.DegreeMod = np.mod(self.Degree,180)
 
-        self.RadianMod = mod(self.Radian, pi)
+        self.RadianMod = np.mod(self.Radian, pi)
 
 
     @property

@@ -23,11 +23,11 @@ class S1S2Plot(object):
 
 
         data = np.abs(self.S1)
-        self.ax0.plot(self.Mesh.PhiVec.Radian,
+        self.ax0.plot(self.Mesh.Phi.Vector.Radian,
                  data,
                  'k')
 
-        self.ax0.fill_between(self.Mesh.PhiVec.Radian,
+        self.ax0.fill_between(self.Mesh.Phi.Vector.Radian,
                          0,
                          data,
                          color='C0',
@@ -36,11 +36,11 @@ class S1S2Plot(object):
 
 
         data = np.abs(self.S2)
-        self.ax1.plot(self.Mesh.PhiVec.Radian,
+        self.ax1.plot(self.Mesh.Phi.Vector.Radian,
                  data,
                  'k')
 
-        self.ax1.fill_between(self.Mesh.PhiVec.Radian,
+        self.ax1.fill_between(self.Mesh.Phi.Vector.Radian,
                          0,
                          data,
                          color='C1',

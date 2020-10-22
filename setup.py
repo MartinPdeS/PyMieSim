@@ -20,7 +20,7 @@ requirements = [ 'numpy',
                 ]
 
 setup_dict = dict(
-      name = 'MieCoupling',
+      name = 'PyMieCoupling',
       description='Coupled mode modlisation for fiber optic coupler',
       version = '0.1',
       author = 'Martin Poinsinet de Sivry',

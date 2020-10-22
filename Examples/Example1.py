@@ -15,7 +15,9 @@ npts = 201
 Detector = Detector(size       = 50e-6,
                     wavelength = 400e-9,
                     shape      = 'circle',
-                    npts       = npts)
+                    npts       = npts,
+                    ThetaOffset = 0,
+                    PhiOffset = 0)
 
 Detector.magnificate(magnification=1.5)
 
@@ -25,10 +27,7 @@ Scat = Scatterer(diameter      = 500e-9,
                  wavelength    = 400e-9,
                  index         = 1.4,
                  npts          = npts,
-                 ThetaBound    = [-180,180],
-                 ThetaOffset   = 0,
-                 PhiBound      = [-180,180],
-                 PhiOffset     = 0)
+                 Meshes = Detector.Meshes)
 
 Scat.PlotS1S2()
 

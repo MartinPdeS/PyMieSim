@@ -5,10 +5,11 @@ import scipy.interpolate as interp
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import PyMieScatt
+import functools
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad
 from PyMieCoupling.classes.Fields import Field
-from PyMieCoupling.classes.Meshes import Meshes
+from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Plots import S1S2Plot
 
 global i
@@ -48,22 +49,27 @@ class Scatterer(object):
                  wavelength: float,
                  index: float,
                  npts: int = 201,
+                 Meshes: MieMesh = None,
                  ThetaBound: list = [-180, 180],
                  ThetaOffset: float = 0,
                  PhiBound: list = [-180, 180],
-                 PhiOffset: float = 0):
+                 PhiOffset: float = 0,
+                 CacheTrunk: int = 0):
 
-        self.diameter = diameter
+        self.diameter, self.wavelength = diameter, wavelength
 
-        self.wavelength = wavelength
+        self.index, self.npts = index, npts
 
-        self.index = index
+        self.CacheTrunk = CacheTrunk
 
-        self.npts = npts
+        if Meshes:
+            self.Meshes = Meshes
+            assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset])
 
-        self.Meshes = Meshes(ThetaBound = np.array(ThetaBound) + ThetaOffset,
-                             PhiBound   = np.array(PhiBound) + PhiOffset,
-                             npts       = npts)
+        else:
+            self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
+                                  PhiBound   = np.array(PhiBound) + PhiOffset,
+                                  npts       = npts)
 
         self.computeS1S2()
 
@@ -79,32 +85,41 @@ class Scatterer(object):
 
     def Make3DField(self, item):
 
-        X = item * np.sin(self.Field.PhiMesh.Radian) * np.cos(self.Field.ThetaMesh.Radian)
+        X = item * np.sin(self.Field.Phi.Mesh.Radian) * np.cos(self.Field.Theta.Mesh.Radian)
 
-        Y = item * np.sin(self.Field.PhiMesh.Radian) * np.sin(self.Field.ThetaMesh.Radian)
+        Y = item * np.sin(self.Field.Phi.Mesh.Radian) * np.sin(self.Field.Theta.Mesh.Radian)
 
-        Z = item * np.cos(self.Field.PhiMesh.Radian)
+        Z = item * np.cos(self.Field.Phi.Mesh.Radian)
 
         return [X, Y, Z]
 
 
     def computeS1S2(self):
 
-        MuList = np.cos(self.Meshes.PhiVec.Radian)
+        MuList = np.cos(self.Meshes.Phi.Vector.Radian)
+
+        if self.CacheTrunk: MuList = np.round(MuList, self.CacheTrunk)
 
         self.S1, self.S2 = [], []
 
-        for mu in MuList:
+        for Mu in MuList:
 
-            SizeParam = np.pi * self.diameter / self.wavelength
+            self.SizeParam = np.pi * self.diameter / self.wavelength
 
-            S1, S2 = PyMieScatt.MieS1S2(self.index,
-                                        SizeParam,
-                                        mu)
+            S1, S2 = self.WrapS1S2(Mu)
 
             self.S1.append(S1)
             self.S2.append(S2)
 
+
+    @functools.lru_cache(maxsize=201)
+    def WrapS1S2(self, Mu):
+
+        S1, S2 = PyMieScatt.MieS1S2(self.index,
+                                    self.SizeParam,
+                                    Mu)
+
+        return S1, S2
 
 
     def GenField(self, PolarizationAngle=0):
@@ -123,9 +138,9 @@ class Scatterer(object):
 
             self.Polarization = Polarization
 
-            Parallel = np.outer(self.S1, np.sin(self.Meshes.ThetaVec.Radian))
+            Parallel = np.outer(self.S1, np.sin(self.Meshes.Theta.Vector.Radian))
 
-            Perpendicular = np.outer(self.S2, np.cos(self.Meshes.ThetaVec.Radian))
+            Perpendicular = np.outer(self.S2, np.cos(self.Meshes.Theta.Vector.Radian))
 
         elif PolarizationAngle is None:
 

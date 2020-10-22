@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
-
+from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 
 class mode(object):
 
@@ -13,7 +13,9 @@ class mode(object):
                  LPmode,
                  wavelength: float,
                  npts: int = 101,
-                 magnification: float = 1.):
+                 magnification: float = 1.,
+                 ThetaOffset: float = 0,
+                 PhiOffset: float = 0):
 
         self._coupling = 'Amplitude'
 
@@ -21,17 +23,15 @@ class mode(object):
 
         self.fiber = fiber
 
-        self.wavelength = wavelength
+        self.wavelength, self.k = wavelength, 2 * np.pi / wavelength
 
-        self.k = 2 * np.pi / wavelength
+        self.npts, self.magnification  = npts, magnification
 
-        self.npts = npts
+        self.ThetaOffset, self.PhiOffset = ThetaOffset, PhiOffset
 
         self.magnification = magnification
 
         self.GenShift()
-
-        self.DirectVec = np.linspace(-self.fiber.MaxDirect, self.fiber.MaxDirect, self.npts)
 
         self.GenMeshes()
 
@@ -47,8 +47,7 @@ class mode(object):
         self.shift_grid = shift_grid * shift_grid.T
 
 
-    def magnificate(self,
-                    magnification):
+    def magnificate(self, magnification: float = 1):
 
         self.DirectVec /= magnification
 
@@ -57,21 +56,17 @@ class mode(object):
 
     def GenMeshes(self):
 
-        self.DirectMesh = np.meshgrid(self.DirectVec, self.DirectVec)
+        self.DirectVec = np.linspace(-self.fiber.MaxDirect, self.fiber.MaxDirect, self.npts)
 
         self.AngleVec = Direct2Angle(self.DirectVec, self.k)
 
-        self.RadVec = deg2rad(self.AngleVec)
+        self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
-        self.MaxAngle = self.AngleVec[0]
+        self._AngleBound = np.array( [self.AngleVec[0], self.AngleVec[-1]] )
 
-        self.AngleMesh = np.meshgrid(self.AngleVec, self.AngleVec)
-
-        self.DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
-
-        self.ThetaBound = [self.AngleVec[0], self.AngleVec[-1]]
-
-        self.PhiBound = self.ThetaBound
+        self.Meshes = MieMesh(npts       = self.npts,
+                              ThetaBound = self._AngleBound + self.ThetaOffset,
+                              PhiBound   = self._AngleBound + self.PhiOffset)
 
 
     def GenField(self):
@@ -124,6 +119,7 @@ class mode(object):
 
         return fig, ax0, ax1, ax2
 
+
     def PlotFields(self):
 
         fig, ax0, ax1, ax2 = self.GenFigure()
@@ -135,8 +131,8 @@ class mode(object):
                              self.Field,
                              shading='auto')
 
-        im1 = ax1.pcolormesh(self.AngleVec,
-                             self.AngleVec,
+        im1 = ax1.pcolormesh(self.Meshes.Phi.Vector.Radian,
+                             self.Meshes.Theta.Vector.Radian,
                              np.imag(self.Fourier),
                              shading='auto')
 
@@ -163,8 +159,8 @@ class mode(object):
 
         data = (np.abs(self.Fourier)[self.npts//2])
 
-        ax2.plot(self.RadVec, data)
+        ax2.plot(self.Meshes.Phi.Vector.Radian, data)
 
-        ax2.fill_between(self.RadVec, min(data), data, color='C0', alpha=0.4)
+        ax2.fill_between(self.Meshes.Phi.Vector.Radian, min(data), data, color='C0', alpha=0.4)
 
         plt.show()

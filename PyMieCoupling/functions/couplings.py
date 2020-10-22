@@ -1,13 +1,15 @@
 import numpy as np
+from PyMieCoupling.classes.Detector import Detector
+from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 
-def PointFieldCoupling(Detector,
+def PointFieldCoupling(Detector: Detector,
                        Source,
-                       Mesh):
+                       Mesh: MieMesh):
 
 
     if Detector._coupling == 'Amplitude':
 
-        temp = Detector.Field * Source * np.abs(np.sin(Mesh.PhiMesh.Radian).T)
+        temp = Detector.Field * Source * np.abs(np.sin(Mesh.Phi.Mesh.Radian).T)
 
         temp = np.sum(temp)**2
 
@@ -18,7 +20,7 @@ def PointFieldCoupling(Detector,
 
     elif Detector._coupling == 'Intensity':
 
-        temp = np.abs(Source) * Detector.Field * np.abs(np.sin(Mesh.PhiMesh.Radian).T)
+        temp = np.abs(Source) * Detector.Field * np.abs(np.sin(Mesh.Phi.Mesh.Radian).T)
 
         temp = np.sum(temp)
 

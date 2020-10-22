@@ -1,6 +1,7 @@
 
 import numpy as np
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
+from PyMieCoupling.classes.Meshes import Meshes
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 
@@ -10,19 +11,19 @@ class Detector(object):
                  size: float = 50e-6,
                  shape: str = 'circle',
                  wavelength: float = 1e-6,
-                 npts: int = 101):
+                 npts: int = 101,
+                 ThetaOffset: float = 0,
+                 PhiOffset: float = 0):
 
         self._coupling = 'Intensity'
 
-        self.size = size
+        self.size, self.wavelength = size, wavelength
 
-        self.wavelength = wavelength
+        self.ThetaOffset, self.PhiOffset = ThetaOffset, PhiOffset
 
         self.k = 2 * np.pi / wavelength
 
         self.npts = npts
-
-        self.DirectVec = np.linspace(-1.5*size/2, 1.5*size/2, self.npts)
 
         self.GenShift()
 
@@ -33,23 +34,17 @@ class Detector(object):
 
     def GenMeshes(self):
 
-        self.DirectMesh = np.meshgrid(self.DirectVec, self.DirectVec)
+        self.DirectVec = np.linspace(-1.5*self.size/2, 1.5*self.size/2, self.npts)
 
         self.AngleVec = Direct2Angle(self.DirectVec, self.k)
 
-        self.RadVec = deg2rad(self.AngleVec)
+        self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
-        self.MaxAngle = self.AngleVec[0]
+        self._AngleBound = np.array( [self.AngleVec[0], self.AngleVec[-1]] )
 
-        self.AngleMesh = np.meshgrid(self.AngleVec, self.AngleVec)
-
-        self.DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
-
-        self.AngleBound = [self.AngleVec[0], self.AngleVec[-1]]
-
-        self.ThetaBound = [self.AngleVec[0], self.AngleVec[-1]]
-
-        self.PhiBound = self.ThetaBound
+        self.Meshes = Meshes(npts       = self.npts,
+                             ThetaBound = self._AngleBound + self.ThetaOffset,
+                             PhiBound   = self._AngleBound + self.PhiOffset)
 
 
     def GenShift(self):
@@ -139,8 +134,8 @@ class Detector(object):
                              self.Field,
                              shading='auto')
 
-        im1 = ax1.pcolormesh(self.AngleVec,
-                             self.AngleVec,
+        im1 = ax1.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
                              self.Fourier,
                              shading='auto')
 
@@ -167,9 +162,9 @@ class Detector(object):
 
         data = (np.abs(self.Fourier)[self.npts//2])
 
-        ax2.plot(self.RadVec, data)
+        ax2.plot(self.Meshes.Phi.Vector.Radian, data)
 
-        ax2.fill_between(self.RadVec, min(data), data, color='C0', alpha=0.4)
+        ax2.fill_between(self.Meshes.Phi.Vector.Radian, min(data), data, color='C0', alpha=0.4)
 
         plt.show()
 

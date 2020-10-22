@@ -36,6 +36,7 @@ LP01 = mode(fiber       = Fiber,
             )
 
 
+
 LP01.magnificate(magnification=2.)
 
 LP11.magnificate(magnification=2.)
@@ -50,10 +51,8 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress"):
                      wavelength  = 400e-9,
                      index       = 1.4,
                      npts        = npts,
-                     ThetaBound  = LP01.ThetaBound,
-                     ThetaOffset = 0,
-                     PhiBound    = LP01.PhiBound,
-                     PhiOffset   = 5)
+                     Meshes = LP01.Meshes
+                     )
 
     CouplingLP01.append( PointFieldCoupling(Detector = LP01,
                                             Source   = Scat.Field.Parallel,

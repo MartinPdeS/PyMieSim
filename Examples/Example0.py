@@ -11,7 +11,7 @@ from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling, MeanFieldCoupling
 
 
-npts=201
+npts=200
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -22,6 +22,8 @@ LP01 = mode(fiber      = Fiber,
             LPmode     = (1, 1),
             wavelength = 400e-9,
             npts       = npts,
+            PhiOffset = 10,
+            ThetaOffset = 0,
             )
 
 LP01.PlotFields()
@@ -30,14 +32,8 @@ Scat = Scatterer(diameter    = 200e-9,
                  wavelength  = 400e-9,
                  index       = 1.5,
                  npts        = 200,
-                 ThetaBound  = [-180,180],
-                 ThetaOffset = 0,
-                 PhiBound    = [-180,180],
-                 PhiOffset   = 10)
-
-
-
-
+                 Meshes = LP01.Meshes,
+                 CacheTrunk = None)
 
 Scat.PlotS1S2()
 

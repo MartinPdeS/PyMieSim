@@ -15,9 +15,12 @@ from PyMieCoupling.functions.couplings import PointFieldCoupling
 
 npts=201
 
-Detector = Detector(size       = 1000e-6,
-                    wavelength = 400e-9,
-                    npts       = npts)
+Detector = Detector(size        = 1000e-6,
+                    wavelength  = 400e-9,
+                    npts        = npts,
+                    ThetaOffset = 0,
+                    PhiOffset   = 0
+                    )
 
 Detector.magnificate(magnification=15.0)
 
@@ -33,14 +36,12 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:")
                      wavelength  = 400e-9,
                      index       = 1.4,
                      npts        = npts,
-                     ThetaBound  = Detector.ThetaBound,
-                     ThetaOffset = 0,
-                     PhiBound    = Detector.PhiBound,
-                     PhiOffset   = 48)
+                     Meshes      = Detector.Meshes
+                     )
 
-    Coupling.append( PointFieldCoupling(Detector     = Detector,
+    Coupling.append( PointFieldCoupling(Detector = Detector,
                                         Source   = Scat.Field.Parallel,
-                                        Mesh     = Scat.Meshes) )
+                                        Mesh     = Detector.Meshes) )
 
 
 
