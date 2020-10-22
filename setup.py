@@ -28,7 +28,7 @@ setup_dict = dict(
       packages=['PyMieCoupling',
                 'PyMieCoupling.classes',
                 'PyMieCoupling.functions'],
-      #install_requires = requirements,
+      install_requires = requirements,
       license = 'Full private, no reproduction authorized',
       #url='https://gitlab.com/PolyMtlLFO/SuPyModes',
       long_description=open('README.md').read(),
