@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import PyMieScatt
 
-from src.functions.converts import rad2deg, deg2rad
-from src.classes.Fields import Field
-from src.classes.Meshes import Meshes
-from src.classes.Plots import S1S2Plot
+from PyMieCoupling.functions.converts import rad2deg, deg2rad
+from PyMieCoupling.classes.Fields import Field
+from PyMieCoupling.classes.Meshes import Meshes
+from PyMieCoupling.classes.Plots import S1S2Plot
 
 global i
 i = complex(0, 1)

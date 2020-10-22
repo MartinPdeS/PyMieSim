@@ -20,16 +20,17 @@ requirements = [ 'numpy',
                 ]
 
 setup_dict = dict(
-      description='Coupled mode modlisation for fiber optic coupler',
       name = 'MieCoupling',
+      description='Coupled mode modlisation for fiber optic coupler',
       version = '0.1',
       author = 'Martin Poinsinet de Sivry',
       author_email = 'Martin.poinsinet.de.sivry@gmail.com',
-      packages=find_packages(),
-      py_modules = [],
-      install_requires = requirements,
+      packages=['PyMieCoupling',
+                'PyMieCoupling.classes',
+                'PyMieCoupling.functions'],
+      #install_requires = requirements,
       license = 'Full private, no reproduction authorized',
-      url='https://gitlab.com/PolyMtlLFO/SuPyModes',
+      #url='https://gitlab.com/PolyMtlLFO/SuPyModes',
       long_description=open('README.md').read(),
       platforms = ['Linux', 'Max OSX']
 )

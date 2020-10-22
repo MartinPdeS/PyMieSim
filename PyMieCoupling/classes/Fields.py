@@ -1,7 +1,6 @@
 
 from numpy import abs, arctan, angle, sqrt, real, imag, conjugate, exp, array, max
 import numpy as np
-from IPython.display import display, Markdown
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches

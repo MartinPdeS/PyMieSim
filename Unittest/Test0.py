@@ -7,9 +7,9 @@ _________________________________________________________
 """
 
 import numpy as np
-from src.classes.Detector import Detector
-from src.classes.Scattering import Scatterer
-from src.functions.couplings import PointFieldCoupling
+from PyMieCoupling.classes.Detector import Detector
+from PyMieCoupling.classes.Scattering import Scatterer
+from PyMieCoupling.functions.couplings import PointFieldCoupling
 
 npts=201
 

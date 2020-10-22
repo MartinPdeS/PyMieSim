@@ -5,10 +5,9 @@ Scattering Parallel Field coupling with en-face detector
 _________________________________________________________
 """
 
-from src.classes.Detector import Detector
-from src.classes.Scattering import Scatterer
-from src.functions.couplings import PointFieldCoupling
-
+from PyMieCoupling.classes.Detector import Detector
+from PyMieCoupling.classes.Scattering import Scatterer
+from PyMieCoupling.functions.couplings import PointFieldCoupling
 
 
 npts = 201
@@ -18,7 +17,7 @@ Detector = Detector(size       = 50e-6,
                     shape      = 'circle',
                     npts       = npts)
 
-#Detector.magnificate(magnification=1.5)
+Detector.magnificate(magnification=1.5)
 
 Detector.PlotFields()
 

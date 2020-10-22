@@ -1,20 +1,25 @@
-
+import fibermodes
 import numpy as np
-from src.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 
-class Detector(object):
+from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
+
+
+class mode(object):
 
     def __init__(self,
-                 size: float = 50e-6,
-                 shape: str = 'circle',
-                 wavelength: float = 1e-6,
-                 npts: int = 101):
+                 fiber,
+                 LPmode,
+                 wavelength: float,
+                 npts: int = 101,
+                 magnification: float = 1.):
 
-        self._coupling = 'Intensity'
+        self._coupling = 'Amplitude'
 
-        self.size = size
+        self.mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *LPmode)
+
+        self.fiber = fiber
 
         self.wavelength = wavelength
 
@@ -22,13 +27,32 @@ class Detector(object):
 
         self.npts = npts
 
-        self.DirectVec = np.linspace(-1.5*size/2, 1.5*size/2, self.npts)
+        self.magnification = magnification
 
         self.GenShift()
 
+        self.DirectVec = np.linspace(-self.fiber.MaxDirect, self.fiber.MaxDirect, self.npts)
+
         self.GenMeshes()
 
-        self.Field, self.Fourier = self.GenField(shape=shape)
+        self.Field, self.Fourier = self.GenField()
+
+
+    def GenShift(self):
+
+        phase_shift = np.exp(-complex(0, 1)*np.pi*np.arange(self.npts)*(self.npts-1)/self.npts)
+
+        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+        self.shift_grid = shift_grid * shift_grid.T
+
+
+    def magnificate(self,
+                    magnification):
+
+        self.DirectVec /= magnification
+
+        self.GenMeshes()
 
 
     def GenMeshes(self):
@@ -45,65 +69,37 @@ class Detector(object):
 
         self.DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
-        self.AngleBound = [self.AngleVec[0], self.AngleVec[-1]]
-
         self.ThetaBound = [self.AngleVec[0], self.AngleVec[-1]]
 
         self.PhiBound = self.ThetaBound
 
 
-    def GenShift(self):
+    def GenField(self):
 
-        phase_shift = np.exp(-complex(0, 1)*np.pi*np.arange(self.npts)*(self.npts-1)/self.npts)
+        Field = fibermodes.field.Field(self.fiber.source,
+                                       self.mode,
+                                       fibermodes.Wavelength(self.wavelength),
+                                       self.DirectVec[0],
+                                       np=self.npts)
 
-        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+        Field = Field.Ex()
 
-        self.shift_grid = shift_grid * shift_grid.T
-
-
-    def magnificate(self, magnification):
-
-        self.DirectVec /= magnification
-
-        self.GenMeshes()
-
-
-    def GenField(self, shape: str = 'circle'):
-
-        Field = np.zeros([self.npts, self.npts])
-
-        gridX, gridY = np.meshgrid(self.DirectVec, self.DirectVec)
-
-
-        if shape == 'square':
-
-            gridX[np.abs(gridX) > self.size/2] = 100
-
-            gridY[np.abs(gridY) > self.size/2] = 100
-
-            grid = gridX + gridY
-
-            Field[grid < 50] = 1
-
-            Field[grid >= 50] = 0
-
-
-        if shape == 'circle':
-
-            grid = np.sqrt((gridX)**2 + (gridY)**2)
-
-            Field[grid > self.size/2] = 0
-
-            Field[grid <= self.size/2] = 1
-
-
-        norm = np.sum(np.abs(Field).flatten())
+        norm = np.sum(np.abs(Field))
 
         Field /= norm
 
-        Fourier = Field
+        Fourier = np.fft.fft2(Field)
+
+        Fourier /= self.shift_grid
+
+        Fourier = np.fft.fftshift(Fourier)
+
+        norm = np.sum(np.abs(Fourier))
+
+        Fourier /= norm
 
         return Field, Fourier
+
 
 
     def GenFigure(self):
@@ -141,7 +137,7 @@ class Detector(object):
 
         im1 = ax1.pcolormesh(self.AngleVec,
                              self.AngleVec,
-                             self.Fourier,
+                             np.imag(self.Fourier),
                              shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -152,6 +148,7 @@ class Detector(object):
                             format=tick.FormatStrFormatter('%.1e'))
 
         cbar.ax.tick_params(labelsize='small')
+
         cbar.ax.locator_params(nbins=3)
 
         cbar = fig.colorbar(im1,
@@ -162,7 +159,6 @@ class Detector(object):
                             format=tick.FormatStrFormatter('%.1e'))
 
         cbar.ax.tick_params(labelsize='small')
-
         cbar.ax.locator_params(nbins=3)
 
         data = (np.abs(self.Fourier)[self.npts//2])
@@ -172,18 +168,3 @@ class Detector(object):
         ax2.fill_between(self.RadVec, min(data), data, color='C0', alpha=0.4)
 
         plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# --

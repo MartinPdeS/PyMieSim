@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 def PointFieldCoupling(Detector,
                        Source,

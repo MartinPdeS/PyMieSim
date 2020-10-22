@@ -5,10 +5,10 @@ Scattering Parallel Field coupling with en-face LP01 mode
 _________________________________________________________
 """
 
-from src.classes.Fiber import fiber
-from src.classes.Modes import mode
-from src.classes.Scattering import Scatterer
-from src.functions.couplings import PointFieldCoupling, MeanFieldCoupling
+from PyMieCoupling.classes.Fiber import fiber
+from PyMieCoupling.classes.Modes import mode
+from PyMieCoupling.classes.Scattering import Scatterer
+from PyMieCoupling.functions.couplings import PointFieldCoupling, MeanFieldCoupling
 
 
 npts=201
