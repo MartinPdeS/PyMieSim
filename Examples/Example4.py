@@ -1,51 +1,90 @@
+
+"""
+_________________________________________________________
+Optimisation code for RI dependence.
+_________________________________________________________
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
-
-from PyMieCoupling.classes.Fiber import fiber
-from PyMieCoupling.classes.Modes import mode
+from tqdm import tqdm
+from PyMieCoupling.classes.Detector import Detector
 from PyMieCoupling.classes.Scattering import Scatterer
+from PyMieCoupling.functions.couplings import PointFieldCoupling
 
-from PyMieCoupling.functions.couplings import PointFieldCoupling, MeanFieldCoupling
-
-
-
-npts = 101
-
-Fiber = fiber(core_radius = 4.2e-6,
-              core_index  = 1.4456,
-              clad_radius = 20.5e-6,
-              clad_index  = 1.4444)
-
-Mode = mode(fiber      = Fiber,
-            LPmode     = (1, 1),
-            wavelength = 400e-9,
-            npts       = npts,
-            )
-
-Mode.magnificate(magnification=2.)
-
-Mode.PlotFields()
-
-Scat = Scatterer(diameter      = 500e-9,
-                 wavelength    = 400e-9,
-                 index         = 1.4,
-                 npts          = npts,
-                 ThetaBound    = [-180,180],
-                 ThetaOffset   = 0,
-                 PhiBound      = [-180,180],
-                 PhiOffset     = 0)
-
-Scat.GenField(PolarizationAngle=0)
-
-Scat.PlotS1S2()
-
-Scat.Field.PlotStokes(RectangleTheta=[-20,20], RectanglePhi=[-20,20])
-
-
-#Scat.Sample.PlotStokes()
+npts=101
 
 
 
+Detector = Detector(size       = 50e-6,
+                    wavelength = 400e-9,
+                    npts       = npts)
+
+
+
+def IterDiameter(DiameterList, index):
+
+    Coupling = []
+
+    for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:"):
+
+        Scat = Scatterer(diameter    = Diameter,
+                         wavelength  = 400e-9,
+                         index       = index,
+                         npts        = 101,
+                         ThetaBound  = Detector.ThetaBound,
+                         ThetaOffset = 0,
+                         PhiBound    = Detector.PhiBound,
+                         PhiOffset   = 0)
+
+        Coupling.append( PointFieldCoupling(Detector = Detector,
+                                            Source   = Scat.Field.Parallel,
+                                            Mesh     = Scat.Meshes) )
+
+
+    return Coupling
+
+
+
+
+NPTS_I, NPTS_D = 10, 10
+
+IndexList = np.linspace(1.3,2,NPTS_I)
+
+Res = np.empty([NPTS_D, NPTS_I])
+
+for ni, index in enumerate(IndexList):
+    Res[:, ni] = IterDiameter(np.linspace(100,3000,NPTS_D) * 1e-9, index=index)
+
+
+
+
+std = np.std(Res, axis=1)
+
+
+fig, (ax0, ax1) = plt.subplots(1,2, figsize=(10,5))
+
+ax0.set_title('Detec. response vs. scatterer size')
+
+ax1.set_title('Standard deviation Detec. response of RI vs. Scatterer size')
+
+ax0.set_xlabel('Scatterer size')
+
+ax1.set_xlabel('Scatterer size')
+
+ax0.set_ylabel('Detector response [U.A]')
+
+[ ax0.plot( Res[:, ni], label='index: {0:.2f}'. format(index)) for ni, index in enumerate(IndexList)  ]
+
+ax0.grid()
+
+ax0.legend()
+
+ax1.plot(std)
+
+ax1.grid()
+
+plt.show()
 
 
 

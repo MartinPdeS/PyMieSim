@@ -13,17 +13,17 @@ from PyMieCoupling.classes.Detector import Detector
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
 
-npts=101
+npts=201
 
-Detector = Detector(size       = 50e-6,
+Detector = Detector(size       = 1000e-6,
                     wavelength = 400e-9,
                     npts       = npts)
 
-Detector.magnificate(magnification=1.5)
+Detector.magnificate(magnification=15.0)
 
 Detector.PlotFields()
 
-DiameterList = np.linspace(100,3000,150) * 1e-9
+DiameterList = np.linspace(100,3000,200) * 1e-9
 
 Coupling = []
 
@@ -32,11 +32,11 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:")
     Scat = Scatterer(diameter    = Diameter,
                      wavelength  = 400e-9,
                      index       = 1.4,
-                     npts        = 101,
+                     npts        = npts,
                      ThetaBound  = Detector.ThetaBound,
                      ThetaOffset = 0,
                      PhiBound    = Detector.PhiBound,
-                     PhiOffset   = 0)
+                     PhiOffset   = 48)
 
     Coupling.append( PointFieldCoupling(Detector     = Detector,
                                         Source   = Scat.Field.Parallel,
