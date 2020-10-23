@@ -2,17 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Detector import Detector
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
+from PyMieCoupling.classes.Scattering import Scatterer
 
 
 def PointFieldCoupling(Detector: Detector,
-                       Source,
-                       Field = None):
+                       Source: Scatterer,
+                       Field: str = None):
 
-    #plt.figure()
-    #plt.imshow(np.abs(Source.Field.Parallel))
-    #plt.colorbar()
-    #plt.show()
-    #df
     if not Field:
         raise Exception('Field must be specified [Parallel, Perpendicular]')
 
@@ -26,9 +22,9 @@ def PointFieldCoupling(Detector: Detector,
 
         temp = Detector.Field * Source * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        temp = np.sum(temp)**2
+        temp = np.sum(temp)
 
-        temp = np.abs(temp)
+        temp = np.abs(temp)**2
 
         return temp
 

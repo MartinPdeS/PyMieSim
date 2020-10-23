@@ -19,6 +19,12 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
+LP01 = mode(fiber      = Fiber,
+            LPmode     = (0, 1),
+            wavelength = 400e-9,
+            npts       = npts,
+            )
+
 LP11 = mode(fiber      = Fiber,
             LPmode     = (1, 1),
             wavelength = 400e-9,
@@ -33,25 +39,32 @@ CouplingLP01, CouplingLP11 = [], []
 Scat = Scatterer(diameter    = 500e-9,
                  wavelength  = 400e-9,
                  index       = 1.4,
-                 npts        = npts,
                  Meshes      = LP11.Meshes
                  )
-Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )
 
-Coupling = PointFieldCoupling(Detector = LP11,
-                              Source   = Scat,  #Uniforme sphere
-                              Field = 'Parallel'
-                              )
+Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )   #Uniforme sphere
+
+LP11Coupling = PointFieldCoupling(Detector = LP11,
+                                  Source   = Scat,
+                                  Field = 'Parallel'
+                                  )
+
+LP01Coupling = PointFieldCoupling(Detector = LP01,
+                                  Source   = Scat,
+                                  Field = 'Parallel'
+                                  )
 
 
-TheoVal, Delta = 0.0, 0.05   # Theoretical value is 0
+LP01TheoVal, Delta = 1.0, 0.05   # Theoretical value is 0
+LP11TheoVal, Delta = 0.0, 0.05   # Theoretical value is 0
 
-print('Bound angle:\n \t Theta -> {0}\n \t Phi -> {1}\n'.format\
+print('Bound angle:\n \t Theta -> {0}\n \t Phi   -> {1}\n'.format\
       (LP11.Meshes.Theta.Boundary.Degree, LP11.Meshes.Phi.Boundary.Degree))
 
-print('Coupling -> {0}, \nTheoretical -> {1}'.format(Coupling, TheoVal))
+print('LP01 Coupling -> {0}, \nTheoretical -> {1}'.format(LP01Coupling, LP01TheoVal))
+print('LP11 Coupling -> {0}, \nTheoretical -> {1}'.format(LP11Coupling, LP11TheoVal))
 
-if 0.127646 - Delta < Coupling < 0.127646 + Delta:
+if 0.0 - Delta < LP11Coupling < 0.0 + Delta:
     print('Unittest 0: Passed!')
 else:
     raise Exception('Unittest 0: Failed!')
