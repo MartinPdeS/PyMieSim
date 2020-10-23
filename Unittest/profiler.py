@@ -23,13 +23,13 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_index  = 1.4444)
 
 LP11 = mode(fiber      = Fiber,
-            LPmode     = (2, 1),
+            LPmode     = (1, 1),
             wavelength = 400e-9,
             npts       = npts,
             )
 
 LP01 = mode(fiber       = Fiber,
-            LPmode      = (1, 1),
+            LPmode      = (0, 1),
             wavelength  = 400e-9,
             npts        = npts,
             )

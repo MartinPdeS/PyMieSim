@@ -22,7 +22,7 @@ Fiber = fiber(core_radius = 4.2e-6,
 
 
 LP01 = mode(fiber       = Fiber,
-            LPmode      = (1, 1),
+            LPmode      = (0, 1),
             wavelength  = 400e-9,
             npts        = npts,
             ThetaOffset = 0,
