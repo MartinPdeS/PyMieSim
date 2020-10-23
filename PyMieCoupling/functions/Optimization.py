@@ -20,7 +20,6 @@ def OptimizeRI(RIList: list,
             Source = Scatterer(diameter    = Diameter,
                                wavelength  = SKwargs['wavelength'],
                                index       = RI,
-                               npts        = SKwargs['npts'],
                                Meshes      = SKwargs['Meshes']
                                )
 
@@ -30,4 +29,4 @@ def OptimizeRI(RIList: list,
 
     STD = np.std(Coupling, axis=0)
 
-    return STD
+    return Coupling, STD

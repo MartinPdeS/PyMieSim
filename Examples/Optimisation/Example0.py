@@ -46,7 +46,7 @@ LP01.magnificate(magnification=2.)
 
 LP11.magnificate(magnification=2.)
 
-DiameterList = np.linspace(100,1000,10) * 1e-9
+DiameterList = np.linspace(100,1000,2) * 1e-9
 
 CouplingLP01, CouplingLP11 = [], []
 
@@ -55,7 +55,6 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress"):
     Scat = Scatterer(diameter    = Diameter,
                      wavelength  = 400e-9,
                      index       = 1.4,
-                     npts        = npts,
                      Meshes      = LP01.Meshes
                      )
 
@@ -73,28 +72,26 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress"):
 fig, (ax0, ax1) = plt.subplots(2,1, figsize=(15,8), sharex = True, subplot_kw={'title':'Mode coupling vs. Scatterer diameter'})
 
 ax0.plot(DiameterList*1e6, CouplingLP01, 'C0', label=r'LP$_{01}$')
+
 ax0.plot(DiameterList*1e6, CouplingLP11, 'C1', label=r'LP$_{11+}$')
+
 ax0.legend()
+
 ax1.set_xlabel(r'Scatterer diameter [$\mu m$]')
+
 ax0.set_ylabel('Modal Coupling')
+
 ax0.set_yscale('log')
+
 ax0.grid()
+
 ax1.plot(DiameterList*1e6, np.array(CouplingLP11)/np.array(CouplingLP01))
+
 ax1.set_ylabel(r'Modal coupling ratio $\Gamma_{11+}$')
+
 ax1.grid()
 
-
-
 plt.show()
-
-
-
-RIList = np.linspace(1.3, 2.0, 4)
-
-OptimizeRI(RIList,
-           DiameterList,
-           Detector = LP01,
-           Source = Scat)
 
 
 

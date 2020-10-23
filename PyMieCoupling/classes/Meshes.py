@@ -7,8 +7,8 @@ class Meshes(object):
 
     def __init__(self,
                  npts: int = 101,
-                 ThetaBound: list = [0,0],
-                 PhiBound: list = [0,360]):
+                 ThetaBound: list = [-180,180],
+                 PhiBound: list = [-180,180]):
 
         self.npts = npts
 
@@ -62,7 +62,7 @@ class Angle(object):
     @Degree.setter
     def Degree(self, Degree):
         Degree = np.array(Degree)
-        if (Degree < -180).any():
+        if (Degree < -180.1).any():
             raise Exception( 'Angle must defined between -180 to 180' )
         self._Degree = Degree
 

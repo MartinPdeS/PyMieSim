@@ -48,7 +48,7 @@ class Scatterer(object):
                  diameter: float,
                  wavelength: float,
                  index: float,
-                 npts: int = 201,
+                 npts: int = None,
                  Meshes: MieMesh = None,
                  ThetaBound: list = [-180, 180],
                  ThetaOffset: float = 0,
@@ -58,13 +58,13 @@ class Scatterer(object):
 
         self.diameter, self.wavelength = diameter, wavelength
 
-        self.index, self.npts = index, npts
+        self.index= index
 
         self.CacheTrunk = CacheTrunk
 
         if Meshes:
             self.Meshes = Meshes
-            assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset])
+            assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, npts])
 
         else:
             self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
@@ -146,9 +146,9 @@ class Scatterer(object):
 
             self.Polarization = "None"
 
-            Parallel = np.outer(self.S1,  np.ones(self.npts)/np.sqrt(2))
+            Parallel = np.outer(self.S1,  np.ones(len(self.S1))/np.sqrt(2))
 
-            Perpendicular = np.outer(self.S2, np.ones(self.npts)/np.sqrt(2))
+            Perpendicular = np.outer(self.S2, np.ones((self.S2))/np.sqrt(2))
 
 
         self.Field = Field(Perpendicular  = Perpendicular,

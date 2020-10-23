@@ -19,7 +19,7 @@ class mode(object):
 
         self._coupling = 'Amplitude'
 
-        LPmode = LPmode[0]-1, LPmode[1]
+        LPmode = LPmode[0]+1, LPmode[1]
 
         self.mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *LPmode)
 
@@ -101,10 +101,11 @@ class mode(object):
 
     def GenFigure(self):
 
-        fig = plt.figure(figsize=(15, 5))
-        ax0 = fig.add_subplot(131)
-        ax1 = fig.add_subplot(132)
-        ax2 = fig.add_subplot(133, projection='polar')
+        fig = plt.figure(figsize=(20, 5))
+        ax0 = fig.add_subplot(141)
+        ax1 = fig.add_subplot(142)
+        ax2 = fig.add_subplot(143)
+        ax3 = fig.add_subplot(144, projection='polar')
 
         ax0.set_xlabel(r'Distance X [$\mu$m]')
         ax0.set_ylabel(r'Distance Y [$\mu$m]')
@@ -113,18 +114,24 @@ class mode(object):
 
         ax1.set_xlabel(r'Angle $\theta$ [deg]')
         ax1.set_ylabel(r'Angle $\phi$ [deg]')
-        ax1.set_title('LP mode Far-Field')
+        ax1.set_title('Real part of LP mode Far-Field')
         ax1.set_aspect('equal')
         ax1.yaxis.tick_right()
 
-        ax2.set_title('LP polar representation')
+        ax2.set_xlabel(r'Angle $\theta$ [deg]')
+        ax2.set_ylabel(r'Angle $\phi$ [deg]')
+        ax2.set_title('Imaginary part of LP mode Far-Field')
+        ax2.set_aspect('equal')
+        ax2.yaxis.tick_right()
 
-        return fig, ax0, ax1, ax2
+        ax3.set_title('LP polar representation')
+
+        return fig, ax0, ax1, ax2, ax3
 
 
     def PlotFields(self):
 
-        fig, ax0, ax1, ax2 = self.GenFigure()
+        fig, ax0, ax1, ax2, ax3 = self.GenFigure()
 
         unit = 1e6
 
@@ -134,6 +141,11 @@ class mode(object):
                              shading='auto')
 
         im1 = ax1.pcolormesh(self.Meshes.Phi.Vector.Radian,
+                             self.Meshes.Theta.Vector.Radian,
+                             np.real(self.Fourier),
+                             shading='auto')
+
+        im2 = ax2.pcolormesh(self.Meshes.Phi.Vector.Radian,
                              self.Meshes.Theta.Vector.Radian,
                              np.imag(self.Fourier),
                              shading='auto')
@@ -146,7 +158,6 @@ class mode(object):
                             format=tick.FormatStrFormatter('%.1e'))
 
         cbar.ax.tick_params(labelsize='small')
-
         cbar.ax.locator_params(nbins=3)
 
         cbar = fig.colorbar(im1,
@@ -159,10 +170,20 @@ class mode(object):
         cbar.ax.tick_params(labelsize='small')
         cbar.ax.locator_params(nbins=3)
 
+        cbar = fig.colorbar(im2,
+                            ax=ax2,
+                            orientation="horizontal",
+                            pad=0.15,
+                            shrink=0.745,
+                            format=tick.FormatStrFormatter('%.1e'))
+
+        cbar.ax.tick_params(labelsize='small')
+        cbar.ax.locator_params(nbins=3)
+
         data = (np.abs(self.Fourier)[self.npts//2])
 
-        ax2.plot(self.Meshes.Phi.Vector.Radian, data)
+        ax3.plot(self.Meshes.Phi.Vector.Radian, data)
 
-        ax2.fill_between(self.Meshes.Phi.Vector.Radian, min(data), data, color='C0', alpha=0.4)
+        ax3.fill_between(self.Meshes.Phi.Vector.Radian, min(data), data, color='C0', alpha=0.4)
 
         plt.show()

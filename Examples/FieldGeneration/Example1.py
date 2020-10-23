@@ -26,7 +26,6 @@ Detector.PlotFields()
 Scat = Scatterer(diameter      = 500e-9,
                  wavelength    = 400e-9,
                  index         = 1.4,
-                 npts          = npts,
                  Meshes = Detector.Meshes)
 
 Scat.PlotS1S2()

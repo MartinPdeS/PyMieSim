@@ -39,18 +39,27 @@ SourceKwargs = {'wavelength': 400e-9,
                 'npts': 101,
                 'Meshes': LP01.Meshes}
 
-STD = OptimizeRI(RIList,
-                 DiameterList,
-                 Detector = LP01,
-                 **SourceKwargs)
+Coupling, STD = OptimizeRI(RIList,
+                           DiameterList,
+                           Detector = LP01,
+                           **SourceKwargs)
 
 
 
-plt.figure(figsize=(10,5))
-plt.plot(DiameterList, STD)
+fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(10,5))
+
+[ax0.plot(DiameterList, Coupling[i,:]) for i in range(len(RIList))]
+
+ax1.plot(DiameterList, STD)
+
 plt.xlabel(r'Scatter size [$\mu$m]')
+
 plt.ylabel('Detector input STD')
-plt.grid()
+
+ax0.grid()
+
+ax1.grid()
+
 plt.show()
 
 

@@ -1,11 +1,18 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Detector import Detector
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
+
 
 def PointFieldCoupling(Detector: Detector,
                        Source,
                        Field = None):
 
+    #plt.figure()
+    #plt.imshow(np.abs(Source.Field.Parallel))
+    #plt.colorbar()
+    #plt.show()
+    #df
     if not Field:
         raise Exception('Field must be specified [Parallel, Perpendicular]')
 

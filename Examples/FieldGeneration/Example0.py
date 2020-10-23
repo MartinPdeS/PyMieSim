@@ -18,11 +18,11 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
-LP01 = mode(fiber      = Fiber,
-            LPmode     = (0, 1),
-            wavelength = 400e-9,
-            npts       = npts,
-            PhiOffset = 10,
+LP01 = mode(fiber       = Fiber,
+            LPmode      = (0, 1),
+            wavelength  = 400e-9,
+            npts        = npts,
+            PhiOffset   = 0,
             ThetaOffset = 0,
             )
 
@@ -31,17 +31,20 @@ LP01.PlotFields()
 Scat = Scatterer(diameter    = 200e-9,
                  wavelength  = 400e-9,
                  index       = 1.5,
-                 npts        = 200,
-                 Meshes = LP01.Meshes,
-                 CacheTrunk = None)
+                 Meshes      = LP01.Meshes,
+                 CacheTrunk  = None)
 
 Scat.PlotS1S2()
 
-Scat.Field.PlotStokes(RectangleTheta=[-5,5],
-                      RectanglePhi=[-5,5])
+Scat.Field.PlotStokes(RectangleTheta = [-5,5],
+                      RectanglePhi   = [-5,5])
 
 
+res = PointFieldCoupling(Detector = LP01,
+                         Source   = Scat,
+                         Field = 'Parallel')
 
+print(res)
 
 
 
