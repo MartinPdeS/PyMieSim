@@ -40,8 +40,8 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress:")
                      )
 
     Coupling.append( PointFieldCoupling(Detector = Detector,
-                                        Source   = Scat.Field.Parallel,
-                                        Mesh     = Detector.Meshes) )
+                                        Source   = Scat,
+                                        Field = 'Parallel') )
 
 
 

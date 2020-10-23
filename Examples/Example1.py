@@ -35,8 +35,8 @@ Scat.Field.PlotStokes(RectangleTheta = [-5,5],
                       RectanglePhi   = [-5,5])
 
 PointFieldCoupling(Detector = Detector,
-                   Source   = Scat.Field.Parallel,
-                   Mesh     = Scat.Meshes)
+                   Source   = Scat,
+                   Field    = 'Parallel')
 
 
 

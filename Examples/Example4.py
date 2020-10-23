@@ -38,8 +38,8 @@ def IterDiameter(DiameterList, index):
                          PhiOffset   = 0)
 
         Coupling.append( PointFieldCoupling(Detector = Detector,
-                                            Source   = Scat.Field.Parallel,
-                                            Mesh     = Scat.Meshes) )
+                                            Source   = Scat,
+                                            Field = 'Parallel') )
 
 
     return Coupling

@@ -15,6 +15,7 @@ from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Modes import mode
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
+from PyMieCoupling.functions.Optimization import OptimizeRI
 
 npts=201
 
@@ -23,16 +24,20 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
-LP11 = mode(fiber      = Fiber,
-            LPmode     = (2, 1),
-            wavelength = 400e-9,
-            npts       = npts,
+LP11 = mode(fiber       = Fiber,
+            LPmode      = (2, 1),
+            wavelength  = 400e-9,
+            npts        = npts,
+            ThetaOffset = 0,
+            PhiOffset   = 0
             )
 
 LP01 = mode(fiber       = Fiber,
             LPmode      = (1, 1),
             wavelength  = 400e-9,
             npts        = npts,
+            ThetaOffset = 0,
+            PhiOffset   = 0
             )
 
 
@@ -51,16 +56,16 @@ for Diameter in tqdm(DiameterList, total = len(DiameterList), desc ="Progress"):
                      wavelength  = 400e-9,
                      index       = 1.4,
                      npts        = npts,
-                     Meshes = LP01.Meshes
+                     Meshes      = LP01.Meshes
                      )
 
     CouplingLP01.append( PointFieldCoupling(Detector = LP01,
-                                            Source   = Scat.Field.Parallel,
-                                            Mesh     = Scat.Meshes) )
+                                            Source   = Scat,
+                                            Field = 'Parallel') )
 
     CouplingLP11.append( PointFieldCoupling(Detector = LP11,
-                                            Source   = Scat.Field.Parallel,
-                                            Mesh     = Scat.Meshes) )
+                                            Source   = Scat,
+                                            Field = 'Parallel') )
 
 
 
@@ -82,6 +87,14 @@ ax1.grid()
 
 plt.show()
 
+
+
+RIList = np.linspace(1.3, 2.0, 4)
+
+OptimizeRI(RIList,
+           DiameterList,
+           Detector = LP01,
+           Source = Scat)
 
 
 

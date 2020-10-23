@@ -4,12 +4,20 @@ from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 
 def PointFieldCoupling(Detector: Detector,
                        Source,
-                       Mesh: MieMesh):
+                       Field = None):
 
+    if not Field:
+        raise Exception('Field must be specified [Parallel, Perpendicular]')
+
+    if Field == 'Parallel':
+        Source = Source.Field.Parallel
+
+    elif Field == 'Perpendicular':
+        Source = Source.Field.Perpendicular
 
     if Detector._coupling == 'Amplitude':
 
-        temp = Detector.Field * Source * np.abs(np.sin(Mesh.Phi.Mesh.Radian).T)
+        temp = Detector.Field * Source * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
         temp = np.sum(temp)**2
 
@@ -20,7 +28,7 @@ def PointFieldCoupling(Detector: Detector,
 
     elif Detector._coupling == 'Intensity':
 
-        temp = np.abs(Source) * Detector.Field * np.abs(np.sin(Mesh.Phi.Mesh.Radian).T)
+        temp = np.abs(Source) * Detector.Field * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
         temp = np.sum(temp)
 

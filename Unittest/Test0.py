@@ -29,22 +29,21 @@ Scat = Scatterer(diameter    = 500e-9,
                  wavelength  = 400e-9,
                  index       = 1.4,
                  npts        = npts,
-                 ThetaBound  = Detector.ThetaBound,
-                 ThetaOffset = 0,
-                 PhiBound    = Detector.PhiBound,
-                 PhiOffset   = 0
+                 Meshes      = Detector.Meshes
                  )
 
+Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )
+
 Coupling = PointFieldCoupling(Detector = Detector,
-                              Source   = np.ones( np.shape( Scat.Field.Parallel ) ),  #Uniforme sphere
-                              Mesh     = Scat.Meshes
+                              Source   = Scat,  #Uniforme sphere
+                              Field = 'Parallel'
                               )
 
 
 TheoVal, Delta = 0.127646, 0.05  # Theoretical value is around 0.127646
 
 
-print('Bound angle:\n \t Theta -> {0}\n \t Phi -> {1}\n'.format(Detector.ThetaBound, Detector.PhiBound))
+print('Bound angle:\n \t Theta -> {0}\n \t Phi -> {1}\n'.format(Detector.Meshes.Theta.Boundary, Detector.Meshes.Phi.Boundary))
 
 print('Coupling -> {0}, \nTheoretical -> {1}'.format(Coupling, TheoVal))
 
