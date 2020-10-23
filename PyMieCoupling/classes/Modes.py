@@ -19,7 +19,7 @@ class mode(object):
 
         self._coupling = 'Amplitude'
 
-        mode[0] -= 1
+        LPmode[0] -= 1
 
         self.mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *LPmode)
 
