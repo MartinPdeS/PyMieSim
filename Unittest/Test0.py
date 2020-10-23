@@ -35,7 +35,7 @@ Scat = Scatterer(diameter    = 500e-9,
 Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )
 
 Coupling = PointFieldCoupling(Detector = Detector,
-                              Source   = Scat,  #Uniforme sphere
+                              Source   = Scat,
                               Field = 'Parallel'
                               )
 
