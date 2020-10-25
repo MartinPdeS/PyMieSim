@@ -9,17 +9,17 @@ from PyMieCoupling.functions.couplings import PointFieldCoupling
 
 
 
-def OptimizeRI(RIList: list,
-               DiameterList: list,
-               Detector,
-               **SKwargs) -> pd.DataFrame:
+def CouplingStat(RIList: list,
+                 DiameterList: list,
+                 Detector,
+                 **SKwargs) -> pd.DataFrame:
 
     Polarization = ['Parallel', 'Perpendicular']
 
     MI = pd.MultiIndex.from_product([Polarization, DiameterList, RIList],
-                                    names=['Polarization','Diameter','Index',])
+                                    names=['Polarization','Diameter','RI',])
 
-    df = pd.DataFrame(index = MI, columns = ['Values'])
+    df = pd.DataFrame(index = MI, columns = ['Coupling'])
 
     for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress") ):
 
@@ -34,18 +34,23 @@ def OptimizeRI(RIList: list,
 
             Perp, Para = PointFieldCoupling(Detector = Detector, Source   = Source)
 
-            df.at[('Parallel', Diameter, RI),'Values'] = Perp
+            df.at[('Parallel', Diameter, RI),'Coupling'] = Perp
 
-            df.at[('Perpendicular', Diameter, RI),'Values'] = Para
+            df.at[('Perpendicular', Diameter, RI),'Coupling'] = Para
 
-    df.Values = df.Values.astype(float)
+    df.Coupling = df.Coupling.astype(float)
 
-    df = df.assign(STD=df.groupby(['Polarization','Diameter']).Values.transform('std'))
+    df = df.assign(Mean=df.groupby(['Polarization','Diameter']).Coupling.transform('mean'))
 
-    df.to_html('temp.html')
+    df = df.assign(STD=df.groupby(['Polarization','Diameter']).Coupling.transform('std'))
+
+    df._Cmax = df.Coupling.max()
+
+    df._Cmin = df.Coupling.min()
+
+    df._diff = np.abs(df._Cmax - df._Cmin)
 
     return df
-
 
 
 def OptimizeMono(DiameterList: list,
