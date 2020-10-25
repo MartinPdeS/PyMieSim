@@ -26,41 +26,69 @@ LP01 = mode(fiber       = Fiber,
             wavelength  = 400e-9,
             npts        = npts,
             ThetaOffset = 0,
-            PhiOffset   = 0
+            PhiOffset   = 15
             )
 
 LP01.magnificate(magnification=2.)
 
-DiameterList = np.linspace(100,1000,10) * 1e-9
+DiameterList = np.linspace(100,1000,10).round(4) * 1e-9
 
-RIList = np.linspace(1.3, 2.0, 4)
+RIList = np.linspace(1.3, 2.0, 4).round(4)
 
 SourceKwargs = {'wavelength': 400e-9,
                 'npts': 101,
                 'Meshes': LP01.Meshes}
 
-Coupling, STD = OptimizeRI(RIList,
-                           DiameterList,
-                           Detector = LP01,
-                           **SourceKwargs)
+DataFrame = OptimizeRI(RIList,
+                       DiameterList,
+                       Detector = LP01,
+                       **SourceKwargs)
 
+DataFrame.xs('Parallel').unstack(1).plot(y='Values',
+                                         figsize=(8,3),
+                                         grid=True,
+                                         title='Parallel coupling')
 
+DataFrame.xs('Parallel').unstack(1).plot(y='STD',
+                                         figsize=(8,3),
+                                         grid=True,
+                                         title='Parallel coupling STD')
 
-fig, (ax0, ax1) = plt.subplots(1, 2, figsize=(10,5))
+DataFrame.xs('Perpendicular').unstack(1).plot(y='Values',
+                                              figsize=(8,3),
+                                              grid=True,
+                                              title='Parallel coupling')
 
-[ax0.plot(DiameterList, Coupling[i,:]) for i in range(len(RIList))]
-
-ax1.plot(DiameterList, STD)
-
-plt.xlabel(r'Scatter size [$\mu$m]')
-
-plt.ylabel('Detector input STD')
-
-ax0.grid()
-
-ax1.grid()
+DataFrame.xs('Perpendicular').unstack(1).plot(y='STD',
+                                              figsize=(8,3),
+                                              grid=True,
+                                              title='Perpendicular coupling')
 
 plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -
+
+
+
+
+
+
+
+
 
 
 

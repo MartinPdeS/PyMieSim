@@ -23,12 +23,16 @@ LP01 = mode(fiber      = Fiber,
             LPmode     = (0, 1),
             wavelength = 400e-9,
             npts       = npts,
+            ThetaOffset = 0,
+            PhiOffset   = 0,
             )
 
-LP11 = mode(fiber      = Fiber,
-            LPmode     = (1, 1),
-            wavelength = 400e-9,
-            npts       = npts,
+LP11 = mode(fiber       = Fiber,
+            LPmode      = (1, 1),
+            wavelength  = 400e-9,
+            npts        = npts,
+            ThetaOffset = 0,
+            PhiOffset   = 0,
             )
 
 

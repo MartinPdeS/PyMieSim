@@ -11,6 +11,7 @@ from PyMieCoupling.functions.converts import rad2deg, deg2rad
 from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Plots import S1S2Plot
+from typing import Tuple
 
 global i
 i = complex(0, 1)
@@ -54,7 +55,7 @@ class Scatterer(object):
                  ThetaOffset: float = 0,
                  PhiBound: list = [-180, 180],
                  PhiOffset: float = 0,
-                 CacheTrunk: int = 0):
+                 CacheTrunk: int = 0) -> None:
 
         self.diameter, self.wavelength = diameter, wavelength
 
@@ -76,14 +77,14 @@ class Scatterer(object):
         self.GenField(PolarizationAngle=0)
 
 
-    def PlotS1S2(self):
+    def PlotS1S2(self) -> None:
 
         SPF = self.Make3DField(self.Field.SPF)
 
         Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Meshes)
 
 
-    def Make3DField(self, item):
+    def Make3DField(self, item) -> Tuple[np.array, np.array, np.array]:
 
         X = item * np.sin(self.Field.Phi.Mesh.Radian) * np.cos(self.Field.Theta.Mesh.Radian)
 
@@ -91,10 +92,10 @@ class Scatterer(object):
 
         Z = item * np.cos(self.Field.Phi.Mesh.Radian)
 
-        return [X, Y, Z]
+        return X, Y, Z
 
 
-    def computeS1S2(self):
+    def computeS1S2(self) -> None:
 
         MuList = np.cos(self.Meshes.Phi.Vector.Radian)
 
@@ -113,7 +114,7 @@ class Scatterer(object):
 
 
     @functools.lru_cache(maxsize=201)
-    def WrapS1S2(self, Mu):
+    def WrapS1S2(self, Mu) -> Tuple[float, float]:
 
         S1, S2 = PyMieScatt.MieS1S2(self.index,
                                     self.SizeParam,

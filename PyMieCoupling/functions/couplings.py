@@ -6,36 +6,39 @@ from PyMieCoupling.classes.Scattering import Scatterer
 
 
 def PointFieldCoupling(Detector: Detector,
-                       Source: Scatterer,
-                       Field: str = None):
-
-    if not Field:
-        raise Exception('Field must be specified [Parallel, Perpendicular]')
-
-    if Field == 'Parallel':
-        Source = Source.Field.Parallel
-
-    elif Field == 'Perpendicular':
-        Source = Source.Field.Perpendicular
+                       Source: Scatterer):
 
     if Detector._coupling == 'Amplitude':
 
-        temp = Detector.Field * Source * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+        Perp = Detector.Field *\
+               Source.Field.Perpendicular *\
+               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        temp = np.sum(temp)
+        Perp = np.abs( np.sum(Perp) )**2
 
-        temp = np.abs(temp)**2
+        Para = Detector.Field *\
+               Source.Field.Parallel *\
+               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        return temp
+        Para = np.abs( np.sum(Para) )**2
 
 
     elif Detector._coupling == 'Intensity':
 
-        temp = np.abs(Source) * Detector.Field * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+        Perp = Detector.Field *\
+               np.abs(Source.Field.Perpendicular) *\
+               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        temp = np.sum(temp)
+        Perp = np.sum(Perp)**2
 
-        return temp
+        Para = Detector.Field *\
+               np.abs(Source.Field.Parallel) *\
+               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+
+        Para = np.sum(Para)**2
+
+
+    return Para, Perp
 
 
 
