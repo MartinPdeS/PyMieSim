@@ -44,11 +44,17 @@ def CouplingStat(RIList: list,
 
     df = df.assign(STD=df.groupby(['Polarization','Diameter']).Coupling.transform('std'))
 
-    df._Cmax = df.Coupling.max()
+    df.ParaMax = df.xs('Parallel').Coupling.max()
 
-    df._Cmin = df.Coupling.min()
+    df.ParaMin = df.xs('Parallel').Coupling.min()
 
-    df._diff = np.abs(df._Cmax - df._Cmin)
+    df.PerpMax = df.xs('Perpendicular').Coupling.max()
+
+    df.PerpMin = df.xs('Perpendicular').Coupling.min()
+
+    df.ParaDiff = np.abs(df.ParaMax - df.ParaMin)
+
+    df.PerpDiff = np.abs(df.PerpMax - df.PerpMin)
 
     return df
 
