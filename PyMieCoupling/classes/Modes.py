@@ -58,7 +58,7 @@ class mode(object):
 
     def magnificate(self, Magnification: float = 1):
 
-        self.DirectVec /= magnification
+        self.DirectVec /= Magnification
 
         self.GenMeshes()
 

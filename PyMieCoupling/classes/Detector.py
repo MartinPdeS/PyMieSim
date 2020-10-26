@@ -63,9 +63,9 @@ class Detector(object):
         self.shift_grid = shift_grid * shift_grid.T
 
 
-    def magnificate(self, magnification):
+    def magnificate(self, Magnification):
 
-        self.DirectVec /= magnification
+        self.DirectVec /= Magnification
 
         self.GenMeshes()
 
