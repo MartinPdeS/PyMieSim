@@ -16,6 +16,7 @@ class mode(object):
                  magnification: float = 1.,
                  ThetaOffset: float = 0,
                  PhiOffset: float = 0,
+                 Magnification: float = 1,
                  Name: str = 'Field detector'):
 
         self._name = Name
@@ -42,6 +43,9 @@ class mode(object):
 
         self.Field, self.Fourier = self.GenField()
 
+        if Magnification != 1:
+            self.magnificate(Magnification)
+
 
     def GenShift(self):
 
@@ -52,7 +56,7 @@ class mode(object):
         self.shift_grid = shift_grid * shift_grid.T
 
 
-    def magnificate(self, magnification: float = 1):
+    def magnificate(self, Magnification: float = 1):
 
         self.DirectVec /= magnification
 

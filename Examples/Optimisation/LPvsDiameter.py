@@ -31,7 +31,8 @@ LP11 = mode(fiber       = Fiber,
             npts        = npts,
             ThetaOffset = 0,
             PhiOffset   = 0,
-            Name        = 'LP11'
+            Name        = 'LP11',
+            Magnification=2.
             )
 
 LP01 = mode(fiber       = Fiber,
@@ -40,14 +41,9 @@ LP01 = mode(fiber       = Fiber,
             npts        = npts,
             ThetaOffset = 0,
             PhiOffset   = 0,
-            Name        = 'LP01'
+            Name        = 'LP01',
+            Magnification=2.
             )
-
-
-
-LP01.magnificate(magnification=2.)
-
-LP11.magnificate(magnification=2.)
 
 DiameterList = np.linspace(100,1000,5) * 1e-9
 

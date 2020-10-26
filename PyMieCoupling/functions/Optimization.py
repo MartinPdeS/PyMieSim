@@ -45,7 +45,7 @@ class WrapDataFrame(pd.DataFrame):
 def CouplingStat(RIList: list,
                  DiameterList: list,
                  Detector,
-                 **SKwargs) -> pd.DataFrame:
+                 **SKwargs) -> WrapDataFrame:
 
     Polarization = ['Parallel', 'Perpendicular']
 
@@ -64,7 +64,6 @@ def CouplingStat(RIList: list,
                                Meshes      = Detector.Meshes
                                )
 
-
             Perp, Para = PointFieldCoupling(Detector = Detector, Source   = Source)
 
             df.at[('Parallel', Diameter, RI),'Coupling'] = Perp
@@ -73,13 +72,9 @@ def CouplingStat(RIList: list,
 
     df.Coupling = df.Coupling.astype(float)
 
-    #df = df.assign(Mean=df.groupby(['Polarization','Diameter']).Coupling.transform('mean'))
-
     df['Mean'] = df.groupby(['Polarization','Diameter']).Coupling.transform('mean')
 
     df['STD'] = df.groupby(['Polarization','Diameter']).Coupling.transform('std')
-
-    #df = df.assign(STD=df.groupby(['Polarization','Diameter']).Coupling.transform('std'))
 
     df.ParaMax = df.xs('Parallel').Coupling.max()
 

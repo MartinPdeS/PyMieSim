@@ -14,6 +14,7 @@ class Detector(object):
                  npts: int = 101,
                  ThetaOffset: float = 0,
                  PhiOffset: float = 0,
+                 Magnification: float = 1,
                  Name: str = 'Detector'):
 
         self._name = Name
@@ -33,6 +34,9 @@ class Detector(object):
         self.GenMeshes()
 
         self.Field, self.Fourier = self.GenField(shape=shape)
+
+        if Magnification != 1:
+            self.magnificate(Magnification)
 
 
     def GenMeshes(self):
