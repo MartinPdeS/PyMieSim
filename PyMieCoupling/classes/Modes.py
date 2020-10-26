@@ -37,6 +37,8 @@ class mode(object):
 
         self.magnification = magnification
 
+        self.DirectVec = np.linspace(-self.fiber.MaxDirect, self.fiber.MaxDirect, self.npts)
+
         self.GenShift()
 
         self.GenMeshes()
@@ -64,8 +66,6 @@ class mode(object):
 
 
     def GenMeshes(self):
-
-        self.DirectVec = np.linspace(-self.fiber.MaxDirect, self.fiber.MaxDirect, self.npts)
 
         self.AngleVec = Direct2Angle(self.DirectVec, self.k)
 

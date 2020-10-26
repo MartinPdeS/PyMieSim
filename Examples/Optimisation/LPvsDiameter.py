@@ -40,9 +40,9 @@ LP01 = mode(fiber       = Fiber,
             wavelength  = 400e-9,
             npts        = npts,
             ThetaOffset = 0,
-            PhiOffset   = 0,
-            Name        = 'LP01',
-            Magnification=2.
+            PhiOffset     = 0,
+            Name          = 'LP01',
+            Magnification = 2.
             )
 
 DiameterList = np.linspace(100,1000,5) * 1e-9
