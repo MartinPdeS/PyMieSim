@@ -13,7 +13,10 @@ class Detector(object):
                  wavelength: float = 1e-6,
                  npts: int = 101,
                  ThetaOffset: float = 0,
-                 PhiOffset: float = 0):
+                 PhiOffset: float = 0,
+                 Name: str = 'Detector'):
+
+        self._name = Name
 
         self._coupling = 'Intensity'
 

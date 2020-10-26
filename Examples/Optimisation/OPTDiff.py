@@ -16,7 +16,7 @@ from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Modes import mode
 from PyMieCoupling.functions.Optimization import CouplingStat
 
-npts=201
+npts=51
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -60,7 +60,7 @@ def EvalFunc(x):
 
     print('\n-> PhiOffset: {0}\n-> Max coupling: {1}\n'.format(x, DataFrame.ParaMax), flush=True)
 
-    return -DataFrame.ParaMax
+    return DataFrame.ParaMax
 
 
 Result = optimize.minimize_scalar(EvalFunc, options={'maxiter':5})

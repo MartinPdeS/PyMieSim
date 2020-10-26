@@ -31,38 +31,21 @@ LP01 = mode(fiber       = Fiber,
 
 LP01.magnificate(magnification=2.)
 
-DiameterList = np.linspace(100,1000,20).round(4) * 1e-9
+DiameterList = np.linspace(100,1000,20).round(2) * 1e-9
 
-RIList = np.linspace(1.3, 2.0, 10).round(4)
+RIList = np.linspace(1.3, 2.0, 10).round(2)
 
 SourceKwargs = {'wavelength': 400e-9,
-                'npts': 101,
-                'Meshes': LP01.Meshes}
+                'npts': 101}
 
 DataFrame = CouplingStat(RIList,
                          DiameterList,
                          Detector = LP01,
                          **SourceKwargs)
 
-DataFrame.xs('Parallel').unstack(1).plot(y='Coupling',
-                                         figsize=(8,3),
-                                         grid=True,
-                                         title='Parallel coupling')
+DataFrame.plot(y='Coupling')
 
-DataFrame.xs('Parallel').unstack(1).plot(y='STD',
-                                         figsize=(8,3),
-                                         grid=True,
-                                         title='Parallel coupling STD')
-
-DataFrame.xs('Perpendicular').unstack(1).plot(y='Coupling',
-                                              figsize=(8,3),
-                                              grid=True,
-                                              title='Parallel coupling')
-
-DataFrame.xs('Perpendicular').unstack(1).plot(y='STD',
-                                              figsize=(8,3),
-                                              grid=True,
-                                              title='Perpendicular coupling')
+DataFrame.plot(y='STD')
 
 plt.show()
 

@@ -15,7 +15,10 @@ class mode(object):
                  npts: int = 101,
                  magnification: float = 1.,
                  ThetaOffset: float = 0,
-                 PhiOffset: float = 0):
+                 PhiOffset: float = 0,
+                 Name: str = 'Field detector'):
+
+        self._name = Name
 
         self._coupling = 'Amplitude'
 
