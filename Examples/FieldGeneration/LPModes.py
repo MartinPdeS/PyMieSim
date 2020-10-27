@@ -6,7 +6,7 @@ _________________________________________________________
 """
 
 from PyMieCoupling.classes.Fiber import fiber
-from PyMieCoupling.classes.Modes import mode
+from PyMieCoupling.classes.Detector import LPmode
 
 
 npts=201
@@ -16,30 +16,34 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
-LP11 = mode(fiber       = Fiber,
-            LPmode      = (1, 1),
-            wavelength  = 400e-9,
-            npts        = npts,
-            ThetaOffset = 0,
-            PhiOffset   = 0
+LP11 = LPmode(Fiber       = Fiber,
+              Name        = 'LP11',
+              Mode        = (1, 1),
+              Wavelength  = 400e-9,
+              Npts        = npts,
+              ThetaOffset = 0,
+              PhiOffset   = 0
             )
 
-LP01 = mode(fiber       = Fiber,
-            LPmode      = (0, 1),
-            wavelength  = 400e-9,
-            npts        = npts,
-            ThetaOffset = 0,
-            PhiOffset   = 0
+LP01 = LPmode(Fiber       = Fiber,
+              Name        = 'LP01',
+              Mode      = (0, 1),
+              Wavelength  = 400e-9,
+              Npts        = npts,
+              ThetaOffset = 0,
+              PhiOffset   = 0
             )
 
 
-LP01.magnificate(magnification=2.)
+LP01.magnificate(Magnification=2.)
 
-LP11.magnificate(magnification=2.)
+LP11.magnificate(Magnification=2.)
 
-LP01.PlotFields()
+LP01.PlotPolar()
 
-LP11.PlotFields()
+LP11.PlotPolar()
+
+LP01.PlotDirectSpace()
 
 
 

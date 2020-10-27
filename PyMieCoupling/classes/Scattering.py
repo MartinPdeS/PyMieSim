@@ -46,10 +46,10 @@ class Scatterer(object):
     """
 
     def __init__(self,
-                 diameter: float,
-                 wavelength: float,
-                 index: float,
-                 npts: int = None,
+                 Diameter: float,
+                 Wavelength: float,
+                 Index: float,
+                 Npts: int = None,
                  Meshes: MieMesh = None,
                  ThetaBound: list = [-180, 180],
                  ThetaOffset: float = 0,
@@ -57,20 +57,20 @@ class Scatterer(object):
                  PhiOffset: float = 0,
                  CacheTrunk: int = 0) -> None:
 
-        self.diameter, self.wavelength = diameter, wavelength
+        self.Diameter, self.Wavelength = Diameter, Wavelength
 
-        self.index= index
+        self.Index = Index
 
         self.CacheTrunk = CacheTrunk
 
         if Meshes:
             self.Meshes = Meshes
-            assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, npts])
+            assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts])
 
         else:
             self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
                                   PhiBound   = np.array(PhiBound) + PhiOffset,
-                                  npts       = npts)
+                                  Npts       = Npts)
 
         self.computeS1S2()
 
@@ -105,7 +105,7 @@ class Scatterer(object):
 
         for Mu in MuList:
 
-            self.SizeParam = np.pi * self.diameter / self.wavelength
+            self.SizeParam = np.pi * self.Diameter / self.Wavelength
 
             S1, S2 = self.WrapS1S2(Mu)
 
@@ -116,7 +116,7 @@ class Scatterer(object):
     @functools.lru_cache(maxsize=201)
     def WrapS1S2(self, Mu) -> Tuple[float, float]:
 
-        S1, S2 = PyMieScatt.MieS1S2(self.index,
+        S1, S2 = PyMieScatt.MieS1S2(self.Index,
                                     self.SizeParam,
                                     Mu)
 

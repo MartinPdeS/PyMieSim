@@ -11,42 +11,32 @@ from PyMieCoupling.classes.Detector import Detector
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
 
-npts=201
+npts = 101
 
-Detector = Detector(size       = 100e-6,
-                    shape      = 'circle',
-                    wavelength = 400e-9,
-                    npts       = npts,
-                    )
+Detector = Detector(NumericalAperture  = 0.5,
+                    wavelength         = 400e-9,
+                    npts               = npts)
 
-Detector.magnificate( magnification=1.5 )
-
-DiameterList = np.linspace(100,1000,50) * 1e-9
-
-CouplingLP01, CouplingLP11 = [], []
+DiameterList = np.linspace(100,1000,50).round(4) * 1e-9
 
 Scat = Scatterer(diameter    = 500e-9,
-                 wavelength  = 400e-9,
+                 wavelength  = 1200e-9,
                  index       = 1.4,
-                 Meshes      = Detector.Meshes
-                 )
+                 Meshes      = Detector.Meshes)
 
 Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )
 
-Coupling = PointFieldCoupling(Detector = Detector,
-                              Source   = Scat,
-                              Field = 'Parallel'
-                              )
 
+Para, Perp = PointFieldCoupling(Detector = Detector,
+                                Source   = Scat)
 
 TheoVal, Delta = 0.127646, 0.05  # Theoretical value is around 0.127646
 
+print('Bound angle:\n \t Theta -> {0}\n \t Phi   -> {1}\n'.format(Detector.Meshes.Theta.Boundary.Degree, Detector.Meshes.Phi.Boundary.Degree))
 
-print('Bound angle:\n \t Theta -> {0}\n \t Phi -> {1}\n'.format(Detector.Meshes.Theta.Boundary, Detector.Meshes.Phi.Boundary))
+print('Coupling     -> {0}, \nTheoretical -> {1}'.format(Para, TheoVal))
 
-print('Coupling -> {0}, \nTheoretical -> {1}'.format(Coupling, TheoVal))
-
-if 0.127646 - Delta < Coupling < 0.127646 + Delta:
+if 0.127646 - Delta < Para < 0.127646 + Delta:
     print('Unittest 0: Passed!')
 else:
     raise Exception('Unittest 0: Failed!')

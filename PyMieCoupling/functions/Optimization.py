@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from PyMieCoupling.functions.couplings import PointFieldCoupling
+from PyMieCoupling.classes.Detector import DetectorMeta
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
 
@@ -46,11 +47,10 @@ class WrapDataFrame(pd.DataFrame):
         plt.subplots_adjust(right=0.8,)
 
 
-
-
 def CouplingStat(RIList: list,
                  DiameterList: list,
-                 Detector,
+                 Detector: DetectorMeta,
+                 QuietMode: bool = False,
                  **SKwargs) -> WrapDataFrame:
 
     Polarization = ['Parallel', 'Perpendicular']
@@ -60,17 +60,16 @@ def CouplingStat(RIList: list,
 
     df = WrapDataFrame(index = MI, columns = ['Coupling'])
 
-    for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress") ):
-
+    for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
         for nd, Diameter in enumerate(DiameterList):
 
-            Source = Scatterer(diameter    = Diameter,
-                               index       = RI,
-                               wavelength  = SKwargs['wavelength'],
+            Source = Scatterer(Diameter    = Diameter,
+                               Index       = RI,
+                               Wavelength  = SKwargs['Wavelength'],
                                Meshes      = Detector.Meshes
                                )
 
-            Perp, Para = PointFieldCoupling(Detector = Detector, Source   = Source)
+            Perp, Para = PointFieldCoupling(Detector = Detector, Source = Source)
 
             df.at[('Parallel', Diameter, RI),'Coupling'] = Perp
 

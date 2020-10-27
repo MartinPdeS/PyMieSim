@@ -1,12 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.classes.Detector import Detector
+from PyMieCoupling.classes.Detector import DetectorMeta
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Scattering import Scatterer
 
 
-def PointFieldCoupling(Detector: Detector,
+def PointFieldCoupling(Detector: DetectorMeta,
                        Source: Scatterer):
+
+    dOmega = Detector.Meshes.Phi.Delta.Radian *\
+             Detector.Meshes.Theta.Delta.Radian
 
     if Detector._coupling == 'Amplitude':
 
@@ -20,22 +23,24 @@ def PointFieldCoupling(Detector: Detector,
                Source.Field.Parallel *\
                np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        Para = np.abs( np.sum(Para) )**2
+        Para = np.abs( np.sum(Para * dOmega) )**2
 
 
     elif Detector._coupling == 'Intensity':
 
-        Perp = Detector.Field *\
+        Perp = Detector.Fourier *\
                np.abs(Source.Field.Perpendicular) *\
                np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        Perp = np.sum(Perp)**2
+        Perp = np.sum(Perp * dOmega)**2
 
-        Para = Detector.Field *\
+        Para = Detector.Fourier *\
                np.abs(Source.Field.Parallel) *\
                np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
 
-        Para = np.sum(Para)**2
+        Para = np.sum(Para * dOmega)**2
+
+        data = np.sum(Source.Field.Parallel) / dOmega
 
 
     return Para, Perp
