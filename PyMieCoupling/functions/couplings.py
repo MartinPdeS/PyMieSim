@@ -12,7 +12,6 @@ def PointFieldCoupling(Detector: DetectorMeta,
              Detector.Meshes.Theta.Delta.Radian
 
     if Detector._coupling == 'Amplitude':
-
         Perp = Detector.Field *\
                Source.Field.Perpendicular *\
                np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
@@ -27,20 +26,18 @@ def PointFieldCoupling(Detector: DetectorMeta,
 
 
     elif Detector._coupling == 'Intensity':
-
         Perp = Detector.Fourier *\
                np.abs(Source.Field.Perpendicular) *\
-               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T)
 
         Perp = np.sum(Perp * dOmega)**2
 
         Para = Detector.Fourier *\
                np.abs(Source.Field.Parallel) *\
-               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T)
 
         Para = np.sum(Para * dOmega)**2
 
-        data = np.sum(Source.Field.Parallel) / dOmega
 
 
     return Para, Perp

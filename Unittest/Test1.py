@@ -8,7 +8,7 @@ _________________________________________________________
 
 import numpy as np
 from PyMieCoupling.classes.Fiber import fiber
-from PyMieCoupling.classes.Modes import mode
+from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
 
@@ -19,45 +19,36 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
-LP01 = mode(fiber      = Fiber,
-            LPmode     = (0, 1),
-            wavelength = 400e-9,
-            npts       = npts,
-            ThetaOffset = 0,
-            PhiOffset   = 0,
-            )
+LP01 = LPmode(Fiber      = Fiber,
+              Mode     = (0, 1),
+              Wavelength = 400e-9,
+              Npts       = npts,
+              ThetaOffset = 0,
+              PhiOffset   = 0,)
 
-LP11 = mode(fiber       = Fiber,
-            LPmode      = (1, 1),
-            wavelength  = 400e-9,
-            npts        = npts,
-            ThetaOffset = 0,
-            PhiOffset   = 0,
-            )
+LP11 = LPmode(Fiber      = Fiber,
+              Mode     = (1, 1),
+              Wavelength = 400e-9,
+              Npts       = npts,
+              ThetaOffset = 0,
+              PhiOffset   = 0,)
 
 
 DiameterList = np.linspace(100,1000,50) * 1e-9
 
-CouplingLP01, CouplingLP11 = [], []
-
-Scat = Scatterer(diameter    = 500e-9,
-                 wavelength  = 400e-9,
-                 index       = 1.4,
+Scat = Scatterer(Diameter    = 500e-9,
+                 Wavelength  = 400e-9,
+                 Index       = 1.4,
                  Meshes      = LP11.Meshes
                  )
 
 Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )   #Uniforme sphere
 
-LP11Coupling = PointFieldCoupling(Detector = LP11,
-                                  Source   = Scat,
-                                  Field = 'Parallel'
-                                  )
+LP11Coupling, _ = PointFieldCoupling(Detector = LP11,
+                                     Source   = Scat)
 
-LP01Coupling = PointFieldCoupling(Detector = LP01,
-                                  Source   = Scat,
-                                  Field = 'Parallel'
-                                  )
-
+LP01Coupling, _ = PointFieldCoupling(Detector = LP01,
+                                     Source   = Scat)
 
 LP01TheoVal, Delta = 1.0, 0.05   # Theoretical value is 0
 LP11TheoVal, Delta = 0.0, 0.05   # Theoretical value is 0
