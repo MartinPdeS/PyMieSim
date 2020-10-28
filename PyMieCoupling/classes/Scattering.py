@@ -8,6 +8,7 @@ import PyMieScatt
 import functools
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad
+from PyMieCoupling.functions.Misc import Make3D
 from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Plots import S1S2Plot
@@ -36,7 +37,7 @@ class Scatterer(object):
     ----------
     Full : <Fields class>
         It represents the entire Far-field representation of the scatterer.
-    computeS1S2 : type
+    ComputeS1S2 : type
         Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.
     diameter
     wavelength
@@ -57,12 +58,18 @@ class Scatterer(object):
                  PhiOffset: float = 0,
                  CacheTrunk: int = 0) -> None:
 
-        self.Diameter, self.Wavelength = Diameter, Wavelength
-
-        self.Index = Index
+        self.Diameter, self.Wavelength, self.Index = Diameter, Wavelength, Index
 
         self.CacheTrunk = CacheTrunk
 
+        self.GenMesh(Meshes, ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts)
+
+        self.ComputeS1S2()
+
+        self.GenField(PolarizationAngle=0)
+
+
+    def GenMesh(self, Meshes, ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts):
         if Meshes:
             self.Meshes = Meshes
             assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts])
@@ -72,30 +79,17 @@ class Scatterer(object):
                                   PhiBound   = np.array(PhiBound) + PhiOffset,
                                   Npts       = Npts)
 
-        self.computeS1S2()
-
-        self.GenField(PolarizationAngle=0)
-
 
     def PlotS1S2(self) -> None:
 
-        SPF = self.Make3DField(self.Field.SPF)
+        SPF3D = Make3D(self.Field.SPF,
+                       self.Field.Phi.Mesh.Radian,
+                       self.Field.Theta.Mesh.Radian)
 
-        Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF, self.Meshes)
-
-
-    def Make3DField(self, item) -> Tuple[np.array, np.array, np.array]:
-
-        X = item * np.sin(self.Field.Phi.Mesh.Radian) * np.cos(self.Field.Theta.Mesh.Radian)
-
-        Y = item * np.sin(self.Field.Phi.Mesh.Radian) * np.sin(self.Field.Theta.Mesh.Radian)
-
-        Z = item * np.cos(self.Field.Phi.Mesh.Radian)
-
-        return X, Y, Z
+        Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF3D, self.Meshes)
 
 
-    def computeS1S2(self) -> None:
+    def ComputeS1S2(self) -> None:
 
         MuList = np.cos(self.Meshes.Phi.Vector.Radian)
 
@@ -111,6 +105,7 @@ class Scatterer(object):
 
             self.S1.append(S1)
             self.S2.append(S2)
+
 
 
     @functools.lru_cache(maxsize=201)
@@ -150,7 +145,6 @@ class Scatterer(object):
             Parallel = np.outer(self.S1,  np.ones(len(self.S1))/np.sqrt(2))
 
             Perpendicular = np.outer(self.S2, np.ones((self.S2))/np.sqrt(2))
-
 
         self.Field = Field(Perpendicular  = Perpendicular,
                            Parallel       = Parallel,

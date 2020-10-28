@@ -11,12 +11,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import optimize
 import sys
-
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.functions.Optimization import CouplingStat
 
-npts=51
+
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -33,15 +32,14 @@ def EvalFunc(x):
     LP01 = LPmode(Fiber       = Fiber,
                   Mode        = (0, 1),
                   Wavelength  = 400e-9,
-                  Npts        = npts,
+                  Npts        = 101,
                   ThetaOffset = 0,
                   PhiOffset   = x)
 
-    DataFrame = CouplingStat(RIList,
-                             DiameterList,
-                             Detector = LP01,
-                             Wavelength = 400e-9,
-                             Npts = 101)
+    DataFrame = CouplingStat(RIList       = RIList,
+                             DiameterList = DiameterList,
+                             Detector     = LP01,
+                             Wavelength   = 400e-9)
 
     print('\n-> PhiOffset: {0}\n-> Max coupling: {1}\n'.format(x, DataFrame.ParaMax), flush=True)
 
