@@ -12,6 +12,7 @@ from PyMieCoupling.functions.Misc import Make3D
 from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Plots import S1S2Plot
+from PyMieCoupling.classes.Representations import S1S2
 from typing import Tuple
 
 global i
@@ -60,11 +61,13 @@ class Scatterer(object):
 
         self.Diameter, self.Wavelength, self.Index = Diameter, Wavelength, Index
 
+        self.SizeParam = np.pi * self.Diameter / self.Wavelength
+
         self.CacheTrunk = CacheTrunk
 
         self.GenMesh(Meshes, ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts)
 
-        self.ComputeS1S2()
+        self.__S1S2 = None
 
         self.GenField(PolarizationAngle=0)
 
@@ -79,6 +82,8 @@ class Scatterer(object):
                                   PhiBound   = np.array(PhiBound) + PhiOffset,
                                   Npts       = Npts)
 
+        self.MuList = np.cos(self.Meshes.Phi.Vector.Radian)
+
 
     def PlotS1S2(self) -> None:
 
@@ -89,33 +94,19 @@ class Scatterer(object):
         Plot = S1S2Plot(np.abs(self.S1), np.abs(self.S2), *SPF3D, self.Meshes)
 
 
-    def ComputeS1S2(self) -> None:
 
-        MuList = np.cos(self.Meshes.Phi.Vector.Radian)
+    @property
+    def S1S2(self) -> None:
+        if self.__S1S2 is None:
+            self.__S1S2 = S1S2(self.SizeParam,
+                               self.MuList,
+                               self.Index,
+                               self.Meshes)
+            return self.__S1S2
 
-        if self.CacheTrunk: MuList = np.round(MuList, self.CacheTrunk)
+        else:
+            return self.__S1S2
 
-        self.S1, self.S2 = [], []
-
-        for Mu in MuList:
-
-            self.SizeParam = np.pi * self.Diameter / self.Wavelength
-
-            S1, S2 = self.WrapS1S2(Mu)
-
-            self.S1.append(S1)
-            self.S2.append(S2)
-
-
-
-    @functools.lru_cache(maxsize=201)
-    def WrapS1S2(self, Mu) -> Tuple[float, float]:
-
-        S1, S2 = PyMieScatt.MieS1S2(self.Index,
-                                    self.SizeParam,
-                                    Mu)
-
-        return S1, S2
 
 
     def GenField(self, PolarizationAngle=0):
@@ -134,22 +125,34 @@ class Scatterer(object):
 
             self.Polarization = Polarization
 
-            Parallel = np.outer(self.S1, np.sin(self.Meshes.Theta.Vector.Radian))
+            Parallel = np.outer(self.S1S2.Array[0], np.sin(self.Meshes.Theta.Vector.Radian))
 
-            Perpendicular = np.outer(self.S2, np.cos(self.Meshes.Theta.Vector.Radian))
+            Perpendicular = np.outer(self.S1S2.Array[1], np.cos(self.Meshes.Theta.Vector.Radian))
 
         elif PolarizationAngle is None:
 
             self.Polarization = "None"
 
-            Parallel = np.outer(self.S1,  np.ones(len(self.S1))/np.sqrt(2))
+            Parallel = np.outer(self.S1S2.Array[0],  np.ones(len(self.S1S2.Array[0]))/np.sqrt(2))
 
-            Perpendicular = np.outer(self.S2, np.ones((self.S2))/np.sqrt(2))
+            Perpendicular = np.outer(self.S1S2.Array[1], np.ones((self.S1S2.Array[1]))/np.sqrt(2))
 
         self.Field = Field(Perpendicular  = Perpendicular,
                            Parallel       = Parallel,
                            Meshes         = self.Meshes
                            )
+
+    @property
+    def Stokes(self) -> None:
+        return self.Field.Stokes
+
+    @property
+    def Jones(self) -> None:
+        return self.Field.Jones
+
+    @property
+    def SPF(self) -> None:
+        return self.Field.SPF
 
 
 

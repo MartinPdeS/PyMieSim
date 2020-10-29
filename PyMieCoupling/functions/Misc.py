@@ -1,5 +1,8 @@
 import numpy as np
 from typing import Tuple
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+import matplotlib.patches as mpatches
 
 
 def Make3D(item: np.array,
