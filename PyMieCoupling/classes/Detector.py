@@ -6,6 +6,7 @@ import fibermodes
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
 from PyMieCoupling.classes.Meshes import Meshes
+from PyMieCoupling.classes.Misc import Source
 
 
 class DetectorMeta(object):
@@ -33,7 +34,7 @@ class DetectorMeta(object):
 
     def GenMeshes(self):
 
-        self.AngleVec = Direct2Angle(self.DirectVec, self.k)
+        self.AngleVec = Direct2Angle(self.DirectVec, self.Source.k)
 
         self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
@@ -97,8 +98,8 @@ class Photodiode(DetectorMeta):
     """
 
     def __init__(self,
+                 Source: Source,
                  NumericalAperture: float = 0.2,
-                 Wavelength: float = 1e-6,
                  Npts: int = 101,
                  ThetaOffset: float = 0,
                  PhiOffset: float = 0,
@@ -110,11 +111,9 @@ class Photodiode(DetectorMeta):
 
         self.NumericalAperture = NumericalAperture
 
-        self.Wavelength = Wavelength
+        self.Source = Source
 
         self.ThetaOffset, self.PhiOffset = ThetaOffset, PhiOffset
-
-        self.k = 2 * np.pi / Wavelength
 
         self.Npts = Npts
 
@@ -213,7 +212,7 @@ class LPmode(DetectorMeta):
     def __init__(self,
                  Fiber: fibermodes.fiber,
                  Mode: tuple,
-                 Wavelength: float,
+                 Source: Source,
                  Npts: int = 101,
                  Magnification: float = 1.,
                  ThetaOffset: float = 0,
@@ -226,7 +225,7 @@ class LPmode(DetectorMeta):
 
         self.Mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *Mode)
 
-        self.Wavelength, self.k = Wavelength, 2 * np.pi / Wavelength
+        self.Source = Source
 
         self.Npts, self.Magnification  = Npts, Magnification
 
@@ -248,7 +247,7 @@ class LPmode(DetectorMeta):
 
         Field = fibermodes.field.Field(self.Fiber.source,
                                        self.Mode,
-                                       fibermodes.Wavelength(self.Wavelength),
+                                       self.Source.Wavelength,
                                        self.DirectVec[0],
                                        np=self.Npts)
 

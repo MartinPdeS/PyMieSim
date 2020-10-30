@@ -10,6 +10,10 @@ import numpy as np
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.functions.Optimization import CouplingStat
+from PyMieCoupling.classes.Misc import Source
+
+LightSource = Source(Wavelength   = 400e-9,
+                     Polarization = 0)
 
 npts=201
 
@@ -28,15 +32,10 @@ Detector0 = LPmode(Fiber         = Fiber,
                    Magnification = 2.)
 
 
-DiameterList = np.linspace(100,1000,20).round(2) * 1e-9
-
-RIList = np.linspace(1.3, 2.0, 10).round(2)
-
-DataFrame = CouplingStat(RIList,
-                         DiameterList,
-                         Detector = Detector0,
-                         Wavelength = 400e-9,
-                         Npts       = 101)
+DataFrame = CouplingStat(RIList        = np.linspace(1.33, 1.65, 10).round(2),
+                         DiameterList  = np.linspace(100,1000,20).round(2) * 1e-9,
+                         Detector      = Detector0,
+                         Source        = LightSource)
 
 DataFrame.plot(y='Coupling')
 

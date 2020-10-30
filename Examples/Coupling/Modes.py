@@ -10,6 +10,7 @@ _________________________________________________________
 import numpy as np
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
+from PyMieCoupling.classes.Misc import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
 
@@ -37,9 +38,11 @@ LP01 = LPmode(Fiber         = Fiber,
               PhiOffset     = 0,
               Magnification = 2.)
 
+LightSource = Source(Wavelength   = 400e-9,
+                     Polarization = 0)
 
 Scat = Scatterer(Diameter    = 500e-9,
-                 Wavelength  = 400e-9,
+                 Source      = LightSource,
                  Index       = 1.4,
                  Meshes      = LP01.Meshes)
 

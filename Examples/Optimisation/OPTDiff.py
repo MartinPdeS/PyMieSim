@@ -5,17 +5,15 @@ Optimization of RI dependence minimizing STD of detector response.
 _________________________________________________________
 """
 
-
-
-import matplotlib.pyplot as plt
 import numpy as np
 from scipy import optimize
-import sys
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.functions.Optimization import CouplingStat
+from PyMieCoupling.classes.Misc import Source
 
-
+LightSource = Source(Wavelength   = 400e-9,
+                     Polarization = 0)
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -23,25 +21,21 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_index  = 1.4444)
 
 
-DiameterList = np.linspace(100,1000,10).round(4) * 1e-9
-
-RIList = np.linspace(1.3, 2.0, 10).round(4)
-
 def EvalFunc(x):
 
     LP01 = LPmode(Fiber       = Fiber,
                   Mode        = (0, 1),
-                  Wavelength  = 400e-9,
+                  Source      = LightSource,
                   Npts        = 101,
                   ThetaOffset = 0,
                   PhiOffset   = x)
 
-    DataFrame = CouplingStat(RIList       = RIList,
-                             DiameterList = DiameterList,
+    DataFrame = CouplingStat(RIList       = np.linspace(1.3, 2.0, 10).round(4),
+                             DiameterList = np.linspace(100,1000,10).round(4) * 1e-9,
                              Detector     = LP01,
-                             Wavelength   = 400e-9)
+                             Source       = LightSource)
 
-    print('\n-> PhiOffset: {0}\n-> Max coupling: {1}\n'.format(x, DataFrame.ParaMax), flush=True)
+    print('\n-> PhiOffset:    {0}\n-> Max coupling: {1}\n'.format(x, DataFrame.ParaMax), flush=True)
 
     return DataFrame.ParaMax
 

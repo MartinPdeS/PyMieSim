@@ -65,7 +65,7 @@ def CouplingStat(RIList: list,
 
             Source = Scatterer(Diameter    = Diameter,
                                Index       = RI,
-                               Wavelength  = SKwargs['Wavelength'],
+                               Source      = SKwargs['Source'],
                                Meshes      = Detector.Meshes
                                )
 
