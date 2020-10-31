@@ -2,34 +2,42 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import matplotlib.patches as patches
-import matplotlib.patches as mpatches
 from PyMieCoupling.functions.Misc import Make3D
-import functools
 from typing import Tuple
-import PyMieScatt
+from PyMieCoupling.functions.Misc import ComputeStokes, ComputeJones, ComputeSPF, ComputeS1S2
+
 
 
 class Stokes(object):
     def __init__(self,
                  Parallel: np.array,
                  Perpendicular: np.array,
-                 Meshes) -> None:
+                 Meshes,
+                 gpu: bool = False) -> None:
 
-        self.shape = np.shape(Parallel)
+        assert isinstance(Parallel, np.ndarray)
+
+        assert isinstance(Perpendicular, np.ndarray)
+
+        self.shape = Parallel.shape
 
         self.Meshes = Meshes
 
-        self.Array = np.empty( [4, *self.shape] )
+        self.Array = ComputeStokes(Parallel, Perpendicular)
 
-        I = abs(Parallel)**2 + abs(Perpendicular)**2
 
-        self.Array[0,:,:] = I
+    def __repr__(self):
 
-        self.Array[1,:,:] = (abs(Parallel)**2 - abs(Perpendicular)**2)/I
+        s0, s1 = self.shape
 
-        self.Array[2,:,:] = 2*np.real( Parallel * np.conjugate(Perpendicular))/I
-
-        self.Array[3,:,:] = -2*np.imag( Parallel * np.conjugate(Perpendicular))/I
+        return '\nStokes Field representation    \
+                \nField dimensions: {0}x{1}      \
+                \nTheta boundary: {2} deg.       \
+                \nPhi boundary: {3} deg'         \
+                .format(*self.shape,
+                        s1,
+                        self.Meshes.Theta.Boundary.Degree,
+                        self.Meshes.Phi.Boundary.Degree )
 
 
     def GenFig(self):
@@ -45,7 +53,6 @@ class Stokes(object):
         [ ax.set_xlabel(r'Angle $\phi$') for ax in axes ]
 
         return fig, axes
-
 
 
     def Plot(self,
@@ -83,17 +90,36 @@ class Stokes(object):
                       headlength=20,
                       headaxislength=20)
 
-        [ax.add_patch(patches.Rectangle(Origin,*SolidAngle,linewidth=1,edgecolor='r',facecolor='none')) for ax in axes ]
+        ax.add_patch(patches.Rectangle(Origin,*SolidAngle,linewidth=1,edgecolor='r',facecolor='none'))
 
         plt.show()
 
+
+
+
+class Jones(object):
+
+    def __init__(self,
+                 Parallel: np.array,
+                 Perpendicular: np.array,
+                 Meshes) -> None:
+
+        assert isinstance(Parallel, np.ndarray)
+
+        assert isinstance(Perpendicular, np.ndarray)
+
+        self.shape = Parallel.shape
+
+        self.Meshes = Meshes
+
+        self.Array = ComputeJones(Parallel, Perpendicular)
 
 
     def __repr__(self):
 
         s0, s1 = self.shape
 
-        return '\nStokes Field representation    \
+        return '\nJones Field representation    \
                 \nField dimensions: {0}x{1}      \
                 \nTheta boundary: {2} deg.       \
                 \nPhi boundary: {3} deg'         \
@@ -101,29 +127,6 @@ class Stokes(object):
                         s1,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
-
-
-
-class Jones(object):
-    def __init__(self,
-                 Parallel: np.array,
-                 Perpendicular: np.array,
-                 Meshes) -> None:
-
-        self.shape = np.shape(Parallel)
-
-        self.Meshes = Meshes
-
-        self.Array = np.empty( [2, *self.shape] )
-
-        delta = np.angle(Parallel)-np.angle(Perpendicular)
-
-        A = np.abs(Parallel) / np.sqrt(abs(Parallel)**2 + np.abs(Perpendicular)**2)
-
-        B = np.abs(Perpendicular) / np.sqrt(abs(Parallel)**2 + np.abs(Perpendicular)**2)
-
-        self.Array = np.array([A, B*np.exp(complex(0,1)*delta)])
-
 
 
     def GenFig(self):
@@ -141,7 +144,6 @@ class Jones(object):
         return fig, axes
 
 
-
     def Plot(self,
              RectangleTheta = [-5,5],
              RectanglePhi = [-5,5]):
@@ -155,12 +157,29 @@ class Jones(object):
 
 
 
+class SPF(object):
+
+    def __init__(self,
+                 Parallel: np.array,
+                 Perpendicular: np.array,
+                 Meshes) -> None:
+
+        assert isinstance(Parallel, np.ndarray)
+
+        assert isinstance(Perpendicular, np.ndarray)
+
+        self.shape = Parallel.shape
+
+        self.Meshes = Meshes
+
+        self.Array = ComputeSPF(Parallel, Perpendicular)
+
 
     def __repr__(self):
 
         s0, s1 = self.shape
 
-        return '\Jones Field representation    \
+        return '\nScattering Phase Function      \
                 \nField dimensions: {0}x{1}      \
                 \nTheta boundary: {2} deg.       \
                 \nPhi boundary: {3} deg'         \
@@ -168,26 +187,6 @@ class Jones(object):
                         s1,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
-
-
-
-
-
-
-
-
-class SPF(object):
-    def __init__(self,
-                 Parallel: np.array,
-                 Perpendicular: np.array,
-                 Meshes) -> None:
-
-        self.shape = np.shape(Parallel)
-
-        self.Meshes = Meshes
-
-        self.Array = np.abs(Parallel)**2 + np.abs(Perpendicular)**2
-
 
 
     def GenFig(self):
@@ -233,26 +232,9 @@ class SPF(object):
         plt.show()
 
 
-    def __repr__(self):
-
-        s0, s1 = self.shape
-
-        return '\nScattering Phase Function      \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(s0,
-                        s1,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
-
-
-
-
-
 
 class S1S2(object):
+
     def __init__(self,
                  SizeParam: np.array,
                  MuList: np.array,
@@ -266,28 +248,7 @@ class S1S2(object):
 
         self.Index = Index
 
-        if CacheTrunk: MuList = np.round(MuList, CacheTrunk)
-
-        S1, S2 = [], []
-
-        for Mu in MuList:
-
-            temp0, temp1 = self.WrapS1S2(Mu)
-
-            S1.append(temp0)
-            S2.append(temp1)
-
-        self.Array = [S1, S2]
-
-
-    @functools.lru_cache(maxsize=201)
-    def WrapS1S2(self, Mu) -> Tuple[float, float]:
-
-        S1, S2 = PyMieScatt.MieS1S2(self.Index,
-                                    self.SizeParam,
-                                    Mu)
-
-        return S1, S2
+        self.Array = ComputeS1S2(MuList, Index, SizeParam)
 
 
     def GenFig(self):
@@ -309,25 +270,17 @@ class S1S2(object):
 
         fig, axes = self.GenFig()
 
-        axes[0].plot(self.Meshes.Phi.Vector.Radian,
-                     np.abs(self.Array[0]),
-                     'k')
+        for ni, ax in enumerate(axes):
 
-        axes[0].fill_between(self.Meshes.Phi.Vector.Radian,
-                             0,
-                             np.abs(self.Array[0]),
-                             color='C0',
-                             alpha=0.4)
+            ax.plot(self.Meshes.Phi.Vector.Radian,
+                         np.abs(self.Array[ni]),
+                         'k')
 
-        axes[1].plot(self.Meshes.Phi.Vector.Radian,
-                     np.abs(self.Array[1]),
-                     'k')
-
-        axes[1].fill_between(self.Meshes.Phi.Vector.Radian,
-                             0,
-                             np.abs(self.Array[1]),
-                             color='C1',
-                             alpha=0.4)
+            ax.fill_between(self.Meshes.Phi.Vector.Radian,
+                                 0,
+                                 np.abs(self.Array[ni]),
+                                 color='C0',
+                                 alpha=0.4)
 
         plt.show()
 
@@ -344,6 +297,9 @@ class S1S2(object):
                         s1,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
+
+
+
 
 
 

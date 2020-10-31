@@ -8,6 +8,7 @@ _________________________________________________________
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.classes.Misc import Source
 
+
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
