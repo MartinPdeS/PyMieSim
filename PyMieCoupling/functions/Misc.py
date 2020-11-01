@@ -2,6 +2,7 @@ import numpy as np
 from typing import Tuple
 import functools
 import PyMieScatt
+import cupy as cp
 
 
 def Make3D(item: np.array,
@@ -17,9 +18,53 @@ def Make3D(item: np.array,
     return X, Y, Z
 
 
+def GetStokes(GPU=False, **kwargs):
+    if GPU:
+        return ComputeStokesGPU(**kwargs)
+    else:
+        return ComputeStokes(**kwargs)
 
 
-def ComputeStokes(Parallel, Perpendicular):
+def GetJones(GPU=False, **kwargs):
+    if GPU:
+        return ComputeJonesGPU(**kwargs)
+    else:
+        return ComputeJones(**kwargs)
+
+
+def GetSPF(GPU=False, **kwargs):
+    if GPU:
+        return ComputeSPFGPU(**kwargs)
+    else:
+        return ComputeSPF(**kwargs)
+
+
+def GetS1S2(GPU=False, **kwargs):
+    if GPU:
+        return ComputeS1S2GPU(**kwargs)
+    else:
+        return ComputeS1S2(**kwargs)
+
+
+
+def ComputeStokesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndarray:
+
+    Array = cp.empty( [4, *cp.shape(Parallel)] )
+
+    I = cp.abs(Parallel)**2 + cp.abs(Perpendicular)**2
+
+    Array[0,:,:] = I
+
+    Array[1,:,:] = (cp.abs(Parallel)**2 - cp.abs(Perpendicular)**2)/I
+
+    Array[2,:,:] = 2*cp.real( Parallel * cp.conjugate(Perpendicular))/I
+
+    Array[3,:,:] = -2*cp.imag( Parallel * cp.conjugate(Perpendicular))/I
+
+    return Array
+
+
+def ComputeStokes(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
     Array = np.empty( [4, *np.shape(Parallel)] )
 
@@ -37,7 +82,7 @@ def ComputeStokes(Parallel, Perpendicular):
 
 
 
-def ComputeJones(Parallel, Perpendicular):
+def ComputeJones(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
     Array = np.empty( [2, *np.shape(Parallel)] )
 
@@ -50,16 +95,34 @@ def ComputeJones(Parallel, Perpendicular):
     return np.array([A, B*np.exp(complex(0,1)*delta)])
 
 
+def ComputeJonesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndarray:
 
-def ComputeSPF(Parallel, Perpendicular):
+    Array = cp.empty( [2, *cp.shape(Parallel)] )
+
+    delta = cp.angle(Parallel)-cp.angle(Perpendicular)
+
+    A = cp.abs(Parallel) / cp.sqrt(abs(Parallel)**2 + cp.abs(Perpendicular)**2)
+
+    B = cp.abs(Perpendicular) / cp.sqrt(abs(Parallel)**2 + cp.abs(Perpendicular)**2)
+
+    return cp.array([A, B*cp.exp(complex(0,1)*delta)])
+
+
+
+def ComputeSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
     return np.abs(Parallel)**2 + np.abs(Perpendicular)**2
 
 
+def ComputeSPFGPU(Parallel, Perpendicular) -> cp.ndarray:
+
+    return cp.abs(Parallel)**2 + cp.abs(Perpendicular)**2
 
 
 
-def ComputeS1S2(MuList, Index, SizeParam, CacheTrunk=None):
+def ComputeS1S2(Index, SizeParam, Meshes, CacheTrunk=None) -> Tuple[list, list]:
+
+    MuList = np.cos(Meshes.Phi.Vector.Radian)
 
     if CacheTrunk: MuList = np.round(MuList, CacheTrunk)
 
@@ -72,7 +135,7 @@ def ComputeS1S2(MuList, Index, SizeParam, CacheTrunk=None):
         S1.append(temp0)
         S2.append(temp1)
 
-    return [S1, S2]
+    return np.array([S1, S2])
 
 
 @functools.lru_cache(maxsize=201)
@@ -86,13 +149,69 @@ def WrapS1S2(Mu, Index, SizeParam) -> Tuple[float, float]:
 
 
 
+def ComputeS1S2GPU(Index, SizeParam, Meshes, CacheTrunk=None) -> Tuple[list, list]:
+
+    MuList = cp.cos(Meshes.Phi.Vector.Radian)
+
+    if CacheTrunk: MuList = np.round(MuList, CacheTrunk)
+
+    Array = cp.ndarray(shape=[2, MuList.size])
+
+    for n, Mu in enumerate(MuList):
+
+        temp0, temp1 = PyMieScatt.MieS1S2(Index,
+                                          SizeParam,
+                                          Mu)
+
+        Array[0,n] = 1
+        Array[1,n] = 2
+
+    return Array
 
 
 
+def S1S2ToField(GPU, **kwargs):
+
+    if GPU:
+        return _S1S2ToFieldGPU(**kwargs)
+
+    else:
+        return _S1S2ToField(**kwargs)
 
 
 
+def _S1S2ToField(S1S2, Source, Meshes):
 
+    if Source.Polarization is not None:
+
+        Parallel = np.outer(S1S2.Array[0], np.sin(Meshes.Theta.Vector.Radian))
+
+        Perpendicular = np.outer(S1S2.Array[1], np.cos(Meshes.Theta.Vector.Radian))
+
+    else:
+
+        Parallel = np.outer( S1S2.Array[0],  np.ones( len( S1S2.Array[0] ) )/np.sqrt(2) )
+
+        Perpendicular = np.outer( S1S2.Array[1], np.ones( ( S1S2.Array[1] ) )/np.sqrt(2) )
+
+    return Parallel, Perpendicular
+
+
+def _S1S2ToFieldGPU(S1S2, Source, Meshes):
+
+    if Source.Polarization is not None:
+
+        Parallel = cp.outer(S1S2.Array[0], cp.sin(Meshes.Theta.Vector.Radian))
+
+        Perpendicular = cp.outer(S1S2.Array[1], cp.cos(Meshes.Theta.Vector.Radian))
+
+    else:
+
+        Parallel = cp.outer( S1S2.Array[0],  cp.ones( len( S1S2.Array[0] ) )/cp.sqrt(2) )
+
+        Perpendicular = cp.outer( S1S2.Array[1], cp.ones( ( S1S2.Array[1] ) )/cp.sqrt(2) )
+
+    return Parallel, Perpendicular
 
 
 

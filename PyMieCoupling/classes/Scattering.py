@@ -11,7 +11,8 @@ from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Plots import S1S2Plot
 from PyMieCoupling.classes.Representations import S1S2
-from PyMieCoupling.classes.Misc import Source, Make3D, S1S2ToField
+from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.functions.Misc import Make3D, S1S2ToField
 from typing import Tuple
 
 global i
@@ -47,16 +48,19 @@ class Scatterer(object):
     """
 
     def __init__(self,
-                 Diameter: float,
-                 Source: Source,
-                 Index: float,
-                 Npts: int = None,
-                 Meshes: MieMesh = None,
-                 ThetaBound: list = [-180, 180],
-                 ThetaOffset: float = 0,
-                 PhiBound: list = [-180, 180],
-                 PhiOffset: float = 0,
-                 CacheTrunk: int = 0) -> None:
+                 Diameter:    float,
+                 Source:      Source,
+                 Index:       float,
+                 Npts:        int     = None,
+                 Meshes:      MieMesh = None,
+                 ThetaBound:  list    = [-180, 180],
+                 ThetaOffset: float   = 0,
+                 PhiBound:    list    = [-180, 180],
+                 PhiOffset:   float   = 0,
+                 GPU:         bool    = False,
+                 CacheTrunk:  int     = 0) -> None:
+
+        self.GPU = GPU
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
@@ -72,12 +76,12 @@ class Scatterer(object):
 
 
     def GenMesh(self,
-                Meshes: MieMesh = None,
-                ThetaBound: list = [-90, 90],
-                PhiBound: list = [-90, 90],
-                ThetaOffset: float = 0,
-                PhiOffset: float = 0,
-                Npts: int = 101):
+                Meshes:      MieMesh = None,
+                ThetaBound:  list    = [-90, 90],
+                PhiBound:    list    = [-90, 90],
+                ThetaOffset: float   = 0,
+                PhiOffset:   float   = 0,
+                Npts:        int     = 101):
 
         if Meshes:
             self.Meshes = Meshes
@@ -86,18 +90,18 @@ class Scatterer(object):
         else:
             self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
                                   PhiBound   = np.array(PhiBound) + PhiOffset,
-                                  Npts       = Npts)
-
-        self.MuList = np.cos(self.Meshes.Phi.Vector.Radian)
+                                  Npts       = Npts,
+                                  GPU        = self.GPU)
 
 
     @property
     def S1S2(self) -> None:
         if self.__S1S2 is None:
-            self.__S1S2 = S1S2(self.SizeParam,
-                               self.MuList,
-                               self.Index,
-                               self.Meshes)
+            self.__S1S2 = S1S2(SizeParam  = self.SizeParam,
+                               Index      = self.Index,
+                               Meshes     = self.Meshes,
+                               GPU        = self.GPU,
+                               CacheTrunk = self.CacheTrunk)
             return self.__S1S2
 
         else:
@@ -111,13 +115,15 @@ class Scatterer(object):
 
         """
 
-        Parallel, Perpendicular = S1S2ToField(S1S2         = self.S1S2,
-                                              Source       = self.Source,
-                                              Meshes       = self.Meshes)
+        Parallel, Perpendicular = S1S2ToField(S1S2   = self.S1S2,
+                                              Source = self.Source,
+                                              Meshes = self.Meshes,
+                                              GPU    = self.GPU)
 
-        self.Field = Field(Perpendicular  = Perpendicular,
-                           Parallel       = Parallel,
-                           Meshes         = self.Meshes
+        self.Field = Field(Perpendicular = Perpendicular,
+                           Parallel      = Parallel,
+                           Meshes        = self.Meshes,
+                           GPU           = self.GPU
                            )
 
     @property

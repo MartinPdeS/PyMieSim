@@ -1,41 +1,37 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import cupy as cp
 from matplotlib import cm
 import matplotlib.patches as patches
 from PyMieCoupling.functions.Misc import Make3D
+from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from typing import Tuple
-from PyMieCoupling.functions.Misc import ComputeStokes, ComputeJones, ComputeSPF, ComputeS1S2
+from PyMieCoupling.functions.Misc import GetStokes, GetJones, GetSPF, GetS1S2
 
 
 
 class Stokes(object):
     def __init__(self,
-                 Parallel: np.array,
-                 Perpendicular: np.array,
-                 Meshes,
-                 gpu: bool = False) -> None:
-
-        assert isinstance(Parallel, np.ndarray)
-
-        assert isinstance(Perpendicular, np.ndarray)
-
-        self.shape = Parallel.shape
+                 Parallel:      np.ndarray,
+                 Perpendicular: np.ndarray,
+                 Meshes:        MieMesh,
+                 GPU:           bool = False) -> None:
 
         self.Meshes = Meshes
 
-        self.Array = ComputeStokes(Parallel, Perpendicular)
+        self.Array = GetStokes(Parallel      = Parallel,
+                               Perpendicular = Perpendicular,
+                               GPU           = GPU)
 
 
     def __repr__(self):
 
-        s0, s1 = self.shape
 
         return '\nStokes Field representation    \
                 \nField dimensions: {0}x{1}      \
                 \nTheta boundary: {2} deg.       \
                 \nPhi boundary: {3} deg'         \
-                .format(*self.shape,
-                        s1,
+                .format(*self.Meshes.Theta.Boundary.Degree.shape,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
 
@@ -56,8 +52,8 @@ class Stokes(object):
 
 
     def Plot(self,
-             RectangleTheta = [-5,5],
-             RectanglePhi = [-5,5]):
+             RectangleTheta: list = [-5,5],
+             RectanglePhi:   list = [-5,5]):
 
         fig, axes = self.GenFig()
 
@@ -66,6 +62,8 @@ class Stokes(object):
         SolidAngle = (RectangleTheta[0] - RectangleTheta[1], RectanglePhi[0] - RectanglePhi[1])
 
         n=8
+
+        if isinstance(self.Array, cp.ndarray): self.Array = cp.asnumpy(self.Array)
 
         for i, ax in enumerate(axes):
 
@@ -84,13 +82,17 @@ class Stokes(object):
                       self.Meshes.Theta.Mesh.Degree[::n, ::n],
                       self.Array[2][::n, ::n],
                       self.Array[1][::n, ::n],
-                      units='width',
-                      width=0.0005,
-                      headwidth=30,
-                      headlength=20,
-                      headaxislength=20)
+                      units          = 'width',
+                      width          = 0.0005,
+                      headwidth      = 30,
+                      headlength     = 20,
+                      headaxislength = 20)
 
-        ax.add_patch(patches.Rectangle(Origin,*SolidAngle,linewidth=1,edgecolor='r',facecolor='none'))
+        ax.add_patch(patches.Rectangle(Origin,
+                                       *SolidAngle,
+                                       linewidth = 1,
+                                       edgecolor = 'r',
+                                       facecolor = 'none'))
 
         plt.show()
 
@@ -100,15 +102,10 @@ class Stokes(object):
 class Jones(object):
 
     def __init__(self,
-                 Parallel: np.array,
-                 Perpendicular: np.array,
-                 Meshes) -> None:
-
-        assert isinstance(Parallel, np.ndarray)
-
-        assert isinstance(Perpendicular, np.ndarray)
-
-        self.shape = Parallel.shape
+                 Parallel:      np.ndarray,
+                 Perpendicular: np.ndarray,
+                 Meshes:        MieMesh,
+                 GPU:           bool) -> None:
 
         self.Meshes = Meshes
 
@@ -117,19 +114,16 @@ class Jones(object):
 
     def __repr__(self):
 
-        s0, s1 = self.shape
-
-        return '\nJones Field representation    \
+        return '\nJones Field representation     \
                 \nField dimensions: {0}x{1}      \
                 \nTheta boundary: {2} deg.       \
                 \nPhi boundary: {3} deg'         \
-                .format(s0,
-                        s1,
+                .format(*self.Meshes.Theta.Boundary.Degree.shape,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
 
 
-    def GenFig(self):
+    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
 
         fig, axes = plt.subplots(1, 2, figsize=(15, 6))
 
@@ -146,7 +140,7 @@ class Jones(object):
 
     def Plot(self,
              RectangleTheta = [-5,5],
-             RectanglePhi = [-5,5]):
+             RectanglePhi   = [-5,5]):
 
         fig, axes = self.GenFig()
 
@@ -160,15 +154,10 @@ class Jones(object):
 class SPF(object):
 
     def __init__(self,
-                 Parallel: np.array,
-                 Perpendicular: np.array,
-                 Meshes) -> None:
-
-        assert isinstance(Parallel, np.ndarray)
-
-        assert isinstance(Perpendicular, np.ndarray)
-
-        self.shape = Parallel.shape
+                 Parallel:      np.ndarray,
+                 Perpendicular: np.ndarray,
+                 Meshes:        MieMesh,
+                 GPU:           bool) -> None:
 
         self.Meshes = Meshes
 
@@ -177,19 +166,16 @@ class SPF(object):
 
     def __repr__(self):
 
-        s0, s1 = self.shape
-
         return '\nScattering Phase Function      \
                 \nField dimensions: {0}x{1}      \
                 \nTheta boundary: {2} deg.       \
                 \nPhi boundary: {3} deg'         \
-                .format(s0,
-                        s1,
+                .format(*self.Meshes.Theta.Boundary.Degree.shape,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
 
 
-    def GenFig(self):
+    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
 
         fig = plt.figure(figsize=(3, 3))
 
@@ -208,8 +194,8 @@ class SPF(object):
 
 
     def Plot(self,
-             RectangleTheta = [-5,5],
-             RectanglePhi = [-5,5]):
+             RectangleTheta: list = [-5,5],
+             RectanglePhi:   list = [-5,5]):
 
         fig, ax = self.GenFig()
 
@@ -222,11 +208,11 @@ class SPF(object):
                        self.Meshes.Theta.Mesh.Radian)
 
         ax.plot_surface(*SPF3D,
-                         rstride=3,
-                         cstride=3,
-                         linewidth=0.5,
-                         cmap=cm.bone,
-                         antialiased=False,
+                         rstride     = 3,
+                         cstride     = 3,
+                         linewidth   = 0.5,
+                         cmap        = cm.bone,
+                         antialiased = False,
                          alpha=1)
 
         plt.show()
@@ -236,22 +222,25 @@ class SPF(object):
 class S1S2(object):
 
     def __init__(self,
-                 SizeParam: np.array,
-                 MuList: np.array,
-                 Index: float,
-                 Meshes,
+                 SizeParam:  np.array,
+                 Index:      float,
+                 Meshes:     MieMesh,
+                 GPU:        bool,
                  CacheTrunk: bool = None) -> None:
 
-        self.shape = np.shape(MuList)
+        self.GPU = GPU
 
         self.Meshes, self.SizeParam = Meshes, SizeParam
 
         self.Index = Index
 
-        self.Array = ComputeS1S2(MuList, Index, SizeParam)
+        self.Array = GetS1S2(Index     = Index,
+                             SizeParam = SizeParam,
+                             Meshes    = self.Meshes,
+                             GPU       = GPU)
 
 
-    def GenFig(self):
+    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
 
         fig = plt.figure(figsize=(6, 3))
 
@@ -277,24 +266,21 @@ class S1S2(object):
                          'k')
 
             ax.fill_between(self.Meshes.Phi.Vector.Radian,
-                                 0,
-                                 np.abs(self.Array[ni]),
-                                 color='C0',
-                                 alpha=0.4)
+                             0,
+                             np.abs(self.Array[ni]),
+                             color='C0',
+                             alpha=0.4)
 
         plt.show()
 
 
     def __repr__(self):
 
-        s0, s1 = self.shape
-
         return '\nScattering Phase Function      \
                 \nField dimensions: {0}x{1}      \
                 \nTheta boundary: {2} deg.       \
                 \nPhi boundary: {3} deg'         \
-                .format(s0,
-                        s1,
+                .format(*Meshes.Phi.Vector.Radian.shape,
                         self.Meshes.Theta.Boundary.Degree,
                         self.Meshes.Phi.Boundary.Degree )
 

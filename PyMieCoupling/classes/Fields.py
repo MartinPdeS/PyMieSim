@@ -1,24 +1,24 @@
 
-from numpy import abs, arctan, angle, sqrt, real, imag, conjugate, exp, array, max
 import numpy as np
-
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-import matplotlib.patches as mpatches
+import cupy as cp
 from PyMieCoupling.classes.Representations import Stokes, Jones, SPF
+from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 
 
 class Field(object):
 
     def __init__(self,
-                 Perpendicular: np.array,
-                 Parallel: np.array,
-                 Meshes):
+                 Perpendicular: np.ndarray,
+                 Parallel:      np.ndarray,
+                 Meshes:        MieMesh,
+                 GPU:           bool):
         """
         Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
 
         """
         self.__dict__ = Meshes.__dict__.copy()
+
+        self.GPU = GPU
 
         self.Perpendicular, self.Parallel = Perpendicular, Parallel
 
@@ -52,7 +52,8 @@ class Field(object):
         if self.__SPF is None:
             self.__SPF = SPF(Parallel      = self.Parallel,
                              Perpendicular = self.Perpendicular,
-                             Meshes        = self.Meshes)
+                             Meshes        = self.Meshes,
+                             GPU           = self.GPU)
             return self.__SPF
 
         else:
@@ -64,7 +65,8 @@ class Field(object):
         if self.__Stokes is None:
             self.__Stokes = Stokes(Parallel      = self.Parallel,
                                    Perpendicular = self.Perpendicular,
-                                   Meshes        = self.Meshes)
+                                   Meshes        = self.Meshes,
+                                   GPU           = self.GPU)
             return self.__Stokes
 
         else:
@@ -76,7 +78,8 @@ class Field(object):
         if self.__Jones is None:
             self.__Jones = Jones(Parallel      = self.Parallel,
                                  Perpendicular = self.Perpendicular,
-                                 Meshes        = self.Meshes)
+                                 Meshes        = self.Meshes,
+                                 GPU           = self.GPU)
             return self.__Jones
 
         else:
