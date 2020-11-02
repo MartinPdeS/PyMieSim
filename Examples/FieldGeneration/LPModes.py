@@ -45,6 +45,11 @@ LP11.Magnificate(Magnification=2.0)
 
 LP01.PhiOffset = 20
 
+LP01.Field.Plot('Real')
+
+LP11.Field.Plot('Imag')
+
+
 LP01.Fourier.Plot('Polar')
 
 LP11.Fourier.Plot('Polar')

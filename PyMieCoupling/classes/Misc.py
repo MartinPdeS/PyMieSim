@@ -1,11 +1,12 @@
 import numpy as np
+import cupy as cp
 import matplotlib.pyplot as plt
 from typing import Tuple
 import matplotlib.ticker as tick
-from PyMieCoupling.functions.converts import deg2rad
+from PyMieCoupling.functions.converts import deg2rad, CuPy2NumPy
 
-global Fontsize
-Fontsize = 10
+global Fontsize, pi
+Fontsize, pi = 10, 3.141592
 
 class Source(object):
 
@@ -17,7 +18,7 @@ class Source(object):
 
         self.Polarization = Polarization
 
-        self.k = 2 * np.pi / Wavelength
+        self.k = 2 * pi / Wavelength
 
 
 
@@ -54,9 +55,13 @@ class LPField(object):
 
         ax.set_title('Real part of LP mode Near-Field')
 
+        data, Phi, Theta = CuPy2NumPy(self.Array.real,
+                                      self.DirectVec*1e6,
+                                      self.DirectVec*1e6)
+
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
-                            np.real(self.Array),
+                            data,
                             shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -79,7 +84,7 @@ class LPField(object):
 
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
-                            np.imag(self.Array),
+                            np.imag(self._Array),
                             shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -94,6 +99,7 @@ class LPField(object):
         cbar.ax.locator_params(nbins=3)
 
         plt.show()
+
 
 
 class LPFourier(object):
@@ -134,10 +140,14 @@ class LPFourier(object):
 
         ax.set_title('Real part of LP mode Far-Field', fontsize = Fontsize)
 
-        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Radian,
-                                 self.Meshes.Theta.Vector.Radian,
-                                 np.real(self.Array),
-                                 shading='auto')
+        data, Phi, Theta = CuPy2NumPy(self.Array.real,
+                                      self.Meshes.Phi.Vector.Radian,
+                                      self.Meshes.Theta.Vector.Radian)
+
+        im0 = ax.pcolormesh(Phi,
+                            Theta,
+                            data,
+                            shading='auto')
 
         cbar = fig.colorbar(im0,
                             ax=ax,
@@ -158,10 +168,14 @@ class LPFourier(object):
 
         ax.set_title('Imaginary part of LP mode Far-Field', fontsize = Fontsize)
 
-        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Radian,
-                                 self.Meshes.Theta.Vector.Radian,
-                                 np.real(self.Array),
-                                 shading='auto')
+        data, Phi, Theta = CuPy2NumPy(self.Array.imag,
+                                      self.Meshes.Phi.Vector.Radian,
+                                      self.Meshes.Theta.Vector.Radian)
+
+        im0 = ax.pcolormesh(Phi,
+                            Theta,
+                            data,
+                            shading='auto')
 
         cbar = fig.colorbar(im0,
                             ax=ax,
@@ -179,7 +193,9 @@ class LPFourier(object):
 
     def PlotPolar(self, fig, ax):
 
-        data = (np.abs(self.Array)[self.Array.shape[0]//2])
+        data, Phi, Theta = CuPy2NumPy(self.Array.__abs__()[self.Array.shape[0]//2],
+                                      self.Meshes.Phi.Vector.Radian,
+                                      self.Meshes.Theta.Vector.Radian)
 
         ax.set_xlabel('')
 
@@ -187,8 +203,8 @@ class LPFourier(object):
 
         ax.set_title('Polar representation of far-field collection mode', fontsize = Fontsize)
 
-        ax.plot(self.Meshes.Phi.Vector.Radian, data)
+        ax.plot(Phi, data)
 
-        ax.fill_between(self.Meshes.Phi.Vector.Radian, 0, data, color='C0', alpha=0.4)
+        ax.fill_between(Phi, 0, data, color='C0', alpha=0.4)
 
         plt.show()

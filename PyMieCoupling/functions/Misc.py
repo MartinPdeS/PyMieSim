@@ -240,8 +240,6 @@ def GetLP(Fiber, Mode, Wavelength, Size, Npts ):
 
 
 
-
-
 def GenShift(Npts):
 
     phase_shift = np.exp(-complex(0, 1)*np.pi*np.arange(Npts)*(Npts-1)/Npts)
@@ -249,13 +247,6 @@ def GenShift(Npts):
     shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
 
     return shift_grid * shift_grid.T
-
-
-
-
-
-
-
 
 
 

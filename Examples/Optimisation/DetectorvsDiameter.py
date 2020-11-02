@@ -17,7 +17,7 @@ npts=201
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-Detector = Photodiode(NumericalAperture = 0.3,
+Detector = Photodiode(NA                = 0.3,
                       Source            = LightSource,
                       Npts              = npts,
                       ThetaOffset       = 10,

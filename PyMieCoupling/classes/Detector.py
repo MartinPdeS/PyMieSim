@@ -5,11 +5,10 @@ import matplotlib.pyplot as plt
 
 import fibermodes
 
-from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle
+from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle, NA2Angle
 from PyMieCoupling.classes.Meshes import Meshes
 from PyMieCoupling.classes.Misc import Source, LPField, LPFourier
 from PyMieCoupling.functions.Misc import GetLP
-
 
 
 class Photodiode(object):
@@ -66,23 +65,26 @@ class Photodiode(object):
 
     def __init__(self,
                  Source:            Source = None,
-                 NumericalAperture: float  = 0.2,
+                 NA:                float  = 0.2,
                  Npts:              int    = 101,
                  ThetaOffset:       float  = 0,
                  PhiOffset:         float  = 0,
+                 GPU:               bool   = False,
                  Name:              str    = 'Detector'):
 
         self._name = Name
 
+        self.GPU = GPU
+
         self._coupling = 'Intensity'
 
-        self.NumericalAperture = NumericalAperture
+        self.NA = NA
 
         self.Source = Source
 
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
 
-        self.__ThetaBound = np.arcsin(self.NumericalAperture)
+        self.__ThetaBound = np.arcsin(self.NA)
 
         self.Npts = Npts
 
@@ -94,19 +96,20 @@ class Photodiode(object):
 
 
     def GenMeshes(self):
-        Angle = rad2deg( np.arcsin(self.NumericalAperture) )
 
-        self.__ThetaBound = np.array([-Angle, Angle])
-
-        self.__PhiBound = np.array([-Angle, Angle])
+        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA, self.GPU)
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = rad2deg(self.__ThetaBound) + self.__ThetaOffset,
-                             PhiBound   = rad2deg(self.__PhiBound) + self.__PhiOffset)
+                             PhiBound   = rad2deg(self.__PhiBound) + self.__PhiOffset,
+                             GPU        = self.GPU)
 
 
     def GenField(self):
-        return np.ones( np.shape( self.Meshes.Theta.Mesh.Degree ) )
+        if self.GPU:
+            return cp.ones( cp.shape( self.Meshes.Theta.Mesh.Degree ) )
+        else:
+            return np.ones( np.shape( self.Meshes.Theta.Mesh.Degree ) )
 
 
     @property
@@ -117,11 +120,12 @@ class Photodiode(object):
     @ThetaBound.setter
     def ThetaBound(self, val: list):
 
-        self.__ThetaBound = np.array(val)
+        self.__ThetaBound = val
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+                             PhiBound   = self.__PhiBound,
+                             GPU        = self.GPU)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -134,11 +138,12 @@ class Photodiode(object):
     @PhiBound.setter
     def PhiBound(self, val: list):
 
-        self.__PhiBound = np.array(val)
+        self.__PhiBound = val
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+                             PhiBound   = self.__PhiBound,
+                             GPU        = self.GPU)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -219,16 +224,19 @@ class LPmode(object):
 
     """
     def __init__(self,
-                 Fiber: fibermodes.fiber,
-                 Mode: tuple,
-                 Source: Source,
-                 Npts: int = 101,
+                 Fiber:         fibermodes.fiber,
+                 Mode:          tuple,
+                 Source:        Source,
+                 Npts:          int   = 101,
                  Magnification: float = 1.,
-                 ThetaOffset: float = 0,
-                 PhiOffset: float = 0,
-                 Name: str = 'Field detector'):
+                 ThetaOffset:   float = 0,
+                 PhiOffset:     float = 0,
+                 GPU:           bool  = False,
+                 Name:          str   = 'Field detector'):
 
         self._name, self._coupling, self.Fiber = Name, 'Amplitude', Fiber
+
+        self.GPU = GPU
 
         Mode = Mode[0]+1, Mode[1]
 
@@ -273,7 +281,8 @@ class LPmode(object):
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound + self.__ThetaOffset,
-                             PhiBound   = self.__PhiBound + self.__PhiOffset)
+                             PhiBound   = self.__PhiBound + self.__PhiOffset,
+                             GPU        = self.GPU)
 
 
 
@@ -283,7 +292,7 @@ class LPmode(object):
 
         self.GenMeshes()
 
-        self.Field.Meshes, self.Fourier.Meshes = self.Meshes, self.Meshes
+        self.Field.DirectVec, self.Fourier.Meshes = self.DirectVec, self.Meshes
 
 
     @property
@@ -294,13 +303,14 @@ class LPmode(object):
     @ThetaBound.setter
     def ThetaBound(self, val: list):
 
-        self.__ThetaBound = np.array(val)
+        self.__ThetaBound = val
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+                             PhiBound   = self.__PhiBound,
+                             GPU        = self.GPU)
 
-        self.Field.Meshes, self.Fourier.Meshes = self.Meshes, self.Meshes
+        self.Fourier.Meshes = self.Meshes
 
 
     @property
@@ -311,13 +321,14 @@ class LPmode(object):
     @PhiBound.setter
     def PhiBound(self, val: list):
 
-        self.__PhiBound = np.array(val)
+        self.__PhiBound = val
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+                             PhiBound   = self.__PhiBound,
+                             GPU        = self.GPU)
 
-        self.Field.Meshes, self.Fourier.Meshes = self.Meshes, self.Meshes
+        self.Fourier.Meshes = self.Meshes
 
 
     @property
