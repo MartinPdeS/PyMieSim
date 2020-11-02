@@ -12,7 +12,7 @@ except ImportError:
 
 
 requirements = ['numpy',
-                'cupy',
+                #'cupy',
                 'matplotlib',
                 'PyMieScatt',
                 'tqdm',

@@ -47,7 +47,7 @@ def GetS1S2(GPU=False, **kwargs):
 
 def ComputeStokesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndarray:
 
-    Array = cp.empty( [4, *cp.shape(Parallel)] )
+    Array = cp.empty( [4, *Parallel.shape] )
 
     I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
@@ -55,16 +55,16 @@ def ComputeStokesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndar
 
     Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
 
-    Array[2,:,:] = 2*cp.real( Parallel * cp.conjugate(Perpendicular))/I
+    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).imag / I
 
-    Array[3,:,:] = -2*cp.imag( Parallel * cp.conjugate(Perpendicular))/I
+    Array[3,:,:] = -2 * ( Parallel * Perpendicular.conjugate() ).imag / I
 
     return Array
 
 
 def ComputeStokes(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
-    Array = np.empty( [4, *np.shape(Parallel)] )
+    Array = np.empty( [4, *Parallel.shape] )
 
     I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
@@ -72,9 +72,9 @@ def ComputeStokes(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray
 
     Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
 
-    Array[2,:,:] = 2*np.real( Parallel * np.conjugate(Perpendicular))/I
+    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
 
-    Array[3,:,:] = -2*np.imag( Parallel * np.conjugate(Perpendicular))/I
+    Array[3,:,:] = -2 * ( Parallel * Perpendicular.conjugate() ).imag / I
 
     return Array
 
@@ -82,7 +82,7 @@ def ComputeStokes(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray
 
 def ComputeJones(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
-    Array = np.empty( [2, *np.shape(Parallel)] )
+    Array = np.empty( [2, *Parallel.shape] )
 
     delta = np.angle(Parallel)-np.angle(Perpendicular)
 
@@ -95,7 +95,7 @@ def ComputeJones(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
 def ComputeJonesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndarray:
 
-    Array = cp.empty( [2, *cp.shape(Parallel)] )
+    Array = cp.empty( [2, * Parallel.shape] )
 
     delta = cp.angle(Parallel)-cp.angle(Perpendicular)
 
