@@ -15,28 +15,29 @@ LightSource = Source(Wavelength   = 400e-9,
 
 npts = 201
 
+GPU = True
+
 Detector = Photodiode(NA                = 0.2,
                       Source            = LightSource,
                       Npts              = npts,
                       ThetaOffset       = 0,
-                      PhiOffset         = 0)
+                      PhiOffset         = 0,
+                      GPU               = GPU)
 
-Detector.PlotPolar()
+Detector.PhiOffset = 45
 
-LightSource = Source(Wavelength   = 400e-9,
-                     Polarization = 0)
+Detector.Fourier.Plot('Polar')
 
 Scat = Scatterer(Diameter      = 500e-9,
                  Source        = LightSource,
                  Index         = 1.4,
-                 Meshes        = Detector.Meshes)
+                 Meshes        = Detector.Meshes,
+                 GPU           = GPU)
 
 Scat.S1S2.Plot()
 
 Scat.Stokes.Plot()
 
-Perp, Para = PointFieldCoupling(Detector = Detector,
-                                Source   = Scat)
 
 
 

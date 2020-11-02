@@ -64,7 +64,8 @@ def CouplingStat(RIList: list,
             Source = Scatterer(Diameter    = Diameter,
                                Index       = RI,
                                Source      = SKwargs['Source'],
-                               Meshes      = Detector.Meshes
+                               Meshes      = Detector.Meshes,
+                               GPU         = SKwargs['GPU']
                                )
 
             Perp, Para = PointFieldCoupling(Detector = Detector, Source = Source)

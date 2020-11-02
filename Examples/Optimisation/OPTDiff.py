@@ -23,9 +23,10 @@ Fiber = fiber(core_radius = 4.2e-6,
 LP01 = LPmode(Fiber       = Fiber,
               Mode        = (0, 1),
               Source      = LightSource,
-              Npts        = 51,
+              Npts        = 201,
               ThetaOffset = 0,
-              PhiOffset   = 0)
+              PhiOffset   = 0,
+              GPU         = False)
 
 
 
@@ -36,7 +37,8 @@ def EvalFunc(x):
     DataFrame = CouplingStat(RIList       = np.linspace(1.3, 2.0, 3).round(4),
                              DiameterList = np.linspace(100,1000,3).round(4) * 1e-9,
                              Detector     = LP01,
-                             Source       = LightSource)
+                             Source       = LightSource,
+                             GPU          = False)
 
     print('\n-> PhiOffset:    {0}\n-> Max coupling: {1}\n'.format(x, DataFrame.ParaMax), flush=True)
 

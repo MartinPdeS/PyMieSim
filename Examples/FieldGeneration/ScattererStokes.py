@@ -17,7 +17,8 @@ Scat = Scatterer(Diameter    = 200e-9,
                  Npts        = 201,
                  ThetaBound  = [-180, 180],
                  PhiBound    = [-180, 180],
-                 CacheTrunk  = None)
+                 CacheTrunk  = None,
+                 GPU         = True)
 
 
 Scat.S1S2.Plot()

@@ -5,6 +5,7 @@ from matplotlib import cm
 import matplotlib.patches as patches
 from PyMieCoupling.functions.Misc import Make3D
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
+from PyMieCoupling.functions.converts import CuPy2NumPy
 from typing import Tuple
 from PyMieCoupling.functions.Misc import GetStokes, GetJones, GetSPF, GetS1S2
 
@@ -25,7 +26,6 @@ class Stokes(object):
 
 
     def __repr__(self):
-
 
         return '\nStokes Field representation    \
                 \nField dimensions: {0}x{1}      \
@@ -63,13 +63,15 @@ class Stokes(object):
 
         n=8
 
-        if isinstance(self.Array, cp.ndarray): self.Array = cp.asnumpy(self.Array)
-
         for i, ax in enumerate(axes):
 
-            im = ax.pcolormesh(self.Meshes.Phi.Vector.Degree,
-                               self.Meshes.Theta.Vector.Degree,
-                               self.Array[3].T,
+            data, Phi, Theta = CuPy2NumPy(self.Array.T,
+                                          self.Meshes.Phi.Mesh.Degree,
+                                          self.Meshes.Theta.Mesh.Degree)
+
+            im = ax.pcolormesh(Phi,
+                               Theta,
+                               data[:,:,3],
                                shading='auto')
 
             cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
@@ -78,10 +80,10 @@ class Stokes(object):
 
             cbar.ax.locator_params(nbins=3)
 
-            ax.quiver(self.Meshes.Phi.Mesh.Degree[::n, ::n],
-                      self.Meshes.Theta.Mesh.Degree[::n, ::n],
-                      self.Array[2][::n, ::n],
-                      self.Array[1][::n, ::n],
+            ax.quiver(Phi[::n, ::n],
+                      Theta[::n, ::n],
+                      data[:,:,2][::n, ::n],
+                      data[:,:,1][::n, ::n],
                       units          = 'width',
                       width          = 0.0005,
                       headwidth      = 30,
@@ -95,8 +97,6 @@ class Stokes(object):
                                        facecolor =  'none'))
 
         plt.show()
-
-
 
 
 class Jones(object):
@@ -161,7 +161,7 @@ class SPF(object):
 
         self.Meshes = Meshes
 
-        self.Array = ComputeSPF(Parallel, Perpendicular)
+        self.Array = GetSPF(Parallel = Parallel, Perpendicular = Perpendicular)
 
 
     def __repr__(self):
@@ -203,9 +203,13 @@ class SPF(object):
 
         SolidAngle = (RectangleTheta[0] - RectangleTheta[1], RectanglePhi[0] - RectanglePhi[1])
 
-        SPF3D = Make3D(self.Array,
-                       self.Meshes.Phi.Mesh.Radian,
-                       self.Meshes.Theta.Mesh.Radian)
+        data, Phi, Theta = CuPy2NumPy(self.Array,
+                                      self.Meshes.Phi.Mesh.Radian,
+                                      self.Meshes.Theta.Mesh.Radian)
+
+        SPF3D = Make3D(data,
+                       Phi,
+                       Theta)
 
         ax.plot_surface(*SPF3D,
                          rstride     = 3,
@@ -240,6 +244,7 @@ class S1S2(object):
                              GPU       = GPU)
 
 
+
     def GenFig(self) -> Tuple[plt.figure, plt.axes]:
 
         fig = plt.figure(figsize=(6, 3))
@@ -261,15 +266,18 @@ class S1S2(object):
 
         for ni, ax in enumerate(axes):
 
-            ax.plot(self.Meshes.Phi.Vector.Radian,
-                         np.abs(self.Array[ni]),
-                         'k')
+            data, Phi = CuPy2NumPy(self.Array[ni].__abs__(),
+                                   self.Meshes.Phi.Vector.Radian)
 
-            ax.fill_between(self.Meshes.Phi.Vector.Radian,
-                             0,
-                             np.abs(self.Array[ni]),
-                             color='C0',
-                             alpha=0.4)
+            ax.plot(Phi,
+                    data,
+                    'k')
+
+            ax.fill_between(Phi,
+                            0,
+                            data,
+                            color='C0',
+                            alpha=0.4)
 
         plt.show()
 

@@ -12,6 +12,7 @@ def PointFieldCoupling(Detector: Union[LPmode, Photodiode],
              Detector.Meshes.Theta.Delta.Radian
 
     if Detector._coupling == 'Amplitude':
+        
         Perp = Detector.Field.Array *\
                Source.Field.Perpendicular *\
                np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)

@@ -82,9 +82,13 @@ class LPField(object):
 
         ax.set_title('Imaginary part of LP mode Near-Field', fontsize = Fontsize)
 
+        data, Phi, Theta = CuPy2NumPy(self.Array.imag,
+                                      self.DirectVec*1e6,
+                                      self.DirectVec*1e6)
+
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
-                            np.imag(self._Array),
+                            data,
                             shading='auto')
 
         cbar = fig.colorbar(im0,

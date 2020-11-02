@@ -9,6 +9,7 @@ from PyMieCoupling.classes.Misc import Source
 from PyMieCoupling.classes.Detector import Photodiode
 
 npts = 401
+GPU = True
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
@@ -18,11 +19,10 @@ Detector = Photodiode(NA                = 0.3,
                       Npts              = npts,
                       ThetaOffset       = 0,
                       PhiOffset         = 0,
-                      GPU               = True)
+                      GPU               = GPU)
 
 
 Detector.PhiOffset = 20
-
 
 Detector.Fourier.Plot('Real')
 

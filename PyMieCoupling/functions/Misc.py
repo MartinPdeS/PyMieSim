@@ -149,25 +149,21 @@ def WrapS1S2(Mu, Index, SizeParam) -> Tuple[float, float]:
     return S1, S2
 
 
-
 def ComputeS1S2GPU(Index, SizeParam, Meshes, CacheTrunk=None) -> Tuple[list, list]:
 
-    MuList = cp.cos(Meshes.Phi.Vector.Radian)
+    MuList = np.cos(cp.asnumpy(Meshes.Phi.Vector.Radian))
 
-    if CacheTrunk: MuList = cp.round(MuList, CacheTrunk)
+    if CacheTrunk: MuList = np.round(MuList, CacheTrunk)
 
-    Array = cp.ndarray(shape=[2, MuList.size])
+    S1, S2 = [], []
 
-    for n, Mu in enumerate(MuList):
+    for Mu in MuList:
 
-        temp0, temp1 = PyMieScatt.MieS1S2(Index,
-                                          SizeParam,
-                                          Mu)
+        temp0, temp1 = WrapS1S2(Mu, Index, SizeParam)
+        S1.append(temp0)
+        S2.append(temp1)
 
-        Array[0,n] = 1
-        Array[1,n] = 2
-
-    return Array
+    return cp.array([S1, S2])
 
 
 
@@ -216,9 +212,15 @@ def _S1S2ToFieldGPU(S1S2, Source, Meshes):
 
 
 
+def GetLP(GPU, **kwargs):
+
+    if GPU: return GetLPGPU(**kwargs)
+
+    else: return GetLPCPU(**kwargs)
 
 
-def GetLP(Fiber, Mode, Wavelength, Size, Npts ):
+
+def GetLPCPU(Fiber, Mode, Wavelength, Size, Npts):
 
     Field = fibermodes.field.Field(Fiber,
                                    Mode,
@@ -238,6 +240,28 @@ def GetLP(Fiber, Mode, Wavelength, Size, Npts ):
 
     return Field, Fourier
 
+
+def GetLPGPU(Fiber, Mode, Wavelength, Size, Npts):
+
+    Field = fibermodes.field.Field(Fiber,
+                                   Mode,
+                                   Wavelength,
+                                   Size,
+                                   Npts).Ex()
+
+    Field = cp.array(Field)
+
+    Field /= cp.sum(cp.abs(Field))
+
+    Fourier = cp.fft.fft2(Field)
+
+    Fourier /= cp.array( GenShift(Npts) )
+
+    Fourier = cp.fft.fftshift(Fourier)
+
+    Fourier /= cp.sum(cp.abs(Fourier))
+
+    return Field, Fourier
 
 
 def GenShift(Npts):

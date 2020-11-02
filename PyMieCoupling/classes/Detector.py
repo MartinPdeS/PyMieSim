@@ -96,12 +96,11 @@ class Photodiode(object):
 
 
     def GenMeshes(self):
-
         self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA, self.GPU)
 
         self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = rad2deg(self.__ThetaBound) + self.__ThetaOffset,
-                             PhiBound   = rad2deg(self.__PhiBound) + self.__PhiOffset,
+                             ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
+                             PhiBound   = (self.__PhiBound) + self.__PhiOffset,
                              GPU        = self.GPU)
 
 
@@ -262,11 +261,12 @@ class LPmode(object):
 
     def GenField(self):
 
-        return GetLP(self.Fiber.source,
-                     self.Mode,
-                     self.Source.Wavelength,
-                     self.DirectVec[0],
-                     self.Npts)
+        return GetLP(Fiber      = self.Fiber.source,
+                     Mode       = self.Mode,
+                     Wavelength = self.Source.Wavelength,
+                     Size       = self.DirectVec[0],
+                     Npts       = self.Npts,
+                     GPU        = self.GPU)
 
 
     def GenMeshes(self):
