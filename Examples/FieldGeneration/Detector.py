@@ -23,7 +23,9 @@ Detector = Photodiode(NumericalAperture = 0.3,
                       PhiOffset         = 0)
 
 
-Detector.PlotPolar()
+Detector.PhiOffset = 20
+
+Detector.Fourier.Plot('Polar')
 
 
 

@@ -3,6 +3,7 @@ from typing import Tuple
 import functools
 import PyMieScatt
 import cupy as cp
+import fibermodes
 
 
 def Make3D(item: np.array,
@@ -153,7 +154,7 @@ def ComputeS1S2GPU(Index, SizeParam, Meshes, CacheTrunk=None) -> Tuple[list, lis
 
     MuList = cp.cos(Meshes.Phi.Vector.Radian)
 
-    if CacheTrunk: MuList = np.round(MuList, CacheTrunk)
+    if CacheTrunk: MuList = cp.round(MuList, CacheTrunk)
 
     Array = cp.ndarray(shape=[2, MuList.size])
 
@@ -212,6 +213,48 @@ def _S1S2ToFieldGPU(S1S2, Source, Meshes):
         Perpendicular = cp.outer( S1S2.Array[1], cp.ones( ( S1S2.Array[1] ) )/cp.sqrt(2) )
 
     return Parallel, Perpendicular
+
+
+
+
+
+def GetLP(Fiber, Mode, Wavelength, Size, Npts ):
+
+    Field = fibermodes.field.Field(Fiber,
+                                   Mode,
+                                   Wavelength,
+                                   Size,
+                                   Npts).Ex()
+
+    Field /= np.sum(np.abs(Field))
+
+    Fourier = np.fft.fft2(Field)
+
+    Fourier /= GenShift(Npts)
+
+    Fourier = np.fft.fftshift(Fourier)
+
+    Fourier /= np.sum(np.abs(Fourier))
+
+    return Field, Fourier
+
+
+
+
+
+def GenShift(Npts):
+
+    phase_shift = np.exp(-complex(0, 1)*np.pi*np.arange(Npts)*(Npts-1)/Npts)
+
+    shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+    return shift_grid * shift_grid.T
+
+
+
+
+
+
 
 
 

@@ -92,7 +92,7 @@ class Stokes(object):
                                        *SolidAngle,
                                        linewidth = 1,
                                        edgecolor = 'r',
-                                       facecolor = 'none'))
+                                       facecolor =  'none'))
 
         plt.show()
 

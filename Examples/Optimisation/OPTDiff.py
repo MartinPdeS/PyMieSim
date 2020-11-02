@@ -20,18 +20,21 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
+LP01 = LPmode(Fiber       = Fiber,
+              Mode        = (0, 1),
+              Source      = LightSource,
+              Npts        = 51,
+              ThetaOffset = 0,
+              PhiOffset   = 0)
+
+
 
 def EvalFunc(x):
 
-    LP01 = LPmode(Fiber       = Fiber,
-                  Mode        = (0, 1),
-                  Source      = LightSource,
-                  Npts        = 101,
-                  ThetaOffset = 0,
-                  PhiOffset   = x)
+    LP01.PhiOffset = x
 
-    DataFrame = CouplingStat(RIList       = np.linspace(1.3, 2.0, 10).round(4),
-                             DiameterList = np.linspace(100,1000,10).round(4) * 1e-9,
+    DataFrame = CouplingStat(RIList       = np.linspace(1.3, 2.0, 3).round(4),
+                             DiameterList = np.linspace(100,1000,3).round(4) * 1e-9,
                              Detector     = LP01,
                              Source       = LightSource)
 

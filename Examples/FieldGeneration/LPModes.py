@@ -22,7 +22,7 @@ Fiber = fiber(core_radius = 4.2e-6,
 LP11 = LPmode(Fiber       = Fiber,
               Name        = 'LP11',
               Mode        = (1, 1),
-              Wavelength  = 400e-9,
+              Source      = LightSource,
               Npts        = npts,
               ThetaOffset = 0,
               PhiOffset   = 0
@@ -30,23 +30,24 @@ LP11 = LPmode(Fiber       = Fiber,
 
 LP01 = LPmode(Fiber       = Fiber,
               Name        = 'LP01',
-              Mode      = (0, 1),
-              Wavelength  = 400e-9,
+              Mode        = (0, 1),
+              Source      = LightSource,
               Npts        = npts,
               ThetaOffset = 0,
               PhiOffset   = 0
             )
 
 
-LP01.magnificate(Magnification=2.)
 
-LP11.magnificate(Magnification=2.)
+LP01.Magnificate(Magnification=2.0)
 
-LP01.PlotPolar()
+LP11.Magnificate(Magnification=2.0)
 
-LP11.PlotPolar()
+LP01.PhiOffset = 20
 
-LP01.PlotDirectSpace()
+LP01.Fourier.Plot('Polar')
+
+LP11.Fourier.Plot('Polar')
 
 
 

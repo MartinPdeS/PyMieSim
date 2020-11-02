@@ -1,13 +1,11 @@
 import numpy as np
 from tqdm import tqdm
-from typing import Tuple
 import pandas as pd
+from typing import Union
 import matplotlib.pyplot as plt
-
+from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.couplings import PointFieldCoupling
-from PyMieCoupling.classes.Detector import DetectorMeta
 from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.functions.couplings import PointFieldCoupling
 
 
 class WrapDataFrame(pd.DataFrame):
@@ -49,7 +47,7 @@ class WrapDataFrame(pd.DataFrame):
 
 def CouplingStat(RIList: list,
                  DiameterList: list,
-                 Detector: DetectorMeta,
+                 Detector: Union[LPmode, Photodiode],
                  QuietMode: bool = False,
                  **SKwargs) -> WrapDataFrame:
 
