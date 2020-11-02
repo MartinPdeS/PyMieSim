@@ -25,7 +25,7 @@ def Angle2Direct(AngleVec, k):
 
         FourierSpace = np.sin(RadSpace)*k/(2*np.pi)
 
-        fourier_unit = np.abs(FourierSpace[1]-FourierSpace[0])
+        fourier_unit = (FourierSpace[1]-FourierSpace[0]).__abs__()
 
         DirectSpace = np.fft.fftshift(np.fft.fftfreq(np.shape(AngleVec)[0], d=fourier_unit))
 
@@ -34,7 +34,7 @@ def Angle2Direct(AngleVec, k):
 
         FourierSpace = cp.sin(RadSpace)*k/(2*cp.pi)
 
-        fourier_unit = cp.abs(FourierSpace[1]-FourierSpace[0])
+        fourier_unit = (FourierSpace[1]-FourierSpace[0]).__abs__()
 
         DirectSpace = cp.fft.fftshift(cp.fft.fftfreq(cp.shape(AngleVec)[0], d=fourier_unit))
 
@@ -45,20 +45,21 @@ def Direct2Angle(DirectVec, k):
 
     if isinstance(DirectVec, np.ndarray) or isinstance(DirectVec, np.float):
 
-        direct_unit = np.abs(DirectVec[1]-DirectVec[0])
+        direct_unit = (DirectVec[1]-DirectVec[0]).__abs__()
 
         FourierSpace = np.fft.fftshift(np.fft.fftfreq(np.shape(DirectVec)[0],d=direct_unit))
 
         AngleVec = np.arcsin(2*np.pi*FourierSpace/ k) #conversion spatial frequency to angular space
 
+        if np.nan in AngleVec:
+            raise Exception('Warning ill defined resolution -> angle definition!')
+
         AngleVec = AngleVec* 180/np.pi
 
-        if np.nan in AngleVec:
-            raise Exception('Error in angle definition!')
 
     if isinstance(DirectVec, cp.ndarray) or isinstance(DirectVec, cp.float):
 
-        direct_unit = cp.abs(DirectVec[1]-DirectVec[0])
+        direct_unit = (DirectVec[1]-DirectVec[0]).__abs__()
 
         FourierSpace = cp.fft.fftshift(cp.fft.fftfreq(cp.shape(DirectVec)[0],d=direct_unit))
 

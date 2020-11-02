@@ -9,12 +9,13 @@ from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.classes.Misc import Source
 
-npts=201
+npts=101
 
 GPU = True
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
+
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -43,9 +44,9 @@ LP01 = LPmode(Fiber       = Fiber,
 
 
 
-LP01.Magnificate(Magnification=2.0)
+#LP01.Magnificate(Magnification=2.0)
 
-LP11.Magnificate(Magnification=2.0)
+#LP11.Magnificate(Magnification=2.0)
 
 LP01.PhiOffset = 20
 

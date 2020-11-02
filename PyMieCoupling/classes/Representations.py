@@ -1,14 +1,13 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import cupy as cp
 from matplotlib import cm
 import matplotlib.patches as patches
-from PyMieCoupling.functions.Misc import Make3D
-from PyMieCoupling.classes.Meshes import Meshes as MieMesh
-from PyMieCoupling.functions.converts import CuPy2NumPy
+import numpy as np
+import cupy as cp
 from typing import Tuple
-from PyMieCoupling.functions.Misc import GetStokes, GetJones, GetSPF, GetS1S2
 
+from PyMieCoupling.classes.Meshes import Meshes as MieMesh
+from PyMieCoupling.functions.Misc import Make3D, GetStokes, GetJones, GetSPF, GetS1S2
+from PyMieCoupling.functions.converts import CuPy2NumPy
 
 
 class Stokes(object):
@@ -51,15 +50,9 @@ class Stokes(object):
         return fig, axes
 
 
-    def Plot(self,
-             RectangleTheta: list = [-5,5],
-             RectanglePhi:   list = [-5,5]):
+    def Plot(self):
 
         fig, axes = self.GenFig()
-
-        Origin = (RectangleTheta[1], RectanglePhi[1])
-
-        SolidAngle = (RectangleTheta[0] - RectangleTheta[1], RectanglePhi[0] - RectanglePhi[1])
 
         n=8
 
@@ -90,11 +83,6 @@ class Stokes(object):
                       headlength     = 20,
                       headaxislength = 20)
 
-        ax.add_patch(patches.Rectangle(Origin,
-                                       *SolidAngle,
-                                       linewidth = 1,
-                                       edgecolor = 'r',
-                                       facecolor =  'none'))
 
         plt.show()
 
@@ -136,17 +124,6 @@ class Jones(object):
         [ ax.set_xlabel(r'Angle $\phi$') for ax in axes ]
 
         return fig, axes
-
-
-    def Plot(self,
-             RectangleTheta = [-5,5],
-             RectanglePhi   = [-5,5]):
-
-        fig, axes = self.GenFig()
-
-        Origin = (RectangleTheta[1], RectanglePhi[1])
-
-        SolidAngle = (RectangleTheta[0] - RectangleTheta[1], RectanglePhi[0] - RectanglePhi[1])
 
 
 
@@ -193,15 +170,9 @@ class SPF(object):
 
 
 
-    def Plot(self,
-             RectangleTheta: list = [-5,5],
-             RectanglePhi:   list = [-5,5]):
+    def Plot(self):
 
         fig, ax = self.GenFig()
-
-        Origin = (RectangleTheta[1], RectanglePhi[1])
-
-        SolidAngle = (RectangleTheta[0] - RectangleTheta[1], RectanglePhi[0] - RectanglePhi[1])
 
         data, Phi, Theta = CuPy2NumPy(self.Array,
                                       self.Meshes.Phi.Mesh.Radian,

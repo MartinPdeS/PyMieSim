@@ -34,10 +34,7 @@ def GetJones(GPU=False, **kwargs):
 
 
 def GetSPF(GPU=False, **kwargs):
-    if GPU:
-        return ComputeSPFGPU(**kwargs)
-    else:
-        return ComputeSPF(**kwargs)
+    return ComputeSPF(**kwargs)
 
 
 def GetS1S2(GPU=False, **kwargs):
@@ -52,11 +49,11 @@ def ComputeStokesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndar
 
     Array = cp.empty( [4, *cp.shape(Parallel)] )
 
-    I = cp.abs(Parallel)**2 + cp.abs(Perpendicular)**2
+    I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
     Array[0,:,:] = I
 
-    Array[1,:,:] = (cp.abs(Parallel)**2 - cp.abs(Perpendicular)**2)/I
+    Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
 
     Array[2,:,:] = 2*cp.real( Parallel * cp.conjugate(Perpendicular))/I
 
@@ -69,11 +66,11 @@ def ComputeStokes(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray
 
     Array = np.empty( [4, *np.shape(Parallel)] )
 
-    I = np.abs(Parallel)**2 + np.abs(Perpendicular)**2
+    I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
     Array[0,:,:] = I
 
-    Array[1,:,:] = (np.abs(Parallel)**2 - np.abs(Perpendicular)**2)/I
+    Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
 
     Array[2,:,:] = 2*np.real( Parallel * np.conjugate(Perpendicular))/I
 
@@ -89,9 +86,9 @@ def ComputeJones(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
     delta = np.angle(Parallel)-np.angle(Perpendicular)
 
-    A = np.abs(Parallel) / np.sqrt(abs(Parallel)**2 + np.abs(Perpendicular)**2)
+    A = Parallel._abs__() / np.sqrt(Parallel._abs__()**2 + Perpendicular._abs__()**2)
 
-    B = np.abs(Perpendicular) / np.sqrt(abs(Parallel)**2 + np.abs(Perpendicular)**2)
+    B = Perpendicular._abs__() / np.sqrt(Parallel._abs__()**2 + Perpendicular._abs__()**2)
 
     return np.array([A, B*np.exp(complex(0,1)*delta)])
 
@@ -102,9 +99,9 @@ def ComputeJonesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndarr
 
     delta = cp.angle(Parallel)-cp.angle(Perpendicular)
 
-    A = cp.abs(Parallel) / cp.sqrt(abs(Parallel)**2 + cp.abs(Perpendicular)**2)
+    A = Parallel.__abs__() / cp.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
 
-    B = cp.abs(Perpendicular) / cp.sqrt(abs(Parallel)**2 + cp.abs(Perpendicular)**2)
+    B = Perpendicular.__abs__() / cp.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
 
     return cp.array([A, B*cp.exp(complex(0,1)*delta)])
 
@@ -112,12 +109,8 @@ def ComputeJonesGPU(Parallel: cp.ndarray, Perpendicular: cp.ndarray) -> cp.ndarr
 
 def ComputeSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
-    return np.abs(Parallel)**2 + np.abs(Perpendicular)**2
+    return Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
-
-def ComputeSPFGPU(Parallel, Perpendicular) -> cp.ndarray:
-
-    return cp.abs(Parallel)**2 + cp.abs(Perpendicular)**2
 
 
 
@@ -228,7 +221,7 @@ def GetLPCPU(Fiber, Mode, Wavelength, Size, Npts):
                                    Size,
                                    Npts).Ex()
 
-    Field /= np.sum(np.abs(Field))
+    Field /= np.sum(Field.__abs__())
 
     Fourier = np.fft.fft2(Field)
 
@@ -236,7 +229,7 @@ def GetLPCPU(Fiber, Mode, Wavelength, Size, Npts):
 
     Fourier = np.fft.fftshift(Fourier)
 
-    Fourier /= np.sum(np.abs(Fourier))
+    Fourier /= np.sum(Fourier.__abs__())
 
     return Field, Fourier
 
@@ -251,7 +244,7 @@ def GetLPGPU(Fiber, Mode, Wavelength, Size, Npts):
 
     Field = cp.array(Field)
 
-    Field /= cp.sum(cp.abs(Field))
+    Field /= cp.sum(Field.__abs__())
 
     Fourier = cp.fft.fft2(Field)
 
@@ -259,7 +252,7 @@ def GetLPGPU(Fiber, Mode, Wavelength, Size, Npts):
 
     Fourier = cp.fft.fftshift(Fourier)
 
-    Fourier /= cp.sum(cp.abs(Fourier))
+    Fourier /= cp.sum(Fourier.__abs__())
 
     return Field, Fourier
 

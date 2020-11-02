@@ -8,7 +8,6 @@ _________________________________________________________
 from PyMieCoupling.classes.Detector import Photodiode
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.classes.Misc import Source
-from PyMieCoupling.functions.couplings import PointFieldCoupling
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)

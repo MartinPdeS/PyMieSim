@@ -7,7 +7,6 @@ _________________________________________________________
 """
 
 
-import numpy as np
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.classes.Misc import Source
@@ -17,7 +16,7 @@ from PyMieCoupling.functions.couplings import PointFieldCoupling
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-npts=201
+npts=101
 
 GPU = False
 
@@ -32,7 +31,7 @@ LP11 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
-              Magnification = 2.,
+              Magnification = 1,
               GPU           = GPU)
 
 LP01 = LPmode(Fiber         = Fiber,
@@ -41,7 +40,7 @@ LP01 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
-              Magnification = 2.,
+              Magnification = 1,
               GPU           = GPU)
 
 LightSource = Source(Wavelength   = 400e-9,

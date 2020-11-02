@@ -88,9 +88,9 @@ def CouplingStat(RIList: list,
 
     df.PerpMin = df.xs('Perpendicular').Coupling.min()
 
-    df.ParaDiff = np.abs(df.ParaMax - df.ParaMin)
+    df.ParaDiff = (df.ParaMax - df.ParaMin).__abs__()
 
-    df.PerpDiff = np.abs(df.PerpMax - df.PerpMin)
+    df.PerpDiff = (df.PerpMax - df.PerpMin).__abs__()
 
     df.DetectorNane = Detector._name
 

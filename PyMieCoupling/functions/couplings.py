@@ -12,34 +12,32 @@ def PointFieldCoupling(Detector: Union[LPmode, Photodiode],
              Detector.Meshes.Theta.Delta.Radian
 
     if Detector._coupling == 'Amplitude':
-        
+
         Perp = Detector.Field.Array *\
                Source.Field.Perpendicular *\
-               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+               (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
 
-        Perp = np.abs( np.sum(Perp) )**2
+        Perp = ( np.sum(Perp) ).__abs__()**2
 
         Para = Detector.Field.Array *\
                Source.Field.Parallel *\
-               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian).T)
+               (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
 
-        Para = np.abs( np.sum(Para * dOmega) )**2
+        Para = ( np.sum(Para * dOmega) ).__abs__()**2
 
 
     elif Detector._coupling == 'Intensity':
         Perp = Detector.Fourier.Array *\
-               np.abs(Source.Field.Perpendicular) *\
-               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T)
+               (Source.Field.Perpendicular).__abs__() *\
+               (np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
         Perp = np.sum(Perp * dOmega)**2
 
         Para = Detector.Fourier.Array *\
-               np.abs(Source.Field.Parallel) *\
-               np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T)
+               (Source.Field.Parallel).__abs__() *\
+               (np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
         Para = np.sum(Para * dOmega)**2
-
-
 
     return Para, Perp
 
@@ -57,4 +55,4 @@ def MeanFieldCoupling(Field0: np.array,
 
     temp = np.fft.fftshift(temp)
 
-    return np.abs(temp)**2
+    return (temp).__abs__()**2
