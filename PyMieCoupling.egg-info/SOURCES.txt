@@ -10,9 +10,12 @@ PyMieCoupling/classes/Detector.py
 PyMieCoupling/classes/Fiber.py
 PyMieCoupling/classes/Fields.py
 PyMieCoupling/classes/Meshes.py
-PyMieCoupling/classes/Modes.py
+PyMieCoupling/classes/Misc.py
 PyMieCoupling/classes/Plots.py
+PyMieCoupling/classes/Representations.py
 PyMieCoupling/classes/Scattering.py
 PyMieCoupling/classes/__init__.py
+PyMieCoupling/functions/Misc.py
+PyMieCoupling/functions/Optimization.py
 PyMieCoupling/functions/converts.py
 PyMieCoupling/functions/couplings.py

@@ -26,7 +26,7 @@ LP01 = LPmode(Fiber       = Fiber,
               Npts        = 201,
               ThetaOffset = 0,
               PhiOffset   = 0,
-              GPU         = False)
+              cuda        = False)
 
 
 
@@ -38,7 +38,7 @@ def EvalFunc(x):
                              DiameterList = np.linspace(100,1000,3).round(4) * 1e-9,
                              Detector     = LP01,
                              Source       = LightSource,
-                             GPU          = False)
+                             cuda         = False)
 
     print('\n-> PhiOffset:    {0}\n-> Max coupling: {1}\n'.format(x, DataFrame.ParaMax), flush=True)
 

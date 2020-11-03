@@ -11,14 +11,14 @@ class Field(object):
                  Perpendicular: np.ndarray,
                  Parallel:      np.ndarray,
                  Meshes:        MieMesh,
-                 GPU:           bool):
+                 cuda:          bool):
         """
         Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
 
         """
         self.__dict__ = Meshes.__dict__.copy()
 
-        self.GPU = GPU
+        self.cuda = cuda
 
         self.Perpendicular, self.Parallel = Perpendicular, Parallel
 
@@ -53,7 +53,7 @@ class Field(object):
             self.__SPF = SPF(Parallel      = self.Parallel,
                              Perpendicular = self.Perpendicular,
                              Meshes        = self.Meshes,
-                             GPU           = self.GPU)
+                             cuda          = self.cuda)
             return self.__SPF
 
         else:
@@ -66,7 +66,7 @@ class Field(object):
             self.__Stokes = Stokes(Parallel      = self.Parallel,
                                    Perpendicular = self.Perpendicular,
                                    Meshes        = self.Meshes,
-                                   GPU           = self.GPU)
+                                   cuda           = self.cuda)
             return self.__Stokes
 
         else:
@@ -79,7 +79,7 @@ class Field(object):
             self.__Jones = Jones(Parallel      = self.Parallel,
                                  Perpendicular = self.Perpendicular,
                                  Meshes        = self.Meshes,
-                                 GPU           = self.GPU)
+                                 cuda           = self.cuda)
             return self.__Jones
 
         else:

@@ -67,12 +67,12 @@ class Photodiode(object):
                  Npts:              int    = 101,
                  ThetaOffset:       float  = 0,
                  PhiOffset:         float  = 0,
-                 GPU:               bool   = False,
+                 cuda:              bool   = False,
                  Name:              str    = 'Detector'):
 
         self._name = Name
 
-        self.GPU = GPU
+        self.cuda = cuda
 
         self._coupling = 'Intensity'
 
@@ -94,19 +94,19 @@ class Photodiode(object):
 
 
     def GenMeshes(self):
-        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA, self.GPU)
+        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA, self.cuda)
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
                              PhiBound   = (self.__PhiBound) + self.__PhiOffset,
-                             GPU        = self.GPU)
+                             cuda       = self.cuda)
 
 
     def GenField(self):
-        if self.GPU:
-            return cp.ones( cp.shape( self.Meshes.Theta.Mesh.Degree ) )
+        if self.cuda:
+            return cp.ones( self.Meshes.Theta.Mesh.Degree.shape )
         else:
-            return np.ones( np.shape( self.Meshes.Theta.Mesh.Degree ) )
+            return np.ones( self.Meshes.Theta.Mesh.Degree.shape )
 
 
     @property
@@ -122,7 +122,7 @@ class Photodiode(object):
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
                              PhiBound   = self.__PhiBound,
-                             GPU        = self.GPU)
+                             cuda       = self.cuda)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -140,7 +140,7 @@ class Photodiode(object):
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
                              PhiBound   = self.__PhiBound,
-                             GPU        = self.GPU)
+                             cuda       = self.cuda)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -228,12 +228,10 @@ class LPmode(object):
                  Magnification: float = 1.,
                  ThetaOffset:   float = 0,
                  PhiOffset:     float = 0,
-                 GPU:           bool  = False,
+                 cuda:          bool  = False,
                  Name:          str   = 'Field detector'):
 
-        self._name, self._coupling, self.Fiber = Name, 'Amplitude', Fiber
-
-        self.GPU = GPU
+        self._name, self._coupling, self.Fiber, self.cuda = Name, 'Amplitude', Fiber, cuda
 
         Mode = Mode[0]+1, Mode[1]
 
@@ -264,23 +262,23 @@ class LPmode(object):
                      Wavelength = self.Source.Wavelength,
                      Size       = self.DirectVec[0],
                      Npts       = self.Npts,
-                     GPU        = self.GPU)
+                     cuda       = self.cuda)
 
 
     def GenMeshes(self):
 
-        self.AngleVec = Direct2Angle(self.DirectVec, self.Source.k)
+        self.AngleVec = np.array( Direct2Angle(self.DirectVec, self.Source.k, cuda = False) )
 
         self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
-        self.__ThetaBound = np.array( [self.AngleVec[0], self.AngleVec[-1]] )
+        self.__ThetaBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__ThetaOffset
 
-        self.__PhiBound = np.array( [self.AngleVec[0], self.AngleVec[-1]] )
+        self.__PhiBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__PhiOffset
 
         self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = self.__ThetaBound + self.__ThetaOffset,
-                             PhiBound   = self.__PhiBound + self.__PhiOffset,
-                             GPU        = self.GPU)
+                             ThetaBound = self.__ThetaBound,
+                             PhiBound   = self.__PhiBound,
+                             cuda       = self.cuda)
 
 
 
@@ -301,12 +299,12 @@ class LPmode(object):
     @ThetaBound.setter
     def ThetaBound(self, val: list):
 
-        self.__ThetaBound = val
+        self.__ThetaBound = np.array( val )
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
                              PhiBound   = self.__PhiBound,
-                             GPU        = self.GPU)
+                             cuda       = self.cuda)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -319,12 +317,12 @@ class LPmode(object):
     @PhiBound.setter
     def PhiBound(self, val: list):
 
-        self.__PhiBound = val
+        self.__PhiBound = np.array( val )
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
                              PhiBound   = self.__PhiBound,
-                             GPU        = self.GPU)
+                             cuda       = self.cuda)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -333,22 +331,25 @@ class LPmode(object):
     def PhiOffset(self):
         return self.__PhiOffset
 
+
     @PhiOffset.setter
     def PhiOffset(self, val):
+
         self.__PhiOffset = val
 
-        self.PhiBound += val
+        self.PhiBound = self.PhiBound + val
 
 
     @property
     def ThetaOffset(self):
         return self.__ThetaOffset
 
+
     @ThetaOffset.setter
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
 
-        self.ThetaBound += val
+        self.ThetaBound = self.ThetaBound + val 
 
 
 

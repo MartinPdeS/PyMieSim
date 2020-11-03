@@ -15,13 +15,13 @@ class Stokes(object):
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
                  Meshes:        MieMesh,
-                 GPU:           bool = False) -> None:
+                 cuda:          bool = False) -> None:
 
         self.Meshes = Meshes
 
         self.Array = GetStokes(Parallel      = Parallel,
                                Perpendicular = Perpendicular,
-                               GPU           = GPU)
+                               cuda          = cuda)
 
 
     def __repr__(self):
@@ -134,7 +134,7 @@ class SPF(object):
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
                  Meshes:        MieMesh,
-                 GPU:           bool) -> None:
+                 cuda:          bool) -> None:
 
         self.Meshes = Meshes
 
@@ -200,10 +200,8 @@ class S1S2(object):
                  SizeParam:  np.array,
                  Index:      float,
                  Meshes:     MieMesh,
-                 GPU:        bool,
+                 cuda:       bool,
                  CacheTrunk: bool = None) -> None:
-
-        self.GPU = GPU
 
         self.Meshes, self.SizeParam = Meshes, SizeParam
 
@@ -212,7 +210,7 @@ class S1S2(object):
         self.Array = GetS1S2(Index     = Index,
                              SizeParam = SizeParam,
                              Meshes    = self.Meshes,
-                             GPU       = GPU)
+                             cuda       = cuda)
 
 
 

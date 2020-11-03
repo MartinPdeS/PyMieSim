@@ -11,7 +11,7 @@ from PyMieCoupling.classes.Misc import Source
 
 npts=101
 
-GPU = True
+cuda = True
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
@@ -29,8 +29,7 @@ LP11 = LPmode(Fiber       = Fiber,
               Npts        = npts,
               ThetaOffset = 0,
               PhiOffset   = 0,
-              GPU         = GPU
-            )
+              cuda        = cuda)
 
 LP01 = LPmode(Fiber       = Fiber,
               Name        = 'LP01',
@@ -39,8 +38,7 @@ LP01 = LPmode(Fiber       = Fiber,
               Npts        = npts,
               ThetaOffset = 0,
               PhiOffset   = 0,
-              GPU         = GPU
-            )
+              cuda        = cuda)
 
 
 

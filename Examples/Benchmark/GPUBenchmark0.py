@@ -22,7 +22,7 @@ Scat = Scatterer(Diameter    = 200e-9,
                  Npts        = 401,
                  ThetaBound  = [-180, 180],
                  PhiBound    = [-180, 180],
-                 GPU         = False,
+                 cuda        = False,
                  CacheTrunk  = None) '''
 
 
@@ -40,7 +40,7 @@ Scat = Scatterer(Diameter    = 200e-9,
                  Npts        = 401,
                  ThetaBound  = [-180, 180],
                  PhiBound    = [-180, 180],
-                 GPU         = True,
+                 cuda        = True,
                  CacheTrunk  = None) '''
 
 

@@ -14,14 +14,14 @@ LightSource = Source(Wavelength   = 400e-9,
 
 npts = 201
 
-GPU = True
+cuda = True
 
 Detector = Photodiode(NA                = 0.2,
                       Source            = LightSource,
                       Npts              = npts,
                       ThetaOffset       = 0,
                       PhiOffset         = 0,
-                      GPU               = GPU)
+                      cuda              = cuda)
 
 Detector.PhiOffset = 45
 
@@ -31,7 +31,7 @@ Scat = Scatterer(Diameter      = 500e-9,
                  Source        = LightSource,
                  Index         = 1.4,
                  Meshes        = Detector.Meshes,
-                 GPU           = GPU)
+                 cuda          = cuda)
 
 Scat.S1S2.Plot()
 

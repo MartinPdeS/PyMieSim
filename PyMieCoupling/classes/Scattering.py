@@ -57,10 +57,10 @@ class Scatterer(object):
                  ThetaOffset: float   = 0,
                  PhiBound:    list    = [-180, 180],
                  PhiOffset:   float   = 0,
-                 GPU:         bool    = False,
+                 cuda:        bool    = False,
                  CacheTrunk:  int     = 0) -> None:
 
-        self.GPU = GPU
+        self.cuda = cuda
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
@@ -91,7 +91,7 @@ class Scatterer(object):
             self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
                                   PhiBound   = np.array(PhiBound) + PhiOffset,
                                   Npts       = Npts,
-                                  GPU        = self.GPU)
+                                  cuda        = self.cuda)
 
 
     @property
@@ -100,7 +100,7 @@ class Scatterer(object):
             self.__S1S2 = S1S2(SizeParam  = self.SizeParam,
                                Index      = self.Index,
                                Meshes     = self.Meshes,
-                               GPU        = self.GPU,
+                               cuda        = self.cuda,
                                CacheTrunk = self.CacheTrunk)
             return self.__S1S2
 
@@ -118,12 +118,13 @@ class Scatterer(object):
         Parallel, Perpendicular = S1S2ToField(S1S2   = self.S1S2,
                                               Source = self.Source,
                                               Meshes = self.Meshes,
-                                              GPU    = self.GPU)
+                                              cuda   = self.cuda)
+
 
         self.Field = Field(Perpendicular = Perpendicular,
                            Parallel      = Parallel,
                            Meshes        = self.Meshes,
-                           GPU           = self.GPU
+                           cuda          = self.cuda
                            )
 
     @property

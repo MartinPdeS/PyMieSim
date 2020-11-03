@@ -16,6 +16,8 @@ from PyMieCoupling.classes.Misc import Source
 
 npts = 151
 
+cuda = False
+
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
@@ -31,7 +33,8 @@ LP11 = LPmode(Fiber         = Fiber,
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Name          = 'LP11',
-              Magnification = 2.)
+              Magnification = 2.,
+              cuda          = cuda)
 
 LP01 = LPmode(Fiber         = Fiber,
               Mode          = (0, 1),
@@ -40,20 +43,23 @@ LP01 = LPmode(Fiber         = Fiber,
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Name          = 'LP01',
-              Magnification = 2.)
+              Magnification = 2.,
+              cuda          = cuda)
 
 
 LP01DataFrame = CouplingStat(RIList        = [1.4],
                              DiameterList  = np.linspace(100,1000,5).round(3) * 1e-9,
                              Detector      = LP01,
-                             Source        = LightSource)
+                             Source        = LightSource,
+                             cuda          = cuda)
 
 LP01DataFrame.plot(y = 'Coupling')
 
 LP11DataFrame = CouplingStat(RIList        = [1.4],
                              DiameterList  = np.linspace(100,1000,5).round(3) * 1e-9,
                              Detector      = LP11,
-                             Source        = LightSource)
+                             Source        = LightSource,
+                             cuda          = cuda)
 
 LP11DataFrame.plot(y = 'Coupling')
 

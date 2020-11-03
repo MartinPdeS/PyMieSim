@@ -23,6 +23,7 @@ Scat = Scatterer(Diameter    = 200e-9,
 
 Scat.S1S2.Plot()
 
+
 Scat.SPF.Plot()
 
 Scat.Stokes.Plot()

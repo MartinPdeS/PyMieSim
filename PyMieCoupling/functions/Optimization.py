@@ -65,7 +65,7 @@ def CouplingStat(RIList: list,
                                Index       = RI,
                                Source      = SKwargs['Source'],
                                Meshes      = Detector.Meshes,
-                               GPU         = SKwargs['GPU']
+                               cuda        = SKwargs['cuda']
                                )
 
             Perp, Para = PointFieldCoupling(Detector = Detector, Source = Source)

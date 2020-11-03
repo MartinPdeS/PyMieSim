@@ -18,7 +18,7 @@ LightSource = Source(Wavelength   = 400e-9,
 
 npts=101
 
-GPU = False
+cuda = True
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -32,7 +32,7 @@ LP11 = LPmode(Fiber         = Fiber,
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Magnification = 1,
-              GPU           = GPU)
+              cuda          = cuda)
 
 LP01 = LPmode(Fiber         = Fiber,
               Mode          = (0, 1),
@@ -41,7 +41,7 @@ LP01 = LPmode(Fiber         = Fiber,
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Magnification = 1,
-              GPU           = GPU)
+              cuda          = cuda)
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
@@ -50,7 +50,7 @@ Scat = Scatterer(Diameter    = 500e-9,
                  Source      = LightSource,
                  Index       = 1.4,
                  Meshes      = LP01.Meshes,
-                 GPU         = GPU)
+                 cuda        = cuda)
 
 LP01Perp, LP01Para = PointFieldCoupling(Detector = LP01,
                                         Source   = Scat,)
