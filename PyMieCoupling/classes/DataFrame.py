@@ -29,7 +29,6 @@ class DataFrameCPU(pd.DataFrame):
                                             figsize = (8,3),
                                             title   = '[{1}: {0}] Parallel field'.format(kwargs['y'], self.DetectorNane),
                                             ylabel  = 'Coupling',
-                                            label   = 'lol',
                                             xlabel  = r'Scatterer diameter [nm]')
 
         plt.legend(bbox_to_anchor=(1, 1), ncol=1)
