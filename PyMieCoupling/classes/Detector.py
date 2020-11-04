@@ -103,7 +103,7 @@ class Photodiode(object):
 
 
     def GenField(self):
-            return Op.ones(self.conda)( self.Meshes.Theta.Mesh.Degree.shape )
+            return Op.ones(self.cuda)( self.Meshes.Theta.Mesh.Degree.shape )
 
 
     @property

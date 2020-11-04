@@ -30,8 +30,7 @@ def CouplingStat(RIList:       list,
                                Index       = RI,
                                Source      = SKwargs['Source'],
                                Meshes      = Detector.Meshes,
-                               cuda        = cuda
-                               )
+                               cuda        = cuda)
 
             Coupling = Detector.Coupling(Source)
 
