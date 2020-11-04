@@ -19,13 +19,13 @@ def Angle2Direct(AngleVec: np.ndarray,
                  k:        float,
                  cuda:     bool = False) -> Union[cp.ndarray, np.ndarray]:
 
-    RadSpace = AngleVec*np.pi/180
+    RadSpace = AngleVec * Op.pi / 180
 
     FourierSpace = Op.sin(RadSpace) * k / (2 * Op.pi)
 
-    fourier_unit = (FourierSpace[1]-FourierSpace[0]).__abs__()
+    fourier_unit = (FourierSpace[1] - FourierSpace[0]).__abs__()
 
-    DirectSpace = Op.fft(cuda).fftshift(np.fft.fftfreq(np.shape(AngleVec)[0], d=fourier_unit))
+    DirectSpace = Op.fft(cuda).fftshift( Op.fft.fftfreq( AngleVec.shape[0], d = fourier_unit ) )
 
     return DirectSpace
 
@@ -34,9 +34,9 @@ def Direct2Angle(DirectVec: np.ndarray,
                  k:         float,
                  cuda:      bool = False) -> Union[cp.ndarray, np.ndarray]:
 
-    direct_unit = (DirectVec[1]-DirectVec[0]).__abs__()
+    direct_unit = (DirectVec[1] - DirectVec[0]).__abs__()
 
-    FourierSpace = Op.fft(cuda).fftshift(Op.fft(cuda).fftfreq(np.shape(DirectVec)[0], d=direct_unit))
+    FourierSpace = Op.fft(cuda).fftshift( Op.fft(cuda).fftfreq( DirectVec.shape[0], d = direct_unit ) )
 
     AngleVec = Op.arcsin(2 * Op.pi * FourierSpace / k) #conversion spatial frequency to angular space
 
@@ -52,9 +52,9 @@ def NA2Angle(NA:   float,
 
     Angle = rad2deg( Op.arcsin(NA) )
 
-    __ThetaBound = Op.array(cuda)([-Angle, Angle])
+    __ThetaBound = Op.array(cuda)( [-Angle, Angle] )
 
-    __PhiBound = Op.array(cuda)([-Angle, Angle])
+    __PhiBound = Op.array(cuda)( [-Angle, Angle] )
 
 
     return __ThetaBound, __PhiBound
@@ -65,7 +65,7 @@ def CuPy2NumPy(*items):
     ItemList = []
     for item in items:
         if isinstance(item, cp.ndarray):
-            ItemList.append(cp.asnumpy(item))
+            ItemList.append( cp.asnumpy(item) )
         else:
             ItemList.append(item)
 

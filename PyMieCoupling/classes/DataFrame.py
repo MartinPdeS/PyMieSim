@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 #import cudf
 
 
@@ -28,9 +29,11 @@ class DataFrameCPU(pd.DataFrame):
                                             figsize = (8,3),
                                             title   = '[{1}: {0}] Parallel field'.format(kwargs['y'], self.DetectorNane),
                                             ylabel  = 'Coupling',
+                                            label   = 'lol',
                                             xlabel  = r'Scatterer diameter [nm]')
 
         plt.legend(bbox_to_anchor=(1, 1), ncol=1)
+
         plt.subplots_adjust(right=0.8,)
 
         self.xs('Perpendicular').unstack(1).plot(y       = kwargs['y'],
@@ -41,6 +44,7 @@ class DataFrameCPU(pd.DataFrame):
                                                  xlabel  = r'Scatterer diameter [nm]')
 
         plt.legend(bbox_to_anchor=(1, 1), ncol=1)
+
         plt.subplots_adjust(right=0.8,)
 
 

@@ -1,16 +1,35 @@
-import matplotlib.pyplot as plt
-from matplotlib import cm
-import matplotlib.patches as patches
 import numpy as np
 import cupy as cp
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+from matplotlib import cm
 from typing import Tuple
-
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.functions.Misc import Make3D, GetStokes, GetJones, GetSPF, GetS1S2
 from PyMieCoupling.functions.converts import CuPy2NumPy
 
 
 class Stokes(object):
+    """Short summary.
+
+    Parameters
+    ----------
+    Parallel : np.ndarray
+        Description of parameter `Parallel`.
+    Perpendicular : np.ndarray
+        Description of parameter `Perpendicular`.
+    Meshes : MieMesh
+        Meshes of the scatterer.
+    cuda : bool
+        If True algorithm will use GPU for computing.
+
+    Attributes
+    ----------
+    Array : type
+        Description of attribute `Array`.
+    Meshes
+
+    """
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
@@ -88,12 +107,32 @@ class Stokes(object):
 
 
 class Jones(object):
+    """Short summary.
+
+    Parameters
+    ----------
+    Parallel : np.ndarray
+        Description of parameter `Parallel`.
+    Perpendicular : np.ndarray
+        Description of parameter `Perpendicular`.
+    Meshes : MieMesh
+        Meshes of the scatterer.
+    cuda : bool
+        If True algorithm will use GPU for computing.
+
+    Attributes
+    ----------
+    Array : type
+        Description of attribute `Array`.
+    Meshes
+
+    """
 
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
                  Meshes:        MieMesh,
-                 GPU:           bool) -> None:
+                 cuda:          bool) -> None:
 
         self.Meshes = Meshes
 
@@ -129,6 +168,26 @@ class Jones(object):
 
 
 class SPF(object):
+    """Short summary.
+
+    Parameters
+    ----------
+    Parallel : np.ndarray
+        Description of parameter `Parallel`.
+    Perpendicular : np.ndarray
+        Description of parameter `Perpendicular`.
+    Meshes : MieMesh
+        Meshes of the scatterer.
+    cuda : bool
+        If True algorithm will use GPU for computing.
+
+    Attributes
+    ----------
+    Array : type
+        Description of attribute `Array`.
+    Meshes
+
+    """
 
     def __init__(self,
                  Parallel:      np.ndarray,
@@ -195,6 +254,30 @@ class SPF(object):
 
 
 class S1S2(object):
+    """Short summary.
+
+    Parameters
+    ----------
+    SizeParam : np.array
+        Description of parameter `SizeParam`.
+    Index : float
+        Description of parameter `Index`.
+    Meshes : MieMesh
+        Description of parameter `Meshes`.
+    cuda : bool
+        Description of parameter `cuda`.
+    CacheTrunk : bool
+        Description of parameter `CacheTrunk`.
+
+    Attributes
+    ----------
+    Array : type
+        Description of attribute `Array`.
+    Meshes
+    SizeParam
+    Index
+
+    """
 
     def __init__(self,
                  SizeParam:  np.array,

@@ -167,6 +167,27 @@ class Photodiode(object):
         self.ThetaBound += val
 
 
+    def Coupling(self, Source):
+
+        dOmega = self.Meshes.Phi.Delta.Radian *\
+                 self.Meshes.Theta.Delta.Radian
+
+        Perp = self.Fourier.Array *\
+               (Source.Field.Perpendicular).__abs__() *\
+               (Op.sin(self.Meshes.Phi.Mesh.Radian + Op.pi/2).T).__abs__()
+
+        Perp = (Perp * dOmega).sum()**2
+
+        Para = self.Fourier.Array *\
+               (Source.Field.Parallel).__abs__() *\
+               (Op.sin(self.Meshes.Phi.Mesh.Radian + Op.pi/2).T).__abs__()
+
+        Para = (Para * dOmega).sum()**2
+
+        return {'Parallel': Para, 'Perpendicular': Perp}
+
+
+
 
 class LPmode(object):
     """Short summary.
@@ -352,8 +373,24 @@ class LPmode(object):
 
 
 
+    def Coupling(self, Source):
 
+        dOmega = self.Meshes.Phi.Delta.Radian *\
+                 self.Meshes.Theta.Delta.Radian
 
+        Perp = self.Field.Array *\
+               Source.Field.Perpendicular *\
+               (Op.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
+
+        Perp = ( Perp.sum() ).__abs__()**2
+
+        Para = self.Field.Array *\
+               Source.Field.Parallel *\
+               (Op.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
+
+        Para = (Para * dOmega).sum().__abs__()**2
+
+        return {'Parallel': Para, 'Perpendicular': Perp}
 
 
 

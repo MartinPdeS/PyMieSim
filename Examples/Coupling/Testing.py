@@ -5,20 +5,26 @@ Scattering Parallel Field coupling with en-face LP01 and LP11 Mode
 For different scatterer diameters.
 _________________________________________________________
 """
-
-
+import numpy as np
+import cupy as cp
+import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.classes.Misc import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
+from PyMieCoupling.functions.Optimization import CouplingStat
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-npts=101
+npts=51
 
-cuda = True
+cuda = False
+
+LightSource = Source(Wavelength   = 400e-9,
+                     Polarization = 0)
+
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -43,20 +49,15 @@ LP01 = LPmode(Fiber         = Fiber,
               Magnification = 1,
               cuda          = cuda)
 
-LightSource = Source(Wavelength   = 400e-9,
-                     Polarization = 0)
-
-Scat = Scatterer(Diameter    = 500e-9,
-                 Source      = LightSource,
-                 Index       = 1.4,
-                 Meshes      = LP01.Meshes,
-                 cuda        = cuda)
+df = CouplingStat(RIList       = np.linspace(1.3, 1.8, 20).tolist(),
+                  DiameterList = np.linspace(1e-6, 5e-6, 10).tolist(),
+                  Detector     = LP01,
+                  QuietMode    = False,
+                  cuda         = cuda,
+                  Source       = LightSource)
 
 
-print( LP01.Coupling(Scat) )
-
-print( LP11.Coupling(Scat) )
-
-
+df.plot(y='STD')
+plt.show()
 
 # -
