@@ -5,7 +5,7 @@ import fibermodes
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle, NA2Angle
 from PyMieCoupling.classes.Meshes import Meshes
-from PyMieCoupling.classes.Misc import Source, LPField, LPFourier
+from PyMieCoupling.classes.Misc import Source, LPField, LPFourier, Operation as Op
 from PyMieCoupling.functions.Misc import GetLP
 
 
@@ -103,10 +103,7 @@ class Photodiode(object):
 
 
     def GenField(self):
-        if self.cuda:
-            return cp.ones( self.Meshes.Theta.Mesh.Degree.shape )
-        else:
-            return np.ones( self.Meshes.Theta.Mesh.Degree.shape )
+            return Op.ones(self.conda)( self.Meshes.Theta.Mesh.Degree.shape )
 
 
     @property
@@ -271,6 +268,8 @@ class LPmode(object):
 
         self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
+        self.__ThetaBound = self.AngleVec + self.__PhiOffset#
+
         self.__ThetaBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__ThetaOffset
 
         self.__PhiBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__PhiOffset
@@ -349,7 +348,7 @@ class LPmode(object):
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
 
-        self.ThetaBound = self.ThetaBound + val 
+        self.ThetaBound = self.ThetaBound + val
 
 
 

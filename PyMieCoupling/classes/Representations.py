@@ -54,7 +54,7 @@ class Stokes(object):
 
         fig, axes = self.GenFig()
 
-        n=8
+        n = 8
 
         for i, ax in enumerate(axes):
 
@@ -188,7 +188,7 @@ class SPF(object):
                          linewidth   = 0.5,
                          cmap        = cm.bone,
                          antialiased = False,
-                         alpha=1)
+                         alpha       = 1)
 
         plt.show()
 
@@ -210,7 +210,7 @@ class S1S2(object):
         self.Array = GetS1S2(Index     = Index,
                              SizeParam = SizeParam,
                              Meshes    = self.Meshes,
-                             cuda       = cuda)
+                             cuda      = cuda)
 
 
 

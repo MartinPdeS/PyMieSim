@@ -28,7 +28,8 @@ class LPField(object):
         self.DirectVec = DirectVec
 
     def __repr__(self):
-        pass
+        txt = 'SHAPE: {0}'.format(self.Array.shape)
+        return txt
 
 
     def Plot(self, Part: str = 'Real'):
@@ -107,7 +108,9 @@ class LPField(object):
 
 
 class LPFourier(object):
-    def __init__(self, input, Meshes):
+    def __init__(self,
+                 input,
+                 Meshes):
         self.Array = input
         self.Meshes = Meshes
 
@@ -245,6 +248,14 @@ class Operation(object):
             return np.arcsin(*args)
 
 
+    def arctan(*args):
+        if isinstance(args[0], cp.ndarray):
+            return cp.arctan(*args)
+
+        else:
+            return np.arctan(*args)        
+
+
     def exp(*args):
         if isinstance(args[0], cp.ndarray):
             return cp.exp(*args)
@@ -346,7 +357,7 @@ class Operation(object):
             return cp.meshgrid
 
         else:
-            return np.meshgrid        
+            return np.meshgrid
 
 
     pi = 3.141516

@@ -1,24 +1,27 @@
 import numpy as np
 import cupy as cp
 from PyMieCoupling.classes.Misc import Operation as Op
+from typing import Union
 
 
-def rad2deg(RadSpace):
+def rad2deg(RadSpace) -> Union[cp.ndarray, np.ndarray]:
 
         return RadSpace * 180/Op.pi
 
 
-def deg2rad(AngleSpace):
+def deg2rad(AngleSpace) -> Union[cp.ndarray, np.ndarray]:
 
     return AngleSpace * Op.pi/180
 
 
 
-def Angle2Direct(AngleVec, k, cuda=False):
+def Angle2Direct(AngleVec: np.ndarray,
+                 k:        float,
+                 cuda:     bool = False) -> Union[cp.ndarray, np.ndarray]:
 
     RadSpace = AngleVec*np.pi/180
 
-    FourierSpace = Op.sin(RadSpace)*k/(2*np.pi)
+    FourierSpace = Op.sin(RadSpace) * k / (2 * Op.pi)
 
     fourier_unit = (FourierSpace[1]-FourierSpace[0]).__abs__()
 
@@ -27,7 +30,9 @@ def Angle2Direct(AngleVec, k, cuda=False):
     return DirectSpace
 
 
-def Direct2Angle(DirectVec, k, cuda=False):
+def Direct2Angle(DirectVec: np.ndarray,
+                 k:         float,
+                 cuda:      bool = False) -> Union[cp.ndarray, np.ndarray]:
 
     direct_unit = (DirectVec[1]-DirectVec[0]).__abs__()
 
@@ -35,14 +40,15 @@ def Direct2Angle(DirectVec, k, cuda=False):
 
     AngleVec = Op.arcsin(2 * Op.pi * FourierSpace / k) #conversion spatial frequency to angular space
 
-    if np.nan in AngleVec:
+    if np.nan in AngleVec or cp.nan in AngleVec:
         raise Exception('Warning ill defined resolution -> angle definition!')
 
-    return AngleVec* 180/Op.pi
+    return AngleVec * 180 / Op.pi
 
 
 
-def NA2Angle(NA, cuda=False):
+def NA2Angle(NA:   float,
+             cuda: bool = False) -> Union[cp.ndarray, np.ndarray]:
 
     Angle = rad2deg( Op.arcsin(NA) )
 

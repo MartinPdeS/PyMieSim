@@ -3,7 +3,7 @@ import numpy as np
 import cupy as cp
 from PyMieCoupling.classes.Representations import Stokes, Jones, SPF
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
-
+from PyMieCoupling.classes.Misc import Operation as Op
 
 class Field(object):
 
@@ -66,7 +66,7 @@ class Field(object):
             self.__Stokes = Stokes(Parallel      = self.Parallel,
                                    Perpendicular = self.Perpendicular,
                                    Meshes        = self.Meshes,
-                                   cuda           = self.cuda)
+                                   cuda          = self.cuda)
             return self.__Stokes
 
         else:
@@ -79,7 +79,7 @@ class Field(object):
             self.__Jones = Jones(Parallel      = self.Parallel,
                                  Perpendicular = self.Perpendicular,
                                  Meshes        = self.Meshes,
-                                 cuda           = self.cuda)
+                                 cuda          = self.cuda)
             return self.__Jones
 
         else:
@@ -87,15 +87,16 @@ class Field(object):
 
 
     def ComputeTotal(self) -> None:
-        return sqrt(abs(self.Parallel)**2 + abs(self.Perpendicular)**2)# * exp(complex(0,1)*self.delta)
+        return Op.sqrt(self.Parallel.__abs__()**2 +\
+                    self.Perpendicular.__abs__()**2)   # * exp(complex(0,1)*self.delta)
 
 
     def ComputeDelay(self) -> None:
-        return arctan(abs(self.Parallel)/abs(self.Perpendicular))
+        return Op.arctan( self.Parallel.__abs__() / self.Perpendicular.__abs__() )
 
 
     def ComputeSPF(self) -> None:
-        return abs(self.Parallel)**2 + abs(self.Perpendicular)**2
+        return self.Parallel.__abs__()**2 + self.Perpendicular.__abs__()**2
 
 
 

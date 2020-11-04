@@ -26,7 +26,7 @@ LP01 = LPmode(Fiber       = Fiber,
               Npts        = 201,
               ThetaOffset = 0,
               PhiOffset   = 0,
-              cuda        = False)
+              cuda        = True)
 
 
 

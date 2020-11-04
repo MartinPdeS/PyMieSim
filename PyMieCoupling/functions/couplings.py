@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.classes.Scattering import Scatterer
+from PyMieCoupling.classes.Misc import Operation as Op
 from typing import Union
 
 def PointFieldCoupling(Detector: Union[LPmode, Photodiode],
@@ -15,29 +16,29 @@ def PointFieldCoupling(Detector: Union[LPmode, Photodiode],
 
         Perp = Detector.Field.Array *\
                Source.Field.Perpendicular *\
-               (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+               (Op.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
 
-        Perp = ( np.sum(Perp) ).__abs__()**2
+        Perp = ( Perp.sum() ).__abs__()**2
 
         Para = Detector.Field.Array *\
                Source.Field.Parallel *\
-               (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+               (Op.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
 
-        Para = ( np.sum(Para * dOmega) ).__abs__()**2
+        Para = (Para * dOmega).sum().__abs__()**2
 
 
     elif Detector._coupling == 'Intensity':
         Perp = Detector.Fourier.Array *\
                (Source.Field.Perpendicular).__abs__() *\
-               (np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
+               (Op.sin(Detector.Meshes.Phi.Mesh.Radian + Op.pi/2).T).__abs__()
 
-        Perp = np.sum(Perp * dOmega)**2
+        Perp = (Perp * dOmega).sum()**2
 
         Para = Detector.Fourier.Array *\
                (Source.Field.Parallel).__abs__() *\
-               (np.sin(Detector.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
+               (Op.sin(Detector.Meshes.Phi.Mesh.Radian + Op.pi/2).T).__abs__()
 
-        Para = np.sum(Para * dOmega)**2
+        Para = (Para * dOmega).sum()**2
 
     return Para, Perp
 

@@ -45,25 +45,12 @@ class Meshes(object):
 
 
     def MakeDeltas(self):
-        if self.cuda: self.MakeDeltasGPU()
+        ThetaDelta = (self.Theta.Boundary.Degree[0] - self.Theta.Boundary.Degree[1]).__abs__() / self.Npts
 
-        else: return self.MakeDeltasCPU()
-
-
-    def MakeDeltasCPU(self):
-        ThetaDelta = np.abs(self.Theta.Boundary.Degree[0] - self.Theta.Boundary.Degree[1]) / self.Npts
-
-        PhiDelta = np.abs(self.Phi.Boundary.Degree[0] - self.Phi.Boundary.Degree[1]) / self.Npts
+        PhiDelta = (self.Phi.Boundary.Degree[0] - self.Phi.Boundary.Degree[1]).__abs__() / self.Npts
 
         self.Theta.Delta, self.Phi.Delta = Angle(ThetaDelta), Angle(PhiDelta)
 
-
-    def MakeDeltasGPU(self):
-        ThetaDelta = cp.abs(self.Theta.Boundary.Degree[0] - self.Theta.Boundary.Degree[1]) / self.Npts
-
-        PhiDelta = cp.abs(self.Phi.Boundary.Degree[0] - self.Phi.Boundary.Degree[1]) / self.Npts
-
-        self.Theta.Delta, self.Phi.Delta = Angle(ThetaDelta), Angle(PhiDelta)
 
 
 
