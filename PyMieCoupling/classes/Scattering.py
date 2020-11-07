@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 import PyMieScatt
 import functools
+import numba as nb
 
 from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
@@ -17,6 +18,7 @@ from typing import Tuple
 
 global i
 i = complex(0, 1)
+
 
 
 class Scatterer(object):
@@ -85,7 +87,7 @@ class Scatterer(object):
 
         if Meshes:
             self.Meshes = Meshes
-            assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts])
+            #assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts])
 
         else:
             self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,

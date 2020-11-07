@@ -13,14 +13,14 @@ from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.classes.Misc import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.functions.couplings import PointFieldCoupling
-from PyMieCoupling.functions.Optimization import CouplingStat
+from PyMieCoupling.functions.Optimization import ComputeSTD
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
 npts=51
 
-cuda = False
+cuda = True
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
@@ -49,15 +49,18 @@ LP01 = LPmode(Fiber         = Fiber,
               Magnification = 1,
               cuda          = cuda)
 
-df = CouplingStat(RIList       = np.linspace(1.3, 1.8, 20).tolist(),
-                  DiameterList = np.linspace(1e-6, 5e-6, 10).tolist(),
-                  Detector     = LP01,
-                  QuietMode    = False,
-                  cuda         = cuda,
-                  Source       = LightSource)
+STD = ComputeSTD(RIList       = np.linspace(1.3, 1.8, 20).tolist(),
+                 DiameterList = np.linspace(1e-6, 5e-6, 10).tolist(),
+                 Detector     = LP01,
+                 QuietMode    = False,
+                 cuda         = cuda,
+                 Source       = LightSource)
 
 
-df.plot(y='STD')
-plt.show()
+print(STD)
+
+
+
+
 
 # -

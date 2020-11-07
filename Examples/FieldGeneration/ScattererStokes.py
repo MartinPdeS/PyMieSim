@@ -18,7 +18,7 @@ Scat = Scatterer(Diameter    = 200e-9,
                  ThetaBound  = [-180, 180],
                  PhiBound    = [-180, 180],
                  CacheTrunk  = None,
-                 GPU         = False)
+                 cuda        = False)
 
 
 Scat.S1S2.Plot()
@@ -27,7 +27,6 @@ Scat.S1S2.Plot()
 Scat.SPF.Plot()
 
 Scat.Stokes.Plot()
-
 
 
 

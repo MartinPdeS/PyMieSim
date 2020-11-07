@@ -14,7 +14,7 @@ except ImportError:
 requirements = ['numpy',
                 #'cupy',
                 'matplotlib',
-                'PyMieScatt',
+                'pandas',
                 'tqdm',
                 'fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=0.2.0'
                 ]
