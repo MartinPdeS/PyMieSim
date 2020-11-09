@@ -5,7 +5,8 @@ from scipy.special import jv, yv
 
 def MieS1S2(m,x,mu):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieS1S2
-  nmax = np.round(2+x+4*np.power(x,1/3))
+  #nmax = np.round(2+x+4*np.power(x,1/3))
+  nmax = int(2+x+4*(x**(1/3)))
   an, bn = AutoMie_ab(m,x)
   pin, taun = MiePiTau(mu,nmax)
   n = np.arange(1,int(nmax)+1)
@@ -15,7 +16,7 @@ def MieS1S2(m,x,mu):
   return S1, S2
 
 
-
+#@jit(nopython=True)
 def MiePiTau(mu,nmax):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MiePiTau
   p = np.zeros(int(nmax))
@@ -30,7 +31,7 @@ def MiePiTau(mu,nmax):
   return p, t
 
 
-
+#@jit(nopython=True, annotate=True)
 def AutoMieQ(m, wavelength, diameter, nMedium=1.0, crossover=0.01, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#AutoMieQ
   nMedium = nMedium.real
@@ -47,7 +48,7 @@ def AutoMieQ(m, wavelength, diameter, nMedium=1.0, crossover=0.01, asDict=False,
 
 
 
-
+#@jit(nopython=True)
 def RayleighMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#RayleighMieQ
   nMedium = nMedium.real
@@ -88,7 +89,7 @@ def RayleighMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSect
 
 
 
-
+#@jit(nopython=True)
 def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieQ
   nMedium = nMedium.real
@@ -100,7 +101,8 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
   elif x<=0.05:
     return RayleighMieQ(m, wavelength, diameter, nMedium, asDict)
   elif x>0.05:
-    nmax = np.round(2+x+4*(x**(1/3)))
+    #nmax = np.round(2+x+4*(x**(1/3)))
+    nmax = int(2+x+4*(x**(1/3)))
     n = np.arange(1,nmax+1)
     n1 = 2*n+1
     n2 = n*(n+2)/(n+1)
@@ -118,6 +120,7 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
           bn.real[1:int(nmax)],
           bn.imag[1:int(nmax)]]
     g1 = [np.append(x, 0.0) for x in g1]
+
     g = (4/(qsca*x2))*np.sum((n2*(an.real*g1[0]+an.imag*g1[1]+bn.real*g1[2]+bn.imag*g1[3]))+(n3*(an.real*bn.real+an.imag*bn.imag)))
 
     qpr = qext-qsca*g
@@ -142,6 +145,7 @@ def MieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=Fals
         return qext, qsca, qabs, g, qpr, qback, qratio
 
 
+#@jit(nopython=True)
 def LowFrequencyMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCrossSection=False):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMieQ
   nMedium = nMedium.real
@@ -164,7 +168,9 @@ def LowFrequencyMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCross
     qabs = qext-qsca
 
     g1 = [an.real[1:2],an.imag[1:2],bn.real[1:2],bn.imag[1:2]]
+
     g1 = [np.append(x, 0.0) for x in g1]
+
     g = (4/(qsca*x2))*np.sum((n2*(an.real*g1[0]+an.imag*g1[1]+bn.real*g1[2]+bn.imag*g1[3]))+(n3*(an.real*bn.real+an.imag*bn.imag)))
 
     qpr = qext-qsca*g
@@ -190,35 +196,50 @@ def LowFrequencyMieQ(m, wavelength, diameter, nMedium=1.0, asDict=False, asCross
         return qext, qsca, qabs, g, qpr, qback, qratio
 
 
+
 def Mie_ab(m,x):
-#  http://pymiescatt.readthedocs.io/en/latest/forward.html#Mie_ab
+
   mx = m*x
-  nmax = np.round(2+x+4*(x**(1/3)))
-  nmx = np.round(max(nmax,np.abs(mx))+16)
+  #nmax = np.round(2+x+4*(x**(1/3)))
+  nmax = int(2+x+4*(x**(1/3)))
+  #nmx = np.round(max(nmax,np.abs(mx))+16)
+  nmx = int(max(nmax,np.abs(mx))+16)
+
   n = np.arange(1,nmax+1) #
+
   nu = n + 0.5 #
 
   sx = np.sqrt(0.5*np.pi*x)
 
   px = sx*jv(nu,x) #
-  p1x = np.append(np.sin(x), px[0:int(nmax)-1]) #
+  #p1x = np.append(np.sin(x), px[0:int(nmax)-1]) ###############################################________MY____CHANGES
 
   chx = -sx*yv(nu,x) #
-  ch1x = np.append(np.cos(x), chx[0:int(nmax)-1]) #
+  #ch1x = np.append(np.cos(x), chx[0:int(nmax)-1]) #
+
+  p1x = np.concatenate([[np.sin(x)], px[0:int(nmax)-1]]) #
+
+  ch1x = np.concatenate([[np.cos(x)], chx[0:int(nmax)-1]]) #
+
 
   gsx = px-(0+1j)*chx #
+
   gs1x = p1x-(0+1j)*ch1x #
 
   # B&H Equation 4.89
   Dn = np.zeros(int(nmx),dtype=complex)
-  for i in range(int(nmx)-1,1,-1):
+
+  for i in range(nmx - 1, 1, -1):
     Dn[i-1] = (i/mx)-(1/(Dn[i]+i/mx))
 
   D = Dn[1:int(nmax)+1] # Dn(mx), drop terms beyond nMax
+
   da = D/m+n/x
+
   db = m*D+n/x
 
   an = (da*px-p1x)/(da*gsx-gs1x)
+
   bn = (db*px-p1x)/(db*gsx-gs1x)
 
   return an, bn
@@ -232,6 +253,7 @@ def AutoMie_ab(m,x):
     return Mie_ab(m,x)
 
 
+#@jit(nopython=True)
 def LowFrequencyMie_ab(m,x):
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMie_ab
   # B&H page 131
@@ -248,9 +270,3 @@ def LowFrequencyMie_ab(m,x):
   an = np.append(a1,a2)
   bn = np.append(b1,b2)
   return an,bn
-
-
-
-if __name__ == '__main__':
-    print('Running')
-    MieS1S2(1.5,10,0.5)

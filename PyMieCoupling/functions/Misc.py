@@ -1,12 +1,11 @@
 import numpy as np
 from typing import Tuple
 import functools
-import PyMieScatt
 import cupy as cp
 import fibermodes
 from PyMieCoupling.classes.Misc import Operation as Op
-from PyMieCoupling.functions.MieComputing import MieS1S2
-
+#from PyMieCoupling.functions.MieComputing import MieS1S2
+from PyMieCoupling.S1S2 import MieS1S2 #_CYTHON PACKAGE
 
 def Make3D(item:      np.array,
            PhiMesh:   np.array,
@@ -81,8 +80,8 @@ def GetS1S2(Index,
     for Mu in MuList:
 
         temp0, temp1 = MieS1S2(Index,
-                                SizeParam,
-                                Mu)
+                               SizeParam,
+                               Mu)
 
         S1.append(temp0)
         S2.append(temp1)

@@ -35,7 +35,4 @@ Scat.Stokes.Plot()
 
 
 
-
-
-
 # -

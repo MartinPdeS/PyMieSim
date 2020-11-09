@@ -95,12 +95,12 @@ class DataFrameGPU(pd.DataFrame):
 
 
 
-def CouplingStat(RIList:       list,
-                 DiameterList: list,
-                 Detector:     Union[LPmode, Photodiode],
-                 QuietMode:    bool = False,
-                 cuda:         bool = False,
-                 **SKwargs):
+def Frame(RIList:       list,
+          DiameterList: list,
+          Detector:     Union[LPmode, Photodiode],
+          QuietMode:    bool = False,
+          cuda:         bool = False,
+          **SKwargs):
 
     Polarization = ['Parallel', 'Perpendicular']
 

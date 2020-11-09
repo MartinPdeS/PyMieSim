@@ -18,7 +18,7 @@ def LoopRIDiameter(RIList:       list,
                    cuda:         bool = False,
                    **SKwargs):
 
-    Array = Op.empty(cuda)( [ len(RIList), len(DiameterList) ] )
+    temp = Op.empty(cuda)( [ len(RIList), len(DiameterList) ] )
 
     for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
         for nd, Diameter in enumerate(DiameterList):
@@ -32,9 +32,9 @@ def LoopRIDiameter(RIList:       list,
 
             Coupling = Detector.Coupling(Source)
 
-            Array[nr, nd] = Coupling['Parallel']
+            temp[nr, nd] = Coupling['Parallel']
 
-    return Array
+    return Array( temp )
 
 
 
@@ -45,14 +45,14 @@ def ComputeSTD(RIList:       list,
                cuda:         bool = False,
                **SKwargs):
 
-    Array = LoopRIDiameter(RIList,
-                           DiameterList,
-                           Detector,
-                           QuietMode,
-                           cuda,
-                           **SKwargs)
+    Array = Array( LoopRIDiameter(RIList,
+                                  DiameterList,
+                                  Detector,
+                                  QuietMode,
+                                  cuda,
+                                  **SKwargs) )
 
-    return Array.std(axis=0)
+    return Array
 
 
 
@@ -63,12 +63,12 @@ def ComputeMonotonic(RIList:       list,
                      cuda:         bool = False,
                      **SKwargs):
 
-    Array = LoopRIDiameter(RIList,
-                           DiameterList,
-                           Detector,
-                           QuietMode,
-                           cuda,
-                           **SKwargs)
+    Array = Array( LoopRIDiameter(RIList,
+                                  DiameterList,
+                                  Detector,
+                                  QuietMode,
+                                  cuda,
+                                  **SKwargs) )
 
     val = Monotonic(Array[0,:])
 
@@ -100,14 +100,40 @@ def Monotonic(Array):
 
 
 def Monotonic(Array):
-    Grad = np.gradient(Array)
-    STD = Grad.std()
 
+    Grad = np.gradient(Array)
+
+    STD = Grad.std()
 
     return STD.sum()
 
 
 
+
+class Array(object):
+    def __init__(self, Val):
+        self.Val = np.array( Val )
+        print(self.Val.shape)
+
+
+    def std(self, arg):
+        if arg == 'RI':
+            return np.std( self.Val, axis = 0 )
+
+        elif arg == 'Diameter':
+            return np.std( self.Val, axis = 1 )
+
+        else:
+            Exception('Warning arg put to std() method invalid. Options are ["RI", "Diameter"]')
+
+
+    def Monotonic(self):
+
+        Grad = np.gradient(self.Val, axis = 1)
+
+        STD = Grad.std( axis = 1)
+
+        return STD[0]
 
 
 

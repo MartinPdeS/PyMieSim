@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
-from PyMieCoupling.classes.DataFrame import CouplingStat
+from PyMieCoupling.classes.DataFrame import Frame
 from PyMieCoupling.classes.Misc import Source
 
 LightSource = Source(Wavelength   = 400e-9,
@@ -34,17 +34,17 @@ Detector0 = LPmode(Fiber         = Fiber,
                    cuda          = cuda)
 
 
-DataFrame = CouplingStat(RIList        = np.linspace(1.33, 1.65, 6).round(2),
-                         DiameterList  = np.linspace(100,1000,10).round(2) * 1e-9,
-                         Detector      = Detector0,
-                         Source        = LightSource,
-                         cuda          = cuda)
+DataFrame = Frame(RIList        = np.linspace(1.33, 1.65, 6).round(2),
+                  DiameterList  = np.linspace(100,1000,100).round(2) * 1e-9,
+                  Detector      = Detector0,
+                  Source        = LightSource,
+                  cuda          = cuda)
 
-DataFrame.plot(y='Coupling')
+#DataFrame.plot(y='Coupling')
 
-DataFrame.plot(y='STD')
+#DataFrame.plot(y='STD')
 
-plt.show()
+#plt.show()
 
 
 

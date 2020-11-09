@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
-from PyMieCoupling.functions.Optimization import ComputeMonotonic
+from PyMieCoupling.functions.Optimization import LoopRIDiameter
 from PyMieCoupling.classes.Misc import Source
-from PyMieCoupling.classes.DataFrame import CouplingStat
+from PyMieCoupling.classes.DataFrame import Frame
 from PyMieCoupling.classes.Optimizer import Simulator
 
 LightSource = Source(Wavelength   = 400e-9,
@@ -24,7 +24,7 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_index  = 1.4444)
 
 LP01 = LPmode(Fiber       = Fiber,
-              Mode        = (0, 1),
+              Mode        = (1, 1),
               Source      = LightSource,
               Npts        = 51,
               ThetaOffset = 0,
@@ -38,45 +38,46 @@ DiameterList = np.linspace(100,1000,100).round(4) * 1e-9
 
 
 
-def EvalFunc(Angle):
+def EvalFunc(X):
 
-    LP01.PhiOffset = Angle[0]
+    LP01.PhiOffset = X[0]
 
-    LP01.ThetaOffset = Angle[1]
+    LP01.ThetaOffset = X[1]
 
-    val = ComputeMonotonic(RIList       = RIList,
+    Array = LoopRIDiameter(RIList       = RIList,
                            DiameterList = DiameterList,
                            Detector     = LP01,
                            Source       = LightSource,
-                           cuda         = False,
-                           QuietMode    = True)
+                           cuda         = False)
 
-    return val
+
+    return Array.Monotonic()
 
 
 Minimizer = Simulator(EvalFunc)
 
-Result = minimize(Minimizer.simulate,
-                  [30, 30],
-                  method='COBYLA',
-                  callback=Minimizer.callback,
-                  tol    = 1e-2,
-                  options={"disp": True, 'rhobeg':10})
+Result = minimize(fun      = Minimizer.simulate,
+                  x0       = [30, 30],
+                  method   = 'COBYLA',
+                  callback = Minimizer.callback,
+                  tol      = 1e-10,
+                  options  = {'maxiter': 20, 'rhobeg':20})
 
+
+print(Result)
 
 LP01.PhiOffset = Result.x[0]
 
 LP01.ThetaOffset = Result.x[1]
 
-DataFrame = CouplingStat(RIList        = RIList,
-                         DiameterList  = DiameterList,
-                         Detector      = LP01,
-                         Source        = LightSource,
-                         cuda          = False)
+DF = Frame(RIList        = RIList,
+           DiameterList  = DiameterList,
+           Detector      = LP01,
+           Source        = LightSource,
+           cuda          = False)
 
-DataFrame.plot(y='Coupling')
+DF.plot(y='Coupling')
 
-DataFrame.plot(y='STD')
 
 plt.show()
 
