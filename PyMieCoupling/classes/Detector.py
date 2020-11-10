@@ -1,6 +1,5 @@
 
 import numpy as np
-import cupy as cp
 import fibermodes
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle, NA2Angle

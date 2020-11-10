@@ -1,8 +1,13 @@
 import numpy as np
-import cupy as cp
 import matplotlib.pyplot as plt
 from typing import Tuple
 import matplotlib.ticker as tick
+
+try:
+    import cupy as cp
+except:
+    import numpy as cp
+
 
 
 global Fontsize, pi
@@ -253,7 +258,7 @@ class Operation(object):
             return cp.arctan(*args)
 
         else:
-            return np.arctan(*args)        
+            return np.arctan(*args)
 
 
     def exp(*args):
@@ -372,6 +377,7 @@ def CuPy2NumPy(*items):
     for item in items:
         if isinstance(item, cp.ndarray):
             ItemList.append(cp.asnumpy(item))
+            pass
         else:
             ItemList.append(item)
 

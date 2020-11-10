@@ -1,7 +1,11 @@
 import numpy as np
-import cupy as cp
 from PyMieCoupling.classes.Misc import Operation as Op
 from typing import Union
+
+try:
+    import cupy as cp
+except:
+    import numpy as cp
 
 
 def rad2deg(RadSpace) -> Union[cp.ndarray, np.ndarray]:

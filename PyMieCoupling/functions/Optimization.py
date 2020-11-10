@@ -1,6 +1,5 @@
 from tqdm import tqdm
 import numpy as np
-import cupy as cp
 
 from typing import Union
 from PyMieCoupling.classes.Detector import LPmode, Photodiode

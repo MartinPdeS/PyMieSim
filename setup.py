@@ -10,7 +10,7 @@ from distutils.extension import Extension
 import numpy
 
 requirements = ['numpy',
-                'cupy',
+                #'cupy',
                 'matplotlib',
                 'pandas',
                 'tqdm',
@@ -18,9 +18,7 @@ requirements = ['numpy',
                 ]
 
 
-ext_modules = [ Extension("PyMieCoupling.S1S2", ["PyMieCoupling/functions/S1S2.pyx"], include_dirs = ['.'])
-
-                ]
+#ext_modules = [ Extension("PyMieCoupling.S1S2", ["PyMieCoupling/functions/S1S2.pyx"], include_dirs = ['.'])]
 
 setup_dict = dict(
       name             = 'PyMieCoupling',

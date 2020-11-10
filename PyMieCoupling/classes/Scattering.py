@@ -1,11 +1,8 @@
 from numpy import pi
 import numpy as np
 
-import scipy.interpolate as interp
 import matplotlib.pyplot as plt
 from matplotlib import cm
-import PyMieScatt
-import functools
 
 from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
