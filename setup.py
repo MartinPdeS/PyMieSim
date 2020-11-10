@@ -38,7 +38,7 @@ setup_dict = dict(
       long_description = open('README.md').read(),
       platforms        = ['Linux', 'Max OSX'],
       include_dirs     = [numpy.get_include()],
-      ext_modules      = ext_modules,
+      #ext_modules      = ext_modules,
       zip_safe=False)
 
 setup(**setup_dict)
