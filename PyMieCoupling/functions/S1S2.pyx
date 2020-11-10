@@ -1,7 +1,8 @@
 import numpy as np
 cimport numpy as np
-from scipy.special import jv, yv
+#from scipy.special import jv, yv
 from scipy.special.cython_special cimport jv as jvCython
+from scipy.special.cython_special cimport yv as yvCython
 import cython
 from libc.math cimport sqrt, cos, acos, sin, abs
 
@@ -33,7 +34,9 @@ cpdef MieS1S2(double_t m,
 
   an, bn = AutoMie_ab(m,x)
   pin, taun = MiePiTau(mu, nmax)
-  S1 = (n2[0:len(an)] * (an*pin[0:len(an)] + bn * taun[0:len(bn)] ) ).sum()
+
+  S1 = ( (n2[0:len(an)] * (an*pin[0:len(an)] + bn * taun[0:len(bn)] ) ) ).sum()
+
   S2 = (n2[0:len(an)] * (an*taun[0:len(an)] + bn * pin[0:len(bn)] ) ).sum()
 
   return S1, S2
@@ -104,13 +107,18 @@ cdef Mie_ab(double_t m,
 
   cdef double_t sx = sqrt(0.5 * pi * x)
 
-  cdef np.ndarray[double_t, ndim=1] px = sx*jv(nu,x) #
+  cdef np.ndarray[complex128_t, ndim=1] px = np.zeros(nmax, dtype='complex')
+  
+  cdef np.ndarray[complex128_t, ndim=1] chx = np.zeros(nmax, dtype='complex')
 
-  cdef np.ndarray[double_t, ndim=1] chx = -sx*yv(nu,x) #
+  cdef int_t N
+  for N in range(nmax):
+    px[N] = sx * jvCython(nu[N],x)
+    chx[N] = -sx * yvCython(nu[N],x)
 
-  cdef np.ndarray[double_t, ndim=1] p1x = np.concatenate([[sin(x)], px[0:nmax-1]]) #p1x = np.append(np.sin(x), px[0:int(nmax)-1])
+  cdef np.ndarray[complex128_t, ndim=1] p1x = np.concatenate([[sin(x)], px[0:nmax-1]]) #p1x = np.append(np.sin(x), px[0:int(nmax)-1])
 
-  cdef np.ndarray[double_t, ndim=1] ch1x = np.concatenate([[cos(x)], chx[0:nmax-1]]) #ch1x = np.append(np.cos(x), chx[0:int(nmax)-1])
+  cdef np.ndarray[complex128_t, ndim=1] ch1x = np.concatenate([[cos(x)], chx[0:nmax-1]]) #ch1x = np.append(np.cos(x), chx[0:int(nmax)-1])
 
   cdef np.ndarray[complex128_t, ndim=1] gsx = px-(0+1j)*chx #
 
@@ -378,6 +386,18 @@ def LowFrequencyMie_ab(double_t m,
 
 
 
+
+@cython.nonecheck(True)
+@cython.boundscheck(True)
+@cython.wraparound(True)
+cdef complex128_t CSum(np.ndarray[complex128_t, ndim=1] arr):
+  cdef int nrows = arr.shape[0]
+  cdef int i
+  cdef complex128_t sum
+  for i in range(nrows):
+    sum += arr[i]
+
+  return sum
 
 
 
