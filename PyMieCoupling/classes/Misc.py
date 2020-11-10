@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Tuple
 import matplotlib.ticker as tick
+from PyMieCoupling.functions.converts import CuPy2NumPy
 
 try:
     import cupy as cp
@@ -366,24 +367,6 @@ class Operation(object):
 
 
     pi = 3.141516
-
-
-
-
-
-
-def CuPy2NumPy(*items):
-    ItemList = []
-    for item in items:
-        if isinstance(item, cp.ndarray):
-            ItemList.append(cp.asnumpy(item))
-            pass
-        else:
-            ItemList.append(item)
-
-    temp = tuple(ItemList)
-
-    return (*temp,)
 
 
 
