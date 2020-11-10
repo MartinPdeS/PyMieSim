@@ -68,10 +68,10 @@ def NA2Angle(NA:   float,
 def CuPy2NumPy(*items):
     ItemList = []
     for item in items:
-        if isinstance(item, cp.ndarray):
-            ItemList.append( cp.asnumpy(item) )
-        else:
+        if isinstance(item, np.ndarray):
             ItemList.append(item)
+        else:
+            ItemList.append( cp.asnumpy(item) )
 
     temp = tuple(ItemList)
 
