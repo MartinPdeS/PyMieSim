@@ -4,7 +4,7 @@ cimport numpy as np
 from scipy.special.cython_special cimport jv as jvCython
 from scipy.special.cython_special cimport yv as yvCython
 import cython
-from libc.math cimport sqrt, cos, acos, sin, abs
+from libc.math cimport sqrt, cos, acos, sin, abs, sum
 
 
 ctypedef double complex complex128_t
@@ -19,7 +19,7 @@ pi = 3.141592
 @cython.nonecheck(False)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cpdef MieS1S2(double_t m,
+cpdef tuple MieS1S2(double_t m,
               double_t x,
               double_t mu):
 
@@ -56,9 +56,10 @@ cdef MiePiTau(double_t mu,
   t[1] = 3.0 * cos(2*acos(mu))
 
   cdef unsigned int n
-  for n in range(2,int(nmax)):
-    p[n] = ((2*n+1)*(mu*p[n-1])-(n+1)*p[n-2])/n
-    t[n] = (n+1)*mu*p[n]-(n+2)*p[n-1]
+  with nogil:
+    for n in range(2,int(nmax)):
+      p[n] = ((2*n+1)*(mu*p[n-1])-(n+1)*p[n-2])/n
+      t[n] = (n+1)*mu*p[n]-(n+2)*p[n-1]
   return p, t
 
 
@@ -108,13 +109,14 @@ cdef Mie_ab(double_t m,
   cdef double_t sx = sqrt(0.5 * pi * x)
 
   cdef np.ndarray[complex128_t, ndim=1] px = np.zeros(nmax, dtype='complex')
-  
+
   cdef np.ndarray[complex128_t, ndim=1] chx = np.zeros(nmax, dtype='complex')
 
   cdef int_t N
-  for N in range(nmax):
-    px[N] = sx * jvCython(nu[N],x)
-    chx[N] = -sx * yvCython(nu[N],x)
+  with nogil:
+    for N in range(nmax):
+      px[N] = sx * jvCython(nu[N],x)
+      chx[N] = -sx * yvCython(nu[N],x)
 
   cdef np.ndarray[complex128_t, ndim=1] p1x = np.concatenate([[sin(x)], px[0:nmax-1]]) #p1x = np.append(np.sin(x), px[0:int(nmax)-1])
 
@@ -128,8 +130,9 @@ cdef Mie_ab(double_t m,
   cdef np.ndarray[complex128_t, ndim=1] Dn = np.zeros(int(nmx),dtype=complex)
 
   cdef unsigned int i
-  for i in range(nmx - 1, 1, -1):
-    Dn[i-1] = (i/mx)-(1/(Dn[i]+i/mx))
+  with nogil:
+    for i in range(nmx - 1, 1, -1):
+      Dn[i-1] = (i/mx)-(1/(Dn[i]+i/mx))
 
   cdef np.ndarray[complex128_t, ndim=1] D = Dn[1:int(nmax)+1] # Dn(mx), drop terms beyond nMax
 

@@ -4,8 +4,8 @@ import functools
 import cupy as cp
 import fibermodes
 from PyMieCoupling.classes.Misc import Operation as Op
-#from PyMieCoupling.functions.MieComputing import MieS1S2
-from PyMieCoupling.S1S2 import MieS1S2 #_CYTHON PACKAGE
+from PyMieCoupling.functions.MieComputing import MieS1S2
+#from PyMieCoupling.S1S2 import MieS1S2 #_CYTHON PACKAGE
 
 def Make3D(item:      np.array,
            PhiMesh:   np.array,

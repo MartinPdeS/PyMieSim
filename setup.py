@@ -10,7 +10,7 @@ from distutils.extension import Extension
 import numpy
 
 requirements = ['numpy',
-                #'cupy',
+                'cupy',
                 'matplotlib',
                 'pandas',
                 'tqdm',
