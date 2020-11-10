@@ -371,4 +371,19 @@ class Operation(object):
 
 
 
+
+
+def CuPy2NumPy(*items):
+    ItemList = []
+    for item in items:
+        if isinstance(item, np.ndarray):
+            ItemList.append(item)
+        else:
+            ItemList.append( cp.asnumpy(item) )
+
+    temp = tuple(ItemList)
+
+    return (*temp,)
+
+
 # -
