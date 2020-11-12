@@ -42,7 +42,7 @@ LP01 = LPmode(Fiber       = Fiber,
 
 
 
-#LP01.Magnificate(Magnification=2.0)
+LP01.Magnificate(Magnification=2.0)
 
 #LP11.Magnificate(Magnification=2.0)
 

@@ -1,216 +1,187 @@
+#cython: language_level=2
+cimport cython
+from cython.operator cimport dereference as deref
+
 import numpy as np
 cimport numpy as np
-#from scipy.special import jv, yv
+
+from libcpp.vector cimport vector
+from libc.math cimport sqrt, cos, acos, sin, abs, pow
+
+
 from scipy.special.cython_special cimport jv as jvCython
 from scipy.special.cython_special cimport yv as yvCython
-import cython
-from libc.math cimport sqrt, cos, acos, sin, abs, sum
 
 
-ctypedef double complex complex128_t
+
 ctypedef double double_t
-ctypedef long long_t
+ctypedef double complex complex128_t
 ctypedef int int_t
 
-global pi
-pi = 3.141592
-
+cdef double_t pi = 3.1415926
 
 @cython.nonecheck(False)
 @cython.boundscheck(False)
 @cython.wraparound(False)
+@cython.cdivision(True)
 cpdef tuple MieS1S2(double_t m,
-              double_t x,
-              double_t mu):
+                   double_t x,
+                   double_t mu):
 
-  cdef complex128_t S1, S2
-  cdef int_t nmax
-  cdef np.ndarray[long_t, ndim=1] n
-  cdef np.ndarray[double_t, ndim=1] n2
+    cdef int_t nmax = int(2 + x + 4 * pow(x,1/3) )
 
-  nmax = int(2+x+4*(x**(1/3)))
-  n = np.arange(1,int(nmax)+1)
-  n2 = (2*n+1) / (n*(n+1))
+    n = Arrange(1, nmax+1)
 
-  an, bn = AutoMie_ab(m,x)
-  pin, taun = MiePiTau(mu, nmax)
+    cdef vector[double_t] n2
+    cdef complex128_t S1, S2
+    cdef vector[complex128_t] SS1, SS2, an, bn
+    cdef int_t i
 
-  S1 = ( (n2[0:len(an)] * (an*pin[0:len(an)] + bn * taun[0:len(bn)] ) ) ).sum()
+    for i in range(n.size()):
+        n2.push_back( (2 * n[i] + 1) / (n[i] * (n[i] + 1)) )
 
-  S2 = (n2[0:len(an)] * (an*taun[0:len(an)] + bn * pin[0:len(bn)] ) ).sum()
 
-  return S1, S2
+    if x < 0.5:
+        an, bn = LowFrequencyMie_ab(m,x, nmax, n)
+    else:
+        an, bn = Mie_ab(m,x, nmax, n)
+
+    pin, taun = MiePiTau(mu,nmax)
+
+    cdef int_t lenght = an.size()
+
+    for i in range(lenght):
+
+      SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] )  )
+      SS2.push_back( n2[i] * (an[i] * taun[i] + bn[i] * pin[i] )  )
+
+    S1 = Sum1(SS1)
+    S2 = Sum1(SS2)
+
+    return S1, S2
+
 
 
 @cython.nonecheck(False)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef MiePiTau(double_t mu,
-              int_t nmax):
+@cython.cdivision(True)
+cdef tuple LowFrequencyMie_ab(double_t m,
+                              double_t x,
+                              int_t nmax,
+                              vector[double_t] n):
 
-  cdef np.ndarray[double_t, ndim=1] p = np.zeros(int(nmax))
-  cdef np.ndarray[double_t, ndim=1] t = np.zeros(int(nmax))
-  p[0] = 1
-  p[1] = 3 * mu
-  t[0] = mu
-  t[1] = 3.0 * cos(2*acos(mu))
+    cdef double_t LL, m2, x3, x4, x5, x6
+    cdef complex128_t a1, a2, b1, b2
+    cdef vector[complex128_t] an, bn
+    cdef extern from "complex.h":
+        float complex J
 
-  cdef unsigned int n
-  with nogil:
-    for n in range(2,int(nmax)):
-      p[n] = ((2*n+1)*(mu*p[n-1])-(n+1)*p[n-2])/n
-      t[n] = (n+1)*mu*p[n]-(n+2)*p[n-1]
+    m2 = pow(m, 2)
+    LL = ( pow(m,2) - 1 ) / ( pow(m,2) + 2 )
+    x3 = pow(x,3.)
+    x4 = pow(x,4.)
+    x5 = pow(x,5.)
+    x6 = pow(x,6.)
+
+
+    a1 = (-2.*1J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * pow(LL,2.)
+    a2 = (-1J * x5 / 15) * (m2 - 1) / (2 * m2 + 3)
+    b1 = (-1J * x5 / 45) * (m2 - 1)
+    b2 = 0 + 0J
+
+    an.push_back(a1)
+    an.push_back(a2)
+
+    bn.push_back(b1)
+    bn.push_back(b2)
+
+    return an, bn
+
+
+
+
+@cython.nonecheck(False)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cdef tuple Mie_ab(double_t m,
+                  double_t x,
+                  int_t nmax,
+                  vector[double_t] n):
+
+    cdef double_t mx = m*x
+    cdef int_t  nmx = int(max(nmax,abs(mx))+16)
+    cdef extern from "complex.h":
+        float complex J
+    cdef vector[complex128_t] gsx, gs1x, an, bn
+    cdef vector[double_t] px, chx, p1x, ch1x, Dn, D, da, db
+
+
+    p1x.push_back( sin(x) )
+    ch1x.push_back( cos(x) )
+
+    cdef int_t i
+    for i in range(nmax):
+      px.push_back(  sqrt(0.5 * pi * x) * jvCython( n[i] + 0.5, x ) )
+      chx.push_back(-sqrt(0.5 * pi * x) * yvCython( n[i] + 0.5, x ) )
+
+      p1x.push_back(  sqrt(0.5 * pi * x) * jvCython( n[i] + 0.5, x ) )
+      ch1x.push_back(-sqrt(0.5 * pi * x) * yvCython( n[i] + 0.5, x ) )
+
+
+    for i in range(px.size()):
+      gsx.push_back( px[i] - 1J * chx[i] )
+      gs1x.push_back( p1x[i] - 1J * ch1x[i] )
+
+    for i in range(nmx):
+      Dn.push_back(0)
+
+    for i in range(nmx - 1, 1, -1):
+      Dn[i-1] = (i / mx) - (1 / (Dn[i] + i / mx))
+
+
+    for i in range(nmax):
+      D.push_back(Dn[i+1])
+      da.push_back( D[i] / m + n[i] / x )
+      db.push_back( m * D[i] + n[i] / x )
+      an.push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) )
+      bn.push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) )
+
+    return an, bn
+
+
+
+
+@cython.nonecheck(False)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cdef tuple MiePiTau(double_t mu,
+                    int_t nmax):
+
+
+  cdef vector[double_t] p, t
+
+  p.push_back(1)
+  p.push_back(3 * mu)
+  t.push_back(mu)
+  t.push_back(3.0 * cos(2 * acos(mu) ) )
+
+  cdef unsigned int i
+
+  for i in range(2,int(nmax)):
+    p.push_back( ( (2 * i + 1) * ( mu * p[i-1] ) - (i + 1) * p[i-2] ) / i )
+    t.push_back( (i + 1) * mu * p[i] - (i + 2) * p[i-1] )
+
   return p, t
 
 
-@cython.nonecheck(False)
-@cython.boundscheck(False)
-@cython.wraparound(False)
-cdef AutoMieQ(double_t m,
-             double_t wavelength,
-             double_t diameter,
-             complex128_t nMedium = 1.0,
-             double_t crossover   = 0.01,
-             bint asDict          = False,
-             bint asCrossSection  = False):
-
-  cdef double_t nMedium_real = nMedium.real
-  cdef double_t m_eff = m / nMedium_real
-  cdef double_t wavelength_eff = wavelength / nMedium_real
-  cdef double_t x_eff = pi * diameter / wavelength_eff
 
 
-  if x_eff == 0:
-    return 0, 0, 0, 1.5, 0, 0, 0
-
-  elif x_eff < crossover:
-    return RayleighMieQ(m, wavelength, diameter, nMedium_real, asDict=asDict, asCrossSection=asCrossSection)
-
-  else:
-    return MieQ(m, wavelength, diameter, nMedium_real, asDict=asDict, asCrossSection=asCrossSection)
 
 
-@cython.nonecheck(False)
-@cython.boundscheck(False)
-@cython.wraparound(False)
-cdef Mie_ab(double_t m,
-            double_t x):
 
-  cdef double_t mx = m*x
-
-  cdef int_t nmax = int(2+x+4*(x**(1/3))) #nmax = np.round(2+x+4*(x**(1/3)))
-
-  cdef int_t  nmx = int(max(nmax,abs(mx))+16) #nmx = np.round(max(nmax,np.abs(mx))+16)
-
-  cdef np.ndarray[long_t, ndim=1] n = np.arange(1,nmax+1) #
-
-  cdef np.ndarray[double_t, ndim=1] nu = n + 0.5 #
-
-  cdef double_t sx = sqrt(0.5 * pi * x)
-
-  cdef np.ndarray[complex128_t, ndim=1] px = np.zeros(nmax, dtype='complex')
-
-  cdef np.ndarray[complex128_t, ndim=1] chx = np.zeros(nmax, dtype='complex')
-
-  cdef int_t N
-  with nogil:
-    for N in range(nmax):
-      px[N] = sx * jvCython(nu[N],x)
-      chx[N] = -sx * yvCython(nu[N],x)
-
-  cdef np.ndarray[complex128_t, ndim=1] p1x = np.concatenate([[sin(x)], px[0:nmax-1]]) #p1x = np.append(np.sin(x), px[0:int(nmax)-1])
-
-  cdef np.ndarray[complex128_t, ndim=1] ch1x = np.concatenate([[cos(x)], chx[0:nmax-1]]) #ch1x = np.append(np.cos(x), chx[0:int(nmax)-1])
-
-  cdef np.ndarray[complex128_t, ndim=1] gsx = px-(0+1j)*chx #
-
-  cdef np.ndarray[complex128_t, ndim=1] gs1x = p1x-(0+1j)*ch1x #
-
-  # B&H Equation 4.89
-  cdef np.ndarray[complex128_t, ndim=1] Dn = np.zeros(int(nmx),dtype=complex)
-
-  cdef unsigned int i
-  with nogil:
-    for i in range(nmx - 1, 1, -1):
-      Dn[i-1] = (i/mx)-(1/(Dn[i]+i/mx))
-
-  cdef np.ndarray[complex128_t, ndim=1] D = Dn[1:int(nmax)+1] # Dn(mx), drop terms beyond nMax
-
-  cdef np.ndarray[complex128_t, ndim=1] da = D/m+n/x
-
-  cdef np.ndarray[complex128_t, ndim=1] db = m*D+n/x
-
-  cdef np.ndarray[complex128_t, ndim=1] an = (da*px-p1x)/(da*gsx-gs1x)
-
-  cdef np.ndarray[complex128_t, ndim=1] bn = (db*px-p1x)/(db*gsx-gs1x)
-
-  return an, bn
-
-
-@cython.nonecheck(False)
-@cython.boundscheck(False)
-@cython.wraparound(False)
-cdef RayleighMieQ(double_t m,
-                  double_t wavelength,
-                  double_t diameter,
-                  complex128_t nMedium=1.0,
-                  bint asDict=False,
-                  bint asCrossSection=False):
-
-  cdef double_t LLabsSq, qratio, g, qsca, qabs, qext, qback, qpr
-  cdef complex128_t LL
-
-  cdef double_t nMedium_real = nMedium.real
-  m /= nMedium_real
-  wavelength /= nMedium_real
-  cdef double_t x = pi*diameter/wavelength
-
-  if x==0:
-    return 0, 0, 0, 1.5, 0, 0, 0
-
-  elif x>0:
-    LL = (m**2-1)/(m**2+2) # Lorentz-Lorenz term
-
-    LLabsSq = abs(LL)**2
-
-    qsca = 8*LLabsSq*(x**4)/3 # B&H eq 5.8
-
-    qabs = 4 * x * LL.imag # B&H eq. 5.11
-
-    qext = qsca + qabs
-
-    qback = 1.5 * qsca # B&H eq. 5.9
-
-    qratio = 1.5
-
-    g = 0.
-
-    qpr = qext
-
-    if asCrossSection:
-      css = pi*(diameter/2)**2
-
-      cext = css*qext
-
-      csca = css*qsca
-
-      cabs = css*qabs
-
-      cpr = css*qpr
-
-      cback = css*qback
-
-      cratio = css*qratio
-
-      if asDict:
-        return dict(Cext=cext,Csca=csca,Cabs=cabs,g=g,Cpr=cpr,Cback=cback,Cratio=cratio)
-      else:
-        return cext, csca, cabs, g, cpr, cback, cratio
-    else:
-      if asDict:
-        return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
-      else:
-        return qext, qsca, qabs, g, qpr, qback, qratio
 
 
 
@@ -218,189 +189,33 @@ cdef RayleighMieQ(double_t m,
 @cython.nonecheck(False)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def MieQ(double_t     m,
-         double_t     wavelength,
-         double_t     diameter,
-         complex128_t nMedium        = 1.0,
-         bint         asDict         = False,
-         bint         asCrossSection = False):
+@cython.cdivision(True)
+cdef vector[double_t] Arrange(int_t start, int_t end):
+    cdef vector[double_t] vec
+    cdef int_t i
 
-  cdef double_t nMedium_real = nMedium.real
-  cdef double_t x = pi*diameter/wavelength
-  cdef int_t nmax
-  cdef double_t x2
-  cdef np.ndarray[double_t, ndim=1] n, n1, n2, n3, n4
+    for i in range(start, end):
+        vec.push_back(i)
 
-  wavelength /= nMedium_real
+    return vec
 
-  m /= nMedium_real
 
-  if x == 0:
-    return 0, 0, 0, 1.5, 0, 0, 0
 
-  elif x <= 0.05:
-    return RayleighMieQ(m, wavelength, diameter, nMedium_real, asDict)
-
-  elif x > 0.05:
-    #nmax = np.round(2+x+4*(x**(1/3)))
-
-    nmax = int(2+x+4*(x**(1/3)))
-
-    n = np.arange(1,nmax+1)
-
-    n1 = 2*n+1
-    n2 = n*(n+2)/(n+1)
-    n3 = n1/(n*(n+1))
-    x2 = x**2
-
-    an,bn = Mie_ab(m,x)
-
-    qext = (2/x2) * (n1*(an.real+bn.real)).sum()
-    qsca = (2/x2) * (n1*(an.real**2+an.imag**2+bn.real**2+bn.imag**2)).sum()
-    qabs = qext-qsca
-
-    g1 = [an.real[1:int(nmax)],
-          an.imag[1:int(nmax)],
-          bn.real[1:int(nmax)],
-          bn.imag[1:int(nmax)]]
-
-    g1 = [np.append(x, 0.0) for x in g1]
-
-    g = (4/(qsca*x2))*np.sum((n2*(an.real*g1[0]+an.imag*g1[1]+bn.real*g1[2]+bn.imag*g1[3]))+(n3*(an.real*bn.real+an.imag*bn.imag)))
-
-    qpr = qext-qsca*g
-    qback = (1/x2)*(abs(np.sum(n1*((-1)**n)*(an-bn)))**2)
-    qratio = qback/qsca
-    if asCrossSection:
-      css = pi*(diameter/2)**2
-      cext = css*qext
-      csca = css*qsca
-      cabs = css*qabs
-      cpr = css*qpr
-      cback = css*qback
-      cratio = css*qratio
-      if asDict:
-        return dict(Cext=cext,Csca=csca,Cabs=cabs,g=g,Cpr=cpr,Cback=cback,Cratio=cratio)
-      else:
-        return cext, csca, cabs, g, cpr, cback, cratio
-    else:
-      if asDict:
-        return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
-      else:
-        return qext, qsca, qabs, g, qpr, qback, qratio
 
 
 @cython.nonecheck(False)
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def LowFrequencyMieQ(double_t     m,
-                     double_t     wavelength,
-                     double_t     diameter,
-                     complex128_t nMedium        = 1.0,
-                     bint         asDict         = False,
-                     bint         asCrossSection = False):
+@cython.cdivision(True)
+cdef complex128_t Sum1(vector[complex128_t] arr):
+    cdef complex128_t sum = 0.
+    cdef int_t size = arr.size()
+    cdef int_t i
 
-  cdef double_t nMedium_real = nMedium.real
+    for i in range(size):
+        sum += arr[i]
 
-  m /= nMedium_real
-
-  wavelength /= nMedium_real
-
-  cdef double_t x = pi*diameter/wavelength
-
-  if x==0:
-    return 0, 0, 0, 1.5, 0, 0, 0
-  elif x>0:
-    n = np.arange(1,3)
-    n1 = 2*n+1
-    n2 = n*(n+2)/(n+1)
-    n3 = n1/(n*(n+1))
-    x2 = x**2
-
-    an,bn = LowFrequencyMie_ab(m,x)
-
-    qext = (2/x2) * (n1*(an.real+bn.real)).sum()
-    qsca = (2/x2) * (n1*(an.real**2+an.imag**2+bn.real**2+bn.imag**2)).sum()
-    qabs = qext-qsca
-
-    g1 = [an.real[1:2],an.imag[1:2],bn.real[1:2],bn.imag[1:2]]
-
-    g1 = [np.append(x, 0.0) for x in g1]
-
-    g = (4/(qsca*x2))*np.sum((n2*(an.real*g1[0]+an.imag*g1[1]+bn.real*g1[2]+bn.imag*g1[3]))+(n3*(an.real*bn.real+an.imag*bn.imag)))
-
-    qpr = qext-qsca*g
-    qback = (1/x2)*(abs(np.sum(n1*((-1)**n)*(an-bn)))**2)
-    qratio = qback/qsca
-
-    if asCrossSection:
-      css = pi*(diameter/2)**2
-      cext = css*qext
-      csca = css*qsca
-      cabs = css*qabs
-      cpr = css*qpr
-      cback = css*qback
-      cratio = css*qratio
-      if asDict:
-        return dict(Cext=cext,Csca=csca,Cabs=cabs,g=g,Cpr=cpr,Cback=cback,Cratio=cratio)
-      else:
-        return cext, csca, cabs, g, cpr, cback, cratio
-    else:
-      if asDict:
-        return dict(Qext=qext,Qsca=qsca,Qabs=qabs,g=g,Qpr=qpr,Qback=qback,Qratio=qratio)
-      else:
-        return qext, qsca, qabs, g, qpr, qback, qratio
-
-
-
-
-
-@cython.boundscheck(False)
-@cython.wraparound(False)
-def AutoMie_ab(double_t m,
-               double_t x):
-
-  if x < 0.5:
-    return LowFrequencyMie_ab(m,x)
-  else:
-    return Mie_ab(m,x)
-
-
-@cython.boundscheck(False)
-@cython.wraparound(False)
-def LowFrequencyMie_ab(double_t m,
-                       double_t x):
-#  http://pymiescatt.readthedocs.io/en/latest/forward.html#LowFrequencyMie_ab
-  # B&H page 131
-  m2 = m**2
-  LL = (m**2-1)/(m**2+2)
-  x3 = x**3
-  x5 = x**5
-  x6 = x**6
-
-  a1 = (-2j*x3/3)*LL-(2j*x5/5)*LL*(m2-2)/(m2+2)+(4*x6/9)*(LL**2)
-  a2 = (-1j*x5/15)*(m2-1)/(2*m2+3)
-  b1 = (-1j*x5/45)*(m2-1)
-  b2 = 0+0j
-  an = np.append(a1,a2)
-  bn = np.append(b1,b2)
-  return an,bn
-
-
-
-
-
-@cython.nonecheck(True)
-@cython.boundscheck(True)
-@cython.wraparound(True)
-cdef complex128_t CSum(np.ndarray[complex128_t, ndim=1] arr):
-  cdef int nrows = arr.shape[0]
-  cdef int i
-  cdef complex128_t sum
-  for i in range(nrows):
-    sum += arr[i]
-
-  return sum
+    return sum
 
 
 
@@ -412,4 +227,4 @@ cdef complex128_t CSum(np.ndarray[complex128_t, ndim=1] arr):
 
 
 
-  # -
+# -

@@ -2,7 +2,7 @@ Metadata-Version: 1.0
 Name: PyMieCoupling
 Version: 0.1
 Summary: Coupled mode modlisation for fiber optic coupler
-Home-page: UNKNOWN
+Home-page: https://gitlab.com/PolyMtlLFO/SuPyModes
 Author: Martin Poinsinet de Sivry
 Author-email: Martin.poinsinet.de.sivry@gmail.com
 License: Full private, no reproduction authorized

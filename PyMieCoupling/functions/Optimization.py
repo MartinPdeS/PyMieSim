@@ -65,6 +65,10 @@ class Array(np.ndarray):
         if arg == 'Mean':
             return -self.mean()
 
+        if arg == 'Mean':
+
+            return -self.max()
+
 
     def Monotonic(self):
 

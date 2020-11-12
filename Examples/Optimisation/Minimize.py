@@ -30,7 +30,7 @@ LP01 = LPmode(Fiber       = Fiber,
               ThetaOffset = 0,
               PhiOffset   = 0,
               cuda        = False,
-              Magnification = 3.)
+              Magnification = 0.5)
 
 
 
