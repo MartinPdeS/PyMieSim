@@ -11,7 +11,7 @@ from PyMieCoupling.classes.Misc import Source
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-Scat = Scatterer(Diameter    = 200e-9,
+Scat = Scatterer(Diameter    = 10e-9,
                  Source      = LightSource,
                  Index       = 1.5,
                  Npts        = 201,

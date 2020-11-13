@@ -20,6 +20,7 @@ def LoopRIDiameter(RIList:       list,
 
     temp = Op.empty(cuda)( [ len(RIList), len(DiameterList) ] )
 
+
     for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
         for nd, Diameter in enumerate(DiameterList):
 
@@ -65,8 +66,7 @@ class Array(np.ndarray):
         if arg == 'Mean':
             return -self.mean()
 
-        if arg == 'Mean':
-
+        if arg == 'Max':
             return -self.max()
 
 

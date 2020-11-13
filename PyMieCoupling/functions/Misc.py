@@ -84,7 +84,6 @@ def GetS1S2(Index,
     S1, S2 = [], []
 
     for Mu in MuList:
-
         temp0, temp1 = MieS1S2(Index,
                                SizeParam,
                                Mu)

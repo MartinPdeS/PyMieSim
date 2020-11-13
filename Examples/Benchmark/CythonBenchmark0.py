@@ -13,11 +13,11 @@ from PyMieCoupling.S1S2 import MieS1S2 as S1S2_CYTHON"""
 
 
 BenchPython = """
-for i in range(1000):
+for i in range(10000):
     S1S2_PYTHON(1.4, 1, 0.5)"""
 
 BenchCython = """
-for i in range(1000):
+for i in range(10000):
     S1S2_CYTHON(1.4, 1, 0.5)"""
 
 

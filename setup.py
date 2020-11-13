@@ -28,7 +28,7 @@ requirements = ['numpy',
 
 
 ext_modules = [Extension("PyMieCoupling.S1S2",
-                         ["PyMieCoupling/functions/S1S2.pyx"],
+                         ["PyMieCoupling/cython/S1S2.pyx"],
                          include_dirs = ['.'],
                          language="c++",
                          extra_compile_args=["-std=c++11"],

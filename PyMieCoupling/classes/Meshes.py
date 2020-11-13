@@ -30,6 +30,10 @@ class Meshes(object):
 
         self.Phi.Boundary = Angle( PhiBound )
 
+        self.Theta.Range = Angle( np.abs(ThetaBound[0] - ThetaBound[1]) )
+
+        self.Phi.Range = Angle( np.abs(PhiBound[0] - PhiBound[1]) )
+
 
     def MakeVec(self):
         self.Theta.Vector = Angle( Op.linspace(self.cuda)(*self.Theta.Boundary.Degree, self.Npts) )
@@ -60,6 +64,7 @@ class _Angle(object):
         self.Vector = None
         self.Mesh = None
         self.Delta = None
+        self.Range = None
 
 
 class Angle(object):

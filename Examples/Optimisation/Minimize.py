@@ -26,16 +26,16 @@ Fiber = fiber(core_radius = 4.2e-6,
 LP01 = LPmode(Fiber       = Fiber,
               Mode        = (0, 1),
               Source      = LightSource,
-              Npts        = 51,
+              Npts        = 81,
               ThetaOffset = 0,
               PhiOffset   = 0,
               cuda        = False,
-              Magnification = 0.5)
+              Magnification = 0.1)
 
 
 
-RIList = np.linspace(1.3, 1.6, 4).round(4)
-DiameterList = np.linspace(100,300,40).round(4) * 1e-9
+RIList = np.linspace(1.3, 1.6, 1).round(4)
+DiameterList = np.linspace(10,100,100).round(4) * 1e-9
 
 def EvalFunc(x):
 
@@ -52,7 +52,7 @@ def EvalFunc(x):
                            Polarization = 'Perpendicular')
 
 
-    return Array.Cost('Mean') # can be: RI  -  RI/Mean  -  Monotonic  -  Mean
+    return Array.Cost('Mean') # can be: RI  -  RI/Mean  -  Monotonic  -  Mean  -  max
 
 
 Minimizer = Simulator(EvalFunc)
@@ -61,14 +61,15 @@ Result = minimize(fun      = Minimizer.simulate,
                   x0       = [10, 10],
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
-                  tol      = 1e-5,
+                  tol      = 1e-3,
                   options  = {'maxiter': 50, 'rhobeg':50})
 print(Result)
 
-LP01.PhiOffset = Result.x[0]
+#LP01.PhiOffset = Result.x[0]
 
 LP01.ThetaOffset = Result.x[1]
 
+print(LP01.Meshes.Phi.Boundary.Degree)
 DF = Frame(RIList        = RIList,
            DiameterList  = DiameterList,
            Detector      = LP01,

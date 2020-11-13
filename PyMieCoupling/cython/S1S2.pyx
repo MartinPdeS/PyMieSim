@@ -25,16 +25,17 @@ cdef double_t pi = 3.1415926
 @cython.wraparound(False)
 @cython.cdivision(True)
 cpdef tuple MieS1S2(double_t m,
-                   double_t x,
-                   double_t mu):
+                    double_t x,
+                    double_t mu):
 
     cdef int_t nmax = int(2 + x + 4 * pow(x,1/3) )
+    cdef vector[double_t] n
 
-    n = Arrange(1, nmax+1)
+    Arrange(1, nmax+1, n)
 
     cdef vector[double_t] n2
     cdef complex128_t S1, S2
-    cdef vector[complex128_t] SS1, SS2, an, bn
+    cdef vector[complex128_t] SS1, SS2, an, bn, pin, taun
     cdef int_t i
 
     for i in range(n.size()):
@@ -42,11 +43,11 @@ cpdef tuple MieS1S2(double_t m,
 
 
     if x < 0.5:
-        an, bn = LowFrequencyMie_ab(m,x, nmax, n)
+        LowFrequencyMie_ab(m,x, nmax, n, an, bn)
     else:
-        an, bn = Mie_ab(m,x, nmax, n)
+        Mie_ab(m,x, nmax, n, an, bn)
 
-    pin, taun = MiePiTau(mu,nmax)
+    MiePiTau(mu,nmax, pin, taun)
 
     cdef int_t lenght = an.size()
 
@@ -58,6 +59,7 @@ cpdef tuple MieS1S2(double_t m,
     S1 = Sum1(SS1)
     S2 = Sum1(SS2)
 
+
     return S1, S2
 
 
@@ -66,14 +68,16 @@ cpdef tuple MieS1S2(double_t m,
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-cdef tuple LowFrequencyMie_ab(double_t m,
-                              double_t x,
-                              int_t nmax,
-                              vector[double_t] n):
+cdef void LowFrequencyMie_ab(double_t m,
+                             double_t x,
+                             int_t nmax,
+                             vector[double_t] n,
+                             vector[complex128_t]& an,
+                             vector[complex128_t]& bn
+                             ):
 
     cdef double_t LL, m2, x3, x4, x5, x6
     cdef complex128_t a1, a2, b1, b2
-    cdef vector[complex128_t] an, bn
     cdef extern from "complex.h":
         float complex J
 
@@ -90,13 +94,12 @@ cdef tuple LowFrequencyMie_ab(double_t m,
     b1 = (-1J * x5 / 45) * (m2 - 1)
     b2 = 0 + 0J
 
+
     an.push_back(a1)
     an.push_back(a2)
 
     bn.push_back(b1)
     bn.push_back(b2)
-
-    return an, bn
 
 
 
@@ -105,16 +108,19 @@ cdef tuple LowFrequencyMie_ab(double_t m,
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-cdef tuple Mie_ab(double_t m,
-                  double_t x,
-                  int_t nmax,
-                  vector[double_t] n):
+cdef void Mie_ab(double_t m,
+                 double_t x,
+                 int_t nmax,
+                 vector[double_t] n,
+                 vector[complex128_t]& an,
+                 vector[complex128_t]& bn
+                 ):
 
     cdef double_t mx = m*x
     cdef int_t  nmx = int(max(nmax,abs(mx))+16)
     cdef extern from "complex.h":
         float complex J
-    cdef vector[complex128_t] gsx, gs1x, an, bn
+    cdef vector[complex128_t] gsx, gs1x,
     cdef vector[double_t] px, chx, p1x, ch1x, Dn, D, da, db
 
 
@@ -122,17 +128,6 @@ cdef tuple Mie_ab(double_t m,
     ch1x.push_back( cos(x) )
 
     cdef int_t i
-    for i in range(nmax):
-      px.push_back(  sqrt(0.5 * pi * x) * jvCython( n[i] + 0.5, x ) )
-      chx.push_back(-sqrt(0.5 * pi * x) * yvCython( n[i] + 0.5, x ) )
-
-      p1x.push_back(  sqrt(0.5 * pi * x) * jvCython( n[i] + 0.5, x ) )
-      ch1x.push_back(-sqrt(0.5 * pi * x) * yvCython( n[i] + 0.5, x ) )
-
-
-    for i in range(px.size()):
-      gsx.push_back( px[i] - 1J * chx[i] )
-      gs1x.push_back( p1x[i] - 1J * ch1x[i] )
 
     for i in range(nmx):
       Dn.push_back(0)
@@ -140,45 +135,26 @@ cdef tuple Mie_ab(double_t m,
     for i in range(nmx - 1, 1, -1):
       Dn[i-1] = (i / mx) - (1 / (Dn[i] + i / mx))
 
+    cdef double_t temp  = sqrt(0.5 * pi * x)
 
-    for i in range(nmax):
-      D.push_back(Dn[i+1])
-      da.push_back( D[i] / m + n[i] / x )
-      db.push_back( m * D[i] + n[i] / x )
-      an.push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) )
-      bn.push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) )
+    with nogil:
+      for i in range(nmax):
+        px.push_back(  temp * jvCython( n[i] + 0.5, x ) )
+        chx.push_back(-temp * yvCython( n[i] + 0.5, x ) )
 
-    return an, bn
+        p1x.push_back(  temp * jvCython( n[i] + 0.5, x ) )
+        ch1x.push_back(-temp * yvCython( n[i] + 0.5, x ) )
 
+        gsx.push_back( px[i] - 1J * chx[i] )
+        gs1x.push_back( p1x[i] - 1J * ch1x[i] )
 
+        D.push_back(Dn[i+1])
 
+        da.push_back( D[i] / m + n[i] / x )
+        db.push_back( m * D[i] + n[i] / x )
 
-@cython.nonecheck(False)
-@cython.boundscheck(False)
-@cython.wraparound(False)
-@cython.cdivision(True)
-cdef tuple MiePiTau(double_t mu,
-                    int_t nmax):
-
-
-  cdef vector[double_t] p, t
-
-  p.push_back(1)
-  p.push_back(3 * mu)
-  t.push_back(mu)
-  t.push_back(3.0 * cos(2 * acos(mu) ) )
-
-  cdef unsigned int i
-
-  for i in range(2,int(nmax)):
-    p.push_back( ( (2 * i + 1) * ( mu * p[i-1] ) - (i + 1) * p[i-2] ) / i )
-    t.push_back( (i + 1) * mu * p[i] - (i + 2) * p[i-1] )
-
-  return p, t
-
-
-
-
+        an.push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) )
+        bn.push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) )
 
 
 
@@ -190,14 +166,47 @@ cdef tuple MiePiTau(double_t mu,
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-cdef vector[double_t] Arrange(int_t start, int_t end):
-    cdef vector[double_t] vec
+cdef void MiePiTau(double_t mu,
+                   int_t nmax,
+                   vector[complex128_t]& pin,
+                   vector[complex128_t]& taun
+                   ):
+
+
+
+  pin.push_back(1.)
+  pin.push_back(3. * mu)
+  taun.push_back(mu)
+  taun.push_back(3.0 * cos(2. * acos(mu) ) )
+
+  cdef int_t i
+
+  for i in range(2,nmax):
+    pin.push_back( ( (2 * i + 1) * ( mu * pin[i-1] ) - (i + 1) * pin[i-2] ) / i )
+    taun.push_back( (i + 1) * mu * pin[i] - (i + 2) * pin[i-1] )
+
+
+
+
+
+
+
+
+
+
+
+@cython.nonecheck(False)
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+cdef vector[double_t] Arrange(int_t start,
+                              int_t end,
+                              vector[double_t]& n):
     cdef int_t i
 
     for i in range(start, end):
-        vec.push_back(i)
+        n.push_back(i)
 
-    return vec
 
 
 

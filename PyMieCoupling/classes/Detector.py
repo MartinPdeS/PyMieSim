@@ -150,7 +150,7 @@ class Photodiode(object):
     def PhiOffset(self, val):
         self.__PhiOffset = val
 
-        self.PhiBound += val
+        self.PhiBound = np.array([-self.Meshes.Phi.Range.Degree/2, self.Meshes.Phi.Range.Degree/2]) + val
 
 
 
@@ -163,7 +163,7 @@ class Photodiode(object):
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
 
-        self.ThetaBound += val
+        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2]) + val
 
 
     def Coupling(self, Source):
@@ -353,10 +353,8 @@ class LPmode(object):
 
     @PhiOffset.setter
     def PhiOffset(self, val):
-
         self.__PhiOffset = val
-
-        self.PhiBound = self.PhiBound + val
+        self.PhiBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree]) + val
 
 
     @property
@@ -367,8 +365,7 @@ class LPmode(object):
     @ThetaOffset.setter
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
-
-        self.ThetaBound = self.ThetaBound + val
+        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2]) + val
 
 
 
