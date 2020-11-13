@@ -26,17 +26,16 @@ cdef double_t pi = 3.1415926
 @cython.cdivision(True)
 cpdef tuple MieS1S2(double_t m,
                     double_t x,
-                    double_t mu):
+                    vector[double_t] angle):
 
-    cdef int_t nmax = int(2 + x + 4 * pow(x,1/3) )
-    cdef vector[double_t] n
-
+    cdef:
+      int_t nmax = int(2 + x + 4 * pow(x,1/3) )
+      vector[double_t] n, n2
+      complex128_t S1, S2
+      vector[complex128_t] SS1, SS2, an, bn, pin, taun, SSS1, SSS2
+      int_t i, k
+    'lol'
     Arrange(1, nmax+1, n)
-
-    cdef vector[double_t] n2
-    cdef complex128_t S1, S2
-    cdef vector[complex128_t] SS1, SS2, an, bn, pin, taun
-    cdef int_t i
 
     for i in range(n.size()):
         n2.push_back( (2 * n[i] + 1) / (n[i] * (n[i] + 1)) )
@@ -47,20 +46,31 @@ cpdef tuple MieS1S2(double_t m,
     else:
         Mie_ab(m,x, nmax, n, an, bn)
 
-    MiePiTau(mu,nmax, pin, taun)
-
     cdef int_t lenght = an.size()
 
-    for i in range(lenght):
+    cdef double_t mu
+    for k in range(angle.size()):
 
-      SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] )  )
-      SS2.push_back( n2[i] * (an[i] * taun[i] + bn[i] * pin[i] )  )
+        mu = cos(angle[k])
 
-    S1 = Sum1(SS1)
-    S2 = Sum1(SS2)
+        MiePiTau(mu,nmax, pin, taun)
 
 
-    return S1, S2
+        for i in range(lenght):
+
+            SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] )  )
+            SS2.push_back( n2[i] * (an[i] * taun[i] + bn[i] * pin[i] )  )
+
+        SSS1.push_back(Sum1(SS1))
+        SSS2.push_back(Sum1(SS2))
+
+        SS1.clear()
+        SS2.clear()
+        pin.clear()
+        taun.clear()
+
+
+    return SSS1, SSS2
 
 
 
@@ -76,20 +86,21 @@ cdef void LowFrequencyMie_ab(double_t m,
                              vector[complex128_t]& bn
                              ):
 
-    cdef double_t LL, m2, x3, x4, x5, x6
-    cdef complex128_t a1, a2, b1, b2
+    cdef :
+      double_t LL, m2, x3, x4, x5, x6
+      complex128_t a1, a2, b1, b2
     cdef extern from "complex.h":
         float complex J
 
-    m2 = pow(m, 2)
-    LL = ( pow(m,2) - 1 ) / ( pow(m,2) + 2 )
-    x3 = pow(x,3.)
-    x4 = pow(x,4.)
-    x5 = pow(x,5.)
-    x6 = pow(x,6.)
+    m2 = m*m
+    LL = ( m2 - 1 ) / ( m2 + 2 )
+    x3 = x*x*x
+    x4 = x3*x
+    x5 = x4*x
+    x6 = x5*x
 
 
-    a1 = (-2.*1J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * pow(LL,2.)
+    a1 = (-2.*1J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL*LL
     a2 = (-1J * x5 / 15) * (m2 - 1) / (2 * m2 + 3)
     b1 = (-1J * x5 / 45) * (m2 - 1)
     b2 = 0 + 0J
@@ -116,18 +127,20 @@ cdef void Mie_ab(double_t m,
                  vector[complex128_t]& bn
                  ):
 
-    cdef double_t mx = m*x
-    cdef int_t  nmx = int(max(nmax,abs(mx))+16)
+    cdef:
+      double_t mx = m*x,
+      double_t temp  = sqrt(0.5 * pi * x)
+      int_t  nmx = int(max(nmax,abs(mx))+16)
+      vector[complex128_t] gsx, gs1x,
+      vector[double_t] px, chx, p1x, ch1x, Dn, D, da, db
+      int_t i
     cdef extern from "complex.h":
         float complex J
-    cdef vector[complex128_t] gsx, gs1x,
-    cdef vector[double_t] px, chx, p1x, ch1x, Dn, D, da, db
 
 
     p1x.push_back( sin(x) )
     ch1x.push_back( cos(x) )
 
-    cdef int_t i
 
     for i in range(nmx):
       Dn.push_back(0)
@@ -135,7 +148,6 @@ cdef void Mie_ab(double_t m,
     for i in range(nmx - 1, 1, -1):
       Dn[i-1] = (i / mx) - (1 / (Dn[i] + i / mx))
 
-    cdef double_t temp  = sqrt(0.5 * pi * x)
 
     with nogil:
       for i in range(nmax):
@@ -155,8 +167,6 @@ cdef void Mie_ab(double_t m,
 
         an.push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) )
         bn.push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) )
-
-
 
 
 

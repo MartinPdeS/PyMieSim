@@ -77,57 +77,14 @@ def GetS1S2(Index,
             cuda,
             CacheTrunk=None) -> Tuple[list, list]:
 
-    MuList = np.cos(Meshes.Phi.Vector.Radian.tolist())
-
     if CacheTrunk: MuList = Op.round(cuda)(MuList, CacheTrunk)
 
-    S1, S2 = [], []
-
-    for Mu in MuList:
-        temp0, temp1 = MieS1S2(Index,
-                               SizeParam,
-                               Mu)
-
-        S1.append(temp0)
-        S2.append(temp1)
+    S1, S2 = MieS1S2(Index,
+                     SizeParam,
+                     Meshes.Phi.Vector.Radian.tolist()
+                     )
 
     return Op.array(cuda)([S1, S2])
-
-
-
-def _GetS1S2(Index,
-                SizeParam,
-                Meshes,
-                cuda,
-                CacheTrunk=None) -> Tuple[list, list]:
-
-    MuList = np.cos(Meshes.Phi.Vector.Radian.tolist())
-
-    if CacheTrunk: MuList = Op.round(cuda)(MuList, CacheTrunk)
-
-    S1, S2 = np.ones(len(MuList)), np.ones(len(MuList))
-
-    for nm, Mu in enumerate(MuList):
-
-        S1[nm], S2[nm] = PyMieScatt.MieS1S2(Index,
-                                    SizeParam,
-                                    Mu)
-
-
-    return Op.array(cuda)([S1, S2])
-
-
-
-
-
-@functools.lru_cache(maxsize=201)
-def WrapS1S2(Mu, Index, SizeParam) -> Tuple[float, float]:
-
-    S1, S2 = PyMieScatt.MieS1S2(Index,
-                                SizeParam,
-                                Mu)
-
-    return S1, S2
 
 
 
