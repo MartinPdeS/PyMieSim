@@ -1,20 +1,12 @@
-from numpy import pi
+
 import numpy as np
-
-import matplotlib.pyplot as plt
-from matplotlib import cm
-
 from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
-from PyMieCoupling.classes.Plots import S1S2Plot
 from PyMieCoupling.classes.Representations import S1S2
 from PyMieCoupling.classes.Misc import Source
-from PyMieCoupling.functions.Misc import Make3D, S1S2ToField
-from typing import Tuple
-
-global i
-i = complex(0, 1)
-
+from PyMieCoupling.functions.Misc import Make3D
+from PyMieCoupling.cpp.S1S2 import MieS1S2 #_CYTHON PACKAGE
+from PyMieCoupling.cpp.Fields import CCoupling
 
 
 class Scatterer(object):
@@ -55,10 +47,8 @@ class Scatterer(object):
                  ThetaOffset: float   = 0,
                  PhiBound:    list    = [-180, 180],
                  PhiOffset:   float   = 0,
-                 cuda:        bool    = False,
                  CacheTrunk:  int     = 0) -> None:
 
-        self.cuda = cuda
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
@@ -83,13 +73,11 @@ class Scatterer(object):
 
         if Meshes:
             self.Meshes = Meshes
-            #assert not all([ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts])
 
         else:
             self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
                                   PhiBound   = np.array(PhiBound) + PhiOffset,
-                                  Npts       = Npts,
-                                  cuda        = self.cuda)
+                                  Npts       = Npts)
 
 
     @property
@@ -98,7 +86,6 @@ class Scatterer(object):
             self.__S1S2 = S1S2(SizeParam  = self.SizeParam,
                                Index      = self.Index,
                                Meshes     = self.Meshes,
-                               cuda        = self.cuda,
                                CacheTrunk = self.CacheTrunk)
             return self.__S1S2
 
@@ -113,16 +100,22 @@ class Scatterer(object):
 
         """
 
-        Parallel, Perpendicular = S1S2ToField(S1S2   = self.S1S2,
-                                              Source = self.Source,
-                                              Meshes = self.Meshes,
-                                              cuda   = self.cuda)
 
+        S1, S2 = MieS1S2(self.Index,
+                         self.SizeParam,
+                         self.Meshes.Phi.Vector.Radian.tolist(),
+                         self.Meshes.Theta.Vector.Radian.tolist(),
+                         )
+
+
+        Parallel = np.outer(S1, np.sin(self.Meshes.Theta.Vector.Radian))
+
+
+        Perpendicular = np.outer(S2, np.cos(self.Meshes.Theta.Vector.Radian))
 
         self.Field = Field(Perpendicular = Perpendicular,
                            Parallel      = Parallel,
-                           Meshes        = self.Meshes,
-                           cuda          = self.cuda
+                           Meshes        = self.Meshes
                            )
 
     @property

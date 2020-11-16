@@ -10,7 +10,7 @@ from PyMieCoupling.classes.Scattering import Scatterer
 #import cudf
 
 
-def GetDataFrame(cuda, **kwargs):
+def GetDataFrame(**kwargs):
 
     return DataFrameCPU(**kwargs)
 
@@ -57,7 +57,6 @@ def Frame(RIList:       list,
           DiameterList: list,
           Detector:     Union[LPmode, Photodiode],
           QuietMode:    bool = False,
-          cuda:         bool = False,
           **SKwargs):
 
     Polarization = ['Parallel', 'Perpendicular']
@@ -65,7 +64,7 @@ def Frame(RIList:       list,
     MI = pd.MultiIndex.from_product([Polarization, DiameterList, RIList],
                                     names=['Polarization','Diameter','RI',])
 
-    df = GetDataFrame(index = MI, columns = ['Coupling'], cuda = cuda)
+    df = GetDataFrame(index = MI, columns = ['Coupling'])
 
     for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
         for nd, Diameter in enumerate(DiameterList):
@@ -73,8 +72,7 @@ def Frame(RIList:       list,
             Source = Scatterer(Diameter    = Diameter,
                                Index       = RI,
                                Source      = SKwargs['Source'],
-                               Meshes      = Detector.Meshes,
-                               cuda        = cuda)
+                               Meshes      = Detector.Meshes)
 
             Coupling = Detector.Coupling(Source)
 

@@ -3,9 +3,7 @@ import numpy as np
 
 from typing import Union
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.functions.couplings import PointFieldCoupling
 from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.classes.Misc import Operation as Op
 
 
 
@@ -14,11 +12,10 @@ def LoopRIDiameter(RIList:       list,
                    DiameterList: list,
                    Detector:     Union[LPmode, Photodiode],
                    QuietMode:    bool = False,
-                   cuda:         bool = False,
                    Polarization: str  = 'Parallel',
                    **SKwargs):
 
-    temp = Op.empty(cuda)( [ len(RIList), len(DiameterList) ] )
+    temp = np.empty( [ len(RIList), len(DiameterList) ] )
 
 
     for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
@@ -27,8 +24,7 @@ def LoopRIDiameter(RIList:       list,
             Source = Scatterer(Diameter    = Diameter,
                                Index       = RI,
                                Source      = SKwargs['Source'],
-                               Meshes      = Detector.Meshes,
-                               cuda        = cuda
+                               Meshes      = Detector.Meshes
                                )
 
             Coupling = Detector.Coupling(Source)
@@ -68,6 +64,9 @@ class Array(np.ndarray):
 
         if arg == 'Max':
             return -self.max()
+
+        if arg == 'Min':
+            return self.max()
 
 
     def Monotonic(self):

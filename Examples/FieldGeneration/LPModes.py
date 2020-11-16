@@ -11,8 +11,6 @@ from PyMieCoupling.classes.Misc import Source
 
 npts=101
 
-cuda = True
-
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
@@ -28,8 +26,7 @@ LP11 = LPmode(Fiber       = Fiber,
               Source      = LightSource,
               Npts        = npts,
               ThetaOffset = 0,
-              PhiOffset   = 0,
-              cuda        = cuda)
+              PhiOffset   = 0)
 
 LP01 = LPmode(Fiber       = Fiber,
               Name        = 'LP01',
@@ -37,8 +34,7 @@ LP01 = LPmode(Fiber       = Fiber,
               Source      = LightSource,
               Npts        = npts,
               ThetaOffset = 0,
-              PhiOffset   = 0,
-              cuda        = cuda)
+              PhiOffset   = 0)
 
 
 

@@ -11,18 +11,15 @@ from PyMieCoupling.classes.Misc import Source
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-Scat = Scatterer(Diameter    = 1000e-9,
+Scat = Scatterer(Diameter    = 300e-9,
                  Source      = LightSource,
                  Index       = 1.5,
-                 Npts        = 201,
+                 Npts        = 21,
                  ThetaBound  = [-180, 180],
-                 PhiBound    = [-180, 180],
-                 CacheTrunk  = None,
-                 cuda        = False)
+                 PhiBound    = [-180, 180])
 
 
 Scat.S1S2.Plot()
-
 
 Scat.SPF.Plot()
 

@@ -2,22 +2,18 @@
 import numpy as np
 from PyMieCoupling.classes.Representations import Stokes, Jones, SPF
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
-from PyMieCoupling.classes.Misc import Operation as Op
 
 class Field(object):
 
     def __init__(self,
                  Perpendicular: np.ndarray,
                  Parallel:      np.ndarray,
-                 Meshes:        MieMesh,
-                 cuda:          bool):
+                 Meshes:        MieMesh):
         """
         Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
 
         """
         self.__dict__ = Meshes.__dict__.copy()
-
-        self.cuda = cuda
 
         self.Perpendicular, self.Parallel = Perpendicular, Parallel
 
@@ -51,8 +47,7 @@ class Field(object):
         if self.__SPF is None:
             self.__SPF = SPF(Parallel      = self.Parallel,
                              Perpendicular = self.Perpendicular,
-                             Meshes        = self.Meshes,
-                             cuda          = self.cuda)
+                             Meshes        = self.Meshes)
             return self.__SPF
 
         else:
@@ -64,8 +59,7 @@ class Field(object):
         if self.__Stokes is None:
             self.__Stokes = Stokes(Parallel      = self.Parallel,
                                    Perpendicular = self.Perpendicular,
-                                   Meshes        = self.Meshes,
-                                   cuda          = self.cuda)
+                                   Meshes        = self.Meshes)
             return self.__Stokes
 
         else:
@@ -77,8 +71,7 @@ class Field(object):
         if self.__Jones is None:
             self.__Jones = Jones(Parallel      = self.Parallel,
                                  Perpendicular = self.Perpendicular,
-                                 Meshes        = self.Meshes,
-                                 cuda          = self.cuda)
+                                 Meshes        = self.Meshes)
             return self.__Jones
 
         else:
@@ -86,12 +79,12 @@ class Field(object):
 
 
     def ComputeTotal(self) -> None:
-        return Op.sqrt(self.Parallel.__abs__()**2 +\
+        return np.sqrt(self.Parallel.__abs__()**2 +\
                     self.Perpendicular.__abs__()**2)   # * exp(complex(0,1)*self.delta)
 
 
     def ComputeDelay(self) -> None:
-        return Op.arctan( self.Parallel.__abs__() / self.Perpendicular.__abs__() )
+        return np.arctan( self.Parallel.__abs__() / self.Perpendicular.__abs__() )
 
 
     def ComputeSPF(self) -> None:

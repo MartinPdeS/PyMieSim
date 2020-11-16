@@ -12,16 +12,12 @@ from PyMieCoupling.classes.Misc import Source
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-npts = 201
-
-cuda = True
 
 Detector = Photodiode(NA                = 0.2,
                       Source            = LightSource,
-                      Npts              = npts,
+                      Npts              = 201,
                       ThetaOffset       = 0,
-                      PhiOffset         = 0,
-                      cuda              = cuda)
+                      PhiOffset         = 0)
 
 Detector.PhiOffset = 45
 
@@ -30,8 +26,7 @@ Detector.Fourier.Plot('Polar')
 Scat = Scatterer(Diameter      = 500e-9,
                  Source        = LightSource,
                  Index         = 1.4,
-                 Meshes        = Detector.Meshes,
-                 cuda          = cuda)
+                 Meshes        = Detector.Meshes)
 
 Scat.S1S2.Plot()
 

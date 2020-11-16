@@ -27,13 +27,27 @@ requirements = ['numpy',
                 ]
 
 
-ext_modules = [Extension("PyMieCoupling.S1S2",
+ext_modules = [ Extension("PyMieCoupling.cpp.S1S2",
                          ["PyMieCoupling/cython/S1S2.pyx"],
                          include_dirs = ['.'],
                          language="c++",
-                         extra_compile_args=["-std=c++11"],
-                         extra_link_args=["-std=c++11"]
-                         )]
+                         extra_compile_args=["-std=c++11", '-fopenmp'],
+                         extra_link_args=["-std=c++11",'-fopenmp']),
+
+                Extension("PyMieCoupling.cpp.Fields",
+                         ["PyMieCoupling/cython/Fields.pyx"],
+                         include_dirs = ['.'],
+                         language="c++",
+                         extra_compile_args=["-std=c++11", '-fopenmp'],
+                         extra_link_args=["-std=c++11",'-fopenmp']),
+
+               Extension("PyMieCoupling.cpp.math",
+                         ["PyMieCoupling/cython/math.pyx"],
+                         include_dirs = ['.'],
+                         language="c++",
+                         extra_compile_args=["-std=c++11",'-fopenmp'],
+                         extra_link_args=["-std=c++11", '-fopenmp',]),
+                         ]
 
 setup_dict = dict(
       name               = 'PyMieCoupling',

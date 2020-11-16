@@ -19,8 +19,6 @@ class Stokes(object):
         Description of parameter `Perpendicular`.
     Meshes : MieMesh
         Meshes of the scatterer.
-    cuda : bool
-        If True algorithm will use GPU for computing.
 
     Attributes
     ----------
@@ -32,14 +30,12 @@ class Stokes(object):
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        MieMesh,
-                 cuda:          bool = False) -> None:
+                 Meshes:        MieMesh) -> None:
 
         self.Meshes = Meshes
 
         self.Array = GetStokes(Parallel      = Parallel,
-                               Perpendicular = Perpendicular,
-                               cuda          = cuda)
+                               Perpendicular = Perpendicular)
 
 
     def __repr__(self):
@@ -116,8 +112,6 @@ class Jones(object):
         Description of parameter `Perpendicular`.
     Meshes : MieMesh
         Meshes of the scatterer.
-    cuda : bool
-        If True algorithm will use GPU for computing.
 
     Attributes
     ----------
@@ -130,8 +124,7 @@ class Jones(object):
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        MieMesh,
-                 cuda:          bool) -> None:
+                 Meshes:        MieMesh) -> None:
 
         self.Meshes = Meshes
 
@@ -177,8 +170,6 @@ class SPF(object):
         Description of parameter `Perpendicular`.
     Meshes : MieMesh
         Meshes of the scatterer.
-    cuda : bool
-        If True algorithm will use GPU for computing.
 
     Attributes
     ----------
@@ -191,8 +182,7 @@ class SPF(object):
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        MieMesh,
-                 cuda:          bool) -> None:
+                 Meshes:        MieMesh) -> None:
 
         self.Meshes = Meshes
 
@@ -263,8 +253,6 @@ class S1S2(object):
         Description of parameter `Index`.
     Meshes : MieMesh
         Description of parameter `Meshes`.
-    cuda : bool
-        Description of parameter `cuda`.
     CacheTrunk : bool
         Description of parameter `CacheTrunk`.
 
@@ -282,17 +270,15 @@ class S1S2(object):
                  SizeParam:  np.array,
                  Index:      float,
                  Meshes:     MieMesh,
-                 cuda:       bool,
                  CacheTrunk: bool = None) -> None:
 
         self.Meshes, self.SizeParam = Meshes, SizeParam
 
         self.Index = Index
 
-        self.Array = GetS1S2(Index     = Index,
-                             SizeParam = SizeParam,
-                             Meshes    = self.Meshes,
-                             cuda      = cuda)
+        self.S1, self.S2 = GetS1S2(Index = Index,
+                             SizeParam   = SizeParam,
+                             Meshes      = self.Meshes)
 
 
 
@@ -317,7 +303,7 @@ class S1S2(object):
 
         for ni, ax in enumerate(axes):
 
-            data, Phi = CuPy2NumPy(self.Array[ni].__abs__(),
+            data, Phi = CuPy2NumPy([self.S1, self.S2][ni].__abs__(),
                                    self.Meshes.Phi.Vector.Radian)
 
             ax.plot(Phi,

@@ -7,12 +7,9 @@ class Meshes(object):
     def __init__(self,
                  Npts:       int  = 101,
                  ThetaBound: list = [-180,180],
-                 PhiBound:   list = [-180,180],
-                 cuda:       bool = False):
+                 PhiBound:   list = [-180,180]):
 
         self.Npts = Npts
-
-        self.cuda = cuda
 
         self.MakeBound(ThetaBound= ThetaBound, PhiBound= PhiBound)
 
@@ -36,13 +33,13 @@ class Meshes(object):
 
 
     def MakeVec(self):
-        self.Theta.Vector = Angle( Op.linspace(self.cuda)(*self.Theta.Boundary.Degree, self.Npts) )
+        self.Theta.Vector = Angle( np.linspace(*self.Theta.Boundary.Degree, self.Npts) )
 
-        self.Phi.Vector = Angle( Op.linspace(self.cuda)(*self.Phi.Boundary.Degree, self.Npts) )
+        self.Phi.Vector = Angle( np.linspace(*self.Phi.Boundary.Degree, self.Npts) )
 
 
     def MakeMeshes(self):
-        ThetaMesh, PhiMesh = Op.meshgrid(self.cuda)(self.Theta.Vector.Degree, self.Phi.Vector.Degree)
+        ThetaMesh, PhiMesh = np.meshgrid(self.Theta.Vector.Degree, self.Phi.Vector.Degree)
 
         self.Theta.Mesh, self.Phi.Mesh = Angle(ThetaMesh), Angle(PhiMesh)
 

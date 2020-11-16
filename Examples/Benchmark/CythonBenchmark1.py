@@ -8,31 +8,26 @@ _________________________________________________________
 import timeit
 
 setup = """
-from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.classes.Misc import Source
+import numpy as np
+from PyMieCoupling.S1S2 import MieS1S2 as S1S2_CYTHON
+from PyMieCoupling.functions.MieComputing import GetS1S2 as S1S2_PYTHON
+AngleList = np.linspace(0,np.pi/2,200)"""
 
-LightSource = Source(Wavelength   = 400e-9,
-                     Polarization = 0)"""
 
+BenchPython = """S1S2_PYTHON(1.4, 0.3, AngleList)"""
 
-BenchPython = """
-Scat = Scatterer(Diameter    = 10e-9,
-                 Source      = LightSource,
-                 Index       = 1.5,
-                 Npts        = 201,
-                 ThetaBound  = [-180, 180],
-                 PhiBound    = [-180, 180],
-                 CacheTrunk  = None,
-                 cuda        = False)
-
-Scat.S1S2                 """
-
+BenchCython = """S1S2_CYTHON(1.4, 0.3, AngleList)"""
 
 
 print('\nCYTHON BENCHMARK')
 print( timeit.timeit(setup = setup,
-                    stmt = BenchPython,
+                    stmt = BenchCython,
                     number = 1000) )
 
 
 print('='*50)
+
+print('\nPYTHON BENCHMARK')
+print( timeit.timeit(setup = setup,
+                    stmt = BenchPython,
+                    number = 1000) )

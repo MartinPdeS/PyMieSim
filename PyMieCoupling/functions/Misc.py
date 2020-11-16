@@ -2,14 +2,7 @@ import numpy as np
 from typing import Tuple
 import functools
 import fibermodes
-from PyMieCoupling.classes.Misc import Operation as Op
-#from PyMieCoupling.functions.MieComputing import MieS1S2
-from PyMieCoupling.S1S2 import MieS1S2 #_CYTHON PACKAGE
-try:
-    import cupy as cp
-except:
-    import numpy as cp
-
+from PyMieCoupling.cpp.S1S2 import MieS1S2
 
 
 
@@ -17,25 +10,24 @@ def Make3D(item:      np.array,
            PhiMesh:   np.array,
            ThetaMesh: np.array) -> Tuple[np.array, np.array, np.array]:
 
-    X = item * Op.sin(PhiMesh) * Op.cos(ThetaMesh)
+    X = item * np.sin(PhiMesh) * np.cos(ThetaMesh)
 
-    Y = item * Op.sin(PhiMesh) * Op.sin(ThetaMesh)
+    Y = item * np.sin(PhiMesh) * np.sin(ThetaMesh)
 
-    Z = item * Op.cos(PhiMesh)
+    Z = item * np.cos(PhiMesh)
 
     return X, Y, Z
 
 
-def GetSPF(cuda=False, **kwargs):
+def GetSPF(**kwargs):
     return ComputeSPF(**kwargs)
 
 
 
-def GetStokes(Parallel:      cp.ndarray,
-              Perpendicular: cp.ndarray,
-              cuda:          bool       = False) -> cp.ndarray:
+def GetStokes(Parallel:      np.ndarray,
+              Perpendicular: np.ndarray) -> np.ndarray:
 
-    Array = Op.empty(cuda)( [4, *Parallel.shape] )
+    Array = np.empty( [4, *Parallel.shape] )
 
     I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
@@ -50,19 +42,18 @@ def GetStokes(Parallel:      cp.ndarray,
     return Array
 
 
-def GetJones(Parallel:      cp.ndarray,
-             Perpendicular: cp.ndarray,
-             cuda:          bool       = False) -> cp.ndarray:
+def GetJones(Parallel:      np.ndarray,
+             Perpendicular: np.ndarray) -> np.ndarray:
 
-    Array = Op.empty(cuda)( [2, * Parallel.shape] )
+    Array = np.empty( [2, * Parallel.shape] )
 
-    delta = Op.angle(cuda)(Parallel) - Op.angle(cuda)(Perpendicular)
+    delta = np.angle(Parallel) - np.angle(Perpendicular)
 
-    A = Parallel.__abs__() / Op.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
+    A = Parallel.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
 
-    B = Perpendicular.__abs__() / Op.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
+    B = Perpendicular.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
 
-    return Op.array(cuda)([A, B * Op.exp(complex(0,1)*delta)])
+    return np.array([A, B * np.exp(complex(0,1)*delta)])
 
 
 
@@ -73,38 +64,32 @@ def ComputeSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
 
 def GetS1S2(Index,
             SizeParam,
-            Meshes,
-            cuda,
-            CacheTrunk=None) -> Tuple[list, list]:
-
-    if CacheTrunk: MuList = Op.round(cuda)(MuList, CacheTrunk)
+            Meshes) -> Tuple[np.ndarray, np.ndarray]:
 
     S1, S2 = MieS1S2(Index,
                      SizeParam,
-                     Meshes.Phi.Vector.Radian.tolist()
+                     Meshes.Phi.Vector.Radian.tolist(),
+                     Meshes.Theta.Vector.Radian.tolist(),
                      )
 
-    return Op.array(cuda)([S1, S2])
+    return np.array(S1), np.array(S2)
 
 
 
 
 
-def S1S2ToField(S1S2, Source, Meshes, cuda):
+def S1S2ToField(S1,
+                S2,
+                Meshes) -> Tuple[np.ndarray, np.ndarray]:
 
-    if Source.Polarization is not None:
 
-        Parallel = Op.outer(S1S2.Array[0], Op.sin(Meshes.Theta.Vector.Radian))
+    Parallel = np.outer(S1, np.sin(Meshes.Theta.Vector.Radian))
 
-        Perpendicular = Op.outer(S1S2.Array[1], Op.cos(Meshes.Theta.Vector.Radian))
+    Perpendicular = np.outer(S2, np.cos(Meshes.Theta.Vector.Radian))
 
-    else:
-
-        Parallel = Op.outer( S1S2.Array[0],  Op.ones(cuda)( len( S1S2.Array[0] ) )/Op.sqrt(2) )
-
-        Perpendicular = Op.outer( S1S2.Array[1], Op.ones(cuda)( ( S1S2.Array[1] ) )/Op.sqrt(2) )
 
     return Parallel, Perpendicular
+
 
 
 
@@ -113,8 +98,7 @@ def GetLP(Fiber,
           Mode,
           Wavelength: float,
           Size:       float,
-          Npts:       int,
-          cuda:       bool):
+          Npts:       int):
 
     Field = fibermodes.field.Field(Fiber,
                                    Mode,
@@ -122,30 +106,48 @@ def GetLP(Fiber,
                                    Size,
                                    Npts).Ex()
 
-    Field = Op.array(cuda)(Field)
+    Field = np.array(Field)
 
     Field /= (Field.__abs__()).sum()
 
-    Fourier = Op.fft(cuda).fft2(Field)
+    Fourier = np.fft.fft2(Field)
 
-    Fourier /= GenShift(Npts, cuda)
+    Fourier /= GenShift(Npts)
 
-    Fourier = Op.fft(cuda).fftshift(Fourier)
+    Fourier = np.fft.fftshift(Fourier)
 
     Fourier /= (Fourier.__abs__()).sum()
 
     return Field, Fourier
 
 
-def GenShift(Npts, cuda):
+def GenShift(Npts):
 
-    phase_shift = Op.exp(-complex(0, 1) * Op.pi * Op.arange(cuda)(Npts)*(Npts-1)/Npts)
+    phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(Npts)*(Npts-1)/Npts)
 
-    shift_grid, _ = Op.meshgrid(cuda)(phase_shift, phase_shift)
+    shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
 
     return shift_grid * shift_grid.T
 
 
+
+def Coupling(Field:         np.ndarray,
+             Parallel:      np.ndarray,
+             Perpendicular: np.ndarray,
+             Phi:           np.ndarray):
+
+
+    dOmega = (Phi[0,0] - Phi[0,1]).__abs__()**2
+
+    Perp = Field * Perpendicular * np.sin(Phi).__abs__()
+
+    Perp = ( Perp * dOmega).sum().__abs__()**2
+
+    Para = Field * Parallel * np.sin(Phi).__abs__()
+
+    Para = (Para * dOmega).sum().__abs__()**2
+
+    return Para, Perp
 
 
 # -

@@ -1,6 +1,7 @@
 #cython: language_level=2
 cimport cython
 from cython.operator cimport dereference as deref
+from cython.parallel cimport parallel, prange
 
 import numpy as np
 cimport numpy as np
@@ -17,6 +18,9 @@ from scipy.special.cython_special cimport yv as yvCython
 ctypedef double double_t
 ctypedef double complex complex128_t
 ctypedef int int_t
+ctypedef vector[complex128_t] CVec
+ctypedef vector[CVec] CMatrix
+
 
 cdef double_t pi = 3.1415926
 
@@ -26,15 +30,20 @@ cdef double_t pi = 3.1415926
 @cython.cdivision(True)
 cpdef tuple MieS1S2(double_t m,
                     double_t x,
-                    vector[double_t] angle):
+                    vector[double_t] phi,
+                    vector[double_t] theta):
+
+    cdef extern from "complex.h":
+        float complex J
 
     cdef:
-      int_t nmax = int(2 + x + 4 * pow(x,1/3) )
+      Py_ssize_t nmax = int(2 + x + 4 * pow(x,1/3) )
       vector[double_t] n, n2
-      complex128_t S1, S2
-      vector[complex128_t] SS1, SS2, an, bn, pin, taun, SSS1, SSS2
-      int_t i, k
-    'lol'
+      vector[complex128_t] SS1, SS2, an, bn, pin, taun, S1, S2
+      Py_ssize_t i, k
+      complex128_t temp = 0.*J, *SumS1 = &temp, *SumS2 = &temp
+
+
     Arrange(1, nmax+1, n)
 
     for i in range(n.size()):
@@ -46,31 +55,35 @@ cpdef tuple MieS1S2(double_t m,
     else:
         Mie_ab(m,x, nmax, n, an, bn)
 
-    cdef int_t lenght = an.size()
+    cdef:
+        unsigned int lenght = an.size()
+        double_t mu
 
-    cdef double_t mu
-    for k in range(angle.size()):
 
-        mu = cos(angle[k])
+    for k in range(phi.size()):
+
+        mu = cos(phi[k])
 
         MiePiTau(mu,nmax, pin, taun)
-
 
         for i in range(lenght):
 
             SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] )  )
             SS2.push_back( n2[i] * (an[i] * taun[i] + bn[i] * pin[i] )  )
 
-        SSS1.push_back(Sum1(SS1))
-        SSS2.push_back(Sum1(SS2))
+        Sum1(SS1, SumS1)
+        Sum1(SS2, SumS2)
+
+
+        S1.push_back(SumS1[0])
+        S2.push_back(SumS2[0])
 
         SS1.clear()
         SS2.clear()
         pin.clear()
         taun.clear()
 
-
-    return SSS1, SSS2
+    return S1, S2
 
 
 
@@ -80,7 +93,7 @@ cpdef tuple MieS1S2(double_t m,
 @cython.cdivision(True)
 cdef void LowFrequencyMie_ab(double_t m,
                              double_t x,
-                             int_t nmax,
+                             Py_ssize_t nmax,
                              vector[double_t] n,
                              vector[complex128_t]& an,
                              vector[complex128_t]& bn
@@ -89,8 +102,8 @@ cdef void LowFrequencyMie_ab(double_t m,
     cdef :
       double_t LL, m2, x3, x4, x5, x6
       complex128_t a1, a2, b1, b2
-    cdef extern from "complex.h":
-        float complex J
+      extern from "complex.h":
+          float complex J
 
     m2 = m*m
     LL = ( m2 - 1 ) / ( m2 + 2 )
@@ -121,7 +134,7 @@ cdef void LowFrequencyMie_ab(double_t m,
 @cython.cdivision(True)
 cdef void Mie_ab(double_t m,
                  double_t x,
-                 int_t nmax,
+                 Py_ssize_t nmax,
                  vector[double_t] n,
                  vector[complex128_t]& an,
                  vector[complex128_t]& bn
@@ -133,8 +146,8 @@ cdef void Mie_ab(double_t m,
       int_t  nmx = int(max(nmax,abs(mx))+16)
       vector[complex128_t] gsx, gs1x,
       vector[double_t] px, chx, p1x, ch1x, Dn, D, da, db
-      int_t i
-    cdef extern from "complex.h":
+      Py_ssize_t i
+      extern from "complex.h":
         float complex J
 
 
@@ -180,7 +193,7 @@ cdef void MiePiTau(double_t mu,
                    int_t nmax,
                    vector[complex128_t]& pin,
                    vector[complex128_t]& taun
-                   ):
+                   ) nogil:
 
 
 
@@ -189,9 +202,9 @@ cdef void MiePiTau(double_t mu,
   taun.push_back(mu)
   taun.push_back(3.0 * cos(2. * acos(mu) ) )
 
-  cdef int_t i
+  cdef Py_ssize_t i
 
-  for i in range(2,nmax):
+  for i in prange(2,nmax, num_threads=1):
     pin.push_back( ( (2 * i + 1) * ( mu * pin[i-1] ) - (i + 1) * pin[i-2] ) / i )
     taun.push_back( (i + 1) * mu * pin[i] - (i + 2) * pin[i-1] )
 
@@ -209,10 +222,10 @@ cdef void MiePiTau(double_t mu,
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-cdef vector[double_t] Arrange(int_t start,
-                              int_t end,
-                              vector[double_t]& n):
-    cdef int_t i
+cdef void Arrange(Py_ssize_t start,
+                  Py_ssize_t end,
+                  vector[double_t]& n) nogil:
+    cdef Py_ssize_t i
 
     for i in range(start, end):
         n.push_back(i)
@@ -226,15 +239,26 @@ cdef vector[double_t] Arrange(int_t start,
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-cdef complex128_t Sum1(vector[complex128_t] arr):
-    cdef complex128_t sum = 0.
-    cdef int_t size = arr.size()
-    cdef int_t i
+cdef void Sum1(vector[complex128_t] arr,
+               complex128_t* SumVal) nogil:
 
-    for i in range(size):
-        sum += arr[i]
+    cdef complex128_t val
+    SumVal[0] = 0.
 
-    return sum
+    for val in arr:
+        SumVal[0] += val
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

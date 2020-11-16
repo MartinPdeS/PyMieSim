@@ -4,8 +4,9 @@ import fibermodes
 
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle, NA2Angle
 from PyMieCoupling.classes.Meshes import Meshes
-from PyMieCoupling.classes.Misc import Source, LPField, LPFourier, Operation as Op
 from PyMieCoupling.functions.Misc import GetLP
+from PyMieCoupling.functions.Misc import Coupling
+from PyMieCoupling.classes.Misc import Source, LPField, LPFourier
 
 
 class Photodiode(object):
@@ -66,12 +67,9 @@ class Photodiode(object):
                  Npts:              int    = 101,
                  ThetaOffset:       float  = 0,
                  PhiOffset:         float  = 0,
-                 cuda:              bool   = False,
                  Name:              str    = 'Detector'):
 
         self._name = Name
-
-        self.cuda = cuda
 
         self._coupling = 'Intensity'
 
@@ -93,16 +91,15 @@ class Photodiode(object):
 
 
     def GenMeshes(self):
-        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA, self.cuda)
+        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA)
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
-                             PhiBound   = (self.__PhiBound) + self.__PhiOffset,
-                             cuda       = self.cuda)
+                             PhiBound   = (self.__PhiBound) + self.__PhiOffset)
 
 
     def GenField(self):
-            return Op.ones(self.cuda)( self.Meshes.Theta.Mesh.Degree.shape )
+            return np.ones( self.Meshes.Theta.Mesh.Degree.shape )
 
 
     @property
@@ -117,8 +114,7 @@ class Photodiode(object):
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound,
-                             cuda       = self.cuda)
+                             PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -135,8 +131,7 @@ class Photodiode(object):
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound,
-                             cuda       = self.cuda)
+                             PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -173,13 +168,13 @@ class Photodiode(object):
 
         Perp = self.Fourier.Array *\
                (Source.Field.Perpendicular).__abs__() *\
-               (Op.sin(self.Meshes.Phi.Mesh.Radian + Op.pi/2).T).__abs__()
+               (np.sin(self.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
         Perp = (Perp * dOmega).sum()**2
 
         Para = self.Fourier.Array *\
                (Source.Field.Parallel).__abs__() *\
-               (Op.sin(self.Meshes.Phi.Mesh.Radian + Op.pi/2).T).__abs__()
+               (np.sin(self.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
         Para = (Para * dOmega).sum()**2
 
@@ -245,10 +240,9 @@ class LPmode(object):
                  Magnification: float = 1.,
                  ThetaOffset:   float = 0,
                  PhiOffset:     float = 0,
-                 cuda:          bool  = False,
                  Name:          str   = 'Field detector'):
 
-        self._name, self._coupling, self.Fiber, self.cuda = Name, 'Amplitude', Fiber, cuda
+        self._name, self._coupling, self.Fiber = Name, 'Amplitude', Fiber
 
         Mode = Mode[0]+1, Mode[1]
 
@@ -278,13 +272,12 @@ class LPmode(object):
                      Mode       = self.Mode,
                      Wavelength = self.Source.Wavelength,
                      Size       = self.DirectVec[0],
-                     Npts       = self.Npts,
-                     cuda       = self.cuda)
+                     Npts       = self.Npts)
 
 
     def GenMeshes(self):
 
-        self.AngleVec = np.array( Direct2Angle(self.DirectVec, self.Source.k, cuda = False) )
+        self.AngleVec = np.array( Direct2Angle(self.DirectVec, self.Source.k) )
 
         self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
@@ -296,8 +289,7 @@ class LPmode(object):
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound,
-                             cuda       = self.cuda)
+                             PhiBound   = self.__PhiBound)
 
 
 
@@ -322,8 +314,7 @@ class LPmode(object):
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound,
-                             cuda       = self.cuda)
+                             PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -340,8 +331,7 @@ class LPmode(object):
 
         self.Meshes = Meshes(Npts       = self.Npts,
                              ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound,
-                             cuda       = self.cuda)
+                             PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -371,20 +361,11 @@ class LPmode(object):
 
     def Coupling(self, Source):
 
-        dOmega = self.Meshes.Phi.Delta.Radian *\
-                 self.Meshes.Theta.Delta.Radian
+        Para, Perp = Coupling(Field         = self.Field.Array,
+                              Parallel      = Source.Field.Parallel,
+                              Perpendicular = Source.Field.Perpendicular,
+                              Phi           = self.Meshes.Phi.Mesh.Radian.T)
 
-        Perp = self.Field.Array *\
-               Source.Field.Perpendicular *\
-               (Op.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-        Perp = ( Perp.sum() ).__abs__()**2
-
-        Para = self.Field.Array *\
-               Source.Field.Parallel *\
-               (Op.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-        Para = (Para * dOmega).sum().__abs__()**2
 
         return {'Parallel': Para, 'Perpendicular': Perp}
 
