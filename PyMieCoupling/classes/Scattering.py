@@ -46,21 +46,18 @@ class Scatterer(object):
                  ThetaBound:  list    = [-180, 180],
                  ThetaOffset: float   = 0,
                  PhiBound:    list    = [-180, 180],
-                 PhiOffset:   float   = 0,
-                 CacheTrunk:  int     = 0) -> None:
+                 PhiOffset:   float   = 0) -> None:
 
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
         self.SizeParam = Source.k * ( self.Diameter * 2 )
 
-        self.CacheTrunk = CacheTrunk
 
         self.GenMesh(Meshes, ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts)
 
-        self.__S1S2 = None
+        self.__S1S2, self.__Field = None, None
 
-        self.GenField()
 
 
     def GenMesh(self,
@@ -81,16 +78,24 @@ class Scatterer(object):
 
 
     @property
-    def S1S2(self) -> None:
+    def S1S2(self) -> np.ndarray:
         if self.__S1S2 is None:
             self.__S1S2 = S1S2(SizeParam  = self.SizeParam,
                                Index      = self.Index,
-                               Meshes     = self.Meshes,
-                               CacheTrunk = self.CacheTrunk)
+                               Meshes     = self.Meshes)
             return self.__S1S2
 
         else:
             return self.__S1S2
+
+
+    @property
+    def Field(self) -> MieMesh:
+        if self.__Field is None:
+            self.GenField()
+            return self.__Field
+        else:
+            return self.__Field
 
 
 
@@ -107,16 +112,14 @@ class Scatterer(object):
                          self.Meshes.Theta.Vector.Radian.tolist(),
                          )
 
-
         Parallel = np.outer(S1, np.sin(self.Meshes.Theta.Vector.Radian))
-
 
         Perpendicular = np.outer(S2, np.cos(self.Meshes.Theta.Vector.Radian))
 
-        self.Field = Field(Perpendicular = Perpendicular,
-                           Parallel      = Parallel,
-                           Meshes        = self.Meshes
-                           )
+        self.__Field = Field(Perpendicular = Perpendicular,
+                             Parallel      = Parallel,
+                             Meshes        = self.Meshes
+                             )
 
     @property
     def Stokes(self) -> None:

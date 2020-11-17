@@ -58,7 +58,7 @@ Result = minimize(fun      = Minimizer.simulate,
                   x0       = [10, 10],
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
-                  tol      = 1e-12,
+                  tol      = 1e-20,
                   options  = {'maxiter': 150, 'rhobeg':50})
 print(Result)
 

@@ -4,7 +4,8 @@ import matplotlib.patches as patches
 from matplotlib import cm
 from typing import Tuple
 from PyMieCoupling.classes.Meshes import Meshes as MieMesh
-from PyMieCoupling.functions.Misc import Make3D, GetStokes, GetJones, GetSPF, GetS1S2
+from PyMieCoupling.functions.Misc import Make3D, GetStokes, GetJones, GetSPF
+from PyMieCoupling.cpp.S1S2 import MieS1S2 #_CYTHON PACKAGE
 from PyMieCoupling.functions.converts import CuPy2NumPy
 
 
@@ -68,34 +69,55 @@ class Stokes(object):
 
         fig, axes = self.GenFig()
 
-        n = 8
 
-        for i, ax in enumerate(axes):
+        n = 3
 
-            data, Phi, Theta = CuPy2NumPy(self.Array.T,
-                                          self.Meshes.Phi.Mesh.Degree,
-                                          self.Meshes.Theta.Mesh.Degree)
+        ax = axes[0]
+        im = ax.pcolormesh(self.Meshes.Phi.Mesh.Degree,
+                           self.Meshes.Theta.Mesh.Degree,
+                           self.Array[0,:,:],
+                           shading='auto',
+                           )
 
-            im = ax.pcolormesh(Phi,
-                               Theta,
-                               data[:,:,3],
-                               shading='auto')
+        cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
 
-            cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
+        cbar.ax.tick_params(labelsize='small')
 
-            cbar.ax.tick_params(labelsize='small')
+        cbar.ax.locator_params(nbins=3)
 
-            cbar.ax.locator_params(nbins=3)
+        ax.quiver(self.Meshes.Phi.Mesh.Degree[::n, ::n],
+                  self.Meshes.Theta.Mesh.Degree[::n, ::n],
+                  self.Array[1,::n,::n],
+                  self.Array[2,::n,::n],
+                  units          = 'width',
+                  width          = 0.0005,
+                  headwidth      = 30,
+                  headlength     = 20,
+                  headaxislength = 20)
 
-            ax.quiver(Phi[::n, ::n],
-                      Theta[::n, ::n],
-                      data[:,:,2][::n, ::n],
-                      data[:,:,1][::n, ::n],
-                      units          = 'width',
-                      width          = 0.0005,
-                      headwidth      = 30,
-                      headlength     = 20,
-                      headaxislength = 20)
+        ax = axes[1]
+        im = ax.pcolormesh(self.Meshes.Phi.Mesh.Degree,
+                           self.Meshes.Theta.Mesh.Degree,
+                           self.Array[3,:,:],
+                           shading='auto',
+                           )
+
+        cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
+
+        cbar.ax.tick_params(labelsize='small')
+
+        cbar.ax.locator_params(nbins=3)
+
+        ax.quiver( self.Meshes.Phi.Mesh.Degree[::n, ::n],
+                  self.Meshes.Theta.Mesh.Degree[::n, ::n],
+                  self.Array[1,::n,::n],
+                  self.Array[2,::n,::n],
+                  units          = 'width',
+                  width          = 0.0005,
+                  headwidth      = 30,
+                  headlength     = 20,
+                  headaxislength = 20)
+
 
 
         plt.show()
@@ -276,9 +298,11 @@ class S1S2(object):
 
         self.Index = Index
 
-        self.S1, self.S2 = GetS1S2(Index = Index,
-                             SizeParam   = SizeParam,
-                             Meshes      = self.Meshes)
+        self.S1, self.S2 = MieS1S2(self.Index,
+                                   self.SizeParam,
+                                   self.Meshes.Phi.Vector.Radian.tolist(),
+                                   self.Meshes.Theta.Vector.Radian.tolist(),
+                                   )
 
 
 
@@ -303,16 +327,13 @@ class S1S2(object):
 
         for ni, ax in enumerate(axes):
 
-            data, Phi = CuPy2NumPy([self.S1, self.S2][ni].__abs__(),
-                                   self.Meshes.Phi.Vector.Radian)
-
-            ax.plot(Phi,
-                    data,
+            ax.plot(self.Meshes.Phi.Vector.Radian,
+                    np.abs( [self.S1, self.S2][ni] ),
                     'k')
 
-            ax.fill_between(Phi,
+            ax.fill_between(self.Meshes.Phi.Vector.Radian,
                             0,
-                            data,
+                            np.abs( [self.S1, self.S2][ni] ),
                             color='C0',
                             alpha=0.4)
 

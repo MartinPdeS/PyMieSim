@@ -50,7 +50,7 @@ cpdef tuple MieS1S2(double_t m,
 
     getS1S2(phi, nmax, pin, taun, SS1, SS2, n2, S1, S2, an, bn)
 
-    return S1, S2
+    return np.asarray(S1), np.asarray(S2)
 
 
 
@@ -70,11 +70,12 @@ cdef void getS1S2(vector[double_t]&     phi,
   cdef:
     double_t mu
     Py_ssize_t i, k, lenght = an.size()
-    complex128_t temp = 0.*J, *SumS1 = &temp, *SumS2 = &temp
+    complex128_t temp0 = 0.*J, temp1 = 0.*J,
+    complex128_t *SumS1 = &temp0, *SumS2 = &temp1
     extern from "complex.h":
       float complex J
 
-  for k in prange(phi.size(), nogil=True, schedule='dynamic', num_threads=5):
+  for k in prange(phi.size(), nogil=True, schedule='dynamic', num_threads=1):
 
       mu = cos(phi[k])
 
@@ -83,10 +84,14 @@ cdef void getS1S2(vector[double_t]&     phi,
       for i in range(lenght):
 
           SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] )  )
-          SS2.push_back( n2[i] * (an[i] * taun[i] + bn[i] * pin[i] )  )
+          SS2.push_back( n2[i] * ( an[i] * taun[i] + bn[i] * pin[i] )  )
+
+
 
       Sum1(SS1, SumS1)
       Sum1(SS2, SumS2)
+
+
 
 
       S1.push_back(SumS1[0])
@@ -96,6 +101,7 @@ cdef void getS1S2(vector[double_t]&     phi,
       SS2.clear()
       pin.clear()
       taun.clear()
+
 
 
 cdef void LowFrequencyMie_ab(double_t m,
@@ -119,12 +125,10 @@ cdef void LowFrequencyMie_ab(double_t m,
     x5 = x4*x
     x6 = x5*x
 
-
     a1 = (-2.*1*J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL*LL
     a2 = (-1*J * x5 / 15) * (m2 - 1) / (2 * m2 + 3)
     b1 = (-1*J * x5 / 45) * (m2 - 1)
     b2 = 0 + 0*J
-
 
     an.push_back(a1)
     an.push_back(a2)
@@ -228,7 +232,7 @@ cdef void Arrange(Py_ssize_t start,
 
 
 
-cdef void Sum1(vector[complex128_t]& arr,
+cdef void Sum1(vector[complex128_t] arr,
                complex128_t* SumVal) nogil:
 
     cdef complex128_t val

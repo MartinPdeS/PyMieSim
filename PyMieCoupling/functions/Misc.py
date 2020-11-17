@@ -30,14 +30,13 @@ def GetStokes(Parallel:      np.ndarray,
     Array = np.empty( [4, *Parallel.shape] )
 
     I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-
     Array[0,:,:] = I
 
     Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
 
-    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).imag / I
+    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
 
-    Array[3,:,:] = -2 * ( Parallel * Perpendicular.conjugate() ).imag / I
+    Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
 
     return Array
 

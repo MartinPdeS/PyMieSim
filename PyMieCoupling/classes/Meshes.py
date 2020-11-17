@@ -11,58 +11,42 @@ class Meshes(object):
 
         self.Npts = Npts
 
-        self.MakeBound(ThetaBound= ThetaBound, PhiBound= PhiBound)
-
-        self.MakeVec()
-
-        self.MakeMeshes()
-
-        self.MakeDeltas()
+        self.MakeProperties(ThetaBound= ThetaBound, PhiBound= PhiBound)
 
 
-    def MakeBound(self, ThetaBound, PhiBound):
-        self.Theta, self.Phi = _Angle(), _Angle()
+    def MakeProperties(self, ThetaBound, PhiBound):
 
-        self.Theta.Boundary = Angle( ThetaBound )
+        ThetaRange              = np.abs(ThetaBound[0] - ThetaBound[1])
+        PhiRange                = np.abs(PhiBound[0] - PhiBound[1])
 
-        self.Phi.Boundary = Angle( PhiBound )
+        ThetaVector             = np.linspace(*ThetaBound, self.Npts)
+        PhiVector               = np.linspace(*PhiBound, self.Npts)
 
-        self.Theta.Range = Angle( np.abs(ThetaBound[0] - ThetaBound[1]) )
+        ThetaMesh, PhiMesh      = np.meshgrid(ThetaVector, PhiVector)
 
-        self.Phi.Range = Angle( np.abs(PhiBound[0] - PhiBound[1]) )
+        ThetaDelta = np.abs(ThetaBound[0] - ThetaBound[1]) / self.Npts
 
+        PhiDelta = np.abs(PhiBound[0] - PhiBound[1]) / self.Npts
 
-    def MakeVec(self):
-        self.Theta.Vector = Angle( np.linspace(*self.Theta.Boundary.Degree, self.Npts) )
+        self.Theta = Namespace(Boundary  = Angle( ThetaBound ),
+                                Range    = Angle( ThetaRange ),
+                                Vector   = Angle( ThetaVector ),
+                                Mesh     = Angle( ThetaMesh ),
+                                Delta    = Angle( PhiDelta )
+                                )
 
-        self.Phi.Vector = Angle( np.linspace(*self.Phi.Boundary.Degree, self.Npts) )
-
-
-    def MakeMeshes(self):
-        ThetaMesh, PhiMesh = np.meshgrid(self.Theta.Vector.Degree, self.Phi.Vector.Degree)
-
-        self.Theta.Mesh, self.Phi.Mesh = Angle(ThetaMesh), Angle(PhiMesh)
-
-
-    def MakeDeltas(self):
-        ThetaDelta = (self.Theta.Boundary.Degree[0] - self.Theta.Boundary.Degree[1]).__abs__() / self.Npts
-
-        PhiDelta = (self.Phi.Boundary.Degree[0] - self.Phi.Boundary.Degree[1]).__abs__() / self.Npts
-
-        self.Theta.Delta, self.Phi.Delta = Angle(ThetaDelta), Angle(PhiDelta)
+        self.Phi = Namespace(Boundary = Angle( PhiBound ),
+                              Range    = Angle( PhiRange ),
+                              Vector   = Angle( PhiVector ),
+                              Mesh     = Angle( PhiMesh ),
+                              Delta    = Angle( PhiDelta )
+                              )
 
 
 
-
-class _Angle(object):
-
-    def __init__(self):
-        self.Boundary = None
-        self.Vector = None
-        self.Mesh = None
-        self.Delta = None
-        self.Range = None
-
+class Namespace:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
 
 class Angle(object):
 
