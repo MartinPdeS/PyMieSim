@@ -1,12 +1,11 @@
 
 import numpy as np
 from PyMieCoupling.classes.Fields import Field
-from PyMieCoupling.classes.Meshes import Meshes as MieMesh
+from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.classes.Representations import S1S2
 from PyMieCoupling.classes.Misc import Source
-from PyMieCoupling.functions.Misc import Make3D
 from PyMieCoupling.cpp.S1S2 import MieS1S2 #_CYTHON PACKAGE
-from PyMieCoupling.cpp.Fields import CCoupling
+
 
 
 class Scatterer(object):
@@ -41,12 +40,12 @@ class Scatterer(object):
                  Diameter:    float,
                  Source:      Source,
                  Index:       float,
-                 Npts:        int     = None,
-                 Meshes:      MieMesh = None,
-                 ThetaBound:  list    = [-180, 180],
-                 ThetaOffset: float   = 0,
-                 PhiBound:    list    = [-180, 180],
-                 PhiOffset:   float   = 0) -> None:
+                 Npts:        int         = None,
+                 Meshes:      ScatMeshes  = None,
+                 ThetaBound:  list        = [-180, 180],
+                 ThetaOffset: float       = 0,
+                 PhiBound:    list        = [-180, 180],
+                 PhiOffset:   float       = 0) -> None:
 
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
@@ -61,20 +60,20 @@ class Scatterer(object):
 
 
     def GenMesh(self,
-                Meshes:      MieMesh = None,
-                ThetaBound:  list    = [-90, 90],
-                PhiBound:    list    = [-90, 90],
-                ThetaOffset: float   = 0,
-                PhiOffset:   float   = 0,
-                Npts:        int     = 101):
+                Meshes:      ScatMeshes = None,
+                ThetaBound:  list       = [-90, 90],
+                PhiBound:    list       = [-90, 90],
+                ThetaOffset: float      = 0,
+                PhiOffset:   float      = 0,
+                Npts:        int        = 101):
 
         if Meshes:
             self.Meshes = Meshes
 
         else:
-            self.Meshes = MieMesh(ThetaBound = np.array(ThetaBound) + ThetaOffset,
-                                  PhiBound   = np.array(PhiBound) + PhiOffset,
-                                  Npts       = Npts)
+            self.Meshes = ScatMeshes(ThetaBound = np.array(ThetaBound) + ThetaOffset,
+                                     PhiBound   = np.array(PhiBound) + PhiOffset,
+                                     Npts       = Npts)
 
 
     @property
@@ -90,7 +89,7 @@ class Scatterer(object):
 
 
     @property
-    def Field(self) -> MieMesh:
+    def Field(self) -> ScatMeshes:
         if self.__Field is None:
             self.GenField()
             return self.__Field

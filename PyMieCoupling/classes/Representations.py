@@ -1,12 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 from matplotlib import cm
 from typing import Tuple
-from PyMieCoupling.classes.Meshes import Meshes as MieMesh
-from PyMieCoupling.functions.Misc import Make3D, GetStokes, GetJones, GetSPF
+from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.cpp.S1S2 import MieS1S2 #_CYTHON PACKAGE
-from PyMieCoupling.functions.converts import CuPy2NumPy
 
 
 class Stokes(object):
@@ -18,7 +15,7 @@ class Stokes(object):
         Description of parameter `Parallel`.
     Perpendicular : np.ndarray
         Description of parameter `Perpendicular`.
-    Meshes : MieMesh
+    Meshes : ScatMeshes
         Meshes of the scatterer.
 
     Attributes
@@ -31,7 +28,7 @@ class Stokes(object):
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        MieMesh) -> None:
+                 Meshes:        ScatMeshes) -> None:
 
         self.Meshes = Meshes
 
@@ -39,7 +36,7 @@ class Stokes(object):
                                Perpendicular = Perpendicular)
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
 
         return '\nStokes Field representation    \
                 \nField dimensions: {0}x{1}      \
@@ -132,7 +129,7 @@ class Jones(object):
         Description of parameter `Parallel`.
     Perpendicular : np.ndarray
         Description of parameter `Perpendicular`.
-    Meshes : MieMesh
+    Meshes : ScatMeshes
         Meshes of the scatterer.
 
     Attributes
@@ -146,14 +143,14 @@ class Jones(object):
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        MieMesh) -> None:
+                 Meshes:        ScatMeshes) -> None:
 
         self.Meshes = Meshes
 
         self.Array = ComputeJones(Parallel, Perpendicular)
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
 
         return '\nJones Field representation     \
                 \nField dimensions: {0}x{1}      \
@@ -190,7 +187,7 @@ class SPF(object):
         Description of parameter `Parallel`.
     Perpendicular : np.ndarray
         Description of parameter `Perpendicular`.
-    Meshes : MieMesh
+    Meshes : ScatMeshes
         Meshes of the scatterer.
 
     Attributes
@@ -204,14 +201,14 @@ class SPF(object):
     def __init__(self,
                  Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        MieMesh) -> None:
+                 Meshes:        ScatMeshes) -> None:
 
         self.Meshes = Meshes
 
         self.Array = GetSPF(Parallel = Parallel, Perpendicular = Perpendicular)
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
 
         return '\nScattering Phase Function      \
                 \nField dimensions: {0}x{1}      \
@@ -244,13 +241,9 @@ class SPF(object):
 
         fig, ax = self.GenFig()
 
-        data, Phi, Theta = CuPy2NumPy(self.Array,
-                                      self.Meshes.Phi.Mesh.Radian,
-                                      self.Meshes.Theta.Mesh.Radian)
-
-        SPF3D = Make3D(data,
-                       Phi,
-                       Theta)
+        SPF3D = Make3D(self.Array,
+                       self.Meshes.Phi.Mesh.Radian,
+                       self.Meshes.Theta.Mesh.Radian)
 
         ax.plot_surface(*SPF3D,
                          rstride     = 3,
@@ -273,7 +266,7 @@ class S1S2(object):
         Description of parameter `SizeParam`.
     Index : float
         Description of parameter `Index`.
-    Meshes : MieMesh
+    Meshes : ScatMeshes
         Description of parameter `Meshes`.
     CacheTrunk : bool
         Description of parameter `CacheTrunk`.
@@ -291,7 +284,7 @@ class S1S2(object):
     def __init__(self,
                  SizeParam:  np.array,
                  Index:      float,
-                 Meshes:     MieMesh,
+                 Meshes:     ScatMeshes,
                  CacheTrunk: bool = None) -> None:
 
         self.Meshes, self.SizeParam = Meshes, SizeParam
@@ -303,7 +296,6 @@ class S1S2(object):
                                    self.Meshes.Phi.Vector.Radian.tolist(),
                                    self.Meshes.Theta.Vector.Radian.tolist(),
                                    )
-
 
 
     def GenFig(self) -> Tuple[plt.figure, plt.axes]:
@@ -321,26 +313,28 @@ class S1S2(object):
         return fig, [ax0, ax1]
 
 
-    def Plot(self):
+    def Plot(self) -> None:
 
         fig, axes = self.GenFig()
+
+        data = np.abs( [self.S1, self.S2] )
 
         for ni, ax in enumerate(axes):
 
             ax.plot(self.Meshes.Phi.Vector.Radian,
-                    np.abs( [self.S1, self.S2][ni] ),
+                    data[ni],
                     'k')
 
             ax.fill_between(self.Meshes.Phi.Vector.Radian,
                             0,
-                            np.abs( [self.S1, self.S2][ni] ),
+                            data[ni],
                             color='C0',
                             alpha=0.4)
 
         plt.show()
 
 
-    def __repr__(self):
+    def __repr__(self) -> str:
 
         return '\nScattering Phase Function      \
                 \nField dimensions: {0}x{1}      \
@@ -352,9 +346,54 @@ class S1S2(object):
 
 
 
+def GetJones(Parallel:      np.ndarray,
+             Perpendicular: np.ndarray) -> np.ndarray:
+
+    Array = np.empty( [2, * Parallel.shape] )
+
+    delta = np.angle(Parallel) - np.angle(Perpendicular)
+
+    A = Parallel.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
+
+    B = Perpendicular.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
+
+    return np.array([A, B * np.exp(complex(0,1)*delta)])
 
 
 
 
+def GetStokes(Parallel:      np.ndarray,
+              Perpendicular: np.ndarray) -> np.ndarray:
+
+    Array = np.empty( [4, *Parallel.shape] )
+
+    I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
+    Array[0,:,:] = I
+
+    Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
+
+    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
+
+    Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
+
+    return Array
+
+
+
+def Make3D(item:      np.array,
+           PhiMesh:   np.array,
+           ThetaMesh: np.array) -> Tuple[np.array, np.array, np.array]:
+
+    X = item * np.sin(PhiMesh) * np.cos(ThetaMesh)
+
+    Y = item * np.sin(PhiMesh) * np.sin(ThetaMesh)
+
+    Z = item * np.cos(PhiMesh)
+
+    return X, Y, Z
+
+
+def GetSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
+    return Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
 # -

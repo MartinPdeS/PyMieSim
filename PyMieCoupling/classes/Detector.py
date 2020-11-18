@@ -2,8 +2,8 @@
 import numpy as np
 import fibermodes
 
-from PyMieCoupling.functions.converts import rad2deg, deg2rad, Angle2Direct, Direct2Angle, NA2Angle
-from PyMieCoupling.classes.Meshes import Meshes
+from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle
+from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.functions.Misc import GetLP
 from PyMieCoupling.functions.Misc import Coupling
 from PyMieCoupling.classes.Misc import Source, LPField, LPFourier
@@ -93,9 +93,9 @@ class Photodiode(object):
     def GenMeshes(self):
         self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA)
 
-        self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
-                             PhiBound   = (self.__PhiBound) + self.__PhiOffset)
+        self.Meshes = ScatMeshes(Npts       = self.Npts,
+                                 ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
+                                 PhiBound   = (self.__PhiBound) + self.__PhiOffset)
 
 
     def GenField(self):
@@ -112,9 +112,9 @@ class Photodiode(object):
 
         self.__ThetaBound = val
 
-        self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+        self.Meshes = ScatMeshes(Npts       = self.Npts,
+                                 ThetaBound = self.__ThetaBound,
+                                 PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -129,9 +129,9 @@ class Photodiode(object):
 
         self.__PhiBound = val
 
-        self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+        self.Meshes = ScatMeshes(Npts       = self.Npts,
+                                 ThetaBound = self.__ThetaBound,
+                                 PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -287,9 +287,9 @@ class LPmode(object):
 
         self.__PhiBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__PhiOffset
 
-        self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+        self.Meshes = ScatMeshes(Npts       = self.Npts,
+                                 ThetaBound = self.__ThetaBound,
+                                 PhiBound   = self.__PhiBound)
 
 
 
@@ -312,9 +312,9 @@ class LPmode(object):
 
         self.__ThetaBound = np.array( val )
 
-        self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+        self.Meshes = ScatMeshes(Npts       = self.Npts,
+                                 ThetaBound = self.__ThetaBound,
+                                 PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 
@@ -329,9 +329,9 @@ class LPmode(object):
 
         self.__PhiBound = np.array( val )
 
-        self.Meshes = Meshes(Npts       = self.Npts,
-                             ThetaBound = self.__ThetaBound,
-                             PhiBound   = self.__PhiBound)
+        self.Meshes = ScatMeshes(Npts       = self.Npts,
+                                 ThetaBound = self.__ThetaBound,
+                                 PhiBound   = self.__PhiBound)
 
         self.Fourier.Meshes = self.Meshes
 

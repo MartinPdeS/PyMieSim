@@ -66,7 +66,8 @@ LP01.PhiOffset = Result.x[0]
 
 LP01.ThetaOffset = Result.x[1]
 
-"""
+
+
 DF = Frame(RIList        = RIList,
            DiameterList  = DiameterList,
            Detector      = LP01,
@@ -78,7 +79,7 @@ DF.plot(y='STD')
 
 plt.show()
 
-"""
+
 
 
 

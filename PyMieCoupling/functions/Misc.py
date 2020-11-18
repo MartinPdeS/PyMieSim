@@ -6,58 +6,7 @@ from PyMieCoupling.cpp.S1S2 import MieS1S2
 
 
 
-def Make3D(item:      np.array,
-           PhiMesh:   np.array,
-           ThetaMesh: np.array) -> Tuple[np.array, np.array, np.array]:
 
-    X = item * np.sin(PhiMesh) * np.cos(ThetaMesh)
-
-    Y = item * np.sin(PhiMesh) * np.sin(ThetaMesh)
-
-    Z = item * np.cos(PhiMesh)
-
-    return X, Y, Z
-
-
-def GetSPF(**kwargs):
-    return ComputeSPF(**kwargs)
-
-
-
-def GetStokes(Parallel:      np.ndarray,
-              Perpendicular: np.ndarray) -> np.ndarray:
-
-    Array = np.empty( [4, *Parallel.shape] )
-
-    I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-    Array[0,:,:] = I
-
-    Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
-
-    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
-
-    Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
-
-    return Array
-
-
-def GetJones(Parallel:      np.ndarray,
-             Perpendicular: np.ndarray) -> np.ndarray:
-
-    Array = np.empty( [2, * Parallel.shape] )
-
-    delta = np.angle(Parallel) - np.angle(Perpendicular)
-
-    A = Parallel.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
-
-    B = Perpendicular.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
-
-    return np.array([A, B * np.exp(complex(0,1)*delta)])
-
-
-
-def ComputeSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
-    return Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
 
 

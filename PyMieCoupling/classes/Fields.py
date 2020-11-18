@@ -1,14 +1,14 @@
 
 import numpy as np
 from PyMieCoupling.classes.Representations import Stokes, Jones, SPF
-from PyMieCoupling.classes.Meshes import Meshes as MieMesh
+from PyMieCoupling.classes.Meshes import ScatMeshes
 
 class Field(object):
 
     def __init__(self,
                  Perpendicular: np.ndarray,
                  Parallel:      np.ndarray,
-                 Meshes:        MieMesh):
+                 Meshes:        ScatMeshes):
         """
         Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
 
