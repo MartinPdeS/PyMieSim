@@ -27,26 +27,19 @@ requirements = ['numpy',
                 ]
 
 
-ext_modules = [ Extension("PyMieCoupling.cpp.S1S2",
+ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                          ["PyMieCoupling/cython/S1S2.pyx"],
                          include_dirs = ['.'],
                          language="c++",
-                         extra_compile_args=["-std=c++11", '-fopenmp'],
-                         extra_link_args=["-std=c++11",'-fopenmp']),
+                         extra_compile_args=["-std=c++11", '-fopenmp', '-lboost_filesystem','-lboost_system'],
+                         extra_link_args=["-std=c++11",'-fopenmp','-lboost_filesystem','-lboost_system']),
 
-                Extension("PyMieCoupling.cpp.Fields",
+                Extension("PyMieCoupling.cython.Fields",
                          ["PyMieCoupling/cython/Fields.pyx"],
                          include_dirs = ['.'],
                          language="c++",
-                         extra_compile_args=["-std=c++11", '-fopenmp'],
-                         extra_link_args=["-std=c++11",'-fopenmp']),
-
-               Extension("PyMieCoupling.cpp.math",
-                         ["PyMieCoupling/cython/math.pyx"],
-                         include_dirs = ['.'],
-                         language="c++",
-                         extra_compile_args=["-std=c++11",'-fopenmp'],
-                         extra_link_args=["-std=c++11", '-fopenmp',]),
+                         extra_compile_args=["-std=c++11", '-fopenmp','-lboost_filesystem','-lboost_system'],
+                         extra_link_args=["-std=c++11",'-fopenmp','-lboost_filesystem','-lboost_system']),
                          ]
 
 setup_dict = dict(

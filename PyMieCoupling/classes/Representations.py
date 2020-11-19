@@ -294,7 +294,6 @@ class S1S2(object):
         self.S1, self.S2 = MieS1S2(self.Index,
                                    self.SizeParam,
                                    self.Meshes.Phi.Vector.Radian.tolist(),
-                                   self.Meshes.Theta.Vector.Radian.tolist(),
                                    )
 
 

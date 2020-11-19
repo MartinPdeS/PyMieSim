@@ -4,7 +4,7 @@ from PyMieCoupling.classes.Fields import Field
 from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.classes.Representations import S1S2
 from PyMieCoupling.classes.Misc import Source
-from PyMieCoupling.cpp.S1S2 import MieS1S2 #_CYTHON PACKAGE
+from PyMieCoupling.cython.S1S2 import MieS1S2 #_CYTHON PACKAGE
 
 
 
@@ -108,7 +108,6 @@ class Scatterer(object):
         S1, S2 = MieS1S2(self.Index,
                          self.SizeParam,
                          self.Meshes.Phi.Vector.Radian.tolist(),
-                         self.Meshes.Theta.Vector.Radian.tolist(),
                          )
 
         Parallel = np.outer(S1, np.sin(self.Meshes.Theta.Vector.Radian))

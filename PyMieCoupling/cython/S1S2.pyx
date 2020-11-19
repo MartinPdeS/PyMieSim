@@ -27,17 +27,18 @@ ctypedef double double_t
 ctypedef double complex complex128_t
 ctypedef int int_t
 
+cdef extern from "PyMieCoupling/cpp/MieS1S2.cpp":
+    cdef void test(double a, double b, vector[double_t] phi);
 
 cdef double_t pi = 3.1415926
 
 
 cpdef tuple MieS1S2(double_t m,
                     double_t x,
-                    vector[double_t] phi,
-                    vector[double_t] theta):
+                    vector[double_t] phi):
 
     cdef:
-      Py_ssize_t nmax = <Py_ssize_t>(2 + x + 4 * pow(x,1/3) )
+      Py_ssize_t nmax = <Py_ssize_t>(2 + x + 4 * pow(x,1./3.) )
       vector[double_t] n, n2
       vector[complex128_t] SS1, SS2, an, bn, pin, taun, S1, S2
 
@@ -49,6 +50,10 @@ cpdef tuple MieS1S2(double_t m,
         Mie_ab(m,x, nmax, n, an, bn)
 
     getS1S2(phi, nmax, pin, taun, SS1, SS2, n2, S1, S2, an, bn)
+
+
+    #test(m, x, phi)
+
 
     return np.asarray(S1), np.asarray(S2)
 
@@ -70,12 +75,11 @@ cdef void getS1S2(vector[double_t]&     phi,
   cdef:
     double_t mu
     Py_ssize_t i, k, lenght = an.size()
-    complex128_t temp0 = 0.*J, temp1 = 0.*J,
+    complex128_t temp0 = 0.*1j, temp1 = 0.*1j,
     complex128_t *SumS1 = &temp0, *SumS2 = &temp1
-    extern from "complex.h":
-      float complex J
 
-  for k in prange(phi.size(), nogil=True, schedule='dynamic', num_threads=1):
+
+  for k in range(phi.size()):
 
       mu = cos(phi[k])
 
@@ -87,11 +91,8 @@ cdef void getS1S2(vector[double_t]&     phi,
           SS2.push_back( n2[i] * ( an[i] * taun[i] + bn[i] * pin[i] )  )
 
 
-
       Sum1(SS1, SumS1)
       Sum1(SS2, SumS2)
-
-
 
 
       S1.push_back(SumS1[0])
@@ -125,10 +126,10 @@ cdef void LowFrequencyMie_ab(double_t m,
     x5 = x4*x
     x6 = x5*x
 
-    a1 = (-2.*1*J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL*LL
-    a2 = (-1*J * x5 / 15) * (m2 - 1) / (2 * m2 + 3)
-    b1 = (-1*J * x5 / 45) * (m2 - 1)
-    b2 = 0 + 0*J
+    a1 = (-2.*1*1j * x3 / 3.) * LL - (2.*1j * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL*LL
+    a2 = (-1*1j * x5 / 15) * (m2 - 1) / (2 * m2 + 3)
+    b1 = (-1*1j * x5 / 45) * (m2 - 1)
+    b2 = 0 + 0*1j
 
     an.push_back(a1)
     an.push_back(a2)
@@ -168,24 +169,23 @@ cdef void Mie_ab(double_t m,
       Dn[i-1] = (i / mx) - (1 / (Dn[i] + i / mx))
 
 
-    with nogil:
-      for i in range(nmax):
-        px.push_back(  temp * jvCython( n[i] + 0.5, x ) )
-        chx.push_back(-temp * yvCython( n[i] + 0.5, x ) )
+    for i in range(nmax):
+      px.push_back(  temp * jvCython( n[i] + 0.5, x ) )
+      chx.push_back(-temp * yvCython( n[i] + 0.5, x ) )
 
-        p1x.push_back(  temp * jvCython( n[i] + 0.5, x ) )
-        ch1x.push_back(-temp * yvCython( n[i] + 0.5, x ) )
+      p1x.push_back(  temp * jvCython( n[i] + 0.5, x ) )
+      ch1x.push_back(-temp * yvCython( n[i] + 0.5, x ) )
 
-        gsx.push_back( px[i] - 1J * chx[i] )
-        gs1x.push_back( p1x[i] - 1J * ch1x[i] )
+      gsx.push_back( px[i] - 1j * chx[i] )
+      gs1x.push_back( p1x[i] - 1j * ch1x[i] )
 
-        D.push_back(Dn[i+1])
+      D.push_back(Dn[i+1])
 
-        da.push_back( D[i] / m + n[i] / x )
-        db.push_back( m * D[i] + n[i] / x )
+      da.push_back( D[i] / m + n[i] / x )
+      db.push_back( m * D[i] + n[i] / x )
 
-        an.push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) )
-        bn.push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) )
+      an.push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) )
+      bn.push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) )
 
 
 
@@ -196,7 +196,7 @@ cdef void MiePiTau(double_t mu,
                    int_t nmax,
                    vector[complex128_t]& pin,
                    vector[complex128_t]& taun
-                   ) nogil:
+                   ):
 
 
 
@@ -207,7 +207,7 @@ cdef void MiePiTau(double_t mu,
 
   cdef Py_ssize_t i
 
-  for i in prange(2,nmax, num_threads=1):
+  for i in range(2,nmax):
     pin.push_back( ( (2 * i + 1) * ( mu * pin[i-1] ) - (i + 1) * pin[i-2] ) / i )
     taun.push_back( (i + 1) * mu * pin[i] - (i + 2) * pin[i-1] )
 
@@ -219,10 +219,10 @@ cdef void MiePiTau(double_t mu,
 cdef void Arrange(Py_ssize_t start,
                   Py_ssize_t end,
                   vector[double_t]& n,
-                  vector[double_t]& n2) nogil:
+                  vector[double_t]& n2):
     cdef Py_ssize_t i
 
-    for i in range(start, end):
+    for i in range(start-1, end-1):
         n.push_back(i)
         n2.push_back( (2 * (<double_t>i+1) + 1) / ((<double_t>i+1) * (<double_t>i + 2)) )
 
@@ -233,7 +233,7 @@ cdef void Arrange(Py_ssize_t start,
 
 
 cdef void Sum1(vector[complex128_t] arr,
-               complex128_t* SumVal) nogil:
+               complex128_t* SumVal):
 
     cdef complex128_t val
     SumVal[0] = 0.

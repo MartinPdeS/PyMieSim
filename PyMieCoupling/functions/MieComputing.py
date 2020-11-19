@@ -8,14 +8,16 @@ def GetS1S2(m,x,angle):
   #nmax = np.round(2+x+4*np.power(x,1/3))
   MuList = np.cos(angle)
   S1, S2 = [], []
+
   for mu in MuList:
         nmax = int(2+x+4*(x**(1/3)))
         an, bn = AutoMie_ab(m,x)
         pin, taun = MiePiTau(mu,nmax)
         n = np.arange(1,int(nmax)+1)
         n2 = (2*n+1)/(n*(n+1))
-        S1.append( np.sum(n2[0:len(an)]*(an*pin[0:len(an)]+bn*taun[0:len(bn)])) )
-        S2.append( np.sum(n2[0:len(an)]*(an*taun[0:len(an)]+bn*pin[0:len(bn)])) )
+        S1.append( np.sum( n2[0:len(an)] * ( an*pin[0:len(an)] + bn*taun[0:len(bn)] ) ) )
+        S2.append( np.sum( n2[0:len(an)] * ( an*taun[0:len(an)] + bn*pin[0:len(bn)] ) ) )
+
 
 
   return S1, S2
