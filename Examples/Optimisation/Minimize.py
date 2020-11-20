@@ -26,7 +26,7 @@ Fiber = fiber(core_radius = 4.2e-6,
 LP01 = LPmode(Fiber       = Fiber,
               Mode        = (0, 1),
               Source      = LightSource,
-              Npts        = 31,
+              Npts        = 101,
               ThetaOffset = 0,
               PhiOffset   = 0,
               Magnification = 0.1)

@@ -52,7 +52,6 @@ class Scatterer(object):
 
         self.SizeParam = Source.k * ( self.Diameter * 2 )
 
-
         self.GenMesh(Meshes, ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts)
 
         self.__S1S2, self.__Field = None, None
@@ -103,7 +102,6 @@ class Scatterer(object):
         with the PyMieScatt package.
 
         """
-
 
         S1, S2 = MieS1S2(self.Index,
                          self.SizeParam,

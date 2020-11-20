@@ -51,7 +51,7 @@ std::tuple<std::vector<double> , std::vector<double>> Arrange(double start, doub
 {
   std::vector<double> Vec0;
   std::vector<double> Vec1;
-  for (double i = start; i < stop; i++)
+  for (double i = start-1; i < stop-1; i++)
   {
     Vec0.push_back(i);
     Vec1.push_back( ( 2 * (i + 1) + 1) / ( (i + 1) * (i + 2) ) ) ;

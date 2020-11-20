@@ -616,8 +616,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__PyMieCoupling__cpp__Fields
-#define __PYX_HAVE_API__PyMieCoupling__cpp__Fields
+#define __PYX_HAVE__PyMieCoupling__cython__Fields
+#define __PYX_HAVE_API__PyMieCoupling__cython__Fields
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -1077,7 +1077,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  * ctypedef double complex complex128_t
  * ctypedef int int_t
  */
-typedef double __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t;
+typedef double __pyx_t_13PyMieCoupling_6cython_6Fields_double_t;
 
 /* "PyMieCoupling/cython/Fields.pyx":26
  * ctypedef double double_t
@@ -1086,7 +1086,7 @@ typedef double __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t;
  * 
  * 
  */
-typedef int __pyx_t_13PyMieCoupling_3cpp_6Fields_int_t;
+typedef int __pyx_t_13PyMieCoupling_6cython_6Fields_int_t;
 /* Declarations.proto */
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
@@ -1688,26 +1688,26 @@ static double (*__pyx_fuse_1__pyx_f_5scipy_7special_14cython_special_jv)(double,
 static __pyx_t_double_complex (*__pyx_fuse_0__pyx_f_5scipy_7special_14cython_special_yv)(double, __pyx_t_double_complex, int __pyx_skip_dispatch); /*proto*/
 static double (*__pyx_fuse_1__pyx_f_5scipy_7special_14cython_special_yv)(double, double, int __pyx_skip_dispatch); /*proto*/
 
-/* Module declarations from 'PyMieCoupling.cpp.Fields' */
-static __pyx_t_double_complex __pyx_v_13PyMieCoupling_3cpp_6Fields_J;
-static PyObject *__pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<std::vector<__pyx_t_double_complex> >  &, int __pyx_skip_dispatch); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_S1S2toFields(std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<std::vector<__pyx_t_double_complex> >  &, std::vector<std::vector<__pyx_t_double_complex> >  &, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t *, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t *, std::vector<std::vector<__pyx_t_double_complex> >  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, unsigned long &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, unsigned long, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t> , std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, unsigned long, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MiePiTau(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t, unsigned long, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Arrange(unsigned long, unsigned long, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &); /*proto*/
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Sum1(std::vector<__pyx_t_double_complex> , __pyx_t_double_complex *); /*proto*/
-static __pyx_t_double_complex __pyx_f_13PyMieCoupling_3cpp_6Fields_MultiplyComplex(__pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
-static std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(PyObject *); /*proto*/
+/* Module declarations from 'PyMieCoupling.cython.Fields' */
+static __pyx_t_double_complex __pyx_v_13PyMieCoupling_6cython_6Fields_J;
+static PyObject *__pyx_f_13PyMieCoupling_6cython_6Fields_Coupling(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<std::vector<__pyx_t_double_complex> >  &, int __pyx_skip_dispatch); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_S1S2toFields(std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<std::vector<__pyx_t_double_complex> >  &, std::vector<std::vector<__pyx_t_double_complex> >  &, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t *, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t *, std::vector<std::vector<__pyx_t_double_complex> >  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_MieS1S2(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_getS1S2(std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, unsigned long &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_LowFrequencyMie_ab(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t, unsigned long, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t> , std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t, unsigned long, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_MiePiTau(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t, unsigned long, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_Arrange(unsigned long, unsigned long, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &); /*proto*/
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_Sum1(std::vector<__pyx_t_double_complex> , __pyx_t_double_complex *); /*proto*/
+static __pyx_t_double_complex __pyx_f_13PyMieCoupling_6cython_6Fields_MultiplyComplex(__pyx_t_double_complex, __pyx_t_double_complex); /*proto*/
+static std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(PyObject *); /*proto*/
 static std::vector<__pyx_t_double_complex>  __pyx_convert_vector_from_py___pyx_t_double_complex(PyObject *); /*proto*/
 static std::vector<std::vector<__pyx_t_double_complex> >  __pyx_convert_vector_from_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(PyObject *); /*proto*/
-#define __Pyx_MODULE_NAME "PyMieCoupling.cpp.Fields"
-extern int __pyx_module_is_main_PyMieCoupling__cpp__Fields;
-int __pyx_module_is_main_PyMieCoupling__cpp__Fields = 0;
+#define __Pyx_MODULE_NAME "PyMieCoupling.cython.Fields"
+extern int __pyx_module_is_main_PyMieCoupling__cython__Fields;
+int __pyx_module_is_main_PyMieCoupling__cython__Fields = 0;
 
-/* Implementation of 'PyMieCoupling.cpp.Fields' */
+/* Implementation of 'PyMieCoupling.cython.Fields' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_[] = "##############################";
@@ -1750,7 +1750,7 @@ static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_theta;
 static PyObject *__pyx_n_s_x;
-static PyObject *__pyx_pf_13PyMieCoupling_3cpp_6Fields_Coupling(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_phi, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Fourier); /* proto */
+static PyObject *__pyx_pf_13PyMieCoupling_6cython_6Fields_Coupling(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_phi, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Fourier); /* proto */
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
 /* Late includes */
@@ -1763,16 +1763,16 @@ static PyObject *__pyx_tuple__3;
  *                      vector[double_t]&             phi,
  */
 
-static PyObject *__pyx_pw_13PyMieCoupling_3cpp_6Fields_1Coupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_phi, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Fourier, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_13PyMieCoupling_6cython_6Fields_1Coupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_13PyMieCoupling_6cython_6Fields_Coupling(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_phi, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Fourier, CYTHON_UNUSED int __pyx_skip_dispatch) {
   std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Parallel;
   std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Perpendicular;
   std::vector<__pyx_t_double_complex>  __pyx_v_S1;
   std::vector<__pyx_t_double_complex>  __pyx_v_S2;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_temp0;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_temp1;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t *__pyx_v_SumParallel;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t *__pyx_v_SumPerpendicular;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_temp0;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_temp1;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t *__pyx_v_SumParallel;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t *__pyx_v_SumPerpendicular;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   std::vector<__pyx_t_double_complex>  __pyx_t_1;
@@ -1855,7 +1855,7 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_t_13PyMieCo
  * 
  *     S1S2toFields(S1, S2, theta, Parallel, Perpendicular, SumParallel, SumPerpendicular, Fourier)
  */
-  __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_v_m, __pyx_v_x, __pyx_v_phi, __pyx_v_theta, __pyx_v_S1, __pyx_v_S2);
+  __pyx_f_13PyMieCoupling_6cython_6Fields_MieS1S2(__pyx_v_m, __pyx_v_x, __pyx_v_phi, __pyx_v_theta, __pyx_v_S1, __pyx_v_S2);
 
   /* "PyMieCoupling/cython/Fields.pyx":59
  *     MieS1S2(m, x, phi, theta, S1, S2)
@@ -1864,7 +1864,7 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_t_13PyMieCo
  * 
  *     return SumParallel[0], SumPerpendicular[0]
  */
-  __pyx_f_13PyMieCoupling_3cpp_6Fields_S1S2toFields(__pyx_v_S1, __pyx_v_S2, __pyx_v_theta, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SumParallel, __pyx_v_SumPerpendicular, __pyx_v_Fourier);
+  __pyx_f_13PyMieCoupling_6cython_6Fields_S1S2toFields(__pyx_v_S1, __pyx_v_S2, __pyx_v_theta, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SumParallel, __pyx_v_SumPerpendicular, __pyx_v_Fourier);
 
   /* "PyMieCoupling/cython/Fields.pyx":61
  *     S1S2toFields(S1, S2, theta, Parallel, Perpendicular, SumParallel, SumPerpendicular, Fourier)
@@ -1903,7 +1903,7 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_t_13PyMieCo
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("PyMieCoupling.cpp.Fields.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieCoupling.cython.Fields.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -1912,12 +1912,12 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_t_13PyMieCo
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13PyMieCoupling_3cpp_6Fields_1Coupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_13PyMieCoupling_3cpp_6Fields_1Coupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_phi;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_theta;
+static PyObject *__pyx_pw_13PyMieCoupling_6cython_6Fields_1Coupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_13PyMieCoupling_6cython_6Fields_1Coupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_phi;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_theta;
   std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Fourier;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -1989,26 +1989,26 @@ static PyObject *__pyx_pw_13PyMieCoupling_3cpp_6Fields_1Coupling(PyObject *__pyx
     }
     __pyx_v_m = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_m == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 38, __pyx_L3_error)
     __pyx_v_x = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_x == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L3_error)
-    __pyx_v_phi = __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
-    __pyx_v_theta = __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
+    __pyx_v_phi = __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(values[2]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 40, __pyx_L3_error)
+    __pyx_v_theta = __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(values[3]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 41, __pyx_L3_error)
     __pyx_v_Fourier = __pyx_convert_vector_from_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(values[4]); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("Coupling", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 38, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieCoupling.cpp.Fields.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieCoupling.cython.Fields.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_self, __pyx_v_m, __pyx_v_x, __pyx_v_phi, __pyx_v_theta, __pyx_v_Fourier);
+  __pyx_r = __pyx_pf_13PyMieCoupling_6cython_6Fields_Coupling(__pyx_self, __pyx_v_m, __pyx_v_x, __pyx_v_phi, __pyx_v_theta, __pyx_v_Fourier);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13PyMieCoupling_3cpp_6Fields_Coupling(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_phi, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Fourier) {
+static PyObject *__pyx_pf_13PyMieCoupling_6cython_6Fields_Coupling(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_phi, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_Fourier) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2017,7 +2017,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_6Fields_Coupling(CYTHON_UNUSED Py
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("Coupling", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_13PyMieCoupling_3cpp_6Fields_Coupling(__pyx_v_m, __pyx_v_x, __pyx_v_phi, __pyx_v_theta, __pyx_v_Fourier, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_13PyMieCoupling_6cython_6Fields_Coupling(__pyx_v_m, __pyx_v_x, __pyx_v_phi, __pyx_v_theta, __pyx_v_Fourier, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2026,7 +2026,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_6Fields_Coupling(CYTHON_UNUSED Py
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieCoupling.cpp.Fields.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieCoupling.cython.Fields.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2042,15 +2042,15 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_6Fields_Coupling(CYTHON_UNUSED Py
  *                        vector[double_t]&             theta,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_S1S2toFields(std::vector<__pyx_t_double_complex>  &__pyx_v_S1, std::vector<__pyx_t_double_complex>  &__pyx_v_S2, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Parallel, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Perpendicular, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t *__pyx_v_SumParallel, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t *__pyx_v_SumPerpendicular, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Fourier) {
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_S1S2toFields(std::vector<__pyx_t_double_complex>  &__pyx_v_S1, std::vector<__pyx_t_double_complex>  &__pyx_v_S2, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_theta, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Parallel, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Perpendicular, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t *__pyx_v_SumParallel, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t *__pyx_v_SumPerpendicular, std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_Fourier) {
   unsigned long __pyx_v_i;
   unsigned long __pyx_v_k;
   __Pyx_RefNannyDeclarations
   std::vector<__pyx_t_double_complex> ::size_type __pyx_t_1;
   std::vector<__pyx_t_double_complex> ::size_type __pyx_t_2;
   unsigned long __pyx_t_3;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t> ::size_type __pyx_t_4;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t> ::size_type __pyx_t_5;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t> ::size_type __pyx_t_4;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t> ::size_type __pyx_t_5;
   unsigned long __pyx_t_6;
   __pyx_t_double_complex __pyx_t_7;
   __pyx_t_double_complex __pyx_t_8;
@@ -2109,7 +2109,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_S1S2toFields(std::vector<__pyx_
  */
       __pyx_t_7 = ((__pyx_v_Parallel[__pyx_v_i])[__pyx_v_k]);
       __pyx_t_8 = ((__pyx_v_Fourier[__pyx_v_i])[__pyx_v_k]);
-      (__pyx_v_SumParallel[0]) = ((__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t)__Pyx_c_abs_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8)))));
+      (__pyx_v_SumParallel[0]) = ((__pyx_t_13PyMieCoupling_6cython_6Fields_double_t)__Pyx_c_abs_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8)))));
 
       /* "PyMieCoupling/cython/Fields.pyx":84
  *             Perpendicular[i][k]  = S2[i] * cos(theta[k])
@@ -2120,7 +2120,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_S1S2toFields(std::vector<__pyx_
  */
       __pyx_t_8 = ((__pyx_v_Perpendicular[__pyx_v_i])[__pyx_v_k]);
       __pyx_t_7 = ((__pyx_v_Fourier[__pyx_v_i])[__pyx_v_k]);
-      (__pyx_v_SumPerpendicular[0]) = ((__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t)__Pyx_c_abs_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7)))));
+      (__pyx_v_SumPerpendicular[0]) = ((__pyx_t_13PyMieCoupling_6cython_6Fields_double_t)__Pyx_c_abs_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7)))));
     }
   }
 
@@ -2144,10 +2144,10 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_S1S2toFields(std::vector<__pyx_
  *                    vector[double_t]&     phi,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_phi, CYTHON_UNUSED std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_theta, std::vector<__pyx_t_double_complex>  &__pyx_v_S1, std::vector<__pyx_t_double_complex>  &__pyx_v_S2) {
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_MieS1S2(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_phi, CYTHON_UNUSED std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_theta, std::vector<__pyx_t_double_complex>  &__pyx_v_S1, std::vector<__pyx_t_double_complex>  &__pyx_v_S2) {
   unsigned long __pyx_v_nmax;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_n;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_n2;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_n;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_n2;
   std::vector<__pyx_t_double_complex>  __pyx_v_SS1;
   std::vector<__pyx_t_double_complex>  __pyx_v_SS2;
   std::vector<__pyx_t_double_complex>  __pyx_v_an;
@@ -2177,7 +2177,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling
  *     print('##############################')
  * 
  */
-  __pyx_f_13PyMieCoupling_3cpp_6Fields_Arrange(1, (__pyx_v_nmax + 1), __pyx_v_n, __pyx_v_n2);
+  __pyx_f_13PyMieCoupling_6cython_6Fields_Arrange(1, (__pyx_v_nmax + 1), __pyx_v_n, __pyx_v_n2);
 
   /* "PyMieCoupling/cython/Fields.pyx":103
  * 
@@ -2205,7 +2205,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling
  *     else:
  *         Mie_ab(m,x, nmax, n, an, bn)
  */
-    __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_v_m, __pyx_v_x, __pyx_v_nmax, __pyx_v_n, __pyx_v_an, __pyx_v_bn);
+    __pyx_f_13PyMieCoupling_6cython_6Fields_LowFrequencyMie_ab(__pyx_v_m, __pyx_v_x, __pyx_v_nmax, __pyx_v_n, __pyx_v_an, __pyx_v_bn);
 
     /* "PyMieCoupling/cython/Fields.pyx":105
  *     print('##############################')
@@ -2225,7 +2225,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling
  *     getS1S2(phi, nmax, pin, taun, SS1, SS2, n2, S1, S2, an, bn)
  */
   /*else*/ {
-    __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_v_m, __pyx_v_x, __pyx_v_nmax, __pyx_v_n, __pyx_v_an, __pyx_v_bn);
+    __pyx_f_13PyMieCoupling_6cython_6Fields_Mie_ab(__pyx_v_m, __pyx_v_x, __pyx_v_nmax, __pyx_v_n, __pyx_v_an, __pyx_v_bn);
   }
   __pyx_L3:;
 
@@ -2236,7 +2236,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling
  * 
  * 
  */
-  __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(__pyx_v_phi, __pyx_v_nmax, __pyx_v_pin, __pyx_v_taun, __pyx_v_SS1, __pyx_v_SS2, __pyx_v_n2, __pyx_v_S1, __pyx_v_S2, __pyx_v_an, __pyx_v_bn);
+  __pyx_f_13PyMieCoupling_6cython_6Fields_getS1S2(__pyx_v_phi, __pyx_v_nmax, __pyx_v_pin, __pyx_v_taun, __pyx_v_SS1, __pyx_v_SS2, __pyx_v_n2, __pyx_v_S1, __pyx_v_S2, __pyx_v_an, __pyx_v_bn);
 
   /* "PyMieCoupling/cython/Fields.pyx":89
  * 
@@ -2249,7 +2249,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyMieCoupling.cpp.Fields.MieS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("PyMieCoupling.cython.Fields.MieS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -2262,8 +2262,8 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MieS1S2(__pyx_t_13PyMieCoupling
  *                   vector[complex128_t]& pin,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_phi, unsigned long &__pyx_v_nmax, std::vector<__pyx_t_double_complex>  &__pyx_v_pin, std::vector<__pyx_t_double_complex>  &__pyx_v_taun, std::vector<__pyx_t_double_complex>  &__pyx_v_SS1, std::vector<__pyx_t_double_complex>  &__pyx_v_SS2, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_n2, std::vector<__pyx_t_double_complex>  &__pyx_v_S2, std::vector<__pyx_t_double_complex>  &__pyx_v_S1, std::vector<__pyx_t_double_complex>  &__pyx_v_an, std::vector<__pyx_t_double_complex>  &__pyx_v_bn) {
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_mu;
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_getS1S2(std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_phi, unsigned long &__pyx_v_nmax, std::vector<__pyx_t_double_complex>  &__pyx_v_pin, std::vector<__pyx_t_double_complex>  &__pyx_v_taun, std::vector<__pyx_t_double_complex>  &__pyx_v_SS1, std::vector<__pyx_t_double_complex>  &__pyx_v_SS2, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_n2, std::vector<__pyx_t_double_complex>  &__pyx_v_S2, std::vector<__pyx_t_double_complex>  &__pyx_v_S1, std::vector<__pyx_t_double_complex>  &__pyx_v_an, std::vector<__pyx_t_double_complex>  &__pyx_v_bn) {
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_mu;
   unsigned long __pyx_v_i;
   unsigned long __pyx_v_k;
   unsigned long __pyx_v_lenght;
@@ -2272,8 +2272,8 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
   __pyx_t_double_complex *__pyx_v_SumS1;
   __pyx_t_double_complex *__pyx_v_SumS2;
   __Pyx_RefNannyDeclarations
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t> ::size_type __pyx_t_1;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t> ::size_type __pyx_t_2;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t> ::size_type __pyx_t_1;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t> ::size_type __pyx_t_2;
   unsigned long __pyx_t_3;
   unsigned long __pyx_t_4;
   unsigned long __pyx_t_5;
@@ -2303,8 +2303,8 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
  *     complex128_t *SumS1 = &temp0, *SumS2 = &temp1;
  * 
  */
-  __pyx_v_temp0 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0., 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J);
-  __pyx_v_temp1 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0., 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J);
+  __pyx_v_temp0 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0., 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J);
+  __pyx_v_temp1 = __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0., 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J);
 
   /* "PyMieCoupling/cython/Fields.pyx":134
  *     unsigned long i, k, lenght = <unsigned long>an.size()
@@ -2344,7 +2344,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
  * 
  *       for i in range(lenght):
  */
-    __pyx_f_13PyMieCoupling_3cpp_6Fields_MiePiTau(__pyx_v_mu, __pyx_v_nmax, __pyx_v_pin, __pyx_v_taun);
+    __pyx_f_13PyMieCoupling_6cython_6Fields_MiePiTau(__pyx_v_mu, __pyx_v_nmax, __pyx_v_pin, __pyx_v_taun);
 
     /* "PyMieCoupling/cython/Fields.pyx":142
  *       MiePiTau(mu, nmax, pin, taun)
@@ -2368,7 +2368,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
       __pyx_t_7 = (__pyx_v_bn[__pyx_v_i]);
       __pyx_t_8 = (__pyx_v_taun[__pyx_v_i]);
       try {
-        __pyx_v_SS1.push_back(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_n2[__pyx_v_i]), 0), __Pyx_c_sum_double(__pyx_v_temp0, __pyx_f_13PyMieCoupling_3cpp_6Fields_MultiplyComplex(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8))))));
+        __pyx_v_SS1.push_back(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_n2[__pyx_v_i]), 0), __Pyx_c_sum_double(__pyx_v_temp0, __pyx_f_13PyMieCoupling_6cython_6Fields_MultiplyComplex(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8))))));
       } catch(...) {
         __Pyx_CppExn2PyErr();
         __PYX_ERR(0, 144, __pyx_L1_error)
@@ -2386,7 +2386,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
       __pyx_t_9 = (__pyx_v_bn[__pyx_v_i]);
       __pyx_t_10 = (__pyx_v_pin[__pyx_v_i]);
       try {
-        __pyx_v_SS2.push_back(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_n2[__pyx_v_i]), 0), __Pyx_c_sum_double(__pyx_f_13PyMieCoupling_3cpp_6Fields_MultiplyComplex(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7))), __pyx_f_13PyMieCoupling_3cpp_6Fields_MultiplyComplex(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_9), __Pyx_CIMAG(__pyx_t_9)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_10), __Pyx_CIMAG(__pyx_t_10))))));
+        __pyx_v_SS2.push_back(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((__pyx_v_n2[__pyx_v_i]), 0), __Pyx_c_sum_double(__pyx_f_13PyMieCoupling_6cython_6Fields_MultiplyComplex(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_8), __Pyx_CIMAG(__pyx_t_8)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_7), __Pyx_CIMAG(__pyx_t_7))), __pyx_f_13PyMieCoupling_6cython_6Fields_MultiplyComplex(__pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_9), __Pyx_CIMAG(__pyx_t_9)), __pyx_t_double_complex_from_parts(__Pyx_CREAL(__pyx_t_10), __Pyx_CIMAG(__pyx_t_10))))));
       } catch(...) {
         __Pyx_CppExn2PyErr();
         __PYX_ERR(0, 148, __pyx_L1_error)
@@ -2400,7 +2400,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
  *       Sum1(SS2, SumS2)
  * 
  */
-    __pyx_f_13PyMieCoupling_3cpp_6Fields_Sum1(__pyx_v_SS1, __pyx_v_SumS1);
+    __pyx_f_13PyMieCoupling_6cython_6Fields_Sum1(__pyx_v_SS1, __pyx_v_SumS1);
 
     /* "PyMieCoupling/cython/Fields.pyx":152
  * 
@@ -2409,7 +2409,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
  * 
  *       S1.push_back(SumS1[0])
  */
-    __pyx_f_13PyMieCoupling_3cpp_6Fields_Sum1(__pyx_v_SS2, __pyx_v_SumS2);
+    __pyx_f_13PyMieCoupling_6cython_6Fields_Sum1(__pyx_v_SS2, __pyx_v_SumS2);
 
     /* "PyMieCoupling/cython/Fields.pyx":154
  *       Sum1(SS2, SumS2)
@@ -2487,7 +2487,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyMieCoupling.cpp.Fields.getS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("PyMieCoupling.cython.Fields.getS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -2500,13 +2500,13 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_getS1S2(std::vector<__pyx_t_13P
  *                              unsigned long         nmax,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x, CYTHON_UNUSED unsigned long __pyx_v_nmax, CYTHON_UNUSED std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_n, std::vector<__pyx_t_double_complex>  &__pyx_v_an, std::vector<__pyx_t_double_complex>  &__pyx_v_bn) {
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_LL;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m2;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x3;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x4;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x5;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x6;
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_LowFrequencyMie_ab(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x, CYTHON_UNUSED unsigned long __pyx_v_nmax, CYTHON_UNUSED std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_n, std::vector<__pyx_t_double_complex>  &__pyx_v_an, std::vector<__pyx_t_double_complex>  &__pyx_v_bn) {
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_LL;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m2;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x3;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x4;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x5;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x6;
   __pyx_t_double_complex __pyx_v_a1;
   __pyx_t_double_complex __pyx_v_a2;
   __pyx_t_double_complex __pyx_v_b1;
@@ -2578,7 +2578,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13Py
  *     a2 = (-1*J * x5 / 15) * (m2 - 1) / (2 * m2 + 3);
  *     b1 = (-1*J * x5 / 45) * (m2 - 1);
  */
-  __pyx_v_a1 = __Pyx_c_sum_double(__Pyx_c_diff_double(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((-2. * 1.0), 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x3, 0)), __pyx_t_double_complex_from_parts(3., 0)), __pyx_t_double_complex_from_parts(__pyx_v_LL, 0)), __Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(2., 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x5, 0)), __pyx_t_double_complex_from_parts(5., 0)), __pyx_t_double_complex_from_parts(__pyx_v_LL, 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 - 2.), 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 + 2.), 0))), __pyx_t_double_complex_from_parts(((((4. * __pyx_v_x6) / 9.) * __pyx_v_LL) * __pyx_v_LL), 0));
+  __pyx_v_a1 = __Pyx_c_sum_double(__Pyx_c_diff_double(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts((-2. * 1.0), 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x3, 0)), __pyx_t_double_complex_from_parts(3., 0)), __pyx_t_double_complex_from_parts(__pyx_v_LL, 0)), __Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(2., 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x5, 0)), __pyx_t_double_complex_from_parts(5., 0)), __pyx_t_double_complex_from_parts(__pyx_v_LL, 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 - 2.), 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 + 2.), 0))), __pyx_t_double_complex_from_parts(((((4. * __pyx_v_x6) / 9.) * __pyx_v_LL) * __pyx_v_LL), 0));
 
   /* "PyMieCoupling/cython/Fields.pyx":184
  * 
@@ -2587,7 +2587,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13Py
  *     b1 = (-1*J * x5 / 45) * (m2 - 1);
  *     b2 = 0 + 0*J;
  */
-  __pyx_v_a2 = __Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(-1L, 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x5, 0)), __pyx_t_double_complex_from_parts(15, 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 - 1.0), 0)), __pyx_t_double_complex_from_parts(((2.0 * __pyx_v_m2) + 3.0), 0));
+  __pyx_v_a2 = __Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(-1L, 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x5, 0)), __pyx_t_double_complex_from_parts(15, 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 - 1.0), 0)), __pyx_t_double_complex_from_parts(((2.0 * __pyx_v_m2) + 3.0), 0));
 
   /* "PyMieCoupling/cython/Fields.pyx":185
  *     a1 = (-2.*1*J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL * LL;
@@ -2596,7 +2596,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13Py
  *     b2 = 0 + 0*J;
  * 
  */
-  __pyx_v_b1 = __Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(-1L, 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x5, 0)), __pyx_t_double_complex_from_parts(45, 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 - 1.0), 0));
+  __pyx_v_b1 = __Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(-1L, 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J), __pyx_t_double_complex_from_parts(__pyx_v_x5, 0)), __pyx_t_double_complex_from_parts(45, 0)), __pyx_t_double_complex_from_parts((__pyx_v_m2 - 1.0), 0));
 
   /* "PyMieCoupling/cython/Fields.pyx":186
  *     a2 = (-1*J * x5 / 15) * (m2 - 1) / (2 * m2 + 3);
@@ -2605,7 +2605,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13Py
  * 
  *     an.push_back(a1)
  */
-  __pyx_v_b2 = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts(0, 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J));
+  __pyx_v_b2 = __Pyx_c_sum_double(__pyx_t_double_complex_from_parts(0, 0), __Pyx_c_prod_double(__pyx_t_double_complex_from_parts(0, 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J));
 
   /* "PyMieCoupling/cython/Fields.pyx":188
  *     b2 = 0 + 0*J;
@@ -2674,7 +2674,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13Py
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyMieCoupling.cpp.Fields.LowFrequencyMie_ab", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("PyMieCoupling.cython.Fields.LowFrequencyMie_ab", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -2687,19 +2687,19 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_LowFrequencyMie_ab(__pyx_t_13Py
  *                  unsigned long     nmax,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_x, unsigned long __pyx_v_nmax, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_n, std::vector<__pyx_t_double_complex>  &__pyx_v_an, std::vector<__pyx_t_double_complex>  &__pyx_v_bn) {
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_mx;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_temp;
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_x, unsigned long __pyx_v_nmax, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_n, std::vector<__pyx_t_double_complex>  &__pyx_v_an, std::vector<__pyx_t_double_complex>  &__pyx_v_bn) {
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_mx;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_temp;
   std::vector<__pyx_t_double_complex>  __pyx_v_gsx;
   std::vector<__pyx_t_double_complex>  __pyx_v_gs1x;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_px;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_chx;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_p1x;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_ch1x;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_Dn;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_D;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_da;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_db;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_px;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_chx;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_p1x;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_ch1x;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_Dn;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_D;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_da;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_db;
   unsigned long __pyx_v_i;
   unsigned long __pyx_v_nmx;
   __Pyx_RefNannyDeclarations
@@ -2892,7 +2892,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_
  * 
  */
     try {
-      __pyx_v_gsx.push_back(__Pyx_c_diff_double(__pyx_t_double_complex_from_parts((__pyx_v_px[__pyx_v_i]), 0), __Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(1, 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J), __pyx_t_double_complex_from_parts((__pyx_v_chx[__pyx_v_i]), 0))));
+      __pyx_v_gsx.push_back(__Pyx_c_diff_double(__pyx_t_double_complex_from_parts((__pyx_v_px[__pyx_v_i]), 0), __Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(1, 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J), __pyx_t_double_complex_from_parts((__pyx_v_chx[__pyx_v_i]), 0))));
     } catch(...) {
       __Pyx_CppExn2PyErr();
       __PYX_ERR(0, 231, __pyx_L1_error)
@@ -2906,7 +2906,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_
  *       D.push_back(Dn[i+1])
  */
     try {
-      __pyx_v_gs1x.push_back(__Pyx_c_diff_double(__pyx_t_double_complex_from_parts((__pyx_v_p1x[__pyx_v_i]), 0), __Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(1, 0), __pyx_v_13PyMieCoupling_3cpp_6Fields_J), __pyx_t_double_complex_from_parts((__pyx_v_ch1x[__pyx_v_i]), 0))));
+      __pyx_v_gs1x.push_back(__Pyx_c_diff_double(__pyx_t_double_complex_from_parts((__pyx_v_p1x[__pyx_v_i]), 0), __Pyx_c_prod_double(__Pyx_c_prod_double(__pyx_t_double_complex_from_parts(1, 0), __pyx_v_13PyMieCoupling_6cython_6Fields_J), __pyx_t_double_complex_from_parts((__pyx_v_ch1x[__pyx_v_i]), 0))));
     } catch(...) {
       __Pyx_CppExn2PyErr();
       __PYX_ERR(0, 232, __pyx_L1_error)
@@ -2998,7 +2998,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyMieCoupling.cpp.Fields.Mie_ab", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("PyMieCoupling.cython.Fields.Mie_ab", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
 }
@@ -3011,7 +3011,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Mie_ab(__pyx_t_13PyMieCoupling_
  *                    vector[complex128_t]& pin,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MiePiTau(__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_v_mu, unsigned long __pyx_v_nmax, std::vector<__pyx_t_double_complex>  &__pyx_v_pin, std::vector<__pyx_t_double_complex>  &__pyx_v_taun) {
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_MiePiTau(__pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_v_mu, unsigned long __pyx_v_nmax, std::vector<__pyx_t_double_complex>  &__pyx_v_pin, std::vector<__pyx_t_double_complex>  &__pyx_v_taun) {
   unsigned long __pyx_v_i;
   unsigned long __pyx_t_1;
   unsigned long __pyx_t_2;
@@ -3170,7 +3170,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MiePiTau(__pyx_t_13PyMieCouplin
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyMieCoupling.cpp.Fields.MiePiTau", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("PyMieCoupling.cython.Fields.MiePiTau", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_L0:;
 }
 
@@ -3182,7 +3182,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_MiePiTau(__pyx_t_13PyMieCouplin
  *                   vector[double_t]& n,
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Arrange(unsigned long __pyx_v_start, unsigned long __pyx_v_end, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_n, std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  &__pyx_v_n2) {
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_Arrange(unsigned long __pyx_v_start, unsigned long __pyx_v_end, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_n, std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  &__pyx_v_n2) {
   unsigned long __pyx_v_i;
   unsigned long __pyx_t_1;
   unsigned long __pyx_t_2;
@@ -3231,7 +3231,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Arrange(unsigned long __pyx_v_s
  * 
  */
     try {
-      __pyx_v_n2.push_back((((2.0 * (((__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t)__pyx_v_i) + 1.0)) + 1.0) / ((((__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t)__pyx_v_i) + 1.0) * (((__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t)__pyx_v_i) + 2.0))));
+      __pyx_v_n2.push_back((((2.0 * (((__pyx_t_13PyMieCoupling_6cython_6Fields_double_t)__pyx_v_i) + 1.0)) + 1.0) / ((((__pyx_t_13PyMieCoupling_6cython_6Fields_double_t)__pyx_v_i) + 1.0) * (((__pyx_t_13PyMieCoupling_6cython_6Fields_double_t)__pyx_v_i) + 2.0))));
     } catch(...) {
       #ifdef WITH_THREAD
       PyGILState_STATE __pyx_gilstate_save = __Pyx_PyGILState_Ensure();
@@ -3255,7 +3255,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Arrange(unsigned long __pyx_v_s
   /* function exit code */
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("PyMieCoupling.cpp.Fields.Arrange", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
+  __Pyx_WriteUnraisable("PyMieCoupling.cython.Fields.Arrange", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 1);
   __pyx_L0:;
 }
 
@@ -3267,7 +3267,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Arrange(unsigned long __pyx_v_s
  *                ) nogil:
  */
 
-static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Sum1(std::vector<__pyx_t_double_complex>  __pyx_v_arr, __pyx_t_double_complex *__pyx_v_SumVal) {
+static void __pyx_f_13PyMieCoupling_6cython_6Fields_Sum1(std::vector<__pyx_t_double_complex>  __pyx_v_arr, __pyx_t_double_complex *__pyx_v_SumVal) {
   __pyx_t_double_complex __pyx_v_val;
   std::vector<__pyx_t_double_complex> ::iterator __pyx_t_1;
   __pyx_t_double_complex __pyx_t_2;
@@ -3334,7 +3334,7 @@ static void __pyx_f_13PyMieCoupling_3cpp_6Fields_Sum1(std::vector<__pyx_t_double
  *                                   ) nogil:
  */
 
-static __pyx_t_double_complex __pyx_f_13PyMieCoupling_3cpp_6Fields_MultiplyComplex(__pyx_t_double_complex __pyx_v_val0, __pyx_t_double_complex __pyx_v_val1) {
+static __pyx_t_double_complex __pyx_f_13PyMieCoupling_6cython_6Fields_MultiplyComplex(__pyx_t_double_complex __pyx_v_val0, __pyx_t_double_complex __pyx_v_val1) {
   __pyx_t_double_complex __pyx_v_a;
   __pyx_t_double_complex __pyx_v_b;
   __pyx_t_double_complex __pyx_v_c;
@@ -3384,7 +3384,7 @@ static __pyx_t_double_complex __pyx_f_13PyMieCoupling_3cpp_6Fields_MultiplyCompl
  * 
  *     return c
  */
-  __pyx_v_c = __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_prod_double(__pyx_v_a, __pyx_v_c), __Pyx_c_prod_double(__pyx_v_b, __pyx_v_d)), __Pyx_c_prod_double(__pyx_v_13PyMieCoupling_3cpp_6Fields_J, __Pyx_c_sum_double(__Pyx_c_prod_double(__pyx_v_b, __pyx_v_c), __Pyx_c_prod_double(__pyx_v_a, __pyx_v_d))));
+  __pyx_v_c = __Pyx_c_sum_double(__Pyx_c_sum_double(__Pyx_c_prod_double(__pyx_v_a, __pyx_v_c), __Pyx_c_prod_double(__pyx_v_b, __pyx_v_d)), __Pyx_c_prod_double(__pyx_v_13PyMieCoupling_6cython_6Fields_J, __Pyx_c_sum_double(__Pyx_c_prod_double(__pyx_v_b, __pyx_v_c), __Pyx_c_prod_double(__pyx_v_a, __pyx_v_d))));
 
   /* "PyMieCoupling/cython/Fields.pyx":301
  *     c = (a * c + b * d) + J * ( b * c + a * d);
@@ -4254,29 +4254,29 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
 
 /* "vector.from_py":45
  * 
- * @cname("__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t")
- * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(object o) except *:             # <<<<<<<<<<<<<<
+ * @cname("__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t")
+ * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(object o) except *:             # <<<<<<<<<<<<<<
  *     cdef vector[X] v
  *     for item in o:
  */
 
-static std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(PyObject *__pyx_v_o) {
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_v_v;
+static std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(PyObject *__pyx_v_o) {
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_v_v;
   PyObject *__pyx_v_item = NULL;
-  std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_r;
+  std::vector<__pyx_t_13PyMieCoupling_6cython_6Fields_double_t>  __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   Py_ssize_t __pyx_t_2;
   PyObject *(*__pyx_t_3)(PyObject *);
   PyObject *__pyx_t_4 = NULL;
-  __pyx_t_13PyMieCoupling_3cpp_6Fields_double_t __pyx_t_5;
+  __pyx_t_13PyMieCoupling_6cython_6Fields_double_t __pyx_t_5;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t", 0);
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t", 0);
 
   /* "vector.from_py":47
- * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(object o) except *:
+ * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(object o) except *:
  *     cdef vector[X] v
  *     for item in o:             # <<<<<<<<<<<<<<
  *         v.push_back(<X>item)
@@ -4332,10 +4332,10 @@ static std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_convert
  * 
  */
     __pyx_t_5 = __pyx_PyFloat_AsDouble(__pyx_v_item); if (unlikely((__pyx_t_5 == (double)-1) && PyErr_Occurred())) __PYX_ERR(2, 48, __pyx_L1_error)
-    __pyx_v_v.push_back(((__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t)__pyx_t_5));
+    __pyx_v_v.push_back(((__pyx_t_13PyMieCoupling_6cython_6Fields_double_t)__pyx_t_5));
 
     /* "vector.from_py":47
- * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(object o) except *:
+ * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(object o) except *:
  *     cdef vector[X] v
  *     for item in o:             # <<<<<<<<<<<<<<
  *         v.push_back(<X>item)
@@ -4356,8 +4356,8 @@ static std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_convert
 
   /* "vector.from_py":45
  * 
- * @cname("__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t")
- * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t(object o) except *:             # <<<<<<<<<<<<<<
+ * @cname("__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t")
+ * cdef vector[X] __pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t(object o) except *:             # <<<<<<<<<<<<<<
  *     cdef vector[X] v
  *     for item in o:
  */
@@ -4366,7 +4366,7 @@ static std::vector<__pyx_t_13PyMieCoupling_3cpp_6Fields_double_t>  __pyx_convert
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("vector.from_py.__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_3cpp_6Fields_double_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("vector.from_py.__pyx_convert_vector_from_py___pyx_t_13PyMieCoupling_6cython_6Fields_double_t", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_pretend_to_initialize(&__pyx_r);
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_item);
@@ -4603,7 +4603,7 @@ static std::vector<std::vector<__pyx_t_double_complex> >  __pyx_convert_vector_f
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"Coupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13PyMieCoupling_3cpp_6Fields_1Coupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"Coupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13PyMieCoupling_6cython_6Fields_1Coupling, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -5010,14 +5010,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_PyMieCoupling__cpp__Fields) {
+  if (__pyx_module_is_main_PyMieCoupling__cython__Fields) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "PyMieCoupling.cpp.Fields")) {
-      if (unlikely(PyDict_SetItemString(modules, "PyMieCoupling.cpp.Fields", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "PyMieCoupling.cython.Fields")) {
+      if (unlikely(PyDict_SetItemString(modules, "PyMieCoupling.cython.Fields", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -5057,7 +5057,7 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  */
-  __pyx_v_13PyMieCoupling_3cpp_6Fields_J = __pyx_t_double_complex_from_parts(0, 1.0);
+  __pyx_v_13PyMieCoupling_6cython_6Fields_J = __pyx_t_double_complex_from_parts(0, 1.0);
 
   /* "PyMieCoupling/cython/Fields.pyx":1
  * #cython: language_level=2             # <<<<<<<<<<<<<<
@@ -5084,11 +5084,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init PyMieCoupling.cpp.Fields", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init PyMieCoupling.cython.Fields", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init PyMieCoupling.cpp.Fields");
+    PyErr_SetString(PyExc_ImportError, "init PyMieCoupling.cython.Fields");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

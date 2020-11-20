@@ -1,8 +1,10 @@
 //#include "MieS1S2.h"
 #include <vector>
 #include <complex>
-#include<iostream>
+#include <complex.h>
+#include <iostream>
 #include <tuple>
+#include <stdio.h>
 #include <algorithm>
 #include <boost/math/special_functions.hpp> // For gamma function.
 #include <boost/math/special_functions/bessel.hpp>
@@ -44,7 +46,6 @@ std::tuple<std::vector<complex128> , std::vector<complex128>> LowFrequencyMie_ab
 
   an.push_back(a1); an.push_back(a2);
   bn.push_back(b1); bn.push_back(b2);
-
 
   return std::make_tuple(an, bn);
 }
@@ -110,14 +111,16 @@ std::tuple<std::vector<complex128> , std::vector<complex128>> MiePiTau(double m,
 
 {
   std::vector<complex128> pin, taun;
-  pin.push_back(1.); pin.push_back(3. * mu);
-  taun.push_back(mu); taun.push_back(3.0 * cos(2. * acos(mu) ) );
+  pin.push_back(1.);
+  pin.push_back(3. * mu);
+  taun.push_back(mu);
+  taun.push_back(3.0 * cos(2. * acos(mu) ) );
 
-  for (int i = 0; i < nmax; i++)
-  {
-    pin.push_back( ( (2 * (double)i + 1) * ( mu * pin[i-1] ) - ((double)i + 1) * pin[i-2] ) / (double)i );
-    taun.push_back( ((double)i + 1) * mu * pin[i] - ((double)i + 2) * pin[i-1] );
-  }
+  for (int i = 2; i < nmax; i++)
+      {
+       pin.push_back( ( (2. * (double)i + 1.) * ( mu * pin[i-1] ) - ((double)i + 1) * pin[i-2] ) / (double)i );
+       taun.push_back( ((double)i + 1.) * mu * pin[i] - ((double)i + 2.) * pin[i-1] );
+      }
 
   return std::make_tuple(pin, taun);
 
@@ -126,12 +129,7 @@ std::tuple<std::vector<complex128> , std::vector<complex128>> MiePiTau(double m,
 
 
 
-
-
-
-
-
-std::tuple<std::vector<complex128> , std::vector<complex128>> test(double m, double x, std::vector<double> phi)
+std::pair<std::vector<complex128> , std::vector<complex128>> Cwrapper(double m, double x, std::vector<double> phi)
 {
     std::vector<complex128> an, bn, SS1, SS2, pin, taun, S1, S2;
     std::vector<double> n, n2;
@@ -139,24 +137,30 @@ std::tuple<std::vector<complex128> , std::vector<complex128>> test(double m, dou
     int nmax = (int) (2. + x + 4. * pow(x, 1./3.) );
     double mu = 0.;
 
-    std::tie(an, bn) = LowFrequencyMie_ab(m, x);
-
     std::tie(n, n2) = Arrange(1, nmax + 1);
 
+    if (x < 0.5){ std::tie(an, bn) = LowFrequencyMie_ab(m, x); }
+
+    else{ std::tie(an, bn) = HighFrequencyMie_ab(m, x, nmax, n); }
+
     for (int i = 0; i < phi.size(); i++){
-        mu = phi[i];
+        mu = cos( phi[i] );
         std::tie(pin, taun) = MiePiTau(m, mu, x, nmax);
 
         for (int i = 0; i < an.size(); i++){
             SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] ) );
+
             SS2.push_back( n2[i] * ( an[i] * taun[i] + bn[i] * pin[i] ) );
+
             }
 
         S1.push_back(Sum(SS1)); S2.push_back(Sum(SS2));
+        SS1.clear();
+        SS2.clear();
 
     }
 
-  return std::make_tuple(S1, S2);
+  return std::make_pair(S1, S2);
 
 }
 

@@ -35,7 +35,9 @@ cdef double_t pi = 3.1415926
 
 cpdef tuple MieS1S2(double_t m,
                     double_t x,
-                    vector[double_t] phi):
+                    vector[double_t] phi
+                    #double_t[:] phi
+                    ):
 
     cdef:
       Py_ssize_t nmax = <Py_ssize_t>(2 + x + 4 * pow(x,1./3.) )
@@ -48,6 +50,7 @@ cpdef tuple MieS1S2(double_t m,
         LowFrequencyMie_ab(m,x, nmax, n, an, bn)
     else:
         Mie_ab(m,x, nmax, n, an, bn)
+
 
     S1, S2 = getS1S2(phi, nmax, pin, taun, SS1, SS2, n2, an, bn)
 
@@ -82,6 +85,7 @@ cdef tuple getS1S2(vector[double_t]&     phi,
       for i in range(lenght):
 
           SS1.push_back( n2[i] * ( an[i] * pin[i] + bn[i] * taun[i] )  )
+
           SS2.push_back( n2[i] * ( an[i] * taun[i] + bn[i] * pin[i] )  )
 
 
@@ -209,6 +213,7 @@ cdef void MiePiTau(double_t mu,
   for i in range(2,nmax):
     pin.push_back( ( (2 * i + 1) * ( mu * pin[i-1] ) - (i + 1) * pin[i-2] ) / i )
     taun.push_back( (i + 1) * mu * pin[i] - (i + 2) * pin[i-1] )
+
 
 
 
