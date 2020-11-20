@@ -40,7 +40,7 @@ cpdef tuple MieS1S2(double_t m,
     cdef:
       Py_ssize_t nmax = <Py_ssize_t>(2 + x + 4 * pow(x,1./3.) )
       vector[double_t] n, n2
-      vector[complex128_t] SS1, SS2, an, bn, pin, taun, S1, S2
+      vector[complex128_t] SS1, SS2, an, bn, pin, taun
 
     Arrange(1, nmax+1, n, n2)
 
@@ -49,34 +49,28 @@ cpdef tuple MieS1S2(double_t m,
     else:
         Mie_ab(m,x, nmax, n, an, bn)
 
-    getS1S2(phi, nmax, pin, taun, SS1, SS2, n2, S1, S2, an, bn)
-
-
-    #test(m, x, phi)
-
+    S1, S2 = getS1S2(phi, nmax, pin, taun, SS1, SS2, n2, an, bn)
 
     return np.asarray(S1), np.asarray(S2)
 
 
 
 
-cdef void getS1S2(vector[double_t]&     phi,
+cdef tuple getS1S2(vector[double_t]&     phi,
                   Py_ssize_t&           nmax,
                   vector[complex128_t]& pin,
                   vector[complex128_t]& taun,
                   vector[complex128_t]& SS1,
                   vector[complex128_t]& SS2,
                   vector[double_t]&     n2,
-                  vector[complex128_t]& S2,
-                  vector[complex128_t]& S1,
                   vector[complex128_t]& an,
                   vector[complex128_t]& bn):
 
   cdef:
     double_t mu
     Py_ssize_t i, k, lenght = an.size()
-    complex128_t temp0 = 0.*1j, temp1 = 0.*1j,
-    complex128_t *SumS1 = &temp0, *SumS2 = &temp1
+    complex128_t SumS1 = 0, SumS2 = 0
+    vector[complex128_t] S1, S2
 
 
   for k in range(phi.size()):
@@ -91,17 +85,22 @@ cdef void getS1S2(vector[double_t]&     phi,
           SS2.push_back( n2[i] * ( an[i] * taun[i] + bn[i] * pin[i] )  )
 
 
-      Sum1(SS1, SumS1)
-      Sum1(SS2, SumS2)
+      SumS1 = Sum1(SS1)
+      SumS2 = Sum1(SS2)
+
+      S1.push_back(SumS1)
+
+      S2.push_back(SumS2)
 
 
-      S1.push_back(SumS1[0])
-      S2.push_back(SumS2[0])
 
       SS1.clear()
       SS2.clear()
       pin.clear()
       taun.clear()
+
+  return S1, S2
+
 
 
 
@@ -127,9 +126,9 @@ cdef void LowFrequencyMie_ab(double_t m,
     x6 = x5*x
 
     a1 = (-2.*1*1j * x3 / 3.) * LL - (2.*1j * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL*LL
-    a2 = (-1*1j * x5 / 15) * (m2 - 1) / (2 * m2 + 3)
-    b1 = (-1*1j * x5 / 45) * (m2 - 1)
-    b2 = 0 + 0*1j
+    a2 = (-1.*1j * x5 / 15.) * (m2 - 1.) / (2. * m2 + 3.)
+    b1 = (-1.*1j * x5 / 45.) * (m2 - 1.)
+    b2 = 0. + 0.*1j
 
     an.push_back(a1)
     an.push_back(a2)
@@ -232,14 +231,14 @@ cdef void Arrange(Py_ssize_t start,
 
 
 
-cdef void Sum1(vector[complex128_t] arr,
-               complex128_t* SumVal):
+cdef complex128_t Sum1(vector[complex128_t]& arr):
 
-    cdef complex128_t val
-    SumVal[0] = 0.
+    cdef complex128_t val, Sum
 
     for val in arr:
-        SumVal[0] += val
+        Sum += val
+
+    return Sum
 
 
 
