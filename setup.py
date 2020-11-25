@@ -18,7 +18,6 @@ for key, value in cfg_vars.items():
         cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
 requirements = ['numpy',
-                #'cupy',
                 'matplotlib',
                 'cython',
                 'pandas',
@@ -44,25 +43,6 @@ ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                                           '-lboost_system',
                                           '-O3',
                                           '-march=native']),
-
-Extension("PyMieCoupling.cpp.S1S2",
-                         ["PyMieCoupling/cpp/S1S2.pyx"],
-                         include_dirs = ['.'],
-                         language="c++",
-                         extra_compile_args=["-std=c++11",
-                                             '-fopenmp',
-                                             '-lboost_filesystem',
-                                             '-lboost_system',
-                                             '-O3',
-                                             '-march=native'],
-
-                         extra_link_args=["-std=c++11",
-                                          '-fopenmp',
-                                          '-lboost_filesystem',
-                                          '-lboost_system',
-                                          '-O3',
-                                          '-march=native',
-                                          ]),
 
                          ]
 
