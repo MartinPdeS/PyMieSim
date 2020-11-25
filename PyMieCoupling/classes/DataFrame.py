@@ -38,6 +38,7 @@ class DataFrameCPU(pd.DataFrame):
 
             self._plot_Parallel(y)
 
+
         elif Polarization == 'Perpendicular':
 
             self._plot_Perpendicular(y)

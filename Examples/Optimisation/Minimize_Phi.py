@@ -27,12 +27,14 @@ Fiber = fiber(core_radius = 4.2e-6,
 
 
 Detector = LPmode(Fiber         = Fiber,
-                  Mode          = (1, 1),
+                  Mode          = (0, 1),
                   Source        = LightSource,
-                  Npts          = 101,
+                  Npts          = 51,
                   ThetaOffset   = 0,
                   PhiOffset     = 0,
-                  Magnification = 0.1)
+                  Magnification = 5)
+
+
 
 """
 Detector = Photodiode(NA                = 0.34,
@@ -42,9 +44,10 @@ Detector = Photodiode(NA                = 0.34,
                       PhiOffset         = 0)
 
 """
+
 RIList = np.linspace(1.3, 1.5, 4).round(4)
 
-DiameterList = np.linspace(500,10000,50).round(4) * 1e-9
+DiameterList = np.linspace(500,1000,50).round(4) * 1e-9
 
 def EvalFunc(x):
 
@@ -74,7 +77,6 @@ print(Result)
 Detector.PhiOffset = Result.x
 
 
-
 DF = Frame(RIList        = RIList,
            DiameterList  = DiameterList,
            Detector      = Detector,
@@ -82,7 +84,7 @@ DF = Frame(RIList        = RIList,
 
 DF.Plot(y='Coupling')
 
-DF.Plot(y='STD')
+#DF.Plot(y='STD')
 
 plt.show()
 

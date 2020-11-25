@@ -157,7 +157,7 @@ class Array(np.ndarray):
 
 
     def __init__(self, arr):
-        self = np.array([1,2,3])
+        pass
 
 
     def Cost(self, arg='RI'):

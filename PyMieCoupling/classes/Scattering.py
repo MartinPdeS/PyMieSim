@@ -339,7 +339,7 @@ class SPF(object):
 
         self.Meshes = Meshes
 
-        self.Array = GetSPF(Parallel = Parallel, Perpendicular = Perpendicular)
+        self.Array = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
 
 
     def __repr__(self) -> str:
@@ -523,16 +523,6 @@ def Make3D(item:      np.array,
     Z = item * np.cos(PhiMesh)
 
     return X, Y, Z
-
-
-def GetSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
-    return Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-
-
-
-
-
-
 
 
 

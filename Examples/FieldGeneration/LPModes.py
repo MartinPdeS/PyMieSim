@@ -28,20 +28,14 @@ LP11 = LPmode(Fiber       = Fiber,
               ThetaOffset = 0,
               PhiOffset   = 0)
 
-LP01 = LPmode(Fiber       = Fiber,
-              Name        = 'LP01',
-              Mode        = (0, 1),
-              Source      = LightSource,
-              Npts        = npts,
-              ThetaOffset = 0,
-              PhiOffset   = 0)
-
-
-
-LP01.Magnificate(Magnification=2.0)
-
-#LP11.Magnificate(Magnification=2.0)
-
+LP01 = LPmode(Fiber         = Fiber,
+              Name          = 'LP01',
+              Mode          = (0, 1),
+              Source        = LightSource,
+              Npts          = npts,
+              ThetaOffset   = 0,
+              PhiOffset     = 0,
+              Magnification = 2)
 
 
 LP01.Field.Plot('Real')

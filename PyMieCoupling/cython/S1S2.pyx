@@ -27,9 +27,6 @@ ctypedef double double_t
 ctypedef double complex complex128_t
 ctypedef int int_t
 
-cdef extern from "PyMieCoupling/cpp/MieS1S2.cpp":
-    cdef void test(double a, double b, vector[double_t] phi);
-
 cdef double_t pi = 3.1415926
 
 
