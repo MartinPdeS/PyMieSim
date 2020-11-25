@@ -26,24 +26,25 @@ Fiber = fiber(core_radius = 4.2e-6,
               clad_index  = 1.4444)
 
 
-Detector = LPmode(Fiber         = Fiber,
-                  Mode          = (0, 1),
-                  Source        = LightSource,
-                  Npts          = 51,
-                  ThetaOffset   = 0,
-                  PhiOffset     = 0,
-                  Magnification = 5)
+Detector0 = LPmode(Fiber         = Fiber,
+                   Mode          = (0, 1),
+                   Source        = LightSource,
+                   Npts          = 51,
+                   ThetaOffset   = 0,
+                   PhiOffset     = 0,
+                   Magnification = 5)
 
 
 
-"""
-Detector = Photodiode(NA                = 0.34,
-                      Source            = LightSource,
-                      Npts              = 101,
-                      ThetaOffset       = 0,
-                      PhiOffset         = 0)
 
-"""
+Detector1 = Photodiode(NA                = 0.1,
+                       Source            = LightSource,
+                       Npts              = 101,
+                       ThetaOffset       = 0,
+                       PhiOffset         = 0)
+
+
+Detector = Detector1
 
 RIList = np.linspace(1.3, 1.5, 4).round(4)
 
@@ -71,7 +72,7 @@ Result = minimize(fun      = Minimizer.simulate,
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
                   tol      = 1e-6,
-                  options  = {'maxiter': 150, 'rhobeg':20})
+                  options  = {'maxiter': 50, 'rhobeg':20})
 print(Result)
 
 Detector.PhiOffset = Result.x
@@ -88,6 +89,8 @@ DF.Plot(y='Coupling')
 
 plt.show()
 
+
+print(Detector.Fourier)
 
 
 

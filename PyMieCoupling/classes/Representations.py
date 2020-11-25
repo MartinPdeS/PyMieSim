@@ -356,7 +356,7 @@ def GetJones(Parallel:      np.ndarray,
 
     B = Perpendicular.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
 
-    return np.array([A, B * np.exp(complex(0,1)*delta)])
+    return np.array([A, B * np.exp(complex(0,1)*delta)], copy=False)
 
 
 

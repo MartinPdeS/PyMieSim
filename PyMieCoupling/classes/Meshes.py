@@ -1,6 +1,5 @@
 import numpy as np
 from PyMieCoupling.functions.converts import rad2deg, deg2rad
-from PyMieCoupling.classes.Misc import Operation as Op
 
 class ScatMeshes(object):
 

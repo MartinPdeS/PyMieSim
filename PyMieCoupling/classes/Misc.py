@@ -2,11 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Tuple
 import matplotlib.ticker as tick
-
-try:
-    import cupy as cp
-except:
-    import numpy as cp
+import numpy as cp
 
 
 
@@ -27,13 +23,29 @@ class Source(object):
 
 
 
-class LPField(object):
-    def __init__(self, input, DirectVec):
-        self.Array = input
-        self.DirectVec = DirectVec
+class LPField(np.ndarray):
+
+    def __init__(self, array, DirectVec):
+
+        pass
+
+
+    def __new__(cls, **kwargs):
+
+        this = np.asarray(kwargs['array']).view(cls)
+
+        this.DirectVec = kwargs['DirectVec']
+
+        return this
+
+
+    def __array_finalize__(self, obj):
+        pass
+
 
     def __repr__(self):
-        txt = 'SHAPE: {0}'.format(self.Array.shape)
+
+        txt = 'SHAPE: {0}'.format(self.shape)
         return txt
 
 
@@ -61,13 +73,10 @@ class LPField(object):
 
         ax.set_title('Real part of LP mode Near-Field')
 
-        data, Phi, Theta = CuPy2NumPy(self.Array.real,
-                                      self.DirectVec*1e6,
-                                      self.DirectVec*1e6)
 
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
-                            data,
+                            self.real,
                             shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -88,13 +97,9 @@ class LPField(object):
 
         ax.set_title('Imaginary part of LP mode Near-Field', fontsize = Fontsize)
 
-        data, Phi, Theta = CuPy2NumPy(self.Array.imag,
-                                      self.DirectVec*1e6,
-                                      self.DirectVec*1e6)
-
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
-                            data,
+                            self.imag,
                             shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -112,15 +117,31 @@ class LPField(object):
 
 
 
-class LPFourier(object):
-    def __init__(self,
-                 input,
-                 Meshes):
-        self.Array = input
-        self.Meshes = Meshes
+class LPFourier(np.ndarray):
+
+    def __init__(self, array, Meshes):
+
+        pass
+
+
+
+    def __new__(cls, **kwargs):
+        this = np.array(kwargs['array'], copy=False)
+
+        this = np.asarray(this).view(cls)
+
+        this.Meshes = kwargs['Meshes']
+
+        return this
+
+    def __array_finalize__(self, obj):
+        pass
+
+
 
     def __repr__(self):
-        pass
+
+        return 'lol'
 
 
     def Plot(self, Part: str = 'Real') -> None:
@@ -152,13 +173,9 @@ class LPFourier(object):
 
         ax.set_title('Real part of LP mode Far-Field', fontsize = Fontsize)
 
-        data, Phi, Theta = CuPy2NumPy(self.Array.real,
-                                      self.Meshes.Phi.Vector.Radian,
-                                      self.Meshes.Theta.Vector.Radian)
-
-        im0 = ax.pcolormesh(Phi,
-                            Theta,
-                            data,
+        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Radian,
+                            self.Meshes.Theta.Vector.Radian,
+                            self.real,
                             shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -180,13 +197,9 @@ class LPFourier(object):
 
         ax.set_title('Imaginary part of LP mode Far-Field', fontsize = Fontsize)
 
-        data, Phi, Theta = CuPy2NumPy(self.Array.imag,
-                                      self.Meshes.Phi.Vector.Radian,
-                                      self.Meshes.Theta.Vector.Radian)
-
-        im0 = ax.pcolormesh(Phi,
-                            Theta,
-                            data,
+        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Radian,
+                            self.Meshes.Theta.Vector.Radian,
+                            self.imag,
                             shading='auto')
 
         cbar = fig.colorbar(im0,
@@ -205,184 +218,22 @@ class LPFourier(object):
 
     def PlotPolar(self, fig, ax):
 
-        data, Phi, Theta = CuPy2NumPy(self.Array.__abs__()[self.Array.shape[0]//2],
-                                      self.Meshes.Phi.Vector.Radian,
-                                      self.Meshes.Theta.Vector.Radian)
-
         ax.set_xlabel('')
 
         ax.set_ylabel('')
 
         ax.set_title('Polar representation of far-field collection mode', fontsize = Fontsize)
 
-        ax.plot(Phi, data)
+        ax.plot(self.Meshes.Phi.Vector.Radian, self.__abs__()[self.shape[0]//2])
 
-        ax.fill_between(Phi, 0, data, color='C0', alpha=0.4)
+        ax.fill_between(self.Meshes.Phi.Vector.Radian,
+                        0,
+                        self.__abs__()[self.shape[0]//2],
+                        color='C0',
+                        alpha=0.4 )
 
         plt.show()
 
-
-
-
-
-class Operation(object):
-    def __init__(self):
-        pass
-
-
-    def cos(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.cos(*args)
-
-        elif isinstance(args[0], np.ndarray):
-            return np.cos(*args)
-
-
-    def sin(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.sin(*args)
-
-        elif isinstance(args[0], np.ndarray):
-            return np.sin(*args)
-
-    def arcsin(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.arcsin(*args)
-
-        else:
-            return np.arcsin(*args)
-
-
-    def arctan(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.arctan(*args)
-
-        else:
-            return np.arctan(*args)
-
-
-    def exp(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.exp(*args)
-
-        elif isinstance(args[0], np.ndarray):
-            return np.exp(*args)
-
-
-    def outer(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.outer(args[0], args[1])
-
-        elif isinstance(args[0], np.ndarray):
-            return np.outer(args[0], args[1])
-
-
-    def sqrt(*args):
-        if isinstance(args[0], cp.ndarray):
-            return cp.sqrt(args)
-
-        elif isinstance(args[0], np.ndarray):
-            return np.sqrt(*args)
-
-
-    def angle(cuda):
-        if cuda:
-            return cp.angle
-
-        else:
-            return np.angle
-
-
-    def empty(cuda):
-        if cuda:
-            return cp.empty
-
-        else:
-            return np.empty
-
-
-    def array(cuda):
-        if cuda:
-            return cp.array
-
-        else:
-            return np.array
-
-
-    def round(cuda):
-        if cuda:
-            return cp.round
-
-        else:
-            return np.round
-
-
-    def ones(cuda = False):
-        if cuda:
-            return cp.ones
-
-        else:
-            return np.ones
-
-
-    def fft(cuda = False):
-        if cuda:
-            return cp.fft
-
-        else:
-            return np.fft
-
-
-    def meshgrid(cuda = False):
-        if cuda:
-            return cp.meshgrid
-
-        else:
-            return np.meshgrid
-
-
-    def arange(cuda = False):
-        if cuda:
-            return cp.arange
-
-        else:
-            return np.arange
-
-
-    def linspace(cuda = False):
-        if cuda:
-            return cp.linspace
-
-        else:
-            return np.linspace
-
-
-    def meshgrid(cuda = False):
-        if cuda:
-            return cp.meshgrid
-
-        else:
-            return np.meshgrid
-
-
-    pi = 3.141516
-
-
-
-
-
-
-def CuPy2NumPy(*items):
-    ItemList = []
-    for item in items:
-        if isinstance(item, np.ndarray):
-            ItemList.append(item)
-        else:
-            ItemList.append( cp.asnumpy(item) )
-
-    temp = tuple(ItemList)
-
-    return (*temp,)
 
 
 # -

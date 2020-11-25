@@ -43,7 +43,7 @@ Detector = Photodiode(NA                = 0.34,
 
 RIList = np.linspace(1.3, 1.5, 4).round(4)
 
-DiameterList = np.linspace(500,10000,50).round(4) * 1e-9
+DiameterList = np.linspace(500,1000,50).round(4) * 1e-9
 
 def EvalFunc(x):
 

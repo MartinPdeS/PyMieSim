@@ -87,9 +87,9 @@ class Photodiode(object):
 
         self.GenMeshes()
 
-        item = np.ones( self.Meshes.Theta.Mesh.Degree.shape )
+        item = np.ones( self.Meshes.Theta.Mesh.Degree.shape ) / (self.Meshes.Theta.Mesh.Degree.shape[0]*self.Meshes.Theta.Mesh.Degree.shape[1])
 
-        self.Fourier = LPFourier(item, self.Meshes)
+        self.Fourier = LPFourier(array = item, Meshes = self.Meshes)
 
         self.filter = filter
 
@@ -146,7 +146,7 @@ class Photodiode(object):
     def PhiOffset(self, val):
         self.__PhiOffset = val
 
-        self.PhiBound = np.array([-self.Meshes.Phi.Range.Degree/2, self.Meshes.Phi.Range.Degree/2]) + val
+        self.PhiBound = np.array([-self.Meshes.Phi.Range.Degree/2, self.Meshes.Phi.Range.Degree/2], copy=False) + val
 
 
 
@@ -159,7 +159,7 @@ class Photodiode(object):
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
 
-        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2]) + val
+        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
 
 
     def Coupling(self, Source):
@@ -168,12 +168,12 @@ class Photodiode(object):
         dOmega = self.Meshes.Phi.Delta.Radian *\
                  self.Meshes.Theta.Delta.Radian
 
-        Perp = self.Fourier.Array *\
+        Perp = self.Fourier *\
                (Source.Field.Perpendicular).__abs__() *\
                (np.sin(self.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
 
-        Para = self.Fourier.Array *\
+        Para = self.Fourier *\
                (Source.Field.Parallel).__abs__() *\
                (np.sin(self.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
@@ -280,7 +280,7 @@ class LPmode(object):
                      Size       = self.DirectVec[0],
                      Npts       = self.Npts)
 
-        self.Field, self.Fourier = LPField(item[0], self.DirectVec), LPFourier(item[1], self.Meshes)
+        self.Field, self.Fourier = LPField(array = item[0], DirectVec = self.DirectVec), LPFourier(array = item[1], Meshes = self.Meshes)
 
         if Magnification != 1:
             self.Magnificate(Magnification)
@@ -288,15 +288,15 @@ class LPmode(object):
 
     def GenMeshes(self):
 
-        self.AngleVec = np.array( Direct2Angle(self.DirectVec, self.Source.k) )
+        self.AngleVec = np.array( Direct2Angle(self.DirectVec, self.Source.k), copy=False )
 
         self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
 
         self.__ThetaBound = self.AngleVec + self.__PhiOffset#
 
-        self.__ThetaBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__ThetaOffset
+        self.__ThetaBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ], copy=False ) + self.__ThetaOffset
 
-        self.__PhiBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ] ) + self.__PhiOffset
+        self.__PhiBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ], copy=False ) + self.__PhiOffset
 
         self.Meshes = ScatMeshes(Npts       = self.Npts,
                                  ThetaBound = self.__ThetaBound,
@@ -321,7 +321,7 @@ class LPmode(object):
     @ThetaBound.setter
     def ThetaBound(self, val: list):
 
-        self.__ThetaBound = np.array( val )
+        self.__ThetaBound = np.array( val, copy=False )
 
         self.Meshes = ScatMeshes(Npts       = self.Npts,
                                  ThetaBound = self.__ThetaBound,
@@ -338,7 +338,7 @@ class LPmode(object):
     @PhiBound.setter
     def PhiBound(self, val: list):
 
-        self.__PhiBound = np.array( val )
+        self.__PhiBound = np.array( val, copy=False )
 
         self.Meshes = ScatMeshes(Npts       = self.Npts,
                                  ThetaBound = self.__ThetaBound,
@@ -355,7 +355,7 @@ class LPmode(object):
     @PhiOffset.setter
     def PhiOffset(self, val):
         self.__PhiOffset = val
-        self.PhiBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree]) + val
+        self.PhiBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree], copy=False) + val
 
 
     @property
@@ -366,7 +366,7 @@ class LPmode(object):
     @ThetaOffset.setter
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
-        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2]) + val
+        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
 
 
     def Coupling(self, Source):
@@ -374,19 +374,20 @@ class LPmode(object):
         dOmega = self.Meshes.Phi.Delta.Radian *\
                  self.Meshes.Theta.Delta.Radian
 
-        Perp = self.Field.Array *\
+        Perp = self.Field *\
                Source.Field.Perpendicular *\
                np.sin(self.Meshes.Phi.Mesh.Radian.T).__abs__() *\
                dOmega
 
         CPerp = Perp.sum().__abs__()**2
 
-        Para = self.Field.Array *\
+        Para = self.Field *\
                Source.Field.Parallel *\
                np.sin(self.Meshes.Phi.Mesh.Radian.T).__abs__() *\
                dOmega
 
         CPara = Para.sum().__abs__()**2
+
 
         if self.Filter:
             Filtered = (Perp * np.sin(self.Filter/180*np.pi) + Para * np.cos(self.Filter/180*np.pi)).sum().__abs__()**2

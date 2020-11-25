@@ -4,7 +4,9 @@
 #include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
-#include "python3.6/Python.h"
+//#include "python3.6/Python.h"
+#include "python3.8/Python.h"
+
 //#include "/usr/lib/python3/dist-packages/numpy/core/include/numpy/arrayobject.h"
 //#include "numpy/arrayobject.h"
 //#include "list_of_ndarrays_lib.h"

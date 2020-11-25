@@ -5,7 +5,8 @@ from libcpp.vector cimport vector
 from libcpp.utility cimport pair
 cimport cython
 import cython
-
+from libc.stdlib cimport free
+from cpython cimport PyObject, Py_INCREF
 
 
 ctypedef double complex complex128_t
@@ -28,8 +29,9 @@ cpdef tuple MieS1S2(double m,
     arr = Cwrapper(m, x, phi)
 
 
-    return arr
+    a =  np.asarray(arr)
 
+    return a
 
 
 

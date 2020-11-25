@@ -45,7 +45,7 @@ ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                                           '-march=native']),
 
 Extension("PyMieCoupling.cpp.S1S2",
-                         ["PyMieCoupling/cpp/S1S2.pyx"],
+                         ["PyMieCoupling/cpp/S1S2.pyx","PyMieCoupling/cpp/MieS1S2.cpp"],
                          include_dirs = [numpy.get_include()],
                          language="c++",
                          extra_compile_args=["-std=c++11",

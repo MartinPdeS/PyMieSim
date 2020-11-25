@@ -19,8 +19,6 @@ Scat = Scatterer(Diameter    = 60e-9,
                  PhiBound    = [-180, 180])
 
 
-print(Scat.SizeParam)
-
 Scat.S1S2.Plot()
 
 Scat.SPF.Plot()

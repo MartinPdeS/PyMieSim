@@ -53,9 +53,14 @@ DF.Plot(y='Coupling', Polarization='Perpendicular')
 
 DF.Plot(y='Coupling', Polarization='Parallel')
 
-DF.Plot(y='Coupling', Polarization='Perpendicular')
+DF.Plot(y='Coupling', Polarization='Filtered')
+
+DF.Plot(y='STD', Polarization='Perpendicular')
+
+DF.Plot(y='STD', Polarization='Parallel')
 
 DF.Plot(y='STD', Polarization='Filtered')
+
 
 plt.show()
 
