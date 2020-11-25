@@ -1,10 +1,10 @@
 //#include "MieS1S2.h"
 #include <vector>
 #include <complex>
-#include <boost/math/special_functions.hpp> // For gamma function.
+#include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
-#include "python3.8/Python.h"
+#include "python3.6/Python.h"
 //#include "/usr/lib/python3/dist-packages/numpy/core/include/numpy/arrayobject.h"
 //#include "numpy/arrayobject.h"
 //#include "list_of_ndarrays_lib.h"
@@ -13,34 +13,6 @@
 typedef std::vector<std::complex<double>> iVec;
 typedef std::complex<double> complex128;
 
-
-
-
-
-
-
-template<typename T>
-static PyArrayObject* vector_to_nparray(const std::vector<T>& vec, int type_num = PyArray_FLOAT){
-
-   // rows not empty
-   if( !vec.empty() ){
-
-       long int nRows = vec.size();
-       npy_intp dims[1] = {nRows};
-
-       PyArrayObject* vec_array = (PyArrayObject *) PyArray_SimpleNew(1, dims, type_num);
-       T *vec_array_pointer = (T*) PyArray_DATA(vec_array);
-
-       copy(vec.begin(),vec.end(),vec_array_pointer);
-       return vec_array;
-
-   // no data at all
-   } else {
-      npy_intp dims[1] = {0};
-      return (PyArrayObject*) PyArray_ZEROS(1, dims, PyArray_FLOAT, 0);
-   }
-
-}
 
 
 

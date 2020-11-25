@@ -6,15 +6,12 @@ from libcpp.utility cimport pair
 cimport cython
 import cython
 
-import numpy as np
-cimport numpy as np
 
 
 ctypedef double complex complex128_t
 
-np.import_array()
-cdef extern from "PyMieCoupling/cpp/MieS1S2.cpp":
-    #cdef pair[vector[complex128_t], vector[complex128_t]]
+
+cdef extern from "MieS1S2.cpp":
     cdef pair[vector[complex128_t], vector[complex128_t]] Cwrapper(double a, double b, vector[double] phi);
 
 @cython.boundscheck(False)
@@ -26,7 +23,7 @@ cpdef tuple MieS1S2(double m,
                     double x,
                     phi):
 
- 
+
     #cdef pair[vector[complex128_t], vector[complex128_t]]
     arr = Cwrapper(m, x, phi)
 
