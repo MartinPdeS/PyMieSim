@@ -16,7 +16,7 @@ from PyMieCoupling.classes.Scattering import Scatterer
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-npts=21
+npts=101
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
@@ -29,6 +29,7 @@ LP11 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
+              filter        = None,
               Magnification = 1)
 
 LP01 = LPmode(Fiber         = Fiber,
@@ -37,6 +38,7 @@ LP01 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
+              filter        = 90,
               Magnification = 1)
 
 LightSource = Source(Wavelength   = 400e-9,

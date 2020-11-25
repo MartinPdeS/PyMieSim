@@ -5,7 +5,6 @@ import fibermodes
 from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle
 from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.functions.Misc import GetLP
-from PyMieCoupling.functions.Misc import Coupling
 from PyMieCoupling.classes.Misc import Source, LPField, LPFourier
 
 
@@ -67,6 +66,7 @@ class Photodiode(object):
                  Npts:              int    = 101,
                  ThetaOffset:       float  = 0,
                  PhiOffset:         float  = 0,
+                 filter:            float  = None,
                  Name:              str    = 'Detector'):
 
         self._name = Name
@@ -83,11 +83,15 @@ class Photodiode(object):
 
         self.Npts = Npts
 
+        self.Detection = None
+
         self.GenMeshes()
 
-        item = self.GenField()
+        item = np.ones( self.Meshes.Theta.Mesh.Degree.shape )
 
         self.Fourier = LPFourier(item, self.Meshes)
+
+        self.filter = filter
 
 
     def GenMeshes(self):
@@ -97,9 +101,6 @@ class Photodiode(object):
                                  ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
                                  PhiBound   = (self.__PhiBound) + self.__PhiOffset)
 
-
-    def GenField(self):
-            return np.ones( self.Meshes.Theta.Mesh.Degree.shape )
 
 
     @property
@@ -163,6 +164,7 @@ class Photodiode(object):
 
     def Coupling(self, Source):
 
+
         dOmega = self.Meshes.Phi.Delta.Radian *\
                  self.Meshes.Theta.Delta.Radian
 
@@ -170,15 +172,26 @@ class Photodiode(object):
                (Source.Field.Perpendicular).__abs__() *\
                (np.sin(self.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
-        Perp = (Perp * dOmega).sum()**2
 
         Para = self.Fourier.Array *\
                (Source.Field.Parallel).__abs__() *\
                (np.sin(self.Meshes.Phi.Mesh.Radian + np.pi/2).T).__abs__()
 
+        if self.filter:
+            PerpFiltre = (np.cos(Perp) * dOmega).sum()**2
+            ParaFiltre = (np.sin(Para) * dOmega).sum()**2
+            Detection = PerpFiltre + ParaFiltre
+
+        else:
+            PerpFiltre = (Perp * dOmega).sum()**2
+            ParaFiltre = (Para * dOmega).sum()**2
+            Detection = PerpFiltre + ParaFiltre
+
+        Perp = (Perp * dOmega).sum()**2
+
         Para = (Para * dOmega).sum()**2
 
-        return {'Parallel': Para, 'Perpendicular': Perp}
+        return {'Parallel': Para, 'Perpendicular': Perp, 'Filtered': Detection}
 
 
 
@@ -240,9 +253,12 @@ class LPmode(object):
                  Magnification: float = 1.,
                  ThetaOffset:   float = 0,
                  PhiOffset:     float = 0,
+                 filter:        float = None,
                  Name:          str   = 'Field detector'):
 
         self._name, self._coupling, self.Fiber = Name, 'Amplitude', Fiber
+
+        self.Filter = filter
 
         Mode = Mode[0]+1, Mode[1]
 
@@ -258,21 +274,16 @@ class LPmode(object):
 
         self.GenMeshes()
 
-        item = self.GenField()
+        item = GetLP(Fiber      = self.Fiber.source,
+                     Mode       = self.Mode,
+                     Wavelength = self.Source.Wavelength,
+                     Size       = self.DirectVec[0],
+                     Npts       = self.Npts)
 
         self.Field, self.Fourier = LPField(item[0], self.DirectVec), LPFourier(item[1], self.Meshes)
 
         if Magnification != 1:
             self.Magnificate(Magnification)
-
-
-    def GenField(self):
-
-        return GetLP(Fiber      = self.Fiber.source,
-                     Mode       = self.Mode,
-                     Wavelength = self.Source.Wavelength,
-                     Size       = self.DirectVec[0],
-                     Npts       = self.Npts)
 
 
     def GenMeshes(self):
@@ -358,16 +369,53 @@ class LPmode(object):
         self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2]) + val
 
 
-
     def Coupling(self, Source):
 
-        Para, Perp = Coupling(Field         = self.Field.Array,
-                              Parallel      = Source.Field.Parallel,
-                              Perpendicular = Source.Field.Perpendicular,
-                              Phi           = self.Meshes.Phi.Mesh.Radian.T)
+        dOmega = self.Meshes.Phi.Delta.Radian *\
+                 self.Meshes.Theta.Delta.Radian
+
+        Perp = self.Field.Array *\
+               Source.Field.Perpendicular *\
+               np.sin(self.Meshes.Phi.Mesh.Radian.T).__abs__() *\
+               dOmega
+
+        CPerp = Perp.sum().__abs__()**2
+
+        Para = self.Field.Array *\
+               Source.Field.Parallel *\
+               np.sin(self.Meshes.Phi.Mesh.Radian.T).__abs__() *\
+               dOmega
+
+        CPara = Para.sum().__abs__()**2
+
+        if self.Filter:
+            Filtered = (Perp * np.sin(self.Filter/180*np.pi) + Para * np.cos(self.Filter/180*np.pi)).sum().__abs__()**2
+        else:
+            Filtered = (Perp + Para).sum().__abs__()**2
 
 
-        return {'Parallel': Para, 'Perpendicular': Perp}
+        return {'Parallel': CPara, 'Perpendicular': CPerp, 'Filtered': Filtered}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

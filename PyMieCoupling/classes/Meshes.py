@@ -19,7 +19,7 @@ class ScatMeshes(object):
         ThetaRange              = np.abs(ThetaBound[0] - ThetaBound[1])
         PhiRange                = np.abs(PhiBound[0] - PhiBound[1])
 
-        ThetaVector             = np.linspace(*ThetaBound, self.Npts)
+        ThetaVector             = np.linspace(ThetaBound[0], ThetaBound[1], self.Npts)
         PhiVector               = np.linspace(*PhiBound, self.Npts)
 
         ThetaMesh, PhiMesh      = np.meshgrid(ThetaVector, PhiVector)
@@ -35,7 +35,7 @@ class ScatMeshes(object):
                                 Delta    = Angle( PhiDelta )
                                 )
 
-        self.Phi = Namespace(Boundary = Angle( PhiBound ),
+        self.Phi = Namespace(Boundary  = Angle( PhiBound ),
                               Range    = Angle( PhiRange ),
                               Vector   = Angle( PhiVector ),
                               Mesh     = Angle( PhiMesh ),

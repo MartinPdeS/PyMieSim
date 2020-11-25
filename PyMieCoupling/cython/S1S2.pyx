@@ -15,7 +15,7 @@ import numpy as np
 cimport numpy as np
 
 from libcpp.vector cimport vector
-from libc.math cimport sqrt, cos, acos, sin, abs, pow
+from libc.math cimport sqrt, cos, acos, sin, abs, pow, round
 
 
 from scipy.special.cython_special cimport jv as jvCython
@@ -35,16 +35,16 @@ cdef double_t pi = 3.1415926
 
 cpdef tuple MieS1S2(double_t m,
                     double_t x,
-                    vector[double_t] phi
-                    #double_t[:] phi
+                    double_t[:] phi
                     ):
 
     cdef:
-      Py_ssize_t nmax = <Py_ssize_t>(2 + x + 4 * pow(x,1./3.) )
+      Py_ssize_t nmax = <Py_ssize_t>round(2. + x + 4. * pow(x,1./3.) )
       vector[double_t] n, n2
       vector[complex128_t] SS1, SS2, an, bn, pin, taun
 
     Arrange(1, nmax+1, n, n2)
+
 
     if x < 0.5:
         LowFrequencyMie_ab(m,x, nmax, n, an, bn)
@@ -59,15 +59,15 @@ cpdef tuple MieS1S2(double_t m,
 
 
 
-cdef tuple getS1S2(vector[double_t]&     phi,
-                  Py_ssize_t&           nmax,
-                  vector[complex128_t]& pin,
-                  vector[complex128_t]& taun,
-                  vector[complex128_t]& SS1,
-                  vector[complex128_t]& SS2,
-                  vector[double_t]&     n2,
-                  vector[complex128_t]& an,
-                  vector[complex128_t]& bn):
+cdef tuple getS1S2(double_t[:]&          phi,
+                   Py_ssize_t&           nmax,
+                   vector[complex128_t]& pin,
+                   vector[complex128_t]& taun,
+                   vector[complex128_t]& SS1,
+                   vector[complex128_t]& SS2,
+                   vector[double_t]&     n2,
+                   vector[complex128_t]& an,
+                   vector[complex128_t]& bn):
 
   cdef:
     double_t mu
@@ -75,8 +75,7 @@ cdef tuple getS1S2(vector[double_t]&     phi,
     complex128_t SumS1 = 0, SumS2 = 0
     vector[complex128_t] S1, S2
 
-
-  for k in range(phi.size()):
+  for k in range(len(phi)):
 
       mu = cos(phi[k])
 
@@ -103,7 +102,7 @@ cdef tuple getS1S2(vector[double_t]&     phi,
       pin.clear()
       taun.clear()
 
-  return S1, S2
+  return (S1, S2)
 
 
 
@@ -139,6 +138,7 @@ cdef void LowFrequencyMie_ab(double_t m,
 
     bn.push_back(b1)
     bn.push_back(b2)
+
 
 
 
@@ -194,7 +194,6 @@ cdef void Mie_ab(double_t m,
 
 
 
-
 cdef void MiePiTau(double_t mu,
                    int_t nmax,
                    vector[complex128_t]& pin,
@@ -226,9 +225,9 @@ cdef void Arrange(Py_ssize_t start,
                   vector[double_t]& n2):
     cdef Py_ssize_t i
 
-    for i in range(start-1, end-1):
+    for i in range(start, end):
         n.push_back(i)
-        n2.push_back( (2 * (<double_t>i+1) + 1) / ((<double_t>i+1) * (<double_t>i + 2)) )
+        n2.push_back( (2 * (<double_t>i) + 1) / ((<double_t>i) * (<double_t>i + 1)) )
 
 
 

@@ -79,23 +79,5 @@ def GenShift(Npts):
 
 
 
-def Coupling(Field:         np.ndarray,
-             Parallel:      np.ndarray,
-             Perpendicular: np.ndarray,
-             Phi:           np.ndarray):
-
-
-    dOmega = (Phi[0,0] - Phi[0,1]).__abs__()**2
-
-    Perp = Field * Perpendicular * np.sin(Phi).__abs__()
-
-    Perp = ( Perp * dOmega).sum().__abs__()**2
-
-    Para = Field * Parallel * np.sin(Phi).__abs__()
-
-    Para = (Para * dOmega).sum().__abs__()**2
-
-    return Para, Perp
-
 
 # -
