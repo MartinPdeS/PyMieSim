@@ -5,7 +5,6 @@ PyMieCoupling.egg-info/PKG-INFO
 PyMieCoupling.egg-info/SOURCES.txt
 PyMieCoupling.egg-info/dependency_links.txt
 PyMieCoupling.egg-info/not-zip-safe
-PyMieCoupling.egg-info/requires.txt
 PyMieCoupling.egg-info/top_level.txt
 PyMieCoupling/classes/DataFrame.py
 PyMieCoupling/classes/Detector.deprecated.py

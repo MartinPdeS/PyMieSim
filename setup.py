@@ -17,14 +17,6 @@ for key, value in cfg_vars.items():
     if type(value) == str:
         cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
-requirements = ['numpy',
-                'matplotlib',
-                'cython',
-                'pandas',
-                'tqdm',
-                'fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=0.2.0',
-                ]
-
 
 ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                          ["PyMieCoupling/cython/S1S2.pyx"],
@@ -76,7 +68,6 @@ setup_dict = dict(
       packages           = ['PyMieCoupling',
                           'PyMieCoupling.classes',
                           'PyMieCoupling.functions'],
-      install_requires   = requirements,
       license            = 'Full private, no reproduction authorized',
       url                = 'https://gitlab.com/PolyMtlLFO/SuPyModes',
       long_description   = open('README.md').read(),

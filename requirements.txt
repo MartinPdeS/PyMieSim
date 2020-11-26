@@ -1,0 +1,7 @@
+numpy
+matplotlib
+cython
+pandas
+tqdm
+scipy
+fibermodes @ git+https://github.com/cbrunet/fibermodes.git
