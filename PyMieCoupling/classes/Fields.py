@@ -171,8 +171,8 @@ class LPFourier(np.ndarray):
 
         ax.set_title('Real part of LP mode Far-Field', fontsize = Fontsize)
 
-        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Radian,
-                            self.Meshes.Theta.Vector.Radian,
+        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                            self.Meshes.Theta.Vector.Degree,
                             self.real,
                             shading='auto')
 
@@ -202,8 +202,8 @@ class LPFourier(np.ndarray):
 
         ax.set_title('Imaginary part of LP mode Far-Field', fontsize = Fontsize)
 
-        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Radian,
-                            self.Meshes.Theta.Vector.Radian,
+        im0 = ax.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                            self.Meshes.Theta.Vector.Degree,
                             self.imag,
                             shading='auto')
 

@@ -27,11 +27,17 @@ class ScatMeshes(object):
 
         PhiDelta = np.abs(PhiBound[0] - PhiBound[1]) / self.Npts
 
+        self.dOmega   = Angle( 0 )
+
+        self.dOmega.Degree = PhiDelta * ThetaDelta
+        
+        self.dOmega.Radian = deg2rad(PhiDelta) * deg2rad(ThetaDelta)
+
         self.Theta = Namespace(Boundary  = Angle( ThetaBound ),
                                 Range    = Angle( ThetaRange ),
                                 Vector   = Angle( ThetaVector ),
                                 Mesh     = Angle( ThetaMesh ),
-                                Delta    = Angle( PhiDelta )
+                                Delta    = Angle( ThetaDelta ),
                                 )
 
         self.Phi = Namespace(Boundary  = Angle( PhiBound ),

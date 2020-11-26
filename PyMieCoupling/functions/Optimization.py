@@ -22,15 +22,15 @@ def LoopRIDiameter(RIList:       list,
     for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
         for nd, Diameter in enumerate(DiameterList):
 
-            Source = Scatterer(Diameter  = Diameter,
-                               Index     = RI,
-                               Source    = SKwargs['Source'],
-                               Meshes    = Detector.Meshes
-                               )
+            Scat = Scatterer(Diameter  = Diameter,
+                             Index     = RI,
+                             Source    = SKwargs['Source'],
+                             Meshes    = Detector.Meshes
+                             )
 
-            Coupling = Detector.Coupling(Source)
+            Coupling = Detector.Coupling(Scatterer = Scat, Polarization = Polarization)
 
-            temp[nr, nd] = Coupling[Polarization]
+            temp[nr, nd] = Coupling
 
     return Array(temp)
 
@@ -148,7 +148,7 @@ def PlotDiameter(DiameterList: float,
 
 class Array(np.ndarray):
     def __new__(cls, *args, **kwargs):
-        this = np.array(*args, **kwargs)
+        this = np.array(*args, **kwargs, copy=False)
         this = np.asarray(this).view(cls)
         return this
 

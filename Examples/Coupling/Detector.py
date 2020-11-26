@@ -7,7 +7,7 @@ _________________________________________________________
 
 from PyMieCoupling.classes.Detector import Photodiode
 from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.classes.Fields import Source
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
@@ -32,7 +32,7 @@ Scat.S1S2.Plot()
 
 Scat.Stokes.Plot()
 
-
+print(Detector.Coupling(Scatterer = Scat, Polarization='NoFiltered'))   # can be  all  -  Parallel  -  Perpendicular  -  Filtered  -  NoFiltered
 
 
 

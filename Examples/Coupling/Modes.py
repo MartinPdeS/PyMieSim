@@ -29,7 +29,7 @@ LP11 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
-              filter        = None,
+              Filter        = None,
               NA            = 0.2)
 
 LP01 = LPmode(Fiber         = Fiber,
@@ -38,7 +38,7 @@ LP01 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
-              filter        = 90,
+              Filter        = 0,
               NA            = 0.2)
 
 LightSource = Source(Wavelength   = 400e-9,
@@ -50,9 +50,9 @@ Scat = Scatterer(Diameter    = 500e-9,
                  Meshes      = LP01.Meshes)
 
 
-print( LP01.Coupling(Scat) )
+print( LP01.Coupling(Scatterer=Scat, Polarization='all') )
 
-print( LP11.Coupling(Scat) )
+#print( LP11.Coupling(Scat) )
 
 
 

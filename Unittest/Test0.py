@@ -7,36 +7,40 @@ _________________________________________________________
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Detector import Photodiode
+from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.functions.couplings import PointFieldCoupling
 
-npts = 501
+npts = 200
 
-Detector = Photodiode(NumericalAperture  = 1.,         #half the sphere
-                      Wavelength         = 400e-9,
+LightSource = Source(Wavelength   = 450e-9,
+                     Polarization = 0)
+
+Detector = Photodiode(NA                 = 1.,             # half the sphere
+                      Source             = LightSource,
                       Npts               = npts)
 
-DiameterList = np.linspace(100,1000,50).round(4) * 1e-9
+Detector.Fourier.Plot()
 
 Scat = Scatterer(Diameter    = 500e-9,
-                 Wavelength  = 1200e-9,
+                 Source      = LightSource,
                  Index       = 1.4,
                  Meshes      = Detector.Meshes)
 
 Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )
 
 
-Para, Perp = PointFieldCoupling(Detector = Detector,
-                                Source   = Scat)
+Coupling = Detector.Coupling(Scatterer = Scat, Polarization='Parallel')
 
-TheoVal, Delta = (2*np.pi)**2, 0.5  # Theoretical value is around 0.127646
+
+TheoVal = (2*np.pi)**2     # Theoretical value is around 6.28319**2
 
 print('Bound angle:\n \t Theta -> {0}\n \t Phi   -> {1}\n'.format(Detector.Meshes.Theta.Boundary.Degree, Detector.Meshes.Phi.Boundary.Degree))
 
-print('Coupling     -> {0}, \nTheoretical -> {1}'.format(Para, TheoVal))
+print('Coupling     -> {0}, \nTheoretical -> {1}'.format(Coupling, TheoVal))
 
-if TheoVal - Delta < Para < TheoVal + Delta:
+if TheoVal - 0.5 < Coupling < TheoVal + 0.5:
     print('Unittest 0: Passed!')
 else:
     raise Exception('Unittest 0: Failed!')

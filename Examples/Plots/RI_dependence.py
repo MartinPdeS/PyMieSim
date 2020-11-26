@@ -11,7 +11,7 @@ from scipy.optimize import minimize
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.Optimization import PlotRI
-from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.classes.Fields import Source
 
 
 

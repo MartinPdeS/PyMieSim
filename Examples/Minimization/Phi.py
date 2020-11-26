@@ -27,19 +27,17 @@ Fiber = fiber(core_radius = 4.2e-6,
 
 
 Detector0 = LPmode(Fiber         = Fiber,
-                   Mode          = (0, 1),
+                   Mode          = (1, 1),
                    Source        = LightSource,
-                   Npts          = 51,
+                   Npts          = 80,
                    ThetaOffset   = 0,
                    PhiOffset     = 0,
                    NA            = 0.2)
 
 
-
-
 Detector1 = Photodiode(NA                = 0.1,
                        Source            = LightSource,
-                       Npts              = 101,
+                       Npts              = 80,
                        ThetaOffset       = 0,
                        PhiOffset         = 0)
 
@@ -59,19 +57,19 @@ def EvalFunc(x):
                            Detector     = Detector,
                            Source       = LightSource,
                            QuietMode    = True,
-                           Polarization = 'Filtered')    # can Parallel  -  Perpendicular  -  Filetered
+                           Polarization = 'Perpendicular')    # can be   Parallel  -  Perpendicular  -  Filtered  -  NoFiltered
 
 
-    return Array.Cost('RI_RSD') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
 Minimizer = Simulator(EvalFunc)
 
 Result = minimize(fun      = Minimizer.simulate,
-                  x0       = [10],
+                  x0       = [30],
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
-                  tol      = 1e-6,
+                  tol      = 1e-10,
                   options  = {'maxiter': 50, 'rhobeg':20})
 print(Result)
 
@@ -85,12 +83,9 @@ DF = Frame(RIList        = RIList,
 
 DF.Plot(y='Coupling')
 
-#DF.Plot(y='STD')
+DF.Plot(y='STD')
 
 plt.show()
-
-
-print(Detector.Fourier)
 
 
 

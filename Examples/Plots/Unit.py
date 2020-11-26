@@ -11,7 +11,7 @@ from scipy.optimize import minimize
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.Optimization import LoopRIDiameter
-from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.DataFrame import Frame
 
 LightSource = Source(Wavelength   = 1000e-9,
@@ -28,8 +28,8 @@ Detector = LPmode(Fiber       = Fiber,
                   Npts        = 101,
                   ThetaOffset = 0,
                   PhiOffset   = 0,
-                  filter      = None,
-                  Magnification = 0.1)
+                  Filter      = 0,
+                  NA          = 0.1)
 
 """
 Detector = Photodiode(NA                = 0.2,
@@ -49,6 +49,7 @@ DF = Frame(RIList        = RIList,
            Detector      = Detector,
            Source        = LightSource)
 
+
 DF.Plot(y='Coupling', Polarization='Perpendicular')
 
 DF.Plot(y='Coupling', Polarization='Parallel')
@@ -63,8 +64,6 @@ DF.Plot(y='STD', Polarization='Filtered')
 
 
 plt.show()
-
-
 
 
 
