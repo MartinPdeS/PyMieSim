@@ -8,14 +8,16 @@ PyMieCoupling.egg-info/not-zip-safe
 PyMieCoupling.egg-info/requires.txt
 PyMieCoupling.egg-info/top_level.txt
 PyMieCoupling/classes/DataFrame.py
+PyMieCoupling/classes/Detector.deprecated.py
 PyMieCoupling/classes/Detector.py
 PyMieCoupling/classes/Fiber.py
+PyMieCoupling/classes/Fields.py
 PyMieCoupling/classes/Meshes.py
-PyMieCoupling/classes/Misc.py
 PyMieCoupling/classes/Optimizer.py
 PyMieCoupling/classes/Representations.py
 PyMieCoupling/classes/Scattering.py
 PyMieCoupling/classes/__init__.py
+PyMieCoupling/cpp/MieS1S2.cpp
 PyMieCoupling/cpp/S1S2.pyx
 PyMieCoupling/cython/S1S2.pyx
 PyMieCoupling/functions/Misc.py

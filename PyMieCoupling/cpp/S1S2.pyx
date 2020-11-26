@@ -29,9 +29,7 @@ cpdef tuple MieS1S2(double m,
     arr = Cwrapper(m, x, phi)
 
 
-    a =  np.asarray(arr)
-
-    return a
+    return arr
 
 
 
