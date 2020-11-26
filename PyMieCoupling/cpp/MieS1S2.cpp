@@ -5,7 +5,12 @@
 #include <cmath>
 #include "Math.cpp"
 //#include "python3.6/Python.h"
+#if __has_include("python3.8/Python.h")
 #include "python3.8/Python.h"
+#elif _has_include("python3.6/Python.h")
+#include "python3.8/Python.h"
+#endif
+
 
 //#include "/usr/lib/python3/dist-packages/numpy/core/include/numpy/arrayobject.h"
 //#include "numpy/arrayobject.h"
