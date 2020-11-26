@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 from typing import Union
 from tqdm import tqdm
 
-from PyMieCoupling.classes.Fiber import fiber
+
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 import numpy as np
 
 
-
+Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
 class DataFrameCPU(pd.DataFrame):
 
@@ -44,6 +44,8 @@ class DataFrameCPU(pd.DataFrame):
                                                       title   = '[{0}: ] {1} signal'.format(self.DetectorNane, Polarization),
                                                       ylabel  = y,
                                                       xlabel  = r'Scatterer diameter [nm]')
+
+        self.ax.tick_params(labelsize='small')
 
         plt.legend(bbox_to_anchor=(1, 1), ncol=1)
 

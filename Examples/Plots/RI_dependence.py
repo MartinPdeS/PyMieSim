@@ -21,11 +21,11 @@ LightSource = Source(Wavelength   = 450e-9,
 
 npts = 401
 
-Detector = Photodiode(NA                = 0.08,
+Detector = Photodiode(NA                = 0.18,
                       Source            = LightSource,
                       Npts              = npts,
                       ThetaOffset       = 0,
-                      PhiOffset         = 50)
+                      PhiOffset         = 38)
 
 
 RIList = np.linspace(1.3, 1.6, 4).round(4)

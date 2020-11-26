@@ -2,10 +2,41 @@
 import numpy as np
 import fibermodes
 
-from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle
+from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle, Angle2Direct
 from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.classes.Fields import Source, LPField, LPFourier
 from PyMieCoupling.functions.converts import deg2rad
+import fibermodes
+
+
+
+
+class fiber(object):
+
+    def __init__(self,
+                 core_radius,
+                 core_index,
+                 clad_radius,
+                 clad_index):
+
+        self.MaxDirect = 2 * clad_radius
+
+        factory = fibermodes.FiberFactory()
+
+        factory.addLayer(name     = 'core',
+                         radius   = core_radius,
+                         material = 'Fixed',
+                         geometry = "StepIndex",
+                         index    = 1.4489)
+
+        factory.addLayer(name     = 'cladding',
+                         material = 'Fixed',
+                         index    = 1)
+
+        self.source = factory[0]
+
+
+
 
 class Photodiode(object):
     """Short summary.
@@ -85,6 +116,7 @@ class Photodiode(object):
         self.GenMeshes()
 
         item = np.ones( self.Meshes.Theta.Mesh.Degree.shape )
+        item /= (item.shape[0] * item.shape[1])
 
         self.Fourier = LPFourier(array = item, Meshes = self.Meshes)
 
@@ -321,6 +353,8 @@ class LPmode(object):
 
         self.NA = NA
 
+        FourierScaleFactor = self.Fiber.MaxDirect/Npts/5e-7
+
         self.__ThetaBound = np.arcsin(self.NA)
 
         self.Source = Source
@@ -329,7 +363,10 @@ class LPmode(object):
 
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
 
-        self.DirectVec = np.linspace(-self.Fiber.MaxDirect, self.Fiber.MaxDirect, self.Npts)
+        self.DirectVec = np.linspace(-self.Fiber.MaxDirect/FourierScaleFactor,
+                                      self.Fiber.MaxDirect/FourierScaleFactor,
+                                      self.Npts)
+
 
         self.GenMeshes()
 
@@ -416,6 +453,7 @@ class LPmode(object):
                (Scatterer.Field.Parallel).__abs__() *\
                (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
 
+
         return np.asscalar( ( Para.sum().__abs__() * self.Meshes.dOmega.Radian ) **2 )
 
 
@@ -468,26 +506,38 @@ class LPmode(object):
 
     def Coupling(self, Scatterer, Polarization):
 
-        CouplingDict = {}
+        if Polarization in ['Parallel']:
+            return self.Coupling_Para(Scatterer)
 
-        if Polarization in ['all','Parallel']:
+
+        if Polarization in ['Perpendicular']:
+            return self.Coupling_Perp(Scatterer)
+
+
+        if Polarization in ['Filtered']:
+            return self.Coupling_Filtered(Scatterer)
+
+
+        if Polarization in ['NoFiltered']:
+            return self.Coupling_NoFilter(Scatterer)
+
+
+        if Polarization in ['all']:
+            CouplingDict = {}
+
             coupling = self.Coupling_Para(Scatterer)
             CouplingDict['Parallel'] = coupling
 
-        if Polarization in ['all','Perpendicular']:
             coupling = self.Coupling_Perp(Scatterer)
             CouplingDict['Perpendicular'] = coupling
 
-        if Polarization in ['all','NoFiltered']:
-            coupling = self.Coupling_NoFilter(Scatterer)
-            CouplingDict['NoFiltered'] = coupling
-
-        if Polarization in ['all','Filtered']:
             coupling = self.Coupling_Filtered(Scatterer)
             CouplingDict['Filtered'] = coupling
 
+            coupling = self.Coupling_NoFilter(Scatterer)
+            CouplingDict['NoFiltered'] = coupling
 
-        return CouplingDict
+            return CouplingDict
 
 
 

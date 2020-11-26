@@ -23,14 +23,14 @@ class ScatMeshes(object):
 
         ThetaMesh, PhiMesh      = np.meshgrid(ThetaVector, PhiVector)
 
-        ThetaDelta = np.abs(ThetaBound[0] - ThetaBound[1]) / self.Npts
+        ThetaDelta = np.abs(ThetaBound[0] - ThetaBound[1])# / self.Npts
 
-        PhiDelta = np.abs(PhiBound[0] - PhiBound[1]) / self.Npts
+        PhiDelta = np.abs(PhiBound[0] - PhiBound[1])# / self.Npts
 
         self.dOmega   = Angle( 0 )
 
         self.dOmega.Degree = PhiDelta * ThetaDelta
-        
+
         self.dOmega.Radian = deg2rad(PhiDelta) * deg2rad(ThetaDelta)
 
         self.Theta = Namespace(Boundary  = Angle( ThetaBound ),

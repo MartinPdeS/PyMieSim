@@ -138,10 +138,6 @@ class LPFourier(np.ndarray):
 
 
 
-    def __repr__(self):
-
-        return 'lol'
-
 
     def Plot(self, Part: str = 'Real') -> None:
 

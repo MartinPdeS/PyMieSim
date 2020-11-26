@@ -84,6 +84,7 @@ def PlotRI(Diameter:     float,
     ax.set_xlabel(r'Scattering Angle [degree]')
     ax.set_ylabel(r'Scattered light intensity [a.u]')
     ax.set_yscale('log')
+    ax.tick_params(labelsize=8)
     plt.legend()
     plt.show()
 
