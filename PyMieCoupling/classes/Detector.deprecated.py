@@ -78,6 +78,8 @@ class Photodiode(object):
 
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
 
+        self.__ThetaBound = np.arcsin(self.NA)
+
         self.Npts = Npts
 
         self.Detection = None
@@ -246,8 +248,8 @@ class LPmode(object):
                  Fiber:         fibermodes.fiber,
                  Mode:          tuple,
                  Source:        Source,
-                 NA:            float  = 0.2,
                  Npts:          int   = 101,
+                 Magnification: float = 1.,
                  ThetaOffset:   float = 0,
                  PhiOffset:     float = 0,
                  filter:        float = None,
@@ -261,13 +263,9 @@ class LPmode(object):
 
         self.Mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *Mode)
 
-        self.NA = NA
-
-        self.__ThetaBound = np.arcsin(self.NA)
-
         self.Source = Source
 
-        self.Npts = Npts
+        self.Npts, self.Magnification  = Npts, Magnification
 
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
 
@@ -283,17 +281,37 @@ class LPmode(object):
 
         self.Field, self.Fourier = LPField(array = item[0], DirectVec = self.DirectVec), LPFourier(array = item[1], Meshes = self.Meshes)
 
+        if Magnification != 1:
+            self.Magnificate(Magnification)
+
 
     def GenMeshes(self):
 
-        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA)
+        self.AngleVec = Direct2Angle(self.DirectVec, self.Source.k)
+
+        self.AngleVec = np.array(self.AngleVec, copy=False)
+
+        self._DirectBound = [self.DirectVec[0], self.DirectVec[-1]]
+
+        self.__ThetaBound = self.AngleVec + self.__PhiOffset#
+
+        self.__ThetaBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ], copy=False ) + self.__ThetaOffset
+
+        self.__PhiBound = np.array( [ self.AngleVec[0], self.AngleVec[-1] ], copy=False ) + self.__PhiOffset
 
         self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
-                                 PhiBound   = (self.__PhiBound) + self.__PhiOffset)
+                                 ThetaBound = self.__ThetaBound,
+                                 PhiBound   = self.__PhiBound)
 
 
 
+    def Magnificate(self, Magnification):
+
+        self.DirectVec /= Magnification
+
+        self.GenMeshes()
+
+        self.Field.DirectVec, self.Fourier.Meshes = self.DirectVec, self.Meshes
 
 
     @property
@@ -378,7 +396,7 @@ class LPmode(object):
             Filtered = (Perp + Para).sum().__abs__()**2
 
 
-        return {'Parallel': np.asscalar(CPara), 'Perpendicular': np.asscalar(CPerp), 'Filtered': np.asscalar(Filtered)}
+        return {'Parallel': CPara, 'Perpendicular': CPerp, 'Filtered': Filtered}
 
 
 

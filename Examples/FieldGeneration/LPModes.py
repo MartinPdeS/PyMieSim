@@ -7,7 +7,7 @@ _________________________________________________________
 
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
-from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.classes.Fields import Source
 
 npts=101
 
@@ -26,7 +26,8 @@ LP11 = LPmode(Fiber       = Fiber,
               Source      = LightSource,
               Npts        = npts,
               ThetaOffset = 0,
-              PhiOffset   = 0)
+              PhiOffset   = 0,
+              NA          = 0.4)
 
 LP01 = LPmode(Fiber         = Fiber,
               Name          = 'LP01',
@@ -35,18 +36,20 @@ LP01 = LPmode(Fiber         = Fiber,
               Npts          = npts,
               ThetaOffset   = 0,
               PhiOffset     = 0,
-              Magnification = 2)
+              NA            = 0.4)
 
 
-LP01.Field.Plot('Real')
+LP01.Field.Plot()
 
-LP11.Field.Plot('Imag')
+LP11.Field.Plot()
+
+LP01.Fourier.Plot()
+
+LP11.Fourier.Plot()
 
 LP01.Fourier.Plot('Polar')
 
 LP11.Fourier.Plot('Polar')
-
-
 
 
 # -

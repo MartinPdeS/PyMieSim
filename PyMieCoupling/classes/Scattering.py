@@ -1,7 +1,7 @@
 
 import numpy as np
 from PyMieCoupling.classes.Meshes import ScatMeshes
-from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.classes.Fields import Source
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from typing import Tuple
@@ -120,8 +120,7 @@ class Scatterer(object):
 
         self.__Field = Field(Perpendicular = Perpendicular,
                              Parallel      = Parallel,
-                             Meshes        = self.Meshes
-                             )
+                             Meshes        = self.Meshes)
 
     @property
     def Stokes(self) -> None:

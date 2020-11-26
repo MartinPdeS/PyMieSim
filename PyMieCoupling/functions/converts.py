@@ -1,26 +1,20 @@
 import numpy as np
-from typing import Union
-
-try:
-    import cupy as cp
-except:
-    import numpy as cp
 
 
-def rad2deg(RadSpace) -> Union[cp.ndarray, np.ndarray]:
+
+def rad2deg(RadSpace) -> np.ndarray:
 
         return RadSpace * 180/np.pi
 
 
-def deg2rad(AngleSpace) -> Union[cp.ndarray, np.ndarray]:
+
+def deg2rad(AngleSpace) -> np.ndarray:
 
     return AngleSpace * np.pi/180
 
 
 
-def Angle2Direct(AngleVec: np.ndarray,
-                 k:        float,
-                 cuda:     bool = False) -> Union[cp.ndarray, np.ndarray]:
+def Angle2Direct(AngleVec: np.ndarray, k: float,) -> np.ndarray:
 
     RadSpace = AngleVec * np.pi / 180
 
@@ -33,25 +27,23 @@ def Angle2Direct(AngleVec: np.ndarray,
     return DirectSpace
 
 
-def Direct2Angle(DirectVec: np.ndarray,
-                 k:         float,
-                 cuda:      bool = False) -> Union[cp.ndarray, np.ndarray]:
+
+def Direct2Angle(DirectVec: np.ndarray, k: float) -> np.ndarray:
 
     direct_unit = (DirectVec[1] - DirectVec[0]).__abs__()
 
     FourierSpace = np.fft.fftshift( np.fft.fftfreq( DirectVec.shape[0], d = direct_unit ) )
 
-    AngleVec = np.arcsin(2 * np.pi * FourierSpace / k) #conversion spatial frequency to angular space
+    AngleVec = np.arcsin(2 * np.pi * FourierSpace / k) # conversion spatial frequency to angular space
 
-    if np.nan in AngleVec or cp.nan in AngleVec:
-        raise Exception('Warning ill defined resolution -> angle definition!')
+    if np.isnan(AngleVec).any():
+        raise Exception("Magnification too large.")
 
     return AngleVec * 180 / np.pi
 
 
 
-def NA2Angle(NA:   float,
-             cuda: bool = False) -> Union[cp.ndarray, np.ndarray]:
+def NA2Angle(NA: float) -> np.ndarray:
 
     Angle = rad2deg( np.arcsin(NA) )
 
@@ -59,22 +51,12 @@ def NA2Angle(NA:   float,
 
     __PhiBound = np.array( [-Angle, Angle] )
 
-
     return __ThetaBound, __PhiBound
 
 
 
-def CuPy2NumPy(*items):
-    ItemList = []
-    for item in items:
-        if isinstance(item, np.ndarray):
-            ItemList.append(item)
-        else:
-            ItemList.append( cp.asnumpy(item) )
 
-    temp = tuple(ItemList)
 
-    return (*temp,)
 
 
 

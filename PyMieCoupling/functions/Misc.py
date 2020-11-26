@@ -42,40 +42,7 @@ def S1S2ToField(S1,
 
 
 
-def GetLP(Fiber,
-          Mode,
-          Wavelength: float,
-          Size:       float,
-          Npts:       int):
 
-    Field = fibermodes.field.Field(Fiber,
-                                   Mode,
-                                   Wavelength,
-                                   Size,
-                                   Npts).Ex()
-
-    Field = np.array(Field)
-
-    Field /= (Field.__abs__()).sum()
-
-    Fourier = np.fft.fft2(Field)
-
-    Fourier /= GenShift(Npts)
-
-    Fourier = np.fft.fftshift(Fourier)
-
-    Fourier /= (Fourier.__abs__()).sum()
-
-    return Field, Fourier
-
-
-def GenShift(Npts):
-
-    phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(Npts)*(Npts-1)/Npts)
-
-    shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
-
-    return shift_grid * shift_grid.T
 
 
 

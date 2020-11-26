@@ -6,8 +6,8 @@ import numpy as cp
 
 
 
-global Fontsize, pi
-Fontsize, pi = 10, 3.141592
+global Fontsize, pi, cmapPad
+Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
 class Source(object):
 
@@ -43,17 +43,20 @@ class LPField(np.ndarray):
         pass
 
 
-    def __repr__(self):
+    def Plot(self):
 
-        txt = 'SHAPE: {0}'.format(self.shape)
-        return txt
+        fig, ax = plt.subplots(1,2, figsize=(6,3))
+
+        self.PlotReal(fig, ax[0])
+
+        self.PlotImag(fig, ax[1])
+
+        plt.show()
 
 
-    def Plot(self, Part: str = 'Real'):
+    def PlotReal(self, fig, ax):
 
-        assert Part in ['Real', 'Imag']
-
-        fig, ax = plt.subplots(1,1, figsize=(4,4))
+        ax.set_title('Real part of LP mode Near-Field', fontsize = Fontsize)
 
         ax.set_xlabel(r'X Direction [$\mu$m]', fontsize = Fontsize)
 
@@ -63,16 +66,6 @@ class LPField(np.ndarray):
 
         ax.set_aspect('equal')
 
-        if Part == 'Real':
-            return self.PlotReal(fig, ax)
-        else:
-            return self.PlotImag(fig, ax)
-
-
-    def PlotReal(self, fig, ax):
-
-        ax.set_title('Real part of LP mode Near-Field')
-
 
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
@@ -80,22 +73,29 @@ class LPField(np.ndarray):
                             shading='auto')
 
         cbar = fig.colorbar(im0,
-                            ax=ax,
-                            orientation="horizontal",
-                            pad=0.15,
-                            shrink=0.745,
-                            format=tick.FormatStrFormatter('%.1e'))
+                            ax          = ax,
+                            orientation = "horizontal",
+                            pad         = cmapPad,
+                            shrink      = 0.745,
+                            format      = tick.FormatStrFormatter('%.1e'))
 
-        cbar.ax.tick_params(labelsize='small')
+        cbar.ax.tick_params(labelsize=7)
 
         cbar.ax.locator_params(nbins=3)
-
-        plt.show()
 
 
     def PlotImag(self, fig, ax) -> None:
 
         ax.set_title('Imaginary part of LP mode Near-Field', fontsize = Fontsize)
+
+        ax.set_xlabel(r'X Direction [$\mu$m]', fontsize = Fontsize)
+
+        ax.set_ylabel(r'Y Direction [$\mu$m]', fontsize = Fontsize)
+
+        ax.tick_params(labelsize='small')
+
+        ax.set_aspect('equal')
+
 
         im0 = ax.pcolormesh(self.DirectVec*1e6,
                             self.DirectVec*1e6,
@@ -103,17 +103,16 @@ class LPField(np.ndarray):
                             shading='auto')
 
         cbar = fig.colorbar(im0,
-                            ax=ax,
-                            orientation="horizontal",
-                            pad=0.15,
-                            shrink=0.745,
-                            format=tick.FormatStrFormatter('%.1e'))
+                            ax          = ax,
+                            orientation = "horizontal",
+                            pad         = cmapPad,
+                            shrink      = 0.745,
+                            format      = tick.FormatStrFormatter('%.1e'))
 
-        cbar.ax.tick_params(labelsize='small')
+        cbar.ax.tick_params(labelsize=7)
 
         cbar.ax.locator_params(nbins=3)
 
-        plt.show()
 
 
 
@@ -146,13 +145,22 @@ class LPFourier(np.ndarray):
 
     def Plot(self, Part: str = 'Real') -> None:
 
-        assert Part in ['Real', 'Imag', 'Polar']
-
         if Part == 'Polar':
-            fig, ax = plt.subplots(1,1, figsize=(4,4), subplot_kw={'projection':'polar'})
+            fig, ax = plt.subplots(1,1, figsize=(3,3), subplot_kw={'projection':'polar'})
+            self.PlotPolar(fig, ax)
+
         else:
-            fig, ax = plt.subplots(1,1, figsize=(4,4)
-                                   )
+            fig, ax = plt.subplots(1,2, figsize=(6,3))
+            self.PlotReal(fig, ax[0])
+
+            self.PlotImag(fig, ax[1])
+
+        plt.show()
+
+
+
+    def PlotReal(self, fig, ax) -> None:
+
         ax.set_xlabel(r'Angle $\theta$ [Degree]', fontsize = Fontsize)
 
         ax.set_ylabel(r'Angle $\phi$ [Degree]', fontsize = Fontsize)
@@ -160,16 +168,6 @@ class LPFourier(np.ndarray):
         ax.tick_params(labelsize='small')
 
         ax.set_aspect('equal')
-
-        if Part == 'Real':
-            return self.PlotReal(fig, ax)
-        elif Part == 'Imag':
-            return self.PlotImag(fig, ax)
-        elif Part == 'Polar':
-            return self.PlotPolar(fig, ax)
-
-
-    def PlotReal(self, fig, ax) -> None:
 
         ax.set_title('Real part of LP mode Far-Field', fontsize = Fontsize)
 
@@ -179,21 +177,28 @@ class LPFourier(np.ndarray):
                             shading='auto')
 
         cbar = fig.colorbar(im0,
-                            ax=ax,
-                            orientation="horizontal",
-                            pad=0.15,
-                            shrink=0.745,
-                            format=tick.FormatStrFormatter('%.1e'))
+                            ax          = ax,
+                            orientation = "horizontal",
+                            pad         = cmapPad,
+                            shrink      = 0.745,
+                            format      = tick.FormatStrFormatter('%.1e'))
 
-        cbar.ax.tick_params(labelsize='small')
+        cbar.ax.tick_params(labelsize=7)
 
         cbar.ax.locator_params(nbins=3)
 
-        plt.show()
 
 
 
     def PlotImag(self, fig, ax) -> None:
+
+        ax.set_xlabel(r'Angle $\theta$ [Degree]', fontsize = Fontsize)
+
+        ax.set_ylabel(r'Angle $\phi$ [Degree]', fontsize = Fontsize)
+
+        ax.tick_params(labelsize='small')
+
+        ax.set_aspect('equal')
 
         ax.set_title('Imaginary part of LP mode Far-Field', fontsize = Fontsize)
 
@@ -203,20 +208,23 @@ class LPFourier(np.ndarray):
                             shading='auto')
 
         cbar = fig.colorbar(im0,
-                            ax=ax,
-                            orientation="horizontal",
-                            pad=0.15,
-                            shrink=0.745,
-                            format=tick.FormatStrFormatter('%.1e'))
+                            ax          = ax,
+                            orientation = "horizontal",
+                            pad         = cmapPad,
+                            shrink      = 0.745,
+                            format      = tick.FormatStrFormatter('%.1e'))
 
-        cbar.ax.tick_params(labelsize='small')
+        cbar.ax.tick_params(labelsize=7)
 
         cbar.ax.locator_params(nbins=3)
 
-        plt.show()
 
 
     def PlotPolar(self, fig, ax):
+
+        ax.tick_params(labelsize='small')
+
+        ax.set_aspect('equal')
 
         ax.set_xlabel('')
 
@@ -232,7 +240,7 @@ class LPFourier(np.ndarray):
                         color='C0',
                         alpha=0.4 )
 
-        plt.show()
+
 
 
 

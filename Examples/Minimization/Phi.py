@@ -11,7 +11,7 @@ from scipy.optimize import minimize
 from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.Optimization import LoopRIDiameter
-from PyMieCoupling.classes.Misc import Source
+from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.DataFrame import Frame
 from PyMieCoupling.classes.Optimizer import Simulator1 as Simulator
 
@@ -32,7 +32,7 @@ Detector0 = LPmode(Fiber         = Fiber,
                    Npts          = 51,
                    ThetaOffset   = 0,
                    PhiOffset     = 0,
-                   Magnification = 5)
+                   NA            = 0.2)
 
 
 
