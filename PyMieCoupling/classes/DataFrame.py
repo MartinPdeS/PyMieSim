@@ -39,11 +39,11 @@ class DataFrameCPU(pd.DataFrame):
     def _plot(self, y, Polarization):
 
         self.ax = self.xs(Polarization).unstack(1).plot(y       = y,
-                                                      grid    = True,
-                                                      figsize = (8,3),
-                                                      title   = '[{0}: ] {1} signal'.format(self.DetectorNane, Polarization),
-                                                      ylabel  = y,
-                                                      xlabel  = r'Scatterer diameter [nm]')
+                                                        grid    = True,
+                                                        figsize = (8,3.5),
+                                                        title   = '[{0}: ] {1} signal'.format(self.DetectorNane, Polarization),
+                                                        ylabel  = y,
+                                                        xlabel  = r'Scatterer diameter [m]')
 
         self.ax.tick_params(labelsize='small')
 

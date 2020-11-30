@@ -1286,7 +1286,7 @@ static PyTypeObject *__pyx_ptype_7cpython_7complex_complex = 0;
 static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_MieS1S2(double, double, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static std::vector<double>  __pyx_convert_vector_from_py_double(PyObject *); /*proto*/
 static PyObject *__pyx_convert_vector_to_py___pyx_t_double_complex(const std::vector<__pyx_t_double_complex>  &); /*proto*/
-static PyObject *__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(std::pair<std::vector<__pyx_t_double_complex> ,std::vector<__pyx_t_double_complex> >  const &); /*proto*/
+static PyObject *__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(const std::vector<std::vector<__pyx_t_double_complex> >  &); /*proto*/
 #define __Pyx_MODULE_NAME "PyMieCoupling.cpp.S1S2"
 extern int __pyx_module_is_main_PyMieCoupling__cpp__S1S2;
 int __pyx_module_is_main_PyMieCoupling__cpp__S1S2 = 0;
@@ -1315,14 +1315,14 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_MieS1S2(CYTHON_UNUSED PyObj
 /* "PyMieCoupling/cpp/S1S2.pyx":23
  * @cython.nonecheck(False)
  * @cython.wraparound(False)
- * cpdef tuple MieS1S2(double m,             # <<<<<<<<<<<<<<
+ * cpdef list MieS1S2(double m,             # <<<<<<<<<<<<<<
  *                     double x,
  *                     phi):
  */
 
 static PyObject *__pyx_pw_13PyMieCoupling_3cpp_4S1S2_1MieS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_MieS1S2(double __pyx_v_m, double __pyx_v_x, PyObject *__pyx_v_phi, CYTHON_UNUSED int __pyx_skip_dispatch) {
-  std::pair<std::vector<__pyx_t_double_complex> ,std::vector<__pyx_t_double_complex> >  __pyx_v_arr;
+  std::vector<std::vector<__pyx_t_double_complex> >  __pyx_v_arr;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   std::vector<double>  __pyx_t_1;
@@ -1332,14 +1332,14 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_MieS1S2(double __pyx_v_m, do
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("MieS1S2", 0);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":29
+  /* "PyMieCoupling/cpp/S1S2.pyx":28
  * 
- *     #cdef pair[vector[complex128_t], vector[complex128_t]]
- *     arr = Cwrapper(m, x, phi)             # <<<<<<<<<<<<<<
+ * 
+ *     cdef vector[vector[complex128_t]] arr = Cwrapper(m,  x, phi)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __pyx_convert_vector_from_py_double(__pyx_v_phi); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_vector_from_py_double(__pyx_v_phi); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L1_error)
   __pyx_v_arr = Cwrapper(__pyx_v_m, __pyx_v_x, __pyx_t_1);
 
   /* "PyMieCoupling/cpp/S1S2.pyx":32
@@ -1350,9 +1350,9 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_MieS1S2(double __pyx_v_m, do
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(__pyx_v_arr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(__pyx_v_arr); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (!(likely(PyTuple_CheckExact(__pyx_t_2))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 32, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_2))||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 32, __pyx_L1_error)
   __pyx_r = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
   goto __pyx_L0;
@@ -1360,7 +1360,7 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_MieS1S2(double __pyx_v_m, do
   /* "PyMieCoupling/cpp/S1S2.pyx":23
  * @cython.nonecheck(False)
  * @cython.wraparound(False)
- * cpdef tuple MieS1S2(double m,             # <<<<<<<<<<<<<<
+ * cpdef list MieS1S2(double m,             # <<<<<<<<<<<<<<
  *                     double x,
  *                     phi):
  */
@@ -1666,63 +1666,56 @@ static PyObject *__pyx_convert_vector_to_py___pyx_t_double_complex(const std::ve
   return __pyx_r;
 }
 
-/* "pair.to_py":158
- * 
- * @cname("__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
- * cdef object __pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(const pair[X,Y]& p):             # <<<<<<<<<<<<<<
- *     return p.first, p.second
- * 
- */
-
-static PyObject *__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(std::pair<std::vector<__pyx_t_double_complex> ,std::vector<__pyx_t_double_complex> >  const &__pyx_v_p) {
+static PyObject *__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(const std::vector<std::vector<__pyx_t_double_complex> >  &__pyx_v_v) {
+  size_t __pyx_v_i;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
+  size_t __pyx_t_2;
+  size_t __pyx_t_3;
+  size_t __pyx_t_4;
+  PyObject *__pyx_t_5 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___", 0);
+  __Pyx_RefNannySetupContext("__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___", 0);
 
-  /* "pair.to_py":159
- * @cname("__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
- * cdef object __pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(const pair[X,Y]& p):
- *     return p.first, p.second             # <<<<<<<<<<<<<<
+  /* "vector.to_py":61
+ * @cname("__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
+ * cdef object __pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(vector[X]& v):
+ *     return [v[i] for i in range(v.size())]             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_convert_vector_to_py___pyx_t_double_complex(__pyx_v_p.first); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 159, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_vector_to_py___pyx_t_double_complex(__pyx_v_p.second); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 159, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
+  __pyx_t_2 = __pyx_v_v.size();
+  __pyx_t_3 = __pyx_t_2;
+  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
+    __pyx_v_i = __pyx_t_4;
+    __pyx_t_5 = __pyx_convert_vector_to_py___pyx_t_double_complex((__pyx_v_v[__pyx_v_i])); if (unlikely(!__pyx_t_5)) __PYX_ERR(1, 61, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(1, 61, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  }
+  __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
-  __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "pair.to_py":158
+  /* "vector.to_py":60
  * 
- * @cname("__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
- * cdef object __pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(const pair[X,Y]& p):             # <<<<<<<<<<<<<<
- *     return p.first, p.second
+ * @cname("__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
+ * cdef object __pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(vector[X]& v):             # <<<<<<<<<<<<<<
+ *     return [v[i] for i in range(v.size())]
  * 
  */
 
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("pair.to_py.__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_AddTraceback("vector.to_py.__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2113,11 +2106,11 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "pair.to_py":158
+  /* "vector.to_py":60
  * 
- * @cname("__pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
- * cdef object __pyx_convert_pair_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e_______std_3a__3a_vector_3c___pyx_t_double_complex_3e___(const pair[X,Y]& p):             # <<<<<<<<<<<<<<
- *     return p.first, p.second
+ * @cname("__pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___")
+ * cdef object __pyx_convert_vector_to_py_std_3a__3a_vector_3c___pyx_t_double_complex_3e___(vector[X]& v):             # <<<<<<<<<<<<<<
+ *     return [v[i] for i in range(v.size())]
  * 
  */
 

@@ -4,6 +4,9 @@
 #include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
+#include <boost/python.hpp>
+#include <boost/python/numpy.hpp>
+
 //#include "python3.6/Python.h"
 #if __has_include("python3.8/Python.h")
 #include "python3.8/Python.h"
@@ -17,8 +20,9 @@
 //#include "list_of_ndarrays_lib.h"
 
 #define PI 3.14159265
-typedef std::vector<std::complex<double>> iVec;
 typedef std::complex<double> complex128;
+typedef std::vector<complex128> iVec;
+typedef std::vector<std::vector<complex128>> iMatrix;
 
 
 
@@ -139,13 +143,14 @@ void MiePiTau(const double mu,
 
 
 
-static std::pair<iVec, iVec> Cwrapper(const double m,
-                                const double x,
-                                const std::vector<double> phi)
+static iMatrix Cwrapper(const double m,
+                        const double x,
+                        const std::vector<double> phi,
+                       //const std::vector<std::reference_wrapper<int>>& phi)
 {
 
-    std::vector<complex128> *an = new std::vector<complex128>;
-    std::vector<complex128> *bn = new std::vector<complex128>;
+    iVec *an = new iVec;
+    iVec *bn = new iVec;
 
     std::vector<double> *n, *n2;
 
@@ -159,13 +164,15 @@ static std::pair<iVec, iVec> Cwrapper(const double m,
     const long int anLength = an->size();
     const long int lenght = phi.size();
 
-    std::vector<complex128> S1 = std::vector<complex128>(lenght) ;
+    iVec S1 = iVec(lenght) ;
+    iVec S2 = iVec(lenght) ;
+    iMatrix S1S2 = std::vector<std::vector<complex128>>(2, std::vector<complex128>(lenght));
 
-    std::vector<complex128> S2 = std::vector<complex128>(lenght) ;
 
-    std::vector<complex128> *pin = new std::vector<complex128>(nmax);
-    std::vector<complex128> *taun = new std::vector<complex128>(nmax);
-    std::complex<double> j (0., 1.0);
+
+    iVec *pin = new iVec(nmax);
+    iVec *taun = new iVec(nmax);
+    complex128 j (0., 1.0);
 
     PyObject* Py_S1 = PyList_New(0);
 
@@ -176,13 +183,14 @@ static std::pair<iVec, iVec> Cwrapper(const double m,
         for (long unsigned int k = 0; k < anLength ; k++){
 
 
-            S1[i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
-            S2[i] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+            S1S2[0][i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
+            S1S2[1][i] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
           }
     }
 
-    return std::make_pair(S1, S2);
+    return S1S2;
+
 
 
 }

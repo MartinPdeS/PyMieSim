@@ -1,17 +1,454 @@
 
 import numpy as np
-from PyMieCoupling.classes.Meshes import ScatMeshes
-from PyMieCoupling.classes.Fields import Source
+import pandas as pd
+from tqdm import tqdm
 import matplotlib.pyplot as plt
 from matplotlib import cm
-from typing import Tuple
+from typing import Tuple, Union
+
+
+from PyMieCoupling.classes.Meshes import ScatMeshes
+from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Detector import LPmode, Photodiode
+from PyMieCoupling.functions.Couplings import Coupling
+
+
+Fontsize, pi, cmapPad = 7, 3.141592, 0.2
+
+
+
+try:
+    from PyMieCoupling.cpp.S1S2 import MieS1S2
+except:
+    try:
+        from PyMieCoupling.cython.S1S2 import MieS1S2
+    except:
+        try:
+            from PyMieCoupling.cython.S1S2 import MieS1S2
+        except: ImportError
 
 
 
 
-#from PyMieCoupling.cython.S1S2 import MieS1S2
-#from PyMieCoupling.python.S1S2 import MieS1S2# as S1S2_PYTHON
-from PyMieCoupling.cpp.S1S2 import MieS1S2# as S1S2_CPP
+class DataFrameCPU(pd.DataFrame):
+
+    def __init__(self,**kwargs):
+        pd.DataFrame.__init__(self,**kwargs)
+        self.Polarization = None
+
+
+    @property
+    def Parallel(self):
+        return self.xs('Parallel')
+
+
+    @property
+    def Perpendicular(self):
+        return self.xs('Perpendicular')
+
+
+    def Plot(self, y, Polarization=None):
+
+        for Polar in self.Polarization:
+            self._plot(y, Polar)
+
+
+    def _plot(self, y, Polarization):
+
+        self.ax = self.xs(Polarization).unstack(1).plot(y       = y,
+                                                        grid    = True,
+                                                        figsize = (8,3.5),
+                                                        title   = '[{0}: ] {1} signal'.format(self.DetectorNane, Polarization),
+                                                        ylabel  = y,
+                                                        xlabel  = r'Scatterer diameter [m]')
+
+        self.ax.tick_params(labelsize='small')
+
+        plt.legend(bbox_to_anchor=(1, 1), ncol=1)
+
+        plt.subplots_adjust(right=0.8,)
+
+        plt.show()
+
+
+
+
+class ScattererSet(object):
+
+    def __init__(self,
+                 DiameterList:    list,
+                 RIList:          list,
+                 Detector:        Union[LPmode, Photodiode],
+                 Source:          Source,
+                 ):
+
+        self.DiameterList = DiameterList
+
+        self.Detector = Detector
+
+        self.RIList = RIList
+
+        self.Source = Source
+
+        self.Coupling = np.empty( [len(self.RIList), len(self.DiameterList)] )
+
+        self.S1List = np.empty( [len(self.RIList), len(self.DiameterList), self.Detector.Npts], dtype=np.complex  )
+
+        self.S2List = np.empty( [len(self.RIList), len(self.DiameterList), self.Detector.Npts], dtype=np.complex  )
+
+
+
+    def GetFrame(self, Polarization: list = ['NoFiltered'] ):
+
+        if not isinstance(Polarization, list):
+            Polarization = [Polarization]
+
+
+        MI = pd.MultiIndex.from_product([Polarization, self.DiameterList, self.RIList],
+                                        names=['Polarization','Diameter','RI',])
+
+        df = DataFrameCPU(index = MI, columns = ['Coupling'])
+
+        df.Polarization = Polarization
+
+        for nr, RI in enumerate( self.RIList ):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                Scat = Scatterer(Diameter    = Diameter,
+                                 Index       = RI,
+                                 Source      = self.Source,
+                                 Meshes      = self.Detector.Meshes)
+
+                for Polar in Polarization:
+                    Coupling = self.Detector.Coupling(Scatterer = Scat, Polarization = Polar)
+                    df.at[(Polar, Diameter, RI),'Coupling'] = Coupling
+
+
+        df.Coupling = df.Coupling.astype(float)
+
+        df['Mean'] = df.groupby(['Polarization','Diameter']).Coupling.transform('mean')
+
+        df['STD'] = df.groupby(['Polarization','Diameter']).Coupling.transform('std')
+
+        df.DetectorNane = self.Detector._name
+
+        return df
+
+
+
+    def GetS1(self, Boundary: str = 'Detector'):
+
+        if Boundary == 'Detector':
+            Meshes = self.Detector.Meshes
+
+        elif Boundary == 'Full':
+            Meshes = ScatMeshes(ThetaBound = np.array([-180, 180], copy=False),
+                                PhiBound   = np.array([-90,90], copy=False),
+                                Npts       = self.Detector.Npts)
+
+        for nr, RI in enumerate(self.RIList):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                Scat = Scatterer(Diameter  = Diameter,
+                                 Index     = RI,
+                                 Source    = self.Source,
+                                 Meshes    = Meshes
+                                 )
+
+                self.S1List[nr, nd,:] = Scat.S1S2.S1S2[0]
+
+
+        return self.S1List, Meshes
+
+
+
+    def GetS2(self, Boundary: str = 'Detector'):
+
+        if Boundary == 'Detector':
+            Meshes = self.Detector.Meshes
+
+        elif Boundary == 'Full':
+            Meshes = ScatMeshes(ThetaBound = np.array([-180, 180], copy=False),
+                                PhiBound   = np.array([-90,90], copy=False),
+                                Npts       = self.Detector.Npts)
+
+        for nr, RI in enumerate(self.RIList):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                Scat = Scatterer(Diameter  = Diameter,
+                                 Index     = RI,
+                                 Source    = self.Source,
+                                 Meshes    = Meshes
+                                 )
+
+                self.S2List[nr, nd,:] = Scat.S1S2.S1S2[1]
+
+
+        return self.S2List, Meshes
+
+
+
+    def GetCoupling(self,
+                    Polarization: str   = 'NoFiltered',
+                    Boundary:     str   = 'Detector'):
+
+
+        if Boundary == 'Detector':
+            Meshes = self.Detector.Meshes
+
+        elif Boundary == 'Full':
+            Meshes = ScatMeshes(ThetaBound = np.array([-180, 180], copy=False),
+                                PhiBound   = np.array([-90,90], copy=False),
+                                Npts       = self.Detector.Npts)
+
+        for nr, RI in enumerate(self.RIList):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                Scat = Scatterer(Diameter  = Diameter,
+                                 Index     = RI,
+                                 Source    = self.Source,
+                                 Meshes    = self.Detector.Meshes
+                                 )
+
+
+                self.Coupling[nr, nd] = Scat.Coupling(Detector = self.Detector,
+                                                      Polarization = Polarization)
+
+        return self.Coupling, Meshes
+
+
+
+    def GetCoupling(self, Polarization):
+
+        temp = np.empty( [ len(self.RIList), len(self.DiameterList) ] )
+
+
+        for nr, RI in enumerate(self.RIList):
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                Scat = Scatterer(Diameter  = Diameter,
+                                 Index     = RI,
+                                 Source    = self.Source,
+                                 Meshes    = self.Detector.Meshes
+                                 )
+
+                Coupling = self.Detector.Coupling(Scatterer = Scat, Polarization = Polarization)
+
+                temp[nr, nd] = Coupling
+
+        return Array(temp)
+
+
+
+    def Plot(self, part = 'S1'):
+
+        if 'S1' in  part:
+            y, Meshes = self.GetS1('Full')
+
+        elif "S2" in part:
+            y, Meshes = self.GetS2('Full')
+
+        y = np.abs(y)**2
+
+        if part == 'S1':
+            self.Plot_S1(Meshes, y)
+
+        if part == 'STD::S1':
+            self.Plot_STDS1(Meshes, y)
+
+        if part == 'S2':
+            self.Plot_S2(Meshes, y)
+
+        if part == 'STD::S2':
+            self.Plot_STDS2(Meshes, y)
+
+
+
+    def Plot_STDS1(self, Meshes, y):
+
+        STDDiameter = y.std(axis=1)
+
+        STDRI = y.std(axis=0)
+
+        fig = plt.figure(figsize=(7,3))
+
+        ax = fig.add_subplot(1,1,1)
+
+        ax.grid()
+
+        for nr, RI in enumerate(self.RIList):
+
+            ax.plot(Meshes.Phi.Vector.Degree,
+                    STDDiameter[nr],
+                    '--',
+                    label="RI:{0:.2f}".format(RI)
+                    )
+
+
+        for nd, Diameter in enumerate(self.DiameterList):
+
+            ax.plot(Meshes.Phi.Vector.Degree,
+                    STDRI[nd],
+                    label="Diam.:{0:.2e}".format(Diameter)
+                    )
+
+
+        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+                        ax.get_ylim()[0],
+                        ax.get_ylim()[1]*3,
+                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        label = 'Detector',
+                        color = 'green',
+                        alpha = 0.5)
+
+        ax.set_xlabel(r'Scattering Angle [degree]')
+
+        ax.set_ylabel(r'Scattered light intensity: $STD(S1^2)$ ')
+
+        ax.set_yscale('log')
+
+        ax.tick_params(labelsize=8)
+
+        plt.legend(fontsize=6)
+
+        plt.show()
+
+
+
+    def Plot_STDS2(self, Meshes, y):
+
+        STDDiameter = y.std(axis=1)
+
+        STDRI = y.std(axis=0)
+
+        fig = plt.figure(figsize=(7,3))
+
+        ax = fig.add_subplot(1,1,1)
+
+        ax.grid()
+
+        for nr, RI in enumerate(self.RIList):
+
+            ax.plot(Meshes.Phi.Vector.Degree,
+                    STDDiameter[nr],
+                    '--',
+                    label="RI:{0:.2f}".format(RI)
+                    )
+
+
+        for nd, Diameter in enumerate(self.DiameterList):
+
+            ax.plot(Meshes.Phi.Vector.Degree,
+                    STDRI[nd],
+                    label="Diam.:{0:.2e}".format(Diameter)
+                    )
+
+
+        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+                        ax.get_ylim()[0],
+                        ax.get_ylim()[1]*3,
+                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        label = 'Detector',
+                        color = 'green',
+                        alpha = 0.5)
+
+        ax.set_xlabel(r'Scattering Angle [degree]')
+
+        ax.set_ylabel(r'Scattered light intensity: $STD(S2^2)$ ')
+
+        ax.set_yscale('log')
+
+        ax.tick_params(labelsize=8)
+
+        plt.legend(fontsize=6)
+
+        plt.show()
+
+
+
+    def Plot_S1(self, Meshes, y):
+
+        fig = plt.figure(figsize=(7,3))
+
+        ax = fig.add_subplot(1,1,1)
+
+        print(self.DiameterList)
+
+        for nr, RI in enumerate(self.RIList):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                plt.plot(Meshes.Phi.Vector.Degree,
+                         y[nr, nd],
+                         label="RI:{0:.2f}; Diam.: {1:.3e}".format(RI, Diameter))
+
+
+        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+                        ax.get_ylim()[0],
+                        ax.get_ylim()[1]*3,
+                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        label = 'Detector',
+                        color = 'green',
+                        alpha = 0.5)
+
+        ax.grid()
+
+        ax.set_xlabel(r'Scattering Angle [degree]')
+
+        ax.set_ylabel(r'Scattered light intensity: $S1^2$ ')
+
+        ax.set_yscale('log')
+
+        ax.tick_params(labelsize=8)
+
+        plt.legend(fontsize=6)
+
+        plt.show()
+
+
+
+    def Plot_S2(self, Meshes, y):
+
+        fig = plt.figure(figsize=(7,3))
+
+        ax = fig.add_subplot(1,1,1)
+
+        print(self.DiameterList)
+
+        for nr, RI in enumerate(self.RIList):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                plt.plot(Meshes.Phi.Vector.Degree,
+                         y[nr, nd],
+                         label="RI:{0:.2f}; Diam.: {1:.3e}".format(RI, Diameter))
+
+
+        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+                        ax.get_ylim()[0],
+                        ax.get_ylim()[1]*3,
+                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        label = 'Detector',
+                        color = 'green',
+                        alpha = 0.5)
+
+        ax.grid()
+
+        ax.set_xlabel(r'Scattering Angle [degree]')
+
+        ax.set_ylabel(r'Scattered light intensity: $S2^2$ ')
+
+        ax.set_yscale('log')
+
+        ax.tick_params(labelsize=8)
+
+        plt.legend(fontsize=6)
+
+        plt.show()
 
 
 class Scatterer(object):
@@ -61,24 +498,12 @@ class Scatterer(object):
         if Meshes:
             self.Meshes = Meshes
         else:
-            self.GenMesh(ThetaBound, PhiBound, ThetaOffset, PhiOffset, Npts)
+            self.Meshes = ScatMeshes(ThetaBound = np.array(ThetaBound, copy=False) + ThetaOffset,
+                                     PhiBound   = np.array(PhiBound, copy=False) + PhiOffset,
+                                     Npts       = Npts)
+
 
         self.__S1S2, self.__Field = None, None
-
-
-
-    def GenMesh(self,
-                ThetaBound:  list       = [-90, 90],
-                PhiBound:    list       = [-90, 90],
-                ThetaOffset: float      = 0,
-                PhiOffset:   float      = 0,
-                Npts:        int        = 101):
-
-
-
-        self.Meshes = ScatMeshes(ThetaBound = np.array(ThetaBound, copy=False) + ThetaOffset,
-                                 PhiBound   = np.array(PhiBound, copy=False) + PhiOffset,
-                                 Npts       = Npts)
 
 
     @property
@@ -110,9 +535,8 @@ class Scatterer(object):
         """
 
         S1S2 = MieS1S2(self.Index,
-                         self.SizeParam,
-                         self.Meshes.Phi.Vector.Radian,
-                         )
+                       self.SizeParam,
+                       self.Meshes.Phi.Vector.Radian)
 
         Parallel = np.outer(S1S2[0], np.sin(self.Meshes.Theta.Vector.Radian))
 
@@ -135,6 +559,12 @@ class Scatterer(object):
         return self.Field.SPF
 
 
+
+    def Coupling(self, Detector, Polarization = 'NoFiltered'):
+
+        return Coupling(Scatterer    = self,
+                        Detector     = Detector,
+                        Polarization = Polarization)
 
 
 
@@ -477,6 +907,9 @@ class RepS1S2(object):
 
 
 
+
+
+
 def GetJones(Parallel:      np.ndarray,
              Perpendicular: np.ndarray) -> np.ndarray:
 
@@ -625,9 +1058,51 @@ class Field(object):
 
 
 
+
+class Array(np.ndarray):
+    def __new__(cls, *args, **kwargs):
+        this = np.array(*args, **kwargs, copy=False)
+        this = np.asarray(this).view(cls)
+        return this
+
+    def __array_finalize__(self, obj):
+        pass
+
+
+    def __init__(self, arr):
+        pass
+
+
+    def Cost(self, arg='RI'):
+        if arg == 'RI_STD':
+            return self.std(axis=0).sum()
+
+        if arg == 'RI_RSD':
+            return self.std(axis=0).sum()/self.mean()
+
+        if arg == 'Monotonic':
+            return self.Monotonic()
+
+        if arg == 'Mean':
+            return -self.mean()
+
+        if arg == 'Max':
+            return -self.max()
+
+        if arg == 'Min':
+            return self.max()
+
+
+    def Monotonic(self):
+
+        Grad = np.gradient(self, axis = 1)
+
+        STD = Grad.std( axis = 1)
+
+        return STD[0]
+
+
+
+
+
 # -
-
-
-
-
-    # -

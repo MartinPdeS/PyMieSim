@@ -6,58 +6,63 @@ _________________________________________________________
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.optimize import minimize
-from PyMieCoupling.classes.Fiber import fiber
-from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.functions.Optimization import LoopRIDiameter
+from PyMieCoupling.classes.Detector import fiber, LPmode, Photodiode
 from PyMieCoupling.classes.Fields import Source
-from PyMieCoupling.classes.DataFrame import Frame
 from PyMieCoupling.classes.Optimizer import Simulator2 as Simulator
+from PyMieCoupling.classes.Scattering import ScattererSet
 
 LightSource = Source(Wavelength   = 450e-9,
                      Polarization = 0)
+
+
 
 Fiber = fiber(core_radius = 4.2e-6,
               core_index  = 1.4456,
               clad_radius = 20.5e-6,
               clad_index  = 1.4444)
 
-Detector = LPmode(Fiber         = Fiber,
-                  Mode          = (1, 1),
-                  Source        = LightSource,
-                  Npts          = 101,
-                  ThetaOffset   = 0,
-                  PhiOffset     = 0,
-                  filter        = 90,
-                  NA            = 0.2)
 
-"""
-Detector = Photodiode(NA                = 0.34,
-                      Source            = LightSource,
-                      Npts              = 101,
-                      ThetaOffset       = 0,
-                      filter            = 45,
-                      PhiOffset         = 0)
+LP01 = LPmode(Fiber         = Fiber,
+               Mode          = (0, 1),
+               Source        = LightSource,
+               Npts          = 81,
+               ThetaOffset   = 0,
+               PhiOffset     = 0,
+               Name          = 'LP01',
+               NA            = 0.9)
 
-"""
-RIList = np.linspace(1.3, 1.5, 4).round(4)
 
-DiameterList = np.linspace(500,1000,50).round(4) * 1e-9
+LP11 = LPmode(Fiber         = Fiber,
+              Mode          = (1, 1),
+              Source        = LightSource,
+              Npts          = 81,
+              ThetaOffset   = 0,
+              PhiOffset     = 0,
+              Name          = 'LP11',
+              NA            = 0.9)
+
+
+Photodiode0 = Photodiode(NA                = 0.54,
+                         Source            = LightSource,
+                         Npts              = 81,
+                         ThetaOffset       = 0,
+                         PhiOffset         = 0)
+
+
+Set = ScattererSet(DiameterList  = np.linspace(100,10000,100).round(4) * 1e-9,
+                   RIList        = np.linspace(1.3, 1.5, 4).round(4),
+                   Detector      = Photodiode0,
+                   Source        = LightSource
+                   )
 
 def EvalFunc(x):
 
-    Detector.PhiOffset = x[0]
+    Set.Detector.PhiOffset = x[0]
 
-    Detector.ThetaOffset = x[1]
+    Set.Detector.ThetaOffset = x[1]
 
-    Array = LoopRIDiameter(RIList       = RIList,
-                           DiameterList = DiameterList,
-                           Detector     = Detector,
-                           Source       = LightSource,
-                           QuietMode    = True,
-                           Polarization = 'Filtered')
-
+    Array = Set.GetCoupling(Polarization = 'NoFiltered') # can be   Parallel  -  Perpendicular  -  Filtered  -  NoFiltered
 
     return Array.Cost('RI_RSD') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
@@ -65,30 +70,16 @@ def EvalFunc(x):
 Minimizer = Simulator(EvalFunc)
 
 Result = minimize(fun      = Minimizer.simulate,
-                  x0       = [50, 00],
+                  x0       = [50, 50],
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
-                  tol      = 1e-6,
-                  options  = {'maxiter': 50, 'rhobeg':20})
+                  tol      = 1e-5,
+                  options  = {'maxiter': 50, 'rhobeg':5})
 print(Result)
 
-Detector.PhiOffset = Result.x[0]
+DF = Set.GetFrame()
 
-Detector.ThetaOffset = Result.x[1]
-
-
-
-DF = Frame(RIList        = RIList,
-           DiameterList  = DiameterList,
-           Detector      = Detector,
-           Source        = LightSource)
-
-DF.Plot(y='Coupling', Polarization='Filtered')
-
-DF.Plot(y='STD', Polarization='Filtered')
-
-plt.show()
-
+DF.Plot('Coupling') # can be Couplimg  -  STD
 
 
 

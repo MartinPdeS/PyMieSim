@@ -38,16 +38,19 @@ def LoopRIDiameter(RIList:       list,
 def PlotRI(Diameter:     float,
            RIList:       list,
            Detector:     Union[LPmode, Photodiode],
-           Npts:         int,
            QuietMode:    bool = False,
-           Source             = None
-           ):
+           Source             = None):
 
     temp = np.empty( [ len(RIList),1 ] )
 
     fig = plt.figure(figsize=(7,3))
+
     ax = fig.add_subplot(1,1,1)
-    for nr, RI in enumerate( tqdm(RIList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
+
+    for nr, RI in enumerate( tqdm( RIList,
+                                   total = len(RIList),
+                                   desc ="Progress",
+                                   disable = QuietMode) ):
 
 
         Scat = Scatterer(Diameter    = Diameter,
@@ -55,17 +58,14 @@ def PlotRI(Diameter:     float,
                          Source      = Source,
                          ThetaBound  = [-180,180],
                          PhiBound    = [-90,90],
-                         Npts        = Npts,
+                         Npts        = Detector.Npts,
                          )
 
 
         x = Scat.Meshes.Phi.Vector.Degree
         y = np.abs(Scat.S1S2.S1S2[0])**2
-        plt.plot(x,
-                 y,
-                 label="{0:.3f}".format(RI))
 
-
+        plt.plot(x, y, label="{0:.3f}".format(RI))
 
     if Detector:
         ymin = ax.get_ylim()[0]
@@ -81,11 +81,17 @@ def PlotRI(Diameter:     float,
                         color='green',
                         alpha=0.5)
     ax.grid()
+
     ax.set_xlabel(r'Scattering Angle [degree]')
+
     ax.set_ylabel(r'Scattered light intensity [a.u]')
+
     ax.set_yscale('log')
+
     ax.tick_params(labelsize=8)
+
     plt.legend()
+
     plt.show()
 
 
@@ -94,18 +100,20 @@ def PlotRI(Diameter:     float,
 
 
 def PlotDiameter(DiameterList: float,
-                 RI:       list,
+                 RI:           list,
                  Detector:     Union[LPmode, Photodiode],
-                 Npts:         int,
                  QuietMode:    bool = False,
                  Source        = None
                  ):
 
-    temp = np.empty( [ len(RIList),1 ] )
+    temp = np.empty( [ len(DiameterList),1 ] )
 
     fig = plt.figure(figsize=(7,3))
     ax = fig.add_subplot(1,1,1)
-    for nr, Diameter in enumerate( tqdm(DiameterList, total = len(RIList), desc ="Progress", disable = QuietMode) ):
+    for nr, Diameter in enumerate( tqdm( DiameterList,
+                                         total = len(DiameterList),
+                                         desc ="Progress",
+                                         disable = QuietMode ) ):
 
 
         Scat = Scatterer(Diameter    = Diameter,
@@ -113,35 +121,37 @@ def PlotDiameter(DiameterList: float,
                          Source      = Source,
                          ThetaBound  = [-180,180],
                          PhiBound    = [-180,180],
-                         Npts        = Npts,
+                         Npts        = Detector.Npts,
                          )
 
 
         x = Scat.Meshes.Phi.Vector.Degree
         y = np.abs(Scat.S1S2.S1S2[0])**2
-        plt.plot(x,
-                 y,
-                 label="{0:.3f}".format(Diameter))
+
+        plt.plot(x, y, label="{0:.1e}".format(Diameter))
+
+
+    ymin = ax.get_ylim()[0]
+    ymax = ax.get_ylim()[1]*3
 
 
 
-    if Detector:
-        ymin = ax.get_ylim()[0]
-        ymax = ax.get_ylim()[1]*3
+    ax.fill_between(Scat.Meshes.Phi.Vector.Degree,
+                    ymin,
+                    ymax,
+                    where= (x > Detector.Meshes.Phi.Boundary.Degree[0]) & (x < Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                    color='green', alpha=0.5)
 
-
-
-        ax.fill_between(Scat.Meshes.Phi.Vector.Degree,
-                        ymin,
-                        ymax,
-                        where= (x > Detector.Meshes.Phi.Boundary.Degree[0]) & (x < Detector.Meshes.Phi.Boundary.Degree[1]) ,
-
-                        color='green', alpha=0.5)
     ax.grid()
+
     ax.set_xlabel(r'Scattering Angle [degree]')
+
     ax.set_ylabel(r'Scattered light intensity [a.u]')
+
     ax.set_yscale('log')
+    
     plt.legend()
+
     plt.show()
 
 

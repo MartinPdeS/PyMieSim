@@ -6,6 +6,8 @@ from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle, Angle2Direc
 from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.classes.Fields import Source, LPField, LPFourier
 from PyMieCoupling.functions.converts import deg2rad
+from PyMieCoupling.functions.Couplings import Coupling
+
 import fibermodes
 
 
@@ -191,95 +193,12 @@ class Photodiode(object):
         self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
 
 
-    def Coupling_Para(self, Scatterer):
+    def Coupling(self, Scatterer, Polarization = 'NoFiltered'):
 
-        Para = self.Fourier *\
-               (Scatterer.Field.Parallel).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
+        return Coupling(Scatterer    = Scatterer,
+                        Detector     = self,
+                        Polarization = Polarization)
 
-        return np.asscalar( ( Para.sum().__abs__() * self.Meshes.dOmega.Radian ) **2 )
-
-
-    def Coupling_Perp(self, Scatterer):
-
-        Perp = self.Fourier *\
-               (Scatterer.Field.Perpendicular).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-        return np.asscalar( ( Perp.sum().__abs__() * self.Meshes.dOmega.Radian )**2 )
-
-
-    def Coupling_Filtered(self, Scatterer):
-
-        Perp = self.Fourier *\
-               (Scatterer.Field.Perpendicular).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-
-        Para = self.Fourier *\
-               (Scatterer.Field.Parallel).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-        PerpFiltre = ( ( np.cos(self.FilterRad) * Perp ).sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        ParaFiltre = ( ( np.sin(self.FilterRad) * Para ).sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        return np.asscalar(PerpFiltre + ParaFiltre)
-
-
-    def Coupling_NoFilter(self, Scatterer):
-
-        Perp = self.Fourier *\
-               (Scatterer.Field.Perpendicular).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-
-        Para = self.Fourier *\
-               (Scatterer.Field.Parallel).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian).T).__abs__()
-
-        PerpFiltre = (Perp.sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        ParaFiltre = (Para.sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        return np.asscalar(PerpFiltre + ParaFiltre)
-
-
-
-    def Coupling(self, Scatterer, Polarization):
-
-        if Polarization in ['Parallel']:
-            return self.Coupling_Para(Scatterer)
-
-
-        if Polarization in ['Perpendicular']:
-            return self.Coupling_Perp(Scatterer)
-
-
-        if Polarization in ['Filtered']:
-            return self.Coupling_Filtered(Scatterer)
-
-
-        if Polarization in ['NoFiltered']:
-            return self.Coupling_NoFilter(Scatterer)
-
-
-        if Polarization in ['all']:
-            CouplingDict = {}
-
-            coupling = self.Coupling_Para(Scatterer)
-            CouplingDict['Parallel'] = coupling
-
-            coupling = self.Coupling_Perp(Scatterer)
-            CouplingDict['Perpendicular'] = coupling
-
-            coupling = self.Coupling_Filtered(Scatterer)
-            CouplingDict['Filtered'] = coupling
-
-            coupling = self.Coupling_NoFilter(Scatterer)
-            CouplingDict['NoFiltered'] = coupling
-
-            return CouplingDict
 
 
 
@@ -447,100 +366,11 @@ class LPmode(object):
         self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
 
 
-    def Coupling_Para(self, Scatterer):
+    def Coupling(self, Scatterer, Polarization= 'NoFiltered'):
 
-        Para = self.Fourier *\
-               (Scatterer.Field.Parallel).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
-
-
-        return np.asscalar( ( Para.sum().__abs__() * self.Meshes.dOmega.Radian ) **2 )
-
-
-    def Coupling_Perp(self, Scatterer):
-
-        Perp = self.Fourier *\
-               (Scatterer.Field.Perpendicular).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
-
-        return np.asscalar( ( Perp.sum().__abs__() * self.Meshes.dOmega.Radian )**2 )
-
-
-    def Coupling_Filtered(self, Scatterer):
-
-        Perp = self.Fourier *\
-               (Scatterer.Field.Perpendicular).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
-
-
-        Para = self.Fourier *\
-               (Scatterer.Field.Parallel).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
-
-        PerpFiltre = ( ( np.cos(self.FilterRad) * Perp ).sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        ParaFiltre = ( ( np.sin(self.FilterRad) * Para ).sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        return np.asscalar(PerpFiltre + ParaFiltre)
-
-
-    def Coupling_NoFilter(self, Scatterer):
-
-        Perp = self.Fourier *\
-               (Scatterer.Field.Perpendicular).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
-
-
-        Para = self.Fourier *\
-               (Scatterer.Field.Parallel).__abs__() *\
-               (np.sin(self.Meshes.Phi.Mesh.Radian ).T).__abs__()
-
-        PerpFiltre = (Perp.sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        ParaFiltre = (Para.sum().__abs__() * self.Meshes.dOmega.Radian )**2
-
-        return np.asscalar(PerpFiltre + ParaFiltre)
-
-
-
-
-    def Coupling(self, Scatterer, Polarization):
-
-        if Polarization in ['Parallel']:
-            return self.Coupling_Para(Scatterer)
-
-
-        if Polarization in ['Perpendicular']:
-            return self.Coupling_Perp(Scatterer)
-
-
-        if Polarization in ['Filtered']:
-            return self.Coupling_Filtered(Scatterer)
-
-
-        if Polarization in ['NoFiltered']:
-            return self.Coupling_NoFilter(Scatterer)
-
-
-        if Polarization in ['all']:
-            CouplingDict = {}
-
-            coupling = self.Coupling_Para(Scatterer)
-            CouplingDict['Parallel'] = coupling
-
-            coupling = self.Coupling_Perp(Scatterer)
-            CouplingDict['Perpendicular'] = coupling
-
-            coupling = self.Coupling_Filtered(Scatterer)
-            CouplingDict['Filtered'] = coupling
-
-            coupling = self.Coupling_NoFilter(Scatterer)
-            CouplingDict['NoFiltered'] = coupling
-
-            return CouplingDict
-
-
-
+        return Coupling(Scatterer    = Scatterer,
+                        Detector     = self,
+                        Polarization = Polarization)
 
 
 def GetLP(Fiber,
