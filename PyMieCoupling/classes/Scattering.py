@@ -12,7 +12,6 @@ from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.Couplings import Coupling
 
-
 Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
 
@@ -68,7 +67,7 @@ class DataFrameCPU(pd.DataFrame):
 
         plt.subplots_adjust(right=0.8,)
 
-        plt.show()
+        plt.show(block=False)
 
 
 
@@ -315,7 +314,7 @@ class ScattererSet(object):
 
         plt.legend(fontsize=6)
 
-        plt.show()
+        plt.show(block=False)
 
 
 
@@ -366,7 +365,7 @@ class ScattererSet(object):
 
         plt.legend(fontsize=6)
 
-        plt.show()
+        plt.show(block=False)
 
 
 
@@ -407,7 +406,7 @@ class ScattererSet(object):
 
         plt.legend(fontsize=6)
 
-        plt.show()
+        plt.show(block=False)
 
 
 
@@ -448,7 +447,7 @@ class ScattererSet(object):
 
         plt.legend(fontsize=6)
 
-        plt.show()
+        plt.show(block=False)
 
 
 class Scatterer(object):
@@ -680,7 +679,7 @@ class Stokes(object):
 
 
 
-        plt.show()
+        plt.show(block=False)
 
 
 class Jones(object):
@@ -816,7 +815,7 @@ class SPF(object):
                          antialiased = False,
                          alpha       = 1)
 
-        plt.show()
+        plt.show(block=False)
 
 
 
@@ -892,7 +891,7 @@ class RepS1S2(object):
                             color='C0',
                             alpha=0.4)
 
-        plt.show()
+        plt.show(block=False)
 
 
     def __repr__(self) -> str:

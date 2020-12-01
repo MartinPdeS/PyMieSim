@@ -143,11 +143,14 @@ void MiePiTau(const double mu,
 
 
 
-static iMatrix Cwrapper(const double m,
-                        const double x,
-                        const std::vector<double> phi,
-                       //const std::vector<std::reference_wrapper<int>>& phi)
+static complex128*
+Cwrapper(const double m,
+         const double x,
+         const std::vector<double> phi)
+
 {
+
+
 
     iVec *an = new iVec;
     iVec *bn = new iVec;
@@ -166,15 +169,12 @@ static iMatrix Cwrapper(const double m,
 
     iVec S1 = iVec(lenght) ;
     iVec S2 = iVec(lenght) ;
-    iMatrix S1S2 = std::vector<std::vector<complex128>>(2, std::vector<complex128>(lenght));
-
-
 
     iVec *pin = new iVec(nmax);
     iVec *taun = new iVec(nmax);
     complex128 j (0., 1.0);
 
-    PyObject* Py_S1 = PyList_New(0);
+    complex128* S1S2 = (complex128*)malloc(phi.size() * 2 * sizeof(complex128));
 
 
     for (long unsigned int i = 0; i < lenght; i++){
@@ -182,9 +182,9 @@ static iMatrix Cwrapper(const double m,
         MiePiTau(cos( phi[i] ), nmax, pin, taun);
         for (long unsigned int k = 0; k < anLength ; k++){
 
+            S1S2[i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
 
-            S1S2[0][i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
-            S1S2[1][i] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+            S1S2[i + lenght] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
           }
     }
@@ -192,18 +192,27 @@ static iMatrix Cwrapper(const double m,
     return S1S2;
 
 
-
 }
 
 
 
-int main()
+
+
+
+
+
+#include <stdlib.h>
+
+complex128 *compute(int size)
 {
-
-  return 1;
+    complex128* array = (complex128*)malloc(sizeof(int)*size);
+    int i;
+    for (i=0; i<size; i++)
+    {
+	array[i] = 1.;
+    }
+    return array;
 }
-
-
 
 
 
