@@ -877,6 +877,7 @@ class RepS1S2(object):
     def Plot(self) -> None:
 
         fig, axes = self.GenFig()
+        
         data = np.abs( self.S1S2 )
 
         for ni, ax in enumerate(axes):

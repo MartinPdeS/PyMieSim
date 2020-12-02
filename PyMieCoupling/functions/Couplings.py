@@ -1,35 +1,44 @@
 import numpy as np
 
 
+""" Coupling Reference: Estimation of Coupling Efficiency of Optical Fiber by Far-Field Method """
+
+
+def GetPerp(Detector, Scatterer):
+    Perp = Detector.Fourier *\
+           (Scatterer.Field.Perpendicular).__abs__() \
+           #*(np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+
+    return Perp
+
+
+def GetPara(Detector, Scatterer):
+    Para = Detector.Fourier *\
+           (Scatterer.Field.Parallel).__abs__() \
+           #*(np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+
+    return Para
+
 
 def Coupling_Para(Detector, Scatterer):
 
-    Para = Detector.Fourier *\
-           (Scatterer.Field.Parallel).__abs__() *\
-           (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+    Para = GetPara(Detector, Scatterer)
 
     return np.asscalar( ( Para.sum().__abs__() * Detector.Meshes.dOmega.Radian ) **2 )
 
 
 def Coupling_Perp(Detector, Scatterer):
 
-    Perp = Detector.Fourier *\
-           (Scatterer.Field.Perpendicular).__abs__() *\
-           (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+    Perp = GetPerp(Detector, Scatterer)
 
     return np.asscalar( ( Perp.sum().__abs__() * Detector.Meshes.dOmega.Radian )**2 )
 
 
 def Coupling_Filtered(Detector, Scatterer):
 
-    Perp = Detector.Fourier *\
-           (Scatterer.Field.Perpendicular).__abs__() *\
-           (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+    Perp = GetPerp(Detector, Scatterer)
 
-
-    Para = Detector.Fourier *\
-           (Scatterer.Field.Parallel).__abs__() *\
-           (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+    Para = GetPara(Detector, Scatterer)
 
     PerpFiltre = ( ( np.cos(Detector.FilterRad) * Perp ).sum().__abs__() * Detector.Meshes.dOmega.Radian )**2
 
@@ -40,14 +49,9 @@ def Coupling_Filtered(Detector, Scatterer):
 
 def Coupling_NoFilter(Detector, Scatterer):
 
-    Perp = Detector.Fourier *\
-           (Scatterer.Field.Perpendicular).__abs__() *\
-           (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+    Perp = GetPerp(Detector, Scatterer)
 
-
-    Para = Detector.Fourier *\
-           (Scatterer.Field.Parallel).__abs__() *\
-           (np.sin(Detector.Meshes.Phi.Mesh.Radian).T).__abs__()
+    Para = GetPara(Detector, Scatterer)
 
     PerpFiltre = (Perp.sum().__abs__() * Detector.Meshes.dOmega.Radian )**2
 
