@@ -4,6 +4,7 @@
 #include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
+#include <Python.h>
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
 
@@ -143,17 +144,17 @@ void MiePiTau(const double mu,
 
 
 
-static complex128*
-Cwrapper(const double m,
-         const double x,
-         const std::vector<double> phi)
+static void
+Vec_Cwrapper(const double m,
+             const double x,
+             const double*  phi,
+             const int lenght,
+             complex128* v)
 
 {
-
-
-
     iVec *an = new iVec;
     iVec *bn = new iVec;
+
 
     std::vector<double> *n, *n2;
 
@@ -165,7 +166,6 @@ Cwrapper(const double m,
     else{ HighFrequencyMie_ab(m, x, nmax, n, an, bn); }
 
     const long int anLength = an->size();
-    const long int lenght = phi.size();
 
     iVec S1 = iVec(lenght) ;
     iVec S2 = iVec(lenght) ;
@@ -174,45 +174,21 @@ Cwrapper(const double m,
     iVec *taun = new iVec(nmax);
     complex128 j (0., 1.0);
 
-    complex128* S1S2 = (complex128*)malloc(phi.size() * 2 * sizeof(complex128));
-
-
     for (long unsigned int i = 0; i < lenght; i++){
 
         MiePiTau(cos( phi[i] ), nmax, pin, taun);
         for (long unsigned int k = 0; k < anLength ; k++){
 
-            S1S2[i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
-
-            S1S2[i + lenght] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+            v[i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
+            v[i + lenght] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
           }
     }
 
-    return S1S2;
-
+    return;
 
 }
 
-
-
-
-
-
-
-
-#include <stdlib.h>
-
-complex128 *compute(int size)
-{
-    complex128* array = (complex128*)malloc(sizeof(int)*size);
-    int i;
-    for (i=0; i<size; i++)
-    {
-	array[i] = 1.;
-    }
-    return array;
-}
 
 
 

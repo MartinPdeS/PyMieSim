@@ -14,16 +14,17 @@ from PyMieCoupling.cython.S1S2 import MieS1S2 as S1S2_CYTHON
 from PyMieCoupling.python.S1S2 import MieS1S2 as S1S2_PYTHON
 from PyMieCoupling.cpp.S1S2 import MieS1S2 as S1S2_CPP
 
-AngleList = np.linspace(0,np.pi/2,50)#.tolist()
+AngleList = np.linspace(0,np.pi/2,101)#.tolist()
 
-SizeParam = 0.8
+SizeParam, index = 0.2, 1.4
 
-resPython = S1S2_PYTHON(1.4, SizeParam, AngleList);
+resPython = S1S2_PYTHON(index, SizeParam, AngleList);
 
-resCython = S1S2_CYTHON(1.4, SizeParam, AngleList);
+resCython = S1S2_CYTHON(index, SizeParam, AngleList);
 
-resCpp = S1S2_CPP(1.4, SizeParam, AngleList);
-print(resCpp)
+resCpp = S1S2_CPP(index, SizeParam, AngleList);
+resCpp = S1S2_CPP(index, SizeParam, AngleList);
+print(np.reshape( resCpp,[2,101] ))
 
 fig = plt.figure(figsize=(10,5))
 ax0 = fig.add_subplot(1,3,1); ax1 = fig.add_subplot(1,3,2); ax2 = fig.add_subplot(1,3,3);

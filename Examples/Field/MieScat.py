@@ -5,29 +5,34 @@ Plotting of Stokes parameter for scattere far-field.
 _________________________________________________________
 """
 
+import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.classes.Fields import Source
 
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-Scat = Scatterer(Diameter    = 60e-9,
+Scat = Scatterer(Diameter    = 600e-9,
                  Source      = LightSource,
-                 Index       = 1.5,
+                 Index       = 1.4,
                  Npts        = 101,
                  ThetaBound  = [-180, 180],
                  PhiBound    = [-180, 180])
 
+Scat.SizeParam = 0.2
+print(Scat.S1S2.S1S2)
+print(Scat.Meshes.Phi.Vector.Radian)
 
 Scat.S1S2.Plot()
 
-Scat.SPF.Plot()
+#Scat.SPF.Plot()
 
-Scat.Stokes.Plot()
-
-
+#Scat.Stokes.Plot()
 
 
+plt.show()
+
+#print(Scat.Stokes)
 
 
 

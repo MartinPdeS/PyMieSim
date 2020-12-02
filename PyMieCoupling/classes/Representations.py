@@ -333,16 +333,6 @@ class S1S2(object):
         plt.show()
 
 
-    def __repr__(self) -> str:
-
-        return '\nScattering Phase Function      \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*Meshes.Phi.Vector.Radian.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
 
 
 def GetJones(Parallel:      np.ndarray,

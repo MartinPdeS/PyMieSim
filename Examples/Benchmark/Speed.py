@@ -19,7 +19,7 @@ BenchPython = """S1S2_PYTHON(1.4, 0.3, AngleList);"""
 
 BenchCython = """S1S2_CYTHON(1.4, 0.3, AngleList);"""
 
-BenchCpp = """S1S2_CPP(1.4, 0.3, AngleList); """
+BenchCpp = """S1S2_CPP(1.4, 0.3, AngleList);"""
 
 
 print('\nPYTHON BENCHMARK')
