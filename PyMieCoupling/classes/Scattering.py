@@ -17,13 +17,13 @@ Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
 
 try:
-    from PyMieCoupling.cpp.S1S2 import MieS1S2
+    from PyMieCoupling.cpp.S1S2 import GetS1S2
 except:
     try:
-        from PyMieCoupling.cython.S1S2 import MieS1S2
+        from PyMieCoupling.cython.S1S2 import GetS1S2
     except:
         try:
-            from PyMieCoupling.cython.S1S2 import MieS1S2
+            from PyMieCoupling.cython.S1S2 import GetS1S2
         except: ImportError
 
 
@@ -533,7 +533,7 @@ class Scatterer(object):
 
         """
 
-        S1S2 = MieS1S2(self.Index,
+        S1S2 = GetS1S2(self.Index,
                        self.SizeParam,
                        self.Meshes.Phi.Vector.Radian)
 
@@ -853,7 +853,7 @@ class RepS1S2(object):
 
         self.Index = Index
 
-        self.S1S2 = MieS1S2(self.Index,
+        self.S1S2 = GetS1S2(self.Index,
                             self.SizeParam,
                             self.Meshes.Phi.Vector.Radian,
                             )

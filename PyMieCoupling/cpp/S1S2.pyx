@@ -9,8 +9,8 @@ import numpy as np
 from cpython.mem cimport PyMem_Malloc
 from cpython cimport Py_buffer
 
-ctypedef double complex complex128_t
 
+ctypedef double complex complex128_t
 
 cdef extern from "MieS1S2.cpp":
     cdef void* Vec_Cwrapper(double a,
@@ -25,9 +25,9 @@ cdef extern from "MieS1S2.cpp":
 @cython.cdivision(True)
 @cython.nonecheck(False)
 @cython.wraparound(False)
-cpdef MieS1S2(double m,
-                     double x,
-                     phi):
+cpdef GetS1S2(double m,
+              double x,
+              phi):
 
     M = Matrix(2 * phi.size)
 
@@ -43,9 +43,7 @@ cpdef MieS1S2(double m,
 
     arr = np.asarray(M)
 
-    arr = np.reshape(arr,[2,phi.size])
-
-    return arr
+    return np.reshape(arr,[2,phi.size])
 
 
 

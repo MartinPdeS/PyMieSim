@@ -16,12 +16,13 @@ cfg_vars = distutils.sysconfig.get_config_vars()
 for key, value in cfg_vars.items():
     if type(value) == str:
         cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
-
+ 
 
 ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                          ["PyMieCoupling/cython/S1S2.pyx"],
                          include_dirs = ['.'],
                          language="c++",
+                         define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
                          extra_compile_args=["-std=c++11",
                                              '-fopenmp',
                                              '-lboost_filesystem',
@@ -40,6 +41,7 @@ Extension("PyMieCoupling.cpp.S1S2",
                          ["PyMieCoupling/cpp/S1S2.pyx"],
                          include_dirs = [numpy.get_include()],
                          language="c++",
+                         define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
                          extra_compile_args=["-std=c++11",
                                              '-fopenmp',
                                              '-lboost_filesystem',

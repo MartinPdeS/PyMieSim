@@ -377,7 +377,7 @@ def SF_SD(m, wavelength, dp, ndp, nMedium=1.0, minAngle=0, maxAngle=180, angular
     SU /= trapz(SU,measure)
   return measure,SL,SR,SU
 
-def MieS1S2(m,x,angle):
+def GetS1S2(m,x,angle):
   muList = np.cos(angle)
 #  http://pymiescatt.readthedocs.io/en/latest/forward.html#MieS1S2
   S1, S2 = [], []

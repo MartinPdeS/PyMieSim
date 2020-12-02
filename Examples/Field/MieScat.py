@@ -19,16 +19,12 @@ Scat = Scatterer(Diameter    = 600e-9,
                  ThetaBound  = [-180, 180],
                  PhiBound    = [-180, 180])
 
-Scat.SizeParam = 0.2
-print(Scat.S1S2.S1S2)
-print(Scat.Meshes.Phi.Vector.Radian)
 
 Scat.S1S2.Plot()
 
-#Scat.SPF.Plot()
+Scat.SPF.Plot()
 
-#Scat.Stokes.Plot()
-
+Scat.Stokes.Plot()
 
 plt.show()
 

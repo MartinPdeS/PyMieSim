@@ -1,24 +1,16 @@
-//#include "MieS1S2.h"
+#include "MieS1S2.hpp"
 #include <vector>
 #include <complex>
 #include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
-#include <Python.h>
-#include <boost/python.hpp>
-#include <boost/python/numpy.hpp>
 
-//#include "python3.6/Python.h"
 #if __has_include("python3.8/Python.h")
 #include "python3.8/Python.h"
 #elif _has_include("python3.6/Python.h")
-#include "python3.8/Python.h"
+#include "python3.6/Python.h"
 #endif
 
-
-//#include "/usr/lib/python3/dist-packages/numpy/core/include/numpy/arrayobject.h"
-//#include "numpy/arrayobject.h"
-//#include "list_of_ndarrays_lib.h"
 
 #define PI 3.14159265
 typedef std::complex<double> complex128;
@@ -29,10 +21,11 @@ typedef std::vector<std::vector<complex128>> iMatrix;
 
 
 
-void LowFrequencyMie_ab(const double m,
-                        const double x,
-                        std::vector<complex128> *an,
-                        std::vector<complex128> *bn)
+static void
+LowFrequencyMie_ab(const double m,
+                   const double x,
+                   iVec *an,
+                   iVec *bn)
 {
   const std::complex<double> j (0., 1.0);
 
@@ -55,26 +48,24 @@ void LowFrequencyMie_ab(const double m,
   an->push_back(a2);
   bn->push_back(b1);
   bn->push_back(b2);
-
-
 }
 
 
 
-void HighFrequencyMie_ab(const double m,
+static void
+HighFrequencyMie_ab(const double m,
                          const double x,
                          const long unsigned int nmax,
                          const std::vector<double>* n,
-                         std::vector<complex128> *an,
-                         std::vector<complex128> *bn
-                                            )
+                         iVec *an,
+                         iVec *bn)
 
 {
   const double mx = m * x;
   const double temp  = sqrt(0.5 * PI * x);
   const long unsigned int nmx = (long unsigned int) ( std::max( nmax, (long unsigned int) abs(mx) ) + 16 );
-  std::vector<complex128> gsx, gs1x;
-  std::vector<complex128> px, chx, p1x, ch1x, D, da, db;
+  iVec gsx, gs1x;
+  iVec px, chx, p1x, ch1x, D, da, db;
   std::vector<double> Dn = std::vector<double>(nmx);
   std::complex<double> j (0., 1.0);
 
@@ -84,9 +75,7 @@ void HighFrequencyMie_ab(const double m,
   for (double i = nmx - 1; i > 1; i--)
   {
       Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );
-
   }
-
 
   for (long unsigned int i = 0; i < nmax; i++)
   {
@@ -96,34 +85,29 @@ void HighFrequencyMie_ab(const double m,
     p1x.push_back(px[i]);
     ch1x.push_back(chx[i]);
 
-
     gsx.push_back( px[i] - 1.*j * chx[i] );
     gs1x.push_back( p1x[i] - 1.*j * ch1x[i] );
 
     D.push_back(Dn[i+1]);
-
 
     da.push_back( D[i] / m + (*n)[i] / x );
     db.push_back( m * D[i] + (*n)[i] / x );
 
     an->push_back( (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) );
     bn->push_back( (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) );
-
   }
-
-
 }
 
 
 
 
-void MiePiTau(const double mu,
-              const long unsigned int nmax,
-              std::vector<complex128> *pin,
-              std::vector<complex128> *taun )
+static void
+MiePiTau(const double mu,
+         const long unsigned int nmax,
+         iVec *pin,
+         iVec *taun )
 
 {
-
   (*pin)[0] = 1.;
   (*pin)[1] = 3. * mu;
 
@@ -134,10 +118,8 @@ void MiePiTau(const double mu,
       {
        temp = (double)i;
        (*pin)[i] = ( (2. * temp + 1.) * ( mu * (*pin)[i-1] ) - (temp + 1.) * (*pin)[i-2] ) / temp;
-
        (*taun)[i] = (temp + 1.) * mu * (*pin)[i] - (temp + 2.) * (*pin)[i-1];
      }
-
 }
 
 
@@ -148,13 +130,12 @@ static void
 Vec_Cwrapper(const double m,
              const double x,
              const double*  phi,
-             const int lenght,
+             const long unsigned int lenght,
              complex128* v)
 
 {
     iVec *an = new iVec;
     iVec *bn = new iVec;
-
 
     std::vector<double> *n, *n2;
 
@@ -165,7 +146,7 @@ Vec_Cwrapper(const double m,
     if (x < 0.5){ LowFrequencyMie_ab(m, x, an, bn); }
     else{ HighFrequencyMie_ab(m, x, nmax, n, an, bn); }
 
-    const long int anLength = an->size();
+    const long unsigned int anLength = an->size();
 
     iVec S1 = iVec(lenght) ;
     iVec S2 = iVec(lenght) ;

@@ -2286,7 +2286,7 @@ static PyObject *contiguous = 0;
 static PyObject *indirect_contiguous = 0;
 static int __pyx_memoryview_thread_locks_used;
 static PyThread_type_lock __pyx_memoryview_thread_locks[8];
-static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_GetS1S2(__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, __Pyx_memviewslice, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_getS1S2(__Pyx_memviewslice &, Py_ssize_t &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
 static void __pyx_f_13PyMieCoupling_6cython_4S1S2_LowFrequencyMie_ab(__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, Py_ssize_t, std::vector<__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t> , std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
 static void __pyx_f_13PyMieCoupling_6cython_4S1S2_Mie_ab(__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t, Py_ssize_t, std::vector<__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t>  &, std::vector<__pyx_t_double_complex>  &, std::vector<__pyx_t_double_complex>  &); /*proto*/
@@ -2530,7 +2530,7 @@ static PyObject *__pyx_kp_s_unable_to_allocate_shape_and_str;
 static PyObject *__pyx_n_s_unpack;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_x;
-static PyObject *__pyx_pf_13PyMieCoupling_6cython_4S1S2_MieS1S2(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x, __Pyx_memviewslice __pyx_v_phi); /* proto */
+static PyObject *__pyx_pf_13PyMieCoupling_6cython_4S1S2_GetS1S2(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x, __Pyx_memviewslice __pyx_v_phi); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -2613,13 +2613,13 @@ static PyObject *__pyx_codeobj__27;
 /* "PyMieCoupling/cython/S1S2.pyx":33
  * 
  * 
- * cpdef tuple MieS1S2(double_t m,             # <<<<<<<<<<<<<<
+ * cpdef tuple GetS1S2(double_t m,             # <<<<<<<<<<<<<<
  *                     double_t x,
  *                     double_t[:] phi
  */
 
-static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x, __Pyx_memviewslice __pyx_v_phi, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1GetS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_GetS1S2(__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x, __Pyx_memviewslice __pyx_v_phi, CYTHON_UNUSED int __pyx_skip_dispatch) {
   Py_ssize_t __pyx_v_nmax;
   std::vector<__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t>  __pyx_v_n;
   std::vector<__pyx_t_13PyMieCoupling_6cython_4S1S2_double_t>  __pyx_v_n2;
@@ -2641,7 +2641,7 @@ static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_t_13PyMieCo
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("MieS1S2", 0);
+  __Pyx_RefNannySetupContext("GetS1S2", 0);
 
   /* "PyMieCoupling/cython/S1S2.pyx":39
  * 
@@ -2802,7 +2802,7 @@ static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_t_13PyMieCo
   /* "PyMieCoupling/cython/S1S2.pyx":33
  * 
  * 
- * cpdef tuple MieS1S2(double_t m,             # <<<<<<<<<<<<<<
+ * cpdef tuple GetS1S2(double_t m,             # <<<<<<<<<<<<<<
  *                     double_t x,
  *                     double_t[:] phi
  */
@@ -2813,7 +2813,7 @@ static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_t_13PyMieCo
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("PyMieCoupling.cython.S1S2.MieS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieCoupling.cython.S1S2.GetS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_S1);
@@ -2824,8 +2824,8 @@ static PyObject *__pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_t_13PyMieCo
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1GetS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1GetS1S2(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m;
   __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x;
   __Pyx_memviewslice __pyx_v_phi = { 0, 0, { 0 }, { 0 }, { 0 } };
@@ -2834,7 +2834,7 @@ static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2(PyObject *__pyx
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("MieS1S2 (wrapper)", 0);
+  __Pyx_RefNannySetupContext("GetS1S2 (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_m,&__pyx_n_s_x,&__pyx_n_s_phi,0};
     PyObject* values[3] = {0,0,0};
@@ -2860,17 +2860,17 @@ static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2(PyObject *__pyx
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("MieS1S2", 1, 3, 3, 1); __PYX_ERR(0, 33, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 3, 3, 1); __PYX_ERR(0, 33, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_phi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("MieS1S2", 1, 3, 3, 2); __PYX_ERR(0, 33, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 3, 3, 2); __PYX_ERR(0, 33, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "MieS1S2") < 0)) __PYX_ERR(0, 33, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetS1S2") < 0)) __PYX_ERR(0, 33, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -2885,29 +2885,29 @@ static PyObject *__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2(PyObject *__pyx
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("MieS1S2", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 33, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 33, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieCoupling.cython.S1S2.MieS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieCoupling.cython.S1S2.GetS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_self, __pyx_v_m, __pyx_v_x, __pyx_v_phi);
+  __pyx_r = __pyx_pf_13PyMieCoupling_6cython_4S1S2_GetS1S2(__pyx_self, __pyx_v_m, __pyx_v_x, __pyx_v_phi);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13PyMieCoupling_6cython_4S1S2_MieS1S2(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x, __Pyx_memviewslice __pyx_v_phi) {
+static PyObject *__pyx_pf_13PyMieCoupling_6cython_4S1S2_GetS1S2(CYTHON_UNUSED PyObject *__pyx_self, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_m, __pyx_t_13PyMieCoupling_6cython_4S1S2_double_t __pyx_v_x, __Pyx_memviewslice __pyx_v_phi) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("MieS1S2", 0);
+  __Pyx_RefNannySetupContext("GetS1S2", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_13PyMieCoupling_6cython_4S1S2_MieS1S2(__pyx_v_m, __pyx_v_x, __pyx_v_phi, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_13PyMieCoupling_6cython_4S1S2_GetS1S2(__pyx_v_m, __pyx_v_x, __pyx_v_phi, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2916,7 +2916,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_6cython_4S1S2_MieS1S2(CYTHON_UNUSED Py
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieCoupling.cython.S1S2.MieS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieCoupling.cython.S1S2.GetS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __PYX_XDEC_MEMVIEW(&__pyx_v_phi, 1);
@@ -18634,7 +18634,7 @@ static PyTypeObject __pyx_type___pyx_memoryviewslice = {
 };
 
 static PyMethodDef __pyx_methods[] = {
-  {"MieS1S2", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13PyMieCoupling_6cython_4S1S2_1MieS1S2, METH_VARARGS|METH_KEYWORDS, 0},
+  {"GetS1S2", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_13PyMieCoupling_6cython_4S1S2_1GetS1S2, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
