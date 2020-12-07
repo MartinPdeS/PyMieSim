@@ -10,11 +10,11 @@ from typing import Tuple, Union
 from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.functions.Couplings import Coupling
+from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 
 Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
-
+from PyMieCoupling.cpp.S1S2 import GetFields as Fields_CPP
 
 try:
     from PyMieCoupling.cpp.S1S2 import GetS1S2
@@ -46,13 +46,13 @@ class DataFrameCPU(pd.DataFrame):
         return self.xs('Perpendicular')
 
 
-    def Plot(self, y, Polarization=None):
+    def Plot(self, y, Polarization=None, Scale='Linear'):
 
         for Polar in self.Polarization:
-            self._plot(y, Polar)
+            self._plot(y, Polar, Scale)
 
 
-    def _plot(self, y, Polarization):
+    def _plot(self, y, Polarization, Scale):
 
         self.ax = self.xs(Polarization).unstack(1).plot(y       = y,
                                                         grid    = True,
@@ -64,6 +64,9 @@ class DataFrameCPU(pd.DataFrame):
         self.ax.tick_params(labelsize='small')
 
         plt.legend(bbox_to_anchor=(1, 1), ncol=1)
+
+        if Scale == 'Logarithmic':
+            self.ax.set_yscale('log')
 
         plt.subplots_adjust(right=0.8,)
 
@@ -79,6 +82,7 @@ class ScattererSet(object):
                  RIList:          list,
                  Detector:        Union[LPmode, Photodiode],
                  Source:          Source,
+                 Mode:            str = 'Centered'
                  ):
 
         self.DiameterList = DiameterList
@@ -88,6 +92,8 @@ class ScattererSet(object):
         self.RIList = RIList
 
         self.Source = Source
+
+        self.Mode = Mode
 
         self.Coupling = np.empty( [len(self.RIList), len(self.DiameterList)] )
 
@@ -120,7 +126,9 @@ class ScattererSet(object):
                                  Meshes      = self.Detector.Meshes)
 
                 for Polar in Polarization:
-                    Coupling = self.Detector.Coupling(Scatterer = Scat, Polarization = Polar)
+                    Coupling = self.Detector.Coupling(Scatterer    = Scat,
+                                                      Polarization = Polar,
+                                                      Mode         = self.Mode)
                     df.at[(Polar, Diameter, RI),'Coupling'] = Coupling
 
 
@@ -190,37 +198,6 @@ class ScattererSet(object):
 
 
 
-    def GetCoupling(self,
-                    Polarization: str   = 'NoFiltered',
-                    Boundary:     str   = 'Detector'):
-
-
-        if Boundary == 'Detector':
-            Meshes = self.Detector.Meshes
-
-        elif Boundary == 'Full':
-            Meshes = ScatMeshes(ThetaBound = np.array([-180, 180], copy=False),
-                                PhiBound   = np.array([-90,90], copy=False),
-                                Npts       = self.Detector.Npts)
-
-        for nr, RI in enumerate(self.RIList):
-
-            for nd, Diameter in enumerate(self.DiameterList):
-
-                Scat = Scatterer(Diameter  = Diameter,
-                                 Index     = RI,
-                                 Source    = self.Source,
-                                 Meshes    = self.Detector.Meshes
-                                 )
-
-
-                self.Coupling[nr, nd] = Scat.Coupling(Detector = self.Detector,
-                                                      Polarization = Polarization)
-
-        return self.Coupling, Meshes
-
-
-
     def GetCoupling(self, Polarization):
 
         temp = np.empty( [ len(self.RIList), len(self.DiameterList) ] )
@@ -235,7 +212,9 @@ class ScattererSet(object):
                                  Meshes    = self.Detector.Meshes
                                  )
 
-                Coupling = self.Detector.Coupling(Scatterer = Scat, Polarization = Polarization)
+                Coupling = self.Detector.Coupling(Scatterer    = Scat,
+                                                  Polarization = Polarization,
+                                                  Mode         = self.Mode)
 
                 temp[nr, nd] = Coupling
 
@@ -530,20 +509,19 @@ class Scatterer(object):
     def GenField(self):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
-
         """
 
-        S1S2 = GetS1S2(self.Index,
-                       self.SizeParam,
-                       self.Meshes.Phi.Vector.Radian)
+        Parallel, Perpendicular = Fields_CPP(self.Index,
+                                             self.SizeParam,
+                                             self.Meshes.Phi.Vector.Radian,
+                                             self.Meshes.Theta.Vector.Radian,
+                                             Polarization  = self.Source.Polarization);
 
-        Parallel = np.outer(S1S2[0], np.sin(self.Meshes.Theta.Vector.Radian))
 
-        Perpendicular = np.outer(S1S2[1], np.cos(self.Meshes.Theta.Vector.Radian))
-
-        self.__Field = Field(Perpendicular = Perpendicular,
-                             Parallel      = Parallel,
-                             Meshes        = self.Meshes)
+        self.__Field = Field(Perpendicular = Perpendicular,# * np.cos(self.Source.Polarization/180*np.pi),
+                             Parallel      = Parallel,# * np.sin(self.Source.Polarization/180*np.pi),
+                             Meshes        = self.Meshes,
+                             )
 
     @property
     def Stokes(self) -> None:
@@ -559,11 +537,20 @@ class Scatterer(object):
 
 
 
-    def Coupling(self, Detector, Polarization = 'NoFiltered'):
+    def Coupling(self,
+                 Detector,
+                 Polarization = 'NoFiltered',
+                 Mode         = 'Centered'):
 
         return Coupling(Scatterer    = self,
                         Detector     = Detector,
-                        Polarization = Polarization)
+                        Polarization = Polarization,
+                        Mode         = Mode)
+
+    def Footprint(self, Detector):
+
+        return GetFootprint(Scatterer    = self,
+                            Detector     = Detector)
 
 
 
@@ -808,12 +795,19 @@ class SPF(object):
                        self.Meshes.Theta.Mesh.Radian)
 
         ax.plot_surface(*SPF3D,
-                         rstride     = 3,
-                         cstride     = 3,
+                         rstride     = 1,
+                         cstride     = 1,
                          linewidth   = 0.5,
                          cmap        = cm.bone,
                          antialiased = False,
                          alpha       = 1)
+
+
+        xLim = ax.get_xlim(); yLim = ax.get_ylim()
+
+        ax.set_xlim(min(xLim[0],yLim[0]), max(xLim[1],yLim[1]) )
+
+        ax.set_ylim(min(xLim[0],yLim[0]), max(xLim[1],yLim[1]) )
 
         plt.show(block=False)
 
@@ -877,7 +871,7 @@ class RepS1S2(object):
     def Plot(self) -> None:
 
         fig, axes = self.GenFig()
-        
+
         data = np.abs( self.S1S2 )
 
         for ni, ax in enumerate(axes):
@@ -975,7 +969,7 @@ class Field(object):
         Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
 
         """
-        self.__dict__ = Meshes.__dict__.copy()
+        self.__dict__ = Meshes.__dict__
 
         self.Perpendicular, self.Parallel = Perpendicular, Parallel
 
@@ -1051,10 +1045,6 @@ class Field(object):
 
     def ComputeSPF(self) -> None:
         return self.Parallel.__abs__()**2 + self.Perpendicular.__abs__()**2
-
-
-
-
 
 
 

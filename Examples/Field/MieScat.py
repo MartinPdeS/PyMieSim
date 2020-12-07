@@ -10,9 +10,9 @@ from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.classes.Fields import Source
 
 LightSource = Source(Wavelength   = 400e-9,
-                     Polarization = 0)
+                     Polarization = None)
 
-Scat = Scatterer(Diameter    = 600e-9,
+Scat = Scatterer(Diameter    = 60e-9,
                  Source      = LightSource,
                  Index       = 1.4,
                  Npts        = 101,

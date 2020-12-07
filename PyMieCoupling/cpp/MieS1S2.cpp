@@ -54,11 +54,11 @@ LowFrequencyMie_ab(const double m,
 
 static void
 HighFrequencyMie_ab(const double m,
-                         const double x,
-                         const long unsigned int nmax,
-                         const std::vector<double>* n,
-                         iVec *an,
-                         iVec *bn)
+                    const double x,
+                    const long unsigned int nmax,
+                    const std::vector<double>* n,
+                    iVec *an,
+                    iVec *bn)
 
 {
   const double mx = m * x;
@@ -127,11 +127,11 @@ MiePiTau(const double mu,
 
 
 static void
-Vec_Cwrapper(const double m,
-             const double x,
-             const double*  phi,
-             const long unsigned int lenght,
-             complex128* v)
+C_GetS1S2(const double m,
+          const double x,
+          const double*  phi,
+          const long unsigned int lenght,
+          complex128* S1S2)
 
 {
     iVec *an = new iVec;
@@ -143,8 +143,7 @@ Vec_Cwrapper(const double m,
 
     std::tie(n, n2) = Arrange(1, nmax + 1);
 
-    if (x < 0.5){ LowFrequencyMie_ab(m, x, an, bn); }
-    else{ HighFrequencyMie_ab(m, x, nmax, n, an, bn); }
+    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, nmax, n, an, bn);
 
     const long unsigned int anLength = an->size();
 
@@ -155,15 +154,20 @@ Vec_Cwrapper(const double m,
     iVec *taun = new iVec(nmax);
     complex128 j (0., 1.0);
 
+    complex128 *temp0 = &S1S2[0], *temp1 = &S1S2[lenght] ;
+
     for (long unsigned int i = 0; i < lenght; i++){
 
         MiePiTau(cos( phi[i] ), nmax, pin, taun);
+
         for (long unsigned int k = 0; k < anLength ; k++){
 
-            v[i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
-            v[i + lenght] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+            *temp0 += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
+            *temp1 += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
           }
+    temp0++ ;
+    temp1++ ;
     }
 
     return;
@@ -171,7 +175,77 @@ Vec_Cwrapper(const double m,
 }
 
 
+static void
+C_GetFields(const double m,
+            const double x,
+            const double*  phi,
+            double* Theta,
+            const long unsigned int Philenght,
+            const long unsigned int Thetalenght,
+            complex128* Parallel,
+            complex128* Perpendicular,
+            double Polarization
+          )
+{
+  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
 
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0 ;
+  complex128 temp2;
+
+  C_GetS1S2(m, x, phi, Philenght, S1S2) ;
+
+  for (long unsigned int k=0; k < Thetalenght; k++ )
+  {
+    temp0 = *Theta++ ;
+    for (long unsigned int i=0; i < Philenght; i++ )
+    {
+      *Parallel++          = S1S2[i] * cos(temp0 + Polarization) ;
+      *Perpendicular++     = S1S2[i + Philenght] * sin(temp0 + Polarization) ;
+    }
+  }
+
+  free(S1S2) ;
+  return;
+}
+
+
+
+
+static void
+C_GetFieldsNoPolarization(const double m,
+            const double x,
+            const double*  phi,
+            double* Theta,
+            const long unsigned int Philenght,
+            const long unsigned int Thetalenght,
+            complex128* Parallel,
+            complex128* Perpendicular
+          )
+{
+  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
+
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0 ;
+  complex128 temp2;
+
+  C_GetS1S2(m, x, phi, Philenght, S1S2) ;
+
+  for (long unsigned int k=0; k < Thetalenght; k++ )
+  {
+    temp0 = *Theta++ ;
+    for (long unsigned int i=0; i < Philenght; i++ )
+    {
+      *Parallel++          = S1S2[i] * 1./sqrt(2) ;
+      *Perpendicular++     = S1S2[i + Philenght] * 1./sqrt(2) ;
+    }
+  }
+
+  free(S1S2) ;
+  return;
+}
 
 
 

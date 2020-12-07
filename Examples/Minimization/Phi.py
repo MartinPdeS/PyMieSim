@@ -6,6 +6,7 @@ _________________________________________________________
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 from PyMieCoupling.classes.Detector import fiber, LPmode, Photodiode
 from PyMieCoupling.classes.Fields import Source
@@ -40,20 +41,21 @@ LP11 = LPmode(Fiber         = Fiber,
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Name          = 'LP11',
-              NA            = 0.9)
+              NA            = 0.54)
 
 
-Photodiode0 = Photodiode(NA                = 0.65,
+Photodiode0 = Photodiode(NA                = 0.54,
                          Source            = LightSource,
                          Npts              = 81,
                          ThetaOffset       = 0,
                          PhiOffset         = 0)
 
 
-Set = ScattererSet(DiameterList  = np.linspace(100,10000,100).round(4) * 1e-9,
+Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
                    RIList        = np.linspace(1.3, 1.5, 6).round(4),
-                   Detector      = Photodiode0,
-                   Source        = LightSource
+                   Detector      = LP11,
+                   Source        = LightSource,
+                   Mode          = 'Mean'
                    )
 
 def EvalFunc(x):
@@ -62,7 +64,7 @@ def EvalFunc(x):
 
     Array = Set.GetCoupling(Polarization = 'NoFiltered') # can be   Parallel  -  Perpendicular  -  Filtered  -  NoFiltered
 
-    return Array.Cost('RI_RSD') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
 Minimizer = Simulator(EvalFunc)
@@ -79,6 +81,7 @@ DF = Set.GetFrame()
 
 DF.Plot('Coupling') # can be Couplimg  -  STD
 
+plt.show()
 
 
 

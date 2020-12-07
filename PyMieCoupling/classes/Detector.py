@@ -6,7 +6,7 @@ from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle, Angle2Direc
 from PyMieCoupling.classes.Meshes import ScatMeshes
 from PyMieCoupling.classes.Fields import Source, LPField, LPFourier
 from PyMieCoupling.functions.converts import deg2rad
-from PyMieCoupling.functions.Couplings import Coupling
+from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 
 import fibermodes
 
@@ -193,12 +193,21 @@ class Photodiode(object):
         self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
 
 
-    def Coupling(self, Scatterer, Polarization = 'NoFiltered'):
+    def Coupling(self,
+                 Scatterer,
+                 Polarization = 'NoFiltered',
+                 Mode         = 'Centered'):
 
         return Coupling(Scatterer    = Scatterer,
                         Detector     = self,
-                        Polarization = Polarization)
+                        Polarization = Polarization,
+                        Mode         = Mode)
 
+
+    def Footprint(self, Scatterer):
+
+        return GetFootprint(Scatterer    = Scatterer,
+                            Detector     = self)
 
 
 
@@ -366,11 +375,23 @@ class LPmode(object):
         self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
 
 
-    def Coupling(self, Scatterer, Polarization= 'NoFiltered'):
+    def Coupling(self,
+                 Scatterer,
+                 Polarization = 'NoFiltered',
+                 Mode         = 'Centered'):
 
         return Coupling(Scatterer    = Scatterer,
                         Detector     = self,
-                        Polarization = Polarization)
+                        Polarization = Polarization,
+                        Mode         = Mode)
+
+
+    def Footprint(self, Scatterer):
+
+        return GetFootprint(Scatterer    = Scatterer,
+                            Detector     = self)
+
+
 
 
 def GetLP(Fiber,

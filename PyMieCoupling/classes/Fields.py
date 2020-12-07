@@ -12,14 +12,19 @@ Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 class Source(object):
 
     def __init__(self,
-                 Wavelength: float,
-                 Polarization: float):
+                 Wavelength:   float,
+                 Polarization: float,
+                 Power:        float = 1):
 
         self.Wavelength = Wavelength
-
-        self.Polarization = Polarization
+        if Polarization:
+            self.Polarization = Angle(Polarization)
+        else:
+            self.Polarization = None
 
         self.k = 2 * pi / Wavelength
+
+        self.Power = Power
 
 
 
@@ -237,6 +242,15 @@ class LPFourier(np.ndarray):
                         alpha=0.4 )
 
 
+
+
+
+
+class Angle(object):
+
+    def __init__(self, input):
+        self.Degree = input
+        self.Radian = deg2rad(input)
 
 
 

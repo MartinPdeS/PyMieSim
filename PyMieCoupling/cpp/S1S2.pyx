@@ -13,11 +13,31 @@ from cpython cimport Py_buffer
 ctypedef double complex complex128_t
 
 cdef extern from "MieS1S2.cpp":
-    cdef void* Vec_Cwrapper(double a,
-                            double b,
-                            double* phi,
-                            int lenght,
-                            complex128_t* ptr);
+    cdef void* C_GetS1S2(double a,
+                         double b,
+                         double* phi,
+                         int lenght,
+                         complex128_t* ptr);
+
+    cdef void* C_GetFields(double a,
+                           double b,
+                           double* phi,
+                           double* theta,
+                           int Philenght,
+                           int Thetalenght,
+                           complex128_t* Parallel,
+                           complex128_t* Perpendicular,
+                           double Polarization);
+
+
+    cdef void* C_GetFieldsNoPolarization(double a,
+                                        double b,
+                                        double* phi,
+                                        double* theta,
+                                        int Philenght,
+                                        int Thetalenght,
+                                        complex128_t* Parallel,
+                                        complex128_t* Perpendicular);
 
 
 @cython.boundscheck(False)
@@ -29,25 +49,80 @@ cpdef GetS1S2(double m,
               double x,
               phi):
 
-    M = Matrix(2 * phi.size)
-
-    M.add_row()
+    Vector = VectorWrapper(2 * phi.size)
+    Vector.add_row()
 
     cdef:
-        np.ndarray[double, ndim=1, mode="c"] a_cython = np.asarray(phi, dtype = float, order="C")
-        double* point_to_a = <double *>PyMem_Malloc(sizeof(double*))
+        np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(phi, dtype = float, order="C")
+        double* phi_ptr = <double *>PyMem_Malloc(sizeof(double*))
 
-    point_to_a = &a_cython[0]
+    phi_ptr = &phiView[0]
 
-    Vec_Cwrapper(m,  x, point_to_a, phi.size, &(M.S1S2)[0])
+    C_GetS1S2(m,  x, phi_ptr, phi.size, &(Vector.S1S2)[0])
 
-    arr = np.asarray(M)
+    arr = np.asarray(Vector)
 
     return np.reshape(arr,[2,phi.size])
 
 
 
-cdef class Matrix:
+@cython.boundscheck(False)
+@cython.initializedcheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
+@cython.wraparound(False)
+cpdef GetFields(double m,
+                double x,
+                Phi,
+                Theta,
+                Polarization):
+
+    cdef:
+        np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(Phi, dtype = float, order="C")
+        double* phi_ptr = <double *>PyMem_Malloc(sizeof(double*))
+
+        np.ndarray[double, ndim=1, mode="c"] thetaView = np.asarray(Theta, dtype = float, order="C")
+        double* theta_ptr = <double *>PyMem_Malloc(sizeof(double*))
+
+    phi_ptr = &phiView[0]
+    theta_ptr = &thetaView[0]
+
+    Parallel = VectorWrapper(Phi.size * Theta.size)
+    Parallel.add_row()
+
+    Perpendicular = VectorWrapper(Phi.size * Theta.size)
+    Perpendicular.add_row()
+
+    if Polarization:
+        C_GetFields(m,
+                    x,
+                    phi_ptr,
+                    theta_ptr,
+                    Phi.size,
+                    Theta.size,
+                    &(Parallel.S1S2)[0],
+                    &(Perpendicular.S1S2)[0],
+                    Polarization
+                    );
+
+    else:
+      C_GetFieldsNoPolarization(m,
+                                x,
+                                phi_ptr,
+                                theta_ptr,
+                                Phi.size,
+                                Theta.size,
+                                &(Parallel.S1S2)[0],
+                                &(Perpendicular.S1S2)[0]
+                                );
+
+    arr0 = np.asarray(Parallel).reshape([Phi.size, Theta.size]).T
+    arr1 = np.asarray(Perpendicular).reshape([Phi.size, Theta.size]).T
+
+    return arr0, arr1
+
+
+cdef class VectorWrapper:
     cdef:
         Py_ssize_t ncols
         Py_ssize_t shape[2]
@@ -58,6 +133,7 @@ cdef class Matrix:
     def __cinit__(self, Py_ssize_t ncols):
         self.ncols = ncols
         self.view_count = 0
+
 
     def add_row(self):
         """Adds a row, initially zero-filled."""
@@ -91,6 +167,3 @@ cdef class Matrix:
 
     def __releasebuffer__(self, Py_buffer *buffer):
         self.view_count -= 1
-
-
-# -

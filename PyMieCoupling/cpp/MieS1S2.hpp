@@ -41,11 +41,11 @@ MiePiTau(const double mu,
 
 
 static void
-Vec_Cwrapper(const double m,
-             const double x,
-             const double*  phi,
-             const long unsigned int lenght,
-             complex128* v);
+C_GetS1S2(const double m,
+          const double x,
+          const double*  phi,
+          const long unsigned int lenght,
+          complex128* v);
 
 
 
