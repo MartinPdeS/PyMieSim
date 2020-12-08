@@ -20,6 +20,9 @@ Scat = Scatterer(Diameter    = 100e-9,
                  PhiBound    = [-180, 180])
 
 
+
+Scat.Field.Plot()
+
 Scat.S1S2.Plot()
 
 Scat.SPF.Plot()

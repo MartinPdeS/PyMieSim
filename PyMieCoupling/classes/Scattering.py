@@ -7,6 +7,7 @@ import matplotlib
 import matplotlib
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import cm
 from typing import Tuple, Union
 
@@ -733,6 +734,8 @@ class Jones(object):
 
 
 
+
+
 class SPF(object):
     """Short summary.
 
@@ -852,8 +855,7 @@ class RepS1S2(object):
     def __init__(self,
                  SizeParam:  np.array,
                  Index:      float,
-                 Meshes:     ScatMeshes,
-                 CacheTrunk: bool = None) -> None:
+                 Meshes:     ScatMeshes) -> None:
 
         self.Meshes, self.SizeParam = Meshes, SizeParam
 
@@ -1057,6 +1059,61 @@ class Field(object):
 
     def ComputeSPF(self) -> None:
         return self.Parallel.__abs__()**2 + self.Perpendicular.__abs__()**2
+
+
+    def Plot(self) -> None:
+        fig = plt.figure(figsize=(8,4))
+        ax0 = fig.add_subplot(221)
+        ax1 = fig.add_subplot(222)
+        ax2 = fig.add_subplot(223)
+        ax3 = fig.add_subplot(224)
+        im0 = ax0.pcolormesh(self.Meshes.Theta.Vector.Degree,
+                             self.Meshes.Phi.Vector.Degree,
+                             np.real(self.Perpendicular),
+                             shading='auto')
+
+        im1 = ax1.pcolormesh(self.Meshes.Theta.Vector.Degree,
+                             self.Meshes.Phi.Vector.Degree,
+                             np.real(self.Parallel),
+                             shading='auto')
+
+        im2 = ax2.pcolormesh(self.Meshes.Theta.Vector.Degree,
+                             self.Meshes.Phi.Vector.Degree,
+                             np.imag(self.Perpendicular),
+                             shading='auto')
+
+        im3 = ax3.pcolormesh(self.Meshes.Theta.Vector.Degree,
+                             self.Meshes.Phi.Vector.Degree,
+                             np.imag(self.Parallel),
+                             shading='auto')
+
+        ax0.set_title(r'$\mathcal{Real}[Perpendicular] $')
+        ax1.set_title(r'$\mathcal{Real}[Parallel] $')
+        ax2.set_title(r'$\mathcal{Imaginary}[Perpendicular] $')
+        ax3.set_title(r'$\mathcal{Imaginary}[Parallel] $')
+
+        ax2.set_xlabel(r'Angle $\phi$ [Degree]'); ax3.set_xlabel(r'Angle $\phi$ [Degree]')
+
+        ax0.set_ylabel(r'Angle $\theta$ [Degree]'); ax2.set_ylabel(r'Angle $\theta$ [Degree]');
+
+        divider = make_axes_locatable(ax0)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im0, cax=cax, orientation='vertical',format='%.0e')
+
+        divider = make_axes_locatable(ax1)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im1, cax=cax, orientation='vertical',format='%.0e')
+
+        divider = make_axes_locatable(ax2)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im2, cax=cax, orientation='vertical',format='%.0e')
+
+        divider = make_axes_locatable(ax3)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im3, cax=cax, orientation='vertical',format='%.0e')
+
+        fig.tight_layout()
+
 
 
 
