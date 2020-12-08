@@ -1159,7 +1159,7 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "PyMieCoupling/cpp/S1S2.pyx":125
+/* "PyMieCoupling/cpp/S1S2.pyx":128
  * 
  * 
  * cdef class VectorWrapper:             # <<<<<<<<<<<<<<
@@ -1840,6 +1840,7 @@ static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_ncols[] = "ncols";
 static const char __pyx_k_numpy[] = "numpy";
 static const char __pyx_k_order[] = "order";
+static const char __pyx_k_Radian[] = "Radian";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_add_row[] = "add_row";
@@ -1864,6 +1865,7 @@ static PyObject *__pyx_n_s_C;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_n_s_Phi;
 static PyObject *__pyx_n_s_Polarization;
+static PyObject *__pyx_n_s_Radian;
 static PyObject *__pyx_n_s_T;
 static PyObject *__pyx_n_s_Theta;
 static PyObject *__pyx_n_s_TypeError;
@@ -2544,7 +2546,7 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
  *     Perpendicular = VectorWrapper(Phi.size * Theta.size)
  *     Perpendicular.add_row()             # <<<<<<<<<<<<<<
  * 
- *     if Polarization:
+ *     if Polarization == None:
  */
   __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Perpendicular), __pyx_n_s_add_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -2568,119 +2570,124 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
   /* "PyMieCoupling/cpp/S1S2.pyx":96
  *     Perpendicular.add_row()
  * 
- *     if Polarization:             # <<<<<<<<<<<<<<
- *         C_GetFields(m,
- *                     x,
+ *     if Polarization == None:             # <<<<<<<<<<<<<<
+ * 
+ *       C_GetFieldsNoPolarization(m,
  */
-  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_v_Polarization); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_4 = PyObject_RichCompare(__pyx_v_Polarization, Py_None, Py_EQ); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   if (__pyx_t_8) {
 
-    /* "PyMieCoupling/cpp/S1S2.pyx":101
- *                     phi_ptr,
- *                     theta_ptr,
- *                     Phi.size,             # <<<<<<<<<<<<<<
- *                     Theta.size,
- *                     &(Parallel.S1S2)[0],
- */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
     /* "PyMieCoupling/cpp/S1S2.pyx":102
- *                     theta_ptr,
- *                     Phi.size,
- *                     Theta.size,             # <<<<<<<<<<<<<<
- *                     &(Parallel.S1S2)[0],
- *                     &(Perpendicular.S1S2)[0],
- */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-
-    /* "PyMieCoupling/cpp/S1S2.pyx":105
- *                     &(Parallel.S1S2)[0],
- *                     &(Perpendicular.S1S2)[0],
- *                     Polarization             # <<<<<<<<<<<<<<
- *                     );
- * 
- */
-    __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_v_Polarization); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L1_error)
-
-    /* "PyMieCoupling/cpp/S1S2.pyx":97
- * 
- *     if Polarization:
- *         C_GetFields(m,             # <<<<<<<<<<<<<<
- *                     x,
- *                     phi_ptr,
- */
-    (void)(C_GetFields(__pyx_v_m, __pyx_v_x, __pyx_v_phi_ptr, __pyx_v_theta_ptr, __pyx_t_9, __pyx_t_10, (&(__pyx_v_Parallel->S1S2[0])), (&(__pyx_v_Perpendicular->S1S2[0])), __pyx_t_11));
-
-    /* "PyMieCoupling/cpp/S1S2.pyx":96
- *     Perpendicular.add_row()
- * 
- *     if Polarization:             # <<<<<<<<<<<<<<
- *         C_GetFields(m,
- *                     x,
- */
-    goto __pyx_L3;
-  }
-
-  /* "PyMieCoupling/cpp/S1S2.pyx":109
- * 
- *     else:
- *       C_GetFieldsNoPolarization(m,             # <<<<<<<<<<<<<<
- *                                 x,
- *                                 phi_ptr,
- */
-  /*else*/ {
-
-    /* "PyMieCoupling/cpp/S1S2.pyx":113
  *                                 phi_ptr,
  *                                 theta_ptr,
  *                                 Phi.size,             # <<<<<<<<<<<<<<
  *                                 Theta.size,
  *                                 &(Parallel.S1S2)[0],
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 102, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "PyMieCoupling/cpp/S1S2.pyx":114
+    /* "PyMieCoupling/cpp/S1S2.pyx":103
  *                                 theta_ptr,
  *                                 Phi.size,
  *                                 Theta.size,             # <<<<<<<<<<<<<<
  *                                 &(Parallel.S1S2)[0],
  *                                 &(Perpendicular.S1S2)[0]
  */
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-    /* "PyMieCoupling/cpp/S1S2.pyx":109
+    /* "PyMieCoupling/cpp/S1S2.pyx":98
+ *     if Polarization == None:
  * 
- *     else:
  *       C_GetFieldsNoPolarization(m,             # <<<<<<<<<<<<<<
  *                                 x,
  *                                 phi_ptr,
  */
-    (void)(C_GetFieldsNoPolarization(__pyx_v_m, __pyx_v_x, __pyx_v_phi_ptr, __pyx_v_theta_ptr, __pyx_t_10, __pyx_t_9, (&(__pyx_v_Parallel->S1S2[0])), (&(__pyx_v_Perpendicular->S1S2[0]))));
+    (void)(C_GetFieldsNoPolarization(__pyx_v_m, __pyx_v_x, __pyx_v_phi_ptr, __pyx_v_theta_ptr, __pyx_t_9, __pyx_t_10, (&(__pyx_v_Parallel->S1S2[0])), (&(__pyx_v_Perpendicular->S1S2[0]))));
+
+    /* "PyMieCoupling/cpp/S1S2.pyx":96
+ *     Perpendicular.add_row()
+ * 
+ *     if Polarization == None:             # <<<<<<<<<<<<<<
+ * 
+ *       C_GetFieldsNoPolarization(m,
+ */
+    goto __pyx_L3;
+  }
+
+  /* "PyMieCoupling/cpp/S1S2.pyx":110
+ *     else:
+ * 
+ *         C_GetFields(m,             # <<<<<<<<<<<<<<
+ *                     x,
+ *                     phi_ptr,
+ */
+  /*else*/ {
+
+    /* "PyMieCoupling/cpp/S1S2.pyx":114
+ *                     phi_ptr,
+ *                     theta_ptr,
+ *                     Phi.size,             # <<<<<<<<<<<<<<
+ *                     Theta.size,
+ *                     &(Parallel.S1S2)[0],
+ */
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "PyMieCoupling/cpp/S1S2.pyx":115
+ *                     theta_ptr,
+ *                     Phi.size,
+ *                     Theta.size,             # <<<<<<<<<<<<<<
+ *                     &(Parallel.S1S2)[0],
+ *                     &(Perpendicular.S1S2)[0],
+ */
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_9 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_9 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "PyMieCoupling/cpp/S1S2.pyx":118
+ *                     &(Parallel.S1S2)[0],
+ *                     &(Perpendicular.S1S2)[0],
+ *                     Polarization.Radian             # <<<<<<<<<<<<<<
+ *                     );
+ * 
+ */
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Polarization, __pyx_n_s_Radian); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_4);
+    __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_t_4); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 118, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "PyMieCoupling/cpp/S1S2.pyx":110
+ *     else:
+ * 
+ *         C_GetFields(m,             # <<<<<<<<<<<<<<
+ *                     x,
+ *                     phi_ptr,
+ */
+    (void)(C_GetFields(__pyx_v_m, __pyx_v_x, __pyx_v_phi_ptr, __pyx_v_theta_ptr, __pyx_t_10, __pyx_t_9, (&(__pyx_v_Parallel->S1S2[0])), (&(__pyx_v_Perpendicular->S1S2[0])), __pyx_t_11));
   }
   __pyx_L3:;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":119
- *                                 );
+  /* "PyMieCoupling/cpp/S1S2.pyx":122
+ * 
  * 
  *     arr0 = np.asarray(Parallel).reshape([Phi.size, Theta.size]).T             # <<<<<<<<<<<<<<
  *     arr1 = np.asarray(Perpendicular).reshape([Phi.size, Theta.size]).T
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -2695,17 +2702,17 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
   }
   __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, ((PyObject *)__pyx_v_Parallel)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_Parallel));
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_reshape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_reshape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_12 = PyList_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_12 = PyList_New(2); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_GIVEREF(__pyx_t_2);
   PyList_SET_ITEM(__pyx_t_12, 0, __pyx_t_2);
@@ -2726,25 +2733,25 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
   __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_12);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_T); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_arr0 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":120
+  /* "PyMieCoupling/cpp/S1S2.pyx":123
  * 
  *     arr0 = np.asarray(Parallel).reshape([Phi.size, Theta.size]).T
  *     arr1 = np.asarray(Perpendicular).reshape([Phi.size, Theta.size]).T             # <<<<<<<<<<<<<<
  * 
  *     return arr0, arr1
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __pyx_t_12 = NULL;
@@ -2759,17 +2766,17 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
   }
   __pyx_t_4 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_12, ((PyObject *)__pyx_v_Perpendicular)) : __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)__pyx_v_Perpendicular));
   __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_reshape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_reshape); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_v_Theta, __pyx_n_s_size); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_4);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
@@ -2790,16 +2797,16 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
   __pyx_t_3 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_12, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 120, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 120, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_T); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 123, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_arr1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":122
+  /* "PyMieCoupling/cpp/S1S2.pyx":125
  *     arr1 = np.asarray(Perpendicular).reshape([Phi.size, Theta.size]).T
  * 
  *     return arr0, arr1             # <<<<<<<<<<<<<<
@@ -2807,7 +2814,7 @@ static PyObject *__pyx_f_13PyMieCoupling_3cpp_4S1S2_GetFields(double __pyx_v_m, 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_arr0);
   __Pyx_GIVEREF(__pyx_v_arr0);
@@ -2982,7 +2989,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_2GetFields(CYTHON_UNUSED Py
   return __pyx_r;
 }
 
-/* "PyMieCoupling/cpp/S1S2.pyx":133
+/* "PyMieCoupling/cpp/S1S2.pyx":136
  *         int view_count
  * 
  *     def __cinit__(self, Py_ssize_t ncols):             # <<<<<<<<<<<<<<
@@ -3019,18 +3026,18 @@ static int __pyx_pw_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_1__cinit__(PyObje
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 133, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 136, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
     }
-    __pyx_v_ncols = __Pyx_PyIndex_AsSsize_t(values[0]); if (unlikely((__pyx_v_ncols == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 133, __pyx_L3_error)
+    __pyx_v_ncols = __Pyx_PyIndex_AsSsize_t(values[0]); if (unlikely((__pyx_v_ncols == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 136, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 133, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 136, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieCoupling.cpp.S1S2.VectorWrapper.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3048,7 +3055,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper___cinit__(struct 
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":134
+  /* "PyMieCoupling/cpp/S1S2.pyx":137
  * 
  *     def __cinit__(self, Py_ssize_t ncols):
  *         self.ncols = ncols             # <<<<<<<<<<<<<<
@@ -3057,7 +3064,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper___cinit__(struct 
  */
   __pyx_v_self->ncols = __pyx_v_ncols;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":135
+  /* "PyMieCoupling/cpp/S1S2.pyx":138
  *     def __cinit__(self, Py_ssize_t ncols):
  *         self.ncols = ncols
  *         self.view_count = 0             # <<<<<<<<<<<<<<
@@ -3066,7 +3073,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper___cinit__(struct 
  */
   __pyx_v_self->view_count = 0;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":133
+  /* "PyMieCoupling/cpp/S1S2.pyx":136
  *         int view_count
  * 
  *     def __cinit__(self, Py_ssize_t ncols):             # <<<<<<<<<<<<<<
@@ -3080,7 +3087,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper___cinit__(struct 
   return __pyx_r;
 }
 
-/* "PyMieCoupling/cpp/S1S2.pyx":138
+/* "PyMieCoupling/cpp/S1S2.pyx":141
  * 
  * 
  *     def add_row(self):             # <<<<<<<<<<<<<<
@@ -3112,7 +3119,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_2add_row(st
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_row", 0);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":140
+  /* "PyMieCoupling/cpp/S1S2.pyx":143
  *     def add_row(self):
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:             # <<<<<<<<<<<<<<
@@ -3122,20 +3129,20 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_2add_row(st
   __pyx_t_1 = ((__pyx_v_self->view_count > 0) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "PyMieCoupling/cpp/S1S2.pyx":141
+    /* "PyMieCoupling/cpp/S1S2.pyx":144
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:
  *             raise ValueError("can't add row while being viewed")             # <<<<<<<<<<<<<<
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 144, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 141, __pyx_L1_error)
+    __PYX_ERR(0, 144, __pyx_L1_error)
 
-    /* "PyMieCoupling/cpp/S1S2.pyx":140
+    /* "PyMieCoupling/cpp/S1S2.pyx":143
  *     def add_row(self):
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:             # <<<<<<<<<<<<<<
@@ -3144,7 +3151,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_2add_row(st
  */
   }
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":143
+  /* "PyMieCoupling/cpp/S1S2.pyx":146
  *             raise ValueError("can't add row while being viewed")
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)             # <<<<<<<<<<<<<<
@@ -3155,10 +3162,10 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_2add_row(st
     __pyx_v_self->S1S2.resize((__pyx_v_self->S1S2.size() + __pyx_v_self->ncols));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 143, __pyx_L1_error)
+    __PYX_ERR(0, 146, __pyx_L1_error)
   }
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":138
+  /* "PyMieCoupling/cpp/S1S2.pyx":141
  * 
  * 
  *     def add_row(self):             # <<<<<<<<<<<<<<
@@ -3179,7 +3186,7 @@ static PyObject *__pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_2add_row(st
   return __pyx_r;
 }
 
-/* "PyMieCoupling/cpp/S1S2.pyx":145
+/* "PyMieCoupling/cpp/S1S2.pyx":148
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):             # <<<<<<<<<<<<<<
@@ -3218,7 +3225,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   __pyx_v_buffer->obj = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(__pyx_v_buffer->obj);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":146
+  /* "PyMieCoupling/cpp/S1S2.pyx":149
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):
  *         cdef Py_ssize_t itemsize = sizeof(self.S1S2[0])             # <<<<<<<<<<<<<<
@@ -3227,7 +3234,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_itemsize = (sizeof((__pyx_v_self->S1S2[0])));
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":148
+  /* "PyMieCoupling/cpp/S1S2.pyx":151
  *         cdef Py_ssize_t itemsize = sizeof(self.S1S2[0])
  * 
  *         self.shape[0] = self.S1S2.size() / self.ncols             # <<<<<<<<<<<<<<
@@ -3237,11 +3244,11 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   __pyx_t_1 = __pyx_v_self->S1S2.size();
   if (unlikely(__pyx_v_self->ncols == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-    __PYX_ERR(0, 148, __pyx_L1_error)
+    __PYX_ERR(0, 151, __pyx_L1_error)
   }
   (__pyx_v_self->shape[0]) = (__pyx_t_1 / __pyx_v_self->ncols);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":149
+  /* "PyMieCoupling/cpp/S1S2.pyx":152
  * 
  *         self.shape[0] = self.S1S2.size() / self.ncols
  *         self.shape[1] = self.ncols             # <<<<<<<<<<<<<<
@@ -3251,7 +3258,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   __pyx_t_2 = __pyx_v_self->ncols;
   (__pyx_v_self->shape[1]) = __pyx_t_2;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":151
+  /* "PyMieCoupling/cpp/S1S2.pyx":154
  *         self.shape[1] = self.ncols
  * 
  *         self.strides[1] = <Py_ssize_t>(  <char *>&(self.S1S2[1]) - <char *>&(self.S1S2[0]))             # <<<<<<<<<<<<<<
@@ -3260,7 +3267,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   (__pyx_v_self->strides[1]) = ((Py_ssize_t)(((char *)(&(__pyx_v_self->S1S2[1]))) - ((char *)(&(__pyx_v_self->S1S2[0])))));
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":153
+  /* "PyMieCoupling/cpp/S1S2.pyx":156
  *         self.strides[1] = <Py_ssize_t>(  <char *>&(self.S1S2[1]) - <char *>&(self.S1S2[0]))
  * 
  *         self.strides[0] = self.ncols * self.strides[1]             # <<<<<<<<<<<<<<
@@ -3269,7 +3276,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   (__pyx_v_self->strides[0]) = (__pyx_v_self->ncols * (__pyx_v_self->strides[1]));
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":155
+  /* "PyMieCoupling/cpp/S1S2.pyx":158
  *         self.strides[0] = self.ncols * self.strides[1]
  * 
  *         buffer.buf = <char *>&(self.S1S2[0])             # <<<<<<<<<<<<<<
@@ -3278,7 +3285,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->buf = ((char *)(&(__pyx_v_self->S1S2[0])));
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":156
+  /* "PyMieCoupling/cpp/S1S2.pyx":159
  * 
  *         buffer.buf = <char *>&(self.S1S2[0])
  *         buffer.format = 'Zd'                     # float             # <<<<<<<<<<<<<<
@@ -3287,7 +3294,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->format = ((char *)"Zd");
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":157
+  /* "PyMieCoupling/cpp/S1S2.pyx":160
  *         buffer.buf = <char *>&(self.S1S2[0])
  *         buffer.format = 'Zd'                     # float
  *         buffer.internal = NULL             # <<<<<<<<<<<<<<
@@ -3296,7 +3303,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->internal = NULL;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":158
+  /* "PyMieCoupling/cpp/S1S2.pyx":161
  *         buffer.format = 'Zd'                     # float
  *         buffer.internal = NULL
  *         buffer.itemsize = itemsize             # <<<<<<<<<<<<<<
@@ -3305,7 +3312,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->itemsize = __pyx_v_itemsize;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":159
+  /* "PyMieCoupling/cpp/S1S2.pyx":162
  *         buffer.internal = NULL
  *         buffer.itemsize = itemsize
  *         buffer.len = self.S1S2.size() * itemsize             # <<<<<<<<<<<<<<
@@ -3314,7 +3321,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->len = (__pyx_v_self->S1S2.size() * __pyx_v_itemsize);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":160
+  /* "PyMieCoupling/cpp/S1S2.pyx":163
  *         buffer.itemsize = itemsize
  *         buffer.len = self.S1S2.size() * itemsize
  *         buffer.ndim = 2             # <<<<<<<<<<<<<<
@@ -3323,7 +3330,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->ndim = 2;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":161
+  /* "PyMieCoupling/cpp/S1S2.pyx":164
  *         buffer.len = self.S1S2.size() * itemsize
  *         buffer.ndim = 2
  *         buffer.obj = self             # <<<<<<<<<<<<<<
@@ -3336,7 +3343,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   __Pyx_DECREF(__pyx_v_buffer->obj);
   __pyx_v_buffer->obj = ((PyObject *)__pyx_v_self);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":162
+  /* "PyMieCoupling/cpp/S1S2.pyx":165
  *         buffer.ndim = 2
  *         buffer.obj = self
  *         buffer.readonly = 0             # <<<<<<<<<<<<<<
@@ -3345,7 +3352,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->readonly = 0;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":163
+  /* "PyMieCoupling/cpp/S1S2.pyx":166
  *         buffer.obj = self
  *         buffer.readonly = 0
  *         buffer.shape = self.shape             # <<<<<<<<<<<<<<
@@ -3355,7 +3362,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   __pyx_t_3 = __pyx_v_self->shape;
   __pyx_v_buffer->shape = __pyx_t_3;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":164
+  /* "PyMieCoupling/cpp/S1S2.pyx":167
  *         buffer.readonly = 0
  *         buffer.shape = self.shape
  *         buffer.strides = self.strides             # <<<<<<<<<<<<<<
@@ -3365,7 +3372,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   __pyx_t_3 = __pyx_v_self->strides;
   __pyx_v_buffer->strides = __pyx_t_3;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":165
+  /* "PyMieCoupling/cpp/S1S2.pyx":168
  *         buffer.shape = self.shape
  *         buffer.strides = self.strides
  *         buffer.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -3374,7 +3381,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_buffer->suboffsets = NULL;
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":166
+  /* "PyMieCoupling/cpp/S1S2.pyx":169
  *         buffer.strides = self.strides
  *         buffer.suboffsets = NULL
  *         self.view_count += 1             # <<<<<<<<<<<<<<
@@ -3383,7 +3390,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
  */
   __pyx_v_self->view_count = (__pyx_v_self->view_count + 1);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":145
+  /* "PyMieCoupling/cpp/S1S2.pyx":148
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):             # <<<<<<<<<<<<<<
@@ -3412,7 +3419,7 @@ static int __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_4__getbuffer__(st
   return __pyx_r;
 }
 
-/* "PyMieCoupling/cpp/S1S2.pyx":168
+/* "PyMieCoupling/cpp/S1S2.pyx":171
  *         self.view_count += 1
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):             # <<<<<<<<<<<<<<
@@ -3434,14 +3441,14 @@ static void __pyx_pf_13PyMieCoupling_3cpp_4S1S2_13VectorWrapper_6__releasebuffer
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":169
+  /* "PyMieCoupling/cpp/S1S2.pyx":172
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):
  *         self.view_count -= 1             # <<<<<<<<<<<<<<
  */
   __pyx_v_self->view_count = (__pyx_v_self->view_count - 1);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":168
+  /* "PyMieCoupling/cpp/S1S2.pyx":171
  *         self.view_count += 1
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):             # <<<<<<<<<<<<<<
@@ -4582,6 +4589,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_n_s_Phi, __pyx_k_Phi, sizeof(__pyx_k_Phi), 0, 0, 1, 1},
   {&__pyx_n_s_Polarization, __pyx_k_Polarization, sizeof(__pyx_k_Polarization), 0, 0, 1, 1},
+  {&__pyx_n_s_Radian, __pyx_k_Radian, sizeof(__pyx_k_Radian), 0, 0, 1, 1},
   {&__pyx_n_s_T, __pyx_k_T, sizeof(__pyx_k_T), 0, 0, 1, 1},
   {&__pyx_n_s_Theta, __pyx_k_Theta, sizeof(__pyx_k_Theta), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
@@ -4617,7 +4625,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 144, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 884, __pyx_L1_error)
   return 0;
@@ -4629,14 +4637,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "PyMieCoupling/cpp/S1S2.pyx":141
+  /* "PyMieCoupling/cpp/S1S2.pyx":144
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:
  *             raise ValueError("can't add row while being viewed")             # <<<<<<<<<<<<<<
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_can_t_add_row_while_being_viewed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_can_t_add_row_while_being_viewed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -4734,15 +4742,15 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper) < 0) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper.tp_dictoffset && __pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VectorWrapper, (PyObject *)&__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper) < 0) __PYX_ERR(0, 125, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper) < 0) __PYX_ERR(0, 125, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VectorWrapper, (PyObject *)&__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
   __pyx_ptype_13PyMieCoupling_3cpp_4S1S2_VectorWrapper = &__pyx_type_13PyMieCoupling_3cpp_4S1S2_VectorWrapper;
   __Pyx_RefNannyFinishContext();
   return 0;

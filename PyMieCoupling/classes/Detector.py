@@ -98,7 +98,7 @@ class Photodiode(object):
                  Npts:              int    = 101,
                  ThetaOffset:       float  = 0,
                  PhiOffset:         float  = 0,
-                 Filter:            float  = 0,
+                 Filter:            float  = None,
                  Name:              str    = 'Intensity Detector'):
 
         self._name = Name
@@ -122,7 +122,7 @@ class Photodiode(object):
 
         self.Fourier = LPFourier(array = item, Meshes = self.Meshes)
 
-        self.Filter, self.FilterRad = Filter, deg2rad(Filter)
+        self._Filter = Angle(Filter)
 
 
     def GenMeshes(self):
@@ -150,6 +150,14 @@ class Photodiode(object):
 
         self.Fourier.Meshes = self.Meshes
 
+
+    @property
+    def Filter(self):
+        return self._Filter
+
+    @Filter.setter
+    def Filter(self, val):
+        self._Filter = Angle(val)
 
     @property
     def PhiBound(self):
@@ -195,12 +203,10 @@ class Photodiode(object):
 
     def Coupling(self,
                  Scatterer,
-                 Polarization = 'NoFiltered',
                  Mode         = 'Centered'):
 
         return Coupling(Scatterer    = Scatterer,
                         Detector     = self,
-                        Polarization = Polarization,
                         Mode         = Mode)
 
 
@@ -268,12 +274,12 @@ class LPmode(object):
                  Npts:          int   = 101,
                  ThetaOffset:   float = 0,
                  PhiOffset:     float = 0,
-                 Filter:        float = 0,
+                 Filter:        float =  None,
                  Name:          str   = 'Amplitude detector'):
 
         self._name, self._coupling, self.Fiber = Name, 'Amplitude', Fiber
 
-        self.Filter, self.FilterRad = Filter, deg2rad(Filter)
+        self._Filter = Angle(Filter)
 
         Mode = Mode[0]+1, Mode[1]
 
@@ -283,7 +289,7 @@ class LPmode(object):
 
         FourierScaleFactor = self.Fiber.MaxDirect/Npts/5e-7
 
-        self.__ThetaBound = np.arcsin(self.NA)
+        self.NAScaleFactor = 2.8
 
         self.Source = Source
 
@@ -298,6 +304,7 @@ class LPmode(object):
 
         self.GenMeshes()
 
+
         item = GetLP(Fiber      = self.Fiber.source,
                      Mode       = self.Mode,
                      Wavelength = self.Source.Wavelength,
@@ -308,15 +315,21 @@ class LPmode(object):
 
 
     def GenMeshes(self):
-
         self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA)
-
+        self.__ThetaBound *= self.NAScaleFactor; self.__PhiBound  *= self.NAScaleFactor
         self.Meshes = ScatMeshes(Npts       = self.Npts,
                                  ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
                                  PhiBound   = (self.__PhiBound) + self.__PhiOffset)
 
 
 
+    @property
+    def Filter(self):
+        return self._Filter
+
+    @Filter.setter
+    def Filter(self, val):
+        self._Filter = Angle(val)
 
 
     @property
@@ -326,7 +339,6 @@ class LPmode(object):
 
     @ThetaBound.setter
     def ThetaBound(self, val: list):
-
         self.__ThetaBound = np.array( val, copy=False )
 
         self.Meshes = ScatMeshes(Npts       = self.Npts,
@@ -343,7 +355,6 @@ class LPmode(object):
 
     @PhiBound.setter
     def PhiBound(self, val: list):
-
         self.__PhiBound = np.array( val, copy=False )
 
         self.Meshes = ScatMeshes(Npts       = self.Npts,
@@ -377,17 +388,15 @@ class LPmode(object):
 
     def Coupling(self,
                  Scatterer,
-                 Polarization = 'NoFiltered',
+                 Filter       = None,
                  Mode         = 'Centered'):
 
         return Coupling(Scatterer    = Scatterer,
                         Detector     = self,
-                        Polarization = Polarization,
                         Mode         = Mode)
 
 
     def Footprint(self, Scatterer):
-
         return GetFootprint(Scatterer    = Scatterer,
                             Detector     = self)
 
@@ -436,6 +445,17 @@ def GenShift(Npts):
 
 
 
+
+class Angle(object):
+
+    def __init__(self, input):
+
+        if input != None:
+            self.Degree = input
+            self.Radian = deg2rad(input)
+        else:
+            self.Degree = None
+            self.Radian = None
 
 
 

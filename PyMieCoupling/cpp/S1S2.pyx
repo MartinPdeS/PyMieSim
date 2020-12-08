@@ -93,19 +93,8 @@ cpdef GetFields(double m,
     Perpendicular = VectorWrapper(Phi.size * Theta.size)
     Perpendicular.add_row()
 
-    if Polarization:
-        C_GetFields(m,
-                    x,
-                    phi_ptr,
-                    theta_ptr,
-                    Phi.size,
-                    Theta.size,
-                    &(Parallel.S1S2)[0],
-                    &(Perpendicular.S1S2)[0],
-                    Polarization
-                    );
+    if Polarization == None:
 
-    else:
       C_GetFieldsNoPolarization(m,
                                 x,
                                 phi_ptr,
@@ -115,6 +104,20 @@ cpdef GetFields(double m,
                                 &(Parallel.S1S2)[0],
                                 &(Perpendicular.S1S2)[0]
                                 );
+
+    else:
+
+        C_GetFields(m,
+                    x,
+                    phi_ptr,
+                    theta_ptr,
+                    Phi.size,
+                    Theta.size,
+                    &(Parallel.S1S2)[0],
+                    &(Perpendicular.S1S2)[0],
+                    Polarization.Radian
+                    );
+
 
     arr0 = np.asarray(Parallel).reshape([Phi.size, Theta.size]).T
     arr1 = np.asarray(Perpendicular).reshape([Phi.size, Theta.size]).T

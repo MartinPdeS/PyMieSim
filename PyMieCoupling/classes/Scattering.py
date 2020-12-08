@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+import matplotlib
+import matplotlib
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
 from matplotlib import cm
 from typing import Tuple, Union
 
@@ -33,7 +37,8 @@ class DataFrameCPU(pd.DataFrame):
 
     def __init__(self,**kwargs):
         pd.DataFrame.__init__(self,**kwargs)
-        self.Polarization = None
+        self.Filter = None
+        self.ax = None
 
 
     @property
@@ -46,24 +51,24 @@ class DataFrameCPU(pd.DataFrame):
         return self.xs('Perpendicular')
 
 
-    def Plot(self, y, Polarization=None, Scale='Linear'):
+    def Plot(self, y, Scale='Linear'):
 
-        for Polar in self.Polarization:
+        for Polar in self.attrs['Filter']:
             self._plot(y, Polar, Scale)
 
 
-    def _plot(self, y, Polarization, Scale):
+    def _plot(self, y, Filter, Scale):
 
-        self.ax = self.xs(Polarization).unstack(1).plot(y       = y,
-                                                        grid    = True,
-                                                        figsize = (8,3.5),
-                                                        title   = '[{0}: ] {1} signal'.format(self.DetectorNane, Polarization),
-                                                        ylabel  = y,
-                                                        xlabel  = r'Scatterer diameter [m]')
+        self.ax = self.xs(Filter).unstack(1).plot(y       = y,
+                                                  grid    = True,
+                                                  figsize = (8,3.5),
+                                                  title   = r'[{0}] Filter: {1} [Degree]'.format(self.DetectorNane, Filter),
+                                                  ylabel  = y,
+
+                                                  xlabel  = r'Scatterer diameter [m]')
 
         self.ax.tick_params(labelsize='small')
-
-        plt.legend(bbox_to_anchor=(1, 1), ncol=1)
+        self.ax.legend(bbox_to_anchor=(1, 1), ncol=1)
 
         if Scale == 'Logarithmic':
             self.ax.set_yscale('log')
@@ -103,18 +108,18 @@ class ScattererSet(object):
 
 
 
-    def GetFrame(self, Polarization: list = ['NoFiltered'] ):
+    def GetFrame(self, Filter: list = [None] ):
 
-        if not isinstance(Polarization, list):
-            Polarization = [Polarization]
+        if not isinstance(Filter, list):
+            Filter = [Filter]
 
 
-        MI = pd.MultiIndex.from_product([Polarization, self.DiameterList, self.RIList],
-                                        names=['Polarization','Diameter','RI',])
+        MI = pd.MultiIndex.from_product([Filter, self.DiameterList, self.RIList],
+                                        names=['Filter','Diameter','RI',])
 
         df = DataFrameCPU(index = MI, columns = ['Coupling'])
 
-        df.Polarization = Polarization
+        df.attrs['Filter'] = Filter
 
         for nr, RI in enumerate( self.RIList ):
 
@@ -125,18 +130,20 @@ class ScattererSet(object):
                                  Source      = self.Source,
                                  Meshes      = self.Detector.Meshes)
 
-                for Polar in Polarization:
+                for Polar in df.attrs['Filter']:
+                    self.Detector.Filter = Polar
+
                     Coupling = self.Detector.Coupling(Scatterer    = Scat,
-                                                      Polarization = Polar,
                                                       Mode         = self.Mode)
+
                     df.at[(Polar, Diameter, RI),'Coupling'] = Coupling
 
 
         df.Coupling = df.Coupling.astype(float)
 
-        df['Mean'] = df.groupby(['Polarization','Diameter']).Coupling.transform('mean')
+        df['Mean'] = df.groupby(['Filter','Diameter']).Coupling.transform('mean')
 
-        df['STD'] = df.groupby(['Polarization','Diameter']).Coupling.transform('std')
+        df['STD'] = df.groupby(['Filter','Diameter']).Coupling.transform('std')
 
         df.DetectorNane = self.Detector._name
 
@@ -518,10 +525,9 @@ class Scatterer(object):
                                              Polarization  = self.Source.Polarization);
 
 
-        self.__Field = Field(Perpendicular = Perpendicular,# * np.cos(self.Source.Polarization/180*np.pi),
-                             Parallel      = Parallel,# * np.sin(self.Source.Polarization/180*np.pi),
-                             Meshes        = self.Meshes,
-                             )
+        self.__Field = Field(Perpendicular = Perpendicular,
+                             Parallel      = Parallel,
+                             Meshes        = self.Meshes);
 
     @property
     def Stokes(self) -> None:
@@ -539,12 +545,12 @@ class Scatterer(object):
 
     def Coupling(self,
                  Detector,
-                 Polarization = 'NoFiltered',
+                 Filter       = None,
                  Mode         = 'Centered'):
 
         return Coupling(Scatterer    = self,
                         Detector     = Detector,
-                        Polarization = Polarization,
+                        Filter       = Filter,
                         Mode         = Mode)
 
     def Footprint(self, Detector):
@@ -795,19 +801,25 @@ class SPF(object):
                        self.Meshes.Theta.Mesh.Radian)
 
         ax.plot_surface(*SPF3D,
-                         rstride     = 1,
-                         cstride     = 1,
-                         linewidth   = 0.5,
+                         rstride     = 2,
+                         cstride     = 2,
+                         linewidth   = 0.01,
                          cmap        = cm.bone,
+                         edgecolors='k',
                          antialiased = False,
-                         alpha       = 1)
+                         alpha       = 0.5)
 
 
-        xLim = ax.get_xlim(); yLim = ax.get_ylim()
+        xLim = ax.get_xlim(); yLim = ax.get_ylim(); zLim = ax.get_zlim()
 
-        ax.set_xlim(min(xLim[0],yLim[0]), max(xLim[1],yLim[1]) )
+        Min = min(xLim[0],yLim[0],zLim[0]); Max = max(xLim[1], yLim[1], zLim[1])
+        Min = - Max
+        ax.set_xlim(Min, Max )
 
-        ax.set_ylim(min(xLim[0],yLim[0]), max(xLim[1],yLim[1]) )
+        ax.set_ylim(Min, Max )
+
+        ax.set_zlim(zLim[0], Max )
+        ax.set_xticklabels([]); ax.set_yticklabels([]); ax.set_zticklabels([])
 
         plt.show(block=False)
 

@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.classes.Fields import Source
 
-LightSource = Source(Wavelength   = 400e-9,
-                     Polarization = None)
+LightSource = Source(Wavelength   = 940e-9,
+                     Polarization = 0)
 
-Scat = Scatterer(Diameter    = 60e-9,
+Scat = Scatterer(Diameter    = 100e-9,
                  Source      = LightSource,
                  Index       = 1.4,
                  Npts        = 101,
-                 ThetaBound  = [-180, 180],
+                 ThetaBound  = [-90, 90],
                  PhiBound    = [-180, 180])
 
 
@@ -28,7 +28,6 @@ Scat.Stokes.Plot()
 
 plt.show()
 
-#print(Scat.Stokes)
 
 
 

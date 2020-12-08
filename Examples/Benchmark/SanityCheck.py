@@ -15,11 +15,11 @@ LightSource = Source(Wavelength   = 450e-9,
 
 Photodiode0 = Photodiode(NA                = 0.1,
                          Source            = LightSource,
-                         Npts              = 91,
+                         Npts              = 10,
                          ThetaOffset       = 0,
                          PhiOffset         = 0)
 
-DiameterList  = np.linspace(10e-9, 1000e-9, 80)
+DiameterList  = np.linspace(10e-9, 5000e-9, 3)
 
 
 Set1 = ScattererSet(DiameterList  = DiameterList,
@@ -30,11 +30,8 @@ Set1 = ScattererSet(DiameterList  = DiameterList,
                     )
 
 
-
-DF1 = Set1.GetFrame(Polarization=['NoFiltered'])
-
-
-
+DF1 = Set1.GetFrame(Filter=0)
+DF1.Plot('Coupling')
 
 
 Theoretical_coupling = []
@@ -56,8 +53,6 @@ for diameter in DiameterList:
         temp1 = np.abs(S1(phi))**2 * np.sin(theta)**2
 
         return (temp0 + temp1)/Scat.Source.k**2 * np.abs(np.sin(phi))
-
-
 
 
     ans, err = dblquad(integrand,
@@ -85,8 +80,8 @@ text1 = r"$\int \int_\Omega \frac{ |S_2|^2  \cos{\theta}^2 + |S1|^2  \sin{\theta
 
 fig = plt.figure(figsize=(10,5))
 ax1 = fig.add_subplot(111)
-ax1.plot(DiameterList, data0, 'C0', label='Simulations')
-ax1.plot(DiameterList, data1, 'C1--', label = text1)
+ax1.plot(DiameterList, data0, 'C0s', label='Simulations')
+ax1.plot(DiameterList, data1, "C1", label = text1)
 ax1.set_xlabel('Scatterer size [m]')
 ax1.set_ylabel('Detector coupling [u.a.]')
 ax1.legend()

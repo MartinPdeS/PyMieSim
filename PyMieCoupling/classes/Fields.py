@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from typing import Tuple
 import matplotlib.ticker as tick
+from PyMieCoupling.functions.converts import rad2deg, deg2rad
 import numpy as cp
 
 
@@ -17,14 +18,15 @@ class Source(object):
                  Power:        float = 1):
 
         self.Wavelength = Wavelength
-        if Polarization:
-            self.Polarization = Angle(Polarization)
-        else:
-            self.Polarization = None
 
         self.k = 2 * pi / Wavelength
 
         self.Power = Power
+
+        if Polarization != None:
+            self.Polarization = Angle(Polarization)
+        else:
+            self.Polarization = None        
 
 
 

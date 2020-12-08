@@ -40,20 +40,6 @@ def CenteredCoupling_Perp(Detector, Scatterer):
     return np.asscalar( Perp )
 
 
-def CenteredCoupling_Filtered(Detector, Scatterer):
-    Perp = CenteredCoupling_Perp(Detector, Scatterer)
-    Para = CenteredCoupling_Para(Detector, Scatterer)
-
-    return  Perp * np.cos(Detector.FilterRad) + Para * np.sin(Detector.FilterRad)
-
-
-def CenteredCoupling_NoFilter(Detector, Scatterer):
-    Perp = CenteredCoupling_Perp(Detector, Scatterer)
-    Para = CenteredCoupling_Para(Detector, Scatterer)
-
-    return Perp + Para
-
-
 
 def MeanCoupling_Para(Detector, Scatterer):
     Para = (Detector.Fourier * Scatterer.Field.Parallel).__abs__()**2
@@ -73,102 +59,40 @@ def GetFootprint(Detector, Scatterer):
     Perp = (Detector.Fourier * Scatterer.Field.Perpendicular).__abs__()**2
     Para = (Detector.Fourier * Scatterer.Field.Parallel).__abs__()**2
 
-    return Perp, Para
+    return Perp + Para
 
 
-def MeanCoupling_Filtered(Detector, Scatterer):
-    Perp = MeanCoupling_Perp(Detector, Scatterer)
-    Para = MeanCoupling_Para(Detector, Scatterer)
 
-    return  Perp * np.cos(Detector.FilterRad)  + Para * np.sin(Detector.FilterRad)
+def Coupling(Scatterer, Detector, Mode='Centered'):
+
+    if Mode == 'Centered':
+        return CenteredCoupling(Scatterer, Detector)
+
+    if Mode == 'Mean':
+        return MeanCoupling(Scatterer, Detector)
 
 
-def MeanCoupling_NoFilter(Detector, Scatterer):
-    Perp = MeanCoupling_Perp(Detector, Scatterer)
-    Para = MeanCoupling_Para(Detector, Scatterer)
+
+def CenteredCoupling(Scatterer, Detector):
+
+    if Detector._Filter.Radian != None:
+        Perp = CenteredCoupling_Perp(Detector, Scatterer) * np.cos(Detector._Filter.Radian)**2
+        Para = CenteredCoupling_Para(Detector, Scatterer) * np.sin(Detector._Filter.Radian)**2
+    else:
+        Perp = CenteredCoupling_Perp(Detector, Scatterer)
+        Para = CenteredCoupling_Para(Detector, Scatterer)
 
     return Perp + Para
 
 
 
-def Coupling(Scatterer, Detector, Polarization, Mode='Centered'):
 
-    if Mode == 'Centered':
-        return CenteredCoupling(Scatterer, Detector, Polarization)
+def MeanCoupling(Scatterer, Detector):
+    if Detector._Filter.Radian != None:
+        Perp = MeanCoupling_Perp(Detector, Scatterer) * np.cos(Detector.Filter.Radian)**2
+        Para = MeanCoupling_Para(Detector, Scatterer) * np.sin(Detector.Filter.Radian)**2
+    else:
+        Perp = MeanCoupling_Perp(Detector, Scatterer)
+        Para = MeanCoupling_Para(Detector, Scatterer)
 
-    if Mode == 'Mean':
-        return MeanCoupling(Scatterer, Detector, Polarization)
-
-
-
-def CenteredCoupling(Scatterer, Detector, Polarization):
-
-    if Polarization in ['Parallel']:
-        return CenteredCoupling_Para(Detector, Scatterer)
-
-
-    if Polarization in ['Perpendicular']:
-        return CenteredCoupling_Perp(Detector, Scatterer)
-
-
-    if Polarization in ['Filtered']:
-        return CenteredCoupling_Filtered(Detector, Scatterer)
-
-
-    if Polarization in ['NoFiltered']:
-        return CenteredCoupling_NoFilter(Detector, Scatterer)
-
-
-    if Polarization in ['all']:
-        CouplingDict = {}
-
-        coupling = CenteredCoupling_Para(Detector, Scatterer)
-        CouplingDict['Parallel'] = coupling
-
-        coupling = CenteredCoupling_Perp(Detector, Scatterer)
-        CouplingDict['Perpendicular'] = coupling
-
-        coupling = CenteredCoupling_Filtered(Detector, Scatterer)
-        CouplingDict['Filtered'] = coupling
-
-        coupling = CenteredCoupling_NoFilter(Detector, Scatterer)
-        CouplingDict['NoFiltered'] = coupling
-
-        return CouplingDict
-
-
-
-
-
-
-def MeanCoupling(Scatterer, Detector, Polarization):
-
-    if Polarization in ['Parallel']:
-        return MeanCoupling_Para(Detector, Scatterer)
-
-    if Polarization in ['Perpendicular']:
-        return MeanCoupling_Perp(Detector, Scatterer)
-
-    if Polarization in ['Filtered']:
-        return MeanCoupling_Filtered(Detector, Scatterer)
-
-    if Polarization in ['NoFiltered']:
-        return MeanCoupling_NoFilter(Detector, Scatterer)
-
-
-    if Polarization in ['all']:
-        CouplingDict = {}
-
-        coupling = MeanCoupling_Para(Detector, Scatterer)
-        CouplingDict['Parallel'] = coupling
-
-        coupling = MeanCoupling_Perp(Detector, Scatterer)
-        CouplingDict['Perpendicular'] = coupling
-
-        coupling = MeanCoupling_Filtered(Detector, Scatterer)
-        CouplingDict['Filtered'] = coupling
-
-        coupling = MeanCoupling_NoFilter(Detector, Scatterer)
-        CouplingDict['NoFiltered'] = coupling
-
-        return CouplingDict
+    return Perp + Para
