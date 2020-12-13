@@ -12,10 +12,12 @@ from matplotlib import cm
 from typing import Tuple, Union
 
 
-from PyMieCoupling.classes.Meshes import ScatMeshes
+from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
+from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field
 
 Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
@@ -65,7 +67,6 @@ class DataFrameCPU(pd.DataFrame):
                                                   figsize = (8,3.5),
                                                   title   = r'[{0}] Filter: {1} [Degree]'.format(self.DetectorNane, Filter),
                                                   ylabel  = y,
-
                                                   xlabel  = r'Scatterer diameter [m]')
 
         self.ax.tick_params(labelsize='small')
@@ -109,7 +110,7 @@ class ScattererSet(object):
 
 
 
-    def GetFrame(self, Filter: list = [None] ):
+    def GetFrame(self, Filter: list = ['None'] ):
 
         if not isinstance(Filter, list):
             Filter = [Filter]
@@ -129,7 +130,7 @@ class ScattererSet(object):
                 Scat = Scatterer(Diameter    = Diameter,
                                  Index       = RI,
                                  Source      = self.Source,
-                                 Meshes      = self.Detector.Meshes)
+                                 Meshes      = self.Detector.FarField.Meshes)
 
                 for Polar in df.attrs['Filter']:
                     self.Detector.Filter = Polar
@@ -158,7 +159,7 @@ class ScattererSet(object):
             Meshes = self.Detector.Meshes
 
         elif Boundary == 'Full':
-            Meshes = ScatMeshes(ThetaBound = np.array([-180, 180], copy=False),
+            Meshes = AngleMeshes(ThetaBound = np.array([-180, 180], copy=False),
                                 PhiBound   = np.array([-90,90], copy=False),
                                 Npts       = self.Detector.Npts)
 
@@ -185,9 +186,9 @@ class ScattererSet(object):
             Meshes = self.Detector.Meshes
 
         elif Boundary == 'Full':
-            Meshes = ScatMeshes(ThetaBound = np.array([-180, 180], copy=False),
-                                PhiBound   = np.array([-90,90], copy=False),
-                                Npts       = self.Detector.Npts)
+            Meshes = AngleMeshes(ThetaBound = np.array([-180, 180], copy=False),
+                                 PhiBound   = np.array([-90,90], copy=False),
+                                 Npts       = self.Detector.Npts)
 
         for nr, RI in enumerate(self.RIList):
 
@@ -206,7 +207,7 @@ class ScattererSet(object):
 
 
 
-    def GetCoupling(self, Polarization):
+    def GetCoupling(self, Filter):
 
         temp = np.empty( [ len(self.RIList), len(self.DiameterList) ] )
 
@@ -217,16 +218,16 @@ class ScattererSet(object):
                 Scat = Scatterer(Diameter  = Diameter,
                                  Index     = RI,
                                  Source    = self.Source,
-                                 Meshes    = self.Detector.Meshes
+                                 Meshes    = self.Detector.FarField.Meshes
                                  )
 
                 Coupling = self.Detector.Coupling(Scatterer    = Scat,
-                                                  Polarization = Polarization,
+                                                  Filter       = Filter,
                                                   Mode         = self.Mode)
 
                 temp[nr, nd] = Coupling
 
-        return Array(temp)
+        return OptArray(temp)
 
 
 
@@ -362,8 +363,6 @@ class ScattererSet(object):
 
         ax = fig.add_subplot(1,1,1)
 
-        print(self.DiameterList)
-
         for nr, RI in enumerate(self.RIList):
 
             for nd, Diameter in enumerate(self.DiameterList):
@@ -402,8 +401,6 @@ class ScattererSet(object):
         fig = plt.figure(figsize=(7,3))
 
         ax = fig.add_subplot(1,1,1)
-
-        print(self.DiameterList)
 
         for nr, RI in enumerate(self.RIList):
 
@@ -470,7 +467,7 @@ class Scatterer(object):
                  Source:      Source,
                  Index:       float,
                  Npts:        int         = None,
-                 Meshes:      ScatMeshes  = None,
+                 Meshes:      AngleMeshes  = None,
                  ThetaBound:  list        = [-180, 180],
                  ThetaOffset: float       = 0,
                  PhiBound:    list        = [-180, 180],
@@ -481,12 +478,16 @@ class Scatterer(object):
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
+        self._Stokes, self._SPF, self._Fields = (None,)*3
+
         if Meshes:
             self.Meshes = Meshes
         else:
-            self.Meshes = ScatMeshes(ThetaBound = np.array(ThetaBound, copy=False) + ThetaOffset,
-                                     PhiBound   = np.array(PhiBound, copy=False) + PhiOffset,
-                                     Npts       = Npts)
+            self.Meshes = AngleMeshes(ThetaBound = np.asarray(ThetaBound) + ThetaOffset,
+                                      PhiBound   = np.asarray(PhiBound) + PhiOffset,
+                                      ThetaNpts  = Npts,
+                                      PhiNpts    = Npts)
+
 
 
         self.__S1S2, self.__Field = None, None
@@ -495,7 +496,7 @@ class Scatterer(object):
     @property
     def S1S2(self) -> np.ndarray:
         if self.__S1S2 is None:
-            self.__S1S2 = RepS1S2(SizeParam  = self.SizeParam,
+            self.__S1S2 = S1S2(SizeParam  = self.SizeParam,
                                   Index      = self.Index,
                                   Meshes     = self.Meshes)
             return self.__S1S2
@@ -505,7 +506,7 @@ class Scatterer(object):
 
 
     @property
-    def Field(self) -> ScatMeshes:
+    def Field(self) -> AngleMeshes:
         if self.__Field is None:
             self.GenField()
             return self.__Field
@@ -521,26 +522,33 @@ class Scatterer(object):
 
         Parallel, Perpendicular = Fields_CPP(self.Index,
                                              self.SizeParam,
-                                             self.Meshes.Phi.Vector.Radian,
                                              self.Meshes.Theta.Vector.Radian,
-                                             Polarization  = self.Source.Polarization);
+                                             self.Meshes.Phi.Vector.Radian,
+                                             Polarization  = self.Source.Polarization.Radian);
 
 
         self.__Field = Field(Perpendicular = Perpendicular,
                              Parallel      = Parallel,
                              Meshes        = self.Meshes);
 
-    @property
-    def Stokes(self) -> None:
-        return self.Field.Stokes
 
     @property
-    def Jones(self) -> None:
-        return self.Field.Jones
+    def Stokes(self) -> None:
+        if not self._Stokes:
+            self._Stokes = Stokes(Field = self.Field)
+            return self._Stokes
+        else:
+            return self._Stokes
+
 
     @property
     def SPF(self) -> None:
-        return self.Field.SPF
+        if not self._SPF:
+            self._SPF = SPF(Field = self.Field)
+            return self._SPF
+        else:
+            return self._SPF
+
 
 
 
@@ -562,603 +570,7 @@ class Scatterer(object):
 
 
 
-class Stokes(object):
-    """Short summary.
 
-    Parameters
-    ----------
-    Parallel : np.ndarray
-        Description of parameter `Parallel`.
-    Perpendicular : np.ndarray
-        Description of parameter `Perpendicular`.
-    Meshes : ScatMeshes
-        Meshes of the scatterer.
-
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
-
-    """
-    def __init__(self,
-                 Parallel:      np.ndarray,
-                 Perpendicular: np.ndarray,
-                 Meshes:        ScatMeshes) -> None:
-
-        self.Meshes = Meshes
-
-        self.Array = GetStokes(Parallel      = Parallel,
-                               Perpendicular = Perpendicular)
-
-
-    def __repr__(self) -> str:
-
-        return '\nStokes Field representation    \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Theta.Boundary.Degree.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
-
-    def GenFig(self):
-
-        fig, axes = plt.subplots(1, 2, figsize=(6, 3))
-
-        axes[0].set_title('$S_0$ Stokes parameter of Far-Field \n Projection on [$S_1, S_2$] ')
-
-        axes[1].set_title('$S_3$ Stokes parameter of Far-Field \n Projection on [$S_1, S_2$]')
-
-        [ ax.set_ylabel(r'Angle $\theta$') for ax in axes ]
-
-        [ ax.set_xlabel(r'Angle $\phi$') for ax in axes ]
-
-        return fig, axes
-
-
-    def Plot(self):
-
-        fig, axes = self.GenFig()
-
-
-        n = 3
-
-        ax = axes[0]
-        im = ax.pcolormesh(self.Meshes.Phi.Mesh.Degree,
-                           self.Meshes.Theta.Mesh.Degree,
-                           self.Array[0,:,:],
-                           shading='auto',
-                           )
-
-        cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
-
-        cbar.ax.tick_params(labelsize='small')
-
-        cbar.ax.locator_params(nbins=3)
-
-        ax.quiver(self.Meshes.Phi.Mesh.Degree[::n, ::n],
-                  self.Meshes.Theta.Mesh.Degree[::n, ::n],
-                  self.Array[1,::n,::n],
-                  self.Array[2,::n,::n],
-                  units          = 'width',
-                  width          = 0.0005,
-                  headwidth      = 30,
-                  headlength     = 20,
-                  headaxislength = 20)
-
-        ax = axes[1]
-        im = ax.pcolormesh(self.Meshes.Phi.Mesh.Degree,
-                           self.Meshes.Theta.Mesh.Degree,
-                           self.Array[3,:,:],
-                           shading='auto',
-                           )
-
-        cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
-
-        cbar.ax.tick_params(labelsize='small')
-
-        cbar.ax.locator_params(nbins=3)
-
-        ax.quiver( self.Meshes.Phi.Mesh.Degree[::n, ::n],
-                  self.Meshes.Theta.Mesh.Degree[::n, ::n],
-                  self.Array[1,::n,::n],
-                  self.Array[2,::n,::n],
-                  units          = 'width',
-                  width          = 0.0005,
-                  headwidth      = 30,
-                  headlength     = 20,
-                  headaxislength = 20)
-
-
-
-        plt.show(block=False)
-
-
-class Jones(object):
-    """Short summary.
-
-    Parameters
-    ----------
-    Parallel : np.ndarray
-        Description of parameter `Parallel`.
-    Perpendicular : np.ndarray
-        Description of parameter `Perpendicular`.
-    Meshes : ScatMeshes
-        Meshes of the scatterer.
-
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
-
-    """
-
-    def __init__(self,
-                 Parallel:      np.ndarray,
-                 Perpendicular: np.ndarray,
-                 Meshes:        ScatMeshes) -> None:
-
-        self.Meshes = Meshes
-
-        self.Array = ComputeJones(Parallel, Perpendicular)
-
-
-    def __repr__(self) -> str:
-
-        return '\nJones Field representation     \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Theta.Boundary.Degree.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
-
-    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
-
-        fig, axes = plt.subplots(1, 2, figsize=(15, 6))
-
-        axes[0].set_title(r'$S_0$ Stokes parameter of Far-Field & Projection on [$S_1, S_2$] ')
-
-        axes[1].set_title(r'$S_3$ Stokes parameter of Far-Field & Projection on [$S_1, S_2$]')
-
-        [ ax.set_ylabel(r'Angle $\theta$') for ax in axes ]
-
-        [ ax.set_xlabel(r'Angle $\phi$') for ax in axes ]
-
-        return fig, axes
-
-
-
-
-
-
-class SPF(object):
-    """Short summary.
-
-    Parameters
-    ----------
-    Parallel : np.ndarray
-        Description of parameter `Parallel`.
-    Perpendicular : np.ndarray
-        Description of parameter `Perpendicular`.
-    Meshes : ScatMeshes
-        Meshes of the scatterer.
-
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
-
-    """
-
-    def __init__(self,
-                 Parallel:      np.ndarray,
-                 Perpendicular: np.ndarray,
-                 Meshes:        ScatMeshes) -> None:
-
-        self.Meshes = Meshes
-
-        self.Array = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-
-
-    def __repr__(self) -> str:
-
-        return '\nScattering Phase Function      \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Theta.Boundary.Degree.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
-
-    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
-
-        fig = plt.figure(figsize=(3, 3))
-
-        ax = fig.add_subplot(111, projection='3d')
-
-        ax.set_title(r'Scattering Phase Function')
-
-        ax.set_ylabel(r'Y-direction')
-
-        ax.set_xlabel(r'X-direction')
-
-        ax.set_zlabel(r'Z-direction')
-
-        return fig, ax
-
-
-
-    def Plot(self):
-
-        fig, ax = self.GenFig()
-
-        SPF3D = Make3D(self.Array,
-                       self.Meshes.Phi.Mesh.Radian,
-                       self.Meshes.Theta.Mesh.Radian)
-
-        ax.plot_surface(*SPF3D,
-                         rstride     = 2,
-                         cstride     = 2,
-                         linewidth   = 0.01,
-                         cmap        = cm.bone,
-                         edgecolors='k',
-                         antialiased = False,
-                         alpha       = 0.5)
-
-
-        xLim = ax.get_xlim(); yLim = ax.get_ylim(); zLim = ax.get_zlim()
-
-        Min = min(xLim[0],yLim[0],zLim[0]); Max = max(xLim[1], yLim[1], zLim[1])
-        Min = - Max
-        ax.set_xlim(Min, Max )
-
-        ax.set_ylim(Min, Max )
-
-        ax.set_zlim(zLim[0], Max )
-        ax.set_xticklabels([]); ax.set_yticklabels([]); ax.set_zticklabels([])
-
-        plt.show(block=False)
-
-
-
-class RepS1S2(object):
-    """Short summary.
-
-    Parameters
-    ----------
-    SizeParam : np.array
-        Description of parameter `SizeParam`.
-    Index : float
-        Description of parameter `Index`.
-    Meshes : ScatMeshes
-        Description of parameter `Meshes`.
-    CacheTrunk : bool
-        Description of parameter `CacheTrunk`.
-
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
-    SizeParam
-    Index
-
-    """
-
-    def __init__(self,
-                 SizeParam:  np.array,
-                 Index:      float,
-                 Meshes:     ScatMeshes) -> None:
-
-        self.Meshes, self.SizeParam = Meshes, SizeParam
-
-        self.Index = Index
-
-        self.S1S2 = GetS1S2(self.Index,
-                            self.SizeParam,
-                            self.Meshes.Phi.Vector.Radian,
-                            )
-
-
-    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
-
-        fig = plt.figure(figsize=(6, 3))
-
-        ax0 = fig.add_subplot(121, projection = 'polar')
-
-        ax1 = fig.add_subplot(122, projection = 'polar')
-
-        ax0.set_title(r'S1 function')
-
-        ax1.set_title(r'S2 function')
-
-        return fig, [ax0, ax1]
-
-
-    def Plot(self) -> None:
-
-        fig, axes = self.GenFig()
-
-        data = np.abs( self.S1S2 )
-
-        for ni, ax in enumerate(axes):
-
-            ax.plot(self.Meshes.Phi.Vector.Radian,
-                    data[ni],
-                    'k')
-
-            ax.fill_between(self.Meshes.Phi.Vector.Radian,
-                            0,
-                            data[ni],
-                            color='C0',
-                            alpha=0.4)
-
-        plt.show(block=False)
-
-
-    def __repr__(self) -> str:
-
-        return '\nScattering Phase Function      \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Phi.Vector.Radian.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
-
-
-
-
-
-def GetJones(Parallel:      np.ndarray,
-             Perpendicular: np.ndarray) -> np.ndarray:
-
-    Array = np.empty( [2, * Parallel.shape] )
-
-    delta = np.angle(Parallel) - np.angle(Perpendicular)
-
-    A = Parallel.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
-
-    B = Perpendicular.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
-
-    return np.array([A, B * np.exp(complex(0,1)*delta)], copy=False)
-
-
-
-
-def GetStokes(Parallel:      np.ndarray,
-              Perpendicular: np.ndarray) -> np.ndarray:
-
-    Array = np.empty( [4, *Parallel.shape] )
-
-    I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-    Array[0,:,:] = I
-
-    Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
-
-    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
-
-    Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
-
-    return Array
-
-
-
-def Make3D(item:      np.array,
-           PhiMesh:   np.array,
-           ThetaMesh: np.array) -> Tuple[np.array, np.array, np.array]:
-
-    X = item * np.sin(PhiMesh) * np.cos(ThetaMesh)
-
-    Y = item * np.sin(PhiMesh) * np.sin(ThetaMesh)
-
-    Z = item * np.cos(PhiMesh)
-
-    return X, Y, Z
-
-
-
-
-
-
-
-
-
-
-class Field(object):
-
-    def __init__(self,
-                 Perpendicular: np.ndarray,
-                 Parallel:      np.ndarray,
-                 Meshes:        ScatMeshes):
-        """
-        Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
-
-        """
-        self.__dict__ = Meshes.__dict__
-
-        self.Perpendicular, self.Parallel = Perpendicular, Parallel
-
-        self.Meshes = Meshes
-
-        self.__Jones, self.__Stokes, self.__SPF, self.__Delay, self.__Total = (None,)*5
-
-
-    @property
-    def Total(self) -> None:
-        if self.__Total is None:
-            self.__Total = self.ComputeTotal()
-            return self.__Total
-
-        else:
-            return self.__Total
-
-
-    @property
-    def Delay(self) -> None:
-        if self.__Delay is None:
-            self.__Delay = self.ComputeDelay()
-            return self.__Delay
-
-        else:
-            return self.__Delay
-
-
-    @property
-    def SPF(self) -> None:
-        if self.__SPF is None:
-            self.__SPF = SPF(Parallel      = self.Parallel,
-                             Perpendicular = self.Perpendicular,
-                             Meshes        = self.Meshes)
-            return self.__SPF
-
-        else:
-            return self.__SPF
-
-
-    @property
-    def Stokes(self) -> None:
-        if self.__Stokes is None:
-            self.__Stokes = Stokes(Parallel      = self.Parallel,
-                                   Perpendicular = self.Perpendicular,
-                                   Meshes        = self.Meshes)
-            return self.__Stokes
-
-        else:
-            return self.__Stokes
-
-
-    @property
-    def Jones(self) -> None:
-        if self.__Jones is None:
-            self.__Jones = Jones(Parallel      = self.Parallel,
-                                 Perpendicular = self.Perpendicular,
-                                 Meshes        = self.Meshes)
-            return self.__Jones
-
-        else:
-            return self.__Jones
-
-
-    def ComputeTotal(self) -> None:
-        return np.sqrt(self.Parallel.__abs__()**2 +\
-                    self.Perpendicular.__abs__()**2)   # * exp(complex(0,1)*self.delta)
-
-
-    def ComputeDelay(self) -> None:
-        return np.arctan( self.Parallel.__abs__() / self.Perpendicular.__abs__() )
-
-
-    def ComputeSPF(self) -> None:
-        return self.Parallel.__abs__()**2 + self.Perpendicular.__abs__()**2
-
-
-    def Plot(self) -> None:
-        fig = plt.figure(figsize=(8,4))
-        ax0 = fig.add_subplot(221)
-        ax1 = fig.add_subplot(222)
-        ax2 = fig.add_subplot(223)
-        ax3 = fig.add_subplot(224)
-        im0 = ax0.pcolormesh(self.Meshes.Theta.Vector.Degree,
-                             self.Meshes.Phi.Vector.Degree,
-                             np.real(self.Perpendicular),
-                             shading='auto')
-
-        im1 = ax1.pcolormesh(self.Meshes.Theta.Vector.Degree,
-                             self.Meshes.Phi.Vector.Degree,
-                             np.real(self.Parallel),
-                             shading='auto')
-
-        im2 = ax2.pcolormesh(self.Meshes.Theta.Vector.Degree,
-                             self.Meshes.Phi.Vector.Degree,
-                             np.imag(self.Perpendicular),
-                             shading='auto')
-
-        im3 = ax3.pcolormesh(self.Meshes.Theta.Vector.Degree,
-                             self.Meshes.Phi.Vector.Degree,
-                             np.imag(self.Parallel),
-                             shading='auto')
-
-        ax0.set_title(r'$\mathcal{Real}[Perpendicular] $')
-        ax1.set_title(r'$\mathcal{Real}[Parallel] $')
-        ax2.set_title(r'$\mathcal{Imaginary}[Perpendicular] $')
-        ax3.set_title(r'$\mathcal{Imaginary}[Parallel] $')
-
-        ax2.set_xlabel(r'Angle $\phi$ [Degree]'); ax3.set_xlabel(r'Angle $\phi$ [Degree]')
-
-        ax0.set_ylabel(r'Angle $\theta$ [Degree]'); ax2.set_ylabel(r'Angle $\theta$ [Degree]');
-
-        divider = make_axes_locatable(ax0)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.colorbar(im0, cax=cax, orientation='vertical',format='%.0e')
-
-        divider = make_axes_locatable(ax1)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.colorbar(im1, cax=cax, orientation='vertical',format='%.0e')
-
-        divider = make_axes_locatable(ax2)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.colorbar(im2, cax=cax, orientation='vertical',format='%.0e')
-
-        divider = make_axes_locatable(ax3)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.colorbar(im3, cax=cax, orientation='vertical',format='%.0e')
-
-        fig.tight_layout()
-
-
-
-
-
-class Array(np.ndarray):
-    def __new__(cls, *args, **kwargs):
-        this = np.array(*args, **kwargs, copy=False)
-        this = np.asarray(this).view(cls)
-        return this
-
-    def __array_finalize__(self, obj):
-        pass
-
-
-    def __init__(self, arr):
-        pass
-
-
-    def Cost(self, arg='RI'):
-        if arg == 'RI_STD':
-            return self.std(axis=0).sum()
-
-        if arg == 'RI_RSD':
-            return self.std(axis=0).sum()/self.mean()
-
-        if arg == 'Monotonic':
-            return self.Monotonic()
-
-        if arg == 'Mean':
-            return -self.mean()
-
-        if arg == 'Max':
-            return -self.max()
-
-        if arg == 'Min':
-            return self.max()
-
-
-    def Monotonic(self):
-
-        Grad = np.gradient(self, axis = 1)
-
-        STD = Grad.std( axis = 1)
-
-        return STD[0]
 
 
 

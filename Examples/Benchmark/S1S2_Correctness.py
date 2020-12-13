@@ -14,7 +14,7 @@ from PyMieCoupling.cython.S1S2 import GetS1S2 as S1S2_CYTHON
 from PyMieCoupling.python.S1S2 import GetS1S2 as S1S2_PYTHON
 from PyMieCoupling.cpp.S1S2 import GetS1S2 as S1S2_CPP
 
-AngleList = np.linspace(0,np.pi/2,101)#.tolist()
+AngleList = np.linspace(-np.pi/2,np.pi/2,101)#.tolist()
 
 SizeParam, index = 0.2, 1.4
 

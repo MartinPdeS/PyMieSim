@@ -2,9 +2,15 @@
 import numpy as np
 import fibermodes
 
-from PyMieCoupling.functions.converts import Direct2Angle, NA2Angle, Angle2Direct
-from PyMieCoupling.classes.Meshes import ScatMeshes
-from PyMieCoupling.classes.Fields import Source, LPField, LPFourier
+import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+
+from PyMieCoupling.functions.converts import NA2Angle
+from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
+from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Representations import Detector_FarField, LP_FarField
 from PyMieCoupling.functions.converts import deg2rad
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 
@@ -98,7 +104,7 @@ class Photodiode(object):
                  Npts:              int    = 101,
                  ThetaOffset:       float  = 0,
                  PhiOffset:         float  = 0,
-                 Filter:            float  = None,
+                 Filter:            float  = 'None',
                  Name:              str    = 'Intensity Detector'):
 
         self._name = Name
@@ -113,24 +119,9 @@ class Photodiode(object):
 
         self.Npts = Npts
 
-        self.Detection = None
-
-        self.GenMeshes()
-
-        item = np.ones( self.Meshes.Theta.Mesh.Degree.shape )
-        item /= (item.shape[0] * item.shape[1])
-
-        self.Fourier = LPFourier(array = item, Meshes = self.Meshes)
+        self.FarField = Detector_FarField(self.Npts, self.NA, ThetaOffset, PhiOffset)
 
         self._Filter = Angle(Filter)
-
-
-    def GenMeshes(self):
-        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA)
-
-        self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
-                                 PhiBound   = (self.__PhiBound) + self.__PhiOffset)
 
 
 
@@ -138,18 +129,9 @@ class Photodiode(object):
     def ThetaBound(self):
         return self.__ThetaBound
 
-
     @ThetaBound.setter
     def ThetaBound(self, val: list):
-
-        self.__ThetaBound = val
-
-        self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = self.__ThetaBound,
-                                 PhiBound   = self.__PhiBound)
-
-        self.Fourier.Meshes = self.Meshes
-
+        self.FarField.ThetaBound = val
 
     @property
     def Filter(self):
@@ -161,57 +143,38 @@ class Photodiode(object):
 
     @property
     def PhiBound(self):
-        return self.__PhiBound
-
+        return self.FarField.__PhiBound
 
     @PhiBound.setter
     def PhiBound(self, val: list):
-
-        self.__PhiBound = val
-
-        self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = self.__ThetaBound,
-                                 PhiBound   = self.__PhiBound)
-
-        self.Fourier.Meshes = self.Meshes
-
+        self.FarField.PhiBound = val
 
     @property
     def PhiOffset(self):
-        return self.__PhiOffset
-
+        return self.FarField.PhiOffset
 
     @PhiOffset.setter
     def PhiOffset(self, val):
-        self.__PhiOffset = val
-
-        self.PhiBound = np.array([-self.Meshes.Phi.Range.Degree/2, self.Meshes.Phi.Range.Degree/2], copy=False) + val
-
-
+        self.FarField.PhiOffset = val
 
     @property
     def ThetaOffset(self):
-        return self.__ThetaOffset
-
+        return self.FarField.__ThetaOffset
 
     @ThetaOffset.setter
     def ThetaOffset(self, val):
-        self.__ThetaOffset = val
-
-        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
+        self.FarField.ThetaOffset = val
 
 
     def Coupling(self,
                  Scatterer,
                  Mode         = 'Centered'):
-
         return Coupling(Scatterer    = Scatterer,
                         Detector     = self,
                         Mode         = Mode)
 
 
     def Footprint(self, Scatterer):
-
         return GetFootprint(Scatterer    = Scatterer,
                             Detector     = self)
 
@@ -267,27 +230,25 @@ class LPmode(object):
 
     """
     def __init__(self,
-                 Fiber:         fibermodes.fiber,
                  Mode:          tuple,
                  Source:        Source,
-                 NA:            float  = 0.2,
+                 Orientation:   str   = 'h',
+                 NA:            float = 0.2,
                  Npts:          int   = 101,
                  ThetaOffset:   float = 0,
                  PhiOffset:     float = 0,
-                 Filter:        float =  None,
+                 Filter:        float =  'None',
                  Name:          str   = 'Amplitude detector'):
 
-        self._name, self._coupling, self.Fiber = Name, 'Amplitude', Fiber
+        assert Orientation in ['v','h'], "Orientation should either be v [vertical] or h [horizontal]'"
+
+        self._name, self._coupling = Name, 'Amplitude'
 
         self._Filter = Angle(Filter)
 
-        Mode = Mode[0]+1, Mode[1]
-
-        self.Mode = fibermodes.Mode(fibermodes.ModeFamily.HE, *Mode)
+        ModeNumber = Mode[0]+1, Mode[1]
 
         self.NA = NA
-
-        FourierScaleFactor = self.Fiber.MaxDirect/Npts/5e-7
 
         self.NAScaleFactor = 2.8
 
@@ -295,33 +256,35 @@ class LPmode(object):
 
         self.Npts = Npts
 
+        self.Orientation = Orientation
+
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
 
-        self.DirectVec = np.linspace(-self.Fiber.MaxDirect/FourierScaleFactor,
-                                      self.Fiber.MaxDirect/FourierScaleFactor,
-                                      self.Npts)
+        Fiber, CoreDiameter = SMF28()
 
 
-        self.GenMeshes()
+        obj = ModeField(Fiber       = Fiber.source,
+                        Mode        = fibermodes.Mode(fibermodes.ModeFamily.HE, *ModeNumber),
+                        Wavelength  = Source.Wavelength,
+                        Size        = 10*CoreDiameter,
+                        Npts        = Npts,
+                        NA          = 0.2,
+                        Orientation = self.Orientation)
+
+        self.NearField = obj.NearField
+
+        self.FarField = obj.FarField
 
 
-        item = GetLP(Fiber      = self.Fiber.source,
-                     Mode       = self.Mode,
-                     Wavelength = self.Source.Wavelength,
-                     Size       = self.DirectVec[0],
-                     Npts       = self.Npts)
-
-        self.Field, self.Fourier = LPField(array = item[0], DirectVec = self.DirectVec), LPFourier(array = item[1], Meshes = self.Meshes)
 
 
-    def GenMeshes(self):
-        self.__ThetaBound, self.__PhiBound  = NA2Angle(self.NA)
-        self.__ThetaBound *= self.NAScaleFactor; self.__PhiBound  *= self.NAScaleFactor
-        self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = (self.__ThetaBound) + self.__ThetaOffset,
-                                 PhiBound   = (self.__PhiBound) + self.__PhiOffset)
+    @property
+    def ThetaBound(self):
+        return self.__ThetaBound
 
-
+    @ThetaBound.setter
+    def ThetaBound(self, val: list):
+        self.FarField.ThetaBound = val
 
     @property
     def Filter(self):
@@ -331,60 +294,29 @@ class LPmode(object):
     def Filter(self, val):
         self._Filter = Angle(val)
 
-
-    @property
-    def ThetaBound(self):
-        return self.__ThetaBound
-
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self.__ThetaBound = np.array( val, copy=False )
-
-        self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = self.__ThetaBound,
-                                 PhiBound   = self.__PhiBound)
-
-        self.Fourier.Meshes = self.Meshes
-
-
     @property
     def PhiBound(self):
-        return self.__PhiBound
-
+        return self.FarField.__PhiBound
 
     @PhiBound.setter
     def PhiBound(self, val: list):
-        self.__PhiBound = np.array( val, copy=False )
-
-        self.Meshes = ScatMeshes(Npts       = self.Npts,
-                                 ThetaBound = self.__ThetaBound,
-                                 PhiBound   = self.__PhiBound)
-
-        self.Fourier.Meshes = self.Meshes
-
+        self.FarField.PhiBound = val
 
     @property
     def PhiOffset(self):
-        return self.__PhiOffset
-
+        return self.FarField.__PhiOffset
 
     @PhiOffset.setter
     def PhiOffset(self, val):
-        self.__PhiOffset = val
-        self.PhiBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree], copy=False) + val
-
+        self.FarField.PhiOffset = val
 
     @property
     def ThetaOffset(self):
-        return self.__ThetaOffset
-
+        return self.FarField.__ThetaOffset
 
     @ThetaOffset.setter
     def ThetaOffset(self, val):
-        self.__ThetaOffset = val
-        self.ThetaBound = np.array([-self.Meshes.Theta.Range.Degree/2, self.Meshes.Theta.Range.Degree/2], copy=False) + val
-
+        self.FarField.ThetaOffset = val
 
     def Coupling(self,
                  Scatterer,
@@ -403,42 +335,126 @@ class LPmode(object):
 
 
 
-def GetLP(Fiber,
-          Mode,
-          Wavelength: float,
-          Size:       float,
-          Npts:       int):
-
-    Field = fibermodes.field.Field(Fiber,
-                                   Mode,
-                                   Wavelength,
-                                   Size,
-                                   Npts).Ex()
-
-    Field = np.array(Field, copy=False)
-
-    Field /= (Field.__abs__()).sum()
-
-    Fourier = np.fft.fft2(Field)
-
-    Fourier /= GenShift(Npts)
-
-    Fourier = np.fft.fftshift(Fourier)
-
-    Fourier /= (Fourier.__abs__()).sum()
-
-    return Field, Fourier
 
 
 
 
-def GenShift(Npts):
 
-    phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(Npts)*(Npts-1)/Npts)
+def SMF28():
+    CoreDiameter = 8.2e-6
+    cladDiameter = 125e-6
 
-    shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+    Fiber = fiber(core_radius = CoreDiameter,
+                  core_index  = 1.4456,
+                  clad_radius = cladDiameter,
+                  clad_index  = 1.4444)
 
-    return shift_grid * shift_grid.T
+    return Fiber, CoreDiameter
+
+
+
+
+
+class ModeField(object):
+
+    def __init__(self,
+                 Fiber,
+                 Mode,
+                 Wavelength,
+                 Size,
+                 Npts,
+                 Orientation,
+                 NA):
+
+
+        self.Fiber = Fiber
+        self.Mode = Mode
+        self.Size = Size
+        self.Wavelength = Wavelength
+        self.Npts = Npts
+        self.Orientation = Orientation
+        self.NA = NA
+        self.GetNearField()
+        self.GetFarField()
+
+
+    def GetFarField(self):
+        temp = np.fft.fft2(self.NearField.Cartesian)
+
+        temp /= self.GenShift()
+
+        temp = np.fft.fftshift(temp)
+
+        temp /= (temp.__abs__()).sum()
+
+        self.FarField = LP_FarField(temp, self.Size, self.Npts, self.NA)
+
+
+    def GenShift(self):
+
+        phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(self.Npts)*(self.Npts-1)/self.Npts)
+
+        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+        return shift_grid * shift_grid.T
+
+
+    def GetNearField(self):
+
+        temp = fibermodes.field.Field(self.Fiber,
+                                           self.Mode,
+                                           self.Wavelength,
+                                           self.Size,
+                                           self.Npts).Ex()
+
+        temp = np.array(temp, copy=False)
+
+        temp /= (temp.__abs__()).sum()
+
+        if self.Orientation == 'h': temp = temp.T
+
+
+        self.NearField = _NearField(temp, self.Size, self.Npts)
+
+
+
+class _NearField(object):
+
+    def __init__(self, Input, Size, Npts):
+        self.Cartesian = Input
+        self.Size = Size
+        self.Npts = Npts
+
+        self.Meshes = DirectMeshes(Npts   = self.Npts,
+                                  XBound = [-self.Size/2, self.Size/2],
+                                  YBound = [-self.Size/2, self.Size/2],
+                                  XNpts  = self.Npts,
+                                  YNpts  = self.Npts)
+
+
+    def Plot(self):
+        fig = plt.figure(figsize=(6,3))
+        ax0 = fig.add_subplot(121)
+        ax1 = fig.add_subplot(122)
+
+        ax0.pcolormesh(self.Meshes.X.Vector,
+                       self.Meshes.Y.Vector,
+                       self.Cartesian.real,
+                       shading='auto')
+
+        ax0.set_title('Real Part \n Near-Field Cartesian Coordinates')
+        ax0.set_xlabel(r'X-Distance x [$\mu$m]')
+        ax0.set_ylabel('Y-Distance y  [$\mu$m]')
+
+        ax1.pcolormesh(self.Meshes.X.Vector,
+                       self.Meshes.Y.Vector,
+                       self.Cartesian.imag,
+                       shading='auto')
+
+        ax1.set_title('Imaginary Part \n Near-Field Cartesian Coordinates')
+        ax1.set_xlabel(r'X-Distance x  [$\mu$m]')
+        ax1.set_ylabel(r'Y-Distance y  [$\mu$m]')
+        fig.tight_layout()
 
 
 
@@ -450,12 +466,12 @@ class Angle(object):
 
     def __init__(self, input):
 
-        if input != None:
+        if input != 'None':
             self.Degree = input
             self.Radian = deg2rad(input)
         else:
-            self.Degree = None
-            self.Radian = None
+            self.Degree = 'None'
+            self.Radian = 'None'
 
 
 

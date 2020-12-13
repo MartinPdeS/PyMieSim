@@ -13,15 +13,15 @@ LightSource = Source(Wavelength   = 450e-9,
                      Polarization = 0)
 
 
-Photodiode0 = Photodiode(NA                = 0.1,
+Photodiode0 = Photodiode(NA                = 0.2,
                          Source            = LightSource,
-                         Npts              = 10,
+                         Npts              = 201,
                          ThetaOffset       = 0,
                          PhiOffset         = 0)
 
-DiameterList  = np.linspace(10e-9, 5000e-9, 3)
+DiameterList  = np.linspace(100e-9, 5000e-9, 100)
 
-
+Photodiode0.FarField.Plot()
 Set1 = ScattererSet(DiameterList  = DiameterList,
                     RIList        = [1.4],
                     Detector      = Photodiode0,
@@ -30,9 +30,7 @@ Set1 = ScattererSet(DiameterList  = DiameterList,
                     )
 
 
-DF1 = Set1.GetFrame(Filter=0)
-DF1.Plot('Coupling')
-
+DF1 = Set1.GetFrame(Filter='None')
 
 Theoretical_coupling = []
 for diameter in DiameterList:
@@ -40,7 +38,7 @@ for diameter in DiameterList:
     Scat = Scatterer(Diameter      = diameter,
                      Source        = LightSource,
                      Index         = 1.4,
-                     Meshes        = Photodiode0.Meshes)
+                     Meshes        = Photodiode0.FarField.Meshes)
 
     S1 = interpolate.interp1d(Scat.Meshes.Phi.Vector.Radian, Scat.S1S2.S1S2[0])
     S2 = interpolate.interp1d(Scat.Meshes.Phi.Vector.Radian, Scat.S1S2.S1S2[1])
@@ -52,12 +50,13 @@ for diameter in DiameterList:
 
         temp1 = np.abs(S1(phi))**2 * np.sin(theta)**2
 
-        return (temp0 + temp1)/Scat.Source.k**2 * np.abs(np.sin(phi))
+        return (temp0 + temp1) * np.sin(phi) / Scat.Source.k**2
 
 
     ans, err = dblquad(integrand,
                        *Scat.Meshes.Phi.Boundary.Radian,                  #phi
-                       *Scat.Meshes.Theta.Boundary.Radian)                #theta
+                       *Scat.Meshes.Theta.Boundary.Radian,
+                       epsabs=1e-4)                                        #theta
 
     Theoretical_coupling.append(ans)
 
@@ -71,11 +70,11 @@ for diameter in DiameterList:
 
 
 data0 = DF1.Coupling.to_numpy()
-data0 /= np.max(data0)
+data0 /= np.mean(data0)
 
 
 data1 = Theoretical_coupling
-data1 /= np.max(data1)
+data1 /= np.mean(data1)
 text1 = r"$\int \int_\Omega \frac{ |S_2|^2  \cos{\theta}^2 + |S1|^2  \sin{\theta}^2 }{k^2} \sin{\phi} d\phi d\theta$"
 
 fig = plt.figure(figsize=(10,5))

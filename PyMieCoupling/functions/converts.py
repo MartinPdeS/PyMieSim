@@ -1,6 +1,6 @@
 import numpy as np
 
-
+""" Ref: https://optiwave.com/optifdtd-manuals/fdtd-far-field-transform/"""
 
 def rad2deg(RadSpace) -> np.ndarray:
 
@@ -45,13 +45,7 @@ def Direct2Angle(DirectVec: np.ndarray, k: float) -> np.ndarray:
 
 def NA2Angle(NA: float) -> np.ndarray:
 
-    Angle = rad2deg( np.arcsin(NA) )
-
-    __ThetaBound = np.array( [-Angle, Angle] )
-
-    __PhiBound = np.array( [-Angle, Angle] )
-
-    return __ThetaBound, __PhiBound
+    return rad2deg( np.arcsin(NA) )
 
 
 

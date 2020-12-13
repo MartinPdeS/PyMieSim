@@ -20,18 +20,21 @@ Perpendicular_CYTHON = np.outer(S1S2_CYTHON[1], np.cos(ThetaList))
 
 
 
-Parallel_CPP, Perpendicular_CPP = Fields_CPP(1.4, 0.3, PhiList, ThetaList);
+Parallel_CPP, Perpendicular_CPP = Fields_CPP(1.4, 0.3, PhiList, ThetaList, Polarization=0);
 
-
-Parallel_CPP = np.reshape(Parallel_CPP,[100,100]).T
-Perpendicular_CPP = np.reshape(Perpendicular_CPP,[100,100]).T
 
 fig = plt.figure()
-ax0 = fig.add_subplot(121)
-ax1 = fig.add_subplot(122)
+ax0 = fig.add_subplot(141)
+ax1 = fig.add_subplot(142)
+ax2 = fig.add_subplot(143)
+ax3 = fig.add_subplot(144)
+
 ax0.imshow(np.abs(Perpendicular_CYTHON))
 ax1.imshow(np.abs(Perpendicular_CPP))
+ax2.imshow(np.abs(Parallel_CYTHON))
+ax3.imshow(np.abs(Parallel_CPP))
 
 plt.show()
+
 
 # 1

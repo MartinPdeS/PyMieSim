@@ -1,5 +1,5 @@
 import numpy as np
-
+import matplotlib.pyplot as plt
 
 """ Coupling Reference: Estimation of Coupling Efficiency of Optical Fiber by Far-Field Method """
 
@@ -10,15 +10,16 @@ import numpy as np
 
 def CenteredCoupling_Para(Detector, Scatterer):
     if Detector._coupling == "Intensity":
-        Para = (Detector.Fourier * Scatterer.Field.Parallel).__abs__()**2
-        Para = Para * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian) )
-        Para = Para.sum() * Detector.Meshes.dOmega.Radian
+        Para = (Detector.FarField.Spherical * Scatterer.Field.Parallel).__abs__()**2
+        Para = Para * np.sin(Detector.FarField.Meshes.Phi.Mesh.Radian.T).__abs__()
+        Para = Para.sum() * Detector.FarField.Meshes.dOmega.Radian
+
 
 
     if Detector._coupling == "Amplitude":
-        Para = (Detector.Fourier * Scatterer.Field.Parallel)
-        Para = Para * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian) )
-        Para = Para.sum() * Detector.Meshes.dOmega.Radian
+        Para = (Detector.FarField.Spherical * Scatterer.Field.Parallel)
+        Para = Para * np.sin(Detector.FarField.Meshes.Phi.Mesh.Radian.T).__abs__()
+        Para = Para.sum() * Detector.FarField.Meshes.dOmega.Radian
         Para = Para.__abs__()**2
 
     return np.asscalar( Para )
@@ -26,15 +27,16 @@ def CenteredCoupling_Para(Detector, Scatterer):
 
 def CenteredCoupling_Perp(Detector, Scatterer):
     if Detector._coupling == "Intensity":
-        Perp = (Detector.Fourier * Scatterer.Field.Perpendicular ).__abs__()**2
-        Perp = Perp * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian) )
-        Perp = Perp.sum() * Detector.Meshes.dOmega.Radian
+        Perp = (Detector.FarField.Spherical * Scatterer.Field.Perpendicular ).__abs__()**2
+        Perp = Perp * np.sin(Detector.FarField.Meshes.Phi.Mesh.Radian.T).__abs__()
+        Perp = Perp.sum() * Detector.FarField.Meshes.dOmega.Radian
 
     if Detector._coupling == "Amplitude":
-        Perp = (Detector.Fourier * Scatterer.Field.Perpendicular)
-        Perp = Perp * np.abs(np.sin(Detector.Meshes.Phi.Mesh.Radian) )
+
+        Perp = (Detector.FarField.Spherical * Scatterer.Field.Perpendicular)
+        Perp = Perp * np.sin(Detector.FarField.Meshes.Phi.Mesh.Radian.T).__abs__()
         Perp = Perp.sum()
-        Perp = Perp * Detector.Meshes.dOmega.Radian
+        Perp = Perp * Detector.FarField.Meshes.dOmega.Radian
         Perp = Perp.__abs__()**2
 
     return np.asscalar( Perp )
@@ -42,22 +44,22 @@ def CenteredCoupling_Perp(Detector, Scatterer):
 
 
 def MeanCoupling_Para(Detector, Scatterer):
-    Para = (Detector.Fourier * Scatterer.Field.Parallel).__abs__()**2
+    Para = (Detector.FarField.Spherical * Scatterer.Field.Parallel * np.sin(Detector.FarField.Meshes.Phi.Mesh.Radian.T)).__abs__()**2
     Para = Para.sum()
 
     return np.asscalar( Para )
 
 
 def MeanCoupling_Perp(Detector, Scatterer):
-    Perp = (Detector.Fourier * Scatterer.Field.Perpendicular).__abs__()**2
+    Perp = (Detector.FarField.Spherical * Scatterer.Field.Perpendicular * np.sin(Detector.FarField.Meshes.Phi.Mesh.Radian.T)).__abs__()**2
     Perp = Perp.sum()
 
     return np.asscalar( Perp )
 
 
 def GetFootprint(Detector, Scatterer):
-    Perp = (Detector.Fourier * Scatterer.Field.Perpendicular).__abs__()**2
-    Para = (Detector.Fourier * Scatterer.Field.Parallel).__abs__()**2
+    Perp = (Detector.FarField.Spherical * Scatterer.Field.Perpendicular).__abs__()**2
+    Para = (Detector.FarField.Spherical * Scatterer.Field.Parallel).__abs__()**2
 
     return Perp + Para
 
@@ -75,12 +77,14 @@ def Coupling(Scatterer, Detector, Mode='Centered'):
 
 def CenteredCoupling(Scatterer, Detector):
 
-    if Detector._Filter.Radian != None:
-        Perp = CenteredCoupling_Perp(Detector, Scatterer) * np.cos(Detector._Filter.Radian)**2
-        Para = CenteredCoupling_Para(Detector, Scatterer) * np.sin(Detector._Filter.Radian)**2
+    if Detector._Filter.Radian != 'None':
+        Perp = CenteredCoupling_Perp(Detector, Scatterer) * (np.cos(Detector._Filter.Radian)**2)
+        Para = CenteredCoupling_Para(Detector, Scatterer) * (np.sin(Detector._Filter.Radian)**2)
+
     else:
         Perp = CenteredCoupling_Perp(Detector, Scatterer)
         Para = CenteredCoupling_Para(Detector, Scatterer)
+
 
     return Perp + Para
 
@@ -88,7 +92,7 @@ def CenteredCoupling(Scatterer, Detector):
 
 
 def MeanCoupling(Scatterer, Detector):
-    if Detector._Filter.Radian != None:
+    if Detector._Filter.Radian != 'None':
         Perp = MeanCoupling_Perp(Detector, Scatterer) * np.cos(Detector.Filter.Radian)**2
         Para = MeanCoupling_Para(Detector, Scatterer) * np.sin(Detector.Filter.Radian)**2
     else:

@@ -149,55 +149,12 @@ def PlotDiameter(DiameterList: float,
     ax.set_ylabel(r'Scattered light intensity [a.u]')
 
     ax.set_yscale('log')
-    
+
     plt.legend()
 
     plt.show()
 
 
-
-
-class Array(np.ndarray):
-    def __new__(cls, *args, **kwargs):
-        this = np.array(*args, **kwargs, copy=False)
-        this = np.asarray(this).view(cls)
-        return this
-
-    def __array_finalize__(self, obj):
-        pass
-
-
-    def __init__(self, arr):
-        pass
-
-
-    def Cost(self, arg='RI'):
-        if arg == 'RI_STD':
-            return self.std(axis=0).sum()
-
-        if arg == 'RI_RSD':
-            return self.std(axis=0).sum()/self.mean()
-
-        if arg == 'Monotonic':
-            return self.Monotonic()
-
-        if arg == 'Mean':
-            return -self.mean()
-
-        if arg == 'Max':
-            return -self.max()
-
-        if arg == 'Min':
-            return self.max()
-
-
-    def Monotonic(self):
-
-        Grad = np.gradient(self, axis = 1)
-
-        STD = Grad.std( axis = 1)
-
-        return STD[0]
 
 
 

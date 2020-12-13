@@ -1,50 +1,48 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 from matplotlib import cm
 from typing import Tuple
-from PyMieCoupling.classes.Meshes import ScatMeshes
-from PyMieCoupling.cpp.S1S2 import MieS1S2 #_CYTHON PACKAGE
+from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
+import matplotlib.ticker as tick
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import polarTransform
+from PyMieCoupling.functions.converts import NA2Angle
 
 
-class Stokes(object):
-    """Short summary.
-
-    Parameters
-    ----------
-    Parallel : np.ndarray
-        Description of parameter `Parallel`.
-    Perpendicular : np.ndarray
-        Description of parameter `Perpendicular`.
-    Meshes : ScatMeshes
-        Meshes of the scatterer.
-
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
-
-    """
-    def __init__(self,
-                 Parallel:      np.ndarray,
-                 Perpendicular: np.ndarray,
-                 Meshes:        ScatMeshes) -> None:
-
-        self.Meshes = Meshes
-
-        self.Array = GetStokes(Parallel      = Parallel,
-                               Perpendicular = Perpendicular)
+try:
+    from PyMieCoupling.cpp.S1S2 import GetS1S2
+except:
+    try:
+        from PyMieCoupling.cython.S1S2 import GetS1S2
+    except:
+        try:
+            from PyMieCoupling.cython.S1S2 import GetS1S2
+        except: ImportError
 
 
-    def __repr__(self) -> str:
+class Stokes(np.ndarray):
+    def __new__(cls, Field):
 
-        return '\nStokes Field representation    \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Theta.Boundary.Degree.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
+        cls.Meshes = Field.Meshes
+
+        Stokes = cls.GetStokes(cls, Field.Parallel, Field.Perpendicular)
+
+        this = np.array(Stokes, copy=False)
+
+        this = np.asarray(this).view(cls)
+
+        return this
+
+
+    def __array_finalize__(self, obj):
+        pass
+
+
+    def __init__(self, Field):
+        pass
 
 
     def GenFig(self):
@@ -55,24 +53,23 @@ class Stokes(object):
 
         axes[1].set_title('$S_3$ Stokes parameter of Far-Field \n Projection on [$S_1, S_2$]')
 
-        [ ax.set_ylabel(r'Angle $\theta$') for ax in axes ]
+        [ ax.set_ylabel(r'Angle $\theta$ [Degree]') for ax in axes ]
 
-        [ ax.set_xlabel(r'Angle $\phi$') for ax in axes ]
+        [ ax.set_xlabel(r'Angle $\phi$ [Degree]') for ax in axes ]
 
         return fig, axes
 
 
-    def Plot(self):
+    def Plot(cls):
 
-        fig, axes = self.GenFig()
+        fig, axes = cls.GenFig()
 
-
-        n = 3
+        n = 6
 
         ax = axes[0]
-        im = ax.pcolormesh(self.Meshes.Phi.Mesh.Degree,
-                           self.Meshes.Theta.Mesh.Degree,
-                           self.Array[0,:,:],
+        im = ax.pcolormesh(cls.Meshes.Phi.Vector.Degree,
+                           cls.Meshes.Theta.Vector.Degree,
+                           cls.Array[0,:,:],
                            shading='auto',
                            )
 
@@ -82,20 +79,16 @@ class Stokes(object):
 
         cbar.ax.locator_params(nbins=3)
 
-        ax.quiver(self.Meshes.Phi.Mesh.Degree[::n, ::n],
-                  self.Meshes.Theta.Mesh.Degree[::n, ::n],
-                  self.Array[1,::n,::n],
-                  self.Array[2,::n,::n],
-                  units          = 'width',
-                  width          = 0.0005,
-                  headwidth      = 30,
-                  headlength     = 20,
-                  headaxislength = 20)
+        ax.streamplot(cls.Meshes.Phi.Mesh.Degree[::n, ::n].T,
+                      cls.Meshes.Theta.Mesh.Degree[::n, ::n].T,
+                      cls.Array[1,::n,::n],
+                      cls.Array[2,::n,::n],
+                  )
 
         ax = axes[1]
-        im = ax.pcolormesh(self.Meshes.Phi.Mesh.Degree,
-                           self.Meshes.Theta.Mesh.Degree,
-                           self.Array[3,:,:],
+        im = ax.pcolormesh(cls.Meshes.Phi.Vector.Degree,
+                           cls.Meshes.Theta.Vector.Degree,
+                           cls.Array[3,:,:],
                            shading='auto',
                            )
 
@@ -105,118 +98,177 @@ class Stokes(object):
 
         cbar.ax.locator_params(nbins=3)
 
-        ax.quiver( self.Meshes.Phi.Mesh.Degree[::n, ::n],
-                  self.Meshes.Theta.Mesh.Degree[::n, ::n],
-                  self.Array[1,::n,::n],
-                  self.Array[2,::n,::n],
-                  units          = 'width',
-                  width          = 0.0005,
-                  headwidth      = 30,
-                  headlength     = 20,
-                  headaxislength = 20)
+        ax.streamplot(cls.Meshes.Phi.Mesh.Degree[::n, ::n].T,
+                      cls.Meshes.Theta.Mesh.Degree[::n, ::n].T,
+                      cls.Array[1,::n,::n],
+                      cls.Array[2,::n,::n],
+                  )
+
+        plt.show(block=False)
+
+    def GetStokes(cls, Parallel, Perpendicular):
+
+        Array = np.empty( [4, *Parallel.shape] )
+
+        I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
+        Array[0,:,:] = I
+
+        Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
+
+        Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
+
+        Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
+
+        cls.Array = Array
 
 
 
-        plt.show()
 
 
-class Jones(object):
-    """Short summary.
 
-    Parameters
-    ----------
-    Parallel : np.ndarray
-        Description of parameter `Parallel`.
-    Perpendicular : np.ndarray
-        Description of parameter `Perpendicular`.
-    Meshes : ScatMeshes
-        Meshes of the scatterer.
 
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
 
-    """
+class Field(object):
 
     def __init__(self,
-                 Parallel:      np.ndarray,
                  Perpendicular: np.ndarray,
-                 Meshes:        ScatMeshes) -> None:
+                 Parallel:      np.ndarray,
+                 Meshes:        AngleMeshes):
+        """
+        Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
+
+        """
+        self.__dict__ = Meshes.__dict__
+
+        self.Perpendicular, self.Parallel = Perpendicular, Parallel
 
         self.Meshes = Meshes
 
-        self.Array = ComputeJones(Parallel, Perpendicular)
+
+    def Plot(self) -> None:
+        fig = plt.figure(figsize=(8,4))
+        ax0 = fig.add_subplot(221)
+        ax1 = fig.add_subplot(222)
+        ax2 = fig.add_subplot(223)
+        ax3 = fig.add_subplot(224)
+        im0 = ax0.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
+                             np.real(self.Perpendicular)   ,
+                             shading='auto')
+
+        im1 = ax1.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
+                             np.real(self.Parallel)         ,
+                             shading='auto')
+
+        im2 = ax2.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
+                             np.imag(self.Perpendicular)   ,
+                             shading='auto')
+
+        im3 = ax3.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
+                             np.imag(self.Parallel)       ,
+                             shading='auto')
+
+        ax0.set_title(r'$\mathcal{Real}[Perpendicular] $')
+        ax1.set_title(r'$\mathcal{Real}[Parallel] $')
+        ax2.set_title(r'$\mathcal{Imaginary}[Perpendicular] $')
+        ax3.set_title(r'$\mathcal{Imaginary}[Parallel] $')
+
+        ax2.set_xlabel(r'Angle $\phi$ [Degree]'); ax3.set_xlabel(r'Angle $\phi$ [Degree]')
+
+        ax0.set_ylabel(r'Angle $\theta$ [Degree]'); ax2.set_ylabel(r'Angle $\theta$ [Degree]');
+
+        divider = make_axes_locatable(ax0)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im0, cax=cax, orientation='vertical',format='%.0e')
+
+        divider = make_axes_locatable(ax1)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im1, cax=cax, orientation='vertical',format='%.0e')
+
+        divider = make_axes_locatable(ax2)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im2, cax=cax, orientation='vertical',format='%.0e')
+
+        divider = make_axes_locatable(ax3)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im3, cax=cax, orientation='vertical',format='%.0e')
+
+        fig.tight_layout()
 
 
-    def __repr__(self) -> str:
-
-        return '\nJones Field representation     \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Theta.Boundary.Degree.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
-
-
-    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
-
-        fig, axes = plt.subplots(1, 2, figsize=(15, 6))
-
-        axes[0].set_title(r'$S_0$ Stokes parameter of Far-Field & Projection on [$S_1, S_2$] ')
-
-        axes[1].set_title(r'$S_3$ Stokes parameter of Far-Field & Projection on [$S_1, S_2$]')
-
-        [ ax.set_ylabel(r'Angle $\theta$') for ax in axes ]
-
-        [ ax.set_xlabel(r'Angle $\phi$') for ax in axes ]
-
-        return fig, axes
 
 
 
 
-class SPF(object):
-    """Short summary.
+class SPF(np.ndarray):
+    def __new__(cls, Field):
 
-    Parameters
-    ----------
-    Parallel : np.ndarray
-        Description of parameter `Parallel`.
-    Perpendicular : np.ndarray
-        Description of parameter `Perpendicular`.
-    Meshes : ScatMeshes
-        Meshes of the scatterer.
+        cls.Meshes = Field.Meshes
 
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-    Meshes
+        scamap = plt.cm.ScalarMappable(cmap='jet')
 
-    """
+        cls.fcolors = scamap.to_rgba(np.real(Field.Perpendicular.T) + np.real(Field.Parallel.T) )
 
-    def __init__(self,
-                 Parallel:      np.ndarray,
-                 Perpendicular: np.ndarray,
-                 Meshes:        ScatMeshes) -> None:
+        SPF3D = cls.Make3D(cls,
+                            Field.Parallel.__abs__()**2 + Field.Perpendicular.__abs__()**2,
+                            cls.Meshes.Phi.Mesh.Radian,
+                            cls.Meshes.Theta.Mesh.Radian)
 
-        self.Meshes = Meshes
+        this = np.array(SPF3D, copy=False)
 
-        self.Array = GetSPF(Parallel = Parallel, Perpendicular = Perpendicular)
+        this = np.asarray(this).view(cls)
+
+        return this
 
 
-    def __repr__(self) -> str:
+    def __array_finalize__(self, obj):
+        pass
 
-        return '\nScattering Phase Function      \
-                \nField dimensions: {0}x{1}      \
-                \nTheta boundary: {2} deg.       \
-                \nPhi boundary: {3} deg'         \
-                .format(*self.Meshes.Theta.Boundary.Degree.shape,
-                        self.Meshes.Theta.Boundary.Degree,
-                        self.Meshes.Phi.Boundary.Degree )
+
+    def __init__(self, Field):
+
+        pass
+
+
+    def Plot(cls):
+
+        fig, ax = cls.GenFig()
+
+        ax.plot_surface(*cls,
+                         rstride     = 2,
+                         cstride     = 2,
+                         linewidth   = 0.003,
+                         facecolors=cls.fcolors,
+                         edgecolors='k',
+                         antialiased = False,
+                         )
+
+        xLim = ax.get_xlim(); yLim = ax.get_ylim(); zLim = ax.get_zlim()
+
+        Min = min(xLim[0],yLim[0]); Max = max(xLim[1], yLim[1])
+
+        ax.set_xlim(Min, Max )
+
+        ax.set_ylim(Min, Max )
+
+        plt.show(block=False)
+
+
+    def Make3D(cls,
+               item:      np.array,
+               PhiMesh:   np.array,
+               ThetaMesh: np.array) -> Tuple[np.array, np.array, np.array]:
+
+        X = item.T * np.sin(PhiMesh) * np.cos(ThetaMesh)
+
+        Y = item.T * np.sin(PhiMesh) * np.sin(ThetaMesh)
+
+        Z = item.T * np.cos(PhiMesh)
+
+        return X, Y, Z
 
 
     def GenFig(self) -> Tuple[plt.figure, plt.axes]:
@@ -225,7 +277,7 @@ class SPF(object):
 
         ax = fig.add_subplot(111, projection='3d')
 
-        ax.set_title(r'Scattering Phase Function')
+        ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
 
         ax.set_ylabel(r'Y-direction')
 
@@ -237,27 +289,7 @@ class SPF(object):
 
 
 
-    def Plot(self):
-
-        fig, ax = self.GenFig()
-
-        SPF3D = Make3D(self.Array,
-                       self.Meshes.Phi.Mesh.Radian,
-                       self.Meshes.Theta.Mesh.Radian)
-
-        ax.plot_surface(*SPF3D,
-                         rstride     = 3,
-                         cstride     = 3,
-                         linewidth   = 0.5,
-                         cmap        = cm.bone,
-                         antialiased = False,
-                         alpha       = 1)
-
-        plt.show()
-
-
-
-class S1S2(object):
+class S1S2(np.ndarray):
     """Short summary.
 
     Parameters
@@ -266,7 +298,7 @@ class S1S2(object):
         Description of parameter `SizeParam`.
     Index : float
         Description of parameter `Index`.
-    Meshes : ScatMeshes
+    Meshes : AngleMeshes
         Description of parameter `Meshes`.
     CacheTrunk : bool
         Description of parameter `CacheTrunk`.
@@ -281,20 +313,30 @@ class S1S2(object):
 
     """
 
-    def __init__(self,
-                 SizeParam:  np.array,
-                 Index:      float,
-                 Meshes:     ScatMeshes,
-                 CacheTrunk: bool = None) -> None:
+    def __new__(cls,
+                SizeParam:  np.array,
+                Index:      float,
+                Meshes:     AngleMeshes):
 
-        self.Meshes, self.SizeParam = Meshes, SizeParam
+        temp = GetS1S2(Index,
+                       SizeParam,
+                       Meshes.Phi.Vector.Radian)
 
-        self.Index = Index
+        this = np.array(temp, copy=False)
 
-        self.S1, self.S2 = MieS1S2(self.Index,
-                                   self.SizeParam,
-                                   self.Meshes.Phi.Vector.Radian.tolist(),
-                                   )
+        this = np.asarray(this).view(cls)
+
+        return this
+
+
+    def __array_finalize__(self, obj):
+        pass
+
+
+    def __init__(self, SizeParam, Index, Meshes):
+
+        self.Meshes = Meshes
+
 
 
     def GenFig(self) -> Tuple[plt.figure, plt.axes]:
@@ -312,11 +354,12 @@ class S1S2(object):
         return fig, [ax0, ax1]
 
 
+
     def Plot(self) -> None:
 
         fig, axes = self.GenFig()
 
-        data = np.abs( [self.S1, self.S2] )
+        data = np.abs(self)
 
         for ni, ax in enumerate(axes):
 
@@ -330,59 +373,283 @@ class S1S2(object):
                             color='C0',
                             alpha=0.4)
 
-        plt.show()
+        plt.show(block=False)
+
+
+    def __repr__(self) -> str:
+
+        return '\nScattering Phase Function      \
+                \nField dimensions: {0}x{1}      \
+                \nTheta boundary: {2} deg.       \
+                \nPhi boundary: {3} deg'         \
+                .format(*self.Meshes.Phi.Vector.Radian.shape,
+                        self.Meshes.Theta.Boundary.Degree,
+                        self.Meshes.Phi.Boundary.Degree )
 
 
 
 
-def GetJones(Parallel:      np.ndarray,
-             Perpendicular: np.ndarray) -> np.ndarray:
-
-    Array = np.empty( [2, * Parallel.shape] )
-
-    delta = np.angle(Parallel) - np.angle(Perpendicular)
-
-    A = Parallel.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
-
-    B = Perpendicular.__abs__() / np.sqrt(Parallel.__abs__()**2 + Perpendicular.__abs__()**2)
-
-    return np.array([A, B * np.exp(complex(0,1)*delta)], copy=False)
 
 
 
 
-def GetStokes(Parallel:      np.ndarray,
-              Perpendicular: np.ndarray) -> np.ndarray:
-
-    Array = np.empty( [4, *Parallel.shape] )
-
-    I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-    Array[0,:,:] = I
-
-    Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
-
-    Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
-
-    Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
-
-    return Array
 
 
+class LP_FarField(object):
 
-def Make3D(item:      np.array,
-           PhiMesh:   np.array,
-           ThetaMesh: np.array) -> Tuple[np.array, np.array, np.array]:
+    def __init__(self,
+                 Input,
+                 Size,
+                 Npts,
+                 NA):
 
-    X = item * np.sin(PhiMesh) * np.cos(ThetaMesh)
+        self.Cartesian = Input
+        self.Size = Size
+        self.Npts = Npts
+        self.X = np.linspace(-self.Size/2, self.Size/2, self.Npts)*1e6
+        self.Y = np.linspace(-self.Size/2, self.Size/2, self.Npts)*1e6
+        self.NA = NA
+        self.__PhiBound =  np.asarray( [0, NA2Angle(self.NA)] )
+        self.__ThetaBound = np.asarray([-180, 180])
 
-    Y = item * np.sin(PhiMesh) * np.sin(ThetaMesh)
+        self.GetSpherical()
+        self.Meshes = AngleMeshes(ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound,
+                                  ThetaNpts  = self.Spherical.shape[0],
+                                  PhiNpts    = self.Spherical.shape[1])
 
-    Z = item * np.cos(PhiMesh)
 
-    return X, Y, Z
+    def GetSpherical(self):
+        polarImageReal, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.real,
+                                                                        center        = [self.Npts//2, self.Npts//2],
+                                                                        initialRadius = 0,
+                                                                        finalRadius   = 40,
+                                                                        finalAngle    = 2*np.pi)
+
+        polarImageimag, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.imag,
+                                                                        center        = [self.Npts//2, self.Npts//2],
+                                                                        initialRadius = 0,
+                                                                        finalRadius   = 40,
+                                                                        finalAngle    = 2*np.pi)
+
+        self.Spherical = polarImageReal + complex(0,1) * polarImageimag
 
 
-def GetSPF(Parallel: np.ndarray, Perpendicular: np.ndarray) -> np.ndarray:
-    return Parallel.__abs__()**2 + Perpendicular.__abs__()**2
+
+    def Plot(self):
+        fig = plt.figure(figsize=(12,3))
+        ax0 = fig.add_subplot(141)
+        ax1 = fig.add_subplot(142)
+        ax2 = fig.add_subplot(143)
+        ax3 = fig.add_subplot(144)
+
+        ax0.pcolormesh(self.X,
+                       self.Y,
+                       self.Cartesian.real,
+                       shading='auto')
+
+        ax0.set_title('Real Part\n Far-Field Cartesian Coordinates')
+        ax0.set_xlabel(r'X-Distance c * x [u.a.]')
+        ax0.set_ylabel(r'Y-Distance c * y [u.a.]')
+
+        ax1.pcolormesh(self.X,
+                       self.Y,
+                       self.Cartesian.imag,
+                       shading='auto')
+
+        ax1.set_title('Imaginary Part\n Far-Field Cartesian Coordinates')
+        ax1.set_xlabel(r'X-Distance c * x [u.a.]')
+        ax1.set_ylabel(r'Y-Distance c * y [u.a.]')
+
+        ax2.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                       self.Meshes.Theta.Vector.Degree,
+                       self.Spherical.real,
+                       shading='auto')
+
+        ax2.set_title('Real Part\n Far-Field Spherical Coordinates')
+        ax2.set_xlabel(r'Angle $\phi$ [Degree]')
+        ax2.set_ylabel(r'Angle $\theta$ [Degree]')
+
+        ax3.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                       self.Meshes.Theta.Vector.Degree,
+                       self.Spherical.imag,
+                       shading='auto')
+
+        ax3.set_title('Imaginary Part\n Far-Field Spherical Coordinates')
+        ax3.set_xlabel(r'Angle $\phi$ [Degree]')
+        ax3.set_ylabel(r'Angle $\theta$ [Degree]')
+
+        fig.tight_layout()
+
+
+    @property
+    def ThetaBound(self):
+        return self.__ThetaBound
+
+    @property
+    def PhiBound(self):
+        return self.__PhiBound
+
+    @property
+    def PhiOffset(self):
+        return self.__PhiOffset
+
+    @property
+    def ThetaOffset(self):
+        return self.__ThetaOffset
+
+    @ThetaBound.setter
+    def ThetaBound(self, val: list):
+        self.__ThetaBound = np.asarray( val )
+        self.Meshes = AngleMeshes(ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound,
+                                  ThetaNpts  = self.Spherical.shape[0],
+                                  PhiNpts    = self.Spherical.shape[1])
+    @PhiBound.setter
+    def PhiBound(self, val: list):
+        self.__PhiBound = val
+        self.Meshes = AngleMeshes(ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound,
+                                  ThetaNpts  = self.Spherical.shape[0],
+                                  PhiNpts    = self.Spherical.shape[1])
+
+
+    @PhiOffset.setter
+    def PhiOffset(self, val):
+        self.__PhiBound += val
+        self.Meshes = AngleMeshes(ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound,
+                                  ThetaNpts  = self.Spherical.shape[0],
+                                  PhiNpts    = self.Spherical.shape[1])
+
+    @ThetaOffset.setter
+    def ThetaOffset(self, val):
+        self.__ThetaBound += val
+        self.Meshes = AngleMeshes(ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound,
+                                  ThetaNpts  = self.Spherical.shape[0],
+                                  PhiNpts    = self.Spherical.shape[1])
+
+
+
+
+
+
+
+class Detector_FarField(object):
+
+    def __init__(self,
+                 Npts,
+                 NA,
+                 ThetaOffset = 0,
+                 PhiOffset   = 0):
+
+
+        self.Npts = Npts
+        self.NA = NA
+        self.__PhiBound =  np.asarray( [0, NA2Angle(self.NA)] )
+        self.__ThetaBound = np.asarray([-180, 180])
+        self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
+        self.GetSpherical()
+        self.Meshes = AngleMeshes(ThetaBound = self.__ThetaBound + self.__ThetaOffset,
+                                  PhiBound   = self.__PhiBound + self.__PhiOffset,
+                                  ThetaNpts  = self.Npts,
+                                  PhiNpts    = self.Npts)
+
+
+    def GetSpherical(self):
+        self.Spherical = np.ones([self.Npts, self.Npts]) / (self.Npts*self.Npts)
+
+
+    def Plot(self):
+        fig = plt.figure(figsize=(8,4))
+        ax0 = fig.add_subplot(121)
+        ax1 = fig.add_subplot(122)
+
+        im0 = ax0.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
+                             self.Spherical.real,
+                             shading='auto')
+
+        ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
+        ax0.set_xlabel(r'Angle $\phi$ [Degree]')
+        ax0.set_ylabel(r'Angle $\theta$ [Degree]')
+
+        im1 = ax1.pcolormesh(self.Meshes.Phi.Vector.Degree,
+                             self.Meshes.Theta.Vector.Degree,
+                             self.Spherical.imag,
+                             shading='auto')
+
+        ax1.set_title('Imaginary Part\n Far-Field Spherical Coordinates')
+        ax1.set_xlabel(r'Angle $\phi$ [Degree]')
+        ax1.set_ylabel(r'Angle $\theta$ [Degree]')
+
+        divider = make_axes_locatable(ax0)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im0, cax=cax, orientation='vertical')
+
+        divider = make_axes_locatable(ax1)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        fig.colorbar(im1, cax=cax, orientation='vertical')
+
+        fig.tight_layout()
+
+
+    @property
+    def ThetaBound(self):
+        return self.__ThetaBound
+
+    @property
+    def PhiBound(self):
+        return self.__PhiBound
+
+    @property
+    def PhiOffset(self):
+        return self.__PhiOffset
+
+    @property
+    def ThetaOffset(self):
+        return self.__ThetaOffset
+
+    @ThetaBound.setter
+    def ThetaBound(self, val: list):
+        self.__ThetaBound = np.asarray( val )
+        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
+                                  PhiNpts    = self.Npts,
+                                  ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound)
+
+    @PhiBound.setter
+    def PhiBound(self, val: list):
+        self.__PhiBound = val
+        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
+                                  PhiNpts    = self.Npts,
+                                  ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound)
+
+
+    @PhiOffset.setter
+    def PhiOffset(self, val):
+        self.__PhiOffset = val
+        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
+                                  PhiNpts    = self.Npts,
+                                  ThetaBound = self.__ThetaBound,
+                                  PhiBound   = self.__PhiBound + val)
+
+
+    @ThetaOffset.setter
+    def ThetaOffset(self, val):
+        self.__ThetaOffset = val
+        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
+                                  PhiNpts    = self.Npts,
+                                  ThetaBound = self.__ThetaBound + val,
+                                  PhiBound   = self.__PhiBound)
+
+
+
+
+
+
+
 
 # -

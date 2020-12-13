@@ -178,10 +178,10 @@ C_GetS1S2(const double m,
 static void
 C_GetFields(const double m,
             const double x,
-            const double*  phi,
             double* Theta,
-            const long unsigned int Philenght,
+            const double*  phi,
             const long unsigned int Thetalenght,
+            const long unsigned int Philenght,
             complex128* Parallel,
             complex128* Perpendicular,
             double Polarization
@@ -201,8 +201,8 @@ C_GetFields(const double m,
     temp0 = *Theta++ ;
     for (long unsigned int i=0; i < Philenght; i++ )
     {
-      *Parallel++          = S1S2[i] * cos(temp0 + Polarization) ;
-      *Perpendicular++     = S1S2[i + Philenght] * sin(temp0 + Polarization) ;
+      *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
+      *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
     }
   }
 
@@ -216,10 +216,10 @@ C_GetFields(const double m,
 static void
 C_GetFieldsNoPolarization(const double m,
             const double x,
-            const double*  phi,
             double* Theta,
-            const long unsigned int Philenght,
+            const double*  phi,
             const long unsigned int Thetalenght,
+            const long unsigned int Philenght,
             complex128* Parallel,
             complex128* Perpendicular
           )
@@ -236,6 +236,7 @@ C_GetFieldsNoPolarization(const double m,
   for (long unsigned int k=0; k < Thetalenght; k++ )
   {
     temp0 = *Theta++ ;
+
     for (long unsigned int i=0; i < Philenght; i++ )
     {
       *Parallel++          = S1S2[i] * 1./sqrt(2) ;

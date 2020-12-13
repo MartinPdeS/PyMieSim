@@ -13,7 +13,7 @@ from cpython cimport Py_buffer
 ctypedef double complex complex128_t
 
 cdef extern from "MieS1S2.cpp":
-    cdef void* C_GetS1S2(double a,
+    cdef void* C_GetS1S2(double a, 
                          double b,
                          double* phi,
                          int lenght,
@@ -73,8 +73,8 @@ cpdef GetS1S2(double m,
 @cython.wraparound(False)
 cpdef GetFields(double m,
                 double x,
-                Phi,
                 Theta,
+                Phi,
                 Polarization):
 
     cdef:
@@ -93,14 +93,14 @@ cpdef GetFields(double m,
     Perpendicular = VectorWrapper(Phi.size * Theta.size)
     Perpendicular.add_row()
 
-    if Polarization == None:
+    if Polarization == 'None':
 
       C_GetFieldsNoPolarization(m,
                                 x,
-                                phi_ptr,
                                 theta_ptr,
-                                Phi.size,
+                                phi_ptr,
                                 Theta.size,
+                                Phi.size,
                                 &(Parallel.S1S2)[0],
                                 &(Perpendicular.S1S2)[0]
                                 );
@@ -109,18 +109,18 @@ cpdef GetFields(double m,
 
         C_GetFields(m,
                     x,
-                    phi_ptr,
                     theta_ptr,
-                    Phi.size,
+                    phi_ptr,
                     Theta.size,
+                    Phi.size,
                     &(Parallel.S1S2)[0],
                     &(Perpendicular.S1S2)[0],
-                    Polarization.Radian
+                    Polarization
                     );
 
 
-    arr0 = np.asarray(Parallel).reshape([Phi.size, Theta.size]).T
-    arr1 = np.asarray(Perpendicular).reshape([Phi.size, Theta.size]).T
+    arr0 = np.asarray(Parallel).reshape([Theta.size, Phi.size])
+    arr1 = np.asarray(Perpendicular).reshape([Theta.size, Phi.size])
 
     return arr0, arr1
 

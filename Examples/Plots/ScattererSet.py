@@ -18,7 +18,7 @@ Detector = Photodiode(NA                = 0.5,
                       Source            = LightSource,
                       Npts              = 101,
                       ThetaOffset       = 0,
-                      PhiOffset         = -15,
+                      PhiOffset         = 0,
                       Filter            = 90)
 
 
@@ -33,11 +33,11 @@ Set = ScattererSet(DiameterList  = np.linspace(100e-9, 1000e-9, 400),
 
 #Set.Plot(part='STD::S1')  # can be  S1  -  STD::S1  -  S2  -  STD::S2
 
-DF = Set.GetFrame(Polarization=['NoFiltered', 'Filtered'])
+DF = Set.GetFrame(Filter=['None',90])
 
 DF.Plot(y='Coupling')
 
-DF.Plot(y='STD')
+#DF.Plot(y='STD')
 
 
 plt.show()

@@ -29,7 +29,7 @@ Perpendicular = np.outer(S1S2[1], np.cos(ThetaList))
 
 BenchCpp = \
 """
-Fields_CPP(1.4, 0.3, PhiList, ThetaList);
+Fields_CPP(1.4, 0.3, PhiList, ThetaList, Polarization=0);
 """
 
 
