@@ -12,20 +12,20 @@ from PyMieCoupling.classes.Detector import fiber, LPmode
 from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 
-LightSource = Source(Wavelength   = 940e-9,
-                     Polarization = 90)
+LightSource = Source(Wavelength   = 450e-9,
+                     Polarization = 30)
 
-npts=101
+npts=201
 
 
 LP11 = LPmode(Mode          = (1, 1),
-              Orientation   = 'h',
+              Orientation   = 'v',
               Source        = LightSource,
               Npts          = npts,
               ThetaOffset   = 0,
-              PhiOffset     = 0,
+              PhiOffset     = 10,
               Filter        = 0,
-              NA            = 0.5)
+              NA            = 0.8)
 
 
 LP01 = LPmode(Mode          = (0, 1),
@@ -34,19 +34,19 @@ LP01 = LPmode(Mode          = (0, 1),
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Filter        = 0,
-              NA            = 0.5,
+              NA            = 0.8,
               Orientation   = 'v')
 
 
-Scat = Scatterer(Diameter    = 5000e-9,
+Scat = Scatterer(Diameter    = 15000e-9,
                  Source      = LightSource,
                  Index       = 1.4,
-                 Meshes      = LP01.FarField.Meshes)
+                 Meshes      = LP11.FarField.Meshes)
 
 
 print(LP11.Coupling(Scat, Mode='Centered'))
 
-LP01.FarField.Plot()
+LP11.FarField.Plot()
 
 Scat.Field.Plot()
 

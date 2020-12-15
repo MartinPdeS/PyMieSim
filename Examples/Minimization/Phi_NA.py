@@ -6,25 +6,18 @@ _________________________________________________________
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 from scipy.optimize import minimize
-from PyMieCoupling.classes.Detector import fiber, LPmode, Photodiode
+from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.classes.Fields import Source
-from PyMieCoupling.classes.Optimizer import Simulator2 as Simulator
+from PyMieCoupling.classes.Optimizer import Simulator
 from PyMieCoupling.classes.Scattering import ScattererSet
 
 LightSource = Source(Wavelength   = 450e-9,
                      Polarization = 0)
 
 
-
-Fiber = fiber(core_radius = 4.2e-6,
-              core_index  = 1.4456,
-              clad_radius = 20.5e-6,
-              clad_index  = 1.4444)
-
-
-LP01 = LPmode(Fiber         = Fiber,
-               Mode          = (0, 1),
+LP01 = LPmode(Mode          = (0, 1),
                Source        = LightSource,
                Npts          = 81,
                ThetaOffset   = 0,
@@ -33,54 +26,56 @@ LP01 = LPmode(Fiber         = Fiber,
                NA            = 0.9)
 
 
-LP11 = LPmode(Fiber         = Fiber,
-              Mode          = (1, 1),
+LP11 = LPmode(Mode          = (1, 1),
               Source        = LightSource,
-              Npts          = 81,
+              Npts          = 41,
               ThetaOffset   = 0,
               PhiOffset     = 0,
               Name          = 'LP11',
-              NA            = 0.9)
+              NA            = 0.2,
+              Orientation   = 'v')
 
 
 Photodiode0 = Photodiode(NA                = 0.54,
                          Source            = LightSource,
-                         Npts              = 81,
+                         Npts              = 41,
                          ThetaOffset       = 0,
                          PhiOffset         = 0)
 
 
-Set = ScattererSet(DiameterList  = np.linspace(100,10000,100).round(4) * 1e-9,
-                   RIList        = np.linspace(1.3, 1.5, 4).round(4),
-                   Detector      = Photodiode0,
-                   Source        = LightSource
+Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
+                   RIList        = np.linspace(1.3, 1.5, 6).round(4),
+                   Detector      = LP11,
+                   Source        = LightSource,
+                   Mode          = 'Centered'
                    )
 
 def EvalFunc(x):
 
     Set.Detector.PhiOffset = x[0]
 
-    Set.Detector.ThetaOffset = x[1]
+    Set.Detector.NA = x[1]
 
-    Array = Set.GetCoupling(Polarization = 'NoFiltered') # can be   Parallel  -  Perpendicular  -  Filtered  -  NoFiltered
+    Array = Set.GetCouplingArray(Filter = 'None')
 
-    return Array.Cost('RI_RSD') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
-Minimizer = Simulator(EvalFunc)
+Minimizer = Simulator(EvalFunc, ParameterName= ['Phi', 'NA'])
 
 Result = minimize(fun      = Minimizer.simulate,
-                  x0       = [50, 50],
+                  x0       = [0, 0.2],
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
                   tol      = 1e-5,
-                  options  = {'maxiter': 50, 'rhobeg':5})
+                  options  = {'maxiter': 50, 'rhobeg':0.5})
 print(Result)
 
-DF = Set.GetFrame()
+DF = Set.GetCouplingFrame()
 
 DF.Plot('Coupling') # can be Couplimg  -  STD
 
+plt.show()
 
 
 

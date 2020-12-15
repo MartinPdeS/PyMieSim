@@ -111,15 +111,13 @@ class Photodiode(object):
 
         self._coupling = 'Intensity'
 
-        self.NA = NA
-
         self.Source = Source
 
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
 
         self.Npts = Npts
 
-        self.FarField = Detector_FarField(self.Npts, self.NA, ThetaOffset, PhiOffset)
+        self.FarField = Detector_FarField(self.Npts, NA, ThetaOffset, PhiOffset)
 
         self._Filter = Angle(Filter)
 
@@ -165,10 +163,24 @@ class Photodiode(object):
     def ThetaOffset(self, val):
         self.FarField.ThetaOffset = val
 
+    @property
+    def NA(self):
+        return self.FarField._NA
+
+    @NA.setter
+    def NA(self, val):
+        if val >= 1:
+            val = 1
+        if val <= 0:
+            val = 0
+        self.FarField.NA = val
+
+
 
     def Coupling(self,
                  Scatterer,
                  Mode         = 'Centered'):
+
         return Coupling(Scatterer    = Scatterer,
                         Detector     = self,
                         Mode         = Mode)
@@ -248,10 +260,6 @@ class LPmode(object):
 
         ModeNumber = Mode[0]+1, Mode[1]
 
-        self.NA = NA
-
-        self.NAScaleFactor = 2.8
-
         self.Source = Source
 
         self.Npts = Npts
@@ -268,12 +276,16 @@ class LPmode(object):
                         Wavelength  = Source.Wavelength,
                         Size        = 10*CoreDiameter,
                         Npts        = Npts,
-                        NA          = 0.2,
+                        NA          = NA,
                         Orientation = self.Orientation)
 
         self.NearField = obj.NearField
 
         self.FarField = obj.FarField
+
+        if PhiOffset != 0: self.FarField.PhiOffset = PhiOffset
+
+        if ThetaOffset != 0: self.FarField.ThetaOffset = ThetaOffset
 
 
 
@@ -318,9 +330,22 @@ class LPmode(object):
     def ThetaOffset(self, val):
         self.FarField.ThetaOffset = val
 
+    @property
+    def NA(self):
+        return self.FarField._NA
+
+    @NA.setter
+    def NA(self, val):
+        if val >= 1:
+            val = 1
+        if val <= 0:
+            val = 0
+        self.FarField.NA = val
+
+
+
     def Coupling(self,
                  Scatterer,
-                 Filter       = None,
                  Mode         = 'Centered'):
 
         return Coupling(Scatterer    = Scatterer,

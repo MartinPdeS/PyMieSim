@@ -19,7 +19,8 @@ typedef std::vector<std::vector<complex128>> iMatrix;
 
 
 
-
+//REF: PhD Thesis   ON LIGHT SCATTERING BY NANOPARTICLES WITH CONVENTIONAL AND NON-CONVENTIONAL OPTICAL PROPERTIES
+//REF: PhD Thesis https://www.google.com/url?sa=i&source=web&cd=&ved=2ahUKEwjvg4yF3cbtAhUPac0KHQj_BZkQ3YkBegQIARAE&url=http%3A%2F%2Frepositorio.unican.es%2Fxmlui%2Fbitstream%2Fhandle%2F10902%2F1566%2F2de8.BGCparteIcap2.pdf%3Fsequence%3D3&psig=AOvVaw18kz43dplVLIwhnDBQTTYI&ust=1607798286433047
 
 static void
 LowFrequencyMie_ab(const double m,
@@ -180,6 +181,7 @@ C_GetFields(const double m,
             const double x,
             double* Theta,
             const double*  phi,
+            const double* phiOnly,
             const long unsigned int Thetalenght,
             const long unsigned int Philenght,
             complex128* Parallel,
@@ -194,16 +196,20 @@ C_GetFields(const double m,
   double temp0 ;
   complex128 temp2;
 
-  C_GetS1S2(m, x, phi, Philenght, S1S2) ;
+  C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
 
+  long unsigned int i = 0;
   for (long unsigned int k=0; k < Thetalenght; k++ )
   {
     temp0 = *Theta++ ;
-    for (long unsigned int i=0; i < Philenght; i++ )
-    {
-      *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
-      *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
-    }
+
+    if (k % Philenght == 0) i++;
+
+    *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
+    *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
+
+
+
   }
 
   free(S1S2) ;
@@ -218,35 +224,40 @@ C_GetFieldsNoPolarization(const double m,
             const double x,
             double* Theta,
             const double*  phi,
+            const double* phiOnly,
             const long unsigned int Thetalenght,
             const long unsigned int Philenght,
             complex128* Parallel,
             complex128* Perpendicular
           )
-{
-  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
+          {
+            complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
 
-  const std::complex<double> j (0., 1.0) ;
+            const std::complex<double> j (0., 1.0) ;
 
-  double temp0 ;
-  complex128 temp2;
+            double temp0 ;
+            complex128 temp2;
 
-  C_GetS1S2(m, x, phi, Philenght, S1S2) ;
+            C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
 
-  for (long unsigned int k=0; k < Thetalenght; k++ )
-  {
-    temp0 = *Theta++ ;
+            long unsigned int i = 0;
+            for (long unsigned int k=0; k < Thetalenght; k++ )
+            {
+              temp0 = *Theta++ ;
 
-    for (long unsigned int i=0; i < Philenght; i++ )
-    {
-      *Parallel++          = S1S2[i] * 1./sqrt(2) ;
-      *Perpendicular++     = S1S2[i + Philenght] * 1./sqrt(2) ;
-    }
-  }
+              if (k % Philenght == 0) i++;
 
-  free(S1S2) ;
-  return;
-}
+              *Parallel++          = S1S2[i] * 1./sqrt(2.) ;
+              *Perpendicular++     = S1S2[i + Philenght] * 1./sqrt(2.) ;
+
+
+
+            }
+
+            free(S1S2) ;
+            return;
+          }
+
 
 
 

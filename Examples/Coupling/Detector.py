@@ -11,7 +11,7 @@ from PyMieCoupling.classes.Fields import Source
 import matplotlib.pyplot as plt
 
 LightSource = Source(Wavelength   = 400e-9,
-                     Polarization = 0)
+                     Polarization = 90)
 
 
 Detector = Photodiode(NA                = 0.2,
@@ -34,7 +34,7 @@ Scat = Scatterer(Diameter      = 500e-9,
 
 Scat.Field.Plot()
 
-Detector.FarField.Plot()
+#Detector.FarField.Plot()
 
 print(Detector.Coupling(Scatterer = Scat, Mode='Centered'))
 

@@ -110,7 +110,7 @@ class ScattererSet(object):
 
 
 
-    def GetFrame(self, Filter: list = ['None'] ):
+    def GetCouplingFrame(self, Filter: list = ['None'] ):
 
         if not isinstance(Filter, list):
             Filter = [Filter]
@@ -160,8 +160,9 @@ class ScattererSet(object):
 
         elif Boundary == 'Full':
             Meshes = AngleMeshes(ThetaBound = np.array([-180, 180], copy=False),
-                                PhiBound   = np.array([-90,90], copy=False),
-                                Npts       = self.Detector.Npts)
+                                 PhiBound   = np.array([-90,90], copy=False),
+                                 ThetaNpts  = self.Detector.FarField.Meshes.ThetaNpts,
+                                 PhiNpts    = self.Detector.FarField.Meshes.PhiNpts)
 
         for nr, RI in enumerate(self.RIList):
 
@@ -173,7 +174,7 @@ class ScattererSet(object):
                                  Meshes    = Meshes
                                  )
 
-                self.S1List[nr, nd,:] = Scat.S1S2.S1S2[0]
+                self.S1List[nr, nd,:] = Scat.S1S2[0]
 
 
         return self.S1List, Meshes
@@ -200,14 +201,14 @@ class ScattererSet(object):
                                  Meshes    = Meshes
                                  )
 
-                self.S2List[nr, nd,:] = Scat.S1S2.S1S2[1]
+                self.S2List[nr, nd,:] = Scat.S1S2[1]
 
 
         return self.S2List, Meshes
 
 
 
-    def GetCoupling(self, Filter):
+    def GetCouplingArray(self, Filter='None'):
 
         temp = np.empty( [ len(self.RIList), len(self.DiameterList) ] )
 
@@ -222,7 +223,6 @@ class ScattererSet(object):
                                  )
 
                 Coupling = self.Detector.Coupling(Scatterer    = Scat,
-                                                  Filter       = Filter,
                                                   Mode         = self.Mode)
 
                 temp[nr, nd] = Coupling
@@ -231,27 +231,28 @@ class ScattererSet(object):
 
 
 
-    def Plot(self, part = 'S1'):
+    def Plot(self, y: str = 'S1'):
 
-        if 'S1' in  part:
-            y, Meshes = self.GetS1('Full')
+        if 'S1' in  y:
+            data, Meshes = self.GetS1('Full')
 
-        elif "S2" in part:
-            y, Meshes = self.GetS2('Full')
+        elif "S2" in y:
+            data, Meshes = self.GetS2('Full')
 
-        y = np.abs(y)**2
+        data = np.abs(data)**2
 
-        if part == 'S1':
-            self.Plot_S1(Meshes, y)
+        if str(y) == "S1":
 
-        if part == 'STD::S1':
-            self.Plot_STDS1(Meshes, y)
+            self.Plot_S1(Meshes, data)
 
-        if part == 'S2':
-            self.Plot_S2(Meshes, y)
+        if str(y) == 'STD::S1':
+            self.Plot_STDS1(Meshes, data)
 
-        if part == 'STD::S2':
-            self.Plot_STDS2(Meshes, y)
+        if str(y) == 'S2':
+            self.Plot_S2(Meshes, data)
+
+        if str(y) == 'STD::S2':
+            self.Plot_STDS2(Meshes, data)
 
 
 
@@ -284,10 +285,10 @@ class ScattererSet(object):
                     )
 
 
-        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -335,10 +336,10 @@ class ScattererSet(object):
                     )
 
 
-        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -372,10 +373,10 @@ class ScattererSet(object):
                          label="RI:{0:.2f}; Diam.: {1:.3e}".format(RI, Diameter))
 
 
-        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -411,10 +412,10 @@ class ScattererSet(object):
                          label="RI:{0:.2f}; Diam.: {1:.3e}".format(RI, Diameter))
 
 
-        ax.fill_between(self.Detector.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -473,20 +474,24 @@ class Scatterer(object):
                  PhiBound:    list        = [-180, 180],
                  PhiOffset:   float       = 0) -> None:
 
-
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
+
 
         self._Stokes, self._SPF, self._Fields = (None,)*3
 
         if Meshes:
             self.Meshes = Meshes
         else:
-            self.Meshes = AngleMeshes(ThetaBound = np.asarray(ThetaBound) + ThetaOffset,
-                                      PhiBound   = np.asarray(PhiBound) + PhiOffset,
-                                      ThetaNpts  = Npts,
-                                      PhiNpts    = Npts)
+
+            self.Meshes = AngleMeshes(ThetaBound  = np.asarray(ThetaBound),
+                                      PhiBound    = np.asarray(PhiBound),
+                                      ThetaNpts   = Npts,
+                                      PhiNpts     = Npts,
+                                      PhiOffset   = PhiOffset,
+                                      ThetaOffset = ThetaOffset)
+
 
 
 
@@ -519,9 +524,10 @@ class Scatterer(object):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
         """
-
         Parallel, Perpendicular = Fields_CPP(self.Index,
                                              self.SizeParam,
+                                             self.Meshes.Theta.Mesh.Radian.flatten(),
+                                             self.Meshes.Phi.Mesh.Radian.flatten(),
                                              self.Meshes.Theta.Vector.Radian,
                                              self.Meshes.Phi.Vector.Radian,
                                              Polarization  = self.Source.Polarization.Radian);

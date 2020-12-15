@@ -45,8 +45,7 @@ def Direct2Angle(DirectVec: np.ndarray, k: float) -> np.ndarray:
 
 def NA2Angle(NA: float) -> np.ndarray:
 
-    return rad2deg( np.arcsin(NA) )
-
+    return rad2deg( np.arcsin(NA) ).squeeze()
 
 
 
