@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.functions.converts import rad2deg, deg2rad
+from PyMieCoupling.utils import Angle
 from ai import cs
 
 class AngleMeshes(object):
@@ -139,19 +140,6 @@ class AngleMeshes(object):
 class Namespace:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
-
-
-class Angle(object):
-
-    def __init__(self, input, unit='Degree'):
-        if unit == 'Degree':
-            self.Degree = input
-            self.Radian = deg2rad(input)
-        if unit == 'Radian':
-            self.Degree = rad2deg(input)
-            self.Radian = input
-
-
 
 
 

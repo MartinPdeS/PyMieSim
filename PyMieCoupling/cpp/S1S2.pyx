@@ -21,25 +21,19 @@ cdef extern from "MieS1S2.cpp":
 
     cdef void* C_GetFields(double a,
                            double b,
-                           double* theta,
-                           double* phi,
-                           double* phiVector,
-                           int Thetalenght,
-                           int Philenght,
+                           double* ThetaVec,
+                           double* PhiVec,
                            complex128_t* Parallel,
                            complex128_t* Perpendicular,
                            double Polarization);
 
 
     cdef void* C_GetFieldsNoPolarization(double a,
-                                        double b,
-                                        double* theta,
-                                        double* phi,
-                                        double* phiVector,
-                                        int Thetalenght,
-                                        int Philenght,
-                                        complex128_t* Parallel,
-                                        complex128_t* Perpendicular);
+                                         double b,
+                                         double* ThetaVec,
+                                         double* PhiVec,
+                                         complex128_t* Parallel,
+                                         complex128_t* Perpendicular);
 
 
 @cython.boundscheck(False)
@@ -75,63 +69,50 @@ cpdef GetS1S2(double m,
 @cython.wraparound(False)
 cpdef GetFields(double m,
                 double x,
-                Theta,
-                Phi,
+                ThetaVec,
                 PhiVec,
-                Thetalenght,
-                Philenght,
                 Polarization):
 
     cdef:
-        np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(Phi, dtype = float, order="C")
-        double* phiMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
+        np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaVec, dtype = float, order="C")
+        double* ThetaVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
 
-        np.ndarray[double, ndim=1, mode="c"] phiVectorView = np.asarray(PhiVec, dtype = float, order="C")
-        double* phiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
-
-        np.ndarray[double, ndim=1, mode="c"] thetaView = np.asarray(Theta, dtype = float, order="C")
-        double* thetaMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
-
-    phiMesh_ptr = &phiView[0]
-    phiVec_ptr = &phiVectorView[0]
-    thetaMesh_ptr = &thetaView[0]
+        np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiVec, dtype = float, order="C")
+        double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
 
 
-    Parallel = VectorWrapper(Philenght * Thetalenght)
+    PhiVec_ptr = &PhiVectorView[0]
+    ThetaVec_ptr = &ThetaVectorView[0]
+
+
+    Parallel = VectorWrapper(PhiVec.size * ThetaVec.size)
     Parallel.add_row()
 
-    Perpendicular = VectorWrapper(Philenght * Thetalenght)
+    Perpendicular = VectorWrapper(PhiVec.size * ThetaVec.size)
     Perpendicular.add_row()
 
     if Polarization == 'None':
 
       C_GetFieldsNoPolarization(m,
                                 x,
-                                thetaMesh_ptr,
-                                phiMesh_ptr,
-                                phiVec_ptr,
-                                Thetalenght,
-                                Philenght,
+                                double* ThetaVec_ptr,
+                                double* PhiVec_ptr,
                                 &(Parallel.S1S2)[0],
-                                &(Perpendicular.S1S2)[0]
-                                );
+                                &(Perpendicular.S1S2)[0]);
 
     else:
-        C_GetFields(m,
-                    x,
-                    thetaMesh_ptr,
-                    phiMesh_ptr,
-                    phiVec_ptr,
-                    Theta.size,
-                    PhiVec.size,
-                    &(Parallel.S1S2)[0],
-                    &(Perpendicular.S1S2)[0],
-                    Polarization
-                    );
+      C_GetFields(a,
+                  b,
+                  ThetaVec_ptr,
+                  PhiVec_ptr,
+                  &(Parallel.S1S2)[0],
+                  &(Perpendicular.S1S2)[0],
+                  Polarization);
 
 
-    arr0 = np.asarray(Parallel).reshape([Thetalenght, Philenght])
-    arr1 = np.asarray(Perpendicular).reshape([Thetalenght, Philenght])
+    arr0 = np.asarray(Parallel).reshape([ThetaVec.size, PhiVec.size])
+    arr1 = np.asarray(Perpendicular).reshape([ThetaVec.size, PhiVec.size])
+
 
 
     return arr0, arr1

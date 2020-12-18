@@ -5,8 +5,8 @@ Plottings of the far-field for LP modes.
 _________________________________________________________
 """
 
-from PyMieCoupling.classes.Detector import fiber, LPmode
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Detector import LPmode
+from PyMieCoupling.utils import Source
 import matplotlib.pyplot as plt
 
 npts=101

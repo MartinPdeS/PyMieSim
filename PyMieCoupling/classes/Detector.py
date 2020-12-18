@@ -1,6 +1,6 @@
 
 import numpy as np
-import fibermodes
+
 
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
@@ -9,39 +9,14 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
-from PyMieCoupling.classes.Fields import Source
-from PyMieCoupling.classes.Representations import Detector_FarField, LP_FarField
+from PyMieCoupling.utils import Source, SMF28, Angle
+from PyMieCoupling.classes.Fields import Detector_FarField, LPFarField, LPNearField
 from PyMieCoupling.functions.converts import deg2rad
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.classes.BaseClasses import BaseDetector
 import fibermodes
 
 
-
-
-class fiber(object):
-
-    def __init__(self,
-                 core_radius,
-                 core_index,
-                 clad_radius,
-                 clad_index):
-
-        self.MaxDirect = 2 * clad_radius
-
-        factory = fibermodes.FiberFactory()
-
-        factory.addLayer(name     = 'core',
-                         radius   = core_radius,
-                         material = 'Fixed',
-                         geometry = "StepIndex",
-                         index    = 1.4489)
-
-        factory.addLayer(name     = 'cladding',
-                         material = 'Fixed',
-                         index    = 1)
-
-        self.source = factory[0]
 
 
 
@@ -221,7 +196,7 @@ class LPmode(BaseDetector):
 
         if self.Orientation == 'h': temp = temp.T
 
-        self.NearField = _NearField(temp, 10*CoreDiameter, self.Npts)
+        self.NearField = LPNearField(temp, 10*CoreDiameter, self.Npts)
 
         temp = np.fft.fft2(self.NearField.Cartesian)
 
@@ -231,7 +206,7 @@ class LPmode(BaseDetector):
 
         temp /= (temp.__abs__()).sum()
 
-        self.FarField = LP_FarField(temp, 10*CoreDiameter, self.Npts, self._NA)
+        self.FarField = LPFarField(temp, 10*CoreDiameter, self.Npts, self._NA)
 
 
     def GenShift(self):
@@ -250,75 +225,7 @@ class LPmode(BaseDetector):
 
 
 
-def SMF28():
-    CoreDiameter = 8.2e-6
-    cladDiameter = 125e-6
 
-    Fiber = fiber(core_radius = CoreDiameter,
-                  core_index  = 1.4456,
-                  clad_radius = cladDiameter,
-                  clad_index  = 1.4444)
-
-    return Fiber, CoreDiameter
-
-
-
-
-
-class _NearField(object):
-
-    def __init__(self, Input, Size, Npts):
-        self.Cartesian = Input
-        self.Size = Size
-        self.Npts = Npts
-
-        self.Meshes = DirectMeshes(Npts   = self.Npts,
-                                  XBound = [-self.Size/2, self.Size/2],
-                                  YBound = [-self.Size/2, self.Size/2],
-                                  XNpts  = self.Npts,
-                                  YNpts  = self.Npts)
-
-
-    def Plot(self):
-        fig = plt.figure(figsize=(6,3))
-        ax0 = fig.add_subplot(121)
-        ax1 = fig.add_subplot(122)
-
-        ax0.pcolormesh(self.Meshes.X.Vector,
-                       self.Meshes.Y.Vector,
-                       self.Cartesian.real,
-                       shading='auto')
-
-        ax0.set_title('Real Part \n Near-Field Cartesian Coordinates')
-        ax0.set_xlabel(r'X-Distance x [$\mu$m]')
-        ax0.set_ylabel('Y-Distance y  [$\mu$m]')
-
-        ax1.pcolormesh(self.Meshes.X.Vector,
-                       self.Meshes.Y.Vector,
-                       self.Cartesian.imag,
-                       shading='auto')
-
-        ax1.set_title('Imaginary Part \n Near-Field Cartesian Coordinates')
-        ax1.set_xlabel(r'X-Distance x  [$\mu$m]')
-        ax1.set_ylabel(r'Y-Distance y  [$\mu$m]')
-        fig.tight_layout()
-
-
-
-
-
-
-
-class Angle(object):
-
-    def __init__(self, input):
-
-        if input != 'None':
-            self.Degree = input
-            self.Radian = deg2rad(input)
-        else:
-            self.Degree = 'None'
-            self.Radian = 'None'
 
 
 

@@ -176,8 +176,49 @@ C_GetS1S2(const double m,
 }
 
 
+
 static void
 C_GetFields(const double m,
+            const double x,
+            const double* ThetaVec,
+            const double*  PhiVec,
+            complex128* Parallel,
+            complex128* Perpendicular,
+            double Polarization
+          )
+{
+  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
+
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0 ;
+  complex128 temp2;
+
+  C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
+
+  long unsigned int i = 0;
+  for (long unsigned int k=0; k < Thetalenght; k++ )
+  {
+    temp0 = *Theta++ ;
+
+    if (k % Philenght == 0) i++;
+
+    *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
+    *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
+
+
+
+  }
+
+  free(S1S2) ;
+  return;
+}
+
+
+
+
+static void
+_C_GetFields(const double m,
             const double x,
             double* Theta,
             const double*  phi,

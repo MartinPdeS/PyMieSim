@@ -13,15 +13,12 @@ from typing import Tuple, Union
 
 
 from PyMieCoupling.classes.Meshes import AngleMeshes
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
-from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field
+from PyMieCoupling.classes.BaseClasses import BaseScatterer
 
-Fontsize, pi, cmapPad = 7, 3.141592, 0.2
-
-from PyMieCoupling.cpp.S1S2 import GetFields as Fields_CPP
 
 
 class DataFrameCPU(pd.DataFrame):
@@ -423,7 +420,11 @@ class ScattererSet(object):
         plt.show(block=False)
 
 
-class Scatterer(object):
+
+
+
+
+class Scatterer(BaseScatterer):
     """Object containing all scatterer-related attributes.
 
     Parameters
@@ -466,7 +467,7 @@ class Scatterer(object):
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
-        self._Stokes, self._SPF, self.__FarField, self.__S1S2 = (None,)*4
+        self._Stokes, self._SPF, self._FarField, self._S1S2 = (None,)*4
 
         if Meshes:
             self.Meshes = Meshes
@@ -479,84 +480,54 @@ class Scatterer(object):
                                       ThetaOffset = ThetaOffset)
 
 
-    @property
-    def S1S2(self) -> np.ndarray:
-        if self.__S1S2 is None:
-            self.__S1S2 = S1S2(SizeParam  = self.SizeParam,
-                                  Index      = self.Index,
-                                  Meshes     = self.Meshes)
-            return self.__S1S2
-
-        else:
-            return self.__S1S2
 
 
-    @property
-    def FarField(self) -> AngleMeshes:
-        if self.__FarField is None:
-            self.GenField()
-            return self.__FarField
-        else:
-            return self.__FarField
+class FullScatterer(BaseScatterer):
+    """Object containing all scatterer-related attributes.
 
+    Parameters
+    ----------
+    diameter : float
+        Diameter of the scatterer.
+    wavelength : float
+        Wavelength of the incident lightfield.
+    index : float
+        Refractive index of the scatterer.
+    npts : int
+        Number of points for the full solid angle of the far-field, later to
+        be interpolated.
 
+    Attributes
+    ----------
+    Full : <Fields class>
+        It represents the entire Far-field representation of the scatterer.
+    ComputeS1S2 : type
+        Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.
+    diameter
+    wavelength
+    index
+    npts
 
-    def GenField(self):
-        """The methode generate the <Fields> class from S1 and S2 value computed
-        with the PyMieScatt package.
-        """
+    """
 
-        Parallel, Perpendicular = Fields_CPP(self.Index,
-                                             self.SizeParam,
-                                             self.Meshes.Theta.Mesh.Radian.flatten(),
-                                             self.Meshes.Phi.Mesh.Radian.flatten(),
-                                             self.Meshes.Phi.Vector.Radian,
-                                             self.Meshes.Theta.Mesh.Radian.shape[0],
-                                             self.Meshes.Theta.Mesh.Radian.shape[1],
-                                             Polarization  = self.Source.Polarization.Radian);
+    def __init__(self,
+                 Diameter:    float,
+                 Source:      Source,
+                 Index:       float,
+                 Npts:        int    = 201):
 
+        self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
-        self.__FarField = Field(Perpendicular = Perpendicular,
-                                Parallel      = Parallel,
-                                Meshes        = self.Meshes);
+        self.SizeParam = Source.k * ( self.Diameter / 2 )
 
+        self._Stokes, self._SPF, self._FarField, self._S1S2 = (None,)*4
 
-    @property
-    def Stokes(self) -> None:
-        if not self._Stokes:
-            self._Stokes = Stokes(Field = self.Field)
-            return self._Stokes
-        else:
-            return self._Stokes
-
-
-    @property
-    def SPF(self) -> None:
-        if not self._SPF:
-            self._SPF = SPF(Index=self.Index, SizeParam=self.SizeParam)
-            return self._SPF
-        else:
-            return self._SPF
-
-
-
-
-    def Coupling(self,
-                 Detector,
-                 Filter       = None,
-                 Mode         = 'Centered'):
-
-        return Coupling(Scatterer    = self,
-                        Detector     = Detector,
-                        Filter       = Filter,
-                        Mode         = Mode)
-
-    def Footprint(self, Detector):
-
-        return GetFootprint(Scatterer    = self,
-                            Detector     = Detector)
-
-
+        self.Meshes = AngleMeshes(ThetaBound  = np.asarray([-180,180]),
+                                  PhiBound    = np.asarray([0,180]),
+                                  ThetaNpts   = Npts,
+                                  PhiNpts     = Npts,
+                                  PhiOffset   = 0,
+                                  ThetaOffset = 0)
 
 
 
