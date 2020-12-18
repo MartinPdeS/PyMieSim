@@ -151,11 +151,8 @@ class SPF(np.ndarray):
 
         Parallel, Perpendicular = Fields_CPP(Index,
                                              SizeParam,
-                                             thetaMesh.flatten(),
-                                             phiMesh.flatten(),
+                                             thetaVec,
                                              phiVec,
-                                             num,
-                                             num,
                                              Polarization  = Polarization);
 
         scamap = plt.cm.ScalarMappable(cmap='jet')

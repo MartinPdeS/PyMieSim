@@ -22,7 +22,9 @@ cdef extern from "MieS1S2.cpp":
     cdef void* C_GetFields(double a,
                            double b,
                            double* ThetaVec,
+                           int Thetalenght,
                            double* PhiVec,
+                           int Philenght,
                            complex128_t* Parallel,
                            complex128_t* Perpendicular,
                            double Polarization);
@@ -31,7 +33,9 @@ cdef extern from "MieS1S2.cpp":
     cdef void* C_GetFieldsNoPolarization(double a,
                                          double b,
                                          double* ThetaVec,
+                                         int Thetalenght,
                                          double* PhiVec,
+                                         int Philenght,
                                          complex128_t* Parallel,
                                          complex128_t* Perpendicular);
 
@@ -92,19 +96,23 @@ cpdef GetFields(double m,
     Perpendicular.add_row()
 
     if Polarization == 'None':
-
       C_GetFieldsNoPolarization(m,
                                 x,
-                                double* ThetaVec_ptr,
-                                double* PhiVec_ptr,
+                                ThetaVec_ptr,
+                                ThetaVec.size,
+                                PhiVec_ptr,
+                                PhiVec.size,
                                 &(Parallel.S1S2)[0],
                                 &(Perpendicular.S1S2)[0]);
 
+
     else:
-      C_GetFields(a,
-                  b,
+      C_GetFields(m,
+                  x,
                   ThetaVec_ptr,
+                  ThetaVec.size,
                   PhiVec_ptr,
+                  PhiVec.size,
                   &(Parallel.S1S2)[0],
                   &(Perpendicular.S1S2)[0],
                   Polarization);

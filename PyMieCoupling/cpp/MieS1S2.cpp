@@ -181,7 +181,9 @@ static void
 C_GetFields(const double m,
             const double x,
             const double* ThetaVec,
-            const double*  PhiVec,
+            const int Thetalenght,
+            const double* PhiVec,
+            const int Philenght,
             complex128* Parallel,
             complex128* Perpendicular,
             double Polarization
@@ -194,20 +196,15 @@ C_GetFields(const double m,
   double temp0 ;
   complex128 temp2;
 
-  C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
+  C_GetS1S2(m, x, PhiVec, Philenght, S1S2) ;
 
-  long unsigned int i = 0;
   for (long unsigned int k=0; k < Thetalenght; k++ )
   {
-    temp0 = *Theta++ ;
-
-    if (k % Philenght == 0) i++;
-
-    *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
-    *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
-
-
-
+    temp0 = *ThetaVec++ ;
+    for (long unsigned int i=0; i < Thetalenght; i++ ){
+      *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
+      *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
+    }
   }
 
   free(S1S2) ;
@@ -238,7 +235,7 @@ _C_GetFields(const double m,
   complex128 temp2;
 
   C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
-
+/*
   long unsigned int i = 0;
   for (long unsigned int k=0; k < Thetalenght; k++ )
   {
@@ -254,51 +251,46 @@ _C_GetFields(const double m,
   }
 
   free(S1S2) ;
+  */
   return;
 }
 
 
 
 
+
 static void
 C_GetFieldsNoPolarization(const double m,
-            const double x,
-            double* Theta,
-            const double*  phi,
-            const double* phiOnly,
-            const long unsigned int Thetalenght,
-            const long unsigned int Philenght,
-            complex128* Parallel,
-            complex128* Perpendicular
-          )
-          {
-            complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
+                          const double x,
+                          const double* ThetaVec,
+                          const int Thetalenght,
+                          const double* PhiVec,
+                          const int Philenght,
+                          complex128* Parallel,
+                          complex128* Perpendicular)
+{
+  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
 
-            const std::complex<double> j (0., 1.0) ;
+  const std::complex<double> j (0., 1.0) ;
 
-            double temp0 ;
-            complex128 temp2;
+  double temp0 ;
+  double temp1 = 1./sqrt(2.) ;
+  complex128 temp2;
 
-            C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
+  C_GetS1S2(m, x, PhiVec, Philenght, S1S2) ;
 
-            long unsigned int i = 0;
-            for (long unsigned int k=0; k < Thetalenght; k++ )
-            {
-              temp0 = *Theta++ ;
+  for (long unsigned int k=0; k < Thetalenght; k++ )
+  {
+    temp0 = *ThetaVec++ ;
+    for (long unsigned int i=0; i < Thetalenght; i++ ){
+      *Parallel++          = S1S2[i] * temp1 ;
+      *Perpendicular++     = S1S2[i + Philenght] * temp1 ;
+    }
+  }
 
-              if (k % Philenght == 0) i++;
-
-              *Parallel++          = S1S2[i] * 1./sqrt(2.) ;
-              *Perpendicular++     = S1S2[i + Philenght] * 1./sqrt(2.) ;
-
-
-
-            }
-
-            free(S1S2) ;
-            return;
-          }
-
+  free(S1S2) ;
+  return;
+}
 
 
 

@@ -20,7 +20,7 @@ Perpendicular_CYTHON = np.outer(S1S2_CYTHON[1], np.cos(ThetaList))
 
 
 
-Parallel_CPP, Perpendicular_CPP = Fields_CPP(1.4, 0.3, PHI.flatten(), THETA.flatten(), ThetaList, PhiList, Polarization=0);
+Parallel_CPP, Perpendicular_CPP = Fields_CPP(1.4, 0.3, ThetaList, PhiList, Polarization='None');
 
 
 fig = plt.figure()
