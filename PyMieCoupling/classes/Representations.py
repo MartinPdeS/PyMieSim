@@ -4,13 +4,14 @@ import matplotlib
 from matplotlib import cm
 from typing import Tuple
 from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
+from PyMieCoupling.classes.BaseClasses import BaseFarField
 import matplotlib.ticker as tick
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import polarTransform
 from PyMieCoupling.functions.converts import NA2Angle
-
+from PyMieCoupling.cpp.S1S2 import GetFields as Fields_CPP
 
 try:
     from PyMieCoupling.cpp.S1S2 import GetS1S2
@@ -106,6 +107,7 @@ class Stokes(np.ndarray):
 
         plt.show(block=False)
 
+
     def GetStokes(cls, Parallel, Perpendicular):
 
         Array = np.empty( [4, *Parallel.shape] )
@@ -120,11 +122,6 @@ class Stokes(np.ndarray):
         Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
 
         cls.Array = Array
-
-
-
-
-
 
 
 
@@ -151,16 +148,17 @@ class Field(object):
         ax0 = fig.add_subplot(121, projection = 'mollweide')
         ax1 = fig.add_subplot(122, projection = 'mollweide')
 
+        ax0.pcolormesh(
+                     self.Meshes.Theta.Mesh.Radian,
+                     self.Meshes.Phi.Mesh.Radian-np.pi/2,
+                     np.real(self.Perpendicular),
+                     shading='auto')
 
-        ax0.contourf(
-                     self.Meshes.Theta.Mesh.Radian.T,
-                     (self.Meshes.Phi.Mesh.Radian.T-np.pi/2),
-                     np.real(self.Perpendicular))
-
-        ax1.contourf(
-                     self.Meshes.Theta.Mesh.Radian.T,
-                     self.Meshes.Phi.Mesh.Radian.T-np.pi/2,
-                     np.imag(self.Perpendicular))
+        ax1.pcolormesh(
+                     self.Meshes.Theta.Mesh.Radian,
+                     self.Meshes.Phi.Mesh.Radian-np.pi/2,
+                     np.imag(self.Perpendicular),
+                     shading='auto')
 
         ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
         ax0.set_ylabel(r'Angle $\phi$ [Degree]')
@@ -178,18 +176,29 @@ class Field(object):
 
 
 class SPF(np.ndarray):
-    def __new__(cls, Field):
+    def __new__(cls, Index, SizeParam, Polarization=0, num=201):
+        thetaVec = np.linspace(-np.pi, np.pi, num)
+        phiVec   = np.linspace(0, np.pi, num)
 
-        cls.Meshes = Field.Meshes
+        thetaMesh, phiMesh = np.meshgrid(thetaVec, phiVec)
+
+        Parallel, Perpendicular = Fields_CPP(Index,
+                                             SizeParam,
+                                             thetaMesh.flatten(),
+                                             phiMesh.flatten(),
+                                             phiVec,
+                                             num,
+                                             num,
+                                             Polarization  = Polarization);
 
         scamap = plt.cm.ScalarMappable(cmap='jet')
 
-        cls.fcolors = scamap.to_rgba(np.real(Field.Perpendicular) + np.real(Field.Parallel) )
+        cls.fcolors = scamap.to_rgba(np.real(Perpendicular) + np.real(Parallel) )
 
         SPF3D = cls.Make3D(cls,
-                            Field.Parallel.__abs__()**2 + Field.Perpendicular.__abs__()**2,
-                            cls.Meshes.Theta.Mesh.Radian,
-                            cls.Meshes.Phi.Mesh.Radian,
+                            Parallel.__abs__()**2 + Perpendicular.__abs__()**2,
+                            thetaMesh,
+                            phiMesh,
                             )
 
         this = np.array(SPF3D, copy=False)
@@ -203,7 +212,7 @@ class SPF(np.ndarray):
         pass
 
 
-    def __init__(self, Field):
+    def __init__(self, Index, SizeParam, Polarization=0):
 
         pass
 
@@ -360,32 +369,22 @@ class S1S2(np.ndarray):
 
 
 
-class LP_FarField(object):
+
+class LP_FarField(BaseFarField):
 
     def __init__(self,
                  Input,
-                 Size,
-                 Npts,
-                 NA,
-                 PhiOffset   = 0,
-                 ThetaOffset = 0):
+                 Size:        float,
+                 Npts:        int     = 101,
+                 NA:          float   = 0.2,
+                 PhiOffset:   float   = 0,
+                 ThetaOffset: float   = 0):
 
         self.Cartesian = Input
-        self.Size = Size
-        self.Npts = Npts
-        self.X = np.linspace(-self.Size/2, self.Size/2, self.Npts)*1e6
-        self.Y = np.linspace(-self.Size/2, self.Size/2, self.Npts)*1e6
-        self._NA = NA
-        self._PhiBound =  np.asarray( [0, NA2Angle(self.NA)] )
-        self._ThetaBound = np.asarray([-180, 180])
+        self.Size, self.Npts, self._NA  = Size, Npts, NA
+        self._PhiBound, self._ThetaBound  =  np.asarray( [0, NA2Angle(self._NA)] ), np.asarray([-180, 180])
+        self._PhiOffset, self._ThetaOffset = PhiOffset, ThetaOffset
         self.GetSpherical()
-
-        self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
-                                  PhiBound    = self._PhiBound,
-                                  ThetaNpts   = self.Spherical.shape[1],
-                                  PhiNpts     = self.Spherical.shape[0],
-                                  PhiOffset   = PhiOffset,
-                                  ThetaOffset = ThetaOffset)
 
     def GetSpherical(self):
         polarImageReal, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.real,
@@ -402,280 +401,43 @@ class LP_FarField(object):
 
         self.Spherical = polarImageReal + complex(0,1) * polarImageimag
 
-
-
-    def Plot(self):
-        fig = plt.figure(figsize=(12,3))
-        ax0 = fig.add_subplot(121, projection = 'aitoff')
-        ax1 = fig.add_subplot(122, projection = 'aitoff')
-
-        ax0.contourf(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     np.real(self.Spherical.T))
-
-        ax1.contourf(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     np.imag(self.Spherical.T))
-
-        ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
-        ax0.set_xlabel(r'Angle $\phi$ [Degree]')
-        ax0.set_ylabel(r'Angle $\theta$ [Degree]')
-        ax0.grid()
-
-        ax1.set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        ax1.set_xlabel(r'Angle $\phi$ [Degree]')
-        ax1.set_ylabel(r'Angle $\theta$ [Degree]')
-        ax1.grid()
-
-        fig.tight_layout()
-
-
-
-    def PlotPlan(self):
-        fig = plt.figure(figsize=(12,3))
-        ax0 = fig.add_subplot(141)
-        ax1 = fig.add_subplot(142)
-        ax2 = fig.add_subplot(143)
-        ax3 = fig.add_subplot(144)
-
-        ax0.pcolormesh(self.X,
-                       self.Y,
-                       self.Cartesian.real,
-                       shading='auto')
-
-        ax0.set_title('Real Part\n Far-Field Cartesian Coordinates')
-        ax0.set_xlabel(r'X-Distance c * x [u.a.]')
-        ax0.set_ylabel(r'Y-Distance c * y [u.a.]')
-
-        ax1.pcolormesh(self.X,
-                       self.Y,
-                       self.Cartesian.imag,
-                       shading='auto')
-
-        ax1.set_title('Imaginary Part\n Far-Field Cartesian Coordinates')
-        ax1.set_xlabel(r'X-Distance c * x [u.a.]')
-        ax1.set_ylabel(r'Y-Distance c * y [u.a.]')
-
-        ax2.pcolormesh(self.Meshes.Phi.Vector.Degree,
-                       self.Meshes.Theta.Vector.Degree,
-                       self.Spherical.real,
-                       shading='auto')
-
-        ax2.set_title('Real Part\n Far-Field Spherical Coordinates')
-        ax2.set_xlabel(r'Angle $\phi$ [Degree]')
-        ax2.set_ylabel(r'Angle $\theta$ [Degree]')
-
-        ax3.pcolormesh(self.Meshes.Phi.Vector.Degree,
-                       self.Meshes.Theta.Vector.Degree,
-                       self.Spherical.imag,
-                       shading='auto')
-
-        ax3.set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        ax3.set_xlabel(r'Angle $\phi$ [Degree]')
-        ax3.set_ylabel(r'Angle $\theta$ [Degree]')
-
-        fig.tight_layout()
-
-
-    @property
-    def ThetaBound(self):
-        return self._ThetaBound
-
-    @property
-    def PhiBound(self):
-        return self._PhiBound
-
-    @property
-    def PhiOffset(self):
-        return self.__PhiOffset
-
-    @property
-    def ThetaOffset(self):
-        return self.__ThetaOffset
-
-    @property
-    def NA(self):
-        return self._NA
-
-    @NA.setter
-    def NA(self, val: float):
-        self._NA = val
-        self.PhiBound =  np.asarray( [0, NA2Angle(self._NA)] )
-
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self._ThetaBound = np.asarray( val )
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
-                                  ThetaOffset        = 0,
-                                  PhiOffset          = 0)
-    @PhiBound.setter
-    def PhiBound(self, val: list):
-        self._PhiBound = val
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
-                                  ThetaOffset        = 0,
-                                  PhiOffset          = 0)
-
-    @PhiOffset.setter
-    def PhiOffset(self, val):
-        self.__PhiOffset = val
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
-                                  ThetaOffset        = 0,
-                                  PhiOffset          = val)
-
-    @ThetaOffset.setter
-    def ThetaOffset(self, val):
-        self._ThetaOffset = val
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
-                                  ThetaOffset        = val,
-                                  PhiOffset          = 0)
-
-
-
-
-
-
-class Detector_FarField(object):
-
-    def __init__(self,
-                 Npts,
-                 NA,
-                 ThetaOffset = 0,
-                 PhiOffset   = 0):
-
-
-        self.Npts = Npts
-        self._NA = NA
-        self._PhiBound =  np.asarray( [0, NA2Angle(self._NA)] )
-        self._ThetaBound = np.asarray([-180, 180])
-        self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
-        self.GetSpherical()
         self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
                                   PhiBound    = self._PhiBound,
-                                  ThetaNpts   = self.Npts,
-                                  PhiNpts     = self.Npts,
-                                  PhiOffset   = PhiOffset,
-                                  ThetaOffset = ThetaOffset)
+                                  ThetaNpts   = self.Spherical.shape[0],
+                                  PhiNpts     = self.Spherical.shape[1],
+                                  PhiOffset   = self._PhiOffset,
+                                  ThetaOffset = self._ThetaOffset)
+
+
+
+class Detector_FarField(BaseFarField):
+
+    def __init__(self,
+                 Npts:        int   = 101,
+                 NA:          float = 0.2,
+                 ThetaOffset: float = 0,
+                 PhiOffset:   float = 0):
+
+
+        self.Npts, self._NA = Npts, NA
+
+        self._PhiBound, self._ThetaBound  =  np.asarray( [0, NA2Angle(self._NA)] ), np.asarray([-180, 180])
+
+        self._PhiOffset, self._ThetaOffset = PhiOffset, ThetaOffset
+
+        self.GetSpherical()
 
 
 
     def GetSpherical(self):
         self.Spherical = np.ones([self.Npts, self.Npts]) / (self.Npts*self.Npts)
 
-
-    def Plot(self):
-        fig = plt.figure(figsize=(8,4))
-        ax0 = fig.add_subplot(121)
-        ax1 = fig.add_subplot(122)
-
-        im0 = ax0.pcolormesh(self.Meshes.Phi.Vector.Degree,
-                             self.Meshes.Theta.Vector.Degree,
-                             self.Spherical.real,
-                             shading='auto')
-
-        ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
-        ax0.set_xlabel(r'Angle $\phi$ [Degree]')
-        ax0.set_ylabel(r'Angle $\theta$ [Degree]')
-
-        im1 = ax1.pcolormesh(self.Meshes.Phi.Vector.Degree,
-                             self.Meshes.Theta.Vector.Degree,
-                             self.Spherical.imag,
-                             shading='auto')
-
-        ax1.set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        ax1.set_xlabel(r'Angle $\phi$ [Degree]')
-        ax1.set_ylabel(r'Angle $\theta$ [Degree]')
-
-        divider = make_axes_locatable(ax0)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.colorbar(im0, cax=cax, orientation='vertical')
-
-        divider = make_axes_locatable(ax1)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        fig.colorbar(im1, cax=cax, orientation='vertical')
-
-        fig.tight_layout()
-
-
-    @property
-    def NA(self):
-        return self._NA
-
-    @NA.setter
-    def NA(self, val: float):
-        self._NA = val
-        self.PhiBound =  np.asarray( [0, NA2Angle(self._NA)] )
-
-    @property
-    def ThetaBound(self):
-        return self._ThetaBound
-
-    @property
-    def PhiBound(self):
-        return self._PhiBound
-
-    @property
-    def PhiOffset(self):
-        return self.__PhiOffset
-
-    @property
-    def ThetaOffset(self):
-        return self.__ThetaOffset
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self._ThetaBound = np.asarray( val )
-        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
-                                  PhiNpts    = self.Npts,
-                                  ThetaBound = self._ThetaBound,
-                                  PhiBound   = self._PhiBound)
-
-    @PhiBound.setter
-    def PhiBound(self, val: list):
-        self._PhiBound = val
-        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
-                                  PhiNpts    = self.Npts,
-                                  ThetaBound = self._ThetaBound,
-                                  PhiBound   = self._PhiBound)
-
-
-
-    @PhiOffset.setter
-    def PhiOffset(self, val):
-        self.__PhiOffset = val
-        self.Meshes = AngleMeshes(ThetaNpts    = self.Npts,
-                                  PhiNpts      = self.Npts,
-                                  ThetaBound   = self._ThetaBound,
-                                  PhiBound     = self._PhiBound,
-                                  PhiOffset    = val,
-                                  ThetaOffset  = self.__ThetaOffset)
-
-
-    @ThetaOffset.setter
-    def ThetaOffset(self, val):
-        self.__ThetaOffset = val
-        self.Meshes = AngleMeshes(ThetaNpts    = self.Npts,
-                                  PhiNpts      = self.Npts,
-                                  ThetaBound   = self._ThetaBound + val,
-                                  PhiBound     = self._PhiBound,
-                                  PhiOffset    = self.__PhiOffset,
-                                  ThetaOffset  = val)
-
-
+        self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
+                                  PhiBound    = self._PhiBound,
+                                  ThetaNpts   = self.Npts,
+                                  PhiNpts     = self.Npts,
+                                  PhiOffset   = self._PhiOffset,
+                                  ThetaOffset = self._ThetaOffset)
 
 
 

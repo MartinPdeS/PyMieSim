@@ -533,7 +533,7 @@ class Scatterer(object):
     @property
     def SPF(self) -> None:
         if not self._SPF:
-            self._SPF = SPF(Field = self.FarField)
+            self._SPF = SPF(Index=self.Index, SizeParam=self.SizeParam)
             return self._SPF
         else:
             return self._SPF

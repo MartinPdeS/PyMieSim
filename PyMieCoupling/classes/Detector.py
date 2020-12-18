@@ -13,7 +13,7 @@ from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Representations import Detector_FarField, LP_FarField
 from PyMieCoupling.functions.converts import deg2rad
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
-
+from PyMieCoupling.classes.BaseClasses import BaseDetector
 import fibermodes
 
 
@@ -46,7 +46,7 @@ class fiber(object):
 
 
 
-class Photodiode(object):
+class Photodiode(BaseDetector):
     """Short summary.
 
     Parameters
@@ -119,76 +119,9 @@ class Photodiode(object):
 
 
 
-    @property
-    def ThetaBound(self):
-        return self.__ThetaBound
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self.FarField.ThetaBound = val
-
-    @property
-    def Filter(self):
-        return self._Filter
-
-    @Filter.setter
-    def Filter(self, val):
-        self._Filter = Angle(val)
-
-    @property
-    def PhiBound(self):
-        return self.FarField.__PhiBound
-
-    @PhiBound.setter
-    def PhiBound(self, val: list):
-        self.FarField.PhiBound = val
-
-    @property
-    def PhiOffset(self):
-        return self.FarField.PhiOffset
-
-    @PhiOffset.setter
-    def PhiOffset(self, val):
-        self.FarField.PhiOffset = val
-
-    @property
-    def ThetaOffset(self):
-        return self.FarField.__ThetaOffset
-
-    @ThetaOffset.setter
-    def ThetaOffset(self, val):
-        self.FarField.ThetaOffset = val
-
-    @property
-    def NA(self):
-        return self.FarField._NA
-
-    @NA.setter
-    def NA(self, val):
-        if val >= 1:
-            val = 1
-        if val <= 0:
-            val = 0
-        self.FarField.NA = val
 
 
-
-    def Coupling(self,
-                 Scatterer,
-                 Mode         = 'Centered'):
-
-        return Coupling(Scatterer    = Scatterer,
-                        Detector     = self,
-                        Mode         = Mode)
-
-
-    def Footprint(self, Scatterer):
-        return GetFootprint(Scatterer    = Scatterer,
-                            Detector     = self)
-
-
-
-class LPmode(object):
+class LPmode(BaseDetector):
     """Short summary.
 
     Parameters
@@ -266,15 +199,13 @@ class LPmode(object):
 
         Fiber, CoreDiameter = SMF28()
 
-        self.GetFarField()
+        if PhiOffset == 0:
 
-        if PhiOffset != 0: self.FarField.PhiOffset = PhiOffset
-
-        if ThetaOffset != 0: self.FarField.ThetaOffset = ThetaOffset
+            self.GetFarFieldNoOffset()
 
 
 
-    def GetFarField(self):
+    def GetFarFieldNoOffset(self):
 
         Fiber, CoreDiameter = SMF28()
 
@@ -310,74 +241,6 @@ class LPmode(object):
         shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
 
         return shift_grid * shift_grid.T
-
-
-    @property
-    def ThetaBound(self):
-        return self.__ThetaBound
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self.FarField.ThetaBound = val
-
-    @property
-    def Filter(self):
-        return self._Filter
-
-    @Filter.setter
-    def Filter(self, val):
-        self._Filter = Angle(val)
-
-    @property
-    def PhiBound(self):
-        return self.FarField.__PhiBound
-
-    @PhiBound.setter
-    def PhiBound(self, val: list):
-        self.FarField.PhiBound = val
-
-    @property
-    def PhiOffset(self):
-        return self.FarField.__PhiOffset
-
-    @PhiOffset.setter
-    def PhiOffset(self, val):
-        self.FarField.PhiOffset = val
-
-    @property
-    def ThetaOffset(self):
-        return self.FarField.__ThetaOffset
-
-    @ThetaOffset.setter
-    def ThetaOffset(self, val):
-        self.FarField.ThetaOffset = val
-
-    @property
-    def NA(self):
-        return self.FarField._NA
-
-    @NA.setter
-    def NA(self, val):
-        if val >= 1:
-            val = 1
-        if val <= 0:
-            val = 0
-        self.FarField.NA = val
-
-
-
-    def Coupling(self,
-                 Scatterer,
-                 Mode         = 'Centered'):
-
-        return Coupling(Scatterer    = Scatterer,
-                        Detector     = self,
-                        Mode         = Mode)
-
-
-    def Footprint(self, Scatterer):
-        return GetFootprint(Scatterer    = Scatterer,
-                            Detector     = self)
 
 
 
