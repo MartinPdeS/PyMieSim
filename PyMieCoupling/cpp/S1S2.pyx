@@ -23,7 +23,7 @@ cdef extern from "MieS1S2.cpp":
                            double b,
                            double* theta,
                            double* phi,
-                           double* phiOnly,
+                           double* phiVector,
                            int Thetalenght,
                            int Philenght,
                            complex128_t* Parallel,
@@ -35,7 +35,7 @@ cdef extern from "MieS1S2.cpp":
                                         double b,
                                         double* theta,
                                         double* phi,
-                                        double* phiOnly,
+                                        double* phiVector,
                                         int Thetalenght,
                                         int Philenght,
                                         complex128_t* Parallel,
@@ -77,29 +77,31 @@ cpdef GetFields(double m,
                 double x,
                 Theta,
                 Phi,
-                ThetaVec,
                 PhiVec,
+                Thetalenght,
+                Philenght,
                 Polarization):
 
     cdef:
         np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(Phi, dtype = float, order="C")
         double* phiMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
 
-        np.ndarray[double, ndim=1, mode="c"] phiOnlyView = np.asarray(PhiVec, dtype = float, order="C")
+        np.ndarray[double, ndim=1, mode="c"] phiVectorView = np.asarray(PhiVec, dtype = float, order="C")
         double* phiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
 
         np.ndarray[double, ndim=1, mode="c"] thetaView = np.asarray(Theta, dtype = float, order="C")
         double* thetaMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
 
     phiMesh_ptr = &phiView[0]
-    phiVec_ptr = &phiOnlyView[0]
+    phiVec_ptr = &phiVectorView[0]
     thetaMesh_ptr = &thetaView[0]
 
-    Parallel = VectorWrapper(PhiVec.size * ThetaVec.size)
+
+    Parallel = VectorWrapper(Philenght * Thetalenght)
     Parallel.add_row()
 
-    Perpendicular = VectorWrapper(PhiVec.size * ThetaVec.size)
-    Perpendicular.add_row() 
+    Perpendicular = VectorWrapper(Philenght * Thetalenght)
+    Perpendicular.add_row()
 
     if Polarization == 'None':
 
@@ -108,8 +110,8 @@ cpdef GetFields(double m,
                                 thetaMesh_ptr,
                                 phiMesh_ptr,
                                 phiVec_ptr,
-                                Theta.size,
-                                PhiVec.size,
+                                Thetalenght,
+                                Philenght,
                                 &(Parallel.S1S2)[0],
                                 &(Perpendicular.S1S2)[0]
                                 );
@@ -128,8 +130,9 @@ cpdef GetFields(double m,
                     );
 
 
-    arr0 = np.asarray(Parallel).reshape([ThetaVec.size, PhiVec.size])
-    arr1 = np.asarray(Perpendicular).reshape([ThetaVec.size, PhiVec.size])
+    arr0 = np.asarray(Parallel).reshape([Thetalenght, Philenght])
+    arr1 = np.asarray(Perpendicular).reshape([Thetalenght, Philenght])
+
 
     return arr0, arr1
 

@@ -23,18 +23,6 @@ Fontsize, pi, cmapPad = 7, 3.141592, 0.2
 
 from PyMieCoupling.cpp.S1S2 import GetFields as Fields_CPP
 
-try:
-    from PyMieCoupling.cpp.S1S2 import GetS1S2
-except:
-    try:
-        from PyMieCoupling.cython.S1S2 import GetS1S2
-    except:
-        try:
-            from PyMieCoupling.cython.S1S2 import GetS1S2
-        except: ImportError
-
-
-
 
 class DataFrameCPU(pd.DataFrame):
 
@@ -478,24 +466,17 @@ class Scatterer(object):
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
-
-        self._Stokes, self._SPF, self._Fields = (None,)*3
+        self._Stokes, self._SPF, self.__FarField, self.__S1S2 = (None,)*4
 
         if Meshes:
             self.Meshes = Meshes
         else:
-
             self.Meshes = AngleMeshes(ThetaBound  = np.asarray(ThetaBound),
                                       PhiBound    = np.asarray(PhiBound),
                                       ThetaNpts   = Npts,
                                       PhiNpts     = Npts,
                                       PhiOffset   = PhiOffset,
                                       ThetaOffset = ThetaOffset)
-
-
-
-
-        self.__S1S2, self.__Field = None, None
 
 
     @property
@@ -511,12 +492,12 @@ class Scatterer(object):
 
 
     @property
-    def Field(self) -> AngleMeshes:
-        if self.__Field is None:
+    def FarField(self) -> AngleMeshes:
+        if self.__FarField is None:
             self.GenField()
-            return self.__Field
+            return self.__FarField
         else:
-            return self.__Field
+            return self.__FarField
 
 
 
@@ -524,18 +505,20 @@ class Scatterer(object):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
         """
+
         Parallel, Perpendicular = Fields_CPP(self.Index,
                                              self.SizeParam,
                                              self.Meshes.Theta.Mesh.Radian.flatten(),
                                              self.Meshes.Phi.Mesh.Radian.flatten(),
-                                             self.Meshes.Theta.Vector.Radian,
                                              self.Meshes.Phi.Vector.Radian,
+                                             self.Meshes.Theta.Mesh.Radian.shape[0],
+                                             self.Meshes.Theta.Mesh.Radian.shape[1],
                                              Polarization  = self.Source.Polarization.Radian);
 
 
-        self.__Field = Field(Perpendicular = Perpendicular,
-                             Parallel      = Parallel,
-                             Meshes        = self.Meshes);
+        self.__FarField = Field(Perpendicular = Perpendicular,
+                                Parallel      = Parallel,
+                                Meshes        = self.Meshes);
 
 
     @property
@@ -550,7 +533,7 @@ class Scatterer(object):
     @property
     def SPF(self) -> None:
         if not self._SPF:
-            self._SPF = SPF(Field = self.Field)
+            self._SPF = SPF(Field = self.FarField)
             return self._SPF
         else:
             return self._SPF

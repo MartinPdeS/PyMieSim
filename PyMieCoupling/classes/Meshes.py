@@ -71,9 +71,10 @@ class AngleMeshes(object):
 
         r = np.ones(self.Phi.Mesh.Radian.flatten().shape)
 
+
         x, y, z = cs.sp2cart(r,
-                              self.Phi.Mesh.Radian.flatten()+np.pi/2,
-                              self.Theta.Mesh.Radian.flatten(),
+                              self.Phi.Mesh.Radian.flatten()-np.pi/2/1.01, ###########################___MAY BE A PROBLEM HERE!
+                              self.Theta.Mesh.Radian.flatten()/1.01,
                               )
 
         Tz = cs.mx_rot_x(gamma = rotation/180*np.pi)
@@ -84,7 +85,8 @@ class AngleMeshes(object):
 
         self.Theta.Mesh   = Angle( thetap.reshape(self.Theta.Mesh.Radian.shape), unit='Radian' )
 
-        self.Phi.Mesh = Angle( (phip.reshape(self.Phi.Mesh.Radian.shape)-np.pi/2) , unit='Radian' )
+        self.Phi.Mesh = Angle( (phip.reshape(self.Phi.Mesh.Radian.shape)+np.pi/2) , unit='Radian' )
+        print(self.Theta.Mesh.Radian-thetap.reshape(self.Phi.Mesh.Radian.shape))
 
 
 

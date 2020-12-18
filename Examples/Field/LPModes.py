@@ -38,7 +38,7 @@ LP01 = LPmode(Name          = 'LP01',
 
 #LP01.NearField.Plot()
 
-LP11.FarField.Plot()
+#LP11.FarField.Plot()
 
 plt.show()
 # -

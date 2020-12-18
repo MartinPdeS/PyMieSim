@@ -146,18 +146,20 @@ class Field(object):
 
 
     def Plot(self):
+
         fig = plt.figure(figsize=(12,3))
         ax0 = fig.add_subplot(121, projection = 'mollweide')
         ax1 = fig.add_subplot(122, projection = 'mollweide')
 
+
         ax0.contourf(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
+                     self.Meshes.Theta.Mesh.Radian.T,
+                     (self.Meshes.Phi.Mesh.Radian.T-np.pi/2),
                      np.real(self.Perpendicular))
 
         ax1.contourf(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
+                     self.Meshes.Theta.Mesh.Radian.T,
+                     self.Meshes.Phi.Mesh.Radian.T-np.pi/2,
                      np.imag(self.Perpendicular))
 
         ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
@@ -214,8 +216,8 @@ class SPF(np.ndarray):
                          rstride     = 2,
                          cstride     = 2,
                          linewidth   = 0.003,
-                         facecolors=cls.fcolors,
-                         edgecolors='k',
+                         facecolors  = cls.fcolors,
+                         edgecolors  = 'k',
                          antialiased = False,
                          )
 
@@ -235,6 +237,8 @@ class SPF(np.ndarray):
                ThetaMesh: np.array,
                PhiMesh:   np.array,
                ) -> Tuple[np.array, np.array, np.array]:
+
+        PhiMesh = PhiMesh %np.pi
 
         X = item * np.sin(PhiMesh) * np.cos(ThetaMesh)
 
@@ -362,7 +366,9 @@ class LP_FarField(object):
                  Input,
                  Size,
                  Npts,
-                 NA):
+                 NA,
+                 PhiOffset   = 0,
+                 ThetaOffset = 0):
 
         self.Cartesian = Input
         self.Size = Size
@@ -373,11 +379,13 @@ class LP_FarField(object):
         self._PhiBound =  np.asarray( [0, NA2Angle(self.NA)] )
         self._ThetaBound = np.asarray([-180, 180])
         self.GetSpherical()
-        self.Meshes = AngleMeshes(ThetaBound = self._ThetaBound,
-                                  PhiBound   = self._PhiBound,
-                                  ThetaNpts  = self.Spherical.shape[0],
-                                  PhiNpts    = self.Spherical.shape[1])
 
+        self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
+                                  PhiBound    = self._PhiBound,
+                                  ThetaNpts   = self.Spherical.shape[1],
+                                  PhiNpts     = self.Spherical.shape[0],
+                                  PhiOffset   = PhiOffset,
+                                  ThetaOffset = ThetaOffset)
 
     def GetSpherical(self):
         polarImageReal, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.real,
@@ -556,10 +564,13 @@ class Detector_FarField(object):
         self._ThetaBound = np.asarray([-180, 180])
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
         self.GetSpherical()
-        self.Meshes = AngleMeshes(ThetaBound = self._ThetaBound + self.__ThetaOffset,
-                                  PhiBound   = self._PhiBound + self.__PhiOffset,
-                                  ThetaNpts  = self.Npts,
-                                  PhiNpts    = self.Npts)
+        self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
+                                  PhiBound    = self._PhiBound,
+                                  ThetaNpts   = self.Npts,
+                                  PhiNpts     = self.Npts,
+                                  PhiOffset   = PhiOffset,
+                                  ThetaOffset = ThetaOffset)
+
 
 
     def GetSpherical(self):
@@ -609,7 +620,6 @@ class Detector_FarField(object):
         self._NA = val
         self.PhiBound =  np.asarray( [0, NA2Angle(self._NA)] )
 
-
     @property
     def ThetaBound(self):
         return self._ThetaBound
@@ -637,8 +647,6 @@ class Detector_FarField(object):
     @PhiBound.setter
     def PhiBound(self, val: list):
         self._PhiBound = val
-        print(self._PhiBound)
-
         self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
                                   PhiNpts    = self.Npts,
                                   ThetaBound = self._ThetaBound,
@@ -649,19 +657,23 @@ class Detector_FarField(object):
     @PhiOffset.setter
     def PhiOffset(self, val):
         self.__PhiOffset = val
-        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
-                                  PhiNpts    = self.Npts,
-                                  ThetaBound = self._ThetaBound,
-                                  PhiBound   = self._PhiBound + val)
+        self.Meshes = AngleMeshes(ThetaNpts    = self.Npts,
+                                  PhiNpts      = self.Npts,
+                                  ThetaBound   = self._ThetaBound,
+                                  PhiBound     = self._PhiBound,
+                                  PhiOffset    = val,
+                                  ThetaOffset  = self.__ThetaOffset)
 
 
     @ThetaOffset.setter
     def ThetaOffset(self, val):
         self.__ThetaOffset = val
-        self.Meshes = AngleMeshes(ThetaNpts  = self.Npts,
-                                  PhiNpts    = self.Npts,
-                                  ThetaBound = self._ThetaBound + val,
-                                  PhiBound   = self._PhiBound)
+        self.Meshes = AngleMeshes(ThetaNpts    = self.Npts,
+                                  PhiNpts      = self.Npts,
+                                  ThetaBound   = self._ThetaBound + val,
+                                  PhiBound     = self._PhiBound,
+                                  PhiOffset    = self.__PhiOffset,
+                                  ThetaOffset  = val)
 
 
 

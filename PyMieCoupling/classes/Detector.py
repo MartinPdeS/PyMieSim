@@ -107,15 +107,11 @@ class Photodiode(object):
                  Filter:            float  = 'None',
                  Name:              str    = 'Intensity Detector'):
 
-        self._name = Name
+        self._name, self._coupling  = Name, 'Intensity'
 
-        self._coupling = 'Intensity'
-
-        self.Source = Source
+        self.Source, self.Npts = Source, Npts
 
         self.__ThetaOffset, self.__PhiOffset = ThetaOffset, PhiOffset
-
-        self.Npts = Npts
 
         self.FarField = Detector_FarField(self.Npts, NA, ThetaOffset, PhiOffset)
 
@@ -256,13 +252,13 @@ class LPmode(object):
 
         self._name, self._coupling = Name, 'Amplitude'
 
+        self._NA = NA
+
         self._Filter = Angle(Filter)
 
-        ModeNumber = Mode[0]+1, Mode[1]
+        self.ModeNumber = Mode[0]+1, Mode[1]
 
-        self.Source = Source
-
-        self.Npts = Npts
+        self.Source, self.Npts = Source, Npts
 
         self.Orientation = Orientation
 
@@ -270,24 +266,50 @@ class LPmode(object):
 
         Fiber, CoreDiameter = SMF28()
 
-
-        obj = ModeField(Fiber       = Fiber.source,
-                        Mode        = fibermodes.Mode(fibermodes.ModeFamily.HE, *ModeNumber),
-                        Wavelength  = Source.Wavelength,
-                        Size        = 10*CoreDiameter,
-                        Npts        = Npts,
-                        NA          = NA,
-                        Orientation = self.Orientation)
-
-        self.NearField = obj.NearField
-
-        self.FarField = obj.FarField
+        self.GetFarField()
 
         if PhiOffset != 0: self.FarField.PhiOffset = PhiOffset
 
         if ThetaOffset != 0: self.FarField.ThetaOffset = ThetaOffset
 
 
+
+    def GetFarField(self):
+
+        Fiber, CoreDiameter = SMF28()
+
+        temp = fibermodes.field.Field(Fiber.source,
+                                      fibermodes.Mode(fibermodes.ModeFamily.HE, *self.ModeNumber),
+                                      self.Source.Wavelength,
+                                      10*CoreDiameter,
+                                      self.Npts).Ex()
+
+        temp = np.array(temp, copy=False)
+
+        temp /= (temp.__abs__()).sum()
+
+        if self.Orientation == 'h': temp = temp.T
+
+        self.NearField = _NearField(temp, 10*CoreDiameter, self.Npts)
+
+        temp = np.fft.fft2(self.NearField.Cartesian)
+
+        temp /= self.GenShift()
+
+        temp = np.fft.fftshift(temp)
+
+        temp /= (temp.__abs__()).sum()
+
+        self.FarField = LP_FarField(temp, 10*CoreDiameter, self.Npts, self._NA)
+
+
+    def GenShift(self):
+
+        phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(self.Npts)*(self.Npts-1)/self.Npts)
+
+        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+        return shift_grid * shift_grid.T
 
 
     @property
@@ -377,69 +399,6 @@ def SMF28():
     return Fiber, CoreDiameter
 
 
-
-
-
-class ModeField(object):
-
-    def __init__(self,
-                 Fiber,
-                 Mode,
-                 Wavelength,
-                 Size,
-                 Npts,
-                 Orientation,
-                 NA):
-
-
-        self.Fiber = Fiber
-        self.Mode = Mode
-        self.Size = Size
-        self.Wavelength = Wavelength
-        self.Npts = Npts
-        self.Orientation = Orientation
-        self.NA = NA
-        self.GetNearField()
-        self.GetFarField()
-
-
-    def GetFarField(self):
-        temp = np.fft.fft2(self.NearField.Cartesian)
-
-        temp /= self.GenShift()
-
-        temp = np.fft.fftshift(temp)
-
-        temp /= (temp.__abs__()).sum()
-
-        self.FarField = LP_FarField(temp, self.Size, self.Npts, self.NA)
-
-
-    def GenShift(self):
-
-        phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(self.Npts)*(self.Npts-1)/self.Npts)
-
-        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
-
-        return shift_grid * shift_grid.T
-
-
-    def GetNearField(self):
-
-        temp = fibermodes.field.Field(self.Fiber,
-                                           self.Mode,
-                                           self.Wavelength,
-                                           self.Size,
-                                           self.Npts).Ex()
-
-        temp = np.array(temp, copy=False)
-
-        temp /= (temp.__abs__()).sum()
-
-        if self.Orientation == 'h': temp = temp.T
-
-
-        self.NearField = _NearField(temp, self.Size, self.Npts)
 
 
 
