@@ -1,5 +1,5 @@
 
-from PyMieCoupling.classes.BaseClasses import BaseFarField
+from PyMieCoupling.classes.BaseClasses import BaseFarField, _BaseFarField
 from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
 from PyMieCoupling.functions.converts import NA2Angle
 
@@ -17,6 +17,7 @@ class LPFarField(BaseFarField):
                  ThetaOffset: float   = 0):
 
         self.Cartesian = Input
+        self.Parallel, self.Perpendicular, self.Scalar = (None,)*3
         self.Size, self.Npts, self._NA  = Size, Npts, NA
         self._PhiBound, self._ThetaBound  =  np.asarray( [0, NA2Angle(self._NA)] ), np.asarray([-180, 180])
         self._PhiOffset, self._ThetaOffset = PhiOffset, ThetaOffset
@@ -35,12 +36,13 @@ class LPFarField(BaseFarField):
                                                                         finalRadius   = 40,
                                                                         finalAngle    = 2*np.pi)
 
-        self.Spherical = polarImageReal + complex(0,1) * polarImageimag
+
+        self.Scalar = polarImageReal + complex(0,1) * polarImageimag
 
         self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
                                   PhiBound    = self._PhiBound,
-                                  ThetaNpts   = self.Spherical.shape[0],
-                                  PhiNpts     = self.Spherical.shape[1],
+                                  ThetaNpts   = self.Scalar.shape[0],
+                                  PhiNpts     = self.Scalar.shape[1],
                                   PhiOffset   = self._PhiOffset,
                                   ThetaOffset = self._ThetaOffset)
 
@@ -104,7 +106,7 @@ class Detector_FarField(BaseFarField):
 
 
     def GetSpherical(self):
-        self.Spherical = np.ones([self.Npts, self.Npts]) / (self.Npts*self.Npts)
+        self.Scalar = np.ones([self.Npts, self.Npts]) / (self.Npts*self.Npts)
 
         self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
                                   PhiBound    = self._PhiBound,

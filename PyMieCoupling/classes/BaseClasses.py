@@ -61,7 +61,7 @@ class BaseDetector(object):
     npts
 
     """
-    
+
     def __init__(self):
         pass
 
@@ -126,6 +126,63 @@ class BaseDetector(object):
 
 
 
+class _BaseFarField(np.ndarray):
+
+    def __new__(cls,
+                Scalar        = None,
+                Meshes        = None):
+
+        cls.Meshes = Meshes
+
+        this = np.array(Scalar, copy=False)
+
+        this = np.asarray(this).view(cls)
+
+        return this
+
+
+    def __array_finalize__(self, obj):
+        pass
+
+
+    def __init__(self, Scalar, Meshes):
+        pass
+
+
+    def Plot(self):
+
+        fig, axes = plt.subplots(nrows = 1,
+                                 ncols = 2,
+                                 figsize    = (8,3),
+                                 subplot_kw = {'projection':'mollweide'})
+
+        axes[0].pcolormesh(
+                     self.Meshes.Theta.Mesh.Radian,
+                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
+                     self.Scalar.real,
+                     shading='auto')
+
+        axes[0].set_title('Real Part\n Far-Field Spherical Coordinates')
+        axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
+        axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
+
+        axes[1].pcolormesh(
+                     self.Meshes.Theta.Mesh.Radian,
+                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
+                     self.Scalar.imag,
+                     shading='auto')
+
+        axes[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
+        axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
+        axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
+        axes[1].grid()
+
+        fig.tight_layout()
+        plt.show()
+
+
+
+
 
 class BaseFarField(object):
     def __init__(self):
@@ -140,13 +197,13 @@ class BaseFarField(object):
         ax0.pcolormesh(
                      self.Meshes.Theta.Mesh.Radian,
                      self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     np.real(self.Spherical),
+                     np.real(self.Scalar),
                      shading='auto')
 
         ax1.pcolormesh(
                      self.Meshes.Theta.Mesh.Radian,
                      self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     np.imag(self.Spherical),
+                     np.imag(self.Scalar),
                      shading='auto')
 
         ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
@@ -193,8 +250,8 @@ class BaseFarField(object):
         self._ThetaBound = np.asarray( val )
         self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
                                   PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
+                                  ThetaNpts          = self.Scalar.shape[0],
+                                  PhiNpts            = self.Scalar.shape[1],
                                   ThetaOffset        = 0,
                                   PhiOffset          = 0)
     @PhiBound.setter
@@ -202,8 +259,8 @@ class BaseFarField(object):
         self._PhiBound = val
         self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
                                   PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
+                                  ThetaNpts          = self.Scalar.shape[0],
+                                  PhiNpts            = self.Scalar.shape[1],
                                   ThetaOffset        = 0,
                                   PhiOffset          = 0)
 
@@ -212,8 +269,8 @@ class BaseFarField(object):
         self._PhiOffset = val
         self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
                                   PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
+                                  ThetaNpts          = self.Scalar.shape[0],
+                                  PhiNpts            = self.Scalar.shape[1],
                                   ThetaOffset        = 0,
                                   PhiOffset          = val)
 
@@ -222,8 +279,8 @@ class BaseFarField(object):
         self._ThetaOffset = val
         self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
                                   PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Spherical.shape[0],
-                                  PhiNpts            = self.Spherical.shape[1],
+                                  ThetaNpts          = self.Scalar.shape[0],
+                                  PhiNpts            = self.Scalar.shape[1],
                                   ThetaOffset        = val,
                                   PhiOffset          = 0)
 

@@ -137,6 +137,7 @@ class DirectMeshes(object):
                  YBound:   list = [-1,1],
                  XNpts:    int  = None,
                  YNpts:    int  = None,
+                 Npts:     int  = None,
                  ):
 
         self.Npts = Npts
