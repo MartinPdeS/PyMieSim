@@ -9,8 +9,8 @@ _________________________________________________________
 import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.functions.converts import Angle2Direct, Direct2Angle
-from PyMieCoupling.classes.Detector import fiber, LPmode
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Detector import LPmode
+from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 
 PolarizationList = np.linspace(0,180,100)
@@ -25,7 +25,7 @@ LP11 = LPmode(Mode          = (1, 1),
               Source        = LightSource,
               Npts          = 101,
               ThetaOffset   = 0,
-              PhiOffset     = 40,
+              PhiOffset     = 0,
               Filter        = 'None',
               NA            = 0.2)
 
@@ -35,7 +35,7 @@ LP01 = LPmode(Mode          = (0, 1),
               Source        = LightSource,
               Npts          = 101,
               ThetaOffset   = 0,
-              PhiOffset     = 40,
+              PhiOffset     = 0,
               Filter        = 0,
               NA            = 0.2)
 

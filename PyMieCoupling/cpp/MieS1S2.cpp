@@ -162,7 +162,6 @@ C_GetS1S2(const double m,
         MiePiTau(cos( phi[i] ), nmax, pin, taun);
 
         for (long unsigned int k = 0; k < anLength ; k++){
-
             *temp0 += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
             *temp1 += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
@@ -214,48 +213,6 @@ C_GetFields(const double m,
 
 
 
-static void
-_C_GetFields(const double m,
-            const double x,
-            double* Theta,
-            const double*  phi,
-            const double* phiOnly,
-            const long unsigned int Thetalenght,
-            const long unsigned int Philenght,
-            complex128* Parallel,
-            complex128* Perpendicular,
-            double Polarization
-          )
-{
-  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
-
-  const std::complex<double> j (0., 1.0) ;
-
-  double temp0 ;
-  complex128 temp2;
-
-  C_GetS1S2(m, x, phiOnly, Philenght, S1S2) ;
-/*
-  long unsigned int i = 0;
-  for (long unsigned int k=0; k < Thetalenght; k++ )
-  {
-    temp0 = *Theta++ ;
-
-    if (k % Philenght == 0) i++;
-
-    *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
-    *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
-
-
-
-  }
-
-  free(S1S2) ;
-  */
-  return;
-}
-
-
 
 
 
@@ -291,6 +248,86 @@ C_GetFieldsNoPolarization(const double m,
   free(S1S2) ;
   return;
 }
+
+
+
+
+
+
+static void
+C_GetFieldsFromMesh(const double m,
+                    const double x,
+                    const double* ThetaMesh,
+                    const double* PhiMesh,
+                    const int Philenght,
+                    const int Thetalenght,
+                    complex128* Parallel,
+                    complex128* Perpendicular,
+                    double Polarization
+          )
+{
+
+  complex128* S1S2 = (complex128*) calloc(2 * Philenght*Thetalenght , sizeof(complex128));
+
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0 ;
+  complex128 temp2;
+
+  C_GetS1S2(m, x, PhiMesh, Philenght*Thetalenght, S1S2) ;
+
+  for (long unsigned int k=0; k < Thetalenght * Philenght; k++ )
+  {
+    temp0 = *ThetaMesh++ ;
+
+    *Parallel++          = S1S2[k] * abs(cos(temp0 + Polarization)) ;
+    *Perpendicular++     = S1S2[k + Philenght*Thetalenght] * abs(sin(temp0 + Polarization)) ;
+
+  }
+
+  free(S1S2) ;
+  return;
+}
+
+
+
+
+
+
+
+static void
+C_GetFieldsNoPolarizationFromMesh(const double m,
+                                  const double x,
+                                  const double* ThetaVec,
+                                  const double* PhiVec,
+                                  complex128* Parallel,
+                                  complex128* Perpendicular)
+        {
+  /*
+  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
+
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0 ;
+  double temp1 = 1./sqrt(2.) ;
+  complex128 temp2;
+
+  C_GetS1S2(m, x, PhiVec, Philenght, S1S2) ;
+
+  for (long unsigned int k=0; k < Thetalenght; k++ )
+  {
+    temp0 = *ThetaVec++ ;
+    for (long unsigned int i=0; i < Thetalenght; i++ ){
+      *Parallel++          = S1S2[i] * temp1 ;
+      *Perpendicular++     = S1S2[i + Philenght] * temp1 ;
+    }
+  }
+
+  free(S1S2) ;
+  */
+  return;
+}
+
 
 
 

@@ -7,14 +7,14 @@ _________________________________________________________
 
 from PyMieCoupling.classes.Detector import Photodiode
 from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.utils import Source
 import matplotlib.pyplot as plt
 
 LightSource = Source(Wavelength   = 1000e-9,
                      Polarization = 90)
 
 
-Detector = Photodiode(NA                = 0.2,
+Detector = Photodiode(NA                = 0.8,
                       Source            = LightSource,
                       Npts              = 201,
                       ThetaOffset       = 0,
@@ -30,9 +30,7 @@ Scat = Scatterer(Diameter      = 50e-9,
 
 Scat.S1S2.Plot()
 
-Scat.Stokes.Plot()
-
-Scat.Field.Plot()
+Scat.FarField.Plot()
 
 Detector.FarField.Plot()
 

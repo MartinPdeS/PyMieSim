@@ -22,11 +22,11 @@ Scat = FullScatterer(Diameter    = 10e-9,
 
 Scat.FarField.Plot()
 
-Scat.S1S2.Plot()
+#Scat.S1S2.Plot()
 
-Scat.SPF.Plot()
+#Scat.SPF.Plot()
 
-Scat.Meshes.Plot()
+#Scat.Meshes.Plot()
 
 plt.show()
 

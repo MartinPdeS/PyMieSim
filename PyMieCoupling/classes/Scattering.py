@@ -1,68 +1,20 @@
-
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
-import matplotlib.pyplot as plt
-import matplotlib
-import matplotlib
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-from matplotlib import cm
 from typing import Tuple, Union
 
+import matplotlib.pyplot as plt
+from matplotlib import cm
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.classes.BaseClasses import BaseScatterer
+from PyMieCoupling.cpp.S1S2 import GetS1S2
+from PyMieCoupling.classes.DataFrame import DataFrameCPU
 
-
-
-class DataFrameCPU(pd.DataFrame):
-
-    def __init__(self,**kwargs):
-        pd.DataFrame.__init__(self,**kwargs)
-        self.Filter = None
-        self.ax = None
-
-
-    @property
-    def Parallel(self):
-        return self.xs('Parallel')
-
-
-    @property
-    def Perpendicular(self):
-        return self.xs('Perpendicular')
-
-
-    def Plot(self, y, Scale='Linear'):
-
-        for Polar in self.attrs['Filter']:
-            self._plot(y, Polar, Scale)
-
-
-    def _plot(self, y, Filter, Scale):
-
-        self.ax = self.xs(Filter).unstack(1).plot(y       = y,
-                                                  grid    = True,
-                                                  figsize = (8,3.5),
-                                                  title   = r'[{0}] Filter: {1} [Degree]'.format(self.DetectorNane, Filter),
-                                                  ylabel  = y,
-                                                  xlabel  = r'Scatterer diameter [m]')
-
-        self.ax.tick_params(labelsize='small')
-        self.ax.legend(bbox_to_anchor=(1, 1), ncol=1)
-
-        if Scale == 'Logarithmic':
-            self.ax.set_yscale('log')
-
-        plt.subplots_adjust(right=0.8,)
-
-        plt.show(block=False)
 
 
 
@@ -74,25 +26,20 @@ class ScattererSet(object):
                  RIList:          list,
                  Detector:        Union[LPmode, Photodiode],
                  Source:          Source,
-                 Mode:            str = 'Centered'
+                 Mode:            str = 'Centered',
+                 Npts:            int = 201,
                  ):
 
-        self.DiameterList = DiameterList
+        self.DiameterList, self.RIList = DiameterList, RIList
 
-        self.Detector = Detector
-
-        self.RIList = RIList
-
-        self.Source = Source
-
-        self.Mode = Mode
+        self.Detector, self.Source, self.Mode = Detector, Source, Mode
 
         self.Coupling = np.empty( [len(self.RIList), len(self.DiameterList)] )
 
-        self.S1List = np.empty( [len(self.RIList), len(self.DiameterList), self.Detector.Npts], dtype=np.complex  )
+        maxPhi, minPhi = np.max(Detector.FarField.Meshes.Phi.Mesh.Degree), np.min(Detector.FarField.Meshes.Phi.Mesh.Degree)
+        self.PhiVector = np.linspace(-np.pi/2, +np.pi/2,201)
 
-        self.S2List = np.empty( [len(self.RIList), len(self.DiameterList), self.Detector.Npts], dtype=np.complex  )
-
+        self.PhiVectorDetector = np.linspace(minPhi, maxPhi, 101)
 
 
     def GetCouplingFrame(self, Filter: list = ['None'] ):
@@ -138,58 +85,17 @@ class ScattererSet(object):
 
 
 
-    def GetS1(self, Boundary: str = 'Detector'):
-
-        if Boundary == 'Detector':
-            Meshes = self.Detector.Meshes
-
-        elif Boundary == 'Full':
-            Meshes = AngleMeshes(ThetaBound = np.array([-180, 180], copy=False),
-                                 PhiBound   = np.array([-90,90], copy=False),
-                                 ThetaNpts  = self.Detector.FarField.Meshes.ThetaNpts,
-                                 PhiNpts    = self.Detector.FarField.Meshes.PhiNpts)
-
+    def GetS1S2(self, num=201, n=0):
+        List = np.empty( [len(self.RIList), len(self.DiameterList), self.Detector.Npts], dtype=np.complex  )
         for nr, RI in enumerate(self.RIList):
 
             for nd, Diameter in enumerate(self.DiameterList):
+                SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                Scat = Scatterer(Diameter  = Diameter,
-                                 Index     = RI,
-                                 Source    = self.Source,
-                                 Meshes    = Meshes
-                                 )
+                S1S2 = GetS1S2(RI, SizeParam, self.PhiVector);
 
-                self.S1List[nr, nd,:] = Scat.S1S2[0]
+                List[nr, nd,:] = S1S2[n+1]
 
-
-        return self.S1List, Meshes
-
-
-
-    def GetS2(self, Boundary: str = 'Detector'):
-
-        if Boundary == 'Detector':
-            Meshes = self.Detector.Meshes
-
-        elif Boundary == 'Full':
-            Meshes = AngleMeshes(ThetaBound = np.array([-180, 180], copy=False),
-                                 PhiBound   = np.array([-90,90], copy=False),
-                                 Npts       = self.Detector.Npts)
-
-        for nr, RI in enumerate(self.RIList):
-
-            for nd, Diameter in enumerate(self.DiameterList):
-
-                Scat = Scatterer(Diameter  = Diameter,
-                                 Index     = RI,
-                                 Source    = self.Source,
-                                 Meshes    = Meshes
-                                 )
-
-                self.S2List[nr, nd,:] = Scat.S1S2[1]
-
-
-        return self.S2List, Meshes
 
 
 
@@ -218,26 +124,19 @@ class ScattererSet(object):
 
     def Plot(self, y: str = 'S1'):
 
-        if 'S1' in  y:
-            data, Meshes = self.GetS1('Full')
+        if 'S1' in  y: data = self.GetS1S2(1)
 
-        elif "S2" in y:
-            data, Meshes = self.GetS2('Full')
+        elif "S2" in y: data = self.GetS1S2(2)
 
         data = np.abs(data)**2
 
-        if str(y) == "S1":
+        if str(y) == "S1": self.Plot_S1(Meshes, data)
 
-            self.Plot_S1(Meshes, data)
+        if str(y) == 'STD::S1': self.Plot_STDS1(Meshes, data)
 
-        if str(y) == 'STD::S1':
-            self.Plot_STDS1(Meshes, data)
+        if str(y) == 'S2': self.Plot_S2(Meshes, data)
 
-        if str(y) == 'S2':
-            self.Plot_S2(Meshes, data)
-
-        if str(y) == 'STD::S2':
-            self.Plot_STDS2(Meshes, data)
+        if str(y) == 'STD::S2': self.Plot_STDS2(Meshes, data)
 
 
 
@@ -255,7 +154,7 @@ class ScattererSet(object):
 
         for nr, RI in enumerate(self.RIList):
 
-            ax.plot(Meshes.Phi.Vector.Degree,
+            ax.plot(self.PhiVector,
                     STDDiameter[nr],
                     '--',
                     label="RI:{0:.2f}".format(RI)
@@ -264,13 +163,13 @@ class ScattererSet(object):
 
         for nd, Diameter in enumerate(self.DiameterList):
 
-            ax.plot(Meshes.Phi.Vector.Degree,
+            ax.plot(self.PhiVector,
                     STDRI[nd],
                     label="Diam.:{0:.2e}".format(Diameter)
                     )
 
 
-        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.PhiVector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
                         #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
@@ -306,7 +205,7 @@ class ScattererSet(object):
 
         for nr, RI in enumerate(self.RIList):
 
-            ax.plot(Meshes.Phi.Vector.Degree,
+            ax.plot(self.PhiVector,
                     STDDiameter[nr],
                     '--',
                     label="RI:{0:.2f}".format(RI)
@@ -315,13 +214,13 @@ class ScattererSet(object):
 
         for nd, Diameter in enumerate(self.DiameterList):
 
-            ax.plot(Meshes.Phi.Vector.Degree,
+            ax.plot(self.PhiVector,
                     STDRI[nd],
                     label="Diam.:{0:.2e}".format(Diameter)
                     )
 
 
-        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.PhiVectorDetector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
                         #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
@@ -353,12 +252,12 @@ class ScattererSet(object):
 
             for nd, Diameter in enumerate(self.DiameterList):
 
-                plt.plot(Meshes.Phi.Vector.Degree,
+                plt.plot(self.PhiVector,
                          y[nr, nd],
                          label="RI:{0:.2f}; Diam.: {1:.3e}".format(RI, Diameter))
 
 
-        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.PhiVectorDetector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
                         #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
@@ -382,7 +281,7 @@ class ScattererSet(object):
 
 
 
-    def Plot_S2(self, Meshes, y):
+    def Plot_S2(self, y):
 
         fig = plt.figure(figsize=(7,3))
 
@@ -392,12 +291,12 @@ class ScattererSet(object):
 
             for nd, Diameter in enumerate(self.DiameterList):
 
-                plt.plot(Meshes.Phi.Vector.Degree,
+                plt.plot(self.PhiVector,
                          y[nr, nd],
                          label="RI:{0:.2f}; Diam.: {1:.3e}".format(RI, Diameter))
 
 
-        ax.fill_between(self.Detector.FarField.Meshes.Phi.Vector.Degree,
+        ax.fill_between(self.PhiVectorDetector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
                         #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
@@ -425,32 +324,6 @@ class ScattererSet(object):
 
 
 class Scatterer(BaseScatterer):
-    """Object containing all scatterer-related attributes.
-
-    Parameters
-    ----------
-    diameter : float
-        Diameter of the scatterer.
-    wavelength : float
-        Wavelength of the incident lightfield.
-    index : float
-        Refractive index of the scatterer.
-    npts : int
-        Number of points for the full solid angle of the far-field, later to
-        be interpolated.
-
-    Attributes
-    ----------
-    Full : <Fields class>
-        It represents the entire Far-field representation of the scatterer.
-    ComputeS1S2 : type
-        Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.
-    diameter
-    wavelength
-    index
-    npts
-
-    """
 
     def __init__(self,
                  Diameter:    float,
@@ -483,32 +356,6 @@ class Scatterer(BaseScatterer):
 
 
 class FullScatterer(BaseScatterer):
-    """Object containing all scatterer-related attributes.
-
-    Parameters
-    ----------
-    diameter : float
-        Diameter of the scatterer.
-    wavelength : float
-        Wavelength of the incident lightfield.
-    index : float
-        Refractive index of the scatterer.
-    npts : int
-        Number of points for the full solid angle of the far-field, later to
-        be interpolated.
-
-    Attributes
-    ----------
-    Full : <Fields class>
-        It represents the entire Far-field representation of the scatterer.
-    ComputeS1S2 : type
-        Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.
-    diameter
-    wavelength
-    index
-    npts
-
-    """
 
     def __init__(self,
                  Diameter:    float,

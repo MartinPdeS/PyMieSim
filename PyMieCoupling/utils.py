@@ -20,6 +20,18 @@ class Source(object):
             self.Polarization = None
 
 
+class Polarization(object):
+
+    def __init__(self, input,):
+        if input == 'None':
+            self.Degree = 'None'
+            self.Radian = 'None'
+        else:
+            self.Degree = input
+            self.Radian = np.deg2rad(input)
+
+
+
 class Angle(object):
 
     def __init__(self, input, unit='Degree'):

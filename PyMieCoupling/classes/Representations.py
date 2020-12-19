@@ -67,8 +67,8 @@ class Stokes(np.ndarray):
         for n, ax in enumerate(axes):
             m = n * 3
 
-            im = ax.pcolormesh(cls.Meshes.Phi.Vector.Degree,
-                               cls.Meshes.Theta.Vector.Degree,
+            im = ax.pcolormesh(cls.Meshes.Phi.Mesh.Degree,
+                               cls.Meshes.Theta.Mesh.Degree,
                                cls.Array[m,:,:],
                                shading='auto',
                                )
@@ -121,16 +121,16 @@ class Field(object):
                                  subplot_kw = {'projection':'mollweide'})
 
         axes[0].pcolormesh(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian-np.pi/2,
-                     np.real(self.Perpendicular),
-                     shading='auto')
+                         self.Meshes.Theta.Mesh.Radian,
+                         -( self.Meshes.Phi.Mesh.Radian - np.pi/2),
+                         np.real(self.Perpendicular),
+                         shading='auto')
 
         axes[1].pcolormesh(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian-np.pi/2,
-                     np.imag(self.Perpendicular),
-                     shading='auto')
+                         self.Meshes.Theta.Mesh.Radian,
+                         -( self.Meshes.Phi.Mesh.Radian - np.pi/2),
+                         np.imag(self.Perpendicular),
+                         shading='auto')
 
         [ax.set_ylabel(r'Angle $\phi$ [Degree]') for ax in axes]
         [ax.set_xlabel(r'Angle $\theta$ [Degree]') for ax in axes]
@@ -143,7 +143,7 @@ class Field(object):
 
 
 class SPF(np.ndarray):
-    def __new__(cls, Index, SizeParam, Polarization=0, num=201):
+    def __new__(cls, Index, SizeParam, Polarization=0, num=101):
         thetaVec = np.linspace(-np.pi, np.pi, num)
         phiVec   = np.linspace(0, np.pi, num)
 
@@ -153,13 +153,13 @@ class SPF(np.ndarray):
                                              SizeParam,
                                              thetaVec,
                                              phiVec,
-                                             Polarization  = Polarization);
+                                             Polarization  = 0);
 
         scamap = plt.cm.ScalarMappable(cmap='jet')
         cls.fcolors = scamap.to_rgba(np.real(Perpendicular) + np.real(Parallel) )
 
         SPF3D = cs.sp2cart(Parallel.__abs__()**2 + Perpendicular.__abs__()**2,
-                           phiMesh - np.pi/2,
+                           phiMesh - np.min(phiMesh) -np.pi/2,
                            thetaMesh,
                            )
 
@@ -171,7 +171,11 @@ class SPF(np.ndarray):
 
     def Plot(cls):
 
-        fig, ax = cls.GenFig()
+        fig, ax = plt.subplots(1, figsize=(3, 3), subplot_kw = {'projection':'3d'})
+        ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
+        ax.set_ylabel(r'Y-direction')
+        ax.set_xlabel(r'X-direction')
+        ax.set_zlabel(r'Z-direction')
 
         ax.plot_surface(*cls,
                          rstride     = 2,
@@ -191,18 +195,6 @@ class SPF(np.ndarray):
         ax.set_ylim(Min, Max)
 
         plt.show(block=False)
-
-
-    def GenFig(self) -> Tuple[plt.figure, plt.axes]:
-
-        fig, ax = plt.subplots(1, figsize=(3, 3), subplot_kw = {'projection':'3d'})
-        ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
-        ax.set_ylabel(r'Y-direction')
-        ax.set_xlabel(r'X-direction')
-        ax.set_zlabel(r'Z-direction')
-
-        return fig, ax
-
 
 
 class S1S2(np.ndarray):
@@ -234,10 +226,9 @@ class S1S2(np.ndarray):
                 Index:      float,
                 Meshes:     AngleMeshes):
 
-        temp = GetS1S2(Index,
-                       SizeParam,
-                       Meshes.Phi.Vector.Radian)
+        cls.Phivector = np.linspace(*Meshes.Phi.Boundary.Radian, 201 )
 
+        temp = GetS1S2(Index, SizeParam, cls.Phivector)
         this = np.array(temp, copy=False)
         this = np.asarray(this).view(cls)
         return this
@@ -259,11 +250,9 @@ class S1S2(np.ndarray):
 
         for ni, ax in enumerate(axes):
 
-            ax.plot(self.Meshes.Phi.Vector.Radian,
-                    data[ni],
-                    'k')
+            ax.plot(self.Phivector, data[ni], 'k')
 
-            ax.fill_between(self.Meshes.Phi.Vector.Radian,
+            ax.fill_between(self.Phivector,
                             0,
                             data[ni],
                             color='C0',

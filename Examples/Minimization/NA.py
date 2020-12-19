@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 from PyMieCoupling.classes.Detector import Photodiode
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import Simulator
 from PyMieCoupling.classes.Scattering import ScattererSet
 
@@ -26,7 +26,7 @@ Photodiode0 = Photodiode(NA                = 0.2,
 
 
 Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
-                   RIList        = np.linspace(1.3, 1.5, 6).round(4),
+                   RIList        = np.linspace(1.3, 1.5, 4).round(4),
                    Detector      = Photodiode0,
                    Source        = LightSource,
                    Mode          = 'Centered'
@@ -38,7 +38,7 @@ def EvalFunc(x):
 
     Array = Set.GetCouplingArray()
 
-    return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Array.Cost('RI_RSD') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
 Minimizer = Simulator(EvalFunc, ParameterName= ['NA'])

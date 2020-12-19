@@ -7,12 +7,11 @@ plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-from PyMieCoupling.functions.converts import NA2Angle
+
 from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
-from PyMieCoupling.utils import Source, SMF28, Angle
+from PyMieCoupling.utils import Source, SMF28, Angle, Polarization
 from PyMieCoupling.classes.Fields import Detector_FarField, LPFarField, LPNearField
 from PyMieCoupling.functions.converts import deg2rad
-from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.classes.BaseClasses import BaseDetector
 import fibermodes
 
@@ -22,56 +21,6 @@ import fibermodes
 
 
 class Photodiode(BaseDetector):
-    """Short summary.
-
-    Parameters
-    ----------
-    size : float
-        Size of the detector, [diameter for circle shaped/ side for square].
-    shape : str
-        Shape of the detector.
-    wavelength : float
-        Wavelength of the incoming source.
-    npts : int
-        Number of points defining the rastered meshes.
-    ThetaOffset : float
-        Offset of theta angle between the detector and source.
-    PhiOffset : float
-        Offset of phi angle between the detector and source.
-    Magnification : float
-        Magnification induced by the lense.
-    Name : str
-        Name of detector [optional for plots].
-
-    Attributes
-    ----------
-    _name : type
-        Description of attribute `_name`.
-    _coupling : type
-        Description of attribute `_coupling`.
-    k : type
-        Description of attribute `k`.
-    DirectVec : type
-        Description of attribute `DirectVec`.
-    GenShift : type
-        Description of attribute `GenShift`.
-    GenMeshes : type
-        Description of attribute `GenMeshes`.
-    Field : type
-        Description of attribute `Field`.
-    Fourier : type
-        Description of attribute `Fourier`.
-    GenField : type
-        Description of attribute `GenField`.
-    magnificate : type
-        Description of attribute `magnificate`.
-    size
-    wavelength
-    ThetaOffset
-    PhiOffset
-    npts
-
-    """
 
     def __init__(self,
                  Source:            Source = None,
@@ -90,61 +39,14 @@ class Photodiode(BaseDetector):
 
         self.FarField = Detector_FarField(self.Npts, NA, ThetaOffset, PhiOffset)
 
-        self._Filter = Angle(Filter)
+        self._Filter = Polarization(Filter)
 
 
 
 
 
 class LPmode(BaseDetector):
-    """Short summary.
 
-    Parameters
-    ----------
-    Fiber : float
-        The Fiber class used to generate the modes.
-    LPmode : str
-        The indices of LP mode.
-    wavelength : float
-        Wavelength of the incoming source.
-    npts : int
-        Number of points defining the rastered meshes.
-    ThetaOffset : float
-        Offset of theta angle between the detector and source.
-    PhiOffset : float
-        Offset of phi angle between the detector and source.
-    Magnification : float
-        Magnification induced by the lense.
-    Name : str
-        Name of detector [optional for plots].
-
-    Attributes
-    ----------
-    _name : type
-        Description of attribute `_name`.
-    _coupling : type
-        Description of attribute `_coupling`.
-    k : type
-        Description of attribute `k`.
-    DirectVec : type
-        Description of attribute `DirectVec`.
-    GenMeshes : type
-        Description of attribute `GenMeshes`.
-    Field : type
-        Description of attribute `Field`.
-    Fourier : type
-        Description of attribute `Fourier`.
-    GenField : type
-        Description of attribute `GenField`.
-    magnificate : type
-        Description of attribute `magnificate`.
-    size
-    wavelength
-    ThetaOffset
-    PhiOffset
-    npts
-
-    """
     def __init__(self,
                  Mode:          tuple,
                  Source:        Source,
@@ -162,7 +64,7 @@ class LPmode(BaseDetector):
 
         self._NA = NA
 
-        self._Filter = Angle(Filter)
+        self._Filter = Polarization(Filter)
 
         self.ModeNumber = Mode[0]+1, Mode[1]
 
@@ -174,9 +76,7 @@ class LPmode(BaseDetector):
 
         Fiber, CoreDiameter = SMF28()
 
-        if PhiOffset == 0:
-
-            self.GetFarFieldNoOffset()
+        if PhiOffset == 0: self.GetFarFieldNoOffset()
 
 
 

@@ -23,7 +23,6 @@ resPython = S1S2_PYTHON(index, SizeParam, AngleList);
 resCython = S1S2_CYTHON(index, SizeParam, AngleList);
 
 resCpp = S1S2_CPP(index, SizeParam, AngleList);
-resCpp = S1S2_CPP(index, SizeParam, AngleList);
 
 fig = plt.figure(figsize=(10,5))
 ax0 = fig.add_subplot(1,3,1); ax1 = fig.add_subplot(1,3,2); ax2 = fig.add_subplot(1,3,3);

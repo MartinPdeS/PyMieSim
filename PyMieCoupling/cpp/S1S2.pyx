@@ -40,6 +40,26 @@ cdef extern from "MieS1S2.cpp":
                                          complex128_t* Perpendicular);
 
 
+
+    cdef void* C_GetFieldsFromMesh(double a,
+                                  double b,
+                                  double* ThetaVec,
+                                  double* PhiVec,
+                                  int Philenght,
+                                  int Thetalenght,
+                                  complex128_t* Parallel,
+                                  complex128_t* Perpendicular,
+                                  double Polarization);
+
+
+    cdef void* C_GetFieldsNoPolarizationFromMesh(double a,
+                                                double b,
+                                                double* ThetaVec,
+                                                double* PhiVec,
+                                                complex128_t* Parallel,
+                                                complex128_t* Perpendicular);
+
+
 @cython.boundscheck(False)
 @cython.initializedcheck(False)
 @cython.cdivision(True)
@@ -118,12 +138,67 @@ cpdef GetFields(double m,
                   Polarization);
 
 
-    arr0 = np.asarray(Parallel).reshape([ThetaVec.size, PhiVec.size])
-    arr1 = np.asarray(Perpendicular).reshape([ThetaVec.size, PhiVec.size])
+    arr0 = np.asarray(Parallel).reshape([ThetaVec.size, PhiVec.size]).T
+    arr1 = np.asarray(Perpendicular).reshape([ThetaVec.size, PhiVec.size]).T
 
 
 
     return arr0, arr1
+
+
+
+
+
+@cython.boundscheck(False)
+@cython.initializedcheck(False)
+@cython.cdivision(True)
+@cython.nonecheck(False)
+@cython.wraparound(False)
+cpdef GetFieldsFromMesh(double m,
+                        double x,
+                        ThetaMesh,
+                        PhiMesh,
+                        Shape,
+                        Polarization):
+
+    cdef:
+        np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")
+        double* ThetaVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
+
+        np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiMesh, dtype = float, order="C")
+        double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
+
+
+    PhiVec_ptr = &PhiVectorView[0]
+    ThetaVec_ptr = &ThetaVectorView[0]
+
+
+
+    Parallel = VectorWrapper(ThetaMesh.size)
+    Parallel.add_row()
+
+    Perpendicular = VectorWrapper(ThetaMesh.size)
+    Perpendicular.add_row()
+
+
+    C_GetFieldsFromMesh(m,
+                        x,
+                        ThetaVec_ptr,
+                        PhiVec_ptr,
+                        Shape[0],
+                        Shape[1],
+                        &(Parallel.S1S2)[0],
+                        &(Perpendicular.S1S2)[0],
+                        Polarization);
+
+
+    arr0 = np.asarray(Parallel).reshape(Shape)
+    arr1 = np.asarray(Perpendicular).reshape(Shape)
+
+
+
+    return arr0, arr1
+
 
 
 cdef class VectorWrapper:
