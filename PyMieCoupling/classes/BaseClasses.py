@@ -294,9 +294,8 @@ class BaseScatterer(object):
         """
         Para, Perp = GetFieldsFromMesh(m                    = self.Index,
                                        x                    = self.SizeParam,
-                                       ThetaMesh            = self.Meshes.Theta.Mesh.Radian.flatten(),
-                                       PhiMesh              = self.Meshes.Phi.Mesh.Radian.flatten(),
-                                       Shape                = self.Meshes.Theta.Mesh.Radian.shape,
+                                       ThetaMesh            = self.Meshes.Theta.Radian.flatten(),
+                                       PhiMesh              = self.Meshes.Phi.Radian.flatten(),
                                        Polarization         = self.Source.Polarization.Radian);
 
 

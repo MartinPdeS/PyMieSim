@@ -333,6 +333,7 @@ class Scatterer(BaseScatterer):
                  Meshes:      AngleMeshes  = None,
                  ThetaBound:  list        = [-180, 180],
                  ThetaOffset: float       = 0,
+                 Samples:     int         = 1000,
                  PhiBound:    list        = [-180, 180],
                  PhiOffset:   float       = 0) -> None:
 
@@ -347,8 +348,7 @@ class Scatterer(BaseScatterer):
         else:
             self.Meshes = AngleMeshes(ThetaBound  = np.asarray(ThetaBound),
                                       PhiBound    = np.asarray(PhiBound),
-                                      ThetaNpts   = Npts,
-                                      PhiNpts     = Npts,
+                                      Samples     = Samples,
                                       PhiOffset   = PhiOffset,
                                       ThetaOffset = ThetaOffset)
 
@@ -371,8 +371,6 @@ class FullScatterer(BaseScatterer):
 
         self.Meshes = AngleMeshes(ThetaBound  = np.asarray([-180,180]),
                                   PhiBound    = np.asarray([0,180]),
-                                  ThetaNpts   = Npts,
-                                  PhiNpts     = Npts,
                                   PhiOffset   = 0,
                                   ThetaOffset = 0)
 

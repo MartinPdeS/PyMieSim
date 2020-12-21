@@ -68,14 +68,14 @@ class Stokes(np.ndarray):
         for n, ax in enumerate(axes):
             m = n * 3
 
-            im = ax.pcolormesh(cls.Meshes.Phi.Mesh.Degree,
-                               cls.Meshes.Theta.Mesh.Degree,
+            im = ax.pcolormesh(cls.Meshes.Phi.Degree,
+                               cls.Meshes.Theta.Degree,
                                cls.Array[m,:,:],
                                shading='auto',
                                )
 
-            ax.streamplot(cls.Meshes.Phi.Mesh.Degree[::n, ::n].T,
-                          cls.Meshes.Theta.Mesh.Degree[::n, ::n].T,
+            ax.streamplot(cls.Meshes.Phi.Degree[::n, ::n].T,
+                          cls.Meshes.Theta.Degree[::n, ::n].T,
                           cls.Array[1,::n,::n],
                           cls.Array[2,::n,::n])
 
@@ -121,14 +121,14 @@ class Field(object):
                                  subplot_kw = {'projection':'mollweide'})
 
         axes[0].pcolormesh(
-                         self.Parent.Meshes.Theta.Mesh.Radian,
-                         -( self.Parent.Meshes.Phi.Mesh.Radian - np.pi/2),
+                         self.Parent.Meshes.Theta.Radian,
+                         -( self.Parent.Meshes.Phi.Radian - np.pi/2),
                          np.real(self.Perpendicular),
                          shading='auto')
 
         axes[1].pcolormesh(
-                         self.Parent.Meshes.Theta.Mesh.Radian,
-                         -( self.Parent.Meshes.Phi.Mesh.Radian - np.pi/2),
+                         self.Parent.Meshes.Theta.Radian,
+                         -( self.Parent.Meshes.Phi.Radian - np.pi/2),
                          np.imag(self.Perpendicular),
                          shading='auto')
 
@@ -226,7 +226,7 @@ class S1S2(np.ndarray):
                 Index:      float,
                 Meshes:     AngleMeshes):
 
-        cls.Phivector = np.linspace(*Meshes.Phi.Boundary.Radian, 201 )
+        cls.Phivector = np.linspace(0, np.pi, 201 )
 
         temp = GetS1S2(Index, SizeParam, cls.Phivector)
         this = np.array(temp, copy=False)
@@ -287,28 +287,38 @@ class ScalarFarField(np.ndarray):
 
 
     def Plot(self):
+        from scipy.interpolate import griddata
+        phi, theta = np.mgrid[-np.pi/2:np.pi/2:400j, -np.pi:np.pi:400j]
+
+        ziReal = griddata((self.Parent.Meshes.Theta.Radian.flatten(),
+                           self.Parent.Meshes.Phi.Radian.flatten()),
+                           self.Scalar.imag.flatten(),
+                           (theta.flatten(),
+                           phi.flatten()),
+                           fill_value = 0,
+                           method     = 'linear')
+
+        ziImag = griddata((self.Parent.Meshes.Theta.Radian.flatten(),
+                           self.Parent.Meshes.Phi.Radian.flatten()),
+                           self.Scalar.imag.flatten(),
+                           (theta.flatten(),
+                           phi.flatten()),
+                           fill_value = 0,
+                           method     = 'linear')
 
         fig, axes = plt.subplots(nrows = 1,
                                  ncols = 2,
                                  figsize    = (8,3),
                                  subplot_kw = {'projection':'mollweide'})
 
-        axes[0].pcolormesh(
-                         self.Parent.Meshes.Theta.Mesh.Radian,
-                         -(self.Parent.Meshes.Phi.Mesh.Radian-np.pi/2),
-                         self.Scalar.real,
-                         shading='auto')
+        axes[0].pcolormesh(theta, phi, ziReal.reshape([400,400]), shading='auto')
 
         axes[0].set_title('Real Part\n Far-Field Spherical Coordinates')
         axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
         axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
         axes[0].grid()
 
-        axes[1].pcolormesh(
-                         self.Parent.Meshes.Theta.Mesh.Radian,
-                         -(self.Parent.Meshes.Phi.Mesh.Radian-np.pi/2),
-                         self.Scalar.imag,
-                         shading='auto')
+        axes[1].pcolormesh(theta, phi, ziImag.reshape([400,400]), shading='auto')
 
         axes[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
         axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
