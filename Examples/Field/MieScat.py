@@ -13,20 +13,18 @@ from PyMieCoupling.utils import Source
 LightSource = Source(Wavelength   = 100e-9,
                      Polarization = 0)
 
-Scat = FullScatterer(Diameter    = 10e-9,
+Scat = FullScatterer(Diameter    = 100e-9,
                      Source      = LightSource,
                      Index       = 1.4,)
 
 
+Scat.Parallel.Plot()
 
+Scat.S1S2.Plot()
 
-Scat.FarField.Plot()
+Scat.SPF.Plot()
 
-#Scat.S1S2.Plot()
-
-#Scat.SPF.Plot()
-
-#Scat.Meshes.Plot()
+Scat.Meshes.Plot()
 
 plt.show()
 

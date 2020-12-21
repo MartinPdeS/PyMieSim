@@ -38,7 +38,7 @@ def EvalFunc(x):
 
     Array = Set.GetCouplingArray()
 
-    return Array.Cost('RI_RSD') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
 Minimizer = Simulator(EvalFunc, ParameterName= ['NA'])

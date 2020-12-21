@@ -21,7 +21,8 @@ Perpendicular_CYTHON = np.outer(S1S2_CYTHON[1], np.cos(ThetaList))
 
 
 Parallel_CPP, Perpendicular_CPP = Fields_CPP(1.4, 0.3, ThetaList, PhiList, Polarization='None');
-
+Parallel_CPP = Parallel_CPP.reshape([50,50])
+Perpendicular_CPP = Perpendicular_CPP.reshape([50,50])
 
 fig = plt.figure()
 ax0 = fig.add_subplot(141)

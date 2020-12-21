@@ -45,8 +45,7 @@ cdef extern from "MieS1S2.cpp":
                                   double b,
                                   double* ThetaVec,
                                   double* PhiVec,
-                                  int Philenght,
-                                  int Thetalenght,
+                                  int Lenght,
                                   complex128_t* Parallel,
                                   complex128_t* Perpendicular,
                                   double Polarization);
@@ -158,7 +157,6 @@ cpdef GetFieldsFromMesh(double m,
                         double x,
                         ThetaMesh,
                         PhiMesh,
-                        Shape,
                         Polarization):
 
     cdef:
@@ -167,7 +165,6 @@ cpdef GetFieldsFromMesh(double m,
 
         np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiMesh, dtype = float, order="C")
         double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
-
 
     PhiVec_ptr = &PhiVectorView[0]
     ThetaVec_ptr = &ThetaVectorView[0]
@@ -185,15 +182,14 @@ cpdef GetFieldsFromMesh(double m,
                         x,
                         ThetaVec_ptr,
                         PhiVec_ptr,
-                        Shape[0],
-                        Shape[1],
+                        PhiMesh.size,
                         &(Parallel.S1S2)[0],
                         &(Perpendicular.S1S2)[0],
                         Polarization);
 
 
-    arr0 = np.asarray(Parallel).reshape(Shape)
-    arr1 = np.asarray(Perpendicular).reshape(Shape)
+    arr0 = np.asarray(Parallel)
+    arr1 = np.asarray(Perpendicular)
 
 
 

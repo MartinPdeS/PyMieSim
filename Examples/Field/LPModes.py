@@ -32,9 +32,8 @@ LP01 = LPmode(Name          = 'LP01',
 
 #LP01.ThetaOffset = 60
 
-#LP01.NearField.Plot()
 
-LP01.FarField.Plot()
+LP11.Plot()
 
 plt.show()
 # -

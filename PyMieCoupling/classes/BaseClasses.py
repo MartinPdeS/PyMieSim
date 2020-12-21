@@ -2,9 +2,10 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import numpy as np
+import weakref
 
 from PyMieCoupling.classes.Meshes import AngleMeshes
-from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field
+from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
@@ -65,6 +66,9 @@ class BaseDetector(object):
     def __init__(self):
         pass
 
+    def Plot(self):
+        return self.FarField.Plot()
+
     @property
     def ThetaBound(self):
         return self.__ThetaBound
@@ -115,8 +119,6 @@ class BaseDetector(object):
         if val <= 0: val = 0
         self.FarField.NA = val
 
-
-
     def Coupling(self, Scatterer, Mode = 'Centered'):
         return Coupling(Scatterer = Scatterer, Detector = self, Mode = Mode)
 
@@ -126,61 +128,6 @@ class BaseDetector(object):
 
 
 
-class _BaseFarField(np.ndarray):
-
-    def __new__(cls,
-                Scalar        = None,
-                Meshes        = None):
-
-        cls.Meshes = Meshes
-
-        this = np.array(Scalar, copy=False)
-
-        this = np.asarray(this).view(cls)
-
-        return this
-
-
-    def __array_finalize__(self, obj):
-        pass
-
-
-    def __init__(self, Scalar, Meshes):
-        pass
-
-
-    def Plot(self):
-
-        fig, axes = plt.subplots(nrows = 1,
-                                 ncols = 2,
-                                 figsize    = (8,3),
-                                 subplot_kw = {'projection':'mollweide'})
-
-        axes[0].pcolormesh(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     self.Scalar.real,
-                     shading='auto')
-
-        axes[0].set_title('Real Part\n Far-Field Spherical Coordinates')
-        axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
-        axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
-
-        axes[1].pcolormesh(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     self.Scalar.imag,
-                     shading='auto')
-
-        axes[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
-        axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
-        axes[1].grid()
-
-        fig.tight_layout()
-        plt.show()
-
-
 
 
 
@@ -188,36 +135,8 @@ class BaseFarField(object):
     def __init__(self):
         pass
 
-
     def Plot(self):
-        fig = plt.figure(figsize=(12,3))
-        ax0 = fig.add_subplot(121, projection = 'mollweide')
-        ax1 = fig.add_subplot(122, projection = 'mollweide')
-
-        ax0.pcolormesh(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     np.real(self.Scalar),
-                     shading='auto')
-
-        ax1.pcolormesh(
-                     self.Meshes.Theta.Mesh.Radian,
-                     self.Meshes.Phi.Mesh.Radian+np.pi/2,
-                     np.imag(self.Scalar),
-                     shading='auto')
-
-        ax0.set_title('Real Part\n Far-Field Spherical Coordinates')
-        ax0.set_ylabel(r'Angle $\phi$ [Degree]')
-        ax0.set_xlabel(r'Angle $\theta$ [Degree]')
-        ax0.grid()
-
-        ax1.set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        ax1.set_ylabel(r'Angle $\phi$ [Degree]')
-        ax1.set_xlabel(r'Angle $\theta$ [Degree]')
-        ax1.grid()
-
-        fig.tight_layout()
-
+        return self.Scalar.Plot()
 
     @property
     def ThetaBound(self):
@@ -320,15 +239,6 @@ class BaseScatterer(object):
         pass
 
 
-    @property
-    def FarField(self) -> AngleMeshes:
-        if self._FarField is None:
-            self.GenField()
-            return self._FarField
-        else:
-
-            return self._FarField
-
 
     @property
     def S1S2(self) -> np.ndarray:
@@ -340,6 +250,23 @@ class BaseScatterer(object):
 
         else:
             return self._S1S2
+
+
+    @property
+    def Parallel(self):
+        if not isinstance(self._Parallel, np.ndarray):
+            self.GenField()
+            return self._Parallel
+        else:
+            return self._Parallel
+
+    @property
+    def Perpendicular(self):
+        if not isinstance(self._Perpendicular, np.ndarray):
+            self.GenField()
+            return self._Perpendicular
+        else:
+            return self._Perpendicular
 
 
     @property
@@ -372,7 +299,9 @@ class BaseScatterer(object):
                                        Shape                = self.Meshes.Theta.Mesh.Radian.shape,
                                        Polarization         = self.Source.Polarization.Radian);
 
-        self._FarField = Field(Perpendicular = Perp, Parallel = Para, Meshes = self.Meshes);
+
+        self._Parallel      = ScalarFarField(Scalar=Para, Parent=self)
+        self._Perpendicular = ScalarFarField(Scalar=Perp, Parent=self)
 
 
     def Coupling(self, Detector, Filter = None, Mode = 'Centered'):

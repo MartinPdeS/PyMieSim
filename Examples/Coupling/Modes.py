@@ -35,9 +35,9 @@ Scat = Scatterer(Diameter    = 50e-9,
 
 print(LP11.Coupling(Scat, Mode='Centered'))
 
-LP11.FarField.Plot()
+LP11.Plot()
 
-Scat.FarField.Plot()
+Scat.Parallel.Plot()
 
 plt.show()
 # -

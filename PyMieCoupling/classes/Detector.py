@@ -10,7 +10,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
 from PyMieCoupling.utils import Source, SMF28, Angle, Polarization
-from PyMieCoupling.classes.Fields import Detector_FarField, LPFarField, LPNearField
+from PyMieCoupling.classes.Fields import Detector_FarField, LPFarField
 from PyMieCoupling.functions.converts import deg2rad
 from PyMieCoupling.classes.BaseClasses import BaseDetector
 import fibermodes
@@ -96,9 +96,7 @@ class LPmode(BaseDetector):
 
         if self.Orientation == 'h': temp = temp.T
 
-        self.NearField = LPNearField(temp, 10*CoreDiameter, self.Npts)
-
-        temp = np.fft.fft2(self.NearField.Cartesian)
+        temp = np.fft.fft2(temp)
 
         temp /= self.GenShift()
 

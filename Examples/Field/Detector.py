@@ -18,7 +18,7 @@ Detector = Photodiode(NA                = 0.2,
                       ThetaOffset       = 0,
                       PhiOffset         = 0)
 
-Detector.FarField.Plot()
+Detector.Plot()
 
 plt.show()
 

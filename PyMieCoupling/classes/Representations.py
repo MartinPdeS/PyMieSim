@@ -4,6 +4,7 @@ from matplotlib import cm
 from typing import Tuple
 from PyMieCoupling.classes.Meshes import AngleMeshes
 
+
 import matplotlib.ticker as tick
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
@@ -104,14 +105,13 @@ class Field(object):
     def __init__(self,
                  Perpendicular: np.ndarray,
                  Parallel:      np.ndarray,
-                 Meshes:        AngleMeshes):
+                 Parent):
         """
         Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
 
         """
-        self.__dict__ = Meshes.__dict__
         self.Perpendicular, self.Parallel = Perpendicular, Parallel
-        self.Meshes = Meshes
+        self.Parent = Parent
 
 
     def Plot(self):
@@ -121,14 +121,14 @@ class Field(object):
                                  subplot_kw = {'projection':'mollweide'})
 
         axes[0].pcolormesh(
-                         self.Meshes.Theta.Mesh.Radian,
-                         -( self.Meshes.Phi.Mesh.Radian - np.pi/2),
+                         self.Parent.Meshes.Theta.Mesh.Radian,
+                         -( self.Parent.Meshes.Phi.Mesh.Radian - np.pi/2),
                          np.real(self.Perpendicular),
                          shading='auto')
 
         axes[1].pcolormesh(
-                         self.Meshes.Theta.Mesh.Radian,
-                         -( self.Meshes.Phi.Mesh.Radian - np.pi/2),
+                         self.Parent.Meshes.Theta.Mesh.Radian,
+                         -( self.Parent.Meshes.Phi.Mesh.Radian - np.pi/2),
                          np.imag(self.Perpendicular),
                          shading='auto')
 
@@ -263,6 +263,58 @@ class S1S2(np.ndarray):
 
 
 
+
+
+class ScalarFarField(np.ndarray):
+
+    def __new__(cls, Scalar = None, Parent = None):
+
+        this = np.array(Scalar, copy=False)
+
+        this = np.asarray(this).view(cls)
+
+        return this
+
+
+    def __array_finalize__(self, obj):
+        pass
+
+
+    def __init__(self, Scalar, Parent):
+        self.Scalar = Scalar
+        #self.Parent = weakref.ref(Parent)
+        self.Parent = Parent
+
+
+    def Plot(self):
+
+        fig, axes = plt.subplots(nrows = 1,
+                                 ncols = 2,
+                                 figsize    = (8,3),
+                                 subplot_kw = {'projection':'mollweide'})
+
+        axes[0].pcolormesh(
+                         self.Parent.Meshes.Theta.Mesh.Radian,
+                         -(self.Parent.Meshes.Phi.Mesh.Radian-np.pi/2),
+                         self.Scalar.real,
+                         shading='auto')
+
+        axes[0].set_title('Real Part\n Far-Field Spherical Coordinates')
+        axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
+        axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
+        axes[0].grid()
+
+        axes[1].pcolormesh(
+                         self.Parent.Meshes.Theta.Mesh.Radian,
+                         -(self.Parent.Meshes.Phi.Mesh.Radian-np.pi/2),
+                         self.Scalar.imag,
+                         shading='auto')
+
+        axes[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
+        axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
+        axes[1].grid()
+
+        fig.tight_layout()
 
 
 

@@ -340,7 +340,7 @@ class Scatterer(BaseScatterer):
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
-        self._Stokes, self._SPF, self._FarField, self._S1S2 = (None,)*4
+        self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
         if Meshes:
             self.Meshes = Meshes
@@ -367,7 +367,7 @@ class FullScatterer(BaseScatterer):
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
-        self._Stokes, self._SPF, self._FarField, self._S1S2 = (None,)*4
+        self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
         self.Meshes = AngleMeshes(ThetaBound  = np.asarray([-180,180]),
                                   PhiBound    = np.asarray([0,180]),

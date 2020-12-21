@@ -30,9 +30,9 @@ Scat = Scatterer(Diameter      = 50e-9,
 
 Scat.S1S2.Plot()
 
-Scat.FarField.Plot()
+Scat.Parallel.Plot()
 
-Detector.FarField.Plot()
+Detector.Plot()
 
 print(Detector.Coupling(Scatterer = Scat, Mode='Centered'))
 

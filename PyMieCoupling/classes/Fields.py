@@ -1,9 +1,10 @@
 
-from PyMieCoupling.classes.BaseClasses import BaseFarField, _BaseFarField
+from PyMieCoupling.classes.BaseClasses import BaseFarField
 from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
 from PyMieCoupling.functions.converts import NA2Angle
-
+from PyMieCoupling.classes.Representations import ScalarFarField
 import polarTransform
+import matplotlib.pyplot as plt
 import numpy as np
 
 class LPFarField(BaseFarField):
@@ -23,6 +24,7 @@ class LPFarField(BaseFarField):
         self._PhiOffset, self._ThetaOffset = PhiOffset, ThetaOffset
         self.GetSpherical()
 
+
     def GetSpherical(self):
         polarImageReal, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.real,
                                                                         center        = [self.Npts//2, self.Npts//2],
@@ -37,53 +39,18 @@ class LPFarField(BaseFarField):
                                                                         finalAngle    = 2*np.pi)
 
 
-        self.Scalar = polarImageReal + complex(0,1) * polarImageimag
+        Scalar = polarImageReal + complex(0,1) * polarImageimag
 
         self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
                                   PhiBound    = self._PhiBound,
-                                  ThetaNpts   = self.Scalar.shape[0],
-                                  PhiNpts     = self.Scalar.shape[1],
+                                  ThetaNpts   = Scalar.shape[0],
+                                  PhiNpts     = Scalar.shape[1],
                                   PhiOffset   = self._PhiOffset,
                                   ThetaOffset = self._ThetaOffset)
 
-
-class LPNearField(object):
-
-    def __init__(self, Input, Size, Npts):
-        self.Cartesian = Input
-        self.Size = Size
-        self.Npts = Npts
-
-        self.Meshes = DirectMeshes(Npts   = self.Npts,
-                                  XBound = [-self.Size/2, self.Size/2],
-                                  YBound = [-self.Size/2, self.Size/2],
-                                  XNpts  = self.Npts,
-                                  YNpts  = self.Npts)
+        self.Scalar = ScalarFarField(Scalar, Parent=self)
 
 
-    def Plot(self):
-        fig = plt.figure(figsize=(6,3))
-        ax0 = fig.add_subplot(121)
-        ax1 = fig.add_subplot(122)
-
-        ax0.pcolormesh(self.Meshes.X.Vector,
-                       self.Meshes.Y.Vector,
-                       self.Cartesian.real,
-                       shading='auto')
-
-        ax0.set_title('Real Part \n Near-Field Cartesian Coordinates')
-        ax0.set_xlabel(r'X-Distance x [$\mu$m]')
-        ax0.set_ylabel('Y-Distance y  [$\mu$m]')
-
-        ax1.pcolormesh(self.Meshes.X.Vector,
-                       self.Meshes.Y.Vector,
-                       self.Cartesian.imag,
-                       shading='auto')
-
-        ax1.set_title('Imaginary Part \n Near-Field Cartesian Coordinates')
-        ax1.set_xlabel(r'X-Distance x  [$\mu$m]')
-        ax1.set_ylabel(r'Y-Distance y  [$\mu$m]')
-        fig.tight_layout()
 
 
 class Detector_FarField(BaseFarField):
@@ -104,9 +71,8 @@ class Detector_FarField(BaseFarField):
         self.GetSpherical()
 
 
-
     def GetSpherical(self):
-        self.Scalar = np.ones([self.Npts, self.Npts]) / (self.Npts*self.Npts)
+        Scalar = np.ones([self.Npts, self.Npts]) / (self.Npts*self.Npts)
 
         self.Meshes = AngleMeshes(ThetaBound  = self._ThetaBound,
                                   PhiBound    = self._PhiBound,
@@ -114,6 +80,8 @@ class Detector_FarField(BaseFarField):
                                   PhiNpts     = self.Npts,
                                   PhiOffset   = self._PhiOffset,
                                   ThetaOffset = self._ThetaOffset)
+
+        self.Scalar = ScalarFarField(Scalar, Parent=self)
 
 
 
