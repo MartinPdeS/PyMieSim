@@ -55,6 +55,7 @@ cdef extern from "MieS1S2.cpp":
                                                 double b,
                                                 double* ThetaVec,
                                                 double* PhiVec,
+                                                int Lenght,
                                                 complex128_t* Parallel,
                                                 complex128_t* Perpendicular);
 
@@ -114,7 +115,7 @@ cpdef GetFields(double m,
     Perpendicular = VectorWrapper(PhiVec.size * ThetaVec.size)
     Perpendicular.add_row()
 
-    if Polarization == 'None':
+    if Polarization is 'None':
       C_GetFieldsNoPolarization(m,
                                 x,
                                 ThetaVec_ptr,
@@ -139,8 +140,6 @@ cpdef GetFields(double m,
 
     arr0 = np.asarray(Parallel).reshape([ThetaVec.size, PhiVec.size]).T
     arr1 = np.asarray(Perpendicular).reshape([ThetaVec.size, PhiVec.size]).T
-
-
 
     return arr0, arr1
 
@@ -177,15 +176,23 @@ cpdef GetFieldsFromMesh(double m,
     Perpendicular = VectorWrapper(ThetaMesh.size)
     Perpendicular.add_row()
 
-
-    C_GetFieldsFromMesh(m,
-                        x,
-                        ThetaVec_ptr,
-                        PhiVec_ptr,
-                        PhiMesh.size,
-                        &(Parallel.S1S2)[0],
-                        &(Perpendicular.S1S2)[0],
-                        Polarization);
+    if Polarization is 'None':
+      C_GetFieldsNoPolarizationFromMesh(m,
+                                        x,
+                                        ThetaVec_ptr,
+                                        PhiVec_ptr,
+                                        PhiMesh.size,
+                                        &(Parallel.S1S2)[0],
+                                        &(Perpendicular.S1S2)[0]);
+    else:
+      C_GetFieldsFromMesh(m,
+                          x,
+                          ThetaVec_ptr,
+                          PhiVec_ptr, 
+                          PhiMesh.size,
+                          &(Parallel.S1S2)[0],
+                          &(Perpendicular.S1S2)[0],
+                          Polarization);
 
 
     arr0 = np.asarray(Parallel)

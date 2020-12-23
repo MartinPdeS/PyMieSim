@@ -22,22 +22,25 @@ npts=101
 LP11 = LPmode(Name        = 'LP11',
               Mode        = (1, 1),
               Source      = LightSource,
-              Npts        = npts,
-              NA          = 1)
+              Samples     = 501,
+              NA          = 1,
+              GammaOffset = 0,
+              PhiOffset   = 0
+              )
 
 
 
 Scat = Scatterer(Diameter    = 50e-9,
                  Source      = LightSource,
                  Index       = 1.4,
-                 Meshes      = LP11.FarField.Meshes)
+                 Meshes      = LP11.Meshes)
 
 
 print(LP11.Coupling(Scat, Mode='Centered'))
 
-LP11.Plot()
+#LP11.Plot()
 
-Scat.Parallel.Plot()
+#Scat.Parallel.Plot()
 
 plt.show()
 # -

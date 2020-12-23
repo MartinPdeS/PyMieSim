@@ -12,13 +12,13 @@ import matplotlib.pyplot as plt
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 0)
 
-Detector = Photodiode(NA                = 0.2,
+Detector = Photodiode(NA                = 0.8,
                       Source            = Source,
-                      Npts              = 201,
-                      ThetaOffset       = 0,
+                      Samples           = 1001,
+                      GammaOffset       = 0,
                       PhiOffset         = 0)
 
-Detector.Plot()
+Detector.Plot(num=100)
 
 plt.show()
 

@@ -11,23 +11,21 @@ from PyMieCoupling.classes.Detector import Photodiode
 from PyMieCoupling.utils import Source
 
 LightSource = Source(Wavelength   = 100e-9,
-                     Polarization = 0)
-"""
-Scat = FullScatterer(Diameter    = 100e-9,
-                     Source      = LightSource,
-                     Index       = 1.4)
-"""
-Scat = Scatterer(Diameter    = 100e-9,
+                     Polarization = 90)
+
+Scat = Scatterer(Diameter    = 200e-9,
                  Source      = LightSource,
+                 Acceptance  = 50,
                  Index       = 1.4,
                  Samples     = 1000,
-                 PhiOffset   = 40)
+                 PhiOffset   = 0,
+                 GammaOffset = 60)
 
 Scat.Parallel.Plot()
 
-Scat.S1S2.Plot()
+#Scat.S1S2.Plot()
 
-Scat.SPF.Plot()
+#Scat.SPF.Plot()
 
 Scat.Meshes.Plot()
 

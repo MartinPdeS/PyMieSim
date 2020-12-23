@@ -18,22 +18,20 @@ LightSource = Source(Wavelength   = 400e-9,
 LP11 = LPmode(Name        = 'LP11',
               Mode        = (1, 1),
               Source      = LightSource,
-              Npts        = npts,
-              NA          = 1)
+              Samples     = 501,
+              NA          = 1,
+              GammaOffset = 90,
+              PhiOffset   = 0
+              )
 
 LP01 = LPmode(Name          = 'LP01',
               Mode          = (0, 1),
               Source        = LightSource,
-              Npts          = npts,
+              Samples       = 101,
               NA            = 1)
-
-
-#LP01.PhiOffset = 10
-
-#LP01.ThetaOffset = 60
 
 
 LP11.Plot()
 
 plt.show()
-# -
+# --

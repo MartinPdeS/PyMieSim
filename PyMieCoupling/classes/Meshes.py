@@ -12,16 +12,15 @@ import math
 
 def fibonacci_sphere(samples=1):
 
-    X = []
-    Y = []
-    Z = []
-    phi = math.pi * (3. - math.sqrt(5.))  # golden angle in radians
+    X = []; Y = []; Z = []
+
+    phi = math.pi * (3. - math.sqrt(5.))  ## golden angle in radians
 
     for i in range(samples):
-        y = 1 - (i / float(samples - 1)) * 2  # y goes from 1 to -1
-        radius = math.sqrt(1 - y * y)  # radius at y
+        y = 1 - (i / float(samples - 1)) * 2  ## y goes from 1 to -1
+        radius = math.sqrt(1 - y * y)  ## radius at y
 
-        theta = phi * i  # golden angle increment
+        theta = phi * i  ## golden angle increment
 
         x = math.cos(theta) * radius
         z = math.sin(theta) * radius
@@ -35,29 +34,24 @@ def fibonacci_sphere(samples=1):
 
 
 
-
-
-
-
-
-
 class AngleMeshes(object):
     def __init__(self,
-                 NA:          float = 0.5,
-                 Samples:     int   = 4000,
-                 ThetaBound:  list  = [-180,180],
-                 PhiBound:    list  = [-180,180],
+                 MaxAngle:    float = np.pi/6,
+                 Samples:     int   = 1000,
                  PhiOffset          = 0,
-                 ThetaOffset        = 0):
+                 GammaOffset        = 0):
 
-        theta, phi, dOmega = self.GenerateLedevedMesh(NA          = NA,
+        theta, phi, dOmega = self.GenerateLedevedMesh(MaxAngle    = MaxAngle,
                                                       Samples     = Samples,
                                                       PhiOffset   = PhiOffset,
-                                                      ThetaOffset = ThetaOffset)
+                                                      GammaOffset = GammaOffset)
+
 
         self.Theta = Angle(theta, unit='Radian')
 
         self.Phi = Angle(phi, unit='Radian')
+
+        self.SinMesh = np.sin(phi)
 
         self.dOmega = Angle(0, unit='Radian')
 
@@ -72,11 +66,14 @@ class AngleMeshes(object):
 
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        ax.scatter(x, y, z,s=10)
+        ax.set_xlabel('X-direction [u.a.]')
+        ax.set_ylabel('Y-direction [u.a.]')
+        ax.set_zlabel('Z-direction [u.a.]')
+        ax.scatter(x, y, z,s=10,c='k')
         ax.set_aspect('auto')
-        ax.set_xlim([-2.5,2.5])
-        ax.set_ylim([-2.5,2.5])
-        ax.set_zlim([-2,2])
+        ax.set_xlim([-1.3,1.3])
+        ax.set_ylim([-1.3,1.3])
+        ax.set_zlim([-1,1])
 
         ax.quiver(0,0,-1.5,0,0,1,length=0.5, color='k')
 
@@ -84,32 +81,76 @@ class AngleMeshes(object):
         x = 1*np.sin(phi)*np.cos(theta)
         y = 1*np.sin(phi)*np.sin(theta)
         z = 1*np.cos(phi)
-        ax.plot_surface(
-        x, y, z,  rstride=1, cstride=1, color='k', alpha=0.3, linewidth=0)
+        ax.plot_surface(x,
+                        y,
+                        z,
+                        rstride=1,
+                        cstride=1,
+                        color='b',
+                        alpha=0.3,
+                        linewidth=0.2,
+                        shade=True,
+                        edgecolors='k'
+                        )
 
 
         plt.show()
 
 
-    def GenerateLedevedMesh(self, NA, Samples, PhiOffset, ThetaOffset):
-
-        MaxAngle = np.deg2rad( NA2Angle(NA) )
+    def GenerateLedevedMesh(self, MaxAngle, Samples, PhiOffset, GammaOffset):
 
         #assert MaxAngle <= np.pi/2, print("Angle should be inferior to pi/2")
+
+        TrueSample, dOmega = self.ComputeTrueSample(Samples, MaxAngle)
+
+        base = fibonacci_sphere(samples=TrueSample)
+
+        Tinitial = cs.mx_rot_x(gamma = 90/180*np.pi)
+
+        Tfinal = cs.mx_rot_x(gamma = -90/180*np.pi)
+
+        base = cs.mx_apply(Tinitial, *base)
+
+        base = self.Cutoff(*base, MaxAngle)
+
+        notbase = self.RotateOnPhi(PhiOffset, base)
+
+        notbase = self.RotateOnTheta(GammaOffset, notbase)
+
+        #notbase = cs.mx_apply(Tfinal, *notbase)
+
+        r, phi, theta = cs.cart2sp(*notbase)
+
+        return theta, phi, dOmega
+
+
+    def RotateOnTheta(self, rotation, base):
+        TPhi = cs.mx_rot_y(theta = rotation/180*np.pi)
+
+        return cs.mx_apply(TPhi, *base)
+
+
+    def RotateOnPhi(self, rotation, base):
+        TTheta = cs.mx_rot_x(gamma = rotation/180*np.pi)
+
+        return cs.mx_apply(TTheta, *base)
+
+
+    def ComputeTrueSample(self, Samples, MaxAngle):
 
         SolidAngle = np.abs( 2*np.pi * (np.cos(MaxAngle) - np.cos(0)))
 
         ratio = (4*np.pi/SolidAngle)
 
-        TrueSample = int(Samples*ratio)
+        TrueSamples = int(Samples*ratio)
 
-        x, y, z = fibonacci_sphere(samples=TrueSample)
+        return TrueSamples, 4*np.pi / TrueSamples
 
-        T0 = cs.mx_rot_x(gamma = 0/180*np.pi)
+
+    def Cutoff(self, x, y, z, MaxAngle):
+        T0 = cs.mx_rot_x(gamma = 90/180*np.pi)
 
         x,y,z = cs.mx_apply(T0, x, y, z)
-
-        dOmega = 4*np.pi / TrueSample
 
         r, phi, theta = cs.cart2sp(x, y, z)
 
@@ -117,29 +158,9 @@ class AngleMeshes(object):
 
         phi = phi[indices]; theta = theta[indices]; r = r[indices]
 
-        xp, yp, zp = cs.sp2cart(r, phi, theta)
+        self.base = (r,phi,theta)
 
-        TPhi = cs.mx_rot_y(theta = PhiOffset/180*np.pi)
-
-        TTheta = cs.mx_rot_x(gamma = ThetaOffset/180*np.pi)
-
-        xp,yp,zp = cs.mx_apply(TPhi, xp, yp, zp)
-
-        xp,yp,zp = cs.mx_apply(TTheta, xp, yp, zp)
-
-        r, phi, theta = cs.cart2sp(xp, yp, zp)
-
-        return theta, phi, dOmega
-
-
-
-
-
-
-
-
-
-
+        return cs.sp2cart(r, phi, theta)
 
 
 
@@ -155,7 +176,7 @@ class _AngleMeshes(object):
                  PhiBound:    list  = [-180,180],
                  ThetaNpts:   int   = None,
                  PhiNpts:     int   = None,
-                 ThetaOffset: float = 0,
+                 GammaOffset: float = 0,
                  PhiOffset:   float = 0
                  ):
 
@@ -163,11 +184,11 @@ class _AngleMeshes(object):
         self.PhiNpts   = PhiNpts
         self.MakeProperties(ThetaBound  = ThetaBound,
                             PhiBound    = PhiBound,
-                            ThetaOffset = ThetaOffset,
+                            GammaOffset = GammaOffset,
                             PhiOffset   = PhiOffset)
 
 
-    def MakeProperties(self, ThetaBound, PhiBound, ThetaOffset, PhiOffset):
+    def MakeProperties(self, ThetaBound, PhiBound, GammaOffset, PhiOffset):
 
         ThetaMesh, PhiMesh = np.mgrid[ThetaBound[0] : ThetaBound[1] : complex(0,self.ThetaNpts),
                                       PhiBound[0]   : PhiBound[1]   : complex(self.PhiNpts), ]
@@ -183,7 +204,7 @@ class _AngleMeshes(object):
         self.dOmega.Radian = deg2rad(PhiDelta) * deg2rad(ThetaDelta)
 
         self.Theta = Namespace( Boundary = Angle( [ThetaBound[0], ThetaBound[1]] ),
-                                Offset   = Angle( ThetaOffset ),
+                                Offset   = Angle( GammaOffset ),
                                 Mesh     = Angle( ThetaMesh ),
                                 Delta    = Angle( ThetaDelta ),
                                 )

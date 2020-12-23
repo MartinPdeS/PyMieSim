@@ -9,7 +9,7 @@ from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, Scal
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Angle, Polarization
+from PyMieCoupling.utils import Angle, _Polarization
 
 class BaseDetector(object):
     """Short summary.
@@ -66,8 +66,8 @@ class BaseDetector(object):
     def __init__(self):
         pass
 
-    def Plot(self):
-        return self.FarField.Plot()
+    def Plot(self, *args, **kwargs):
+        return self.Scalar.Plot(*args, **kwargs)
 
     @property
     def ThetaBound(self):
@@ -83,7 +83,7 @@ class BaseDetector(object):
 
     @Filter.setter
     def Filter(self, val):
-        self._Filter = Polarization(val)
+        self._Filter = _Polarization(val)
 
     @property
     def PhiBound(self):
@@ -135,8 +135,8 @@ class BaseFarField(object):
     def __init__(self):
         pass
 
-    def Plot(self):
-        return self.Scalar.Plot()
+    def Plot(self, *args, **kwargs):
+        return self.Scalar.Plot(*args, **kwargs)
 
     @property
     def ThetaBound(self):
@@ -281,7 +281,7 @@ class BaseScatterer(object):
     @property
     def SPF(self) -> None:
         if not self._SPF:
-            self._SPF = SPF(Index=self.Index, SizeParam=self.SizeParam)
+            self._SPF = SPF(Parent=self)
             return self._SPF
         else:
             return self._SPF
@@ -292,6 +292,7 @@ class BaseScatterer(object):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
         """
+
         Para, Perp = GetFieldsFromMesh(m                    = self.Index,
                                        x                    = self.SizeParam,
                                        ThetaMesh            = self.Meshes.Theta.Radian.flatten(),
@@ -299,8 +300,8 @@ class BaseScatterer(object):
                                        Polarization         = self.Source.Polarization.Radian);
 
 
-        self._Parallel      = ScalarFarField(Scalar=Para, Parent=self)
-        self._Perpendicular = ScalarFarField(Scalar=Perp, Parent=self)
+        self._Parallel      = ScalarFarField(Scalar=Para.squeeze(), Parent=self)
+        self._Perpendicular = ScalarFarField(Scalar=Perp.squeeze(), Parent=self)
 
 
     def Coupling(self, Detector, Filter = None, Mode = 'Centered'):

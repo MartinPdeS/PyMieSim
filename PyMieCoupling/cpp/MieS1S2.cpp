@@ -297,35 +297,35 @@ C_GetFieldsFromMesh(const double m,
 static void
 C_GetFieldsNoPolarizationFromMesh(const double m,
                                   const double x,
-                                  const double* ThetaVec,
-                                  const double* PhiVec,
+                                  const double* ThetaMesh,
+                                  const double* PhiMesh,
+                                  const int Lenght,
                                   complex128* Parallel,
-                                  complex128* Perpendicular)
-        {
-  /*
-  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
+                                  complex128* Perpendicular){
+
+  complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
 
   const std::complex<double> j (0., 1.0) ;
 
   double temp0 ;
-  double temp1 = 1./sqrt(2.) ;
+  double temp1 = 1./sqrt(2.);
   complex128 temp2;
 
-  C_GetS1S2(m, x, PhiVec, Philenght, S1S2) ;
+  C_GetS1S2(m, x, PhiMesh, Lenght, S1S2) ;
 
-  for (long unsigned int k=0; k < Thetalenght; k++ )
+  for (long unsigned int k=0; k < Lenght; k++ )
   {
-    temp0 = *ThetaVec++ ;
-    for (long unsigned int i=0; i < Thetalenght; i++ ){
-      *Parallel++          = S1S2[i] * temp1 ;
-      *Perpendicular++     = S1S2[i + Philenght] * temp1 ;
-    }
+    temp0 = *ThetaMesh++ ;
+
+    *Parallel++          = S1S2[k] * temp1 ;
+    *Perpendicular++     = S1S2[k + Lenght] * temp1 ;
+
   }
 
   free(S1S2) ;
-  */
   return;
 }
+
 
 
 

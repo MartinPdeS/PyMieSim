@@ -36,7 +36,8 @@ class ScattererSet(object):
 
         self.Coupling = np.empty( [len(self.RIList), len(self.DiameterList)] )
 
-        maxPhi, minPhi = np.max(Detector.FarField.Meshes.Phi.Mesh.Degree), np.min(Detector.FarField.Meshes.Phi.Mesh.Degree)
+        maxPhi, minPhi = np.max(Detector.Meshes.Phi.Degree), np.min(Detector.Meshes.Phi.Degree)
+
         self.PhiVector = np.linspace(-np.pi/2, +np.pi/2,201)
 
         self.PhiVectorDetector = np.linspace(minPhi, maxPhi, 101)
@@ -44,9 +45,7 @@ class ScattererSet(object):
 
     def GetCouplingFrame(self, Filter: list = ['None'] ):
 
-        if not isinstance(Filter, list):
-            Filter = [Filter]
-
+        if not isinstance(Filter, list): Filter = [Filter]
 
         MI = pd.MultiIndex.from_product([Filter, self.DiameterList, self.RIList],
                                         names=['Filter','Diameter','RI',])
@@ -62,7 +61,7 @@ class ScattererSet(object):
                 Scat = Scatterer(Diameter    = Diameter,
                                  Index       = RI,
                                  Source      = self.Source,
-                                 Meshes      = self.Detector.FarField.Meshes)
+                                 Meshes      = self.Detector.Meshes)
 
                 for Polar in df.attrs['Filter']:
                     self.Detector.Filter = Polar
@@ -110,7 +109,7 @@ class ScattererSet(object):
                 Scat = Scatterer(Diameter  = Diameter,
                                  Index     = RI,
                                  Source    = self.Source,
-                                 Meshes    = self.Detector.FarField.Meshes
+                                 Meshes    = self.Detector.Meshes
                                  )
 
                 Coupling = self.Detector.Coupling(Scatterer    = Scat,
@@ -172,7 +171,7 @@ class ScattererSet(object):
         ax.fill_between(self.PhiVector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -223,7 +222,7 @@ class ScattererSet(object):
         ax.fill_between(self.PhiVectorDetector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -260,7 +259,7 @@ class ScattererSet(object):
         ax.fill_between(self.PhiVectorDetector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -299,7 +298,7 @@ class ScattererSet(object):
         ax.fill_between(self.PhiVectorDetector,
                         ax.get_ylim()[0],
                         ax.get_ylim()[1]*3,
-                        #where = (Meshes.Phi.Vector.Degree > self.Detector.FarField.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.FarField.Meshes.Phi.Boundary.Degree[1]) ,
+                        #where = (Meshes.Phi.Vector.Degree > self.Detector.Meshes.Phi.Boundary.Degree[0]) & (Meshes.Phi.Vector.Degree < self.Detector.Meshes.Phi.Boundary.Degree[1]) ,
                         label = 'Detector',
                         color = 'green',
                         alpha = 0.5)
@@ -321,23 +320,21 @@ class ScattererSet(object):
 
 
 
-
-
 class Scatterer(BaseScatterer):
 
     def __init__(self,
                  Diameter:    float,
                  Source:      Source,
                  Index:       float,
-                 Npts:        int         = None,
                  Meshes:      AngleMeshes  = None,
-                 ThetaBound:  list        = [-180, 180],
-                 ThetaOffset: float       = 0,
-                 Samples:     int         = 1000,
-                 PhiBound:    list        = [-180, 180],
-                 PhiOffset:   float       = 0) -> None:
+                 Acceptance:  list         = 20,
+                 Samples:     int          = 1000,
+                 GammaOffset: float        = 0,
+                 PhiOffset:   float        = 0) -> None:
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
+
+        self.Acceptance = np.deg2rad(Acceptance)
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
@@ -346,11 +343,10 @@ class Scatterer(BaseScatterer):
         if Meshes:
             self.Meshes = Meshes
         else:
-            self.Meshes = AngleMeshes(ThetaBound  = np.asarray(ThetaBound),
-                                      PhiBound    = np.asarray(PhiBound),
+            self.Meshes = AngleMeshes(MaxAngle    = self.Acceptance,
                                       Samples     = Samples,
                                       PhiOffset   = PhiOffset,
-                                      ThetaOffset = ThetaOffset)
+                                      GammaOffset = GammaOffset)
 
 
 
@@ -361,18 +357,20 @@ class FullScatterer(BaseScatterer):
                  Diameter:    float,
                  Source:      Source,
                  Index:       float,
-                 Npts:        int    = 201):
+                 Samples:     int     = 1000):
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
+
+        self.Acceptance = np.deg2rad(180)
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
-        self.Meshes = AngleMeshes(ThetaBound  = np.asarray([-180,180]),
-                                  PhiBound    = np.asarray([0,180]),
+        self.Meshes = AngleMeshes(MaxAngle    = self.Acceptance,
+                                  Samples     = Samples,
                                   PhiOffset   = 0,
-                                  ThetaOffset = 0)
+                                  GammaOffset = 0)
 
 
 

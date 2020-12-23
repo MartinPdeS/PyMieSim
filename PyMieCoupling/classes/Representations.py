@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from typing import Tuple
 from PyMieCoupling.classes.Meshes import AngleMeshes
+from PyMieCoupling.utils import interp_at
+from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
+from scipy.interpolate import griddata
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 import matplotlib.ticker as tick
@@ -143,33 +147,32 @@ class Field(object):
 
 
 class SPF(np.ndarray):
-    def __new__(cls, Index, SizeParam, Polarization=0, num=101):
-        thetaVec = np.linspace(-np.pi, np.pi, num)
-        phiVec   = np.linspace(0, np.pi, num)
+    def __new__(cls, num=200, Parent = None):
 
-        thetaMesh, phiMesh = np.meshgrid(thetaVec, phiVec)
+        cls.Parent = Parent
 
-        Parallel, Perpendicular = Fields_CPP(Index,
-                                             SizeParam,
-                                             thetaVec,
-                                             phiVec,
-                                             Polarization  = 0);
+        cls.phi, cls.theta = np.mgrid[-np.pi/2:np.pi/2:complex(num), -np.pi:np.pi:complex(num)]
 
-        scamap = plt.cm.ScalarMappable(cmap='jet')
-        cls.fcolors = scamap.to_rgba(np.real(Perpendicular) + np.real(Parallel) )
+        Para, Perp = GetFieldsFromMesh(m                    = cls.Parent.Index,
+                                       x                    = cls.Parent.SizeParam,
+                                       ThetaMesh            = cls.theta.flatten(),
+                                       PhiMesh              = cls.phi.flatten()-np.pi/2,
+                                       Polarization         = 0);
+        cls.Para = Para
 
-        SPF3D = cs.sp2cart(Parallel.__abs__()**2 + Perpendicular.__abs__()**2,
-                           phiMesh - np.min(phiMesh) -np.pi/2,
-                           thetaMesh,
-                           )
+        SPF = Para.__abs__()**2 + Perp.__abs__()**2
 
-        this = np.array(SPF3D, copy=False)
+        this = np.array(SPF, copy=False)
+
         this = np.asarray(this).view(cls)
 
         return this
 
 
-    def Plot(cls):
+
+    def Plot(cls, num=200):
+
+        x, y, z = cs.sp2cart(cls.reshape([num,num]), cls.phi, cls.theta)
 
         fig, ax = plt.subplots(1, figsize=(3, 3), subplot_kw = {'projection':'3d'})
         ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
@@ -177,22 +180,24 @@ class SPF(np.ndarray):
         ax.set_xlabel(r'X-direction')
         ax.set_zlabel(r'Z-direction')
 
-        ax.plot_surface(*cls,
+        scamap = plt.cm.ScalarMappable(cmap='jet')
+
+        ax.plot_surface( x, y, z,
                          rstride     = 2,
                          cstride     = 2,
-                         linewidth   = 0.003,
-                         facecolors  = cls.fcolors,
+                         linewidth   = 0.3,
+                         facecolors  = scamap.to_rgba(cls.Para.real.reshape([num,num]) ),
+                         alpha =1,
                          edgecolors  = 'k',
-                         antialiased = False,
+                         #antialiased = False,
+                         #shade  =False
                          )
 
         xLim = ax.get_xlim(); yLim = ax.get_ylim(); zLim = ax.get_zlim()
 
         Min = min(xLim[0],yLim[0]); Max = max(xLim[1], yLim[1])
 
-        ax.set_xlim(Min, Max)
-
-        ax.set_ylim(Min, Max)
+        ax.set_xlim(Min, Max); ax.set_ylim(Min, Max)
 
         plt.show(block=False)
 
@@ -281,48 +286,56 @@ class ScalarFarField(np.ndarray):
 
 
     def __init__(self, Scalar, Parent):
-        self.Scalar = Scalar
+        self.Scalar = Scalar.astype(np.complex)
         #self.Parent = weakref.ref(Parent)
         self.Parent = Parent
 
 
-    def Plot(self):
-        from scipy.interpolate import griddata
-        phi, theta = np.mgrid[-np.pi/2:np.pi/2:400j, -np.pi:np.pi:400j]
+    def Plot(self, num=600):
 
-        ziReal = griddata((self.Parent.Meshes.Theta.Radian.flatten(),
-                           self.Parent.Meshes.Phi.Radian.flatten()),
-                           self.Scalar.imag.flatten(),
-                           (theta.flatten(),
-                           phi.flatten()),
+        phi, theta = np.mgrid[-np.pi/2:np.pi/2:complex(num), -np.pi:np.pi:complex(num)]
+
+        ziReal = griddata((self.Parent.Meshes.Theta.Radian,
+                           self.Parent.Meshes.Phi.Radian),
+                           self.Scalar.real,
+                           (theta.flatten(), phi.flatten()),
                            fill_value = 0,
                            method     = 'linear')
 
-        ziImag = griddata((self.Parent.Meshes.Theta.Radian.flatten(),
-                           self.Parent.Meshes.Phi.Radian.flatten()),
-                           self.Scalar.imag.flatten(),
-                           (theta.flatten(),
-                           phi.flatten()),
+        ziImag = griddata((self.Parent.Meshes.Theta.Radian,
+                           self.Parent.Meshes.Phi.Radian),
+                           self.Scalar.imag,
+                           (theta.flatten(), phi.flatten()),
                            fill_value = 0,
                            method     = 'linear')
 
-        fig, axes = plt.subplots(nrows = 1,
-                                 ncols = 2,
-                                 figsize    = (8,3),
-                                 subplot_kw = {'projection':'mollweide'})
+        fig, ax = plt.subplots(nrows      = 1,
+                               ncols      = 2,
+                               figsize    = (8, 3),
+                               subplot_kw = {'projection':'mollweide'}
+                               )
 
-        axes[0].pcolormesh(theta, phi, ziReal.reshape([400,400]), shading='auto')
+        im0 = ax[0].pcolormesh(theta,
+                               phi,
+                               ziReal.reshape([num,num]),
+                               shading='auto')
 
-        axes[0].set_title('Real Part\n Far-Field Spherical Coordinates')
-        axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
-        axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
-        axes[0].grid()
+        plt.colorbar(mappable=im0, orientation='horizontal', ax=ax[0])
 
-        axes[1].pcolormesh(theta, phi, ziImag.reshape([400,400]), shading='auto')
+        ax[0].set_title('Real Part\n Far-Field Spherical Coordinates')
+        ax[0].set_ylabel(r'Angle $\phi$ [Degree]')
+        ax[0].set_xlabel(r'Angle $\theta$ [Degree]')
+        ax[0].grid()
 
-        axes[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
-        axes[1].grid()
+        im1 = ax[1].pcolormesh(theta,
+                               phi,
+                               ziImag.reshape([num,num]),
+                               shading='auto')
+        plt.colorbar(mappable=im1, orientation='horizontal', ax=ax[1])
+
+        ax[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
+        ax[1].set_xlabel(r'Angle $\theta$ [Degree]')
+        ax[1].grid()
 
         fig.tight_layout()
 

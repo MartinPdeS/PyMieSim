@@ -7,19 +7,19 @@ _________________________________________________________
 
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.classes.Detector import fiber, LPmode, Photodiode
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Detector import LPmode, Photodiode
+from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Scattering import ScattererSet
 
 LightSource = Source(Wavelength   = 450e-9,
                      Polarization = 0)
 
-Detector = Photodiode(NA                = 0.5,
-                      Source            = LightSource,
-                      Npts              = 101,
-                      ThetaOffset       = 0,
-                      PhiOffset         = 0,
-                      Filter            = 90)
+Detector = Photodiode(NA                = 0.9,
+                      Source            = Source,
+                      Samples           = 1001,
+                      GammaOffset       = 0,
+                      PhiOffset         = 0)
+
 
 
 

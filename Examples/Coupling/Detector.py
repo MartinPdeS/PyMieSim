@@ -10,29 +10,28 @@ from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.utils import Source
 import matplotlib.pyplot as plt
 
-LightSource = Source(Wavelength   = 1000e-9,
-                     Polarization = 90)
+LightSource = Source(Wavelength   = 100e-9,
+                     Polarization = 0)
 
 
-Detector = Photodiode(NA                = 0.8,
-                      Source            = LightSource,
-                      Npts              = 201,
-                      ThetaOffset       = 0,
+Detector = Photodiode(NA                = 0.9,
+                      Source            = Source,
+                      Samples           = 1001,
+                      GammaOffset       = 0,
                       PhiOffset         = 0)
 
 
 
-
-Scat = Scatterer(Diameter      = 50e-9,
+Scat = Scatterer(Diameter      = 500e-9,
                  Source        = LightSource,
                  Index         = 1.4,
-                 Meshes        = Detector.FarField.Meshes)
+                 Meshes        = Detector.Meshes)
 
-Scat.S1S2.Plot()
+#Scat.S1S2.Plot()
 
-Scat.Parallel.Plot()
+#Scat.Parallel.Plot()
 
-Detector.Plot()
+#Detector.Plot()
 
 print(Detector.Coupling(Scatterer = Scat, Mode='Centered'))
 
