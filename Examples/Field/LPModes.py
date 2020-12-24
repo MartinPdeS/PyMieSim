@@ -9,8 +9,6 @@ from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.utils import Source
 import matplotlib.pyplot as plt
 
-npts=101
-
 LightSource = Source(Wavelength   = 400e-9,
                      Polarization = 90)
 
@@ -18,20 +16,15 @@ LightSource = Source(Wavelength   = 400e-9,
 LP11 = LPmode(Name        = 'LP11',
               Mode        = (1, 1),
               Source      = LightSource,
-              Samples     = 501,
-              NA          = 1,
-              GammaOffset = 90,
+              Samples     = 201,
+              NA          = 0.1,
+              GammaOffset = 0,
               PhiOffset   = 0
               )
 
-LP01 = LPmode(Name          = 'LP01',
-              Mode          = (0, 1),
-              Source        = LightSource,
-              Samples       = 101,
-              NA            = 1)
+LP11.NA = 0.8
 
-
-LP11.Plot()
+LP11.Meshes.Plot()
 
 plt.show()
 # --

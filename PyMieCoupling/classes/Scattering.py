@@ -347,6 +347,7 @@ class Scatterer(BaseScatterer):
                                       Samples     = Samples,
                                       PhiOffset   = PhiOffset,
                                       GammaOffset = GammaOffset)
+                     
 
 
 

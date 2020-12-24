@@ -34,6 +34,7 @@ def fibonacci_sphere(samples=1):
 
 
 
+
 class AngleMeshes(object):
     def __init__(self,
                  MaxAngle:    float = np.pi/6,
@@ -41,23 +42,30 @@ class AngleMeshes(object):
                  PhiOffset          = 0,
                  GammaOffset        = 0):
 
-        theta, phi, dOmega = self.GenerateLedevedMesh(MaxAngle    = MaxAngle,
-                                                      Samples     = Samples,
-                                                      PhiOffset   = PhiOffset,
-                                                      GammaOffset = GammaOffset)
+        self.PhiOffset = PhiOffset
+        self.GammaOffset = GammaOffset
+        self.MaxAngle = MaxAngle
+        self.Samples = Samples
+        Theta, Phi, dOmega = self.GenerateLedevedMesh()
 
 
-        self.Theta = Angle(theta, unit='Radian')
+        self.MakeProperties(Theta, Phi, dOmega)
 
-        self.Phi = Angle(phi, unit='Radian')
 
-        self.SinMesh = np.sin(phi)
+    def MakeProperties(self, Theta, Phi, dOmega):
+
+        self.Theta = Angle(Theta, unit='Radian')
+
+        self.Phi = Angle(Phi, unit='Radian')
+
+        self.SinMesh = np.sin(Phi)
 
         self.dOmega = Angle(0, unit='Radian')
 
         self.dOmega.Radian = dOmega
 
         self.dOmega.Degree = dOmega * (180/np.pi)**2
+
 
     def Plot(self):
         x, y, z = cs.sp2cart(np.ones(self.Phi.Radian.shape),
@@ -97,48 +105,79 @@ class AngleMeshes(object):
         plt.show()
 
 
-    def GenerateLedevedMesh(self, MaxAngle, Samples, PhiOffset, GammaOffset):
+    def GenerateLedevedMesh(self):
 
         #assert MaxAngle <= np.pi/2, print("Angle should be inferior to pi/2")
 
-        TrueSample, dOmega = self.ComputeTrueSample(Samples, MaxAngle)
+        self.TrueSample, dOmega = self.ComputeTrueSample(self.Samples)
 
-        base = fibonacci_sphere(samples=TrueSample)
+        base = fibonacci_sphere(samples=self.TrueSample)
 
-        Tinitial = cs.mx_rot_x(gamma = 90/180*np.pi)
+        base = self.AvoidPoles(base)
 
-        Tfinal = cs.mx_rot_x(gamma = -90/180*np.pi)
+        r, phi, theta = cs.cart2sp(*base)
 
-        base = cs.mx_apply(Tinitial, *base)
+        base = self.Cutoff(phi, theta)
 
-        base = self.Cutoff(*base, MaxAngle)
+        notbase = self.RotateOnPhi(self.PhiOffset, base)
 
-        notbase = self.RotateOnPhi(PhiOffset, base)
-
-        notbase = self.RotateOnTheta(GammaOffset, notbase)
-
-        #notbase = cs.mx_apply(Tfinal, *notbase)
+        notbase = self.RotateOnGamma(self.GammaOffset, notbase)
 
         r, phi, theta = cs.cart2sp(*notbase)
 
         return theta, phi, dOmega
 
 
-    def RotateOnTheta(self, rotation, base):
+    def UpdateMaxAngle(self, MaxAngle):
+
+        self.MaxAngle = MaxAngle
+
+        base = self.Cutoff(self.base.Phi, self.base.Theta)
+
+        notbase = self.RotateOnPhi(self.PhiOffset, base)
+
+        notbase = self.RotateOnGamma(self.GammaOffset, notbase)
+
+        _, Phi, Theta = cs.cart2sp(*notbase)
+
+        dOmega = 4*np.pi / self.TrueSample
+
+        self.MakeProperties(Theta, Phi, dOmega)
+
+
+    def UpdateSphere(self, **kwargs):
+
+        if 'MaxAngle' in kwargs: self.MaxAngle = kwargs['MaxAngle']
+        if 'GammaOffset' in kwargs: self.GammaOffset = kwargs['GammaOffset']
+        if 'PhiOffset' in kwargs: self.PhiOffset = kwargs['PhiOffset']
+        if 'Samples' in kwargs: self.Samples = kwargs['Samples']
+
+        Theta, Phi, dOmega =  self.GenerateLedevedMesh()
+
+        self.MakeProperties(Theta, Phi, dOmega)
+
+
+    def AvoidPoles(self, base):
+        Tinitial = cs.mx_rot_x(gamma = np.pi)
+
+        return cs.mx_apply(Tinitial, *base)
+
+
+    def RotateOnGamma(self, rotation, base):
         TPhi = cs.mx_rot_y(theta = rotation/180*np.pi)
 
         return cs.mx_apply(TPhi, *base)
 
 
     def RotateOnPhi(self, rotation, base):
-        TTheta = cs.mx_rot_x(gamma = rotation/180*np.pi)
+        TGamma = cs.mx_rot_x(gamma = rotation/180*np.pi)
 
-        return cs.mx_apply(TTheta, *base)
+        return cs.mx_apply(TGamma, *base)
 
 
-    def ComputeTrueSample(self, Samples, MaxAngle):
+    def ComputeTrueSample(self, Samples):
 
-        SolidAngle = np.abs( 2*np.pi * (np.cos(MaxAngle) - np.cos(0)))
+        SolidAngle = np.abs( 2*np.pi * (np.cos(self.MaxAngle) - np.cos(0)))
 
         ratio = (4*np.pi/SolidAngle)
 
@@ -147,145 +186,17 @@ class AngleMeshes(object):
         return TrueSamples, 4*np.pi / TrueSamples
 
 
-    def Cutoff(self, x, y, z, MaxAngle):
-        T0 = cs.mx_rot_x(gamma = 90/180*np.pi)
+    def Cutoff(self, phi, theta):
 
-        x,y,z = cs.mx_apply(T0, x, y, z)
+        indices = phi>=(np.pi/2-self.MaxAngle)
 
-        r, phi, theta = cs.cart2sp(x, y, z)
+        phi = phi[indices]; theta = theta[indices];
 
-        indices = phi>=(np.pi/2-MaxAngle)
+        self.base = Namespace(Phi=phi, Theta=theta)
 
-        phi = phi[indices]; theta = theta[indices]; r = r[indices]
-
-        self.base = (r,phi,theta)
-
-        return cs.sp2cart(r, phi, theta)
+        return cs.sp2cart(np.ones(phi.size), phi, theta)
 
 
-
-
-
-
-
-
-class _AngleMeshes(object):
-
-    def __init__(self,
-                 ThetaBound:  list  = [-180,180],
-                 PhiBound:    list  = [-180,180],
-                 ThetaNpts:   int   = None,
-                 PhiNpts:     int   = None,
-                 GammaOffset: float = 0,
-                 PhiOffset:   float = 0
-                 ):
-
-        self.ThetaNpts = ThetaNpts
-        self.PhiNpts   = PhiNpts
-        self.MakeProperties(ThetaBound  = ThetaBound,
-                            PhiBound    = PhiBound,
-                            GammaOffset = GammaOffset,
-                            PhiOffset   = PhiOffset)
-
-
-    def MakeProperties(self, ThetaBound, PhiBound, GammaOffset, PhiOffset):
-
-        ThetaMesh, PhiMesh = np.mgrid[ThetaBound[0] : ThetaBound[1] : complex(0,self.ThetaNpts),
-                                      PhiBound[0]   : PhiBound[1]   : complex(self.PhiNpts), ]
-
-        ThetaDelta = np.abs(ThetaBound[0] - ThetaBound[1])
-
-        PhiDelta = np.abs(PhiBound[0] - PhiBound[1])
-
-        self.dOmega = Angle( 0 )
-
-        self.dOmega.Degree = PhiDelta * ThetaDelta
-
-        self.dOmega.Radian = deg2rad(PhiDelta) * deg2rad(ThetaDelta)
-
-        self.Theta = Namespace( Boundary = Angle( [ThetaBound[0], ThetaBound[1]] ),
-                                Offset   = Angle( GammaOffset ),
-                                Mesh     = Angle( ThetaMesh ),
-                                Delta    = Angle( ThetaDelta ),
-                                )
-
-        self.Phi = Namespace( Boundary = Angle( [PhiBound[0], PhiBound[1]] ),
-                              Offset   = Angle( PhiOffset ),
-                              Mesh     = Angle( PhiMesh ),
-                              Delta    = Angle( PhiDelta )
-                              )
-
-        self.SinMesh = np.abs(np.sin(PhiMesh))
-
-        if PhiOffset != 0: self.MakePhiOffset(PhiOffset)
-
-
-    def MakePhiOffset(self, rotation):
-
-        self.PhiOffset = Angle(rotation)
-
-        r = np.ones(self.Phi.Mesh.Radian.flatten().shape)
-
-
-        x, y, z = cs.sp2cart(r,
-                              self.Phi.Mesh.Radian.flatten()-np.pi/2,
-                              self.Theta.Mesh.Radian.flatten(),
-                              )
-
-        Tz = cs.mx_rot_x(gamma = rotation/180*np.pi)
-
-        xp,yp,zp = cs.mx_apply(Tz, x, y, z)
-
-        rp, phip, thetap = cs.cart2sp(xp, yp, zp)
-
-        self.Theta.Mesh   = Angle( thetap.reshape(self.Theta.Mesh.Radian.shape), unit='Radian' )
-
-        self.Phi.Mesh = Angle( (phip.reshape(self.Phi.Mesh.Radian.shape)+np.pi/2) , unit='Radian' )
-
-
-
-
-
-    def Plot(self):
-
-        R = np.ones(self.Theta.Mesh.Radian.flatten().shape)
-        xp, yp, zp = cs.sp2cart(R,
-                                self.Phi.Mesh.Radian.flatten()+np.pi/2,
-                                self.Theta.Mesh.Radian.flatten(),
-                                )
-
-
-        r = 1
-        pi = np.pi
-        cos = np.cos
-        sin = np.sin
-        phi, theta = np.mgrid[0.0:pi:50j, 0.0:2.0*pi:50j]
-        x = r*sin(phi)*cos(theta)
-        y = r*sin(phi)*sin(theta)
-        z = r*cos(phi)
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-
-        ax.plot_surface(x,
-                        y,
-                        z,
-                        rstride=1,
-                        cstride=1,
-                        color='k',
-                        alpha=0.3,
-                        linewidth=0.00,
-                        edgecolors='k',
-                        antialiased = False)
-
-        ax.scatter(xp,yp,zp,color="k",s=2)
-        ax.set_xlabel('X-Direction')
-        ax.set_ylabel('Y-Direction')
-        ax.set_zlabel('Z-Direction')
-        ax.set_xticklabels([]); ax.set_yticklabels([]); ax.set_zticklabels([])
-        ax.set_xlim([-1,1]); ax.set_ylim([-1,1]); ax.set_zlim([-1,1])
-        plt.tight_layout()
-        plt.show()
 
 
 

@@ -18,11 +18,12 @@ LightSource = Source(Wavelength   = 450e-9,
 
 
 
-Photodiode0 = Photodiode(NA                = 0.2,
-                         Source            = LightSource,
-                         Npts              = 81,
-                         ThetaOffset       = 0,
-                         PhiOffset         = 0)
+Photodiode0 = Photodiode(Name              = 'Detector',
+                      NA                = 0.5,
+                      Source            = LightSource,
+                      Samples           = 801,
+                      GammaOffset       = 0,
+                      PhiOffset         = 0)
 
 
 Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,

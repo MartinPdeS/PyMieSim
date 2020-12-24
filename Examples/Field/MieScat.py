@@ -15,17 +15,17 @@ LightSource = Source(Wavelength   = 100e-9,
 
 Scat = Scatterer(Diameter    = 200e-9,
                  Source      = LightSource,
-                 Acceptance  = 50,
+                 Acceptance  = 10,
                  Index       = 1.4,
-                 Samples     = 1000,
+                 Samples     = 2000,
                  PhiOffset   = 0,
-                 GammaOffset = 60)
+                 GammaOffset = 30)
 
-Scat.Parallel.Plot()
+Scat.Plot()
 
-#Scat.S1S2.Plot()
+Scat.S1S2.Plot()
 
-#Scat.SPF.Plot()
+Scat.SPF.Plot()
 
 Scat.Meshes.Plot()
 

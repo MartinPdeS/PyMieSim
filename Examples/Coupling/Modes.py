@@ -14,7 +14,7 @@ from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.classes.Detector import Photodiode
 
 LightSource = Source(Wavelength   = 450e-9,
-                     Polarization = 0)
+                     Polarization = 90)
 
 npts=101
 
@@ -38,9 +38,9 @@ Scat = Scatterer(Diameter    = 50e-9,
 
 print(LP11.Coupling(Scat, Mode='Centered'))
 
-#LP11.Plot()
+LP11.Plot()
 
-#Scat.Parallel.Plot()
+Scat.Parallel.Plot()
 
 plt.show()
 # -

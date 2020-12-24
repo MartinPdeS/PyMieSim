@@ -16,7 +16,7 @@ def CenteredCoupling_Para(Detector, Scatterer):
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
 
     if Detector._coupling == "Amplitude":
-        PlotUnstructureData(Detector.Scalar, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
+        #PlotUnstructureData(Detector.Scalar, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
         Para = (Detector.Scalar * Scatterer.Parallel)
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian

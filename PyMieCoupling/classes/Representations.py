@@ -1,15 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import cm
-from typing import Tuple
 from PyMieCoupling.classes.Meshes import AngleMeshes
-from PyMieCoupling.utils import interp_at
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
+from PyMieCoupling.utils import InterpFull
 from scipy.interpolate import griddata
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-
-import matplotlib.ticker as tick
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
@@ -26,6 +21,7 @@ except:
         try:
             from PyMieCoupling.cython.S1S2 import GetS1S2
         except: ImportError
+
 
 
 class Stokes(np.ndarray):
@@ -291,33 +287,27 @@ class ScalarFarField(np.ndarray):
         self.Parent = Parent
 
 
-    def Plot(self, num=600):
+    def Plot(self, num=200):
 
-        phi, theta = np.mgrid[-np.pi/2:np.pi/2:complex(num), -np.pi:np.pi:complex(num)]
+        ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(num),
+                                      -np.pi/2:np.pi/2:complex(num)]
 
-        ziReal = griddata((self.Parent.Meshes.Theta.Radian,
-                           self.Parent.Meshes.Phi.Radian),
-                           self.Scalar.real,
-                           (theta.flatten(), phi.flatten()),
-                           fill_value = 0,
-                           method     = 'linear')
-
-        ziImag = griddata((self.Parent.Meshes.Theta.Radian,
-                           self.Parent.Meshes.Phi.Radian),
-                           self.Scalar.imag,
-                           (theta.flatten(), phi.flatten()),
-                           fill_value = 0,
-                           method     = 'linear')
+        Para, Perp = GetFieldsFromMesh(m                    = self.Parent.Index,
+                                       x                    = self.Parent.SizeParam,
+                                       ThetaMesh            = ThetaMesh.flatten(),
+                                       PhiMesh              = PhiMesh.flatten(),
+                                       Polarization         = 0);
 
         fig, ax = plt.subplots(nrows      = 1,
                                ncols      = 2,
                                figsize    = (8, 3),
-                               subplot_kw = {'projection':'mollweide'}
+                              # subplot_kw = {'projection':'mollweide'}
                                )
 
-        im0 = ax[0].pcolormesh(theta,
-                               phi,
-                               ziReal.reshape([num,num]),
+        im0 = ax[0].pcolormesh(ThetaMesh,
+                               PhiMesh,
+                               Para.real.reshape([num,num]),
+                               cmap = 'RdBu',
                                shading='auto')
 
         plt.colorbar(mappable=im0, orientation='horizontal', ax=ax[0])
@@ -327,9 +317,10 @@ class ScalarFarField(np.ndarray):
         ax[0].set_xlabel(r'Angle $\theta$ [Degree]')
         ax[0].grid()
 
-        im1 = ax[1].pcolormesh(theta,
-                               phi,
-                               ziImag.reshape([num,num]),
+        im1 = ax[1].pcolormesh(ThetaMesh,
+                               PhiMesh,
+                               Para.imag.reshape([num,num]),
+                               cmap = 'RdBu',
                                shading='auto')
         plt.colorbar(mappable=im1, orientation='horizontal', ax=ax[1])
 

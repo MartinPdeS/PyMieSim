@@ -24,7 +24,7 @@ class BaseDetector(object):
         Wavelength of the incoming source.
     npts : int
         Number of points defining the rastered meshes.
-    ThetaOffset : float
+    GammaOffset : float
         Offset of theta angle between the detector and source.
     PhiOffset : float
         Offset of phi angle between the detector and source.
@@ -57,7 +57,7 @@ class BaseDetector(object):
         Description of attribute `magnificate`.
     size
     wavelength
-    ThetaOffset
+    GammaOffset
     PhiOffset
     npts
 
@@ -70,14 +70,6 @@ class BaseDetector(object):
         return self.Scalar.Plot(*args, **kwargs)
 
     @property
-    def ThetaBound(self):
-        return self.__ThetaBound
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self.FarField.ThetaBound = val
-
-    @property
     def Filter(self):
         return self._Filter
 
@@ -86,38 +78,36 @@ class BaseDetector(object):
         self._Filter = _Polarization(val)
 
     @property
-    def PhiBound(self):
-        return self.FarField.__PhiBound
-
-    @PhiBound.setter
-    def PhiBound(self, val: list):
-        self.FarField.PhiBound = val
-
-    @property
     def PhiOffset(self):
-        return self.FarField.__PhiOffset
+        return self.Meshes.PhiOffset
 
     @PhiOffset.setter
     def PhiOffset(self, val):
-        self.FarField.PhiOffset = val
+        self.Meshes.UpdateSphere(PhiOffset = val)
+        self.GetSpherical()
+
 
     @property
-    def ThetaOffset(self):
-        return self.FarField.__ThetaOffset
+    def GammaOffset(self):
+        return self.FarField.__GammaOffset
 
-    @ThetaOffset.setter
-    def ThetaOffset(self, val):
-        self.FarField.ThetaOffset = val
+    @GammaOffset.setter
+    def GammaOffset(self, val):
+        self.Meshes.UpdateSphere(GammaOffset = val)
+        self.GetSpherical()
 
     @property
     def NA(self):
-        return self.FarField._NA
+        return self._NA
 
     @NA.setter
     def NA(self, val):
         if val >= 1: val = 1
         if val <= 0: val = 0
-        self.FarField.NA = val
+        MaxAngle = NA2Angle(val).Radian
+        self.Meshes.UpdateSphere(MaxAngle = MaxAngle)
+        self.GetSpherical()
+
 
     def Coupling(self, Scatterer, Mode = 'Centered'):
         return Coupling(Scatterer = Scatterer, Detector = self, Mode = Mode)
@@ -126,82 +116,6 @@ class BaseDetector(object):
     def Footprint(self, Scatterer):
         return GetFootprint(Scatterer = Scatterer, Detector = self)
 
-
-
-
-
-
-class BaseFarField(object):
-    def __init__(self):
-        pass
-
-    def Plot(self, *args, **kwargs):
-        return self.Scalar.Plot(*args, **kwargs)
-
-    @property
-    def ThetaBound(self):
-        return self._ThetaBound
-
-    @property
-    def PhiBound(self):
-        return self._PhiBound
-
-    @property
-    def PhiOffset(self):
-        return self.__PhiOffset
-
-    @property
-    def ThetaOffset(self):
-        return self.__ThetaOffset
-
-    @property
-    def NA(self):
-        return self._NA
-
-    @NA.setter
-    def NA(self, val: float):
-        self._NA = val
-        self.PhiBound =  np.asarray( [0, NA2Angle(self._NA)] )
-
-
-    @ThetaBound.setter
-    def ThetaBound(self, val: list):
-        self._ThetaBound = np.asarray( val )
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Scalar.shape[0],
-                                  PhiNpts            = self.Scalar.shape[1],
-                                  ThetaOffset        = 0,
-                                  PhiOffset          = 0)
-    @PhiBound.setter
-    def PhiBound(self, val: list):
-        self._PhiBound = val
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Scalar.shape[0],
-                                  PhiNpts            = self.Scalar.shape[1],
-                                  ThetaOffset        = 0,
-                                  PhiOffset          = 0)
-
-    @PhiOffset.setter
-    def PhiOffset(self, val):
-        self._PhiOffset = val
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Scalar.shape[0],
-                                  PhiNpts            = self.Scalar.shape[1],
-                                  ThetaOffset        = 0,
-                                  PhiOffset          = val)
-
-    @ThetaOffset.setter
-    def ThetaOffset(self, val):
-        self._ThetaOffset = val
-        self.Meshes = AngleMeshes(ThetaBound         = self._ThetaBound,
-                                  PhiBound           = self._PhiBound,
-                                  ThetaNpts          = self.Scalar.shape[0],
-                                  PhiNpts            = self.Scalar.shape[1],
-                                  ThetaOffset        = val,
-                                  PhiOffset          = 0)
 
 
 
@@ -293,15 +207,68 @@ class BaseScatterer(object):
         with the PyMieScatt package.
         """
 
+        self._Parallel, self._Perpendicular = GetFieldsFromMesh(m            = self.Index,
+                                                                x            = self.SizeParam,
+                                                                ThetaMesh    = self.Meshes.Theta.Radian,
+                                                                PhiMesh      = self.Meshes.Phi.Radian,
+                                                                Polarization = self.Source.Polarization.Radian);
+
+
+
+    def Plot(self, num=200, scatter=True):
+        ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(num),
+                                      -np.pi/2:np.pi/2:complex(num)]
+
         Para, Perp = GetFieldsFromMesh(m                    = self.Index,
                                        x                    = self.SizeParam,
-                                       ThetaMesh            = self.Meshes.Theta.Radian.flatten(),
-                                       PhiMesh              = self.Meshes.Phi.Radian.flatten(),
-                                       Polarization         = self.Source.Polarization.Radian);
+                                       ThetaMesh            = ThetaMesh.flatten(),
+                                       PhiMesh              = PhiMesh.flatten(),
+                                       Polarization         = 0);
+
+        fig, axes = plt.subplots(nrows    = 2,
+                               ncols      = 2,
+                               figsize    = (8, 6),
+                               subplot_kw = {'projection':'mollweide'}
+                               )
+        dic = {'Parallel': Para, 'Perpendicular': Perp}
+        n = 0; axes = axes.ravel()
+
+        for key, value in dic.items():
+            im = axes[n].pcolormesh(ThetaMesh,
+                               PhiMesh,
+                               value.real.reshape([num,num]),
+                               cmap = 'RdBu',
+                               shading='auto')
+
+            plt.colorbar(mappable=im, orientation='horizontal', ax=axes[n])
+            axes[n].grid()
+            axes[n].set_title('Real Part [{0}] Field'.format(key))
+            axes[n].set_ylabel(r'Angle $\phi$ [Degree]')
+            axes[n].set_xlabel(r'Angle $\theta$ [Degree]')
+
+            n += 1
+
+            im = axes[n].pcolormesh(ThetaMesh,
+                               PhiMesh,
+                               value.imag.reshape([num,num]),
+                               cmap = 'RdBu',
+                               shading='auto')
+
+            plt.colorbar(mappable=im, orientation='horizontal', ax=axes[n])
+            axes[n].grid()
+            axes[n].set_title('Imaginary Part [{0}] Field'.format(key))
+            axes[n].set_ylabel(r'Angle $\phi$ [Degree]')
+            axes[n].set_xlabel(r'Angle $\theta$ [Degree]')
+            n +=1
 
 
-        self._Parallel      = ScalarFarField(Scalar=Para.squeeze(), Parent=self)
-        self._Perpendicular = ScalarFarField(Scalar=Perp.squeeze(), Parent=self)
+        if scatter:
+            for i in range(4):
+                axes[i].scatter(self.Meshes.Theta.Radian, self.Meshes.Phi.Radian, s=0.1,c='k')
+
+
+        fig.tight_layout()
+
 
 
     def Coupling(self, Detector, Filter = None, Mode = 'Centered'):

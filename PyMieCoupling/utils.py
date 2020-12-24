@@ -89,13 +89,54 @@ class fiber(object):
         self.source = factory[0]
 
 
+def _InterpFull(Meshes, Scalar, Shape):
+
+    ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(Shape[0]),
+                                  -np.pi/2:np.pi/2:complex(Shape[1])]
+
+    ZReal = griddata((Meshes.Theta.Radian, Meshes.Phi.Radian),
+                      Scalar.astype(np.complex).flatten(),
+                      (ThetaMesh.flatten(), PhiMesh.flatten()),
+                      fill_value = np.nan + np.nan*1j,
+                      method     = 'linear')
+
+
+
+    return ZReal, PhiMesh, ThetaMesh
+
+
+def InterpFull(Meshes, Scalar, Shape):
+
+    ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(Shape[0]),
+                                  -np.pi/2:np.pi/2:complex(Shape[1])]
+
+    Para, Perp = GetFieldsFromMesh(m                    = self.Index,
+                                   x                    = self.SizeParam,
+                                   ThetaMesh            = ThetaMesh.flatten(),
+                                   PhiMesh              = PhiMesh.flatten(),
+                                   Polarization         = 0);
+
+
+    ZReal = griddata((Meshes.Theta.Radian, Meshes.Phi.Radian),
+                      Scalar.astype(np.complex).flatten(),
+                      (ThetaMesh.flatten(), PhiMesh.flatten()),
+                      fill_value = np.nan + np.nan*1j,
+                      method     = 'linear')
+
+
+
+    return ZReal, PhiMesh, ThetaMesh
+
 
 
 def PlotUnstructureData(z, phi, theta, num=400):
     Theta, Phi = np.mgrid[-np.pi:np.pi:complex(0,num),
                           -np.pi/2:np.pi/2:complex(0,num) ]
 
-    Z = griddata((phi, theta), z, (Phi.flatten(), Theta.flatten()), method='linear')
+    Z = griddata((phi, theta),
+                 z, (Phi.flatten(), Theta.flatten()),
+                 method='linear',
+                 fill_value = 10)
 
     plt.figure()
     plt.pcolormesh(Phi,Theta,Z.imag.reshape([num,num]))

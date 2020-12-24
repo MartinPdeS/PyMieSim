@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import Simulator
 from PyMieCoupling.classes.Scattering import ScattererSet
 
@@ -17,29 +17,32 @@ LightSource = Source(Wavelength   = 450e-9,
                      Polarization = 0)
 
 
-LP01 = LPmode(Mode          = (0, 1),
-               Source        = LightSource,
-               Npts          = 81,
-               ThetaOffset   = 0,
-               PhiOffset     = 0,
-               Name          = 'LP01',
-               NA            = 0.9)
+LP01 = LPmode(Name        = 'LP11',
+              Mode        = (0, 1),
+              Source      = LightSource,
+              Samples     = 501,
+              NA          = 0.5,
+              GammaOffset = 0,
+              PhiOffset   = 0
+              )
 
 
-LP11 = LPmode(Mode          = (1, 1),
-              Source        = LightSource,
-              Npts          = 41,
-              ThetaOffset   = 0,
-              PhiOffset     = 0,
-              Name          = 'LP11',
-              NA            = 0.54)
+LP11 = LPmode(Name        = 'LP11',
+              Mode        = (1, 1),
+              Source      = LightSource,
+              Samples     = 501,
+              NA          = 0.5,
+              GammaOffset = 0,
+              PhiOffset   = 0
+              )
 
 
-Photodiode0 = Photodiode(NA                = 0.54,
-                         Source            = LightSource,
-                         Npts              = 81,
-                         ThetaOffset       = 0,
-                         PhiOffset         = 0)
+Photodiode0 = Photodiode(Name              = 'Detector',
+                      NA                = 0.5,
+                      Source            = LightSource,
+                      Samples           = 501,
+                      GammaOffset       = 0,
+                      PhiOffset         = 0)
 
 
 Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,

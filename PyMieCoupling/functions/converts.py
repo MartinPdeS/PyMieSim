@@ -1,4 +1,5 @@
 import numpy as np
+from PyMieCoupling.utils import Angle
 
 """ Ref: https://optiwave.com/optifdtd-manuals/fdtd-far-field-transform/"""
 
@@ -45,7 +46,7 @@ def Direct2Angle(DirectVec: np.ndarray, k: float) -> np.ndarray:
 
 def NA2Angle(NA: float) -> np.ndarray:
 
-    return rad2deg( np.arcsin(NA) ).squeeze()
+    return Angle( np.arcsin(NA), unit='Radian')
 
 
 

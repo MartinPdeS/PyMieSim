@@ -1,26 +1,22 @@
 
 import numpy as np
-
-
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-
-
-from PyMieCoupling.classes.Meshes import AngleMeshes, DirectMeshes
-from PyMieCoupling.classes.Representations import ScalarFarField
-from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization
-from PyMieCoupling.classes.BaseClasses import BaseFarField
-from PyMieCoupling.functions.converts import deg2rad
 from PyMieCoupling.classes.BaseClasses import BaseDetector
 import fibermodes
 from scipy.interpolate import griddata
 import polarTransform
 
+from PyMieCoupling.classes.Meshes import AngleMeshes
+from PyMieCoupling.classes.Representations import ScalarFarField
+from PyMieCoupling.functions.converts import NA2Angle
+from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructureData
 
 
+
+global cmap
+cmap = 'RdBu'
 
 
 class Photodiode(BaseDetector):
@@ -48,9 +44,7 @@ class Photodiode(BaseDetector):
 
 
     def GetSpherical(self):
-
-
-        self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(self._NA)*np.pi/180,
+        self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(self._NA).Radian,
                                   Samples     = self.Samples,
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
@@ -81,7 +75,7 @@ class LPmode(BaseDetector):
 
         self._NA = NA
 
-        self.MaxAngle = NA2Angle(self._NA)/180*np.pi
+        self.MaxAngle = NA2Angle(self._NA).Radian
 
         self._GammaOffset, self._PhiOffset = GammaOffset, PhiOffset
 
@@ -92,6 +86,8 @@ class LPmode(BaseDetector):
         self.Source, self.Samples, self.Npts = Source, Samples, int(Samples/8)*2 + 1
 
         self.Orientation = Orientation
+
+        self.debug = False
 
         self.GetFarField()
 
@@ -123,7 +119,7 @@ class LPmode(BaseDetector):
 
         self.Cartesian  /= (self.Cartesian.__abs__()).sum()
 
-        MaxAngle = NA2Angle(self._NA)/180*np.pi
+        MaxAngle = NA2Angle(self._NA).Radian
 
         self.Meshes = AngleMeshes(MaxAngle    = MaxAngle,
                                   Samples     = self.Samples,
@@ -132,7 +128,6 @@ class LPmode(BaseDetector):
 
 
     def GenShift(self):
-
         phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(self.Npts)*(self.Npts-1)/self.Npts)
 
         shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
@@ -143,8 +138,6 @@ class LPmode(BaseDetector):
 
 
     def GetSpherical(self):
-
-
         polarImageReal, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.real,
                                                                         center        = [self.Npts//2, self.Npts//2],
                                                                         initialRadius = 0,
@@ -157,12 +150,9 @@ class LPmode(BaseDetector):
                                                                         finalRadius   = 40,
                                                                         finalAngle    = 2*np.pi)
 
-        Scalar = polarImageReal + complex(0,1) * polarImageimag
+        scalar = polarImageReal + complex(0,1) * polarImageimag
 
-        self.Scalar = ScalarFarField(Scalar, Parent=self)
-
-
-        shape = Scalar.imag.shape
+        shape = scalar.imag.shape
 
         offset = np.pi/2 - self.MaxAngle
 
@@ -171,25 +161,74 @@ class LPmode(BaseDetector):
 
         self.Samples = self.Meshes.Phi.Radian.shape
 
-        ZReal = griddata((ThetaMesh.flatten(), PhiMesh.flatten()),
-                          Scalar.real.flatten(),
-                          (self.Meshes.base[2], self.Meshes.base[1]),
-                          fill_value = 0,
-                          method     = 'cubic')
+        scalar = np.flip(scalar)
 
+        Scalar = griddata((PhiMesh.flatten(), ThetaMesh.flatten()),
+                           scalar.astype(np.complex).flatten(),
+                           (self.Meshes.base.Phi, self.Meshes.base.Theta),
+                           fill_value = np.nan,
+                           method     = 'cubic')
 
-        ZImag = griddata((ThetaMesh.flatten(), PhiMesh.flatten()),
-                          Scalar.imag.flatten(),
-                          (self.Meshes.base[2], self.Meshes.base[1]),
-                          fill_value = 0,
-                          method     = 'cubic')
+        if self.debug:
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection='mollweide')
+            ax.pcolormesh(ThetaMesh, PhiMesh, scalar.imag)
+            ax.scatter(self.Meshes.base.Theta, self.Meshes.base.Phi, s=1)
+            ax.grid()
+            plt.show()
 
-
-        Scalar = ZReal + complex(0,1) * ZImag
+        #PlotUnstructureData(Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
 
         self.Scalar = ScalarFarField(Scalar, Parent=self)
 
 
+
+    def Plot(self, num=600):
+
+        phi, theta = np.mgrid[-np.pi/2:np.pi/2:complex(0,num),
+                              -np.pi:np.pi:complex(0,num)]
+
+        ziReal = griddata((self.Meshes.base.Theta,
+                           self.Meshes.base.Phi),
+                           self.Scalar.astype(np.complex),
+                           (theta.flatten(), phi.flatten()),
+                           fill_value = 0,
+                           method     = 'linear')
+
+
+        fig, ax = plt.subplots(nrows      = 1,
+                               ncols      = 2,
+                               figsize    = (8, 3),
+                               subplot_kw = {'projection':'mollweide'}
+                               )
+
+        im0 = ax[0].pcolormesh(theta,
+                               phi,
+                               ziReal.real.reshape([num,num]),
+                               cmap=cmap,
+                               shading='auto')
+
+        cbar = plt.colorbar(mappable=im0, orientation='horizontal', ax=ax[0], format='%.0e')
+        cbar.ax.tick_params(labelsize='small')
+
+        ax[0].set_title('Real Part\n Far-Field Spherical Coordinates')
+        ax[0].set_ylabel(r'Angle $\phi$ [Degree]')
+        ax[0].set_xlabel(r'Angle $\theta$ [Degree]')
+        ax[0].grid()
+
+        im1 = ax[1].pcolormesh(theta,
+                               phi,
+                               ziReal.imag.reshape([num,num]),
+                               cmap=cmap,
+                               shading='auto')
+        cbar = plt.colorbar(mappable=im1, orientation='horizontal', ax=ax[1], format='%.0e')
+        cbar.ax.tick_params(labelsize='small')
+
+        ax[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
+        ax[1].set_xlabel(r'Angle $\theta$ [Degree]')
+        ax[1].grid()
+
+        fig.tight_layout()
 
 
 
