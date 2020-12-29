@@ -15,7 +15,7 @@ LightSource = Source(Wavelength   = 500e-9,
 
 
 Detector = Photodiode(Name              = 'Detector',
-                      NA                = 0.5,
+                      NA                = 0.1,
                       Source            = LightSource,
                       Samples           = 501,
                       GammaOffset       = 0,
@@ -26,7 +26,7 @@ LP11 = LPmode(Name        = 'LP11',
               Mode        = (1, 1),
               Source      = LightSource,
               Samples     = 501,
-              NA          = 0.5,
+              NA          = 0.1,
               GammaOffset = 0,
               PhiOffset   = 0
               )
@@ -36,26 +36,26 @@ LP01 = LPmode(Name        = 'LP01',
               Mode        = (0, 1),
               Source      = LightSource,
               Samples     = 501,
-              NA          = 0.5,
+              NA          = 0.1,
               GammaOffset = 0,
               PhiOffset   = 0
               )
 
 
-Scat = Scatterer(Diameter      = 500e-9,
+Scat = Scatterer(Diameter      = 1000e-9,
                  Source        = LightSource,
                  Index         = 1.4,
                  Meshes        = Detector.Meshes)
 
-#Scat.S1S2.Plot()
+Scat.S1S2.Plot()
 
-#Scat.Parallel.Plot()
+Scat.Parallel.Plot()
 
-#Detector.Plot()
+Detector.Plot()
 
 Coupling0 = Detector.Coupling(Scatterer = Scat, Mode='Centered')
 
-Coupling1 = LP11.Coupling(Scatterer = Scat, Mode='Centered')
+Coupling1 = LP11.Coupling(Scatterer = Scat, Mode='Mean')
 
 Coupling2 = LP01.Coupling(Scatterer = Scat, Mode='Centered')
 

@@ -129,18 +129,15 @@ def InterpFull(Meshes, Scalar, Shape):
 
 
 
-def PlotUnstructureData(z, phi, theta, num=400):
-    Theta, Phi = np.mgrid[-np.pi:np.pi:complex(0,num),
-                          -np.pi/2:np.pi/2:complex(0,num) ]
+def PlotUnstructureData(Scalar, phi, theta, num=20):
+    fig, ax = plt.subplots(1,2,figsize=(15,8))
+    im0 = ax[0].tricontourf(theta, phi, Scalar.real, num)
+    im1 = ax[1].tricontourf(theta, phi, Scalar.imag, num)
+    plt.colorbar(mappable=im0, ax=ax[0])
+    plt.colorbar(mappable=im1, ax=ax[1])
+    ax[0].plot(theta, phi, 'ko ', markersize=2)
+    ax[1].plot(theta, phi, 'ko ', markersize=2)
 
-    Z = griddata((phi, theta),
-                 z, (Phi.flatten(), Theta.flatten()),
-                 method='linear',
-                 fill_value = 10)
-
-    plt.figure()
-    plt.pcolormesh(Phi,Theta,Z.imag.reshape([num,num]))
-    plt.colorbar()
     plt.show()
 
 

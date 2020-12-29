@@ -195,8 +195,8 @@ cpdef GetFieldsFromMesh(double m,
                           Polarization);
 
 
-    arr0 = np.asarray(Parallel)
-    arr1 = np.asarray(Perpendicular)
+    arr0 = np.asarray(Parallel).squeeze()
+    arr1 = np.asarray(Perpendicular).squeeze()
 
 
 

@@ -7,7 +7,7 @@ _________________________________________________________
 
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.classes.Detector import fiber, LPmode, Photodiode
+from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.classes.Fields import Source
 from PyMieCoupling.classes.Scattering import ScattererSet
 

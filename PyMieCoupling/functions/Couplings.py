@@ -16,7 +16,6 @@ def CenteredCoupling_Para(Detector, Scatterer):
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
 
     if Detector._coupling == "Amplitude":
-        #PlotUnstructureData(Detector.Scalar, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
         Para = (Detector.Scalar * Scatterer.Parallel)
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
@@ -43,6 +42,7 @@ def CenteredCoupling_Perp(Detector, Scatterer):
 
 
 def MeanCoupling_Para(Detector, Scatterer):
+    #PlotUnstructureData(Scatterer.Parallel, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
     Para = (Detector.Scalar * Scatterer.Parallel * Detector.Meshes.SinMesh).__abs__()**2
     Para = Para.sum()
 

@@ -19,11 +19,11 @@ LightSource = Source(Wavelength   = 450e-9,
 
 
 Photodiode0 = Photodiode(Name              = 'Detector',
-                      NA                = 0.5,
-                      Source            = LightSource,
-                      Samples           = 801,
-                      GammaOffset       = 0,
-                      PhiOffset         = 0)
+                         NA                = 0.5,
+                         Source            = LightSource,
+                         Samples           = 801,
+                         GammaOffset       = 0,
+                         PhiOffset         = 0)
 
 
 Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
@@ -35,7 +35,7 @@ Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
 
 def EvalFunc(x):
 
-    Set.Detector.NA = x
+    Set.Detector.NA = x[0]
 
     Array = Set.GetCouplingArray()
 
@@ -50,6 +50,7 @@ Result = minimize(fun      = Minimizer.simulate,
                   callback = Minimizer.callback,
                   tol      = 1e-5,
                   options  = {'maxiter': 50, 'rhobeg':0.1})
+                  
 print(Result)
 
 DF = Set.GetCouplingFrame()

@@ -16,15 +16,15 @@ LightSource = Source(Wavelength   = 400e-9,
 LP11 = LPmode(Name        = 'LP11',
               Mode        = (1, 1),
               Source      = LightSource,
-              Samples     = 201,
-              NA          = 0.1,
-              GammaOffset = 0,
-              PhiOffset   = 0
+              Samples     = 501,
+              NA          = 0.8,
+              GammaOffset = 250,
+              PhiOffset   = 90
               )
 
-LP11.NA = 0.8
+#LP11.NA = 1
 
-LP11.Meshes.Plot()
-
+#LP11.Meshes.Plot()
+LP11.Plot()
 plt.show()
 # --

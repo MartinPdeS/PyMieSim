@@ -40,14 +40,15 @@ class Photodiode(BaseDetector):
 
         self._Filter = _Polarization(Filter)
 
-        self.GetSpherical()
-
-
-    def GetSpherical(self):
         self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(self._NA).Radian,
                                   Samples     = self.Samples,
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
+
+        self.GetSpherical()
+
+
+    def GetSpherical(self):
 
         self.Samples = self.Meshes.Phi.Radian.shape
 
@@ -89,6 +90,13 @@ class LPmode(BaseDetector):
 
         self.debug = False
 
+        MaxAngle = NA2Angle(self._NA).Radian
+
+        self.Meshes = AngleMeshes(MaxAngle    = MaxAngle,
+                                  Samples     = self.Samples,
+                                  PhiOffset   = self._PhiOffset,
+                                  GammaOffset = self._GammaOffset)
+
         self.GetFarField()
 
         self.GetSpherical()
@@ -102,7 +110,7 @@ class LPmode(BaseDetector):
         temp = fibermodes.field.Field(Fiber.source,
                                       fibermodes.Mode(fibermodes.ModeFamily.HE, *self.ModeNumber),
                                       self.Source.Wavelength,
-                                      CoreDiameter*self.Npts/8,
+                                      CoreDiameter*self.Npts/6,
                                       self.Npts).Ex()
 
         temp = np.array(temp, copy=False)
@@ -119,13 +127,6 @@ class LPmode(BaseDetector):
 
         self.Cartesian  /= (self.Cartesian.__abs__()).sum()
 
-        MaxAngle = NA2Angle(self._NA).Radian
-
-        self.Meshes = AngleMeshes(MaxAngle    = MaxAngle,
-                                  Samples     = self.Samples,
-                                  PhiOffset   = self._PhiOffset,
-                                  GammaOffset = self._GammaOffset)
-
 
     def GenShift(self):
         phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(self.Npts)*(self.Npts-1)/self.Npts)
@@ -141,30 +142,29 @@ class LPmode(BaseDetector):
         polarImageReal, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.real,
                                                                         center        = [self.Npts//2, self.Npts//2],
                                                                         initialRadius = 0,
-                                                                        finalRadius   = 40,
+                                                                        finalRadius   = self.Cartesian.real.shape[0]//2,
                                                                         finalAngle    = 2*np.pi)
 
         polarImageimag, ptSettings = polarTransform.convertToPolarImage(self.Cartesian.imag,
                                                                         center        = [self.Npts//2, self.Npts//2],
                                                                         initialRadius = 0,
-                                                                        finalRadius   = 40,
+                                                                        finalRadius   = self.Cartesian.real.shape[0]//2,
                                                                         finalAngle    = 2*np.pi)
 
-        scalar = polarImageReal + complex(0,1) * polarImageimag
+        self.Polar = polarImageReal + complex(0,1) * polarImageimag
 
-        shape = scalar.imag.shape
+        shape = self.Polar.imag.shape
 
-        offset = np.pi/2 - self.MaxAngle
+        offset = self.MaxAngle
 
         ThetaMesh, PhiMesh = np.mgrid[-np.pi: np.pi:complex(shape[0]),
-                                      offset: offset + self.MaxAngle:complex(shape[1])]
+                                      np.pi/2: np.pi/2-self.MaxAngle :complex(shape[1])]
+
 
         self.Samples = self.Meshes.Phi.Radian.shape
 
-        scalar = np.flip(scalar)
-
         Scalar = griddata((PhiMesh.flatten(), ThetaMesh.flatten()),
-                           scalar.astype(np.complex).flatten(),
+                           self.Polar.astype(np.complex).flatten(),
                            (self.Meshes.base.Phi, self.Meshes.base.Theta),
                            fill_value = np.nan,
                            method     = 'cubic')
@@ -172,7 +172,7 @@ class LPmode(BaseDetector):
         if self.debug:
             fig = plt.figure()
             ax = fig.add_subplot(111, projection='mollweide')
-            ax.pcolormesh(ThetaMesh, PhiMesh, scalar.imag)
+            ax.pcolormesh(ThetaMesh, PhiMesh, self.Polar.imag)
             ax.scatter(self.Meshes.base.Theta, self.Meshes.base.Phi, s=1)
             ax.grid()
             plt.show()
@@ -188,11 +188,11 @@ class LPmode(BaseDetector):
         phi, theta = np.mgrid[-np.pi/2:np.pi/2:complex(0,num),
                               -np.pi:np.pi:complex(0,num)]
 
-        ziReal = griddata((self.Meshes.base.Theta,
-                           self.Meshes.base.Phi),
+        ziReal = griddata((self.Meshes.Theta.Radian,
+                           self.Meshes.Phi.Radian),
                            self.Scalar.astype(np.complex),
                            (theta.flatten(), phi.flatten()),
-                           fill_value = 0,
+                           fill_value = complex(np.nan, np.nan),
                            method     = 'linear')
 
 
@@ -227,6 +227,9 @@ class LPmode(BaseDetector):
         ax[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
         ax[1].set_xlabel(r'Angle $\theta$ [Degree]')
         ax[1].grid()
+
+        ax[0].scatter(self.Meshes.Theta.Radian, self.Meshes.Phi.Radian, s=0.1,c='k')
+        ax[1].scatter(self.Meshes.Theta.Radian, self.Meshes.Phi.Radian, s=0.1,c='k')
 
         fig.tight_layout()
 

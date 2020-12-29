@@ -3,7 +3,7 @@ plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import numpy as np
 import weakref
-
+import matplotlib
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
@@ -104,8 +104,8 @@ class BaseDetector(object):
     def NA(self, val):
         if val >= 1: val = 1
         if val <= 0: val = 0
-        MaxAngle = NA2Angle(val).Radian
-        self.Meshes.UpdateSphere(MaxAngle = MaxAngle)
+        self.MaxAngle = NA2Angle(val).Radian
+        self.Meshes.UpdateSphere(MaxAngle = self.MaxAngle)
         self.GetSpherical()
 
 
@@ -206,68 +206,104 @@ class BaseScatterer(object):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
         """
-
         self._Parallel, self._Perpendicular = GetFieldsFromMesh(m            = self.Index,
                                                                 x            = self.SizeParam,
                                                                 ThetaMesh    = self.Meshes.Theta.Radian,
-                                                                PhiMesh      = self.Meshes.Phi.Radian,
+                                                                PhiMesh      = self.Meshes.Phi.Radian - np.pi/2,
                                                                 Polarization = self.Source.Polarization.Radian);
 
 
 
+
+
     def Plot(self, num=200, scatter=True):
-        ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(num),
-                                      -np.pi/2:np.pi/2:complex(num)]
+        import cartopy.crs as ccrs
+        ThetaMesh, PhiMesh = np.mgrid[0:2*np.pi:complex(num), -np.pi/2:np.pi/2:complex(num)]
 
         Para, Perp = GetFieldsFromMesh(m                    = self.Index,
                                        x                    = self.SizeParam,
                                        ThetaMesh            = ThetaMesh.flatten(),
-                                       PhiMesh              = PhiMesh.flatten(),
+                                       PhiMesh              = PhiMesh.flatten()-np.pi/2,
                                        Polarization         = 0);
 
-        fig, axes = plt.subplots(nrows    = 2,
-                               ncols      = 2,
-                               figsize    = (8, 6),
-                               subplot_kw = {'projection':'mollweide'}
-                               )
+        fig0, axes0 = plt.subplots(nrows      = 1,
+                                   ncols      = 2,
+                                   figsize    = (8, 4),
+                                   subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()}
+                                  )
+
+
+        fig1, axes1= plt.subplots(nrows       = 1,
+                                   ncols      = 2,
+                                   figsize    = (8, 4),
+                                   subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()}
+                                  )
+
         dic = {'Parallel': Para, 'Perpendicular': Perp}
-        n = 0; axes = axes.ravel()
+        n = 0; axes0 = axes0.ravel()
 
         for key, value in dic.items():
-            im = axes[n].pcolormesh(ThetaMesh,
-                               PhiMesh,
-                               value.real.reshape([num,num]),
-                               cmap = 'RdBu',
-                               shading='auto')
+            im = axes0[n].contourf(
+                                    np.rad2deg(ThetaMesh),
+                                    np.rad2deg(PhiMesh),
+                                    value.real.reshape([num,num]),
+                                    cmap = 'inferno',
+                                    shading='auto',
+                                    transform=ccrs.PlateCarree(),
+                                    levels=50
+                                    )
 
-            plt.colorbar(mappable=im, orientation='horizontal', ax=axes[n])
-            axes[n].grid()
-            axes[n].set_title('Real Part [{0}] Field'.format(key))
-            axes[n].set_ylabel(r'Angle $\phi$ [Degree]')
-            axes[n].set_xlabel(r'Angle $\theta$ [Degree]')
+            gl = axes0[n].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+            gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+            gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
 
-            n += 1
+            plt.colorbar(mappable=im, fraction=0.046, orientation='vertical', ax=axes0[n])
+            axes0[n].grid()
+            axes0[n].set_title('Real Part [{0}] Field'.format(key))
+            axes0[n].set_ylabel(r'Angle $\phi$ [Degree]')
+            axes0[n].set_xlabel(r'Angle $\theta$ [Degree]')
+            axes0[n].grid(True, which='minor')
 
-            im = axes[n].pcolormesh(ThetaMesh,
-                               PhiMesh,
-                               value.imag.reshape([num,num]),
-                               cmap = 'RdBu',
-                               shading='auto')
 
-            plt.colorbar(mappable=im, orientation='horizontal', ax=axes[n])
-            axes[n].grid()
-            axes[n].set_title('Imaginary Part [{0}] Field'.format(key))
-            axes[n].set_ylabel(r'Angle $\phi$ [Degree]')
-            axes[n].set_xlabel(r'Angle $\theta$ [Degree]')
+            im = axes1[n].contourf(
+                                    np.rad2deg(ThetaMesh),
+                                    np.rad2deg(PhiMesh),
+                                    value.imag.reshape([num,num]),
+                                    cmap = 'inferno',
+                                    shading='auto',
+                                    transform=ccrs.PlateCarree(),
+                                    levels=50)
+            gl = axes1[n].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+            gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+            gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+
+            plt.colorbar(mappable=im, fraction=0.046, orientation='vertical', ax=axes1[n])
+            axes1[n].grid()
+            axes1[n].set_title('Imaginary Part [{0}] Field'.format(key))
+            axes1[n].set_ylabel(r'Angle $\phi$ [Degree]')
+            axes1[n].set_xlabel(r'Angle $\theta$ [Degree]')
             n +=1
 
 
         if scatter:
-            for i in range(4):
-                axes[i].scatter(self.Meshes.Theta.Radian, self.Meshes.Phi.Radian, s=0.1,c='k')
+            for n in range(2):
+                axes0[n].scatter(np.rad2deg(self.Meshes.Theta.Radian),
+                                 np.rad2deg(self.Meshes.Phi.Radian),
+                                 s=0.2,
+                                 c='k',
+                                 transform=ccrs.PlateCarree())
+
+                axes1[n].scatter(np.rad2deg(self.Meshes.Theta.Radian),
+                                 np.rad2deg(self.Meshes.Phi.Radian),
+                                 s=0.2,
+                                 c='k',
+                                 transform=ccrs.PlateCarree())
 
 
-        fig.tight_layout()
+        fig1.tight_layout()
+        fig0.tight_layout()
+
+        return fig0, fig1
 
 
 
