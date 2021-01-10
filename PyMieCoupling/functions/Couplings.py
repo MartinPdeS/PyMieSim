@@ -42,7 +42,7 @@ def CenteredCoupling_Perp(Detector, Scatterer):
 
 
 def MeanCoupling_Para(Detector, Scatterer):
-    #PlotUnstructureData(Scatterer.Parallel, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
+    #PlotUnstructureData(Detector.Meshes.SinMesh, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
     Para = (Detector.Scalar * Scatterer.Parallel * Detector.Meshes.SinMesh).__abs__()**2
     Para = Para.sum()
 

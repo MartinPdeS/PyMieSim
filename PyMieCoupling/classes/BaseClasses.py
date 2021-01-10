@@ -194,6 +194,7 @@ class BaseScatterer(object):
 
     @property
     def SPF(self) -> None:
+
         if not self._SPF:
             self._SPF = SPF(Parent=self)
             return self._SPF

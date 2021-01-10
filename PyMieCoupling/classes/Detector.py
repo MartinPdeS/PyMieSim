@@ -97,6 +97,7 @@ class LPmode(BaseDetector):
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
 
+
         self.GetFarField()
 
         self.GetSpherical()
@@ -115,7 +116,7 @@ class LPmode(BaseDetector):
 
         temp = np.array(temp, copy=False)
 
-        temp /= (temp.__abs__()).sum()
+        #temp /= (temp.__abs__()).sum()
 
         if self.Orientation == 'h': temp = temp.T
 
@@ -124,8 +125,6 @@ class LPmode(BaseDetector):
         temp /= self.GenShift()
 
         self.Cartesian  = np.fft.fftshift(temp)
-
-        self.Cartesian  /= (self.Cartesian.__abs__()).sum()
 
 
     def GenShift(self):
@@ -155,10 +154,10 @@ class LPmode(BaseDetector):
 
         shape = self.Polar.imag.shape
 
-        offset = self.MaxAngle
+        print('####', np.pi/2-self.MaxAngle, np.max(self.Meshes.base.Phi.__abs__()))
 
         ThetaMesh, PhiMesh = np.mgrid[-np.pi: np.pi:complex(shape[0]),
-                                      np.pi/2: np.pi/2-self.MaxAngle :complex(shape[1])]
+                                      np.pi/2: np.pi/2-self.MaxAngle*1.01 :complex(shape[1])]
 
 
         self.Samples = self.Meshes.Phi.Radian.shape
@@ -166,18 +165,15 @@ class LPmode(BaseDetector):
         Scalar = griddata((PhiMesh.flatten(), ThetaMesh.flatten()),
                            self.Polar.astype(np.complex).flatten(),
                            (self.Meshes.base.Phi, self.Meshes.base.Theta),
-                           fill_value = np.nan,
-                           method     = 'cubic')
+                           #fill_value = np.nan,
+                           method     = 'nearest')
+
+        norm = np.sqrt( np.sum((self.Meshes.SinMesh * Scalar.__abs__())**2) )
+
+        Scalar /=  norm
 
         if self.debug:
-            fig = plt.figure()
-            ax = fig.add_subplot(111, projection='mollweide')
-            ax.pcolormesh(ThetaMesh, PhiMesh, self.Polar.imag)
-            ax.scatter(self.Meshes.base.Theta, self.Meshes.base.Phi, s=1)
-            ax.grid()
-            plt.show()
-
-        #PlotUnstructureData(Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
+            PlotUnstructureData(Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
 
         self.Scalar = ScalarFarField(Scalar, Parent=self)
 

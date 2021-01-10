@@ -26,7 +26,7 @@ LP11 = LPmode(Name        = 'LP11',
               Mode        = (1, 1),
               Source      = LightSource,
               Samples     = 501,
-              NA          = 0.1,
+              NA          = 0.01,
               GammaOffset = 0,
               PhiOffset   = 0
               )

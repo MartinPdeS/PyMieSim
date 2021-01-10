@@ -129,10 +129,11 @@ def InterpFull(Meshes, Scalar, Shape):
 
 
 
-def PlotUnstructureData(Scalar, phi, theta, num=20):
+def PlotUnstructureData(Scalar, phi, theta):
+
     fig, ax = plt.subplots(1,2,figsize=(15,8))
-    im0 = ax[0].tricontourf(theta, phi, Scalar.real, num)
-    im1 = ax[1].tricontourf(theta, phi, Scalar.imag, num)
+    im0 = ax[0].tripcolor(theta, phi, Scalar.real)
+    im1 = ax[1].tripcolor(theta, phi, Scalar.imag)
     plt.colorbar(mappable=im0, ax=ax[0])
     plt.colorbar(mappable=im1, ax=ax[1])
     ax[0].plot(theta, phi, 'ko ', markersize=2)

@@ -9,29 +9,6 @@ import math
 
 
 
-
-def fibonacci_sphere(samples=1):
-
-    X = []; Y = []; Z = []
-
-    phi = math.pi * (3. - math.sqrt(5.))  ## golden angle in radians
-
-    for i in range(samples):
-        y = 1 - (i / float(samples - 1)) * 2  ## y goes from 1 to -1
-        radius = math.sqrt(1 - y * y)  ## radius at y
-
-        theta = phi * i  ## golden angle increment
-
-        x = math.cos(theta) * radius
-        z = math.sin(theta) * radius
-
-        X.append(x)
-        Y.append(y)
-        Z.append(z)
-
-    return np.asarray(X), np.asarray(Y), np.asarray(Z)
-
-
 class AngleMeshes(object):
     def __init__(self,
                  MaxAngle:    float = np.pi/6,
@@ -113,15 +90,15 @@ class AngleMeshes(object):
 
         self.TrueSample, dOmega = self.ComputeTrueSample(self.Samples)
 
-        base = fibonacci_sphere(samples=self.TrueSample)
+        base = fibonacci_sphere(samples=self.Samples, maxAngle=self.MaxAngle)
 
         base = self.AvoidPoles(base)
 
         r, phi, theta = cs.cart2sp(*base)
 
-        base = self.Cutoff(phi, theta)
+        base = cs.sp2cart(np.ones(phi.size), phi, theta)
 
-        #base = self.RotateOnPhi(90, base)
+        base = self.RotateOnPhi(-90, base)
 
         base = self.RotateOnGamma(90 , base)
 
@@ -136,23 +113,6 @@ class AngleMeshes(object):
         r, phi, theta = cs.cart2sp(*notbase)
 
         return theta, phi, dOmega
-
-
-    def UpdateMaxAngle(self, MaxAngle):
-
-        self.MaxAngle = MaxAngle
-
-        base = self.Cutoff(self.base.Phi, self.base.Theta)
-
-        notbase = self.RotateOnPhi(self.PhiOffset, base)
-
-        notbase = self.RotateOnGamma(self.GammaOffset, notbase)
-
-        _, Phi, Theta = cs.cart2sp(*notbase)
-
-        dOmega = 4*np.pi / self.TrueSample
-
-        self.MakeProperties(Theta, Phi, dOmega)
 
 
     def UpdateSphere(self, **kwargs):
@@ -198,11 +158,11 @@ class AngleMeshes(object):
 
     def Cutoff(self, phi, theta):
 
-        indices = phi>=(np.pi/2-self.MaxAngle)
+        #indices = phi>=(np.pi/2-self.MaxAngle)
 
-        phi = phi[indices]; theta = theta[indices];
+        #phi = phi[indices]; theta = theta[indices];
 
-        notbase = (phi*0+1, phi, theta)
+        #notbase = (phi*0+1, phi, theta)
 
         return cs.sp2cart(np.ones(phi.size), phi, theta)
 
@@ -213,6 +173,39 @@ class AngleMeshes(object):
 class Namespace:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
+
+
+
+
+
+def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
+
+    X = []; Y = []; Z = []
+
+    phi = math.pi * (3. - math.sqrt(5.))  ## golden angle in radians
+    MaxY = np.cos(maxAngle)
+
+    solidAngle = np.pi * np.sin(maxAngle)**2
+
+    ratio = 4*np.pi / solidAngle
+
+    TrueSamples = int( samples * ratio )
+
+
+    for i in range(TrueSamples):
+        y = 1 - (i / float(TrueSamples - 1)) * 2  ## y goes from 1 to -1
+        radius = math.sqrt(1 - y * y)  ## radius at y
+
+        theta = phi * i  ## golden angle increment
+
+        x = math.cos(theta) * radius
+        z = math.sin(theta) * radius
+
+        X.append(x); Y.append(y); Z.append(z)
+
+        if y <= MaxY: break
+
+    return np.asarray(X), np.asarray(Y), np.asarray(Z)
 
 
 
