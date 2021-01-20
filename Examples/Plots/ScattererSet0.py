@@ -9,40 +9,42 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.utils import Source
-from PyMieCoupling.classes.Scattering import ScattererSet
+from PyMieCoupling.classes.Sets import ScattererSet
 
 LightSource = Source(Wavelength   = 950e-9,
                      Polarization = 0)
 
-Detector = Photodiode(NA                = 0.1,
-                      Source            = LightSource,
-                      Samples           = 1001,
-                      GammaOffset       = 0,
-                      PhiOffset         = 0)
+Detector0 = Photodiode(NA                = 0.1,
+                       Source            = LightSource,
+                       Sampling          = 1001,
+                       GammaOffset       = 0,
+                       PhiOffset         = 0)
 
 Detector1 = LPmode(NA                = 0.1,
                    Source            = LightSource,
-                   Samples           = 401,
+                   Sampling          = 401,
                    GammaOffset       = 0,
                    PhiOffset         = 0,
                    Mode              = (1,1))
 
 
-Detector1.Plot()
-
 Set = ScattererSet(DiameterList  = np.linspace(100e-9, 20000e-9, 400),
                    RIList        = np.linspace(1.4, 1.4, 1).round(1),
-                   Detector      = Detector1,
+                   Detectors     = [Detector0, Detector1],
                    Source        = LightSource,
                    Mode          = 'Mean')
 
 
-DF = Set.GetCouplingFrame()
+Array = Set.GetCouplingArray()
 
-DF.Plot(y='Coupling')
+
+print(Array)
+#DF = Set.GetCouplingFrame()
+
+#DF.Plot(y='Coupling')
 
 #DF.Plot(y='STD')
 
-plt.show()
+#plt.show()
 
 # -

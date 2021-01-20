@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import FancyArrowPatch
 from PyMieCoupling.functions.converts import rad2deg, deg2rad, NA2Angle
 from PyMieCoupling.utils import Angle
 from ai import cs
@@ -58,16 +57,14 @@ class AngleMeshes(object):
         ax.set_zlim([-1,1])
 
         ax.quiver(-2,0,0,1,0,0,length=0.5, color='k',arrow_length_ratio=0.5)
-
-
         ax.quiver(0,0,0,0,0,1.,length=1.5, color='k', arrow_length_ratio=0.1)
         ax.quiver(0,0,0,0,1,0,length=1.5, color='k', arrow_length_ratio=0.1)
         ax.quiver(0,0,0,1,0,0,length=1.5, color='k', arrow_length_ratio=0.1)
 
         phi, theta = np.mgrid[0.0:np.pi:20j, 0.0:2.0*np.pi:20j]
-        x = 1*np.sin(phi)*np.cos(theta)
-        y = 1*np.sin(phi)*np.sin(theta)
-        z = 1*np.cos(phi)
+        x = np.sin(phi)*np.cos(theta)
+        y = np.sin(phi)*np.sin(theta)
+        z = np.cos(phi)
         ax.plot_surface(x,
                         y,
                         z,
@@ -104,7 +101,7 @@ class AngleMeshes(object):
 
         r, phi, theta = cs.cart2sp(*base)
 
-        self.base = Namespace(Phi=phi, Theta=theta) ###############################
+        self.base = Namespace(Phi=phi, Theta=theta)
 
         notbase = self.RotateOnPhi(self.PhiOffset, base)
 
@@ -156,26 +153,11 @@ class AngleMeshes(object):
         return TrueSampling, 4*np.pi / TrueSampling
 
 
-    def Cutoff(self, phi, theta):
-
-        #indices = phi>=(np.pi/2-self.MaxAngle)
-
-        #phi = phi[indices]; theta = theta[indices];
-
-        #notbase = (phi*0+1, phi, theta)
-
-        return cs.sp2cart(np.ones(phi.size), phi, theta)
-
-
-
 
 
 class Namespace:
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)
-
-
-
 
 
 def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
@@ -206,51 +188,6 @@ def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
         if y <= MaxY: break
 
     return np.asarray(X), np.asarray(Y), np.asarray(Z)
-
-
-
-class DirectMeshes(object):
-
-    def __init__(self,
-                 XBound:   list = [-1,1],
-                 YBound:   list = [-1,1],
-                 XNpts:    int  = None,
-                 YNpts:    int  = None,
-                 Npts:     int  = None,
-                 ):
-
-        self.Npts = Npts
-        self.XNpts = XNpts
-        self.YNpts   = YNpts
-
-        self.MakeProperties(XBound= XBound, YBound= YBound)
-
-
-    def MakeProperties(self, XBound, YBound):
-
-        XRange              = np.abs(XBound[0] - XBound[1])
-        YRange                = np.abs(YBound[0] - YBound[1])
-
-        XVector             = np.linspace(XBound[0], XBound[1], self.XNpts)
-        YVector               = np.linspace(*YBound, self.YNpts)
-
-        XMesh, YMesh      = np.meshgrid(XVector, YVector)
-
-        XDelta = np.abs(XBound[0] - XBound[1])
-
-        YDelta = np.abs(YBound[0] - YBound[1])
-
-        self.dA   = XDelta * YDelta
-
-        self.X = Namespace(Vector   =  XVector ,
-                           Mesh     =  XMesh ,
-                           Delta    =  XDelta ,
-                            )
-
-        self.Y = Namespace(Vector   =  YVector ,
-                           Mesh     =  YMesh ,
-                           Delta    =  YDelta
-                              )
 
 
 

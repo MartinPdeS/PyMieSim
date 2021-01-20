@@ -2,8 +2,6 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import numpy as np
-import weakref
-from scipy.interpolate import griddata
 import matplotlib
 import cartopy.crs as ccrs
 
@@ -12,11 +10,7 @@ from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, Scal
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Angle, _Polarization, PlotFarField
-
-
-global cmap
-cmap = 'viridis'
+from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull
 
 
 class BaseDetector(object):
@@ -74,9 +68,6 @@ class BaseDetector(object):
     def __init__(self):
         pass
 
-    #def Plot(self, *args, **kwargs):
-    #    return self.Scalar.Plot(*args, **kwargs)
-
     @property
     def Filter(self):
         return self._Filter
@@ -93,7 +84,6 @@ class BaseDetector(object):
     def PhiOffset(self, val):
         self.Meshes.UpdateSphere(PhiOffset = val)
         self.GetSpherical()
-
 
     @property
     def GammaOffset(self):
@@ -127,16 +117,16 @@ class BaseDetector(object):
 
     def Plot(self, num=400, scatter=True):
 
-        phi, theta = np.mgrid[-np.pi/2:np.pi/2:complex(0,num), -np.pi:np.pi:complex(0,num)]
+        interpScalar, Phi, Theta = InterpFull(Meshes = self.Meshes,
+                                              Scalar = self.Scalar,
+                                              Shape  = [num, num])
 
-        ziReal = griddata((self.Meshes.Theta.Radian,
-                           self.Meshes.Phi.Radian),
-                           self.Scalar.astype(np.complex),
-                           (theta.flatten(), phi.flatten()),
-                           fill_value = complex(np.nan, np.nan),
-                           method     = 'linear').reshape([num,num])
-
-        return PlotFarField(phi, theta, ziReal, self.Meshes, Name='Mode field', scatter=scatter)
+        return PlotFarField(Phi     = Phi,
+                            Theta   = Theta+np.pi,
+                            Scalar  = interpScalar,
+                            Meshes  = self.Meshes,
+                            Name    = 'Mode field',
+                            scatter = scatter)
 
 
 
@@ -237,18 +227,27 @@ class BaseScatterer(object):
 
     def Plot(self, num=200, scatter=True):
 
-        ThetaMesh, PhiMesh = np.mgrid[0:2*np.pi:complex(num), -np.pi/2:np.pi/2:complex(num)]
+        Theta, Phi = np.mgrid[0:2*np.pi:complex(num), -np.pi/2:np.pi/2:complex(num)]
 
-        Para, Perp = GetFieldsFromMesh(m                    = self.Index,
-                                       x                    = self.SizeParam,
-                                       ThetaMesh            = ThetaMesh.flatten(),
-                                       PhiMesh              = PhiMesh.flatten()-np.pi/2,
-                                       Polarization         = 0)
+        Para, Perp = GetFieldsFromMesh(m            = self.Index,
+                                       x            = self.SizeParam,
+                                       ThetaMesh    = Theta.flatten(),
+                                       PhiMesh      = Phi.flatten()-np.pi/2,
+                                       Polarization = 0)
 
+        fig0 = PlotFarField(Phi     = Phi,
+                            Theta   = Theta,
+                            Scalar  = Para.reshape([num,num]),
+                            Meshes  = self.Meshes,
+                            Name    = 'Parallel field',
+                            scatter = scatter)
 
-        fig0 = PlotFarField(PhiMesh, ThetaMesh, Para.reshape([num,num]), self.Meshes, Name='Parallel field', scatter=scatter)
-
-        fig1 = PlotFarField(PhiMesh, ThetaMesh, Perp.reshape([num,num]), self.Meshes, Name='Perpendicular field', scatter=scatter)
+        fig1 = PlotFarField(Phi     = Phi,
+                            Theta   = Theta,
+                            Scalar  = Perp.reshape([num,num]),
+                            Meshes  = self.Meshes,
+                            Name    = 'Perpendicular field',
+                            scatter = scatter)
 
         return fig0, fig1
 

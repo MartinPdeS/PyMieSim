@@ -8,6 +8,9 @@ import cartopy.crs as ccrs
 from scipy.interpolate import griddata
 import scipy
 
+
+from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
+
 class Source(object):
 
     def __init__(self,
@@ -92,54 +95,38 @@ class fiber(object):
         self.source = factory[0]
 
 
-def _InterpFull(Meshes, Scalar, Shape):
-
-    ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(Shape[0]),
-                                  -np.pi/2:np.pi/2:complex(Shape[1])]
-
-    ZReal = griddata((Meshes.Theta.Radian, Meshes.Phi.Radian),
-                      Scalar.astype(np.complex).flatten(),
-                      (ThetaMesh.flatten(), PhiMesh.flatten()),
-                      fill_value = np.nan + np.nan*1j,
-                      method     = 'linear')
-
-
-
-    return ZReal, PhiMesh, ThetaMesh
-
 
 def InterpFull(Meshes, Scalar, Shape):
 
-    ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(Shape[0]),
-                                  -np.pi/2:np.pi/2:complex(Shape[1])]
+    Phi, Theta = np.mgrid[-np.pi/2:np.pi/2:complex(Shape[0]),
+                          -np.pi:np.pi:complex(Shape[1])]
 
-    Para, Perp = GetFieldsFromMesh(m                    = self.Index,
-                                   x                    = self.SizeParam,
-                                   ThetaMesh            = ThetaMesh.flatten(),
-                                   PhiMesh              = PhiMesh.flatten(),
-                                   Polarization         = 0);
+    Scalar = interp_at(Meshes.Phi.Radian,
+                       Meshes.Theta.Radian,
+                       Scalar.astype(np.complex).flatten(),
+                       Phi.flatten(),
+                       Theta.flatten(),
+                       algorithm='linear',
+                       extrapolate=True)
 
-
-    ZReal = griddata((Meshes.Theta.Radian, Meshes.Phi.Radian),
-                      Scalar.astype(np.complex).flatten(),
-                      (ThetaMesh.flatten(), PhiMesh.flatten()),
-                      fill_value = np.nan + np.nan*1j,
-                      method     = 'linear')
-
-
-
-    return ZReal, PhiMesh, ThetaMesh
+    return Scalar.reshape(Shape), Phi, Theta
 
 
 
 def PlotUnstructureData(Scalar, phi, theta):
 
     fig, ax = plt.subplots(1,2,figsize=(15,8))
+
     im0 = ax[0].tripcolor(theta, phi, Scalar.real)
+
     im1 = ax[1].tripcolor(theta, phi, Scalar.imag)
+
     plt.colorbar(mappable=im0, ax=ax[0])
+
     plt.colorbar(mappable=im1, ax=ax[1])
+
     ax[0].plot(theta, phi, 'ko ', markersize=2)
+
     ax[1].plot(theta, phi, 'ko ', markersize=2)
 
     plt.show()

@@ -34,19 +34,17 @@ Scat = Scatterer(Diameter    = 1000e-9,
                  Meshes      = LP11.Meshes)
 
 Sam = Sample(g           = 0.8,
-             lc          = 10,
+             lc          = 10*1e-7,
              D           = 2,
              Nc          = 10,
              Source      = LightSource,
              Meshes      = LP11.Meshes)
 
 
-print(LP11.Coupling(Sam, Mode='Mean'))
-
-LP11.Meshes.Plot()
+Sam.Plot()
 #LP11.Plot()
 
 #Scat.Plot()
 
-#plt.show()
+plt.show()
 # -

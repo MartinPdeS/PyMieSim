@@ -1,21 +1,13 @@
 
 import numpy as np
-import matplotlib.pyplot as plt
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
-from PyMieCoupling.classes.BaseClasses import BaseDetector
 import fibermodes
-from scipy.interpolate import griddata
-import polarTransform
 
+from PyMieCoupling.classes.BaseClasses import BaseDetector
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructureData, interp_at
+from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructureData, interp_at, InterpFull
 from PyMieCoupling.physics import FraunhoferDiffraction
 
-
-global cmap
-cmap = 'RdBu'
 
 
 class Photodiode(BaseDetector):
@@ -44,12 +36,12 @@ class Photodiode(BaseDetector):
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
 
+        self.Sampling = self.Meshes.Phi.Radian.shape
+
         self.GetSpherical()
 
 
     def GetSpherical(self):
-
-        self.Sampling = self.Meshes.Phi.Radian.shape
 
         Scalar = np.ones(self.Sampling) / (self.Sampling)
 
@@ -95,6 +87,8 @@ class LPmode(BaseDetector):
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
 
+        self.Sampling = self.Meshes.Phi.Radian.shape
+
         self.GetFarField()
 
         self.GetSpherical()
@@ -122,14 +116,10 @@ class LPmode(BaseDetector):
 
     def GetSpherical(self):
 
-        self.debug = True
-
         shape = self.Cartesian.shape
 
         ThetaMesh, PhiMesh = np.mgrid[-np.pi: np.pi:complex(shape[0]),
-                                      np.pi/2: np.pi/2-self.MaxAngle*1.01 :complex(shape[0])]
-
-        self.Sampling = self.Meshes.Phi.Radian.shape
+                                      np.pi/2: np.pi/2-self.MaxAngle*1.01 :complex(shape[1])]
 
         Scalar = interp_at(PhiMesh.flatten(),
                            ThetaMesh.flatten(),

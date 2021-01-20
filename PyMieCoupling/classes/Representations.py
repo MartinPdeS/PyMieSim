@@ -2,8 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
-from PyMieCoupling.utils import InterpFull
-from scipy.interpolate import griddata
 
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
@@ -40,7 +38,6 @@ class Stokes(np.ndarray):
 
     def __array_finalize__(self, obj):
         pass
-
 
     def __init__(self, Field):
         pass
