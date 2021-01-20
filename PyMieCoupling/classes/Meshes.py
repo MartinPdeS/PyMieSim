@@ -12,14 +12,14 @@ import math
 class AngleMeshes(object):
     def __init__(self,
                  MaxAngle:    float = np.pi/6,
-                 Samples:     int   = 1000,
+                 Sampling:     int   = 1000,
                  PhiOffset          = 0,
                  GammaOffset        = 0):
 
         self.PhiOffset = PhiOffset
         self.GammaOffset = GammaOffset
         self.MaxAngle = MaxAngle
-        self.Samples = Samples
+        self.Sampling = Sampling
         Theta, Phi, dOmega = self.GenerateLedevedMesh()
 
 
@@ -88,9 +88,9 @@ class AngleMeshes(object):
 
         #assert MaxAngle <= np.pi/2, print("Angle should be inferior to pi/2")
 
-        self.TrueSample, dOmega = self.ComputeTrueSample(self.Samples)
+        self.TrueSample, dOmega = self.ComputeTrueSample(self.Sampling)
 
-        base = fibonacci_sphere(samples=self.Samples, maxAngle=self.MaxAngle)
+        base = fibonacci_sphere(samples=self.Sampling, maxAngle=self.MaxAngle)
 
         base = self.AvoidPoles(base)
 
@@ -120,7 +120,7 @@ class AngleMeshes(object):
         if 'MaxAngle' in kwargs: self.MaxAngle = kwargs['MaxAngle']
         if 'GammaOffset' in kwargs: self.GammaOffset = kwargs['GammaOffset']
         if 'PhiOffset' in kwargs: self.PhiOffset = kwargs['PhiOffset']
-        if 'Samples' in kwargs: self.Samples = kwargs['Samples']
+        if 'Sampling' in kwargs: self.Sampling = kwargs['Sampling']
 
         Theta, Phi, dOmega =  self.GenerateLedevedMesh()
 
@@ -145,15 +145,15 @@ class AngleMeshes(object):
         return cs.mx_apply(TGamma, *base)
 
 
-    def ComputeTrueSample(self, Samples):
+    def ComputeTrueSample(self, Sampling):
 
         SolidAngle = np.abs( 2*np.pi * (np.cos(self.MaxAngle) - np.cos(0)))
 
         ratio = (4*np.pi/SolidAngle)
 
-        TrueSamples = int(Samples*ratio)
+        TrueSampling = int(Sampling*ratio)
 
-        return TrueSamples, 4*np.pi / TrueSamples
+        return TrueSampling, 4*np.pi / TrueSampling
 
 
     def Cutoff(self, phi, theta):
@@ -189,11 +189,11 @@ def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
 
     ratio = 4*np.pi / solidAngle
 
-    TrueSamples = int( samples * ratio )
+    TrueSampling = int( samples * ratio )
 
 
-    for i in range(TrueSamples):
-        y = 1 - (i / float(TrueSamples - 1)) * 2  ## y goes from 1 to -1
+    for i in range(TrueSampling):
+        y = 1 - (i / float(TrueSampling - 1)) * 2  ## y goes from 1 to -1
         radius = math.sqrt(1 - y * y)  ## radius at y
 
         theta = phi * i  ## golden angle increment

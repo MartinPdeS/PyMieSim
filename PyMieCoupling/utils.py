@@ -1,9 +1,12 @@
 import numpy as np
 import fibermodes
+import matplotlib
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
+import cartopy.crs as ccrs
 from scipy.interpolate import griddata
 import scipy
-import numpy
 
 class Source(object):
 
@@ -174,9 +177,10 @@ def interp_at(x, y, v, xp, yp, algorithm='cubic', extrapolate=False):
                                       v,
                                       (xp, yp),
                                       method=algorithm).ravel()
-    if extrapolate and algorithm != 'nearest' and numpy.any(numpy.isnan(grid)):
+    if extrapolate and algorithm != 'nearest' and np.any(np.isnan(grid)):
         grid = extrapolate_nans(xp, yp, grid)
     return grid
+
 
 def extrapolate_nans(x, y, v):
     """
@@ -198,12 +202,78 @@ def extrapolate_nans(x, y, v):
         The array with NaNs or masked values extrapolated.
 
     """
-    if numpy.ma.is_masked(v):
+    if np.ma.is_masked(v):
         nans = v.mask
     else:
-        nans = numpy.isnan(v)
-    notnans = numpy.logical_not(nans)
+        nans = np.isnan(v)
+    notnans = np.logical_not(nans)
     v[nans] = scipy.interpolate.griddata((x[notnans], y[notnans]), v[notnans],
                                          (x[nans], y[nans]),
                                          method='nearest').ravel()
     return v
+
+
+
+
+def PlotFarField(Phi, Theta, Scalar, Meshes, Name='Field', scatter=True):
+
+        fig, axes = plt.subplots(nrows      = 1,
+                                  ncols      = 2,
+                                  figsize    = (8, 4),
+                                  subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+
+        im0 = axes[0].contourf(np.rad2deg(Theta),
+                               np.rad2deg(Phi),
+                               Scalar.real,
+                               cmap      = 'inferno',
+                               shading   = 'nearest',
+                               transform = ccrs.PlateCarree(),
+                               levels    = 50)
+
+        gl = axes[0].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+        gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+        gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+
+        plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[0])
+        axes[0].set_title('Real Part {}'.format(Name))
+        axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
+        axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
+        axes[0].grid(True, which='minor')
+
+
+        im1 = axes[1].contourf(np.rad2deg(Theta),
+                               np.rad2deg(Phi),
+                               Scalar.imag,
+                               cmap      = 'inferno',
+                               shading   = 'nearest',
+                               transform = ccrs.PlateCarree(),
+                               levels    = 50)
+
+        gl = axes[1].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+        gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+        gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+
+        plt.colorbar(mappable=im1, fraction=0.046, orientation='vertical', ax=axes[1])
+        axes[1].set_title('Imaginary Part {}'.format(Name))
+        axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
+        axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
+        axes[1].grid(True, which='minor')
+
+        if scatter:
+            for n in range(2):
+                axes[0].scatter(Meshes.Theta.Degree,
+                                Meshes.Phi.Degree,
+                                s=0.2,
+                                c='k',
+                                transform=ccrs.PlateCarree())
+
+                axes[1].scatter(Meshes.Theta.Degree,
+                                Meshes.Phi.Degree,
+                                s=0.2,
+                                c='k',
+                                transform=ccrs.PlateCarree())
+
+        fig.tight_layout()
+
+
+        return fig

@@ -3,13 +3,21 @@ plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import numpy as np
 import weakref
+from scipy.interpolate import griddata
 import matplotlib
+import cartopy.crs as ccrs
+
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Angle, _Polarization
+from PyMieCoupling.utils import Angle, _Polarization, PlotFarField
+
+
+global cmap
+cmap = 'viridis'
+
 
 class BaseDetector(object):
     """Short summary.
@@ -66,8 +74,8 @@ class BaseDetector(object):
     def __init__(self):
         pass
 
-    def Plot(self, *args, **kwargs):
-        return self.Scalar.Plot(*args, **kwargs)
+    #def Plot(self, *args, **kwargs):
+    #    return self.Scalar.Plot(*args, **kwargs)
 
     @property
     def Filter(self):
@@ -116,6 +124,19 @@ class BaseDetector(object):
     def Footprint(self, Scatterer):
         return GetFootprint(Scatterer = Scatterer, Detector = self)
 
+
+    def Plot(self, num=400, scatter=True):
+
+        phi, theta = np.mgrid[-np.pi/2:np.pi/2:complex(0,num), -np.pi:np.pi:complex(0,num)]
+
+        ziReal = griddata((self.Meshes.Theta.Radian,
+                           self.Meshes.Phi.Radian),
+                           self.Scalar.astype(np.complex),
+                           (theta.flatten(), phi.flatten()),
+                           fill_value = complex(np.nan, np.nan),
+                           method     = 'linear').reshape([num,num])
+
+        return PlotFarField(phi, theta, ziReal, self.Meshes, Name='Mode field', scatter=scatter)
 
 
 
@@ -214,98 +235,22 @@ class BaseScatterer(object):
                                                                 Polarization = self.Source.Polarization.Radian);
 
 
-
-
-
     def Plot(self, num=200, scatter=True):
-        import cartopy.crs as ccrs
+
         ThetaMesh, PhiMesh = np.mgrid[0:2*np.pi:complex(num), -np.pi/2:np.pi/2:complex(num)]
 
         Para, Perp = GetFieldsFromMesh(m                    = self.Index,
                                        x                    = self.SizeParam,
                                        ThetaMesh            = ThetaMesh.flatten(),
                                        PhiMesh              = PhiMesh.flatten()-np.pi/2,
-                                       Polarization         = 0);
-
-        fig0, axes0 = plt.subplots(nrows      = 1,
-                                   ncols      = 2,
-                                   figsize    = (8, 4),
-                                   subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()}
-                                  )
+                                       Polarization         = 0)
 
 
-        fig1, axes1= plt.subplots(nrows       = 1,
-                                   ncols      = 2,
-                                   figsize    = (8, 4),
-                                   subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()}
-                                  )
+        fig0 = PlotFarField(PhiMesh, ThetaMesh, Para.reshape([num,num]), self.Meshes, Name='Parallel field', scatter=scatter)
 
-        dic = {'Parallel': Para, 'Perpendicular': Perp}
-        n = 0; axes0 = axes0.ravel()
-
-        for key, value in dic.items():
-            im = axes0[n].contourf(
-                                    np.rad2deg(ThetaMesh),
-                                    np.rad2deg(PhiMesh),
-                                    value.real.reshape([num,num]),
-                                    cmap = 'inferno',
-                                    shading='auto',
-                                    transform=ccrs.PlateCarree(),
-                                    levels=50
-                                    )
-
-            gl = axes0[n].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-            gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-            gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
-
-            plt.colorbar(mappable=im, fraction=0.046, orientation='vertical', ax=axes0[n])
-            axes0[n].grid()
-            axes0[n].set_title('Real Part [{0}] Field'.format(key))
-            axes0[n].set_ylabel(r'Angle $\phi$ [Degree]')
-            axes0[n].set_xlabel(r'Angle $\theta$ [Degree]')
-            axes0[n].grid(True, which='minor')
-
-
-            im = axes1[n].contourf(
-                                    np.rad2deg(ThetaMesh),
-                                    np.rad2deg(PhiMesh),
-                                    value.imag.reshape([num,num]),
-                                    cmap = 'inferno',
-                                    shading='auto',
-                                    transform=ccrs.PlateCarree(),
-                                    levels=50)
-            gl = axes1[n].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-            gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-            gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
-
-            plt.colorbar(mappable=im, fraction=0.046, orientation='vertical', ax=axes1[n])
-            axes1[n].grid()
-            axes1[n].set_title('Imaginary Part [{0}] Field'.format(key))
-            axes1[n].set_ylabel(r'Angle $\phi$ [Degree]')
-            axes1[n].set_xlabel(r'Angle $\theta$ [Degree]')
-            n +=1
-
-
-        if scatter:
-            for n in range(2):
-                axes0[n].scatter(np.rad2deg(self.Meshes.Theta.Radian),
-                                 np.rad2deg(self.Meshes.Phi.Radian),
-                                 s=0.2,
-                                 c='k',
-                                 transform=ccrs.PlateCarree())
-
-                axes1[n].scatter(np.rad2deg(self.Meshes.Theta.Radian),
-                                 np.rad2deg(self.Meshes.Phi.Radian),
-                                 s=0.2,
-                                 c='k',
-                                 transform=ccrs.PlateCarree())
-
-
-        fig1.tight_layout()
-        fig0.tight_layout()
+        fig1 = PlotFarField(PhiMesh, ThetaMesh, Perp.reshape([num,num]), self.Meshes, Name='Perpendicular field', scatter=scatter)
 
         return fig0, fig1
-
 
 
     def Coupling(self, Detector, Filter = None, Mode = 'Centered'):
