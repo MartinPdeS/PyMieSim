@@ -50,7 +50,7 @@ class AngleMeshes(object):
         ax.set_xlabel('X-direction [u.a.]')
         ax.set_ylabel('Y-direction [u.a.]')
         ax.set_zlabel('Z-direction [u.a.]')
-        ax.scatter(x, y, z,s=10,c='k')
+        ax.scatter(x, y, z,s=10, c='k')
         ax.set_aspect('auto')
         ax.set_xlim([-1.3,1.3])
         ax.set_ylim([-1.3,1.3])

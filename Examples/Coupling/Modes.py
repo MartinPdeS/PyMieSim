@@ -18,13 +18,14 @@ LightSource = Source(Wavelength   = 450e-9,
 
 
 
-LP11 = LPmode(Name        = 'LP11',
-              Mode        = (1, 1),
-              Source      = LightSource,
-              Sampling    = 101,
-              NA          = 1,
-              GammaOffset = 0,
-              PhiOffset   = 0
+LP11 = LPmode(Name         = 'LP11',
+              Mode         = (1, 1),
+              Source       = LightSource,
+              Sampling     = 501,
+              NA           = 0.2,
+              GammaOffset  = 0,
+              PhiOffset    = 0,
+              CouplingMode = 'Centered'
               )
 
 
@@ -35,9 +36,9 @@ Scat = Scatterer(Diameter    = 50e-9,
                  Meshes      = LP11.Meshes)
 
 
-print(LP11.Coupling(Scat, Mode='Centered'))
+print(LP11.Coupling(Scat))
 
-LP11.Plot()
+#LP11.Plot()
 
 #Scat.Plot()
 

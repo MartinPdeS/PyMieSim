@@ -107,8 +107,8 @@ class BaseDetector(object):
         self.GetSpherical()
 
 
-    def Coupling(self, Scatterer, Mode = 'Centered'):
-        return Coupling(Scatterer = Scatterer, Detector = self, Mode = Mode)
+    def Coupling(self, Scatterer):
+        return Coupling(Scatterer = Scatterer, Detector = self)
 
 
     def Footprint(self, Scatterer):
@@ -252,11 +252,8 @@ class BaseScatterer(object):
         return fig0, fig1
 
 
-    def Coupling(self, Detector, Filter = None, Mode = 'Centered'):
-        return Coupling(Scatterer    = self,
-                        Detector     = Detector,
-                        Filter       = Filter,
-                        Mode         = Mode)
+    def Coupling(self, Detector, Filter = None):
+        return Coupling(Scatterer = self, Detector = Detector)
 
     def Footprint(self, Detector):
         return GetFootprint(Scatterer = self, Detector = Detector)

@@ -42,7 +42,6 @@ def CenteredCoupling_Perp(Detector, Scatterer):
 
 
 def MeanCoupling_Para(Detector, Scatterer):
-    #PlotUnstructureData(Detector.Meshes.SinMesh, Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian,)
     Para = (Detector.Scalar * Scatterer.Parallel * Detector.Meshes.SinMesh).__abs__()**2
     Para = Para.sum()
 
@@ -64,11 +63,11 @@ def GetFootprint(Detector, Scatterer):
 
 
 
-def Coupling(Scatterer, Detector, Mode='Centered'):
-    if Mode == 'Centered':
+def Coupling(Scatterer, Detector):
+    if Detector.CouplingMode == 'Centered':
         return CenteredCoupling(Scatterer, Detector)
 
-    if Mode == 'Mean':
+    if Detector.CouplingMode == 'Mean':
         return MeanCoupling(Scatterer, Detector)
 
 

@@ -32,14 +32,17 @@ class ScattererSet(object):
 
         self.DiameterList, self.RIList = DiameterList, RIList
 
-        self.Detectors, self.Source, self.Mode = Detectors, Source, Mode
+        self.Source, self.Mode = Source, Mode
 
-        self.Coupling = np.empty( [len(self.RIList), len(self.DiameterList)] )
+        self.Detectors = {detector : 'Detector {}'.format(n) for n, detector in enumerate(Detectors) }
+
+        self._Coupling = None
 
 
-    def GetCouplingArray(self, Filter='None'):
+    @property
+    def Coupling(self):
 
-        temp = np.empty( [len(self.Detectors), len(self.RIList), len(self.DiameterList) ] )
+        temp = np.empty( [len(self.Detectors.keys()), len(self.RIList), len(self.DiameterList) ] )
 
         for nDetector, Detector in enumerate(self.Detectors):
             for nIndex, RI in enumerate(self.RIList):
@@ -48,14 +51,49 @@ class ScattererSet(object):
                     Scat = Scatterer(Diameter  = Diameter,
                                      Index     = RI,
                                      Source    = self.Source,
-                                     Meshes    = Detector.Meshes
-                                     )
+                                     Meshes    = Detector.Meshes)
 
-                    Coupling = Detector.Coupling(Scatterer = Scat, Mode = self.Mode)
+                    Coupling = Detector.Coupling(Scatterer = Scat)
 
                     temp[nDetector, nIndex, nDiameter] = Coupling
 
         return OptArray(temp)
+
+
+    @property
+    def DataFrame(self):
+
+        MI = pd.MultiIndex.from_product([list(self.Detectors.values()), self.DiameterList, self.RIList],
+                                        names=['Detectors','Diameter','RI',])
+
+        df = DataFrameCPU(index = MI, columns = ['Coupling'])
+
+        df.attrs['Detectors'] = self.Detectors
+
+        #df.attrs['Filter'] = Filter
+
+        for nr, RI in enumerate( self.RIList ):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+
+                for Detector, DetectorName in self.Detectors.items():
+
+                    Scat = Scatterer(Diameter    = Diameter,
+                                     Index       = RI,
+                                     Source      = self.Source,
+                                     Meshes      = Detector.Meshes)
+
+                    Coupling = Detector.Coupling(Scatterer = Scat)
+
+                    df.at[(DetectorName, Diameter, RI),'Coupling'] = Coupling
+
+        df.Coupling = df.Coupling.astype(float)
+
+        df['Mean'] = df.groupby(['Detectors','Diameter']).Coupling.transform('mean')
+
+        df['STD'] = df.groupby(['Detectors','Diameter']).Coupling.transform('std')
+
+        return df
 
 
 class _ScattererSet(object):

@@ -19,7 +19,8 @@ Detector = Photodiode(Name              = 'Detector',
                       Source            = LightSource,
                       Sampling          = 501,
                       GammaOffset       = 0,
-                      PhiOffset         = 0)
+                      PhiOffset         = 0,
+                      CouplingMode      = 'Centered')
 
 
 
@@ -34,7 +35,7 @@ Scat = Scatterer(Diameter      = 1000e-9,
 
 Detector.Plot()
 
-Coupling0 = Detector.Coupling(Scatterer = Scat, Mode='Centered')
+Coupling0 = Detector.Coupling(Scatterer = Scat)
 
 plt.show()
 

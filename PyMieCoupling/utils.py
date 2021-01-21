@@ -160,10 +160,12 @@ def interp_at(x, y, v, xp, yp, algorithm='cubic', extrapolate=False):
     """
     if algorithm not in ['cubic', 'linear', 'nearest']:
         raise ValueError("Invalid interpolation algorithm: " + str(algorithm))
+
     grid = scipy.interpolate.griddata((x, y),
                                       v,
                                       (xp, yp),
                                       method=algorithm).ravel()
+
     if extrapolate and algorithm != 'nearest' and np.any(np.isnan(grid)):
         grid = extrapolate_nans(xp, yp, grid)
     return grid

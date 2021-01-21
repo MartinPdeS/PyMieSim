@@ -20,27 +20,34 @@ class DataFrameCPU(pd.DataFrame):
         return self.xs('Perpendicular')
 
 
+    def _Plot(self, y, Scale='Linear'):
+
+        for Detector in self.attrs['Detectors'] .keys():
+            print(Detector)
+        self._plot(y, Detector, Scale)
+
+
     def Plot(self, y, Scale='Linear'):
 
-        for Polar in self.attrs['Filter']:
-            self._plot(y, Polar, Scale)
+        self.unstack(level=[-3,-1]).plot(y       = 'Coupling',
+                                         grid    = True,
+                                         figsize = (8,3.5),
+                                         xlabel  = r'Scatterer diameter [m]',
+                                         ylabel  = r'Coupling [u.a.]')
 
 
-    def _plot(self, y, Filter, Scale):
 
-        self.ax = self.xs(Filter).unstack(1).plot(y       = y,
-                                                  grid    = True,
-                                                  figsize = (8,3.5),
-                                                  title   = r'[{0}] Filter: {1} [Degree]'.format(self.DetectorNane, Filter),
-                                                  ylabel  = y,
-                                                  xlabel  = r'Scatterer diameter [m]')
 
-        self.ax.tick_params(labelsize='small')
-        self.ax.legend(bbox_to_anchor=(1, 1), ncol=1)
 
-        if Scale == 'Logarithmic':
-            self.ax.set_yscale('log')
 
-        plt.subplots_adjust(right=0.8,)
 
-        plt.show(block=False)
+
+
+
+
+
+
+
+
+
+# -
