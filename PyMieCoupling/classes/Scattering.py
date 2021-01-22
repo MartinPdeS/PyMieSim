@@ -15,27 +15,16 @@ class Scatterer(BaseScatterer):
                  Diameter:    float,
                  Source:      Source,
                  Index:       float,
-                 Meshes:      AngleMeshes  = None,
-                 Acceptance:  list         = 20,
-                 Sampling:     int          = 1000,
-                 GammaOffset: float        = 0,
-                 PhiOffset:   float        = 0) -> None:
+                 Meshes:      AngleMeshes  = None) -> None:
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
-
-        self.Acceptance = np.deg2rad(Acceptance)
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
-        if Meshes:
-            self.Meshes = Meshes
-        else:
-            self.Meshes = AngleMeshes(MaxAngle    = self.Acceptance,
-                                      Sampling     = Sampling,
-                                      PhiOffset   = PhiOffset,
-                                      GammaOffset = GammaOffset)
+        self.Meshes = Meshes
+
 
 
 
@@ -51,14 +40,12 @@ class FullScatterer(BaseScatterer):
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
-        self.Acceptance = np.deg2rad(180)
-
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
-        self.Meshes = AngleMeshes(MaxAngle    = self.Acceptance,
-                                  Sampling     = Sampling,
+        self.Meshes = AngleMeshes(MaxAngle    = np.deg2rad(180),
+                                  Sampling    = Sampling,
                                   PhiOffset   = 0,
                                   GammaOffset = 0)
 
@@ -68,28 +55,18 @@ class FullScatterer(BaseScatterer):
 
 class Sample(object):
     def __init__(self,
-                 g,
-                 lc,
-                 D,
-                 Nc,
-                 Source,
-                 Meshes      = None,
-                 Acceptance  = 20,
-                 Sampling    = 1000,
-                 GammaOffset = 0,
-                 PhiOffset   = 0) -> None:
+                 g:       float,
+                 lc:      float,
+                 D:       float,
+                 Nc:      float,
+                 Source:  Source,
+                 Meshes:  AngleMeshes  = None):
 
         self.g  = g; self.lc = lc; self.D  = D; self.Nc = Nc
 
-        self.Acceptance = Acceptance; self.Source = Source
+        self.Source = Source
 
-        if Meshes:
-            self.Meshes = Meshes
-        else:
-            self.Meshes = AngleMeshes(MaxAngle    = self.Acceptance,
-                                      Sampling    = Sampling,
-                                      PhiOffset   = PhiOffset,
-                                      GammaOffset = GammaOffset)
+        self.Meshes = Meshes
 
         self.Parallel = self.GetScalar(self.Meshes.Theta.Radian, self.Meshes.Phi.Radian)
 
