@@ -20,6 +20,7 @@ class AngleMeshes(object):
         self.MaxAngle = MaxAngle
         self.Sampling = Sampling
         Theta, Phi, dOmega = self.GenerateLedevedMesh()
+        self.Sampling = Theta.size
 
 
         self.MakeProperties(Theta, Phi, dOmega)

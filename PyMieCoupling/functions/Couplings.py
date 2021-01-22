@@ -10,12 +10,12 @@ from PyMieCoupling.utils import PlotUnstructureData
 
 
 def CenteredCoupling_Para(Detector, Scatterer):
-    if Detector._coupling == "Intensity":
+    if Detector._CouplingMode[0] == "Intensity":
         Para = (Detector.Scalar * Scatterer.Parallel).__abs__()**2
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
 
-    if Detector._coupling == "Amplitude":
+    if Detector._CouplingMode[0] == "Amplitude":
         Para = (Detector.Scalar * Scatterer.Parallel)
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
@@ -25,12 +25,12 @@ def CenteredCoupling_Para(Detector, Scatterer):
 
 
 def CenteredCoupling_Perp(Detector, Scatterer):
-    if Detector._coupling == "Intensity":
+    if Detector._CouplingMode[0] == "Intensity":
         Perp = (Detector.Scalar * Scatterer.Perpendicular ).__abs__()**2
         Perp = Perp * Detector.Meshes.SinMesh
         Perp = Perp.sum() * Detector.Meshes.dOmega.Radian
 
-    if Detector._coupling == "Amplitude":
+    if Detector._CouplingMode[0] == "Amplitude":
         Perp = (Detector.Scalar * Scatterer.Perpendicular)
         Perp = Perp * Detector.Meshes.SinMesh
         Perp = Perp.sum()
@@ -64,10 +64,10 @@ def GetFootprint(Detector, Scatterer):
 
 
 def Coupling(Scatterer, Detector):
-    if Detector.CouplingMode == 'Centered':
+    if Detector._CouplingMode[1] == 'Centered':
         return CenteredCoupling(Scatterer, Detector)
 
-    if Detector.CouplingMode == 'Mean':
+    if Detector._CouplingMode[1] == 'Mean':
         return MeanCoupling(Scatterer, Detector)
 
 

@@ -27,7 +27,7 @@ Detector1 = LPmode(NA                = 0.05,
                    Sampling          = 401,
                    GammaOffset       = 0,
                    PhiOffset         = 0,
-                   Mode              = (1,1),
+                   Mode              = (1,1,'v'),
                    CouplingMode      = 'Mean')
 
 
@@ -35,8 +35,6 @@ Set = ExperimentalSet(DiameterList  = np.linspace(100e-9, 5000e-9, 400),
                       RIList        = np.linspace(1.5, 1.5, 1).round(1),
                       Detectors     = [Detector0, Detector1],
                       Source        = LightSource)
-
-
 
 ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 500e-9, 5),
                        RIList        = np.linspace(1.5, 1.5, 1).round(1),

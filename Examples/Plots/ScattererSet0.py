@@ -53,7 +53,7 @@ Array = Set.Coupling
 DataFrame = Set.DataFrame
 
 
-DataFrame.Plot(y='STD')
+DataFrame.Plot(y='Coupling')
 
 
 plt.show()

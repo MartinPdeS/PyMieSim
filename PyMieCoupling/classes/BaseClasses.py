@@ -87,7 +87,7 @@ class BaseDetector(object):
 
     @property
     def GammaOffset(self):
-        return self.FarField.__GammaOffset
+        return self.Meshes.GammaOffset
 
     @GammaOffset.setter
     def GammaOffset(self, val):
