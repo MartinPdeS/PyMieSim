@@ -8,30 +8,43 @@ _________________________________________________________
 import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.classes.Fields import Source
-from PyMieCoupling.classes.Scattering import ScattererSet
+from PyMieCoupling.utils import Source
+from PyMieCoupling.classes.Sets import ExperimentalSet, ScattererSet
 
-LightSource = Source(Wavelength   = 450e-9,
+LightSource = Source(Wavelength   = 950e-9,
                      Polarization = 0)
 
-Detector = Photodiode(NA                = 0.5,
-                      Source            = LightSource,
-                      Npts              = 101,
-                      ThetaOffset       = 0,
-                      PhiOffset         = 0,
-                      Filter            = 90)
+Detector0 = LPmode(NA                = 0.05,
+                   Source            = LightSource,
+                   Sampling          = 401,
+                   GammaOffset       = 0,
+                   PhiOffset         = 0,
+                   Mode              = (0,1),
+                   CouplingMode      = 'Mean')
+
+Detector1 = LPmode(NA                = 0.05,
+                   Source            = LightSource,
+                   Sampling          = 401,
+                   GammaOffset       = 0,
+                   PhiOffset         = 0,
+                   Mode              = (1,1),
+                   CouplingMode      = 'Mean')
+
+
+Set = ExperimentalSet(DiameterList  = np.linspace(100e-9, 5000e-9, 400),
+                      RIList        = np.linspace(1.5, 1.5, 1).round(1),
+                      Detectors     = [Detector0, Detector1],
+                      Source        = LightSource)
 
 
 
-Set = ScattererSet(DiameterList  = np.linspace(100e-9, 1000e-9, 8),
-                   RIList        = np.linspace(1.3, 1.6, 4).round(1),
-                   Detector      = Detector,
-                   Source        = LightSource
-                   )
+ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 500e-9, 5),
+                       RIList        = np.linspace(1.5, 1.5, 1).round(1),
+                       Source        = LightSource)
 
+DataFrame = ScatSet.S1S2
 
-
-Set.Plot(y='S1')  # can be  S1  -  STD::S1  -  S2  -  STD::S2
+DataFrame.Plot(y='S1')
 
 plt.show()
 
