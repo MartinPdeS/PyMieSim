@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+
 from PyMieCoupling.utils import PlotUnstructureData
 
 """ Coupling Reference: Estimation of Coupling Efficiency of Optical Fiber by Far-Field Method """
@@ -76,7 +76,7 @@ def CenteredCoupling(Scatterer, Detector):
     if Detector._Filter.Radian != 'None':
         Perp = CenteredCoupling_Perp(Detector, Scatterer) * (np.cos(Detector._Filter.Radian)**2)
         Para = CenteredCoupling_Para(Detector, Scatterer) * (np.sin(Detector._Filter.Radian)**2)
-
+        
     else:
         Perp = CenteredCoupling_Perp(Detector, Scatterer)
         Para = CenteredCoupling_Para(Detector, Scatterer)

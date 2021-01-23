@@ -13,8 +13,7 @@ from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import Simulator
 from PyMieCoupling.classes.Sets import ExperimentalSet
 
-LightSource = Source(Wavelength   = 450e-9,
-                     Polarization = 0)
+LightSource = Source(Wavelength = 450e-9, Polarization = 0)
 
 
 

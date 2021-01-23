@@ -1,9 +1,12 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from PyMieCoupling.functions.converts import rad2deg, deg2rad, NA2Angle
-from PyMieCoupling.utils import Angle
 from ai import cs
 import math
+import matplotlib.pyplot as plt
+
+
+from PyMieCoupling.functions.converts import rad2deg, deg2rad, NA2Angle
+from PyMieCoupling.utils import Angle
+
 
 
 
@@ -57,7 +60,7 @@ class AngleMeshes(object):
         ax.set_ylim([-1.3,1.3])
         ax.set_zlim([-1,1])
 
-        ax.quiver(-2,0,0,1,0,0,length=0.5, color='k',arrow_length_ratio=0.5)
+        ax.quiver(0,0,-2,0,0,1,length=0.5, color='k',arrow_length_ratio=0.5)
         ax.quiver(0,0,0,0,0,1.,length=1.5, color='k', arrow_length_ratio=0.1)
         ax.quiver(0,0,0,0,1,0,length=1.5, color='k', arrow_length_ratio=0.1)
         ax.quiver(0,0,0,1,0,0,length=1.5, color='k', arrow_length_ratio=0.1)
@@ -98,7 +101,7 @@ class AngleMeshes(object):
 
         base = self.RotateOnPhi(-90, base)
 
-        base = self.RotateOnGamma(90 , base)
+        #base = self.RotateOnGamma(90 , base)
 
         r, phi, theta = cs.cart2sp(*base)
 
@@ -132,7 +135,7 @@ class AngleMeshes(object):
 
 
     def RotateOnGamma(self, rotation, base):
-        TPhi = cs.mx_rot_z(phi = rotation/180*np.pi)
+        TPhi = cs.mx_rot_y(theta = rotation/180*np.pi)
 
         return cs.mx_apply(TPhi, *base)
 

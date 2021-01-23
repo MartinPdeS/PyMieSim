@@ -93,7 +93,7 @@ class LPmode(BaseDetector, MeshProperty):
                  Source:         Source,
                  NA:             float = 0.2,
                  Sampling:       int   = 401,
-                 InterpSampling: int   = 101,
+                 InterpSampling: int   = 201,
                  GammaOffset:    float = 0,
                  PhiOffset:      float = 0,
                  Filter:         float =  'None',

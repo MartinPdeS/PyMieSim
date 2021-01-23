@@ -8,58 +8,54 @@ _________________________________________________________
 
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.functions.converts import Angle2Direct, Direct2Angle
-from PyMieCoupling.classes.Detector import LPmode
+from PyMieCoupling.classes.Detector import LPmode,Photodiode
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 
-PolarizationList = np.linspace(0,180,100)
-CouplingLP01 = []
+PolarizationList = np.linspace(0,360,100)
+Coupling = []
 CouplingLP11 = []
 
-LightSource = Source(Wavelength   = 450e-9,
-                     Polarization = 40)
+LightSource = Source(Wavelength = 450e-9,
+                     Polarization = 0,
+                     Power = 1,
+                     Radius = 1)
 
-LP11 = LPmode(Mode          = (1, 1),
-              Orientation   = 'v',
+LP01 = LPmode(Mode          = (0, 1,'v'),
               Source        = LightSource,
-              Npts          = 101,
-              ThetaOffset   = 0,
+              Sampling      = 501,
+              GammaOffset   = 0,
               PhiOffset     = 0,
-              Filter        = 'None',
-              NA            = 0.2)
+              Filter        = 90,
+              NA            = 0.2,
+              CouplingMode  = 'Centered' )
 
-
-LP01 = LPmode(Mode          = (0, 1),
-              Orientation   = 'v',
-              Source        = LightSource,
-              Npts          = 101,
-              ThetaOffset   = 0,
-              PhiOffset     = 0,
-              Filter        = 0,
-              NA            = 0.2)
-
-
+Detector = Photodiode(NA                = 0.2,
+                      Source            = Source,
+                      Sampling          = 1001,
+                      GammaOffset       = 0,
+                      Filter            = 'None',
+                      PhiOffset         = 85)
 
 for Polarization in PolarizationList:
 
-    LightSource = Source(Wavelength   = 450e-9,
-                         Polarization = Polarization)
+    LightSource = Source(Wavelength = 450e-9, Polarization = Polarization)
 
 
-    Scat = Scatterer(Diameter    = 2000e-9,
+    Scat = Scatterer(Diameter    = 800e-9,
                      Source      = LightSource,
                      Index       = 1.4,
-                     Meshes      = LP11.FarField.Meshes)
+                     Meshes      = Detector.Meshes)
 
 
-    CouplingLP01.append( LP01.Coupling(Scat, Mode='Centered'))
-    CouplingLP11.append( LP11.Coupling(Scat, Mode='Centered'))
+    Coupling.append( Detector.Coupling(Scat) )
+
 
 
 plt.figure(figsize=(10,5))
-plt.plot(PolarizationList, CouplingLP01, 'C0', label='LP11')
-plt.plot(PolarizationList, CouplingLP11, 'C1', label='LP11')
+plt.plot(PolarizationList, Coupling, 'C0', label='LP01')
+
+#plt.xlim([0, np.max(Coupling)])
 plt.grid()
 plt.legend()
 plt.show()

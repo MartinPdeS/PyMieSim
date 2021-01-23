@@ -16,7 +16,8 @@ class Source(object):
     def __init__(self,
                  Wavelength:   float,
                  Polarization: float,
-                 Power:        float = 1):
+                 Power:        float = 1
+                 Radius:       float = 1):
 
         self.Wavelength = Wavelength
 
@@ -263,6 +264,8 @@ def PlotFarField(Phi, Theta, Scalar, Meshes, Name='Field', scatter=True):
                                 transform=ccrs.PlateCarree())
 
         fig.tight_layout()
+
+        plt.show()
 
 
         return fig
