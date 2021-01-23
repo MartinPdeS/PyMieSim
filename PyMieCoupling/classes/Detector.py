@@ -3,7 +3,7 @@ import numpy as np
 import fibermodes
 from ai import cs
 
-from PyMieCoupling.classes.BaseClasses import BaseDetector
+from PyMieCoupling.classes.BaseClasses import BaseDetector, MeshProperty
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructureData, interp_at
@@ -11,7 +11,7 @@ from PyMieCoupling.physics import FraunhoferDiffraction
 
 
 
-class Photodiode(BaseDetector):
+class Photodiode(BaseDetector, MeshProperty):
     """Short summary.
 
     Parameters
@@ -63,7 +63,7 @@ class Photodiode(BaseDetector):
 
 
 
-class LPmode(BaseDetector):
+class LPmode(BaseDetector, MeshProperty):
     """Short summary.
 
     Parameters

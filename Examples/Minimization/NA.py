@@ -11,33 +11,31 @@ from scipy.optimize import minimize
 from PyMieCoupling.classes.Detector import Photodiode
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import Simulator
-from PyMieCoupling.classes.Scattering import ScattererSet
+from PyMieCoupling.classes.Sets import ExperimentalSet
 
 LightSource = Source(Wavelength   = 450e-9,
                      Polarization = 0)
 
 
 
-Photodiode0 = Photodiode(Name              = 'Detector',
-                         NA                = 0.5,
+Photodiode0 = Photodiode(NA                = 0.5,
                          Source            = LightSource,
-                         Samples           = 801,
+                         Sampling          = 801,
                          GammaOffset       = 0,
-                         PhiOffset         = 0)
+                         PhiOffset         = 0,
+                         CouplingMode      = 'Mean')
 
 
-Set = ScattererSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
-                   RIList        = np.linspace(1.3, 1.5, 4).round(4),
-                   Detector      = Photodiode0,
-                   Source        = LightSource,
-                   Mode          = 'Centered'
-                   )
+Set = ExperimentalSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
+                      RIList        = np.linspace(1.3, 1.5, 4).round(4),
+                      Detectors     = Photodiode0,
+                      Source        = LightSource,)
 
 def EvalFunc(x):
 
-    Set.Detector.NA = x[0]
+    Set.Detectors['Detector 0'].NA = x[0]
 
-    Array = Set.GetCouplingArray()
+    Array = Set.Coupling()
 
     return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
@@ -50,7 +48,7 @@ Result = minimize(fun      = Minimizer.simulate,
                   callback = Minimizer.callback,
                   tol      = 1e-5,
                   options  = {'maxiter': 50, 'rhobeg':0.1})
-                  
+
 print(Result)
 
 DF = Set.GetCouplingFrame()

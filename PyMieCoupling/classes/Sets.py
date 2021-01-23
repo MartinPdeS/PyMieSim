@@ -1,18 +1,13 @@
 import numpy as np
 import pandas as pd
 from typing import Tuple, Union
-import matplotlib
 
-import matplotlib.pyplot as plt
-from matplotlib import cm
-
-
-from PyMieCoupling.utils import Source, PlotFarField
+from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.cpp.S1S2 import GetS1S2
 from PyMieCoupling.classes.DataFrame import ExperimentalDataFrame, ScattererDataFrame
-from PyMieCoupling.classes.Scattering import Scatterer, Sample
+from PyMieCoupling.classes.Scattering import Scatterer, WMSample
 
 
 
@@ -21,8 +16,11 @@ class ScattererSet(object):
     def __init__(self,
                  DiameterList:    list,
                  RIList:          list,
-                 Source:          Source,
-                 ):
+                 Source:          Source):
+
+        if not isinstance(RIList, list): RIList = [RIList]
+
+        if not isinstance(DiameterList, list): DiameterList = [DiameterList]
 
         self.DiameterList, self.RIList = DiameterList, RIList
 
@@ -64,11 +62,17 @@ class ExperimentalSet(object):
                  Mode:            str     = 'Centered',
                  ):
 
+        if not isinstance(Detectors, list): Detectors = [Detectors]
+
+        if not isinstance(RIList, list): RIList = [RIList]
+
+        if not isinstance(DiameterList, list): DiameterList = [DiameterList]
+
         self.DiameterList, self.RIList = DiameterList, RIList
 
         self.Source, self.Mode = Source, Mode
 
-        self.Detectors = {detector : 'Detector {}'.format(n) for n, detector in enumerate(Detectors) }
+        self.Detectors = {'Detector {}'.format(n): detector for n, detector in enumerate(Detectors) }
 
         self._Coupling = None
 
@@ -78,7 +82,8 @@ class ExperimentalSet(object):
 
         temp = np.empty( [len(self.Detectors.keys()), len(self.RIList), len(self.DiameterList) ] )
 
-        for nDetector, Detector in enumerate(self.Detectors):
+        for nDetector, (DetectorName, Detector) in enumerate(self.Detectors.items()):
+
             for nIndex, RI in enumerate(self.RIList):
                 for nDiameter, Diameter in enumerate(self.DiameterList):
 

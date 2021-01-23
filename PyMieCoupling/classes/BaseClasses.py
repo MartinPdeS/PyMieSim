@@ -13,55 +13,14 @@ from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull
 
 
-class BaseDetector(object):
+
+
+
+
+
+
+class MeshProperty(object):
     """Short summary.
-
-    Parameters
-    ----------
-    size : float
-        Size of the detector, [diameter for circle shaped/ side for square].
-    shape : str
-        Shape of the detector.
-    wavelength : float
-        Wavelength of the incoming source.
-    npts : int
-        Number of points defining the rastered meshes.
-    GammaOffset : float
-        Offset of theta angle between the detector and source.
-    PhiOffset : float
-        Offset of phi angle between the detector and source.
-    Magnification : float
-        Magnification induced by the lense.
-    Name : str
-        Name of detector [optional for plots].
-
-    Attributes
-    ----------
-    _name : type
-        Description of attribute `_name`.
-    _coupling : type
-        Description of attribute `_coupling`.
-    k : type
-        Description of attribute `k`.
-    DirectVec : type
-        Description of attribute `DirectVec`.
-    GenShift : type
-        Description of attribute `GenShift`.
-    GenMeshes : type
-        Description of attribute `GenMeshes`.
-    Field : type
-        Description of attribute `Field`.
-    Fourier : type
-        Description of attribute `Fourier`.
-    GenField : type
-        Description of attribute `GenField`.
-    magnificate : type
-        Description of attribute `magnificate`.
-    size
-    wavelength
-    GammaOffset
-    PhiOffset
-    npts
 
     """
 
@@ -105,6 +64,33 @@ class BaseDetector(object):
         self.MaxAngle = NA2Angle(val).Radian
         self.Meshes.UpdateSphere(MaxAngle = self.MaxAngle)
         self.GetSpherical()
+
+
+
+
+class BaseDetector(object):
+    """Short summary.
+
+    Parameters
+    ----------
+    size : float
+        Size of the detector, [diameter for circle shaped/ side for square].
+    shape : str
+        Shape of the detector.
+    wavelength : float
+        Wavelength of the incoming source.
+    npts : int
+        Number of points defining the rastered meshes.
+    GammaOffset : float
+        Offset of theta angle between the detector and source.
+    PhiOffset : float
+        Offset of phi angle between the detector and source.
+    Magnification : float
+        Magnification induced by the lense.
+    Name : str
+        Name of detector [optional for plots].
+
+    """
 
 
     def Coupling(self, Scatterer):

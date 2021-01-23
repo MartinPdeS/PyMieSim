@@ -10,6 +10,21 @@ from PyMieCoupling.classes.BaseClasses import BaseScatterer
 
 
 class Scatterer(BaseScatterer):
+    """Single scatterer object.
+
+    Parameters
+    ----------
+    Diameter : float
+        Diameter of the single scatterer in unit of meter.
+    Source : Source
+        Light source object containing info on polarization and wavelength.
+    Index : float
+        Refractive index of scatterer
+    Meshes : AngleMeshes
+        Object AngleMeshes which describes the point in fourier space that are
+        used for computation.
+
+    """
 
     def __init__(self,
                  Diameter:    float,
@@ -31,7 +46,18 @@ class Scatterer(BaseScatterer):
 
 
 class FullScatterer(BaseScatterer):
+    """Full-field Single scatterer object.
 
+    Parameters
+    ----------
+    Diameter : float
+        Diameter of the single scatterer in unit of meter.
+    Source : Source
+        Light source object containing info on polarization and wavelength.
+    Index : float
+        Refractive index of scatterer
+
+    """
     def __init__(self,
                  Diameter:    float,
                  Source:      Source,
@@ -53,7 +79,27 @@ class FullScatterer(BaseScatterer):
 
 
 
-class Sample(object):
+class WMSample(object):
+    """Sample represented by the Whittle-Matern RI correlation function and
+    using the first Born approximation .
+
+    Parameters
+    ----------
+    g : float
+        Description of parameter `g`.
+    lc : float
+        Correlation lenght of RI of the sample
+    D : float
+        Form factor of the sample
+    Nc : float
+        Scalling factor of the sample.
+    Source : Source
+        Light source object containing info on polarization and wavelength.
+    Meshes : AngleMeshes
+        Object AngleMeshes which describes the point in fourier space that are
+        used for computation.
+
+    """
     def __init__(self,
                  g:       float,
                  lc:      float,

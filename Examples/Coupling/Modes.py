@@ -18,8 +18,7 @@ LightSource = Source(Wavelength   = 450e-9,
 
 
 
-LP11 = LPmode(Name         = 'LP11',
-              Mode         = (1, 1),
+LP11 = LPmode(Mode         = (1, 1),
               Source       = LightSource,
               Sampling     = 501,
               NA           = 0.2,
