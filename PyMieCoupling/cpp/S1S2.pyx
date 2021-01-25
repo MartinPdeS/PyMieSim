@@ -19,26 +19,6 @@ cdef extern from "MieS1S2.cpp":
                          int lenght,
                          complex128_t* ptr);
 
-    cdef void* C_GetFields(double a,
-                           double b,
-                           double* ThetaVec,
-                           int Thetalenght,
-                           double* PhiVec,
-                           int Philenght,
-                           complex128_t* Parallel,
-                           complex128_t* Perpendicular,
-                           double Polarization);
-
-
-    cdef void* C_GetFieldsNoPolarization(double a,
-                                         double b,
-                                         double* ThetaVec,
-                                         int Thetalenght,
-                                         double* PhiVec,
-                                         int Philenght,
-                                         complex128_t* Parallel,
-                                         complex128_t* Perpendicular);
-
 
 
     cdef void* C_GetFieldsFromMesh(double a,
@@ -59,7 +39,7 @@ cdef extern from "MieS1S2.cpp":
                                                 complex128_t* Parallel,
                                                 complex128_t* Perpendicular);
 
-
+ 
 @cython.boundscheck(False)
 @cython.initializedcheck(False)
 @cython.cdivision(True)
@@ -86,62 +66,6 @@ cpdef GetS1S2(double m,
 
 
 
-@cython.boundscheck(False)
-@cython.initializedcheck(False)
-@cython.cdivision(True)
-@cython.nonecheck(False)
-@cython.wraparound(False)
-cpdef GetFields(double m,
-                double x,
-                ThetaVec,
-                PhiVec,
-                Polarization):
-
-    cdef:
-        np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaVec, dtype = float, order="C")
-        double* ThetaVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
-
-        np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiVec, dtype = float, order="C")
-        double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
-
-
-    PhiVec_ptr = &PhiVectorView[0]
-    ThetaVec_ptr = &ThetaVectorView[0]
-
-
-    Parallel = VectorWrapper(PhiVec.size * ThetaVec.size)
-    Parallel.add_row()
-
-    Perpendicular = VectorWrapper(PhiVec.size * ThetaVec.size)
-    Perpendicular.add_row()
-
-    if Polarization is 'None':
-      C_GetFieldsNoPolarization(m,
-                                x,
-                                ThetaVec_ptr,
-                                ThetaVec.size,
-                                PhiVec_ptr,
-                                PhiVec.size,
-                                &(Parallel.S1S2)[0],
-                                &(Perpendicular.S1S2)[0]);
-
-
-    else:
-      C_GetFields(m,
-                  x,
-                  ThetaVec_ptr,
-                  ThetaVec.size,
-                  PhiVec_ptr,
-                  PhiVec.size,
-                  &(Parallel.S1S2)[0],
-                  &(Perpendicular.S1S2)[0],
-                  Polarization);
-
-
-    arr0 = np.asarray(Parallel).reshape([ThetaVec.size, PhiVec.size]).T
-    arr1 = np.asarray(Perpendicular).reshape([ThetaVec.size, PhiVec.size]).T
-
-    return arr0, arr1
 
 
 

@@ -29,8 +29,7 @@ class Scatterer(BaseScatterer):
     def __init__(self,
                  Diameter:    float,
                  Source:      Source,
-                 Index:       float,
-                 Meshes:      AngleMeshes  = None) -> None:
+                 Index:       float,) -> None:
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
@@ -38,7 +37,6 @@ class Scatterer(BaseScatterer):
 
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
-        self.Meshes = Meshes
 
 
 
@@ -105,21 +103,33 @@ class WMSample(object):
                  lc:      float,
                  D:       float,
                  Nc:      float,
-                 Source:  Source,
-                 Meshes:  AngleMeshes  = None):
+                 Source:  Source):
 
         self.g  = g; self.lc = lc; self.D  = D; self.Nc = Nc
 
         self.Source = Source
 
-        self.Meshes = Meshes
-
-        self.Parallel = self.GetScalar(self.Meshes.Theta.Radian, self.Meshes.Phi.Radian)
-
-        self.Perpendicular = self.Parallel
+        self._Perpendicular, self._Parallel = None, None
 
 
-    def GetScalar(self, Phi, Theta):
+
+    def Parallel(self, Meshes):
+        if not isinstance(self._Parallel, np.ndarray):
+            self.GetScalar(Meshes)
+            return self._Parallel
+        else:
+            return self._Parallel
+
+    #@property
+    def Perpendicular(self, Meshes):
+        if not isinstance(self._Perpendicular, np.ndarray):
+            self.GetScalar(Meshes)
+            return self._Perpendicular*0
+        else:
+            return self._Perpendicular
+
+
+    def GetField(self, Phi, Theta):
 
         k = self.Source.k
 
@@ -132,18 +142,23 @@ class WMSample(object):
         return term0 * term1 / term2
 
 
-    def Plot(self, num=200, scatter=True):
+    def GetScalar(self, Meshes):
+
+        return self.GetField(Meshes.Phi.Radian, Meshes.Theta.Radian)
+
+
+    def Plot(self, num=200, scatter=False):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(num), -np.pi/2:np.pi/2:complex(num)]
 
-        Scalar = self.GetScalar(Phi, Theta+np.pi/2)
+        Scalar = self.GetField(Phi, Theta+np.pi/2)
 
         fig0 = PlotFarField(Phi     = Phi,
                             Theta   = Theta,
                             Scalar  = Scalar.reshape([num,num]),
-                            Meshes  = self.Meshes,
-                            Name    = 'Scattered field',
-                            scatter = scatter)
+                            Meshes  = scatter,
+                            scatter = False,
+                            Name    = 'Scattered field')
 
 
 

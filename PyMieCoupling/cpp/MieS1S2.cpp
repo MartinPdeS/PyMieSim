@@ -124,6 +124,14 @@ MiePiTau(const double mu,
 }
 
 
+static void
+C_GetQsca(iVec *an, iVec *bn, const double x)
+{    complex128 Qsca = 2. / (x * x);
+     for(auto it = 0; it < an->size(); ++it)
+     {
+       Qsca +=  (*an)[it];
+     }
+}
 
 
 
@@ -171,82 +179,6 @@ C_GetS1S2(const double m,
     }
 
     return;
-
-}
-
-
-
-static void
-C_GetFields(const double m,
-            const double x,
-            const double* ThetaVec,
-            const int Thetalenght,
-            const double* PhiVec,
-            const int Philenght,
-            complex128* Parallel,
-            complex128* Perpendicular,
-            double Polarization
-          )
-{
-  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
-
-  const std::complex<double> j (0., 1.0) ;
-
-  double temp0 ;
-  complex128 temp2;
-
-  C_GetS1S2(m, x, PhiVec, Philenght, S1S2) ;
-
-  for (long unsigned int k=0; k < Thetalenght; k++ )
-  {
-    temp0 = *ThetaVec++ ;
-    for (long unsigned int i=0; i < Thetalenght; i++ ){
-      *Parallel++          = S1S2[i] * abs(cos(temp0 + Polarization)) ;
-      *Perpendicular++     = S1S2[i + Philenght] * abs(sin(temp0 + Polarization)) ;
-    }
-  }
-
-  free(S1S2) ;
-  return;
-}
-
-
-
-
-
-
-
-static void
-C_GetFieldsNoPolarization(const double m,
-                          const double x,
-                          const double* ThetaVec,
-                          const int Thetalenght,
-                          const double* PhiVec,
-                          const int Philenght,
-                          complex128* Parallel,
-                          complex128* Perpendicular)
-{
-  complex128* S1S2 = (complex128*) calloc(2 * Philenght , sizeof(complex128));
-
-  const std::complex<double> j (0., 1.0) ;
-
-  double temp0 ;
-  double temp1 = 1./sqrt(2.) ;
-  complex128 temp2;
-
-  C_GetS1S2(m, x, PhiVec, Philenght, S1S2) ;
-
-  for (long unsigned int k=0; k < Thetalenght; k++ )
-  {
-    temp0 = *ThetaVec++ ;
-    for (long unsigned int i=0; i < Thetalenght; i++ ){
-      *Parallel++          = S1S2[i] * temp1 ;
-      *Perpendicular++     = S1S2[i + Philenght] * temp1 ;
-    }
-  }
-
-  free(S1S2) ;
-  return;
 }
 
 
@@ -287,8 +219,6 @@ C_GetFieldsFromMesh(const double m,
   free(S1S2) ;
   return;
 }
-
-
 
 
 

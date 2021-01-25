@@ -171,12 +171,11 @@ def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
     phi = math.pi * (3. - math.sqrt(5.))  ## golden angle in radians
     MaxY = np.cos(maxAngle)
 
-    solidAngle = np.pi * np.sin(maxAngle)**2
+    SolidAngle = np.abs( 2*np.pi * (np.cos(maxAngle) - np.cos(0)))
 
-    ratio = 4*np.pi / solidAngle
+    ratio = 4*np.pi / SolidAngle
 
     TrueSampling = int( samples * ratio )
-
 
     for i in range(TrueSampling):
         y = 1 - (i / float(TrueSampling - 1)) * 2  ## y goes from 1 to -1

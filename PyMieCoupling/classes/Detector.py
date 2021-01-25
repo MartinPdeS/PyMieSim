@@ -16,8 +16,6 @@ class Photodiode(BaseDetector, MeshProperty):
 
     Parameters
     ----------
-    Source : Source
-        Light source object containing info on polarization and wavelength.
     NA : float
         Numerical aperture of imaging system.
     Sampling : int
@@ -32,7 +30,6 @@ class Photodiode(BaseDetector, MeshProperty):
         Methode for computing mode coupling. Either Centered or Mean.
     """
     def __init__(self,
-                 Source:            Source = None,
                  NA:                float  = 0.2,
                  Sampling:          int    = 401,
                  GammaOffset:       float  = 0,
@@ -42,8 +39,6 @@ class Photodiode(BaseDetector, MeshProperty):
 
 
         self._CouplingMode = ('Intensity', CouplingMode)
-
-        self.Source = Source
 
         self._GammaOffset, self._PhiOffset = GammaOffset, PhiOffset
 
@@ -70,8 +65,6 @@ class LPmode(BaseDetector, MeshProperty):
     ----------
     Mode : tuple
         LP mode index l, m.
-    Source : Source
-        Light source object containing info on polarization and wavelength.
     NA : float
         Numerical aperture of imaging system.
     Sampling : int
@@ -90,7 +83,6 @@ class LPmode(BaseDetector, MeshProperty):
 
     def __init__(self,
                  Mode:           tuple,
-                 Source:         Source,
                  NA:             float = 0.2,
                  Sampling:       int   = 401,
                  InterpSampling: int   = 201,
@@ -105,7 +97,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
 
-        assert NA < 0.5, "Numerical aperture has to be under 0.5 radian"
+        assert NA < 1, "Numerical aperture has to be under 1 radian"
 
         self._CouplingMode = ('Amplitude', CouplingMode)
 
@@ -113,7 +105,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         self.ModeNumber = Mode[0]+1, Mode[1], Mode[2]
 
-        self.Source, self.InterpSampling = Source, InterpSampling
+        self.InterpSampling = InterpSampling
 
         self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(NA).Radian,
                                   Sampling    = Sampling,
@@ -132,13 +124,13 @@ class LPmode(BaseDetector, MeshProperty):
 
         temp = fibermodes.field.Field(Fiber.source,
                                       fibermodes.Mode(fibermodes.ModeFamily.HE, *self.ModeNumber[:2]),
-                                      self.Source.Wavelength,
-                                      CoreDiameter*self.InterpSampling/8,
+                                      940e-9,
+                                      CoreDiameter*self.InterpSampling/4,
                                       self.InterpSampling).Ex()
 
         temp = np.array(temp, copy=False)
 
-        if self.ModeNumber == 'h': temp = temp.T
+        if self.ModeNumber[2] == 'h': temp = temp.T
 
         self.Cartesian = FraunhoferDiffraction(temp)
 
@@ -150,9 +142,12 @@ class LPmode(BaseDetector, MeshProperty):
 
         x, y = np.mgrid[-50: 50: complex(shape[0]), -50: 50: complex(shape[1])]
 
-        z = 50 / np.tan(self.Meshes.MaxAngle*2)
+        z = 50 / np.tan(self.Meshes.MaxAngle)
 
         r, phi, theta = cs.cart2sp(x.flatten(), y.flatten(), x.flatten()*0+z)
+
+
+
 
         self.Scalar = interp_at(x           = phi.flatten(),
                                 y           = theta.flatten(),
@@ -162,12 +157,15 @@ class LPmode(BaseDetector, MeshProperty):
                                 algorithm   = 'linear',
                                 extrapolate = True)
 
+
         norm = np.sqrt( np.sum((self.Meshes.SinMesh * self.Scalar.__abs__())**2) )
 
         self.Scalar /=  norm
 
+
+
         if False:
-            PlotUnstructureData(Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
+            PlotUnstructureData(self.Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
 
 
 

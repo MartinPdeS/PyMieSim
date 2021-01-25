@@ -9,35 +9,28 @@ from PyMieCoupling.utils import PlotUnstructureData
 
 
 
-def CenteredCoupling_Para(Detector, Scatterer):
+def _CenteredCoupling(Detector, Scatterer):
     if Detector._CouplingMode[0] == "Intensity":
-        Para = (Detector.Scalar * Scatterer.Parallel).__abs__()**2
+        Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes)).__abs__()**2
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
 
-    if Detector._CouplingMode[0] == "Amplitude":
-        Para = (Detector.Scalar * Scatterer.Parallel)
-        Para = Para * Detector.Meshes.SinMesh
-        Para = Para.sum() * Detector.Meshes.dOmega.Radian
-        Para = Para.__abs__()**2
-
-    return np.asscalar( Para )
-
-
-def CenteredCoupling_Perp(Detector, Scatterer):
-    if Detector._CouplingMode[0] == "Intensity":
-        Perp = (Detector.Scalar * Scatterer.Perpendicular ).__abs__()**2
+        Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes) ).__abs__()**2
         Perp = Perp * Detector.Meshes.SinMesh
         Perp = Perp.sum() * Detector.Meshes.dOmega.Radian
 
     if Detector._CouplingMode[0] == "Amplitude":
-        Perp = (Detector.Scalar * Scatterer.Perpendicular)
+        Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes))
+        Para = Para * Detector.Meshes.SinMesh
+        Para = Para.sum() * Detector.Meshes.dOmega.Radian
+        Para = Para.__abs__()**2
+
+        Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes))
         Perp = Perp * Detector.Meshes.SinMesh
-        Perp = Perp.sum()
-        Perp = Perp * Detector.Meshes.dOmega.Radian
+        Perp = Perp.sum() * Detector.Meshes.dOmega.Radian
         Perp = Perp.__abs__()**2
 
-    return np.asscalar( Perp )
+    return np.asscalar( Para ), np.asscalar( Perp )
 
 
 
@@ -73,14 +66,14 @@ def Coupling(Scatterer, Detector):
 
 
 def CenteredCoupling(Scatterer, Detector):
-    if Detector._Filter.Radian != 'None':
-        Perp = CenteredCoupling_Perp(Detector, Scatterer) * (np.cos(Detector._Filter.Radian)**2)
-        Para = CenteredCoupling_Para(Detector, Scatterer) * (np.sin(Detector._Filter.Radian)**2)
-        
-    else:
-        Perp = CenteredCoupling_Perp(Detector, Scatterer)
-        Para = CenteredCoupling_Para(Detector, Scatterer)
 
+    if Detector._Filter.Radian != 'None':
+        Para, Perp = _CenteredCoupling(Detector, Scatterer)
+        Para *= np.sin(Detector._Filter.Radian)**2
+        Perp *= np.cos(Detector._Filter.Radian)**2
+
+    else:
+        Para, Perp = _CenteredCoupling(Detector, Scatterer)
 
     return Perp + Para
 

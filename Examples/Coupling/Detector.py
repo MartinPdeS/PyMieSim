@@ -10,11 +10,13 @@ from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.utils import Source
 
 
-LightSource = Source(Wavelength = 500e-9, Polarization = 0)
+LightSource = Source(Wavelength = 450e-9,
+                     Polarization = 0,
+                     Power = 1,
+                     Radius = 1)
 
 
 Detector = Photodiode(NA                = 0.5,
-                      Source            = LightSource,
                       Sampling          = 501,
                       GammaOffset       = 0,
                       PhiOffset         = 0,
@@ -22,8 +24,7 @@ Detector = Photodiode(NA                = 0.5,
 
 Scat = Scatterer(Diameter      = 1000e-9,
                  Source        = LightSource,
-                 Index         = 1.4,
-                 Meshes        = Detector.Meshes)
+                 Index         = 1.4)
 
 
 Detector.Plot()

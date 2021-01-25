@@ -15,19 +15,15 @@ LightSource = Source(Wavelength   = 950e-9,
 
 Scat = Scatterer(Diameter    = 5000e-9,
                  Source      = LightSource,
-                 Acceptance  = 20,
-                 Index       = 1.4,
-                 Samples     = 500,
-                 PhiOffset   = 20,
-                 GammaOffset = 60)
+                 Index       = 1.4)
 
-fig0, fig1 = Scat.Plot(scatter=False)
+fig0, fig1 = Scat.Plot()
 
 Scat.S1S2.Plot()
 
 Scat.SPF.Plot()
 
-Scat.Meshes.Plot()
+
 #fig0.savefig("lambert_5000.png", dpi=300)
 
 plt.show()

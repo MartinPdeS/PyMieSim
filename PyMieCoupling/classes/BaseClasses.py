@@ -10,7 +10,7 @@ from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, Scal
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull
+from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere
 
 
 
@@ -103,16 +103,9 @@ class BaseDetector(object):
 
     def Plot(self, num=400, scatter=True):
 
-        interpScalar, Phi, Theta = InterpFull(Meshes = self.Meshes,
-                                              Scalar = self.Scalar,
-                                              Shape  = [num, num])
-
-        return PlotFarField(Phi     = Phi,
-                            Theta   = Theta+np.pi,
-                            Scalar  = interpScalar,
-                            Meshes  = self.Meshes,
-                            Name    = 'Mode field',
-                            scatter = scatter)
+        return PlotUnstructuredSphere(Phi     = self.Meshes.Phi.Degree,
+                                     Theta   = self.Meshes.Theta.Degree,
+                                     Scalar  = self.Scalar)
 
 
 
@@ -163,18 +156,18 @@ class BaseScatterer(object):
             return self._S1S2
 
 
-    @property
-    def Parallel(self):
+    #@property
+    def Parallel(self, Meshes):
         if not isinstance(self._Parallel, np.ndarray):
-            self.GenField()
+            self.GenField(Meshes)
             return self._Parallel
         else:
             return self._Parallel
 
-    @property
-    def Perpendicular(self):
+    #@property
+    def Perpendicular(self, Meshes):
         if not isinstance(self._Perpendicular, np.ndarray):
-            self.GenField()
+            self.GenField(Meshes)
             return self._Perpendicular
         else:
             return self._Perpendicular
@@ -200,14 +193,15 @@ class BaseScatterer(object):
 
 
 
-    def GenField(self):
+    def GenField(self, Meshes):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
         """
+
         self._Parallel, self._Perpendicular = GetFieldsFromMesh(m            = self.Index,
                                                                 x            = self.SizeParam,
-                                                                ThetaMesh    = self.Meshes.Theta.Radian,
-                                                                PhiMesh      = self.Meshes.Phi.Radian - np.pi/2,
+                                                                ThetaMesh    = Meshes.Theta.Radian,
+                                                                PhiMesh      = Meshes.Phi.Radian - np.pi/2,
                                                                 Polarization = self.Source.Polarization.Radian);
 
 
@@ -222,16 +216,14 @@ class BaseScatterer(object):
                                        Polarization = 0)
 
         fig0 = PlotFarField(Phi     = Phi,
-                            Theta   = Theta,
+                            Theta   = Theta-np.pi,
                             Scalar  = Para.reshape([num,num]),
-                            Meshes  = self.Meshes,
                             Name    = 'Parallel field',
                             scatter = scatter)
 
         fig1 = PlotFarField(Phi     = Phi,
                             Theta   = Theta,
                             Scalar  = Perp.reshape([num,num]),
-                            Meshes  = self.Meshes,
                             Name    = 'Perpendicular field',
                             scatter = scatter)
 

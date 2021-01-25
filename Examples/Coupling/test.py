@@ -6,20 +6,17 @@ For different scatterer diameters.
 _________________________________________________________
 """
 
-import matplotlib.pyplot as plt
-from PyMieCoupling.functions.converts import Angle2Direct, Direct2Angle
-from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.utils import Source
-from PyMieCoupling.classes.Scattering import Scatterer, Sample
-from PyMieCoupling.classes.Detector import Photodiode
+from PyMieCoupling.classes.Scattering import Scatterer, WMSample
+from PyMieCoupling.classes.Detector import Photodiode, LPmode
 
-LightSource = Source(Wavelength   = 450e-9,
-                     Polarization = 90)
+LightSource = Source(Wavelength = 450e-9,
+                     Polarization = 0,
+                     Power = 1,
+                     Radius = 1)
 
 
-LP11 = LPmode(Name        = 'LP11',
-              Mode        = (0, 1),
-              Source      = LightSource,
+LP11 = LPmode(Mode        = (0, 1),
               Sampling    = 401,
               NA          = 0.01,
               GammaOffset = 0,
@@ -30,15 +27,13 @@ LP11 = LPmode(Name        = 'LP11',
 
 Scat = Scatterer(Diameter    = 1000e-9,
                  Source      = LightSource,
-                 Index       = 1.5,
-                 Meshes      = LP11.Meshes)
+                 Index       = 1.5)
 
-Sam = Sample(g           = 0.8,
-             lc          = 10*1e-7,
-             D           = 2,
-             Nc          = 10,
-             Source      = LightSource,
-             Meshes      = LP11.Meshes)
+Sam = WMSample(g           = 0.8,
+               lc          = 10*1e-7,
+               D           = 2,
+               Nc          = 10,
+               Source      = LightSource)
 
 
 Sam.Plot()
@@ -46,5 +41,7 @@ Sam.Plot()
 
 #Scat.Plot()
 
-plt.show()
+
+
+
 # -

@@ -6,7 +6,6 @@ from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
-from PyMieCoupling.cpp.S1S2 import GetFields as Fields_CPP
 from ai import cs
 
 

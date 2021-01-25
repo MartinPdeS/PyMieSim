@@ -22,7 +22,6 @@ LightSource = Source(Wavelength = 450e-9,
                      Radius = 1)
 
 LP01 = LPmode(Mode          = (0, 1,'v'),
-              Source        = LightSource,
               Sampling      = 501,
               GammaOffset   = 0,
               PhiOffset     = 0,
@@ -31,7 +30,6 @@ LP01 = LPmode(Mode          = (0, 1,'v'),
               CouplingMode  = 'Centered' )
 
 Detector = Photodiode(NA                = 0.2,
-                      Source            = Source,
                       Sampling          = 1001,
                       GammaOffset       = 0,
                       Filter            = 'None',
@@ -44,8 +42,7 @@ for Polarization in PolarizationList:
 
     Scat = Scatterer(Diameter    = 800e-9,
                      Source      = LightSource,
-                     Index       = 1.4,
-                     Meshes      = Detector.Meshes)
+                     Index       = 1.4)
 
 
     Coupling.append( Detector.Coupling(Scat) )
