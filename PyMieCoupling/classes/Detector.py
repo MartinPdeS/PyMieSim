@@ -58,6 +58,8 @@ class Photodiode(BaseDetector, MeshProperty):
 
 
 
+
+
 class LPmode(BaseDetector, MeshProperty):
     """Short summary.
 

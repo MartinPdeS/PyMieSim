@@ -67,11 +67,13 @@ class MeshProperty(object):
 
     @NA.setter
     def NA(self, val):
-        if val >= 1: val = 1
-        if val <= 0: val = 0
+        if val >= 1: val = 0.999
+        if val <= 0: val = 0.001
         self.MaxAngle = NA2Angle(val).Radian
         self.Meshes.UpdateSphere(MaxAngle = self.MaxAngle)
         self.GetSpherical()
+
+
 
 
 

@@ -6,23 +6,24 @@ _________________________________________________________
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.optimize import minimize
 from PyMieCoupling.classes.Detector import Photodiode
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import Simulator
 from PyMieCoupling.classes.Sets import ExperimentalSet
 
-LightSource = Source(Wavelength = 450e-9, Polarization = 0)
+LightSource = Source(Wavelength = 450e-9,
+                     Polarization = 0,
+                     Power = 1,
+                     Radius = 1)
 
 
 
-Photodiode0 = Photodiode(NA                = 0.5,
-                         Source            = LightSource,
-                         Sampling          = 801,
+Photodiode0 = Photodiode(NA                = 0.2,
+                         Sampling          = 150,
                          GammaOffset       = 0,
                          PhiOffset         = 0,
-                         CouplingMode      = 'Mean')
+                         CouplingMode      = 'Centered')
 
 
 Set = ExperimentalSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
@@ -30,13 +31,14 @@ Set = ExperimentalSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
                       Detectors     = Photodiode0,
                       Source        = LightSource,)
 
+
 def EvalFunc(x):
 
     Set.Detectors['Detector 0'].NA = x[0]
 
     Array = Set.Coupling()
 
-    return Array.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Array.Cost('Min') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
 Minimizer = Simulator(EvalFunc, ParameterName= ['NA'])
@@ -46,15 +48,12 @@ Result = minimize(fun      = Minimizer.simulate,
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
                   tol      = 1e-5,
-                  options  = {'maxiter': 50, 'rhobeg':0.1})
+                  options  = {'maxiter': 5, 'rhobeg':0.1})
 
 print(Result)
 
-DF = Set.GetCouplingFrame()
+Set.DataFrame.Plot('Coupling') # can be Couplimg  -  STD
 
-DF.Plot('Coupling') # can be Couplimg  -  STD
-
-plt.show()
 
 
 

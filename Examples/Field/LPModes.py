@@ -23,9 +23,8 @@ LP11 = LPmode(Mode         = (1, 1,'h'),
               CouplingMode = 'Centered')
 
 
-#LP11.NA = 1
+LP11.NA = 0.3
 
-#LP11.Meshes.Plot()
 LP11.Plot()
 
 # --

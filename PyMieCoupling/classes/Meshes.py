@@ -23,7 +23,6 @@ class AngleMeshes(object):
         self.MaxAngle = MaxAngle
         self.Sampling = Sampling
         Theta, Phi, dOmega = self.GenerateLedevedMesh()
-        self.Sampling = Theta.size
 
 
         self.MakeProperties(Theta, Phi, dOmega)
@@ -42,6 +41,8 @@ class AngleMeshes(object):
         self.dOmega.Radian = dOmega
 
         self.dOmega.Degree = dOmega * (180/np.pi)**2
+
+        self.Sampling = Theta.size
 
 
     def Plot(self):

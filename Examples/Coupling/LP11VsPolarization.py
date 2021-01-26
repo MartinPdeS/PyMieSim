@@ -8,13 +8,12 @@ _________________________________________________________
 
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.classes.Detector import LPmode,Photodiode
+from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Scattering import Scatterer
 
 PolarizationList = np.linspace(0,360,100)
-Coupling = []
-CouplingLP11 = []
+Coupling = []; CouplingLP11 = []
 
 LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -49,11 +48,12 @@ for Polarization in PolarizationList:
 
 
 
-plt.figure(figsize=(10,5))
+plt.figure(figsize=(7,3))
 plt.plot(PolarizationList, Coupling, 'C0', label='LP01')
-
-#plt.xlim([0, np.max(Coupling)])
+plt.xlabel('Polarization state')
+plt.xlabel('Mode coupling')
 plt.grid()
 plt.legend()
+plt.tight_layout()
 plt.show()
 # -

@@ -313,7 +313,7 @@ def PlotStructuredSphere(Scalar, Phi, Theta, Name=''):
 
 def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
 
-    fig, axes = plt.subplots(1,2,figsize=(8,6),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+    fig, axes = plt.subplots(1,2,figsize=(8,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
 
     im0 = axes[0].tripcolor(Theta,
                             Phi,

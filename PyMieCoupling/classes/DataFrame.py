@@ -31,6 +31,7 @@ class ExperimentalDataFrame(pd.DataFrame):
                                               **kwargs)
 
         ax.legend(prop={'size': 8})
+        plt.show()
 
 
 class ScattererDataFrame(pd.DataFrame):
@@ -59,6 +60,8 @@ class ScattererDataFrame(pd.DataFrame):
                                               **kwargs)
 
         ax.legend(prop={'size': 8})
+
+        plt.show()
 
 
 

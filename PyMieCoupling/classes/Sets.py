@@ -62,11 +62,11 @@ class ExperimentalSet(object):
                  Mode:            str     = 'Centered',
                  ):
 
-        if not isinstance(Detectors, list): Detectors = [Detectors]
+        if not isinstance(Detectors, (list, np.ndarray)): Detectors = [Detectors]
 
-        if not isinstance(RIList, list): RIList = [RIList]
+        if not isinstance(RIList, (list, np.ndarray)): RIList = [RIList]
 
-        if not isinstance(DiameterList, list): DiameterList = [DiameterList]
+        if not isinstance(DiameterList, (list, np.ndarray)): DiameterList = [DiameterList]
 
         self.DiameterList, self.RIList = DiameterList, RIList
 
@@ -77,7 +77,6 @@ class ExperimentalSet(object):
         self._Coupling = None
 
 
-    @property
     def Coupling(self):
 
         temp = np.empty( [len(self.Detectors.keys()), len(self.RIList), len(self.DiameterList) ] )
@@ -89,8 +88,7 @@ class ExperimentalSet(object):
 
                     Scat = Scatterer(Diameter  = Diameter,
                                      Index     = RI,
-                                     Source    = self.Source,
-                                     Meshes    = Detector.Meshes)
+                                     Source    = self.Source)
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 
@@ -102,7 +100,7 @@ class ExperimentalSet(object):
     @property
     def DataFrame(self):
 
-        MI = pd.MultiIndex.from_product([list(self.Detectors.values()), self.DiameterList, self.RIList],
+        MI = pd.MultiIndex.from_product([list(self.Detectors.keys()), self.DiameterList, self.RIList],
                                         names=['Detectors','Diameter','RI',])
 
         df = ExperimentalDataFrame(index = MI, columns = ['Coupling'])
@@ -113,12 +111,11 @@ class ExperimentalSet(object):
 
             for nd, Diameter in enumerate(self.DiameterList):
 
-                for Detector, DetectorName in self.Detectors.items():
+                for DetectorName, Detector in self.Detectors.items():
 
                     Scat = Scatterer(Diameter    = Diameter,
                                      Index       = RI,
-                                     Source      = self.Source,
-                                     Meshes      = Detector.Meshes)
+                                     Source      = self.Source)
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 
