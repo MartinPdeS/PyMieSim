@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
+from PyMieCoupling.utils import PlotUnstructuredSphere, PlotStructuredSphere
+
 
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
@@ -138,33 +140,25 @@ class Field(object):
 
 
 
-class SPF(np.ndarray):
-    def __new__(cls, num=200, Parent = None):
+class SPF(dict):
 
-        cls.Parent = Parent
+    def __init__(self, Parent, Num):
 
-        cls.phi, cls.theta = np.mgrid[-np.pi/2:np.pi/2:complex(num), -np.pi:np.pi:complex(num)]
+        self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp = GetFieldsFromMesh(m                    = cls.Parent.Index,
-                                       x                    = cls.Parent.SizeParam,
-                                       ThetaMesh            = cls.theta.flatten(),
-                                       PhiMesh              = cls.phi.flatten()-np.pi/2,
-                                       Polarization         = 0);
-        cls.Para = Para
+        Para, Perp = GetFieldsFromMesh(m                    = Parent.Index,
+                                       x                    = Parent.SizeParam,
+                                       ThetaMesh            = self['Theta'].flatten(),
+                                       PhiMesh              = self['Phi'].flatten()-np.pi/2,
+                                       Polarization         = 0)
 
-        SPF = Para.__abs__()**2 + Perp.__abs__()**2
-
-        this = np.array(SPF, copy=False)
-
-        this = np.asarray(this).view(cls)
-
-        return this
+        self['Parallel'], self['Perpendicular'] = Para, Perp
+        self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 )
 
 
+    def Plot(self):
 
-    def Plot(cls, num=200):
-
-        x, y, z = cs.sp2cart(cls.reshape([num,num]), cls.phi, cls.theta)
+        x, y, z = cs.sp2cart(self['SPF'].reshape(self['Phi'].shape), self['Phi'], self['Theta'])
 
         fig, ax = plt.subplots(1, figsize=(3, 3), subplot_kw = {'projection':'3d'})
         ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
@@ -178,7 +172,7 @@ class SPF(np.ndarray):
                          rstride     = 2,
                          cstride     = 2,
                          linewidth   = 0.3,
-                         facecolors  = scamap.to_rgba(cls.Para.real.reshape([num,num]) ),
+                         facecolors  = scamap.to_rgba(self['Parallel'].real.reshape(self['Phi'].shape) ),
                          alpha =1,
                          edgecolors  = 'k',
                          #antialiased = False,
@@ -191,10 +185,19 @@ class SPF(np.ndarray):
 
         ax.set_xlim(Min, Max); ax.set_ylim(Min, Max)
 
-        plt.show(block=False)
+        plt.show()
 
 
-class S1S2(np.ndarray):
+    def __repr__(self):
+        return f"""
+        Object:          Dictionary
+        Keys:            SPF, Parallel, Perpendicular, Theta, Phi
+        Structured data: Yes
+        Shape:           {self['Phi'].shape}"""
+
+
+
+class S1S2(dict):
     """Short summary.
 
     Parameters
@@ -218,21 +221,9 @@ class S1S2(np.ndarray):
 
     """
 
-    def __new__(cls,
-                SizeParam:  np.array,
-                Index:      float,
-                Meshes:     AngleMeshes):
-
-        cls.Phivector = np.linspace(0, np.pi, 201 )
-
-        temp = GetS1S2(Index, SizeParam, cls.Phivector)
-        this = np.array(temp, copy=False)
-        this = np.asarray(this).view(cls)
-        return this
-
-
-    def __init__(self, SizeParam, Index, Meshes):
-        self.Meshes = Meshes
+    def __init__(self, Parent, Num):
+        self['Phi'] = np.linspace(0, 2*np.pi, Num)
+        self['S1'], self['S2'] = GetS1S2(Parent.Index, Parent.SizeParam, self['Phi'])
 
 
     def Plot(self) -> None:
@@ -247,84 +238,66 @@ class S1S2(np.ndarray):
 
         for ni, ax in enumerate(axes):
 
-            ax.plot(self.Phivector, data[ni], 'k')
+            ax.plot(self.Phi, data[ni], 'k')
 
-            ax.fill_between(self.Phivector,
+            ax.fill_between(self.Phi,
                             0,
                             data[ni],
                             color='C0',
                             alpha=0.4)
+        plt.show()
+
+
+    def __repr__(self):
+        return f"""
+        Object:          Dictionary
+        Keys:            S1, S2, Phi
+        Structured data: Yes
+        Shape:           {self['Phi'].shape}"""
 
 
 
 
+class ScalarFarField(dict):
 
 
+    def __init__(self, Num = 200, Parent = None):
 
+        Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-class ScalarFarField(np.ndarray):
+        Para, Perp = GetFieldsFromMesh(m            = Parent.Index,
+                                       x            = Parent.SizeParam,
+                                       ThetaMesh    = Theta.flatten(),
+                                       PhiMesh      = Phi.flatten() - np.pi/2,
+                                       Polarization = Parent.Source.Polarization.Radian)
 
-    def __new__(cls, Scalar = None, Parent = None):
+        self['Parallel'] = Para
 
-        this = np.array(Scalar, copy=False)
+        self['Perpendicular'] = Perp
 
-        this = np.asarray(this).view(cls)
+        self['Theta'] = Theta
 
-        return this
-
-
-    def __array_finalize__(self, obj):
-        pass
-
-
-    def __init__(self, Scalar, Parent):
-        self.Scalar = Scalar.astype(np.complex)
-        #self.Parent = weakref.ref(Parent)
-        self.Parent = Parent
+        self['Phi'] = Phi
 
 
     def Plot(self, num=200):
 
-        ThetaMesh, PhiMesh = np.mgrid[-np.pi:np.pi:complex(num),
-                                      -np.pi/2:np.pi/2:complex(num)]
+        PlotStructuredSphere(Phi     = np.rad2deg(self['Phi']),
+                             Theta   = np.rad2deg(self['Theta']),
+                             Scalar  = self['Parallel'].reshape(self['Theta'].shape))
 
-        Para, Perp = GetFieldsFromMesh(m                    = self.Parent.Index,
-                                       x                    = self.Parent.SizeParam,
-                                       ThetaMesh            = ThetaMesh.flatten(),
-                                       PhiMesh              = PhiMesh.flatten(),
-                                       Polarization         = 0);
+        PlotStructuredSphere(Phi     = np.rad2deg(self['Phi']),
+                             Theta   = np.rad2deg(self['Theta']),
+                             Scalar  = self['Perpendicular'].reshape(self['Theta'].shape))
 
-        fig, ax = plt.subplots(nrows      = 1,
-                               ncols      = 2,
-                               figsize    = (8, 3),
-                              # subplot_kw = {'projection':'mollweide'}
-                               )
+    def __repr__(self):
 
-        im0 = ax[0].pcolormesh(ThetaMesh,
-                               PhiMesh,
-                               Para.real.reshape([num,num]),
-                               cmap = 'RdBu',
-                               shading='auto')
+        return f"""
+        Object:          Dictionary
+        Keys:            Parallel, Perpendicular, Theta, Phi
+        Structured data: Yes
+        Shape:           {self['Theta'].shape}"""
 
-        plt.colorbar(mappable=im0, orientation='horizontal', ax=ax[0])
-
-        ax[0].set_title('Real Part\n Far-Field Spherical Coordinates')
-        ax[0].set_ylabel(r'Angle $\phi$ [Degree]')
-        ax[0].set_xlabel(r'Angle $\theta$ [Degree]')
-        ax[0].grid()
-
-        im1 = ax[1].pcolormesh(ThetaMesh,
-                               PhiMesh,
-                               Para.imag.reshape([num,num]),
-                               cmap = 'RdBu',
-                               shading='auto')
-        plt.colorbar(mappable=im1, orientation='horizontal', ax=ax[1])
-
-        ax[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        ax[1].set_xlabel(r'Angle $\theta$ [Degree]')
-        ax[1].grid()
-
-        fig.tight_layout()
 
 
 

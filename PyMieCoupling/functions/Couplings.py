@@ -11,21 +11,21 @@ from PyMieCoupling.utils import PlotUnstructureData
 
 def _CenteredCoupling(Detector, Scatterer):
     if Detector._CouplingMode[0] == "Intensity":
-        Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes)).__abs__()**2
+        Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian)).__abs__()**2
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
 
-        Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes) ).__abs__()**2
+        Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian) ).__abs__()**2
         Perp = Perp * Detector.Meshes.SinMesh
         Perp = Perp.sum() * Detector.Meshes.dOmega.Radian
 
     if Detector._CouplingMode[0] == "Amplitude":
-        Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes))
+        Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian))
         Para = Para * Detector.Meshes.SinMesh
         Para = Para.sum() * Detector.Meshes.dOmega.Radian
         Para = Para.__abs__()**2
 
-        Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes))
+        Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian))
         Perp = Perp * Detector.Meshes.SinMesh
         Perp = Perp.sum() * Detector.Meshes.dOmega.Radian
         Perp = Perp.__abs__()**2
@@ -35,22 +35,22 @@ def _CenteredCoupling(Detector, Scatterer):
 
 
 def MeanCoupling_Para(Detector, Scatterer):
-    Para = (Detector.Scalar * Scatterer.Parallel * Detector.Meshes.SinMesh).__abs__()**2
+    Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian) * Detector.Meshes.SinMesh).__abs__()**2
     Para = Para.sum()
 
     return np.asscalar( Para )
 
 
 def MeanCoupling_Perp(Detector, Scatterer):
-    Perp = (Detector.Scalar * Scatterer.Perpendicular * Detector.Meshes.SinMesh).__abs__()**2
+    Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian) * Detector.Meshes.SinMesh).__abs__()**2
     Perp = Perp.sum()
 
     return np.asscalar( Perp )
 
 
 def GetFootprint(Detector, Scatterer):
-    Perp = (Detector.Scalar * Scatterer.Perpendicular).__abs__()**2
-    Para = (Detector.Scalar * Scatterer.Parallel).__abs__()**2
+    Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian)).__abs__()**2
+    Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian)).__abs__()**2
 
     return Perp + Para
 

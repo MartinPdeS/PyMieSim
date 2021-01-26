@@ -21,7 +21,7 @@ LP11 = LPmode(Mode         = (1, 1),
               Sampling     = 501,
               NA           = 0.2,
               GammaOffset  = 0,
-              PhiOffset    = 90,
+              PhiOffset    = 0,
               CouplingMode = 'Centered')
 
 Scat = Scatterer(Diameter    = 50e-9,

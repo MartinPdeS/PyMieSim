@@ -5,29 +5,23 @@ Plotting of Stokes parameter for scattere far-field.
 _________________________________________________________
 """
 
-import matplotlib.pyplot as plt
-from PyMieCoupling.classes.Scattering import FullScatterer, Scatterer
-from PyMieCoupling.classes.Detector import Photodiode
+from PyMieCoupling.classes.Scattering import Scatterer
 from PyMieCoupling.utils import Source
 
-LightSource = Source(Wavelength   = 950e-9,
-                     Polarization = 0)
+LightSource = Source(Wavelength = 450e-9,
+                     Polarization = 0,
+                     Power = 1,
+                     Radius = 1)
 
-Scat = Scatterer(Diameter    = 5000e-9,
+Scat = Scatterer(Diameter    = 5e-9,
                  Source      = LightSource,
                  Index       = 1.4)
 
-fig0, fig1 = Scat.Plot()
+Field = Scat.Field(Num=150)
+SPF = Scat.SPF(Num=80)
+S1S2 = Scat.S1S2(Num=80)
 
-Scat.S1S2.Plot()
-
-Scat.SPF.Plot()
-
-
-#fig0.savefig("lambert_5000.png", dpi=300)
-
-plt.show()
-
+Field.Plot()
 
 
 

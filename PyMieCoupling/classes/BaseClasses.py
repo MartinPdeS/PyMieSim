@@ -10,9 +10,17 @@ from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, Scal
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere
+from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
 
-
+try:
+    from PyMieCoupling.cpp.S1S2 import GetS1S2
+except:
+    try:
+        from PyMieCoupling.cython.S1S2 import GetS1S2
+    except:
+        try:
+            from PyMieCoupling.cython.S1S2 import GetS1S2
+        except: ImportError
 
 
 
@@ -143,98 +151,80 @@ class BaseScatterer(object):
         pass
 
 
-
-    @property
-    def S1S2(self) -> np.ndarray:
+    def S1S2(self, Num=200):
         if self._S1S2 is None:
-            self._S1S2 = S1S2(SizeParam  = self.SizeParam,
-                              Index      = self.Index,
-                              Meshes     = self.Meshes)
+            self._S1S2 = S1S2(Parent=self, Num=Num)
             return self._S1S2
 
         else:
             return self._S1S2
 
 
-    #@property
-    def Parallel(self, Meshes):
+
+    def Field(self, Num=200):
+
+        self._Field = ScalarFarField(Num = Num, Parent = self)
+
+        return self._Field
+
+
+    def Parallel(self, Phi, Theta):
         if not isinstance(self._Parallel, np.ndarray):
-            self.GenField(Meshes)
+            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
             return self._Parallel
         else:
             return self._Parallel
 
-    #@property
-    def Perpendicular(self, Meshes):
+
+    def Perpendicular(self, Phi, Theta):
         if not isinstance(self._Perpendicular, np.ndarray):
-            self.GenField(Meshes)
+            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
             return self._Perpendicular
         else:
             return self._Perpendicular
 
 
-    @property
-    def Stokes(self) -> None:
-        if not self._Stokes:
-            self._Stokes = Stokes(Field = self.Field)
-            return self._Stokes
-        else:
-            return self._Stokes
-
-
-    @property
-    def SPF(self) -> None:
-
+    def SPF(self, Num=100):
         if not self._SPF:
-            self._SPF = SPF(Parent=self)
+            self._SPF = SPF(Parent=self, Num=Num)
             return self._SPF
         else:
             return self._SPF
 
 
-
-    def GenField(self, Meshes):
+    def GenField(self, Phi, Theta):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
         """
 
-        self._Parallel, self._Perpendicular = GetFieldsFromMesh(m            = self.Index,
-                                                                x            = self.SizeParam,
-                                                                ThetaMesh    = Meshes.Theta.Radian,
-                                                                PhiMesh      = Meshes.Phi.Radian - np.pi/2,
-                                                                Polarization = self.Source.Polarization.Radian);
+        return GetFieldsFromMesh(m            = self.Index,
+                                 x            = self.SizeParam,
+                                 ThetaMesh    = Theta,
+                                 PhiMesh      = Phi - np.pi/2,
+                                 Polarization = self.Source.Polarization.Radian)
 
 
-    def Plot(self, num=200, scatter=True):
+    def Plot(self, Num=200, scatter=False):
 
-        Theta, Phi = np.mgrid[0:2*np.pi:complex(num), -np.pi/2:np.pi/2:complex(num)]
+        Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        Para, Perp = GetFieldsFromMesh(m            = self.Index,
-                                       x            = self.SizeParam,
-                                       ThetaMesh    = Theta.flatten(),
-                                       PhiMesh      = Phi.flatten()-np.pi/2,
-                                       Polarization = 0)
+        Para, Perp = self.GenField(Phi.flatten(), Theta.flatten())
 
-        fig0 = PlotFarField(Phi     = Phi,
-                            Theta   = Theta-np.pi,
-                            Scalar  = Para.reshape([num,num]),
-                            Name    = 'Parallel field',
-                            scatter = scatter)
+        fig0 = PlotStructuredSphere(Phi     = np.rad2deg(Phi),
+                                    Theta   = np.rad2deg(Theta),
+                                    Scalar  = Para.reshape(Theta.shape))
 
-        fig1 = PlotFarField(Phi     = Phi,
-                            Theta   = Theta,
-                            Scalar  = Perp.reshape([num,num]),
-                            Name    = 'Perpendicular field',
-                            scatter = scatter)
+        fig1 = PlotStructuredSphere(Phi     = np.rad2deg(Phi),
+                                    Theta   = np.rad2deg(Theta),
+                                    Scalar  = Perp.reshape(Theta.shape))
 
         return fig0, fig1
 
 
-    def Coupling(self, Detector, Filter = None):
-        return Coupling(Scatterer = self, Detector = Detector)
-
     def Footprint(self, Detector):
         return GetFootprint(Scatterer = self, Detector = Detector)
+
+
 
 
 
