@@ -14,9 +14,9 @@ from PyMieCoupling.utils import Angle
 class AngleMeshes(object):
     def __init__(self,
                  MaxAngle:    float = np.pi/6,
-                 Sampling:     int   = 1000,
-                 PhiOffset          = 0,
-                 GammaOffset        = 0):
+                 Sampling:    int   = 1000,
+                 PhiOffset:   float = 0,
+                 GammaOffset: float = 0):
 
         self.PhiOffset = PhiOffset
         self.GammaOffset = GammaOffset

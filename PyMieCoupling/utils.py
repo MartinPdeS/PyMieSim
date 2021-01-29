@@ -295,12 +295,12 @@ def PlotStructuredSphere(Scalar, Phi, Theta, Name=''):
     axes[0].set_title(f'Real Part {Name}')
     axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
     axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
-    axes[0].grid(True, which='minor')
+
 
     axes[1].set_title(f'Imaginary Part {Name}')
     axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
     axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
-    axes[1].grid(True, which='minor')
+
 
     #axes[0].set_extent([-12755636.1863, 12755636.1863, -12727770.598700099, 12727770.598700099])
     #axes[1].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
@@ -313,19 +313,25 @@ def PlotStructuredSphere(Scalar, Phi, Theta, Name=''):
 
 def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
 
-    fig, axes = plt.subplots(1,2,figsize=(8,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+    fig, axes = plt.subplots(1,
+                             2,
+                             figsize=(8,4),
+                             subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()}
+    )
 
     im0 = axes[0].tripcolor(Theta,
                             Phi,
                             Scalar.real,
                             antialiased=False,
-                            transform = ccrs.PlateCarree())
+                            transform = ccrs.PlateCarree()
+                            )
 
-    im1 = axes[1].tricontourf(Theta,
-                            Phi,
-                            Scalar.imag,
-                            antialiased=False,
-                            transform = ccrs.PlateCarree())
+    im1 = axes[1].tricontour(Theta,
+                              Phi,
+                              Scalar.imag,
+                              antialiased=False,
+                              transform = ccrs.PlateCarree()
+                             )
 
 
 
@@ -350,13 +356,25 @@ def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
     axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
     axes[1].grid(True, which='minor')
 
+
     axes[0].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
     axes[1].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
 
 
-    axes[0].plot(Theta, Phi, 'ko ', markersize=0.2, transform = ccrs.PlateCarree())
+    axes[0].plot(Theta,
+                 Phi,
+                 'ko ',
+                 markersize=0.2,
+                 transform = ccrs.PlateCarree()
+                 )
 
-    axes[1].plot(Theta, Phi, 'ko ', markersize=0.2, transform = ccrs.PlateCarree())
+    axes[1].plot(Theta,
+                 Phi,
+                 'ko ',
+                 markersize=0.2,
+                 transform = ccrs.PlateCarree()
+                 )
     fig.tight_layout()
+
 
     plt.show()

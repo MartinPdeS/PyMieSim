@@ -1,14 +1,15 @@
 
 import numpy as np
 import fibermodes
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
 from ai import cs
 
 from PyMieCoupling.classes.BaseClasses import BaseDetector, MeshProperty
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructureData, interp_at
+from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructuredSphere, interp_at
 from PyMieCoupling.physics import FraunhoferDiffraction
-
 
 
 class Photodiode(BaseDetector, MeshProperty):
@@ -54,7 +55,7 @@ class Photodiode(BaseDetector, MeshProperty):
 
     def GetSpherical(self):
 
-        self.Scalar = np.ones(self.Meshes.Sampling) / (self.Meshes.Sampling)
+        self.Scalar = np.ones(self.Meshes.Sampling) #/ np.sqrt((self.Meshes.Sampling))
 
 
 
@@ -87,7 +88,7 @@ class LPmode(BaseDetector, MeshProperty):
                  Mode:           tuple,
                  NA:             float = 0.2,
                  Sampling:       int   = 401,
-                 InterpSampling: int   = 201,
+                 InterpSampling: int   = 51,
                  GammaOffset:    float = 0,
                  PhiOffset:      float = 0,
                  Filter:         float =  'None',
@@ -146,23 +147,19 @@ class LPmode(BaseDetector, MeshProperty):
 
         z = 50 / np.tan(self.Meshes.MaxAngle)
 
-        r, phi, theta = cs.cart2sp(x.flatten(), y.flatten(), x.flatten()*0+z)
+        _, self._phi, self._theta = cs.cart2sp(x.flatten(), y.flatten(), x.flatten()*0+z)
 
 
 
 
-        self.Scalar = interp_at(x           = phi.flatten(),
-                                y           = theta.flatten(),
+        self.Scalar = interp_at(x           = self._phi.flatten(),
+                                y           = self._theta.flatten(),
                                 v           = self.Cartesian.astype(np.complex).flatten(),
                                 xp          = self.Meshes.base.Phi,
                                 yp          = self.Meshes.base.Theta,
                                 algorithm   = 'linear',
                                 extrapolate = True)
 
-
-        norm = np.sqrt( np.sum((self.Meshes.SinMesh * self.Scalar.__abs__())**2) )
-
-        self.Scalar /=  norm
 
 
 
@@ -171,8 +168,89 @@ class LPmode(BaseDetector, MeshProperty):
 
 
 
+    def Plot(self):
+        Name = 'Mode Field'
+        ThetaMean = np.mean(self.Meshes.Theta.Degree).round(1)
+        PhiMean = np.mean(self.Meshes.Phi.Degree).round(1)
+
+        fig, (ax0, ax1) = plt.subplots(1,
+                                 2,
+                                 figsize=(8,4),
+                                 subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea(central_latitude=PhiMean, central_longitude=ThetaMean)})
+
+        im0 = ax0.tricontour(self.Meshes.Theta.Degree,
+                             self.Meshes.Phi.Degree,
+                             self.Scalar.real,
+                             levels=13,
+                             linewidths=0.5,
+                             colors='k',
+                             transform = ccrs.PlateCarree())
+
+        cntr0 = ax0.tricontourf(self.Meshes.Theta.Degree,
+                                self.Meshes.Phi.Degree,
+                                self.Scalar.real,
+                                levels=13,
+                                cmap="inferno",
+                                transform = ccrs.PlateCarree())
 
 
+        im1 = ax1.tricontour(self.Meshes.Theta.Degree,
+                             self.Meshes.Phi.Degree,
+                             self.Scalar.imag,
+                             levels=14,
+                             linewidths=0.5,
+                             colors='k',
+                             transform = ccrs.PlateCarree())
+
+        cntr1 = ax1.tricontourf(self.Meshes.Theta.Degree,
+                                self.Meshes.Phi.Degree,
+                                self.Scalar.imag,
+                                levels=14,
+                                cmap="inferno",
+                                transform = ccrs.PlateCarree())
+
+        plt.colorbar(mappable=cntr1, fraction=0.046, orientation='horizontal', ax=ax1)
+        plt.colorbar(mappable=cntr0, fraction=0.046, orientation='horizontal', ax=ax0)
+
+
+        ax1.plot(self.Meshes.Theta.Degree,
+                 self.Meshes.Phi.Degree,
+                 'ko',
+                 ms=0.1,
+                 transform = ccrs.PlateCarree())
+
+        ax0.plot(self.Meshes.Theta.Degree,
+                 self.Meshes.Phi.Degree,
+                 'ko',
+                 ms=0.1,
+                 transform = ccrs.PlateCarree())
+
+        gl = ax1.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
+        gl.top_labels = False
+        gl.left_labels = False
+        gl.right_labels = False
+        gl.bottom_labels = True
+
+        gl = ax0.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
+        #gl.xlocator = matplotlib.ticker.FixedLocator([])
+        gl.top_labels = False
+        gl.left_labels = False
+        gl.right_labels = False
+        gl.bottom_labels = True
+
+
+        ax1.set_title(f'Real Part {Name}')
+        ax1.set_ylabel(r'Angle $\phi$ [Degree]')
+        ax1.set_xlabel(r'Angle $\theta$ [Degree]')
+
+        ax0.set_title(f'Imaginary Part {Name}')
+        ax0.set_ylabel(r'Angle $\phi$ [Degree]')
+        ax0.set_xlabel(r'Angle $\theta$ [Degree]')
+
+        #ax1.set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
+
+        #fig.tight_layout()
+        plt.show()
 
 
 

@@ -18,9 +18,9 @@ class ScattererSet(object):
                  RIList:          list,
                  Source:          Source):
 
-        if not isinstance(RIList, list): RIList = [RIList]
+        if not isinstance(RIList, (list, np.ndarray)): RIList = [RIList]
 
-        if not isinstance(DiameterList, list): DiameterList = [DiameterList]
+        if not isinstance(DiameterList, (list, np.ndarray)): DiameterList = [DiameterList]
 
         self.DiameterList, self.RIList = DiameterList, RIList
 
@@ -55,40 +55,31 @@ class ScattererSet(object):
 class ExperimentalSet(object):
 
     def __init__(self,
-                 DiameterList:    list,
-                 RIList:          list,
-                 Detectors:       list,
-                 Source:          Source,
-                 Mode:            str     = 'Centered',
-                 ):
+                 ScattererSet:    ScattererSet = None,
+                 Detectors:       list         = None):
 
         if not isinstance(Detectors, (list, np.ndarray)): Detectors = [Detectors]
 
-        if not isinstance(RIList, (list, np.ndarray)): RIList = [RIList]
-
-        if not isinstance(DiameterList, (list, np.ndarray)): DiameterList = [DiameterList]
-
-        self.DiameterList, self.RIList = DiameterList, RIList
-
-        self.Source, self.Mode = Source, Mode
+        self.ScattererSet = ScattererSet
 
         self.Detectors = {'Detector {}'.format(n): detector for n, detector in enumerate(Detectors) }
 
         self._Coupling = None
 
 
+    @property
     def Coupling(self):
 
-        temp = np.empty( [len(self.Detectors.keys()), len(self.RIList), len(self.DiameterList) ] )
+        temp = np.empty( [len(self.Detectors.keys()), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
 
         for nDetector, (DetectorName, Detector) in enumerate(self.Detectors.items()):
 
-            for nIndex, RI in enumerate(self.RIList):
-                for nDiameter, Diameter in enumerate(self.DiameterList):
+            for nIndex, RI in enumerate(self.ScattererSet.RIList):
+                for nDiameter, Diameter in enumerate(self.ScattererSet.DiameterList):
 
                     Scat = Scatterer(Diameter  = Diameter,
                                      Index     = RI,
-                                     Source    = self.Source)
+                                     Source    = self.ScattererSet.Source)
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 
@@ -100,22 +91,23 @@ class ExperimentalSet(object):
     @property
     def DataFrame(self):
 
-        MI = pd.MultiIndex.from_product([list(self.Detectors.keys()), self.DiameterList, self.RIList],
+        MI = pd.MultiIndex.from_product([list(self.Detectors.keys()), self.ScattererSet.DiameterList, self.ScattererSet.RIList],
                                         names=['Detectors','Diameter','RI',])
+
 
         df = ExperimentalDataFrame(index = MI, columns = ['Coupling'])
 
         df.attrs['Detectors'] = self.Detectors
 
-        for nr, RI in enumerate( self.RIList ):
+        for nr, RI in enumerate( self.ScattererSet.RIList ):
 
-            for nd, Diameter in enumerate(self.DiameterList):
+            for nd, Diameter in enumerate(self.ScattererSet.DiameterList):
 
                 for DetectorName, Detector in self.Detectors.items():
 
                     Scat = Scatterer(Diameter    = Diameter,
                                      Index       = RI,
-                                     Source      = self.Source)
+                                     Source      = self.ScattererSet.Source)
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 

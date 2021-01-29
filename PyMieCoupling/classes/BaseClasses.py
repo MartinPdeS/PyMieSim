@@ -114,8 +114,8 @@ class BaseDetector(object):
     def Plot(self, num=400, scatter=True):
 
         return PlotUnstructuredSphere(Phi     = self.Meshes.Phi.Degree,
-                                     Theta   = self.Meshes.Theta.Degree,
-                                     Scalar  = self.Scalar)
+                                      Theta   = self.Meshes.Theta.Degree,
+                                      Scalar  = self.Scalar)
 
 
 
