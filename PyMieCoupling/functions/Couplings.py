@@ -48,11 +48,26 @@ def MeanCoupling_Perp(Detector, Scatterer):
     return np.asscalar( Perp )
 
 
-def GetFootprint(Detector, Scatterer):
-    Perp = (Detector.Scalar * Scatterer.Perpendicular(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian)).__abs__()**2
-    Para = (Detector.Scalar * Scatterer.Parallel(Detector.Meshes.Phi.Radian, Detector.Meshes.Theta.Radian)).__abs__()**2
+def GetFootprint(Detector, Scatterer, Num):
 
-    return Perp + Para
+    MaxPhi = Detector.Meshes.Phi.Radian.max()
+
+    Phi, Theta = Detector.StructuredSphericalMesh(Num = Num, MaxAngle=MaxPhi)
+
+    Perp =  (Detector.StructuredFarField(Num=Num) *\
+    Scatterer.Perpendicular( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )#.__abs__()**2
+
+    Para = (Detector.StructuredFarField(Num=Num) *\
+    Scatterer.Parallel( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )#.__abs__()**2
+
+    return Para, Perp
+    # n =
+    # Footprint = np.fft.ifft2(Para + Perp, s=[512*n, 512*n]);
+    #
+    # Footprint = np.fft.fftshift(Footprint)
+    #
+    # return Footprint.__abs__()**2
+    #
 
 
 

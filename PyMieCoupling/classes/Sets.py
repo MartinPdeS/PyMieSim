@@ -26,8 +26,9 @@ class ScattererSet(object):
 
         self.Source = Source
 
+
     @property
-    def S1S2(self, num=201, n=0):
+    def S1S2(self, num=201):
 
         Angle = np.linspace(0,2*np.pi,num)
 
@@ -55,8 +56,8 @@ class ScattererSet(object):
 class ExperimentalSet(object):
 
     def __init__(self,
-                 ScattererSet:    ScattererSet = None,
-                 Detectors:       list         = None):
+                 ScattererSet: ScattererSet = None,
+                 Detectors:    list         = None):
 
         if not isinstance(Detectors, (list, np.ndarray)): Detectors = [Detectors]
 

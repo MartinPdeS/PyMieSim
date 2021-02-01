@@ -4,6 +4,7 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import numpy as np
 import matplotlib
 import cartopy.crs as ccrs
+from ai import cs
 
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
@@ -11,16 +12,6 @@ from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
-
-try:
-    from PyMieCoupling.cpp.S1S2 import GetS1S2
-except:
-    try:
-        from PyMieCoupling.cython.S1S2 import GetS1S2
-    except:
-        try:
-            from PyMieCoupling.cython.S1S2 import GetS1S2
-        except: ImportError
 
 
 
@@ -31,7 +22,6 @@ class MeshProperty(object):
     """Short summary.
 
     """
-
     def __init__(self):
         pass
 
@@ -107,15 +97,104 @@ class BaseDetector(object):
         return Coupling(Scatterer = Scatterer, Detector = self)
 
 
-    def Footprint(self, Scatterer):
-        return GetFootprint(Scatterer = Scatterer, Detector = self)
+    def Footprint(self, Scatterer, Num = 200):
+        return GetFootprint(Scatterer = Scatterer, Detector = self, Num = Num)
 
 
-    def Plot(self, num=400, scatter=True):
+    def StructuredSphericalMesh(self, Num, MaxAngle):
 
-        return PlotUnstructuredSphere(Phi     = self.Meshes.Phi.Degree,
-                                      Theta   = self.Meshes.Theta.Degree,
-                                      Scalar  = self.Scalar)
+        x, y = np.mgrid[-50: 50: complex(Num), -50: 50: complex(Num)]
+
+        z = 50 / np.tan(MaxAngle)
+
+        _, phi, theta = cs.cart2sp(x, y, x*0+z)
+
+        return phi, theta
+
+
+    def Plot(self):
+        Name = 'Mode Field'
+        ThetaMean = np.mean(self.Meshes.Theta.Degree).round(1)
+        PhiMean = np.mean(self.Meshes.Phi.Degree).round(1)
+
+        fig, (ax0, ax1) = plt.subplots(1,
+                                 2,
+                                 figsize=(8,4),
+                                 subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea(central_latitude=PhiMean, central_longitude=ThetaMean)})
+
+        im0 = ax0.tricontour(self.Meshes.Theta.Degree,
+                             self.Meshes.Phi.Degree,
+                             self.Scalar.real,
+                             levels=13,
+                             linewidths=0.5,
+                             colors='k',
+                             transform = ccrs.PlateCarree())
+
+        cntr0 = ax0.tricontourf(self.Meshes.Theta.Degree,
+                                self.Meshes.Phi.Degree,
+                                self.Scalar.real,
+                                levels=13,
+                                cmap="inferno",
+                                transform = ccrs.PlateCarree())
+
+
+        im1 = ax1.tricontour(self.Meshes.Theta.Degree,
+                             self.Meshes.Phi.Degree,
+                             self.Scalar.imag,
+                             levels=14,
+                             linewidths=0.5,
+                             colors='k',
+                             transform = ccrs.PlateCarree())
+
+        cntr1 = ax1.tricontourf(self.Meshes.Theta.Degree,
+                                self.Meshes.Phi.Degree,
+                                self.Scalar.imag,
+                                levels=14,
+                                cmap="inferno",
+                                transform = ccrs.PlateCarree())
+
+        plt.colorbar(mappable=cntr1, fraction=0.046, orientation='horizontal', ax=ax1)
+        plt.colorbar(mappable=cntr0, fraction=0.046, orientation='horizontal', ax=ax0)
+
+
+        ax1.plot(self.Meshes.Theta.Degree,
+                 self.Meshes.Phi.Degree,
+                 'ko',
+                 ms=0.1,
+                 transform = ccrs.PlateCarree())
+
+        ax0.plot(self.Meshes.Theta.Degree,
+                 self.Meshes.Phi.Degree,
+                 'ko',
+                 ms=0.1,
+                 transform = ccrs.PlateCarree())
+
+        gl = ax1.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
+        gl.top_labels = False
+        gl.left_labels = False
+        gl.right_labels = False
+        gl.bottom_labels = True
+
+        gl = ax0.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
+        #gl.xlocator = matplotlib.ticker.FixedLocator([])
+        gl.top_labels = False
+        gl.left_labels = False
+        gl.right_labels = False
+        gl.bottom_labels = True
+
+
+        ax1.set_title(f'Real Part {Name}')
+        ax1.set_ylabel(r'Angle $\phi$ [Degree]')
+        ax1.set_xlabel(r'Angle $\theta$ [Degree]')
+
+        ax0.set_title(f'Imaginary Part {Name}')
+        ax0.set_ylabel(r'Angle $\phi$ [Degree]')
+        ax0.set_xlabel(r'Angle $\theta$ [Degree]')
+
+        #ax1.set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
+
+        #fig.tight_layout()
+        plt.show()
 
 
 

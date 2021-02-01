@@ -1,8 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
-from PyMieCoupling.utils import PlotUnstructuredSphere, PlotStructuredSphere
+from PyMieCoupling.utils import PlotStructuredSphere
 
 
 plt.rcParams["font.family"] = "serif"
@@ -206,8 +205,6 @@ class S1S2(dict):
         Description of parameter `SizeParam`.
     Index : float
         Description of parameter `Index`.
-    Meshes : AngleMeshes
-        Description of parameter `Meshes`.
     CacheTrunk : bool
         Description of parameter `CacheTrunk`.
 
@@ -228,23 +225,37 @@ class S1S2(dict):
 
     def Plot(self) -> None:
 
+
+        S1 = np.abs(self['S1'])
+        S2 = np.abs(self['S2'])
+
         fig, axes = plt.subplots(nrows      = 1,
                                  ncols      = 2,
                                  subplot_kw = {'projection':'polar'})
 
         axes[0].set_title('S1 function'); axes[1].set_title('S2 function')
 
-        data = np.abs(self)
+        axes[0].plot(self['Phi'],
+                     S1,
+                     color = 'k')
 
-        for ni, ax in enumerate(axes):
+        axes[0].fill_between(x     = self['Phi'],
+                             y2    = 0,
+                             y1    = S1,
+                             color = 'C0',
+                             alpha = 0.4)
 
-            ax.plot(self.Phi, data[ni], 'k')
 
-            ax.fill_between(self.Phi,
-                            0,
-                            data[ni],
-                            color='C0',
-                            alpha=0.4)
+        axes[1].plot(self['Phi'],
+                     S2,
+                     color = 'k')
+
+        axes[1].fill_between(x     = self['Phi'],
+                             y2    = 0,
+                             y1    = S2,
+                             color = 'C1',
+                             alpha = 0.4)
+
         plt.show()
 
 

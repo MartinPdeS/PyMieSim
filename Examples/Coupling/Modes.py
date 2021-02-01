@@ -19,7 +19,7 @@ LightSource = Source(Wavelength = 450e-9,
 
 LP11 = LPmode(Mode         = (1, 1, 'v'),
               Sampling     = 800,
-              NA           = 0.1,
+              NA           = 0.2,
               GammaOffset  = 30,
               PhiOffset    = 0,
               CouplingMode = 'Centered')

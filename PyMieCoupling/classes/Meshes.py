@@ -2,9 +2,9 @@ import numpy as np
 from ai import cs
 import math
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
-
-from PyMieCoupling.functions.converts import rad2deg, deg2rad, NA2Angle
 from PyMieCoupling.utils import Angle
 
 
@@ -12,6 +12,36 @@ from PyMieCoupling.utils import Angle
 
 
 class AngleMeshes(object):
+    """Class wich represent an angular mesh. The distribution of points inside
+    the mesh is similar to a Fibonnaci sphere where each point cover an
+    equivalent solid angle.
+
+    Parameters
+    ----------
+    MaxAngle : float
+        Angle in radian defined by the numerical aperture of the imaging system.
+    Sampling : int
+        Number of point distrubuted inside the Solid angle defined by the
+        numerical aperture.
+    PhiOffset : float
+        Angle offset in the parallel direction of the polarization of
+        incindent light.
+    GammaOffset : float
+        Angle offset in the perpendicular direction of the polarization of
+        incindent light.
+
+    Attributes
+    ----------
+    GenerateLedevedMesh : type
+        Description of attribute `GenerateLedevedMesh`.
+    MakeProperties : type
+        Description of attribute `MakeProperties`.
+    PhiOffset
+    GammaOffset
+    MaxAngle
+    Sampling
+
+    """
     def __init__(self,
                  MaxAngle:    float = np.pi/6,
                  Sampling:    int   = 1000,
@@ -67,22 +97,18 @@ class AngleMeshes(object):
         ax.quiver(0,0,0,1,0,0,length=1.5, color='k', arrow_length_ratio=0.1)
 
         phi, theta = np.mgrid[0.0:np.pi:20j, 0.0:2.0*np.pi:20j]
-        x = np.sin(phi)*np.cos(theta)
-        y = np.sin(phi)*np.sin(theta)
-        z = np.cos(phi)
-        ax.plot_surface(x,
-                        y,
-                        z,
-                        rstride=1,
-                        cstride=1,
-                        color='b',
-                        alpha=0.3,
-                        linewidth=0.2,
-                        shade=True,
-                        edgecolors='k'
+
+        ax.plot_surface(X          = np.sin(phi)*np.cos(theta),
+                        Y          = np.sin(phi)*np.sin(theta),
+                        Z          = np.cos(phi),
+                        rstride    = 1,
+                        cstride    = 1,
+                        color      = 'b',
+                        alpha      = 0.3,
+                        linewidth  = 0.2,
+                        shade      = True,
+                        edgecolors = 'k'
                         )
-
-
         plt.show()
 
 

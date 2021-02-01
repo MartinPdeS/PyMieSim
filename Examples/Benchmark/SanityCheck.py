@@ -2,11 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 from PyMieCoupling.classes.Detector import Photodiode
-from PyMieCoupling.classes.Scattering import Scatterer, ScattererSet
-from PyMieCoupling.classes.Fields import Source
+from PyMieCoupling.classes.Scattering import Scatterer
+from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet
+from PyMieCoupling.utils import Source
 from scipy import interpolate
 from scipy.integrate import dblquad
-
+from PyMieCoupling.cython.S1S2 import GetS1S2
 
 
 LightSource = Source(Wavelength   = 450e-9,
@@ -14,34 +15,36 @@ LightSource = Source(Wavelength   = 450e-9,
 
 
 Photodiode0 = Photodiode(NA                = 0.2,
-                         Source            = LightSource,
-                         Npts              = 201,
-                         ThetaOffset       = 0,
-                         PhiOffset         = 0)
+                         Sampling          = 201,
+                         GammaOffset       = 0,
+                         PhiOffset         = 0,
+                         CouplingMode      = 'Centered')
 
 DiameterList  = np.linspace(100e-9, 5000e-9, 100)
 
-Photodiode0.FarField.Plot()
+#Photodiode0.Plot()
+
+
 Set1 = ScattererSet(DiameterList  = DiameterList,
                     RIList        = [1.4],
-                    Detector      = Photodiode0,
-                    Source        = LightSource,
-                    Mode          = 'Centered'
-                    )
+                    Source        = LightSource)
 
 
-DF1 = Set1.GetFrame(Filter='None')
+Experience = ExperimentalSet(ScattererSet = Set1, Detectors=Photodiode0)
+
+DF1 = Experience.DataFrame
 
 Theoretical_coupling = []
 for diameter in DiameterList:
 
     Scat = Scatterer(Diameter      = diameter,
                      Source        = LightSource,
-                     Index         = 1.4,
-                     Meshes        = Photodiode0.FarField.Meshes)
+                     Index         = 1.4)
 
-    S1 = interpolate.interp1d(Scat.Meshes.Phi.Vector.Radian, Scat.S1S2.S1S2[0])
-    S2 = interpolate.interp1d(Scat.Meshes.Phi.Vector.Radian, Scat.S1S2.S1S2[1])
+    s1s2 = GetS1S2(Scat.Index, Scat.SizeParam, Photodiode0.Meshes.Phi.Radian)
+
+    S1 = interpolate.interp1d(Scat.S1S2()['Phi'], Scat.S1S2()['S1'])
+    S2 = interpolate.interp1d(Scat.S1S2()['Phi'], Scat.S1S2()['S2'])
 
 
 
@@ -54,8 +57,8 @@ for diameter in DiameterList:
 
 
     ans, err = dblquad(integrand,
-                       *Scat.Meshes.Phi.Boundary.Radian,                  #phi
-                       *Scat.Meshes.Theta.Boundary.Radian,
+                       *(0,0.2),                  #phi
+                       *(0, np.pi),
                        epsabs=1e-4)                                        #theta
 
     Theoretical_coupling.append(ans)

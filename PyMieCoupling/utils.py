@@ -62,24 +62,23 @@ def SMF28():
     CoreDiameter = 8.2e-6
     cladDiameter = 125e-6
 
-    Fiber = fiber(core_radius = CoreDiameter,
-                  core_index  = 1.4456,
-                  clad_radius = cladDiameter,
-                  clad_index  = 1.4444)
+    Fiber = fiber()
 
-    return Fiber, CoreDiameter
+    return Fiber
 
 
 
 class fiber(object):
 
     def __init__(self,
-                 core_radius,
-                 core_index,
-                 clad_radius,
-                 clad_index):
+                 core_radius: float  = 8.2e-6,
+                 core_index:  float  = 1.4456,
+                 clad_radius: float  = 125e-6,
+                 clad_index:  float  = 1.4444):
 
         self.MaxDirect = 2 * clad_radius
+
+        self.CoreDiameter = core_radius
 
         factory = fibermodes.FiberFactory()
 

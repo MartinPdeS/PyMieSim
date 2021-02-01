@@ -7,42 +7,34 @@ _________________________________________________________
 """
 
 import numpy as np
-from PyMieCoupling.classes.Fiber import fiber
 from PyMieCoupling.classes.Detector import LPmode
 from PyMieCoupling.classes.Scattering import Scatterer
-from PyMieCoupling.functions.couplings import PointFieldCoupling
-
+from PyMieCoupling.utils import Source
 npts=201
 
-Fiber = fiber(core_radius = 4.2e-6,
-              core_index  = 1.4456,
-              clad_radius = 20.5e-6,
-              clad_index  = 1.4444)
+LightSource = Source(Wavelength = 400e-9, Polarization=0)
 
-LP01 = LPmode(Fiber      = Fiber,
-              Mode     = (0, 1),
-              Wavelength = 400e-9,
-              Npts       = npts,
-              ThetaOffset = 0,
+
+LP01 = LPmode(NA          = 0.2,
+              Mode        = (0, 1),
+              Sampling    = 200,
+              GammaOffset = 0,
               PhiOffset   = 0,)
 
-LP11 = LPmode(Fiber      = Fiber,
-              Mode     = (1, 1),
-              Wavelength = 400e-9,
-              Npts       = npts,
-              ThetaOffset = 0,
+LP11 = LPmode(NA          = 0.2,
+              Mode        = (1, 1),
+              Sampling    = 200,
+              GammaOffset = 0,
               PhiOffset   = 0,)
 
 
 DiameterList = np.linspace(100,1000,50) * 1e-9
 
 Scat = Scatterer(Diameter    = 500e-9,
-                 Wavelength  = 400e-9,
-                 Index       = 1.4,
-                 Meshes      = LP11.Meshes
-                 )
+                 Source      = LightSource,
+                 Index       = 1.4)
 
-Scat.Field.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )   #Uniforme sphere
+Scat.Parallel = np.ones( np.shape( Scat.Field.Parallel ) )   #Uniforme sphere
 
 LP11Coupling, _ = PointFieldCoupling(Detector = LP11,
                                      Source   = Scat)

@@ -8,7 +8,7 @@ from ai import cs
 from PyMieCoupling.classes.BaseClasses import BaseDetector, MeshProperty
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Source, SMF28, Angle, _Polarization, PlotUnstructuredSphere, interp_at
+from PyMieCoupling.utils import SMF28, Angle, _Polarization, interp_at
 from PyMieCoupling.physics import FraunhoferDiffraction
 
 
@@ -31,12 +31,12 @@ class Photodiode(BaseDetector, MeshProperty):
         Methode for computing mode coupling. Either Centered or Mean.
     """
     def __init__(self,
-                 NA:                float  = 0.2,
-                 Sampling:          int    = 401,
-                 GammaOffset:       float  = 0,
-                 PhiOffset:         float  = 0,
-                 Filter:            float  = 'None',
-                 CouplingMode:      str    = 'Centered'):
+                 NA:           float  = 0.2,
+                 Sampling:     int    = 401,
+                 GammaOffset:  float  = 0,
+                 PhiOffset:    float  = 0,
+                 Filter:       float  = 'None',
+                 CouplingMode: str    = 'Centered'):
 
 
         self._CouplingMode = ('Intensity', CouplingMode)
@@ -50,13 +50,15 @@ class Photodiode(BaseDetector, MeshProperty):
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
 
-        self.GetSpherical()
+        self.Scalar = self.UnstructuredFarField()
 
 
-    def GetSpherical(self):
+    def UnstructuredFarField(self):
+        return np.ones(self.Meshes.Sampling)
 
-        self.Scalar = np.ones(self.Meshes.Sampling) #/ np.sqrt((self.Meshes.Sampling))
 
+    def StructuredFarField(self, Num = 100):
+        return np.ones([Num, Num])
 
 
 
@@ -108,40 +110,41 @@ class LPmode(BaseDetector, MeshProperty):
 
         self.ModeNumber = Mode[0]+1, Mode[1], Mode[2]
 
-        self.InterpSampling = InterpSampling
-
         self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(NA).Radian,
                                   Sampling    = Sampling,
                                   PhiOffset   = PhiOffset,
                                   GammaOffset = GammaOffset)
 
-        self.GetFarField()
+        self.Structured = self.StructuredFarField(Num = InterpSampling)
 
-        self.GetSpherical()
+        self.Scalar = self.UnstructuredFarField()
+
+        if False:
+            PlotUnstructureData(self.Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
 
 
 
-    def GetFarField(self):
+    def StructuredFarField(self, Num):
 
-        Fiber, CoreDiameter = SMF28()
+        Fiber = SMF28()
 
         temp = fibermodes.field.Field(Fiber.source,
                                       fibermodes.Mode(fibermodes.ModeFamily.HE, *self.ModeNumber[:2]),
                                       940e-9,
-                                      CoreDiameter*self.InterpSampling/4,
-                                      self.InterpSampling).Ex()
+                                      Fiber.CoreDiameter*Num/4,
+                                      Num).Ex()
 
         temp = np.array(temp, copy=False)
 
         if self.ModeNumber[2] == 'h': temp = temp.T
 
-        self.Cartesian = FraunhoferDiffraction(temp)
+        return FraunhoferDiffraction(temp)
 
 
 
-    def GetSpherical(self):
+    def UnstructuredFarField(self):
 
-        shape = self.Cartesian.shape
+        shape = self.Structured.shape
 
         x, y = np.mgrid[-50: 50: complex(shape[0]), -50: 50: complex(shape[1])]
 
@@ -149,108 +152,19 @@ class LPmode(BaseDetector, MeshProperty):
 
         _, self._phi, self._theta = cs.cart2sp(x.flatten(), y.flatten(), x.flatten()*0+z)
 
+        return interp_at(x           = self._phi.flatten(),
+                         y           = self._theta.flatten(),
+                         v           = self.Structured.astype(np.complex).flatten(),
+                         xp          = self.Meshes.base.Phi,
+                         yp          = self.Meshes.base.Theta,
+                         algorithm   = 'linear',
+                         extrapolate = True)
 
 
 
-        self.Scalar = interp_at(x           = self._phi.flatten(),
-                                y           = self._theta.flatten(),
-                                v           = self.Cartesian.astype(np.complex).flatten(),
-                                xp          = self.Meshes.base.Phi,
-                                yp          = self.Meshes.base.Theta,
-                                algorithm   = 'linear',
-                                extrapolate = True)
 
 
 
-
-        if False:
-            PlotUnstructureData(self.Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
-
-
-
-    def Plot(self):
-        Name = 'Mode Field'
-        ThetaMean = np.mean(self.Meshes.Theta.Degree).round(1)
-        PhiMean = np.mean(self.Meshes.Phi.Degree).round(1)
-
-        fig, (ax0, ax1) = plt.subplots(1,
-                                 2,
-                                 figsize=(8,4),
-                                 subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea(central_latitude=PhiMean, central_longitude=ThetaMean)})
-
-        im0 = ax0.tricontour(self.Meshes.Theta.Degree,
-                             self.Meshes.Phi.Degree,
-                             self.Scalar.real,
-                             levels=13,
-                             linewidths=0.5,
-                             colors='k',
-                             transform = ccrs.PlateCarree())
-
-        cntr0 = ax0.tricontourf(self.Meshes.Theta.Degree,
-                                self.Meshes.Phi.Degree,
-                                self.Scalar.real,
-                                levels=13,
-                                cmap="inferno",
-                                transform = ccrs.PlateCarree())
-
-
-        im1 = ax1.tricontour(self.Meshes.Theta.Degree,
-                             self.Meshes.Phi.Degree,
-                             self.Scalar.imag,
-                             levels=14,
-                             linewidths=0.5,
-                             colors='k',
-                             transform = ccrs.PlateCarree())
-
-        cntr1 = ax1.tricontourf(self.Meshes.Theta.Degree,
-                                self.Meshes.Phi.Degree,
-                                self.Scalar.imag,
-                                levels=14,
-                                cmap="inferno",
-                                transform = ccrs.PlateCarree())
-
-        plt.colorbar(mappable=cntr1, fraction=0.046, orientation='horizontal', ax=ax1)
-        plt.colorbar(mappable=cntr0, fraction=0.046, orientation='horizontal', ax=ax0)
-
-
-        ax1.plot(self.Meshes.Theta.Degree,
-                 self.Meshes.Phi.Degree,
-                 'ko',
-                 ms=0.1,
-                 transform = ccrs.PlateCarree())
-
-        ax0.plot(self.Meshes.Theta.Degree,
-                 self.Meshes.Phi.Degree,
-                 'ko',
-                 ms=0.1,
-                 transform = ccrs.PlateCarree())
-
-        gl = ax1.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
-        gl.top_labels = False
-        gl.left_labels = False
-        gl.right_labels = False
-        gl.bottom_labels = True
-
-        gl = ax0.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
-        #gl.xlocator = matplotlib.ticker.FixedLocator([])
-        gl.top_labels = False
-        gl.left_labels = False
-        gl.right_labels = False
-        gl.bottom_labels = True
-
-
-        ax1.set_title(f'Real Part {Name}')
-        ax1.set_ylabel(r'Angle $\phi$ [Degree]')
-        ax1.set_xlabel(r'Angle $\theta$ [Degree]')
-
-        ax0.set_title(f'Imaginary Part {Name}')
-        ax0.set_ylabel(r'Angle $\phi$ [Degree]')
-        ax0.set_xlabel(r'Angle $\theta$ [Degree]')
-
-        #ax1.set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
-
-        #fig.tight_layout()
-        plt.show()
 
 
 
