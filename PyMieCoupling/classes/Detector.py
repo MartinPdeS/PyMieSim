@@ -57,7 +57,7 @@ class Photodiode(BaseDetector, MeshProperty):
         return np.ones(self.Meshes.Sampling)
 
 
-    def StructuredFarField(self, Num = 100):
+    def StructuredFarField(self, Num = 100, SFactor = None):
         return np.ones([Num, Num])
 
 
@@ -90,11 +90,11 @@ class LPmode(BaseDetector, MeshProperty):
                  Mode:           tuple,
                  NA:             float = 0.2,
                  Sampling:       int   = 401,
-                 InterpSampling: int   = 51,
+                 InterpSampling: int   = 151,
                  GammaOffset:    float = 0,
                  PhiOffset:      float = 0,
                  Filter:         float =  'None',
-                 CouplingMode:   str   = 'Centered',):
+                 CouplingMode:   str   = 'Centered'):
 
         if len(Mode) <= 2: Mode = Mode[0], Mode[1], 'h'
 
@@ -124,14 +124,14 @@ class LPmode(BaseDetector, MeshProperty):
 
 
 
-    def StructuredFarField(self, Num):
+    def StructuredFarField(self, Num, SFactor=5):
 
         Fiber = SMF28()
 
         temp = fibermodes.field.Field(Fiber.source,
                                       fibermodes.Mode(fibermodes.ModeFamily.HE, *self.ModeNumber[:2]),
                                       940e-9,
-                                      Fiber.CoreDiameter*Num/4,
+                                      Fiber.CoreDiameter*Num/SFactor,
                                       Num).Ex()
 
         temp = np.array(temp, copy=False)

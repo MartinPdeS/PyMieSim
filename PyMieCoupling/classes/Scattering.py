@@ -37,6 +37,8 @@ class Scatterer(BaseScatterer):
 
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
+        self._phi, self._theta = [None], [None]
+
 
 
 

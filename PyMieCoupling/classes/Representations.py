@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
 from PyMieCoupling.utils import PlotStructuredSphere
-
+from mayavi import mlab
 
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
@@ -152,12 +152,12 @@ class SPF(dict):
                                        Polarization         = 0)
 
         self['Parallel'], self['Perpendicular'] = Para, Perp
-        self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 )
+        self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
 
 
-    def Plot(self):
+    def _Plot(self):
 
-        x, y, z = cs.sp2cart(self['SPF'].reshape(self['Phi'].shape), self['Phi'], self['Theta'])
+        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
 
         fig, ax = plt.subplots(1, figsize=(3, 3), subplot_kw = {'projection':'3d'})
         ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
@@ -187,11 +187,23 @@ class SPF(dict):
         plt.show()
 
 
+    def Plot(self):
+
+        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
+
+        mlab.mesh(x,y,z)
+
+        mlab.axes()
+
+        mlab.show()
+
+
     def __repr__(self):
         return f"""
         Object:          Dictionary
         Keys:            SPF, Parallel, Perpendicular, Theta, Phi
         Structured data: Yes
+        Method:          <Plot>
         Shape:           {self['Phi'].shape}"""
 
 
@@ -264,6 +276,7 @@ class S1S2(dict):
         Object:          Dictionary
         Keys:            S1, S2, Phi
         Structured data: Yes
+        Method:          <Plot>
         Shape:           {self['Phi'].shape}"""
 
 
@@ -307,6 +320,7 @@ class ScalarFarField(dict):
         Object:          Dictionary
         Keys:            Parallel, Perpendicular, Theta, Phi
         Structured data: Yes
+        Method:          <Plot>
         Shape:           {self['Theta'].shape}"""
 
 

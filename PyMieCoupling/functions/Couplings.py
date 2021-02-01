@@ -54,20 +54,21 @@ def GetFootprint(Detector, Scatterer, Num):
 
     Phi, Theta = Detector.StructuredSphericalMesh(Num = Num, MaxAngle=MaxPhi)
 
-    Perp =  (Detector.StructuredFarField(Num=Num) *\
-    Scatterer.Perpendicular( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )#.__abs__()**2
+    Perp =  (Detector.StructuredFarField(Num=Num, SFactor=16) *\
+    Scatterer.Perpendicular( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )
 
-    Para = (Detector.StructuredFarField(Num=Num) *\
-    Scatterer.Parallel( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )#.__abs__()**2
+    Para = (Detector.StructuredFarField(Num=Num, SFactor=16) *\
+    Scatterer.Parallel( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )#
 
-    return Para, Perp
-    # n =
-    # Footprint = np.fft.ifft2(Para + Perp, s=[512*n, 512*n]);
-    #
-    # Footprint = np.fft.fftshift(Footprint)
-    #
-    # return Footprint.__abs__()**2
-    #
+    FourierPara = np.fft.ifft2(Para, s=[512*2, 512*2])
+
+    FourierPara = np.fft.fftshift(FourierPara).__abs__()**2
+
+    FourierPerp = np.fft.ifft2(Perp,  s=[512*2, 512*2])
+
+    FourierPerp = np.fft.fftshift(FourierPerp).__abs__()**2
+
+    return FourierPara + FourierPerp
 
 
 

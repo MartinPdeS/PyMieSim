@@ -250,7 +250,8 @@ class BaseScatterer(object):
 
 
     def Parallel(self, Phi, Theta):
-        if not isinstance(self._Parallel, np.ndarray):
+        if np.array_equal(self._phi, Phi) or np.array_equal(self._theta, Theta):
+            self._phi, self._theta = Phi, Theta
             self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
             return self._Parallel
         else:
@@ -258,7 +259,8 @@ class BaseScatterer(object):
 
 
     def Perpendicular(self, Phi, Theta):
-        if not isinstance(self._Perpendicular, np.ndarray):
+        if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
+            self._phi, self._theta = Phi, Theta
             self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
             return self._Perpendicular
         else:
