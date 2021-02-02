@@ -5,8 +5,8 @@ from typing import Tuple, Union
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.cpp.S1S2 import GetS1S2
-from PyMieCoupling.classes.DataFrame import ExperimentalDataFrame, ScattererDataFrame
+from PyMieCoupling.cpp.interface import GetS1S2, GetS1S2Qsca
+from PyMieCoupling.classes.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieCoupling.classes.Scattering import Scatterer, WMSample
 
 
@@ -27,7 +27,27 @@ class ScattererSet(object):
         self.Source = Source
 
 
-    @property
+    def Qsca(self, num=201):
+
+        Angle = np.linspace(0,2*np.pi,num)
+
+        MI = pd.MultiIndex.from_product([self.DiameterList, self.RIList], names=['Diameter', 'RI'])
+
+        df = QscaDataFrame(index = MI, columns = ['Qsca'])
+
+        for nr, RI in enumerate(self.RIList):
+
+            for nd, Diameter in enumerate(self.DiameterList):
+                SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
+
+                _, Qsca = GetS1S2Qsca(RI, SizeParam, np.linspace(0,2*np.pi,num));
+
+                df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
+
+
+        return df
+
+
     def S1S2(self, num=201):
 
         Angle = np.linspace(0,2*np.pi,num)
@@ -35,7 +55,7 @@ class ScattererSet(object):
         MI = pd.MultiIndex.from_product([self.DiameterList, self.RIList, Angle],
                                         names=['Diameter', 'RI', 'Angle'])
 
-        df = ScattererDataFrame(index = MI, columns = ['S1', 'S2'])
+        df = S1S2DataFrame(index = MI, columns = ['S1', 'S2'])
 
         for nr, RI in enumerate(self.RIList):
 

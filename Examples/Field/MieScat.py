@@ -13,15 +13,15 @@ LightSource = Source(Wavelength = 450e-9,
                      Power = 1,
                      Radius = 1)
 
-Scat = Scatterer(Diameter    = 5e-9,
+Scat = Scatterer(Diameter    = 500e-9,
                  Source      = LightSource,
                  Index       = 1.4)
 
-Field = Scat.Field(Num=150)
+#Field = Scat.Field(Num=150)
 SPF = Scat.SPF(Num=80)
-S1S2 = Scat.S1S2(Num=80)
+#S1S2 = Scat.S1S2(Num=80)
 
-Field.Plot()
+SPF.Plot()
 
 
 

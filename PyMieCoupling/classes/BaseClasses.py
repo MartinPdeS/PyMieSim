@@ -250,9 +250,9 @@ class BaseScatterer(object):
 
 
     def Parallel(self, Phi, Theta):
-        if np.array_equal(self._phi, Phi) or np.array_equal(self._theta, Theta):
+        if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
             self._phi, self._theta = Phi, Theta
-            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
+            self._Parallel, self._Perpendicular, Qsca = self.GenField(Phi, Theta)
             return self._Parallel
         else:
             return self._Parallel
@@ -261,7 +261,7 @@ class BaseScatterer(object):
     def Perpendicular(self, Phi, Theta):
         if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
             self._phi, self._theta = Phi, Theta
-            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
+            self._Parallel, self._Perpendicular, Qsca = self.GenField(Phi, Theta)
             return self._Perpendicular
         else:
             return self._Perpendicular
@@ -280,11 +280,12 @@ class BaseScatterer(object):
         with the PyMieScatt package.
         """
 
-        return GetFieldsFromMesh(m            = self.Index,
-                                 x            = self.SizeParam,
-                                 ThetaMesh    = Theta,
-                                 PhiMesh      = Phi - np.pi/2,
-                                 Polarization = self.Source.Polarization.Radian)
+        return GetFields(m            = self.Index,
+                         x            = self.SizeParam,
+                         ThetaMesh    = Theta,
+                         PhiMesh      = Phi - np.pi/2,
+                         Polarization = self.Source.Polarization.Radian,
+                         Qsca         = False)
 
 
     def Plot(self, Num=200, scatter=False):

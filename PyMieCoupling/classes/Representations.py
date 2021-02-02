@@ -145,12 +145,12 @@ class SPF(dict):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp = GetFields(m                    = Parent.Index,
-                               x                    = Parent.SizeParam,
-                               ThetaMesh            = self['Theta'].flatten(),
-                               PhiMesh              = self['Phi'].flatten()-np.pi/2,
-                               Polarization         = 0,
-                               Qsca                 = False)
+        Para, Perp, _ = GetFields(m                    = Parent.Index,
+                                  x                    = Parent.SizeParam,
+                                  ThetaMesh            = self['Theta'].flatten(),
+                                  PhiMesh              = self['Phi'].flatten()-np.pi/2,
+                                  Polarization         = 0,
+                                  Qsca                 = False)
 
         self['Parallel'], self['Perpendicular'] = Para, Perp
         self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
@@ -192,9 +192,36 @@ class SPF(dict):
 
         x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
 
-        mlab.mesh(x,y,z)
+        X = np.linspace(np.min(x),np.max(x),10)*1.3
+        Y = np.linspace(np.min(y),np.max(y),10)*1.3
+        Z = np.linspace(np.min(z),np.max(z),10)*1.3
 
-        mlab.axes()
+        radius = np.abs( min(np.min(x), np.min(y), np.min(z))/100 )
+
+        mlab.plot3d(X,
+                    np.zeros_like(X),
+                    np.zeros_like(X),
+                    line_width=1e-12,
+                    tube_radius=radius
+                    )
+
+        mlab.plot3d(np.zeros_like(Y),
+                    Y,
+                    np.zeros_like(Y),
+                    line_width=1e-12,
+                    tube_radius=radius
+                    )
+
+        mlab.plot3d(np.zeros_like(Z),
+                    np.zeros_like(Z),
+                    Z,
+                    line_width=1e-12,
+                    tube_radius=radius
+                    )
+
+        mlab.mesh(x, y, z)
+
+        #mlab.axes()
 
         mlab.show()
 
