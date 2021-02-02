@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
+from PyMieCoupling.cpp.interface import GetFields
 from PyMieCoupling.utils import PlotStructuredSphere
 from mayavi import mlab
 
@@ -145,11 +145,12 @@ class SPF(dict):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp = GetFieldsFromMesh(m                    = Parent.Index,
-                                       x                    = Parent.SizeParam,
-                                       ThetaMesh            = self['Theta'].flatten(),
-                                       PhiMesh              = self['Phi'].flatten()-np.pi/2,
-                                       Polarization         = 0)
+        Para, Perp = GetFields(m                    = Parent.Index,
+                               x                    = Parent.SizeParam,
+                               ThetaMesh            = self['Theta'].flatten(),
+                               PhiMesh              = self['Phi'].flatten()-np.pi/2,
+                               Polarization         = 0,
+                               Qsca                 = False)
 
         self['Parallel'], self['Perpendicular'] = Para, Perp
         self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
@@ -289,11 +290,12 @@ class ScalarFarField(dict):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        Para, Perp = GetFieldsFromMesh(m            = Parent.Index,
-                                       x            = Parent.SizeParam,
-                                       ThetaMesh    = Theta.flatten(),
-                                       PhiMesh      = Phi.flatten() - np.pi/2,
-                                       Polarization = Parent.Source.Polarization.Radian)
+        Para, Perp = GetFields(m            = Parent.Index,
+                               x            = Parent.SizeParam,
+                               ThetaMesh    = Theta.flatten(),
+                               PhiMesh      = Phi.flatten() - np.pi/2,
+                               Polarization = Parent.Source.Polarization.Radian,
+                               Qsca         = False)
 
         self['Parallel'] = Para
 

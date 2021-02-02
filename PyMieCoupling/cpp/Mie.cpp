@@ -1,4 +1,4 @@
-#include "MieS1S2.hpp"
+#include "Mie.hpp"
 #include <vector>
 #include <complex>
 #include <boost/math/special_functions.hpp>
@@ -124,13 +124,18 @@ MiePiTau(const double mu,
 }
 
 
-static void
+static double
 C_GetQsca(iVec *an, iVec *bn, const double x)
-{    complex128 Qsca = 2. / (x * x);
+{    double Qsca = 2. / (x * x);
+     complex128 temp;
      for(auto it = 0; it < an->size(); ++it)
      {
-       Qsca +=  (*an)[it];
+       temp +=  std::real( (*an)[it] ) * std::real( (*an)[it] )
+              + std::imag( (*an)[it] ) * std::imag( (*an)[it] )
+              + std::real( (*bn)[it] ) * std::real( (*bn)[it] )
+              + std::imag( (*bn)[it] ) * std::imag( (*bn)[it] );
      }
+     return Qsca * std::real(temp);
 }
 
 
@@ -182,20 +187,104 @@ C_GetS1S2(const double m,
 }
 
 
+static double
+C_GetS1S2Qsca(const double            m,
+              const double            x,
+              const double*           phi,
+              const long unsigned int lenght,
+              complex128*             S1S2)
+
+{
+    iVec *an = new iVec;
+    iVec *bn = new iVec;
+
+    double Qsca;
+
+    std::vector<double> *n, *n2;
+
+    const long unsigned int nmax = (int) round(2. + x + 4. * pow(x, 1./3.) );
+
+    std::tie(n, n2) = Arrange(1, nmax + 1);
+
+    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, nmax, n, an, bn);
+
+    Qsca = C_GetQsca(an, bn, x);
+
+    const long unsigned int anLength = an->size();
+
+    iVec S1 = iVec(lenght) ;
+    iVec S2 = iVec(lenght) ;
+
+    iVec *pin = new iVec(nmax);
+    iVec *taun = new iVec(nmax);
+    complex128 j (0., 1.0);
+
+    complex128 *temp0 = &S1S2[0], *temp1 = &S1S2[lenght] ;
+
+    for (long unsigned int i = 0; i < lenght; i++){
+
+        MiePiTau(cos( phi[i] ), nmax, pin, taun);
+
+        for (long unsigned int k = 0; k < anLength ; k++){
+            *temp0 += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
+            *temp1 += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+
+          }
+    temp0++ ;
+    temp1++ ;
+    }
+
+    return Qsca;
+}
 
 
+
+
+
+
+static double
+FieldsQsca(const double m,
+           const double x,
+           const double* ThetaMesh,
+           const double* PhiMesh,
+           const int Lenght,
+           complex128* Parallel,
+           complex128* Perpendicular,
+           double Polarization)
+{
+
+  complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
+
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0, Qsca ;
+  complex128 temp2;
+
+  Qsca = C_GetS1S2Qsca(m, x, PhiMesh, Lenght, S1S2) ;
+
+  for (long unsigned int k=0; k < Lenght; k++ )
+  {
+    temp0 = *ThetaMesh++ ;
+
+    *Parallel++          = S1S2[k] * abs(cos(temp0 + Polarization)) ;
+    *Perpendicular++     = S1S2[k + Lenght] * abs(sin(temp0 + Polarization)) ;
+
+  }
+
+  free(S1S2) ;
+  return Qsca;
+}
 
 
 static void
-C_GetFieldsFromMesh(const double m,
-                    const double x,
-                    const double* ThetaMesh,
-                    const double* PhiMesh,
-                    const int Lenght,
-                    complex128* Parallel,
-                    complex128* Perpendicular,
-                    double Polarization
-          )
+Fields(const double m,
+       const double x,
+       const double* ThetaMesh,
+       const double* PhiMesh,
+       const int Lenght,
+       complex128* Parallel,
+       complex128* Perpendicular,
+       double Polarization)
 {
 
   complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
@@ -225,13 +314,14 @@ C_GetFieldsFromMesh(const double m,
 
 
 static void
-C_GetFieldsNoPolarizationFromMesh(const double m,
-                                  const double x,
-                                  const double* ThetaMesh,
-                                  const double* PhiMesh,
-                                  const int Lenght,
-                                  complex128* Parallel,
-                                  complex128* Perpendicular){
+FieldsNoPolarization(const double m,
+                     const double x,
+                     const double* ThetaMesh,
+                     const double* PhiMesh,
+                     const int Lenght,
+                     complex128* Parallel,
+                     complex128* Perpendicular)
+  {
 
   complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
 
@@ -254,6 +344,42 @@ C_GetFieldsNoPolarizationFromMesh(const double m,
 
   free(S1S2) ;
   return;
+}
+
+
+
+static double
+FieldsNoPolarizationQsca(const double m,
+                         const double x,
+                         const double* ThetaMesh,
+                         const double* PhiMesh,
+                         const int Lenght,
+                         complex128* Parallel,
+                         complex128* Perpendicular)
+  {
+
+  complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
+
+  const std::complex<double> j (0., 1.0) ;
+
+  double temp0, Qsca ;
+  double temp1 = 1./sqrt(2.);
+  complex128 temp2;
+
+
+  Qsca = C_GetS1S2Qsca(m, x, PhiMesh, Lenght, S1S2) ;
+
+  for (long unsigned int k=0; k < Lenght; k++ )
+  {
+    temp0 = *ThetaMesh++ ;
+
+    *Parallel++          = S1S2[k] * temp1 ;
+    *Perpendicular++     = S1S2[k + Lenght] * temp1 ;
+
+  }
+
+  free(S1S2) ;
+  return Qsca;
 }
 
 

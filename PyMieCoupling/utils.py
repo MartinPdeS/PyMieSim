@@ -9,8 +9,6 @@ from scipy.interpolate import griddata
 import scipy
 
 
-from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
-
 class Source(object):
 
     def __init__(self,

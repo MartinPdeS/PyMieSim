@@ -9,7 +9,7 @@ from ai import cs
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
-from PyMieCoupling.cpp.S1S2 import GetFieldsFromMesh
+from PyMieCoupling.cpp.interface import GetFields
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
 

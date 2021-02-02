@@ -17,10 +17,9 @@ The package rely on different library as:
 - Numpy
 - Matplotlib
 - Scipy
-- PyMieScatt
 - Pandas
-- Tqdm
 - Fibermodes
+- Mayavi
 
 In order to use this package one need to install it. This can be done using the **pip3** package manager. In the root folder do:
 
