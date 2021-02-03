@@ -351,6 +351,7 @@
 <span class="go">Detector.Plot()</span>
 </pre></div>
 </td></tr></table></div>
+<a class="reference internal image-reference" href="_images/LPmode.png"><img alt="_images/LPmode.png" src="_images/LPmode.png" style="width: 600px;" /></a>
 </div>
 <div class="section" id="coupling-scatterer-lpmode">
 <h2>Coupling: Scatterer-LPMode<a class="headerlink" href="#coupling-scatterer-lpmode" title="Permalink to this headline">¶</a></h2>
@@ -372,8 +373,14 @@
 16
 17
 18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.utils import Source</span>
+19
+20
+21
+22
+23
+24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.utils import Source</span>
 <span class="go">from PyMieCoupling.classes.Detector import LPmode</span>
+<span class="go">from PyMieCoupling.classes.Scattering import Scatterer</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -388,11 +395,16 @@
 <span class="go">                  CouplingMode = &#39;Centered&#39;)</span>
 
 
+<span class="go">Scat = Scatterer(Diameter    = 400e-9,</span>
+<span class="go">                 Source      = LightSource,</span>
+<span class="go">                 Index       = 1.4)</span>
+
 <span class="go">Coupling = Detector.Coupling(Scatterer = Scat)</span>
 
 <span class="go">print(Coupling)</span>
 </pre></div>
 </td></tr></table></div>
+<p>Output: (2.852590820006693e-07)</p>
 </div>
 <div class="section" id="scattererset-qscattering">
 <h2>ScattererSet: Qscattering<a class="headerlink" href="#scattererset-qscattering" title="Permalink to this headline">¶</a></h2>
@@ -429,42 +441,43 @@
 <span class="go">Qsca.Plot()</span>
 </pre></div>
 </td></tr></table></div>
+<a class="reference internal image-reference" href="_images/Qsca.png"><img alt="_images/Qsca.png" src="_images/Qsca.png" style="width: 600px;" /></a>
 </div>
 <div class="section" id="experimentalset-coupling">
 <h2>ExperimentalSet: Coupling<a class="headerlink" href="#experimentalset-coupling" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">import numpy as np</span>
-<span class="go">from PyMieCoupling.utils import Source</span>
-<span class="go">from PyMieCoupling.classes.Sets import ScattererSet</span>
-
-<span class="go">LightSource = Source(Wavelength   = 950e-9,</span>
-<span class="go">                     Polarization = 0)</span>
-
-
-<span class="go">ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 500e-9, 100),</span>
-<span class="go">                       RIList        = np.linspace(1.5, 1.5, 1).round(1),</span>
-<span class="go">                       Source        = LightSource)</span>
-
-
-<span class="go">Qsca = ScatSet.Qsca()</span>
-
-<span class="go">Qsca.Plot()</span>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
 </pre></div>
 </td></tr></table></div>
+<p>import numpy as np
+from PyMieCoupling.utils import Source
+from PyMieCoupling.classes.Detector import LPmode
+from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>LightSource = Source(Wavelength   = 950e-9,</dt>
+<dd>Polarization = 0)</dd>
+<dt>Detector0 = LPmode(NA                = 0.2,</dt>
+<dd>Sampling          = 401,
+GammaOffset       = 0,
+PhiOffset         = 20,
+Mode              = (0,1),
+CouplingMode      = ‘Mean’)</dd>
+<dt>Detector1 = LPmode(NA                = 0.2,</dt>
+<dd>Sampling          = 401,
+GammaOffset       = 0,
+PhiOffset         = 20,
+Mode              = (1,1),
+CouplingMode      = ‘Mean’)</dd>
+<dt>ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 3000e-9, 300),</dt>
+<dd>RIList        = np.linspace(1.5, 1.5, 1).round(1),
+Source        = LightSource)</dd>
+<dt>Set = ExperimentalSet(ScattererSet  = ScatSet,</dt>
+<dd>Detectors     = [Detector0, Detector1])</dd>
+</dl>
+<p>Data = Set.DataFrame</p>
+<p>Data.Plot(y=’Coupling’)</p>
+</div></blockquote>
+<a class="reference internal image-reference" href="_images/ExperimentalSet.png"><img alt="_images/ExperimentalSet.png" src="_images/ExperimentalSet.png" style="width: 600px;" /></a>
 </div>
 </div>
 

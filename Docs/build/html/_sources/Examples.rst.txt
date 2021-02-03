@@ -130,7 +130,8 @@ Detector: LPMode
                     
    Detector.Plot()
    
-   
+.. image:: ../images/LPmode.png
+   :width: 600      
    
 Coupling: Scatterer-LPMode
 --------------------------
@@ -140,24 +141,31 @@ Coupling: Scatterer-LPMode
    
    from PyMieCoupling.utils import Source
    from PyMieCoupling.classes.Detector import LPmode
-   
+   from PyMieCoupling.classes.Scattering import Scatterer
+
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
                      Power = 1,
                      Radius = 1)
-                     
+
    Detector = LPmode(Mode         = (1, 1,'h'),
                      Sampling     = 201,
                      NA           = 0.2,
                      GammaOffset  = 0,
                      PhiOffset    = 0,
                      CouplingMode = 'Centered')
-                    
-                    
-   Coupling = Detector.Coupling(Scatterer = Scat)  
-   
+
+
+   Scat = Scatterer(Diameter    = 400e-9,
+                    Source      = LightSource,
+                    Index       = 1.4)
+
+   Coupling = Detector.Coupling(Scatterer = Scat)
+
    print(Coupling)
+
    
+Output: (2.852590820006693e-07)   
    
    
 ScattererSet: Qscattering
@@ -184,7 +192,8 @@ ScattererSet: Qscattering
    Qsca.Plot()
    
    
-   
+.. image:: ../images/Qsca.png
+   :width: 600       
    
 ExperimentalSet: Coupling
 ----------------------------
@@ -192,24 +201,53 @@ ExperimentalSet: Coupling
 .. code-block:: console
    :linenos:
    
-   import numpy as np
-   from PyMieCoupling.utils import Source
-   from PyMieCoupling.classes.Sets import ScattererSet
+import numpy as np
+from PyMieCoupling.utils import Source
+from PyMieCoupling.classes.Detector import LPmode
+from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet
 
    LightSource = Source(Wavelength   = 950e-9,
                         Polarization = 0)
 
 
-   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 500e-9, 100),
+
+   Detector0 = LPmode(NA                = 0.2,
+                      Sampling          = 401,
+                      GammaOffset       = 0,
+                      PhiOffset         = 20,
+                      Mode              = (0,1),
+                      CouplingMode      = 'Mean')
+
+   Detector1 = LPmode(NA                = 0.2,
+                      Sampling          = 401,
+                      GammaOffset       = 0,
+                      PhiOffset         = 20,
+                      Mode              = (1,1),
+                      CouplingMode      = 'Mean')
+
+
+
+
+
+   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 3000e-9, 300),
                           RIList        = np.linspace(1.5, 1.5, 1).round(1),
-                          Source        = LightSource) 
-   
-     
-   Qsca = ScatSet.Qsca()
-   
-   Qsca.Plot()
+                          Source        = LightSource)
+
+
+
+
+
+   Set = ExperimentalSet(ScattererSet  = ScatSet,
+                         Detectors     = [Detector0, Detector1])
+
+
+   Data = Set.DataFrame
+
+   Data.Plot(y='Coupling')
       
    
+.. image:: ../images/ExperimentalSet.png
+   :width: 600        
    
    
    
