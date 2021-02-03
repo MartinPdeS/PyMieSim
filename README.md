@@ -1,6 +1,6 @@
 # PyMieSim
 
-
+A package for extensive Mie scattering analysis.
 
 ## Dependencies
 
