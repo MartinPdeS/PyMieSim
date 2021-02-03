@@ -9,7 +9,7 @@ from ai import cs
 from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
-from PyMieCoupling.cpp.interface import GetFields
+from PyMieCoupling.cpp.interface import GetFields, GetS1S2Qsca
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
 
@@ -241,9 +241,17 @@ class BaseScatterer(object):
             return self._S1S2
 
 
+    @property
+    def Qsca(self):
+        """https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no"""
+        _, _, Qsca = GetS1S2Qsca(m = self.Index,
+                                 x = self.SizeParam,
+                                 phi = np.linspace(0, np.pi, 2))
+
+        return Qsca
+
 
     def Field(self, Num=200):
-
         self._Field = ScalarFarField(Num = Num, Parent = self)
 
         return self._Field

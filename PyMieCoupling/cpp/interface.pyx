@@ -86,7 +86,9 @@ cpdef GetS1S2(double m,
 
     arr = np.asarray(Vector)
 
-    return np.reshape(arr,[2,phi.size])
+    arr = np.reshape(arr,[2,phi.size])
+
+    return arr[0], arr[1]
 
 
 
@@ -113,9 +115,12 @@ cpdef GetS1S2Qsca(double m,
 
     arr = np.asarray(Vector)
 
-    return np.reshape(arr,[2,phi.size]), Qsca
+    arr = np.reshape(arr,[2,phi.size])
+
+    return arr[0], arr[1], Qsca
 
 
+ 
 
 
 

@@ -40,7 +40,7 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                _, Qsca = GetS1S2Qsca(RI, SizeParam, np.linspace(0,2*np.pi,num));
+                _, _, Qsca = GetS1S2Qsca(RI, SizeParam, np.linspace(0,2*np.pi,num));
 
                 df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
 
@@ -62,7 +62,7 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                S1S2 = GetS1S2(RI, SizeParam, np.linspace(0,2*np.pi,num));
+                S1, S2 = GetS1S2(RI, SizeParam, np.linspace(0,2*np.pi,num));
 
                 df.loc[(Diameter, RI),'S1'] = np.abs(S1S2[0])
 

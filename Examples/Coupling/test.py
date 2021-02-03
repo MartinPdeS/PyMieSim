@@ -25,7 +25,7 @@ Detector1 = LPmode(NA                = 0.2,
                    PhiOffset         = 180,
                    Mode              = (1,1))
 
-DiameterList  = np.linspace(10e-9, 10000e-9, 300)
+DiameterList  = np.linspace(10e-9, 10000e-9, 500)
 RIList        = np.linspace(1.36, 1.56, 1).round(1)
 
 Set0 = ScattererSet(DiameterList  = DiameterList,

@@ -11,10 +11,12 @@ from ai import cs
 
 
 try:
-    from PyMieCoupling.cpp.S1S2 import GetS1S2
+    from PyMieCoupling.cpp.interface import GetS1S2
+    print('C++ module loaded')
 except:
     try:
         from PyMieCoupling.cython.S1S2 import GetS1S2
+        print('Cython module loaded')
     except:
         try:
             from PyMieCoupling.cython.S1S2 import GetS1S2
@@ -23,6 +25,7 @@ except:
 
 
 class Stokes(np.ndarray):
+    """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B """
     def __new__(cls, Field):
 
         cls.Meshes = Field.Meshes
@@ -317,12 +320,12 @@ class ScalarFarField(dict):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        Para, Perp = GetFields(m            = Parent.Index,
-                               x            = Parent.SizeParam,
-                               ThetaMesh    = Theta.flatten(),
-                               PhiMesh      = Phi.flatten() - np.pi/2,
-                               Polarization = Parent.Source.Polarization.Radian,
-                               Qsca         = False)
+        Para, Perp, Qsca = GetFields(m            = Parent.Index,
+                                     x            = Parent.SizeParam,
+                                     ThetaMesh    = Theta.flatten(),
+                                     PhiMesh      = Phi.flatten() - np.pi/2,
+                                     Polarization = Parent.Source.Polarization.Radian,
+                                     Qsca         = False)
 
         self['Parallel'] = Para
 
