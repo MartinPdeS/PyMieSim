@@ -25,7 +25,7 @@ cdef extern from "Mie.cpp":
                               int lenght,
                               complex128_t* ptr);
 
-
+ 
 
     cdef void* Fields(double a,
                       double b,
@@ -120,7 +120,7 @@ cpdef GetS1S2Qsca(double m,
     return arr[0], arr[1], Qsca
 
 
- 
+
 
 
 

@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Classes &mdash; PyMieSim 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Detector" href="Detector.html" />
+    <link rel="prev" title="Introduction" href="Intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> PyMieSim
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Scattering">Scatterering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Detector">Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Meshes">Meshes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Detector.html">Detector</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyMieSim</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Classes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/Scattering.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="classes">
+<h1>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-PyMieCoupling.classes.Scattering">
+<span id="scatterering"></span><h2>Scatterering<a class="headerlink" href="#module-PyMieCoupling.classes.Scattering" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="PyMieCoupling.classes.Scattering.FullScatterer">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Scattering.</code><code class="descname">FullScatterer</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieCoupling.utils.Source</em>, <em>Index: float</em>, <em>Sampling: int = 1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#FullScatterer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.FullScatterer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.BaseScatterer</span></code></p>
+<p>Full-field Single scatterer object.</p>
+<dl class="docutils">
+<dt>Diameter <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Diameter of the single scatterer in unit of meter.</dd>
+<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier">Source</span></dt>
+<dd>Light source object containing info on polarization and wavelength.</dd>
+<dt>Index <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Refractive index of scatterer</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="PyMieCoupling.classes.Scattering.Scatterer">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Scattering.</code><code class="descname">Scatterer</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieCoupling.utils.Source</em>, <em>Index: float</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#Scatterer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.Scatterer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.BaseScatterer</span></code></p>
+<p>Single scatterer object.</p>
+<dl class="docutils">
+<dt>Diameter <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Diameter of the single scatterer in unit of meter.</dd>
+<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier">Source</span></dt>
+<dd>Light source object containing info on polarization and wavelength.</dd>
+<dt>Index <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Refractive index of scatterer</dd>
+<dt>Meshes <span class="classifier-delimiter">:</span> <span class="classifier">AngleMeshes</span></dt>
+<dd>Object AngleMeshes which describes the point in fourier space that are
+used for computation.</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="PyMieCoupling.classes.Scattering.WMSample">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Scattering.</code><code class="descname">WMSample</code><span class="sig-paren">(</span><em>g: float</em>, <em>lc: float</em>, <em>D: float</em>, <em>Nc: float</em>, <em>Source: PyMieCoupling.utils.Source</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sample represented by the Whittle-Matern RI correlation function and
+using the first Born approximation .</p>
+<dl class="docutils">
+<dt>g <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Description of parameter <cite>g</cite>.</dd>
+<dt>lc <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Correlation lenght of RI of the sample</dd>
+<dt>D <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Form factor of the sample</dd>
+<dt>Nc <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Scalling factor of the sample.</dd>
+<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier">Source</span></dt>
+<dd>Light source object containing info on polarization and wavelength.</dd>
+<dt>Meshes <span class="classifier-delimiter">:</span> <span class="classifier">AngleMeshes</span></dt>
+<dd>Object AngleMeshes which describes the point in fourier space that are
+used for computation.</dd>
+</dl>
+<dl class="method">
+<dt id="PyMieCoupling.classes.Scattering.WMSample.GetField">
+<code class="descname">GetField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.GetField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.GetField" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Scattering.WMSample.GetScalar">
+<code class="descname">GetScalar</code><span class="sig-paren">(</span><em>Meshes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.GetScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.GetScalar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Scattering.WMSample.Parallel">
+<code class="descname">Parallel</code><span class="sig-paren">(</span><em>Meshes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Parallel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Scattering.WMSample.Perpendicular">
+<code class="descname">Perpendicular</code><span class="sig-paren">(</span><em>Meshes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Perpendicular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Perpendicular" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Scattering.WMSample.Plot">
+<code class="descname">Plot</code><span class="sig-paren">(</span><em>num=200</em>, <em>scatter=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-PyMieCoupling.classes.Detector">
+<span id="detector"></span><h2>Detector<a class="headerlink" href="#module-PyMieCoupling.classes.Detector" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="PyMieCoupling.classes.Detector.LPmode">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Detector.</code><code class="descname">LPmode</code><span class="sig-paren">(</span><em>Mode: tuple</em>, <em>NA: float = 0.2</em>, <em>Sampling: int = 401</em>, <em>InterpSampling: int = 151</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = 'None'</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#LPmode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.LPmode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.BaseDetector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.MeshProperty</span></code></p>
+<p>Short summary.</p>
+<dl class="docutils">
+<dt>Mode <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
+<dd>LP mode index l, m.</dd>
+<dt>NA <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Numerical aperture of imaging system.</dd>
+<dt>Sampling <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Number of sampling points for the mode (inside NA).</dd>
+<dt>InterpSampling <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Number of sampling point for interpolation of FarField mode.</dd>
+<dt>GammaOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle offset of detector in the direction perpendicular to polarization.</dd>
+<dt>PhiOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle offset of detector in the direction parallel to polarization.</dd>
+<dt>Filter <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle of polarization filter in front of detector. Default is “None”</dd>
+<dt>CouplingMode <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Methode for computing mode coupling. Either Centered or Mean.</dd>
+</dl>
+<dl class="method">
+<dt id="PyMieCoupling.classes.Detector.LPmode.StructuredFarField">
+<code class="descname">StructuredFarField</code><span class="sig-paren">(</span><em>Num</em>, <em>SFactor=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#LPmode.StructuredFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.LPmode.StructuredFarField" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Detector.LPmode.UnstructuredFarField">
+<code class="descname">UnstructuredFarField</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#LPmode.UnstructuredFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.LPmode.UnstructuredFarField" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyMieCoupling.classes.Detector.Photodiode">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Detector.</code><code class="descname">Photodiode</code><span class="sig-paren">(</span><em>NA: float = 0.2</em>, <em>Sampling: int = 401</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = 'None'</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#Photodiode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.Photodiode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.BaseDetector</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.MeshProperty</span></code></p>
+<p>Short summary.</p>
+<dl class="docutils">
+<dt>NA <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Numerical aperture of imaging system.</dd>
+<dt>Sampling <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Number of sampling points for the mode (inside NA).</dd>
+<dt>GammaOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle offset of detector in the direction perpendicular to polarization.</dd>
+<dt>PhiOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle offset of detector in the direction parallel to polarization.</dd>
+<dt>Filter <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle of polarization filter in front of detector. Default is “None”</dd>
+<dt>CouplingMode <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
+<dd>Methode for computing mode coupling. Either Centered or Mean.</dd>
+</dl>
+<dl class="method">
+<dt id="PyMieCoupling.classes.Detector.Photodiode.StructuredFarField">
+<code class="descname">StructuredFarField</code><span class="sig-paren">(</span><em>Num=100</em>, <em>SFactor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#Photodiode.StructuredFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.Photodiode.StructuredFarField" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Detector.Photodiode.UnstructuredFarField">
+<code class="descname">UnstructuredFarField</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#Photodiode.UnstructuredFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.Photodiode.UnstructuredFarField" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-PyMieCoupling.classes.Meshes">
+<span id="meshes"></span><h2>Meshes<a class="headerlink" href="#module-PyMieCoupling.classes.Meshes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Meshes.</code><code class="descname">AngleMeshes</code><span class="sig-paren">(</span><em>MaxAngle: float = 0.5235987755982988</em>, <em>Sampling: int = 1000</em>, <em>PhiOffset: float = 0</em>, <em>GammaOffset: float = 0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class wich represent an angular mesh. The distribution of points inside
+the mesh is similar to a Fibonnaci sphere where each point cover an
+equivalent solid angle.</p>
+<dl class="docutils">
+<dt>MaxAngle <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle in radian defined by the numerical aperture of the imaging system.</dd>
+<dt>Sampling <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dd>Number of point distrubuted inside the Solid angle defined by the
+numerical aperture.</dd>
+<dt>PhiOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle offset in the parallel direction of the polarization of
+incindent light.</dd>
+<dt>GammaOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Angle offset in the perpendicular direction of the polarization of
+incindent light.</dd>
+</dl>
+<dl class="docutils">
+<dt>GenerateLedevedMesh <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>GenerateLedevedMesh</cite>.</dd>
+<dt>MakeProperties <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>MakeProperties</cite>.</dd>
+</dl>
+<p>PhiOffset
+GammaOffset
+MaxAngle
+Sampling</p>
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.AvoidPoles">
+<code class="descname">AvoidPoles</code><span class="sig-paren">(</span><em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.AvoidPoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.AvoidPoles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.ComputeTrueSample">
+<code class="descname">ComputeTrueSample</code><span class="sig-paren">(</span><em>Sampling</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.ComputeTrueSample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.ComputeTrueSample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.GenerateLedevedMesh">
+<code class="descname">GenerateLedevedMesh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.GenerateLedevedMesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.GenerateLedevedMesh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.MakeProperties">
+<code class="descname">MakeProperties</code><span class="sig-paren">(</span><em>Theta</em>, <em>Phi</em>, <em>dOmega</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.MakeProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.MakeProperties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.Plot">
+<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.Plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnGamma">
+<code class="descname">RotateOnGamma</code><span class="sig-paren">(</span><em>rotation</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.RotateOnGamma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnGamma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnPhi">
+<code class="descname">RotateOnPhi</code><span class="sig-paren">(</span><em>rotation</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.RotateOnPhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnPhi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.UpdateSphere">
+<code class="descname">UpdateSphere</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.UpdateSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.UpdateSphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyMieCoupling.classes.Meshes.Namespace">
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Meshes.</code><code class="descname">Namespace</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#Namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.Namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PyMieCoupling.classes.Meshes.fibonacci_sphere">
+<code class="descclassname">PyMieCoupling.classes.Meshes.</code><code class="descname">fibonacci_sphere</code><span class="sig-paren">(</span><em>samples=1</em>, <em>maxAngle=1.5707963267948966</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#fibonacci_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.fibonacci_sphere" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Detector.html" class="btn btn-neutral float-right" title="Detector" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

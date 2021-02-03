@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>PyMieCoupling.classes.Sets &mdash; PyMieSim 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> PyMieSim
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../Intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Classes.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Examples.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">PyMieSim</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>PyMieCoupling.classes.Sets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for PyMieCoupling.classes.Sets</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">PyMieCoupling.utils</span> <span class="kn">import</span> <span class="n">Source</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Optimizer</span> <span class="kn">import</span> <span class="n">OptArray</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Detector</span> <span class="kn">import</span> <span class="n">LPmode</span><span class="p">,</span> <span class="n">Photodiode</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.cpp.interface</span> <span class="kn">import</span> <span class="n">GetS1S2</span><span class="p">,</span> <span class="n">GetS1S2Qsca</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.DataFrame</span> <span class="kn">import</span> <span class="n">ExperimentalDataFrame</span><span class="p">,</span> <span class="n">S1S2DataFrame</span><span class="p">,</span> <span class="n">QscaDataFrame</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Scattering</span> <span class="kn">import</span> <span class="n">Scatterer</span><span class="p">,</span> <span class="n">WMSample</span>
+
+
+
+<div class="viewcode-block" id="ScattererSet"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.ScattererSet">[docs]</a><span class="k">class</span> <span class="nc">ScattererSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">DiameterList</span><span class="p">:</span>    <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">RIList</span><span class="p">:</span>          <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">Source</span><span class="p">:</span>          <span class="n">Source</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">RIList</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span> <span class="n">RIList</span> <span class="o">=</span> <span class="p">[</span><span class="n">RIList</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">DiameterList</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span> <span class="n">DiameterList</span> <span class="o">=</span> <span class="p">[</span><span class="n">DiameterList</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RIList</span> <span class="o">=</span> <span class="n">DiameterList</span><span class="p">,</span> <span class="n">RIList</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span> <span class="o">=</span> <span class="n">Source</span>
+
+
+<div class="viewcode-block" id="ScattererSet.Qsca"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.ScattererSet.Qsca">[docs]</a>    <span class="k">def</span> <span class="nf">Qsca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">201</span><span class="p">):</span>
+
+        <span class="n">Angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
+
+        <span class="n">MI</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RIList</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Diameter&#39;</span><span class="p">,</span> <span class="s1">&#39;RI&#39;</span><span class="p">])</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">QscaDataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">MI</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Qsca&#39;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">nr</span><span class="p">,</span> <span class="n">RI</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RIList</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">nd</span><span class="p">,</span> <span class="n">Diameter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">):</span>
+                <span class="n">SizeParam</span> <span class="o">=</span>  <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Diameter</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span>
+
+                <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Qsca</span> <span class="o">=</span> <span class="n">GetS1S2Qsca</span><span class="p">(</span><span class="n">RI</span><span class="p">,</span> <span class="n">SizeParam</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num</span><span class="p">));</span>
+
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Diameter</span><span class="p">,</span> <span class="n">RI</span><span class="p">),</span><span class="s1">&#39;Qsca&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
+
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="ScattererSet.S1S2"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.ScattererSet.S1S2">[docs]</a>    <span class="k">def</span> <span class="nf">S1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">201</span><span class="p">):</span>
+
+        <span class="n">Angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
+
+        <span class="n">MI</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">RIList</span><span class="p">,</span> <span class="n">Angle</span><span class="p">],</span>
+                                        <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Diameter&#39;</span><span class="p">,</span> <span class="s1">&#39;RI&#39;</span><span class="p">,</span> <span class="s1">&#39;Angle&#39;</span><span class="p">])</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">S1S2DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">MI</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;S2&#39;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">nr</span><span class="p">,</span> <span class="n">RI</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">RIList</span><span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">nd</span><span class="p">,</span> <span class="n">Diameter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">):</span>
+                <span class="n">SizeParam</span> <span class="o">=</span>  <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Diameter</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span>
+
+                <span class="n">S1</span><span class="p">,</span> <span class="n">S2</span> <span class="o">=</span> <span class="n">GetS1S2</span><span class="p">(</span><span class="n">RI</span><span class="p">,</span> <span class="n">SizeParam</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num</span><span class="p">));</span>
+
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Diameter</span><span class="p">,</span> <span class="n">RI</span><span class="p">),</span><span class="s1">&#39;S1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S1S2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+                <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Diameter</span><span class="p">,</span> <span class="n">RI</span><span class="p">),</span><span class="s1">&#39;S2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">S1S2</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">df</span></div></div>
+
+
+
+
+<div class="viewcode-block" id="ExperimentalSet"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.ExperimentalSet">[docs]</a><span class="k">class</span> <span class="nc">ExperimentalSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">ScattererSet</span><span class="p">:</span> <span class="n">ScattererSet</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">Detectors</span><span class="p">:</span>    <span class="nb">list</span>         <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Detectors</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span> <span class="n">Detectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">Detectors</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">ScattererSet</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Detectors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Detector </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="n">detector</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">Detectors</span><span class="p">)</span> <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Coupling</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Detectors</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">RIList</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">nDetector</span><span class="p">,</span> <span class="p">(</span><span class="n">DetectorName</span><span class="p">,</span> <span class="n">Detector</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Detectors</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+            <span class="k">for</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">RI</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">RIList</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">nDiameter</span><span class="p">,</span> <span class="n">Diameter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">):</span>
+
+                    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Scatterer</span><span class="p">(</span><span class="n">Diameter</span>  <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+                                     <span class="n">Index</span>     <span class="o">=</span> <span class="n">RI</span><span class="p">,</span>
+                                     <span class="n">Source</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">Source</span><span class="p">)</span>
+
+                    <span class="n">Coupling</span> <span class="o">=</span> <span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scat</span><span class="p">)</span>
+
+                    <span class="n">temp</span><span class="p">[</span><span class="n">nDetector</span><span class="p">,</span> <span class="n">nIndex</span><span class="p">,</span> <span class="n">nDiameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">Coupling</span>
+
+        <span class="k">return</span> <span class="n">OptArray</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">MI</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Detectors</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">RIList</span><span class="p">],</span>
+                                        <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Detectors&#39;</span><span class="p">,</span><span class="s1">&#39;Diameter&#39;</span><span class="p">,</span><span class="s1">&#39;RI&#39;</span><span class="p">,])</span>
+
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">ExperimentalDataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">MI</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Coupling&#39;</span><span class="p">])</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Detectors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detectors</span>
+
+        <span class="k">for</span> <span class="n">nr</span><span class="p">,</span> <span class="n">RI</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">RIList</span> <span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">nd</span><span class="p">,</span> <span class="n">Diameter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">DiameterList</span><span class="p">):</span>
+
+                <span class="k">for</span> <span class="n">DetectorName</span><span class="p">,</span> <span class="n">Detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Scatterer</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+                                     <span class="n">Index</span>       <span class="o">=</span> <span class="n">RI</span><span class="p">,</span>
+                                     <span class="n">Source</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ScattererSet</span><span class="o">.</span><span class="n">Source</span><span class="p">)</span>
+
+                    <span class="n">Coupling</span> <span class="o">=</span> <span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scat</span><span class="p">)</span>
+
+                    <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">DetectorName</span><span class="p">,</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">RI</span><span class="p">),</span><span class="s1">&#39;Coupling&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Coupling</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">Coupling</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Coupling</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Detectors&#39;</span><span class="p">,</span><span class="s1">&#39;Diameter&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">Coupling</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;STD&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Detectors&#39;</span><span class="p">,</span><span class="s1">&#39;Diameter&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">Coupling</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;std&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+
+<div class="viewcode-block" id="SampleSet"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.SampleSet">[docs]</a><span class="k">class</span> <span class="nc">SampleSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">gList</span><span class="p">:</span>           <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">LcList</span><span class="p">:</span>          <span class="nb">list</span><span class="p">,</span>
+                 <span class="n">D</span><span class="p">:</span>               <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">Nc</span><span class="p">:</span>              <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">Detector</span><span class="p">:</span>        <span class="n">Union</span><span class="p">[</span><span class="n">LPmode</span><span class="p">,</span> <span class="n">Photodiode</span><span class="p">],</span>
+                 <span class="n">Source</span><span class="p">:</span>          <span class="n">Source</span><span class="p">,</span>
+                 <span class="n">Mode</span><span class="p">:</span>            <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">,</span>
+                 <span class="n">Npts</span><span class="p">:</span>            <span class="nb">int</span> <span class="o">=</span> <span class="mi">201</span><span class="p">,</span>
+                 <span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LcList</span> <span class="o">=</span> <span class="n">gList</span><span class="p">,</span> <span class="n">LcList</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">D</span><span class="p">;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span> <span class="o">=</span> <span class="n">Nc</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span> <span class="o">=</span> <span class="n">Source</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mode</span> <span class="o">=</span> <span class="n">Detector</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Mode</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Coupling</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LcList</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gList</span><span class="p">)]</span> <span class="p">)</span>
+
+        <span class="n">maxPhi</span><span class="p">,</span> <span class="n">minPhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">Detector</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">Detector</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">PhiVector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span><span class="mi">201</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">PhiVectorDetector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">minPhi</span><span class="p">,</span> <span class="n">maxPhi</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SampleSet.GetCouplingFrame"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.SampleSet.GetCouplingFrame">[docs]</a>    <span class="k">def</span> <span class="nf">GetCouplingFrame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Filter</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;None&#39;</span><span class="p">]</span> <span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">Filter</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span> <span class="n">Filter</span> <span class="o">=</span> <span class="p">[</span><span class="n">Filter</span><span class="p">]</span>
+
+        <span class="n">MI</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="n">Filter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gList</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LcList</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Filter&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;lc&#39;</span><span class="p">,])</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">MI</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Coupling&#39;</span><span class="p">])</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Filter&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Filter</span>
+
+        <span class="k">for</span> <span class="n">ng</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gList</span> <span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">nlc</span><span class="p">,</span> <span class="n">lc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LcList</span><span class="p">):</span>
+
+                <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">(</span><span class="n">g</span>           <span class="o">=</span> <span class="n">g</span><span class="p">,</span>
+                              <span class="n">lc</span>          <span class="o">=</span> <span class="n">lc</span><span class="p">,</span>
+                              <span class="n">D</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span>
+                              <span class="n">Nc</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span>
+                              <span class="n">Source</span>      <span class="o">=</span> <span class="n">LightSource</span><span class="p">,</span>
+                              <span class="n">Meshes</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">Meshes</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">Polar</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;Filter&#39;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">Filter</span> <span class="o">=</span> <span class="n">Polar</span>
+
+                    <span class="n">Coupling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scat</span><span class="p">,</span> <span class="n">Mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mode</span><span class="p">)</span>
+
+                    <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">Polar</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">lc</span><span class="p">),</span><span class="s1">&#39;Coupling&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Coupling</span>
+
+
+        <span class="n">df</span><span class="o">.</span><span class="n">Coupling</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Coupling</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="o">.</span><span class="n">DetectorNane</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">_name</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+
+<div class="viewcode-block" id="SampleSet.GetCouplingArray"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Sets.SampleSet.GetCouplingArray">[docs]</a>    <span class="k">def</span> <span class="nf">GetCouplingArray</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Filter</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">):</span>
+
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gList</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LcList</span><span class="p">)</span> <span class="p">]</span> <span class="p">)</span>
+
+
+        <span class="k">for</span> <span class="n">ng</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">gList</span> <span class="p">):</span>
+
+            <span class="k">for</span> <span class="n">nlc</span><span class="p">,</span> <span class="n">lc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">LcList</span><span class="p">):</span>
+
+                <span class="n">Samp</span> <span class="o">=</span> <span class="n">Sample</span><span class="p">(</span><span class="n">g</span>           <span class="o">=</span> <span class="n">g</span><span class="p">,</span>
+                              <span class="n">lc</span>          <span class="o">=</span> <span class="n">lc</span><span class="p">,</span>
+                              <span class="n">D</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">D</span><span class="p">,</span>
+                              <span class="n">Nc</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Nc</span><span class="p">,</span>
+                              <span class="n">Source</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span>
+                              <span class="n">Meshes</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">Meshes</span><span class="p">)</span>
+
+                <span class="n">Coupling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Samp</span><span class="p">,</span> <span class="n">Mode</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mode</span><span class="p">)</span>
+
+                <span class="n">temp</span><span class="p">[</span><span class="n">ng</span><span class="p">,</span> <span class="n">nlc</span><span class="p">]</span> <span class="o">=</span> <span class="n">Coupling</span>
+
+        <span class="k">return</span> <span class="n">OptArray</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span></div></div>
+
+
+
+
+
+
+<span class="c1"># -</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
