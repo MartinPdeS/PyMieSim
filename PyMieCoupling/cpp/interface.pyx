@@ -8,6 +8,7 @@ cimport numpy as np
 import numpy as np
 from cpython.mem cimport PyMem_Malloc
 from cpython cimport Py_buffer
+from libcpp.utility cimport pair
 
 
 ctypedef double complex complex128_t
@@ -19,13 +20,7 @@ cdef extern from "Mie.cpp":
                          int lenght,
                          complex128_t* ptr);
 
-    cdef double C_GetS1S2Qsca(double a,
-                              double b,
-                              double* phi,
-                              int lenght,
-                              complex128_t* ptr);
-
- 
+    cdef pair[double, double] C_GetEfficiencies(double a, double b, double* phi);
 
     cdef void* Fields(double a,
                       double b,
@@ -36,15 +31,6 @@ cdef extern from "Mie.cpp":
                       complex128_t* Perpendicular,
                       double Polarization);
 
-    cdef double FieldsQsca(double a,
-                           double b,
-                           double* ThetaVec,
-                           double* PhiVec,
-                           int Lenght,
-                           complex128_t* Parallel,
-                           complex128_t* Perpendicular,
-                           double Polarization);
-
 
     cdef void* FieldsNoPolarization(double a,
                                     double b,
@@ -54,14 +40,6 @@ cdef extern from "Mie.cpp":
                                     complex128_t* Parallel,
                                     complex128_t* Perpendicular);
 
-
-    cdef double FieldsNoPolarizationQsca(double a,
-                                         double b,
-                                         double* ThetaVec,
-                                         double* PhiVec,
-                                         int Lenght,
-                                         complex128_t* Parallel,
-                                         complex128_t* Perpendicular);
 
 
 @cython.boundscheck(False)
@@ -98,9 +76,9 @@ cpdef GetS1S2(double m,
 @cython.cdivision(True)
 @cython.nonecheck(False)
 @cython.wraparound(False)
-cpdef GetS1S2Qsca(double m,
-                  double x,
-                  phi):
+cpdef GetEfficiencies(double m,
+                      double x,
+                      phi):
 
     Vector = VectorWrapper(2 * phi.size)
     Vector.add_row()
@@ -111,17 +89,11 @@ cpdef GetS1S2Qsca(double m,
 
     phiMesh_ptr = &phiView[0]
 
-    Qsca = C_GetS1S2Qsca(m,  x, phiMesh_ptr, phi.size, &(Vector.S1S2)[0])
+    Qsca, Qext = C_GetEfficiencies(m,  x, phiMesh_ptr)
 
-    arr = np.asarray(Vector)
+    Qabs = Qext - Qsca
 
-    arr = np.reshape(arr,[2,phi.size])
-
-    return arr[0], arr[1], Qsca
-
-
-
-
+    return Qsca, Qext, Qabs
 
 
 
@@ -136,8 +108,7 @@ cpdef GetFields(double m,
                         double x,
                         ThetaMesh,
                         PhiMesh,
-                        Polarization,
-                        Qsca):
+                        Polarization):
 
     cdef:
         np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")
@@ -158,52 +129,30 @@ cpdef GetFields(double m,
     Perpendicular.add_row()
 
     if Polarization is 'None':
-        if Qsca is False:
-            FieldsNoPolarization(m,
-                                 x,
-                                 ThetaVec_ptr,
-                                 PhiVec_ptr,
-                                 PhiMesh.size,
-                                 &(Parallel.S1S2)[0],
-                                 &(Perpendicular.S1S2)[0]);
 
-        else:
-            FieldsNoPolarizationQsca(m,
-                                     x,
-                                     ThetaVec_ptr,
-                                     PhiVec_ptr,
-                                     PhiMesh.size,
-                                     &(Parallel.S1S2)[0],
-                                     &(Perpendicular.S1S2)[0]);
+        FieldsNoPolarization(m,
+                             x,
+                             ThetaVec_ptr,
+                             PhiVec_ptr,
+                             PhiMesh.size,
+                             &(Parallel.S1S2)[0],
+                             &(Perpendicular.S1S2)[0]);
 
     else:
-        if Qsca is False:
-            Fields(m,
-                   x,
-                   ThetaVec_ptr,
-                   PhiVec_ptr,
-                   PhiMesh.size,
-                   &(Parallel.S1S2)[0],
-                   &(Perpendicular.S1S2)[0],
-                   Polarization);
 
-        else:
-            Qsca = FieldsQsca(m,
-                              x,
-                              ThetaVec_ptr,
-                              PhiVec_ptr,
-                              PhiMesh.size,
-                              &(Parallel.S1S2)[0],
-                              &(Perpendicular.S1S2)[0],
-                              Polarization);
-
+        Fields(m,
+               x,
+               ThetaVec_ptr,
+               PhiVec_ptr,
+               PhiMesh.size,
+               &(Parallel.S1S2)[0],
+               &(Perpendicular.S1S2)[0],
+               Polarization);
 
     arr0 = np.asarray(Parallel).squeeze()
     arr1 = np.asarray(Perpendicular).squeeze()
 
-
-
-    return arr0, arr1, Qsca
+    return arr0, arr1
 
 
 

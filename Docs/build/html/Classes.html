@@ -33,12 +33,14 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="Examples.html" />
     <link rel="prev" title="Introduction" href="Intro.html" /> 
 </head>
 
@@ -84,19 +86,20 @@
               
             
             
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Classes</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Scattering">Scatterering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Detector">Detector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Meshes">Meshes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#meshes">Meshes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Sets">Sets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.Representations">Representations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.BaseClasses">BaseClasses</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieCoupling.classes.DataFrame">DataFrame</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
 </ul>
 
             
@@ -187,7 +190,7 @@
 <dt id="PyMieCoupling.classes.Scattering.Scatterer">
 <em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Scattering.</code><code class="descname">Scatterer</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieCoupling.utils.Source</em>, <em>Index: float</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#Scatterer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.Scatterer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PyMieCoupling.classes.BaseClasses.BaseScatterer" title="PyMieCoupling.classes.BaseClasses.BaseScatterer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.BaseScatterer</span></code></a></p>
-<p>Single scatterer object.</p>
+<p>Short summary.</p>
 <dl class="docutils">
 <dt>Diameter <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
 <dd>Diameter of the single scatterer in unit of meter.</dd>
@@ -195,10 +198,30 @@
 <dd>Light source object containing info on polarization and wavelength.</dd>
 <dt>Index <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
 <dd>Refractive index of scatterer</dd>
-<dt>Meshes <span class="classifier-delimiter">:</span> <span class="classifier">AngleMeshes</span></dt>
-<dd>Object AngleMeshes which describes the point in fourier space that are
-used for computation.</dd>
 </dl>
+<dl class="docutils">
+<dt>Area <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Mathematical 2D area of the scatterer [pi * r^2].</dd>
+<dt>SizeParam <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd>Size parameter of the scatterer [k * r].</dd>
+<dt>_Stokes <span class="classifier-delimiter">:</span> <span class="classifier">&lt;PyMieCoupling.classes.Representation.Stokes&gt;</span></dt>
+<dd>Stoke representation class</dd>
+<dt>_SPF <span class="classifier-delimiter">:</span> <span class="classifier">&lt;PyMieCoupling.classes.Representation.SPF&gt;</span></dt>
+<dd>Scattering phase function representation class</dd>
+<dt>_Parallel <span class="classifier-delimiter">:</span> <span class="classifier">&lt;PyMieCoupling.classes.Representation.Field&gt;</span></dt>
+<dd>Parallel field representation class</dd>
+<dt>_Perpendicular <span class="classifier-delimiter">:</span> <span class="classifier">&lt;PyMieCoupling.classes.Representation.Field&gt;</span></dt>
+<dd>Perpendicular field representation class</dd>
+<dt>_S1S2 <span class="classifier-delimiter">:</span> <span class="classifier">&lt;PyMieCoupling.classes.Representation.S1S2&gt;</span></dt>
+<dd>S1 and S2 values representation class</dd>
+<dt>_phi <span class="classifier-delimiter">:</span> <span class="classifier">[list, np.ndarray]</span></dt>
+<dd>Last phi list used for computing S1S2 or Field or SPF or Stokes</dd>
+<dt>_theta <span class="classifier-delimiter">:</span> <span class="classifier">[list, np.ndarray]</span></dt>
+<dd>Last theta list used for computing S1S2 or Field or SPF or Stokes</dd>
+</dl>
+<p>Diameter
+Source
+Index</p>
 </dd></dl>
 
 <dl class="class">
@@ -218,8 +241,8 @@ using the first Born approximation .</p>
 <dd>Scalling factor of the sample.</dd>
 <dt>Source <span class="classifier-delimiter">:</span> <span class="classifier">Source</span></dt>
 <dd>Light source object containing info on polarization and wavelength.</dd>
-<dt>Meshes <span class="classifier-delimiter">:</span> <span class="classifier">AngleMeshes</span></dt>
-<dd>Object AngleMeshes which describes the point in fourier space that are
+<dt>Mesh <span class="classifier-delimiter">:</span> <span class="classifier">FibonacciMesh</span></dt>
+<dd>Object FibonacciMesh which describes the point in fourier space that are
 used for computation.</dd>
 </dl>
 <dl class="method">
@@ -229,17 +252,17 @@ used for computation.</dd>
 
 <dl class="method">
 <dt id="PyMieCoupling.classes.Scattering.WMSample.GetScalar">
-<code class="descname">GetScalar</code><span class="sig-paren">(</span><em>Meshes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.GetScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.GetScalar" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetScalar</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.GetScalar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.GetScalar" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="PyMieCoupling.classes.Scattering.WMSample.Parallel">
-<code class="descname">Parallel</code><span class="sig-paren">(</span><em>Meshes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Parallel" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Parallel</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Parallel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="PyMieCoupling.classes.Scattering.WMSample.Perpendicular">
-<code class="descname">Perpendicular</code><span class="sig-paren">(</span><em>Meshes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Perpendicular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Perpendicular" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Perpendicular</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Scattering.html#WMSample.Perpendicular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Scattering.WMSample.Perpendicular" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -254,7 +277,7 @@ used for computation.</dd>
 <span id="detector"></span><h2>Detector<a class="headerlink" href="#module-PyMieCoupling.classes.Detector" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="PyMieCoupling.classes.Detector.LPmode">
-<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Detector.</code><code class="descname">LPmode</code><span class="sig-paren">(</span><em>Mode: tuple</em>, <em>NA: float = 0.2</em>, <em>Sampling: int = 401</em>, <em>InterpSampling: int = 151</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = 'None'</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#LPmode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.LPmode" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Detector.</code><code class="descname">LPmode</code><span class="sig-paren">(</span><em>Mode: tuple</em>, <em>NA: float = 0.2</em>, <em>Sampling: int = 401</em>, <em>InterpSampling: int = 251</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = 'None'</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Detector.html#LPmode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Detector.LPmode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PyMieCoupling.classes.BaseClasses.BaseDetector" title="PyMieCoupling.classes.BaseClasses.BaseDetector"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.BaseDetector</span></code></a>, <a class="reference internal" href="#PyMieCoupling.classes.BaseClasses.MeshProperty" title="PyMieCoupling.classes.BaseClasses.MeshProperty"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieCoupling.classes.BaseClasses.MeshProperty</span></code></a></p>
 <p>Short summary.</p>
 <dl class="docutils">
@@ -274,6 +297,24 @@ used for computation.</dd>
 <dd>Angle of polarization filter in front of detector. Default is “None”</dd>
 <dt>CouplingMode <span class="classifier-delimiter">:</span> <span class="classifier">str</span></dt>
 <dd>Methode for computing mode coupling. Either Centered or Mean.</dd>
+</dl>
+<dl class="docutils">
+<dt>_CouplingMode <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>_CouplingMode</cite>.</dd>
+<dt>_Filter <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>_Filter</cite>.</dd>
+<dt>ModeNumber <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>ModeNumber</cite>.</dd>
+<dt>Mesh <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>Mesh</cite>.</dd>
+<dt>Structured <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>Structured</cite>.</dd>
+<dt>StructuredFarField <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>StructuredFarField</cite>.</dd>
+<dt>Scalar <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>Scalar</cite>.</dd>
+<dt>UnstructuredFarField <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd>Description of attribute <cite>UnstructuredFarField</cite>.</dd>
 </dl>
 <dl class="method">
 <dt id="PyMieCoupling.classes.Detector.LPmode.StructuredFarField">
@@ -319,91 +360,8 @@ used for computation.</dd>
 </dd></dl>
 
 </div>
-<div class="section" id="module-PyMieCoupling.classes.Meshes">
-<span id="meshes"></span><h2>Meshes<a class="headerlink" href="#module-PyMieCoupling.classes.Meshes" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes">
-<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Meshes.</code><code class="descname">AngleMeshes</code><span class="sig-paren">(</span><em>MaxAngle: float = 0.5235987755982988</em>, <em>Sampling: int = 1000</em>, <em>PhiOffset: float = 0</em>, <em>GammaOffset: float = 0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class wich represent an angular mesh. The distribution of points inside
-the mesh is similar to a Fibonnaci sphere where each point cover an
-equivalent solid angle.</p>
-<dl class="docutils">
-<dt>MaxAngle <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>Angle in radian defined by the numerical aperture of the imaging system.</dd>
-<dt>Sampling <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>Number of point distrubuted inside the Solid angle defined by the
-numerical aperture.</dd>
-<dt>PhiOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>Angle offset in the parallel direction of the polarization of
-incindent light.</dd>
-<dt>GammaOffset <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>Angle offset in the perpendicular direction of the polarization of
-incindent light.</dd>
-</dl>
-<dl class="docutils">
-<dt>GenerateLedevedMesh <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>GenerateLedevedMesh</cite>.</dd>
-<dt>MakeProperties <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>MakeProperties</cite>.</dd>
-</dl>
-<p>PhiOffset
-GammaOffset
-MaxAngle
-Sampling</p>
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.AvoidPoles">
-<code class="descname">AvoidPoles</code><span class="sig-paren">(</span><em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.AvoidPoles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.AvoidPoles" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.ComputeTrueSample">
-<code class="descname">ComputeTrueSample</code><span class="sig-paren">(</span><em>Sampling</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.ComputeTrueSample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.ComputeTrueSample" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.GenerateLedevedMesh">
-<code class="descname">GenerateLedevedMesh</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.GenerateLedevedMesh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.GenerateLedevedMesh" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.MakeProperties">
-<code class="descname">MakeProperties</code><span class="sig-paren">(</span><em>Theta</em>, <em>Phi</em>, <em>dOmega</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.MakeProperties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.MakeProperties" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.Plot">
-<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.Plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnGamma">
-<code class="descname">RotateOnGamma</code><span class="sig-paren">(</span><em>rotation</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.RotateOnGamma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnGamma" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnPhi">
-<code class="descname">RotateOnPhi</code><span class="sig-paren">(</span><em>rotation</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.RotateOnPhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.RotateOnPhi" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieCoupling.classes.Meshes.AngleMeshes.UpdateSphere">
-<code class="descname">UpdateSphere</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#AngleMeshes.UpdateSphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.AngleMeshes.UpdateSphere" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="PyMieCoupling.classes.Meshes.Namespace">
-<em class="property">class </em><code class="descclassname">PyMieCoupling.classes.Meshes.</code><code class="descname">Namespace</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#Namespace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.Namespace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-</dd></dl>
-
-<dl class="function">
-<dt id="PyMieCoupling.classes.Meshes.fibonacci_sphere">
-<code class="descclassname">PyMieCoupling.classes.Meshes.</code><code class="descname">fibonacci_sphere</code><span class="sig-paren">(</span><em>samples=1</em>, <em>maxAngle=1.5707963267948966</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieCoupling/classes/Meshes.html#fibonacci_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieCoupling.classes.Meshes.fibonacci_sphere" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<div class="section" id="meshes">
+<h2>Meshes<a class="headerlink" href="#meshes" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-PyMieCoupling.classes.Sets">
 <span id="sets"></span><h2>Sets<a class="headerlink" href="#module-PyMieCoupling.classes.Sets" title="Permalink to this headline">¶</a></h2>
@@ -766,6 +724,7 @@ with the PyMieScatt package.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="Intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

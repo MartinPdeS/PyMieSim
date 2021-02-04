@@ -25,7 +25,7 @@ def LoopRIDiameter(RIList:       list,
             Scat = Scatterer(Diameter  = Diameter,
                              Index     = RI,
                              Source    = SKwargs['Source'],
-                             Meshes    = Detector.Meshes
+                             Mesh    = Detector.Mesh
                              )
 
             Coupling = Detector.Coupling(Scatterer = Scat, Polarization = Polarization)
@@ -62,7 +62,7 @@ def PlotRI(Diameter:     float,
                          )
 
 
-        x = Scat.Meshes.Phi.Vector.Degree
+        x = Scat.Mesh.Phi.Vector.Degree
         y = np.abs(Scat.S1S2.S1S2[0])**2
 
         plt.plot(x, y, label="{0:.3f}".format(RI))
@@ -73,10 +73,10 @@ def PlotRI(Diameter:     float,
 
 
 
-        ax.fill_between(Scat.Meshes.Phi.Vector.Degree,
+        ax.fill_between(Scat.Mesh.Phi.Vector.Degree,
                         ymin,
                         ymax,
-                        where= (x > Detector.Meshes.Phi.Boundary.Degree[0]) & (x < Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                        where= (x > Detector.Mesh.Phi.Boundary.Degree[0]) & (x < Detector.Mesh.Phi.Boundary.Degree[1]) ,
                         label='Detector',
                         color='green',
                         alpha=0.5)
@@ -125,7 +125,7 @@ def PlotDiameter(DiameterList: float,
                          )
 
 
-        x = Scat.Meshes.Phi.Vector.Degree
+        x = Scat.Mesh.Phi.Vector.Degree
         y = np.abs(Scat.S1S2.S1S2[0])**2
 
         plt.plot(x, y, label="{0:.1e}".format(Diameter))
@@ -136,10 +136,10 @@ def PlotDiameter(DiameterList: float,
 
 
 
-    ax.fill_between(Scat.Meshes.Phi.Vector.Degree,
+    ax.fill_between(Scat.Mesh.Phi.Vector.Degree,
                     ymin,
                     ymax,
-                    where= (x > Detector.Meshes.Phi.Boundary.Degree[0]) & (x < Detector.Meshes.Phi.Boundary.Degree[1]) ,
+                    where= (x > Detector.Mesh.Phi.Boundary.Degree[0]) & (x < Detector.Mesh.Phi.Boundary.Degree[1]) ,
                     color='green', alpha=0.5)
 
     ax.grid()

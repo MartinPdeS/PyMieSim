@@ -5,7 +5,7 @@ from typing import Tuple, Union
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.cpp.interface import GetS1S2, GetS1S2Qsca
+from PyMieCoupling.cpp.interface import GetS1S2, GetEfficiencies
 from PyMieCoupling.classes.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieCoupling.classes.Scattering import Scatterer, WMSample
 
@@ -40,7 +40,7 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                _, _, Qsca = GetS1S2Qsca(RI, SizeParam, np.linspace(0,2*np.pi,num));
+                Qsca, Qext, Qabs = GetEfficiencies(RI, SizeParam, np.linspace(0,2*np.pi,num));
 
                 df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
 

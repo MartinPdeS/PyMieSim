@@ -201,10 +201,10 @@ ExperimentalSet: Coupling
 .. code-block:: console
    :linenos:
    
-import numpy as np
-from PyMieCoupling.utils import Source
-from PyMieCoupling.classes.Detector import LPmode
-from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet
+   import numpy as np
+   from PyMieCoupling.utils import Source
+   from PyMieCoupling.classes.Detector import LPmode
+   from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet
 
    LightSource = Source(Wavelength   = 950e-9,
                         Polarization = 0)

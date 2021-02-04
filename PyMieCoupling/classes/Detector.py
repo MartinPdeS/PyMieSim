@@ -6,7 +6,7 @@ import cartopy.crs as ccrs
 from ai import cs
 
 from PyMieCoupling.classes.BaseClasses import BaseDetector, MeshProperty
-from PyMieCoupling.classes.Meshes import AngleMeshes
+from PyMieCoupling.classes.Mesh import FibonacciMesh
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import SMF28, Angle, _Polarization, interp_at
 from PyMieCoupling.physics import FraunhoferDiffraction
@@ -45,7 +45,7 @@ class Photodiode(BaseDetector, MeshProperty):
 
         self._Filter = _Polarization(Filter)
 
-        self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(NA).Radian,
+        self.Mesh = FibonacciMesh(MaxAngle    = NA2Angle(NA).Radian,
                                   Sampling    = Sampling,
                                   PhiOffset   = self._PhiOffset,
                                   GammaOffset = self._GammaOffset)
@@ -54,7 +54,7 @@ class Photodiode(BaseDetector, MeshProperty):
 
 
     def UnstructuredFarField(self):
-        return np.ones(self.Meshes.Sampling)
+        return np.ones(self.Mesh.Sampling)
 
 
     def StructuredFarField(self, Num = 100, SFactor = None):
@@ -84,13 +84,34 @@ class LPmode(BaseDetector, MeshProperty):
         Angle of polarization filter in front of detector. Default is "None"
     CouplingMode : str
         Methode for computing mode coupling. Either Centered or Mean.
+
+    Attributes
+    ----------
+    _CouplingMode : type
+        Description of attribute `_CouplingMode`.
+    _Filter : type
+        Description of attribute `_Filter`.
+    ModeNumber : type
+        Description of attribute `ModeNumber`.
+    Mesh : type
+        Description of attribute `Mesh`.
+    Structured : type
+        Description of attribute `Structured`.
+    StructuredFarField : type
+        Description of attribute `StructuredFarField`.
+    Scalar : type
+        Description of attribute `Scalar`.
+    UnstructuredFarField : type
+        Description of attribute `UnstructuredFarField`.
+
     """
+
 
     def __init__(self,
                  Mode:           tuple,
                  NA:             float = 0.2,
                  Sampling:       int   = 401,
-                 InterpSampling: int   = 151,
+                 InterpSampling: int   = 251,
                  GammaOffset:    float = 0,
                  PhiOffset:      float = 0,
                  Filter:         float =  'None',
@@ -110,7 +131,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         self.ModeNumber = Mode[0]+1, Mode[1], Mode[2]
 
-        self.Meshes = AngleMeshes(MaxAngle    = NA2Angle(NA).Radian,
+        self.Mesh = FibonacciMesh(MaxAngle    = NA2Angle(NA).Radian,
                                   Sampling    = Sampling,
                                   PhiOffset   = PhiOffset,
                                   GammaOffset = GammaOffset)
@@ -120,7 +141,7 @@ class LPmode(BaseDetector, MeshProperty):
         self.Scalar = self.UnstructuredFarField()
 
         if False:
-            PlotUnstructureData(self.Scalar, self.Meshes.base.Theta, self.Meshes.base.Phi)
+            PlotUnstructureData(self.Scalar, self.Mesh.base.Theta, self.Mesh.base.Phi)
 
 
 
@@ -148,15 +169,15 @@ class LPmode(BaseDetector, MeshProperty):
 
         x, y = np.mgrid[-50: 50: complex(shape[0]), -50: 50: complex(shape[1])]
 
-        z = 50 / np.tan(self.Meshes.MaxAngle)
+        z = 50 / np.tan(self.Mesh.MaxAngle)
 
         _, self._phi, self._theta = cs.cart2sp(x.flatten(), y.flatten(), x.flatten()*0+z)
 
         return interp_at(x           = self._phi.flatten(),
                          y           = self._theta.flatten(),
                          v           = self.Structured.astype(np.complex).flatten(),
-                         xp          = self.Meshes.base.Phi,
-                         yp          = self.Meshes.base.Theta,
+                         xp          = self.Mesh.base.Phi,
+                         yp          = self.Mesh.base.Theta,
                          algorithm   = 'linear',
                          extrapolate = True)
 

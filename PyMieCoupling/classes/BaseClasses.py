@@ -6,10 +6,9 @@ import matplotlib
 import cartopy.crs as ccrs
 from ai import cs
 
-from PyMieCoupling.classes.Meshes import AngleMeshes
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
-from PyMieCoupling.cpp.interface import GetFields, GetS1S2Qsca
+from PyMieCoupling.cpp.interface import GetFields, GetEfficiencies
 from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
 
@@ -35,20 +34,20 @@ class MeshProperty(object):
 
     @property
     def PhiOffset(self):
-        return self.Meshes.PhiOffset
+        return self.Mesh.PhiOffset
 
     @PhiOffset.setter
     def PhiOffset(self, val):
-        self.Meshes.UpdateSphere(PhiOffset = val)
+        self.Mesh.UpdateSphere(PhiOffset = val)
         self.GetSpherical()
 
     @property
     def GammaOffset(self):
-        return self.Meshes.GammaOffset
+        return self.Mesh.GammaOffset
 
     @GammaOffset.setter
     def GammaOffset(self, val):
-        self.Meshes.UpdateSphere(GammaOffset = val)
+        self.Mesh.UpdateSphere(GammaOffset = val)
         self.GetSpherical()
 
     @property
@@ -60,7 +59,7 @@ class MeshProperty(object):
         if val >= 1: val = 0.999
         if val <= 0: val = 0.001
         self.MaxAngle = NA2Angle(val).Radian
-        self.Meshes.UpdateSphere(MaxAngle = self.MaxAngle)
+        self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
         self.GetSpherical()
 
 
@@ -114,40 +113,40 @@ class BaseDetector(object):
 
     def Plot(self):
         Name = 'Mode Field'
-        ThetaMean = np.mean(self.Meshes.Theta.Degree).round(1)
-        PhiMean = np.mean(self.Meshes.Phi.Degree).round(1)
+        ThetaMean = np.mean(self.Mesh.Theta.Degree).round(1)
+        PhiMean = np.mean(self.Mesh.Phi.Degree).round(1)
 
         fig, (ax0, ax1) = plt.subplots(1,
                                  2,
                                  figsize=(8,4),
                                  subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea(central_latitude=PhiMean, central_longitude=ThetaMean)})
 
-        im0 = ax0.tricontour(self.Meshes.Theta.Degree,
-                             self.Meshes.Phi.Degree,
+        im0 = ax0.tricontour(self.Mesh.Theta.Degree,
+                             self.Mesh.Phi.Degree,
                              self.Scalar.real,
                              levels=13,
                              linewidths=0.5,
                              colors='k',
                              transform = ccrs.PlateCarree())
 
-        cntr0 = ax0.tricontourf(self.Meshes.Theta.Degree,
-                                self.Meshes.Phi.Degree,
+        cntr0 = ax0.tricontourf(self.Mesh.Theta.Degree,
+                                self.Mesh.Phi.Degree,
                                 self.Scalar.real,
                                 levels=13,
                                 cmap="inferno",
                                 transform = ccrs.PlateCarree())
 
 
-        im1 = ax1.tricontour(self.Meshes.Theta.Degree,
-                             self.Meshes.Phi.Degree,
+        im1 = ax1.tricontour(self.Mesh.Theta.Degree,
+                             self.Mesh.Phi.Degree,
                              self.Scalar.imag,
                              levels=14,
                              linewidths=0.5,
                              colors='k',
                              transform = ccrs.PlateCarree())
 
-        cntr1 = ax1.tricontourf(self.Meshes.Theta.Degree,
-                                self.Meshes.Phi.Degree,
+        cntr1 = ax1.tricontourf(self.Mesh.Theta.Degree,
+                                self.Mesh.Phi.Degree,
                                 self.Scalar.imag,
                                 levels=14,
                                 cmap="inferno",
@@ -157,14 +156,14 @@ class BaseDetector(object):
         plt.colorbar(mappable=cntr0, fraction=0.046, orientation='horizontal', ax=ax0)
 
 
-        ax1.plot(self.Meshes.Theta.Degree,
-                 self.Meshes.Phi.Degree,
+        ax1.plot(self.Mesh.Theta.Degree,
+                 self.Mesh.Phi.Degree,
                  'ko',
                  ms=0.1,
                  transform = ccrs.PlateCarree())
 
-        ax0.plot(self.Meshes.Theta.Degree,
-                 self.Meshes.Phi.Degree,
+        ax0.plot(self.Mesh.Theta.Degree,
+                 self.Mesh.Phi.Degree,
                  'ko',
                  ms=0.1,
                  transform = ccrs.PlateCarree())
@@ -244,11 +243,13 @@ class BaseScatterer(object):
     @property
     def Qsca(self):
         """https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no"""
-        _, _, Qsca = GetS1S2Qsca(m = self.Index,
-                                 x = self.SizeParam,
-                                 phi = np.linspace(0, np.pi, 2))
+
+        Qsca, Qext, Qabs = GetEfficiencies(m = self.Index,
+                               x = self.SizeParam,
+                               phi = np.linspace(0, np.pi, 2))
 
         return Qsca
+
 
 
     def Field(self, Num=200):
@@ -260,7 +261,7 @@ class BaseScatterer(object):
     def Parallel(self, Phi, Theta):
         if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
             self._phi, self._theta = Phi, Theta
-            self._Parallel, self._Perpendicular, Qsca = self.GenField(Phi, Theta)
+            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
             return self._Parallel
         else:
             return self._Parallel
@@ -269,7 +270,7 @@ class BaseScatterer(object):
     def Perpendicular(self, Phi, Theta):
         if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
             self._phi, self._theta = Phi, Theta
-            self._Parallel, self._Perpendicular, Qsca = self.GenField(Phi, Theta)
+            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
             return self._Perpendicular
         else:
             return self._Perpendicular
@@ -292,8 +293,7 @@ class BaseScatterer(object):
                          x            = self.SizeParam,
                          ThetaMesh    = Theta,
                          PhiMesh      = Phi - np.pi/2,
-                         Polarization = self.Source.Polarization.Radian,
-                         Qsca         = False)
+                         Polarization = self.Source.Polarization.Radian)
 
 
     def Plot(self, Num=200, scatter=False):

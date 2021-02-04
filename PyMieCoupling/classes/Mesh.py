@@ -11,9 +11,9 @@ from PyMieCoupling.utils import Angle
 
 
 
-class AngleMeshes(object):
+class FibonacciMesh(object):
     """Class wich represent an angular mesh. The distribution of points inside
-    the mesh is similar to a Fibonnaci sphere where each point cover an
+    the mesh is similar to a Fibonacci sphere where each point cover an
     equivalent solid angle.
 
     Parameters
@@ -113,8 +113,6 @@ class AngleMeshes(object):
 
 
     def GenerateLedevedMesh(self):
-
-        #assert MaxAngle <= np.pi/2, print("Angle should be inferior to pi/2")
 
         self.TrueSample, dOmega = self.ComputeTrueSample(self.Sampling)
 

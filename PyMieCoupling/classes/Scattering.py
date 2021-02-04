@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.special import gamma
 
-from PyMieCoupling.classes.Meshes import AngleMeshes
+from PyMieCoupling.classes.Mesh import FibonacciMesh
 from PyMieCoupling.utils import Source, PlotFarField
 from PyMieCoupling.classes.BaseClasses import BaseScatterer
 
@@ -10,7 +10,7 @@ from PyMieCoupling.classes.BaseClasses import BaseScatterer
 
 
 class Scatterer(BaseScatterer):
-    """Single scatterer object.
+    """Short summary.
 
     Parameters
     ----------
@@ -20,11 +20,33 @@ class Scatterer(BaseScatterer):
         Light source object containing info on polarization and wavelength.
     Index : float
         Refractive index of scatterer
-    Meshes : AngleMeshes
-        Object AngleMeshes which describes the point in fourier space that are
-        used for computation.
+
+    Attributes
+    ----------
+    Area : float
+        Mathematical 2D area of the scatterer [pi * r^2].
+    SizeParam : float
+        Size parameter of the scatterer [k * r].
+    _Stokes : <PyMieCoupling.classes.Representation.Stokes>
+        Stoke representation class
+    _SPF : <PyMieCoupling.classes.Representation.SPF>
+        Scattering phase function representation class
+    _Parallel : <PyMieCoupling.classes.Representation.Field>
+        Parallel field representation class
+    _Perpendicular : <PyMieCoupling.classes.Representation.Field>
+        Perpendicular field representation class
+    _S1S2 : <PyMieCoupling.classes.Representation.S1S2>
+        S1 and S2 values representation class
+    _phi : [list, np.ndarray]
+        Last phi list used for computing S1S2 or Field or SPF or Stokes
+    _theta : [list, np.ndarray]
+        Last theta list used for computing S1S2 or Field or SPF or Stokes
+    Diameter
+    Source
+    Index
 
     """
+
 
     def __init__(self,
                  Diameter:    float,
@@ -40,9 +62,6 @@ class Scatterer(BaseScatterer):
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
         self._phi, self._theta = [None], [None]
-
-
-
 
 
 
@@ -74,7 +93,7 @@ class FullScatterer(BaseScatterer):
 
         self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
 
-        self.Meshes = AngleMeshes(MaxAngle    = np.deg2rad(180),
+        self.Mesh = FibonacciMesh(MaxAngle    = np.deg2rad(180),
                                   Sampling    = Sampling,
                                   PhiOffset   = 0,
                                   GammaOffset = 0)
@@ -99,8 +118,8 @@ class WMSample(object):
         Scalling factor of the sample.
     Source : Source
         Light source object containing info on polarization and wavelength.
-    Meshes : AngleMeshes
-        Object AngleMeshes which describes the point in fourier space that are
+    Mesh : FibonacciMesh
+        Object FibonacciMesh which describes the point in fourier space that are
         used for computation.
 
     """
@@ -119,17 +138,17 @@ class WMSample(object):
 
 
 
-    def Parallel(self, Meshes):
+    def Parallel(self, Mesh):
         if not isinstance(self._Parallel, np.ndarray):
-            self.GetScalar(Meshes)
+            self.GetScalar(Mesh)
             return self._Parallel
         else:
             return self._Parallel
 
     #@property
-    def Perpendicular(self, Meshes):
+    def Perpendicular(self, Mesh):
         if not isinstance(self._Perpendicular, np.ndarray):
-            self.GetScalar(Meshes)
+            self.GetScalar(Mesh)
             return self._Perpendicular*0
         else:
             return self._Perpendicular
@@ -148,9 +167,9 @@ class WMSample(object):
         return term0 * term1 / term2
 
 
-    def GetScalar(self, Meshes):
+    def GetScalar(self, Mesh):
 
-        return self.GetField(Meshes.Phi.Radian, Meshes.Theta.Radian)
+        return self.GetField(Mesh.Phi.Radian, Mesh.Theta.Radian)
 
 
     def Plot(self, num=200, scatter=False):
@@ -162,7 +181,7 @@ class WMSample(object):
         fig0 = PlotFarField(Phi     = Phi,
                             Theta   = Theta,
                             Scalar  = Scalar.reshape([num,num]),
-                            Meshes  = scatter,
+                            Mesh  = scatter,
                             scatter = False,
                             Name    = 'Scattered field')
 

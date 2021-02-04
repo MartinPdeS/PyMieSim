@@ -33,6 +33,7 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -157,7 +158,7 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">gamma</span>
 
-<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Meshes</span> <span class="kn">import</span> <span class="n">AngleMeshes</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieCoupling.utils</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">PlotFarField</span>
 <span class="kn">from</span> <span class="nn">PyMieCoupling.classes.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseScatterer</span>
 
@@ -166,7 +167,7 @@
 
 
 <div class="viewcode-block" id="Scatterer"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.Scatterer">[docs]</a><span class="k">class</span> <span class="nc">Scatterer</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Single scatterer object.</span>
+    <span class="sd">&quot;&quot;&quot;Short summary.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -176,11 +177,33 @@
 <span class="sd">        Light source object containing info on polarization and wavelength.</span>
 <span class="sd">    Index : float</span>
 <span class="sd">        Refractive index of scatterer</span>
-<span class="sd">    Meshes : AngleMeshes</span>
-<span class="sd">        Object AngleMeshes which describes the point in fourier space that are</span>
-<span class="sd">        used for computation.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Area : float</span>
+<span class="sd">        Mathematical 2D area of the scatterer [pi * r^2].</span>
+<span class="sd">    SizeParam : float</span>
+<span class="sd">        Size parameter of the scatterer [k * r].</span>
+<span class="sd">    _Stokes : &lt;PyMieCoupling.classes.Representation.Stokes&gt;</span>
+<span class="sd">        Stoke representation class</span>
+<span class="sd">    _SPF : &lt;PyMieCoupling.classes.Representation.SPF&gt;</span>
+<span class="sd">        Scattering phase function representation class</span>
+<span class="sd">    _Parallel : &lt;PyMieCoupling.classes.Representation.Field&gt;</span>
+<span class="sd">        Parallel field representation class</span>
+<span class="sd">    _Perpendicular : &lt;PyMieCoupling.classes.Representation.Field&gt;</span>
+<span class="sd">        Perpendicular field representation class</span>
+<span class="sd">    _S1S2 : &lt;PyMieCoupling.classes.Representation.S1S2&gt;</span>
+<span class="sd">        S1 and S2 values representation class</span>
+<span class="sd">    _phi : [list, np.ndarray]</span>
+<span class="sd">        Last phi list used for computing S1S2 or Field or SPF or Stokes</span>
+<span class="sd">    _theta : [list, np.ndarray]</span>
+<span class="sd">        Last theta list used for computing S1S2 or Field or SPF or Stokes</span>
+<span class="sd">    Diameter</span>
+<span class="sd">    Source</span>
+<span class="sd">    Index</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">Diameter</span><span class="p">:</span>    <span class="nb">float</span><span class="p">,</span>
@@ -196,9 +219,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_Stokes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span><span class="o">*</span><span class="mi">5</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span></div>
-
-
-
 
 
 
@@ -230,7 +250,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_Stokes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span><span class="o">*</span><span class="mi">5</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span> <span class="o">=</span> <span class="n">AngleMeshes</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">180</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span> <span class="o">=</span> <span class="n">FibonacciMesh</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mi">180</span><span class="p">),</span>
                                   <span class="n">Sampling</span>    <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
                                   <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                                   <span class="n">GammaOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span></div>
@@ -255,8 +275,8 @@
 <span class="sd">        Scalling factor of the sample.</span>
 <span class="sd">    Source : Source</span>
 <span class="sd">        Light source object containing info on polarization and wavelength.</span>
-<span class="sd">    Meshes : AngleMeshes</span>
-<span class="sd">        Object AngleMeshes which describes the point in fourier space that are</span>
+<span class="sd">    Mesh : FibonacciMesh</span>
+<span class="sd">        Object FibonacciMesh which describes the point in fourier space that are</span>
 <span class="sd">        used for computation.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -275,17 +295,17 @@
 
 
 
-<div class="viewcode-block" id="WMSample.Parallel"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Parallel">[docs]</a>    <span class="k">def</span> <span class="nf">Parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Meshes</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.Parallel"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Parallel">[docs]</a>    <span class="k">def</span> <span class="nf">Parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetScalar</span><span class="p">(</span><span class="n">Meshes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetScalar</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span></div>
 
     <span class="c1">#@property</span>
-<div class="viewcode-block" id="WMSample.Perpendicular"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">Perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Meshes</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.Perpendicular"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">Perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetScalar</span><span class="p">(</span><span class="n">Meshes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetScalar</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="o">*</span><span class="mi">0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span></div>
@@ -304,9 +324,9 @@
         <span class="k">return</span> <span class="n">term0</span> <span class="o">*</span> <span class="n">term1</span> <span class="o">/</span> <span class="n">term2</span></div>
 
 
-<div class="viewcode-block" id="WMSample.GetScalar"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.GetScalar">[docs]</a>    <span class="k">def</span> <span class="nf">GetScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Meshes</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.GetScalar"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.GetScalar">[docs]</a>    <span class="k">def</span> <span class="nf">GetScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">Meshes</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Meshes</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="WMSample.Plot"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -318,7 +338,7 @@
         <span class="n">fig0</span> <span class="o">=</span> <span class="n">PlotFarField</span><span class="p">(</span><span class="n">Phi</span>     <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span>
                             <span class="n">Theta</span>   <span class="o">=</span> <span class="n">Theta</span><span class="p">,</span>
                             <span class="n">Scalar</span>  <span class="o">=</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="n">num</span><span class="p">,</span><span class="n">num</span><span class="p">]),</span>
-                            <span class="n">Meshes</span>  <span class="o">=</span> <span class="n">scatter</span><span class="p">,</span>
+                            <span class="n">Mesh</span>  <span class="o">=</span> <span class="n">scatter</span><span class="p">,</span>
                             <span class="n">scatter</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                             <span class="n">Name</span>    <span class="o">=</span> <span class="s1">&#39;Scattered field&#39;</span><span class="p">)</span></div></div>
 

@@ -33,6 +33,7 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -162,7 +163,7 @@
 <span class="kn">from</span> <span class="nn">ai</span> <span class="kn">import</span> <span class="n">cs</span>
 
 <span class="kn">from</span> <span class="nn">PyMieCoupling.classes.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span>
-<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Meshes</span> <span class="kn">import</span> <span class="n">AngleMeshes</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieCoupling.functions.converts</span> <span class="kn">import</span> <span class="n">NA2Angle</span>
 <span class="kn">from</span> <span class="nn">PyMieCoupling.utils</span> <span class="kn">import</span> <span class="n">SMF28</span><span class="p">,</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">interp_at</span>
 <span class="kn">from</span> <span class="nn">PyMieCoupling.physics</span> <span class="kn">import</span> <span class="n">FraunhoferDiffraction</span>
@@ -201,7 +202,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_Filter</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Filter</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span> <span class="o">=</span> <span class="n">AngleMeshes</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span> <span class="o">=</span> <span class="n">FibonacciMesh</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
                                   <span class="n">Sampling</span>    <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
                                   <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PhiOffset</span><span class="p">,</span>
                                   <span class="n">GammaOffset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_GammaOffset</span><span class="p">)</span>
@@ -210,7 +211,7 @@
 
 
 <div class="viewcode-block" id="Photodiode.UnstructuredFarField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.Photodiode.UnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Photodiode.StructuredFarField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.Photodiode.StructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">SFactor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
@@ -240,13 +241,34 @@
 <span class="sd">        Angle of polarization filter in front of detector. Default is &quot;None&quot;</span>
 <span class="sd">    CouplingMode : str</span>
 <span class="sd">        Methode for computing mode coupling. Either Centered or Mean.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    _CouplingMode : type</span>
+<span class="sd">        Description of attribute `_CouplingMode`.</span>
+<span class="sd">    _Filter : type</span>
+<span class="sd">        Description of attribute `_Filter`.</span>
+<span class="sd">    ModeNumber : type</span>
+<span class="sd">        Description of attribute `ModeNumber`.</span>
+<span class="sd">    Mesh : type</span>
+<span class="sd">        Description of attribute `Mesh`.</span>
+<span class="sd">    Structured : type</span>
+<span class="sd">        Description of attribute `Structured`.</span>
+<span class="sd">    StructuredFarField : type</span>
+<span class="sd">        Description of attribute `StructuredFarField`.</span>
+<span class="sd">    Scalar : type</span>
+<span class="sd">        Description of attribute `Scalar`.</span>
+<span class="sd">    UnstructuredFarField : type</span>
+<span class="sd">        Description of attribute `UnstructuredFarField`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
+
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">Mode</span><span class="p">:</span>           <span class="nb">tuple</span><span class="p">,</span>
                  <span class="n">NA</span><span class="p">:</span>             <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                  <span class="n">Sampling</span><span class="p">:</span>       <span class="nb">int</span>   <span class="o">=</span> <span class="mi">401</span><span class="p">,</span>
-                 <span class="n">InterpSampling</span><span class="p">:</span> <span class="nb">int</span>   <span class="o">=</span> <span class="mi">151</span><span class="p">,</span>
+                 <span class="n">InterpSampling</span><span class="p">:</span> <span class="nb">int</span>   <span class="o">=</span> <span class="mi">251</span><span class="p">,</span>
                  <span class="n">GammaOffset</span><span class="p">:</span>    <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">PhiOffset</span><span class="p">:</span>      <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">Filter</span><span class="p">:</span>         <span class="nb">float</span> <span class="o">=</span>  <span class="s1">&#39;None&#39;</span><span class="p">,</span>
@@ -266,7 +288,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ModeNumber</span> <span class="o">=</span> <span class="n">Mode</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">Mode</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">Mode</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span> <span class="o">=</span> <span class="n">AngleMeshes</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span> <span class="o">=</span> <span class="n">FibonacciMesh</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
                                   <span class="n">Sampling</span>    <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
                                   <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="n">PhiOffset</span><span class="p">,</span>
                                   <span class="n">GammaOffset</span> <span class="o">=</span> <span class="n">GammaOffset</span><span class="p">)</span>
@@ -276,7 +298,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnstructuredFarField</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="n">PlotUnstructureData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Phi</span><span class="p">)</span>
+            <span class="n">PlotUnstructureData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Phi</span><span class="p">)</span>
 
 
 
@@ -304,15 +326,15 @@
 
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">:</span> <span class="mi">50</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="o">-</span><span class="mi">50</span><span class="p">:</span> <span class="mi">50</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 
-        <span class="n">z</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">MaxAngle</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">MaxAngle</span><span class="p">)</span>
 
         <span class="n">_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">cart2sp</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">*</span><span class="mi">0</span><span class="o">+</span><span class="n">z</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">interp_at</span><span class="p">(</span><span class="n">x</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
                          <span class="n">y</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
                          <span class="n">v</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Structured</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
-                         <span class="n">xp</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Phi</span><span class="p">,</span>
-                         <span class="n">yp</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Meshes</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Theta</span><span class="p">,</span>
+                         <span class="n">xp</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Phi</span><span class="p">,</span>
+                         <span class="n">yp</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Theta</span><span class="p">,</span>
                          <span class="n">algorithm</span>   <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
                          <span class="n">extrapolate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div></div>
 
