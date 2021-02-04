@@ -6,14 +6,7 @@
 Welcome to PyMieSim's documentation!
 ====================================
 
-.. toctree::
-   :maxdepth: 3
-   :caption: Table of contents:
-
-   Intro
-   Classes
-   Examples
-
+## Documentation
 
 To-Do List
 ----------
@@ -26,18 +19,3 @@ To-Do List
 
 Indices and tables
 ==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
-
-
-
-
-
-Author Contact Information
---------------------------
-PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_.
-
-Email: `martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_
