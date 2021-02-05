@@ -11,7 +11,8 @@ Welcome to PyMieSim's documentation!
    :caption: Table of contents:
 
    Intro
-   Classes
+   Theory
+   Code
    Examples
 
 
@@ -38,9 +39,6 @@ Indices and tables
 
 Author Contact Information
 --------------------------
-PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_. 
+PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_.
 
 Email: `martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_
-
-
-

@@ -12,6 +12,24 @@ from PyMieCoupling.classes.Scattering import Scatterer, WMSample
 
 
 class ScattererSet(object):
+    """Small class which represents the set of scatterer considered for analysis.
+
+    Parameters
+    ----------
+    DiameterList : list
+        List of diameters to be considered for the single scatterers.
+    RIList : list
+        List of refractive index to be considered for the single scatterers.
+    Source : Source
+        Source <class> representing the illumination impinging the scatterers.
+
+    Attributes
+    ----------
+    DiameterList
+    RIList
+    Source
+
+    """
 
     def __init__(self,
                  DiameterList:    list,
@@ -40,10 +58,9 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                Qsca, Qext, Qabs = GetEfficiencies(RI, SizeParam, np.linspace(0,2*np.pi,num));
+                Qsca, Qext, Qabs = GetEfficiencies(RI, SizeParam);
 
                 df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
-
 
         return df
 
@@ -77,13 +94,16 @@ class ExperimentalSet(object):
 
     def __init__(self,
                  ScattererSet: ScattererSet = None,
-                 Detectors:    list         = None):
+                 Detectors:    tuple         = None):
 
-        if not isinstance(Detectors, (list, np.ndarray)): Detectors = [Detectors]
+
+        if isinstance(Detectors, (Photodiode, LPmode)): Detectors = (Detectors,)
+
+        assert isinstance(Detectors, tuple), 'Detectors arguement must be a tuple'
+
+        self.Detectors = Detectors
 
         self.ScattererSet = ScattererSet
-
-        self.Detectors = {'Detector {}'.format(n): detector for n, detector in enumerate(Detectors) }
 
         self._Coupling = None
 
@@ -91,9 +111,9 @@ class ExperimentalSet(object):
     @property
     def Coupling(self):
 
-        temp = np.empty( [len(self.Detectors.keys()), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
+        temp = np.empty( [len(self.Detectors), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
 
-        for nDetector, (DetectorName, Detector) in enumerate(self.Detectors.items()):
+        for nDetector, Detector in enumerate(self.Detectors):
 
             for nIndex, RI in enumerate(self.ScattererSet.RIList):
                 for nDiameter, Diameter in enumerate(self.ScattererSet.DiameterList):
@@ -112,7 +132,7 @@ class ExperimentalSet(object):
     @property
     def DataFrame(self):
 
-        MI = pd.MultiIndex.from_product([list(self.Detectors.keys()), self.ScattererSet.DiameterList, self.ScattererSet.RIList],
+        MI = pd.MultiIndex.from_product([range(len(self.Detectors)), self.ScattererSet.DiameterList, self.ScattererSet.RIList],
                                         names=['Detectors','Diameter','RI',])
 
 
@@ -124,7 +144,7 @@ class ExperimentalSet(object):
 
             for nd, Diameter in enumerate(self.ScattererSet.DiameterList):
 
-                for DetectorName, Detector in self.Detectors.items():
+                for nDetector, Detector in enumerate(self.Detectors):
 
                     Scat = Scatterer(Diameter    = Diameter,
                                      Index       = RI,
@@ -132,7 +152,7 @@ class ExperimentalSet(object):
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 
-                    df.at[(DetectorName, Diameter, RI),'Coupling'] = Coupling
+                    df.at[(nDetector, Diameter, RI),'Coupling'] = Coupling
 
         df.Coupling = df.Coupling.astype(float)
 

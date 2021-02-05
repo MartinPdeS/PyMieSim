@@ -87,7 +87,8 @@
               <p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Classes.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Theory.html">Theoretical background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Code.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Examples.html">Examples</a></li>
 </ul>
 
@@ -166,7 +167,7 @@
 
 
 
-<div class="viewcode-block" id="Scatterer"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.Scatterer">[docs]</a><span class="k">class</span> <span class="nc">Scatterer</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">):</span>
+<div class="viewcode-block" id="Scatterer"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.Scatterer">[docs]</a><span class="k">class</span> <span class="nc">Scatterer</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Short summary.</span>
 
 <span class="sd">    Parameters</span>
@@ -225,7 +226,7 @@
 
 
 
-<div class="viewcode-block" id="FullScatterer"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.FullScatterer">[docs]</a><span class="k">class</span> <span class="nc">FullScatterer</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">):</span>
+<div class="viewcode-block" id="FullScatterer"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.FullScatterer">[docs]</a><span class="k">class</span> <span class="nc">FullScatterer</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Full-field Single scatterer object.</span>
 
 <span class="sd">    Parameters</span>
@@ -259,7 +260,7 @@
 
 
 
-<div class="viewcode-block" id="WMSample"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample">[docs]</a><span class="k">class</span> <span class="nc">WMSample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.WMSample">[docs]</a><span class="k">class</span> <span class="nc">WMSample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Sample represented by the Whittle-Matern RI correlation function and</span>
 <span class="sd">    using the first Born approximation .</span>
 
@@ -295,7 +296,7 @@
 
 
 
-<div class="viewcode-block" id="WMSample.Parallel"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Parallel">[docs]</a>    <span class="k">def</span> <span class="nf">Parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.Parallel"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.WMSample.Parallel">[docs]</a>    <span class="k">def</span> <span class="nf">Parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">GetScalar</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span>
@@ -303,7 +304,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span></div>
 
     <span class="c1">#@property</span>
-<div class="viewcode-block" id="WMSample.Perpendicular"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">Perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.Perpendicular"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.WMSample.Perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">Perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">GetScalar</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="o">*</span><span class="mi">0</span>
@@ -311,7 +312,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span></div>
 
 
-<div class="viewcode-block" id="WMSample.GetField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.GetField">[docs]</a>    <span class="k">def</span> <span class="nf">GetField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.GetField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.WMSample.GetField">[docs]</a>    <span class="k">def</span> <span class="nf">GetField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
 
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">k</span>
 
@@ -324,12 +325,12 @@
         <span class="k">return</span> <span class="n">term0</span> <span class="o">*</span> <span class="n">term1</span> <span class="o">/</span> <span class="n">term2</span></div>
 
 
-<div class="viewcode-block" id="WMSample.GetScalar"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.GetScalar">[docs]</a>    <span class="k">def</span> <span class="nf">GetScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.GetScalar"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.WMSample.GetScalar">[docs]</a>    <span class="k">def</span> <span class="nf">GetScalar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="WMSample.Plot"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Scattering.WMSample.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.Plot"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Scattering.WMSample.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">Theta</span><span class="p">,</span> <span class="n">Phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">num</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">num</span><span class="p">)]</span>
 

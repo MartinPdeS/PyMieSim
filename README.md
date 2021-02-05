@@ -14,6 +14,7 @@ To-Do List
 - Adding docstring
 - Adding monotonic metric to optimizer class
 - Comments on c++ codes
+- verify if changes of NA for <LPmode> class can be simplified (it takes way too much time)
 
 
 

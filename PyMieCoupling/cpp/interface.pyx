@@ -20,7 +20,7 @@ cdef extern from "Mie.cpp":
                          int lenght,
                          complex128_t* ptr);
 
-    cdef pair[double, double] C_GetEfficiencies(double a, double b, double* phi);
+    cdef pair[double, double] C_GetEfficiencies(double a, double b);
 
     cdef void* Fields(double a,
                       double b,
@@ -77,19 +77,9 @@ cpdef GetS1S2(double m,
 @cython.nonecheck(False)
 @cython.wraparound(False)
 cpdef GetEfficiencies(double m,
-                      double x,
-                      phi):
+                      double x):
 
-    Vector = VectorWrapper(2 * phi.size)
-    Vector.add_row()
-
-    cdef:
-        np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(phi, dtype = float, order="C")
-        double* phiMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
-
-    phiMesh_ptr = &phiView[0]
-
-    Qsca, Qext = C_GetEfficiencies(m,  x, phiMesh_ptr)
+    Qsca, Qext = C_GetEfficiencies(m,  x)
 
     Qabs = Qext - Qsca
 
@@ -105,10 +95,10 @@ cpdef GetEfficiencies(double m,
 @cython.nonecheck(False)
 @cython.wraparound(False)
 cpdef GetFields(double m,
-                        double x,
-                        ThetaMesh,
-                        PhiMesh,
-                        Polarization):
+                double x,
+                ThetaMesh,
+                PhiMesh,
+                Polarization):
 
     cdef:
         np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")

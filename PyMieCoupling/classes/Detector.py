@@ -56,6 +56,9 @@ class Photodiode(BaseDetector, MeshProperty):
     def UnstructuredFarField(self):
         return np.ones(self.Mesh.Sampling)
 
+    def UpdateUnstructuredFarField(self):
+        self.Scalar = np.ones(self.Mesh.Sampling)
+
 
     def StructuredFarField(self, Num = 100, SFactor = None):
         return np.ones([Num, Num])
@@ -184,7 +187,8 @@ class LPmode(BaseDetector, MeshProperty):
 
 
 
-
+    def UpdateUnstructuredFarField(self):
+        self.Scalar = self.UnstructuredFarField() 
 
 
 

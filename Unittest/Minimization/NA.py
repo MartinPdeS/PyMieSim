@@ -7,10 +7,10 @@ _________________________________________________________
 
 import numpy as np
 from scipy.optimize import minimize
-from PyMieCoupling.classes.Detector import Photodiode
+from PyMieCoupling.classes.Detector import Photodiode, LPmode
 from PyMieCoupling.utils import Source
 from PyMieCoupling.classes.Optimizer import Simulator
-from PyMieCoupling.classes.Sets import ExperimentalSet
+from PyMieCoupling.classes.Sets import ExperimentalSet, ScattererSet
 
 LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -19,26 +19,33 @@ LightSource = Source(Wavelength = 450e-9,
 
 
 
-Photodiode0 = Photodiode(NA                = 0.2,
-                         Sampling          = 150,
-                         GammaOffset       = 0,
-                         PhiOffset         = 0,
-                         CouplingMode      = 'Centered')
+Detector0 = Photodiode(NA                = 0.2,
+                       Sampling          = 150,
+                       GammaOffset       = 0,
+                       PhiOffset         = 0,
+                       CouplingMode      = 'Centered')
+
+Detector1 = LPmode(NA                = 0.2,
+                   Sampling          = 150,
+                   Mode              = (0,1),
+                   GammaOffset       = 0,
+                   PhiOffset         = 0,
+                   CouplingMode      = 'Centered')
 
 
-Set = ExperimentalSet(DiameterList  = np.linspace(100,1000,100).round(4) * 1e-9,
-                      RIList        = np.linspace(1.3, 1.5, 4).round(4),
-                      Detectors     = Photodiode0,
-                      Source        = LightSource,)
+ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 3500e-9, 100),
+                       RIList        = np.linspace(1.5, 1.5, 1).round(1),
+                       Source        = LightSource)
+
+Set = ExperimentalSet(ScattererSet  = ScatSet,
+                      Detectors     = (Detector0, Detector1))
 
 
 def EvalFunc(x):
 
-    Set.Detectors['Detector 0'].NA = x[0]
+    Set.Detectors[1].NA = x[0]
 
-    Array = Set.Coupling()
-
-    return Array.Cost('Min') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+    return Set.Coupling.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
 
 
 Minimizer = Simulator(EvalFunc, ParameterName= ['NA'])
@@ -48,7 +55,7 @@ Result = minimize(fun      = Minimizer.simulate,
                   method   = 'COBYLA',
                   callback = Minimizer.callback,
                   tol      = 1e-5,
-                  options  = {'maxiter': 5, 'rhobeg':0.1})
+                  options  = {'maxiter': 100, 'rhobeg':0.1})
 
 print(Result)
 

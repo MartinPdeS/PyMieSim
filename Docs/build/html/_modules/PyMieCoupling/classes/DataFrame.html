@@ -87,7 +87,8 @@
               <p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Classes.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Theory.html">Theoretical background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Code.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Examples.html">Examples</a></li>
 </ul>
 
@@ -162,7 +163,7 @@
 
 
 
-<div class="viewcode-block" id="ExperimentalDataFrame"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.DataFrame.ExperimentalDataFrame">[docs]</a><span class="k">class</span> <span class="nc">ExperimentalDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="ExperimentalDataFrame"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.DataFrame.ExperimentalDataFrame">[docs]</a><span class="k">class</span> <span class="nc">ExperimentalDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -178,7 +179,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;Perpendicular&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ExperimentalDataFrame.Plot"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.DataFrame.ExperimentalDataFrame.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Coupling&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ExperimentalDataFrame.Plot"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.DataFrame.ExperimentalDataFrame.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Coupling&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span>       <span class="o">=</span> <span class="n">y</span><span class="p">,</span>
                                               <span class="n">grid</span>    <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -191,7 +192,7 @@
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
 
 
-<div class="viewcode-block" id="S1S2DataFrame"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.DataFrame.S1S2DataFrame">[docs]</a><span class="k">class</span> <span class="nc">S1S2DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="S1S2DataFrame"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.DataFrame.S1S2DataFrame">[docs]</a><span class="k">class</span> <span class="nc">S1S2DataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -207,7 +208,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;Perpendicular&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="S1S2DataFrame.Plot"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.DataFrame.S1S2DataFrame.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="S1S2DataFrame.Plot"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.DataFrame.S1S2DataFrame.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span>       <span class="o">=</span> <span class="s1">&#39;S1&#39;</span><span class="p">,</span>
                                             <span class="n">grid</span>    <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
@@ -232,7 +233,7 @@
 
 
 
-<div class="viewcode-block" id="QscaDataFrame"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.DataFrame.QscaDataFrame">[docs]</a><span class="k">class</span> <span class="nc">QscaDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="viewcode-block" id="QscaDataFrame"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.DataFrame.QscaDataFrame">[docs]</a><span class="k">class</span> <span class="nc">QscaDataFrame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -248,7 +249,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xs</span><span class="p">(</span><span class="s1">&#39;Perpendicular&#39;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="QscaDataFrame.Plot"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.DataFrame.QscaDataFrame.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="QscaDataFrame.Plot"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.DataFrame.QscaDataFrame.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="n">ax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span>       <span class="o">=</span> <span class="s1">&#39;Qsca&#39;</span><span class="p">,</span>
                                           <span class="n">grid</span>    <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>

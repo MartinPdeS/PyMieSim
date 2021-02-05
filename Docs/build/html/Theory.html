@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Introduction &mdash; PyMieSim 0.0.1 documentation</title>
+  <title>Theoretical background &mdash; PyMieSim 0.0.1 documentation</title>
   
 
   
@@ -40,8 +40,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Theoretical background" href="Theory.html" />
-    <link rel="prev" title="Welcome to PyMieSim’s documentation!" href="index.html" /> 
+    <link rel="next" title="Classes" href="Code.html" />
+    <link rel="prev" title="Introduction" href="Intro.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,13 +88,11 @@
             
               <p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-package">Installing package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-test-simulation">Run test simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Theoretical background</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mie-theory">Mie Theory</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Code.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
 </ul>
@@ -145,13 +143,13 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Introduction</li>
+      <li>Theoretical background</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/Intro.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/Theory.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,42 +162,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="introduction">
-<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>This project (SuPyModes) aims to create a python library that gives the necesary tool to simulate propagation mode of light inside fibers coupler.</p>
-<div class="section" id="getting-started">
-<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>Here is the list of packages you need to use this library:</dt>
-<dd><ul class="first last simple">
-<li>Python (3+)</li>
-<li>Numpy</li>
-<li>Cython</li>
-<li>Scipy</li>
-<li>Pandas</li>
-<li>Fibermodes: <a class="reference external" href="https://github.com/cbrunet/fibermodes">https://github.com/cbrunet/fibermodes</a></li>
-<li>Mayavi</li>
-</ul>
-</dd>
-</dl>
-<p>Those depedencies are included in the “requirements.txt” file</p>
-</div>
-<div class="section" id="installing-package">
-<h2>Installing package<a class="headerlink" href="#installing-package" title="Permalink to this headline">¶</a></h2>
-<p>Soon enough you will be able to use “pip” to install PyMieSim but for the moment one can install it manually
-from the <a class="reference external" href="https://github.com/MartinPdS/PyMieSim">github repository</a></p>
-<p>Once downloaded the class command “python setup.py install” should do the trick. If not i invite you o contact me, I answer quickly!</p>
-<p>As of today (February 2021) the package was only tested on Ubuntu 20.14lts and as it
-necessitate compilation of c++ core it might not be easily exportable to Windows or MacOS.
-However I am currently working on the Google COLAB notebook to share with any interested
-user so you wont need to install anything to use the package.</p>
-</div>
-<div class="section" id="run-test-simulation">
-<h2>Run test simulation<a class="headerlink" href="#run-test-simulation" title="Permalink to this headline">¶</a></h2>
-<p>Here an example of command to run a simulation on linux (ubuntu 16.04).</p>
-<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
-</pre></div>
-</td></tr></table></div>
+  <div class="section" id="theoretical-background">
+<h1>Theoretical background<a class="headerlink" href="#theoretical-background" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="mie-theory">
+<h2>Mie Theory<a class="headerlink" href="#mie-theory" title="Permalink to this headline">¶</a></h2>
+<p>Calculates S<sub>1</sub> and S<sub>2</sub> at μ=cos(θ), where θ is the scattering angle.</p>
+<blockquote>
+<div><p>S<sub>1</sub> and S<sub>2</sub> are calculated by:</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\({\displaystyle S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)}\)</span></p>
+<p><span class="math notranslate nohighlight">\({\displaystyle S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)}\)</span></p>
+</div></blockquote>
+<p>Computes Mie efficencies <em>Q</em> and asymmetry parameter <em>g</em> of a single, homogeneous particle. Uses <code class="xref py py-func docutils literal notranslate"><span class="pre">Mie_ab()</span></code> to calculate <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span>, and then calculates <em>Q</em> via:</p>
+<blockquote>
+<div><span class="math notranslate nohighlight">\(${\displaystyle Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)}$\)</span></div></blockquote>
+</div></blockquote>
 </div>
 </div>
 
@@ -209,8 +186,8 @@ user so you wont need to install anything to use the package.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Theory.html" class="btn btn-neutral float-right" title="Theoretical background" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to PyMieSim’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Code.html" class="btn btn-neutral float-right" title="Classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

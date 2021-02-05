@@ -8,33 +8,33 @@ Getting started
 ---------------
 
 
-
 Here is the list of packages you need to use this library:
     - Python (3+)
     - Numpy
+    - Cython
     - Scipy
     - Pandas
     - Fibermodes: https://github.com/cbrunet/fibermodes
     - Mayavi
 
 
-Mie Theory
-----------
-
-Calculates S\ :sub:`1` and S\ :sub:`2` at μ=cos(θ), where θ is the scattering angle.
-
- S\ :sub:`1` and S\ :sub:`2` are calculated by:
-
-             :math:`{\displaystyle S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)}`
-
-             :math:`{\displaystyle S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)}`
+Those depedencies are included in the "requirements.txt" file
 
 
- Computes Mie efficencies *Q* and asymmetry parameter *g* of a single, homogeneous particle. Uses :py:func:`Mie_ab` to calculate :math:`a_n` and :math:`b_n`, and then calculates *Q* via:
+Installing package
+------------------
 
-              :math:`${\displaystyle Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)}$`
+Soon enough you will be able to use "pip" to install PyMieSim but for the moment one can install it manually
+from the `github repository <https://github.com/MartinPdS/PyMieSim>`_
 
 
+Once downloaded the class command "python setup.py install" should do the trick. If not i invite you o contact me, I answer quickly!
+
+
+As of today (February 2021) the package was only tested on Ubuntu 20.14lts and as it
+necessitate compilation of c++ core it might not be easily exportable to Windows or MacOS.
+However I am currently working on the Google COLAB notebook to share with any interested
+user so you wont need to install anything to use the package.
 
 
 

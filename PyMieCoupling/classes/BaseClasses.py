@@ -13,7 +13,7 @@ from PyMieCoupling.functions.converts import NA2Angle
 from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
 
 
-
+##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no
 
 
 
@@ -48,7 +48,7 @@ class MeshProperty(object):
     @GammaOffset.setter
     def GammaOffset(self, val):
         self.Mesh.UpdateSphere(GammaOffset = val)
-        self.GetSpherical()
+        self.UnstructuredFarField()
 
     @property
     def NA(self):
@@ -56,11 +56,11 @@ class MeshProperty(object):
 
     @NA.setter
     def NA(self, val):
-        if val >= 1: val = 0.999
-        if val <= 0: val = 0.001
+        if val >= 0.99: val = 0.99
+        if val <= 0.01: val = 0.01
         self.MaxAngle = NA2Angle(val).Radian
         self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
-        self.GetSpherical()
+        self.UpdateUnstructuredFarField()
 
 
 
@@ -201,7 +201,9 @@ class BaseDetector(object):
 
 
 class BaseScatterer(object):
-    """Object containing all scatterer-related attributes.
+    """Base class for <Scatterer> instance.
+    This class containes all the methodes that output something interesting for
+    the user.
 
     Parameters
     ----------
@@ -230,6 +232,11 @@ class BaseScatterer(object):
     def __init__(self):
         pass
 
+    def GetEfficiencies(self):
+        self.Qsca, self.Qext, self.Qabs = GetEfficiencies(m = self.Index,
+                                                          x = self.SizeParam)
+
+
 
     def S1S2(self, Num=200):
         if self._S1S2 is None:
@@ -239,16 +246,30 @@ class BaseScatterer(object):
         else:
             return self._S1S2
 
+    @property
+    def Qext(self):
+        if self._Qext:
+            return self._Qext
+        else:
+            self.GetEfficiencies()
+            return self._Qext
 
     @property
     def Qsca(self):
-        """https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no"""
+        if self._Qsca:
+            return self._Qsca
+        else:
+            self.GetEfficiencies()
+            return self._Qsca
 
-        Qsca, Qext, Qabs = GetEfficiencies(m = self.Index,
-                               x = self.SizeParam,
-                               phi = np.linspace(0, np.pi, 2))
+    @property
+    def Qabs(self):
+        if self._Qabs:
+            return self._Qabs
+        else:
+            self.GetEfficiencies()
+            return self._Qabs
 
-        return Qsca
 
 
 

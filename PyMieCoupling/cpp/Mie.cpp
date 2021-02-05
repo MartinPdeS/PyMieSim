@@ -211,8 +211,7 @@ C_GetS1S2(const double            m,
 
 static std::pair<double, double>
 C_GetEfficiencies(const double  m,
-                  const double  x,
-                  const double* phi)
+                  const double  x)
 
 {
     iVec *an = new iVec;

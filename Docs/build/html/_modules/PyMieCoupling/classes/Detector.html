@@ -87,7 +87,8 @@
               <p class="caption"><span class="caption-text">Table of contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../Classes.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Theory.html">Theoretical background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Code.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Examples.html">Examples</a></li>
 </ul>
 
@@ -169,7 +170,7 @@
 <span class="kn">from</span> <span class="nn">PyMieCoupling.physics</span> <span class="kn">import</span> <span class="n">FraunhoferDiffraction</span>
 
 
-<div class="viewcode-block" id="Photodiode"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.Photodiode">[docs]</a><span class="k">class</span> <span class="nc">Photodiode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
+<div class="viewcode-block" id="Photodiode"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.Photodiode">[docs]</a><span class="k">class</span> <span class="nc">Photodiode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Short summary.</span>
 
 <span class="sd">    Parameters</span>
@@ -210,17 +211,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnstructuredFarField</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="Photodiode.UnstructuredFarField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.Photodiode.UnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Photodiode.UnstructuredFarField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.Photodiode.UnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Photodiode.UpdateUnstructuredFarField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.Photodiode.UpdateUnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UpdateUnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Photodiode.StructuredFarField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.Photodiode.StructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">SFactor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Photodiode.StructuredFarField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.Photodiode.StructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">SFactor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">Num</span><span class="p">,</span> <span class="n">Num</span><span class="p">])</span></div></div>
 
 
 
 
-<div class="viewcode-block" id="LPmode"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.LPmode">[docs]</a><span class="k">class</span> <span class="nc">LPmode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
+<div class="viewcode-block" id="LPmode"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.LPmode">[docs]</a><span class="k">class</span> <span class="nc">LPmode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Short summary.</span>
 
 <span class="sd">    Parameters</span>
@@ -302,7 +306,7 @@
 
 
 
-<div class="viewcode-block" id="LPmode.StructuredFarField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.LPmode.StructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">,</span> <span class="n">SFactor</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<div class="viewcode-block" id="LPmode.StructuredFarField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.LPmode.StructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">,</span> <span class="n">SFactor</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
 
         <span class="n">Fiber</span> <span class="o">=</span> <span class="n">SMF28</span><span class="p">()</span>
 
@@ -320,7 +324,7 @@
 
 
 
-<div class="viewcode-block" id="LPmode.UnstructuredFarField"><a class="viewcode-back" href="../../../Classes.html#PyMieCoupling.classes.Detector.LPmode.UnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LPmode.UnstructuredFarField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.LPmode.UnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Structured</span><span class="o">.</span><span class="n">shape</span>
 
@@ -336,12 +340,13 @@
                          <span class="n">xp</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Phi</span><span class="p">,</span>
                          <span class="n">yp</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">Theta</span><span class="p">,</span>
                          <span class="n">algorithm</span>   <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span>
-                         <span class="n">extrapolate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div></div>
+                         <span class="n">extrapolate</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span></div>
 
 
 
 
-
+<div class="viewcode-block" id="LPmode.UpdateUnstructuredFarField"><a class="viewcode-back" href="../../../Code.html#PyMieCoupling.classes.Detector.LPmode.UpdateUnstructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">UpdateUnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnstructuredFarField</span><span class="p">()</span> </div></div>
 
 
 

@@ -141,6 +141,7 @@ class FibonacciMesh(object):
         return theta, phi, dOmega
 
 
+
     def UpdateSphere(self, **kwargs):
 
         if 'MaxAngle' in kwargs: self.MaxAngle = kwargs['MaxAngle']
@@ -151,6 +152,7 @@ class FibonacciMesh(object):
         Theta, Phi, dOmega =  self.GenerateLedevedMesh()
 
         self.MakeProperties(Theta, Phi, dOmega)
+
 
 
     def AvoidPoles(self, base):
