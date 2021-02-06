@@ -1,11 +1,33 @@
 import numpy as np
+from ai import cs
+
 
 from PyMieCoupling.utils import PlotUnstructureData
+from PyMieCoupling.functions.converts import Angle2Direct
+from PyMieCoupling.classes.Representations import Footprint
 
 """ Coupling Reference: Estimation of Coupling Efficiency of Optical Fiber by Far-Field Method """
 
 
 
+def Direct2Angle(X, Y, MaxAngle):
+    MaxZ = np.max(50) / np.tan(MaxAngle)
+
+    Gamma = np.arctan(np.abs(X / MaxZ) )
+
+    Phi = np.arctan(np.abs(X / MaxZ) )
+
+    return Phi, Gamma
+
+
+def AngleUnit2DirectUnit(Angle, k):
+    FourierSpace = np.sin(Angle) * k / (2 * np.pi)
+
+    fourier_unit = (FourierSpace[1] - FourierSpace[0]).__abs__()
+
+    DirectSpace = np.fft.fftshift( np.fft.fftfreq( Angle.shape[0], d = fourier_unit ) )
+
+    return DirectSpace
 
 
 
@@ -47,28 +69,22 @@ def MeanCoupling_Perp(Detector, Scatterer):
 
     return np.asscalar( Perp )
 
+def Direct2spherical(X, Y, MaxAngle):
+    Z = 50 / np.tan(MaxAngle)
+
+    _, Phi, Theta = cs.cart2sp(X, Y, X*0+Z)
+
+    return Phi, Theta
+
+def Direct2Angle(X, Y, MaxAngle):
+    MaxZ = np.max(X) / np.cos(MaxAngle)
+
 
 def GetFootprint(Detector, Scatterer, Num):
 
-    MaxPhi = Detector.Mesh.Phi.Radian.max()
+    Footprin = Footprint(Scatterer = Scatterer, Detector = Detector, Num=200)
 
-    Phi, Theta = Detector.StructuredSphericalMesh(Num = Num, MaxAngle=MaxPhi)
-
-    Perp =  (Detector.StructuredFarField(Num=Num, SFactor=16) *\
-    Scatterer.Perpendicular( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )
-
-    Para = (Detector.StructuredFarField(Num=Num, SFactor=16) *\
-    Scatterer.Parallel( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )#
-
-    FourierPara = np.fft.ifft2(Para, s=[512*2, 512*2])
-
-    FourierPara = np.fft.fftshift(FourierPara).__abs__()**2
-
-    FourierPerp = np.fft.ifft2(Perp,  s=[512*2, 512*2])
-
-    FourierPerp = np.fft.fftshift(FourierPerp).__abs__()**2
-
-    return FourierPara + FourierPerp
+    return Footprin
 
 
 

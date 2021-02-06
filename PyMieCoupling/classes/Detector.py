@@ -188,7 +188,7 @@ class LPmode(BaseDetector, MeshProperty):
 
 
     def UpdateUnstructuredFarField(self):
-        self.Scalar = self.UnstructuredFarField() 
+        self.Scalar = self.UnstructuredFarField()
 
 
 

@@ -14,8 +14,17 @@ def FraunhoferDiffraction(nearField):
 
 
 def GenShift(npts):
-    phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(npts)*(npts-1)/npts)
 
-    shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+    if npts % 2 == 1 :
+        phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(npts)*(npts-1)/npts)
 
-    return shift_grid * shift_grid.T
+        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+        return shift_grid * shift_grid.T
+
+    else:
+        phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(npts)*(npts)/npts)
+
+        shift_grid, _ = np.meshgrid(phase_shift, phase_shift)
+
+        return shift_grid * shift_grid.T

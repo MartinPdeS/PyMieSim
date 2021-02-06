@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyMieCoupling.cpp.interface import GetFields
 from PyMieCoupling.utils import PlotStructuredSphere
+from PyMieCoupling.functions.converts import Direct2spherical, AngleUnit2DirectUnit
 from mayavi import mlab
 
 plt.rcParams["font.family"] = "serif"
@@ -358,6 +359,67 @@ class ScalarFarField(dict):
 
 
 
+
+class Footprint(dict):
+
+    def __init__(self, Scatterer, Detector, Num=100):
+
+        x, y = np.mgrid[-50: 50: complex(Num), -50: 50: complex(Num)]
+
+        MaxAngle = np.abs( np.pi/2 - Detector.Mesh.Phi.Radian.min() )
+
+        Phi, Theta = Direct2spherical(X=x, Y=y, MaxAngle=MaxAngle)
+
+        Direct = AngleUnit2DirectUnit(Phi, Scatterer.Source.k)
+
+        Perp =  (Detector.StructuredFarField(Num=Num, SFactor=16) *\
+        Scatterer.Perpendicular( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )
+
+        Para = (Detector.StructuredFarField(Num=Num, SFactor=16) *\
+        Scatterer.Parallel( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )
+
+        n = 5
+
+        FourierPara = np.fft.ifft2(Para, s=[512*n, 512*n])
+
+        FourierPara = np.fft.fftshift(FourierPara).__abs__()**2
+
+        FourierPerp = np.fft.ifft2(Perp,  s=[512*n, 512*n])
+
+        FourierPerp = np.fft.fftshift(FourierPerp).__abs__()**2
+
+        Direct = np.linspace(np.min(Direct), np.max(Direct), FourierPerp.shape[0])
+
+        self['Map'] = FourierPara + FourierPerp
+
+        self['DirectX'] = Direct; self['DirectY'] = Direct
+
+
+
+    def Plot(self):
+
+        fig = plt.figure()
+
+        ax = fig.add_subplot(111)
+
+        ax.contourf(self['DirectX']*1e6, self['DirectY']*1e6, self['Map'], cmap='gray')
+
+        ax.set_xlabel(r'Offset distance in X-axis [$\mu$m]')
+
+        ax.set_ylabel(r'Offset distance in Y-axis [$\mu$m]')
+
+        ax.set_title('Scatterer Footprint')
+
+        plt.show()
+
+
+    def __repr__(self):
+        return f"""
+        Object:          Dictionary
+        Keys:            Map, DirectX, DirectY
+        Structured data: Yes
+        Method:          <Plot>
+        Shape:           {self['Phi'].shape}"""
 
 
 

@@ -60,7 +60,7 @@ class MeshProperty(object):
         if val <= 0.01: val = 0.01
         self.MaxAngle = NA2Angle(val).Radian
         self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
-        self.UpdateUnstructuredFarField()
+        #self.UpdateUnstructuredFarField()
 
 
 

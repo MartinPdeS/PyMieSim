@@ -1,4 +1,6 @@
 import numpy as np
+from ai import cs
+
 from PyMieCoupling.utils import Angle
 
 """ Ref: https://optiwave.com/optifdtd-manuals/fdtd-far-field-transform/"""
@@ -17,7 +19,7 @@ def deg2rad(AngleSpace) -> np.ndarray:
 
 def Angle2Direct(AngleVec: np.ndarray, k: float,) -> np.ndarray:
 
-    RadSpace = AngleVec * np.pi / 180
+    RadSpace = np.deg2rad(AngleVec)
 
     FourierSpace = np.sin(RadSpace) * k / (2 * np.pi)
 
@@ -50,11 +52,24 @@ def NA2Angle(NA: float) -> np.ndarray:
 
 
 
+def Direct2spherical(X, Y, MaxAngle):
+    Z = 50 / np.tan(MaxAngle)
+
+    _, Phi, Theta = cs.cart2sp(X, Y, X*0+Z)
+
+    return Phi, Theta
+
+def Direct2Angle(X, Y, MaxAngle):
+    MaxZ = np.max(X) / np.cos(MaxAngle)
 
 
 
+def AngleUnit2DirectUnit(Angle, k):
+    FourierSpace = np.sin(Angle) * k / (2 * np.pi)
 
+    fourier_unit = (FourierSpace[1] - FourierSpace[0]).__abs__()
 
+    DirectSpace = np.fft.fftshift( np.fft.fftfreq( Angle.shape[0], d = fourier_unit ) )
 
-
+    return DirectSpace
 # -

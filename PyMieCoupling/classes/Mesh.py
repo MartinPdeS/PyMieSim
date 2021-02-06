@@ -215,7 +215,8 @@ def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
 
         X.append(x); Y.append(y); Z.append(z)
 
-        if y <= MaxY: break
+        if i >= samples - 1: break
+        #if y <= MaxY: break
 
     return np.asarray(X), np.asarray(Y), np.asarray(Z)
 
