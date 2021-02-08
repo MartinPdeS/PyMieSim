@@ -8,8 +8,7 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 class ExperimentalDataFrame(pd.DataFrame):
 
     def __init__(self,**kwargs):
-        pd.DataFrame.__init__(self,**kwargs)
-        self.Filter = None
+        pd.DataFrame.__init__(self, **kwargs)
         self.ax = None
 
     @property
@@ -38,7 +37,6 @@ class S1S2DataFrame(pd.DataFrame):
 
     def __init__(self,**kwargs):
         pd.DataFrame.__init__(self,**kwargs)
-        self.Filter = None
         self.ax = None
 
     @property
@@ -79,7 +77,6 @@ class QscaDataFrame(pd.DataFrame):
 
     def __init__(self,**kwargs):
         pd.DataFrame.__init__(self,**kwargs)
-        self.Filter = None
         self.ax = None
 
     @property

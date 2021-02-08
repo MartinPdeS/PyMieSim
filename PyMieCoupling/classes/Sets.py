@@ -2,13 +2,14 @@ import numpy as np
 import pandas as pd
 from typing import Tuple, Union
 
-from PyMieCoupling.utils import Source
+from PyMieCoupling.utils import LoadLibraries
+from PyMieCoupling.Physics import Source
 from PyMieCoupling.classes.Optimizer import OptArray
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
-from PyMieCoupling.cpp.interface import GetS1S2, GetEfficiencies
 from PyMieCoupling.classes.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieCoupling.classes.Scattering import Scatterer, WMSample
 
+LoadLibraries(['S1S2', 'Efficiencies'])
 
 
 class ScattererSet(object):

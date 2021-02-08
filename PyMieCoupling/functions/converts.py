@@ -1,7 +1,7 @@
 import numpy as np
 from ai import cs
 
-from PyMieCoupling.utils import Angle
+from PyMieCoupling.Physics import Angle
 
 """ Ref: https://optiwave.com/optifdtd-manuals/fdtd-far-field-transform/"""
 

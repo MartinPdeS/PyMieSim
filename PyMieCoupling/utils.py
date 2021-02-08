@@ -1,5 +1,4 @@
 import numpy as np
-import fibermodes
 import matplotlib
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
@@ -9,88 +8,41 @@ from scipy.interpolate import griddata
 import scipy
 
 
-class Source(object):
 
-    def __init__(self,
-                 Wavelength:   float,
-                 Polarization: float,
-                 Power:        float = 1,
-                 Radius:       float = 1):
+def LoadLibraries(lib=[]):
+    if 'S1S2' in lib:
+        try:
+            from PyMieCoupling.cpp.Interface import GetS1S2
+            print('[S1S2] C++ module loaded')
+        except:
+            print(f'[S1S2] C++ module load fail in {__file__}-> fallback to Cython module')
+            try:
+                from PyMieCoupling.cython.S1S2 import GetS1S2
+                print('[S1S2] Cython module loaded')
+            except:
+                print(f'[S1S2] C++ module load fail in {__file__}-> fallback to Python module')
+                try:
+                    from PyMieCoupling.cython.S1S2 import GetS1S2
+                    print('[S1S2] Python module loaded')
 
-        self.Wavelength = Wavelength
+                except ImportError:
+                    raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
 
-        self.k = 2 * np.pi / Wavelength
-
-        self.Power = Power
-
-        if Polarization != None:
-            self.Polarization = _Polarization(Polarization)
-        else:
-            self.Polarization = None
-
-
-class _Polarization(object):
-
-    def __init__(self, input,):
-        if input == 'None':
-            self.Degree = 'None'
-            self.Radian = 'None'
-        else:
-            self.Degree = input
-            self.Radian = np.deg2rad(input)
+    if 'Efficiencies' in lib:
+        try:
+            from PyMieCoupling.cpp.Interface import GetEfficiencies
+            print('[Efficiencies] C++ module loaded')
+        except ImportError:
+            raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
 
 
+    if 'Fields' in lib:
+        try:
+            from PyMieCoupling.cpp.Interface import GetFields
+            print('[GetFields] C++ module loaded')
+        except ImportError:
+            raise ImportError(f'[GetFields] C++ module load fail in {__file__}-> no fallback')
 
-class Angle(object):
-
-    def __init__(self, input, unit='Degree'):
-        if input == 'None':
-            self.Degree = 'None'
-            self.Radian = 'None'
-
-        if unit == 'Degree':
-            self.Degree = input
-            self.Radian = np.deg2rad(input)
-        if unit == 'Radian':
-            self.Degree = np.rad2deg(input)
-            self.Radian = input
-
-
-def SMF28():
-    CoreDiameter = 8.2e-6
-    cladDiameter = 125e-6
-
-    Fiber = fiber()
-
-    return Fiber
-
-
-
-class fiber(object):
-
-    def __init__(self,
-                 core_radius: float  = 8.2e-6,
-                 core_index:  float  = 1.4456,
-                 clad_radius: float  = 125e-6,
-                 clad_index:  float  = 1.4444):
-
-        self.MaxDirect = 2 * clad_radius
-
-        self.CoreDiameter = core_radius
-
-        factory = fibermodes.FiberFactory()
-
-        factory.addLayer(name     = 'core',
-                         radius   = core_radius,
-                         material = 'Fixed',
-                         geometry = "StepIndex",
-                         index    = 1.4489)
-
-        factory.addLayer(name     = 'cladding',
-                         material = 'Fixed',
-                         index    = 1)
-
-        self.source = factory[0]
 
 
 
@@ -159,10 +111,7 @@ def interp_at(x, y, v, xp, yp, algorithm='cubic', extrapolate=False):
     if algorithm not in ['cubic', 'linear', 'nearest']:
         raise ValueError("Invalid interpolation algorithm: " + str(algorithm))
 
-    grid = scipy.interpolate.griddata((x, y),
-                                      v,
-                                      (xp, yp),
-                                      method=algorithm).ravel()
+    grid = griddata((x, y), v, (xp, yp), method=algorithm).ravel()
 
     if extrapolate and algorithm != 'nearest' and np.any(np.isnan(grid)):
         grid = extrapolate_nans(xp, yp, grid)
@@ -194,9 +143,10 @@ def extrapolate_nans(x, y, v):
     else:
         nans = np.isnan(v)
     notnans = np.logical_not(nans)
-    v[nans] = scipy.interpolate.griddata((x[notnans], y[notnans]), v[notnans],
-                                         (x[nans], y[nans]),
-                                         method='nearest').ravel()
+    v[nans] = griddata((x[notnans], y[notnans]),
+                        v[notnans],
+                        (x[nans], y[nans]),
+                        method='nearest').ravel()
     return v
 
 

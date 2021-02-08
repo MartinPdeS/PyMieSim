@@ -8,8 +8,8 @@ from ai import cs
 from PyMieCoupling.classes.BaseClasses import BaseDetector, MeshProperty
 from PyMieCoupling.classes.Mesh import FibonacciMesh
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import SMF28, Angle, _Polarization, interp_at
-from PyMieCoupling.physics import FraunhoferDiffraction
+from PyMieCoupling.utils import interp_at
+from PyMieCoupling.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
 
 
 class Photodiode(BaseDetector, MeshProperty):
@@ -35,7 +35,7 @@ class Photodiode(BaseDetector, MeshProperty):
                  Sampling:     int    = 401,
                  GammaOffset:  float  = 0,
                  PhiOffset:    float  = 0,
-                 Filter:       float  = 'None',
+                 Filter:       float  = None,
                  CouplingMode: str    = 'Centered'):
 
 
@@ -59,8 +59,23 @@ class Photodiode(BaseDetector, MeshProperty):
     def UpdateUnstructuredFarField(self):
         self.Scalar = np.ones(self.Mesh.Sampling)
 
-
     def StructuredFarField(self, Num = 100, SFactor = None):
+        """
+        Compute the FarField in a structured Mesh.
+
+        Parameters
+        ----------
+        Num : int
+            Dimension of the structured mesh [Num, Num].
+        SFactor : float
+            Unused parameter added to match <LPmode> class.
+
+        Returns
+        -------
+        type
+            Structured FarField value.
+
+        """
         return np.ones([Num, Num])
 
 
@@ -117,7 +132,7 @@ class LPmode(BaseDetector, MeshProperty):
                  InterpSampling: int   = 251,
                  GammaOffset:    float = 0,
                  PhiOffset:      float = 0,
-                 Filter:         float =  'None',
+                 Filter:         float =  None,
                  CouplingMode:   str   = 'Centered'):
 
         if len(Mode) <= 2: Mode = Mode[0], Mode[1], 'h'
@@ -149,7 +164,22 @@ class LPmode(BaseDetector, MeshProperty):
 
 
     def StructuredFarField(self, Num, SFactor=5):
+        """
+        Compute the FarField in a structured Mesh.
 
+        Parameters
+        ----------
+        Num : int
+            Dimension of the structured mesh [Num, Num].
+        SFactor : float
+            Factor that is used to definie the LP mode numerical aperture (NA).
+
+        Returns
+        -------
+        type
+            Structured FarField value.
+
+        """
         Fiber = SMF28()
 
         temp = fibermodes.field.Field(Fiber.source,

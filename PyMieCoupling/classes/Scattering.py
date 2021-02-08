@@ -2,7 +2,8 @@ import numpy as np
 from scipy.special import gamma
 
 from PyMieCoupling.classes.Mesh import FibonacciMesh
-from PyMieCoupling.utils import Source, PlotFarField
+from PyMieCoupling.utils import PlotFarField
+from PyMieCoupling.Physics import Angle, Source
 from PyMieCoupling.classes.BaseClasses import BaseScatterer
 
 

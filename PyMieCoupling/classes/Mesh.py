@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
-from PyMieCoupling.utils import Angle
+from PyMieCoupling.Physics import Angle
 
 
 
@@ -64,15 +64,21 @@ class FibonacciMesh(object):
 
         self.Phi = Angle(Phi, unit='Radian')
 
+        self.Sampling = Theta.size
+
         self.SinMesh = np.abs( np.sin(Phi - np.pi/2) )
 
-        self.dOmega = Angle(0, unit='Radian')
-
+        self.dOmega = Angle(0, unit='Radian');
         self.dOmega.Radian = dOmega
-
         self.dOmega.Degree = dOmega * (180/np.pi)**2
 
-        self.Sampling = Theta.size
+        self.Omega = Angle(0, unit='Radian');
+        self.Omega.Radian = np.abs( self.dOmega.Radian * self.Sampling)
+        self.Omega.Degree = self.Omega.Radian * (180/np.pi)**2
+
+
+
+
 
 
     def Plot(self):
@@ -182,6 +188,37 @@ class FibonacciMesh(object):
         TrueSampling = int(Sampling*ratio)
 
         return TrueSampling, 4*np.pi / TrueSampling
+
+
+
+
+class StructuredFullMesh(object):
+    """Class wich represent an angular mesh.
+
+    Parameters
+    ----------
+    MaxAngle : float
+        Angle in radian defined by the numerical aperture of the imaging system.
+    Num : int
+        Number of point for the mesh shape [Num, Num].
+
+    Attributes
+    ----------
+    Num
+
+    """
+    def __init__(self, Num: int = 100):
+        self.Num = Num
+
+        self.shape = [Num, Num]
+
+        Phi, Theta = np.mgrid[-np.pi/2:np.pi/2:complex(Num), 0:2*np.pi:complex(Num)]
+
+        self.Phi = Angle(Phi, unit='Radian')
+
+        self.Theta = Angle(Theta, unit='Radian')
+
+
 
 
 

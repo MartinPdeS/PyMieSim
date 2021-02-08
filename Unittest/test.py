@@ -25,8 +25,12 @@ Scat = Scatterer(Diameter    = 1e-9,
                  Source      = LightSource,
                  Index       = 1.4)
 
-Footprint = Detector.Footprint(Scatterer = Scat)
 
 
-Footprint.Plot()
-Footprint
+Detector.Coupling(Scat)
+#Scat.Field().Plot()
+#Footprint = Detector.Footprint(Scatterer = Scat)
+
+
+#Footprint.Plot()
+#Footprint

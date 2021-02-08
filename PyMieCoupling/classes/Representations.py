@@ -1,28 +1,16 @@
 import numpy as np
-import matplotlib.pyplot as plt
-from PyMieCoupling.cpp.interface import GetFields
-from PyMieCoupling.utils import PlotStructuredSphere
-from PyMieCoupling.functions.converts import Direct2spherical, AngleUnit2DirectUnit
+from ai import cs
 from mayavi import mlab
-
+import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
-from ai import cs
+
+from PyMieCoupling.utils import PlotStructuredSphere, LoadLibraries
+from PyMieCoupling.functions.converts import Direct2spherical, AngleUnit2DirectUnit
 
 
-try:
-    from PyMieCoupling.cpp.interface import GetS1S2
-    print('C++ module loaded')
-except:
-    try:
-        from PyMieCoupling.cython.S1S2 import GetS1S2
-        print('Cython module loaded')
-    except:
-        try:
-            from PyMieCoupling.cython.S1S2 import GetS1S2
-        except: ImportError
-
+LoadLibraries(['S1S2', 'Fields'])
 
 
 class Stokes(np.ndarray):
@@ -321,12 +309,11 @@ class ScalarFarField(dict):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        Para, Perp, Qsca = GetFields(m            = Parent.Index,
-                                     x            = Parent.SizeParam,
-                                     ThetaMesh    = Theta.flatten(),
-                                     PhiMesh      = Phi.flatten() - np.pi/2,
-                                     Polarization = Parent.Source.Polarization.Radian,
-                                     Qsca         = False)
+        Para, Perp = GetFields(m            = Parent.Index,
+                               x            = Parent.SizeParam,
+                               ThetaMesh    = Theta.flatten(),
+                               PhiMesh      = Phi.flatten() - np.pi/2,
+                               Polarization = Parent.Source.Polarization.Radian)
 
         self['Parallel'] = Para
 

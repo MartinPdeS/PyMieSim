@@ -7,10 +7,11 @@ import cartopy.crs as ccrs
 from ai import cs
 
 from PyMieCoupling.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
-from PyMieCoupling.functions.Couplings import Coupling, GetFootprint
-from PyMieCoupling.cpp.interface import GetFields, GetEfficiencies
+from PyMieCoupling.functions.Couplings import Coupling as Coupling, GetFootprint
+from PyMieCoupling.cpp.Interface import GetFields, GetEfficiencies
 from PyMieCoupling.functions.converts import NA2Angle
-from PyMieCoupling.utils import Angle, _Polarization, PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
+from PyMieCoupling.Physics import _Polarization, Angle
+from PyMieCoupling.utils import PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
 
 
 ##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no
@@ -30,7 +31,7 @@ class MeshProperty(object):
 
     @Filter.setter
     def Filter(self, val):
-        self._Filter = _Polarization(val)
+        self._Filter = Polarization(val)
 
     @property
     def PhiOffset(self):
