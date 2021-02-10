@@ -141,8 +141,7 @@ class SPF(dict):
                                   x                    = Parent.SizeParam,
                                   ThetaMesh            = self['Theta'].flatten(),
                                   PhiMesh              = self['Phi'].flatten()-np.pi/2,
-                                  Polarization         = 0,
-                                  Qsca                 = False)
+                                  Polarization         = 0)
 
         self['Parallel'], self['Perpendicular'] = Para, Perp
         self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
