@@ -6,6 +6,16 @@
 Welcome to PyMieSim's documentation!
 ====================================
 
+dependencies
+============
+sudo apt-get install libproj-dev proj-data proj-bin  
+sudo apt-get install libgeos-dev
+
+
+Installation
+============
+pip3 install -v git+https://gitlab.com/Martth/miecoupling.git
+
 ## Documentation
 
 To-Do List

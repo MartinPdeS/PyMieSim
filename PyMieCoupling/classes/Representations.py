@@ -10,7 +10,7 @@ from PyMieCoupling.utils import PlotStructuredSphere, LoadLibraries
 from PyMieCoupling.functions.converts import Direct2spherical, AngleUnit2DirectUnit
 
 
-LoadLibraries(['S1S2', 'Fields'])
+GetS1S2, GetFields =  LoadLibraries(['S1S2', 'Fields'])
 
 
 class Stokes(np.ndarray):
