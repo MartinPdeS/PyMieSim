@@ -4,6 +4,20 @@ import fibermodes
 
 
 def FraunhoferDiffraction(nearField):
+    """Function compute the Far-Field of a given Near-Field using Fraunhofer
+    relation under approximation of small angle.
+
+    Parameters
+    ----------
+    nearField : np.ndarray
+        Near-Field input [2D].
+
+    Returns
+    -------
+    np.ndarray
+        Far-Field ouptut [2D].
+
+    """
 
     temp = np.fft.fft2(nearField)
 
@@ -14,6 +28,20 @@ def FraunhoferDiffraction(nearField):
 
 
 def GenShift(npts):
+    """Function generate a complex shift array that has to be multiplied to FFT in order to obtain
+    a phase accurate Fourier transform.
+
+    Parameters
+    ----------
+    npts : int
+        Number of point (per dimension) of the FFT array.
+
+    Returns
+    -------
+    type
+        Complex array for FFT.
+
+    """
 
     if npts % 2 == 1 :
         phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(npts)*(npts-1)/npts)
@@ -77,6 +105,10 @@ class Angle(object):
 
 
 def SMF28():
+    """Function return an instance of the fiber class specific for a
+    SMF28 fiber optic .
+
+    """
     CoreDiameter = 8.2e-6
     cladDiameter = 125e-6
 
@@ -87,6 +119,21 @@ def SMF28():
 
 
 class fiber(object):
+    """Class generating a fiber object from fibermodes package
+    (see requirement.txt).
+
+    Parameters
+    ----------
+    core_radius : float
+        Radius of the core of the fiber.
+    core_index : float
+        Index of the core of the fiber.
+    clad_radius : float
+        Radius of the clad of the fiber.
+    clad_index : float
+        Index of the clad of the fiber.
+
+    """
 
     def __init__(self,
                  core_radius: float  = 8.2e-6,

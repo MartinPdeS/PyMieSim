@@ -155,23 +155,20 @@ cpdef IntensityMeanCoupling(Scalar0,
                             Omega,
                             Filter = None):
 
-    if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
-    else: ParaFiltering = 1;  PerpFiltering = 1
-
-    Para = np.sum( np.abs( Scalar0 * Parallel )**2 * dOmega ) / Omega
-
-    Perp = np.sum( np.abs( Scalar0 * Perpendicular )**2 * dOmega ) / Omega
-
-    return Para * ParaFiltering, Perp * PerpFiltering
-
+    return IntensityPointCoupling(Scalar0       = Scalar0,
+                                  Parallel      = Parallel,
+                                  Perpendicular = Perpendicular,
+                                  SinMesh       = SinMesh,
+                                  dOmega        = dOmega,
+                                  Filter        = Filter)
 
 
 cpdef AmplitudePointCoupling(Scalar0,
-                            Parallel,
-                            Perpendicular,
-                            SinMesh,
-                            dOmega,
-                            Filter = None):
+                             Parallel,
+                             Perpendicular,
+                             SinMesh,
+                             dOmega,
+                             Filter = None):
 
     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
     else: ParaFiltering = 1;  PerpFiltering = 1

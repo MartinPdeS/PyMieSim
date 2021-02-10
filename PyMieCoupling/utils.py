@@ -39,9 +39,9 @@ def LoadLibraries(lib=[]):
     if 'Fields' in lib:
         try:
             from PyMieCoupling.cpp.Interface import GetFields
-            print('[GetFields] C++ module loaded')
+            print('[GetFields] Cython module loaded')
         except ImportError:
-            raise ImportError(f'[GetFields] C++ module load fail in {__file__}-> no fallback')
+            raise ImportError(f'[GetFields] Cython module load fail in {__file__}-> no fallback')
 
 
 

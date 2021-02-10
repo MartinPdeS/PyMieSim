@@ -46,9 +46,16 @@ class ScattererSet(object):
         self.Source = Source
 
 
-    def Qsca(self, num=201):
+    def Qsca(self):
+        """Methode generate a Pandas Dataframe of scattering efficiencies
+        (Qsca) vs. scatterer diameter vs. scatterer refractive index.
 
-        Angle = np.linspace(0,2*np.pi,num)
+        Returns
+        -------
+        pandas.DataFrame
+            Dataframe containing Qsca vs. Diameter vs. Index.
+
+        """
 
         MI = pd.MultiIndex.from_product([self.DiameterList, self.RIList], names=['Diameter', 'RI'])
 
@@ -67,7 +74,16 @@ class ScattererSet(object):
 
 
     def S1S2(self, num=201):
+        """Methode generate a Pandas Dataframe of S1 and S2 parameter as a
+        of the scattering angle, this for the differents scatterer diameter
+        and refractive index.
 
+        Returns
+        -------
+        pandas.DataFrame
+            Dataframe containing S1 and S2 vs. phi angle vs Diameter vs. Index.
+
+        """
         Angle = np.linspace(0,2*np.pi,num)
 
         MI = pd.MultiIndex.from_product([self.DiameterList, self.RIList, Angle],
@@ -92,10 +108,27 @@ class ScattererSet(object):
 
 
 class ExperimentalSet(object):
+    """Small class which represents experimental setup for analysis.
+    THe setup is comprised of ScattrererSet and a tuple of Detectors.
+
+    Parameters
+    ----------
+    ScattererSet : <ScattererSet>
+        Instance containing information about the scatterer to analyse in the experiment.
+    Detectors : tuple
+        Tuple containing all the detectors instance to analyses the scattering signal.
+
+    Attributes
+    ----------
+    Detectors
+    ScattererSet
+    _Coupling
+
+    """
 
     def __init__(self,
                  ScattererSet: ScattererSet = None,
-                 Detectors:    tuple         = None):
+                 Detectors:    tuple        = None):
 
 
         if isinstance(Detectors, (Photodiode, LPmode)): Detectors = (Detectors,)
@@ -111,7 +144,16 @@ class ExperimentalSet(object):
 
     @property
     def Coupling(self):
+        """Property method which return a n by m by l OptArray array, n being the
+        number of detectors, m is the point evaluated for the refractive index,
+        l is the nomber of point evaluted for the scatterers diameters.
 
+        Returns
+        -------
+        OptArray
+            Raw array of detectors coupling.
+
+        """
         temp = np.empty( [len(self.Detectors), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
 
         for nDetector, Detector in enumerate(self.Detectors):
@@ -132,7 +174,16 @@ class ExperimentalSet(object):
 
     @property
     def DataFrame(self):
+        """Property method which return pandas.DataFrame of the scattering-
+        detector coupling for the different diameter and refracive index
+        evaluated.
 
+        Returns
+        -------
+        pandas.DataFrame
+            DataFrame of detectors coupling.
+
+        """
         MI = pd.MultiIndex.from_product([range(len(self.Detectors)), self.ScattererSet.DiameterList, self.ScattererSet.RIList],
                                         names=['Detectors','Diameter','RI',])
 
@@ -196,7 +247,8 @@ class SampleSet(object):
         self.PhiVectorDetector = np.linspace(minPhi, maxPhi, 101)
 
 
-    def GetCouplingFrame(self, Filter: list = ['None'] ):
+    @property
+    def DataFrame(self, Filter: list = ['None'] ):
 
         if not isinstance(Filter, list): Filter = [Filter]
 
@@ -232,9 +284,8 @@ class SampleSet(object):
         return df
 
 
-
-
-    def GetCouplingArray(self, Filter='None'):
+    @property
+    def Coupling(self, Filter='None'):
 
         temp = np.empty( [ len(self.gList), len(self.LcList) ] )
 

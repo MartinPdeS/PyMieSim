@@ -1,4 +1,4 @@
-from PyMieCoupling.utils import Source
+from PyMieCoupling.Physics import Source
 from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.classes.Scattering import Scatterer
 
@@ -27,7 +27,7 @@ Scat = Scatterer(Diameter    = 1e-9,
 
 
 
-Detector.Coupling(Scat)
+print( Detector.Coupling(Scat) )
 #Scat.Field().Plot()
 #Footprint = Detector.Footprint(Scatterer = Scat)
 

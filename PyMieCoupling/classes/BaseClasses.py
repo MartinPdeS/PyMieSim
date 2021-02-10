@@ -234,8 +234,8 @@ class BaseScatterer(object):
         pass
 
     def GetEfficiencies(self):
-        self.Qsca, self.Qext, self.Qabs = GetEfficiencies(m = self.Index,
-                                                          x = self.SizeParam)
+        self._Qsca, self._Qext, self._Qabs = GetEfficiencies(m = self.Index,
+                                                             x = self.SizeParam)
 
 
 

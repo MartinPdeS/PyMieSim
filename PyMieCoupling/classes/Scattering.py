@@ -64,6 +64,8 @@ class Scatterer(BaseScatterer):
 
         self._phi, self._theta = [None], [None]
 
+        self._Qsca, self.Q_ext, self._Qabs = None, None, None
+
 
 
 
