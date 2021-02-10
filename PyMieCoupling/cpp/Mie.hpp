@@ -4,11 +4,11 @@
 #include <cmath>
 
 
-#if __has_include("python3.8/Python.h")
-#include "python3.8/Python.h"
-#elif _has_include("python3.6/Python.h")
-#include "python3.6/Python.h"
-#endif
+//#if __has_include("python3.8/Python.h")
+//#include "python3.8/Python.h"
+//#elif _has_include("python3.6/Python.h")
+//#include "python3.6/Python.h"
+//#endif
 
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;

@@ -22,7 +22,7 @@ cdef extern from "Mie.cpp":
     cdef void* C_GetS1S2(double a,
                          double b,
                          double* phi,
-                         int lenght,
+                         int lenght, 
                          complex128_t* ptr);
 
     cdef pair[double, double] C_GetEfficiencies(double a, double b);
