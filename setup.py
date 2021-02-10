@@ -71,6 +71,7 @@ setup_dict = dict(
                             'cython',
                             'mayavi',
                             'ai.cs',
+                            'geos',
                             'cartopy',
                             "fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0",
                             ],
