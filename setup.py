@@ -72,7 +72,7 @@ setup_dict = dict(
                             'mayavi',
                             'ai.cs'
                             ],
-      dependency_links   = ['https://github.com/cbrunet/fibermodes.git'],
+      dependency_links   = ['https://github.com/cbrunet/fibermodes.git#egg=fibermodes'],
       author             = 'Martin Poinsinet de Sivry',
       author_email       = 'Martin.poinsinet.de.sivry@gmail.com',
       cmdclass           = {'build_ext': build_ext},
