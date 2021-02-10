@@ -71,8 +71,9 @@ setup_dict = dict(
                             'cython',
                             'mayavi',
                             'ai.cs'
+                            "fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0",
                             ],
-      dependency_links   = ['https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0'],
+      #dependency_links   = ['https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0'],
       author             = 'Martin Poinsinet de Sivry',
       author_email       = 'Martin.poinsinet.de.sivry@gmail.com',
       cmdclass           = {'build_ext': build_ext},
