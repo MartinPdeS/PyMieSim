@@ -1,0 +1,12 @@
+Detector
+=================
+
+    
+Detector
+---------------------
+
+.. automodule:: PyMieCoupling.classes.Detector
+    :members:
+    :undoc-members:
+    :show-inheritance:    
+
