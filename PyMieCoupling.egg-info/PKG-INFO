@@ -1,4 +1,4 @@
-Metadata-Version: 1.2
+Metadata-Version: 1.0
 Name: PyMieCoupling
 Version: 0.1
 Summary: Coupled mode modlisation for fiber optic coupler
@@ -6,42 +6,28 @@ Home-page: https://gitlab.com/PolyMtlLFO/SuPyModes
 Author: Martin Poinsinet de Sivry
 Author-email: Martin.poinsinet.de.sivry@gmail.com
 License: Full private, no reproduction authorized
-Description: # PyMieCoupling
+Description: .. PyMieSim documentation master file, created by
+           sphinx-quickstart on Wed Feb  3 17:01:20 2021.
+           You can adapt this file completely to your liking, but it should at least
+           contain the root `toctree` directive.
         
-        This package is a platform aiming to gives the tools to compute scattered light field coupling with different detection schemes.
+        Welcome to PyMieSim's documentation!
+        ====================================
+        
+        ## Documentation
+        
+        To-Do List
+        ----------
+        
+        - Adding docstring
+        - Adding monotonic metric to optimizer class
+        - Comments on c++ codes
+        - verify if changes of NA for <LPmode> class can be simplified (it takes way too much time)
         
         
-        ---
-        ## Packages dependecies
         
-        > nvcc --version (ex: v10.1)
-        > sudo apt install nvidia-cuda-toolkit
-        > pip3 install cupy-cuda101
-        
-        ---
-        ## Packages installation
-        
-        The package rely on different library as:
-        - Numpy
-        - Matplotlib
-        - Scipy
-        - PyMieScatt
-        - Pandas
-        - Tqdm
-        - Fibermodes
-        
-        In order to use this package one need to install it. This can be done using the **pip3** package manager. In the root folder do:
-        
-        > pip3 install .
-        
-        ---
-        
-        ## Run examples
-        
-        You can run examples that are in the **\Example** folder as the following:
-        
-        > Python3 Examples/Coupling/Detector.py
+        Indices and tables
+        ==================
         
 Platform: Linux
 Platform: Max OSX
-Requires-Python: ==3.8.*

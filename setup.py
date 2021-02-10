@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -63,7 +63,7 @@ setup_dict = dict(
       name               = 'PyMieCoupling',
       description        = 'Coupled mode modlisation for fiber optic coupler',
       version            = '0.1',
-      python_requires    = ">=3.0*",
+      #python_requires    = ">=3.0*",
       author             = 'Martin Poinsinet de Sivry',
       author_email       = 'Martin.poinsinet.de.sivry@gmail.com',
       cmdclass           = {'build_ext': build_ext},
