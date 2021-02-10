@@ -70,7 +70,8 @@ setup_dict = dict(
                             'pandas',
                             'cython',
                             'mayavi',
-                            'ai.cs'
+                            'ai.cs',
+                            'cartopy',
                             "fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0",
                             ],
       #dependency_links   = ['https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0'],
