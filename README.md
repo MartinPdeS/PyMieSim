@@ -23,7 +23,7 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 
 dependencies
 ============
-```console
+```console 
 sudo apt-get install libproj-dev proj-data proj-bin  
 sudo apt-get install libgeos-dev
 ```
