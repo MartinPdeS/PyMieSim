@@ -160,7 +160,8 @@
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">gamma</span>
 
 <span class="kn">from</span> <span class="nn">PyMieCoupling.classes.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
-<span class="kn">from</span> <span class="nn">PyMieCoupling.utils</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">PlotFarField</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span>
+<span class="kn">from</span> <span class="nn">PyMieCoupling.Physics</span> <span class="kn">import</span> <span class="n">Angle</span><span class="p">,</span> <span class="n">Source</span>
 <span class="kn">from</span> <span class="nn">PyMieCoupling.classes.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseScatterer</span>
 
 
@@ -219,7 +220,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_Stokes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span><span class="o">*</span><span class="mi">5</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
 
 
 

@@ -14,18 +14,37 @@ Here is the list of packages you need to use this library:
     - Cython
     - Scipy
     - Pandas
-    - Fibermodes: https://github.com/cbrunet/fibermodes
+    - Fibermodes @ git+https://github.com/cbrunet/fibermodes#egg=fibermodes-0.2.0
     - Mayavi
+    - cartopy
 
 
-Those depedencies are included in the "requirements.txt" file
+Those depedencies are included in the "requirements.txt" file and can be installed using the command
+.. code-block:: console
+   :linenos:
+
+   pip3 install -r requirements.txt
 
 
 Installing package
 ------------------
 
+First of all, the package has some depedencies that can be installed using the command:
+
+.. code-block:: console
+   :linenos:
+
+   apt-get install libproj-dev proj-data proj-bin
+   apt-get install libgeos-dev
+
+
 Soon enough you will be able to use "pip" to install PyMieSim but for the moment one can install it manually
-from the `github repository <https://github.com/MartinPdS/PyMieSim>`_
+from the `github repository <https://github.com/MartinPdS/PyMieSim>`_ or using the command
+
+.. code-block:: console
+   :linenos:
+
+    pip3 install git+https://gitlab.com/Martth/miecoupling.git
 
 
 Once downloaded the class command "python setup.py install" should do the trick. If not i invite you o contact me, I answer quickly!

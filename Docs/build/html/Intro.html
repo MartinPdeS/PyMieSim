@@ -186,8 +186,17 @@
 </div>
 <div class="section" id="installing-package">
 <h2>Installing package<a class="headerlink" href="#installing-package" title="Permalink to this headline">¶</a></h2>
+<p>First of all, the package has some depedencies that can be installed using the command:</p>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">apt-get install libproj-dev proj-data proj-bin</span>
+<span class="go">apt-get install libgeos-dev</span>
+</pre></div>
+</td></tr></table></div>
 <p>Soon enough you will be able to use “pip” to install PyMieSim but for the moment one can install it manually
-from the <a class="reference external" href="https://github.com/MartinPdS/PyMieSim">github repository</a></p>
+from the <a class="reference external" href="https://github.com/MartinPdS/PyMieSim">github repository</a> or using the command</p>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go"> pip3 install git+https://gitlab.com/Martth/miecoupling.git</span>
+</pre></div>
+</td></tr></table></div>
 <p>Once downloaded the class command “python setup.py install” should do the trick. If not i invite you o contact me, I answer quickly!</p>
 <p>As of today (February 2021) the package was only tested on Ubuntu 20.14lts and as it
 necessitate compilation of c++ core it might not be easily exportable to Windows or MacOS.

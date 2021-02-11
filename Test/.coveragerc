@@ -1,0 +1,10 @@
+# .coveragerc to control coverage.py
+[run]
+omit =
+    */site-packages/*
+    */distutils/*
+    */PIL/*
+    */dateutil/*
+    */pkg_resources/*
+    */six*
+    */pytz/*

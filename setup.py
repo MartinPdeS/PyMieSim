@@ -18,8 +18,8 @@ for key, value in cfg_vars.items():
         cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
 
-ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
-                         ["PyMieCoupling/cython/S1S2.pyx"],
+ext_modules = [ Extension("PyMieSim.cython.S1S2",
+                         ["PyMieSim/cython/S1S2.pyx"],
                          include_dirs = ['.'],
                          language="c++",
                          define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
@@ -37,8 +37,8 @@ ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                                           '-O3',
                                           '-march=native']),
 
-                Extension("PyMieCoupling.cpp.Interface",
-                                         ["PyMieCoupling/cpp/Interface.pyx", ],
+                Extension("PyMieSim.cpp.Interface",
+                                         ["PyMieSim/cpp/Interface.pyx", ],
                                          include_dirs = [numpy.get_include()],
                                          language="c++",
                                          define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
@@ -60,7 +60,7 @@ ext_modules = [ Extension("PyMieCoupling.cython.S1S2",
                          ]
 
 setup_dict = dict(
-      name               = 'PyMieCoupling',
+      name               = 'PyMieSim',
       description        = 'Coupled mode modlisation for fiber optic coupler',
       version            = '0.1',
       #python_requires    = ">=3.0*",
@@ -79,9 +79,9 @@ setup_dict = dict(
       author             = 'Martin Poinsinet de Sivry',
       author_email       = 'Martin.poinsinet.de.sivry@gmail.com',
       cmdclass           = {'build_ext': build_ext},
-      packages           = ['PyMieCoupling',
-                          'PyMieCoupling.classes',
-                          'PyMieCoupling.functions'],
+      packages           = ['PyMieSim',
+                          'PyMieSim.classes',
+                          'PyMieSim.functions'],
       license            = 'Full private, no reproduction authorized',
       url                = 'https://gitlab.com/Martth/miecoupling',
       long_description   = open('README.md').read(),
