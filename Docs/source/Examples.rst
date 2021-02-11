@@ -7,8 +7,8 @@ Scatterer: S1-S2
 .. code-block:: console
    :linenos:
 
-   from PyMieCoupling.classes.Scattering import Scatterer
-   from PyMieCoupling.Physics import Source
+   from PyMieSim.classes.Scattering import Scatterer
+   from PyMieSim.Physics import Source
 
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -34,8 +34,8 @@ Scatterer: full far-field
 .. code-block:: console
    :linenos:
 
-   from PyMieCoupling.classes.Scattering import Scatterer
-   from PyMieCoupling.Physics import Source
+   from PyMieSim.classes.Scattering import Scatterer
+   from PyMieSim.Physics import Source
 
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -60,8 +60,8 @@ Scatterer: phase function
 .. code-block:: console
    :linenos:
 
-   from PyMieCoupling.classes.Scattering import Scatterer
-   from PyMieCoupling.Physics import Source
+   from PyMieSim.classes.Scattering import Scatterer
+   from PyMieSim.Physics import Source
 
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -86,8 +86,8 @@ Detector: Photodiode
 .. code-block:: console
    :linenos:
 
-   from PyMieCoupling.Physics import Source
-   from PyMieCoupling.classes.Detector import Photodiode
+   from PyMieSim.Physics import Source
+   from PyMieSim.classes.Detector import Photodiode
 
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -112,8 +112,8 @@ Detector: LPMode
 .. code-block:: console
    :linenos:
 
-   from PyMieCoupling.Physics import Source
-   from PyMieCoupling.classes.Detector import LPmode
+   from PyMieSim.Physics import Source
+   from PyMieSim.classes.Detector import LPmode
 
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -139,9 +139,9 @@ Coupling: Scatterer-LPMode
 .. code-block:: console
    :linenos:
 
-   from PyMieCoupling.Physics import Source
-   from PyMieCoupling.classes.Detector import LPmode
-   from PyMieCoupling.classes.Scattering import Scatterer
+   from PyMieSim.Physics import Source
+   from PyMieSim.classes.Detector import LPmode
+   from PyMieSim.classes.Scattering import Scatterer
 
    LightSource = Source(Wavelength = 450e-9,
                      Polarization = 0,
@@ -175,8 +175,8 @@ ScattererSet: Qscattering
    :linenos:
 
    import numpy as np
-   from PyMieCoupling.Physics import Source
-   from PyMieCoupling.classes.Sets import ScattererSet
+   from PyMieSim.Physics import Source
+   from PyMieSim.classes.Sets import ScattererSet
 
    LightSource = Source(Wavelength   = 950e-9,
                         Polarization = 0)
@@ -202,9 +202,9 @@ ExperimentalSet: Coupling
    :linenos:
 
    import numpy as np
-   from PyMieCoupling.Physics import Source
-   from PyMieCoupling.classes.Detector import LPmode
-   from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet
+   from PyMieSim.Physics import Source
+   from PyMieSim.classes.Detector import LPmode
+   from PyMieSim.classes.Sets import ScattererSet, ExperimentalSet
 
    LightSource = Source(Wavelength   = 950e-9,
                         Polarization = 0)
@@ -271,10 +271,10 @@ Optimizer: NA
 
    import numpy as np
    from scipy.optimize import minimize
-   from PyMieCoupling.classes.Detector import Photodiode, LPmode
-   from PyMieCoupling.Physics import Source
-   from PyMieCoupling.classes.Optimizer import Simulator
-   from PyMieCoupling.classes.Sets import ExperimentalSet, ScattererSet
+   from PyMieSim.classes.Detector import Photodiode, LPmode
+   from PyMieSim.Physics import Source
+   from PyMieSim.classes.Optimizer import Simulator
+   from PyMieSim.classes.Sets import ExperimentalSet, ScattererSet
 
    LightSource = Source(Wavelength = 450e-9,
                         Polarization = 0,
