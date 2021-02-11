@@ -23,7 +23,7 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 
 dependencies
 ============
-```console 
+```console
 sudo apt-get install libproj-dev proj-data proj-bin  
 sudo apt-get install libgeos-dev
 ```
@@ -52,6 +52,6 @@ Running Unittest
 To run the Unittests one need the coverage library.
 
 ```console
-   pip3 install coverage
+   pip3 install coverage 
    coverage run -m unittest Test/Unittest.py
 ```
