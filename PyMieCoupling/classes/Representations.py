@@ -137,11 +137,11 @@ class SPF(dict):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp, _ = GetFields(m                    = Parent.Index,
-                                  x                    = Parent.SizeParam,
-                                  ThetaMesh            = self['Theta'].flatten(),
-                                  PhiMesh              = self['Phi'].flatten()-np.pi/2,
-                                  Polarization         = 0)
+        Para, Perp = GetFields(m                    = Parent.Index,
+                               x                    = Parent.SizeParam,
+                               ThetaMesh            = self['Theta'].flatten(),
+                               PhiMesh              = self['Phi'].flatten()-np.pi/2,
+                               Polarization         = 0)
 
         self['Parallel'], self['Perpendicular'] = Para, Perp
         self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
