@@ -9,7 +9,7 @@ from PyMieCoupling.classes.Detector import LPmode, Photodiode
 from PyMieCoupling.classes.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieCoupling.classes.Scattering import Scatterer, WMSample
 
-LoadLibraries(['S1S2', 'Efficiencies'])
+GetS1S2, GetEfficiencies = LoadLibraries(['S1S2', 'Efficiencies'])
 
 
 class ScattererSet(object):
