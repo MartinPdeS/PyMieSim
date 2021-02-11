@@ -1,0 +1,12 @@
+Classes package
+=================
+
+
+PyMieCoupling.classes
+---------------------
+
+.. automodule:: PyMieCoupling.classes.Scattering
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

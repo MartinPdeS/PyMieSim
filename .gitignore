@@ -1,5 +1,5 @@
 *.png
 *.ipynb*
 *.MA.*
-build
+/build
 temp.py
