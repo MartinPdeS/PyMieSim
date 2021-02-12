@@ -3,8 +3,8 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 from typing import Union
-from PyMieSim.classes.Detector import LPmode, Photodiode
-from PyMieSim.classes.Scattering import Scatterer
+from PyMieSim.Detector import LPmode, Photodiode
+from PyMieSim.Scattering import Scatterer
 
 
 

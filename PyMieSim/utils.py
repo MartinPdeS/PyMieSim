@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import cartopy.crs as ccrs
@@ -333,3 +335,53 @@ def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
 
 
     plt.show()
+
+
+
+
+def PlotField(Theta, Phi, Parallel, Perpendicular):
+    fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(10,6))
+    axes[0,0].set_title('Parallel fields')
+    axes[0,1].set_title('Perpendicular fields')
+    axes[0,0].set_ylabel('Real Part')
+    axes[1,0].set_ylabel('Imaginary Part')
+
+    im0 = axes[0,0].pcolormesh(Theta,
+                               Phi,
+                               np.real(Parallel).reshape([Phi.size, Theta.size]),
+                               shading='auto')
+
+    divider = make_axes_locatable(axes[0,0])
+    cax = divider.append_axes('right', size='5%', pad=0.05)
+    fig.colorbar(im0, cax=cax, orientation='vertical')
+
+    im1 = axes[0,1].pcolormesh(Theta,
+                               Phi,
+                               np.real(Perpendicular).reshape([Phi.size, Theta.size]),
+                               shading='auto')
+
+    divider = make_axes_locatable(axes[0,1])
+    cax = divider.append_axes('right', size='5%', pad=0.05)
+    fig.colorbar(im1, cax=cax, orientation='vertical')
+
+
+    im2 = axes[1,0].pcolormesh(Theta,
+                               Phi,
+                               np.imag(Parallel).reshape([Phi.size, Theta.size]),
+                               shading='auto')
+
+    divider = make_axes_locatable(axes[1,0])
+    cax = divider.append_axes('right', size='5%', pad=0.05)
+    fig.colorbar(im2, cax=cax, orientation='vertical')
+
+    im3 = axes[1,1].pcolormesh(Theta,
+                               Phi,
+                               np.imag(Perpendicular).reshape([Phi.size, Theta.size]),
+                               shading='auto')
+
+    divider = make_axes_locatable(axes[1,1])
+    cax = divider.append_axes('right', size='5%', pad=0.05)
+    fig.colorbar(im3, cax=cax, orientation='vertical')
+
+    fig.tight_layout()
+    plt.show(block=False)

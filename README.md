@@ -1,7 +1,4 @@
-.. PyMieSim documentation master file, created by
-   sphinx-quickstart on Wed Feb  3 17:01:20 2021.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. PyMieSim documentation master file.
 
 Welcome to PyMieSim's documentation!
 ====================================
@@ -21,8 +18,26 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 <li>Detector coupling mode (Mean coupling or centered coupling)</li>
 </ol>
 
+
+The package is also let you use a **ScattererSet** which is define by a range of scatterer diameter and a range of refractive index
+in order to study how light scattered by such Set will be coupling in differents situations.
+
+
+Documentation
+=============
+For the moment, the documentation for the package is in the Docs/build/html/index,html file.
+I invite you to open it, in order to checkout some pre-defined examples.
+
+
+Google Colab
+============
+It's 2021, you don't need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
+You can open the PyMieSim.ipynb in the file to access it.
+
+
 dependencies
 ============
+In order to install the package you first need to install some dependencies, which are:
 ```console
 sudo apt-get install libproj-dev proj-data proj-bin  
 sudo apt-get install libgeos-dev
@@ -31,7 +46,7 @@ sudo apt-get install libgeos-dev
 Installation
 ============
 ```console
-pip3 install -v git+https://gitlab.com/Martth/miecoupling.git
+pip3 install -v git+https://github.com/MartinPdeS/PyMieSim.git
 ```
 
 ## Documentation
@@ -52,6 +67,6 @@ Running Unittest
 To run the Unittests one need the coverage library.
 
 ```console
-   pip3 install coverage 
+   pip3 install coverage
    coverage run -m unittest Test/Unittest.py
 ```

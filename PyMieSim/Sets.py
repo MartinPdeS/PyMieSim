@@ -4,10 +4,10 @@ from typing import Tuple, Union
 
 from PyMieSim.utils import LoadLibraries
 from PyMieSim.Physics import Source
-from PyMieSim.classes.Optimizer import OptArray
-from PyMieSim.classes.Detector import LPmode, Photodiode
-from PyMieSim.classes.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
-from PyMieSim.classes.Scattering import Scatterer, WMSample
+from PyMieSim.Optimizer import OptArray
+from PyMieSim.Detector import LPmode, Photodiode
+from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
+from PyMieSim.Scattering import Scatterer, WMSample
 
 GetS1S2, GetEfficiencies = LoadLibraries(['S1S2', 'Efficiencies'])
 

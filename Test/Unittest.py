@@ -5,10 +5,10 @@
 from unittest import TestCase
 from numpy import linspace
 
-from PyMieSim.classes.Scattering import Scatterer
+from PyMieSim.Scattering import Scatterer
 from PyMieSim.Physics import Source
-from PyMieSim.classes.Detector import LPmode, Photodiode
-from PyMieSim.classes.Sets import ScattererSet, ExperimentalSet
+from PyMieSim.Detector import LPmode, Photodiode
+from PyMieSim.Sets import ScattererSet, ExperimentalSet
 
 LightSource = Source(Wavelength = 450e-9, Polarization = 0, Power = 1,  Radius = 1)
 Scat = Scatterer(Diameter = 300e-9, Source = LightSource, Index = 1.4)

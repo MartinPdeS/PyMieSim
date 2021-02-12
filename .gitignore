@@ -1,5 +1,6 @@
 *.png
-*.ipynb*
+*.ipynb_checkpoints
+*Perso*
 *.MA.*
 /build
 temp.py

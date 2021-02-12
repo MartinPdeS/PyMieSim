@@ -1,10 +1,10 @@
 import numpy as np
 from scipy.special import gamma
 
-from PyMieSim.classes.Mesh import FibonacciMesh
+from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import PlotFarField
 from PyMieSim.Physics import Angle, Source
-from PyMieSim.classes.BaseClasses import BaseScatterer
+from PyMieSim.BaseClasses import BaseScatterer
 
 
 

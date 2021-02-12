@@ -5,6 +5,17 @@ from scipy.special import jv, yv
 from scipy.integrate import trapz
 import warnings
 
+
+def Field(Index, SizeParam, Phi, Theta):
+    S1S2 = GetS1S2(Index, SizeParam, Phi)
+
+    Parallel = np.outer(S1S2[0], np.abs(np.sin(Theta) ));
+
+    Perpendicular = np.outer(S1S2[1], np.abs(np.cos(Theta)))
+
+    return Parallel, Perpendicular
+
+
 def coerceDType(d):
   if type(d) is not np.ndarray:
     return np.array(d)

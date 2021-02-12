@@ -4,7 +4,7 @@ from ai import cs
 
 from PyMieSim.utils import PlotUnstructureData
 from PyMieSim.functions.converts import Angle2Direct
-from PyMieSim.classes.Representations import Footprint
+from PyMieSim.Representations import Footprint
 from PyMieSim.cpp.Interface import IntensityPointCoupling, AmplitudePointCoupling, IntensityMeanCoupling, AmplitudeMeanCoupling
 
 """ Coupling Reference: Estimation of Coupling Efficiency of Optical Fiber by Far-Field Method """
@@ -65,21 +65,21 @@ def Coupling(Scatterer, Detector):
     if Detector._CouplingMode[1] == 'Centered':
         if Detector._CouplingMode[0] == "Intensity":
             Para, Perp = IntensityPointCoupling(Scalar0       = Detector.Scalar,
-                                                  Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                                  Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                                  SinMesh       = Detector.Mesh.SinMesh,
-                                                  dOmega        = Detector.Mesh.dOmega.Radian,
-                                                  Filter        = Detector.Filter.Radian)
+                                                Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                                Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                                SinMesh       = Detector.Mesh.SinMesh,
+                                                dOmega        = Detector.Mesh.dOmega.Radian,
+                                                Filter        = Detector.Filter.Radian)
 
             return Para + Perp
 
         if Detector._CouplingMode[0] == "Amplitude":
             Para, Perp = AmplitudePointCoupling(Scalar0       = Detector.Scalar,
-                                          Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                          Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                          SinMesh       = Detector.Mesh.SinMesh,
-                                          dOmega        = Detector.Mesh.dOmega.Radian,
-                                          Filter        = Detector.Filter.Radian)
+                                                Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                                Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                                SinMesh       = Detector.Mesh.SinMesh,
+                                                dOmega        = Detector.Mesh.dOmega.Radian,
+                                                Filter        = Detector.Filter.Radian)
 
             return Para + Perp
 
@@ -89,22 +89,22 @@ def Coupling(Scatterer, Detector):
         if Detector._CouplingMode[0] == "Intensity":
 
             Para, Perp = IntensityMeanCoupling(Scalar0       = Detector.Scalar,
-                                         Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                         Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                         SinMesh       = Detector.Mesh.SinMesh,
-                                         dOmega        = Detector.Mesh.dOmega.Radian,
-                                         Omega         = Detector.Mesh.Omega.Radian,
-                                         Filter        = Detector.Filter.Radian)
+                                              Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                              Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                              SinMesh       = Detector.Mesh.SinMesh,
+                                              dOmega        = Detector.Mesh.dOmega.Radian,
+                                              Omega         = Detector.Mesh.Omega.Radian,
+                                              Filter        = Detector.Filter.Radian)
 
             return Para + Perp
 
         if Detector._CouplingMode[0] == "Amplitude":
             Para, Perp = AmplitudeMeanCoupling(Scalar0       = Detector.Scalar,
-                                         Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                         Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
-                                         SinMesh       = Detector.Mesh.SinMesh,
-                                         dOmega        = Detector.Mesh.dOmega.Radian,
-                                         Omega         = Detector.Mesh.Omega.Radian,
-                                         Filter        = Detector.Filter.Radian)
+                                               Parallel      = Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                               Perpendicular = Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian),
+                                               SinMesh       = Detector.Mesh.SinMesh,
+                                               dOmega        = Detector.Mesh.dOmega.Radian,
+                                               Omega         = Detector.Mesh.Omega.Radian,
+                                              Filter        = Detector.Filter.Radian)
 
             return Para + Perp

@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from ai import cs
 
-from PyMieSim.classes.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.classes.Mesh import FibonacciMesh
+from PyMieSim.BaseClasses import BaseDetector, MeshProperty
+from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.functions.converts import NA2Angle
 from PyMieSim.utils import interp_at
 from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
@@ -235,7 +235,7 @@ class LPmode(BaseDetector, MeshProperty):
         return f"""
         LP mode detector
         Coupling Mode: Amplitude
-        LP Mode:       {self.ModeNumber}
+        LP Mode:       {(self.ModeNumber[0]-1, self.ModeNumber[1], self.ModeNumber[2])}
         Sampling:      {self.Mesh.Sampling}
         Gamma offset:  {self.Mesh.GammaOffset}
         Phi offset:    {self.Mesh.PhiOffset}

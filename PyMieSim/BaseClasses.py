@@ -6,7 +6,7 @@ import matplotlib
 import cartopy.crs as ccrs
 from ai import cs
 
-from PyMieSim.classes.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
+from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieSim.functions.Couplings import Coupling as Coupling, GetFootprint
 from PyMieSim.cpp.Interface import GetFields, GetEfficiencies
 from PyMieSim.functions.converts import NA2Angle
