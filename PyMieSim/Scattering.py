@@ -52,9 +52,12 @@ class Scatterer(BaseScatterer):
     def __init__(self,
                  Diameter:    float,
                  Source:      Source,
-                 Index:       float,) -> None:
+                 Index:       float,
+                 IndexMedium: float  = 1.0 ):
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
+
+        self.nMedium = IndexMedium
 
         self.Area = np.pi * (Diameter/2)**2
 

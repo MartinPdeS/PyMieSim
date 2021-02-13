@@ -137,11 +137,13 @@ class SPF(dict):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp = GetFields(m                    = Parent.Index,
-                               x                    = Parent.SizeParam,
-                               ThetaMesh            = self['Theta'].flatten(),
-                               PhiMesh              = self['Phi'].flatten()-np.pi/2,
-                               Polarization         = 0)
+        Para, Perp = GetFields(m            = Parent.Index,
+                               diameter     = Parent.Diameter,
+                               wavelength   = Parent.Source.Wavelength,
+                               nMedium      = 1.0,
+                               ThetaMesh    = self['Theta'].flatten(),
+                               PhiMesh      = self['Phi'].flatten()-np.pi/2,
+                               Polarization = 0)
 
         self['Parallel'], self['Perpendicular'] = Para, Perp
         self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
@@ -252,7 +254,12 @@ class S1S2(dict):
     def __init__(self, Parent, Num):
 
         self['Phi'] = np.linspace(0, 2*np.pi, Num)
-        self['S1'], self['S2'] = GetS1S2(Parent.Index, Parent.SizeParam, self['Phi'])
+        
+        self['S1'], self['S2'] = GetS1S2(m          = Parent.Index,
+                                         diameter   = Parent.Diameter,
+                                         wavelength = Parent.Source.Wavelength,
+                                         nMedium    = Parent.nMedium,
+                                         phi        = self['Phi'])
 
 
     def Plot(self) -> None:
@@ -310,7 +317,9 @@ class ScalarFarField(dict):
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
         Para, Perp = GetFields(m            = Parent.Index,
-                               x            = Parent.SizeParam,
+                               diameter     = Parent.Diameter,
+                               wavelength   = Parent.Source.Wavelength,
+                               nMedium      = Parent.nMedium,
                                ThetaMesh    = Theta.flatten(),
                                PhiMesh      = Phi.flatten() - np.pi/2,
                                Polarization = Parent.Source.Polarization.Radian)

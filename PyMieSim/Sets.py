@@ -35,13 +35,17 @@ class ScattererSet(object):
     def __init__(self,
                  DiameterList:    list,
                  RIList:          list,
-                 Source:          Source):
+                 Source:          Source,
+                 IndexMedium:     float   = 1.0
+                 ):
 
         if not isinstance(RIList, (list, np.ndarray)): RIList = [RIList]
 
         if not isinstance(DiameterList, (list, np.ndarray)): DiameterList = [DiameterList]
 
         self.DiameterList, self.RIList = DiameterList, RIList
+
+        self.nMedium = IndexMedium
 
         self.Source = Source
 
@@ -96,7 +100,11 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                S1, S2 = GetS1S2(RI, SizeParam, np.linspace(0,2*np.pi,num));
+                S1, S2 = GetS1S2(m          = RI,
+                                 diameter   = Diameter,
+                                 wavelength = self.Source.Wavelength,
+                                 nMedium    = self.nMedium,
+                                 phi        = np.linspace(0,2*np.pi,num))
 
                 df.loc[(Diameter, RI),'S1'] = np.abs(S1S2[0])
 

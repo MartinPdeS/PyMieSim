@@ -164,8 +164,10 @@ C_Qext(iVec*                           an,
 
 
 static void
-C_GetS1S2(const double            m,
-          const double            x,
+C_GetS1S2(const double            index,
+          const double            diameter,
+          const double            wavelength,
+          const double            nMedium,
           const double*           phi,
           const long unsigned int lenght,
           complex128*             S1S2)
@@ -173,6 +175,12 @@ C_GetS1S2(const double            m,
 {
     iVec *an = new iVec;
     iVec *bn = new iVec;
+
+    double m = index / nMedium;
+
+    double w = wavelength / nMedium;
+
+    double x = PI * diameter / w;
 
     std::vector<double> *n, *n2;
 
@@ -269,10 +277,12 @@ C_GetQext(const double            m,
 
 
 static void
-Fields(const double  m,
-       const double  x,
-       const double* ThetaMesh,
-       const double* PhiMesh,
+Fields(double  index,
+       double  diameter,
+       double  wavelength,
+       double  nMedium,
+       double* ThetaMesh,
+       double* PhiMesh,
        const int     Lenght,
        complex128*   Parallel,
        complex128*   Perpendicular,
@@ -286,7 +296,13 @@ Fields(const double  m,
   double temp0 ;
   complex128 temp2;
 
-  C_GetS1S2(m, x, PhiMesh, Lenght, S1S2) ;
+  C_GetS1S2(index,
+            diameter,
+            wavelength,
+            nMedium,
+            PhiMesh,
+            Lenght,
+            S1S2);
 
   for (long unsigned int k=0; k < Lenght; k++ )
   {
@@ -306,8 +322,10 @@ Fields(const double  m,
 
 
 static void
-FieldsNoPolarization(const double  m,
-                     const double  x,
+FieldsNoPolarization(const double  index,
+                     const double  diameter,
+                     const double  wavelength,
+                     const double  nMedium,
                      const double* ThetaMesh,
                      const double* PhiMesh,
                      const int     Lenght,
@@ -323,7 +341,13 @@ FieldsNoPolarization(const double  m,
   double temp1 = 1./sqrt(2.);
   complex128 temp2;
 
-  C_GetS1S2(m, x, PhiMesh, Lenght, S1S2) ;
+  C_GetS1S2(index,
+            diameter,
+            wavelength,
+            nMedium,
+            PhiMesh,
+            Lenght,
+            S1S2);
 
   for (long unsigned int k=0; k < Lenght; k++ )
   {

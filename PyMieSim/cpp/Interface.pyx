@@ -19,36 +19,47 @@ from libcpp.utility cimport pair
 ctypedef double complex complex128_t
 
 cdef extern from "Mie.cpp":
-    cdef void* C_GetS1S2(double a,
-                         double b,
-                         double* phi,
-                         int lenght,
+    cdef void* C_GetS1S2(double        index,
+                         double        diameter,
+                         double        wavelength,
+                         double        nMedium,
+                         double*       phi,
+                         int           lenght,
                          complex128_t* ptr);
 
     cdef pair[double, double] C_GetEfficiencies(double a, double b);
 
-    cdef void* Fields(double a,
-                      double b,
-                      double* ThetaVec,
-                      double* PhiVec,
-                      int Lenght,
+    cdef void* Fields(double        index,
+                      double        diameter,
+                      double        wavelength,
+                      double        nMedium,
+                      double*       ThetaVec,
+                      double*       PhiVec,
+                      int           Lenght,
                       complex128_t* Parallel,
                       complex128_t* Perpendicular,
-                      double Polarization);
+                      double        Polarization);
 
 
-    cdef void* FieldsNoPolarization(double a,
-                                    double b,
-                                    double* ThetaVec,
-                                    double* PhiVec,
-                                    int Lenght,
+    cdef void* FieldsNoPolarization(double        index,
+                                    double        diameter,
+                                    double        wavelength,
+                                    double        nMedium,
+                                    double*       ThetaVec,
+                                    double*       PhiVec,
+                                    int           Lenght,
                                     complex128_t* Parallel,
                                     complex128_t* Perpendicular);
 
 
 
 
-cpdef GetS1S2(double m, double x, phi):
+cpdef GetS1S2(double index,
+              double diameter,
+              double wavelength,
+              double nMedium,
+              phi):
+
 
     Vector = VectorWrapper(2 * phi.size)
     Vector.add_row()
@@ -59,11 +70,15 @@ cpdef GetS1S2(double m, double x, phi):
 
     phiMesh_ptr = &phiView[0]
 
-    C_GetS1S2(m,  x, phiMesh_ptr, phi.size, &(Vector.S1S2)[0])
+    C_GetS1S2(index,
+              diameter,
+              wavelength,
+              nMedium,
+              phiMesh_ptr,
+              phi.size,
+              &(Vector.S1S2)[0])
 
-    arr = np.asarray(Vector)
-
-    arr = np.reshape(arr,[2,phi.size])
+    arr = np.asarray(Vector).reshape([2,phi.size])
 
     return arr[0], arr[1]
 
@@ -78,8 +93,10 @@ cpdef GetEfficiencies(double m, double x):
 
 
 
-cpdef GetFields(double m,
-                double x,
+cpdef GetFields(double index,
+                double diameter,
+                double wavelength,
+                double nMedium,
                 ThetaMesh,
                 PhiMesh,
                 Polarization):
@@ -94,8 +111,6 @@ cpdef GetFields(double m,
     PhiVec_ptr = &PhiVectorView[0]
     ThetaVec_ptr = &ThetaVectorView[0]
 
-
-
     Parallel = VectorWrapper(ThetaMesh.size)
     Parallel.add_row()
 
@@ -104,8 +119,10 @@ cpdef GetFields(double m,
 
     if Polarization is 'None':
 
-        FieldsNoPolarization(m,
-                             x,
+        FieldsNoPolarization(index,
+                             diameter,
+                             wavelength,
+                             nMedium,
                              ThetaVec_ptr,
                              PhiVec_ptr,
                              PhiMesh.size,
@@ -114,8 +131,10 @@ cpdef GetFields(double m,
 
     else:
 
-        Fields(m,
-               x,
+        Fields(index,
+               diameter,
+               wavelength,
+               nMedium,
                ThetaVec_ptr,
                PhiVec_ptr,
                PhiMesh.size,

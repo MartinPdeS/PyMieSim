@@ -309,12 +309,13 @@ class BaseScatterer(object):
         with the PyMieScatt package.
         """
 
-        return GetFields(m            = self.Index,
-                         x            = self.SizeParam,
+        return GetFields(index        = self.Index,
+                         diameter     = self.Diameter,
+                         wavelength   = self.Source.Wavelength,
+                         nMedium      = self.nMedium,
                          ThetaMesh    = Theta,
                          PhiMesh      = Phi - np.pi/2,
                          Polarization = self.Source.Polarization.Radian)
-
 
     def Plot(self, Num=200, scatter=False):
 
