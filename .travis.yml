@@ -13,4 +13,5 @@ install:
   - pip install -r requirements.txt
 
 script:
+  - apt-get install libproj-dev proj-data proj-bin libgeos-dev 
   - coverage run -m unittest Test/Uniitest.py
