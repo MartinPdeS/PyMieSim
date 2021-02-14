@@ -1,4 +1,6 @@
-.. PyMieSim documentation master file.
+[![Travis CI](https://img.shields.io/travis/com/numpy/numpy/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
+
+
 
 Welcome to PyMieSim's documentation!
 ====================================

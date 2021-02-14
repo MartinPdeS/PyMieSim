@@ -17,6 +17,16 @@ ScatSet = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.
 
 class PrintingTest(TestCase):
 
+    def Run(self):
+        self.test0()
+        self.test1()
+        self.test2()
+        self.test3()
+        self.test4()
+        self.test5()
+        self.test6()
+        self.test7()
+
     def test0(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
                           Sampling     = 11,
@@ -56,3 +66,8 @@ class PrintingTest(TestCase):
         Set = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
 
         Set.DataFrame
+
+
+if __name__ == '__main__':
+    test = PrintingTest()
+    test.Run()

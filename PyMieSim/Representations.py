@@ -137,7 +137,7 @@ class SPF(dict):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp = GetFields(m            = Parent.Index,
+        Para, Perp = GetFields(index        = Parent.Index,
                                diameter     = Parent.Diameter,
                                wavelength   = Parent.Source.Wavelength,
                                nMedium      = 1.0,
@@ -254,8 +254,8 @@ class S1S2(dict):
     def __init__(self, Parent, Num):
 
         self['Phi'] = np.linspace(0, 2*np.pi, Num)
-        
-        self['S1'], self['S2'] = GetS1S2(m          = Parent.Index,
+
+        self['S1'], self['S2'] = GetS1S2(index      = Parent.Index,
                                          diameter   = Parent.Diameter,
                                          wavelength = Parent.Source.Wavelength,
                                          nMedium    = Parent.nMedium,
@@ -316,7 +316,7 @@ class ScalarFarField(dict):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        Para, Perp = GetFields(m            = Parent.Index,
+        Para, Perp = GetFields(index        = Parent.Index,
                                diameter     = Parent.Diameter,
                                wavelength   = Parent.Source.Wavelength,
                                nMedium      = Parent.nMedium,
