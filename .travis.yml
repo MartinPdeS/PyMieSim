@@ -10,4 +10,4 @@ install:
 
 script:
 
-  - coverage run -m unittest Test/Uniitest.py
+  - coverage run -m unittest Test/Unittest.py
