@@ -1,6 +1,6 @@
+sudo: True
 language: python
-python:
-  - "3.6"      # current default Python on Travis CI
+python: 3.6      # current default Python on Travis CI
 
 
 install:
@@ -8,6 +8,7 @@ install:
   - pip3 install -r requirements.txt
   - python3 setup.py build_ext --inplace
   - pip3 install .
+  - pip3 install codecov
 
 env:
   - CODECOV_TOKEN='8b34d257-0baf-49de-8cd7-d53db530073f'
@@ -18,3 +19,4 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - codecov
