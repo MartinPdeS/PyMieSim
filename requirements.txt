@@ -8,3 +8,4 @@ mayavi
 ai.cs
 cartopy
 coverage
+unittest
