@@ -9,7 +9,12 @@ install:
   - python3 setup.py build_ext --inplace
   - pip3 install .
 
+env:
+  - CODECOV_TOKEN=8b34d257-0baf-49de-8cd7-d53db530073f
 
 script:
   - coverage run -m unittest Test/Unittest.py
+
+
+after_success:
   - bash <(curl -s https://codecov.io/bash)

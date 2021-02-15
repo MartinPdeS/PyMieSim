@@ -14,6 +14,7 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 <li>LightSource Polarization</li>
 <li>Scatterer diameter</li>
 <li>Scatterer refractive index</li>
+<li>Medium refractive index</li>
 <li>Detector type (photodiode or LPMode)</li>
 <li>Detector numerical aperture</li>
 <li>Detector angle offfset in polariation parallel axis</li>
