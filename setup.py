@@ -67,7 +67,6 @@ setup_dict = dict(
       install_requires   = ['numpy',
                             'scipy',
                             'matplotlib',
-                            'unittest',
                             'pandas',
                             'cython',
                             'mayavi',
