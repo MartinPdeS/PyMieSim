@@ -308,8 +308,8 @@ Fields(double  index,
   {
     temp0 = *ThetaMesh++ ;
 
-    *Parallel++          = S1S2[k] * abs(cos(temp0 + Polarization)) ;
-    *Perpendicular++     = S1S2[k + Lenght] * abs(sin(temp0 + Polarization)) ;
+    *Parallel++          = S1S2[k] * (complex128) abs(cos(temp0 + Polarization)) ;
+    *Perpendicular++     = S1S2[k + Lenght] * (complex128) abs(sin(temp0 + Polarization)) ;
 
   }
 
