@@ -8,4 +8,4 @@ mayavi
 ai.cs
 cartopy
 coverage
-yaml
+pyyaml
