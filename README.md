@@ -43,6 +43,7 @@ In order to install the package you first need to install some dependencies, whi
 ```console
 sudo apt-get install libproj-dev proj-data proj-bin  
 sudo apt-get install libgeos-dev
+sudo apt-get install libboost-all-dev
 ```
 
 Installation

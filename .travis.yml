@@ -4,7 +4,7 @@ python:
 
 
 install:
-  - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev vtk6 python-vtk
+  - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev vtk6 python-vtk libboost-all-dev
   - pip3 install -r requirements.txt
   - pip3 install .
 
