@@ -41,6 +41,7 @@ cdef extern from "Mie.cpp":
                       double        Polarization);
 
 
+
     cdef void* FieldsNoPolarization(double        index,
                                     double        diameter,
                                     double        wavelength,
@@ -52,7 +53,7 @@ cdef extern from "Mie.cpp":
                                     complex128_t* Perpendicular);
 
 
-
+  
 
 cpdef GetS1S2(double index,
               double diameter,

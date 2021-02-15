@@ -1,7 +1,7 @@
-*.png
 *.ipynb_checkpoints
 *Perso*
 *.MA.*
 /build
 temp.py
 *Untitled*
+*.svg

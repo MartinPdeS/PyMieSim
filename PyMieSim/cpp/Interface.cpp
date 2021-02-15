@@ -1175,7 +1175,7 @@ struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling;
 struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling;
 struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling;
 
-/* "PyMieSim/cpp/Interface.pyx":152
+/* "PyMieSim/cpp/Interface.pyx":153
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -1187,7 +1187,7 @@ struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_IntensityPointCoupling {
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Interface.pyx":169
+/* "PyMieSim/cpp/Interface.pyx":170
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -1199,7 +1199,7 @@ struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling {
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Interface.pyx":185
+/* "PyMieSim/cpp/Interface.pyx":186
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -1211,7 +1211,7 @@ struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling {
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Interface.pyx":203
+/* "PyMieSim/cpp/Interface.pyx":204
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -1223,7 +1223,7 @@ struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling {
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Interface.pyx":238
+/* "PyMieSim/cpp/Interface.pyx":239
  * 
  * 
  * cdef class VectorWrapper:             # <<<<<<<<<<<<<<
@@ -2057,7 +2057,7 @@ static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
 /* Late includes */
 
-/* "PyMieSim/cpp/Interface.pyx":57
+/* "PyMieSim/cpp/Interface.pyx":58
  * 
  * 
  * cpdef GetS1S2(double index,             # <<<<<<<<<<<<<<
@@ -2091,32 +2091,32 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   __pyx_pybuffernd_phiView.data = NULL;
   __pyx_pybuffernd_phiView.rcbuffer = &__pyx_pybuffer_phiView;
 
-  /* "PyMieSim/cpp/Interface.pyx":64
+  /* "PyMieSim/cpp/Interface.pyx":65
  * 
  * 
  *     Vector = VectorWrapper(2 * phi.size)             # <<<<<<<<<<<<<<
  *     Vector.add_row()
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_phi, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_phi, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Multiply(__pyx_int_2, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Multiply(__pyx_int_2, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_Vector = ((struct __pyx_obj_8PyMieSim_3cpp_9Interface_VectorWrapper *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":65
+  /* "PyMieSim/cpp/Interface.pyx":66
  * 
  *     Vector = VectorWrapper(2 * phi.size)
  *     Vector.add_row()             # <<<<<<<<<<<<<<
  * 
  *     cdef:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Vector), __pyx_n_s_add_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Vector), __pyx_n_s_add_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2130,44 +2130,44 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":68
+  /* "PyMieSim/cpp/Interface.pyx":69
  * 
  *     cdef:
  *         np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(phi, dtype = float, order="C")             # <<<<<<<<<<<<<<
  *         double* phiMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_phi);
   __Pyx_GIVEREF(__pyx_v_phi);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_phi);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 68, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 68, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 69, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_phiView.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_phiView = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_phiView.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 68, __pyx_L1_error)
+      __PYX_ERR(0, 69, __pyx_L1_error)
     } else {__pyx_pybuffernd_phiView.diminfo[0].strides = __pyx_pybuffernd_phiView.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_phiView.diminfo[0].shape = __pyx_pybuffernd_phiView.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -2175,7 +2175,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   __pyx_v_phiView = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":69
+  /* "PyMieSim/cpp/Interface.pyx":70
  *     cdef:
  *         np.ndarray[double, ndim=1, mode="c"] phiView = np.asarray(phi, dtype = float, order="C")
  *         double* phiMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))             # <<<<<<<<<<<<<<
@@ -2184,7 +2184,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
  */
   __pyx_v_phiMesh_ptr = ((double *)PyMem_Malloc((sizeof(double *))));
 
-  /* "PyMieSim/cpp/Interface.pyx":71
+  /* "PyMieSim/cpp/Interface.pyx":72
  *         double* phiMesh_ptr = <double *>PyMem_Malloc(sizeof(double*))
  * 
  *     phiMesh_ptr = &phiView[0]             # <<<<<<<<<<<<<<
@@ -2194,19 +2194,19 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   __pyx_t_6 = 0;
   __pyx_v_phiMesh_ptr = (&(*__Pyx_BufPtrCContig1d(double *, __pyx_pybuffernd_phiView.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_phiView.diminfo[0].strides)));
 
-  /* "PyMieSim/cpp/Interface.pyx":78
+  /* "PyMieSim/cpp/Interface.pyx":79
  *               nMedium,
  *               phiMesh_ptr,
  *               phi.size,             # <<<<<<<<<<<<<<
  *               &(Vector.S1S2)[0])
  * 
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_phi, __pyx_n_s_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 79, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":73
+  /* "PyMieSim/cpp/Interface.pyx":74
  *     phiMesh_ptr = &phiView[0]
  * 
  *     C_GetS1S2(index,             # <<<<<<<<<<<<<<
@@ -2215,16 +2215,16 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
  */
   (void)(C_GetS1S2(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_phiMesh_ptr, __pyx_t_7, (&(__pyx_v_Vector->S1S2[0]))));
 
-  /* "PyMieSim/cpp/Interface.pyx":81
+  /* "PyMieSim/cpp/Interface.pyx":82
  *               &(Vector.S1S2)[0])
  * 
  *     arr = np.asarray(Vector).reshape([2,phi.size])             # <<<<<<<<<<<<<<
  * 
  *     return arr[0], arr[1]
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -2239,15 +2239,15 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   }
   __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_1, ((PyObject *)__pyx_v_Vector)) : __Pyx_PyObject_CallOneArg(__pyx_t_2, ((PyObject *)__pyx_v_Vector));
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_reshape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_reshape); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_phi, __pyx_n_s_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_phi, __pyx_n_s_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_int_2);
   __Pyx_GIVEREF(__pyx_int_2);
@@ -2268,13 +2268,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   __pyx_t_4 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_1);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_arr = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":83
+  /* "PyMieSim/cpp/Interface.pyx":84
  *     arr = np.asarray(Vector).reshape([2,phi.size])
  * 
  *     return arr[0], arr[1]             # <<<<<<<<<<<<<<
@@ -2282,11 +2282,11 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_arr, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_arr, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_arr, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_arr, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_4);
@@ -2298,7 +2298,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(double __pyx_v_index,
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":57
+  /* "PyMieSim/cpp/Interface.pyx":58
  * 
  * 
  * cpdef GetS1S2(double index,             # <<<<<<<<<<<<<<
@@ -2375,29 +2375,29 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_1GetS1S2(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_diameter)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 1); __PYX_ERR(0, 57, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 1); __PYX_ERR(0, 58, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_wavelength)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 2); __PYX_ERR(0, 57, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 2); __PYX_ERR(0, 58, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_nMedium)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 3); __PYX_ERR(0, 57, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 3); __PYX_ERR(0, 58, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_phi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 4); __PYX_ERR(0, 57, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, 4); __PYX_ERR(0, 58, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetS1S2") < 0)) __PYX_ERR(0, 57, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetS1S2") < 0)) __PYX_ERR(0, 58, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -2408,15 +2408,15 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_1GetS1S2(PyObject *__pyx_sel
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
       values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
-    __pyx_v_index = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_index == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L3_error)
-    __pyx_v_diameter = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_diameter == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L3_error)
-    __pyx_v_wavelength = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_wavelength == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
-    __pyx_v_nMedium = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_nMedium == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
+    __pyx_v_index = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_index == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 58, __pyx_L3_error)
+    __pyx_v_diameter = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_diameter == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 59, __pyx_L3_error)
+    __pyx_v_wavelength = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_wavelength == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L3_error)
+    __pyx_v_nMedium = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_nMedium == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 61, __pyx_L3_error)
     __pyx_v_phi = values[4];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 57, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("GetS1S2", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 58, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.GetS1S2", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2438,7 +2438,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_GetS1S2(CYTHON_UNUSED PyObje
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetS1S2", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_phi, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_GetS1S2(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_phi, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2455,7 +2455,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_GetS1S2(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":86
+/* "PyMieSim/cpp/Interface.pyx":87
  * 
  * 
  * cpdef GetEfficiencies(double m, double x):             # <<<<<<<<<<<<<<
@@ -2480,14 +2480,14 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetEfficiencies", 0);
 
-  /* "PyMieSim/cpp/Interface.pyx":88
+  /* "PyMieSim/cpp/Interface.pyx":89
  * cpdef GetEfficiencies(double m, double x):
  * 
  *     Qsca, Qext = C_GetEfficiencies(m,  x)             # <<<<<<<<<<<<<<
  * 
  *     Qabs = Qext - Qsca
  */
-  __pyx_t_1 = __pyx_convert_pair_to_py_double____double(C_GetEfficiencies(__pyx_v_m, __pyx_v_x)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+  __pyx_t_1 = __pyx_convert_pair_to_py_double____double(C_GetEfficiencies(__pyx_v_m, __pyx_v_x)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -2495,7 +2495,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 88, __pyx_L1_error)
+      __PYX_ERR(0, 89, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -2508,15 +2508,15 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 89, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -2524,7 +2524,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 88, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 89, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -2532,7 +2532,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 88, __pyx_L1_error)
+    __PYX_ERR(0, 89, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_Qsca = __pyx_t_2;
@@ -2540,19 +2540,19 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
   __pyx_v_Qext = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":90
+  /* "PyMieSim/cpp/Interface.pyx":91
  *     Qsca, Qext = C_GetEfficiencies(m,  x)
  * 
  *     Qabs = Qext - Qsca             # <<<<<<<<<<<<<<
  * 
  *     return Qsca, Qext, Qabs
  */
-  __pyx_t_1 = PyNumber_Subtract(__pyx_v_Qext, __pyx_v_Qsca); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Subtract(__pyx_v_Qext, __pyx_v_Qsca); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_Qabs = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":92
+  /* "PyMieSim/cpp/Interface.pyx":93
  *     Qabs = Qext - Qsca
  * 
  *     return Qsca, Qext, Qabs             # <<<<<<<<<<<<<<
@@ -2560,7 +2560,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_Qsca);
   __Pyx_GIVEREF(__pyx_v_Qsca);
@@ -2575,7 +2575,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(double __pyx_
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":86
+  /* "PyMieSim/cpp/Interface.pyx":87
  * 
  * 
  * cpdef GetEfficiencies(double m, double x):             # <<<<<<<<<<<<<<
@@ -2634,11 +2634,11 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_3GetEfficiencies(PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetEfficiencies", 1, 2, 2, 1); __PYX_ERR(0, 86, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetEfficiencies", 1, 2, 2, 1); __PYX_ERR(0, 87, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetEfficiencies") < 0)) __PYX_ERR(0, 86, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetEfficiencies") < 0)) __PYX_ERR(0, 87, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2646,12 +2646,12 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_3GetEfficiencies(PyObject *_
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
-    __pyx_v_m = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_m == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L3_error)
-    __pyx_v_x = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_x == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 86, __pyx_L3_error)
+    __pyx_v_m = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_m == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L3_error)
+    __pyx_v_x = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_x == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 87, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("GetEfficiencies", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 86, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("GetEfficiencies", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 87, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.GetEfficiencies", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2673,7 +2673,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_2GetEfficiencies(CYTHON_UNUS
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetEfficiencies", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(__pyx_v_m, __pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_GetEfficiencies(__pyx_v_m, __pyx_v_x, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2690,7 +2690,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_2GetEfficiencies(CYTHON_UNUS
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":96
+/* "PyMieSim/cpp/Interface.pyx":97
  * 
  * 
  * cpdef GetFields(double index,             # <<<<<<<<<<<<<<
@@ -2738,39 +2738,39 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_pybuffernd_PhiVectorView.data = NULL;
   __pyx_pybuffernd_PhiVectorView.rcbuffer = &__pyx_pybuffer_PhiVectorView;
 
-  /* "PyMieSim/cpp/Interface.pyx":105
+  /* "PyMieSim/cpp/Interface.pyx":106
  * 
  *     cdef:
  *         np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")             # <<<<<<<<<<<<<<
  *         double* ThetaVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_ThetaMesh);
   __Pyx_GIVEREF(__pyx_v_ThetaMesh);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_ThetaMesh);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 106, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 106, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 105, __pyx_L1_error)
+  if (!(likely(((__pyx_t_4) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_4, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 106, __pyx_L1_error)
   __pyx_t_5 = ((PyArrayObject *)__pyx_t_4);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_ThetaVectorView.rcbuffer->pybuffer, (PyObject*)__pyx_t_5, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_ThetaVectorView = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_ThetaVectorView.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 105, __pyx_L1_error)
+      __PYX_ERR(0, 106, __pyx_L1_error)
     } else {__pyx_pybuffernd_ThetaVectorView.diminfo[0].strides = __pyx_pybuffernd_ThetaVectorView.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_ThetaVectorView.diminfo[0].shape = __pyx_pybuffernd_ThetaVectorView.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -2778,7 +2778,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_v_ThetaVectorView = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":106
+  /* "PyMieSim/cpp/Interface.pyx":107
  *     cdef:
  *         np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")
  *         double* ThetaVec_ptr = <double *>PyMem_Malloc(sizeof(double*))             # <<<<<<<<<<<<<<
@@ -2787,39 +2787,39 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
  */
   __pyx_v_ThetaVec_ptr = ((double *)PyMem_Malloc((sizeof(double *))));
 
-  /* "PyMieSim/cpp/Interface.pyx":108
+  /* "PyMieSim/cpp/Interface.pyx":109
  *         double* ThetaVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
  * 
  *         np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiMesh, dtype = float, order="C")             # <<<<<<<<<<<<<<
  *         double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_PhiMesh);
   __Pyx_GIVEREF(__pyx_v_PhiMesh);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_PhiMesh);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 108, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, ((PyObject *)(&PyFloat_Type))) < 0) __PYX_ERR(0, 109, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_n_s_C) < 0) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 108, __pyx_L1_error)
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 109, __pyx_L1_error)
   __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_PhiVectorView.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_C_CONTIGUOUS, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_PhiVectorView = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_PhiVectorView.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 108, __pyx_L1_error)
+      __PYX_ERR(0, 109, __pyx_L1_error)
     } else {__pyx_pybuffernd_PhiVectorView.diminfo[0].strides = __pyx_pybuffernd_PhiVectorView.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_PhiVectorView.diminfo[0].shape = __pyx_pybuffernd_PhiVectorView.rcbuffer->pybuffer.shape[0];
     }
   }
@@ -2827,7 +2827,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_v_PhiVectorView = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":109
+  /* "PyMieSim/cpp/Interface.pyx":110
  * 
  *         np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiMesh, dtype = float, order="C")
  *         double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))             # <<<<<<<<<<<<<<
@@ -2836,7 +2836,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
  */
   __pyx_v_PhiVec_ptr = ((double *)PyMem_Malloc((sizeof(double *))));
 
-  /* "PyMieSim/cpp/Interface.pyx":111
+  /* "PyMieSim/cpp/Interface.pyx":112
  *         double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
  * 
  *     PhiVec_ptr = &PhiVectorView[0]             # <<<<<<<<<<<<<<
@@ -2846,7 +2846,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_t_7 = 0;
   __pyx_v_PhiVec_ptr = (&(*__Pyx_BufPtrCContig1d(double *, __pyx_pybuffernd_PhiVectorView.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_PhiVectorView.diminfo[0].strides)));
 
-  /* "PyMieSim/cpp/Interface.pyx":112
+  /* "PyMieSim/cpp/Interface.pyx":113
  * 
  *     PhiVec_ptr = &PhiVectorView[0]
  *     ThetaVec_ptr = &ThetaVectorView[0]             # <<<<<<<<<<<<<<
@@ -2856,29 +2856,29 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_t_7 = 0;
   __pyx_v_ThetaVec_ptr = (&(*__Pyx_BufPtrCContig1d(double *, __pyx_pybuffernd_ThetaVectorView.rcbuffer->pybuffer.buf, __pyx_t_7, __pyx_pybuffernd_ThetaVectorView.diminfo[0].strides)));
 
-  /* "PyMieSim/cpp/Interface.pyx":114
+  /* "PyMieSim/cpp/Interface.pyx":115
  *     ThetaVec_ptr = &ThetaVectorView[0]
  * 
  *     Parallel = VectorWrapper(ThetaMesh.size)             # <<<<<<<<<<<<<<
  *     Parallel.add_row()
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ThetaMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_ThetaMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_Parallel = ((struct __pyx_obj_8PyMieSim_3cpp_9Interface_VectorWrapper *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":115
+  /* "PyMieSim/cpp/Interface.pyx":116
  * 
  *     Parallel = VectorWrapper(ThetaMesh.size)
  *     Parallel.add_row()             # <<<<<<<<<<<<<<
  * 
  *     Perpendicular = VectorWrapper(ThetaMesh.size)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Parallel), __pyx_n_s_add_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Parallel), __pyx_n_s_add_row); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2892,34 +2892,34 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":117
+  /* "PyMieSim/cpp/Interface.pyx":118
  *     Parallel.add_row()
  * 
  *     Perpendicular = VectorWrapper(ThetaMesh.size)             # <<<<<<<<<<<<<<
  *     Perpendicular.add_row()
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ThetaMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_ThetaMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 117, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(((PyObject *)__pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper), __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_Perpendicular = ((struct __pyx_obj_8PyMieSim_3cpp_9Interface_VectorWrapper *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":118
+  /* "PyMieSim/cpp/Interface.pyx":119
  * 
  *     Perpendicular = VectorWrapper(ThetaMesh.size)
  *     Perpendicular.add_row()             # <<<<<<<<<<<<<<
  * 
  *     if Polarization is 'None':
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Perpendicular), __pyx_n_s_add_row); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_Perpendicular), __pyx_n_s_add_row); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
@@ -2933,12 +2933,12 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 118, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":120
+  /* "PyMieSim/cpp/Interface.pyx":121
  *     Perpendicular.add_row()
  * 
  *     if Polarization is 'None':             # <<<<<<<<<<<<<<
@@ -2949,19 +2949,19 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_t_9 = (__pyx_t_8 != 0);
   if (__pyx_t_9) {
 
-    /* "PyMieSim/cpp/Interface.pyx":128
+    /* "PyMieSim/cpp/Interface.pyx":129
  *                              ThetaVec_ptr,
  *                              PhiVec_ptr,
  *                              PhiMesh.size,             # <<<<<<<<<<<<<<
  *                              &(Parallel.S1S2)[0],
  *                              &(Perpendicular.S1S2)[0]);
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_PhiMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_PhiMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "PyMieSim/cpp/Interface.pyx":122
+    /* "PyMieSim/cpp/Interface.pyx":123
  *     if Polarization is 'None':
  * 
  *         FieldsNoPolarization(index,             # <<<<<<<<<<<<<<
@@ -2970,7 +2970,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
  */
     (void)(FieldsNoPolarization(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_ThetaVec_ptr, __pyx_v_PhiVec_ptr, __pyx_t_10, (&(__pyx_v_Parallel->S1S2[0])), (&(__pyx_v_Perpendicular->S1S2[0]))));
 
-    /* "PyMieSim/cpp/Interface.pyx":120
+    /* "PyMieSim/cpp/Interface.pyx":121
  *     Perpendicular.add_row()
  * 
  *     if Polarization is 'None':             # <<<<<<<<<<<<<<
@@ -2980,7 +2980,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":134
+  /* "PyMieSim/cpp/Interface.pyx":135
  *     else:
  * 
  *         Fields(index,             # <<<<<<<<<<<<<<
@@ -2989,28 +2989,28 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
  */
   /*else*/ {
 
-    /* "PyMieSim/cpp/Interface.pyx":140
+    /* "PyMieSim/cpp/Interface.pyx":141
  *                ThetaVec_ptr,
  *                PhiVec_ptr,
  *                PhiMesh.size,             # <<<<<<<<<<<<<<
  *                &(Parallel.S1S2)[0],
  *                &(Perpendicular.S1S2)[0],
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_PhiMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_PhiMesh, __pyx_n_s_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_10 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 141, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "PyMieSim/cpp/Interface.pyx":143
+    /* "PyMieSim/cpp/Interface.pyx":144
  *                &(Parallel.S1S2)[0],
  *                &(Perpendicular.S1S2)[0],
  *                Polarization);             # <<<<<<<<<<<<<<
  * 
  *     arr0 = np.asarray(Parallel).squeeze()
  */
-    __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_v_Polarization); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 143, __pyx_L1_error)
+    __pyx_t_11 = __pyx_PyFloat_AsDouble(__pyx_v_Polarization); if (unlikely((__pyx_t_11 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
 
-    /* "PyMieSim/cpp/Interface.pyx":134
+    /* "PyMieSim/cpp/Interface.pyx":135
  *     else:
  * 
  *         Fields(index,             # <<<<<<<<<<<<<<
@@ -3021,16 +3021,16 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Interface.pyx":145
+  /* "PyMieSim/cpp/Interface.pyx":146
  *                Polarization);
  * 
  *     arr0 = np.asarray(Parallel).squeeze()             # <<<<<<<<<<<<<<
  *     arr1 = np.asarray(Perpendicular).squeeze()
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_asarray); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -3045,10 +3045,10 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, ((PyObject *)__pyx_v_Parallel)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_Parallel));
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -3063,22 +3063,22 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_arr0 = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":146
+  /* "PyMieSim/cpp/Interface.pyx":147
  * 
  *     arr0 = np.asarray(Parallel).squeeze()
  *     arr1 = np.asarray(Perpendicular).squeeze()             # <<<<<<<<<<<<<<
  * 
  *     return arr0, arr1
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = NULL;
@@ -3093,10 +3093,10 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_t_3 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_1, ((PyObject *)__pyx_v_Perpendicular)) : __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_Perpendicular));
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 146, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 146, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -3111,13 +3111,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   }
   __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 146, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 147, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_arr1 = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":148
+  /* "PyMieSim/cpp/Interface.pyx":149
  *     arr1 = np.asarray(Perpendicular).squeeze()
  * 
  *     return arr0, arr1             # <<<<<<<<<<<<<<
@@ -3125,7 +3125,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_arr0);
   __Pyx_GIVEREF(__pyx_v_arr0);
@@ -3137,7 +3137,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_GetFields(double __pyx_v_inde
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":96
+  /* "PyMieSim/cpp/Interface.pyx":97
  * 
  * 
  * cpdef GetFields(double index,             # <<<<<<<<<<<<<<
@@ -3225,41 +3225,41 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_5GetFields(PyObject *__pyx_s
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_diameter)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 1); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 1); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_wavelength)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 2); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 2); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_nMedium)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 3); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 3); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ThetaMesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 4); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 4); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_PhiMesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 5); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 5); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
         if (likely((values[6] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Polarization)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 6); __PYX_ERR(0, 96, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, 6); __PYX_ERR(0, 97, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetFields") < 0)) __PYX_ERR(0, 96, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "GetFields") < 0)) __PYX_ERR(0, 97, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 7) {
       goto __pyx_L5_argtuple_error;
@@ -3272,17 +3272,17 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_5GetFields(PyObject *__pyx_s
       values[5] = PyTuple_GET_ITEM(__pyx_args, 5);
       values[6] = PyTuple_GET_ITEM(__pyx_args, 6);
     }
-    __pyx_v_index = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_index == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 96, __pyx_L3_error)
-    __pyx_v_diameter = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_diameter == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
-    __pyx_v_wavelength = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_wavelength == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
-    __pyx_v_nMedium = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_nMedium == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L3_error)
+    __pyx_v_index = __pyx_PyFloat_AsDouble(values[0]); if (unlikely((__pyx_v_index == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 97, __pyx_L3_error)
+    __pyx_v_diameter = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_diameter == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
+    __pyx_v_wavelength = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_wavelength == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L3_error)
+    __pyx_v_nMedium = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_nMedium == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
     __pyx_v_ThetaMesh = values[4];
     __pyx_v_PhiMesh = values[5];
     __pyx_v_Polarization = values[6];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 96, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("GetFields", 1, 7, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 97, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.GetFields", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3304,7 +3304,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_4GetFields(CYTHON_UNUSED PyO
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetFields", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_GetFields(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_ThetaMesh, __pyx_v_PhiMesh, __pyx_v_Polarization, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_GetFields(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_ThetaMesh, __pyx_v_PhiMesh, __pyx_v_Polarization, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3321,7 +3321,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_4GetFields(CYTHON_UNUSED PyO
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":152
+/* "PyMieSim/cpp/Interface.pyx":153
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3332,7 +3332,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_4GetFields(CYTHON_UNUSED PyO
 static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_7IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_IntensityPointCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Interface.pyx":157
+  /* "PyMieSim/cpp/Interface.pyx":158
  *                             SinMesh,
  *                             dOmega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -3363,20 +3363,20 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
     }
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":159
+  /* "PyMieSim/cpp/Interface.pyx":160
  *                             Filter = None):
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 159, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -3391,17 +3391,17 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_ParaFiltering = __pyx_t_4;
     __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -3416,10 +3416,10 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
     }
     __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 159, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 159, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 160, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_PerpFiltering = __pyx_t_3;
@@ -3427,7 +3427,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":160
+  /* "PyMieSim/cpp/Interface.pyx":161
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
  *     else: ParaFiltering = 1;  PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -3442,24 +3442,24 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Interface.pyx":162
+  /* "PyMieSim/cpp/Interface.pyx":163
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  *     Para = np.sum( np.abs(Scalar0 * Parallel)**2 * SinMesh) * dOmega**2             # <<<<<<<<<<<<<<
  * 
  *     Perp = np.sum( np.abs(Scalar0 * Perpendicular)**2 * SinMesh) * dOmega**2
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_abs); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_abs); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Parallel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Parallel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
@@ -3474,13 +3474,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
   __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_6, __pyx_v_SinMesh); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_t_6, __pyx_v_SinMesh); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -3496,36 +3496,36 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
   __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_6, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 163, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_Para = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":164
+  /* "PyMieSim/cpp/Interface.pyx":165
  *     Para = np.sum( np.abs(Scalar0 * Parallel)**2 * SinMesh) * dOmega**2
  * 
  *     Perp = np.sum( np.abs(Scalar0 * Perpendicular)**2 * SinMesh) * dOmega**2             # <<<<<<<<<<<<<<
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_abs); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_abs); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Perpendicular); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Perpendicular); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -3540,13 +3540,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
   __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_5, __pyx_v_SinMesh); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_5, __pyx_v_SinMesh); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -3562,19 +3562,19 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
   __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_Perp = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":166
+  /* "PyMieSim/cpp/Interface.pyx":167
  *     Perp = np.sum( np.abs(Scalar0 * Perpendicular)**2 * SinMesh) * dOmega**2
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering             # <<<<<<<<<<<<<<
@@ -3582,11 +3582,11 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_Para, __pyx_v_ParaFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_v_Para, __pyx_v_ParaFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_v_Perp, __pyx_v_PerpFiltering); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_v_Perp, __pyx_v_PerpFiltering); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 166, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 167, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -3598,7 +3598,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(PyObje
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":152
+  /* "PyMieSim/cpp/Interface.pyx":153
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3645,7 +3645,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_7IntensityPointCoupling(PyOb
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Filter,0};
     PyObject* values[6] = {0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Interface.pyx":157
+    /* "PyMieSim/cpp/Interface.pyx":158
  *                             SinMesh,
  *                             dOmega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -3681,25 +3681,25 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_7IntensityPointCoupling(PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Parallel)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 1); __PYX_ERR(0, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 1); __PYX_ERR(0, 153, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Perpendicular)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 2); __PYX_ERR(0, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 2); __PYX_ERR(0, 153, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_SinMesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 3); __PYX_ERR(0, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 3); __PYX_ERR(0, 153, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 4); __PYX_ERR(0, 152, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, 4); __PYX_ERR(0, 153, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -3709,7 +3709,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_7IntensityPointCoupling(PyOb
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "IntensityPointCoupling") < 0)) __PYX_ERR(0, 152, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "IntensityPointCoupling") < 0)) __PYX_ERR(0, 153, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3733,7 +3733,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_7IntensityPointCoupling(PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 152, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 153, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3741,7 +3741,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_7IntensityPointCoupling(PyOb
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8PyMieSim_3cpp_9Interface_6IntensityPointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Interface.pyx":152
+  /* "PyMieSim/cpp/Interface.pyx":153
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3766,7 +3766,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_6IntensityPointCoupling(CYTH
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 152, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3783,7 +3783,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_6IntensityPointCoupling(CYTH
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":169
+/* "PyMieSim/cpp/Interface.pyx":170
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3794,7 +3794,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_6IntensityPointCoupling(CYTH
 static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_9IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Interface.pyx":175
+  /* "PyMieSim/cpp/Interface.pyx":176
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -3816,7 +3816,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling(PyObjec
     }
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":177
+  /* "PyMieSim/cpp/Interface.pyx":178
  *                             Filter = None):
  * 
  *     return IntensityPointCoupling(Scalar0       = Scalar0,             # <<<<<<<<<<<<<<
@@ -3825,7 +3825,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling(PyObjec
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "PyMieSim/cpp/Interface.pyx":182
+  /* "PyMieSim/cpp/Interface.pyx":183
  *                                   SinMesh       = SinMesh,
  *                                   dOmega        = dOmega,
  *                                   Filter        = Filter)             # <<<<<<<<<<<<<<
@@ -3834,13 +3834,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling(PyObjec
  */
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 177, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 178, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":169
+  /* "PyMieSim/cpp/Interface.pyx":170
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3879,7 +3879,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_9IntensityMeanCoupling(PyObj
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Omega,&__pyx_n_s_Filter,0};
     PyObject* values[7] = {0,0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Interface.pyx":175
+    /* "PyMieSim/cpp/Interface.pyx":176
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -3917,31 +3917,31 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_9IntensityMeanCoupling(PyObj
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Parallel)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 1); __PYX_ERR(0, 169, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 1); __PYX_ERR(0, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Perpendicular)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 2); __PYX_ERR(0, 169, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 2); __PYX_ERR(0, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_SinMesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 3); __PYX_ERR(0, 169, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 3); __PYX_ERR(0, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 4); __PYX_ERR(0, 169, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 4); __PYX_ERR(0, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Omega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 5); __PYX_ERR(0, 169, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, 5); __PYX_ERR(0, 170, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -3951,7 +3951,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_9IntensityMeanCoupling(PyObj
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "IntensityMeanCoupling") < 0)) __PYX_ERR(0, 169, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "IntensityMeanCoupling") < 0)) __PYX_ERR(0, 170, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3977,7 +3977,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_9IntensityMeanCoupling(PyObj
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 169, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 170, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3985,7 +3985,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_9IntensityMeanCoupling(PyObj
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8PyMieSim_3cpp_9Interface_8IntensityMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Interface.pyx":169
+  /* "PyMieSim/cpp/Interface.pyx":170
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4010,7 +4010,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_8IntensityMeanCoupling(CYTHO
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 169, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_IntensityMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4027,7 +4027,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_8IntensityMeanCoupling(CYTHO
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":185
+/* "PyMieSim/cpp/Interface.pyx":186
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4038,7 +4038,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_8IntensityMeanCoupling(CYTHO
 static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_11AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Interface.pyx":190
+  /* "PyMieSim/cpp/Interface.pyx":191
  *                              SinMesh,
  *                              dOmega,
  *                              Filter = None):             # <<<<<<<<<<<<<<
@@ -4069,20 +4069,20 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
     }
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":192
+  /* "PyMieSim/cpp/Interface.pyx":193
  *                              Filter = None):
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -4097,17 +4097,17 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_ParaFiltering = __pyx_t_4;
     __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -4122,10 +4122,10 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
     }
     __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 192, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_PerpFiltering = __pyx_t_3;
@@ -4133,7 +4133,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":193
+  /* "PyMieSim/cpp/Interface.pyx":194
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
  *     else: ParaFiltering = 1;  PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -4148,26 +4148,26 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Interface.pyx":195
+  /* "PyMieSim/cpp/Interface.pyx":196
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  *     Para = np.abs( np.sum( Scalar0 * Parallel * SinMesh) )**2 * dOmega**2             # <<<<<<<<<<<<<<
  * 
  *     Perp = np.abs( np.sum( Scalar0 * Perpendicular * SinMesh) )**2 * dOmega**2
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Parallel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Parallel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_7 = PyNumber_Multiply(__pyx_t_5, __pyx_v_SinMesh); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_Multiply(__pyx_t_5, __pyx_v_SinMesh); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -4183,7 +4183,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
   __pyx_t_4 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_5, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -4199,41 +4199,41 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
   __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_6, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 196, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_Para = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":197
+  /* "PyMieSim/cpp/Interface.pyx":198
  *     Para = np.abs( np.sum( Scalar0 * Parallel * SinMesh) )**2 * dOmega**2
  * 
  *     Perp = np.abs( np.sum( Scalar0 * Perpendicular * SinMesh) )**2 * dOmega**2             # <<<<<<<<<<<<<<
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_abs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_abs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sum); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sum); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Perpendicular); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Perpendicular); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = PyNumber_Multiply(__pyx_t_6, __pyx_v_SinMesh); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_t_6, __pyx_v_SinMesh); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -4249,7 +4249,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
   __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -4265,22 +4265,22 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
   __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_7, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Power(__pyx_v_dOmega, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 198, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_Perp = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":199
+  /* "PyMieSim/cpp/Interface.pyx":200
  *     Perp = np.abs( np.sum( Scalar0 * Perpendicular * SinMesh) )**2 * dOmega**2
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering             # <<<<<<<<<<<<<<
@@ -4288,11 +4288,11 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_v_Para, __pyx_v_ParaFiltering); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_v_Para, __pyx_v_ParaFiltering); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Perp, __pyx_v_PerpFiltering); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Perp, __pyx_v_PerpFiltering); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 199, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 200, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
@@ -4304,7 +4304,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(PyObje
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":185
+  /* "PyMieSim/cpp/Interface.pyx":186
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4351,7 +4351,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_11AmplitudePointCoupling(PyO
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Filter,0};
     PyObject* values[6] = {0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Interface.pyx":190
+    /* "PyMieSim/cpp/Interface.pyx":191
  *                              SinMesh,
  *                              dOmega,
  *                              Filter = None):             # <<<<<<<<<<<<<<
@@ -4387,25 +4387,25 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_11AmplitudePointCoupling(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Parallel)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 1); __PYX_ERR(0, 185, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 1); __PYX_ERR(0, 186, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Perpendicular)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 2); __PYX_ERR(0, 185, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 2); __PYX_ERR(0, 186, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_SinMesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 3); __PYX_ERR(0, 185, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 3); __PYX_ERR(0, 186, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 4); __PYX_ERR(0, 185, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, 4); __PYX_ERR(0, 186, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -4415,7 +4415,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_11AmplitudePointCoupling(PyO
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "AmplitudePointCoupling") < 0)) __PYX_ERR(0, 185, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "AmplitudePointCoupling") < 0)) __PYX_ERR(0, 186, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4439,7 +4439,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_11AmplitudePointCoupling(PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 185, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 186, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4447,7 +4447,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_11AmplitudePointCoupling(PyO
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8PyMieSim_3cpp_9Interface_10AmplitudePointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Interface.pyx":185
+  /* "PyMieSim/cpp/Interface.pyx":186
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4472,7 +4472,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_10AmplitudePointCoupling(CYT
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_AmplitudePointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4489,7 +4489,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_10AmplitudePointCoupling(CYT
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":203
+/* "PyMieSim/cpp/Interface.pyx":204
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4500,7 +4500,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_10AmplitudePointCoupling(CYT
 static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_13AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, CYTHON_UNUSED PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Interface.pyx":209
+  /* "PyMieSim/cpp/Interface.pyx":210
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -4531,20 +4531,20 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
     }
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":211
+  /* "PyMieSim/cpp/Interface.pyx":212
  *                             Filter = None):
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 211, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 212, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -4559,17 +4559,17 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_ParaFiltering = __pyx_t_4;
     __pyx_t_4 = 0;
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -4584,10 +4584,10 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
     }
     __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 211, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 212, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_PerpFiltering = __pyx_t_3;
@@ -4595,7 +4595,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":212
+  /* "PyMieSim/cpp/Interface.pyx":213
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
  *     else: ParaFiltering = 1;  PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -4610,24 +4610,24 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Interface.pyx":214
+  /* "PyMieSim/cpp/Interface.pyx":215
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  *     Para = np.sum( np.abs( Scalar0 * Parallel )**2 * dOmega ) / Omega             # <<<<<<<<<<<<<<
  * 
  *     Perp = np.sum( np.abs( Scalar0 * Perpendicular )**2 * dOmega ) / Omega
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_abs); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_abs); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Parallel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Parallel); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
@@ -4642,13 +4642,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
   __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_t_5) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_6, __pyx_v_dOmega); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_t_6, __pyx_v_dOmega); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_6 = NULL;
@@ -4664,33 +4664,33 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
   __pyx_t_3 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_6, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_v_Omega); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_v_Omega); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_Para = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":216
+  /* "PyMieSim/cpp/Interface.pyx":217
  *     Para = np.sum( np.abs( Scalar0 * Parallel )**2 * dOmega ) / Omega
  * 
  *     Perp = np.sum( np.abs( Scalar0 * Perpendicular )**2 * dOmega ) / Omega             # <<<<<<<<<<<<<<
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_abs); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_abs); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Perpendicular); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_Perpendicular); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
@@ -4705,13 +4705,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
   __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_5, __pyx_v_dOmega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_5, __pyx_v_dOmega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -4727,16 +4727,16 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
   __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 216, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_v_Omega); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 216, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_v_Omega); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 217, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_Perp = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":218
+  /* "PyMieSim/cpp/Interface.pyx":219
  *     Perp = np.sum( np.abs( Scalar0 * Perpendicular )**2 * dOmega ) / Omega
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering             # <<<<<<<<<<<<<<
@@ -4744,11 +4744,11 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Para, __pyx_v_ParaFiltering); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Para, __pyx_v_ParaFiltering); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_1 = PyNumber_Multiply(__pyx_v_Perp, __pyx_v_PerpFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_v_Perp, __pyx_v_PerpFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 219, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
@@ -4760,7 +4760,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(PyObjec
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Interface.pyx":203
+  /* "PyMieSim/cpp/Interface.pyx":204
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4808,7 +4808,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_13AmplitudeMeanCoupling(PyOb
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Omega,&__pyx_n_s_Filter,0};
     PyObject* values[7] = {0,0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Interface.pyx":209
+    /* "PyMieSim/cpp/Interface.pyx":210
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -4846,31 +4846,31 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_13AmplitudeMeanCoupling(PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Parallel)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 1); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 1); __PYX_ERR(0, 204, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Perpendicular)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 2); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 2); __PYX_ERR(0, 204, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_SinMesh)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 3); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 3); __PYX_ERR(0, 204, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 4); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 4); __PYX_ERR(0, 204, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Omega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 5); __PYX_ERR(0, 203, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, 5); __PYX_ERR(0, 204, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -4880,7 +4880,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_13AmplitudeMeanCoupling(PyOb
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "AmplitudeMeanCoupling") < 0)) __PYX_ERR(0, 203, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "AmplitudeMeanCoupling") < 0)) __PYX_ERR(0, 204, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4906,7 +4906,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_13AmplitudeMeanCoupling(PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 203, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 204, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -4914,7 +4914,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_9Interface_13AmplitudeMeanCoupling(PyOb
   __pyx_L4_argument_unpacking_done:;
   __pyx_r = __pyx_pf_8PyMieSim_3cpp_9Interface_12AmplitudeMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Interface.pyx":203
+  /* "PyMieSim/cpp/Interface.pyx":204
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -4939,7 +4939,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_12AmplitudeMeanCoupling(CYTH
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_9Interface_AmplitudeMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 204, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4956,7 +4956,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_12AmplitudeMeanCoupling(CYTH
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":246
+/* "PyMieSim/cpp/Interface.pyx":247
  *         int view_count
  * 
  *     def __cinit__(self, Py_ssize_t ncols):             # <<<<<<<<<<<<<<
@@ -4993,18 +4993,18 @@ static int __pyx_pw_8PyMieSim_3cpp_9Interface_13VectorWrapper_1__cinit__(PyObjec
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 246, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 247, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
     }
-    __pyx_v_ncols = __Pyx_PyIndex_AsSsize_t(values[0]); if (unlikely((__pyx_v_ncols == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
+    __pyx_v_ncols = __Pyx_PyIndex_AsSsize_t(values[0]); if (unlikely((__pyx_v_ncols == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 247, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 246, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 247, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.cpp.Interface.VectorWrapper.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -5022,7 +5022,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper___cinit__(struct _
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "PyMieSim/cpp/Interface.pyx":247
+  /* "PyMieSim/cpp/Interface.pyx":248
  * 
  *     def __cinit__(self, Py_ssize_t ncols):
  *         self.ncols = ncols             # <<<<<<<<<<<<<<
@@ -5031,7 +5031,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper___cinit__(struct _
  */
   __pyx_v_self->ncols = __pyx_v_ncols;
 
-  /* "PyMieSim/cpp/Interface.pyx":248
+  /* "PyMieSim/cpp/Interface.pyx":249
  *     def __cinit__(self, Py_ssize_t ncols):
  *         self.ncols = ncols
  *         self.view_count = 0             # <<<<<<<<<<<<<<
@@ -5040,7 +5040,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper___cinit__(struct _
  */
   __pyx_v_self->view_count = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":246
+  /* "PyMieSim/cpp/Interface.pyx":247
  *         int view_count
  * 
  *     def __cinit__(self, Py_ssize_t ncols):             # <<<<<<<<<<<<<<
@@ -5054,7 +5054,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper___cinit__(struct _
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":251
+/* "PyMieSim/cpp/Interface.pyx":252
  * 
  * 
  *     def add_row(self):             # <<<<<<<<<<<<<<
@@ -5086,7 +5086,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_2add_row(str
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_row", 0);
 
-  /* "PyMieSim/cpp/Interface.pyx":253
+  /* "PyMieSim/cpp/Interface.pyx":254
  *     def add_row(self):
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:             # <<<<<<<<<<<<<<
@@ -5096,20 +5096,20 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_2add_row(str
   __pyx_t_1 = ((__pyx_v_self->view_count > 0) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "PyMieSim/cpp/Interface.pyx":254
+    /* "PyMieSim/cpp/Interface.pyx":255
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:
  *             raise ValueError("can't add row while being viewed")             # <<<<<<<<<<<<<<
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 255, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 254, __pyx_L1_error)
+    __PYX_ERR(0, 255, __pyx_L1_error)
 
-    /* "PyMieSim/cpp/Interface.pyx":253
+    /* "PyMieSim/cpp/Interface.pyx":254
  *     def add_row(self):
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:             # <<<<<<<<<<<<<<
@@ -5118,7 +5118,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_2add_row(str
  */
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":256
+  /* "PyMieSim/cpp/Interface.pyx":257
  *             raise ValueError("can't add row while being viewed")
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)             # <<<<<<<<<<<<<<
@@ -5129,10 +5129,10 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_2add_row(str
     __pyx_v_self->S1S2.resize((__pyx_v_self->S1S2.size() + __pyx_v_self->ncols));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 256, __pyx_L1_error)
+    __PYX_ERR(0, 257, __pyx_L1_error)
   }
 
-  /* "PyMieSim/cpp/Interface.pyx":251
+  /* "PyMieSim/cpp/Interface.pyx":252
  * 
  * 
  *     def add_row(self):             # <<<<<<<<<<<<<<
@@ -5153,7 +5153,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_2add_row(str
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":258
+/* "PyMieSim/cpp/Interface.pyx":259
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):             # <<<<<<<<<<<<<<
@@ -5188,7 +5188,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
   __pyx_v_buffer->obj = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(__pyx_v_buffer->obj);
 
-  /* "PyMieSim/cpp/Interface.pyx":259
+  /* "PyMieSim/cpp/Interface.pyx":260
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):
  *         cdef Py_ssize_t itemsize = sizeof(self.S1S2[0])             # <<<<<<<<<<<<<<
@@ -5197,7 +5197,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_itemsize = (sizeof((__pyx_v_self->S1S2[0])));
 
-  /* "PyMieSim/cpp/Interface.pyx":261
+  /* "PyMieSim/cpp/Interface.pyx":262
  *         cdef Py_ssize_t itemsize = sizeof(self.S1S2[0])
  * 
  *         self.shape[0] = self.S1S2.size() / self.ncols             # <<<<<<<<<<<<<<
@@ -5206,7 +5206,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   (__pyx_v_self->shape[0]) = (__pyx_v_self->S1S2.size() / __pyx_v_self->ncols);
 
-  /* "PyMieSim/cpp/Interface.pyx":262
+  /* "PyMieSim/cpp/Interface.pyx":263
  * 
  *         self.shape[0] = self.S1S2.size() / self.ncols
  *         self.shape[1] = self.ncols             # <<<<<<<<<<<<<<
@@ -5216,7 +5216,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
   __pyx_t_1 = __pyx_v_self->ncols;
   (__pyx_v_self->shape[1]) = __pyx_t_1;
 
-  /* "PyMieSim/cpp/Interface.pyx":264
+  /* "PyMieSim/cpp/Interface.pyx":265
  *         self.shape[1] = self.ncols
  * 
  *         self.strides[1] = <Py_ssize_t>(  <char *>&(self.S1S2[1]) - <char *>&(self.S1S2[0]))             # <<<<<<<<<<<<<<
@@ -5225,7 +5225,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   (__pyx_v_self->strides[1]) = ((Py_ssize_t)(((char *)(&(__pyx_v_self->S1S2[1]))) - ((char *)(&(__pyx_v_self->S1S2[0])))));
 
-  /* "PyMieSim/cpp/Interface.pyx":266
+  /* "PyMieSim/cpp/Interface.pyx":267
  *         self.strides[1] = <Py_ssize_t>(  <char *>&(self.S1S2[1]) - <char *>&(self.S1S2[0]))
  * 
  *         self.strides[0] = self.ncols * self.strides[1]             # <<<<<<<<<<<<<<
@@ -5234,7 +5234,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   (__pyx_v_self->strides[0]) = (__pyx_v_self->ncols * (__pyx_v_self->strides[1]));
 
-  /* "PyMieSim/cpp/Interface.pyx":268
+  /* "PyMieSim/cpp/Interface.pyx":269
  *         self.strides[0] = self.ncols * self.strides[1]
  * 
  *         buffer.buf = <char *>&(self.S1S2[0])             # <<<<<<<<<<<<<<
@@ -5243,7 +5243,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->buf = ((char *)(&(__pyx_v_self->S1S2[0])));
 
-  /* "PyMieSim/cpp/Interface.pyx":269
+  /* "PyMieSim/cpp/Interface.pyx":270
  * 
  *         buffer.buf = <char *>&(self.S1S2[0])
  *         buffer.format = 'Zd'                     # float             # <<<<<<<<<<<<<<
@@ -5252,7 +5252,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->format = ((char *)"Zd");
 
-  /* "PyMieSim/cpp/Interface.pyx":270
+  /* "PyMieSim/cpp/Interface.pyx":271
  *         buffer.buf = <char *>&(self.S1S2[0])
  *         buffer.format = 'Zd'                     # float
  *         buffer.internal = NULL             # <<<<<<<<<<<<<<
@@ -5261,7 +5261,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->internal = NULL;
 
-  /* "PyMieSim/cpp/Interface.pyx":271
+  /* "PyMieSim/cpp/Interface.pyx":272
  *         buffer.format = 'Zd'                     # float
  *         buffer.internal = NULL
  *         buffer.itemsize = itemsize             # <<<<<<<<<<<<<<
@@ -5270,7 +5270,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->itemsize = __pyx_v_itemsize;
 
-  /* "PyMieSim/cpp/Interface.pyx":272
+  /* "PyMieSim/cpp/Interface.pyx":273
  *         buffer.internal = NULL
  *         buffer.itemsize = itemsize
  *         buffer.len = self.S1S2.size() * itemsize             # <<<<<<<<<<<<<<
@@ -5279,7 +5279,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->len = (__pyx_v_self->S1S2.size() * __pyx_v_itemsize);
 
-  /* "PyMieSim/cpp/Interface.pyx":273
+  /* "PyMieSim/cpp/Interface.pyx":274
  *         buffer.itemsize = itemsize
  *         buffer.len = self.S1S2.size() * itemsize
  *         buffer.ndim = 2             # <<<<<<<<<<<<<<
@@ -5288,7 +5288,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->ndim = 2;
 
-  /* "PyMieSim/cpp/Interface.pyx":274
+  /* "PyMieSim/cpp/Interface.pyx":275
  *         buffer.len = self.S1S2.size() * itemsize
  *         buffer.ndim = 2
  *         buffer.obj = self             # <<<<<<<<<<<<<<
@@ -5301,7 +5301,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
   __Pyx_DECREF(__pyx_v_buffer->obj);
   __pyx_v_buffer->obj = ((PyObject *)__pyx_v_self);
 
-  /* "PyMieSim/cpp/Interface.pyx":275
+  /* "PyMieSim/cpp/Interface.pyx":276
  *         buffer.ndim = 2
  *         buffer.obj = self
  *         buffer.readonly = 0             # <<<<<<<<<<<<<<
@@ -5310,7 +5310,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->readonly = 0;
 
-  /* "PyMieSim/cpp/Interface.pyx":276
+  /* "PyMieSim/cpp/Interface.pyx":277
  *         buffer.obj = self
  *         buffer.readonly = 0
  *         buffer.shape = self.shape             # <<<<<<<<<<<<<<
@@ -5320,7 +5320,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
   __pyx_t_2 = __pyx_v_self->shape;
   __pyx_v_buffer->shape = __pyx_t_2;
 
-  /* "PyMieSim/cpp/Interface.pyx":277
+  /* "PyMieSim/cpp/Interface.pyx":278
  *         buffer.readonly = 0
  *         buffer.shape = self.shape
  *         buffer.strides = self.strides             # <<<<<<<<<<<<<<
@@ -5330,7 +5330,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
   __pyx_t_2 = __pyx_v_self->strides;
   __pyx_v_buffer->strides = __pyx_t_2;
 
-  /* "PyMieSim/cpp/Interface.pyx":278
+  /* "PyMieSim/cpp/Interface.pyx":279
  *         buffer.shape = self.shape
  *         buffer.strides = self.strides
  *         buffer.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -5339,7 +5339,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_buffer->suboffsets = NULL;
 
-  /* "PyMieSim/cpp/Interface.pyx":279
+  /* "PyMieSim/cpp/Interface.pyx":280
  *         buffer.strides = self.strides
  *         buffer.suboffsets = NULL
  *         self.view_count += 1             # <<<<<<<<<<<<<<
@@ -5348,7 +5348,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
  */
   __pyx_v_self->view_count = (__pyx_v_self->view_count + 1);
 
-  /* "PyMieSim/cpp/Interface.pyx":258
+  /* "PyMieSim/cpp/Interface.pyx":259
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):             # <<<<<<<<<<<<<<
@@ -5366,7 +5366,7 @@ static int __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_4__getbuffer__(str
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Interface.pyx":281
+/* "PyMieSim/cpp/Interface.pyx":282
  *         self.view_count += 1
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):             # <<<<<<<<<<<<<<
@@ -5388,14 +5388,14 @@ static void __pyx_pf_8PyMieSim_3cpp_9Interface_13VectorWrapper_6__releasebuffer_
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "PyMieSim/cpp/Interface.pyx":282
+  /* "PyMieSim/cpp/Interface.pyx":283
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):
  *         self.view_count -= 1             # <<<<<<<<<<<<<<
  */
   __pyx_v_self->view_count = (__pyx_v_self->view_count - 1);
 
-  /* "PyMieSim/cpp/Interface.pyx":281
+  /* "PyMieSim/cpp/Interface.pyx":282
  *         self.view_count += 1
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):             # <<<<<<<<<<<<<<
@@ -6656,7 +6656,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 254, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 255, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 884, __pyx_L1_error)
   return 0;
@@ -6668,14 +6668,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "PyMieSim/cpp/Interface.pyx":254
+  /* "PyMieSim/cpp/Interface.pyx":255
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:
  *             raise ValueError("can't add row while being viewed")             # <<<<<<<<<<<<<<
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_can_t_add_row_while_being_viewed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_can_t_add_row_while_being_viewed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 255, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -6774,15 +6774,15 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper) < 0) __PYX_ERR(0, 238, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper) < 0) __PYX_ERR(0, 239, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper.tp_dictoffset && __pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VectorWrapper, (PyObject *)&__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper) < 0) __PYX_ERR(0, 238, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper) < 0) __PYX_ERR(0, 238, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VectorWrapper, (PyObject *)&__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper) < 0) __PYX_ERR(0, 239, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper) < 0) __PYX_ERR(0, 239, __pyx_L1_error)
   __pyx_ptype_8PyMieSim_3cpp_9Interface_VectorWrapper = &__pyx_type_8PyMieSim_3cpp_9Interface_VectorWrapper;
   __Pyx_RefNannyFinishContext();
   return 0;
