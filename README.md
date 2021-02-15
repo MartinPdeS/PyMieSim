@@ -30,7 +30,7 @@ in order to study how light scattered by such Set will be coupling in differents
 
 Documentation
 =============
-For the moment, the documentation for the package is in the Docs/build/html/index,html file.
+For the moment, the documentation for the package is in the Docs/build/html/index.html file.
 I invite you to open it, in order to checkout some pre-defined examples.
 
 
