@@ -1,4 +1,4 @@
-[![Travis CI](https://img.shields.io/travis/com/numpy/numpy/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
+[![Travis CI](https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
 
 
 
@@ -20,7 +20,7 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 <li>Detector coupling mode (Mean coupling or centered coupling)</li>
 </ol>
 
- 
+
 The package is also let you use a **ScattererSet** which is define by a range of scatterer diameter and a range of refractive index
 in order to study how light scattered by such Set will be coupling in differents situations.
 

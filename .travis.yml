@@ -11,5 +11,5 @@ install:
 
 
 script:
-
   - coverage run -m unittest Test/Unittest.py
+  - bash <(curl -s https://codecov.io/bash)
