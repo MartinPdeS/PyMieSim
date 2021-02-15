@@ -4,13 +4,12 @@ from scipy.special import gamma
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import PlotFarField
 from PyMieSim.Physics import Angle, Source
-from PyMieSim.BaseClasses import BaseScatterer
+from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties
 
 
 
 
-
-class Scatterer(BaseScatterer):
+class Scatterer(BaseScatterer, EfficienciesProperties):
     """Short summary.
 
     Parameters
@@ -42,12 +41,9 @@ class Scatterer(BaseScatterer):
         Last phi list used for computing S1S2 or Field or SPF or Stokes
     _theta : [list, np.ndarray]
         Last theta list used for computing S1S2 or Field or SPF or Stokes
-    Diameter
-    Source
-    Index
+
 
     """
-
 
     def __init__(self,
                  Diameter:    float,
@@ -68,42 +64,6 @@ class Scatterer(BaseScatterer):
         self._phi, self._theta = [None], [None]
 
         self._Qsca, self.Q_ext, self._Qabs = None, None, None
-
-
-
-
-
-
-class FullScatterer(BaseScatterer):
-    """Full-field Single scatterer object.
-
-    Parameters
-    ----------
-    Diameter : float
-        Diameter of the single scatterer in unit of meter.
-    Source : Source
-        Light source object containing info on polarization and wavelength.
-    Index : float
-        Refractive index of scatterer
-
-    """
-    def __init__(self,
-                 Diameter:    float,
-                 Source:      Source,
-                 Index:       float,
-                 Sampling:    int     = 1000):
-
-        self.Diameter, self.Source, self.Index = Diameter, Source, Index
-
-        self.SizeParam = Source.k * ( self.Diameter / 2 )
-
-        self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
-
-        self.Mesh = FibonacciMesh(MaxAngle    = np.deg2rad(180),
-                                  Sampling    = Sampling,
-                                  PhiOffset   = 0,
-                                  GammaOffset = 0)
-
 
 
 
@@ -190,6 +150,9 @@ class WMSample(object):
                             Mesh  = scatter,
                             scatter = False,
                             Name    = 'Scattered field')
+
+
+
 
 
 

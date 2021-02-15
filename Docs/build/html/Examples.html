@@ -99,6 +99,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#coupling-scatterer-lpmode">Coupling: Scatterer-LPMode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scattererset-qscattering">ScattererSet: Qscattering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#experimentalset-coupling">ExperimentalSet: Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimizer-na">Optimizer: NA</a></li>
 </ul>
 </li>
 </ul>
@@ -187,8 +188,8 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.classes.Scattering import Scatterer</span>
-<span class="go">from PyMieCoupling.Physics import Source</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.classes.Scattering import Scatterer</span>
+<span class="go">from PyMieSim.Physics import Source</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -224,8 +225,8 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.classes.Scattering import Scatterer</span>
-<span class="go">from PyMieCoupling.Physics import Source</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.classes.Scattering import Scatterer</span>
+<span class="go">from PyMieSim.Physics import Source</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -261,8 +262,8 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.classes.Scattering import Scatterer</span>
-<span class="go">from PyMieCoupling.Physics import Source</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.classes.Scattering import Scatterer</span>
+<span class="go">from PyMieSim.Physics import Source</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -297,8 +298,8 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.Physics import Source</span>
-<span class="go">from PyMieCoupling.classes.Detector import Photodiode</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.Physics import Source</span>
+<span class="go">from PyMieSim.classes.Detector import Photodiode</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -334,8 +335,8 @@
 14
 15
 16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.Physics import Source</span>
-<span class="go">from PyMieCoupling.classes.Detector import LPmode</span>
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.Physics import Source</span>
+<span class="go">from PyMieSim.classes.Detector import LPmode</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -380,9 +381,9 @@
 21
 22
 23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieCoupling.Physics import Source</span>
-<span class="go">from PyMieCoupling.classes.Detector import LPmode</span>
-<span class="go">from PyMieCoupling.classes.Scattering import Scatterer</span>
+24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.Physics import Source</span>
+<span class="go">from PyMieSim.classes.Detector import LPmode</span>
+<span class="go">from PyMieSim.classes.Scattering import Scatterer</span>
 
 <span class="go">LightSource = Source(Wavelength = 450e-9,</span>
 <span class="go">                  Polarization = 0,</span>
@@ -426,8 +427,8 @@
 14
 15
 16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">import numpy as np</span>
-<span class="go">from PyMieCoupling.Physics import Source</span>
-<span class="go">from PyMieCoupling.classes.Sets import ScattererSet</span>
+<span class="go">from PyMieSim.Physics import Source</span>
+<span class="go">from PyMieSim.classes.Sets import ScattererSet</span>
 
 <span class="go">LightSource = Source(Wavelength   = 950e-9,</span>
 <span class="go">                     Polarization = 0)</span>
@@ -490,9 +491,9 @@
 41
 42
 43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">import numpy as np</span>
-<span class="go">from PyMieCoupling.Physics import Source</span>
-<span class="go">from PyMieCoupling.classes.Detector import LPmode</span>
-<span class="go">from PyMieCoupling.classes.Sets import ScattererSet, ExperimentalSet</span>
+<span class="go">from PyMieSim.Physics import Source</span>
+<span class="go">from PyMieSim.classes.Detector import LPmode</span>
+<span class="go">from PyMieSim.classes.Sets import ScattererSet, ExperimentalSet</span>
 
 <span class="go">LightSource = Source(Wavelength   = 950e-9,</span>
 <span class="go">                     Polarization = 0)</span>
@@ -535,6 +536,120 @@
 </pre></div>
 </td></tr></table></div>
 <a class="reference internal image-reference" href="_images/ExperimentalSet.png"><img alt="_images/ExperimentalSet.png" src="_images/ExperimentalSet.png" style="width: 600px;" /></a>
+</div>
+<div class="section" id="optimizer-na">
+<h2>Optimizer: NA<a class="headerlink" href="#optimizer-na" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go"> import numpy as np</span>
+<span class="go"> from scipy.optimize import minimize</span>
+<span class="go"> from PyMieSim.classes.Detector import Photodiode, LPmode</span>
+<span class="go"> from PyMieSim.Physics import Source</span>
+<span class="go"> from PyMieSim.classes.Optimizer import Simulator</span>
+<span class="go"> from PyMieSim.classes.Sets import ExperimentalSet, ScattererSet</span>
+
+<span class="go"> LightSource = Source(Wavelength = 450e-9,</span>
+<span class="go">                      Polarization = 0,</span>
+<span class="go">                      Power = 1,</span>
+<span class="go">                      Radius = 1)</span>
+
+
+
+<span class="go"> Detector0 = Photodiode(NA                = 0.2,</span>
+<span class="go">                        Sampling          = 150,</span>
+<span class="go">                        GammaOffset       = 0,</span>
+<span class="go">                        PhiOffset         = 0,</span>
+<span class="go">                        CouplingMode      = &#39;Centered&#39;)</span>
+
+<span class="go"> Detector1 = LPmode(NA                = 0.2,</span>
+<span class="go">                    Sampling          = 150,</span>
+<span class="go">                    Mode              = (0,1),</span>
+<span class="go">                    GammaOffset       = 0,</span>
+<span class="go">                    PhiOffset         = 0,</span>
+<span class="go">                    CouplingMode      = &#39;Centered&#39;)</span>
+
+
+<span class="go"> ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 3500e-9, 100),</span>
+<span class="go">                        RIList        = np.linspace(1.5, 1.5, 1).round(1),</span>
+<span class="go">                        Source        = LightSource)</span>
+
+<span class="go"> Set = ExperimentalSet(ScattererSet  = ScatSet,</span>
+<span class="go">                       Detectors     = (Detector0, Detector1))</span>
+
+
+<span class="go"> def EvalFunc(x):</span>
+
+<span class="go">     Set.Detectors[1].NA = x[0]</span>
+
+<span class="go">     return Set.Coupling.Cost(&#39;Max&#39;) # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min</span>
+
+
+<span class="go"> Minimizer = Simulator(EvalFunc, ParameterName= [&#39;NA&#39;])</span>
+
+<span class="go"> Result = minimize(fun      = Minimizer.simulate,</span>
+<span class="go">                   x0       = [0.2],</span>
+<span class="go">                   method   = &#39;COBYLA&#39;,</span>
+<span class="go">                   callback = Minimizer.callback,</span>
+<span class="go">                   tol      = 1e-5,</span>
+<span class="go">                   options  = {&#39;maxiter&#39;: 10, &#39;rhobeg&#39;:0.1})</span>
+
+<span class="go"> print(Result)</span>
+
+<span class="go"> Set.DataFrame.Plot(&#39;Coupling&#39;) # can be Couplimg  -  STD</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 </div>
 

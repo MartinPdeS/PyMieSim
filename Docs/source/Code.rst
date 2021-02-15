@@ -4,35 +4,35 @@ Classes
 
 Class: Scatterering
 -------------------
-.. automodule:: PyMieCoupling.classes.Scattering
+.. automodule:: PyMieSim.Scattering
     :members:
     :undoc-members:
-    :show-inheritance:
+    :inherited-members:
 
 Class: Detector
 ---------------
-.. automodule:: PyMieCoupling.classes.Detector
+.. automodule:: PyMieSim.Detector
     :members:
     :undoc-members:
     :show-inheritance:
 
-Class: Meshes
-------------
-.. automodule:: PyMieCoupling.classes.Meshes
+Class: Mesh
+-----------
+.. automodule:: PyMieSim.Mesh
     :members:
     :undoc-members:
     :show-inheritance:
 
 Class: Sets
-----
-.. automodule:: PyMieCoupling.classes.Sets
+-----------
+.. automodule:: PyMieSim.Sets
     :members:
     :undoc-members:
     :show-inheritance:
 
 Class: Representations
 ----------------------
-.. automodule:: PyMieCoupling.classes.Representations
+.. automodule:: PyMieSim.Representations
     :members:
     :undoc-members:
     :show-inheritance:
@@ -40,7 +40,7 @@ Class: Representations
 
 Class: BaseClasses
 ------------------
-.. automodule:: PyMieCoupling.classes.BaseClasses
+.. automodule:: PyMieSim.BaseClasses
     :members:
     :undoc-members:
     :show-inheritance:
@@ -48,7 +48,7 @@ Class: BaseClasses
 
 Class: DataFrame
 ----------------
-.. automodule:: PyMieCoupling.classes.DataFrame
+.. automodule:: PyMieSim.DataFrame
     :members:
     :undoc-members:
     :show-inheritance:

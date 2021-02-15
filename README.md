@@ -108,6 +108,7 @@ To-Do List
 Contact Information
 ===================
 As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
+
 PyMieSim was written by [Martin Poinsinet de Sivry-Houle](https://github.com/MartinPdS).
 
 Email: [martin.poinsinet-de-sivry@polymtl.ca](mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim)

@@ -191,11 +191,46 @@ class BaseDetector(object):
         ax0.set_ylabel(r'Angle $\phi$ [Degree]')
         ax0.set_xlabel(r'Angle $\theta$ [Degree]')
 
-        #ax1.set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
-
-        #fig.tight_layout()
         plt.show()
 
+
+
+class EfficienciesProperties(object):
+    @property
+    def Qext(self):
+        """Extinction efficiency:
+        :math:`Q_{ext}=\\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \\text{real} \{ a_n+b_n \}`
+
+        """
+        if self._Qext:
+            return self._Qext
+        else:
+            self.GetEfficiencies()
+            return self._Qext
+
+    @property
+    def Qsca(self):
+        """Scattering efficiency:
+        :math:`Q_{sca}=\\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)`
+
+        """
+        if self._Qsca:
+            return self._Qsca
+        else:
+            self.GetEfficiencies()
+            return self._Qsca
+
+    @property
+    def Qabs(self):
+        """Absorption efficiency:
+        :math:`Q_{abs}=Q_{ext}-Q_{sca}`
+
+        """
+        if self._Qabs:
+            return self._Qabs
+        else:
+            self.GetEfficiencies()
+            return self._Qabs
 
 
 
@@ -222,12 +257,10 @@ class BaseScatterer(object):
         It represents the entire Far-field representation of the scatterer.
     ComputeS1S2 : type
         Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.
-    diameter
-    wavelength
-    index
-    npts
+
 
     """
+
     def __init__(self):
         pass
 
@@ -236,8 +269,26 @@ class BaseScatterer(object):
                                                              x = self.SizeParam)
 
 
-
     def S1S2(self, Num=200):
+        """Methode return <Representation> instance S1S2.
+        For spherical Scatterer such as here S1 and S2 are computed as follow:
+
+        :math:`S_1=\sum\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\\tau_n)`
+
+        :math:`S_2=\sum\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n\\tau_n+b_n\pi_n)`
+
+        Parameters
+        ----------
+        Num : type
+            Description of parameter `Num`.
+
+        Returns
+        -------
+        type
+            Description of returned object.
+
+        """
+
         if self._S1S2 is None:
             self._S1S2 = S1S2(Parent=self, Num=Num)
             return self._S1S2
@@ -245,34 +296,22 @@ class BaseScatterer(object):
         else:
             return self._S1S2
 
-    @property
-    def Qext(self):
-        if self._Qext:
-            return self._Qext
-        else:
-            self.GetEfficiencies()
-            return self._Qext
-
-    @property
-    def Qsca(self):
-        if self._Qsca:
-            return self._Qsca
-        else:
-            self.GetEfficiencies()
-            return self._Qsca
-
-    @property
-    def Qabs(self):
-        if self._Qabs:
-            return self._Qabs
-        else:
-            self.GetEfficiencies()
-            return self._Qabs
-
-
-
 
     def Field(self, Num=200):
+        """Scattering phase function:
+        Fields = :math:`E_{||}, E_{\\perp} `
+
+        Parameters
+        ----------
+        Num : int
+            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the Fields [Num, Num].
+
+        Returns
+        -------
+        <Field> instance
+            Dictionnay subclass with all pertient information as keys.
+
+        """
         self._Field = ScalarFarField(Num = Num, Parent = self)
 
         return self._Field
@@ -297,6 +336,21 @@ class BaseScatterer(object):
 
 
     def SPF(self, Num=100):
+        """Scattering phase function:
+        SPF = :math:`E_{||}^2 + E_{\\perp}^2`
+
+        Parameters
+        ----------
+        Num : int
+            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
+
+        Returns
+        -------
+        <SPF> instance
+            Dictionnay subclass with all pertient information as keys.
+
+        """
+
         if not self._SPF:
             self._SPF = SPF(Parent=self, Num=Num)
             return self._SPF
@@ -307,6 +361,7 @@ class BaseScatterer(object):
     def GenField(self, Phi, Theta):
         """The methode generate the <Fields> class from S1 and S2 value computed
         with the PyMieScatt package.
+
         """
 
         return GetFields(index        = self.Index,

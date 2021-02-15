@@ -14,7 +14,10 @@ GetS1S2, GetFields =  LoadLibraries(['S1S2', 'Fields'])
 
 
 class Stokes(np.ndarray):
-    """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B """
+    """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B
+
+    """
+
     def __new__(cls, Field):
 
         cls.Meshes = Field.Meshes
@@ -245,9 +248,7 @@ class S1S2(dict):
     ----------
     Array : type
         Description of attribute `Array`.
-    Meshes
-    SizeParam
-    Index
+
 
     """
 

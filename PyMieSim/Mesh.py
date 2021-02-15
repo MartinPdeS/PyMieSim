@@ -36,10 +36,7 @@ class FibonacciMesh(object):
         Description of attribute `GenerateLedevedMesh`.
     MakeProperties : type
         Description of attribute `MakeProperties`.
-    PhiOffset
-    GammaOffset
-    MaxAngle
-    Sampling
+
 
     """
     def __init__(self,
