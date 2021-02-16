@@ -4,7 +4,7 @@ Classes
 
 Class: Scatterering
 -------------------
-.. automodule:: PyMieSim.Scattering
+.. automodule:: PyMieSim.Scatterer
     :members:
     :undoc-members:
     :inherited-members:

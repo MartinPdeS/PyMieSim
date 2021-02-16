@@ -22,8 +22,8 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 <li>Medium refractive index</li>  
 <li>Detector type (photodiode or LPMode)</li>
 <li>Detector numerical aperture</li>
-<li>Detector angle offfset in polariation parallel axis</li>
-<li>Detector angle offfset in polariation perpendicular axis</li>
+<li>Detector angle offfset in polariation parallel axis (&phi;)</li>
+<li>Detector angle offfset in polariation perpendicular axis (&theta;)</li>
 <li>Detector coupling mode (Mean coupling or centered coupling)</li>
 </ol>
 

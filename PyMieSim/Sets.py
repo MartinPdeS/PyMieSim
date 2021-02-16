@@ -7,7 +7,7 @@ from PyMieSim.Physics import Source
 from PyMieSim.Optimizer import OptArray
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
-from PyMieSim.Scattering import Scatterer, WMSample
+from PyMieSim.Scatterer import Sphere, WMSample
 
 GetS1S2, GetEfficiencies = LoadLibraries(['S1S2', 'Efficiencies'])
 
@@ -169,9 +169,9 @@ class ExperimentalSet(object):
             for nIndex, RI in enumerate(self.ScattererSet.RIList):
                 for nDiameter, Diameter in enumerate(self.ScattererSet.DiameterList):
 
-                    Scat = Scatterer(Diameter  = Diameter,
-                                     Index     = RI,
-                                     Source    = self.ScattererSet.Source)
+                    Scat = Sphere(Diameter  = Diameter,
+                                  Index     = RI,
+                                  Source    = self.ScattererSet.Source)
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 
@@ -206,9 +206,9 @@ class ExperimentalSet(object):
 
                 for nDetector, Detector in enumerate(self.Detectors):
 
-                    Scat = Scatterer(Diameter    = Diameter,
-                                     Index       = RI,
-                                     Source      = self.ScattererSet.Source)
+                    Scat = Sphere(Diameter    = Diameter,
+                                  Index       = RI,
+                                   Source      = self.ScattererSet.Source)
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 

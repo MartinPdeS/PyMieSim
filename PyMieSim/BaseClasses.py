@@ -299,7 +299,7 @@ class BaseScatterer(object):
 
     def Field(self, Num=200):
         """Scattering phase function:
-        Fields = :math:`E_{||}, E_{\\perp} `
+        Fields = :math:`E_{||}^2, E_{\\perp}^2`
 
         Parameters
         ----------
