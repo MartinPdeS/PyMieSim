@@ -42,7 +42,6 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     _theta : :class:`list`
         Last theta list used for computing S1S2 or Field or SPF or Stokes
 
-
     """
 
     def __init__(self,
@@ -74,17 +73,17 @@ class WMSample(object):
 
     Parameters
     ----------
-    g : float
+    g : :class:`float`
         Description of parameter `g`.
-    lc : float
+    lc : :class:`float`
         Correlation lenght of RI of the sample
-    D : float
+    D : :class:`float`
         Form factor of the sample
-    Nc : float
+    Nc : :class:`float`
         Scalling factor of the sample.
-    Source : Source
+    Source : :class:`Source`
         Light source object containing info on polarization and wavelength.
-    Mesh : FibonacciMesh
+    Mesh : :class:`FibonacciMesh`
         Object FibonacciMesh which describes the point in fourier space that are
         used for computation.
 
@@ -106,15 +105,15 @@ class WMSample(object):
 
     def Parallel(self, Mesh):
         if not isinstance(self._Parallel, np.ndarray):
-            self.GetScalar(Mesh)
+            self.GetField(Mesh.Phi.Radian, Mesh.Theta.Radian)
             return self._Parallel
         else:
             return self._Parallel
 
-    #@property
+
     def Perpendicular(self, Mesh):
         if not isinstance(self._Perpendicular, np.ndarray):
-            self.GetScalar(Mesh)
+            self.GetField(Mesh.Phi.Radian, Mesh.Theta.Radian)
             return self._Perpendicular*0
         else:
             return self._Perpendicular
@@ -131,11 +130,6 @@ class WMSample(object):
         term2 = (1 + (2* k * self.lc * np.sin((Phi-np.pi/2)/2)**2)**(self.D/2))
 
         return term0 * term1 / term2
-
-
-    def GetScalar(self, Mesh):
-
-        return self.GetField(Mesh.Phi.Radian, Mesh.Theta.Radian)
 
 
     def Plot(self, num=200, scatter=False):

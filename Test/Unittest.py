@@ -13,6 +13,7 @@ from PyMieSim.Sets import ScattererSet, ExperimentalSet
 LightSource = Source(Wavelength = 450e-9, Polarization = 0, Power = 1,  Radius = 1)
 Scat = Sphere(Diameter = 300e-9, Source = LightSource, Index = 1.4)
 Detector = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
+Detector1 = Photodiode(Sampling = 11, NA = 0.2)
 ScatSet = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
 
 class PrintingTest(TestCase):
@@ -55,6 +56,7 @@ class PrintingTest(TestCase):
 
     def test5(self):
         Detector.Coupling(Scatterer = Scat)
+        Detector1.Coupling(Scatterer = Scat)
 
     def test6(self):
         ScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
@@ -66,6 +68,7 @@ class PrintingTest(TestCase):
     def test7(self):
         Set = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
         Set.DataFrame
+        Set.Coupling
 
     def test8(self):
         Sample = WMSample(g      = 0.8,

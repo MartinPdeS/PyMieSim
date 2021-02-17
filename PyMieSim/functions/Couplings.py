@@ -5,7 +5,7 @@ from ai import cs
 from PyMieSim.utils import PlotUnstructureData
 from PyMieSim.functions.converts import Angle2Direct
 from PyMieSim.Representations import Footprint
-from PyMieSim.cpp.Interface import IntensityPointCoupling, AmplitudePointCoupling, IntensityMeanCoupling, AmplitudeMeanCoupling
+from PyMieSim.cpp.Coupling import IntensityPointCoupling, AmplitudePointCoupling, IntensityMeanCoupling, AmplitudeMeanCoupling
 
 """ Coupling Reference: Estimation of Coupling Efficiency of Optical Fiber by Far-Field Method """
 

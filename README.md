@@ -95,6 +95,8 @@ For spherical Scatterers: <img src="./Docs/images/Equations/Sequal0.png" alt="dr
 To-Do List
 ----------
 
+- Adding T-matrix formalism
+- Addind cylindrical scatterer
 - Adding docstring
 - Adding Stokes parameter representations
 - Adding more unittests

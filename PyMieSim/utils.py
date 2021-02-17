@@ -15,7 +15,7 @@ def LoadLibraries(lib=[]):
     func = []
     if 'S1S2' in lib:
         try:
-            from PyMieSim.cpp.Interface import GetS1S2
+            from PyMieSim.cpp.Sphere import GetS1S2
             func.append(GetS1S2)
             print('[S1S2] C++ module loaded')
         except:
@@ -36,7 +36,7 @@ def LoadLibraries(lib=[]):
 
     if 'Efficiencies' in lib:
         try:
-            from PyMieSim.cpp.Interface import GetEfficiencies
+            from PyMieSim.cpp.Sphere import GetEfficiencies
             func.append(GetEfficiencies)
             print('[Efficiencies] C++ module loaded')
         except ImportError:
@@ -45,7 +45,7 @@ def LoadLibraries(lib=[]):
 
     if 'Fields' in lib:
         try:
-            from PyMieSim.cpp.Interface import GetFields
+            from PyMieSim.cpp.Sphere import GetFields
             func.append(GetFields)
             print('[GetFields] Cython module loaded')
         except ImportError:

@@ -2,11 +2,13 @@
 #include <vector>
 #include <complex>
 #include <tuple>
+#include <boost/math/special_functions/legendre.hpp>
 
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
+typedef std::vector<double> Vec;
 typedef std::vector<std::vector<complex128>> iMatrix;
-
+#define PI 3.14159265
 
 std::vector<double>
 linespace(const double start,
@@ -73,7 +75,7 @@ T Sum(const std::vector<T>* vector)
 
 
 template <class T>
-void print(std::vector <T> const &a) {
+void printVector(std::vector <T> const &a) {
    std::cout << "The vector elements are : ";
    for(long unsigned int i=0; i < a.size(); i++)
    std::cout << a.at(i) << ' ';
@@ -94,22 +96,6 @@ Arrange(const double start,
   }
   return std::make_pair(Vec0, Vec1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
