@@ -8,6 +8,7 @@ typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
 typedef std::vector<std::vector<complex128>> iMatrix;
+typedef std::vector<std::vector<double>> Matrix;
 #define PI 3.14159265
 
 std::vector<double>
@@ -110,7 +111,8 @@ Arrange(const double start,
 
 
 template<typename T>
-std::vector<double> Linspace(T start_in, T end_in, int num_in)
+Vec
+Linspace(T start_in, T end_in, int num_in)
 {
 
   std::vector<double> linspaced;
@@ -132,13 +134,44 @@ std::vector<double> Linspace(T start_in, T end_in, int num_in)
     {
       linspaced.push_back(start + delta * i);
     }
-  linspaced.push_back(end); // I want to ensure that start and end
-                            // are exactly the same as the input
+  linspaced.push_back(end);
+
   return linspaced;
 }
 
 
+std::tuple<Vec, Vec>
+Meshgrid(int num)
+{
+  Vec phi = Linspace(-PI/2, PI/2, num);
+  Vec theta = Linspace(-PI, PI, num);
 
+  Vec Phi, Theta;
+
+  for(int i=0; i < num; ++i)
+  {
+    Phi.insert( end(Phi), begin(phi), end(phi) );
+    for(int j=0; j < num; ++j)
+    {
+      Theta.push_back(theta[i]);
+    }
+  }
+
+
+  return std::make_tuple(Phi, Theta);
+}
+
+
+
+std::tuple<Vec, Vec, Vec>
+FullMesh(int num)
+{
+  Vec Phi, Theta;
+  std::tie(Phi, Theta) = Meshgrid(num);
+  Vec R(num*num, 10);
+
+  return std::make_tuple(R, Phi, Theta);
+}
 
 
 

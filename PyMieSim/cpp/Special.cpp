@@ -328,6 +328,78 @@ class VectorSphericalHarmonics1{
 
 
 
+std::tuple<iVec*, iVec*, iVec*>
+N3e1n(int n, double k, Vec r, Vec theta, Vec phi){
+
+  iVec *ThetaComp = new iVec(r.size());
+  iVec *PhiComp   = new iVec(r.size());
+  iVec *RComp     = new iVec(r.size());
+
+  for (long unsigned int i = 0; i < r.size(); i++){
+
+    double p = k*r[i];
+
+    (*ThetaComp)[i] =  cos(phi[i]) * Taun(n, theta[i]) * ( Hankel(n, p) + p * Hankel_p(n, p) ) / p ;
+
+    (*PhiComp)[i]   = -sin(phi[i]) * Pin(n, theta[i])  * ( Hankel(n, p) + p * Hankel_p(n, p) ) / p ;
+
+    (*RComp)[i]     =  cos(phi[i]) * (complex128)( n * (n+1) ) * sin(theta[i]) * Pin(n, theta[i]) * Hankel(n, p) / p ;
+
+  }
+
+  return std::make_tuple(RComp, PhiComp, ThetaComp);
+}
+
+
+
+
+std::tuple<iVec*, iVec*, iVec*>
+M3o1n(int n, double k, Vec r, Vec theta, Vec phi){
+
+  iVec *ThetaComp = new iVec(r.size());
+  iVec *PhiComp   = new iVec(r.size());
+  iVec *RComp     = new iVec(r.size());
+
+  for (long unsigned int i = 0; i < r.size(); i++){
+
+    double p = k*r[i];
+
+    (*ThetaComp)[i] = ( cos(phi[i]) * Pin(n, theta[i]) * Hankel(n,p)  );
+
+    (*PhiComp)[i]   = ( -sin(phi[i]) * Taun(n, theta[i]) * Hankel(n, p) );
+
+    (*RComp)[i]     = (0.);
+
+  }
+
+  return std::make_tuple(RComp, PhiComp, ThetaComp);
+}
+
+
+
+std::tuple<iVec*, iVec*, iVec*>
+N3o1n(int n, double k, Vec r, Vec theta, Vec phi){
+
+  iVec *ThetaComp = new iVec(r.size());
+  iVec *PhiComp   = new iVec(r.size());
+  iVec *RComp     = new iVec(r.size());
+
+  for (long unsigned int i = 0; i < r.size(); i++){
+
+    double p = k*r[i];
+
+    (*ThetaComp)[i] = (sin(phi[i]) * Taun(n, theta[i]) * ( Hankel(n, p) + p * Hankel_p(n, p)/p )  );
+
+    (*PhiComp)[i]   = (  cos(phi[i]) * Pin(n, theta[i])  * ( Hankel(n, p) + p * Hankel_p(n, p)/p )  );
+
+    (*RComp)[i]     = (    sin(phi[i]) * (complex128)( n * (n+1) ) * sin(theta[i]) * Pin(n, theta[i]) * Hankel(n, p)/p  );
+
+  }
+
+  return std::make_tuple(RComp, PhiComp, ThetaComp);
+}
+
+
 class VectorSphericalHarmonics3{
 
   public:
@@ -339,6 +411,7 @@ class VectorSphericalHarmonics3{
     VectorSphericalHarmonics3(int n, double Wavelength){
       this->n = n;
       this->k = 2 * PI /Wavelength;
+
     }
 
 
@@ -406,11 +479,12 @@ class VectorSphericalHarmonics3{
 
         double p = this->k*r[i];
 
-        (*ThetaComp)[i] = (cos(phi[i]) * Taun(this->n, theta[i]) * ( this->ZFunc(this->n, p) + p * this->ZFunc_p(this->n, p)/p )  );
 
-        (*PhiComp)[i]   = ( sin(phi[i]) * Pin(this->n, theta[i])  * ( this->ZFunc(this->n, p) + p * this->ZFunc_p(this->n, p)/p )  );
+        (*ThetaComp)[i] =  cos(phi[i]) * Taun(this->n, theta[i]) * ( this->ZFunc(this->n, p) + p * this->ZFunc_p(this->n, p) ) / p ;
 
-        (*RComp)[i]     = ( cos(phi[i]) * this->n * (n+1) * sin(theta[i]) * Pin(this->n, theta[i]) * ZFunc(this->n, p)/p  );
+        (*PhiComp)[i]   = -sin(phi[i]) * Pin(this->n, theta[i])  * ( this->ZFunc(this->n, p) + p * this->ZFunc_p(this->n, p) ) / p ;
+
+        (*RComp)[i]     =  cos(phi[i]) * (complex128)this->n * (complex128)(this->n+1) * sin(theta[i]) * Pin(this->n, theta[i]) * ZFunc(this->n, p) / p ;
 
       }
 
