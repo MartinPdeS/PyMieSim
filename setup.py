@@ -1,14 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
+from glob import glob
 import sys
 from setuptools import setup, find_packages
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 from distutils.extension import Extension
 import numpy
+from pybind11.setup_helpers import Pybind11Extension
 
+
+macro = [('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
+compile_args=["-std=c++11",
+              '-fopenmp',
+              '-lboost_filesystem',
+              '-lboost_system',
+              '-O3',
+              '-march=native']
+
+link_args=["-std=c++11",
+           '-fopenmp',
+           '-lboost_filesystem',
+           '-lboost_system',
+           '-O3',
+           '-march=native']
 
 # Remove the "-Wstrict-prototypes" compiler option, which isn't valid for C++.
 import distutils.sysconfig
@@ -21,67 +37,55 @@ for key, value in cfg_vars.items():
 ext_modules = [ Extension("PyMieSim.cython.S1S2",
                          ["PyMieSim/cython/S1S2.pyx"],
                          include_dirs = ['.'],
-                         language="c++",
-                         define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
-                         extra_compile_args=["-std=c++11",
-                                             '-fopenmp',
-                                             '-lboost_filesystem',
-                                             '-lboost_system',
-                                             '-O3',
-                                             '-march=native'],
+                         language           = "c++",
+                         define_macros      = macro,
+                         extra_compile_args = compile_args,
+                         extra_link_args    = link_args
+                         ),
 
-                         extra_link_args=["-std=c++11",
-                                          '-fopenmp',
-                                          '-lboost_filesystem',
-                                          '-lboost_system',
-                                          '-O3',
-                                          '-march=native']),
+                Extension("PyMieSim.cpp.Interface",
+                         ["PyMieSim/cpp/Interface.pxd"],
+                         include_dirs       = [numpy.get_include()],
+                         language           = "c++",
+                         define_macros      = macro,
+                         extra_compile_args = compile_args,
+                         extra_link_args    = link_args
+                         ),
+
 
                 Extension("PyMieSim.cpp.Sphere",
                          ["PyMieSim/cpp/Sphere.pyx"],
-                         include_dirs = [numpy.get_include()],
-                         language="c++",
-                         define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
-                         extra_compile_args=["-std=c++11",
-                                             '-fopenmp',
-                                             '-lboost_filesystem',
-                                             '-lboost_system',
-                                             '-O3',
-                                             '-march=native'],
+                         include_dirs       = [numpy.get_include()],
+                         language           = "c++",
+                         define_macros      = macro,
+                         extra_compile_args = compile_args,
+                         extra_link_args    = link_args
+                         ),
 
-                         extra_link_args=["-std=c++11",
-                                          '-fopenmp',
-                                          '-lboost_filesystem',
-                                          '-lboost_system',
-                                          '-O3',
-                                          '-march=native',
-                                          ]),
+
+
 
                 Extension("PyMieSim.cpp.Coupling",
                          ["PyMieSim/cpp/Coupling.pyx"],
-                         include_dirs = [numpy.get_include()],
-                         language="c++",
-                         define_macros=[('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')],
-                         extra_compile_args=["-std=c++11",
-                                             '-fopenmp',
-                                             '-lboost_filesystem',
-                                             '-lboost_system',
-                                             '-O3',
-                                             '-march=native'],
+                         include_dirs        = [numpy.get_include()],
+                         language            = "c++",
+                         define_macros       = macro,
+                         extra_compile_args  = compile_args,
+                         extra_link_args     = link_args
+                         ),
 
-                         extra_link_args=["-std=c++11",
-                                          '-fopenmp',
-                                          '-lboost_filesystem',
-                                          '-lboost_system',
-                                          '-O3',
-                                          '-march=native',
-                                          ]),
+
+                Pybind11Extension("GLMT",
+                                  ["PyMieSim/cpp/GLMT.cpp"],
+                                  language='c++',
+                ),
+
 
                          ]
 
 setup_dict = dict(
       name               = 'PyMieSim',
-      description        = 'Coupled mode modlisation for fiber optic coupler',
+      description        = 'A package for light scattering simulations',
       version            = '0.1',
       #python_requires    = ">=3.0*",
       install_requires   = ['numpy',

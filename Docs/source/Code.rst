@@ -14,14 +14,14 @@ Class: Detector
 .. automodule:: PyMieSim.Detector
     :members:
     :undoc-members:
-    :show-inheritance:
+    :inherited-members:
 
 Class: Mesh
 -----------
 .. automodule:: PyMieSim.Mesh
     :members:
     :undoc-members:
-    :show-inheritance:
+    :inherited-members:
 
 Class: Sets
 -----------
@@ -36,15 +36,6 @@ Class: Representations
     :members:
     :undoc-members:
     :show-inheritance:
-
-
-Class: BaseClasses
-------------------
-.. automodule:: PyMieSim.BaseClasses
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Class: DataFrame
 ----------------

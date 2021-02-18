@@ -7,7 +7,7 @@ PyMieSim/Mesh.py
 PyMieSim/Optimizer.py
 PyMieSim/Physics.py
 PyMieSim/Representations.py
-PyMieSim/Scattering.py
+PyMieSim/Scatterer.py
 PyMieSim/Sets.py
 PyMieSim/__init__.py
 PyMieSim/utils.py
@@ -17,7 +17,11 @@ PyMieSim.egg-info/dependency_links.txt
 PyMieSim.egg-info/not-zip-safe
 PyMieSim.egg-info/requires.txt
 PyMieSim.egg-info/top_level.txt
-PyMieSim/cpp/Interface.pyx
+PyMieSim/cpp/Coupling.pyx
+PyMieSim/cpp/GLMT.cpp
+PyMieSim/cpp/Interface.pxd
+PyMieSim/cpp/Special.cpp
+PyMieSim/cpp/Sphere.pyx
 PyMieSim/cython/S1S2.pyx
 PyMieSim/functions/Couplings.py
 PyMieSim/functions/Misc.py

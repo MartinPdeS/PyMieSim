@@ -17,19 +17,20 @@ class Photodiode(BaseDetector, MeshProperty):
 
     Parameters
     ----------
-    NA : float
+    NA : :class:`float`
         Numerical aperture of imaging system.
-    Sampling : int
+    Sampling : :class:`int`
         Number of sampling points for the mode (inside NA).
-    GammaOffset : float
+    GammaOffset : :class:`float`
         Angle offset of detector in the direction perpendicular to polarization.
-    PhiOffset : float
+    PhiOffset : :class:`float`
         Angle offset of detector in the direction parallel to polarization.
-    Filter : float
+    Filter : :class:`float`
         Angle of polarization filter in front of detector. Default is "None"
-    CouplingMode : str
+    CouplingMode : :class:`str`
         Methode for computing mode coupling. Either Centered or Mean.
     """
+    
     def __init__(self,
                  NA:           float  = 0.2,
                  Sampling:     int    = 401,
@@ -65,10 +66,10 @@ class Photodiode(BaseDetector, MeshProperty):
 
         Parameters
         ----------
-        Num : int
+        Num : :class:`int`
             Dimension of the structured mesh [Num, Num].
-        SFactor : float
-            Unused parameter added to match <LPmode> class.
+        SFactor : :class:`float`
+            Unused parameter added to match :class:`LPmode` class.
 
         Returns
         -------
@@ -94,21 +95,21 @@ class LPmode(BaseDetector, MeshProperty):
 
     Parameters
     ----------
-    Mode : tuple
+    Mode : :class:`tuple`
         LP mode index l, m.
-    NA : float
+    NA : :class:`float`
         Numerical aperture of imaging system.
-    Sampling : int
+    Sampling : :class:`int`
         Number of sampling points for the mode (inside NA).
-    InterpSampling : int
+    InterpSampling : :class:`int`
         Number of sampling point for interpolation of FarField mode.
-    GammaOffset : float
+    GammaOffset : :class:`float`
         Angle offset of detector in the direction perpendicular to polarization.
-    PhiOffset : float
+    PhiOffset : :class:`float`
         Angle offset of detector in the direction parallel to polarization.
-    Filter : float
+    Filter : :class:`float`
         Angle of polarization filter in front of detector. Default is "None"
-    CouplingMode : str
+    CouplingMode : :class:`str`
         Methode for computing mode coupling. Either Centered or Mean.
 
     Attributes
@@ -177,14 +178,14 @@ class LPmode(BaseDetector, MeshProperty):
 
         Parameters
         ----------
-        Num : int
+        Num : :class:`int`
             Dimension of the structured mesh [Num, Num].
-        SFactor : float
+        SFactor : :class:`float`
             Factor that is used to definie the LP mode numerical aperture (NA).
 
         Returns
         -------
-        type
+        :function:`FraunhoferDiffraction`
             Structured FarField value.
 
         """

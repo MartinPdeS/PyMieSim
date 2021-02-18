@@ -69,29 +69,6 @@ class MeshProperty(object):
 
 
 class BaseDetector(object):
-    """Short summary.
-
-    Parameters
-    ----------
-    size : float
-        Size of the detector, [diameter for circle shaped/ side for square].
-    shape : str
-        Shape of the detector.
-    wavelength : float
-        Wavelength of the incoming source.
-    npts : int
-        Number of points defining the rastered meshes.
-    GammaOffset : float
-        Offset of theta angle between the detector and source.
-    PhiOffset : float
-        Offset of phi angle between the detector and source.
-    Magnification : float
-        Magnification induced by the lense.
-    Name : str
-        Name of detector [optional for plots].
-
-    """
-
 
     def Coupling(self, Scatterer):
         return Coupling(Scatterer = Scatterer, Detector = self)
