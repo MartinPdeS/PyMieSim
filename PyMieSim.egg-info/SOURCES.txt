@@ -9,6 +9,8 @@ PyMieSim/Physics.py
 PyMieSim/Representations.py
 PyMieSim/Scatterer.py
 PyMieSim/Sets.py
+PyMieSim/Source.py
+PyMieSim/Special.py
 PyMieSim/__init__.py
 PyMieSim/utils.py
 PyMieSim.egg-info/PKG-INFO

@@ -57,7 +57,7 @@ LowFrequencyMie_ab(const double m,
 static void
 HighFrequencyMie_ab(const double               m,
                     const double               x,
-                    const long unsigned int    nmax,
+                    const long unsigned int    OrderMax,
                     const std::vector<double>* n,
                     iVec*                      an,
                     iVec*                      bn)
@@ -65,7 +65,7 @@ HighFrequencyMie_ab(const double               m,
 {
   const double mx = m * x;
   const double temp  = sqrt(0.5 * PI * x);
-  const long unsigned int nmx = (long unsigned int) ( std::max( nmax, (long unsigned int) abs(mx) ) + 16 );
+  const long unsigned int nmx = (long unsigned int) ( std::max( OrderMax, (long unsigned int) abs(mx) ) + 16 );
   iVec gsx, gs1x;
   iVec px, chx, p1x, ch1x, D, da, db;
   std::vector<double> Dn = std::vector<double>(nmx);
@@ -79,7 +79,7 @@ HighFrequencyMie_ab(const double               m,
       Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );
   }
 
-  for (long unsigned int i = 0; i < nmax; i++)
+  for (long unsigned int i = 0; i < OrderMax; i++)
   {
     px.push_back(  temp * boost::math::cyl_bessel_j( (*n)[i] + 0.5, x ) );         //jv
     chx.push_back(-temp * boost::math::cyl_neumann(  (*n)[i] + 0.5, x ) );          //yv
@@ -105,7 +105,7 @@ HighFrequencyMie_ab(const double               m,
 
 static void
 MiePiTau(const double            mu,
-         const long unsigned int nmax,
+         const long unsigned int OrderMax,
          iVec*                   pin,
          iVec*                   taun )
 
@@ -116,7 +116,7 @@ MiePiTau(const double            mu,
   (*taun)[0] = mu;
   (*taun)[1] = 3.0 * cos(2. * acos(mu) );
   double temp = 0;
-  for (long unsigned int i = 2; i < nmax; i++)
+  for (long unsigned int i = 2; i < OrderMax; i++)
       {
        temp = (double)i;
        (*pin)[i] = ( (2. * temp + 1.) * ( mu * (*pin)[i-1] ) - (temp + 1.) * (*pin)[i-2] ) / temp;
@@ -184,26 +184,26 @@ C_GetS1S2(const double            index,
 
     std::vector<double> *n, *n2;
 
-    const long unsigned int nmax = (int) round(2. + x + 4. * pow(x, 1./3.) );
+    const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
 
-    std::tie(n, n2) = Arrange(1, nmax + 1);
+    std::tie(n, n2) = Arrange(1, OrderMax + 1);
 
-    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, nmax, n, an, bn);
+    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, OrderMax, n, an, bn);
 
     const long unsigned int anLength = an->size();
 
     iVec S1 = iVec(lenght) ;
     iVec S2 = iVec(lenght) ;
 
-    iVec *pin = new iVec(nmax);
-    iVec *taun = new iVec(nmax);
+    iVec *pin = new iVec(OrderMax);
+    iVec *taun = new iVec(OrderMax);
     complex128 j (0., 1.0);
 
     complex128 *temp0 = &S1S2[0], *temp1 = &S1S2[lenght] ;
 
     for (long unsigned int i = 0; i < lenght; i++){
 
-        MiePiTau(cos( phi[i] ), nmax, pin, taun);
+        MiePiTau(cos( phi[i] ), OrderMax, pin, taun);
 
         for (long unsigned int k = 0; k < anLength ; k++){
             *temp0 += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
@@ -230,11 +230,11 @@ C_GetEfficiencies(const double  m,
 
     std::vector<double> *n, *n2;
 
-    const long unsigned int nmax = (int) round(2. + x + 4. * pow(x, 1./3.) );
+    const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
 
-    std::tie(n, n2) = Arrange(1, nmax + 1);
+    std::tie(n, n2) = Arrange(1, OrderMax + 1);
 
-    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, nmax, n, an, bn);
+    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, OrderMax, n, an, bn);
 
     Qsca = C_Qsca(an, bn, x, n);
 
@@ -262,11 +262,11 @@ C_GetQext(const double            m,
 
     std::vector<double> *n, *n2;
 
-    const long unsigned int nmax = (int) round(2. + x + 4. * pow(x, 1./3.) );
+    const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
 
-    std::tie(n, n2) = Arrange(1, nmax + 1);
+    std::tie(n, n2) = Arrange(1, OrderMax + 1);
 
-    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, nmax, n, an, bn);
+    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, OrderMax, n, an, bn);
 
     Qsca = C_Qext(an, bn, x, n);
 

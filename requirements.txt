@@ -9,3 +9,4 @@ ai.cs
 cartopy
 coverage
 pyyaml
+pybind11
