@@ -2,8 +2,7 @@ sudo: True
 language: python
 python: 3.6      # current default Python on Travis CI
 
-before_install:
-- export CXX=g++-4.8 CC=gcc-4.8;
+
 
 install:
   - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev vtk6 python-vtk libboost-all-dev
