@@ -9,7 +9,8 @@ from Cython.Distutils import build_ext
 from distutils.extension import Extension
 import numpy
 from pybind11.setup_helpers import Pybind11Extension
-
+from setuptools import setup, Extension
+import pybind11
 
 macro = [('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
 compile_args=["-std=c++11",
@@ -74,11 +75,12 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                           extra_link_args     = link_args
                          ),
 
-
-                Pybind11Extension(name            = "GLMT",
-                                  sources         = ["PyMieSim/cpp/GLMT.cpp"],
-                                  
+                Extension(name          = 'GLMT',
+                           sources      = ['PyMieSim/cpp/GLMT.cpp'],
+                           include_dirs = [pybind11.get_include()],
+                           language     = 'c++'
                 ),
+
 
 
                          ]
