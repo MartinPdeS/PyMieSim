@@ -8,7 +8,7 @@ from numpy import linspace
 from PyMieSim.Scatterer import Sphere, WMSample
 from PyMieSim.Source import PlaneWave
 from PyMieSim.Detector import LPmode, Photodiode
-from PyMieSim.Sets import ScattererSet, ExperimentalSet
+from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
 Scat        = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)

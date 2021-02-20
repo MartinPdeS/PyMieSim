@@ -7,17 +7,15 @@ Scatterer: S1-S2
 .. code-block:: console
    :linenos:
 
-   from PyMieSim.classes.Scattering import Scatterer
-   from PyMieSim.Physics import Source
+   from PyMieSim.Scatterer import Sphere
+   from PyMieSim.Source import PlaneWave
 
-   LightSource = Source(Wavelength = 450e-9,
-                     Polarization = 0,
-                     Power = 1,
-                     Radius = 1)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
-   Scat = Scatterer(Diameter    = 300e-9,
-                    Source      = LightSource,
-                    Index       = 1.4)
+   Scat = Sphere(Diameter    = 300e-9,
+                 Source      = LightSource,
+                 Index       = 1.4)
 
 
    S1S2 = Scat.S1S2(Num=100)
@@ -34,17 +32,15 @@ Scatterer: full far-field
 .. code-block:: console
    :linenos:
 
-   from PyMieSim.classes.Scattering import Scatterer
-   from PyMieSim.Physics import Source
+   from PyMieSim.Scatterer import Sphere
+   from PyMieSim.Source import PlaneWave
 
-   LightSource = Source(Wavelength = 450e-9,
-                     Polarization = 0,
-                     Power = 1,
-                     Radius = 1)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
-   Scat = Scatterer(Diameter    = 300e-9,
-                    Source      = LightSource,
-                    Index       = 1.4)
+   Scat = Sphere(Diameter    = 300e-9,
+                 Source      = LightSource,
+                 Index       = 1.4)
 
 
    Fields = Scat.Field(Num=100)
@@ -60,17 +56,15 @@ Scatterer: phase function
 .. code-block:: console
    :linenos:
 
-   from PyMieSim.classes.Scattering import Scatterer
-   from PyMieSim.Physics import Source
+   from PyMieSim.Scatterer import Sphere
+   from PyMieSim.Source import PlaneWave
 
-   LightSource = Source(Wavelength = 450e-9,
-                     Polarization = 0,
-                     Power = 1,
-                     Radius = 1)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
-   Scat = Scatterer(Diameter    = 400e-9,
-                    Source      = LightSource,
-                    Index       = 1.4)
+   Scat = Sphere(Diameter    = 300e-9,
+                 Source      = LightSource,
+                 Index       = 1.4)
 
 
    SPF = Scat.SPF(Num=100)
@@ -86,13 +80,11 @@ Detector: Photodiode
 .. code-block:: console
    :linenos:
 
-   from PyMieSim.Physics import Source
+   from PyMieSim.Source import PlaneWave
    from PyMieSim.classes.Detector import Photodiode
 
-   LightSource = Source(Wavelength = 450e-9,
-                     Polarization = 0,
-                     Power = 1,
-                     Radius = 1)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
    Detector = Photodiode(NA                = 0.8,
                          Sampling          = 1001,
@@ -112,13 +104,11 @@ Detector: LPMode
 .. code-block:: console
    :linenos:
 
-   from PyMieSim.Physics import Source
+   from PyMieSim.Source import PlaneWave
    from PyMieSim.classes.Detector import LPmode
 
-   LightSource = Source(Wavelength = 450e-9,
-                     Polarization = 0,
-                     Power = 1,
-                     Radius = 1)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
    Detector = LPmode(Mode         = (1, 1,'h'),
                      Sampling     = 201,
@@ -139,14 +129,12 @@ Coupling: Scatterer-LPMode
 .. code-block:: console
    :linenos:
 
-   from PyMieSim.Physics import Source
+   from PyMieSim.Source import PlaneWave
    from PyMieSim.classes.Detector import LPmode
-   from PyMieSim.classes.Scattering import Scatterer
+   from PyMieSim.Scatterer import Sphere
 
-   LightSource = Source(Wavelength = 450e-9,
-                     Polarization = 0,
-                     Power = 1,
-                     Radius = 1)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
    Detector = LPmode(Mode         = (1, 1,'h'),
                      Sampling     = 201,
@@ -156,9 +144,9 @@ Coupling: Scatterer-LPMode
                      CouplingMode = 'Centered')
 
 
-   Scat = Scatterer(Diameter    = 400e-9,
-                    Source      = LightSource,
-                    Index       = 1.4)
+   Scat = Sphere(Diameter    = 300e-9,
+                 Source      = LightSource,
+                 Index       = 1.4)
 
    Coupling = Detector.Coupling(Scatterer = Scat)
 
@@ -175,11 +163,11 @@ ScattererSet: Qscattering
    :linenos:
 
    import numpy as np
-   from PyMieSim.Physics import Source
+   from PyMieSim.Source import PlaneWave
    from PyMieSim.classes.Sets import ScattererSet
 
-   LightSource = Source(Wavelength   = 950e-9,
-                        Polarization = 0)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
 
    ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 500e-9, 100),
@@ -202,12 +190,12 @@ ExperimentalSet: Coupling
    :linenos:
 
    import numpy as np
-   from PyMieSim.Physics import Source
+   from PyMieSim.Source import PlaneWave
    from PyMieSim.classes.Detector import LPmode
    from PyMieSim.classes.Sets import ScattererSet, ExperimentalSet
 
-   LightSource = Source(Wavelength   = 950e-9,
-                        Polarization = 0)
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
 
 
@@ -272,16 +260,12 @@ Optimizer: NA
    import numpy as np
    from scipy.optimize import minimize
    from PyMieSim.classes.Detector import Photodiode, LPmode
-   from PyMieSim.Physics import Source
+   from PyMieSim.Source import PlaneWave
    from PyMieSim.classes.Optimizer import Simulator
    from PyMieSim.classes.Sets import ExperimentalSet, ScattererSet
 
-   LightSource = Source(Wavelength = 450e-9,
-                        Polarization = 0,
-                        Power = 1,
-                        Radius = 1)
-
-
+   LightSource = PlaneWave(Wavelength = 450e-9,
+                           Polarization = 0)
 
    Detector0 = Photodiode(NA                = 0.2,
                           Sampling          = 150,

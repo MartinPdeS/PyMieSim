@@ -175,19 +175,20 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    NA : float</span>
+<span class="sd">    NA : :class:`float`</span>
 <span class="sd">        Numerical aperture of imaging system.</span>
-<span class="sd">    Sampling : int</span>
+<span class="sd">    Sampling : :class:`int`</span>
 <span class="sd">        Number of sampling points for the mode (inside NA).</span>
-<span class="sd">    GammaOffset : float</span>
+<span class="sd">    GammaOffset : :class:`float`</span>
 <span class="sd">        Angle offset of detector in the direction perpendicular to polarization.</span>
-<span class="sd">    PhiOffset : float</span>
+<span class="sd">    PhiOffset : :class:`float`</span>
 <span class="sd">        Angle offset of detector in the direction parallel to polarization.</span>
-<span class="sd">    Filter : float</span>
+<span class="sd">    Filter : :class:`float`</span>
 <span class="sd">        Angle of polarization filter in front of detector. Default is &quot;None&quot;</span>
-<span class="sd">    CouplingMode : str</span>
+<span class="sd">    CouplingMode : :class:`str`</span>
 <span class="sd">        Methode for computing mode coupling. Either Centered or Mean.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">NA</span><span class="p">:</span>           <span class="nb">float</span>  <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                  <span class="n">Sampling</span><span class="p">:</span>     <span class="nb">int</span>    <span class="o">=</span> <span class="mi">401</span><span class="p">,</span>
@@ -223,10 +224,10 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        Num : int</span>
+<span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Dimension of the structured mesh [Num, Num].</span>
-<span class="sd">        SFactor : float</span>
-<span class="sd">            Unused parameter added to match &lt;LPmode&gt; class.</span>
+<span class="sd">        SFactor : :class:`float`</span>
+<span class="sd">            Unused parameter added to match :class:`LPmode` class.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -252,21 +253,21 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    Mode : tuple</span>
+<span class="sd">    Mode : :class:`tuple`</span>
 <span class="sd">        LP mode index l, m.</span>
-<span class="sd">    NA : float</span>
+<span class="sd">    NA : :class:`float`</span>
 <span class="sd">        Numerical aperture of imaging system.</span>
-<span class="sd">    Sampling : int</span>
+<span class="sd">    Sampling : :class:`int`</span>
 <span class="sd">        Number of sampling points for the mode (inside NA).</span>
-<span class="sd">    InterpSampling : int</span>
+<span class="sd">    InterpSampling : :class:`int`</span>
 <span class="sd">        Number of sampling point for interpolation of FarField mode.</span>
-<span class="sd">    GammaOffset : float</span>
+<span class="sd">    GammaOffset : :class:`float`</span>
 <span class="sd">        Angle offset of detector in the direction perpendicular to polarization.</span>
-<span class="sd">    PhiOffset : float</span>
+<span class="sd">    PhiOffset : :class:`float`</span>
 <span class="sd">        Angle offset of detector in the direction parallel to polarization.</span>
-<span class="sd">    Filter : float</span>
+<span class="sd">    Filter : :class:`float`</span>
 <span class="sd">        Angle of polarization filter in front of detector. Default is &quot;None&quot;</span>
-<span class="sd">    CouplingMode : str</span>
+<span class="sd">    CouplingMode : :class:`str`</span>
 <span class="sd">        Methode for computing mode coupling. Either Centered or Mean.</span>
 
 <span class="sd">    Attributes</span>
@@ -335,14 +336,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        Num : int</span>
+<span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Dimension of the structured mesh [Num, Num].</span>
-<span class="sd">        SFactor : float</span>
+<span class="sd">        SFactor : :class:`float`</span>
 <span class="sd">            Factor that is used to definie the LP mode numerical aperture (NA).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        :function:`FraunhoferDiffraction`</span>
 <span class="sd">            Structured FarField value.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
