@@ -16,7 +16,16 @@ from PyMieSim.utils import PlotFarField, InterpFull, PlotUnstructuredSphere, Plo
 
 ##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no
 
+class BaseSource(object):
 
+    def __init__(self,
+                 Wavelength,
+                 Polarization,
+                 NA = 0.2):
+                 
+        self.Wavelength = Wavelength
+        self.k = 2 * np.pi / Wavelength
+        self.Polarization = _Polarization(Polarization)
 
 class MeshProperty(object):
     """Short summary.

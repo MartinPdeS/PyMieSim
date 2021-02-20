@@ -3,8 +3,9 @@ from scipy.special import gamma
 
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import PlotFarField
-from PyMieSim.Physics import Angle, Source
-from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties
+from PyMieSim.Physics import Angle
+from PyMieSim.Source import PlaneWave
+from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Field, Stokes
 from PyMieSim.Special import Psi, Psi_p, Xi, Xi_p
 
@@ -46,7 +47,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
     def __init__(self,
                  Diameter:    float,
-                 Source:      Source,
+                 Source:      BaseSource,
                  Index:       float,
                  IndexMedium: float  = 1.0):
 
@@ -153,7 +154,7 @@ class WMSample(object):
                  lc:      float,
                  D:       float,
                  Nc:      float,
-                 Source:  Source):
+                 Source:  BaseSource):
 
         self.g  = g; self.lc = lc; self.D  = D; self.Nc = Nc
 
@@ -205,14 +206,6 @@ class WMSample(object):
                             scatter = False,
                             Name    = 'Scattered field')
 
-
-
-
-
-from PyMieSim.Scatterer import Sphere
-from PyMieSim.Physics import Source
-c = Source(Wavelength=1e-6, Polarization=0)
-b = Sphere(Diameter=1e-6, Source=c, Index=1.4)
 
 
 

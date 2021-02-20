@@ -1,18 +1,8 @@
 import numpy as np
+from PyMieSim.Physics import _Polarization
+from PyMieSim.BaseClasses import BaseSource
 
-
-class _Polarization(object):
-
-    def __init__(self, input):
-        if input == None:
-            self.Degree = None
-            self.Radian = None
-        else:
-            self.Degree = input
-            self.Radian = np.deg2rad(input)
-
-
-class PlaneWave(object):
+class PlaneWave(BaseSource):
     def __init__(self,
                  Wavelength,
                  Polarization,
@@ -28,7 +18,6 @@ class PlaneWave(object):
         """Return the beam shape coefficients
          (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a plane wave.
          (Eq: VI.77 of G&G)
-
         Parameters
         ----------
         n : class:`int`
@@ -37,12 +26,10 @@ class PlaneWave(object):
             Description of parameter `m`.
         mode : class:`str`
             Mode of the plane wave, either 'TE' or 'TM'.
-
         Returns
         -------
         class:`float`
             Expansion coefficient.
-
         """
         if m not in [-1,1]: return 0
 

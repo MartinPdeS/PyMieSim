@@ -1,7 +1,15 @@
 import numpy as np
 import fibermodes
 
+class _Polarization(object):
 
+    def __init__(self, input):
+        if input == None:
+            self.Degree = None
+            self.Radian = None
+        else:
+            self.Degree = input
+            self.Radian = np.deg2rad(input)
 
 def FraunhoferDiffraction(nearField):
     """Function compute the Far-Field of a given Near-Field using Fraunhofer
@@ -9,12 +17,12 @@ def FraunhoferDiffraction(nearField):
 
     Parameters
     ----------
-    nearField : np.ndarray
+    nearField : :class:`np.ndarray`
         Near-Field input [2D].
 
     Returns
     -------
-    np.ndarray
+    :class:`np.ndarray`
         Far-Field ouptut [2D].
 
     """
@@ -33,12 +41,12 @@ def GenShift(npts):
 
     Parameters
     ----------
-    npts : int
+    npts : :class:`int`
         Number of point (per dimension) of the FFT array.
 
     Returns
     -------
-    type
+    :class:`np.ndarray`
         Complex array for FFT.
 
     """
@@ -58,35 +66,18 @@ def GenShift(npts):
         return shift_grid * shift_grid.T
 
 
-class _Polarization(object):
 
-    def __init__(self, input):
-        if input == None:
-            self.Degree = None
-            self.Radian = None
-        else:
-            self.Degree = input
-            self.Radian = np.deg2rad(input)
+def SMF28():
+    """Function return an instance of the fiber class specific for a
+    SMF28 fiber optic .
 
+    """
+    CoreDiameter = 8.2e-6
+    cladDiameter = 125e-6
 
+    Fiber = fiber()
 
-
-class Source(object):
-
-    def __init__(self,
-                 Wavelength:   float,
-                 Polarization: float,
-                 Power:        float = 1,
-                 Radius:       float = 1):
-
-        self.Wavelength = Wavelength
-
-        self.k = 2 * np.pi / Wavelength
-
-        self.Power = Power
-
-        self.Polarization = _Polarization(Polarization)
-
+    return Fiber
 
 
 class Angle(object):
@@ -104,33 +95,19 @@ class Angle(object):
             self.Radian = input
 
 
-def SMF28():
-    """Function return an instance of the fiber class specific for a
-    SMF28 fiber optic .
-
-    """
-    CoreDiameter = 8.2e-6
-    cladDiameter = 125e-6
-
-    Fiber = fiber()
-
-    return Fiber
-
-
-
 class fiber(object):
     """Class generating a fiber object from fibermodes package
     (see requirement.txt).
 
     Parameters
     ----------
-    core_radius : float
+    core_radius : :class:`float`
         Radius of the core of the fiber.
-    core_index : float
+    core_index : :class:`float`
         Index of the core of the fiber.
-    clad_radius : float
+    clad_radius : :class:`float`
         Radius of the clad of the fiber.
-    clad_index : float
+    clad_index : :class:`float`
         Index of the clad of the fiber.
 
     """

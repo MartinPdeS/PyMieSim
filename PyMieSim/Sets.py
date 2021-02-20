@@ -188,7 +188,7 @@ class ExperimentalSet(object):
 
         Returns
         -------
-        pandas.DataFrame
+        :class:`pd.DataFrame`
             DataFrame of detectors coupling.
 
         """
@@ -234,7 +234,6 @@ class SampleSet(object):
                  Nc:              float,
                  Detector:        Union[LPmode, Photodiode],
                  Source:          PlaneWave,
-                 Mode:            str = 'Centered',
                  Npts:            int = 201,
                  ):
 
@@ -256,68 +255,84 @@ class SampleSet(object):
 
 
     @property
-    def DataFrame(self, Filter: list = ['None'] ):
+    def DataFrame(self):
+        """Property method which return pandas.DataFrame of the scattering-
+        detector coupling for the different diameter and refracive index
+        evaluated.
 
-        if not isinstance(Filter, list): Filter = [Filter]
+        Returns
+        -------
+        :class:`pd.DataFrame`
+            DataFrame of detectors coupling.
 
-        MI = pd.MultiIndex.from_product([Filter, self.gList, self.LcList], names=['Filter','g','lc',])
+        """
+        MI = pd.MultiIndex.from_product([range(len(self.Detectors)), self.ScattererSet.DiameterList, self.ScattererSet.RIList],
+                                        names=['Detectors','Diameter','RI',])
 
-        df = DataFrame(index = MI, columns = ['Coupling'])
 
-        df.attrs['Filter'] = Filter
+        df = ExperimentalDataFrame(index = MI, columns = ['Coupling'])
 
-        for ng, g in enumerate( self.gList ):
+        df.attrs['Detectors'] = self.Detectors
 
-            for nlc, lc in enumerate(self.LcList):
+        for nr, RI in enumerate( self.ScattererSet.RIList ):
 
-                Scat = Sample(g           = g,
-                              lc          = lc,
-                              D           = self.D,
-                              Nc          = self.Nc,
-                              Source      = LightSource,
-                              Meshes      = self.Detector.Meshes)
+            for nd, Diameter in enumerate(self.ScattererSet.DiameterList):
 
-                for Polar in df.attrs['Filter']:
-                    self.Detector.Filter = Polar
+                for nDetector, Detector in enumerate(self.Detectors):
 
-                    Coupling = self.Detector.Coupling(Scatterer = Scat, Mode = self.Mode)
+                    Scat = Sample(g           = g,
+                                  lc          = lc,
+                                  D           = self.D,
+                                  Nc          = self.Nc,
+                                  Source      = LightSource,
+                                  Meshes      = self.Detector.Meshes)
 
-                    df.at[(Polar, g, lc),'Coupling'] = Coupling
+                    Coupling = Detector.Coupling(Scatterer = Scat)
 
+                    df.at[(nDetector, Diameter, RI),'Coupling'] = Coupling
 
         df.Coupling = df.Coupling.astype(float)
 
-        df.DetectorNane = self.Detector._name
+        df['Mean'] = df.groupby(['Detectors','Diameter']).Coupling.transform('mean')
+
+        df['STD'] = df.groupby(['Detectors','Diameter']).Coupling.transform('std')
 
         return df
 
 
+
+
     @property
-    def Coupling(self, Filter='None'):
+    def Coupling(self):
+        """Property method which return a n by m by l OptArray array, n being the
+        number of detectors, m is the point evaluated for the refractive index,
+        l is the nomber of point evaluted for the scatterers diameters.
 
-        temp = np.empty( [ len(self.gList), len(self.LcList) ] )
+        Returns
+        -------
+        OptArray
+            Raw array of detectors coupling.
 
+        """
+        temp = np.empty( [len(self.Detectors), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
 
-        for ng, g in enumerate( self.gList ):
+        for nDetector, Detector in enumerate(self.Detectors):
 
-            for nlc, lc in enumerate(self.LcList):
+            for nIndex, RI in enumerate(self.ScattererSet.RIList):
+                for nDiameter, Diameter in enumerate(self.ScattererSet.DiameterList):
 
-                Samp = Sample(g           = g,
-                              lc          = lc,
-                              D           = self.D,
-                              Nc          = self.Nc,
-                              Source      = self.Source,
-                              Meshes      = self.Detector.Meshes)
+                    Samp = Sample(g           = g,
+                                  lc          = lc,
+                                  D           = self.D,
+                                  Nc          = self.Nc,
+                                  Source      = self.Source,
+                                  Meshes      = self.Detector.Meshes)
 
-                Coupling = self.Detector.Coupling(Scatterer = Samp, Mode = self.Mode)
+                    Coupling = Detector.Coupling(Scatterer = Samp)
 
-                temp[ng, nlc] = Coupling
+                    temp[nDetector, nIndex, nDiameter] = Coupling
 
         return OptArray(temp)
-
-
-
-
 
 
 # -

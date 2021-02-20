@@ -11,7 +11,8 @@ from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
-Scat        = Sphere(Diameter = 300e-9, Source = LightSource, Index = 1.4)
+Scat        = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+Samp        = WMSample(g = 0.8, lc = 1e-5, D = 2.5, Nc = 1e4, Source = LightSource)
 Detector    = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
 Detector1   = Photodiode(Sampling = 11, NA = 0.2)
 ScatSet     = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
@@ -85,8 +86,19 @@ class PrintingTest(TestCase):
                           D      = 3/2,
                           Nc     = 1e4,
                           Source = LightSource)
-        print('Test 8: passed')                             
+        print('Test 8: passed')
 
+    def test9(self):
+        ScatSet = SampleSet(gList    = [0.8, 0.9],
+                            LcList   = [1e-5, 2e-5],
+                            D        = 3/2,
+                            Nc       = 1e4,
+                            Detector = Detector,
+                            Source   = LightSource,
+                            Npts     = 201)
+
+
+        print('Test 9: passed')
 
 if __name__ == '__main__':
     test = PrintingTest()
