@@ -2,27 +2,43 @@ import numpy as np
 from scipy import special
 from numpy import cos, sin
 from scipy.special import spherical_yn as yn, spherical_jn as jn, hankel1 as h
+from scipy.special import legendre as Pn, factorial as fac
+
 
 
 def hn(n, z, derivative=False):
     return jn(n,z,derivative) + 1j*yn(n,z,derivative)
 
 
-def Pin(n, theta):
-    lpn = special.legendre(n)
+def Pnm(n, m, theta):
+    """Eq:II.77 """
+    if m < 0: return (-1)**m * fac(n-m)/fac(n+m) * Pnm(n,-m,theta)
+    else:     return (-1)**m * sin(theta)**m * Pn(n).deriv(m)(cos(theta))
+
+
+def Pin(n, x):
+    lpn = Pn(n)
     lpn_p = lpn.deriv()
 
-    return -1*lpn_p(cos(theta))
+    return -1*lpn_p(cos(x))
 
 
-def Taun(n, theta):
-    lpn = special.legendre(n)
+def Taun(n, x):
+    lpn = Pn(n)
     lpn_p = lpn.deriv()
     lpn_p2 = lpn_p.deriv()
 
-    return -1*cos(theta)*lpn_p(cos(theta)) + sin(theta)**2*lpn_p2(cos(theta))
+    return -1*cos(x)*lpn_p(cos(x)) + sin(x)**2*lpn_p2(cos(x))
 
 
+def Taunk(n, k, theta):
+    """Eq: III.51 """
+    return Pn(n).deriv(k)(cos(theta))
+
+
+def Pink(n, k, theta):
+    """Eq: III.52 """
+    return Pn(n)(cos(theta)) / sin(theta)
 
 def M1o1n(n, k, r, theta, phi):
     theta_comp =      cos(phi) * Pin(n, theta)  * jn(n, k * r)
@@ -96,6 +112,7 @@ def N3e1n(n, k, r, theta, phi):
     return np.array([r_comp, theta_comp, phi_comp])
 
 def _Psi(type, n, x):
+    """Eq:II.83-86 """
     if type == 0: return x*jn(n, x)
     if type == 1: return jn(n, x)
     if type == 2: return yn(n, x)
@@ -111,6 +128,7 @@ def Psi_p(n, x):
 
 
 def _Psi_p(type, n, x):
+    """Eq:II.83-86 """
     if type == 0: return x*jn(n, x, derivative=True) + jn(n, x, derivative=False)
     if type == 1: return jn(n, x, derivative=True)
     if type == 2: return yn(n, x, derivative=True)
@@ -119,6 +137,7 @@ def _Psi_p(type, n, x):
 
 
 def Xi(n, x):
+    """Eq:II.87 """
     return x * _Psi(4, n, x)
 
 def Xi_p(n, x):
