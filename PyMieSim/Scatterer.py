@@ -77,8 +77,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         """Eq:III.88 of B&B  and M (ksp/k) Eq:I.103"""
         alpha = self.SizeParam
         beta = self.Index * alpha
-        Mu = self.Mu;
-        M = self.Index/self.nMedium; MuSp = self.MuSp
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
         numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta) \
                   - Mu * M * Psi_p(order, alpha) * Psi(order, beta)
@@ -93,7 +92,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         """Eq:III.89 of B&B """
         alpha = self.SizeParam
         beta = self.Index * alpha
-        M = self.Index/self.nMedium; MuSp = self.MuSp
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
         numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) \
                   - MuSp * Psi_p(order, alpha) * Psi(order, beta)
@@ -108,7 +107,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         """Eq:III.90 of B&B """
         alpha = self.SizeParam
         beta = self.Index * alpha
-        M = self.Index/self.nMedium; MuSp = self.MuSp
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
         numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
 
@@ -121,7 +120,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         """Eq:III.91 of B&B """
         alpha = self.SizeParam
         beta = self.Index * alpha
-        M = self.Index/self.nMedium; MuSp = self.MuSp
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
         numerator = Mu * M**2 * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
 

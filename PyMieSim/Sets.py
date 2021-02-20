@@ -245,17 +245,8 @@ class SampleSet(object):
 
         self.D = D; self.Nc = Nc
 
-        self.Source = Source
-
         self.Detector, self.Source = Detector, Source
 
-        self.Coupling = np.empty( [len(self.LcList), len(self.gList)] )
-
-        maxPhi, minPhi = np.max(Detector.Meshes.Phi.Degree), np.min(Detector.Meshes.Phi.Degree)
-
-        self.PhiVector = np.linspace(-np.pi/2, np.pi/2,201)
-
-        self.PhiVectorDetector = np.linspace(minPhi, maxPhi, 101)
 
 
     @property
