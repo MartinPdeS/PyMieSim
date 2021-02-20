@@ -6,15 +6,15 @@ from unittest import TestCase
 from numpy import linspace
 
 from PyMieSim.Scatterer import Sphere, WMSample
-from PyMieSim.Physics import Source
+from PyMieSim.Source import PlaneWave
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet
 
-LightSource = Source(Wavelength = 450e-9, Polarization = 0, Power = 1,  Radius = 1)
-Scat = Sphere(Diameter = 300e-9, Source = LightSource, Index = 1.4)
-Detector = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
-Detector1 = Photodiode(Sampling = 11, NA = 0.2)
-ScatSet = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
+LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
+Scat        = Sphere(Diameter = 300e-9, Source = LightSource, Index = 1.4)
+Detector    = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
+Detector1   = Photodiode(Sampling = 11, NA = 0.2)
+ScatSet     = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
 
 class PrintingTest(TestCase):
 
@@ -37,6 +37,8 @@ class PrintingTest(TestCase):
                           PhiOffset    = 0,
                           CouplingMode = 'Centered')
 
+        print('Test 0: passed')
+
     def test1(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
                           Sampling     = 11,
@@ -44,19 +46,24 @@ class PrintingTest(TestCase):
                           GammaOffset  = 0,
                           PhiOffset    = 0,
                           CouplingMode = 'Centered')
+        print('Test 1: passed')
 
     def test2(self):
-         Scat.S1S2(Num=10)
+        Scat.S1S2(Num=10)
+        print('Test 2: passed')
 
     def test3(self):
         Scat.Field(Num=10)
+        print('Test 3: passed')
 
     def test4(self):
         Scat.SPF(Num=10)
+        print('Test 4: passed')
 
     def test5(self):
         Detector.Coupling(Scatterer = Scat)
         Detector1.Coupling(Scatterer = Scat)
+        print('Test 5: passed')
 
     def test6(self):
         ScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
@@ -64,11 +71,13 @@ class PrintingTest(TestCase):
                                Source        = LightSource)
 
         ScatSet.Qsca()
+        print('Test 6: passed')
 
     def test7(self):
         Set = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
         Set.DataFrame
         Set.Coupling
+        print('Test 7: passed')
 
     def test8(self):
         Sample = WMSample(g      = 0.8,
@@ -76,6 +85,7 @@ class PrintingTest(TestCase):
                           D      = 3/2,
                           Nc     = 1e4,
                           Source = LightSource)
+        print('Test 8: passed')                             
 
 
 if __name__ == '__main__':

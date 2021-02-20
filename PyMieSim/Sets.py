@@ -3,7 +3,7 @@ import pandas as pd
 from typing import Tuple, Union
 
 from PyMieSim.utils import LoadLibraries
-from PyMieSim.Physics import Source
+from PyMieSim.Source import PlaneWave
 from PyMieSim.Optimizer import OptArray
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
@@ -21,7 +21,7 @@ class ScattererSet(object):
         List of diameters to be considered for the single scatterers.
     RIList : list
         List of refractive index to be considered for the single scatterers.
-    Source : Source
+    Source : PlaneWave
         Source <class> representing the illumination impinging the scatterers.
 
     Attributes
@@ -35,7 +35,7 @@ class ScattererSet(object):
     def __init__(self,
                  DiameterList:    list,
                  RIList:          list,
-                 Source:          Source,
+                 Source:          PlaneWave,
                  IndexMedium:     float   = 1.0
                  ):
 
@@ -233,7 +233,7 @@ class SampleSet(object):
                  D:               float,
                  Nc:              float,
                  Detector:        Union[LPmode, Photodiode],
-                 Source:          Source,
+                 Source:          PlaneWave,
                  Mode:            str = 'Centered',
                  Npts:            int = 201,
                  ):

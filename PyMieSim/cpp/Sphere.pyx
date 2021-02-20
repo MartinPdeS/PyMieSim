@@ -13,9 +13,9 @@ cimport cython
 import cython
 cimport numpy as np
 import numpy as np
-from cpython.mem cimport PyMem_Malloc 
+from cpython.mem cimport PyMem_Malloc
 from cpython cimport Py_buffer
-from libcpp.utility cimport pair
+from libcpp.utility cimport pair 
 
 
 ctypedef double complex complex128_t

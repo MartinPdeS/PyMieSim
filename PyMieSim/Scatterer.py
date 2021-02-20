@@ -6,7 +6,7 @@ from PyMieSim.utils import PlotFarField
 from PyMieSim.Physics import Angle, Source
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties
 from PyMieSim.Representations import S1S2, SPF, Field, Stokes
-
+from PyMieSim.Special import Psi, Psi_p, Xi, Xi_p
 
 
 class Sphere(BaseScatterer, EfficienciesProperties):
@@ -64,6 +64,66 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         self._Qsca, self.Q_ext, self._Qabs = None, None, None
 
+        self.MuSp = 1
+
+        self.Mu = 1
+
+
+    def an(self, order):
+        """Eq:III.88 of B&B  and M (ksp/k) Eq:I.103"""
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        Mu = self.Mu;
+        M = self.Index/self.nMedium; MuSp = self.MuSp
+
+        numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta) \
+                  - Mu * M * Psi_p(order, alpha) * Psi(order, beta)
+
+        denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) \
+                    - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
+
+        return numerator/denominator
+
+
+    def bn(self, order):
+        """Eq:III.89 of B&B """
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp
+
+        numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) \
+                  - MuSp * Psi_p(order, alpha) * Psi(order, beta)
+
+        denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) \
+                    - MuSp  * Xi_p(order, alpha) * Psi(order, beta)
+
+        return numerator/denominator
+
+
+    def cn(self, order):
+        """Eq:III.90 of B&B """
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp
+
+        numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
+
+        denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
+
+        return numerator/denominator
+
+
+    def cn(self, order):
+        """Eq:III.91 of B&B """
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp
+
+        numerator = Mu * M**2 * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
+
+        denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta)
+
+        return numerator/denominator
 
 
 
@@ -149,6 +209,10 @@ class WMSample(object):
 
 
 
+from PyMieSim.Scatterer import Sphere
+from PyMieSim.Physics import Source
+c = Source(Wavelength=1e-6, Polarization=0)
+b = Sphere(Diameter=1e-6, Source=c, Index=1.4)
 
 
 
