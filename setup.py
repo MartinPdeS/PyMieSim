@@ -34,50 +34,50 @@ for key, value in cfg_vars.items():
         cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
 
-ext_modules = [ Extension("PyMieSim.cython.S1S2",
-                         ["PyMieSim/cython/S1S2.pyx"],
-                         include_dirs = ['.'],
-                         language           = "c++",
-                         define_macros      = macro,
-                         extra_compile_args = compile_args,
-                         extra_link_args    = link_args
+ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
+                          sources            = ["PyMieSim/cython/S1S2.pyx"],
+                          include_dirs       = ['.'],
+                          language           = "c++",
+                          define_macros      = macro,
+                          extra_compile_args = compile_args,
+                          extra_link_args    = link_args
                          ),
 
-                Extension("PyMieSim.cpp.Interface",
-                         ["PyMieSim/cpp/Interface.pxd"],
-                         include_dirs       = [numpy.get_include()],
-                         language           = "c++",
-                         define_macros      = macro,
-                         extra_compile_args = compile_args,
-                         extra_link_args    = link_args
-                         ),
-
-
-                Extension("PyMieSim.cpp.Sphere",
-                         ["PyMieSim/cpp/Sphere.pyx"],
-                         include_dirs       = [numpy.get_include()],
-                         language           = "c++",
-                         define_macros      = macro,
-                         extra_compile_args = compile_args,
-                         extra_link_args    = link_args
+                Extension(name               = "PyMieSim.cpp.Interface",
+                          sources            = ["PyMieSim/cpp/Interface.pxd"],
+                          include_dirs       = [numpy.get_include()],
+                          language           = "c++",
+                          define_macros      = macro,
+                          extra_compile_args = compile_args,
+                          extra_link_args    = link_args
                          ),
 
 
-
-
-                Extension("PyMieSim.cpp.Coupling",
-                         ["PyMieSim/cpp/Coupling.pyx"],
-                         include_dirs        = [numpy.get_include()],
-                         language            = "c++",
-                         define_macros       = macro,
-                         extra_compile_args  = compile_args,
-                         extra_link_args     = link_args
+                Extension(name               = "PyMieSim.cpp.Sphere",
+                          sources            = ["PyMieSim/cpp/Sphere.pyx"],
+                          include_dirs       = [numpy.get_include()],
+                          language           = "c++",
+                          define_macros      = macro,
+                          extra_compile_args = compile_args,
+                          extra_link_args    = link_args
                          ),
 
 
-                Pybind11Extension("GLMT",
-                                  ["PyMieSim/cpp/GLMT.cpp"],
-                                  language        = 'c++',
+
+
+                Extension(name               = "PyMieSim.cpp.Coupling",
+                          sources            = ["PyMieSim/cpp/Coupling.pyx"],
+                          include_dirs        = [numpy.get_include()],
+                          language            = "c++",
+                          define_macros       = macro,
+                          extra_compile_args  = compile_args,
+                          extra_link_args     = link_args
+                         ),
+
+
+                Pybind11Extension(name            = "GLMT",
+                                  sources         = ["PyMieSim/cpp/GLMT.cpp"],
+                                  language        = 'c++11',
                                   extra_link_args = link_args
                 ),
 
