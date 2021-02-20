@@ -77,8 +77,6 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
 
                 Pybind11Extension(name            = "GLMT",
                                   sources         = ["PyMieSim/cpp/GLMT.cpp"],
-                                  language        = 'c++11',
-                                  extra_link_args = link_args
                 ),
 
 
