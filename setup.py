@@ -98,6 +98,7 @@ setup_dict = dict(
                             'mayavi',
                             'ai.cs',
                             'geos',
+                            'pybind11',
                             'cartopy',
                             "fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0",
                             ],
