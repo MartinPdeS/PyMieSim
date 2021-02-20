@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
@@ -22,7 +26,7 @@ class BaseSource(object):
                  Wavelength,
                  Polarization,
                  NA = 0.2):
-                 
+
         self.Wavelength = Wavelength
         self.k = 2 * np.pi / Wavelength
         self.Polarization = _Polarization(Polarization)

@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 import numpy as np
 import pandas as pd
 from typing import Tuple, Union
@@ -243,7 +247,7 @@ class SampleSet(object):
 
         self.Source = Source
 
-        self.Detector, self.Source, self.Mode = Detector, Source, Mode
+        self.Detector, self.Source = Detector, Source
 
         self.Coupling = np.empty( [len(self.LcList), len(self.gList)] )
 

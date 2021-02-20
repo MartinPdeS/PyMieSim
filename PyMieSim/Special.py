@@ -99,8 +99,8 @@ def _Psi(type, n, x):
     if type == 0: return x*jn(n, x)
     if type == 1: return jn(n, x)
     if type == 2: return yn(n, x)
-    if type == 3: return jn(n,x,derivative=False) + 1j*yn(n,x,derivative=False)
-    if type == 4: return jn(n,x,derivative=False) - 1j*yn(n,x,derivative=False)
+    if type == 3: return _Psi(1, n, x) + 1j * _Psi(2, n, x)
+    if type == 4: return _Psi(1, n, x) - 1j * _Psi(2, n, x)
 
 
 def Psi(n, x):
