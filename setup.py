@@ -8,7 +8,6 @@ from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 from distutils.extension import Extension
 import numpy
-from pybind11.setup_helpers import Pybind11Extension
 from setuptools import setup, Extension
 import pybind11
 
@@ -75,10 +74,10 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                           extra_link_args     = link_args
                          ),
 
-                Extension(name          = 'GLMT',
+                Extension(name          = 'PyMieSim.GLMT',
                            sources      = ['PyMieSim/cpp/GLMT.cpp'],
                            include_dirs = [pybind11.get_include()],
-                           language     = 'c++'
+                           language     = 'c++',
                 ),
 
 
@@ -113,6 +112,7 @@ setup_dict = dict(
       long_description   = open('README.md').read(),
       platforms          = ['Linux', 'Max OSX'],
       include_dirs       = [numpy.get_include()],
+      #build_dir          = "./PyMieSim/builds/",
       ext_modules        = ext_modules,
       zip_safe           = False)
 

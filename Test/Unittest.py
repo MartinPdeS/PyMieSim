@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from unittest import TestCase
-from numpy import linspace
+from numpy import linspace, pi
 
 from PyMieSim.Scatterer import Sphere, WMSample
 from PyMieSim.Source import PlaneWave
+from PyMieSim.python.GLMT import SPF
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
 
@@ -15,6 +16,8 @@ Samp        = WMSample(g = 0.8, lc = 1e-5, D = 2.5, Nc = 1e4, Source = LightSour
 Detector    = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
 Detector1   = Photodiode(Sampling = 11, NA = 0.2)
 ScatSet     = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
+phi         = linspace(-pi/2, pi/2,4)
+theta       =  linspace(-pi, pi,4)
 
 class PrintingTest(TestCase):
 
@@ -28,6 +31,8 @@ class PrintingTest(TestCase):
         self.test6()
         self.test7()
         self.test8()
+        self.test9()
+        self.test10()
 
     def test0(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -98,6 +103,13 @@ class PrintingTest(TestCase):
 
 
         print('Test 9: passed')
+
+
+    def test10(self):
+        spf = SPF(Scat, LightSource, phi, theta)
+
+
+        print('Test 10: passed')
 
 if __name__ == '__main__':
     test = PrintingTest()

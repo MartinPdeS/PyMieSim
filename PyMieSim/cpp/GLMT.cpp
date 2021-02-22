@@ -34,7 +34,6 @@ SphereCoefficient(double Radius,
   Vec jnm = Riccati1(Order, m * SizeParam);
 
   complex128 a = (mt * jnm[0] * jn[1] - jn[0] * jnm[1]) / (mt * jnm[0] * yn[1] - yn[0] * jnm[1]);
-  printf("\n\n\n %f\n \n\n\n", (jnm[0] * yn[1] - mt * yn[0] * jnm[1]) );
   complex128 b = (jnm[0] * jn[1] - mt * jn[0] * jnm[1]) / (jnm[0] * yn[1] - mt * yn[0] * jnm[1]);
 
 

@@ -36,7 +36,7 @@ Fibonacci_sphere(int samples,
 
     double ratio = 4*PI / SolidAngle;
 
-    int TrueSampling = (int)( samples * ratio );
+    long unsigned int TrueSampling = (long unsigned int)( samples * ratio );
 
     for (long unsigned int i = 0; i < TrueSampling; i++){
 
@@ -46,13 +46,13 @@ Fibonacci_sphere(int samples,
         double theta = phi * i;
 
         double x = cos(theta) * radius;
-        double z = sin(theta) * radius;
+        //double z = sin(theta) * radius;
 
         X.push_back(x);
         Y.push_back(1.0);
         Z.push_back(1.0);
 
-        if (i >= samples - 1) break;
+        if (i >= (long unsigned int)samples - 1) break;
       }
 
     std::tie(R, PHI, THETA) = Cart2sph(X,Y,Z);

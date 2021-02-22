@@ -165,8 +165,7 @@
 
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.functions.converts</span> <span class="kn">import</span> <span class="n">NA2Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">interp_at</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">interp_at</span><span class="p">,</span> <span class="n">NA2Angle</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">FraunhoferDiffraction</span><span class="p">,</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">SMF28</span><span class="p">,</span> <span class="n">Angle</span>
 
 
@@ -188,7 +187,7 @@
 <span class="sd">    CouplingMode : :class:`str`</span>
 <span class="sd">        Methode for computing mode coupling. Either Centered or Mean.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">NA</span><span class="p">:</span>           <span class="nb">float</span>  <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
                  <span class="n">Sampling</span><span class="p">:</span>     <span class="nb">int</span>    <span class="o">=</span> <span class="mi">401</span><span class="p">,</span>

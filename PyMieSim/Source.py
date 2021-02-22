@@ -38,4 +38,4 @@ class PlaneWave(BaseSource):
 
         if mode == 'TM': return 1 / 2
 
-        if mode == 'TE': return 1j / 2
+        if mode == 'TE': return  -m * 1j / 2

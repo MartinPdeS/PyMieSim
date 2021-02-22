@@ -7,7 +7,7 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 
 from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
-from PyMieSim.functions.converts import Direct2spherical, AngleUnit2DirectUnit
+from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 
 
 GetS1S2, GetFields =  LoadLibraries(['S1S2', 'Fields'])

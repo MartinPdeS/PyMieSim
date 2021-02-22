@@ -7,8 +7,7 @@ from ai import cs
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.Mesh import FibonacciMesh
-from PyMieSim.functions.converts import NA2Angle
-from PyMieSim.utils import interp_at
+from PyMieSim.utils import interp_at, NA2Angle
 from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
 
 
@@ -30,7 +29,7 @@ class Photodiode(BaseDetector, MeshProperty):
     CouplingMode : :class:`str`
         Methode for computing mode coupling. Either Centered or Mean.
     """
-    
+
     def __init__(self,
                  NA:           float  = 0.2,
                  Sampling:     int    = 401,

@@ -156,7 +156,11 @@
            <div itemprop="articleBody">
             
   <h1>Source code for PyMieSim.BaseClasses</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.family&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;serif&quot;</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;mathtext.fontset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dejavuserif&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -165,11 +169,11 @@
 <span class="kn">from</span> <span class="nn">ai</span> <span class="kn">import</span> <span class="n">cs</span>
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ScalarFarField</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.functions.Couplings</span> <span class="kn">import</span> <span class="n">Coupling</span> <span class="k">as</span> <span class="n">Coupling</span><span class="p">,</span> <span class="n">GetFootprint</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.python.Couplings</span> <span class="kn">import</span> <span class="n">Coupling</span> <span class="k">as</span> <span class="n">Coupling</span><span class="p">,</span> <span class="n">GetFootprint</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.cpp.Sphere</span> <span class="kn">import</span> <span class="n">GetFields</span><span class="p">,</span> <span class="n">GetEfficiencies</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.functions.converts</span> <span class="kn">import</span> <span class="n">NA2Angle</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span><span class="p">,</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">PlotUnstructuredSphere</span><span class="p">,</span> <span class="n">PlotStructuredSphere</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span><span class="p">,</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">NA2Angle</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotUnstructuredSphere</span><span class="p">,</span> <span class="n">PlotStructuredSphere</span>
 
 
 <span class="c1">##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&amp;id=380136&amp;seq=0&amp;mobile=no</span>
@@ -180,7 +184,7 @@
                  <span class="n">Wavelength</span><span class="p">,</span>
                  <span class="n">Polarization</span><span class="p">,</span>
                  <span class="n">NA</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">):</span>
-                 
+
         <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span> <span class="o">=</span> <span class="n">Wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">Wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">)</span>

@@ -37,9 +37,9 @@ Class: Representations
     :undoc-members:
     :show-inheritance:
 
-Class: DataFrame
+Functions: GLMT
 ----------------
-.. automodule:: PyMieSim.DataFrame
+.. automodule:: PyMieSim.python.GLMT
     :members:
     :undoc-members:
     :show-inheritance:

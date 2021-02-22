@@ -6,7 +6,6 @@ from scipy.special import gamma
 
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import PlotFarField
-from PyMieSim.Physics import Angle
 from PyMieSim.Source import PlaneWave
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Field, Stokes

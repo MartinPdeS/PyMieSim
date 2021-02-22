@@ -1,8 +1,8 @@
 import numpy as np
 from scipy import special
-from numpy import cos, sin
+from numpy import cos, sin, sqrt
 from scipy.special import spherical_yn as yn, spherical_jn as jn, hankel1 as h
-from scipy.special import legendre as Pn, factorial as fac
+from scipy.special import legendre as Pn, factorial as fac, lpmn, gammasgn, loggamma
 
 
 
@@ -10,106 +10,54 @@ def hn(n, z, derivative=False):
     return jn(n,z,derivative) + 1j*yn(n,z,derivative)
 
 
-def Pnm(n, m, theta):
+def mnFactorial(n, m):
+    """ Calculates the expression below avoiding overflows.
+
+    .. math::
+        \\frac{(n + m)!}{(n - m)!}
+    """
+    return gammasgn(n) * gammasgn(m) * exp(loggamma(n) - loggamma(m))
+
+
+@np.vectorize
+def Pnm(n, m, x):
     """Eq:II.77 """
-    if m < 0: return (-1)**m * fac(n-m)/fac(n+m) * Pnm(n,-m,theta)
-    else:     return (-1)**m * sin(theta)**m * Pn(n).deriv(m)(cos(theta))
+    return lpmn(m, n, x)[0][-1, -1]
 
 
-def Pin(n, x):
-    lpn = Pn(n)
-    lpn_p = lpn.deriv()
-
-    return -1*lpn_p(cos(x))
+@np.vectorize
+def Pnm_p(n, m, x):
+    """Eq:II.77 """
+    return lpmn(m, n, x)[1][-1, -1]
 
 
 def Taun(n, x):
-    lpn = Pn(n)
-    lpn_p = lpn.deriv()
-    lpn_p2 = lpn_p.deriv()
-
-    return -1*cos(x)*lpn_p(cos(x)) + sin(x)**2*lpn_p2(cos(x))
+    return -1*Pn(n).deriv()(cos(x))
 
 
-def Taunk(n, k, theta):
+def Pin(n, x):
+    return -1*cos(x)*Pn(n).deriv(1)(cos(x)) + sin(x)**2*Pn(n).deriv(2)(cos(x))
+
+
+def Taunm(n, m, x):
     """Eq: III.51 """
-    return Pn(n).deriv(k)(cos(theta))
+    index = np.isclose(x,1,1e-6)
+    if len(index) > 0: x[index] = 1-1e-6
+    index = np.isclose(x,-1,1e-6)
+    if len(index) > 0: x[index] = -1+1e-6
+
+    return sqrt(1-x**2) * Pnm_p(n, m, x)
 
 
-def Pink(n, k, theta):
+def Pinm(n, k, x):
     """Eq: III.52 """
-    return Pn(n)(cos(theta)) / sin(theta)
+    index = np.isclose(x,1,1e-6)
+    if len(index) > 0: x[index] = 1-1e-6
+    index = np.isclose(x,-1,1e-6)
+    if len(index) > 0: x[index] = -1+1e-6
 
-def M1o1n(n, k, r, theta, phi):
-    theta_comp =      cos(phi) * Pin(n, theta)  * jn(n, k * r)
-    phi_comp   = -1 * sin(phi) * Taun(n, theta) * jn(n, k * r)
-    r_comp     = np.zeros(shape = theta.shape, dtype=np.complex)
+    return -Pnm(n, k, x) / (sqrt(1-x**2))
 
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-def M1e1n(n, k, r, theta, phi):
-    theta_comp = -1*sin(phi) * Pin(n, theta)  * jn(n, k * r)
-    phi_comp =   -1*cos(phi) * Taun(n, theta) * jn(n, k * r)
-    r_comp = np.zeros(shape = theta.shape, dtype=np.complex)
-
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-def N1o1n(n, k, r, theta, phi):
-    p = k * r
-    theta_comp = sin(phi) * Taun(n, theta) * (jn(n, p) + p * jn(n, p, derivative=True) ) / p
-    phi_comp   = cos(phi) * Pin(n, theta)  * (jn(n, p) + p * jn(n, p, derivative=True) ) / p
-    r_comp     = sin(phi) * n * (n + 1) * sin(theta) * Pin(n, theta) * jn(n, p) / p
-
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-
-def N1e1n(n, k, r, theta, phi):
-    p = k*r
-    theta_comp =    cos(phi) * Taun(n, theta) * ( jn(n, p) + p * jn(n, p, derivative=True) ) / p
-    phi_comp   = -1*sin(phi) * Pin(n, theta)  * ( jn(n, p) + p * jn(n, p, derivative=True) ) / p
-    r_comp     =    cos(phi) * n * (n+1)      * sin(theta) * Pin(n, theta) * jn(n, p) / p
-
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-
-
-def M3o1n(n, k, r, theta, phi):
-    theta_comp =      cos(phi) * Pin(n, theta)  * hn(n, k * r)
-    phi_comp   = -1 * sin(phi) * Taun(n, theta) * hn(n, k * r)
-    r_comp     = np.zeros(shape = theta.shape, dtype=np.complex)
-
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-def M3e1n(n, k, r, theta, phi):
-    theta_comp = -1*sin(phi) * Pin(n, theta)  * hn(n, k * r)
-    phi_comp =   -1*cos(phi) * Taun(n, theta) * hn(n, k * r)
-    r_comp = np.zeros(shape = theta.shape, dtype=np.complex)
-
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-def N3o1n(n, k, r, theta, phi):
-    p = k * r
-    theta_comp = sin(phi) * Taun(n, theta) * (hn(n, p) + p * hn(n, p, derivative=True) ) / p
-    phi_comp   = cos(phi) * Pin(n, theta)  * (hn(n, p) + p * hn(n, p, derivative=True) ) / p
-    r_comp     = sin(phi) * n * (n + 1) * sin(theta) * Pin(n, theta) * hn(n, p) / p
-
-    return np.array([r_comp, theta_comp, phi_comp])
-
-
-
-def N3e1n(n, k, r, theta, phi):
-    p = k*r
-    theta_comp =    cos(phi) * Taun(n, theta) * ( hn(n, p) + p * hn(n, p, derivative=True) ) / p
-    phi_comp   = -1*sin(phi) * Pin(n, theta)  * ( hn(n, p) + p * hn(n, p, derivative=True) ) / p
-    r_comp     =    cos(phi) * n * (n+1)      * sin(theta) * Pin(n, theta) * hn(n, p) / p
-
-    return np.array([r_comp, theta_comp, phi_comp])
 
 def _Psi(type, n, x):
     """Eq:II.83-86 """
@@ -150,5 +98,64 @@ def Xi_p(n, x):
 
 
 
+class GeneralFunc():
+    def __init__(self, function, *args):
+        self.functions = [function]
+        self.Operation = ['.']
+        self.args = [args]
+
+    def eval(self):
+
+        res = complex(0)
+        for n, func in enumerate(self.functions):
+            Op = self.Operation[n]; arg = self.args[n]
+            if arg == '':
+                if Op ==  '.': res += func; print('Identity')
+                if Op ==  '+': res += func; print('Addition')
+                if Op ==  '-': res -= func; print('Subtraction')
+                if Op ==  '*': res *= func; print('Multiplication')
+                if Op ==  '/': res /= func; print('Division')
+                if Op == '**': res = res ** func; print('Division')
+            else:
+                if Op ==  '.': res += func(*args); print('Identity')
+                if Op ==  '+': res += func(*args); print('Addition')
+                if Op ==  '-': res -= func(*args); print('Subtraction')
+                if Op ==  '*': res *= func(*args); print('Multiplication')
+                if Op ==  '/': res /= func(*args); print('Division')
+                if Op == '**': res = res ** func(*args); print('Division')
+
+        return res
+
+
+    def __add__(self, func):
+        self.Operation.append('+')
+        self.functions.append(func.functions[0])
+        self.args.append(func.args[0])
+
+
+    def __sub__(self, func):
+        self.Operation.append('-')
+        self.functions.append(func.functions[0])
+        self.args.append(func.args[0])
+
+    def __mul__(self, func):
+        self.Operation.append('*')
+        self.functions.append(func.functions[0])
+        self.args.append(func.args[0])
+
+    def __div__(self, func):
+        self.Operation.append('/')
+        self.functions.append(func.functions[0])
+        self.args.append(func.args[0])
+
+    def __pow__(self, func):
+        self.Operation.append('**')
+
+        if not isinstance(func, list):
+            self.functions.append(func)
+            self.args.append('')
+        else:
+            self.functions.append(func.functions[0])
+            self.args.append(func.args[0])
 
 #-

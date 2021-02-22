@@ -11,11 +11,11 @@ import cartopy.crs as ccrs
 from ai import cs
 
 from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
-from PyMieSim.functions.Couplings import Coupling as Coupling, GetFootprint
+from PyMieSim.python.Couplings import Coupling as Coupling, GetFootprint
 from PyMieSim.cpp.Sphere import GetFields, GetEfficiencies
-from PyMieSim.functions.converts import NA2Angle
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import PlotFarField, InterpFull, PlotUnstructuredSphere, PlotStructuredSphere
+from PyMieSim.utils import PlotFarField, InterpFull, NA2Angle
+from PyMieSim.utils import PlotUnstructuredSphere, PlotStructuredSphere
 
 
 ##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no

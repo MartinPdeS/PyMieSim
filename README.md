@@ -3,8 +3,8 @@
 
 [![Travis CI](https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
 [![codecov](https://codecov.io/gh/MartinPdeS/PyMieSim/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinPdeS/PyMieSim)
-
-
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
+[![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing)
 
 
 
@@ -70,27 +70,6 @@ To run the Unittests one need the coverage library.
    python -m unittest Test/Unittest.py
 ```
 
-
-Scattering Theory
-=================
-Light scattering depends on a few parameters:
-<ol>
-<li>Light field Wavelength</li>
-<li>Light field Polarization</li>
-<li>Light field structure</li>
-<li>Scatterer geometry</li>  
-<li>Medium refractive index</li>  
-</ol>
-
-Some useful relations:
-
-Size Parameter: <img src="./Docs/images/Equations/alphaDefinition.png" alt="drawing" height="30"/>
-
-Scattering Matrix: <img src="./Docs/images/Equations/ScatteringMatrix.png" alt="drawing" height="50"/>
-
-For spherical Scatterers: <img src="./Docs/images/Equations/Sequal0.png" alt="drawing" height="20"/>
-
-[To be finished..]
 
 To-Do List
 ----------

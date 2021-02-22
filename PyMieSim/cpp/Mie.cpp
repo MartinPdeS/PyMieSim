@@ -115,12 +115,14 @@ MiePiTau(const double            mu,
 
   (*taun)[0] = mu;
   (*taun)[1] = 3.0 * cos(2. * acos(mu) );
-  double temp = 0;
+  double n = 0;
   for (long unsigned int i = 2; i < OrderMax; i++)
       {
-       temp = (double)i;
-       (*pin)[i] = ( (2. * temp + 1.) * ( mu * (*pin)[i-1] ) - (temp + 1.) * (*pin)[i-2] ) / temp;
-       (*taun)[i] = (temp + 1.) * mu * (*pin)[i] - (temp + 2.) * (*pin)[i-1];
+       n = (double)i;
+
+       (*pin)[i] = ( (2. * n + 1.) * mu * (*pin)[i-1] - (n + 1.) * (*pin)[i-2] ) / n;
+
+       (*taun)[i] = (n + 1.) * mu * (*pin)[i] - (n + 2.) * (*pin)[i-1];
      }
 }
 
