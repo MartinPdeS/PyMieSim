@@ -383,19 +383,19 @@
 
 
 <span class="k">class</span> <span class="nc">BaseScatterer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for &lt;Scatterer&gt; instance.</span>
+    <span class="sd">&quot;&quot;&quot;Base class for :class:`Sphere`.</span>
 <span class="sd">    This class containes all the methodes that output something interesting for</span>
 <span class="sd">    the user.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    diameter : float</span>
+<span class="sd">    diameter : :class:`float`</span>
 <span class="sd">        Diameter of the scatterer.</span>
-<span class="sd">    wavelength : float</span>
+<span class="sd">    wavelength : :class:`float`</span>
 <span class="sd">        Wavelength of the incident lightfield.</span>
-<span class="sd">    index : float</span>
+<span class="sd">    index : :class:`float`</span>
 <span class="sd">        Refractive index of the scatterer.</span>
-<span class="sd">    npts : int</span>
+<span class="sd">    npts : :class:`int`</span>
 <span class="sd">        Number of points for the full solid angle of the far-field, later to</span>
 <span class="sd">        be interpolated.</span>
 
@@ -413,12 +413,17 @@
         <span class="k">pass</span>
 
     <span class="k">def</span> <span class="nf">GetEfficiencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs}`)</span>
+<span class="sd">        for the scatterer.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="n">GetEfficiencies</span><span class="p">(</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
                                                              <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">S1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Methode return &lt;Representation&gt; instance S1S2.</span>
+        <span class="sd">&quot;&quot;&quot;Methode compute :math:`S_1(\\phi)` &amp; :math:`S_2(\\phi)`.</span>
 <span class="sd">        For spherical Scatterer such as here S1 and S2 are computed as follow:</span>
 
 <span class="sd">        :math:`S_1=\sum\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\\tau_n)`</span>
@@ -427,12 +432,12 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        Num : type</span>
-<span class="sd">            Description of parameter `Num`.</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point (:math:`\\phi`) to evaluate :math:`S_1` &amp; :math:`S_2`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        type</span>
+<span class="sd">        :class:`S1S2`</span>
 <span class="sd">            Description of returned object.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -445,19 +450,19 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span>
 
 
-    <span class="k">def</span> <span class="nf">Field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Scattering phase function:</span>
-<span class="sd">        Fields = :math:`E_{||}^2, E_{\\perp}^2`</span>
+<span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        Num : int</span>
-<span class="sd">            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the Fields [Num, Num].</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        &lt;Field&gt; instance</span>
-<span class="sd">            Dictionnay subclass with all pertient information as keys.</span>
+<span class="sd">        :class:`ScalarField`</span>
+<span class="sd">            Dictionnay sub-class with all pertient information as keys.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Field</span> <span class="o">=</span> <span class="n">ScalarFarField</span><span class="p">(</span><span class="n">Num</span> <span class="o">=</span> <span class="n">Num</span><span class="p">,</span> <span class="n">Parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
@@ -485,16 +490,16 @@
 
     <span class="k">def</span> <span class="nf">SPF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Scattering phase function:</span>
-<span class="sd">        SPF = :math:`E_{||}^2 + E_{\\perp}^2`</span>
+<span class="sd">        SPF = :math:`E_{\\para}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        Num : int</span>
+<span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        &lt;SPF&gt; instance</span>
+<span class="sd">        :class:`SPF`</span>
 <span class="sd">            Dictionnay subclass with all pertient information as keys.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -507,8 +512,8 @@
 
 
     <span class="k">def</span> <span class="nf">GenField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The methode generate the &lt;Fields&gt; class from S1 and S2 value computed</span>
-<span class="sd">        with the PyMieScatt package.</span>
+        <span class="sd">&quot;&quot;&quot;The methode generate the :class:`ScalarField` from</span>
+<span class="sd">        :math:`S_1` &amp; :math:`S_2` value computed with the LMT.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -520,7 +525,17 @@
                          <span class="n">PhiMesh</span>      <span class="o">=</span> <span class="n">Phi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
                          <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">scatter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method plots the scattered Far-Field</span>
+<span class="sd">        :math:`E_{\\para}(\\phi,\\theta)^2 , E_{\\perp}(\\phi,\\theta)^2.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">Theta</span><span class="p">,</span> <span class="n">Phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">)]</span>
 

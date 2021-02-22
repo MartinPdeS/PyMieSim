@@ -182,7 +182,7 @@
 <dl class="docutils">
 <dt>Diameter <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
 <dd>Diameter of the single scatterer in unit of meter.</dd>
-<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></span></dt>
+<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
 <dd>Light source object containing info on polarization and wavelength.</dd>
 <dt>Index <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
 <dd>Refractive index of scatterer</dd>
@@ -192,33 +192,19 @@
 <dd>Mathematical 2D area of the scatterer [<span class="math notranslate nohighlight">\(\pi r^2\)</span>].</dd>
 <dt>SizeParam <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
 <dd>Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</dd>
-<dt>_Stokes <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Stokes</span></code></span></dt>
-<dd>Stoke representation class</dd>
-<dt>_SPF <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.SPF" title="PyMieSim.Scatterer.Sphere.SPF"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPF</span></code></a></span></dt>
-<dd>Scattering phase function representation class</dd>
-<dt>_Parallel <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.Field" title="PyMieSim.Scatterer.Sphere.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a></span></dt>
-<dd>Parallel field representation class</dd>
-<dt>_Perpendicular <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.Field" title="PyMieSim.Scatterer.Sphere.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a></span></dt>
-<dd>Perpendicular field representation class</dd>
-<dt>_S1S2 <span class="classifier-delimiter">:</span> <span class="classifier"><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.S1S2" title="PyMieSim.Scatterer.Sphere.S1S2"><code class="xref py py-class docutils literal notranslate"><span class="pre">S1S2</span></code></a></span></dt>
-<dd>S1 and S2 values representation class</dd>
-<dt>_phi <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></dt>
-<dd>Last phi list used for computing S1S2 or Field or SPF or Stokes</dd>
-<dt>_theta <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></dt>
-<dd>Last theta list used for computing S1S2 or Field or SPF or Stokes</dd>
 </dl>
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.Field">
-<code class="descname">Field</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Field</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scattering phase function:
-Fields = <span class="math notranslate nohighlight">\(E_{||}^2, E_{\perp}^2\)</span></p>
+Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
 <dl class="docutils">
-<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the Fields [Num, Num].</dd>
+<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</dd>
 </dl>
 <dl class="docutils">
-<dt>&lt;Field&gt; instance</dt>
-<dd>Dictionnay subclass with all pertient information as keys.</dd>
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code></dt>
+<dd>Dictionnay sub-class with all pertient information as keys.</dd>
 </dl>
 </dd></dl>
 
@@ -230,14 +216,16 @@ Fields = <span class="math notranslate nohighlight">\(E_{||}^2, E_{\perp}^2\)</s
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.GenField">
 <code class="descname">GenField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GenField" title="Permalink to this definition">¶</a></dt>
-<dd><p>The methode generate the &lt;Fields&gt; class from S1 and S2 value computed
-with the PyMieScatt package.</p>
+<dd><p>The methode generate the <code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code> from
+<span class="math notranslate nohighlight">\(S_1\)</span> &amp; <span class="math notranslate nohighlight">\(S_2\)</span> value computed with the LMT.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.GetEfficiencies">
 <code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
+for the scatterer.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.Parallel">
@@ -251,8 +239,14 @@ with the PyMieScatt package.</p>
 
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.Plot">
-<code class="descname">Plot</code><span class="sig-paren">(</span><em>Num=200</em>, <em>scatter=False</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">Plot</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method plots the scattered Far-Field
+:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>E_{para}(phi,theta)^2 , E_{perp}(phi,theta)^2.</p>
+<dl class="docutils">
+<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</dd>
+</dl>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.Qabs">
@@ -278,16 +272,16 @@ with the PyMieScatt package.</p>
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.S1S2">
 <code class="descname">S1S2</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.S1S2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Methode return &lt;Representation&gt; instance S1S2.
+<dd><p>Methode compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> &amp; <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
 For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <p><span class="math notranslate nohighlight">\(S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)\)</span></p>
 <p><span class="math notranslate nohighlight">\(S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)\)</span></p>
 <dl class="docutils">
-<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of parameter <cite>Num</cite>.</dd>
+<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd>Number of point (<span class="math notranslate nohighlight">\(\phi\)</span>) to evaluate <span class="math notranslate nohighlight">\(S_1\)</span> &amp; <span class="math notranslate nohighlight">\(S_2\)</span>.</dd>
 </dl>
 <dl class="docutils">
-<dt>type</dt>
+<dt><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.S1S2" title="PyMieSim.Scatterer.Sphere.S1S2"><code class="xref py py-class docutils literal notranslate"><span class="pre">S1S2</span></code></a></dt>
 <dd>Description of returned object.</dd>
 </dl>
 </dd></dl>
@@ -296,13 +290,13 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.SPF">
 <code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.SPF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scattering phase function:
-SPF = <span class="math notranslate nohighlight">\(E_{||}^2 + E_{\perp}^2\)</span></p>
+SPF = <span class="math notranslate nohighlight">\(E_{\para}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
 <dl class="docutils">
-<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
+<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</dd>
 </dl>
 <dl class="docutils">
-<dt>&lt;SPF&gt; instance</dt>
+<dt><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.SPF" title="PyMieSim.Scatterer.Sphere.SPF"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPF</span></code></a></dt>
 <dd>Dictionnay subclass with all pertient information as keys.</dd>
 </dl>
 </dd></dl>
@@ -458,7 +452,7 @@ used for computation.</dd>
 <dd>Factor that is used to definie the LP mode numerical aperture (NA).</dd>
 </dl>
 <dl class="docutils">
-<dt><a href="#id1"><span class="problematic" id="id2">:function:`FraunhoferDiffraction`</span></a></dt>
+<dt><a href="#id3"><span class="problematic" id="id4">:function:`FraunhoferDiffraction`</span></a></dt>
 <dd>Structured FarField value.</dd>
 </dl>
 </dd></dl>
@@ -803,19 +797,6 @@ and refractive index.</p>
 <dt id="PyMieSim.Representations.S1S2">
 <em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">S1S2</code><span class="sig-paren">(</span><em>Parent</em>, <em>Num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#S1S2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.S1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>Short summary.</p>
-<dl class="docutils">
-<dt>SizeParam <span class="classifier-delimiter">:</span> <span class="classifier">np.array</span></dt>
-<dd>Description of parameter <cite>SizeParam</cite>.</dd>
-<dt>Index <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>Description of parameter <cite>Index</cite>.</dd>
-<dt>CacheTrunk <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd>Description of parameter <cite>CacheTrunk</cite>.</dd>
-</dl>
-<dl class="docutils">
-<dt>Array <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>Array</cite>.</dd>
-</dl>
 <dl class="method">
 <dt id="PyMieSim.Representations.S1S2.Plot">
 <code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/PyMieSim/Representations.html#S1S2.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.S1S2.Plot" title="Permalink to this definition">¶</a></dt>

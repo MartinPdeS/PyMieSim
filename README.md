@@ -6,7 +6,7 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing)
 
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg)](https://doi.org/10.5281/zenodo.4556074)
 
 Welcome to PyMieSim's documentation!
 ====================================
@@ -84,6 +84,11 @@ To-Do List
 - verify if changes of NA for <LPmode> class can be simplified (it takes way too much time)
 - adding travis and codecov [DONE]
 
+
+Citing this work?
+================
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg)](https://doi.org/10.5281/zenodo.4556074)
 
 
 Contact Information

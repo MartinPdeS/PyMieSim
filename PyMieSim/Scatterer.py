@@ -19,7 +19,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     ----------
     Diameter : :class:`float`
         Diameter of the single scatterer in unit of meter.
-    Source : :class:`Source`
+    Source : :class:`BaseSource`
         Light source object containing info on polarization and wavelength.
     Index : :class:`float`
         Refractive index of scatterer
@@ -30,20 +30,6 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
     SizeParam : :class:`float`
         Size parameter of the scatterer [:math:`k r`].
-    _Stokes : :class:`Stokes`
-        Stoke representation class
-    _SPF : :class:`SPF`
-        Scattering phase function representation class
-    _Parallel : :class:`Field`
-        Parallel field representation class
-    _Perpendicular : :class:`Field`
-        Perpendicular field representation class
-    _S1S2 : :class:`S1S2`
-        S1 and S2 values representation class
-    _phi : :class:`list`
-        Last phi list used for computing S1S2 or Field or SPF or Stokes
-    _theta : :class:`list`
-        Last theta list used for computing S1S2 or Field or SPF or Stokes
 
     """
 

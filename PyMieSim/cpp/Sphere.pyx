@@ -15,12 +15,12 @@ cimport numpy as np
 import numpy as np
 from cpython.mem cimport PyMem_Malloc
 from cpython cimport Py_buffer
-from libcpp.utility cimport pair 
+from libcpp.utility cimport pair
 
 
 ctypedef double complex complex128_t
 
-cdef extern from "Mie.cpp":
+cdef extern from "LMT.cpp":
     cdef void* C_GetS1S2(double        index,
                          double        diameter,
                          double        wavelength,

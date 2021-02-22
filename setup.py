@@ -63,8 +63,6 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                          ),
 
 
-
-
                 Extension(name               = "PyMieSim.cpp.Coupling",
                           sources            = ["PyMieSim/cpp/Coupling.pyx"],
                           include_dirs        = [numpy.get_include()],

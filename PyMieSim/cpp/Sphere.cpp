@@ -644,7 +644,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 
     #endif
     
-#include "Mie.cpp"
+#include "LMT.cpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */

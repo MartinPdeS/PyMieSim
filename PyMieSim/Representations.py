@@ -233,24 +233,6 @@ class SPF(dict):
 
 
 class S1S2(dict):
-    """Short summary.
-
-    Parameters
-    ----------
-    SizeParam : np.array
-        Description of parameter `SizeParam`.
-    Index : float
-        Description of parameter `Index`.
-    CacheTrunk : bool
-        Description of parameter `CacheTrunk`.
-
-    Attributes
-    ----------
-    Array : type
-        Description of attribute `Array`.
-
-
-    """
 
     def __init__(self, Parent, Num):
 

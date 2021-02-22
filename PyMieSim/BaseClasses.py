@@ -225,19 +225,19 @@ class EfficienciesProperties(object):
 
 
 class BaseScatterer(object):
-    """Base class for <Scatterer> instance.
+    """Base class for :class:`Sphere`.
     This class containes all the methodes that output something interesting for
     the user.
 
     Parameters
     ----------
-    diameter : float
+    diameter : :class:`float`
         Diameter of the scatterer.
-    wavelength : float
+    wavelength : :class:`float`
         Wavelength of the incident lightfield.
-    index : float
+    index : :class:`float`
         Refractive index of the scatterer.
-    npts : int
+    npts : :class:`int`
         Number of points for the full solid angle of the far-field, later to
         be interpolated.
 
@@ -255,12 +255,17 @@ class BaseScatterer(object):
         pass
 
     def GetEfficiencies(self):
+        """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs}`)
+        for the scatterer.
+
+        """
+
         self._Qsca, self._Qext, self._Qabs = GetEfficiencies(m = self.Index,
                                                              x = self.SizeParam)
 
 
     def S1S2(self, Num=200):
-        """Methode return <Representation> instance S1S2.
+        """Methode compute :math:`S_1(\\phi)` & :math:`S_2(\\phi)`.
         For spherical Scatterer such as here S1 and S2 are computed as follow:
 
         :math:`S_1=\sum\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\\tau_n)`
@@ -269,12 +274,12 @@ class BaseScatterer(object):
 
         Parameters
         ----------
-        Num : type
-            Description of parameter `Num`.
+        Num : :class:`int`
+            Number of point (:math:`\\phi`) to evaluate :math:`S_1` & :math:`S_2`.
 
         Returns
         -------
-        type
+        :class:`S1S2`
             Description of returned object.
 
         """
@@ -327,7 +332,7 @@ class BaseScatterer(object):
 
     def SPF(self, Num=100):
         """Scattering phase function:
-        SPF = :math:`E_{\\para}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
+        SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
 
         Parameters
         ----------
@@ -349,8 +354,8 @@ class BaseScatterer(object):
 
 
     def GenField(self, Phi, Theta):
-        """The methode generate the :class:`ScalarField` from :math:`S_1 \, \& \, S_2`value computed
-        with the PyMieScatt package.
+        """The methode generate the :class:`ScalarField` from
+        :math:`S_1` & :math:`S_2` value computed with the LMT.
 
         """
 
@@ -362,7 +367,17 @@ class BaseScatterer(object):
                          PhiMesh      = Phi - np.pi/2,
                          Polarization = self.Source.Polarization.Radian)
 
-    def Plot(self, Num=200, scatter=False):
+
+    def Plot(self, Num=200):
+        """Method plots the scattered Far-Field
+        :math:`E_{\\parallel}(\\phi,\\theta)^2 , E_{\\perp}(\\phi,\\theta)^2.
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
+
+        """
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 

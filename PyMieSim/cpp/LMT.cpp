@@ -1,16 +1,10 @@
-#include "Mie.hpp"
+#include "LMT.hpp"
 #include <vector>
 #include <complex>
 #include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
 
-
-//#if __has_include("python3.8/Python.h")
-//#include "python3.8/Python.h"
-//#elif _has_include("python3.6/Python.h")
-//#include "python3.6/Python.h"
-//#endif
 
 
 #define PI 3.14159265
