@@ -287,19 +287,19 @@ class BaseScatterer(object):
             return self._S1S2
 
 
-    def Field(self, Num=200):
+    def Field(self, Num: int = 200):
         """Scattering phase function:
-        Fields = :math:`E_{||}^2, E_{\\perp}^2`
+        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
 
         Parameters
         ----------
-        Num : int
-            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the Fields [Num, Num].
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
 
         Returns
         -------
-        <Field> instance
-            Dictionnay subclass with all pertient information as keys.
+        :class:`ScalarField`
+            Dictionnay sub-class with all pertient information as keys.
 
         """
         self._Field = ScalarFarField(Num = Num, Parent = self)
@@ -327,16 +327,16 @@ class BaseScatterer(object):
 
     def SPF(self, Num=100):
         """Scattering phase function:
-        SPF = :math:`E_{||}^2 + E_{\\perp}^2`
+        SPF = :math:`E_{\\para}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
 
         Parameters
         ----------
-        Num : int
+        Num : :class:`int`
             Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
 
         Returns
         -------
-        <SPF> instance
+        :class:`SPF`
             Dictionnay subclass with all pertient information as keys.
 
         """
@@ -349,7 +349,7 @@ class BaseScatterer(object):
 
 
     def GenField(self, Phi, Theta):
-        """The methode generate the <Fields> class from S1 and S2 value computed
+        """The methode generate the :class:`ScalarField` from :math:`S_1 \, \& \, S_2`value computed
         with the PyMieScatt package.
 
         """
