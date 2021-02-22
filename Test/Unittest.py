@@ -22,19 +22,19 @@ theta       =  linspace(-pi, pi,4)
 class PrintingTest(TestCase):
 
     def Run(self):
-        self.test0()
-        self.test1()
-        self.test2()
-        self.test3()
-        self.test4()
-        self.test5()
-        self.test6()
-        self.test7()
-        self.test8()
-        self.test9()
+        self.test00()
+        self.test01()
+        self.test02()
+        self.test03()
+        self.test04()
+        self.test05()
+        self.test06()
+        self.test07()
+        self.test08()
+        self.test09()
         self.test10()
 
-    def test0(self):
+    def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
                           Sampling     = 11,
                           NA           = 0.2,
@@ -44,7 +44,7 @@ class PrintingTest(TestCase):
 
         print('Test 0: passed')
 
-    def test1(self):
+    def test01(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
                           Sampling     = 11,
                           NA           = 0.2,
@@ -53,24 +53,24 @@ class PrintingTest(TestCase):
                           CouplingMode = 'Centered')
         print('Test 1: passed')
 
-    def test2(self):
+    def test02(self):
         Scat.S1S2(Num=10)
         print('Test 2: passed')
 
-    def test3(self):
+    def test03(self):
         Scat.Field(Num=10)
         print('Test 3: passed')
 
-    def test4(self):
+    def test04(self):
         Scat.SPF(Num=10)
         print('Test 4: passed')
 
-    def test5(self):
+    def test05(self):
         Detector.Coupling(Scatterer = Scat)
         Detector1.Coupling(Scatterer = Scat)
         print('Test 5: passed')
 
-    def test6(self):
+    def test06(self):
         ScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
                                RIList        = 1.5,
                                Source        = LightSource)
@@ -78,13 +78,13 @@ class PrintingTest(TestCase):
         ScatSet.Qsca()
         print('Test 6: passed')
 
-    def test7(self):
+    def test07(self):
         Set = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
         Set.DataFrame
         Set.Coupling
         print('Test 7: passed')
 
-    def test8(self):
+    def test08(self):
         Sample = WMSample(g      = 0.8,
                           lc     = 4e-5,
                           D      = 3/2,
@@ -92,7 +92,7 @@ class PrintingTest(TestCase):
                           Source = LightSource)
         print('Test 8: passed')
 
-    def test9(self):
+    def test09(self):
         ScatSet = SampleSet(gList    = [0.8, 0.9],
                             LcList   = [1e-5, 2e-5],
                             D        = 3/2,

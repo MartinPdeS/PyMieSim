@@ -43,6 +43,15 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                           extra_link_args    = link_args
                          ),
 
+                Extension(name               = "PyMieSim.cython.Coupling",
+                          sources            = ["PyMieSim/cython/Coupling/Coupling.pyx"],
+                          include_dirs        = [numpy.get_include()],
+                          language            = "c++",
+                          define_macros       = macro,
+                          extra_compile_args  = compile_args,
+                          extra_link_args     = link_args
+                         ),                         
+
                 Extension(name               = "PyMieSim.LMT.Sphere",
                           sources            = ["PyMieSim/cpp/LMT/Sphere.pyx"],
                           include_dirs       = [numpy.get_include()],
@@ -53,14 +62,7 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                          ),
 
 
-                Extension(name               = "PyMieSim.cpp.Coupling",
-                          sources            = ["PyMieSim/cpp/Coupling/Coupling.pyx"],
-                          include_dirs        = [numpy.get_include()],
-                          language            = "c++",
-                          define_macros       = macro,
-                          extra_compile_args  = compile_args,
-                          extra_link_args     = link_args
-                         ),
+
 
                 Extension(name         = 'PyMieSim.cpp.GLMT',
                           sources      = ['PyMieSim/cpp/GLMT/GLMT.cpp'],
