@@ -11,8 +11,8 @@ import cartopy.crs as ccrs
 from ai import cs
 
 from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
-from PyMieSim.python.Couplings import Coupling as Coupling, GetFootprint
-from PyMieSim.cpp.Sphere import GetFields, GetEfficiencies
+from PyMieSim.Couplings import Coupling as Coupling, GetFootprint
+from PyMieSim.LMT.Sphere import GetFields, GetEfficiencies
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import PlotFarField, InterpFull, NA2Angle
 from PyMieSim.utils import PlotUnstructuredSphere, PlotStructuredSphere
