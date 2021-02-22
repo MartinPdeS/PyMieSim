@@ -35,7 +35,7 @@ for key, value in cfg_vars.items():
 
 
 ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
-                          sources            = ["PyMieSim/cython/S1S2.pyx"],
+                          sources            = ["PyMieSim/cython/LMT/S1S2.pyx"],
                           include_dirs       = ['.'],
                           language           = "c++",
                           define_macros      = macro,
@@ -43,18 +43,8 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                           extra_link_args    = link_args
                          ),
 
-                Extension(name               = "PyMieSim.cpp.Interface",
-                          sources            = ["PyMieSim/cpp/Interface.pxd"],
-                          include_dirs       = [numpy.get_include()],
-                          language           = "c++",
-                          define_macros      = macro,
-                          extra_compile_args = compile_args,
-                          extra_link_args    = link_args
-                         ),
-
-
                 Extension(name               = "PyMieSim.cpp.Sphere",
-                          sources            = ["PyMieSim/cpp/Sphere.pyx"],
+                          sources            = ["PyMieSim/cpp/LMT/Sphere.pyx"],
                           include_dirs       = [numpy.get_include()],
                           language           = "c++",
                           define_macros      = macro,
@@ -64,7 +54,7 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
 
 
                 Extension(name               = "PyMieSim.cpp.Coupling",
-                          sources            = ["PyMieSim/cpp/Coupling.pyx"],
+                          sources            = ["PyMieSim/cpp/Coupling/Coupling.pyx"],
                           include_dirs        = [numpy.get_include()],
                           language            = "c++",
                           define_macros       = macro,
@@ -73,7 +63,7 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                          ),
 
                 Extension(name          = 'PyMieSim.GLMT',
-                           sources      = ['PyMieSim/cpp/GLMT.cpp'],
+                           sources      = ['PyMieSim/cpp/GLMT/GLMT.cpp'],
                            include_dirs = [pybind11.get_include()],
                            language     = 'c++',
                 ),
@@ -85,7 +75,7 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
 setup_dict = dict(
       name               = 'PyMieSim',
       description        = 'A package for light scattering simulations',
-      version            = '0.1',
+      version            = '1.0.0',
       #python_requires    = ">=3.0*",
       install_requires   = ['numpy',
                             'scipy',
