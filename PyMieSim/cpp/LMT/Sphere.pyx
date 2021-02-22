@@ -23,7 +23,7 @@ ctypedef double complex complex128_t
 cdef extern from "LMT.cpp":
     cdef void* C_GetS1S2(double        index,
                          double        diameter,
-                         double        wavelength, 
+                         double        wavelength,
                          double        nMedium,
                          double*       phi,
                          int           lenght,

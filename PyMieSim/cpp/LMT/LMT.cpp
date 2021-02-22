@@ -10,7 +10,7 @@
 #define PI 3.14159265
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
-typedef std::vector<std::vector<complex128>> iMatrix;
+typedef std::vector<std::vector<complex128>> iMatrix; 
 
 
 

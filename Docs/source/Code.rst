@@ -39,7 +39,7 @@ Class: Representations
 
 Functions: GLMT
 ----------------
-.. automodule:: PyMieSim.python.GLMT
+.. automodule:: PyMieSim.python.GLMT.GLMT
     :members:
     :undoc-members:
     :show-inheritance:

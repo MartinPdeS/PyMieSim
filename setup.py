@@ -43,7 +43,7 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                           extra_link_args    = link_args
                          ),
 
-                Extension(name               = "PyMieSim.cpp.Sphere",
+                Extension(name               = "PyMieSim.LMT.Sphere",
                           sources            = ["PyMieSim/cpp/LMT/Sphere.pyx"],
                           include_dirs       = [numpy.get_include()],
                           language           = "c++",
@@ -62,10 +62,10 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                           extra_link_args     = link_args
                          ),
 
-                Extension(name          = 'PyMieSim.GLMT',
-                           sources      = ['PyMieSim/cpp/GLMT/GLMT.cpp'],
-                           include_dirs = [pybind11.get_include()],
-                           language     = 'c++',
+                Extension(name         = 'PyMieSim.cpp.GLMT',
+                          sources      = ['PyMieSim/cpp/GLMT/GLMT.cpp'],
+                          include_dirs = [pybind11.get_include()],
+                          language     = 'c++',
                 ),
 
 
@@ -89,17 +89,15 @@ setup_dict = dict(
                             'cartopy',
                             "fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0",
                             ],
-      #dependency_links   = ['https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0'],
       author             = 'Martin Poinsinet de Sivry',
       author_email       = 'Martin.poinsinet.de.sivry@gmail.com',
       cmdclass           = {'build_ext': build_ext},
       packages           = ['PyMieSim'],
-      license            = 'Full private, no reproduction authorized',
-      url                = 'https://gitlab.com/Martth/miecoupling',
+      license            = 'MIT license',
+      url                = 'https://gitlab.com/MartinPdeS/PyMieSim',
       long_description   = open('README.md').read(),
       platforms          = ['Linux', 'Max OSX'],
       include_dirs       = [numpy.get_include()],
-      #build_dir          = "./PyMieSim/builds/",
       ext_modules        = ext_modules,
       zip_safe           = False)
 

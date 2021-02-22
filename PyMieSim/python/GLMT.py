@@ -41,14 +41,14 @@ def S1(Scat,
         Description of parameter `Scat`.
     Source : :class:`BaseSource`
         Description of parameter `Source`.
-    phi : :class:`ndarray`
+    phi : :class:`numpy.ndarray`
         Vector representing :math:`\\phi` space :math:`[-\\frac{\pi}{2}: \\frac{\pi}{2}]`.
-    theta : :class:`ndarray`
+    theta : :class:`numpy.ndarray`
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
 
     Returns
     -------
-    :class:`ndarray`
+    :class:`numpy.ndarray`
         2D ndarray representing :math:`S_1\\big(\\phi, \\theta \\big)`.
 
     """
@@ -85,14 +85,14 @@ def S2(Scat,
         Description of parameter `Scat`.
     Source : :class:`BaseSource`
         Description of parameter `Source`.
-    phi : :class:`ndarray`
+    phi : :class:`numpy.ndarray`
         Vector representing :math:`\\phi` space :math:`[-\\frac{\pi}{2}: \\frac{\pi}{2}]`.
-    theta : :class:`ndarray`
+    theta : :class:`numpy.ndarray`
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
 
     Returns
     -------
-    :class:`ndarray`
+    :class:`numpy.ndarray`
         2D ndarray representing :math:`S_1\\big(\\phi, \\theta \\big)`.
 
     """
@@ -140,7 +140,7 @@ def SPF(Scat,
 
     Returns
     -------
-    :class:`ndarray`
+    :class:`numpy.ndarray`
         2D ndarray representing SPF.
 
     """
@@ -158,7 +158,7 @@ def FieldTheta(Scat,
                theta:   ndarray,
                r:       float =1,
                E0:      float = 1):
-    """Function compute :math:`\\theta` component of scattered FarField defined
+    """Function compute :math:`\vec{\\theta}` component of scattered FarField defined
     as Eq:III.108 of B&B.
     :math:`E_{\\theta} = \\frac{i E_0}{kr} \exp{(-ikr)} S_2`
 
@@ -168,18 +168,18 @@ def FieldTheta(Scat,
         Description of parameter `Scat`.
     Source : :class:`BaseSource`
         Description of parameter `Source`.
-    phi : ndarray
+    phi : :class:`numpy.ndarray`
         Vector representing :math:`\\phi` space :math:`[-\\frac{\pi}{2}: \\frac{\pi}{2}]`.
-    theta : ndarray
+    theta : :class:`numpy.ndarray`
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
-    r : float
+    r : :class:`float`
         Distance of the FarField
-    E0 : float
+    E0 : :class:`float`
         Initial value of the electric field at focus point.
 
     Returns
     -------
-    :class:`ndarray`
+    :class:`numpy.ndarray`
         2D ndarray representing the scattered field.
 
     """
@@ -199,7 +199,7 @@ def FieldPhi(Scat,
              theta:   ndarray,
              r:       float = 1,
              E0:      float = 1):
-    """Function compute :math:`\\phi` component of scattered FarField defined
+    """Function compute :math:`\\vec{\\phi}` component of scattered FarField defined
     as Eq:III.109 of B&B.
     :math:`E_{\\theta} = -\\frac{E_0}{kr} \\exp{(-ikr)} S_1`
 
@@ -209,18 +209,18 @@ def FieldPhi(Scat,
         Description of parameter `Scat`.
     Source : :class:`BaseSource`
         Description of parameter `Source`.
-    phi : ndarray
+    phi : :class:`numpy.ndarray`
         Vector representing :math:`\\phi` space :math:`[-\\frac{\pi}{2}: \\frac{\pi}{2}]`.
-    theta : ndarray
+    theta : :class:`numpy.ndarray`
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
-    r : float
+    r : :class:`float`
         Distance of the FarField
-    E0 : float
+    E0 : :class:`float`
         Initial value of the electric field at focus point.
 
     Returns
     -------
-    :class:`ndarray`
+    :class:`numpy.ndarray`
         2D ndarray representing the scattered field.
 
     """
