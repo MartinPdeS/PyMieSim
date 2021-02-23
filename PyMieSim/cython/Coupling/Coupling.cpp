@@ -616,8 +616,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__PyMieSim__cpp__Coupling
-#define __PYX_HAVE_API__PyMieSim__cpp__Coupling
+#define __PYX_HAVE__PyMieSim__cython__Coupling
+#define __PYX_HAVE_API__PyMieSim__cython__Coupling
 /* Early includes */
 #include "ios"
 #include "new"
@@ -874,7 +874,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "PyMieSim/cpp/Coupling.pyx",
+  "PyMieSim/cython/Coupling/Coupling.pyx",
   "__init__.pxd",
   "type.pxd",
   "bool.pxd",
@@ -1131,55 +1131,55 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling;
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling;
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling;
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling;
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityPointCoupling;
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling;
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling;
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling;
 
-/* "PyMieSim/cpp/Coupling.pyx":25
+/* "PyMieSim/cython/Coupling/Coupling.pyx":25
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
  *                             Parallel,
  *                             Perpendicular,
  */
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling {
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityPointCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Coupling.pyx":42
+/* "PyMieSim/cython/Coupling/Coupling.pyx":42
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
  *                             Parallel,
  *                             Perpendicular,
  */
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling {
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Coupling.pyx":58
+/* "PyMieSim/cython/Coupling/Coupling.pyx":58
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
  *                              Parallel,
  *                              Perpendicular,
  */
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling {
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
 
-/* "PyMieSim/cpp/Coupling.pyx":76
+/* "PyMieSim/cython/Coupling/Coupling.pyx":76
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
  *                             Parallel,
  *                             Perpendicular,
  */
-struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling {
+struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
@@ -1701,16 +1701,16 @@ static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 
 /* Module declarations from 'libcpp.utility' */
 
-/* Module declarations from 'PyMieSim.cpp.Coupling' */
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling *__pyx_optional_args); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling *__pyx_optional_args); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling *__pyx_optional_args); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling *__pyx_optional_args); /*proto*/
-#define __Pyx_MODULE_NAME "PyMieSim.cpp.Coupling"
-extern int __pyx_module_is_main_PyMieSim__cpp__Coupling;
-int __pyx_module_is_main_PyMieSim__cpp__Coupling = 0;
+/* Module declarations from 'PyMieSim.cython.Coupling' */
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityPointCoupling *__pyx_optional_args); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling *__pyx_optional_args); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling *__pyx_optional_args); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling *__pyx_optional_args); /*proto*/
+#define __Pyx_MODULE_NAME "PyMieSim.cython.Coupling"
+extern int __pyx_module_is_main_PyMieSim__cython__Coupling;
+int __pyx_module_is_main_PyMieSim__cython__Coupling = 0;
 
-/* Implementation of 'PyMieSim.cpp.Coupling' */
+/* Implementation of 'PyMieSim.cython.Coupling' */
 static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_abs[] = "abs";
@@ -1754,17 +1754,17 @@ static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_sin;
 static PyObject *__pyx_n_s_sum;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_6AmplitudeMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_2IntensityMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_4AmplitudePointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_6AmplitudeMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 /* Late includes */
 
-/* "PyMieSim/cpp/Coupling.pyx":25
+/* "PyMieSim/cython/Coupling/Coupling.pyx":25
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -1772,10 +1772,10 @@ static PyObject *__pyx_tuple__2;
  *                             Perpendicular,
  */
 
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_1IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityPointCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Coupling.pyx":30
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":30
  *                             SinMesh,
  *                             dOmega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -1806,7 +1806,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
     }
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":32
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":32
  *                             Filter = None):
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
@@ -1870,7 +1870,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":33
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":33
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
  *     else: ParaFiltering = 1;  PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -1885,7 +1885,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Coupling.pyx":35
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":35
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  *     Para = np.sum( np.abs(Scalar0 * Parallel)**2 * SinMesh) * dOmega**2             # <<<<<<<<<<<<<<
@@ -1951,7 +1951,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
   __pyx_v_Para = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":37
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":37
  *     Para = np.sum( np.abs(Scalar0 * Parallel)**2 * SinMesh) * dOmega**2
  * 
  *     Perp = np.sum( np.abs(Scalar0 * Perpendicular)**2 * SinMesh) * dOmega**2             # <<<<<<<<<<<<<<
@@ -2017,7 +2017,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
   __pyx_v_Perp = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":39
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":39
  *     Perp = np.sum( np.abs(Scalar0 * Perpendicular)**2 * SinMesh) * dOmega**2
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering             # <<<<<<<<<<<<<<
@@ -2041,7 +2041,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":25
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":25
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2057,7 +2057,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ParaFiltering);
@@ -2070,8 +2070,8 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(PyObjec
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_1IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_1IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_Parallel = 0;
   PyObject *__pyx_v_Perpendicular = 0;
@@ -2088,7 +2088,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling(PyObj
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Filter,0};
     PyObject* values[6] = {0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Coupling.pyx":30
+    /* "PyMieSim/cython/Coupling/Coupling.pyx":30
  *                             SinMesh,
  *                             dOmega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -2178,13 +2178,13 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling(PyObj
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 25, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Coupling.pyx":25
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":25
  * 
  * 
  * cpdef IntensityPointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2197,11 +2197,11 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling(PyObj
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityPointCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2209,7 +2209,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(CYTHON
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2218,7 +2218,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(CYTHON
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2226,7 +2226,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(CYTHON
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Coupling.pyx":42
+/* "PyMieSim/cython/Coupling/Coupling.pyx":42
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2234,10 +2234,10 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(CYTHON
  *                             Perpendicular,
  */
 
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_3IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Coupling.pyx":48
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":48
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -2248,7 +2248,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityPointCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2259,7 +2259,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject
     }
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":50
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":50
  *                             Filter = None):
  * 
  *     return IntensityPointCoupling(Scalar0       = Scalar0,             # <<<<<<<<<<<<<<
@@ -2268,7 +2268,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "PyMieSim/cpp/Coupling.pyx":55
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":55
  *                                   SinMesh       = SinMesh,
  *                                   dOmega        = dOmega,
  *                                   Filter        = Filter)             # <<<<<<<<<<<<<<
@@ -2277,13 +2277,13 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject
  */
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_8Coupling_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_6cython_8Coupling_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":42
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":42
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2294,7 +2294,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2303,8 +2303,8 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(PyObject
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_3IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_3IntensityMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_Parallel = 0;
   PyObject *__pyx_v_Perpendicular = 0;
@@ -2322,7 +2322,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling(PyObje
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Omega,&__pyx_n_s_Filter,0};
     PyObject* values[7] = {0,0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Coupling.pyx":48
+    /* "PyMieSim/cython/Coupling/Coupling.pyx":48
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -2422,13 +2422,13 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("IntensityMeanCoupling", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 42, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_6cython_8Coupling_2IntensityMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Coupling.pyx":42
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":42
  * 
  * 
  * cpdef IntensityMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2441,11 +2441,11 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling(PyObje
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_2IntensityMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2453,7 +2453,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(CYTHON
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_8Coupling_IntensityMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_6cython_8Coupling_IntensityMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2462,7 +2462,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(CYTHON
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.IntensityMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2470,7 +2470,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(CYTHON
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Coupling.pyx":58
+/* "PyMieSim/cython/Coupling/Coupling.pyx":58
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2478,10 +2478,10 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_2IntensityMeanCoupling(CYTHON
  *                              Perpendicular,
  */
 
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_5AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Coupling.pyx":63
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":63
  *                              SinMesh,
  *                              dOmega,
  *                              Filter = None):             # <<<<<<<<<<<<<<
@@ -2512,7 +2512,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
     }
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":65
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":65
  *                              Filter = None):
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
@@ -2576,7 +2576,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":66
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":66
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
  *     else: ParaFiltering = 1;  PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -2591,7 +2591,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Coupling.pyx":68
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":68
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  *     Para = np.abs( np.sum( Scalar0 * Parallel * SinMesh) )**2 * dOmega**2             # <<<<<<<<<<<<<<
@@ -2657,7 +2657,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
   __pyx_v_Para = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":70
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":70
  *     Para = np.abs( np.sum( Scalar0 * Parallel * SinMesh) )**2 * dOmega**2
  * 
  *     Perp = np.abs( np.sum( Scalar0 * Perpendicular * SinMesh) )**2 * dOmega**2             # <<<<<<<<<<<<<<
@@ -2723,7 +2723,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
   __pyx_v_Perp = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":72
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":72
  *     Perp = np.abs( np.sum( Scalar0 * Perpendicular * SinMesh) )**2 * dOmega**2
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering             # <<<<<<<<<<<<<<
@@ -2747,7 +2747,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":58
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":58
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2763,7 +2763,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ParaFiltering);
@@ -2776,8 +2776,8 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(PyObjec
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_5AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_5AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_Parallel = 0;
   PyObject *__pyx_v_Perpendicular = 0;
@@ -2794,7 +2794,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling(PyObj
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Filter,0};
     PyObject* values[6] = {0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Coupling.pyx":63
+    /* "PyMieSim/cython/Coupling/Coupling.pyx":63
  *                              SinMesh,
  *                              dOmega,
  *                              Filter = None):             # <<<<<<<<<<<<<<
@@ -2884,13 +2884,13 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling(PyObj
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 58, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_6cython_8Coupling_4AmplitudePointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Coupling.pyx":58
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":58
  * 
  * 
  * cpdef AmplitudePointCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2903,11 +2903,11 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling(PyObj
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_4AmplitudePointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2915,7 +2915,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(CYTHO
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudePointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_6cython_8Coupling_AmplitudePointCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2924,7 +2924,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(CYTHO
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2932,7 +2932,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(CYTHO
   return __pyx_r;
 }
 
-/* "PyMieSim/cpp/Coupling.pyx":76
+/* "PyMieSim/cython/Coupling/Coupling.pyx":76
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -2940,10 +2940,10 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_4AmplitudePointCoupling(CYTHO
  *                             Perpendicular,
  */
 
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, CYTHON_UNUSED PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_7AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, CYTHON_UNUSED PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling *__pyx_optional_args) {
 
-  /* "PyMieSim/cpp/Coupling.pyx":82
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":82
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -2974,7 +2974,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
     }
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":84
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":84
  *                             Filter = None):
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
@@ -3038,7 +3038,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/cpp/Coupling.pyx":85
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":85
  * 
  *     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
  *     else: ParaFiltering = 1;  PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -3053,7 +3053,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
   }
   __pyx_L3:;
 
-  /* "PyMieSim/cpp/Coupling.pyx":87
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":87
  *     else: ParaFiltering = 1;  PerpFiltering = 1
  * 
  *     Para = np.sum( np.abs( Scalar0 * Parallel )**2 * dOmega ) / Omega             # <<<<<<<<<<<<<<
@@ -3116,7 +3116,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
   __pyx_v_Para = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":89
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":89
  *     Para = np.sum( np.abs( Scalar0 * Parallel )**2 * dOmega ) / Omega
  * 
  *     Perp = np.sum( np.abs( Scalar0 * Perpendicular )**2 * dOmega ) / Omega             # <<<<<<<<<<<<<<
@@ -3179,7 +3179,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
   __pyx_v_Perp = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":91
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":91
  *     Perp = np.sum( np.abs( Scalar0 * Perpendicular )**2 * dOmega ) / Omega
  * 
  *     return Para * ParaFiltering, Perp * PerpFiltering             # <<<<<<<<<<<<<<
@@ -3203,7 +3203,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":76
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":76
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3219,7 +3219,7 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ParaFiltering);
@@ -3232,8 +3232,8 @@ static PyObject *__pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(PyObject
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_7AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_6cython_8Coupling_7AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_Parallel = 0;
   PyObject *__pyx_v_Perpendicular = 0;
@@ -3251,7 +3251,7 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling(PyObje
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_Parallel,&__pyx_n_s_Perpendicular,&__pyx_n_s_SinMesh,&__pyx_n_s_dOmega,&__pyx_n_s_Omega,&__pyx_n_s_Filter,0};
     PyObject* values[7] = {0,0,0,0,0,0,0};
 
-    /* "PyMieSim/cpp/Coupling.pyx":82
+    /* "PyMieSim/cython/Coupling/Coupling.pyx":82
  *                             dOmega,
  *                             Omega,
  *                             Filter = None):             # <<<<<<<<<<<<<<
@@ -3351,13 +3351,13 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 76, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_3cpp_8Coupling_6AmplitudeMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_6cython_8Coupling_6AmplitudeMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
 
-  /* "PyMieSim/cpp/Coupling.pyx":76
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":76
  * 
  * 
  * cpdef AmplitudeMeanCoupling(Scalar0,             # <<<<<<<<<<<<<<
@@ -3370,11 +3370,11 @@ static PyObject *__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling(PyObje
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_6AmplitudeMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_6cython_8Coupling_6AmplitudeMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -3382,7 +3382,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_6AmplitudeMeanCoupling(CYTHON
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_3cpp_8Coupling_AmplitudeMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_6cython_8Coupling_AmplitudeMeanCoupling(__pyx_v_Scalar0, __pyx_v_Parallel, __pyx_v_Perpendicular, __pyx_v_SinMesh, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3391,7 +3391,7 @@ static PyObject *__pyx_pf_8PyMieSim_3cpp_8Coupling_6AmplitudeMeanCoupling(CYTHON
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim.cpp.Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim.cython.Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4243,10 +4243,10 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
 }
 
 static PyMethodDef __pyx_methods[] = {
-  {"IntensityPointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_3cpp_8Coupling_1IntensityPointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
-  {"IntensityMeanCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_3cpp_8Coupling_3IntensityMeanCoupling, METH_VARARGS|METH_KEYWORDS, 0},
-  {"AmplitudePointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_3cpp_8Coupling_5AmplitudePointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
-  {"AmplitudeMeanCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_3cpp_8Coupling_7AmplitudeMeanCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"IntensityPointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_6cython_8Coupling_1IntensityPointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"IntensityMeanCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_6cython_8Coupling_3IntensityMeanCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"AmplitudePointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_6cython_8Coupling_5AmplitudePointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"AmplitudeMeanCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_6cython_8Coupling_7AmplitudeMeanCoupling, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
@@ -4643,14 +4643,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_PyMieSim__cpp__Coupling) {
+  if (__pyx_module_is_main_PyMieSim__cython__Coupling) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "PyMieSim.cpp.Coupling")) {
-      if (unlikely(PyDict_SetItemString(modules, "PyMieSim.cpp.Coupling", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "PyMieSim.cython.Coupling")) {
+      if (unlikely(PyDict_SetItemString(modules, "PyMieSim.cython.Coupling", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4671,7 +4671,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "PyMieSim/cpp/Coupling.pyx":15
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":15
  * import cython
  * cimport numpy as np
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -4683,7 +4683,7 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "PyMieSim/cpp/Coupling.pyx":1
+  /* "PyMieSim/cython/Coupling/Coupling.pyx":1
  * # -*- coding: utf-8 -*-             # <<<<<<<<<<<<<<
  * 
  * #cython: language_level=2
@@ -4708,11 +4708,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init PyMieSim.cpp.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init PyMieSim.cython.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init PyMieSim.cpp.Coupling");
+    PyErr_SetString(PyExc_ImportError, "init PyMieSim.cython.Coupling");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
