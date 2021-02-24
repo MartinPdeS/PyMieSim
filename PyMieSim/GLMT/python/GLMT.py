@@ -55,14 +55,15 @@ def S1(Scat,
     result = zeros([phi.size, theta.size], dtype=complex)
     MaxOrder = GetMaxOrder(Scat)
     #phi -= pi/2  # conversion from spherical coordinates to "LMT" spherical
+    an = Scat.an(MaxOrder); bn = Scat.bn(MaxOrder)
     for n in range(1, MaxOrder):
         prefactor = (2*n+1)/(n*(n+1))
 
         for m in [-1,1]:
 
-            Rterm =  m * Scat.an(n) * Source.BSC(n, m, 'TM') * Pinm(n,abs(m), cos(phi-pi/2))
+            Lterm =  m * an[n] * Source.BSC(n, m, 'TM') * Pinm(n,abs(m), cos(phi-pi/2))
 
-            Lterm = 1j * Scat.bn(n) * Source.BSC(n, m, 'TE') * Taunm(n,abs(m), cos(phi-pi/2))
+            Rterm = 1j * bn[n] * Source.BSC(n, m, 'TE') * Taunm(n,abs(m), cos(phi-pi/2))
 
             result += outer(prefactor*( Rterm  + Lterm ), exp(1j*m*theta))
 
@@ -99,14 +100,16 @@ def S2(Scat,
     result = zeros([phi.size, theta.size], dtype=complex)
     MaxOrder = GetMaxOrder(Scat)
     #phi -= pi/2  # conversion from spherical coordinates to "LMT" spherical
+
+    an = Scat.an(MaxOrder); bn = Scat.bn(MaxOrder)
     for n in range(1, MaxOrder):
         prefactor = (2*n+1)/(n*(n+1))
 
         for m in [-1,1]:
 
-            Rterm =  Scat.an(n) * Source.BSC(n, m, 'TM') * Taunm(n,abs(m), cos(phi-pi/2))
+            Lterm =  an[n] * Source.BSC(n, m, 'TM') * Taunm(n,abs(m), cos(phi-pi/2))
 
-            Lterm =  1j * m * Scat.bn(n) * Source.BSC(n, m, 'TE') * Pinm(n,abs(m), cos(phi-pi/2))
+            Rterm =  1j * m * bn[n] * Source.BSC(n, m, 'TE') * Pinm(n,abs(m), cos(phi-pi/2))
 
             result += outer(prefactor*( Rterm  + Lterm ), exp(1j*m*theta))
 
@@ -117,8 +120,7 @@ def SPF(Scat,
         Source,
         phi:     ndarray,
         theta:   ndarray,
-        r:       float =1,
-        E0:      float = 1):
+        r:       float = 1):
 
     """Function compute the scattering phase function (SPF) defined as
     :math:`SPF = \\sqrt{ |E_\\theta |^2 + |E_\\phi |^2 }`
@@ -135,8 +137,7 @@ def SPF(Scat,
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
     r : float
         Distance of the FarField
-    E0 : float
-        Initial value of the electric field at focus point.
+
 
     Returns
     -------
@@ -145,9 +146,9 @@ def SPF(Scat,
 
     """
 
-    EPhi = FieldPhi(Scat, Source, phi, theta, r, E0)
+    EPhi = FieldPhi(Scat, Source, phi, theta, r)
 
-    ETheta = FieldTheta(Scat, Source, phi, theta, r, E0)
+    ETheta = FieldTheta(Scat, Source, phi, theta, r)
 
     return abs(EPhi)**2 + abs(ETheta)**2
 
@@ -156,8 +157,7 @@ def FieldTheta(Scat,
                Source,
                phi:     ndarray,
                theta:   ndarray,
-               r:       float =1,
-               E0:      float = 1):
+               r:       float =1):
     """Function compute :math:`\vec{\\theta}` component of scattered FarField defined
     as Eq:III.108 of B&B.
     :math:`E_{\\theta} = \\frac{i E_0}{kr} \exp{(-ikr)} S_2`
@@ -174,8 +174,6 @@ def FieldTheta(Scat,
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
     r : :class:`float`
         Distance of the FarField
-    E0 : :class:`float`
-        Initial value of the electric field at focus point.
 
     Returns
     -------
@@ -185,7 +183,7 @@ def FieldTheta(Scat,
     """
 
 
-    ETheta = 1j * E0 / (Source.k*r) \
+    ETheta = 1j * Source.E0 / (Source.k*r) \
            * exp(-1j*Source.k*r)    \
            * S1(Scat, Source, phi, theta)
 
@@ -197,8 +195,7 @@ def FieldPhi(Scat,
              Source,
              phi:     ndarray,
              theta:   ndarray,
-             r:       float = 1,
-             E0:      float = 1):
+             r:       float = 1):
     """Function compute :math:`\\vec{\\phi}` component of scattered FarField defined
     as Eq:III.109 of B&B.
     :math:`E_{\\theta} = -\\frac{E_0}{kr} \\exp{(-ikr)} S_1`
@@ -215,8 +212,6 @@ def FieldPhi(Scat,
         Vector representing :math:`\\theta` space :math:`[-\pi: \pi]`.
     r : :class:`float`
         Distance of the FarField
-    E0 : :class:`float`
-        Initial value of the electric field at focus point.
 
     Returns
     -------
@@ -225,7 +220,7 @@ def FieldPhi(Scat,
 
     """
 
-    EPhi = - E0 / (Source.k*r) \
+    EPhi = - Source.E0 / (Source.k*r) \
           * exp(-1j*Source.k*r)    \
           * S2(Scat, Source, phi, theta)
 

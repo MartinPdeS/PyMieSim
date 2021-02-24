@@ -100,7 +100,10 @@ cpdef GetFields(double index,
                 double nMedium,
                 ThetaMesh,
                 PhiMesh,
-                Polarization):
+                double Polarization,
+                double E0,
+                double R,
+                double k):
 
     cdef:
         np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")
@@ -112,11 +115,11 @@ cpdef GetFields(double index,
     PhiVec_ptr = &PhiVectorView[0]
     ThetaVec_ptr = &ThetaVectorView[0]
 
-    Parallel = VectorWrapper(ThetaMesh.size)
-    Parallel.add_row()
+    EPhi = VectorWrapper(ThetaMesh.size)
+    EPhi.add_row()
 
-    Perpendicular = VectorWrapper(ThetaMesh.size)
-    Perpendicular.add_row()
+    ETheta = VectorWrapper(ThetaMesh.size)
+    ETheta.add_row()
 
     if Polarization is 'None':
         FieldsNoPolarization(index,
@@ -126,8 +129,8 @@ cpdef GetFields(double index,
                              ThetaVec_ptr,
                              PhiVec_ptr,
                              PhiMesh.size,
-                             &(Parallel.S1S2)[0],
-                             &(Perpendicular.S1S2)[0]);
+                             &(EPhi.S1S2)[0],
+                             &(ETheta.S1S2)[0]);
 
     else:
         Fields(index,
@@ -137,12 +140,12 @@ cpdef GetFields(double index,
                ThetaVec_ptr,
                PhiVec_ptr,
                PhiMesh.size,
-               &(Parallel.S1S2)[0],
-               &(Perpendicular.S1S2)[0],
+               &(EPhi.S1S2)[0],
+               &(ETheta.S1S2)[0],
                Polarization);
 
-    arr0 = np.asarray(Parallel).squeeze()
-    arr1 = np.asarray(Perpendicular).squeeze()
+    arr0 = 1j * np.asarray(EPhi).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
+    arr1 = - np.asarray(ETheta).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
 
     return arr0, arr1
 

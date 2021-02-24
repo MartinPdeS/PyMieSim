@@ -270,6 +270,58 @@ def PlotStructuredSphere(Scalar, Phi, Theta, Name=''):
 
 
 
+def PlotFarField(Scalar, Phi, Theta, Name=''):
+
+    fig, axes = plt.subplots(1,2,figsize=(8,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+
+    im0 = axes[0].contourf(Theta,
+                            Phi,
+                            Scalar.real,
+                            antialiased=False,
+                            cmap = 'inferno',
+                            #levels = 100,
+                            transform = ccrs.PlateCarree())
+
+    im1 = axes[1].contourf(Theta,
+                            Phi,
+                            Scalar.imag,
+                            antialiased=False,
+                            cmap = 'inferno',
+                            #levels = 100,
+                            transform = ccrs.PlateCarree())
+
+
+
+    gl = axes[0].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+
+    gl = axes[1].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+
+    plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[0])
+    plt.colorbar(mappable=im1, fraction=0.046, orientation='vertical', ax=axes[1])
+
+    axes[0].set_title(f'Real Part {Name}')
+    axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
+    axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
+
+
+    axes[1].set_title(f'Imaginary Part {Name}')
+    axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
+    axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
+
+
+    #axes[0].set_extent([-12755636.1863, 12755636.1863, -12727770.598700099, 12727770.598700099])
+    #axes[1].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
+
+    fig.tight_layout()
+
+    plt.show()
+
+
+
 def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
 
     fig, axes = plt.subplots(1,

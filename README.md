@@ -51,6 +51,7 @@ In order to install the package you first need to install some dependencies, whi
 sudo apt-get install libproj-dev proj-data proj-bin    --> Plottings library
 sudo apt-get install libgeos-dev                       --> Plottings library
 sudo apt-get install libboost-all-dev                  --> Boost library
+sudo apt-get install libeigen3-dev
 ```
 
 Installation

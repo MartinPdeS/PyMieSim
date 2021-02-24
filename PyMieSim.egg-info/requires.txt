@@ -7,4 +7,5 @@ matplotlib
 mayavi
 numpy
 pandas
+pybind11
 scipy

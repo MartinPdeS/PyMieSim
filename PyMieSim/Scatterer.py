@@ -37,7 +37,9 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                  Diameter:    float,
                  Source:      BaseSource,
                  Index:       float,
-                 IndexMedium: float  = 1.0):
+                 IndexMedium: float  = 1.0,
+                 MuSphere:    float  = 1.0,
+                 MuMedium:    float  = 1.0):
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
@@ -47,71 +49,122 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         self.SizeParam = Source.k * ( self.Diameter / 2 )
 
-        self._Stokes, self._SPF, self._Parallel, self._Perpendicular, self._S1S2 = (None,)*5
-
-        self._phi, self._theta = [None], [None]
-
         self._Qsca, self.Q_ext, self._Qabs = None, None, None
 
-        self.MuSp = 1
+        self.MuSp = MuSphere
 
-        self.Mu = 1
+        self.Mu = MuMedium
+
+        self._an, self._bn, self._cn, self._dn = [], [], [], []
 
 
-    def an(self, order):
-        """Eq:III.88 of B&B  and M (ksp/k) Eq:I.103"""
+    def an(self, MaxOrder):
+        """ Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
+
+        :math:`a_n = \\frac{
+        \mu_{sp} \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -
+        \\mu M \Psi_n^\prime(\\alpha) \\Psi_n(\\beta)}
+        {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
+        \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+
+        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
+
+        """
         alpha = self.SizeParam
         beta = self.Index * alpha
         M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
-        numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta) \
-                  - Mu * M * Psi_p(order, alpha) * Psi(order, beta)
+        for order in range(1, MaxOrder+1):
+            numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta) \
+                      - Mu * M * Psi_p(order, alpha) * Psi(order, beta)
 
-        denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) \
-                    - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
+            denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) \
+                        - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
 
-        return numerator/denominator
+            self._an.append(numerator/denominator)
+
+        return self._an
 
 
-    def bn(self, order):
-        """Eq:III.89 of B&B """
+    def bn(self, MaxOrder):
+        """ Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
+
+        :math:`b_n = \\frac{
+        \mu M \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -
+        \\mu_{sp} \Psi_n^\prime(\\alpha) \Psi_n(\\beta)}
+        {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
+        \\mu_{sp} \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+
+        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
+
+        """
         alpha = self.SizeParam
         beta = self.Index * alpha
         M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
-        numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) \
-                  - MuSp * Psi_p(order, alpha) * Psi(order, beta)
+        for order in range(1, MaxOrder+1):
+            numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) \
+                      - MuSp * Psi_p(order, alpha) * Psi(order, beta)
 
-        denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) \
-                    - MuSp  * Xi_p(order, alpha) * Psi(order, beta)
+            denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) \
+                        - MuSp  * Xi_p(order, alpha) * Psi(order, beta)
 
-        return numerator/denominator
+            self._bn.append(numerator/denominator)
+
+        return self._bn
 
 
-    def cn(self, order):
-        """Eq:III.90 of B&B """
+    def cn(self, MaxOrder):
+        """ Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
+
+        :math:`c_n = \\frac{
+        \mu_{sp} M \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -
+        \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}
+        {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\\prime(\\beta)-
+        \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+
+        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
+
+        """
         alpha = self.SizeParam
         beta = self.Index * alpha
         M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
-        numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
+        for order in range(1, MaxOrder+1):
+            numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
 
-        denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
+            denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
 
-        return numerator/denominator
+            self._cn.append(numerator/denominator)
+
+        return self._cn
 
 
-    def cn(self, order):
-        """Eq:III.91 of B&B """
+    def dn(self, MaxOrder):
+        """ Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
+
+        :math:`d_n = \\frac{
+        \mu M^2 \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -
+        \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}
+        {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
+        \\mu_{sp} M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+
+        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
+
+        """
         alpha = self.SizeParam
         beta = self.Index * alpha
         M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
-        numerator = Mu * M**2 * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
+        for order in range(1, MaxOrder+1):
 
-        denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta)
+            numerator = Mu * M**2 * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
 
-        return numerator/denominator
+            denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta)
+
+            self._dn.append(numerator/denominator)
+
+        return self._dn
 
 
 
@@ -150,24 +203,7 @@ class WMSample(object):
         self._Perpendicular, self._Parallel = None, None
 
 
-
-    def Parallel(self, Mesh):
-        if not isinstance(self._Parallel, np.ndarray):
-            self.GetField(Mesh.Phi.Radian, Mesh.Theta.Radian)
-            return self._Parallel
-        else:
-            return self._Parallel
-
-
-    def Perpendicular(self, Mesh):
-        if not isinstance(self._Perpendicular, np.ndarray):
-            self.GetField(Mesh.Phi.Radian, Mesh.Theta.Radian)
-            return self._Perpendicular*0
-        else:
-            return self._Perpendicular
-
-
-    def GetField(self, Phi, Theta):
+    def FarField(self, Phi, Theta):
 
         k = self.Source.k
 

@@ -74,7 +74,6 @@ class MeshProperty(object):
         if val <= 0.01: val = 0.01
         self.MaxAngle = NA2Angle(val).Radian
         self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
-        #self.UpdateUnstructuredFarField()
 
 
 
@@ -241,13 +240,6 @@ class BaseScatterer(object):
         Number of points for the full solid angle of the far-field, later to
         be interpolated.
 
-    Attributes
-    ----------
-    Full : <Fields class>
-        It represents the entire Far-field representation of the scatterer.
-    ComputeS1S2 : type
-        Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.
-
 
     """
 
@@ -284,17 +276,15 @@ class BaseScatterer(object):
 
         """
 
-        if self._S1S2 is None:
-            self._S1S2 = S1S2(Parent=self, Num=Num)
-            return self._S1S2
-
-        else:
-            return self._S1S2
+        return S1S2(Parent=self, Num=Num)
 
 
-    def Field(self, Num: int = 200):
-        """Scattering phase function:
+
+    def FarField(self, Num: int = 200):
+        """Method Compute scattering Far Field:
         Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
+        The Fields are up to a constant phase value:
+        :math:`\\exp{\big(-i k r \big)}`
 
         Parameters
         ----------
@@ -307,27 +297,35 @@ class BaseScatterer(object):
             Dictionnay sub-class with all pertient information as keys.
 
         """
-        self._Field = ScalarFarField(Num = Num, Parent = self)
-
-        return self._Field
+        return ScalarFarField(Num = Num, Parent = self)
 
 
-    def Parallel(self, Phi, Theta):
-        if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
-            self._phi, self._theta = Phi, Theta
-            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
-            return self._Parallel
-        else:
-            return self._Parallel
+
+    def _FarField(self, Phi, Theta):
+        """Method Compute scattering Far Field:
+        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
+        The Fields are up to a constant phase value:
+        :math:`\\exp{\big(-i k r \big)}`
 
 
-    def Perpendicular(self, Phi, Theta):
-        if not np.array_equal(self._phi, Phi) or not np.array_equal(self._theta, Theta):
-            self._phi, self._theta = Phi, Theta
-            self._Parallel, self._Perpendicular = self.GenField(Phi, Theta)
-            return self._Perpendicular
-        else:
-            return self._Perpendicular
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
+
+        """
+
+        return GetFields(index        = self.Index,
+                         diameter     = self.Diameter,
+                         wavelength   = self.Source.Wavelength,
+                         nMedium      = self.nMedium,
+                         ThetaMesh    = Theta,
+                         PhiMesh      = Phi - np.pi/2,
+                         Polarization = self.Source.Polarization.Radian,
+                         E0           = self.Source.E0,
+                         R            = 1,
+                         k            = self.Source.k)
+
 
 
     def SPF(self, Num=100):
@@ -346,52 +344,7 @@ class BaseScatterer(object):
 
         """
 
-        if not self._SPF:
-            self._SPF = SPF(Parent=self, Num=Num)
-            return self._SPF
-        else:
-            return self._SPF
-
-
-    def GenField(self, Phi, Theta):
-        """The methode generate the :class:`ScalarField` from
-        :math:`S_1` & :math:`S_2` value computed with the LMT.
-
-        """
-
-        return GetFields(index        = self.Index,
-                         diameter     = self.Diameter,
-                         wavelength   = self.Source.Wavelength,
-                         nMedium      = self.nMedium,
-                         ThetaMesh    = Theta,
-                         PhiMesh      = Phi - np.pi/2,
-                         Polarization = self.Source.Polarization.Radian)
-
-
-    def Plot(self, Num=200):
-        """Method plots the scattered Far-Field
-        :math:`E_{\\parallel}(\\phi,\\theta)^2 , E_{\\perp}(\\phi,\\theta)^2.
-
-        Parameters
-        ----------
-        Num : :class:`int`
-            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
-
-        """
-
-        Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
-
-        Para, Perp = self.GenField(Phi.flatten(), Theta.flatten())
-
-        fig0 = PlotStructuredSphere(Phi     = np.rad2deg(Phi),
-                                    Theta   = np.rad2deg(Theta),
-                                    Scalar  = Para.reshape(Theta.shape))
-
-        fig1 = PlotStructuredSphere(Phi     = np.rad2deg(Phi),
-                                    Theta   = np.rad2deg(Theta),
-                                    Scalar  = Perp.reshape(Theta.shape))
-
-        return fig0, fig1
+        return SPF(Parent=self, Num=Num)
 
 
     def Footprint(self, Detector):

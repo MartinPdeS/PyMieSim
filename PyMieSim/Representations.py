@@ -1,7 +1,9 @@
 import numpy as np
 from ai import cs
 from mayavi import mlab
+import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
+import matplotlib
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
@@ -146,42 +148,14 @@ class SPF(dict):
                                nMedium      = 1.0,
                                ThetaMesh    = self['Theta'].flatten(),
                                PhiMesh      = self['Phi'].flatten()-np.pi/2,
-                               Polarization = 0)
+                               Polarization = 0,
+                               E0           = Parent.Source.E0,
+                               R            = 1,
+                               k            = 1)
 
-        self['Parallel'], self['Perpendicular'] = Para, Perp
+        self['EPhi'], self['ETheta'] = Para, Perp
+
         self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
-
-
-    def _Plot(self):
-
-        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
-
-        fig, ax = plt.subplots(1, figsize=(3, 3), subplot_kw = {'projection':'3d'})
-        ax.set_title(r'Complex Scattering Phase Function: Real{$ E_{||}$}')
-        ax.set_ylabel(r'Y-direction')
-        ax.set_xlabel(r'X-direction')
-        ax.set_zlabel(r'Z-direction')
-
-        scamap = plt.cm.ScalarMappable(cmap='jet')
-
-        ax.plot_surface( x, y, z,
-                         rstride     = 2,
-                         cstride     = 2,
-                         linewidth   = 0.3,
-                         facecolors  = scamap.to_rgba(self['Parallel'].real.reshape(self['Phi'].shape) ),
-                         alpha =1,
-                         edgecolors  = 'k',
-                         #antialiased = False,
-                         #shade  =False
-                         )
-
-        xLim = ax.get_xlim(); yLim = ax.get_ylim(); zLim = ax.get_zlim()
-
-        Min = min(xLim[0],yLim[0]); Max = max(xLim[1], yLim[1])
-
-        ax.set_xlim(Min, Max); ax.set_ylim(Min, Max)
-
-        plt.show()
 
 
     def Plot(self):
@@ -217,7 +191,7 @@ class SPF(dict):
 
         mlab.mesh(x, y, z)
 
-        #mlab.axes()
+        mlab.setcolormap('viridis')
 
         mlab.show()
 
@@ -225,7 +199,7 @@ class SPF(dict):
     def __repr__(self):
         return f"""
         Object:          Dictionary
-        Keys:            SPF, Parallel, Perpendicular, Theta, Phi
+        Keys:            SPF, EPhi, ETheta, Theta, Phi
         Structured data: Yes
         Method:          <Plot>
         Shape:           {self['Phi'].shape}"""
@@ -294,43 +268,84 @@ class S1S2(dict):
 
 class ScalarFarField(dict):
 
-
-    def __init__(self, Num = 200, Parent = None):
+    def __init__(self, Num = 200, Parent = None, Distance=1):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        Para, Perp = GetFields(index        = Parent.Index,
-                               diameter     = Parent.Diameter,
-                               wavelength   = Parent.Source.Wavelength,
-                               nMedium      = Parent.nMedium,
-                               ThetaMesh    = Theta.flatten(),
-                               PhiMesh      = Phi.flatten() - np.pi/2,
-                               Polarization = Parent.Source.Polarization.Radian)
+        EPhi, ETheta = GetFields(index        = Parent.Index,
+                                 diameter     = Parent.Diameter,
+                                 wavelength   = Parent.Source.Wavelength,
+                                 nMedium      = Parent.nMedium,
+                                 ThetaMesh    = Theta.flatten(),
+                                 PhiMesh      = Phi.flatten() - np.pi/2,
+                                 Polarization = Parent.Source.Polarization.Radian,
+                                 E0           = Parent.Source.E0,
+                                 R            = Distance,
+                                 k            = Parent.Source.k)
 
-        self['Parallel'] = Para
 
-        self['Perpendicular'] = Perp
+        self['Distance'] = Distance
 
         self['Theta'] = Theta
 
         self['Phi'] = Phi
 
+        self['EPhi'] = EPhi.reshape(self['Theta'].shape)
 
-    def Plot(self, num=200):
+        self['ETheta'] = ETheta.reshape(self['Theta'].shape)
 
-        PlotStructuredSphere(Phi     = np.rad2deg(self['Phi']),
-                             Theta   = np.rad2deg(self['Theta']),
-                             Scalar  = self['Parallel'].reshape(self['Theta'].shape))
 
-        PlotStructuredSphere(Phi     = np.rad2deg(self['Phi']),
-                             Theta   = np.rad2deg(self['Theta']),
-                             Scalar  = self['Perpendicular'].reshape(self['Theta'].shape))
+
+    def Plot(self):
+        """Method plots the scattered Far-Field
+        :math:`E_{\\phi}(\\phi,\\theta)^2 , E_{\\theta}(\\phi,\\theta)^2`.
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
+
+        """
+
+        fig, axes = plt.subplots(2,2,figsize=(6,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+
+        for F, Name in enumerate( ['EPhi', 'ETheta'] ):
+
+            for m, Part in enumerate(['Real', 'Imaginary']) :
+
+                if m == 0: data = self[Name].real
+                if m == 1: data = self[Name].imag
+
+                im0 = axes[m,F].contourf(np.rad2deg(self['Theta']),
+                                         np.rad2deg(self['Phi']),
+                                         data,
+                                         antialiased=False,
+                                         cmap = 'inferno',
+                                         #levels = 100,
+                                         transform = ccrs.PlateCarree())
+
+                gl = axes[m,F].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
+                gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
+                gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+
+                plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[m,F])
+
+                if F == 0: name = r"$E_{\phi}(\phi, \theta)$"
+                if F == 1: name = r"$E_{\theta}(\phi, \theta)$"
+
+                axes[m,F].set_title(f'{Part} Part' + '\n' +  name, fontsize=8)
+
+        fig.tight_layout()
+
+        plt.show()
+
+
 
     def __repr__(self):
 
         return f"""
         Object:          Dictionary
-        Keys:            Parallel, Perpendicular, Theta, Phi
+        Keys:            EPhi, ETheta, Theta, Phi, Distance
         Structured data: Yes
         Method:          <Plot>
         Shape:           {self['Theta'].shape}"""

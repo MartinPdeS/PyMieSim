@@ -17,7 +17,7 @@ Detector    = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
 Detector1   = Photodiode(Sampling = 11, NA = 0.2)
 ScatSet     = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
 phi         = linspace(-pi/2, pi/2,4)
-theta       =  linspace(-pi, pi,4)
+theta       = linspace(-pi, pi,4)
 
 class PrintingTest(TestCase):
 
@@ -58,7 +58,7 @@ class PrintingTest(TestCase):
         print('Test 2: passed')
 
     def test03(self):
-        Scat.Field(Num=10)
+        Scat.FarField(Num=10)
         print('Test 3: passed')
 
     def test04(self):
@@ -68,6 +68,7 @@ class PrintingTest(TestCase):
     def test05(self):
         Detector.Coupling(Scatterer = Scat)
         Detector1.Coupling(Scatterer = Scat)
+
         print('Test 5: passed')
 
     def test06(self):
@@ -76,12 +77,14 @@ class PrintingTest(TestCase):
                                Source        = LightSource)
 
         ScatSet.Qsca()
+
         print('Test 6: passed')
 
     def test07(self):
         Set = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
         Set.DataFrame
         Set.Coupling
+
         print('Test 7: passed')
 
     def test08(self):
@@ -90,6 +93,7 @@ class PrintingTest(TestCase):
                           D      = 3/2,
                           Nc     = 1e4,
                           Source = LightSource)
+
         print('Test 8: passed')
 
     def test09(self):
@@ -101,13 +105,11 @@ class PrintingTest(TestCase):
                             Source   = LightSource,
                             Npts     = 201)
 
-
         print('Test 9: passed')
 
 
     def test10(self):
         spf = SPF(Scat, LightSource, phi, theta)
-
 
         print('Test 10: passed')
 

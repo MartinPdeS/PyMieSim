@@ -1,6 +1,8 @@
 README.md
 setup.py
 PyMieSim/BaseClasses.py
+PyMieSim/Coupling.pyx
+PyMieSim/Couplings.py
 PyMieSim/DataFrame.py
 PyMieSim/Detector.py
 PyMieSim/Mesh.py
@@ -19,14 +21,5 @@ PyMieSim.egg-info/dependency_links.txt
 PyMieSim.egg-info/not-zip-safe
 PyMieSim.egg-info/requires.txt
 PyMieSim.egg-info/top_level.txt
-PyMieSim/cpp/Coupling.pyx
-PyMieSim/cpp/GLMT.cpp
-PyMieSim/cpp/Interface.pxd
-PyMieSim/cpp/Special.cpp
-PyMieSim/cpp/Sphere.pyx
-PyMieSim/cython/S1S2.pyx
-PyMieSim/functions/Couplings.py
-PyMieSim/functions/Misc.py
-PyMieSim/functions/Optimization.py
-PyMieSim/functions/__init__.py
-PyMieSim/functions/converts.py
+PyMieSim/GLMT/cpp/GLMT.cpp
+PyMieSim/LMT/cpp/Sphere.pyx

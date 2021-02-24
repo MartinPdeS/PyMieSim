@@ -6,7 +6,7 @@
 #cython: cdivision=True
 #cython: nonecheck=False
 #cython: wraparound=False
- 
+
 
 from libcpp.vector cimport vector
 cimport cython
@@ -18,7 +18,7 @@ from cpython cimport Py_buffer
 from libcpp.utility cimport pair
 
 
-ctypedef double complex complex128_t
+ctypedef double complex complex128_t 
 
 
 

@@ -169,8 +169,8 @@
 <span class="kn">from</span> <span class="nn">ai</span> <span class="kn">import</span> <span class="n">cs</span>
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ScalarFarField</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.python.Couplings</span> <span class="kn">import</span> <span class="n">Coupling</span> <span class="k">as</span> <span class="n">Coupling</span><span class="p">,</span> <span class="n">GetFootprint</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.cpp.Sphere</span> <span class="kn">import</span> <span class="n">GetFields</span><span class="p">,</span> <span class="n">GetEfficiencies</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Couplings</span> <span class="kn">import</span> <span class="n">Coupling</span> <span class="k">as</span> <span class="n">Coupling</span><span class="p">,</span> <span class="n">GetFootprint</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.LMT.Sphere</span> <span class="kn">import</span> <span class="n">GetFields</span><span class="p">,</span> <span class="n">GetEfficiencies</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span><span class="p">,</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">NA2Angle</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotUnstructuredSphere</span><span class="p">,</span> <span class="n">PlotStructuredSphere</span>
@@ -490,7 +490,7 @@
 
     <span class="k">def</span> <span class="nf">SPF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Scattering phase function:</span>
-<span class="sd">        SPF = :math:`E_{\\para}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`</span>
+<span class="sd">        SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -528,7 +528,7 @@
 
     <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method plots the scattered Far-Field</span>
-<span class="sd">        :math:`E_{\\para}(\\phi,\\theta)^2 , E_{\\perp}(\\phi,\\theta)^2.</span>
+<span class="sd">        :math:`E_{\\parallel}(\\phi,\\theta)^2 , E_{\\perp}(\\phi,\\theta)^2`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

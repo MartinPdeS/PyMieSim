@@ -34,26 +34,18 @@ for key, value in cfg_vars.items():
         cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
 
 
-ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
-                          sources            = ["PyMieSim/cython/LMT/S1S2.pyx"],
-                          include_dirs       = ['.'],
-                          language           = "c++",
-                          define_macros      = macro,
-                          extra_compile_args = compile_args,
-                          extra_link_args    = link_args
-                         ),
-
-                Extension(name               = "PyMieSim.cython.Coupling",
-                          sources            = ["PyMieSim/cython/Coupling/Coupling.pyx"],
+ext_modules = [
+                Extension(name               = "PyMieSim._Coupling",
+                          sources            = ["PyMieSim/Coupling.pyx"],
                           include_dirs        = [numpy.get_include()],
                           language            = "c++",
                           define_macros       = macro,
                           extra_compile_args  = compile_args,
                           extra_link_args     = link_args
-                         ),                         
+                         ),
 
                 Extension(name               = "PyMieSim.LMT.Sphere",
-                          sources            = ["PyMieSim/cpp/LMT/Sphere.pyx"],
+                          sources            = ["PyMieSim/LMT/cpp/Sphere.pyx"],
                           include_dirs       = [numpy.get_include()],
                           language           = "c++",
                           define_macros      = macro,
@@ -62,10 +54,8 @@ ext_modules = [ Extension(name               = "PyMieSim.cython.S1S2",
                          ),
 
 
-
-
-                Extension(name         = 'PyMieSim.cpp.GLMT',
-                          sources      = ['PyMieSim/cpp/GLMT/GLMT.cpp'],
+                Extension(name         = 'PyMieSim.GLMT.Sphere',
+                          sources      = ['PyMieSim/GLMT/cpp/GLMT.cpp'],
                           include_dirs = [pybind11.get_include()],
                           language     = 'c++',
                 ),

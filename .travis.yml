@@ -5,7 +5,7 @@ os: linux
 dist: bionic
 
 install:
-  - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev libboost-all-dev
+  - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev libboost-all-dev libeigen3-dev
   - pip3 install -r requirements.txt
   - python3 setup.py build_ext --inplace
   - pip3 install .
