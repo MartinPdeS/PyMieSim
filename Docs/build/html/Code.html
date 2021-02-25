@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Classes &mdash; PyMieSim 0.0.1 documentation</title>
+  <title>Code &mdash; PyMieSim 0.0.1 documentation</title>
   
 
   
@@ -90,13 +90,14 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Classes</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Scatterer">Class: Scatterering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Source">Class: Sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Detector">Class: Detector</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Mesh">Class: Mesh</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Sets">Class: Sets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Representations">Class: Representations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.python.GLMT">Functions: GLMT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.GLMT.python">Functions: GLMT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#function-coupling">Function: Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#function-centeredcoupling">Function: CenteredCoupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#function-meancoupling">Function: MeanCoupling</a></li>
@@ -152,7 +153,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Classes</li>
+      <li>Code</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -171,13 +172,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="classes">
-<h1>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="code">
+<h1>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-PyMieSim.Scatterer">
 <span id="class-scatterering"></span><h2>Class: Scatterering<a class="headerlink" href="#module-PyMieSim.Scatterer" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="PyMieSim.Scatterer.Sphere">
-<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieSim.BaseClasses.BaseSource</em>, <em>Index: float</em>, <em>IndexMedium: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieSim.BaseClasses.BaseSource</em>, <em>Index: float</em>, <em>IndexMedium: float = 1.0</em>, <em>MuSphere: float = 1.0</em>, <em>MuMedium: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere" title="Permalink to this definition">¶</a></dt>
 <dd><p>Short summary.</p>
 <dl class="docutils">
 <dt>Diameter <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
@@ -194,10 +195,12 @@
 <dd>Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</dd>
 </dl>
 <dl class="method">
-<dt id="PyMieSim.Scatterer.Sphere.Field">
-<code class="descname">Field</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Field" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scattering phase function:
-Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<dt id="PyMieSim.Scatterer.Sphere.FarField">
+<code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.FarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field:
+Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span>
+The Fields are up to a constant phase value:
+<span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
 <dl class="docutils">
 <dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</dd>
@@ -214,38 +217,10 @@ Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="PyMieSim.Scatterer.Sphere.GenField">
-<code class="descname">GenField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GenField" title="Permalink to this definition">¶</a></dt>
-<dd><p>The methode generate the <code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code> from
-<span class="math notranslate nohighlight">\(S_1\)</span> &amp; <span class="math notranslate nohighlight">\(S_2\)</span> value computed with the LMT.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.GetEfficiencies">
 <code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
 for the scatterer.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="PyMieSim.Scatterer.Sphere.Parallel">
-<code class="descname">Parallel</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Parallel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieSim.Scatterer.Sphere.Perpendicular">
-<code class="descname">Perpendicular</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Perpendicular" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieSim.Scatterer.Sphere.Plot">
-<code class="descname">Plot</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method plots the scattered Far-Field
-<span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 , E_{\perp}(\phi,\theta)^2\)</span>.</p>
-<dl class="docutils">
-<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
-<dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</dd>
-</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -372,23 +347,154 @@ using the first Born approximation .</p>
 used for computation.</dd>
 </dl>
 <dl class="method">
-<dt id="PyMieSim.Scatterer.WMSample.GetField">
-<code class="descname">GetField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#WMSample.GetField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.WMSample.GetField" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieSim.Scatterer.WMSample.Parallel">
-<code class="descname">Parallel</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#WMSample.Parallel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.WMSample.Parallel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="PyMieSim.Scatterer.WMSample.Perpendicular">
-<code class="descname">Perpendicular</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#WMSample.Perpendicular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.WMSample.Perpendicular" title="Permalink to this definition">¶</a></dt>
+<dt id="PyMieSim.Scatterer.WMSample.FarField">
+<code class="descname">FarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#WMSample.FarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.WMSample.FarField" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Scatterer.WMSample.Plot">
 <code class="descname">Plot</code><span class="sig-paren">(</span><em>num=200</em>, <em>scatter=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#WMSample.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.WMSample.Plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-PyMieSim.Source">
+<span id="class-sources"></span><h2>Class: Sources<a class="headerlink" href="#module-PyMieSim.Source" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="PyMieSim.Source.GaussianBeam">
+<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float</em>, <em>NA: float = 0.1</em>, <em>Polarization: float = 0</em>, <em>E0: float = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.BSC">
+<code class="descname">BSC</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode='TE'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.BSC" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return the beam shape coefficients</dt>
+<dd>(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) for a plane wave.
+(Eq: VI.77 of G&amp;G)</dd>
+</dl>
+<dl class="docutils">
+<dt>n <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dd>Order of the expansion.</dd>
+<dt>m <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dd>Description of parameter <cite>m</cite>.</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>str</cite></span></dt>
+<dd>Mode of the plane wave, either ‘TE’ or ‘TM’.</dd>
+</dl>
+<dl class="docutils">
+<dt>class:<cite>float</cite></dt>
+<dd>Expansion coefficient.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.EField">
+<code class="descname">EField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.EField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric Field (First Order)
+ref[2]:Eq:6
+<span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Er">
+<code class="descname">Er</code><span class="sig-paren">(</span><em>r</em>, <em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Er"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Er" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric Field (First Order)
+ref[2]:Eq:10
+<span class="math notranslate nohighlight">\(E_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -x_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\)</span>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.HField">
+<code class="descname">HField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.HField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric Field (First Order)
+ref[2]:Eq:6
+<span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Hr">
+<code class="descname">Hr</code><span class="sig-paren">(</span><em>r</em>, <em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Hr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Hr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the magnetic Field (First Order)
+ref[2]:Eq:10
+<span class="math notranslate nohighlight">\(H_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -y_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\)</span>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Phi0">
+<code class="descname">Phi0</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Phi0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Phi0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns
+<span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \Big]\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Phi0_Spherical">
+<code class="descname">Phi0_Spherical</code><span class="sig-paren">(</span><em>r</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Phi0_Spherical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Phi0_Spherical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns
+<span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r \sin (\theta) \cos (\phi) - x_0^2 ) + (r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Q">
+<code class="descname">Q</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns
+<span class="math notranslate nohighlight">\(Q_{cartesian} =\frac{1}{2 ( z - z_0 )/k w_0^2 - i}\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Q_Spherical">
+<code class="descname">Q_Spherical</code><span class="sig-paren">(</span><em>r</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Q_Spherical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Q_Spherical" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns
+<span class="math notranslate nohighlight">\(Q_{spherical} = \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.expansion">
+<code class="descname">expansion</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.expansion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.expansion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="PyMieSim.Source.PlaneWave">
+<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">PlaneWave</code><span class="sig-paren">(</span><em>Wavelength: float</em>, <em>Polarization: float = 0</em>, <em>E0: float = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="PyMieSim.Source.PlaneWave.BSC">
+<code class="descname">BSC</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode='TE'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.BSC" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Return the beam shape coefficients</dt>
+<dd>(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) for a plane wave.
+(Eq: VI.77 of G&amp;G)</dd>
+</dl>
+<dl class="docutils">
+<dt>n <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dd>Order of the expansion.</dd>
+<dt>m <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dd>Description of parameter <cite>m</cite>.</dd>
+<dt>mode <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>str</cite></span></dt>
+<dd>Mode of the plane wave, either ‘TE’ or ‘TM’.</dd>
+</dl>
+<dl class="docutils">
+<dt>class:<cite>float</cite></dt>
+<dd>Expansion coefficient.</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.PlaneWave.EField">
+<code class="descname">EField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.EField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric Field
+:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>E = E_0 exp{ig( i k (z-z_0) ig) (p_x vec{e_x}, p_y vec{e_y})}.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.PlaneWave.HField">
+<code class="descname">HField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.HField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric Field
+:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>H = H_0 exp{ig( i k (z-z_0) ig) (p_x vec{e_x}, p_y vec{e_y})}.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.PlaneWave.expansion">
+<code class="descname">expansion</code><span class="sig-paren">(</span><em>n</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.expansion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.expansion" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -482,7 +588,7 @@ used for computation.</dd>
 <dd>Factor that is used to definie the LP mode numerical aperture (NA).</dd>
 </dl>
 <dl class="docutils">
-<dt><a href="#id1"><span class="problematic" id="id2">:function:`FraunhoferDiffraction`</span></a></dt>
+<dt><a href="#id5"><span class="problematic" id="id6">:function:`FraunhoferDiffraction`</span></a></dt>
 <dd>Structured FarField value.</dd>
 </dl>
 </dd></dl>
@@ -847,12 +953,18 @@ and refractive index.</p>
 
 <dl class="class">
 <dt id="PyMieSim.Representations.ScalarFarField">
-<em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">ScalarFarField</code><span class="sig-paren">(</span><em>Num=200</em>, <em>Parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">ScalarFarField</code><span class="sig-paren">(</span><em>Num=200</em>, <em>Parent=None</em>, <em>Distance=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <dl class="method">
 <dt id="PyMieSim.Representations.ScalarFarField.Plot">
-<code class="descname">Plot</code><span class="sig-paren">(</span><em>num=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.Plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method plots the scattered Far-Field
+<span class="math notranslate nohighlight">\(E_{\phi}(\phi,\theta)^2 , E_{\theta}(\phi,\theta)^2\)</span>.</p>
+<dl class="docutils">
+<dt>Num <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd>Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -879,152 +991,8 @@ and refractive index.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-PyMieSim.python.GLMT">
-<span id="functions-glmt"></span><h2>Functions: GLMT<a class="headerlink" href="#module-PyMieSim.python.GLMT" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="PyMieSim.python.GLMT.FieldPhi">
-<code class="descclassname">PyMieSim.python.GLMT.</code><code class="descname">FieldPhi</code><span class="sig-paren">(</span><em>Scat</em>, <em>Source</em>, <em>phi: numpy.ndarray</em>, <em>theta: numpy.ndarray</em>, <em>r: float = 1</em>, <em>E0: float = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/python/GLMT.html#FieldPhi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.python.GLMT.FieldPhi" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function compute <span class="math notranslate nohighlight">\(\vec{\phi}\)</span> component of scattered FarField defined
-as Eq:III.109 of B&amp;B.
-<span class="math notranslate nohighlight">\(E_{\theta} = -\frac{E_0}{kr} \exp{(-ikr)} S_1\)</span></p>
-<dl class="docutils">
-<dt>Scat <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></span></dt>
-<dd>Description of parameter <cite>Scat</cite>.</dd>
-<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
-<dd>Description of parameter <cite>Source</cite>.</dd>
-<dt>phi <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\phi\)</span> space <span class="math notranslate nohighlight">\([-\frac{\pi}{2}: \frac{\pi}{2}]\)</span>.</dd>
-<dt>theta <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\theta\)</span> space <span class="math notranslate nohighlight">\([-\pi: \pi]\)</span>.</dd>
-<dt>r <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
-<dd>Distance of the FarField</dd>
-<dt>E0 <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
-<dd>Initial value of the electric field at focus point.</dd>
-</dl>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></dt>
-<dd>2D ndarray representing the scattered field.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="PyMieSim.python.GLMT.FieldTheta">
-<code class="descclassname">PyMieSim.python.GLMT.</code><code class="descname">FieldTheta</code><span class="sig-paren">(</span><em>Scat</em>, <em>Source</em>, <em>phi: numpy.ndarray</em>, <em>theta: numpy.ndarray</em>, <em>r: float = 1</em>, <em>E0: float = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/python/GLMT.html#FieldTheta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.python.GLMT.FieldTheta" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function compute :math:`
-ec{theta}` component of scattered FarField defined</p>
-<blockquote>
-<div><p>as Eq:III.108 of B&amp;B.
-<span class="math notranslate nohighlight">\(E_{\theta} = \frac{i E_0}{kr} \exp{(-ikr)} S_2\)</span></p>
-<dl class="docutils">
-<dt>Scat <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></span></dt>
-<dd>Description of parameter <cite>Scat</cite>.</dd>
-<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
-<dd>Description of parameter <cite>Source</cite>.</dd>
-<dt>phi <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\phi\)</span> space <span class="math notranslate nohighlight">\([-\frac{\pi}{2}: \frac{\pi}{2}]\)</span>.</dd>
-<dt>theta <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\theta\)</span> space <span class="math notranslate nohighlight">\([-\pi: \pi]\)</span>.</dd>
-<dt>r <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
-<dd>Distance of the FarField</dd>
-<dt>E0 <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
-<dd>Initial value of the electric field at focus point.</dd>
-</dl>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></dt>
-<dd>2D ndarray representing the scattered field.</dd>
-</dl>
-</div></blockquote>
-</dd></dl>
-
-<dl class="function">
-<dt id="PyMieSim.python.GLMT.GetMaxOrder">
-<code class="descclassname">PyMieSim.python.GLMT.</code><code class="descname">GetMaxOrder</code><span class="sig-paren">(</span><em>Scat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/python/GLMT.html#GetMaxOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.python.GLMT.GetMaxOrder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function compute max Order (n) for <span class="math notranslate nohighlight">\(S_1 \, \&amp; \, S_2\)</span> computing
-MaxOrder = <span class="math notranslate nohighlight">\(\big( 2+x + 4 x^{1/3} \big)\)</span>;</p>
-<p>x begin the size parameter of the scatterer.</p>
-<dl class="docutils">
-<dt>Scat <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></span></dt>
-<dd>Description of parameter <cite>Scat</cite>.</dd>
-</dl>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></dt>
-<dd>The maximum order n to reach.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="PyMieSim.python.GLMT.S1">
-<code class="descclassname">PyMieSim.python.GLMT.</code><code class="descname">S1</code><span class="sig-paren">(</span><em>Scat</em>, <em>Source</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/python/GLMT.html#S1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.python.GLMT.S1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function compute <span class="math notranslate nohighlight">\(S_2\)</span> component of scattered FarField defined
-as Eq:III.110 of B&amp;B.
-<span class="math notranslate nohighlight">\(S_2 = \sum_{n=1}^\infty \sum_{m=-n}^{n} \frac{2n+1}{n(n+1)}
-\Big[ m a_n g_{n,TM}^m  \pi_n^{|m|} \big(\cos (\theta) \big) +
-i b_n g_{n,TE}^m \tau_n^{|m|} \big(\cos (\theta) \big) \Big] \exp{\big(i m \phi\big)}\)</span></p>
-<dl class="docutils">
-<dt>Scat <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></span></dt>
-<dd>Description of parameter <cite>Scat</cite>.</dd>
-<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
-<dd>Description of parameter <cite>Source</cite>.</dd>
-<dt>phi <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\phi\)</span> space <span class="math notranslate nohighlight">\([-\frac{\pi}{2}: \frac{\pi}{2}]\)</span>.</dd>
-<dt>theta <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\theta\)</span> space <span class="math notranslate nohighlight">\([-\pi: \pi]\)</span>.</dd>
-</dl>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></dt>
-<dd>2D ndarray representing <span class="math notranslate nohighlight">\(S_1\big(\phi, \theta \big)\)</span>.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="PyMieSim.python.GLMT.S2">
-<code class="descclassname">PyMieSim.python.GLMT.</code><code class="descname">S2</code><span class="sig-paren">(</span><em>Scat</em>, <em>Source</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/python/GLMT.html#S2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.python.GLMT.S2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function compute <span class="math notranslate nohighlight">\(S_2\)</span> component of scattered FarField defined
-as Eq:III.111 of B&amp;B.
-<span class="math notranslate nohighlight">\(S_2 = \sum_{n=1}^\infty \sum_{m=-n}^{n} \frac{2n+1}{n(n+1)}
-\Big[ a_n g_{n,TM}^m  \tau_n^{|m|} \big(\cos (\theta) \big) +
-m i b_n g_{n,TE}^m \pi_n^{|m|} \big(\cos (\theta) \big) \Big] \exp{\big(i m \phi\big)}\)</span></p>
-<dl class="docutils">
-<dt>Scat <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></span></dt>
-<dd>Description of parameter <cite>Scat</cite>.</dd>
-<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
-<dd>Description of parameter <cite>Source</cite>.</dd>
-<dt>phi <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\phi\)</span> space <span class="math notranslate nohighlight">\([-\frac{\pi}{2}: \frac{\pi}{2}]\)</span>.</dd>
-<dt>theta <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\theta\)</span> space <span class="math notranslate nohighlight">\([-\pi: \pi]\)</span>.</dd>
-</dl>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></dt>
-<dd>2D ndarray representing <span class="math notranslate nohighlight">\(S_1\big(\phi, \theta \big)\)</span>.</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="PyMieSim.python.GLMT.SPF">
-<code class="descclassname">PyMieSim.python.GLMT.</code><code class="descname">SPF</code><span class="sig-paren">(</span><em>Scat</em>, <em>Source</em>, <em>phi: numpy.ndarray</em>, <em>theta: numpy.ndarray</em>, <em>r: float = 1</em>, <em>E0: float = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/python/GLMT.html#SPF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.python.GLMT.SPF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function compute the scattering phase function (SPF) defined as
-<span class="math notranslate nohighlight">\(SPF = \sqrt{ |E_\theta |^2 + |E_\phi |^2 }\)</span></p>
-<dl class="docutils">
-<dt>Scat <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseScatterer</span></code></span></dt>
-<dd>Description of parameter <cite>Scat</cite>.</dd>
-<dt>Source <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
-<dd>Description of parameter <cite>Source</cite>.</dd>
-<dt>phi <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\phi\)</span> space <span class="math notranslate nohighlight">\([-\frac{\pi}{2}: \frac{\pi}{2}]\)</span>.</dd>
-<dt>theta <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>Vector representing <span class="math notranslate nohighlight">\(\theta\)</span> space <span class="math notranslate nohighlight">\([-\pi: \pi]\)</span>.</dd>
-<dt>r <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>Distance of the FarField</dd>
-<dt>E0 <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd>Initial value of the electric field at focus point.</dd>
-</dl>
-<dl class="docutils">
-<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></dt>
-<dd>2D ndarray representing SPF.</dd>
-</dl>
-</dd></dl>
-
+<div class="section" id="module-PyMieSim.GLMT.python">
+<span id="functions-glmt"></span><h2>Functions: GLMT<a class="headerlink" href="#module-PyMieSim.GLMT.python" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="function-coupling">
 <h2>Function: Coupling<a class="headerlink" href="#function-coupling" title="Permalink to this headline">¶</a></h2>

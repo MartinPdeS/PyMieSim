@@ -158,4 +158,82 @@ class GeneralFunc():
             self.functions.append(func.functions[0])
             self.args.append(func.args[0])
 
+
+
+
+
+def NPnm( n, m, x ):
+    #ref : https://people.sc.fsu.edu/~jburkardt/py_src/polpak/legendre_associated_normalized.py
+
+
+  if ( m < 0 ):
+    print ( '' )
+    print ( 'LEGENDRE_ASSOCIATED_NORMALIZED - Fatal error!' )
+    print ( '  Input value of M is %d' % ( m ) )
+    print ( '  but M must be nonnegative.' )
+
+  if ( n < m ):
+    print ( '' )
+    print ( 'LEGENDRE_ASSOCIATED_NORMALIZED - Fatal error!' )
+    print ( '  Input value of M = %d' % ( m ) )
+    print ( '  Input value of N = %d' % ( n ) )
+    print ( '  but M must be less than or equal to N.' )
+
+  if ( x < -1.0 ):
+    print ( '' )
+    print ( 'LEGENDRE_ASSOCIATED_NORMALIZED - Fatal error!' )
+    print ( '  Input value of X = %f' % ( x ) )
+    print ( '  but X must be no less than -1.' )
+
+  if ( 1.0 < x ):
+    print ( '' )
+    print ( 'LEGENDRE_ASSOCIATED_NORMALIZED - Fatal error!' )
+    print ( '  Input value of X = %f' % ( x ) )
+    print ( '  but X must be no more than 1.' )
+
+  cx = np.zeros ( n + 1 )
+
+  cx[m] = 1.0
+  somx2 = np.sqrt ( 1.0 - x * x )
+
+  fact = 1.0
+  for i in range ( 0, m ):
+    cx[m] = - cx[m] * fact * somx2
+    fact = fact + 2.0
+
+  if ( m != n ):
+
+    cx[m+1] = x * float ( 2 * m + 1 ) * cx[m]
+
+    for i in range ( m + 2, n + 1 ):
+      cx[i] = ( float ( 2 * i     - 1 ) * x * cx[i-1] \
+              + float (   - i - m + 1 ) *     cx[i-2] ) \
+              / float (     i - m     )
+
+  for mm in range ( m, n + 1 ):
+
+    factor = np.sqrt ( ( ( 2 * mm + 1 ) * r8_factorial ( mm - m ) ) \
+      / (  r8_factorial ( mm + m ) ) )
+
+    cx[mm] = cx[mm] * factor
+
+  return cx
+
+def r8_factorial ( n ):
+
+
+  from sys import exit
+
+  if ( n < 0 ):
+    print ( '' )
+    print ( 'R8_FACTORIAL - Fatal error!' )
+    print ( '  N < 0.' )
+    exit ( 'R8_FACTORIAL - Fatal error!' )
+
+  value = 1.0
+
+  for i in range ( 2, n + 1 ):
+    value = value * i
+
+  return value
 #-

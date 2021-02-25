@@ -88,7 +88,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Theory.html">Theoretical background</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
 </ul>
 
@@ -195,7 +195,9 @@
                  <span class="n">Diameter</span><span class="p">:</span>    <span class="nb">float</span><span class="p">,</span>
                  <span class="n">Source</span><span class="p">:</span>      <span class="n">BaseSource</span><span class="p">,</span>
                  <span class="n">Index</span><span class="p">:</span>       <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">IndexMedium</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+                 <span class="n">IndexMedium</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">MuSphere</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">MuMedium</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Index</span>
 
@@ -205,15 +207,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Stokes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span><span class="o">*</span><span class="mi">5</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">],</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span> <span class="o">=</span> <span class="n">MuSphere</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="n">MuMedium</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
 
@@ -363,24 +361,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
 
 
-
-<div class="viewcode-block" id="WMSample.Parallel"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample.Parallel">[docs]</a>    <span class="k">def</span> <span class="nf">Parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span></div>
-
-
-<div class="viewcode-block" id="WMSample.Perpendicular"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample.Perpendicular">[docs]</a>    <span class="k">def</span> <span class="nf">Perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span><span class="o">*</span><span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span></div>
-
-
-<div class="viewcode-block" id="WMSample.GetField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample.GetField">[docs]</a>    <span class="k">def</span> <span class="nf">GetField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+<div class="viewcode-block" id="WMSample.FarField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample.FarField">[docs]</a>    <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
 
         <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">k</span>
 

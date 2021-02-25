@@ -88,7 +88,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Theory.html">Theoretical background</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
 </ul>
 
@@ -232,7 +232,6 @@
         <span class="k">if</span> <span class="n">val</span> <span class="o">&lt;=</span> <span class="mf">0.01</span><span class="p">:</span> <span class="n">val</span> <span class="o">=</span> <span class="mf">0.01</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">MaxAngle</span> <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">UpdateSphere</span><span class="p">(</span><span class="n">MaxAngle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MaxAngle</span><span class="p">)</span>
-        <span class="c1">#self.UpdateUnstructuredFarField()</span>
 
 
 
@@ -399,13 +398,6 @@
 <span class="sd">        Number of points for the full solid angle of the far-field, later to</span>
 <span class="sd">        be interpolated.</span>
 
-<span class="sd">    Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    Full : &lt;Fields class&gt;</span>
-<span class="sd">        It represents the entire Far-field representation of the scatterer.</span>
-<span class="sd">    ComputeS1S2 : type</span>
-<span class="sd">        Methode using package PyMieScatt to compute S1 and S2 parameter form mu value.</span>
-
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -442,17 +434,15 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span> <span class="o">=</span> <span class="n">S1S2</span><span class="p">(</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_S1S2</span>
+        <span class="k">return</span> <span class="n">S1S2</span><span class="p">(</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">Field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scattering phase function:</span>
+
+    <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field:</span>
 <span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
+<span class="sd">        The Fields are up to a constant phase value:</span>
+<span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -465,27 +455,35 @@
 <span class="sd">            Dictionnay sub-class with all pertient information as keys.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Field</span> <span class="o">=</span> <span class="n">ScalarFarField</span><span class="p">(</span><span class="n">Num</span> <span class="o">=</span> <span class="n">Num</span><span class="p">,</span> <span class="n">Parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Field</span>
+        <span class="k">return</span> <span class="n">ScalarFarField</span><span class="p">(</span><span class="n">Num</span> <span class="o">=</span> <span class="n">Num</span><span class="p">,</span> <span class="n">Parent</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">Parallel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="n">Phi</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_theta</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GenField</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span>
+
+    <span class="k">def</span> <span class="nf">_FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field:</span>
+<span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
+<span class="sd">        The Fields are up to a constant phase value:</span>
+<span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
 
 
-    <span class="k">def</span> <span class="nf">Perpendicular</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="n">Phi</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_theta</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_theta</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_Parallel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GenField</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Perpendicular</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">GetFields</span><span class="p">(</span><span class="n">index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                         <span class="n">diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
+                         <span class="n">wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
+                         <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                         <span class="n">ThetaMesh</span>    <span class="o">=</span> <span class="n">Theta</span><span class="p">,</span>
+                         <span class="n">PhiMesh</span>      <span class="o">=</span> <span class="n">Phi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                         <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+                         <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">,</span>
+                         <span class="n">R</span>            <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                         <span class="n">k</span>            <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
+
 
 
     <span class="k">def</span> <span class="nf">SPF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
@@ -504,52 +502,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span> <span class="o">=</span> <span class="n">SPF</span><span class="p">(</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_SPF</span>
-
-
-    <span class="k">def</span> <span class="nf">GenField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The methode generate the :class:`ScalarField` from</span>
-<span class="sd">        :math:`S_1` &amp; :math:`S_2` value computed with the LMT.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">GetFields</span><span class="p">(</span><span class="n">index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                         <span class="n">diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
-                         <span class="n">wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
-                         <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                         <span class="n">ThetaMesh</span>    <span class="o">=</span> <span class="n">Theta</span><span class="p">,</span>
-                         <span class="n">PhiMesh</span>      <span class="o">=</span> <span class="n">Phi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
-                         <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
-
-
-    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method plots the scattered Far-Field</span>
-<span class="sd">        :math:`E_{\\parallel}(\\phi,\\theta)^2 , E_{\\perp}(\\phi,\\theta)^2`.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        Num : :class:`int`</span>
-<span class="sd">            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">Theta</span><span class="p">,</span> <span class="n">Phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">)]</span>
-
-        <span class="n">Para</span><span class="p">,</span> <span class="n">Perp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GenField</span><span class="p">(</span><span class="n">Phi</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">Theta</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
-
-        <span class="n">fig0</span> <span class="o">=</span> <span class="n">PlotStructuredSphere</span><span class="p">(</span><span class="n">Phi</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">Phi</span><span class="p">),</span>
-                                    <span class="n">Theta</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">Theta</span><span class="p">),</span>
-                                    <span class="n">Scalar</span>  <span class="o">=</span> <span class="n">Para</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Theta</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-
-        <span class="n">fig1</span> <span class="o">=</span> <span class="n">PlotStructuredSphere</span><span class="p">(</span><span class="n">Phi</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">Phi</span><span class="p">),</span>
-                                    <span class="n">Theta</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">Theta</span><span class="p">),</span>
-                                    <span class="n">Scalar</span>  <span class="o">=</span> <span class="n">Perp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Theta</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">fig0</span><span class="p">,</span> <span class="n">fig1</span>
+        <span class="k">return</span> <span class="n">SPF</span><span class="p">(</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">Footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Detector</span><span class="p">):</span>

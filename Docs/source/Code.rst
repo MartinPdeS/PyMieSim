@@ -1,10 +1,17 @@
-Classes
+Code
 =================
 
 
 Class: Scatterering
 -------------------
 .. automodule:: PyMieSim.Scatterer
+    :members:
+    :undoc-members:
+    :inherited-members:
+
+Class: Sources
+-------------------
+.. automodule:: PyMieSim.Source
     :members:
     :undoc-members:
     :inherited-members:
@@ -39,7 +46,7 @@ Class: Representations
 
 Functions: GLMT
 ----------------
-.. automodule:: PyMieSim.python.GLMT
+.. automodule:: PyMieSim.GLMT.python
     :members:
     :undoc-members:
     :show-inheritance:

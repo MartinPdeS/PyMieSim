@@ -2,6 +2,7 @@
 #include <eigen3/Eigen/Core>
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
+#include <pybind11/stl_bind.h>
 #include <pybind11/stl.h>
 namespace py = pybind11;
 #include "Math.cpp"
@@ -15,36 +16,6 @@ typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<std::vector<double>> Matrix;
 typedef std::map<int, double> dict;
-
-std::tuple<iVec, iVec>
-SphereCoefficient(double Radius,
-                  std::size_t Order,
-                  double Eps,
-                  double Mu,
-                  double Wavelength)
-{
-  double k = 2 * PI / Wavelength;
-  double SizeParam = k * Radius;
-  double m = pow(Eps, 0.5);
-  double mt = m / Mu;
-  iVec an, bn;
-
-  Vec jn  = Riccati1(Order, SizeParam);
-  iVec yn = Riccati3(Order, SizeParam);
-  Vec jnm = Riccati1(Order, m * SizeParam);
-
-  complex128 a = (mt * jnm[0] * jn[1] - jn[0] * jnm[1]) / (mt * jnm[0] * yn[1] - yn[0] * jnm[1]);
-  complex128 b = (jnm[0] * jn[1] - mt * jn[0] * jnm[1]) / (jnm[0] * yn[1] - mt * yn[0] * jnm[1]);
-
-  for (long unsigned int i = 0; i < Order; i++)
-  {
-    an.push_back(a);
-    bn.push_back(b);
-  }
-
-  return std::make_tuple(an, bn);
-}
-
 
 int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
@@ -153,20 +124,18 @@ Expansion(int    MaxOrder,
 }
 
 
-Eigen::RowVectorXcd
+
+iVec
 S1(double   SizeParam,
    double   Index,
    double   MediumIndex,
    Vec      PhiList,
    Vec      ThetaList,
-   py::list pyBSC_TM,
-   py::list pyBSC_TE)
+   dict     BSC_TM,
+   dict     BSC_TE)
 {
-  dict BSC_TM = convert_dict_to_map_d(pyBSC_TM);
-  dict BSC_TE = convert_dict_to_map_d(pyBSC_TE);
-  Eigen::RowVectorXcd vec1(1);
-  BSC_TE[-1] = 0.5; BSC_TE[1] = -0.5;
-  BSC_TM[-1] = 0.5; BSC_TM[1] = 0.5;
+
+  iVec vec;
   complex128 j = (complex128) 1j;
 
 
@@ -179,11 +148,11 @@ S1(double   SizeParam,
     {
       for(auto const& Phi: PhiList)
         {
-          vec1 << Expansion(MaxOrder, BSC_TE, BSC_TM, _an, _bn, Phi, Theta);
+          vec.push_back( Expansion(MaxOrder, BSC_TE, BSC_TM, _an, _bn, Phi, Theta) );
         }
     }
 
-  return vec1;
+  return vec;
 }
 
 
@@ -192,7 +161,10 @@ S1(double   SizeParam,
 
 PYBIND11_MODULE(Sphere, module) {
     //py::module Sphere = module.def_submodule("Sphere", "Sphere scattering object");
-    module.def("Coefficient", &SphereCoefficient, "Return coefficient an & bn");
+    module.def("an", &an, "Return an");
+    module.def("bn", &bn, "Return bn");
+    module.def("cn", &cn, "Return cn");
+    module.def("dn", &dn, "Return dn");
     module.def("S1", &S1, "Return S1");
 
 }
