@@ -183,7 +183,7 @@ class GaussianBeam(BaseSource):
         return 1/( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
 
 
-    def Bnm(self, n, m):
+    def Bnm(self, n, m, Num=100):
         """
         Method returns:
         :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
@@ -212,7 +212,7 @@ class GaussianBeam(BaseSource):
         return term0 * integrate( y=sub, x=Theta)
 
 
-    def Anm(self, n, m, Num=200):
+    def Anm(self, n, m, Num=100):
         """
         Method returns:
         :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
@@ -241,7 +241,7 @@ class GaussianBeam(BaseSource):
 
 
 
-    def Anm_integrand(self, n, m, Num=400):
+    def Anm_integrand(self, n, m, Num=100):
         """
         Method returns:
 
@@ -271,7 +271,7 @@ class GaussianBeam(BaseSource):
         return Theta, sub
 
 
-    def Bnm_integrand(self, n, m, Num=200):
+    def Bnm_integrand(self, n, m, Num=100):
         """
         Method returns:
 
@@ -369,7 +369,7 @@ class GaussianBeam(BaseSource):
     def I_4(self, n, m, rhon, Q, theta):
         """
         Method returns :math:`\gamma_4` from ref[2]:Eq:19
-        
+
         :math:`4 Q s^2 Y_0 \\cos(\\theta)`
         """
         return 4 * Q * self.s**2 * self.Offset[1] * cos(theta)
