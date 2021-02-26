@@ -119,8 +119,8 @@ class PrintingTest(TestCase):
                             Polarization = 0,
                             offset       = [5e-6,5e-6,5-6])
 
-        beam.Amn(1,0)
-        beam.Bmn(1,1)
+        beam.Anm(1,0)
+        beam.Bnm(1,1)
 
 if __name__ == '__main__':
     test = PrintingTest()
