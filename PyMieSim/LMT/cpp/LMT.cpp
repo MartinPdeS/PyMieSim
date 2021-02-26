@@ -5,12 +5,17 @@
 #include <cmath>
 #include "Math.cpp"
 
+#include <pybind11/pybind11.h>
+#include <pybind11/complex.h>
+#include <pybind11/stl_bind.h>
+#include <pybind11/stl.h>
+namespace py = pybind11;
 
 
 #define PI 3.14159265
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
-typedef std::vector<std::vector<complex128>> iMatrix; 
+typedef std::vector<std::vector<complex128>> iMatrix;
 
 
 
@@ -159,7 +164,7 @@ C_Qext(iVec*                           an,
 
 
 
-static void
+static int
 C_GetS1S2(const double            index,
           const double            diameter,
           const double            wavelength,
@@ -210,7 +215,7 @@ C_GetS1S2(const double            index,
     temp1++ ;
     }
 
-    return;
+    return 1;
 }
 
 
@@ -312,8 +317,6 @@ Fields(double  index,
   free(S1S2) ;
   return;
 }
-
-
 
 
 

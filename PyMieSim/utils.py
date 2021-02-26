@@ -402,7 +402,7 @@ def PlotField(Theta, Phi, Parallel, Perpendicular):
 
     im0 = axes[0,0].pcolormesh(Theta,
                                Phi,
-                               np.real(Parallel).reshape([Phi.size, Theta.size]),
+                               np.real(Parallel),
                                shading='auto')
 
     divider = make_axes_locatable(axes[0,0])
@@ -411,7 +411,7 @@ def PlotField(Theta, Phi, Parallel, Perpendicular):
 
     im1 = axes[0,1].pcolormesh(Theta,
                                Phi,
-                               np.real(Perpendicular).reshape([Phi.size, Theta.size]),
+                               np.real(Perpendicular),
                                shading='auto')
 
     divider = make_axes_locatable(axes[0,1])
@@ -421,7 +421,7 @@ def PlotField(Theta, Phi, Parallel, Perpendicular):
 
     im2 = axes[1,0].pcolormesh(Theta,
                                Phi,
-                               np.imag(Parallel).reshape([Phi.size, Theta.size]),
+                               np.imag(Parallel),
                                shading='auto')
 
     divider = make_axes_locatable(axes[1,0])
@@ -430,7 +430,7 @@ def PlotField(Theta, Phi, Parallel, Perpendicular):
 
     im3 = axes[1,1].pcolormesh(Theta,
                                Phi,
-                               np.imag(Perpendicular).reshape([Phi.size, Theta.size]),
+                               np.imag(Perpendicular),
                                shading='auto')
 
     divider = make_axes_locatable(axes[1,1])

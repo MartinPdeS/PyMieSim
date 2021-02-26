@@ -102,8 +102,7 @@ cpdef GetFields(double index,
                 PhiMesh,
                 double Polarization,
                 double E0,
-                double R,
-                double k):
+                double R):
 
     cdef:
         np.ndarray[double, ndim=1, mode="c"] ThetaVectorView = np.asarray(ThetaMesh, dtype = float, order="C")
@@ -111,6 +110,8 @@ cpdef GetFields(double index,
 
         np.ndarray[double, ndim=1, mode="c"] PhiVectorView = np.asarray(PhiMesh, dtype = float, order="C")
         double* PhiVec_ptr = <double *>PyMem_Malloc(sizeof(double*))
+
+    k = 2 * np.pi / wavelength
 
     PhiVec_ptr = &PhiVectorView[0]
     ThetaVec_ptr = &ThetaVectorView[0]

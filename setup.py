@@ -46,13 +46,18 @@ ext_modules = [
 
                 Extension(name               = "PyMieSim.LMT.Sphere",
                           sources            = ["PyMieSim/LMT/cpp/Sphere.pyx"],
-                          include_dirs       = [numpy.get_include()],
+                          include_dirs       = [numpy.get_include(), pybind11.get_include()],
                           language           = "c++",
                           define_macros      = macro,
                           extra_compile_args = compile_args,
                           extra_link_args    = link_args
                          ),
 
+                Extension(name               = "PyMieSim.LMT.PyBind.Sphere",
+                          sources            = ["PyMieSim/LMT/cpp/PyLMT.cpp"],
+                          include_dirs       = [numpy.get_include(), pybind11.get_include()],
+                          language           = "c++",
+                         ),
 
                 Extension(name         = 'PyMieSim.GLMT.Sphere',
                           sources      = ['PyMieSim/GLMT/cpp/GLMT.cpp'],
@@ -95,3 +100,23 @@ setup_dict = dict(
 
 
 setup(**setup_dict)
+
+
+
+
+
+
+
+
+
+
+"""
+Extension(name               = "PyMieSim.LMT.Sphere",
+          sources            = ["PyMieSim/LMT/cpp/Sphere.pyx"],
+          include_dirs       = [numpy.get_include(), pybind11.get_include()],
+          language           = "c++",
+          define_macros      = macro,
+          extra_compile_args = compile_args,
+          extra_link_args    = link_args
+         ),
+"""
