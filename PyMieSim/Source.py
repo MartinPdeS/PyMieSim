@@ -4,12 +4,11 @@
 from scipy.integrate import trapz as integrate
 from scipy.special import spherical_jn as jn, lpmv
 from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, meshgrid
-from sympy import symbols
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
-from PyMieSim.Special import Pinm, NPnm, Pnm
+from PyMieSim.Special import Pinm, NPnm, Pnm, Xi, _Psi, Pnm_, r8_factorial
 
 class PlaneWave(BaseSource):
     def __init__(self,
@@ -95,7 +94,7 @@ class GaussianBeam(BaseSource):
         self.s = 1/(self.k*self.w0)
 
 
-        self.x0, self.y0, self.z0 = 5e-6,5e-6, 5e-6
+        self.x0, self.y0, self.z0 = 5e-6, 5e-6, 5e-6
         self.X0 = self.x0 * self.k
         self.Y0 = self.y0 * self.k
         self.Z0 = self.z0 * self.k
@@ -199,15 +198,15 @@ class GaussianBeam(BaseSource):
         return term0 * integrate( y=sub, x=Theta)
 
 
-    def Anm(self, n, m, Num=300):
+    def Anm(self, n, m, Num=200):
 
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num+2)
+        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
         sub = []
         for theta in Theta:
-            Q = self.Q_Spherical(r, theta)
+            Q = 1 / ( 2 * ( r * cos(theta) -self.z0)/(self.k * self.w0**2 ) - 1j )
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
             term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
@@ -215,12 +214,14 @@ class GaussianBeam(BaseSource):
             term0 -= self.I_3(*param) * self.ImHat(m, beta)
             term0 *= self.I_1(*param)
 
-            sub.append(term0)
+            sub.append(-term0)
 
 
-        sub = array(sub, copy=False).squeeze() * self.I_0(*param)
+        sub = array(sub, copy=False).squeeze()
 
-        return term0 * integrate( y=sub, x=Theta)
+
+
+        return integrate( y=sub, x=Theta)* self.I_0(*param)
 
 
     def ImHat(self, m, beta):
@@ -233,18 +234,21 @@ class GaussianBeam(BaseSource):
 
     def I_0(self, n, m, rhon, Q, theta):
         term0 = (-1j)**n * (rhon)**2
-        term1 = (2*n+1) * jn(n, rhon)
+        term1 = (2*n+1) * Xi(n, rhon)
         term2 = exp(-1j * self.Z0)
 
         return term0 / term1 * term2
 
     def I_1(self, n, m, rhon, Q, theta):
-        term1 = 1j * Q * self.s**2
-        term2 = ( self.R0 - rhon * sin(theta) )**2
-        term3 = 1j * rhon * cos(theta)
-        term4 = Pnm(n, abs(m), cos([theta]))[-1] * sin(theta)
+        factor = ( 2 * n + 1 ) * r8_factorial(n - m)
+        factor /= ( 2 * r8_factorial( n + m ) )
 
-        return Q * exp(term1 * term2 + term3 ) * term4
+        term1 = 1j * Q * self.s**2
+        term1 *= ( self.R0 - rhon * sin(theta) )**2
+        term3 = 1j * rhon * cos(theta)
+        term4 = sqrt(factor) * Pnm_(n, abs(m), cos([theta]))[-1] * sin(theta)
+
+        return Q * exp(term1 + term3 ) * term4
 
     def I_2(self, n, m, rhon, Q, theta):
         return ( 2 * Q * self.s**2 * rhon * cos(theta) - 1 ) * sin(theta)

@@ -2,7 +2,7 @@ import numpy as np
 from scipy import special
 from numpy import cos, sin, sqrt
 from scipy.special import spherical_yn as yn, spherical_jn as jn, hankel1 as h
-from scipy.special import legendre as Pn, factorial as fac, lpmn, gammasgn, loggamma
+from scipy.special import legendre as Pn, factorial as fac, lpmn, gammasgn, loggamma, lpmv
 
 
 
@@ -17,6 +17,13 @@ def mnFactorial(n, m):
         \\frac{(n + m)!}{(n - m)!}
     """
     return gammasgn(n) * gammasgn(m) * exp(loggamma(n) - loggamma(m))
+
+
+
+
+def Pnm_(n, m, x):
+    """Eq:II.77 """
+    return lpmv(m, n, x)
 
 
 @np.vectorize

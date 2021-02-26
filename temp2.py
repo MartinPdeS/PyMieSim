@@ -8,9 +8,13 @@ beam = GaussianBeam(Wavelength=0.632e-6,
 
 
 
-angle, val = beam.Anm(20,15)
+val= []
+nList = np.arange(1,23) * 10
+print(nList)
+for n in nList:
+    print(n)
+    val.append(np.abs(beam.Anm(n,0)))
 
-plt.plot(np.rad2deg(angle), val.real,'k')
-plt.plot(np.rad2deg(angle), val.imag,'r--')
+plt.semilogy(nList, val)
 plt.grid()
 plt.show()

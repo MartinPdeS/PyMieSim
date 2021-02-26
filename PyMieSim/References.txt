@@ -1,4 +1,4 @@
 
 ref[1]: G&G book.
 
-ref[2]: https://www.osapublishing.org/view_article.cfm?gotourl=https%3A%2F%2Fwww%2Eosapublishing%2Eorg%2FDirectPDFAccess%2FA2E154C9%2D9805%2D4D07%2DA92B95944EEF7C03%5F380691%2Fao%2D57%2D2%2D302%2Epdf%3Fda%3D1%26id%3D380691%26seq%3D0%26mobile%3Dno&org=Ecole%20Polytechnique%20de%20Montreal
+ref[2]: https://doi.org/10.1364/AO.57.000302
