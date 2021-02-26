@@ -1,22 +1,20 @@
-from PyMieSim.Source import PlaneWave
-from PyMieSim.Detector import LPmode
-from PyMieSim.Scatterer import Sphere
+from PyMieSim.Source import GaussianBeam
+import matplotlib.pyplot as plt
+import numpy as np
 
-LightSource = PlaneWave(Wavelength = 450e-9,
-                        Polarization = 0)
+beam = GaussianBeam(Wavelength=0.632e-6,
+                    NA           = 0.15,
+                    Polarization = 0,
+                    offset = [5e-6,3e-6,0e-6])
 
-Detector = LPmode(Mode         = (1, 1,'h'),
-                  Sampling     = 201,
-                  NA           = 0.2,
-                  GammaOffset  = 0,
-                  PhiOffset    = 0,
-                  CouplingMode = 'Centered')
+print(beam.w0)
+val=[]
+nList = np.arange(1,23)*10
+for n in nList:
+    val.append( beam.Anm(n,0) )
 
 
-Scat = Sphere(Diameter    = 300e-9,
-              Source      = LightSource,
-              Index       = 1.4)
+plt.semilogy(nList, np.abs(val),'k')
 
-Coupling = Detector.Coupling(Scatterer = Scat)
-
-print(Coupling)
+plt.grid()
+plt.show()
