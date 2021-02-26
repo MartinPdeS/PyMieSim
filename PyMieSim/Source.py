@@ -128,7 +128,6 @@ class GaussianBeam(BaseSource):
         class:`float`
             Beam shape coefficient of order n and degree m.
         """
-        if m not in [-1,1]: return 0
 
         if mode == 'TM': return self.Anm(n, m)
 
