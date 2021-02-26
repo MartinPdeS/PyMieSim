@@ -15,6 +15,7 @@ PyMieSim is a very easy to install/use tool for extensive Mie scattering analysi
 on different kind of object, at the moment spherical scatterer and continous sample under the Born approximation.
 Using this package, one can easily set a **LightSource** a **Scatterer** and a **Detector** within a very wide range of parameters such as:
 <ol>
+<li>LightSource structure (e.g. plane wave or Gaussian focused)</li>
 <li>LightSource wavelength</li>
 <li>LightSource Polarization</li>
 <li>Scatterer diameter</li>

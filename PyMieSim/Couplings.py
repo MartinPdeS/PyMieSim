@@ -24,9 +24,9 @@ def PyCoupling(Scatterer, Detector):
     else:
         ParaFiltering = np.cos(Detector.Filter.Radian); PerpFiltering = np.sin(Detector.Filter.Radian)
 
-    if Detector._CouplingMode[1] == 'Centered':
+    if Detector.CouplingMode[1] == 'Centered':
 
-        if Detector._CouplingMode[0] == "Intensity":
+        if Detector.CouplingMode[0] == "Intensity":
             Para = Detector.Scalar * Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
             Para = (Para * Detector.Mesh.SinMesh * Detector.Mesh.dOmega.Radian).__abs__()**2
             Para = Para.sum() * ParaFiltering**2
@@ -36,7 +36,7 @@ def PyCoupling(Scatterer, Detector):
             Perp = Perp.sum() * PerpFiltering**2
 
 
-        if Detector._CouplingMode[0] == "Amplitude":
+        if Detector.CouplingMode[0] == "Amplitude":
             Para = (Detector.Scalar * Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian))
             Para = Para * Detector.Mesh.SinMesh * Detector.Mesh.dOmega.Radian
             Para = Para.sum().__abs__()**2 * ParaFiltering**2
@@ -47,12 +47,12 @@ def PyCoupling(Scatterer, Detector):
 
         return Para + Perp
 
-    if Detector._CouplingMode[1] == 'Mean':
-        if Detector._CouplingMode[0] == "Intensity":
+    if Detector.CouplingMode[1] == 'Mean':
+        if Detector.CouplingMode[0] == "Intensity":
             Para = np.sum( np.abs( Detector.Scalar * Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian) )**2 *  Detector.Mesh.dOmega.Radian) / Detector.Mesh.Omega.Radian
             Perp = np.sum( np.abs( Detector.Scalar * Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian) )**2 *  Detector.Mesh.dOmega.Radian) / Detector.Mesh.Omega.Radian
 
-        if Detector._CouplingMode[0] == "Amplitude":
+        if Detector.CouplingMode[0] == "Amplitude":
             Para = np.sum( np.abs( Detector.Scalar * Scatterer.Parallel(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian) )**2 *  Detector.Mesh.dOmega.Radian) / Detector.Mesh.Omega.Radian
             Perp = np.sum( np.abs( Detector.Scalar * Scatterer.Perpendicular(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian) )**2 *  Detector.Mesh.dOmega.Radian) / Detector.Mesh.Omega.Radian
 
@@ -63,8 +63,8 @@ def PyCoupling(Scatterer, Detector):
 def Coupling(Scatterer, Detector):
     FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
 
-    if Detector._CouplingMode[1] == 'Centered':
-        if Detector._CouplingMode[0] == "Intensity":
+    if Detector.CouplingMode[1] == 'Centered':
+        if Detector.CouplingMode[0] == "Intensity":
             Para, Perp = IntensityPointCoupling(Scalar0       = Detector.Scalar,
                                                 Parallel      = FarFieldPara,
                                                 Perpendicular = FarFieldPerp,
@@ -74,7 +74,7 @@ def Coupling(Scatterer, Detector):
 
             return Para + Perp
 
-        if Detector._CouplingMode[0] == "Amplitude":
+        if Detector.CouplingMode[0] == "Amplitude":
             Para, Perp = AmplitudePointCoupling(Scalar0       = Detector.Scalar,
                                                 Parallel      = FarFieldPara,
                                                 Perpendicular = FarFieldPerp,
@@ -85,9 +85,9 @@ def Coupling(Scatterer, Detector):
             return Para + Perp
 
 
-    if Detector._CouplingMode[1] == 'Mean':
+    if Detector.CouplingMode[1] == 'Mean':
 
-        if Detector._CouplingMode[0] == "Intensity":
+        if Detector.CouplingMode[0] == "Intensity":
 
             Para, Perp = IntensityMeanCoupling(Scalar0      = Detector.Scalar,
                                               Parallel      = FarFieldPara,
@@ -99,7 +99,7 @@ def Coupling(Scatterer, Detector):
 
             return Para + Perp
 
-        if Detector._CouplingMode[0] == "Amplitude":
+        if Detector.CouplingMode[0] == "Amplitude":
             Para, Perp = AmplitudeMeanCoupling(Scalar0       = Detector.Scalar,
                                                Parallel      = FarFieldPara,
                                                Perpendicular = FarFieldPerp,

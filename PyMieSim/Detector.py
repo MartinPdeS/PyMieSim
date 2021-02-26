@@ -39,7 +39,7 @@ class Photodiode(BaseDetector, MeshProperty):
                  CouplingMode: str    = 'Centered'):
 
 
-        self._CouplingMode = ('Intensity', CouplingMode)
+        self.CouplingMode = ('Intensity', CouplingMode)
 
         self._GammaOffset, self._PhiOffset = GammaOffset, PhiOffset
 
@@ -151,7 +151,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         assert NA < 1, "Numerical aperture has to be under 1 radian"
 
-        self._CouplingMode = ('Amplitude', CouplingMode)
+        self.CouplingMode = ('Amplitude', CouplingMode)
 
         self._Filter = _Polarization(Filter)
 

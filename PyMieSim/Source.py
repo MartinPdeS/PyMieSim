@@ -83,8 +83,7 @@ class GaussianBeam(BaseSource):
                  NA:           float = 0.1,
                  Polarization: float = 0,
                  E0:           float = 1,
-                 p:            int   = 20,
-                 offset:       list = None):
+                 offset:       list  = None):
 
         self.Wavelength = Wavelength
         self.k = 2 * pi / Wavelength
@@ -105,9 +104,26 @@ class GaussianBeam(BaseSource):
         self.R0 = sqrt(self.Offset[0]**2 + self.Offset[1]**2)
         self.xi = arccos(self.Offset[0]/self.R0)
 
-        termP = sqrt( 2.3 * p * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
 
-        NBSC = (max(1, self.R0 - 1/2 - termP), self.R0 - 1/2 + termP)
+    def GetMaxOrder(self, Precision=20):
+        """Method return the range of order to evaluate the BSC's.
+        However one should be cautious as a high precision will lead to
+        numerical overflow.
+
+        Parameters
+        ----------
+        Precision : :class:`int`
+            Precision parameter (standard is 20)
+
+        Returns
+        -------
+        :class:`tuple`
+            Tuple containing the minimum and maximum order to evaluate.
+
+        """
+        termP = sqrt( 2.3 * Precision * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
+
+        return (max(1, self.R0 - 1/2 - termP), self.R0 - 1/2 + termP)
 
 
     def BSC(self, n, m, mode='TE'):
@@ -263,6 +279,66 @@ class GaussianBeam(BaseSource):
         sub = array(sub, copy=False).squeeze()
 
         return integrate( y=sub, x=Theta)* self.I_0(*param)
+
+
+    def Anm_integrand(self, n, m, Num=200):
+        """
+        Method returns:
+
+        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+          (\\beta) d \\theta`
+
+        """
+        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
+
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        sub = []
+        for theta in Theta:
+            Q = self.Q_Spherical(r, theta)
+            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
+            param = (n, m, rhon, Q, theta)
+            term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
+            term0 *= self.I_2(*param)
+            term0 -= self.I_3(*param) * self.ImHat(m, beta)
+            term0 *= self.I_1(*param)
+
+            sub.append(-term0)
+
+        sub = array(sub, copy=False).squeeze()
+
+        return sub
+
+
+    def Bnm_integrand(self, n, m, Num=200):
+        """
+        Method returns:
+
+        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
+          (\\beta) d \\theta`
+
+        """
+        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
+
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        sub = []
+        for theta in Theta:
+            Q = self.Q_Spherical(r, theta)
+            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
+            param = (n, m, rhon, Q, theta)
+            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
+            term0 *= self.I_2(*param)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta)
+            term0 *= self.I_1(*param)
+
+            sub.append(-term0)
+
+        sub = array(sub, copy=False).squeeze()
+
+        return sub
 
 
     def ImHat(self, m, beta):
