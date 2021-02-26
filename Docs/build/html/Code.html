@@ -363,10 +363,17 @@ used for computation.</dd>
 <span id="class-sources"></span><h2>Class: Sources<a class="headerlink" href="#module-PyMieSim.Source" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="PyMieSim.Source.GaussianBeam">
-<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float</em>, <em>NA: float = 0.1</em>, <em>Polarization: float = 0</em>, <em>E0: float = 1</em>, <em>p: int = 20</em>, <em>offset: list = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float</em>, <em>NA: float = 0.1</em>, <em>Polarization: float = 0</em>, <em>E0: float = 1</em>, <em>offset: list = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Anm">
 <code class="descname">Anm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}          (\beta) d \theta\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Anm_integrand">
+<code class="descname">Anm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm_integrand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
 <p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}          (\beta) d \theta\)</span></p>
 </dd></dl>
@@ -401,6 +408,13 @@ used for computation.</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.Bnm_integrand">
+<code class="descname">Bnm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm_integrand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}          (\beta) d \theta\)</span></p>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.EField">
 <code class="descname">EField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.EField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Value of the electric Field (First Order)
@@ -414,6 +428,22 @@ ref[2]:Eq:6
 <dd><p>Value of the electric Field (First Order)
 ref[2]:Eq:10
 <span class="math notranslate nohighlight">\(E_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -x_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\)</span>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.GetMaxOrder">
+<code class="descname">GetMaxOrder</code><span class="sig-paren">(</span><em>Precision=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetMaxOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetMaxOrder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return the range of order to evaluate the BSC’s.
+However one should be cautious as a high precision will lead to
+numerical overflow.</p>
+<dl class="docutils">
+<dt>Precision <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd>Precision parameter (standard is 20)</dd>
+</dl>
+<dl class="docutils">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></dt>
+<dd>Tuple containing the minimum and maximum order to evaluate.</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -587,24 +617,6 @@ e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
 <dd>Angle of polarization filter in front of detector. Default is “None”</dd>
 <dt>CouplingMode <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></dt>
 <dd>Methode for computing mode coupling. Either Centered or Mean.</dd>
-</dl>
-<dl class="docutils">
-<dt>_CouplingMode <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>_CouplingMode</cite>.</dd>
-<dt>_Filter <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>_Filter</cite>.</dd>
-<dt>ModeNumber <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>ModeNumber</cite>.</dd>
-<dt>Mesh <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>Mesh</cite>.</dd>
-<dt>Structured <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>Structured</cite>.</dd>
-<dt>StructuredFarField <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>StructuredFarField</cite>.</dd>
-<dt>Scalar <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>Scalar</cite>.</dd>
-<dt>UnstructuredFarField <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
-<dd>Description of attribute <cite>UnstructuredFarField</cite>.</dd>
 </dl>
 <dl class="method">
 <dt id="PyMieSim.Detector.LPmode.Coupling">

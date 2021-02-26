@@ -197,7 +197,7 @@
                  <span class="n">CouplingMode</span><span class="p">:</span> <span class="nb">str</span>    <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">):</span>
 
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_CouplingMode</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Intensity&#39;</span><span class="p">,</span> <span class="n">CouplingMode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CouplingMode</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Intensity&#39;</span><span class="p">,</span> <span class="n">CouplingMode</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_GammaOffset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PhiOffset</span> <span class="o">=</span> <span class="n">GammaOffset</span><span class="p">,</span> <span class="n">PhiOffset</span>
 
@@ -269,25 +269,6 @@
 <span class="sd">    CouplingMode : :class:`str`</span>
 <span class="sd">        Methode for computing mode coupling. Either Centered or Mean.</span>
 
-<span class="sd">    Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    _CouplingMode : type</span>
-<span class="sd">        Description of attribute `_CouplingMode`.</span>
-<span class="sd">    _Filter : type</span>
-<span class="sd">        Description of attribute `_Filter`.</span>
-<span class="sd">    ModeNumber : type</span>
-<span class="sd">        Description of attribute `ModeNumber`.</span>
-<span class="sd">    Mesh : type</span>
-<span class="sd">        Description of attribute `Mesh`.</span>
-<span class="sd">    Structured : type</span>
-<span class="sd">        Description of attribute `Structured`.</span>
-<span class="sd">    StructuredFarField : type</span>
-<span class="sd">        Description of attribute `StructuredFarField`.</span>
-<span class="sd">    Scalar : type</span>
-<span class="sd">        Description of attribute `Scalar`.</span>
-<span class="sd">    UnstructuredFarField : type</span>
-<span class="sd">        Description of attribute `UnstructuredFarField`.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
@@ -309,7 +290,7 @@
 
         <span class="k">assert</span> <span class="n">NA</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Numerical aperture has to be under 1 radian&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_CouplingMode</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">,</span> <span class="n">CouplingMode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">CouplingMode</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Amplitude&#39;</span><span class="p">,</span> <span class="n">CouplingMode</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_Filter</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Filter</span><span class="p">)</span>
 

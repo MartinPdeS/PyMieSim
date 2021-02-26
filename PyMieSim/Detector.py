@@ -109,26 +109,8 @@ class LPmode(BaseDetector, MeshProperty):
     Filter : :class:`float`
         Angle of polarization filter in front of detector. Default is "None"
     CouplingMode : :class:`str`
-        Methode for computing mode coupling. Either Centered or Mean.
+        Methode for computing mode coupling. Either [Centered or Mean].
 
-    Attributes
-    ----------
-    _CouplingMode : type
-        Description of attribute `_CouplingMode`.
-    _Filter : type
-        Description of attribute `_Filter`.
-    ModeNumber : type
-        Description of attribute `ModeNumber`.
-    Mesh : type
-        Description of attribute `Mesh`.
-    Structured : type
-        Description of attribute `Structured`.
-    StructuredFarField : type
-        Description of attribute `StructuredFarField`.
-    Scalar : type
-        Description of attribute `Scalar`.
-    UnstructuredFarField : type
-        Description of attribute `UnstructuredFarField`.
 
     """
 
@@ -162,18 +144,19 @@ class LPmode(BaseDetector, MeshProperty):
                                   PhiOffset   = PhiOffset,
                                   GammaOffset = GammaOffset)
 
-        self.Structured = self.StructuredFarField(Num = InterpSampling)
 
-        self.Scalar = self.UnstructuredFarField()
+        self.Structured = self.FarField(Num = InterpSampling, Interpolate=False)
+
+        self.Scalar = self.FarField(Num = InterpSampling, Interpolate=True)
 
         if False:
             PlotUnstructureData(self.Scalar, self.Mesh.base.Theta, self.Mesh.base.Phi)
 
 
 
-    def StructuredFarField(self, Num, SFactor=5):
+    def FarField(self, Num, Interpolate, SFactor=5):
         """
-        Compute the FarField in a structured Mesh.
+        Compute the FarField in a structured Mesh and interpolate the Mesh.
 
         Parameters
         ----------
@@ -188,6 +171,7 @@ class LPmode(BaseDetector, MeshProperty):
             Structured FarField value.
 
         """
+
         Fiber = SMF28()
 
         temp = fibermodes.field.Field(Fiber.source,
@@ -200,13 +184,11 @@ class LPmode(BaseDetector, MeshProperty):
 
         if self.ModeNumber[2] == 'h': temp = temp.T
 
-        return FraunhoferDiffraction(temp)
+        temp = FraunhoferDiffraction(temp)
 
+        if not Interpolate: return FraunhoferDiffraction(temp)
 
-
-    def UnstructuredFarField(self):
-
-        shape = self.Structured.shape
+        shape = temp.shape
 
         x, y = np.mgrid[-50: 50: complex(shape[0]), -50: 50: complex(shape[1])]
 
@@ -216,7 +198,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         return interp_at(x           = self._phi.flatten(),
                          y           = self._theta.flatten(),
-                         v           = self.Structured.astype(np.complex).flatten(),
+                         v           = temp.astype(np.complex).flatten(),
                          xp          = self.Mesh.base.Phi,
                          yp          = self.Mesh.base.Theta,
                          algorithm   = 'linear',
