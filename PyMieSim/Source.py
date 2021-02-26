@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from scipy.integrate import trapz as integrate
-from scipy.special import spherical_jn as jn, lpmv
-from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, meshgrid
+from scipy.special import spherical_jn as jn
+from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
-from PyMieSim.Special import Pinm, NPnm, Pnm, Xi, _Psi, Pnm_, r8_factorial
+from PyMieSim.Special import Xi, Pnm_, r8_factorial
 
 class PlaneWave(BaseSource):
     def __init__(self,
@@ -42,7 +42,7 @@ class PlaneWave(BaseSource):
         Returns
         -------
         class:`float`
-            Expansion coefficient.
+            Beam shape coefficient of order n and degree m.
         """
         if m not in [-1,1]: return 0
 
@@ -83,28 +83,56 @@ class GaussianBeam(BaseSource):
                  NA:           float = 0.1,
                  Polarization: float = 0,
                  E0:           float = 1,
-                 p:            int   = 20):
+                 p:            int   = 20,
+                 offset:       list = None):
 
         self.Wavelength = Wavelength
         self.k = 2 * pi / Wavelength
         self.Polarization = _Polarization(Polarization)
         self.E0 = E0
         self.NA = NA
-        self.w0 = 2.8476e-6#2 * self.Wavelength / (pi * NA)
+        self.w0 = 2 * self.Wavelength / (pi * NA)
         self.s = 1/(self.k*self.w0)
 
+        if offset is None:
+            self.offset = array( [0,0,0] ) + 1e-16
+        else:
+            self.offset = array( offset )
 
-        self.x0, self.y0, self.z0 = 5e-6, 5e-6, 5e-6
-        self.X0 = self.x0 * self.k
-        self.Y0 = self.y0 * self.k
-        self.Z0 = self.z0 * self.k
-        self.R0 = sqrt(self.X0**2 + self.Y0**2)
-        self.xi = arccos(self.X0/self.R0)
+        self.Offset = self.offset * self.k
 
-        termP = sqrt( 2.3 * p * ( self.s**(-2) + 4 * self.s**2 * self.Z0**2 ) )
+
+        self.R0 = sqrt(self.Offset[0]**2 + self.Offset[1]**2)
+        self.xi = arccos(self.Offset[0]/self.R0)
+
+        termP = sqrt( 2.3 * p * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
 
         NBSC = (max(1, self.R0 - 1/2 - termP), self.R0 - 1/2 + termP)
 
+
+    def BSC(self, n, m, mode='TE'):
+        """Return the beam shape coefficients
+         (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a focused Gaussian
+         beam using the quadrature method (ref[2]:Eq:17).
+
+        Parameters
+        ----------
+        n : class:`int`
+            Order of the expansion.
+        m : class:`int`
+            Description of parameter `m`.
+        mode : class:`str`
+            Mode of the plane wave, either 'TE' or 'TM'.
+        Returns
+        -------
+        class:`float`
+            Beam shape coefficient of order n and degree m.
+        """
+        if m not in [-1,1]: return 0
+
+        if mode == 'TM': return self.Anm(n, m)
+
+        if mode == 'TE': return self.Bnm(n, m)
 
 
     def expansion(self, n):
@@ -118,7 +146,11 @@ class GaussianBeam(BaseSource):
         """
 
         Q = self.Q(x,y,z)
-        return -1j * Q * exp(1j * Q * ( (x-self.x0)**2 + (y-self.y0)**2 )/self.w0**2 )
+        term = (x-self.offset[0])**2 + (y-self.offset[1])**2
+        term *= 1j * Q / self.w0**2
+        term = -1j * Q * exp(term)
+        return term
+        #return -1j * Q * exp(1j * Q * ( (x-self.offset[0])**2 + (y-self.offset[1])**2 )/self.w0**2 )
 
 
     def Phi0_Spherical(self, r, phi, theta):
@@ -129,7 +161,7 @@ class GaussianBeam(BaseSource):
         Q = self.Q_Spherical(r, theta)
         term0 = -1j * Q
         term1 = 1j * Q / self.w0**2
-        term2 = ( r * sin(theta) * cos(phi) - self.x0 )**2
+        term2 = ( r * sin(theta) * cos(phi) - self.offset[0] )**2
         term3 = ( r * sin(theta) * sin(phi) - self.y0 )**2
 
         return term0 * exp(term1 * ( term2 + term3 ) )
@@ -140,14 +172,14 @@ class GaussianBeam(BaseSource):
         :math:`Q_{cartesian} =\\frac{1}{2 ( z - z_0 )/k w_0^2 - i}`
 
         """
-        return 1/( 2 * (z-self.z0)/(self.k * self.w0**2) - 1j )
+        return 1/( 2 * (z-self.offset[0])/(self.k * self.w0**2) - 1j )
 
     def Q_Spherical(self, r, theta):
         """Method returns
         :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
 
         """
-        return 1/( 2 * ( r * cos(theta) -self.z0)/(self.k * self.w0**2 ) - 1j )
+        return 1/( 2 * ( r * cos(theta) -self.offset[0])/(self.k * self.w0**2 ) - 1j )
 
     def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients
@@ -174,39 +206,52 @@ class GaussianBeam(BaseSource):
 
 
 
-    def Bnm(self, n, m):
+    def Bnm(self, n, m, Num=200):
+        """
+        Method returns:
 
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num+2)
+        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
+          (\\beta) d \\theta`
 
-        rhon = n + 0.5
-        r = rhon/self.k
-
-        sub = []
-        for theta in Theta:
-            Q = 1/( 2 * ( r * cos(theta) -self.z0)/(self.k * self.w0**2 ) - 1j )
-            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon
-            param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
-            term0 *= self.I_2(*param)
-            term0 -= self.I_4(*param) * self.ImHat(m, beta)
-            term0 *= self.I_1(*param)
-
-            sub.append(term0)
-
-        sub = array(sub, copy=False).squeeze() * self.I_0(*param)
-
-        return term0 * integrate( y=sub, x=Theta)
-
-
-    def Anm(self, n, m, Num=200):
-
+        """
         Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
         sub = []
         for theta in Theta:
-            Q = 1 / ( 2 * ( r * cos(theta) -self.z0)/(self.k * self.w0**2 ) - 1j )
+            Q = self.Q_Spherical(r, theta)
+            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
+            param = (n, m, rhon, Q, theta)
+            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
+            term0 *= self.I_2(*param)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta)
+            term0 *= self.I_1(*param)
+
+            sub.append(-term0)
+
+        sub = array(sub, copy=False).squeeze()
+
+        return integrate( y=sub, x=Theta)* self.I_0(*param)
+
+
+    def Anm(self, n, m, Num=200):
+        """
+        Method returns:
+
+        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+          (\\beta) d \\theta`
+
+        """
+        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
+
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        sub = []
+        for theta in Theta:
+            Q = self.Q_Spherical(r, theta)
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
             term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
@@ -216,30 +261,54 @@ class GaussianBeam(BaseSource):
 
             sub.append(-term0)
 
-
         sub = array(sub, copy=False).squeeze()
-
-
 
         return integrate( y=sub, x=Theta)* self.I_0(*param)
 
 
     def ImHat(self, m, beta):
+        """
+        Method returns:
+
+        :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
+
+        """
         return exp(-beta - 1j * m * self.xi ) * self.Im(m, beta)
 
     def Im(self, m, beta):
+        """
+        Method modified Bessel function :math:`I_m(\beta)` from ref[2]:Eq:16
+
+        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi}
+        e^{z \\cos(\\phi) - i m \\phi} d\\phi`
+
+        """
         x = linspace(0, 2*pi, 300)
         y = exp(beta * cos(x) - 1j*m*x)
         return 1/(2*pi) * integrate(y=y, x=x, axis=0)
 
     def I_0(self, n, m, rhon, Q, theta):
+        """
+        Method returns :math:`\gamma_0` from ref[2]:Eq:18
+
+        :math:`\\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
+
+        """
         term0 = (-1j)**n * (rhon)**2
         term1 = (2*n+1) * Xi(n, rhon)
-        term2 = exp(-1j * self.Z0)
+        term2 = exp(-1j * self.Offset[2])
 
         return term0 / term1 * term2
 
     def I_1(self, n, m, rhon, Q, theta):
+        """
+        Method returns :math:`\gamma_1` from ref[2]:Eq:19
+
+        :math:`Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
+          \\sin(\\theta)`
+
+        """
         factor = ( 2 * n + 1 ) * r8_factorial(n - m)
         factor /= ( 2 * r8_factorial( n + m ) )
 
@@ -251,13 +320,31 @@ class GaussianBeam(BaseSource):
         return Q * exp(term1 + term3 ) * term4
 
     def I_2(self, n, m, rhon, Q, theta):
+        """
+        Method returns :math:`\gamma_2` from ref[2]:Eq:19
+
+        :math:`\\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
+
+        """
         return ( 2 * Q * self.s**2 * rhon * cos(theta) - 1 ) * sin(theta)
 
     def I_3(self, n, m, rhon, Q, theta):
-        return 4 * Q * self.s**2 * self.X0 * cos(theta)
+        """
+        Method returns :math:`\gamma_3` from ref[2]:Eq:19
+
+        :math:`4 Q s^2 X_0 \\cos(\\theta)`
+
+        """
+        return 4 * Q * self.s**2 * self.Offset[0] * cos(theta)
 
     def I_4(self, n, m, rhon, Q, theta):
-        return 4 * Q * self.s**2 * self.Y0 * cos(theta)
+        """
+        Method returns :math:`\gamma_4` from ref[2]:Eq:19
+
+        :math:`4 Q s^2 Y_0 \\cos(\\theta)`
+
+        """
+        return 4 * Q * self.s**2 * self.Offset[1] * cos(theta)
 
 
     def EField(self, x, y, z):
@@ -275,11 +362,11 @@ class GaussianBeam(BaseSource):
 
         Pol = self.Polarization.Radian
 
-        FPhase = exp(1j * self.k * (z - self.z0))
+        FPhase = exp(1j * self.k * (z - self.offset[2]))
 
         return self.E0 * self.Phi0(x,y,z) * FPhase * 1, \
                0, \
-               self.E0 * self.Phi0(x,y,z) * FPhase * -2*s*_Q*(x-self.x0)/self.w0
+               self.E0 * self.Phi0(x,y,z) * FPhase * -2*s*_Q*(x-self.offset[0])/self.w0
 
 
     def HField(self, x, y, z):
@@ -293,7 +380,7 @@ class GaussianBeam(BaseSource):
         _Q = self.Q(x,y,z)
         Pol = self.Polarization.Radian
 
-        FPhase = exp(1j * self.k * (z - self.z0))
+        FPhase = exp(1j * self.k * (z - self.offset[2]))
 
         return 0, \
                self.H0 * self.Phi0(x,y,z) * FPhase * 1, \
@@ -315,7 +402,7 @@ class GaussianBeam(BaseSource):
 
         Pol = self.Polarization.Radian
 
-        FPhase = exp(1j * self.k * ( r * cos(theta) - self.z0 ) )
+        FPhase = exp(1j * self.k * ( r * cos(theta) - self.offset[2] ) )
 
         term0 = self.E0 * self.Phi0_Spherical(r, phi, theta)
 
@@ -323,7 +410,7 @@ class GaussianBeam(BaseSource):
 
         term2 =  2 * _Q / ( self.k * self.w0**2 ) * cos(theta)
 
-        term3 = (r * sin(theta) * cos(phi) - self.x0)
+        term3 = (r * sin(theta) * cos(phi) - self.offset[0])
 
         Er = term0 * (term1 - term2 * term3) * FPhase
 
@@ -344,7 +431,7 @@ class GaussianBeam(BaseSource):
 
         Pol = self.Polarization.Radian
 
-        FPhase = exp(1j * self.k * ( r * cos(theta) - self.z0 ) )
+        FPhase = exp(1j * self.k * ( r * cos(theta) - self.offset[2] ) )
 
         term0 = self.H0 * self.Phi0_Spherical(r, phi, theta)
 

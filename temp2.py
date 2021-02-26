@@ -2,9 +2,11 @@ from PyMieSim.Source import GaussianBeam
 import matplotlib.pyplot as plt
 import numpy as np
 
-beam = GaussianBeam(Wavelength=0.632e-6,
-                    NA           = 0.8,
-                    Polarization = 0)
+beam = GaussianBeam(Wavelength   = 0.632e-6,
+                    NA           = 0.15,
+                    Polarization = 0,
+                    offset       = [5e-6,5e-6,5-6])
+
 
 
 

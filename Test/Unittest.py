@@ -5,7 +5,7 @@ from unittest import TestCase
 from numpy import linspace, pi
 
 from PyMieSim.Scatterer import Sphere, WMSample
-from PyMieSim.Source import PlaneWave
+from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.GLMT import SPF
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
@@ -113,6 +113,40 @@ class PrintingTest(TestCase):
 
         print('Test 10: passed')
 
+    def test11(self):
+        beam = GaussianBeam(Wavelength   = 0.632e-6,
+                            NA           = 0.15,
+                            Polarization = 0,
+                            offset       = [5e-6,5e-6,5-6])
+
+        beam.Amn(1,0)
+        beam.Bmn(1,1)
+
 if __name__ == '__main__':
     test = PrintingTest()
     test.Run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# -
