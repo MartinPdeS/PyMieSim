@@ -7,6 +7,7 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
+#include <pybind11/numpy.h>
 #include <pybind11/stl_bind.h>
 #include <pybind11/stl.h>
 namespace py = pybind11;
@@ -15,9 +16,8 @@ namespace py = pybind11;
 #define PI 3.14159265
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
-typedef std::vector<std::vector<complex128>> iMatrix;
-
-
+typedef py::array_t<double> ndarray;
+typedef py::array_t<complex128> Cndarray;
 
 //REF: PhD Thesis   ON LIGHT SCATTERING BY NANOPARTICLES WITH CONVENTIONAL AND NON-CONVENTIONAL OPTICAL PROPERTIES
 //REF: PhD Thesis https://www.google.com/url?sa=i&source=web&cd=&ved=2ahUKEwjvg4yF3cbtAhUPac0KHQj_BZkQ3YkBegQIARAE&url=http%3A%2F%2Frepositorio.unican.es%2Fxmlui%2Fbitstream%2Fhandle%2F10902%2F1566%2F2de8.BGCparteIcap2.pdf%3Fsequence%3D3&psig=AOvVaw18kz43dplVLIwhnDBQTTYI&ust=1607798286433047
@@ -164,8 +164,7 @@ C_Qext(iVec*                           an,
 
 
 static std::pair<double, double>
-C_GetEfficiencies(const double  m,
-                  const double  x)
+Efficiencies(const double  m, const double  x)
 
 {
     iVec *an = new iVec;
@@ -221,15 +220,80 @@ C_GetQext(const double            m,
 
 //____________________________PYBIND11 BELOW__________________________________
 
+static std::pair<Cndarray, Cndarray>
+S1S2(const double            index,
+     const double            diameter,
+     const double            wavelength,
+     const double            nMedium,
+     double                  *PhiPtr,
+     const long unsigned int lenght,
+     complex128*             s1s2)
+
+{
+    iVec *an = new iVec,
+         *bn = new iVec;
+
+    py::array_t<complex128> s1 = py::array_t<complex128>(lenght);
+    py::array_t<complex128> s2 = py::array_t<complex128>(lenght);
+
+    py::buffer_info buf0 = s1.request();
+    py::buffer_info buf1 = s2.request();
+
+
+    complex128 *s1Ptr = (complex128 *) buf0.ptr,
+               *s2Ptr = (complex128 *) buf1.ptr;
+
+    double m = index / nMedium;
+
+    double w = wavelength / nMedium;
+
+    double x = PI * diameter / w;
+
+    std::vector<double> *n, *n2;
+
+    const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
+
+    std::tie(n, n2) = Arrange(1, OrderMax + 1);
+
+    (x < 0.5) ? LowFrequencyMie_ab(m, x, an, bn) : HighFrequencyMie_ab(m, x, OrderMax, n, an, bn);
+
+    const long unsigned int anLength = an->size();
+
+    iVec S1 = iVec(lenght) ;
+    iVec S2 = iVec(lenght) ;
+
+    iVec *pin = new iVec(OrderMax);
+    iVec *taun = new iVec(OrderMax);
+    complex128 j (0., 1.0);
+
+    complex128 *temp0 = &s1s2[0], *temp1 = &s1s2[lenght] ;
+
+    for (auto i = 0; i < lenght; i++){
+
+        MiePiTau(cos( PhiPtr[i] ), OrderMax, pin, taun);
+
+        for (auto k = 0; k < anLength ; k++){
+            s1Ptr[k] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
+            s2Ptr[k] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+
+          }
+    temp0++ ;
+    temp1++ ;
+    }
+
+    return std::make_pair(s1,s2);
+}
+
+
 
 static int
-PyC_GetS1S2(const double            index,
-          const double            diameter,
-          const double            wavelength,
-          const double            nMedium,
-          Vec           phi,
-          const long unsigned int lenght,
-          complex128*             S1S2)
+_S1S2(const double            index,
+     const double            diameter,
+     const double            wavelength,
+     const double            nMedium,
+     double                  *PhiPtr,
+     const long unsigned int lenght,
+     complex128*             s1s2)
 
 {
     iVec *an = new iVec;
@@ -258,13 +322,13 @@ PyC_GetS1S2(const double            index,
     iVec *taun = new iVec(OrderMax);
     complex128 j (0., 1.0);
 
-    complex128 *temp0 = &S1S2[0], *temp1 = &S1S2[lenght] ;
+    complex128 *temp0 = &s1s2[0], *temp1 = &s1s2[lenght] ;
 
-    for (long unsigned int i = 0; i < lenght; i++){
+    for (auto i = 0; i < lenght; i++){
 
-        MiePiTau(cos( phi[i] ), OrderMax, pin, taun);
+        MiePiTau(cos( PhiPtr[i] ), OrderMax, pin, taun);
 
-        for (long unsigned int k = 0; k < anLength ; k++){
+        for (auto k = 0; k < anLength ; k++){
             *temp0 += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
             *temp1 += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
@@ -277,96 +341,83 @@ PyC_GetS1S2(const double            index,
 }
 
 
-
-static std::pair<iVec, iVec>
-PyFieldsNoPolarization(const double  index,
-                     const double  diameter,
-                     const double  wavelength,
-                     const double  nMedium,
-                     const Vec ThetaMesh,
-                     const Vec PhiMesh,
-                     const int     Lenght)
-  {
-
-  complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
-
-  iVec Parallel, Perpendicular;
-  const complex128 j (0., 1.0) ;
-
-  double temp0 ;
-  double temp1 = 1./sqrt(2.);
-  complex128 temp2;
-
-  PyC_GetS1S2(index,
-            diameter,
-            wavelength,
-            nMedium,
-            PhiMesh,
-            Lenght,
-            S1S2);
-
-  for (long unsigned int k=0; k < Lenght; k++ )
-  {
-    temp0 = ThetaMesh[k] ;
-
-    Parallel.push_back( S1S2[k] * temp1 ) ;
-    Perpendicular.push_back( S1S2[k + Lenght] * temp1 ) ;
-
-  }
-
-  free(S1S2) ;
-  return std::make_pair(Parallel, Perpendicular);
-}
-
-
-
-
-static std::pair<iVec, iVec>
-PyFields(double  index,
-       double  diameter,
-       double  wavelength,
-       double  nMedium,
-       Vec ThetaMesh,
-       Vec PhiMesh,
-       const int     Lenght,
-       double        Polarization)
+static std::pair<Cndarray, Cndarray>
+Fields(double     index,
+       double     diameter,
+       double     wavelength,
+       double     nMedium,
+       ndarray    PhiMesh,
+       ndarray    ThetaMesh,
+       double     Polarization,
+       double     E0,
+       double     R,
+       int        Lenght)
 {
+  py::buffer_info PhiBuffer   = PhiMesh.request();
+  py::buffer_info ThetaBuffer = ThetaMesh.request();
 
-  complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
+  py::array_t<complex128> result0 = py::array_t<complex128>(PhiMesh.size());
+  py::array_t<complex128> result1 = py::array_t<complex128>(PhiMesh.size());
 
-  iVec Parallel, Perpendicular;
+
+  py::buffer_info buf0 = result0.request();
+  py::buffer_info buf1 = result1.request();
+
+  double *PhiPtr   = (double *) PhiBuffer.ptr,
+         *ThetaPtr = (double *) ThetaBuffer.ptr;
+
+  complex128 *ptr0 = (complex128 *) buf0.ptr,
+             *ptr1 = (complex128 *) buf1.ptr;
+
+  double k = 2. * PI / wavelength;
+
+  complex128* s1s2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
+
+  ndarray Parallel, Perpendicular;
 
   const complex128 j (0., 1.0) ;
 
   double temp0 ;
   complex128 temp2 ;
 
-  PyC_GetS1S2(index,
-            diameter,
-            wavelength,
-            nMedium,
-            PhiMesh,
-            Lenght,
-            S1S2);
+  _S1S2(index,
+       diameter,
+       wavelength,
+       nMedium,
+       PhiPtr,
+       Lenght,
+       s1s2);
 
-  for (long unsigned int k=0; k < Lenght; k++ )
+  complex128 propagator = E0 / (k * R) * exp(-j*k*R);
+  for (auto k=0; k < Lenght; k++ )
   {
-    temp0 = ThetaMesh[k] ;
+    temp0 = ThetaPtr[k] ;
+    ptr0[k] = j* propagator * s1s2[k] * (complex128) abs(cos(temp0 + Polarization));
+    ptr1[k] =- propagator * s1s2[k + Lenght] * (complex128) abs(sin(temp0 + Polarization));
 
-    Parallel.push_back( S1S2[k] * (complex128) abs(cos(temp0 + Polarization)) ) ;
-    Perpendicular.push_back( S1S2[k + Lenght] * (complex128) abs(sin(temp0 + Polarization)) ) ;
   }
 
-  free(S1S2) ;
-  return std::make_pair(Parallel, Perpendicular);
+  free(s1s2);
+
+  return std::make_pair(result0,result1);
 }
 
 
 PYBIND11_MODULE(Sphere, module) {
-    //py::module Sphere = module.def_submodule("Sphere", "Sphere scattering object");
-    module.def("PyFieldsNoPolarization", &PyFieldsNoPolarization, "Return S1S2");
-    module.def("PyFields", &PyFields, "Return S1S2");
+    module.doc() = "c++ binding module for light scattering from a spherical scatterer";
 
+    module.def("Fields",
+               &Fields,
+               "Compute the scattering far-field for a spherical scatterer");
+
+     module.def("S1S2",
+                &S1S2,
+                "Compute the scattering coefficient S1 & S2");
+
+
+      module.def("Efficiencies",
+                 &Efficiencies,
+                 "Compute the scattering efficiencies");       
 
 }
 

@@ -1171,7 +1171,7 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "PyMieSim/LMT/cpp/Sphere.pyx":157
+/* "PyMieSim/LMT/cpp/Sphere.pyx":159
  * 
  * 
  * cdef class VectorWrapper:             # <<<<<<<<<<<<<<
@@ -1971,7 +1971,7 @@ static PyObject *__pyx_n_s_wavelength;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_GetS1S2(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_phi); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_2GetEfficiencies(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_m, double __pyx_v_x); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_ThetaMesh, PyObject *__pyx_v_PhiMesh, double __pyx_v_Polarization, double __pyx_v_E0, double __pyx_v_R); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_PhiMesh, PyObject *__pyx_v_ThetaMesh, double __pyx_v_Polarization, double __pyx_v_E0, double __pyx_v_R); /* proto */
 static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper___cinit__(struct __pyx_obj_8PyMieSim_3LMT_6Sphere_VectorWrapper *__pyx_v_self, Py_ssize_t __pyx_v_ncols); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_2add_row(struct __pyx_obj_8PyMieSim_3LMT_6Sphere_VectorWrapper *__pyx_v_self); /* proto */
 static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct __pyx_obj_8PyMieSim_3LMT_6Sphere_VectorWrapper *__pyx_v_self, Py_buffer *__pyx_v_buffer, CYTHON_UNUSED int __pyx_v_flags); /* proto */
@@ -2629,7 +2629,7 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_2GetEfficiencies(CYTHON_UNUSED 
  */
 
 static PyObject *__pyx_pw_8PyMieSim_3LMT_6Sphere_5GetFields(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_ThetaMesh, PyObject *__pyx_v_PhiMesh, double __pyx_v_Polarization, double __pyx_v_E0, double __pyx_v_R, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_PhiMesh, PyObject *__pyx_v_ThetaMesh, double __pyx_v_Polarization, double __pyx_v_E0, double __pyx_v_R, CYTHON_UNUSED int __pyx_skip_dispatch) {
   PyArrayObject *__pyx_v_ThetaVectorView = 0;
   double *__pyx_v_ThetaVec_ptr;
   PyArrayObject *__pyx_v_PhiVectorView = 0;
@@ -2637,6 +2637,7 @@ static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, 
   PyObject *__pyx_v_k = NULL;
   struct __pyx_obj_8PyMieSim_3LMT_6Sphere_VectorWrapper *__pyx_v_EPhi = NULL;
   struct __pyx_obj_8PyMieSim_3LMT_6Sphere_VectorWrapper *__pyx_v_ETheta = NULL;
+  PyObject *__pyx_v_propagator = NULL;
   PyObject *__pyx_v_arr0 = NULL;
   PyObject *__pyx_v_arr1 = NULL;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_PhiVectorView;
@@ -2655,8 +2656,8 @@ static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, 
   int __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
-  PyObject *__pyx_t_11 = NULL;
-  __pyx_t_double_complex __pyx_t_12;
+  __pyx_t_double_complex __pyx_t_11;
+  PyObject *__pyx_t_12 = NULL;
   PyObject *__pyx_t_13 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
@@ -2972,233 +2973,193 @@ static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, 
   }
   __pyx_L3:;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":148
- *                Polarization);
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":149
  * 
- *     arr0 = 1j * np.asarray(EPhi).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)             # <<<<<<<<<<<<<<
- *     arr1 = - np.asarray(ETheta).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
  * 
+ *     propagator =  E0 / (k*R) * np.exp(-1j*k*R)             # <<<<<<<<<<<<<<
+ *     arr0 = 1j * np.asarray(EPhi).squeeze() * propagator
+ *     arr1 = - np.asarray(ETheta).squeeze() * propagator
  */
-  __pyx_t_4 = PyComplex_FromDoubles(0.0, 1.0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_E0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_11, __pyx_t_3, ((PyObject *)__pyx_v_EPhi)) : __Pyx_PyObject_CallOneArg(__pyx_t_11, ((PyObject *)__pyx_v_EPhi));
-  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_R); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyNumber_Multiply(__pyx_v_k, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_11))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_11);
-    if (likely(__pyx_t_2)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_11);
-      __Pyx_INCREF(__pyx_t_2);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_11, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_CallOneArg(__pyx_t_11, __pyx_t_2) : __Pyx_PyObject_CallNoArg(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = PyNumber_Multiply(__pyx_t_4, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_E0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_11, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_R); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_11 = PyNumber_Multiply(__pyx_v_k, __pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_4, __pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_exp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_12 = __Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0));
-  __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_t_12); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_4, __pyx_v_k); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_exp); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_R); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_11 = __Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0));
+  __pyx_t_4 = __pyx_PyComplex_FromComplex(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_13 = PyNumber_Multiply(__pyx_t_3, __pyx_t_4); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __pyx_t_12 = PyNumber_Multiply(__pyx_t_4, __pyx_v_k); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = PyFloat_FromDouble(__pyx_v_R); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_13 = PyNumber_Multiply(__pyx_t_12, __pyx_t_4); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_2);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
     if (likely(__pyx_t_4)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_4);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
     }
   }
-  __pyx_t_11 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_4, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_13);
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_13) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_13);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 148, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_t_11); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_propagator = __pyx_t_3;
+  __pyx_t_3 = 0;
+
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":150
+ * 
+ *     propagator =  E0 / (k*R) * np.exp(-1j*k*R)
+ *     arr0 = 1j * np.asarray(EPhi).squeeze() * propagator             # <<<<<<<<<<<<<<
+ *     arr1 = - np.asarray(ETheta).squeeze() * propagator
+ * 
+ */
+  __pyx_t_3 = PyComplex_FromDoubles(0.0, 1.0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GetModuleGlobalName(__pyx_t_13, __pyx_n_s_np); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_13, __pyx_n_s_asarray); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
+  __pyx_t_13 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_13 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_13)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_13);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_13) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_13, ((PyObject *)__pyx_v_EPhi)) : __Pyx_PyObject_CallOneArg(__pyx_t_4, ((PyObject *)__pyx_v_EPhi));
+  __Pyx_XDECREF(__pyx_t_13); __pyx_t_13 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_1)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_1) : __Pyx_PyObject_CallNoArg(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = PyNumber_Multiply(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_4, __pyx_v_propagator); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 150, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_arr0 = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":149
- * 
- *     arr0 = 1j * np.asarray(EPhi).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
- *     arr1 = - np.asarray(ETheta).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)             # <<<<<<<<<<<<<<
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":151
+ *     propagator =  E0 / (k*R) * np.exp(-1j*k*R)
+ *     arr0 = 1j * np.asarray(EPhi).squeeze() * propagator
+ *     arr1 = - np.asarray(ETheta).squeeze() * propagator             # <<<<<<<<<<<<<<
  * 
  *     return arr0, arr1
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_asarray); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_13))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_13);
-    if (likely(__pyx_t_1)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-      __Pyx_INCREF(__pyx_t_1);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_13, function);
-    }
-  }
-  __pyx_t_11 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_1, ((PyObject *)__pyx_v_ETheta)) : __Pyx_PyObject_CallOneArg(__pyx_t_13, ((PyObject *)__pyx_v_ETheta));
-  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = NULL;
-  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
-    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_13);
-    if (likely(__pyx_t_11)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_13);
-      __Pyx_INCREF(__pyx_t_11);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_13, function);
-    }
-  }
-  __pyx_t_2 = (__pyx_t_11) ? __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_t_11) : __Pyx_PyObject_CallNoArg(__pyx_t_13);
-  __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_t_13 = PyNumber_Negative(__pyx_t_2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_E0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_11 = PyNumber_Multiply(__pyx_t_13, __pyx_t_2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_R); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_13 = PyNumber_Multiply(__pyx_v_k, __pyx_t_2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_11, __pyx_t_13); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_11, __pyx_n_s_np); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_exp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_12 = __Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0));
-  __pyx_t_11 = __pyx_PyComplex_FromComplex(__pyx_t_12); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_4 = PyNumber_Multiply(__pyx_t_11, __pyx_v_k); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = PyFloat_FromDouble(__pyx_v_R); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_4, __pyx_t_11); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = NULL;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_asarray); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-    __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_1);
-    if (likely(__pyx_t_11)) {
+    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_3)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-      __Pyx_INCREF(__pyx_t_11);
+      __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_1, function);
     }
   }
-  __pyx_t_13 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_11, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 149, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_13);
+  __pyx_t_4 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_3, ((PyObject *)__pyx_v_ETheta)) : __Pyx_PyObject_CallOneArg(__pyx_t_1, ((PyObject *)__pyx_v_ETheta));
+  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, __pyx_t_13); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_squeeze); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Negative(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-  __pyx_v_arr1 = __pyx_t_1;
-  __pyx_t_1 = 0;
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_v_propagator); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_arr1 = __pyx_t_2;
+  __pyx_t_2 = 0;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":151
- *     arr1 = - np.asarray(ETheta).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":153
+ *     arr1 = - np.asarray(ETheta).squeeze() * propagator
  * 
  *     return arr0, arr1             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_arr0);
   __Pyx_GIVEREF(__pyx_v_arr0);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_arr0);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_arr0);
   __Pyx_INCREF(__pyx_v_arr1);
   __Pyx_GIVEREF(__pyx_v_arr1);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_arr1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_arr1);
+  __pyx_r = __pyx_t_2;
+  __pyx_t_2 = 0;
   goto __pyx_L0;
 
   /* "PyMieSim/LMT/cpp/Sphere.pyx":97
@@ -3215,7 +3176,7 @@ static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, 
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
@@ -3236,6 +3197,7 @@ static PyObject *__pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(double __pyx_v_index, 
   __Pyx_XDECREF(__pyx_v_k);
   __Pyx_XDECREF((PyObject *)__pyx_v_EPhi);
   __Pyx_XDECREF((PyObject *)__pyx_v_ETheta);
+  __Pyx_XDECREF(__pyx_v_propagator);
   __Pyx_XDECREF(__pyx_v_arr0);
   __Pyx_XDECREF(__pyx_v_arr1);
   __Pyx_XGIVEREF(__pyx_r);
@@ -3250,8 +3212,8 @@ static PyObject *__pyx_pw_8PyMieSim_3LMT_6Sphere_5GetFields(PyObject *__pyx_self
   double __pyx_v_diameter;
   double __pyx_v_wavelength;
   double __pyx_v_nMedium;
-  PyObject *__pyx_v_ThetaMesh = 0;
   PyObject *__pyx_v_PhiMesh = 0;
+  PyObject *__pyx_v_ThetaMesh = 0;
   double __pyx_v_Polarization;
   double __pyx_v_E0;
   double __pyx_v_R;
@@ -3262,7 +3224,7 @@ static PyObject *__pyx_pw_8PyMieSim_3LMT_6Sphere_5GetFields(PyObject *__pyx_self
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("GetFields (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_index,&__pyx_n_s_diameter,&__pyx_n_s_wavelength,&__pyx_n_s_nMedium,&__pyx_n_s_ThetaMesh,&__pyx_n_s_PhiMesh,&__pyx_n_s_Polarization,&__pyx_n_s_E0,&__pyx_n_s_R,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_index,&__pyx_n_s_diameter,&__pyx_n_s_wavelength,&__pyx_n_s_nMedium,&__pyx_n_s_PhiMesh,&__pyx_n_s_ThetaMesh,&__pyx_n_s_Polarization,&__pyx_n_s_E0,&__pyx_n_s_R,0};
     PyObject* values[9] = {0,0,0,0,0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
@@ -3314,13 +3276,13 @@ static PyObject *__pyx_pw_8PyMieSim_3LMT_6Sphere_5GetFields(PyObject *__pyx_self
         }
         CYTHON_FALLTHROUGH;
         case  4:
-        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ThetaMesh)) != 0)) kw_args--;
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_PhiMesh)) != 0)) kw_args--;
         else {
           __Pyx_RaiseArgtupleInvalid("GetFields", 1, 9, 9, 4); __PYX_ERR(0, 97, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
-        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_PhiMesh)) != 0)) kw_args--;
+        if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ThetaMesh)) != 0)) kw_args--;
         else {
           __Pyx_RaiseArgtupleInvalid("GetFields", 1, 9, 9, 5); __PYX_ERR(0, 97, __pyx_L3_error)
         }
@@ -3363,8 +3325,8 @@ static PyObject *__pyx_pw_8PyMieSim_3LMT_6Sphere_5GetFields(PyObject *__pyx_self
     __pyx_v_diameter = __pyx_PyFloat_AsDouble(values[1]); if (unlikely((__pyx_v_diameter == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L3_error)
     __pyx_v_wavelength = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_wavelength == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L3_error)
     __pyx_v_nMedium = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_nMedium == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 100, __pyx_L3_error)
-    __pyx_v_ThetaMesh = values[4];
-    __pyx_v_PhiMesh = values[5];
+    __pyx_v_PhiMesh = values[4];
+    __pyx_v_ThetaMesh = values[5];
     __pyx_v_Polarization = __pyx_PyFloat_AsDouble(values[6]); if (unlikely((__pyx_v_Polarization == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 103, __pyx_L3_error)
     __pyx_v_E0 = __pyx_PyFloat_AsDouble(values[7]); if (unlikely((__pyx_v_E0 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 104, __pyx_L3_error)
     __pyx_v_R = __pyx_PyFloat_AsDouble(values[8]); if (unlikely((__pyx_v_R == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 105, __pyx_L3_error)
@@ -3377,14 +3339,14 @@ static PyObject *__pyx_pw_8PyMieSim_3LMT_6Sphere_5GetFields(PyObject *__pyx_self
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(__pyx_self, __pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_ThetaMesh, __pyx_v_PhiMesh, __pyx_v_Polarization, __pyx_v_E0, __pyx_v_R);
+  __pyx_r = __pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(__pyx_self, __pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_PhiMesh, __pyx_v_ThetaMesh, __pyx_v_Polarization, __pyx_v_E0, __pyx_v_R);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_ThetaMesh, PyObject *__pyx_v_PhiMesh, double __pyx_v_Polarization, double __pyx_v_E0, double __pyx_v_R) {
+static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_index, double __pyx_v_diameter, double __pyx_v_wavelength, double __pyx_v_nMedium, PyObject *__pyx_v_PhiMesh, PyObject *__pyx_v_ThetaMesh, double __pyx_v_Polarization, double __pyx_v_E0, double __pyx_v_R) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3393,7 +3355,7 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(CYTHON_UNUSED PyObje
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetFields", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_ThetaMesh, __pyx_v_PhiMesh, __pyx_v_Polarization, __pyx_v_E0, __pyx_v_R, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_3LMT_6Sphere_GetFields(__pyx_v_index, __pyx_v_diameter, __pyx_v_wavelength, __pyx_v_nMedium, __pyx_v_PhiMesh, __pyx_v_ThetaMesh, __pyx_v_Polarization, __pyx_v_E0, __pyx_v_R, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3410,7 +3372,7 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_4GetFields(CYTHON_UNUSED PyObje
   return __pyx_r;
 }
 
-/* "PyMieSim/LMT/cpp/Sphere.pyx":165
+/* "PyMieSim/LMT/cpp/Sphere.pyx":167
  *         int view_count
  * 
  *     def __cinit__(self, Py_ssize_t ncols):             # <<<<<<<<<<<<<<
@@ -3447,18 +3409,18 @@ static int __pyx_pw_8PyMieSim_3LMT_6Sphere_13VectorWrapper_1__cinit__(PyObject *
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 165, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__cinit__") < 0)) __PYX_ERR(0, 167, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
     }
-    __pyx_v_ncols = __Pyx_PyIndex_AsSsize_t(values[0]); if (unlikely((__pyx_v_ncols == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L3_error)
+    __pyx_v_ncols = __Pyx_PyIndex_AsSsize_t(values[0]); if (unlikely((__pyx_v_ncols == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 165, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__cinit__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 167, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim.LMT.Sphere.VectorWrapper.__cinit__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3476,7 +3438,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper___cinit__(struct __py
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__cinit__", 0);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":166
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":168
  * 
  *     def __cinit__(self, Py_ssize_t ncols):
  *         self.ncols = ncols             # <<<<<<<<<<<<<<
@@ -3485,7 +3447,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper___cinit__(struct __py
  */
   __pyx_v_self->ncols = __pyx_v_ncols;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":167
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":169
  *     def __cinit__(self, Py_ssize_t ncols):
  *         self.ncols = ncols
  *         self.view_count = 0             # <<<<<<<<<<<<<<
@@ -3494,7 +3456,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper___cinit__(struct __py
  */
   __pyx_v_self->view_count = 0;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":165
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":167
  *         int view_count
  * 
  *     def __cinit__(self, Py_ssize_t ncols):             # <<<<<<<<<<<<<<
@@ -3508,7 +3470,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper___cinit__(struct __py
   return __pyx_r;
 }
 
-/* "PyMieSim/LMT/cpp/Sphere.pyx":170
+/* "PyMieSim/LMT/cpp/Sphere.pyx":172
  * 
  * 
  *     def add_row(self):             # <<<<<<<<<<<<<<
@@ -3540,7 +3502,7 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_2add_row(struct
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("add_row", 0);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":172
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":174
  *     def add_row(self):
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:             # <<<<<<<<<<<<<<
@@ -3550,20 +3512,20 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_2add_row(struct
   __pyx_t_1 = ((__pyx_v_self->view_count > 0) != 0);
   if (unlikely(__pyx_t_1)) {
 
-    /* "PyMieSim/LMT/cpp/Sphere.pyx":173
+    /* "PyMieSim/LMT/cpp/Sphere.pyx":175
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:
  *             raise ValueError("can't add row while being viewed")             # <<<<<<<<<<<<<<
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  */
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 175, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 173, __pyx_L1_error)
+    __PYX_ERR(0, 175, __pyx_L1_error)
 
-    /* "PyMieSim/LMT/cpp/Sphere.pyx":172
+    /* "PyMieSim/LMT/cpp/Sphere.pyx":174
  *     def add_row(self):
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:             # <<<<<<<<<<<<<<
@@ -3572,7 +3534,7 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_2add_row(struct
  */
   }
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":175
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":177
  *             raise ValueError("can't add row while being viewed")
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)             # <<<<<<<<<<<<<<
@@ -3583,10 +3545,10 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_2add_row(struct
     __pyx_v_self->S1S2.resize((__pyx_v_self->S1S2.size() + __pyx_v_self->ncols));
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 175, __pyx_L1_error)
+    __PYX_ERR(0, 177, __pyx_L1_error)
   }
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":170
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":172
  * 
  * 
  *     def add_row(self):             # <<<<<<<<<<<<<<
@@ -3607,7 +3569,7 @@ static PyObject *__pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_2add_row(struct
   return __pyx_r;
 }
 
-/* "PyMieSim/LMT/cpp/Sphere.pyx":177
+/* "PyMieSim/LMT/cpp/Sphere.pyx":179
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):             # <<<<<<<<<<<<<<
@@ -3642,7 +3604,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
   __pyx_v_buffer->obj = Py_None; __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(__pyx_v_buffer->obj);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":178
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":180
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):
  *         cdef Py_ssize_t itemsize = sizeof(self.S1S2[0])             # <<<<<<<<<<<<<<
@@ -3651,7 +3613,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_itemsize = (sizeof((__pyx_v_self->S1S2[0])));
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":180
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":182
  *         cdef Py_ssize_t itemsize = sizeof(self.S1S2[0])
  * 
  *         self.shape[0] = self.S1S2.size() / self.ncols             # <<<<<<<<<<<<<<
@@ -3660,7 +3622,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   (__pyx_v_self->shape[0]) = (__pyx_v_self->S1S2.size() / __pyx_v_self->ncols);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":181
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":183
  * 
  *         self.shape[0] = self.S1S2.size() / self.ncols
  *         self.shape[1] = self.ncols             # <<<<<<<<<<<<<<
@@ -3670,7 +3632,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
   __pyx_t_1 = __pyx_v_self->ncols;
   (__pyx_v_self->shape[1]) = __pyx_t_1;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":183
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":185
  *         self.shape[1] = self.ncols
  * 
  *         self.strides[1] = <Py_ssize_t>(  <char *>&(self.S1S2[1]) - <char *>&(self.S1S2[0]))             # <<<<<<<<<<<<<<
@@ -3679,7 +3641,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   (__pyx_v_self->strides[1]) = ((Py_ssize_t)(((char *)(&(__pyx_v_self->S1S2[1]))) - ((char *)(&(__pyx_v_self->S1S2[0])))));
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":185
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":187
  *         self.strides[1] = <Py_ssize_t>(  <char *>&(self.S1S2[1]) - <char *>&(self.S1S2[0]))
  * 
  *         self.strides[0] = self.ncols * self.strides[1]             # <<<<<<<<<<<<<<
@@ -3688,7 +3650,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   (__pyx_v_self->strides[0]) = (__pyx_v_self->ncols * (__pyx_v_self->strides[1]));
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":187
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":189
  *         self.strides[0] = self.ncols * self.strides[1]
  * 
  *         buffer.buf = <char *>&(self.S1S2[0])             # <<<<<<<<<<<<<<
@@ -3697,7 +3659,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->buf = ((char *)(&(__pyx_v_self->S1S2[0])));
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":188
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":190
  * 
  *         buffer.buf = <char *>&(self.S1S2[0])
  *         buffer.format = 'Zd'                     # float             # <<<<<<<<<<<<<<
@@ -3706,7 +3668,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->format = ((char *)"Zd");
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":189
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":191
  *         buffer.buf = <char *>&(self.S1S2[0])
  *         buffer.format = 'Zd'                     # float
  *         buffer.internal = NULL             # <<<<<<<<<<<<<<
@@ -3715,7 +3677,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->internal = NULL;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":190
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":192
  *         buffer.format = 'Zd'                     # float
  *         buffer.internal = NULL
  *         buffer.itemsize = itemsize             # <<<<<<<<<<<<<<
@@ -3724,7 +3686,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->itemsize = __pyx_v_itemsize;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":191
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":193
  *         buffer.internal = NULL
  *         buffer.itemsize = itemsize
  *         buffer.len = self.S1S2.size() * itemsize             # <<<<<<<<<<<<<<
@@ -3733,7 +3695,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->len = (__pyx_v_self->S1S2.size() * __pyx_v_itemsize);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":192
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":194
  *         buffer.itemsize = itemsize
  *         buffer.len = self.S1S2.size() * itemsize
  *         buffer.ndim = 2             # <<<<<<<<<<<<<<
@@ -3742,7 +3704,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->ndim = 2;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":193
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":195
  *         buffer.len = self.S1S2.size() * itemsize
  *         buffer.ndim = 2
  *         buffer.obj = self             # <<<<<<<<<<<<<<
@@ -3755,7 +3717,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
   __Pyx_DECREF(__pyx_v_buffer->obj);
   __pyx_v_buffer->obj = ((PyObject *)__pyx_v_self);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":194
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":196
  *         buffer.ndim = 2
  *         buffer.obj = self
  *         buffer.readonly = 0             # <<<<<<<<<<<<<<
@@ -3764,7 +3726,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->readonly = 0;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":195
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":197
  *         buffer.obj = self
  *         buffer.readonly = 0
  *         buffer.shape = self.shape             # <<<<<<<<<<<<<<
@@ -3774,7 +3736,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
   __pyx_t_2 = __pyx_v_self->shape;
   __pyx_v_buffer->shape = __pyx_t_2;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":196
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":198
  *         buffer.readonly = 0
  *         buffer.shape = self.shape
  *         buffer.strides = self.strides             # <<<<<<<<<<<<<<
@@ -3784,7 +3746,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
   __pyx_t_2 = __pyx_v_self->strides;
   __pyx_v_buffer->strides = __pyx_t_2;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":197
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":199
  *         buffer.shape = self.shape
  *         buffer.strides = self.strides
  *         buffer.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -3793,7 +3755,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_buffer->suboffsets = NULL;
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":198
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":200
  *         buffer.strides = self.strides
  *         buffer.suboffsets = NULL
  *         self.view_count += 1             # <<<<<<<<<<<<<<
@@ -3802,7 +3764,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
  */
   __pyx_v_self->view_count = (__pyx_v_self->view_count + 1);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":177
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":179
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  * 
  *     def __getbuffer__(self, Py_buffer *buffer, int flags):             # <<<<<<<<<<<<<<
@@ -3820,7 +3782,7 @@ static int __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_4__getbuffer__(struct
   return __pyx_r;
 }
 
-/* "PyMieSim/LMT/cpp/Sphere.pyx":200
+/* "PyMieSim/LMT/cpp/Sphere.pyx":202
  *         self.view_count += 1
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):             # <<<<<<<<<<<<<<
@@ -3842,14 +3804,14 @@ static void __pyx_pf_8PyMieSim_3LMT_6Sphere_13VectorWrapper_6__releasebuffer__(s
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":201
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":203
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):
  *         self.view_count -= 1             # <<<<<<<<<<<<<<
  */
   __pyx_v_self->view_count = (__pyx_v_self->view_count - 1);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":200
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":202
  *         self.view_count += 1
  * 
  *     def __releasebuffer__(self, Py_buffer *buffer):             # <<<<<<<<<<<<<<
@@ -5099,7 +5061,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(0, 175, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 884, __pyx_L1_error)
   return 0;
@@ -5111,14 +5073,14 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "PyMieSim/LMT/cpp/Sphere.pyx":173
+  /* "PyMieSim/LMT/cpp/Sphere.pyx":175
  *         """Adds a row, initially zero-filled."""
  *         if self.view_count > 0:
  *             raise ValueError("can't add row while being viewed")             # <<<<<<<<<<<<<<
  * 
  *         self.S1S2.resize(self.S1S2.size() + self.ncols)
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_can_t_add_row_while_being_viewed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_can_t_add_row_while_being_viewed); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -5216,15 +5178,15 @@ static int __Pyx_modinit_type_init_code(void) {
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__Pyx_modinit_type_init_code", 0);
   /*--- Type init code ---*/
-  if (PyType_Ready(&__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper.tp_dictoffset && __pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VectorWrapper, (PyObject *)&__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper) < 0) __PYX_ERR(0, 157, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_VectorWrapper, (PyObject *)&__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper) < 0) __PYX_ERR(0, 159, __pyx_L1_error)
   __pyx_ptype_8PyMieSim_3LMT_6Sphere_VectorWrapper = &__pyx_type_8PyMieSim_3LMT_6Sphere_VectorWrapper;
   __Pyx_RefNannyFinishContext();
   return 0;

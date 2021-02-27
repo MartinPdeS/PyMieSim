@@ -98,8 +98,8 @@ cpdef GetFields(double index,
                 double diameter,
                 double wavelength,
                 double nMedium,
-                ThetaMesh,
                 PhiMesh,
+                ThetaMesh,
                 double Polarization,
                 double E0,
                 double R):
@@ -145,8 +145,10 @@ cpdef GetFields(double index,
                &(ETheta.S1S2)[0],
                Polarization);
 
-    arr0 = 1j * np.asarray(EPhi).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
-    arr1 = - np.asarray(ETheta).squeeze() * E0 / (k*R) * np.exp(-1j*k*R)
+
+    propagator =  E0 / (k*R) * np.exp(-1j*k*R)
+    arr0 = 1j * np.asarray(EPhi).squeeze() * propagator
+    arr1 = - np.asarray(ETheta).squeeze() * propagator
 
     return arr0, arr1
 

@@ -229,7 +229,7 @@ C_GetEfficiencies(const double  m,
 
     double Qsca, Qext, Qabs;
 
-    std::vector<double> *n, *n2;
+    Vec *n, *n2;
 
     const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
 
@@ -251,9 +251,9 @@ C_GetEfficiencies(const double  m,
 
 
 static double
-C_GetQext(const double            m,
-          const double            x,
-          const double*           phi)
+C_GetQext(const double  m,
+          const double  x,
+          const double* phi)
 
 {
     iVec *an = new iVec;
@@ -261,7 +261,7 @@ C_GetQext(const double            m,
 
     double Qsca;
 
-    std::vector<double> *n, *n2;
+    Vec *n, *n2;
 
     const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
 
@@ -278,15 +278,15 @@ C_GetQext(const double            m,
 
 
 static void
-Fields(double  index,
-       double  diameter,
-       double  wavelength,
-       double  nMedium,
-       double* ThetaMesh,
-       double* PhiMesh,
+Fields(double        index,
+       double        diameter,
+       double        wavelength,
+       double        nMedium,
+       double*       PhiMesh,
+       double*       ThetaMesh,
        const int     Lenght,
-       complex128*   Parallel,
-       complex128*   Perpendicular,
+       complex128*   ETheta,
+       complex128*   EPhi,
        double        Polarization)
 {
 
@@ -309,8 +309,8 @@ Fields(double  index,
   {
     temp0 = *ThetaMesh++ ;
 
-    *Parallel++          = S1S2[k] * (complex128) abs(cos(temp0 + Polarization)) ;
-    *Perpendicular++     = S1S2[k + Lenght] * (complex128) abs(sin(temp0 + Polarization)) ;
+    *ETheta++  = S1S2[k] * (complex128) abs(cos(temp0 + Polarization)) ;
+    *EPhi++    = S1S2[k + Lenght] * (complex128) abs(sin(temp0 + Polarization)) ;
 
   }
 
@@ -325,11 +325,11 @@ FieldsNoPolarization(const double  index,
                      const double  diameter,
                      const double  wavelength,
                      const double  nMedium,
-                     const double* ThetaMesh,
                      const double* PhiMesh,
+                     const double* ThetaMesh,
                      const int     Lenght,
-                     complex128*   Parallel,
-                     complex128*   Perpendicular)
+                     complex128*   ETheta,
+                     complex128*   EPhi)
   {
 
   complex128* S1S2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
@@ -352,8 +352,8 @@ FieldsNoPolarization(const double  index,
   {
     temp0 = *ThetaMesh++ ;
 
-    *Parallel++          = S1S2[k] * temp1 ;
-    *Perpendicular++     = S1S2[k + Lenght] * temp1 ;
+    *ETheta++  = S1S2[k] * temp1 ;
+    *EPhi++    = S1S2[k + Lenght] * temp1 ;
 
   }
 

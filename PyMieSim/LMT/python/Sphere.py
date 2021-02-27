@@ -10,19 +10,25 @@ def Fields(Index,
            Diameter,
            Wavelength,
            nMedium,
-           Theta,
            Phi,
+           Theta,
            Polarization  = 0,
            E0            = 1,
            R             = 1):
 
     k = 2*np.pi/Wavelength
     SizeParam = k * (Diameter/2)
-    S1S2 = GetS1S2(Index, SizeParam, Phi)
+    s1s2 = S1S2(Index, Diameter, Wavelength, nMedium, Phi)
 
-    Parallel = np.outer(S1S2[0], np.abs(np.sin(Theta) ));
+    Parallel = np.outer(s1s2[0], np.abs(np.sin(Theta) ));
 
-    Perpendicular = np.outer(S1S2[1], np.abs(np.cos(Theta)))
+    Perpendicular = np.outer(s1s2[1], np.abs(np.cos(Theta)))
+
+    propagator =  E0 / (k*R) * np.exp(-1j*k*R)
+
+    Parallel *= 1j * propagator
+
+    Perpendicular *= - propagator
 
     return Parallel, Perpendicular
 

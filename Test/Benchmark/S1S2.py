@@ -18,7 +18,7 @@ def Speed(setup):
 
     print(Bench)
 
-    print('='*50 + '\nCYTHON BENCHMARK')
+    print('C++ BENCHMARK\n' + '='*50)
 
     Bench = timeit.timeit(setup = setup,stmt = BenchCpp, number = 1)
 
@@ -37,17 +37,17 @@ def Correctness():
 
     fig = plt.figure(figsize=(10,5))
 
-    ax0 = fig.add_subplot(221); ax1 = fig.add_subplot(222)
-    ax2 = fig.add_subplot(223); ax3 = fig.add_subplot(224)
+    ax0 = fig.add_subplot(211); ax1 = fig.add_subplot(212)
 
-    ax0.plot(Phi, np.abs(PyRes[0]), 'C0', label='Python S1');
-    ax1.plot(Phi, np.abs(PyRes[1]), 'C1', label='Python S2')
 
-    ax2.plot(Phi, np.abs(cppRes[0]), 'C0', label='C++ S1');
-    ax3.plot(Phi, np.abs(cppRes[1]), 'C1', label='C++ S2')
+    ax0.plot(Phi, np.abs(PyRes[0]), 'C0', linewidth=2, label='Python S1');
+    ax1.plot(Phi, np.abs(PyRes[1]), 'C0',linewidth=2, label='Python S2')
 
-    ax0.grid(); ax1.grid(); ax3.grid(); ax2.grid()
-    ax0.legend(); ax1.legend(); ax2.legend(); ax3.legend()
+    ax0.plot(Phi, np.abs(cppRes[0]), 'C1--',linewidth=2, label='C++ S1');
+    ax1.plot(Phi, np.abs(cppRes[1]), 'C1--',linewidth=2, label='C++ S2')
+
+    ax0.grid(); ax1.grid();
+    ax0.legend(); ax1.legend();
 
     plt.show()
 

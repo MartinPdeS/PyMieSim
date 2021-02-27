@@ -394,6 +394,7 @@ def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
 
 
 def PlotField(Theta, Phi, Parallel, Perpendicular):
+
     fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(10,6))
     axes[0,0].set_title('Parallel fields')
     axes[0,1].set_title('Perpendicular fields')
