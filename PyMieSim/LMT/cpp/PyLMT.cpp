@@ -225,33 +225,32 @@ S1S2(const double            index,
      const double            diameter,
      const double            wavelength,
      const double            nMedium,
-     double                  *PhiPtr,
-     const long unsigned int lenght,
-     complex128*             s1s2)
+     ndarray                 Phi)
 
 {
-    iVec *an = new iVec,
-         *bn = new iVec;
+    py::buffer_info PhiBuffer   = Phi.request();
+    double *PhiPtr   = (double *) PhiBuffer.ptr;
+    int lenght = PhiBuffer.size;
 
-    py::array_t<complex128> s1 = py::array_t<complex128>(lenght);
-    py::array_t<complex128> s2 = py::array_t<complex128>(lenght);
+    iVec *an = new iVec, *bn = new iVec;
 
-    py::buffer_info buf0 = s1.request();
-    py::buffer_info buf1 = s2.request();
+    Cndarray s1 = Cndarray(lenght, 0);
+    Cndarray s2 = Cndarray(lenght, 0);
+
+    py::buffer_info S1buf = s1.request();
+    py::buffer_info S2buf = s2.request();
 
 
-    complex128 *s1Ptr = (complex128 *) buf0.ptr,
-               *s2Ptr = (complex128 *) buf1.ptr;
+    complex128 *s1Ptr = (complex128 *) S1buf.ptr;
+    complex128 *s2Ptr = (complex128 *) S2buf.ptr;
 
-    double m = index / nMedium;
+    double m = index / nMedium,
+           w = wavelength / nMedium,
+           x = PI * diameter / w;
 
-    double w = wavelength / nMedium;
+    Vec *n, *n2;
 
-    double x = PI * diameter / w;
-
-    std::vector<double> *n, *n2;
-
-    const long unsigned int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
+    int OrderMax = (int) round(2. + x + 4. * pow(x, 1./3.) );
 
     std::tie(n, n2) = Arrange(1, OrderMax + 1);
 
@@ -259,26 +258,20 @@ S1S2(const double            index,
 
     const long unsigned int anLength = an->size();
 
-    iVec S1 = iVec(lenght) ;
-    iVec S2 = iVec(lenght) ;
-
     iVec *pin = new iVec(OrderMax);
     iVec *taun = new iVec(OrderMax);
     complex128 j (0., 1.0);
-
-    complex128 *temp0 = &s1s2[0], *temp1 = &s1s2[lenght] ;
 
     for (auto i = 0; i < lenght; i++){
 
         MiePiTau(cos( PhiPtr[i] ), OrderMax, pin, taun);
 
         for (auto k = 0; k < anLength ; k++){
-            s1Ptr[k] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
-            s2Ptr[k] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
+            s1Ptr[i] += (*n2)[k] * ( (*an)[k] * (*pin)[k] +  (*bn)[k] * (*taun)[k] );
+            s2Ptr[i] += (*n2)[k] * ( (*an)[k] * (*taun)[k] + (*bn)[k] * (*pin)[k] ) ;
 
           }
-    temp0++ ;
-    temp1++ ;
+
     }
 
     return std::make_pair(s1,s2);
@@ -417,7 +410,7 @@ PYBIND11_MODULE(Sphere, module) {
 
       module.def("Efficiencies",
                  &Efficiencies,
-                 "Compute the scattering efficiencies");       
+                 "Compute the scattering efficiencies");
 
 }
 

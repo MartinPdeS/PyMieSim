@@ -3,7 +3,7 @@ import numpy as np
 import timeit
 
 from PyMieSim.LMT.python.Sphere import S1S2 as PyS1S2
-from PyMieSim.LMT.Sphere import GetS1S2 as CppS1S2
+from PyMieSim.LMT.Sphere import S1S2 as CppS1S2
 
 
 def Speed(setup):
@@ -58,7 +58,7 @@ def Correctness():
 setup = """
 import numpy as np
 from PyMieSim.LMT.python.Sphere import S1S2 as PyS1S2
-from PyMieSim.LMT.Sphere import GetS1S2 as CppS1S2
+from PyMieSim.LMT.Sphere import S1S2 as CppS1S2
 Phi = np.linspace(-np.pi,np.pi,10000)
 args = (1.8, 3e-6, 1e-6, 1, Phi)
 """

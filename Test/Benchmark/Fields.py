@@ -4,8 +4,8 @@ import timeit
 
 from PyMieSim.utils import PlotField
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.LMT.Sphere import GetFields as CppField
-from PyMieSim.LMT.PyBind.Sphere import Fields as PyBindFields
+#from PyMieSim.LMT.Cython.Sphere import GetFields as CppField
+from PyMieSim.LMT.Sphere import Fields as PyBindFields
 
 
 
@@ -23,13 +23,7 @@ def Speed(setup):
 
     print(Bench)
 
-    print('='*50 + '\nC++ BENCHMARK')
-
-    Bench = timeit.timeit(setup = setup,stmt = BenchCpp, number = 1)
-
-    print(Bench)
-
-    print('='*50 + '\nPyBind11 BENCHMARK')
+    print('='*50 + '\C++ BENCHMARK')
 
     Bench = timeit.timeit(setup = setup,stmt = BenchPyBind, number = 1)
 
@@ -62,8 +56,7 @@ def Correctness():
 setup = """
 import numpy as np
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.LMT.Sphere import GetFields as CppField
-from PyMieSim.LMT.PyBind.Sphere import Fields as PyBindFields
+from PyMieSim.LMT.Sphere import Fields as PyBindFields
 Phi = np.linspace(-np.pi/2,np.pi/2,200); Theta = np.linspace(-np.pi,np.pi,520)
 PHI, THETA = np.meshgrid(Theta, Phi)
 args = (1.8, 3e-6, 1e-6, 1, Phi)
