@@ -12,10 +12,12 @@ from ai import cs
 
 from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieSim.Couplings import Coupling as Coupling, GetFootprint
-from PyMieSim.LMT.Sphere import GetFields, GetEfficiencies
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import PlotFarField, InterpFull, NA2Angle
+from PyMieSim.utils import PlotFarField, InterpFull, NA2Angle, LoadLibraries
 from PyMieSim.utils import PlotUnstructuredSphere, PlotStructuredSphere
+
+
+GetEfficiencies, GetFields = LoadLibraries('Fields','Efficiencies')
 
 
 ##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no
@@ -252,8 +254,8 @@ class BaseScatterer(object):
 
         """
 
-        self._Qsca, self._Qext, self._Qabs = GetEfficiencies(m = self.Index,
-                                                             x = self.SizeParam)
+        self._Qsca, self._Qext, self._Qabs = GetEfficiencies(Index         = self.Index,
+                                                             SizeParameter = self.SizeParam)
 
 
     def S1S2(self, Num=200):
@@ -315,16 +317,16 @@ class BaseScatterer(object):
 
         """
 
-        return GetFields(index        = self.Index,
-                         diameter     = self.Diameter,
-                         wavelength   = self.Source.Wavelength,
+        return GetFields(Index        = self.Index,
+                         Diameter     = self.Diameter,
+                         Wavelength   = self.Source.Wavelength,
                          nMedium      = self.nMedium,
-                         ThetaMesh    = Theta,
-                         PhiMesh      = Phi - np.pi/2,
+                         Phi          = Phi,
+                         Theta        = Theta,
                          Polarization = self.Source.Polarization.Radian,
-                         E0           = self.Source.E0,
-                         R            = 1,
-                         k            = self.Source.k)
+                         E0           = float(self.Source.E0),
+                         R            = 1.,
+                         Lenght       = Phi.flatten().size)
 
 
 

@@ -13,7 +13,7 @@ from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieSim.Scatterer import Sphere, WMSample
 
-GetS1S2, GetEfficiencies = LoadLibraries(['S1S2', 'Efficiencies'])
+GetS1S2, GetEfficiencies = LoadLibraries('S1S2', 'Efficiencies')
 
 
 class ScattererSet(object):
@@ -74,7 +74,8 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                Qsca, Qext, Qabs = GetEfficiencies(RI, SizeParam);
+                Qsca, Qext, Qabs = GetEfficiencies(Index         = RI,
+                                                   SizeParameter = SizeParam);
 
                 df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
 
@@ -104,11 +105,11 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                S1, S2 = GetS1S2(m          = RI,
-                                 diameter   = Diameter,
-                                 wavelength = self.Source.Wavelength,
+                S1, S2 = GetS1S2(Index      = RI,
+                                 Diameter   = Diameter,
+                                 Wavelength = self.Source.Wavelength,
                                  nMedium    = self.nMedium,
-                                 phi        = np.linspace(0,2*np.pi,num))
+                                 Phi        = np.linspace(0,2*np.pi,num))
 
                 df.loc[(Diameter, RI),'S1'] = np.abs(S1S2[0])
 

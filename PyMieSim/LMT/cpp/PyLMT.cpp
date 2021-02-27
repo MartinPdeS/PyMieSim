@@ -163,7 +163,7 @@ C_Qext(iVec*                           an,
 }
 
 
-static std::pair<double, double>
+static std::tuple<double, double, double>
 Efficiencies(const double  m, const double  x)
 
 {
@@ -186,7 +186,7 @@ Efficiencies(const double  m, const double  x)
 
     Qabs = Qext - Qabs;
 
-    return std::make_pair(Qsca, Qext);
+    return std::make_tuple(Qsca, Qext, Qabs);
 }
 
 
@@ -339,18 +339,18 @@ Fields(double     index,
        double     diameter,
        double     wavelength,
        double     nMedium,
-       ndarray    PhiMesh,
-       ndarray    ThetaMesh,
+       ndarray    Phi,
+       ndarray    Theta,
        double     Polarization,
        double     E0,
        double     R,
        int        Lenght)
 {
-  py::buffer_info PhiBuffer   = PhiMesh.request();
-  py::buffer_info ThetaBuffer = ThetaMesh.request();
+  py::buffer_info PhiBuffer   = Phi.request();
+  py::buffer_info ThetaBuffer = Theta.request();
 
-  py::array_t<complex128> result0 = py::array_t<complex128>(PhiMesh.size());
-  py::array_t<complex128> result1 = py::array_t<complex128>(PhiMesh.size());
+  py::array_t<complex128> result0 = py::array_t<complex128>(Phi.size());
+  py::array_t<complex128> result1 = py::array_t<complex128>(Phi.size());
 
 
   py::buffer_info buf0 = result0.request();
@@ -401,15 +401,33 @@ PYBIND11_MODULE(Sphere, module) {
 
     module.def("Fields",
                &Fields,
-               "Compute the scattering far-field for a spherical scatterer");
+               py::arg("Index"),
+               py::arg("Diameter"),
+               py::arg("Wavelength"),
+               py::arg("nMedium"),
+               py::arg("Phi"),
+               py::arg("Theta"),
+               py::arg("Polarization"),
+               py::arg("E0"),
+               py::arg("R"),
+               py::arg("Lenght"),
+               "Compute the scattering far-field for a spherical scatterer"
+             );
 
      module.def("S1S2",
                 &S1S2,
+                py::arg("Index"),
+                py::arg("Diameter"),
+                py::arg("Wavelength"),
+                py::arg("nMedium"),
+                py::arg("Phi"),
                 "Compute the scattering coefficient S1 & S2");
 
 
       module.def("Efficiencies",
                  &Efficiencies,
+                 py::arg("Index"),
+                 py::arg("SizeParameter"),
                  "Compute the scattering efficiencies");
 
 }

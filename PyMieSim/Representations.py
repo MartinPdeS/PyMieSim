@@ -12,7 +12,7 @@ from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 
 
-GetS1S2, GetFields =  LoadLibraries(['S1S2', 'Fields'])
+GetS1S2, GetFields =  LoadLibraries('S1S2', 'Fields')
 
 
 class Stokes(np.ndarray):
@@ -114,17 +114,15 @@ class Field(object):
                                  figsize    = (12,3),
                                  subplot_kw = {'projection':'mollweide'})
 
-        axes[0].pcolormesh(
-                         self.Parent.Meshes.Theta.Radian,
-                         -( self.Parent.Meshes.Phi.Radian - np.pi/2),
-                         np.real(self.Perpendicular),
-                         shading='auto')
+        axes[0].pcolormesh(self.Parent.Meshes.Theta.Radian,
+                           -( self.Parent.Meshes.Phi.Radian - np.pi/2),
+                           np.real(self.Perpendicular),
+                           shading='auto')
 
-        axes[1].pcolormesh(
-                         self.Parent.Meshes.Theta.Radian,
-                         -( self.Parent.Meshes.Phi.Radian - np.pi/2),
-                         np.imag(self.Perpendicular),
-                         shading='auto')
+        axes[1].pcolormesh(self.Parent.Meshes.Theta.Radian,
+                           -( self.Parent.Meshes.Phi.Radian - np.pi/2),
+                           np.imag(self.Perpendicular),
+                           shading='auto')
 
         [ax.set_ylabel(r'Angle $\phi$ [Degree]') for ax in axes]
         [ax.set_xlabel(r'Angle $\theta$ [Degree]') for ax in axes]
@@ -142,16 +140,16 @@ class SPF(dict):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
 
-        Para, Perp = GetFields(index        = Parent.Index,
-                               diameter     = Parent.Diameter,
-                               wavelength   = Parent.Source.Wavelength,
+        Para, Perp = GetFields(Index        = Parent.Index,
+                               Diameter     = Parent.Diameter,
+                               Wavelength   = Parent.Source.Wavelength,
                                nMedium      = 1.0,
-                               ThetaMesh    = self['Theta'].flatten(),
-                               PhiMesh      = self['Phi'].flatten()-np.pi/2,
-                               Polarization = 0,
+                               Phi          = self['Phi'].flatten()-np.pi/2,
+                               Theta        = self['Theta'].flatten(),
+                               Polarization = 0.,
                                E0           = Parent.Source.E0,
-                               R            = 1,
-                               k            = 1)
+                               R            = 1.,
+                               Lenght       = self['Theta'].flatten().size)
 
         self['EPhi'], self['ETheta'] = Para, Perp
 
@@ -212,11 +210,14 @@ class S1S2(dict):
 
         self['Phi'] = np.linspace(0, 2*np.pi, Num)
 
-        self['S1'], self['S2'] = GetS1S2(index      = Parent.Index,
-                                         diameter   = Parent.Diameter,
-                                         wavelength = Parent.Source.Wavelength,
+        Phi = np.linspace(-np.pi,np.pi,100);
+
+        args = (1.8, 3e-6, 1e-6, 1, Phi)
+        self['S1'], self['S2'] = GetS1S2(Index      = Parent.Index,
+                                         Diameter   = Parent.Diameter,
+                                         Wavelength = Parent.Source.Wavelength,
                                          nMedium    = Parent.nMedium,
-                                         phi        = self['Phi'])
+                                         Phi        = self['Phi'])
 
 
     def Plot(self) -> None:
@@ -272,16 +273,16 @@ class ScalarFarField(dict):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        EPhi, ETheta = GetFields(index        = Parent.Index,
-                                 diameter     = Parent.Diameter,
-                                 wavelength   = Parent.Source.Wavelength,
+        EPhi, ETheta = GetFields(Index        = Parent.Index,
+                                 Diameter     = Parent.Diameter,
+                                 Wavelength   = Parent.Source.Wavelength,
                                  nMedium      = Parent.nMedium,
-                                 ThetaMesh    = Theta.flatten(),
-                                 PhiMesh      = Phi.flatten() - np.pi/2,
+                                 Phi          = Phi.flatten() - np.pi/2,
+                                 Theta        = Theta.flatten(),
                                  Polarization = Parent.Source.Polarization.Radian,
                                  E0           = Parent.Source.E0,
                                  R            = Distance,
-                                 k            = Parent.Source.k)
+                                 Lenght       = Phi.flatten().size)
 
 
         self['Distance'] = Distance
