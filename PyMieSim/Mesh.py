@@ -12,12 +12,14 @@ from PyMieSim.Physics import Angle
 
 
 class FibonacciMesh(object):
-    """Class wich represent an angular mesh. The distribution of points inside
+    """
+    Class wich represent an angular mesh. The distribution of points inside
     the mesh is similar to a Fibonacci sphere where each point cover an
     equivalent solid angle.
 
     Parameters
     ----------
+
     MaxAngle : float
         Angle in radian defined by the numerical aperture of the imaging system.
     Sampling : int
@@ -30,15 +32,8 @@ class FibonacciMesh(object):
         Angle offset in the perpendicular direction of the polarization of
         incindent light.
 
-    Attributes
-    ----------
-    GenerateLedevedMesh : type
-        Description of attribute `GenerateLedevedMesh`.
-    MakeProperties : type
-        Description of attribute `MakeProperties`.
-
-
     """
+
     def __init__(self,
                  MaxAngle:    float = np.pi/6,
                  Sampling:    int   = 1000,
@@ -198,10 +193,6 @@ class StructuredFullMesh(object):
         Angle in radian defined by the numerical aperture of the imaging system.
     Num : int
         Number of point for the mesh shape [Num, Num].
-
-    Attributes
-    ----------
-    Num
 
     """
     def __init__(self, Num: int = 100):

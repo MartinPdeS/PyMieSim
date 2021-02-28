@@ -170,13 +170,11 @@
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">ScalarFarField</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Couplings</span> <span class="kn">import</span> <span class="n">Coupling</span> <span class="k">as</span> <span class="n">Coupling</span><span class="p">,</span> <span class="n">GetFootprint</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.LMT.Sphere</span> <span class="kn">import</span> <span class="n">GetFields</span><span class="p">,</span> <span class="n">GetEfficiencies</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span><span class="p">,</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">NA2Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotUnstructuredSphere</span><span class="p">,</span> <span class="n">PlotStructuredSphere</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">NA2Angle</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.LMT.Sphere</span> <span class="kn">import</span> <span class="n">S1S2</span> <span class="k">as</span> <span class="n">GetS1S2</span><span class="p">,</span> <span class="n">Fields</span> <span class="k">as</span> <span class="n">GetFields</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 
-
-<span class="c1">##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&amp;id=380136&amp;seq=0&amp;mobile=no</span>
 
 <span class="k">class</span> <span class="nc">BaseSource</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
@@ -248,16 +246,25 @@
         <span class="k">return</span> <span class="n">GetFootprint</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scatterer</span><span class="p">,</span> <span class="n">Detector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="n">Num</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">StructuredSphericalMesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">,</span> <span class="n">MaxAngle</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">SphericalMesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">Sampling</span><span class="p">,</span>
+                      <span class="n">MaxAngle</span><span class="p">,</span>
+                      <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                      <span class="n">GammaOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                      <span class="n">Structured</span>  <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">:</span> <span class="mi">50</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">),</span> <span class="o">-</span><span class="mi">50</span><span class="p">:</span> <span class="mi">50</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">Structured</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">50</span><span class="p">:</span> <span class="mi">50</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">Sampling</span><span class="p">),</span> <span class="o">-</span><span class="mi">50</span><span class="p">:</span> <span class="mi">50</span><span class="p">:</span> <span class="nb">complex</span><span class="p">(</span><span class="n">Sampling</span><span class="p">)]</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">MaxAngle</span><span class="p">)</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">cart2sp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="mi">0</span><span class="o">+</span><span class="n">z</span><span class="p">)</span>
 
-        <span class="n">z</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">MaxAngle</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span>
 
-        <span class="n">_</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">cart2sp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">*</span><span class="mi">0</span><span class="o">+</span><span class="n">z</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span>
-
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FibonacciMesh</span><span class="p">(</span><span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">MaxAngle</span><span class="p">,</span>
+                                 <span class="n">Sampling</span>    <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
+                                 <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="n">PhiOffset</span><span class="p">,</span>
+                                 <span class="n">GammaOffset</span> <span class="o">=</span> <span class="n">GammaOffset</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">Name</span> <span class="o">=</span> <span class="s1">&#39;Mode Field&#39;</span>
@@ -269,74 +276,35 @@
                                  <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span>
                                  <span class="n">subplot_kw</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;projection&#39;</span><span class="p">:</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertAzimuthalEqualArea</span><span class="p">(</span><span class="n">central_latitude</span><span class="o">=</span><span class="n">PhiMean</span><span class="p">,</span> <span class="n">central_longitude</span><span class="o">=</span><span class="n">ThetaMean</span><span class="p">)})</span>
 
-        <span class="n">im0</span> <span class="o">=</span> <span class="n">ax0</span><span class="o">.</span><span class="n">tricontour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
-                             <span class="n">levels</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
-                             <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                             <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-                             <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+        <span class="k">for</span> <span class="nb">iter</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="n">ax0</span><span class="p">,</span> <span class="n">ax1</span><span class="p">]):</span>
+            <span class="k">if</span> <span class="nb">iter</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="o">.</span><span class="n">real</span><span class="p">;</span> <span class="n">Part</span> <span class="o">=</span> <span class="s1">&#39;Real&#39;</span>
+            <span class="k">if</span> <span class="nb">iter</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="o">.</span><span class="n">imag</span><span class="p">;</span> <span class="n">Part</span> <span class="o">=</span> <span class="s1">&#39;Imaginary&#39;</span>
 
-        <span class="n">cntr0</span> <span class="o">=</span> <span class="n">ax0</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
-                                <span class="n">levels</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
-                                <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
-                                <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
+                                    <span class="n">data</span><span class="p">,</span>
+                                    <span class="n">levels</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+                                    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
+                                    <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
-
-        <span class="n">im1</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">tricontour</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
-                             <span class="n">levels</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
-                             <span class="n">linewidths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                             <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span>
-                             <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-
-        <span class="n">cntr1</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
-                                <span class="n">levels</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
-                                <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;inferno&quot;</span><span class="p">,</span>
-                                <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
-
-        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">cntr1</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">cntr0</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax0</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
+                    <span class="s1">&#39;ko&#39;</span><span class="p">,</span>
+                    <span class="n">ms</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                    <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 
 
-        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                 <span class="s1">&#39;ko&#39;</span><span class="p">,</span>
-                 <span class="n">ms</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mappable</span><span class="o">=</span><span class="n">im</span><span class="p">,</span> <span class="n">fraction</span><span class="o">=</span><span class="mf">0.046</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+            <span class="n">gl</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">x_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">y_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-        <span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                 <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Degree</span><span class="p">,</span>
-                 <span class="s1">&#39;ko&#39;</span><span class="p">,</span>
-                 <span class="n">ms</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                 <span class="n">transform</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+            <span class="n">gl</span><span class="o">.</span><span class="n">top_labels</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">gl</span><span class="o">.</span><span class="n">left_labels</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">gl</span><span class="o">.</span><span class="n">right_labels</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">gl</span><span class="o">.</span><span class="n">bottom_labels</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="n">gl</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">x_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">y_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">top_labels</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">left_labels</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">right_labels</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">bottom_labels</span> <span class="o">=</span> <span class="kc">True</span>
-
-        <span class="n">gl</span> <span class="o">=</span> <span class="n">ax0</span><span class="o">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">draw_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">x_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">y_inline</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="c1">#gl.xlocator = matplotlib.ticker.FixedLocator([])</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">top_labels</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">left_labels</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">right_labels</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">gl</span><span class="o">.</span><span class="n">bottom_labels</span> <span class="o">=</span> <span class="kc">True</span>
-
-
-        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Real Part </span><span class="si">{</span><span class="n">Name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Angle $\phi$ [Degree]&#39;</span><span class="p">)</span>
-        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Angle $\theta$ [Degree]&#39;</span><span class="p">)</span>
-
-        <span class="n">ax0</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Imaginary Part </span><span class="si">{</span><span class="n">Name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">ax0</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Angle $\phi$ [Degree]&#39;</span><span class="p">)</span>
-        <span class="n">ax0</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Angle $\theta$ [Degree]&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Part</span><span class="si">}</span><span class="s1"> Part </span><span class="si">{</span><span class="n">Name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Angle $\phi$ [Degree]&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Angle $\theta$ [Degree]&#39;</span><span class="p">)</span>
 
         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
@@ -410,12 +378,12 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="n">GetEfficiencies</span><span class="p">(</span><span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                                                             <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="n">GetEfficiencies</span><span class="p">(</span><span class="n">Index</span>         <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                                                             <span class="n">SizeParameter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">S1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Methode compute :math:`S_1(\\phi)` &amp; :math:`S_2(\\phi)`.</span>
+        <span class="sd">&quot;&quot;&quot;Method compute :math:`S_1(\\phi)` &amp; :math:`S_2(\\phi)`.</span>
 <span class="sd">        For spherical Scatterer such as here S1 and S2 are computed as follow:</span>
 
 <span class="sd">        :math:`S_1=\sum\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\\tau_n)`</span>
@@ -473,16 +441,16 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">GetFields</span><span class="p">(</span><span class="n">index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                         <span class="n">diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
-                         <span class="n">wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">GetFields</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                         <span class="n">Diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
+                         <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
                          <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                         <span class="n">ThetaMesh</span>    <span class="o">=</span> <span class="n">Theta</span><span class="p">,</span>
-                         <span class="n">PhiMesh</span>      <span class="o">=</span> <span class="n">Phi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+                         <span class="n">Phi</span>          <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span>
+                         <span class="n">Theta</span>        <span class="o">=</span> <span class="n">Theta</span><span class="p">,</span>
                          <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
-                         <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">,</span>
-                         <span class="n">R</span>            <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-                         <span class="n">k</span>            <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">k</span><span class="p">)</span>
+                         <span class="n">E0</span>           <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">),</span>
+                         <span class="n">R</span>            <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+                         <span class="n">Lenght</span>       <span class="o">=</span> <span class="n">Phi</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
 
 
@@ -506,6 +474,22 @@
 
 
     <span class="k">def</span> <span class="nf">Footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Detector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method return the scattering footprint of the scatterer defined as:</span>
+
+<span class="sd">        :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\</span>
+<span class="sd">         \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Detector : type</span>
+<span class="sd">            Description of parameter `Detector`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        type</span>
+<span class="sd">            Description of returned object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">GetFootprint</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="bp">self</span><span class="p">,</span> <span class="n">Detector</span> <span class="o">=</span> <span class="n">Detector</span><span class="p">)</span>
 
 

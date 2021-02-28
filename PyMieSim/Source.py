@@ -27,13 +27,11 @@ class PlaneWave(BaseSource):
         self.offset = array([EPS]*3)
 
 
-    def expansion(self, n):
-        return (-1j)**n/(self.k*1j) * (2*n+1) / (n*(n+1));
-
     def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients
-         (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a plane wave.
-         (Eq: VI.77 of G&G)
+        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a plane wave.
+        (Eq: VI.77 of G&G)
+
         Parameters
         ----------
         n : class:`int`
@@ -42,10 +40,12 @@ class PlaneWave(BaseSource):
             Description of parameter `m`.
         mode : class:`str`
             Mode of the plane wave, either 'TE' or 'TM'.
+
         Returns
         -------
         class:`float`
             Expansion coefficient.
+
         """
         if m not in [-1,1]: return 0
 
@@ -54,8 +54,9 @@ class PlaneWave(BaseSource):
         if mode == 'TE': return  -m * 1j / 2
 
     def EField(self, x, y, z):
-        """ Value of the electric Field
-        :math:`E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}.
+        """Value of the electric Field
+        :math:`E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`
+
         """
         z0 = 0
         Pol = self.Polarization.Radian
@@ -65,8 +66,9 @@ class PlaneWave(BaseSource):
                0
 
     def HField(self, x, y, z):
-        """ Value of the electric Field
-        :math:`H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}.
+        """Value of the electric Field
+        :math:`H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`
+
         """
         z0 = 0
         Pol = self.Polarization.Radian
@@ -82,40 +84,42 @@ class GaussianBeam(BaseSource):
     def __init__(self,
                  Wavelength:   float,
                  NA:           float = 0.1,
-                 Polarization: float = 0,
-                 E0:           float = 1,
-                 offset:       list  = [EPS]*3):
+                 Polarization: float = 0.,
+                 E0:           float = 1.,
+                 offset:       list = [EPS]*3) :
 
         self.Wavelength = Wavelength
         self.k = 2 * pi / Wavelength
         self.Polarization = _Polarization(Polarization)
         self.E0 = E0
         self.NA = NA
-        self.w0 = 2.e-6#2 * self.Wavelength / (pi * NA)
+        self.w0 = 2 * self.Wavelength / (pi * NA)
         self.s = 1/(self.k*self.w0)
         self.offset = array(offset)
         self.Offset = self.offset*self.k
-
         self.R0 = sqrt(self.Offset[0]**2 + self.Offset[1]**2)
         self.xi = arccos(self.Offset[0]/self.R0)
 
 
     def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients
-         (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a focused Gaussian
-         beam using the quadrature method (ref[2]:Eq:17).
+        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a focused Gaussian
+        beam using the quadrature method (ref[2]:Eq:17).
+
         Parameters
         ----------
         n : class:`int`
             Order of the expansion.
         m : class:`int`
             Description of parameter `m`.
-        mode : class:`str`
+        mode : :class:`str`
             Mode of the plane wave, either 'TE' or 'TM'.
+
         Returns
         -------
         class:`float`
             Beam shape coefficient of order n and degree m.
+
         """
 
         if mode == 'TM': return self.Anm(n, m)
@@ -126,6 +130,7 @@ class GaussianBeam(BaseSource):
         """Method return the range of order to evaluate the BSC's.
         However one should be cautious as a high precision will lead to
         numerical overflow.
+
         Parameters
         ----------
         Precision : :class:`int`
@@ -138,10 +143,6 @@ class GaussianBeam(BaseSource):
         termP = sqrt( 2.3 * Precision * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
 
         return (max(1, self.R0 - 1/2 - termP), self.R0 - 1/2 + termP)
-
-
-    def expansion(self, n):
-        return (-1j)**n/(self.k*1j) * (2*n+1) / (n*(n+1));
 
 
     def Phi0(self, x, y, z):

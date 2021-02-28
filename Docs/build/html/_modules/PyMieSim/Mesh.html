@@ -170,12 +170,14 @@
 
 
 <div class="viewcode-block" id="FibonacciMesh"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh">[docs]</a><span class="k">class</span> <span class="nc">FibonacciMesh</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Class wich represent an angular mesh. The distribution of points inside</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class wich represent an angular mesh. The distribution of points inside</span>
 <span class="sd">    the mesh is similar to a Fibonacci sphere where each point cover an</span>
 <span class="sd">    equivalent solid angle.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
+
 <span class="sd">    MaxAngle : float</span>
 <span class="sd">        Angle in radian defined by the numerical aperture of the imaging system.</span>
 <span class="sd">    Sampling : int</span>
@@ -188,15 +190,8 @@
 <span class="sd">        Angle offset in the perpendicular direction of the polarization of</span>
 <span class="sd">        incindent light.</span>
 
-<span class="sd">    Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    GenerateLedevedMesh : type</span>
-<span class="sd">        Description of attribute `GenerateLedevedMesh`.</span>
-<span class="sd">    MakeProperties : type</span>
-<span class="sd">        Description of attribute `MakeProperties`.</span>
-
-
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">MaxAngle</span><span class="p">:</span>    <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span>
                  <span class="n">Sampling</span><span class="p">:</span>    <span class="nb">int</span>   <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
@@ -356,10 +351,6 @@
 <span class="sd">        Angle in radian defined by the numerical aperture of the imaging system.</span>
 <span class="sd">    Num : int</span>
 <span class="sd">        Number of point for the mesh shape [Num, Num].</span>
-
-<span class="sd">    Attributes</span>
-<span class="sd">    ----------</span>
-<span class="sd">    Num</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>

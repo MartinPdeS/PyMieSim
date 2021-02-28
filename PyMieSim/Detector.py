@@ -12,7 +12,9 @@ from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
 
 
 class Photodiode(BaseDetector, MeshProperty):
-    """Short summary.
+    """Detector type class representing a photodiode, light coupling is
+    thus independant of the phase of the latter.
+
 
     Parameters
     ----------
@@ -28,6 +30,9 @@ class Photodiode(BaseDetector, MeshProperty):
         Angle of polarization filter in front of detector. Default is "None"
     CouplingMode : :class:`str`
         Methode for computing mode coupling. Either Centered or Mean.
+
+    Methods
+    ------
     """
 
     def __init__(self,
@@ -45,10 +50,11 @@ class Photodiode(BaseDetector, MeshProperty):
 
         self._Filter = _Polarization(Filter)
 
-        self.Mesh = FibonacciMesh(MaxAngle    = NA2Angle(NA).Radian,
-                                  Sampling    = Sampling,
-                                  PhiOffset   = self._PhiOffset,
-                                  GammaOffset = self._GammaOffset)
+        self.Mesh = self.SphericalMesh(Sampling    = Sampling,
+                                       MaxAngle    = NA2Angle(NA).Radian,
+                                       PhiOffset   = PhiOffset,
+                                       GammaOffset = GammaOffset,
+                                       Structured  = False)
 
         self.Scalar = self.UnstructuredFarField()
 
@@ -56,8 +62,10 @@ class Photodiode(BaseDetector, MeshProperty):
     def UnstructuredFarField(self):
         return np.ones(self.Mesh.Sampling)
 
+
     def UpdateUnstructuredFarField(self):
         self.Scalar = np.ones(self.Mesh.Sampling)
+
 
     def StructuredFarField(self, Num = 100, SFactor = None):
         """
@@ -90,7 +98,8 @@ class Photodiode(BaseDetector, MeshProperty):
 
 
 class LPmode(BaseDetector, MeshProperty):
-    """Short summary.
+    """Detector type class representing a fiber LP mode, light coupling is
+    thus dependant of the phase of the latter.
 
     Parameters
     ----------
@@ -111,9 +120,7 @@ class LPmode(BaseDetector, MeshProperty):
     CouplingMode : :class:`str`
         Methode for computing mode coupling. Either [Centered or Mean].
 
-
     """
-
 
     def __init__(self,
                  Mode:           tuple,
@@ -126,26 +133,19 @@ class LPmode(BaseDetector, MeshProperty):
                  CouplingMode:   str   = 'Centered'):
 
         if len(Mode) <= 2: Mode = Mode[0], Mode[1], 'h'
-
         assert Mode[2] in ['v','h',''], "Mode orientation should either be v [vertical] or h [horizontal]"
-
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
-
         assert NA < 1, "Numerical aperture has to be under 1 radian"
 
         self.CouplingMode = ('Amplitude', CouplingMode)
-
         self._Filter = _Polarization(Filter)
-
         self.ModeNumber = Mode[0]+1, Mode[1], Mode[2]
 
-        self.Mesh = FibonacciMesh(MaxAngle    = NA2Angle(NA).Radian,
-                                  Sampling    = Sampling,
-                                  PhiOffset   = PhiOffset,
-                                  GammaOffset = GammaOffset)
-
-
-        self.Structured = self.FarField(Num = InterpSampling, Interpolate=False)
+        self.Mesh = self.SphericalMesh(Sampling    = Sampling,
+                                       MaxAngle    = NA2Angle(NA).Radian,
+                                       PhiOffset   = PhiOffset,
+                                       GammaOffset = GammaOffset,
+                                       Structured  = False)
 
         self.Scalar = self.FarField(Num = InterpSampling, Interpolate=True)
 
@@ -167,7 +167,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         Returns
         -------
-        :function:`FraunhoferDiffraction`
+        :class:`FraunhoferDiffraction`
             Structured FarField value.
 
         """
@@ -207,13 +207,7 @@ class LPmode(BaseDetector, MeshProperty):
 
 
 
-    def UpdateUnstructuredFarField(self):
-        self.Scalar = self.UnstructuredFarField()
-
-
-
     def __repr__(self):
-
         return f"""
         LP mode detector
         Coupling Mode: Amplitude

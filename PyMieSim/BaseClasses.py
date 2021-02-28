@@ -13,14 +13,10 @@ from ai import cs
 from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieSim.Couplings import Coupling as Coupling, GetFootprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import PlotFarField, InterpFull, NA2Angle, LoadLibraries
-from PyMieSim.utils import PlotUnstructuredSphere, PlotStructuredSphere
+from PyMieSim.utils import InterpFull, NA2Angle
+from PyMieSim.LMT.Sphere import S1S2 as GetS1S2, Fields as GetFields
+from PyMieSim.Mesh import FibonacciMesh
 
-
-GetEfficiencies, GetFields = LoadLibraries('Fields','Efficiencies')
-
-
-##__ref__: efficiencies: https://www.osapublishing.org/DirectPDFAccess/EDD7305D-C863-9711-44D9A02B1BAD39CF_380136/josaa-35-1-163.pdf?da=1&id=380136&seq=0&mobile=no
 
 class BaseSource(object):
 
@@ -92,16 +88,25 @@ class BaseDetector(object):
         return GetFootprint(Scatterer = Scatterer, Detector = self, Num = Num)
 
 
-    def StructuredSphericalMesh(self, Num, MaxAngle):
+    def SphericalMesh(self,
+                      Sampling,
+                      MaxAngle,
+                      PhiOffset   = 0,
+                      GammaOffset = 0,
+                      Structured  = True):
 
-        x, y = np.mgrid[-50: 50: complex(Num), -50: 50: complex(Num)]
+        if Structured:
+            x, y = np.mgrid[-50: 50: complex(Sampling), -50: 50: complex(Sampling)]
+            z = 50 / np.tan(MaxAngle)
+            _, phi, theta = cs.cart2sp(x, y, x*0+z)
 
-        z = 50 / np.tan(MaxAngle)
+            return phi, theta
 
-        _, phi, theta = cs.cart2sp(x, y, x*0+z)
-
-        return phi, theta
-
+        else:
+            return FibonacciMesh(MaxAngle    = MaxAngle,
+                                 Sampling    = Sampling,
+                                 PhiOffset   = PhiOffset,
+                                 GammaOffset = GammaOffset)
 
     def Plot(self):
         Name = 'Mode Field'
@@ -113,74 +118,35 @@ class BaseDetector(object):
                                  figsize=(8,4),
                                  subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea(central_latitude=PhiMean, central_longitude=ThetaMean)})
 
-        im0 = ax0.tricontour(self.Mesh.Theta.Degree,
-                             self.Mesh.Phi.Degree,
-                             self.Scalar.real,
-                             levels=13,
-                             linewidths=0.5,
-                             colors='k',
-                             transform = ccrs.PlateCarree())
+        for iter, ax in enumerate([ax0, ax1]):
+            if iter == 0 : data = self.Scalar.real; Part = 'Real'
+            if iter == 1 : data = self.Scalar.imag; Part = 'Imaginary'
 
-        cntr0 = ax0.tricontourf(self.Mesh.Theta.Degree,
-                                self.Mesh.Phi.Degree,
-                                self.Scalar.real,
-                                levels=13,
-                                cmap="inferno",
-                                transform = ccrs.PlateCarree())
+            im = ax.tricontourf(self.Mesh.Theta.Degree,
+                                    self.Mesh.Phi.Degree,
+                                    data,
+                                    levels=13,
+                                    cmap="inferno",
+                                    transform = ccrs.PlateCarree())
 
-
-        im1 = ax1.tricontour(self.Mesh.Theta.Degree,
-                             self.Mesh.Phi.Degree,
-                             self.Scalar.imag,
-                             levels=14,
-                             linewidths=0.5,
-                             colors='k',
-                             transform = ccrs.PlateCarree())
-
-        cntr1 = ax1.tricontourf(self.Mesh.Theta.Degree,
-                                self.Mesh.Phi.Degree,
-                                self.Scalar.imag,
-                                levels=14,
-                                cmap="inferno",
-                                transform = ccrs.PlateCarree())
-
-        plt.colorbar(mappable=cntr1, fraction=0.046, orientation='horizontal', ax=ax1)
-        plt.colorbar(mappable=cntr0, fraction=0.046, orientation='horizontal', ax=ax0)
+            ax.plot(self.Mesh.Theta.Degree,
+                    self.Mesh.Phi.Degree,
+                    'ko',
+                    ms=0.1,
+                    transform = ccrs.PlateCarree())
 
 
-        ax1.plot(self.Mesh.Theta.Degree,
-                 self.Mesh.Phi.Degree,
-                 'ko',
-                 ms=0.1,
-                 transform = ccrs.PlateCarree())
+            plt.colorbar(mappable=im, fraction=0.046, orientation='horizontal', ax=ax)
+            gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
 
-        ax0.plot(self.Mesh.Theta.Degree,
-                 self.Mesh.Phi.Degree,
-                 'ko',
-                 ms=0.1,
-                 transform = ccrs.PlateCarree())
+            gl.top_labels = False
+            gl.left_labels = False
+            gl.right_labels = False
+            gl.bottom_labels = True
 
-        gl = ax1.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
-        gl.top_labels = False
-        gl.left_labels = False
-        gl.right_labels = False
-        gl.bottom_labels = True
-
-        gl = ax0.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
-        #gl.xlocator = matplotlib.ticker.FixedLocator([])
-        gl.top_labels = False
-        gl.left_labels = False
-        gl.right_labels = False
-        gl.bottom_labels = True
-
-
-        ax1.set_title(f'Real Part {Name}')
-        ax1.set_ylabel(r'Angle $\phi$ [Degree]')
-        ax1.set_xlabel(r'Angle $\theta$ [Degree]')
-
-        ax0.set_title(f'Imaginary Part {Name}')
-        ax0.set_ylabel(r'Angle $\phi$ [Degree]')
-        ax0.set_xlabel(r'Angle $\theta$ [Degree]')
+            ax.set_title(f'{Part} Part {Name}')
+            ax.set_ylabel(r'Angle $\phi$ [Degree]')
+            ax.set_xlabel(r'Angle $\theta$ [Degree]')
 
         plt.show()
 
@@ -259,7 +225,7 @@ class BaseScatterer(object):
 
 
     def S1S2(self, Num=200):
-        """Methode compute :math:`S_1(\\phi)` & :math:`S_2(\\phi)`.
+        """Method compute :math:`S_1(\\phi)` & :math:`S_2(\\phi)`.
         For spherical Scatterer such as here S1 and S2 are computed as follow:
 
         :math:`S_1=\sum\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\\tau_n)`
@@ -350,6 +316,22 @@ class BaseScatterer(object):
 
 
     def Footprint(self, Detector):
+        """Method return the scattering footprint of the scatterer defined as:
+
+        :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
+         \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.
+
+        Parameters
+        ----------
+        Detector : type
+            Description of parameter `Detector`.
+
+        Returns
+        -------
+        type
+            Description of returned object.
+
+        """
         return GetFootprint(Scatterer = self, Detector = Detector)
 
 

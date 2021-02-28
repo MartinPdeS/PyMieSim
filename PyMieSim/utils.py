@@ -15,27 +15,28 @@ from PyMieSim.Physics import Angle
 
 def LoadLibraries(*args):
     func = []
-    if 'S1S2' in args:
-        try:
-            from PyMieSim.LMT.Sphere import S1S2
-            func.append(S1S2); print('[S1S2] C++ module loaded')
-        except ImportError:
-            raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
+    for argument in args:
+        if 'S1S2' in argument:
+            try:
+                from PyMieSim.LMT.Sphere import S1S2
+                func.append(S1S2); print('[S1S2] C++ module loaded')
+            except ImportError:
+                raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
 
-    if 'Efficiencies' in args:
-        try:
-            from PyMieSim.LMT.Sphere import Efficiencies
-            func.append(Efficiencies); print('[Efficiencies] C++ module loaded')
-        except ImportError:
-            raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
+        if 'Efficiencies' in argument:
+            try:
+                from PyMieSim.LMT.Sphere import Efficiencies
+                func.append(Efficiencies); print('[Efficiencies] C++ module loaded')
+            except ImportError:
+                raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
 
 
-    if 'Fields' in args:
-        try:
-            from PyMieSim.LMT.Sphere import Fields
-            func.append(Fields); print('[GetFields] C++ module loaded')
-        except ImportError:
-            raise ImportError(f'[GetFields] C++ module load fail in {__file__}-> no fallback')
+        if 'Fields' in argument:
+            try:
+                from PyMieSim.LMT.Sphere import Fields
+                func.append(Fields); print('[GetFields] C++ module loaded')
+            except ImportError:
+                raise ImportError(f'[GetFields] C++ module load fail in {__file__}-> no fallback')
 
     return func
 

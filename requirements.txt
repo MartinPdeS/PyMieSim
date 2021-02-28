@@ -10,3 +10,4 @@ cartopy
 coverage
 pyyaml
 pybind11
+numpydoc

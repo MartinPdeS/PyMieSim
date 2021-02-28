@@ -10,9 +10,7 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-
-
-GetS1S2, GetFields =  LoadLibraries('S1S2', 'Fields')
+from PyMieSim.LMT.Sphere import S1S2 as GetS1S2, Fields as GetFields
 
 
 class Stokes(np.ndarray):
