@@ -3,10 +3,7 @@
 
 import numpy as np
 from scipy.special import gamma
-
-from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import PlotFarField
-from PyMieSim.Source import PlaneWave
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Field, Stokes
 from PyMieSim.Special import Psi, Psi_p, Xi, Xi_p
@@ -184,9 +181,7 @@ class WMSample(object):
         Scalling factor of the sample.
     Source : :class:`Source`
         Light source object containing info on polarization and wavelength.
-    Mesh : :class:`FibonacciMesh`
-        Object FibonacciMesh which describes the point in fourier space that are
-        used for computation.
+
 
     """
     def __init__(self,

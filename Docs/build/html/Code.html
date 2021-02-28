@@ -212,10 +212,9 @@
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.FarField">
 <code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.FarField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method Compute scattering Far Field:
-Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span>
-The Fields are up to a constant phase value:
-<span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<dd><p>Method Compute scattering Far Field.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span>.</p>
+<p>The Fields are up to a constant phase value: <span class="math notranslate nohighlight">\(\exp{(-i k r )}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -241,7 +240,7 @@ The Fields are up to a constant phase value:
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.Footprint">
 <code class="descname">Footprint</code><span class="sig-paren">(</span><em>Detector</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Footprint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method return the scattering footprint of the scatterer defined as:</p>
+<dd><p>Method return the scattering footprint of the scatterer defined as.</p>
 <p><span class="math notranslate nohighlight">\(\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),         \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -325,8 +324,8 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.SPF">
 <code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.SPF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Scattering phase function:
-SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
+<dd><p>Scattering phase function.</p>
+<p>SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -424,10 +423,6 @@ using the first Born approximation .</p>
 <dt><strong>Source</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></span></dt>
 <dd><p class="first last">Light source object containing info on polarization and wavelength.</p>
 </dd>
-<dt><strong>Mesh</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code></span></dt>
-<dd><p class="first last">Object FibonacciMesh which describes the point in fourier space that are
-used for computation.</p>
-</dd>
 </dl>
 </td>
 </tr>
@@ -450,27 +445,54 @@ used for computation.</p>
 <span id="class-sources"></span><h2>Class: Sources<a class="headerlink" href="#module-PyMieSim.Source" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="PyMieSim.Source.GaussianBeam">
-<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float, NA: float = 0.1, Polarization: float = 0.0, E0: float = 1.0, offset: list = [1e-16, 1e-16, 1e-16]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float, NA: float, Polarization: float = 0.0, E0: float = 1.0, Offset: list = [1e-16, 1e-16, 1e-16]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing a focuse Gaussian beam as a light source for
+light scattering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavelength</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Wavelenght of the light field.</p>
+</dd>
+<dt><strong>NA</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Numerical aperture of the beam.</p>
+</dd>
+<dt><strong>Polarization</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Polarization of the light field.</p>
+</dd>
+<dt><strong>E0</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Maximal value of the electric field at focus point.</p>
+</dd>
+<dt><strong>offset</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dd><p class="first last">Distance offset of the beam in comparison to the scatterer.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Anm">
-<code class="descname">Anm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns:
-<span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}          (\beta) d \theta\)</span></p>
+<code class="descname">Anm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}          (\beta) d \theta\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Anm_integrand">
-<code class="descname">Anm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm_integrand" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Anm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm_integrand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
 <p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}          (\beta) d \theta\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.BSC">
-<code class="descname">BSC</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode='TE'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.BSC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the beam shape coefficients
-(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) for a focused Gaussian
+<code class="descname">BSC</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling</em>, <em>mode='TE'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.BSC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the beam shape coefficients for a focused Gaussian
 beam using the quadrature method (ref[2]:Eq:17).</p>
+<p>(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) f</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -501,14 +523,14 @@ beam using the quadrature method (ref[2]:Eq:17).</p>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Bnm">
-<code class="descname">Bnm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns:
-<span class="math notranslate nohighlight">\(B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}          (\beta) d \theta\)</span></p>
+<code class="descname">Bnm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}          (\beta) d \theta\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Bnm_integrand">
-<code class="descname">Bnm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Num=100</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm_integrand" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Bnm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm_integrand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
 <p><span class="math notranslate nohighlight">\(B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}          (\beta) d \theta\)</span></p>
 </dd></dl>
@@ -530,6 +552,11 @@ ref[2]:Eq:10
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.GetBSC">
+<code class="descname">GetBSC</code><span class="sig-paren">(</span><em>Precision=20</em>, <em>maxDegree=3</em>, <em>save=False</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetBSC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.GetMaxOrder">
 <code class="descname">GetMaxOrder</code><span class="sig-paren">(</span><em>Precision=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetMaxOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetMaxOrder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method return the range of order to evaluate the BSC’s.
@@ -539,15 +566,15 @@ numerical overflow.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>Precision</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd><p class="first last">Precision parameter (standard is 20)</p>
 </dd>
-<dt><strong>Returns</strong></dt>
-<dd></dd>
-<dt><strong>——-</strong></dt>
-<dd></dd>
-<dt><strong>:class:`tuple`</strong></dt>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></dt>
 <dd><p class="first last">Tuple containing the minimum and maximum order to evaluate.</p>
 </dd>
 </dl>
@@ -576,41 +603,41 @@ ref[2]:Eq:10
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.I_0">
 <code class="descname">I_0</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>rhon</em>, <em>Q</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.I_0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.I_0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns <span class="math notranslate nohighlight">\(\gamma_0\)</span> from ref[2]:Eq:18</p>
+<dd><p>Method returns: <span class="math notranslate nohighlight">\(\gamma_0\)</span> from ref[2]:Eq:18</p>
 <p><span class="math notranslate nohighlight">\(\frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.I_1">
 <code class="descname">I_1</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>rhon</em>, <em>Q</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.I_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.I_1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns <span class="math notranslate nohighlight">\(\gamma_1\)</span> from ref[2]:Eq:19</p>
+<dd><p>Method returns: <span class="math notranslate nohighlight">\(\gamma_1\)</span> from ref[2]:Eq:19</p>
 <p><span class="math notranslate nohighlight">\(Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2         + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )           \sin(\theta)\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.I_2">
 <code class="descname">I_2</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>rhon</em>, <em>Q</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.I_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.I_2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns <span class="math notranslate nohighlight">\(\gamma_2\)</span> from ref[2]:Eq:19</p>
+<dd><p>Method returns: <span class="math notranslate nohighlight">\(\gamma_2\)</span> from ref[2]:Eq:19</p>
 <p><span class="math notranslate nohighlight">\(\big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.I_3">
 <code class="descname">I_3</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>rhon</em>, <em>Q</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.I_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.I_3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns <span class="math notranslate nohighlight">\(\gamma_3\)</span> from ref[2]:Eq:19</p>
+<dd><p>Method returns: <span class="math notranslate nohighlight">\(\gamma_3\)</span> from ref[2]:Eq:19</p>
 <p><span class="math notranslate nohighlight">\(4 Q s^2 X_0 \cos(\theta)\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.I_4">
 <code class="descname">I_4</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>rhon</em>, <em>Q</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.I_4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.I_4" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns <span class="math notranslate nohighlight">\(\gamma_4\)</span> from ref[2]:Eq:19</p>
+<dd><p>Method returns: <span class="math notranslate nohighlight">\(\gamma_4\)</span> from ref[2]:Eq:19</p>
 <p><span class="math notranslate nohighlight">\(4 Q s^2 Y_0 \cos(\theta)\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Im">
-<code class="descname">Im</code><span class="sig-paren">(</span><em>m</em>, <em>beta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Im"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Im" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Im</code><span class="sig-paren">(</span><em>m</em>, <em>beta</em>, <em>Sampling</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Im"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Im" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method modified Bessel function <span class="math notranslate nohighlight">\(I_m(eta)\)</span> from ref[2]:Eq:16</p>
 <p><span class="math notranslate nohighlight">\(I_m(\beta) = \frac{1}{2\pi} \int_0^{2\pi}
 e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
@@ -618,37 +645,42 @@ e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.ImHat">
-<code class="descname">ImHat</code><span class="sig-paren">(</span><em>m</em>, <em>beta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.ImHat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.ImHat" title="Permalink to this definition">¶</a></dt>
+<code class="descname">ImHat</code><span class="sig-paren">(</span><em>m</em>, <em>beta</em>, <em>Sampling</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.ImHat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.ImHat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
 <p><span class="math notranslate nohighlight">\(e^{-\beta - i m \xi} I_m(\beta)\)</span></p>
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Source.GaussianBeam.LoadBSC">
+<code class="descname">LoadBSC</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.LoadBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.LoadBSC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Phi0">
 <code class="descname">Phi0</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Phi0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Phi0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns
-<span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \Big]\)</span></p>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \Big]\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Phi0_Spherical">
 <code class="descname">Phi0_Spherical</code><span class="sig-paren">(</span><em>r</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Phi0_Spherical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Phi0_Spherical" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns
-<span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r \sin (\theta) \cos (\phi) - x_0^2 ) + (r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\)</span></p>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r \sin (\theta) \cos (\phi) - x_0^2 ) + (r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Q">
 <code class="descname">Q</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Q"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Q" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns
-<span class="math notranslate nohighlight">\(Q_{cartesian} =\frac{1}{2 ( z - z_0 )/k w_0^2 - i}\)</span></p>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(Q_{cartesian} =\frac{1}{2 ( z - z_0 )/k w_0^2 - i}\)</span></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Q_Spherical">
 <code class="descname">Q_Spherical</code><span class="sig-paren">(</span><em>r</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Q_Spherical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Q_Spherical" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method returns
-<span class="math notranslate nohighlight">\(Q_{spherical} = \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\)</span></p>
+<dd><p>Method returns:</p>
+<p><span class="math notranslate nohighlight">\(Q_{spherical} = \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\)</span></p>
 </dd></dl>
 
 </dd></dl>
@@ -656,7 +688,28 @@ e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
 <dl class="class">
 <dt id="PyMieSim.Source.PlaneWave">
 <em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">PlaneWave</code><span class="sig-paren">(</span><em>Wavelength: float</em>, <em>Polarization: float = 0</em>, <em>E0: float = 1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p>Class representing a focuse plane wave beam as a light source for
+light scattering.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Wavelength</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Wavelenght of the light field.</p>
+</dd>
+<dt><strong>Polarization</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Polarization of the light field.</p>
+</dd>
+<dt><strong>E0</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Maximal value of the electric field at focus point.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
 <dt id="PyMieSim.Source.PlaneWave.BSC">
 <code class="descname">BSC</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode='TE'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.BSC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the beam shape coefficients
@@ -693,15 +746,20 @@ e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
 <dl class="method">
 <dt id="PyMieSim.Source.PlaneWave.EField">
 <code class="descname">EField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.EField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric Field
-<span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+<dd><p>Value of the electric field.</p>
+<p><span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
 </dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.PlaneWave.GetBSC">
+<code class="descname">GetBSC</code><span class="sig-paren">(</span><em>MaxOrder=20</em>, <em>save=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.GetBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.GetBSC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.PlaneWave.HField">
 <code class="descname">HField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.HField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric Field
-<span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+<dd><p>Value of the electric field.</p>
+<p><span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
 </dd></dl>
 
 </dd></dl>
@@ -711,7 +769,7 @@ e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
 <span id="class-detector"></span><h2>Class: Detector<a class="headerlink" href="#module-PyMieSim.Detector" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="PyMieSim.Detector.LPmode">
-<em class="property">class </em><code class="descclassname">PyMieSim.Detector.</code><code class="descname">LPmode</code><span class="sig-paren">(</span><em>Mode: tuple</em>, <em>NA: float = 0.2</em>, <em>Sampling: int = 401</em>, <em>InterpSampling: int = 251</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = None</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#LPmode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.LPmode" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Detector.</code><code class="descname">LPmode</code><span class="sig-paren">(</span><em>Mode: tuple</em>, <em>NA: float</em>, <em>Sampling: int = 401</em>, <em>InterpSampling: int = 251</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = None</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#LPmode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.LPmode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detector type class representing a fiber LP mode, light coupling is
 thus dependant of the phase of the latter.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -821,7 +879,7 @@ thus dependant of the phase of the latter.</p>
 
 <dl class="class">
 <dt id="PyMieSim.Detector.Photodiode">
-<em class="property">class </em><code class="descclassname">PyMieSim.Detector.</code><code class="descname">Photodiode</code><span class="sig-paren">(</span><em>NA: float = 0.2</em>, <em>Sampling: int = 401</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = None</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#Photodiode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.Photodiode" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Detector.</code><code class="descname">Photodiode</code><span class="sig-paren">(</span><em>NA: float</em>, <em>Sampling: int = 400</em>, <em>GammaOffset: float = 0</em>, <em>PhiOffset: float = 0</em>, <em>Filter: float = None</em>, <em>CouplingMode: str = 'Centered'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#Photodiode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.Photodiode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detector type class representing a photodiode, light coupling is
 thus independant of the phase of the latter.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -847,10 +905,6 @@ thus independant of the phase of the latter.</p>
 <dt><strong>CouplingMode</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></dt>
 <dd><p class="first last">Methode for computing mode coupling. Either Centered or Mean.</p>
 </dd>
-<dt><strong>Methods</strong></dt>
-<dd></dd>
-<dt><strong>——</strong></dt>
-<dd></dd>
 </dl>
 </td>
 </tr>
@@ -1058,23 +1112,13 @@ THe setup is comprised of ScattrererSet and a tuple of Detectors.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>ScattererSet</strong> <span class="classifier-delimiter">:</span> <span class="classifier">&lt;ScattererSet&gt;</span></dt>
 <dd><p class="first last">Instance containing information about the scatterer to analyse in the experiment.</p>
 </dd>
 <dt><strong>Detectors</strong> <span class="classifier-delimiter">:</span> <span class="classifier">tuple</span></dt>
 <dd><p class="first last">Tuple containing all the detectors instance to analyses the scattering signal.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>Detectors</strong></dt>
-<dd></dd>
-<dt><strong>ScattererSet</strong></dt>
-<dd></dd>
-<dt><strong>_Coupling</strong></dt>
-<dd></dd>
 </dl>
 </td>
 </tr>
@@ -1126,7 +1170,7 @@ evaluated.</p>
 
 <dl class="class">
 <dt id="PyMieSim.Sets.SampleSet">
-<em class="property">class </em><code class="descclassname">PyMieSim.Sets.</code><code class="descname">SampleSet</code><span class="sig-paren">(</span><em>gList: list, LcList: list, D: float, Nc: float, Detector: Union[PyMieSim.Detector.LPmode, PyMieSim.Detector.Photodiode], Source: PyMieSim.Source.PlaneWave, Npts: int = 201</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Sets.html#SampleSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Sets.SampleSet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Sets.</code><code class="descname">SampleSet</code><span class="sig-paren">(</span><em>gList: list</em>, <em>LcList: list</em>, <em>D: float</em>, <em>Nc: float</em>, <em>Detector: PyMieSim.Detector.Photodiode</em>, <em>Source: PyMieSim.Source.PlaneWave</em>, <em>Npts: int = 201</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Sets.html#SampleSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Sets.SampleSet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="attribute">
 <dt id="PyMieSim.Sets.SampleSet.Coupling">
@@ -1181,26 +1225,16 @@ evaluated.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>DiameterList</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>DiameterList</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></dt>
 <dd><p class="first last">List of diameters to be considered for the single scatterers.</p>
 </dd>
-<dt><strong>RIList</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
+<dt><strong>RIList</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></dt>
 <dd><p class="first last">List of refractive index to be considered for the single scatterers.</p>
 </dd>
 <dt><strong>Source</strong> <span class="classifier-delimiter">:</span> <span class="classifier">PlaneWave</span></dt>
 <dd><p class="first last">Source &lt;class&gt; representing the illumination impinging the scatterers.</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>DiameterList</strong></dt>
-<dd></dd>
-<dt><strong>RIList</strong></dt>
-<dd></dd>
-<dt><strong>Source</strong></dt>
-<dd></dd>
 </dl>
 </td>
 </tr>

@@ -33,6 +33,8 @@ class PrintingTest(TestCase):
         self.test08()
         self.test09()
         self.test10()
+        self.test11()
+        self.test12()
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -113,14 +115,24 @@ class PrintingTest(TestCase):
 
         print('Test 10: passed')
 
-    def test11(self):
-        beam = GaussianBeam(Wavelength   = 0.632e-6,
-                            NA           = 0.15,
-                            Polarization = 0,
-                            offset       = [5e-6,5e-6,5-6])
 
-        beam.Anm(1,0)
-        beam.Bnm(1,1)
+    def test11(self):
+        beam = GaussianBeam(Wavelength   = 1.3e-6,
+                            NA           = 0.6,
+                            Polarization = 0,
+                            Offset       = [1e-6,1e-6,1e-6])
+
+        beam.GetBSC(Precision=1, save=False, Sampling=100)
+
+        print('Test 11: passed')
+
+
+    def test12(self):
+        beam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
+
+        beam.GetBSC(MaxOrder=1, save=False)
+
+        print('Test 12: passed')
 
 if __name__ == '__main__':
     test = PrintingTest()

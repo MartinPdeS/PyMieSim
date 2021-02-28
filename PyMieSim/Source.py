@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import csv
+import pandas as pd
 from scipy.integrate import trapz as integrate
 from scipy.special import spherical_jn as jn, lpmv
-from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, meshgrid, arcsin
+from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, meshgrid, arcsin, zeros
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
@@ -14,6 +16,19 @@ from PyMieSim.Special import Pinm, NPnm, Pnm, Xi, _Psi, Pnm_, r8_factorial
 
 EPS = 1e-16
 class PlaneWave(BaseSource):
+    """Class representing a focuse plane wave beam as a light source for
+    light scattering.
+
+    Parameters
+    ----------
+    Wavelength : float
+        Wavelenght of the light field.
+    Polarization : float
+        Polarization of the light field.
+    E0 : float
+        Maximal value of the electric field at focus point.
+
+    """
     def __init__(self,
                  Wavelength:   float,
                  Polarization: float = 0,
@@ -26,6 +41,31 @@ class PlaneWave(BaseSource):
         self.H0 = sqrt(eps0/mu0) * self.E0
         self.offset = array([EPS]*3)
 
+
+    def GetBSC(self, MaxOrder=20, save=False):
+
+        nOrder = range(-MaxOrder,MaxOrder)
+        mOrder = range(-1,1)
+
+        index = pd.MultiIndex.from_product([nOrder,mOrder], names=["n", "m"])
+        BSCTE = r'$BSC_{TE}$'
+        BSCTM = r'$BSC_{TM}$'
+        BSC = pd.DataFrame(columns=[BSCTE, BSCTM], index=index)
+
+        for n in nOrder:
+            print(f'order: {n}/{MaxOrder}')
+            for m in mOrder:
+                BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE' )
+                BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM' )
+
+
+        if save:
+            fileName = f"./PyMieSim/BSC/PW_{self.Wavelength}.csv"
+            print(f" Saving BSC into file:\n {fileName}")
+            BSC.to_csv(f'./{fileName}', mode='w')
+
+
+        return BSC
 
     def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients
@@ -54,7 +94,8 @@ class PlaneWave(BaseSource):
         if mode == 'TE': return  -m * 1j / 2
 
     def EField(self, x, y, z):
-        """Value of the electric Field
+        """Value of the electric field.
+
         :math:`E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`
 
         """
@@ -66,7 +107,8 @@ class PlaneWave(BaseSource):
                0
 
     def HField(self, x, y, z):
-        """Value of the electric Field
+        """Value of the electric field.
+
         :math:`H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`
 
         """
@@ -81,13 +123,31 @@ class PlaneWave(BaseSource):
 
 
 class GaussianBeam(BaseSource):
+    """Class representing a focuse Gaussian beam as a light source for
+    light scattering.
+
+    Parameters
+    ----------
+    Wavelength : float
+        Wavelenght of the light field.
+    NA : float
+        Numerical aperture of the beam.
+    Polarization : float
+        Polarization of the light field.
+    E0 : float
+        Maximal value of the electric field at focus point.
+    offset : list
+        Distance offset of the beam in comparison to the scatterer.
+
+    """
     def __init__(self,
                  Wavelength:   float,
-                 NA:           float = 0.1,
+                 NA:           float,
                  Polarization: float = 0.,
                  E0:           float = 1.,
-                 offset:       list = [EPS]*3) :
+                 Offset:       list = [EPS]*3) :
 
+        Offset = array(Offset); Offset[Offset == 0] = EPS
         self.Wavelength = Wavelength
         self.k = 2 * pi / Wavelength
         self.Polarization = _Polarization(Polarization)
@@ -95,16 +155,47 @@ class GaussianBeam(BaseSource):
         self.NA = NA
         self.w0 = 2 * self.Wavelength / (pi * NA)
         self.s = 1/(self.k*self.w0)
-        self.offset = array(offset)
+        self.offset = array(Offset)
         self.Offset = self.offset*self.k
         self.R0 = sqrt(self.Offset[0]**2 + self.Offset[1]**2)
         self.xi = arccos(self.Offset[0]/self.R0)
 
 
-    def BSC(self, n, m, mode='TE'):
-        """Return the beam shape coefficients
-        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a focused Gaussian
+
+    def GetBSC(self, Precision=20, maxDegree=3, save=False, Sampling=200):
+        MaxOrder = self.GetMaxOrder(Precision)
+
+        nOrder = range(*MaxOrder)
+        mOrder = range(-maxDegree,maxDegree)
+
+        index = pd.MultiIndex.from_product([nOrder,mOrder], names=["n", "m"])
+        BSCTE = r'$BSC_{TE}$'
+        BSCTM = r'$BSC_{TM}$'
+        BSC = pd.DataFrame(columns=[BSCTE, BSCTM], index=index)
+
+        for n in nOrder:
+            print(f'order: {n}/{MaxOrder[1]}')
+            for m in mOrder:
+                BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE', Sampling=Sampling )
+                BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM', Sampling=Sampling )
+
+
+        if save:
+            fileName = f"./PyMieSim/BSC/GB_{self.Wavelength}_{self.NA}.csv"
+            print(f" Saving BSC into file:\n {fileName}")
+            BSC.to_csv(f'./{fileName}', mode='w')
+
+        return BSC
+
+
+    def LoadBSC(dir):
+        BSC = pd.read_csv(dir)
+
+    def BSC(self, n, m, Sampling, mode='TE'):
+        """Return the beam shape coefficients for a focused Gaussian
         beam using the quadrature method (ref[2]:Eq:17).
+
+        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) f
 
         Parameters
         ----------
@@ -122,9 +213,10 @@ class GaussianBeam(BaseSource):
 
         """
 
-        if mode == 'TM': return self.Anm(n, m)
+        if mode == 'TM': return self.Anm(n, m, Sampling)
 
-        if mode == 'TE': return self.Bnm(n, m)
+        if mode == 'TE': return self.Bnm(n, m, Sampling)
+
 
     def GetMaxOrder(self, Precision=20):
         """Method return the range of order to evaluate the BSC's.
@@ -135,18 +227,22 @@ class GaussianBeam(BaseSource):
         ----------
         Precision : :class:`int`
             Precision parameter (standard is 20)
+
         Returns
         -------
         :class:`tuple`
             Tuple containing the minimum and maximum order to evaluate.
+
         """
+
         termP = sqrt( 2.3 * Precision * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
 
-        return (max(1, self.R0 - 1/2 - termP), self.R0 - 1/2 + termP)
+        return (max(1, int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP))
 
 
     def Phi0(self, x, y, z):
-        """Method returns
+        """Method returns:
+
         :math:`\\Phi_0 = -i Q \\exp \\Big[ i Q \\frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \\Big]`
         """
 
@@ -158,7 +254,8 @@ class GaussianBeam(BaseSource):
         #return -1j * Q * exp(1j * Q * ( (x-self.offset[0])**2 + (y-self.offset[1])**2 )/self.w0**2 )
 
     def Phi0_Spherical(self, r, phi, theta):
-        """Method returns
+        """Method returns:
+
         :math:`\\Phi_0 = -i Q \\exp \\Big[ \\frac{i Q}{w_0^2} \\Big(  (r \\sin (\\theta) \\cos (\\phi) - x_0^2 ) + (r \\sin (\\theta) \\sin (\\phi) - y_0^2 ) \\Big) \\Big]`
         """
         Q = self.Q_Spherical(r, theta)
@@ -171,27 +268,32 @@ class GaussianBeam(BaseSource):
 
 
     def Q(self,z):
-        """Method returns
+        """Method returns:
+
         :math:`Q_{cartesian} =\\frac{1}{2 ( z - z_0 )/k w_0^2 - i}`
         """
         return 1/( 2 * (z-self.offset[2])/(self.k * self.w0**2) - 1j )
 
 
     def Q_Spherical(self, r, theta):
-        """Method returns
+        """Method returns:
+
         :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
         """
         return 1/( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
 
 
-    def Bnm(self, n, m, Num=100):
+    def Bnm(self, n, m, Sampling=200):
         """
         Method returns:
+
         :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
          (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
           (\\beta) d \\theta`
         """
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num+2)
+
+        if abs(m) > n: return 0.
+        Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
 
         rhon = n + 0.5
         r = rhon/self.k
@@ -201,9 +303,9 @@ class GaussianBeam(BaseSource):
             Q = 1/( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
+            term0 =  self.ImHat(m+1, beta, Sampling) - self.ImHat(m-1, beta, Sampling)
             term0 *= self.I_2(*param)
-            term0 -= self.I_4(*param) * self.ImHat(m, beta)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta, Sampling)
             term0 *= self.I_1(*param)
 
             sub.append(term0)
@@ -213,14 +315,17 @@ class GaussianBeam(BaseSource):
         return term0 * integrate( y=sub, x=Theta)
 
 
-    def Anm(self, n, m, Num=100):
+    def Anm(self, n, m, Sampling=200):
         """
         Method returns:
+
         :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
          (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
           (\\beta) d \\theta`
         """
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
+
+        if abs(m) > n: return 0.
+        Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
@@ -229,9 +334,9 @@ class GaussianBeam(BaseSource):
             Q = 1 / ( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
+            term0 =  self.ImHat(m+1, beta, Sampling) + self.ImHat(m-1, beta, Sampling)
             term0 *= self.I_2(*param)
-            term0 -= self.I_3(*param) * self.ImHat(m, beta)
+            term0 -= self.I_3(*param) * self.ImHat(m, beta, Sampling)
             term0 *= self.I_1(*param)
 
             sub.append(-term0)
@@ -242,7 +347,7 @@ class GaussianBeam(BaseSource):
 
 
 
-    def Anm_integrand(self, n, m, Num=100):
+    def Anm_integrand(self, n, m, Sampling=200):
         """
         Method returns:
 
@@ -251,7 +356,7 @@ class GaussianBeam(BaseSource):
           (\\beta) d \\theta`
 
         """
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
+        Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
@@ -260,9 +365,9 @@ class GaussianBeam(BaseSource):
             Q = self.Q_Spherical(r, theta)
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
+            term0 =  self.ImHat(m+1, beta, Sampling) + self.ImHat(m-1, beta, Sampling)
             term0 *= self.I_2(*param)
-            term0 -= self.I_3(*param) * self.ImHat(m, beta)
+            term0 -= self.I_3(*param) * self.ImHat(m, beta, Sampling)
             term0 *= self.I_1(*param)
 
             sub.append(-term0)
@@ -272,7 +377,7 @@ class GaussianBeam(BaseSource):
         return Theta, sub
 
 
-    def Bnm_integrand(self, n, m, Num=100):
+    def Bnm_integrand(self, n, m, Sampling=200):
         """
         Method returns:
 
@@ -289,9 +394,9 @@ class GaussianBeam(BaseSource):
             Q = self.Q_Spherical(r, theta)
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
+            term0 =  self.ImHat(m+1, beta, Sampling) - self.ImHat(m-1, beta, Sampling)
             term0 *= self.I_2(*param)
-            term0 -= self.I_4(*param) * self.ImHat(m, beta)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta, Sampling)
             term0 *= self.I_1(*param)
 
             sub.append(-term0)
@@ -301,15 +406,16 @@ class GaussianBeam(BaseSource):
         return sub
 
 
-    def ImHat(self, m, beta):
+    def ImHat(self, m, beta, Sampling):
         """
         Method returns:
 
         :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
         """
-        return exp(-beta - 1j * m * self.xi ) * self.Im(m, beta)
+        return exp(-beta - 1j * m * self.xi ) * self.Im(m, beta, Sampling)
 
-    def Im(self, m, beta):
+
+    def Im(self, m, beta, Sampling):
         """
         Method modified Bessel function :math:`I_m(\beta)` from ref[2]:Eq:16
 
@@ -317,13 +423,14 @@ class GaussianBeam(BaseSource):
         e^{z \\cos(\\phi) - i m \\phi} d\\phi`
         """
 
-        x = linspace(0, 2*pi, 300)
+        x = linspace(0, 2*pi, Sampling)
         y = exp(beta * cos(x) - 1j*m*x)
         return 1/(2*pi) * integrate(y=y, x=x, axis=0)
 
+
     def I_0(self, n, m, rhon, Q, theta):
         """
-        Method returns :math:`\gamma_0` from ref[2]:Eq:18
+        Method returns: :math:`\gamma_0` from ref[2]:Eq:18
 
         :math:`\\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
         """
@@ -335,12 +442,13 @@ class GaussianBeam(BaseSource):
 
     def I_1(self, n, m, rhon, Q, theta):
         """
-        Method returns :math:`\gamma_1` from ref[2]:Eq:19
+        Method returns: :math:`\gamma_1` from ref[2]:Eq:19
 
         :math:`Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
         + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
           \\sin(\\theta)`
         """
+
         factor = ( 2 * n + 1 ) * r8_factorial(n - m)
         factor /= ( 2 * r8_factorial( n + m ) )
 
@@ -351,25 +459,28 @@ class GaussianBeam(BaseSource):
 
         return Q * exp(term1 + term3 ) * term4
 
+
     def I_2(self, n, m, rhon, Q, theta):
         """
-        Method returns :math:`\gamma_2` from ref[2]:Eq:19
+        Method returns: :math:`\gamma_2` from ref[2]:Eq:19
 
         :math:`\\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
         """
         return ( 2 * Q * self.s**2 * rhon * cos(theta) - 1 ) * sin(theta)
 
+
     def I_3(self, n, m, rhon, Q, theta):
         """
-        Method returns :math:`\gamma_3` from ref[2]:Eq:19
+        Method returns: :math:`\gamma_3` from ref[2]:Eq:19
 
         :math:`4 Q s^2 X_0 \\cos(\\theta)`
         """
         return 4 * Q * self.s**2 * self.Offset[0] * cos(theta)
 
+
     def I_4(self, n, m, rhon, Q, theta):
         """
-        Method returns :math:`\gamma_4` from ref[2]:Eq:19
+        Method returns: :math:`\gamma_4` from ref[2]:Eq:19
 
         :math:`4 Q s^2 Y_0 \\cos(\\theta)`
         """

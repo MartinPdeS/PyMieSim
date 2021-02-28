@@ -4,7 +4,6 @@
 
 import numpy as np
 import pandas as pd
-from typing import Tuple, Union
 
 from PyMieSim.utils import LoadLibraries
 from PyMieSim.Source import PlaneWave
@@ -21,18 +20,13 @@ class ScattererSet(object):
 
     Parameters
     ----------
-    DiameterList : list
+    DiameterList : :class:`list`
         List of diameters to be considered for the single scatterers.
-    RIList : list
+    RIList : :class:`list`
         List of refractive index to be considered for the single scatterers.
     Source : PlaneWave
         Source <class> representing the illumination impinging the scatterers.
 
-    Attributes
-    ----------
-    DiameterList
-    RIList
-    Source
 
     """
 
@@ -130,12 +124,6 @@ class ExperimentalSet(object):
         Instance containing information about the scatterer to analyse in the experiment.
     Detectors : tuple
         Tuple containing all the detectors instance to analyses the scattering signal.
-
-    Attributes
-    ----------
-    Detectors
-    ScattererSet
-    _Coupling
 
     """
 
@@ -237,7 +225,7 @@ class SampleSet(object):
                  LcList:          list,
                  D:               float,
                  Nc:              float,
-                 Detector:        Union[LPmode, Photodiode],
+                 Detector:        Photodiode,
                  Source:          PlaneWave,
                  Npts:            int = 201,
                  ):

@@ -71,7 +71,7 @@ def GenShift(npts):
 
 
 
-def SMF28():
+def SMF28(mode, Num, SFactor):
     """Function return an instance of the fiber class specific for a
     SMF28 fiber optic .
 
@@ -81,7 +81,13 @@ def SMF28():
 
     Fiber = fiber()
 
-    return Fiber
+    Field = fibermodes.field.Field(Fiber.source,
+                                  fibermodes.Mode(fibermodes.ModeFamily.HE, mode[0]+1, mode[1]),
+                                  940e-9,
+                                  Fiber.CoreDiameter*Num/SFactor,
+                                  Num).Ex()
+
+    return np.array(Field, copy=False)
 
 
 class Angle(object):

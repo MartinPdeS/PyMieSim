@@ -161,10 +161,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">gamma</span>
-
-<span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Stokes</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Special</span> <span class="kn">import</span> <span class="n">Psi</span><span class="p">,</span> <span class="n">Psi_p</span><span class="p">,</span> <span class="n">Xi</span><span class="p">,</span> <span class="n">Xi_p</span>
@@ -342,9 +339,7 @@
 <span class="sd">        Scalling factor of the sample.</span>
 <span class="sd">    Source : :class:`Source`</span>
 <span class="sd">        Light source object containing info on polarization and wavelength.</span>
-<span class="sd">    Mesh : :class:`FibonacciMesh`</span>
-<span class="sd">        Object FibonacciMesh which describes the point in fourier space that are</span>
-<span class="sd">        used for computation.</span>
+
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>

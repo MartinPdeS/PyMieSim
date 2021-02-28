@@ -249,10 +249,11 @@ class BaseScatterer(object):
 
 
     def FarField(self, Num: int = 200):
-        """Method Compute scattering Far Field:
-        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
-        The Fields are up to a constant phase value:
-        :math:`\\exp{\big(-i k r \big)}`
+        """Method Compute scattering Far Field.
+
+        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`.
+
+        The Fields are up to a constant phase value: :math:`\\exp{(-i k r )}`
 
         Parameters
         ----------
@@ -270,9 +271,12 @@ class BaseScatterer(object):
 
 
     def _FarField(self, Phi, Theta):
-        """Method Compute scattering Far Field:
+        """Method Compute scattering Far Field.
+
         Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
-        The Fields are up to a constant phase value:
+
+        The Fields are up to a constant phase value.
+
         :math:`\\exp{\big(-i k r \big)}`
 
 
@@ -297,7 +301,8 @@ class BaseScatterer(object):
 
 
     def SPF(self, Num=100):
-        """Scattering phase function:
+        """Scattering phase function.
+
         SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
 
         Parameters
@@ -316,7 +321,7 @@ class BaseScatterer(object):
 
 
     def Footprint(self, Detector):
-        """Method return the scattering footprint of the scatterer defined as:
+        """Method return the scattering footprint of the scatterer defined as.
 
         :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
          \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.

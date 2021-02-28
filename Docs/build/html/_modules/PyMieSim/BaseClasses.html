@@ -407,10 +407,11 @@
 
 
     <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field:</span>
-<span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
-<span class="sd">        The Fields are up to a constant phase value:</span>
-<span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
+        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field.</span>
+
+<span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`.</span>
+
+<span class="sd">        The Fields are up to a constant phase value: :math:`\\exp{(-i k r )}`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -428,9 +429,12 @@
 
 
     <span class="k">def</span> <span class="nf">_FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field:</span>
+        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field.</span>
+
 <span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
-<span class="sd">        The Fields are up to a constant phase value:</span>
+
+<span class="sd">        The Fields are up to a constant phase value.</span>
+
 <span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
 
 
@@ -455,7 +459,8 @@
 
 
     <span class="k">def</span> <span class="nf">SPF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scattering phase function:</span>
+        <span class="sd">&quot;&quot;&quot;Scattering phase function.</span>
+
 <span class="sd">        SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`</span>
 
 <span class="sd">        Parameters</span>
@@ -474,7 +479,7 @@
 
 
     <span class="k">def</span> <span class="nf">Footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Detector</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method return the scattering footprint of the scatterer defined as:</span>
+        <span class="sd">&quot;&quot;&quot;Method return the scattering footprint of the scatterer defined as.</span>
 
 <span class="sd">        :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\</span>
 <span class="sd">         \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.</span>

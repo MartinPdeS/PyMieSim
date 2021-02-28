@@ -15,7 +15,6 @@ class Photodiode(BaseDetector, MeshProperty):
     """Detector type class representing a photodiode, light coupling is
     thus independant of the phase of the latter.
 
-
     Parameters
     ----------
     NA : :class:`float`
@@ -31,13 +30,11 @@ class Photodiode(BaseDetector, MeshProperty):
     CouplingMode : :class:`str`
         Methode for computing mode coupling. Either Centered or Mean.
 
-    Methods
-    ------
     """
 
     def __init__(self,
-                 NA:           float  = 0.2,
-                 Sampling:     int    = 401,
+                 NA:           float,
+                 Sampling:     int    = 400,
                  GammaOffset:  float  = 0,
                  PhiOffset:    float  = 0,
                  Filter:       float  = None,
@@ -124,7 +121,7 @@ class LPmode(BaseDetector, MeshProperty):
 
     def __init__(self,
                  Mode:           tuple,
-                 NA:             float = 0.2,
+                 NA:             float,
                  Sampling:       int   = 401,
                  InterpSampling: int   = 251,
                  GammaOffset:    float = 0,
@@ -133,8 +130,11 @@ class LPmode(BaseDetector, MeshProperty):
                  CouplingMode:   str   = 'Centered'):
 
         if len(Mode) <= 2: Mode = Mode[0], Mode[1], 'h'
+
         assert Mode[2] in ['v','h',''], "Mode orientation should either be v [vertical] or h [horizontal]"
+
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
+
         assert NA < 1, "Numerical aperture has to be under 1 radian"
 
         self.CouplingMode = ('Amplitude', CouplingMode)
@@ -172,33 +172,24 @@ class LPmode(BaseDetector, MeshProperty):
 
         """
 
-        Fiber = SMF28()
+        mode = SMF28(mode = (0,1), Num=Num, SFactor=5)
 
-        temp = fibermodes.field.Field(Fiber.source,
-                                      fibermodes.Mode(fibermodes.ModeFamily.HE, *self.ModeNumber[:2]),
-                                      940e-9,
-                                      Fiber.CoreDiameter*Num/SFactor,
-                                      Num).Ex()
+        if self.ModeNumber[2] == 'h': mode = mode.T
 
-        temp = np.array(temp, copy=False)
+        mode = FraunhoferDiffraction(mode)
 
-        if self.ModeNumber[2] == 'h': temp = temp.T
+        if not Interpolate: return FraunhoferDiffraction(mode)
 
-        temp = FraunhoferDiffraction(temp)
+        self._phi, self._theta = self.SphericalMesh(Sampling    = mode.shape[0],
+                                                    MaxAngle    = self.Mesh.MaxAngle,
+                                                    PhiOffset   = 0,
+                                                    GammaOffset = 0,
+                                                    Structured  = True)
 
-        if not Interpolate: return FraunhoferDiffraction(temp)
-
-        shape = temp.shape
-
-        x, y = np.mgrid[-50: 50: complex(shape[0]), -50: 50: complex(shape[1])]
-
-        z = 50 / np.tan(self.Mesh.MaxAngle)
-
-        _, self._phi, self._theta = cs.cart2sp(x.flatten(), y.flatten(), x.flatten()*0+z)
 
         return interp_at(x           = self._phi.flatten(),
                          y           = self._theta.flatten(),
-                         v           = temp.astype(np.complex).flatten(),
+                         v           = mode.astype(np.complex).flatten(),
                          xp          = self.Mesh.base.Phi,
                          yp          = self.Mesh.base.Theta,
                          algorithm   = 'linear',
