@@ -84,16 +84,16 @@ void printVector(std::vector <T> const &a) {
 
 
 
-std::pair<std::vector<double> , std::vector<double>>
+std::pair<std::vector<double>* , std::vector<double>*>
 Arrange(const double start,
         const double stop)
 {
-  std::vector<double> Vec0 ;
-  std::vector<double> Vec1 ;
+  std::vector<double> *Vec0 = new std::vector<double>;
+  std::vector<double> *Vec1 = new std::vector<double>;
   for (double i = start; i < stop; i++)
   {
-    Vec0.push_back(i);
-    Vec1.push_back( ( 2 * (i) + 1) / ( (i) * (i + 1) ) ) ;
+    Vec0->push_back(i);
+    Vec1->push_back( ( 2 * (i) + 1) / ( (i) * (i + 1) ) ) ;
   }
   return std::make_pair(Vec0, Vec1);
 }

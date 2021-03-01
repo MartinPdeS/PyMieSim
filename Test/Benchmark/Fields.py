@@ -4,7 +4,6 @@ import timeit
 
 from PyMieSim.utils import PlotField
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-#from PyMieSim.LMT.Cython.Sphere import GetFields as CppField
 from PyMieSim.LMT.Sphere import Fields as PyBindFields
 
 

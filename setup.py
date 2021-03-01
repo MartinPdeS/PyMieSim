@@ -12,14 +12,14 @@ from setuptools import setup, Extension
 import pybind11
 
 macro = [('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
-compile_args=["-std=c++11",
+compile_args=["-std=c++14",
               '-fopenmp',
               '-lboost_filesystem',
               '-lboost_system',
               '-O3',
               '-march=native']
 
-link_args=["-std=c++11",
+link_args=["-std=c++14",
            '-fopenmp',
            '-lboost_filesystem',
            '-lboost_system',
@@ -44,7 +44,14 @@ ext_modules = [
                           extra_link_args     = link_args
                          ),
 
-
+                Extension(name               = "PyMieSim.LMT.Cython.Sphere",
+                          sources            = ["PyMieSim/LMT/cython/Sphere.pyx"],
+                          include_dirs       = [numpy.get_include(), pybind11.get_include()],
+                          language           = "c++",
+                          define_macros      = macro,
+                          extra_compile_args = compile_args,
+                          extra_link_args    = link_args
+                         ),
 
                 Extension(name               = "PyMieSim.LMT.Sphere",
                           sources            = ["PyMieSim/LMT/cpp/PyLMT.cpp"],

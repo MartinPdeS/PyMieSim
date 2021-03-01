@@ -11,8 +11,8 @@ from PyMieSim.Optimizer import OptArray
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieSim.Scatterer import Sphere, WMSample
+from PyMieSim.LMT.Sphere import S1S2 as GetS1S2, Efficiencies as GetEfficiencies
 
-GetS1S2, GetEfficiencies = LoadLibraries('S1S2', 'Efficiencies')
 
 
 class ScattererSet(object):
