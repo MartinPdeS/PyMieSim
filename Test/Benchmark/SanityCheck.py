@@ -49,7 +49,7 @@ for nD, diameter in enumerate(DiameterList):
                      diameter,
                      LightSource.Wavelength,
                      1.0,
-                     Photodiode0.Mesh.Phi.Radian-np.pi/2)
+                     Photodiode0.Mesh.Phi.Radian)
 
     S1 = interpolate.interp1d(Photodiode0.Mesh.Phi.Radian, s1)
     S2 = interpolate.interp1d(Photodiode0.Mesh.Phi.Radian, s2)
@@ -62,7 +62,6 @@ for nD, diameter in enumerate(DiameterList):
                        epsabs=1e-8)
 
     Theoretical_coupling.append(ans)
-
 
 
 data0 = DF1.Coupling.to_numpy()

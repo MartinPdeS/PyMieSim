@@ -54,13 +54,13 @@ ext_modules = [
                          ),
 
                 Extension(name               = "PyMieSim.LMT.Sphere",
-                          sources            = ["PyMieSim/LMT/cpp/PyLMT.cpp"],
+                          sources            = ["PyMieSim/LMT/cpp/Interface.cpp"],
                           include_dirs       = [numpy.get_include(), pybind11.get_include()],
                           language           = "c++",
                          ),
 
                 Extension(name         = 'PyMieSim.GLMT.Sphere',
-                          sources      = ['PyMieSim/GLMT/cpp/GLMT.cpp'],
+                          sources      = ['PyMieSim/GLMT/cpp/Interface.cpp'],
                           include_dirs = [pybind11.get_include()],
                           language     = 'c++',
                 ),

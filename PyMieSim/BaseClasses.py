@@ -14,8 +14,10 @@ from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
 from PyMieSim.Couplings import Coupling as Coupling, GetFootprint
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle
-from PyMieSim.LMT.Sphere import S1S2 as GetS1S2, Fields as GetFields
 from PyMieSim.Mesh import FibonacciMesh
+
+from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
+#from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, Fields as GLMTFields
 
 
 class BaseSource(object):
@@ -28,6 +30,7 @@ class BaseSource(object):
         self.Wavelength = Wavelength
         self.k = 2 * np.pi / Wavelength
         self.Polarization = _Polarization(Polarization)
+
 
 class MeshProperty(object):
     """Short summary.
@@ -287,16 +290,30 @@ class BaseScatterer(object):
 
         """
 
-        return GetFields(Index        = self.Index,
-                         Diameter     = self.Diameter,
-                         Wavelength   = self.Source.Wavelength,
-                         nMedium      = self.nMedium,
-                         Phi          = Phi,
-                         Theta        = Theta,
-                         Polarization = self.Source.Polarization.Radian,
-                         E0           = float(self.Source.E0),
-                         R            = 1.,
-                         Lenght       = Phi.flatten().size)
+        if self.Source.GLMT:
+            return GLMTFields(Index        = self.Index,
+                             Diameter     = self.Diameter,
+                             Wavelength   = self.Source.Wavelength,
+                             nMedium      = self.nMedium,
+                             Phi          = Phi,
+                             Theta        = Theta,
+                             Polarization = self.Source.Polarization.Radian,
+                             E0           = float(self.Source.E0),
+                             R            = 1.,
+                             Lenght       = Phi.flatten().size)
+
+        else:
+            return LMTFields(Index        = self.Index,
+                             Diameter     = self.Diameter,
+                             Wavelength   = self.Source.Wavelength,
+                             nMedium      = self.nMedium,
+                             Phi          = Phi,
+                             Theta        = Theta,
+                             Polarization = self.Source.Polarization.Radian,
+                             E0           = float(self.Source.E0),
+                             R            = 1.,
+                             Lenght       = Phi.flatten().size)
+
 
 
 
