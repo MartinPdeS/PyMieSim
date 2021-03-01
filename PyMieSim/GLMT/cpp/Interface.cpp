@@ -1,4 +1,5 @@
 #include "Functions.cpp"
+#include <iostream>
 namespace py = pybind11;
 
 typedef std::vector<double> Vec;
@@ -56,7 +57,7 @@ S1(double   Index,
   return s1;
 }
 
- 
+
 
 
 
