@@ -20,8 +20,7 @@ S1(double   Index,
    double   E0,
    double   R,
    int      Lenght,
-   dict     BSC_TM,
-   dict     BSC_TE)
+   Cndarray  BSC)
 {
   py::buffer_info PhiBuffer     = Phi.request();
   py::buffer_info ThetaBuffer   = Theta.request();
@@ -48,7 +47,8 @@ S1(double   Index,
     {
       for(auto l = 0; l < PhiLenght; l++)
         {
-          s1_data[p] =  Expansion(MaxOrder, BSC_TE, BSC_TM, _an, _bn, PhiPtr[l], ThetaPtr[i]) ;
+          s1_data[p] =  Expansion(MaxOrder, BSC, _an, _bn, PhiPtr[l], ThetaPtr[i]) ;
+
           p++;
         }
     }
@@ -56,7 +56,7 @@ S1(double   Index,
   return s1;
 }
 
-
+ 
 
 
 
@@ -77,8 +77,7 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("E0"),
                py::arg("R"),
                py::arg("Lenght"),
-               py::arg("BSC_TE"),
-               py::arg("BSC_TM"),
+               py::arg("BSC"),
                "Return S1");
 
 }

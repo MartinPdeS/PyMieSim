@@ -12,6 +12,7 @@ typedef std::vector<double> Vec;
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::map<int, double> dict;
+typedef std::list<std::list<int>> List2D;
 typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 
@@ -113,36 +114,48 @@ dn(double SizeParam, double Index, double nMedium)
 
 
 complex128
-Expansion(int    MaxOrder,
-          dict   BSC_TE,
-          dict   BSC_TM,
-          iVec  _an,
-          iVec  _bn,
-          double Phi,
-          double Theta)
+Expansion(int      MaxOrder,
+          Cndarray BSC,
+          iVec    _an,
+          iVec   _bn,
+          double   Phi,
+          double   Theta)
 {
-  complex128 Lterm,
+
+  py::buffer_info BSCBuffer = BSC.request();
+
+
+  complex128 *BSCPtr = (complex128 *) BSCBuffer.ptr,
+             Lterm,
              Rterm,
-             result=0.;
+             result=0.,
+             TE,
+             TM;
 
   double prefactor,
-         TE,
-         TM,
-         order_d;
+         order_f;
 
-  for (auto order = 1; order < MaxOrder+1; order++)
+  int Lenght = BSCBuffer.shape[0],
+      Width = BSCBuffer.shape[1],
+      m = 0,
+      n = 0;
+
+  for (auto i = 0; i < Lenght; i++)
   {
-      order_d = (double)order;
-      prefactor = (2.*order_d+1.)/( order_d* (order_d+1.) );
 
-      for (auto m = -order; m < order+1; m++)
-      {
-        TE = BSC_TE[m]; TM = BSC_TM[m];
-        if (TE == 0. || TM == 0.){continue;}
-        Lterm = order_d * _an[order] * TM * Pinm(order, abs(m), cos(Phi - PI/2));
-        Rterm = j * _bn[order] * TE * Taunm(order, abs(m), cos(Phi - PI/2));
-        result += prefactor*(Rterm+Lterm) * exp(j*order_d*Theta);
-      }
+      n  = (int)BSCPtr[i*Width + 0].real();
+      m  = (int)BSCPtr[i*Width + 1].real();
+      TE = BSCPtr[i*Width + 2];
+      TM = BSCPtr[i*Width + 3];
+      order_f = (double)n;
+
+      prefactor = (2.*order_f+1.)/( order_f* (order_f+1.) );
+
+      //if (TE == 0. || TM == 0.){continue;}
+      Lterm = order_f * _an[n] * TM * Pinm(n, abs(m), cos(Phi - PI/2));
+      Rterm = j * _bn[n] * TE * Taunm(n, abs(m), cos(Phi - PI/2));
+      result += prefactor*(Rterm+Lterm) * exp(j*order_f*Theta);
+
   }
   return result;
 }
@@ -152,7 +165,24 @@ Expansion(int    MaxOrder,
 
 
 
+/*
 
+for (auto order = 1; order < MaxOrder+1; order++)
+{
+    order_d = (double)order;
+    prefactor = (2.*order_d+1.)/( order_d* (order_d+1.) );
+
+    for (auto m = -order; m < order+1; m++)
+    {
+      TE = BSCPtr[order*Y  + 2]; TM = BSCPtr[m];
+      if (TE == 0. || TM == 0.){continue;}
+      Lterm = order_d * _an[order] * TM * Pinm(order, abs(m), cos(Phi - PI/2));
+      Rterm = j * _bn[order] * TE * Taunm(order, abs(m), cos(Phi - PI/2));
+      result += prefactor*(Rterm+Lterm) * exp(j*order_d*Theta);
+    }
+}
+
+*/
 
 
 
