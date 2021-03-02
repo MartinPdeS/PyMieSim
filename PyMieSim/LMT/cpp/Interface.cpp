@@ -138,7 +138,7 @@ Fields(double     index,
   ndarray Parallel, Perpendicular;
 
   _S1S2(index,
-       diameter,
+       diameter, 
        wavelength,
        nMedium,
        PhiPtr,

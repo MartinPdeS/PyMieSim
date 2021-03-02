@@ -6,7 +6,9 @@
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
+
 #define PI 3.14159265
+#define j complex128(0.0,1.0)
 
 
 std::tuple<Vec, Vec, Vec>
@@ -81,23 +83,25 @@ double yn_p(int order, double x){ return boost::math::sph_neumann_prime(order, x
 
 double Pnm(int n, int m, double x){return boost::math::legendre_p(n, m, x); }
 
-complex128 _Psi(int type, int n, double x)
+complex128 _Psi_p(int type, int n, double x)
 {
   if (type == 0){return (complex128) (x * jn_p(n, x) + jn(n, x));}
   if (type == 1){return (complex128) jn_p(n, x);}
   if (type == 2){return (complex128) yn_p(n, x);}
-  if (type == 3){return ( jn_p(n, x) + 1.j * yn_p(n,x) ) ;}
-  if (type == 4){return ( jn_p(n, x) - 1.j * yn_p(n,x) ) ;}
+  if (type == 3){return (complex128) jn_p(n, x) + j * yn_p(n, x);}
+  if (type == 4){return (complex128) jn_p(n, x) - j * yn_p(n, x);}
+
   return 0.;
 }
 
-complex128 _Psi_p(int type, int n, double x)
+complex128 _Psi(int type, int n, double x)
 {
   if (type == 0){return (complex128) x * jn(n, x) ;}
   if (type == 1){return (complex128) jn(n, x) ;}
   if (type == 2){return (complex128) yn(n, x) ;}
-  if (type == 4){return (complex128) ( (x * jn_p(n, x) + jn(n, x)) + 1.j * yn_p(n, x) ) ; }
-  if (type == 4){return (complex128) ( (x * jn_p(n, x) + jn(n, x)) - 1.j * jn_p(n, x) ) ; }
+  if (type == 3){return (complex128) _Psi(1, n, x) + j * _Psi(2, n, x) ;}
+  if (type == 4){return (complex128) _Psi(1, n, x) - j * _Psi(2, n, x) ;}
+
   return 0.;
 }
 
@@ -110,7 +114,8 @@ complex128 Psi_p(int n, double x){ return (complex128)  x * _Psi_p(1, n, x) + _P
 double Pnm_p(int n, int m, double x){ return (sqrt(1-x*x) * Pnm(n,m+1,x) + m*x*Pnm(n,m,x))/(x*x-1); }
 
 
-double Pinm(int n, int m, double x)
+double
+Pinm(int n, int m, double x)
 {
   if (x >= 1-1e-6){x = 1-1e-6;}
   if (x <= -1+1e-6){x = -1+1e-6;}
@@ -118,7 +123,8 @@ double Pinm(int n, int m, double x)
 }
 
 
-double Taunm(int n, int m, double x)
+double
+Taunm(int n, int m, double x)
 {
   if (x >= 1-1e-6){x = 1-1e-6;}
   if (x <= -1+1e-6){x = -1+1e-6;}

@@ -45,8 +45,8 @@ class PlaneWave(BaseSource):
 
     def GetBSC(self, MaxOrder=20, save=False):
 
-        nOrder = range(-MaxOrder,MaxOrder)
-        mOrder = range(-1,1)
+        nOrder = range(1,MaxOrder+1)
+        mOrder = [-1,1]
 
         index = pd.MultiIndex.from_product([nOrder,mOrder], names=["n", "m"])
         BSCTE = r'$BSC_{TE}$'
@@ -54,7 +54,6 @@ class PlaneWave(BaseSource):
         BSC = pd.DataFrame(columns=[BSCTE, BSCTM], index=index)
 
         for n in nOrder:
-            print(f'order: {n}/{MaxOrder}')
             for m in mOrder:
                 BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE' )
                 BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM' )
