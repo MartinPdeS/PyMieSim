@@ -166,19 +166,25 @@ class GaussianBeam(BaseSource):
     def GetBSC(self, Precision=20, maxDegree=3, save=False, Sampling=200):
         MaxOrder = self.GetMaxOrder(Precision)
 
-        nOrder = range(*MaxOrder)
-        mOrder = range(-maxDegree,maxDegree)
+        nlist = []
+        mlist = []
+        for n in range(*MaxOrder):
 
-        index = pd.MultiIndex.from_product([nOrder,mOrder], names=["n", "m"])
-        BSCTE = r'$BSC_{TE}$'
-        BSCTM = r'$BSC_{TM}$'
+            for m in range(-n,n+1):
+                nlist.append(n)
+                mlist.append(m)
+
+        idx = tuple( zip( nlist, mlist ) )
+        index = pd.MultiIndex.from_tuples(idx, names=["n", "m"])
+
+        BSCTE = r'$BSC_{TE}$'; BSCTM = r'$BSC_{TM}$'
         BSC = pd.DataFrame(columns=[BSCTE, BSCTM], index=index)
 
-        for n in nOrder:
+        for n, m in idx:
             print(f'order: {n}/{MaxOrder[1]}')
-            for m in mOrder:
-                BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE', Sampling=Sampling )
-                BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM', Sampling=Sampling )
+
+            BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE', Sampling=Sampling )
+            BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM', Sampling=Sampling )
 
 
         if save:
@@ -238,6 +244,8 @@ class GaussianBeam(BaseSource):
 
         termP = sqrt( 2.3 * Precision * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
 
+        #return (int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP)
+
         return (max(1, int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP))
 
 
@@ -253,6 +261,7 @@ class GaussianBeam(BaseSource):
         term = -1j * Q * exp(term)
         return term
         #return -1j * Q * exp(1j * Q * ( (x-self.offset[0])**2 + (y-self.offset[1])**2 )/self.w0**2 )
+
 
     def Phi0_Spherical(self, r, phi, theta):
         """Method returns:

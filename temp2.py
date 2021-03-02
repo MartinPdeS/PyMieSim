@@ -18,12 +18,10 @@ PHI, THETA   = np.meshgrid(Phi, Theta)
 
 MaxOrder     = 20
 
-beam = PlaneWave(Wavelength=1e-6)
-BSC = beam.GetBSC(MaxOrder=MaxOrder)
+beam = GaussianBeam(Wavelength=1e-6, NA = 0.6)
+BSC = beam.GetBSC(Precision=2)
+print(BSC)
 
-
-
-print(np.array(BSC.reset_index(level=[0,1]).values.tolist()))
 
 s1, s2 = S1(Index    = 1.4,
         Diameter     = 2e-6,
