@@ -11,13 +11,13 @@ import cartopy.crs as ccrs
 from ai import cs
 
 from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
-from PyMieSim.Couplings import Coupling as Coupling, GetFootprint
+from PyMieSim.Representations import Footprint
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle
 from PyMieSim.Mesh import FibonacciMesh
-
+from PyMieSim._Coupling import Coupling as CCoupling
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
-#from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, Fields as GLMTFields
+
 
 
 class BaseSource(object):
@@ -84,11 +84,11 @@ class MeshProperty(object):
 class BaseDetector(object):
 
     def Coupling(self, Scatterer):
-        return Coupling(Scatterer = Scatterer, Detector = self)
+        return CCoupling(Scatterer = Scatterer, Detector = self)
 
 
     def Footprint(self, Scatterer, Num = 200):
-        return GetFootprint(Scatterer = Scatterer, Detector = self, Num = Num)
+        return Footprint(Scatterer = Scatterer, Detector = self, Num=Num)
 
 
     def SphericalMesh(self,

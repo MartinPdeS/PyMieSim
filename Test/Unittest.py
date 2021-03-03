@@ -121,7 +121,7 @@ class PrintingTest(TestCase):
         beam = GaussianBeam(Wavelength   = 1.3e-6,
                             NA           = 0.6,
                             Polarization = 0,
-                            Offset       = [1e-6,1e-6,1e-6])
+                            Offset       = [0e-6,0e-6,0e-6])
 
         beam.GetBSC(Precision=1, save=False, Sampling=100)
 

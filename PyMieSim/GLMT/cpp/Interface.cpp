@@ -169,7 +169,6 @@ S1(double   Index,
 
 
 
-
 PYBIND11_MODULE(Sphere, module) {
     module.doc() = "Generalized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
 

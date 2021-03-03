@@ -44,14 +44,6 @@ ext_modules = [
                           extra_link_args     = link_args
                          ),
 
-                Extension(name               = "PyMieSim.LMT.Cython.Sphere",
-                          sources            = ["PyMieSim/LMT/cython/Sphere.pyx"],
-                          include_dirs       = [numpy.get_include(), pybind11.get_include()],
-                          language           = "c++",
-                          define_macros      = macro,
-                          extra_compile_args = compile_args,
-                          extra_link_args    = link_args
-                         ),
 
                 Extension(name               = "PyMieSim.LMT.Sphere",
                           sources            = ["PyMieSim/LMT/cpp/Interface.cpp"],

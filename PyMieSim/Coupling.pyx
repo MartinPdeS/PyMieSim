@@ -18,9 +18,61 @@ from cpython cimport Py_buffer
 from libcpp.utility cimport pair
 
 
-ctypedef double complex complex128_t 
+ctypedef double complex complex128_t
 
 
+cpdef Coupling(Scatterer, Detector):
+     FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+
+     if Detector.CouplingMode[1] == 'Centered':
+         if Detector.CouplingMode[0] == "Intensity":
+             Para, Perp = IntensityPointCoupling(Scalar0       = Detector.Scalar,
+                                                 Parallel      = FarFieldPara,
+                                                 Perpendicular = FarFieldPerp,
+                                                 SinMesh       = Detector.Mesh.SinMesh,
+                                                 dOmega        = Detector.Mesh.dOmega.Radian,
+                                                 Filter        = Detector.Filter.Radian)
+
+             return Para + Perp
+
+         if Detector.CouplingMode[0] == "Amplitude":
+             Para, Perp = AmplitudePointCoupling(Scalar0       = Detector.Scalar,
+                                                 Parallel      = FarFieldPara,
+                                                 Perpendicular = FarFieldPerp,
+                                                 SinMesh       = Detector.Mesh.SinMesh,
+                                                 dOmega        = Detector.Mesh.dOmega.Radian,
+                                                 Filter        = Detector.Filter.Radian)
+
+             return Para + Perp
+
+
+     if Detector.CouplingMode[1] == 'Mean':
+
+         if Detector.CouplingMode[0] == "Intensity":
+
+             Para, Perp = IntensityMeanCoupling(Scalar0      = Detector.Scalar,
+                                               Parallel      = FarFieldPara,
+                                               Perpendicular = FarFieldPerp,
+                                               SinMesh       = Detector.Mesh.SinMesh,
+                                               dOmega        = Detector.Mesh.dOmega.Radian,
+                                               Omega         = Detector.Mesh.Omega.Radian,
+                                               Filter        = Detector.Filter.Radian)
+
+             return Para + Perp
+
+         if Detector.CouplingMode[0] == "Amplitude":
+             Para, Perp = AmplitudeMeanCoupling(Scalar0       = Detector.Scalar,
+                                                Parallel      = FarFieldPara,
+                                                Perpendicular = FarFieldPerp,
+                                                SinMesh       = Detector.Mesh.SinMesh,
+                                                dOmega        = Detector.Mesh.dOmega.Radian,
+                                                Omega         = Detector.Mesh.Omega.Radian,
+                                               Filter        = Detector.Filter.Radian)
+
+             return Para + Perp
+
+
+             
 
 cpdef IntensityPointCoupling(Scalar0,
                             Parallel,
