@@ -14,38 +14,33 @@ typedef py::array_t<complex128> Cndarray;
 
 
 
-
-
-
-
-
-iVec
-an(double SizeParam, double Index, double nMedium)
+Cndarray
+an(double SizeParam, double Index, double nMedium, int MaxOrder)
 {
-  int MaxOrder = GetMaxOrder(SizeParam);
   double alpha = SizeParam,
          beta = alpha * Index,
          MuSp = 1.,
          Mu = 1.,
-         M = Index/nMedium; 
+         M = Index/nMedium;
 
   complex128 numerator, denominator;
-  iVec _an;
+  Cndarray _an = Cndarray(MaxOrder);
+  auto an_data = _an.mutable_data();
+
   for (long unsigned int order = 1; order < MaxOrder+1; order++)
   {
     numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta)  - Mu * M * Psi_p(order, alpha) * Psi(order, beta);
     denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta);
-    _an.push_back(numerator/denominator);
+    an_data[order-1] = numerator/denominator;
 
   }
   return _an;
 }
 
 
-iVec
-bn(double SizeParam, double Index, double nMedium)
+Cndarray
+bn(double SizeParam, double Index, double nMedium, int MaxOrder)
 {
-  int MaxOrder = GetMaxOrder(SizeParam);
 
   double alpha = SizeParam,
          beta = alpha * Index,
@@ -54,22 +49,23 @@ bn(double SizeParam, double Index, double nMedium)
          M = Index/nMedium;
 
   complex128 numerator, denominator;
-  iVec _bn;
+  Cndarray _bn = Cndarray(MaxOrder);
+  auto bn_data = _bn.mutable_data();
+
   for (long unsigned int order = 1; order < MaxOrder+1; order++)
   {
     numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) - MuSp * Psi_p(order, alpha) * Psi(order, beta);
     denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp  * Xi_p(order, alpha) * Psi(order, beta);
-    _bn.push_back(numerator/denominator);
+    bn_data[order-1] = numerator/denominator;
   }
   return _bn;
 }
 
 
 
-iVec
-cn(double SizeParam, double Index, double nMedium)
+Cndarray
+cn(double SizeParam, double Index, double nMedium, int MaxOrder)
 {
-  int MaxOrder = GetMaxOrder(SizeParam);
 
   double alpha = SizeParam,
          beta = alpha * Index,
@@ -78,21 +74,22 @@ cn(double SizeParam, double Index, double nMedium)
          M = Index/nMedium;
 
   complex128 numerator, denominator;
-  iVec _cn;
+  Cndarray _cn = Cndarray(MaxOrder);
+  auto cn_data = _cn.mutable_data();
+
   for (long unsigned int order = 1; order < MaxOrder+1; order++)
   {
     numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) );
     denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta);
-    _cn.push_back(numerator/denominator);
+    cn_data[order-1] = numerator/denominator;
   }
   return _cn;
 }
 
 
-iVec
-dn(double SizeParam, double Index, double nMedium)
+Cndarray
+dn(double SizeParam, double Index, double nMedium, int MaxOrder)
 {
-  int MaxOrder = GetMaxOrder(SizeParam);
 
   double alpha = SizeParam,
          beta = alpha * Index,
@@ -101,12 +98,14 @@ dn(double SizeParam, double Index, double nMedium)
          M = Index/nMedium;
 
   complex128 numerator, denominator;
-  iVec _dn;
+  Cndarray _dn = Cndarray(MaxOrder);
+  auto dn_data = _dn.mutable_data();
+
   for (long unsigned int order = 1; order < MaxOrder+1; order++)
   {
     numerator = Mu * M*M * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) );
     denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta);
-    _dn.push_back(numerator/denominator);
+    dn_data[order-1] = numerator/denominator;
   }
   return _dn;
 }
@@ -197,6 +196,7 @@ PYBIND11_MODULE(Sphere, module) {
               py::arg("SizeParam"),
               py::arg("Index"),
               py::arg("nMedium"),
+              py::arg("MaxOrder"),
               "Return an");
 
    module.def("bn",
@@ -204,6 +204,7 @@ PYBIND11_MODULE(Sphere, module) {
               py::arg("SizeParam"),
               py::arg("Index"),
               py::arg("nMedium"),
+              py::arg("MaxOrder"),
               "Return bn");
 
    module.def("cn",
@@ -211,6 +212,7 @@ PYBIND11_MODULE(Sphere, module) {
               py::arg("SizeParam"),
               py::arg("Index"),
               py::arg("nMedium"),
+              py::arg("MaxOrder"),
               "Return cn");
 
    module.def("dn",
@@ -218,6 +220,7 @@ PYBIND11_MODULE(Sphere, module) {
               py::arg("SizeParam"),
               py::arg("Index"),
               py::arg("nMedium"),
+              py::arg("MaxOrder"),
               "Return dn");
 
 }

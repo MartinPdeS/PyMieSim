@@ -7,7 +7,7 @@ from PyMieSim.utils import PlotFarField
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Field, Stokes
 from PyMieSim.Special import Psi, Psi_p, Xi, Xi_p
-from PyMieSim.GLMT.Sphere import an, bn, cn, dn
+from PyMieSim.GLMT.sphere import an, bn, cn, dn
 
 
 class Sphere(BaseScatterer, EfficienciesProperties):
@@ -56,7 +56,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         self._an, self._bn, self._cn, self._dn = [], [], [], []
 
 
-    def an(self, MaxOrder=5):
+    def an(self, MaxOrder):
         """ Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
         :math:`a_n = \\frac{
@@ -69,16 +69,23 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         """
 
-        self._an = an(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
 
+        for order in range(1, MaxOrder+1):
+            numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta) \
+                      - Mu * M * Psi_p(order, alpha) * Psi(order, beta)
+
+            denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) \
+                        - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
+
+            self._an.append(numerator/denominator)
 
         return self._an
 
 
-    def bn(self, MaxOrder=5):
+    def bn(self, MaxOrder):
         """ Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
         :math:`b_n = \\frac{
@@ -90,15 +97,23 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-        self._bn = bn(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
+
+        for order in range(1, MaxOrder+1):
+            numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) \
+                      - MuSp * Psi_p(order, alpha) * Psi(order, beta)
+
+            denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) \
+                        - MuSp  * Xi_p(order, alpha) * Psi(order, beta)
+
+            self._bn.append(numerator/denominator)
 
         return self._bn
 
 
-    def cn(self, MaxOrder=5):
+    def cn(self, MaxOrder):
         """ Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
 
         :math:`c_n = \\frac{
@@ -110,15 +125,21 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-        self._cn = cn(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
+
+        for order in range(1, MaxOrder+1):
+            numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
+
+            denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta)
+
+            self._cn.append(numerator/denominator)
 
         return self._cn
 
 
-    def dn(self, MaxOrder=5):
+    def dn(self, MaxOrder):
         """ Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
 
         :math:`d_n = \\frac{
@@ -130,10 +151,17 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-        self._dn = dn(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
+        alpha = self.SizeParam
+        beta = self.Index * alpha
+        M = self.Index/self.nMedium; MuSp = self.MuSp; Mu = self.Mu;
+
+        for order in range(1, MaxOrder+1):
+
+            numerator = Mu * M**2 * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) )
+
+            denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta)
+
+            self._dn.append(numerator/denominator)
 
         return self._dn
 

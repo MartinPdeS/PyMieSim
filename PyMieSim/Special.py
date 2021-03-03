@@ -1,22 +1,27 @@
 import numpy as np
-from scipy import special
 from numpy import cos, sin, sqrt
 from scipy.special import spherical_yn as yn, spherical_jn as jn, hankel1 as h
 from scipy.special import legendre as Pn, factorial as fac, lpmn, gammasgn, loggamma, lpmv
+from scipy.special import factorial
 
-
-
+EPS = 1e-20
 def hn(n, z, derivative=False):
     return jn(n,z,derivative) + 1j*yn(n,z,derivative)
 
 
-def mnFactorial(n, m):
+def nmFactorial(n,m):
     """ Calculates the expression below avoiding overflows.
 
     .. math::
         \\frac{(n + m)!}{(n - m)!}
     """
-    return gammasgn(n) * gammasgn(m) * exp(loggamma(n) - loggamma(m))
+    ntemp = loggamma(n+m+1)
+    nSign = gammasgn(n+m+1)
+
+    mtemp = loggamma(n-m+1)
+    mSign = gammasgn(n-m+1)
+
+    return nSign*mSign * np.exp(mtemp-ntemp)
 
 
 
@@ -30,6 +35,10 @@ def Pnm_(n, m, x):
 def Pnm(n, m, x):
     """Eq:II.77 """
     return lpmn(m, n, x)[0][-1, -1]
+
+def NPnm(n, m, x):
+    """Eq:II.77 """
+    return sqrt( (2*n+1)/2 * nmFactorial(n,m) ) * lpmv(m, n, x)
 
 
 @np.vectorize
@@ -48,20 +57,20 @@ def Pin(n, x):
 
 def Taunm(n, m, x):
     """Eq: III.51 """
-    index = np.isclose(x,1,1e-6)
-    if len(index) > 0: x[index] = 1-1e-6
-    index = np.isclose(x,-1,1e-6)
-    if len(index) > 0: x[index] = -1+1e-6
+    index = np.isclose(x,1,EPS)
+    if len(index) > 0: x[index] = 1-EPS
+    index = np.isclose(x,-1,EPS)
+    if len(index) > 0: x[index] = -1+EPS
 
     return sqrt(1-x**2) * Pnm_p(n, m, x)
 
 
 def Pinm(n, k, x):
     """Eq: III.52 """
-    index = np.isclose(x,1,1e-6)
-    if len(index) > 0: x[index] = 1-1e-6
-    index = np.isclose(x,-1,1e-6)
-    if len(index) > 0: x[index] = -1+1e-6
+    index = np.isclose(x,1,EPS)
+    if len(index) > 0: x[index] = 1-EPS
+    index = np.isclose(x,-1,EPS)
+    if len(index) > 0: x[index] = -1+EPS
 
     return -Pnm(n, k, x) / (sqrt(1-x**2))
 
@@ -166,7 +175,7 @@ class GeneralFunc():
             self.args.append(func.args[0])
 
 
-
+"""
 
 
 def NPnm( n, m, x ):
@@ -219,14 +228,31 @@ def NPnm( n, m, x ):
 
   for mm in range ( m, n + 1 ):
 
-    factor = np.sqrt ( ( ( 2 * mm + 1 ) * r8_factorial ( mm - m ) ) \
-      / (  r8_factorial ( mm + m ) ) )
+    factor = np.sqrt( ( (2*mm + 1) * factorial(mm-m, exact=False) ) / (  factorial(mm + m) ) )
 
     cx[mm] = cx[mm] * factor
 
   return cx
 
-def r8_factorial ( n ):
+"""
+
+
+def range_prod(lo,hi):
+    if lo+1 < hi:
+        mid = (hi+lo)//2
+        return range_prod(lo,mid) * range_prod(mid+1,hi)
+    if lo == hi:
+        return lo
+    return lo*hi
+
+def treefactorial(n):
+    if n < 2:
+        return 1
+    return range_prod(1,n)
+
+
+
+def r8_factorial(n):
 
 
   from sys import exit

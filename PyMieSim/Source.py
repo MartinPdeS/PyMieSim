@@ -4,13 +4,13 @@
 import csv
 import pandas as pd
 from scipy.integrate import trapz as integrate
-from scipy.special import spherical_jn as jn, lpmv
+from scipy.special import spherical_jn as jn, lpmv, factorial
 from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, meshgrid, arcsin, zeros
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
-from PyMieSim.Special import Pinm, NPnm, Pnm, Xi, _Psi, Pnm_, r8_factorial
+from PyMieSim.Special import Pinm, NPnm, Pnm, Xi, _Psi, Pnm_, nmFactorial, NPnm
 
 
 
@@ -154,7 +154,7 @@ class GaussianBeam(BaseSource):
         self.Polarization = _Polarization(Polarization)
         self.E0 = E0
         self.NA = NA
-        self.w0 = 2 * self.Wavelength / (pi * NA)
+        self.w0 = 2.8476e-6#2 * self.Wavelength / (pi * NA)
         self.s = 1/(self.k*self.w0)
         self.offset = array(Offset)
         self.Offset = self.offset*self.k
@@ -244,8 +244,6 @@ class GaussianBeam(BaseSource):
 
         termP = sqrt( 2.3 * Precision * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
 
-        #return (int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP)
-
         return (max(1, int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP))
 
 
@@ -260,7 +258,7 @@ class GaussianBeam(BaseSource):
         term *= 1j * Q / self.w0**2
         term = -1j * Q * exp(term)
         return term
-        #return -1j * Q * exp(1j * Q * ( (x-self.offset[0])**2 + (y-self.offset[1])**2 )/self.w0**2 )
+
 
 
     def Phi0_Spherical(self, r, phi, theta):
@@ -459,13 +457,10 @@ class GaussianBeam(BaseSource):
           \\sin(\\theta)`
         """
 
-        factor = ( 2 * n + 1 ) * r8_factorial(n - m)
-        factor /= ( 2 * r8_factorial( n + m ) )
-
         term1 = 1j * Q * self.s**2
         term1 *= ( self.R0 - rhon * sin(theta) )**2
         term3 = 1j * rhon * cos(theta)
-        term4 = sqrt(factor) * Pnm_(n, abs(m), cos([theta]))[-1] * sin(theta)
+        term4 = NPnm(n, abs(m), cos([theta]))[-1] * sin(theta)
 
         return Q * exp(term1 + term3 ) * term4
 
@@ -524,7 +519,7 @@ class GaussianBeam(BaseSource):
         :math:`H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`.
         """
 
-        s = 1 / (self.k * self.w0)
+
         _Q = self.Q(x,y,z)
         Pol = self.Polarization.Radian
 
@@ -532,7 +527,7 @@ class GaussianBeam(BaseSource):
 
         return 0, \
                self.H0 * self.Phi0(x,y,z) * FPhase * 1, \
-               self.H0 * self.Phi0(x,y,z) * FPhase * -2*s*_Q*(y-self.y0)/self.w0
+               self.H0 * self.Phi0(x,y,z) * FPhase * -2*self.s*_Q*(y-self.y0)/self.w0
 
 
     def Er(self, r, phi, theta):
@@ -540,10 +535,6 @@ class GaussianBeam(BaseSource):
         ref[2]:Eq:10
         :math:`E_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -x_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}`.
         """
-
-        w0 = 1e-5
-
-        s = 1 / (self.k * w0)
 
         _Q = self.Q_Spherical(r, theta)
 
@@ -570,9 +561,6 @@ class GaussianBeam(BaseSource):
         ref[2]:Eq:10
         :math:`H_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -y_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}`.
         """
-
-
-        s = 1 / (self.k * self.w0)
 
         _Q = self.Q_Spherical(r, theta)
 
