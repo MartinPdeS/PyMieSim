@@ -4,8 +4,10 @@
 
 import pandas as pd
 from scipy.integrate import trapz as integrate
+import scipy.integrate as iintegrate
 from scipy.special import spherical_jn as jn
-from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
+from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all, sum
+from numba import complex128,float64,jit, int64
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
@@ -154,7 +156,7 @@ class GaussianBeam(BaseSource):
         self.Polarization = _Polarization(Polarization)
         self.E0 = E0
         self.NA = NA
-        self.w0 = 2.8476e-6#2 * self.Wavelength / (pi * NA)
+        self.w0 = 2 * self.Wavelength / (pi * NA)
         self.s = 1/(self.k*self.w0)
         self.offset = array(Offset)
         self.Offset = self.offset*self.k
@@ -195,8 +197,8 @@ class GaussianBeam(BaseSource):
         for n, m in idx:
             print(f'order: {n}/{MaxOrder[1]}')
 
-            BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE', Sampling=Sampling )
-            BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM', Sampling=Sampling )
+            BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE')
+            BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM')
 
 
         if save:
@@ -210,7 +212,7 @@ class GaussianBeam(BaseSource):
     def LoadBSC(dir):
         BSC = pd.read_csv(dir)
 
-    def BSC(self, n, m, Sampling, mode='TE'):
+    def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients for a focused Gaussian
         beam using the quadrature method (ref[2]:Eq:17).
 
@@ -232,9 +234,9 @@ class GaussianBeam(BaseSource):
 
         """
 
-        if mode == 'TM': return self.Anm(n, m, Sampling)
+        if mode == 'TM': return self.Anm(n, m)
 
-        if mode == 'TE': return self.Bnm(n, m, Sampling)
+        if mode == 'TE': return self.Bnm(n, m)
 
 
     def GetMaxOrder(self, Precision=20):
@@ -302,10 +304,11 @@ class GaussianBeam(BaseSource):
 
         :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
         """
+
         return 1/( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
 
 
-    def Bnm(self, n, m, Sampling=200):
+    def Bnm(self, n, m):
         """
         Method returns:
 
@@ -315,7 +318,7 @@ class GaussianBeam(BaseSource):
         """
 
         if abs(m) > n: return 0.
-        Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
+        Theta = linspace(0,pi,Sampling)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
@@ -324,16 +327,41 @@ class GaussianBeam(BaseSource):
             Q = 1 / ( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta, Sampling) - self.ImHat(m-1, beta, Sampling)
+            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
             term0 *= self.I_2(*param)
-            term0 -= self.I_4(*param) * self.ImHat(m, beta, Sampling)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta)
             term0 *= self.I_1(*param)
 
             sub.append(term0)
 
         sub = array(sub, copy=False).squeeze()
 
-        return integrate( y=sub, x=Theta)* self.I_0(*param)
+        return integrate( y=sub, x=Theta)* self.I_0(n, m, rhon)
+
+
+    def _Anm_integrand(self,n,m,theta):
+        """
+        Method returns:
+
+        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+          (\\beta) d \\theta`
+
+        """
+        rhon = (n + 0.5); r = rhon/self.k;
+
+
+        Q = self.Q_Spherical(r, theta)
+        beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
+        param = (n, m, rhon, Q, theta)
+        term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
+        term0 *= self.I_2(*param)
+        term0 -= self.I_3(*param) * self.ImHat(m, beta)
+        term0 *= self.I_1(*param)
+
+        return -term0
+
+
 
 
     def Anm(self, n, m, Sampling=200):
@@ -346,25 +374,16 @@ class GaussianBeam(BaseSource):
         """
 
         if abs(m) > n: return 0.
-        Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
+        Theta = linspace(0,pi,Sampling)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
-        sub = []
-        for theta in Theta:
-            Q = 1 / ( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
-            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
-            param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta, Sampling) + self.ImHat(m-1, beta, Sampling)
-            term0 *= self.I_2(*param)
-            term0 -= self.I_3(*param) * self.ImHat(m, beta, Sampling)
-            term0 *= self.I_1(*param)
+        Real = iintegrate.quad(lambda x: self._Anm_integrand(n,m,x).real, 0, pi, epsrel=1.49e-01,)[0]
 
-            sub.append(-term0)
+        Imag = iintegrate.quad(lambda x: self._Anm_integrand(n,m,x).imag, 0, pi, epsrel=1.49e-01,)[0]
 
-        sub = array(sub, copy=False).squeeze()
+        return (Real + 1j * Imag) * self.I_0(n, m, rhon)
 
-        return integrate( y=sub, x=Theta)* self.I_0(*param)
 
 
 
@@ -377,7 +396,7 @@ class GaussianBeam(BaseSource):
           (\\beta) d \\theta`
 
         """
-        Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
+        Theta = linspace(0,pi,Sampling)
 
         rhon = (n + 0.5); r = rhon/self.k;
 
@@ -386,9 +405,9 @@ class GaussianBeam(BaseSource):
             Q = self.Q_Spherical(r, theta)
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta, Sampling) + self.ImHat(m-1, beta, Sampling)
+            term0 =  self.ImHat(m+1, beta) + self.ImHat(m-1, beta)
             term0 *= self.I_2(*param)
-            term0 -= self.I_3(*param) * self.ImHat(m, beta, Sampling)
+            term0 -= self.I_3(*param) * self.ImHat(m, beta)
             term0 *= self.I_1(*param)
 
             sub.append(-term0)
@@ -415,9 +434,9 @@ class GaussianBeam(BaseSource):
             Q = self.Q_Spherical(r, theta)
             beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta, Sampling) - self.ImHat(m-1, beta, Sampling)
+            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
             term0 *= self.I_2(*param)
-            term0 -= self.I_4(*param) * self.ImHat(m, beta, Sampling)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta)
             term0 *= self.I_1(*param)
 
             sub.append(-term0)
@@ -427,29 +446,66 @@ class GaussianBeam(BaseSource):
         return sub
 
 
-    def ImHat(self, m, beta, Sampling):
+    def ImHat(self, m, beta):
         """
         Method returns:
 
         :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
         """
-        return exp(-beta - 1j * m * self.xi ) * self.Im(m, beta, Sampling)
+        return self.Im(m, beta) * exp(-beta - 1j * m * self.xi )
 
 
-    def Im(self, m, beta, Sampling):
+    def Im(self, m, beta):
         """
         Method modified Bessel function :math:`I_m(\beta)` from ref[2]:Eq:16
 
         :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi}
         e^{z \\cos(\\phi) - i m \\phi} d\\phi`
         """
+        Real = iintegrate.quad(lambda x: exp(beta * cos(x) - 1j*m*x).real, 0, 2*pi, epsrel=1.49e-01)[0]
 
-        x = linspace(0, 2*pi, Sampling)
-        y = exp(beta * cos(x) - 1j*m*x)
-        return 1/(2*pi) * integrate(y=y, x=x, axis=0)
+        Imag = iintegrate.quad(lambda x: exp(beta * cos(x) - 1j*m*x).imag, 0, 2*pi, epsrel=1.49e-01)[0]
+
+        return 1/(2*pi) * (Real + 1j * Imag)
 
 
-    def I_0(self, n, m, rhon, Q, theta):
+
+    def ImHat(self, m, beta):
+        """
+        Method returns:
+
+        :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
+        """
+        return self.Im(m, beta) * exp(-beta - 1j * m * self.xi )
+
+
+    @staticmethod
+    @jit(float64(float64, int64, complex128), nopython=True, cache=True)
+    def ImIntegrandReal(x, m, beta):
+        return exp(beta * cos(x) - 1j*m*x).real
+
+    @staticmethod
+    @jit(float64(float64, int64, complex128), nopython=True, cache=True)
+    def ImIntegrandImag(x, m, beta):
+        return exp(beta * cos(x) - 1j*m*x).imag
+
+
+    def Im(self, m, beta):
+        """
+        Method modified Bessel function :math:`I_m(\beta)` from ref[2]:Eq:16
+
+        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi}
+        e^{z \\cos(\\phi) - i m \\phi} d\\phi`
+        """
+        Real = iintegrate.quad(self.ImIntegrandReal, a=0, b=2*pi, args=(m,beta), epsrel=1.49e-10)[0]
+
+        Imag = iintegrate.quad(self.ImIntegrandImag, a=0, b=2*pi, args=(m,beta), epsrel=1.49e-10)[0]
+
+        return 1/(2*pi) * (Real + 1j * Imag)
+
+
+
+    def I_0(self, n, m, rhon):
         """
         Method returns: :math:`\gamma_0` from ref[2]:Eq:18
 
@@ -472,10 +528,10 @@ class GaussianBeam(BaseSource):
 
         term1 = 1j * Q * self.s**2
         term1 *= ( self.R0 - rhon * sin(theta) )**2
-        term3 = 1j * rhon * cos(theta)
-        term4 = NPnm(n, abs(m), cos([theta]))[-1] * sin(theta)
+        term2 = 1j * rhon * cos(theta)
+        term3 = NPnm(n, abs(m), cos([theta]))[-1] * sin(theta)
 
-        return Q * exp(term1 + term3 ) * term4
+        return Q * exp(term1 + term2 ) * term3
 
 
     def I_2(self, n, m, rhon, Q, theta):

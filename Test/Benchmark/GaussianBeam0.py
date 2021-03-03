@@ -6,8 +6,10 @@ import numpy as np
 
 """ Results shoudl be the same as ref[2] figure 2. """
 
+Theta = np.linspace(0,np.pi,20)
+
 beam = GaussianBeam(Wavelength   = 0.6328e-6,
-                    NA           = 0.21,
+                    NA           = 0.2,
                     Polarization = 0,
                     Offset       = [5e-6,3e-6,0])
 

@@ -13,7 +13,7 @@ beam = GaussianBeam(Wavelength = 0.6328e-6,
                     NA         = 0.14,
                     Offset     = [5e-6]*3)
 
-nList = np.arange(1,250)
+nList = np.arange(1,200)
 Anm = [];
 for n in nList:
     print(n)

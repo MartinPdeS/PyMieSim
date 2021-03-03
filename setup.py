@@ -57,6 +57,11 @@ ext_modules = [
                           language     = 'c++',
                 ),
 
+                Extension(name         = 'PyMieSim.GLMT.GaussianBeam',
+                          sources      = ['PyMieSim/GLMT/cpp/GaussianBeam.cpp'],
+                          include_dirs = [pybind11.get_include()],
+                          language     = 'c++',
+                ),
 
 
                          ]

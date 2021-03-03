@@ -9,7 +9,7 @@ typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
 typedef std::vector<std::vector<complex128>> iMatrix;
 typedef std::vector<std::vector<double>> Matrix;
-#define PI 3.14159265
+#define PI (double) 3.141592653589793238
 
 std::vector<double>
 linespace(const double start,

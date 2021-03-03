@@ -15,7 +15,7 @@ from PyMieSim.Representations import Footprint
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle
 from PyMieSim.Mesh import FibonacciMesh
-from PyMieSim._Coupling import Coupling as CCoupling
+from PyMieSim._Coupling import Coupling
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
 
 
@@ -84,7 +84,7 @@ class MeshProperty(object):
 class BaseDetector(object):
 
     def Coupling(self, Scatterer):
-        return CCoupling(Scatterer = Scatterer, Detector = self)
+        return Coupling(Scatterer = Scatterer, Detector = self)
 
 
     def Footprint(self, Scatterer, Num = 200):

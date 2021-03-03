@@ -3,6 +3,8 @@
 #include <complex>
 #include <boost/math/special_functions/legendre.hpp>
 #include <boost/math/special_functions/bessel_prime.hpp>
+#include <boost/math/quadrature/trapezoidal.hpp>
+#include <boost/math/special_functions/gamma.hpp>
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
@@ -73,6 +75,19 @@ Fibonacci_sphere(int samples,
 }
 
 
+double
+nmFactorial(int n, int m)
+{
+  double mtemp = boost::math::lgamma(n+m+1);
+
+  double ntemp = boost::math::lgamma(n-m+1);
+
+  return exp(mtemp - ntemp);
+}
+
+
+
+
 double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
 
 double jn_p(int order, double x){ return boost::math::sph_bessel_prime(order, x); }
@@ -82,6 +97,8 @@ double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
 double yn_p(int order, double x){ return boost::math::sph_neumann_prime(order, x); }
 
 double Pnm(int n, int m, double x){return boost::math::legendre_p(n, m, x); }
+
+double NPnm(int n, int m, double x){return sqrt((2*n + 1)/2 * nmFactorial(n,m)) * Pnm(n,m,x); };
 
 complex128 _Psi_p(int type, int n, double x)
 {
@@ -135,24 +152,6 @@ Taunm(int n, int m, double x)
 complex128 Xi(int n, double x){return x * _Psi(4,n,x); }
 
 complex128 Xi_p(int n, double x){return x * _Psi_p(4,n,x) + _Psi(4,n,x); }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -155,12 +155,12 @@ S1(double   Index,
       for(auto l = 0; l < PhiLenght; l++)
         {
 
-          std::tie(temp0, temp1) = Expansion(MaxOrder, BSC, __an, __bn, PhiPtr[l], ThetaPtr[i]) ;
+          std::tie(temp0, temp1) = Expansion(BSC, __an, __bn, PhiPtr[l], ThetaPtr[i]) ;
 
           s1_data[p] = temp0;
           s2_data[p] = temp1;
           p++;
-        }
+        } 
     }
 
   return std::make_pair(s1, s2);

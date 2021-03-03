@@ -108,8 +108,7 @@ _dn(double SizeParam, double Index, double nMedium, int MaxOrder)
 
 
 std::tuple<complex128,complex128>
-Expansion(int      MaxOrder,
-          Cndarray BSC,
+Expansion(Cndarray BSC,
           iVec    _an,
           iVec    _bn,
           double   Phi,
