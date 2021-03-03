@@ -130,7 +130,9 @@ Expansion(int      MaxOrder,
              TM,
              _Pinm,
              _Taunm,
-             _exp;
+             _exp,
+             __an,
+             __bn;
 
   double prefactor,
          n_f,
@@ -140,7 +142,8 @@ Expansion(int      MaxOrder,
   int Lenght = BSCBuffer.shape[0],
       Width = BSCBuffer.shape[1],
       m = 0,
-      n = 0;
+      n = 0,
+      first = (int)BSCPtr[0].real();
 
 
   for (auto i = 0; i < Lenght; i++)
@@ -160,12 +163,16 @@ Expansion(int      MaxOrder,
       _Pinm  = Pinm(n, abs(m), mu);
       _Taunm = Taunm(n, abs(m), mu);
       _exp   = exp(j*m_f*Theta);
+      __an   = _an[n-first+1];
+      __bn   = _bn[n-first+1];
 
-      S1Lterm = m_f * _an[n] * TM * _Pinm; S1Rterm = j * _bn[n] * TE * _Taunm;
+      S1Lterm = m_f * __an * TM * _Pinm;
+
+      S1Rterm = j * __bn * TE * _Taunm;
 
       S1 += prefactor*(S1Rterm + S1Lterm) * _exp;
 
-      S2Lterm = _an[n] * TM * _Taunm; S2Rterm = j * m_f * _bn[n] * TE * _Pinm;
+      S2Lterm = __an * TM * _Taunm; S2Rterm = j * m_f * __bn * TE * _Pinm;
 
       S2 += prefactor*(S2Rterm + S2Lterm) * _exp;
 
@@ -175,28 +182,6 @@ Expansion(int      MaxOrder,
 }
 
 
-
-
-
-
-/*
-
-for (auto order = 1; order < MaxOrder+1; order++)
-{
-    order_d = (double)order;
-    prefactor = (2.*order_d+1.)/( order_d* (order_d+1.) );
-
-    for (auto m = -order; m < order+1; m++)
-    {
-      TE = BSCPtr[order*Y  + 2]; TM = BSCPtr[m];
-      if (TE == 0. || TM == 0.){continue;}
-      Lterm = order_d * _an[order] * TM * Pinm(order, abs(m), cos(Phi - PI/2));
-      Rterm = j * _bn[order] * TE * Taunm(order, abs(m), cos(Phi - PI/2));
-      result += prefactor*(Rterm+Lterm) * exp(j*order_d*Theta);
-    }
-}
-
-*/
 
 
 

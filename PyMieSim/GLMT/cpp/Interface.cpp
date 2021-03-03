@@ -225,39 +225,6 @@ PYBIND11_MODULE(Sphere, module) {
 
 }
 
-/*
-
-module.def("an",
-           &an,
-           py::arg("SizeParam"),
-           py::arg("Index"),
-           py::arg("nMedium"),
-           "Return an");
-
-module.def("bn",
-           &bn,
-           py::arg("SizeParam"),
-           py::arg("Index"),
-           py::arg("nMedium"),
-           "Return bn");
-
-module.def("cn",
-           &cn,
-           py::arg("SizeParam"),
-           py::arg("Index"),
-           py::arg("nMedium"),
-           "Return cn");
-
-module.def("dn",
-           &dn,
-           py::arg("SizeParam"),
-           py::arg("Index"),
-           py::arg("nMedium"),
-           "Return dn");
-
-
-
-*/
 
 
 

@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import csv
+
 import pandas as pd
 from scipy.integrate import trapz as integrate
-from scipy.special import spherical_jn as jn, lpmv, factorial
-from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, meshgrid, arcsin, zeros
+from scipy.special import spherical_jn as jn
+from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
-from PyMieSim.Special import Pinm, NPnm, Pnm, Xi, _Psi, Pnm_, nmFactorial, NPnm
+from PyMieSim.Special import Xi, NPnm
 
 
 
@@ -163,18 +163,30 @@ class GaussianBeam(BaseSource):
 
 
 
+    def Getidx(self, MaxOrder):
+        nlist = []
+        mlist = []
+        if all( self.offset <= EPS):
+            for n in range(*MaxOrder):
+                for m in [-1,1]:
+                    nlist.append(n)
+                    mlist.append(m)
+
+        else:
+            for n in range(*MaxOrder):
+                for m in range(-n,n+1):
+                    nlist.append(n)
+                    mlist.append(m)
+
+        return tuple( zip( nlist, mlist ) )
+
+
     def GetBSC(self, Precision=20, maxDegree=3, save=False, Sampling=200):
         MaxOrder = self.GetMaxOrder(Precision)
 
-        nlist = []
-        mlist = []
-        for n in range(*MaxOrder):
 
-            for m in range(-n,n+1):
-                nlist.append(n)
-                mlist.append(m)
 
-        idx = tuple( zip( nlist, mlist ) )
+        idx = self.Getidx(MaxOrder)
         index = pd.MultiIndex.from_tuples(idx, names=["n", "m"])
 
         BSCTE = r'$BSC_{TE}$'; BSCTM = r'$BSC_{TM}$'
@@ -243,8 +255,10 @@ class GaussianBeam(BaseSource):
         """
 
         termP = sqrt( 2.3 * Precision * ( self.s**(-2) + 4 * self.s**2 * self.Offset[2]**2 ) )
-
-        return (max(1, int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP))
+        Orders = (max(1, int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP))
+        self.Orders = Orders
+        self.NOrders = abs(Orders[0]-Orders[1])
+        return Orders
 
 
     def Phi0(self, x, y, z):
@@ -303,13 +317,12 @@ class GaussianBeam(BaseSource):
         if abs(m) > n: return 0.
         Phi = linspace(0,2*pi,Sampling); Theta = linspace(0,pi,Sampling)
 
-        rhon = n + 0.5
-        r = rhon/self.k
+        rhon = (n + 0.5); r = rhon/self.k;
 
         sub = []
         for theta in Theta:
-            Q = 1/( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
-            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon
+            Q = 1 / ( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
+            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
             param = (n, m, rhon, Q, theta)
             term0 =  self.ImHat(m+1, beta, Sampling) - self.ImHat(m-1, beta, Sampling)
             term0 *= self.I_2(*param)
@@ -318,9 +331,9 @@ class GaussianBeam(BaseSource):
 
             sub.append(term0)
 
-        sub = array(sub, copy=False).squeeze() * self.I_0(*param)
+        sub = array(sub, copy=False).squeeze()
 
-        return term0 * integrate( y=sub, x=Theta)
+        return integrate( y=sub, x=Theta)* self.I_0(*param)
 
 
     def Anm(self, n, m, Sampling=200):

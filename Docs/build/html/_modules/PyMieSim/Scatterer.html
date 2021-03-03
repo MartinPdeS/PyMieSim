@@ -165,6 +165,7 @@
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Stokes</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Special</span> <span class="kn">import</span> <span class="n">Psi</span><span class="p">,</span> <span class="n">Psi_p</span><span class="p">,</span> <span class="n">Xi</span><span class="p">,</span> <span class="n">Xi_p</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.GLMT.Sphere</span> <span class="kn">import</span> <span class="n">an</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">dn</span>
 
 
 <div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">):</span>
@@ -213,7 +214,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
 
 
-<div class="viewcode-block" id="Sphere.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="p">):</span>
+<div class="viewcode-block" id="Sphere.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&amp;B:</span>
 
 <span class="sd">        :math:`a_n = \\frac{</span>
@@ -225,23 +226,17 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">*</span> <span class="n">alpha</span>
-        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">;</span> <span class="n">MuSp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span><span class="p">;</span> <span class="n">Mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span><span class="p">;</span>
 
-        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">numerator</span> <span class="o">=</span> <span class="n">MuSp</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> \
-                      <span class="o">-</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_an</span> <span class="o">=</span> <span class="n">an</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
+                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
 
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">MuSp</span> <span class="o">*</span> <span class="n">Xi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> \
-                        <span class="o">-</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">Xi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_an</span></div>
 
 
-<div class="viewcode-block" id="Sphere.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="p">):</span>
+<div class="viewcode-block" id="Sphere.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
 
 <span class="sd">        :math:`b_n = \\frac{</span>
@@ -253,23 +248,15 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">*</span> <span class="n">alpha</span>
-        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">;</span> <span class="n">MuSp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span><span class="p">;</span> <span class="n">Mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">numerator</span> <span class="o">=</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> \
-                      <span class="o">-</span> <span class="n">MuSp</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">Xi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> \
-                        <span class="o">-</span> <span class="n">MuSp</span>  <span class="o">*</span> <span class="n">Xi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span> <span class="o">=</span> <span class="n">bn</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
+                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span></div>
 
 
-<div class="viewcode-block" id="Sphere.cn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.cn">[docs]</a>    <span class="k">def</span> <span class="nf">cn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="p">):</span>
+<div class="viewcode-block" id="Sphere.cn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.cn">[docs]</a>    <span class="k">def</span> <span class="nf">cn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&amp;B:</span>
 
 <span class="sd">        :math:`c_n = \\frac{</span>
@@ -281,21 +268,15 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">*</span> <span class="n">alpha</span>
-        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">;</span> <span class="n">MuSp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span><span class="p">;</span> <span class="n">Mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">numerator</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="n">MuSp</span> <span class="o">*</span> <span class="p">(</span> <span class="n">Xi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">Xi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="p">)</span>
-
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">MuSp</span> <span class="o">*</span> <span class="n">Xi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> <span class="o">-</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">Xi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span> <span class="o">=</span> <span class="n">cn</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
+                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span></div>
 
 
-<div class="viewcode-block" id="Sphere.dn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.dn">[docs]</a>    <span class="k">def</span> <span class="nf">dn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="p">):</span>
+<div class="viewcode-block" id="Sphere.dn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.dn">[docs]</a>    <span class="k">def</span> <span class="nf">dn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&amp;B:</span>
 
 <span class="sd">        :math:`d_n = \\frac{</span>
@@ -307,17 +288,10 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span>
-        <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">*</span> <span class="n">alpha</span>
-        <span class="n">M</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">;</span> <span class="n">MuSp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span><span class="p">;</span> <span class="n">Mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span><span class="p">;</span>
-
-        <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-
-            <span class="n">numerator</span> <span class="o">=</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">Xi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">-</span> <span class="n">Xi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="p">)</span>
-
-            <span class="n">denominator</span> <span class="o">=</span> <span class="n">Mu</span> <span class="o">*</span> <span class="n">M</span> <span class="o">*</span> <span class="n">Xi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> <span class="o">-</span> <span class="n">MuSp</span> <span class="o">*</span> <span class="n">Xi_p</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">Psi</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="n">dn</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
+                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span></div></div>
 
