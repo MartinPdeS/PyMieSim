@@ -13,7 +13,7 @@ beam = GaussianBeam(Wavelength = 0.6328e-6,
                     NA         = 0.14,
                     Offset     = [5e-6]*3)
 
-nList = np.arange(1,200)
+nList = np.arange(1,100)
 Anm = [];
 for n in nList:
     print(n)
@@ -45,8 +45,6 @@ ax0.add_artist(anchored_text)
 ax0.set_xlabel(r'$m$')
 ax0.set_ylabel(r'$|A_{nm}|$')
 plt.show()
-
-
 
 
 

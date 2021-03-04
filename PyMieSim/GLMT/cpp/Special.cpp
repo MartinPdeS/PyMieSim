@@ -9,7 +9,6 @@ typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
 
-#define PI 3.14159265
 #define j complex128(0.0,1.0)
 
 
@@ -82,7 +81,7 @@ nmFactorial(int n, int m)
 
   double ntemp = boost::math::lgamma(n-m+1);
 
-  return exp(mtemp - ntemp);
+  return exp(ntemp - mtemp);
 }
 
 
@@ -98,8 +97,8 @@ double yn_p(int order, double x){ return boost::math::sph_neumann_prime(order, x
 
 double Pnm(int n, int m, double x){return boost::math::legendre_p(n, m, x); }
 
-double NPnm(int n, int m, double x){return sqrt((2*n + 1)/2 * nmFactorial(n,m)) * Pnm(n,m,x); };
-
+double NPnm(int n, int m, double x){return sqrt((2.*(double)n + 1.)/2. * nmFactorial(n,m)) * Pnm(n,m,x); };
+//double NPnm(int n, int m, double x){return nmFactorial(n,m);};
 complex128 _Psi_p(int type, int n, double x)
 {
   if (type == 0){return (complex128) (x * jn_p(n, x) + jn(n, x));}

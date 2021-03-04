@@ -32,7 +32,7 @@ _an(double SizeParam, double Index, double nMedium, int MaxOrder)
 
   complex128 numerator, denominator;
   iVec _an;
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta)  - Mu * M * Psi_p(order, alpha) * Psi(order, beta);
     denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta);
@@ -53,7 +53,7 @@ _bn(double SizeParam, double Index, double nMedium, int MaxOrder)
 
   complex128 numerator, denominator;
   iVec _bn;
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) - MuSp * Psi_p(order, alpha) * Psi(order, beta);
     denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp  * Xi_p(order, alpha) * Psi(order, beta);
@@ -75,7 +75,7 @@ _cn(double SizeParam, double Index, double nMedium, int MaxOrder)
 
   complex128 numerator, denominator;
   iVec _cn;
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) );
     denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta);
@@ -97,7 +97,7 @@ _dn(double SizeParam, double Index, double nMedium, int MaxOrder)
 
   complex128 numerator, denominator;
   iVec _dn;
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = Mu * M*M * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) );
     denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta);

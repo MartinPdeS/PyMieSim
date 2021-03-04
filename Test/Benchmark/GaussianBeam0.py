@@ -6,8 +6,6 @@ import numpy as np
 
 """ Results shoudl be the same as ref[2] figure 2. """
 
-Theta = np.linspace(0,np.pi,20)
-
 beam = GaussianBeam(Wavelength   = 0.6328e-6,
                     NA           = 0.2,
                     Polarization = 0,
@@ -15,6 +13,8 @@ beam = GaussianBeam(Wavelength   = 0.6328e-6,
 
 
 angle0, val0 = beam.Anm_integrand(20,2, Sampling=500)
+
+
 angle1, val1 = beam.Anm_integrand(20,15, Sampling=500)
 
 fig = plt.figure(figsize=(8,5))
@@ -62,3 +62,16 @@ ax0.set_ylabel(r'Integrand of $A_{nm}$')
 ax1.set_ylabel(r'Integrand of $A_{nm}$')
 ax1.set_xlabel(r'Angle $\theta$ [degree]')
 plt.show()
+
+
+
+
+"""
+6283.185307179585
+6283.185307179585
+6283.185307179585
+6283.185307179585
+6283.185307179585
+
+
+"""
