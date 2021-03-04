@@ -14,6 +14,8 @@ typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 #define j complex128(0.0,1.0)
 
+#define EPS 1e-15
+
 using boost::math::quadrature::trapezoidal;
 using boost::math::constants::two_pi;
 using boost::math::constants::pi;
@@ -79,7 +81,7 @@ ImSimpson(int m, complex128 beta)
 
  auto func = [=](double angle){return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
 
- complex128 integral = simpson_rule(func,  0.0, two_pi<double>(), 500);
+ complex128 integral = simpson_rule(func,  0.0, two_pi<double>(), 1000);
 
  return 1./( two_pi<double>()) * integral;
 }
@@ -90,7 +92,7 @@ ImTrapz(int m, complex128 beta)
 
  auto func = [=](double angle){return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
 
- complex128 integral = trapezoidal(func, 0.0, two_pi<double>(),1e-5);
+ complex128 integral = trapezoidal(func, 0.0, two_pi<double>(),EPS);
 
  return 1./( two_pi<double>()) * integral;
 }
@@ -118,7 +120,7 @@ ImHat(double     m,
       complex128 beta,
       double     xi)
 {
-  return Im_Sum(m, beta) * exp(-beta - j * m * xi ) ;
+  return ImTrapz(m, beta) * exp(-beta - j * m * xi ) ;
 }
 
 
@@ -186,7 +188,6 @@ complex128
 Anm_integrand(double angle,
               int n,
               int m,
-              int sampling,
               double k,
               double w0,
               double s,
@@ -200,12 +201,13 @@ Anm_integrand(double angle,
   double rhon = (n + 0.5), r = rhon/k;
 
   complex128 _Q, beta, term0;
-  //beta =2.;angle=2.3;
+
   _Q   = Q(r, angle, w0, offset, k);
 
   beta = -2. * j * _Q * s*s * R0 * rhon * sin(angle);
 
   term0 =  ImHat(m+1, beta, xi);
+
   term0 += ImHat(m-1, beta, xi);
 
   term0 *= I_2(n, m, rhon, _Q, angle, Offset, s, R0);
@@ -213,9 +215,6 @@ Anm_integrand(double angle,
   term0 -= (I_3(n, m, rhon, _Q, angle, Offset, s, R0) * ImHat(m, beta, xi));
 
   term0 *= I_1(n, m, rhon, _Q, angle, Offset, s, R0);
-  //std::cout << term0 << std::endl;
-  //std::cout << "term0 is " <<  term0 << std::endl;
-
 
   return -term0;
 
@@ -225,7 +224,6 @@ Anm_integrand(double angle,
 complex128
 Anm(int n,
     int m,
-    int sampling,
     double k,
     double w0,
     double s,
@@ -234,35 +232,32 @@ Anm(int n,
     double R0,
     double xi)
 {
-  //auto func_ = [=](double angle) {return Anm_integrand(angle, n, m, sampling, k, w0, s, Offset, offset, R0, xi);};
+  auto func_ = [=](double angle) {return Anm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
 
-  //return trapezoidal(func_, 0.0, pi<double>(),1e-5);
-  Vec X = Linspace( 0.0, pi<double>(),400);
+  return trapezoidal(func_, 0.0, pi<double>(),EPS);
+  //Vec X = Linspace( 0.0, pi<double>(),300);
 
-  iVec Y;
-  double dx = abs(X[1]-X[0]);
-  complex128 sum=0.;
+  //iVec Y;
+  //double dx = abs(X[1]-X[0]);
+  //complex128 sum=0.;
 
-  for (auto const& x: X)
-  {
-    sum += Anm_integrand(x, n, m, sampling, k, w0, s, Offset, offset, R0, xi);
-  }
-  return sum * dx ;
+  //for (auto const& x: X){sum += Anm_integrand(x, n, m, sampling, k, w0, s, Offset, offset, R0, xi);}
+  //return sum * dx ;
 }
 
 
 
 Cndarray
-VAnm(int n,
-     int m,
-     int sampling,
-     double k,
-     double w0,
-     double s,
-     Vec Offset,
-     Vec offset,
-     double R0,
-     double xi)
+PyAnm_integrand(int n,
+                 int m,
+                 int sampling,
+                 double k,
+                 double w0,
+                 double s,
+                 Vec Offset,
+                 Vec offset,
+                 double R0,
+                 double xi)
 {
 
   Cndarray _Anm = Cndarray(sampling);
@@ -272,7 +267,7 @@ VAnm(int n,
 
   for (auto i=0; i<sampling;i++)
   {
-    _Anm_data[i] = Anm_integrand(X[i], n, m, sampling, k, w0, s, Offset, offset, R0, xi);
+    _Anm_data[i] = Anm_integrand(X[i], n, m, k, w0, s, Offset, offset, R0, xi);
   }
   return _Anm;
 }
@@ -286,7 +281,6 @@ PYBIND11_MODULE(GaussianBeam, module) {
                &Anm,
                py::arg("n"),
                py::arg("m"),
-               py::arg("sampling"),
                py::arg("k"),
                py::arg("w0"),
                py::arg("s"),
@@ -297,8 +291,8 @@ PYBIND11_MODULE(GaussianBeam, module) {
                "Compute Anm");
 
 
-     module.def("VAnm",
-                &VAnm,
+     module.def("Anm_integrand",
+                &PyAnm_integrand,
                 py::arg("n"),
                 py::arg("m"),
                 py::arg("sampling"),

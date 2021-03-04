@@ -473,7 +473,7 @@ class GaussianBeam(BaseSource):
         :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
         """
 
-        X = linspace(0,2*pi, 1000)
+        X = linspace(0,2*pi, 300)
         dx = abs(X[1]-X[0])
         Y =  exp(-beta*cos(X) - 1j *m*  X)
 
