@@ -3,17 +3,11 @@
 
 
 import pandas as pd
-from scipy.integrate import trapz
-import scipy.integrate as iintegrate
-
-from scipy.special import spherical_jn as jn
-from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all, sum
-from numba import complex128,float64,jit, int64
+from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
-from PyMieSim.Special import Xi, NPnm
 from PyMieSim.GLMT.GaussianBeam import Anm, Anm_integrand, Bnm, Bnm_integrand
 
 
@@ -61,14 +55,13 @@ class PlaneWave(BaseSource):
                 BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE' )
                 BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM' )
 
-
         if save:
             fileName = f"./PyMieSim/BSC/PW_{self.Wavelength}.csv"
             print(f" Saving BSC into file:\n {fileName}")
             BSC.to_csv(f'./{fileName}', mode='w')
 
-
         return BSC
+
 
     def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients
