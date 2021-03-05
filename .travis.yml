@@ -2,7 +2,7 @@ sudo: True
 language: python
 python: 3.6      # current default Python on Travis CI
 os: linux
-dist: bionic
+dist: focal
 
 install:
   - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev libboost-all-dev libeigen3-dev
