@@ -1,19 +1,9 @@
-#include "Interface.hpp"
 #include <vector>
 #include <complex>
 #include <boost/math/special_functions.hpp>
 #include <cmath>
 #include "Math.cpp"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/complex.h>
-#include <pybind11/numpy.h>
-//#include <pybind11/stl_bind.h>
-//#include <pybind11/stl.h>
-namespace py = pybind11;
-
-
-#define PI 3.14159265
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef py::array_t<double> ndarray;
@@ -23,7 +13,7 @@ typedef py::array_t<complex128> Cndarray;
 int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
 
-static std::tuple<iVec, iVec>
+std::tuple<iVec, iVec>
 LowFrequencyMie_ab(const double m,
                    const double x)
 {
@@ -54,17 +44,17 @@ LowFrequencyMie_ab(const double m,
 
 
 
-static std::tuple<iVec, iVec>
-HighFrequencyMie_ab(const double               m,
-                    const double               x,
-                    const long unsigned int    OrderMax,
-                    const                      Vec n)
+std::tuple<iVec, iVec>
+HighFrequencyMie_ab(const double m,
+                    const double x,
+                    int          OrderMax,
+                    const        Vec n)
 
 {
   iVec an, bn ;
-  const double mx = m * x;
-  const double temp  = sqrt(0.5 * PI * x);
-  const long unsigned int nmx = (long unsigned int) ( std::max( OrderMax, (long unsigned int) abs(mx) ) + 16 );
+  const double mx = m * x,
+               temp  = sqrt(0.5 * PI * x);
+  const int nmx = (int) ( std::max( OrderMax, (int) abs(mx) ) + 16 );
   iVec gsx, gs1x;
   iVec px, chx, p1x, ch1x, D, da, db;
   std::vector<double> Dn = std::vector<double>(nmx);
@@ -78,7 +68,7 @@ HighFrequencyMie_ab(const double               m,
       Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );
   }
 
-  for (long unsigned int i = 0; i < OrderMax; i++)
+  for (auto i = 0; i < OrderMax; i++)
   {
     px.push_back(  temp * boost::math::cyl_bessel_j( n[i] + 0.5, x ) );         //jv
     chx.push_back(-temp * boost::math::cyl_neumann(  n[i] + 0.5, x ) );          //yv
@@ -103,7 +93,7 @@ HighFrequencyMie_ab(const double               m,
 
 
 
-static void
+void
 HighFrequencyMie_ab(const double               m,
                     const double               x,
                     const long unsigned int    OrderMax,
@@ -149,7 +139,7 @@ HighFrequencyMie_ab(const double               m,
   }
 }
 
-//static void
+
 std::tuple<iVec, iVec>
 MiePiTau(const double            mu,
          const long unsigned int OrderMax)
@@ -176,7 +166,7 @@ MiePiTau(const double            mu,
 
 
 
-static void
+void
 MiePiTau(const double            mu,
          const long unsigned int OrderMax,
          iVec                    pin,
@@ -209,7 +199,7 @@ C_Qsca(iVec           an,
 {
      double Qsca = 2. / (x * x);
      complex128 temp;
-     for(auto it = 0; it < an.size(); ++it)
+     for(long unsigned int it = 0; it < an.size(); ++it)
      {
        temp += (2.*n[it]+1) * (   std::real( an[it] ) * std::real( an[it] )
                                 + std::imag( an[it] ) * std::imag( an[it] )
@@ -229,7 +219,7 @@ C_Qext(iVec           an,
 {
      double Qsca = 2. / (x * x);
      complex128 temp;
-     for(auto it = 0; it < an.size(); ++it)
+     for(long unsigned int it = 0; it < an.size(); ++it)
      {
        temp += (2.*n[it]+1) * ( std::real( an[it] + an[it] ) );
      }
@@ -238,31 +228,6 @@ C_Qext(iVec           an,
 
 
 
-
-
-
-static double
-C_GetQext(const double            m,
-          const double            x,
-          const double*           phi)
-
-{
-    iVec an, bn ;
-
-    double Qsca;
-
-    Vec n, n2;
-
-    int OrderMax = GetMaxOrder(x);
-
-    std::tie(n, n2) = Arrange(1, OrderMax + 1);
-
-    (x < 0.5) ? std::tie(an, bn) = LowFrequencyMie_ab(m, x) : std::tie(an, bn) = HighFrequencyMie_ab(m, x, OrderMax, n);
-
-    Qsca = C_Qext(an, bn, x, n);
-
-    return Qsca;
-}
 
 
 
@@ -292,15 +257,14 @@ _S1S2(const double            index,
 
     (x < 0.5) ? std::tie(an, bn) = LowFrequencyMie_ab(m, x) : std::tie(an, bn) = HighFrequencyMie_ab(m, x, OrderMax, n);
 
-    iVec S1 = iVec(lenght), S2 = iVec(lenght) ;
+    iVec S1 = iVec(lenght),
+         S2 = iVec(lenght),
+         pin = iVec(OrderMax), taun = iVec(OrderMax);
 
-    iVec pin = iVec(OrderMax), taun = iVec(OrderMax);
+    complex128 j (0., 1.0),
+               *temp0 = &s1s2[0], *temp1 = &s1s2[lenght] ;
 
-    complex128 j (0., 1.0);
-
-    complex128 *temp0 = &s1s2[0], *temp1 = &s1s2[lenght] ;
-
-    for (auto i = 0; i < lenght; i++){
+    for (long unsigned int i = 0; i < lenght; i++){
 
         std::tie(pin, taun) = MiePiTau(cos( PhiPtr[i] ), OrderMax);
 

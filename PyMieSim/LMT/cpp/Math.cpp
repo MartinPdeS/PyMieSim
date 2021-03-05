@@ -7,16 +7,24 @@
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
-typedef std::vector<std::vector<complex128>> iMatrix;
-typedef std::vector<std::vector<double>> Matrix;
-#define PI 3.14159265
+
+#include <pybind11/pybind11.h>
+#include <pybind11/complex.h>
+#include <pybind11/numpy.h>
+
+namespace py = pybind11;
+
+typedef py::array_t<double> ndarray;
+typedef py::array_t<complex128> Cndarray;
+
+#define PI (double)3.14159265358979323846264338
 
 std::vector<double>
 linespace(const double start,
           const double end,
           const long unsigned int N)
 {
-    std::vector<double> vector = std::vector<double>(N);
+    Vec vector = Vec(N);
 
     const double delta = (end-start)/N;
 

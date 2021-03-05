@@ -1,4 +1,3 @@
-#include "Interface.hpp"
 #include "Functions.cpp"
 
 namespace py = pybind11;
@@ -9,10 +8,10 @@ typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 
 #define j complex128(0.0,1.0)
-#define PI 3.14159265
 
 
-static std::tuple<double, double, double>
+
+std::tuple<double, double, double>
 Efficiencies(const double  m, const double  x)
 
 {
@@ -32,18 +31,13 @@ Efficiencies(const double  m, const double  x)
 
     Qext = C_Qext(an, bn, x, n);
 
-    Qabs = Qext - Qabs;
+    Qabs = Qext - Qsca;
 
     return std::make_tuple(Qsca, Qext, Qabs);
 }
 
 
-
-
-
-//____________________________PYBIND11 BELOW__________________________________
-
-static std::tuple<Cndarray, Cndarray>
+std::tuple<Cndarray, Cndarray>
 S1S2(const double            index,
      const double            diameter,
      const double            wavelength,
@@ -69,7 +63,6 @@ S1S2(const double            index,
     Vec n, n2;
 
     complex128 temp0=0., temp1=0.;
-
 
     Cndarray S1 = ndarray(lenght,0),
              S2 = ndarray(lenght,0);
@@ -100,7 +93,7 @@ S1S2(const double            index,
 }
 
 
-static std::pair<Cndarray, Cndarray>
+std::pair<Cndarray, Cndarray>
 Fields(double     index,
        double     diameter,
        double     wavelength,
@@ -130,15 +123,13 @@ Fields(double     index,
   complex128 *ptr0 = (complex128 *) buf0.ptr,
              *ptr1 = (complex128 *) buf1.ptr,
              temp2,
-             propagator = E0 / (k * R) * exp(-j*k*R);
-
-
-  complex128* s1s2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
+             propagator = E0 / (k * R) * exp(-j*k*R),
+             *s1s2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
 
   ndarray Parallel, Perpendicular;
 
   _S1S2(index,
-       diameter, 
+       diameter,
        wavelength,
        nMedium,
        PhiPtr,
