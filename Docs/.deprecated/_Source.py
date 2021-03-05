@@ -14,7 +14,7 @@ from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
 from PyMieSim.Special import Xi, NPnm
-from PyMieSim.GLMT.GaussianBeam import Anm, Anm_integrand, Bnm, Bnm_integrand
+
 
 
 EPS = 1e-16
@@ -292,92 +292,145 @@ class GaussianBeam(BaseSource):
         return term0 * exp(term1 * ( term2 + term3 ) )
 
 
+    def Q(self,z):
+        """Method returns:
+
+        :math:`Q_{cartesian} =\\frac{1}{2 ( z - z_0 )/k w_0^2 - i}`
+        """
+        return 1/( 2 * (z-self.offset[2])/(self.k * self.w0**2) - 1j )
+
+
+    def Q_Spherical(self, r, theta):
+        """Method returns:
+
+        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
+        """
+
+        return 1/( 2 * ( r * cos(theta) - self.offset[2])/(self.k * self.w0**2 ) - 1j )
+
+
     def Bnm(self, n, m):
         """
-        From ref[2]:Eq:18-19
         Method returns:
 
         :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
          (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
-         (\\beta) d \\theta`
-
-        Where:
-
-        :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
-
-        :math:` \\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
-        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
-        \\sin(\\theta)`
-
-        :math:`\\gamma_2 = \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
-
-        :math:`\\gamma_3 = 4 Q s^2 X_0 \\cos(\\theta)`
-
-        :math:`\\gamma_4 = 4 Q s^2 Y_0 \\cos(\\theta)`
-
-        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi`
-
-        :math:`\\tilde{I}_m(\\beta) = e^{-\\beta - i m \\xi} I_m(\\beta)`
-
-        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
-
+          (\\beta) d \\theta`
         """
 
-        return Bnm(n        = n,
-                   m        = m,
-                   k        = self.k,
-                   w0       = self.w0,
-                   s        = self.s,
-                   Offset   = self.Offset,
-                   offset   = self.offset,
-                   R0       = self.R0,
-                   xi       = self.xi)
+        if abs(m) > n: return 0.
+        Theta = linspace(0,pi,Sampling)
+
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        sub = []
+        for theta in Theta:
+            Q = 1 / ( 2 * ( r * cos(theta) -self.offset[2])/(self.k * self.w0**2 ) - 1j )
+            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
+
+            param = (n, m, rhon, Q, theta)
+            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
+            term0 *= self.I_2(*param)
+            term0 -= self.I_4(*param) * self.ImHat(m, beta)
+            term0 *= self.I_1(*param)
+
+            sub.append(term0)
+
+        sub = array(sub, copy=False).squeeze()
+
+        return integrate( y=sub, x=Theta)* self.I_0(n, m, rhon)
 
 
-
-
-
-    def Anm(self, n, m, Sampling=200):
+    def _Anm_integrandR(self,angle,n,m):
         """
-        From ref[2]:Eq:18-19
         Method returns:
 
         :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
          (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
-         (\\beta) d \\theta`
-
-        Where:
-
-        :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
-
-        :math:` \\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
-        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
-        \\sin(\\theta)`
-
-        :math:`\\gamma_2 = \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
-
-        :math:`\\gamma_3 = 4 Q s^2 X_0 \\cos(\\theta)`
-
-        :math:`\\gamma_4 = 4 Q s^2 Y_0 \\cos(\\theta)`
-
-        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi`
-
-        :math:`\\tilde{I}_m(\\beta) = e^{-\\beta - i m \\xi} I_m(\\beta)`
-
-        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
+          (\\beta) d \\theta`
 
         """
+        rhon = (n + 0.5); r = rhon/self.k;
 
-        return Anm(n        = n,
-                   m        = m,
-                   k        = self.k,
-                   w0       = self.w0,
-                   s        = self.s,
-                   Offset   = self.Offset,
-                   offset   = self.offset,
-                   R0       = self.R0,
-                   xi       = self.xi)
+        Q = self.Q_Spherical(r, angle)
+        beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(angle)
 
+        param = (n, m, rhon, Q, angle)
+        term0 =  self.ImHat(m+1, beta)
+
+        term0 += self.ImHat(m-1, beta)
+
+        term0 *= self.I_2(*param)
+        term0 -= self.I_3(*param) * self.ImHat(m, beta)
+        term0 *= self.I_1(*param)
+        #print(f"angle {angle}    term0 {term0} ")
+
+
+        return -term0.real
+
+    def _Anm_integrandI(self,angle,n,m):
+        """
+        Method returns:
+
+        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+          (\\beta) d \\theta`
+
+        """
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        Q = self.Q_Spherical(r, angle)
+        beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(angle)
+
+        param = (n, m, rhon, Q, angle)
+        term0 =  self.ImHat(m+1, beta)
+        term0 += self.ImHat(m-1, beta)
+
+        term0 *= self.I_2(*param)
+        term0 -= (self.I_3(*param) * self.ImHat(m, beta))
+        term0 *= self.I_1(*param)
+
+
+        return -term0.imag
+
+
+    def I_1(self, n, m, rhon, Q, theta):
+        """
+        Method returns: :math:`\gamma_1` from ref[2]:Eq:19
+
+        :math:`Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
+          \\sin(\\theta)`
+        """
+
+        term1 = 1j * Q * self.s**2
+        term1 *= ( self.R0 - rhon * sin(theta) )**2
+        term2 = 1j * rhon * cos(theta)
+        term3 = NPnm(n, abs(m), cos([theta]))[-1] * sin(theta)
+
+        return Q * exp(term1 + term2 ) * term3
+
+
+    def Anm(self, n, m, Sampling=200):
+        """
+        Method returns:
+
+        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+          (\\beta) d \\theta`
+        """
+
+        if abs(m) > n: return 0.
+
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        val0 = iintegrate.quad(self._Anm_integrandR, 0, pi,args=(n,m),epsrel=1e-1, )[0]
+
+        val1 = iintegrate.quad(self._Anm_integrandI, 0, pi,args=(n,m),epsrel=1e-1, )[0]
+
+        val  = (val0 + 1j * val1)
+
+        return val * self.I_0(n, m, rhon)
 
 
 
@@ -388,20 +441,53 @@ class GaussianBeam(BaseSource):
 
         :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
          (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
-         (\\beta) d \\theta`
+          (\\beta) d \\theta`
 
         """
+        Theta = linspace(0,pi,Sampling)
 
-        return Anm_integrand(n        = n,
-                             m        = m,
-                             sampling = Sampling,
-                             k        = self.k,
-                             w0       = self.w0,
-                             s        = self.s,
-                             Offset   = self.Offset,
-                             offset   = self.offset,
-                             R0       = self.R0,
-                             xi       = self.xi)
+        rhon = (n + 0.5); r = rhon/self.k;
+
+        sub = []
+        for theta in Theta:
+            Q = self.Q_Spherical(r, theta)
+            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
+            param = (n, m, rhon, Q, theta)
+            term0 =  self.ImHat(m+1, beta)
+            term0 += self.ImHat(m-1, beta)
+            term0 *= self.I_2(*param)
+            term0 -= self.I_3(*param) * self.ImHat(m, beta)
+            term0 *= self.I_1(*param)
+
+
+            sub.append(-term0)
+
+        sub = array(sub, copy=False).squeeze()
+
+        return Theta, sub
+
+
+    def ImHat(self, m, beta):
+        """
+        Method returns:
+
+        :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
+        """
+
+        X = linspace(0,2*pi, 1000)
+        dx = abs(X[1]-X[0])
+        Y =  exp(-beta*cos(X) - 1j *m*  X)
+
+
+        #a = Y.sum() * dx / (2*pi) * exp(-beta - 1j * m * self.xi )
+
+
+        b= iintegrate.trapz(y=Y,x=X) / (2*pi) * exp(-beta - 1j * m * self.xi )
+
+        #c= self.Im(m, beta)/ (2*pi) * exp(-beta - 1j * m * self.xi )
+
+        return b
+
 
 
 
@@ -434,6 +520,70 @@ class GaussianBeam(BaseSource):
 
         return sub
 
+
+
+
+    @staticmethod
+    @jit(complex128(float64, int64, complex128), nopython=True, cache=True)
+    def ImIntegrand(x, m, beta):
+        arg = beta * cos(x) -1j*  m*x
+        return exp(arg)
+
+
+    def Im(self, m, beta):
+        """
+        Method modified Bessel function :math:`I_m(\beta)` from ref[2]:Eq:16
+
+        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi}
+        e^{z \\cos(\\phi) - i m \\phi} d\\phi`
+        """
+        val = iintegrate.romberg(self.ImIntegrand, a=0, b=2*pi, args=(m,beta), tol=1e-10, divmax=15)
+
+        return 1/(2*pi) * val
+
+
+
+    def I_0(self, n, m, rhon):
+        """
+        Method returns: :math:`\gamma_0` from ref[2]:Eq:18
+
+        :math:`\\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
+        """
+        term0 = (-1j)**n * (rhon)**2
+        term1 = (2*n+1) * Xi(n, rhon)
+        term2 = exp(-1j * self.Offset[2])
+
+        return term0 / term1 * term2
+
+
+
+
+
+    def I_2(self, n, m, rhon, Q, theta):
+        """
+        Method returns: :math:`\gamma_2` from ref[2]:Eq:19
+
+        :math:`\\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
+        """
+        return ( 2 * Q * self.s**2 * rhon * cos(theta) - 1 ) * sin(theta)
+
+
+    def I_3(self, n, m, rhon, Q, theta):
+        """
+        Method returns: :math:`\gamma_3` from ref[2]:Eq:19
+
+        :math:`4 Q s^2 X_0 \\cos(\\theta)`
+        """
+        return 4 * Q * self.s**2 * self.Offset[0] * cos(theta)
+
+
+    def I_4(self, n, m, rhon, Q, theta):
+        """
+        Method returns: :math:`\gamma_4` from ref[2]:Eq:19
+
+        :math:`4 Q s^2 Y_0 \\cos(\\theta)`
+        """
+        return 4 * Q * self.s**2 * self.Offset[1] * cos(theta)
 
 
     def EField(self, x, y, z):

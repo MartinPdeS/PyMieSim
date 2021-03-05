@@ -14,11 +14,21 @@ typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 #define j complex128(0.0,1.0)
 
-#define EPS 1e-15
+#define EPS 1e-10
 
 using boost::math::quadrature::trapezoidal;
 using boost::math::constants::two_pi;
 using boost::math::constants::pi;
+
+
+struct argument
+  {
+  int n, m;
+  double rhon, angle, s, R0;
+  complex128 Q;
+  Vec Offset;
+} args, args0 ;
+
 
 
 template <typename func_type>
@@ -78,7 +88,6 @@ Q(double r,
 complex128
 ImSimpson(int m, complex128 beta)
 {
-
  auto func = [=](double angle){return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
 
  complex128 integral = simpson_rule(func,  0.0, two_pi<double>(), 1000);
@@ -89,7 +98,6 @@ ImSimpson(int m, complex128 beta)
 complex128
 ImTrapz(int m, complex128 beta)
 {
-
  auto func = [=](double angle){return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
 
  complex128 integral = trapezoidal(func, 0.0, two_pi<double>(),EPS);
@@ -97,22 +105,6 @@ ImTrapz(int m, complex128 beta)
  return 1./( two_pi<double>()) * integral;
 }
 
-
-complex128
-Im_Sum(int m, complex128 beta)
-{
-
- Vec X = Linspace( 0.0, two_pi<double>(),1000);
-
- iVec Y;
- double dx = abs(X[1]-X[0]);
- complex128 sum=0.;
-
- for (auto const& x: X){ sum += exp(-beta*cos(x) - j *  (double)m * x); }
-
- return sum *dx * 1./( two_pi<double>());
-
-}
 
 
 complex128
@@ -127,60 +119,30 @@ ImHat(double     m,
 
 
 complex128
-I_0(int n, int m, double rhon, complex128 Q, Vec Offset)
+I_0(argument arg)
 {
-  complex128 term0 = pow(-j, n) * rhon*rhon,
-             term1 = (2. * (double)n + 1.) * Xi(n, rhon),
-             term2 = exp(-j * Offset[2]);
+
+  complex128 term0 = pow(-j, arg.n) * arg.rhon*arg.rhon,
+             term1 = (2. * (double)arg.n + 1.) * Xi(arg.n, arg.rhon),
+             term2 = exp(-j * arg.Offset[2]);
 
   return term0 / term1 * term2;
 }
 
+complex128 I_2(argument arg){ return (2. * arg.Q * arg.s*arg.s * arg.rhon * cos(arg.angle) - 1. ) * sin(arg.angle); }
 
+complex128 I_3(argument arg){ return 4. * arg.Q * arg.s*arg.s * arg.Offset[0] * cos(arg.angle); }
 
-complex128
-I_2(int n, int m, double rhon, complex128 Q, double theta, Vec Offset, double s, double R0)
-{
-  return (2. * Q * s*s * rhon * cos(theta) - 1. ) * sin(theta);
-}
-
+complex128 I_4(argument arg){ return 4. * arg.Q * arg.s*arg.s * arg.Offset[1] * cos(arg.angle); }
 
 complex128
-I_3(int n, int m, double rhon, complex128 Q, double theta, Vec Offset, double s, double R0)
+I_1(argument arg)
 {
-  return 4. * Q * s*s * Offset[0] * cos(theta);
-}
+  complex128 term0 = j * arg.Q * arg.s*arg.s * pow(arg.R0 - arg.rhon * sin(arg.angle), 2. ),
+             term2 = j * arg.rhon * cos(arg.angle),
+             term3 = NPnm(arg.n, abs(arg.m), cos(arg.angle)) * sin(arg.angle) ;
 
-complex128
-I_4(int n, int m, double rhon, complex128 Q, double theta, Vec Offset, double s, double R0)
-{
-  return 4. * Q * s*s * Offset[1] * cos(theta);
-}
-
-complex128
-Integrate(iVec y, Vec Theta)
-{
-  complex128 sum = 0.;
-  double dx  = abs( Theta[1] - Theta[0] );
-
-  for (auto const& val: y)
-  {
-    sum += val;
-  }
-  return sum * dx;
-}
-
-
-
-complex128
-I_1(int n, int m, double rhon, complex128 Q, double theta, Vec Offset, double s, double R0)
-{
-  complex128 term0 = j * Q * s*s,
-             term1 = pow(R0 - rhon * sin(theta), 2. ),
-             term2 = j * rhon * cos(theta),
-             term3 = NPnm(n, abs(m), cos(theta)) * sin(theta) ;
-
-  return Q * exp(term0 * term1 + term2 ) * term3;
+  return arg.Q * exp(term0 + term2 ) * term3;
 }
 
 
@@ -204,19 +166,61 @@ Anm_integrand(double angle,
 
   _Q   = Q(r, angle, w0, offset, k);
 
+  args.angle = angle; args.n=n; args.m=m; args.rhon=rhon; args.Offset=Offset; args.s=s; args.Q=_Q; args.R0=R0;
+
   beta = -2. * j * _Q * s*s * R0 * rhon * sin(angle);
 
   term0 =  ImHat(m+1, beta, xi);
 
   term0 += ImHat(m-1, beta, xi);
 
-  term0 *= I_2(n, m, rhon, _Q, angle, Offset, s, R0);
+  term0 *= -I_2(args);
 
-  term0 -= (I_3(n, m, rhon, _Q, angle, Offset, s, R0) * ImHat(m, beta, xi));
+  term0 -= (I_3(args) * ImHat(m, beta, xi));
 
-  term0 *= I_1(n, m, rhon, _Q, angle, Offset, s, R0);
+  term0 *= I_1(args);
 
-  return -term0;
+  return term0 ;
+
+}
+
+
+
+complex128
+Bnm_integrand(double angle,
+              int n,
+              int m,
+              double k,
+              double w0,
+              double s,
+              Vec Offset,
+              Vec offset,
+              double R0,
+              double xi)
+{
+  if (abs(m) >n){return 0;}
+
+  double rhon = (n + 0.5), r = rhon/k;
+
+  complex128 _Q, beta, term0;
+
+  _Q   = Q(r, angle, w0, offset, k);
+
+  args.angle = angle; args.n=n; args.m=m; args.rhon=rhon; args.Offset=Offset; args.s=s; args.Q=_Q; args.R0=R0;
+
+  beta = -2. * j * _Q * s*s * R0 * rhon * sin(angle);
+
+  term0 =  ImHat(m+1, beta, xi);
+
+  term0 -= ImHat(m-1, beta, xi);
+
+  term0 *= -I_2(args);
+
+  term0 -= (I_4(args) * ImHat(m, beta, xi));
+
+  term0 *= I_1(args);
+
+  return term0 ;
 
 }
 
@@ -232,22 +236,40 @@ Anm(int n,
     double R0,
     double xi)
 {
+  double rhon = (n + 0.5);
+  argument args0; args0.n = n; args0.rhon = rhon; args0.Offset = Offset;
+
   auto func_ = [=](double angle) {return Anm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
 
-  return trapezoidal(func_, 0.0, pi<double>(),EPS);
-  //Vec X = Linspace( 0.0, pi<double>(),300);
+  return -trapezoidal(func_, 0.0, pi<double>(),EPS) * I_0(args0);
 
-  //iVec Y;
-  //double dx = abs(X[1]-X[0]);
-  //complex128 sum=0.;
-
-  //for (auto const& x: X){sum += Anm_integrand(x, n, m, sampling, k, w0, s, Offset, offset, R0, xi);}
-  //return sum * dx ;
 }
 
 
 
-Cndarray
+complex128
+Bnm(int n,
+    int m,
+    double k,
+    double w0,
+    double s,
+    Vec Offset,
+    Vec offset,
+    double R0,
+    double xi)
+{
+  double rhon = (n + 0.5);
+  argument args0; args0.n = n; args0.rhon = rhon; args0.Offset = Offset;
+
+  auto func_ = [=](double angle) {return Bnm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
+
+  return -trapezoidal(func_, 0.0, pi<double>(),EPS) * I_0(args0);
+
+}
+
+
+
+std::tuple<ndarray,Cndarray>
 PyAnm_integrand(int n,
                  int m,
                  int sampling,
@@ -263,14 +285,50 @@ PyAnm_integrand(int n,
   Cndarray _Anm = Cndarray(sampling);
   auto _Anm_data = _Anm.mutable_data();
 
+  Cndarray Angle = Cndarray(sampling);
+  auto Angle_data = Angle.mutable_data();
+
   Vec X = Linspace( 0.0, pi<double>(),sampling);
 
   for (auto i=0; i<sampling;i++)
   {
     _Anm_data[i] = Anm_integrand(X[i], n, m, k, w0, s, Offset, offset, R0, xi);
+    Angle_data[i] = X[i];
   }
-  return _Anm;
+  return std::make_tuple(Angle, _Anm);
 }
+
+
+std::tuple<ndarray,Cndarray>
+PyBnm_integrand(int n,
+                 int m,
+                 int sampling,
+                 double k,
+                 double w0,
+                 double s,
+                 Vec Offset,
+                 Vec offset,
+                 double R0,
+                 double xi)
+{
+
+  Cndarray _Anm = Cndarray(sampling);
+  auto _Anm_data = _Anm.mutable_data();
+
+  Cndarray Angle = Cndarray(sampling);
+  auto Angle_data = Angle.mutable_data();
+
+  Vec X = Linspace( 0.0, pi<double>(),sampling);
+
+  for (auto i=0; i<sampling;i++)
+  {
+    _Anm_data[i] = Bnm_integrand(X[i], n, m, k, w0, s, Offset, offset, R0, xi);
+    Angle_data[i] = X[i];
+  }
+  return std::make_tuple(Angle, _Anm);
+}
+
+
 
 
 
@@ -303,7 +361,37 @@ PYBIND11_MODULE(GaussianBeam, module) {
                 py::arg("offset"),
                 py::arg("R0"),
                 py::arg("xi"),
-                "Compute Anm");
+                "Compute Anm integrand as a function of theta");
+
+
+
+    module.def("Bnm",
+               &Bnm,
+               py::arg("n"),
+               py::arg("m"),
+               py::arg("k"),
+               py::arg("w0"),
+               py::arg("s"),
+               py::arg("Offset"),
+               py::arg("offset"),
+               py::arg("R0"),
+               py::arg("xi"),
+               "Compute Bnm");
+
+
+     module.def("Bnm_integrand",
+                &PyBnm_integrand,
+                py::arg("n"),
+                py::arg("m"),
+                py::arg("sampling"),
+                py::arg("k"),
+                py::arg("w0"),
+                py::arg("s"),
+                py::arg("Offset"),
+                py::arg("offset"),
+                py::arg("R0"),
+                py::arg("xi"),
+                "Compute Bnm integrand as a function of theta");
 }
 
 

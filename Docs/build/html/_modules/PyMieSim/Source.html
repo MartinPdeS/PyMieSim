@@ -161,15 +161,18 @@
 
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">trapz</span> <span class="k">as</span> <span class="n">integrate</span>
+<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">trapz</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">iintegrate</span>
+
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">spherical_jn</span> <span class="k">as</span> <span class="n">jn</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">arccos</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="nb">all</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">arccos</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="nb">all</span><span class="p">,</span> <span class="nb">sum</span>
+<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">complex128</span><span class="p">,</span><span class="n">float64</span><span class="p">,</span><span class="n">jit</span><span class="p">,</span> <span class="n">int64</span>
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Constants</span> <span class="kn">import</span> <span class="n">eps0</span><span class="p">,</span> <span class="n">mu0</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Special</span> <span class="kn">import</span> <span class="n">Xi</span><span class="p">,</span> <span class="n">NPnm</span>
-
+<span class="kn">from</span> <span class="nn">PyMieSim.GLMT.GaussianBeam</span> <span class="kn">import</span> <span class="n">Anm</span><span class="p">,</span> <span class="n">Anm_integrand</span><span class="p">,</span> <span class="n">Bnm</span><span class="p">,</span> <span class="n">Bnm_integrand</span>
 
 
 <span class="n">EPS</span> <span class="o">=</span> <span class="mf">1e-16</span>
@@ -312,7 +315,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">E0</span> <span class="o">=</span> <span class="n">E0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="n">NA</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">w0</span> <span class="o">=</span> <span class="mf">2.8476e-6</span><span class="c1">#2 * self.Wavelength / (pi * NA)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span> <span class="o">/</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="n">NA</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">Offset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span>
@@ -353,8 +356,8 @@
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;order: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">MaxOrder</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-            <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="n">Sampling</span> <span class="p">)</span>
-            <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTM</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="n">Sampling</span> <span class="p">)</span>
+            <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">)</span>
+            <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTM</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">)</span>
 
 
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
@@ -368,7 +371,7 @@
 <div class="viewcode-block" id="GaussianBeam.LoadBSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.LoadBSC">[docs]</a>    <span class="k">def</span> <span class="nf">LoadBSC</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
         <span class="n">BSC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GaussianBeam.BSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.BSC">[docs]</a>    <span class="k">def</span> <span class="nf">BSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="GaussianBeam.BSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.BSC">[docs]</a>    <span class="k">def</span> <span class="nf">BSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the beam shape coefficients for a focused Gaussian</span>
 <span class="sd">        beam using the quadrature method (ref[2]:Eq:17).</span>
 
@@ -390,9 +393,9 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TM&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Anm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TM&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Anm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TE&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bnm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TE&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bnm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GaussianBeam.GetMaxOrder"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.GetMaxOrder">[docs]</a>    <span class="k">def</span> <span class="nf">GetMaxOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Precision</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
@@ -447,82 +450,93 @@
         <span class="k">return</span> <span class="n">term0</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="n">term1</span> <span class="o">*</span> <span class="p">(</span> <span class="n">term2</span> <span class="o">+</span> <span class="n">term3</span> <span class="p">)</span> <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GaussianBeam.Q"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Q">[docs]</a>    <span class="k">def</span> <span class="nf">Q</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method returns:</span>
-
-<span class="sd">        :math:`Q_{cartesian} =\\frac{1}{2 ( z - z_0 )/k w_0^2 - i}`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.Q_Spherical"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Q_Spherical">[docs]</a>    <span class="k">def</span> <span class="nf">Q_Spherical</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method returns:</span>
-
-<span class="sd">        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">r</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.Bnm"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Bnm">[docs]</a>    <span class="k">def</span> <span class="nf">Bnm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+<div class="viewcode-block" id="GaussianBeam.Bnm"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Bnm">[docs]</a>    <span class="k">def</span> <span class="nf">Bnm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        From ref[2]:Eq:18-19</span>
 <span class="sd">        Method returns:</span>
 
 <span class="sd">        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
 <span class="sd">         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\</span>
-<span class="sd">          (\\beta) d \\theta`</span>
+<span class="sd">         (\\beta) d \\theta`</span>
+
+<span class="sd">        Where:</span>
+
+<span class="sd">        :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`</span>
+
+<span class="sd">        :math:` \\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \</span>
+<span class="sd">        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \</span>
+<span class="sd">        \\sin(\\theta)`</span>
+
+<span class="sd">        :math:`\\gamma_2 = \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`</span>
+
+<span class="sd">        :math:`\\gamma_3 = 4 Q s^2 X_0 \\cos(\\theta)`</span>
+
+<span class="sd">        :math:`\\gamma_4 = 4 Q s^2 Y_0 \\cos(\\theta)`</span>
+
+<span class="sd">        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi`</span>
+
+<span class="sd">        :math:`\\tilde{I}_m(\\beta) = e^{-\\beta - i m \\xi} I_m(\\beta)`</span>
+
+<span class="sd">        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span> <span class="k">return</span> <span class="mf">0.</span>
-        <span class="n">Phi</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span><span class="n">Sampling</span><span class="p">);</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">Sampling</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Bnm</span><span class="p">(</span><span class="n">n</span>        <span class="o">=</span> <span class="n">n</span><span class="p">,</span>
+                   <span class="n">m</span>        <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
+                   <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+                   <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
+                   <span class="n">s</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+                   <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">,</span>
+                   <span class="n">offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+                   <span class="n">R0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">,</span>
+                   <span class="n">xi</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span></div>
 
-        <span class="n">rhon</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span> <span class="n">r</span> <span class="o">=</span> <span class="n">rhon</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">;</span>
 
-        <span class="n">sub</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">Theta</span><span class="p">:</span>
-            <span class="n">Q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">r</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="p">)</span>
-            <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_2</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_4</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_1</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
 
-            <span class="n">sub</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term0</span><span class="p">)</span>
-
-        <span class="n">sub</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">integrate</span><span class="p">(</span> <span class="n">y</span><span class="o">=</span><span class="n">sub</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">Theta</span><span class="p">)</span><span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_0</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GaussianBeam.Anm"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Anm">[docs]</a>    <span class="k">def</span> <span class="nf">Anm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        From ref[2]:Eq:18-19</span>
 <span class="sd">        Method returns:</span>
 
 <span class="sd">        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
 <span class="sd">         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\</span>
-<span class="sd">          (\\beta) d \\theta`</span>
+<span class="sd">         (\\beta) d \\theta`</span>
+
+<span class="sd">        Where:</span>
+
+<span class="sd">        :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`</span>
+
+<span class="sd">        :math:` \\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \</span>
+<span class="sd">        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \</span>
+<span class="sd">        \\sin(\\theta)`</span>
+
+<span class="sd">        :math:`\\gamma_2 = \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`</span>
+
+<span class="sd">        :math:`\\gamma_3 = 4 Q s^2 X_0 \\cos(\\theta)`</span>
+
+<span class="sd">        :math:`\\gamma_4 = 4 Q s^2 Y_0 \\cos(\\theta)`</span>
+
+<span class="sd">        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi`</span>
+
+<span class="sd">        :math:`\\tilde{I}_m(\\beta) = e^{-\\beta - i m \\xi} I_m(\\beta)`</span>
+
+<span class="sd">        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span> <span class="k">return</span> <span class="mf">0.</span>
-        <span class="n">Phi</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span><span class="n">Sampling</span><span class="p">);</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">Sampling</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Anm</span><span class="p">(</span><span class="n">n</span>        <span class="o">=</span> <span class="n">n</span><span class="p">,</span>
+                   <span class="n">m</span>        <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
+                   <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+                   <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
+                   <span class="n">s</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+                   <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">,</span>
+                   <span class="n">offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+                   <span class="n">R0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">,</span>
+                   <span class="n">xi</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span></div>
 
-        <span class="n">rhon</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span> <span class="n">r</span> <span class="o">=</span> <span class="n">rhon</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">;</span>
 
-        <span class="n">sub</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">Theta</span><span class="p">:</span>
-            <span class="n">Q</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">r</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="p">)</span>
-            <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_2</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_3</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_1</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-
-            <span class="n">sub</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">term0</span><span class="p">)</span>
-
-        <span class="n">sub</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">integrate</span><span class="p">(</span> <span class="n">y</span><span class="o">=</span><span class="n">sub</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">Theta</span><span class="p">)</span><span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_0</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span></div>
 
 
 
@@ -532,28 +546,21 @@
 
 <span class="sd">        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
 <span class="sd">         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\</span>
-<span class="sd">          (\\beta) d \\theta`</span>
+<span class="sd">         (\\beta) d \\theta`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Phi</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span><span class="n">Sampling</span><span class="p">);</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">Sampling</span><span class="p">)</span>
 
-        <span class="n">rhon</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span> <span class="n">r</span> <span class="o">=</span> <span class="n">rhon</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Anm_integrand</span><span class="p">(</span><span class="n">n</span>        <span class="o">=</span> <span class="n">n</span><span class="p">,</span>
+                             <span class="n">m</span>        <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
+                             <span class="n">sampling</span> <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
+                             <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+                             <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
+                             <span class="n">s</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+                             <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">,</span>
+                             <span class="n">offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+                             <span class="n">R0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">,</span>
+                             <span class="n">xi</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span></div>
 
-        <span class="n">sub</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">Theta</span><span class="p">:</span>
-            <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_Spherical</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_2</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_3</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_1</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-
-            <span class="n">sub</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">term0</span><span class="p">)</span>
-
-        <span class="n">sub</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">Theta</span><span class="p">,</span> <span class="n">sub</span></div>
 
 
 <div class="viewcode-block" id="GaussianBeam.Bnm_integrand"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Bnm_integrand">[docs]</a>    <span class="k">def</span> <span class="nf">Bnm_integrand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
@@ -573,9 +580,10 @@
             <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_Spherical</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
             <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
             <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
+            <span class="n">term0</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
             <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_2</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_4</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
+
+            <span class="n">term0</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_4</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
             <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_1</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
 
             <span class="n">sub</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">term0</span><span class="p">)</span>
@@ -584,83 +592,6 @@
 
         <span class="k">return</span> <span class="n">sub</span></div>
 
-
-<div class="viewcode-block" id="GaussianBeam.ImHat"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.ImHat">[docs]</a>    <span class="k">def</span> <span class="nf">ImHat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method returns:</span>
-
-<span class="sd">        :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Im</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.Im"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Im">[docs]</a>    <span class="k">def</span> <span class="nf">Im</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method modified Bessel function :math:`I_m(\beta)` from ref[2]:Eq:16</span>
-
-<span class="sd">        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi}</span>
-<span class="sd">        e^{z \\cos(\\phi) - i m \\phi} d\\phi`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">x</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">)</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">integrate</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.I_0"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.I_0">[docs]</a>    <span class="k">def</span> <span class="nf">I_0</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method returns: :math:`\gamma_0` from ref[2]:Eq:18</span>
-
-<span class="sd">        :math:`\\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">term0</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span><span class="o">**</span><span class="n">n</span> <span class="o">*</span> <span class="p">(</span><span class="n">rhon</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-        <span class="n">term1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">Xi</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">rhon</span><span class="p">)</span>
-        <span class="n">term2</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-
-        <span class="k">return</span> <span class="n">term0</span> <span class="o">/</span> <span class="n">term1</span> <span class="o">*</span> <span class="n">term2</span></div>
-
-<div class="viewcode-block" id="GaussianBeam.I_1"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.I_1">[docs]</a>    <span class="k">def</span> <span class="nf">I_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method returns: :math:`\gamma_1` from ref[2]:Eq:19</span>
-
-<span class="sd">        :math:`Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \</span>
-<span class="sd">        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \</span>
-<span class="sd">          \\sin(\\theta)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">term1</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span>
-        <span class="n">term1</span> <span class="o">*=</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">-</span> <span class="n">rhon</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-        <span class="n">term3</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-        <span class="n">term4</span> <span class="o">=</span> <span class="n">NPnm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">cos</span><span class="p">([</span><span class="n">theta</span><span class="p">]))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">exp</span><span class="p">(</span><span class="n">term1</span> <span class="o">+</span> <span class="n">term3</span> <span class="p">)</span> <span class="o">*</span> <span class="n">term4</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.I_2"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.I_2">[docs]</a>    <span class="k">def</span> <span class="nf">I_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method returns: :math:`\gamma_2` from ref[2]:Eq:19</span>
-
-<span class="sd">        :math:`\\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.I_3"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.I_3">[docs]</a>    <span class="k">def</span> <span class="nf">I_3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method returns: :math:`\gamma_3` from ref[2]:Eq:19</span>
-
-<span class="sd">        :math:`4 Q s^2 X_0 \\cos(\\theta)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="GaussianBeam.I_4"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.I_4">[docs]</a>    <span class="k">def</span> <span class="nf">I_4</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method returns: :math:`\gamma_4` from ref[2]:Eq:19</span>
-
-<span class="sd">        :math:`4 Q s^2 Y_0 \\cos(\\theta)`</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GaussianBeam.EField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.EField">[docs]</a>    <span class="k">def</span> <span class="nf">EField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>

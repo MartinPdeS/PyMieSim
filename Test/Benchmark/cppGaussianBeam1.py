@@ -21,7 +21,7 @@ print(s)
 offset= [5.e-06, 5.e-06, 5.e-06]
 Offset = [49.64590161, 49.64590161, 49.64590161]
 
-nList = np.arange(1,100)
+nList = np.arange(1,250)
 Anm2 = []
 for n in nList:
     print(n)
