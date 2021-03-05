@@ -305,7 +305,7 @@ class GaussianBeam(BaseSource):
 
         :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
 
-        :math:` \\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+        :math:`\\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
         + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
         \\sin(\\theta)`
 
@@ -350,7 +350,7 @@ class GaussianBeam(BaseSource):
 
         :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
 
-        :math:` \\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+        :math:`\\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
         + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
         \\sin(\\theta)`
 
