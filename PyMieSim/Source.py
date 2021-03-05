@@ -70,11 +70,11 @@ class PlaneWave(BaseSource):
 
         Parameters
         ----------
-        n : class:`int`
+        n : :class:`int`
             Order of the expansion.
-        m : class:`int`
+        m : :class:`int`
             Description of parameter `m`.
-        mode : class:`str`
+        mode : :class:`str`
             Mode of the plane wave, either 'TE' or 'TM'.
 
         Returns
@@ -210,13 +210,14 @@ class GaussianBeam(BaseSource):
         """Return the beam shape coefficients for a focused Gaussian
         beam using the quadrature method (ref[2]:Eq:17).
 
-        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) f
+        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`)
+
 
         Parameters
         ----------
-        n : class:`int`
+        n : :class:`int`
             Order of the expansion.
-        m : class:`int`
+        m : :class:`int`
             Description of parameter `m`.
         mode : :class:`str`
             Mode of the plane wave, either 'TE' or 'TM'.
