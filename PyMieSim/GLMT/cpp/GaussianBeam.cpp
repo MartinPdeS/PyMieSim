@@ -98,9 +98,9 @@ ImSimpson(int m, complex128 beta)
 complex128
 ImTrapz(int m, complex128 beta)
 {
- auto func = [=](double angle){return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
+ auto func = [=](double angle)->complex128{return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
 
- complex128 integral = trapezoidal(func, 0.0, two_pi<double>(),EPS);
+ complex128 integral = trapezoidal(func, 0.0, two_pi<double>(), EPS);
 
  return 1./( two_pi<double>()) * integral;
 }
@@ -223,7 +223,7 @@ Bnm_integrand(double angle,
   return term0 ;
 
 }
- 
+
 
 complex128
 Anm(int n,
@@ -239,7 +239,7 @@ Anm(int n,
   double rhon = (n + 0.5);
   argument args0; args0.n = n; args0.rhon = rhon; args0.Offset = Offset;
 
-  auto func_ = [=](double angle) {return Anm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
+  auto func_ = [=](double angle)->complex128 {return Anm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
 
   return -trapezoidal(func_, 0.0, pi<double>(),EPS) * I_0(args0);
 
@@ -261,7 +261,7 @@ Bnm(int n,
   double rhon = (n + 0.5);
   argument args0; args0.n = n; args0.rhon = rhon; args0.Offset = Offset;
 
-  auto func_ = [=](double angle) {return Bnm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
+  auto func_ = [=](double angle)->complex128 {return Bnm_integrand(angle, n, m, k, w0, s, Offset, offset, R0, xi);};
 
   return -trapezoidal(func_, 0.0, pi<double>(),EPS) * I_0(args0);
 

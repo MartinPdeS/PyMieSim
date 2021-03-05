@@ -79,7 +79,7 @@ class PlaneWave(BaseSource):
 
         Returns
         -------
-        class:`float`
+        :class:`float`
             Expansion coefficient.
 
         """
@@ -224,7 +224,7 @@ class GaussianBeam(BaseSource):
 
         Returns
         -------
-        class:`float`
+        :class:`float`
             Beam shape coefficient of order n and degree m.
 
         """
