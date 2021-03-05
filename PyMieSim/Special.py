@@ -4,7 +4,7 @@ from scipy.special import spherical_yn as yn, spherical_jn as jn, hankel1 as h
 from scipy.special import legendre as Pn, factorial as fac, lpmn, gammasgn, loggamma, lpmv
 from scipy.special import factorial
 
-EPS = 1e-20
+EPS = 1e-15
 def hn(n, z, derivative=False):
     return jn(n,z,derivative) + 1j*yn(n,z,derivative)
 
@@ -58,9 +58,9 @@ def Pin(n, x):
 def Taunm(n, m, x):
     """Eq: III.51 """
     index = np.isclose(x,1,EPS)
-    if len(index) > 0: x[index] = 1-EPS
+    if len(index) > 0: x[index] = 1-EPS; print('yolo')
     index = np.isclose(x,-1,EPS)
-    if len(index) > 0: x[index] = -1+EPS
+    if len(index) > 0: x[index] = -1+EPS; print('yolo')
 
     return sqrt(1-x**2) * Pnm_p(n, m, x)
 
