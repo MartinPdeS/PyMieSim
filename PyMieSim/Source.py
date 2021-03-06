@@ -11,7 +11,7 @@ from PyMieSim.Constants import eps0, mu0
 from PyMieSim.GLMT.GaussianBeam import Anm, Anm_integrand, Bnm, Bnm_integrand
 
 
-EPS = 1e-16
+EPS = 1e-20
 class PlaneWave(BaseSource):
     """Class representing a focuse plane wave beam as a light source for
     light scattering.
@@ -38,9 +38,10 @@ class PlaneWave(BaseSource):
         self.E0 = E0
         self.H0 = sqrt(eps0/mu0) * self.E0
         self.offset = array([EPS]*3)
+        self._BSC_ = None
 
 
-    def GetBSC(self, MaxOrder=20, save=False):
+    def GetBSC(self, Precision, MaxOrder=30, save=False):
 
         nOrder = range(1,MaxOrder+1)
         mOrder = [-1,1]
@@ -60,7 +61,22 @@ class PlaneWave(BaseSource):
             print(f" Saving BSC into file:\n {fileName}")
             BSC.to_csv(f'./{fileName}', mode='w')
 
+
+        self._BSC_ = BSC.reset_index(level=[0,1]).to_numpy().astype(complex)
+
+        self.MaxOrder = int(self._BSC_[:,0].max().real)
+
         return BSC
+
+
+    def _BSC(self):
+        if self._BSC_:
+            return self._BSC_
+        else:
+            print('Need to compute BSC before computing light scattering. [<beam>.GetBSC(Precision=20)]')
+            raise
+
+
 
 
     def BSC(self, n, m, mode='TE'):
@@ -89,6 +105,7 @@ class PlaneWave(BaseSource):
 
         if mode == 'TE': return  -m * 1j / 2
 
+
     def EField(self, x, y, z):
         """Value of the electric field.
 
@@ -114,6 +131,15 @@ class PlaneWave(BaseSource):
         return self.H0 * FPhase * cos(Pol), \
                self.H0 * FPhase * sin(Pol), \
                0
+
+
+    def __repr__(self):
+
+        return f"""
+                PlaneWave source beam
+                Wavelenght:   {self.Wavelength}
+                Polarization: {self.Polarization}
+                """
 
 
 
@@ -143,7 +169,7 @@ class GaussianBeam(BaseSource):
                  E0:           float = 1.,
                  Offset:       list = [EPS]*3) :
 
-        self.LGMT = True
+        self.GLMT = True
         Offset = array(Offset); Offset[Offset == 0] = EPS
         self.Wavelength = Wavelength
         self.k = 2 * pi / Wavelength
@@ -156,6 +182,7 @@ class GaussianBeam(BaseSource):
         self.Offset = self.offset*self.k
         self.R0 = sqrt(self.Offset[0]**2 + self.Offset[1]**2)
         self.xi = arccos(self.Offset[0]/self.R0)
+        self._BSC_ = None
 
 
 
@@ -177,10 +204,8 @@ class GaussianBeam(BaseSource):
         return tuple( zip( nlist, mlist ) )
 
 
-    def GetBSC(self, Precision=20, maxDegree=3, save=False, Sampling=200):
+    def GetBSC(self, Precision=5, maxDegree=3, save=False, Sampling=200):
         MaxOrder = self.GetMaxOrder(Precision)
-
-
 
         idx = self.Getidx(MaxOrder)
         index = pd.MultiIndex.from_tuples(idx, names=["n", "m"])
@@ -189,7 +214,6 @@ class GaussianBeam(BaseSource):
         BSC = pd.DataFrame(columns=[BSCTE, BSCTM], index=index)
 
         for n, m in idx:
-            print(f'order: {n}/{MaxOrder[1]}')
 
             BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE')
             BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM')
@@ -200,11 +224,23 @@ class GaussianBeam(BaseSource):
             print(f" Saving BSC into file:\n {fileName}")
             BSC.to_csv(f'./{fileName}', mode='w')
 
+        self._BSC_ = BSC.reset_index(level=[0,1]).to_numpy().astype(complex)
+
+        self.MaxOrder = int(self._BSC_[:,0].max().real)
+
         return BSC
+
+    def _BSC(self):
+        if self._BSC_:
+            return self._BSC_
+        else:
+            print('Need to compute BSC before computing light scattering. [<beam>.GetBSC(Precision=20)]')
+            raise
 
 
     def LoadBSC(dir):
         BSC = pd.read_csv(dir)
+
 
     def BSC(self, n, m, mode='TE'):
         """Return the beam shape coefficients for a focused Gaussian
@@ -234,7 +270,7 @@ class GaussianBeam(BaseSource):
         if mode == 'TE': return self.Bnm(n, m)
 
 
-    def GetMaxOrder(self, Precision=20):
+    def GetMaxOrder(self, Precision=5):
         """Method return the range of order to evaluate the BSC's.
         However one should be cautious as a high precision will lead to
         numerical overflow.
@@ -255,6 +291,7 @@ class GaussianBeam(BaseSource):
         Orders = (max(1, int(self.R0 - 1/2 - termP) ), int(self.R0 - 1/2 + termP))
         self.Orders = Orders
         self.NOrders = abs(Orders[0]-Orders[1])
+
         return Orders
 
 
@@ -321,11 +358,7 @@ class GaussianBeam(BaseSource):
                    m        = m,
                    k        = self.k,
                    w0       = self.w0,
-                   s        = self.s,
-                   Offset   = self.Offset,
-                   offset   = self.offset,
-                   R0       = self.R0,
-                   xi       = self.xi)
+                   Offset   = self.Offset)
 
 
 
@@ -366,11 +399,7 @@ class GaussianBeam(BaseSource):
                    m        = m,
                    k        = self.k,
                    w0       = self.w0,
-                   s        = self.s,
-                   Offset   = self.Offset,
-                   offset   = self.offset,
-                   R0       = self.R0,
-                   xi       = self.xi)
+                   Offset   = self.Offset)
 
 
 
@@ -391,42 +420,26 @@ class GaussianBeam(BaseSource):
                              sampling = Sampling,
                              k        = self.k,
                              w0       = self.w0,
-                             s        = self.s,
-                             Offset   = self.Offset,
-                             offset   = self.offset,
-                             R0       = self.R0,
-                             xi       = self.xi)
-
+                             Offset   = self.Offset)
 
 
     def Bnm_integrand(self, n, m, Sampling=200):
         """
         Method returns:
 
-        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
-         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
-          (\\beta) d \\theta`
+        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+         (\\beta) d \\theta`
+
         """
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
 
-        rhon = (n + 0.5); r = rhon/self.k;
+        return Bnm_integrand(n        = n,
+                             m        = m,
+                             sampling = Sampling,
+                             k        = self.k,
+                             w0       = self.w0,
+                             Offset   = self.Offset)
 
-        sub = []
-        for theta in Theta:
-            Q = self.Q_Spherical(r, theta)
-            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
-            param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
-            term0 *= self.I_2(*param)
-
-            term0 -= self.I_4(*param) * self.ImHat(m, beta)
-            term0 *= self.I_1(*param)
-
-            sub.append(-term0)
-
-        sub = array(sub, copy=False).squeeze()
-
-        return sub
 
 
 
@@ -517,3 +530,14 @@ class GaussianBeam(BaseSource):
         Hr = term0 * (term1 - term2 * term3) * FPhase
 
         return Hr
+
+
+    def __repr__(self):
+
+        return f"""
+                Gaussian source beam
+                Wavelenght:   {self.Wavelength}
+                Polarization: {self.Polarization}
+                NA:           {self.NA}
+                Waist (w_0)   {self.w0}
+                """

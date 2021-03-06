@@ -10,8 +10,8 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-from PyMieSim.LMT.Sphere import S1S2 as GetS1S2, Fields as GetFields
-
+from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
+from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, Fields as GLMTFields
 
 class Stokes(np.ndarray):
     """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B
@@ -137,17 +137,32 @@ class SPF(dict):
     def __init__(self, Parent, Num):
 
         self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
+        print(Parent.Source.GLMT)
+        if Parent.Source.GLMT:
+            Para, Perp = GLMTFields(Index        = Parent.Index,
+                                    Diameter     = Parent.Diameter,
+                                    Wavelength   = Parent.Source.Wavelength,
+                                    nMedium      = Parent.nMedium,
+                                    Phi          = self['Phi']+np.pi/2,
+                                    Theta        = self['Theta'],
+                                    Polarization = Parent.Source.Polarization.Radian,
+                                    E0           = float(Parent.Source.E0),
+                                    R            = 1.,
+                                    BSC          = Parent.Source._BSC_,
+                                    MaxOrder     = Parent.Source.MaxOrder)
 
-        Para, Perp = GetFields(Index        = Parent.Index,
-                               Diameter     = Parent.Diameter,
-                               Wavelength   = Parent.Source.Wavelength,
-                               nMedium      = 1.0,
-                               Phi          = self['Phi'].flatten()-np.pi/2,
-                               Theta        = self['Theta'].flatten(),
-                               Polarization = 0.,
-                               E0           = Parent.Source.E0,
-                               R            = 1.,
-                               Lenght       = self['Theta'].flatten().size)
+
+        else:
+            Para, Perp = LMTFields(Index        = Parent.Index,
+                                   Diameter     = Parent.Diameter,
+                                   Wavelength   = Parent.Source.Wavelength,
+                                   nMedium      = 1.0,
+                                   Phi          = self['Phi'].flatten()-np.pi/2,
+                                   Theta        = self['Theta'].flatten(),
+                                   Polarization = 0.,
+                                   E0           = Parent.Source.E0,
+                                   R            = 1.,
+                                   Lenght       = self['Theta'].flatten().size)
 
         self['EPhi'], self['ETheta'] = Para, Perp
 
@@ -185,9 +200,7 @@ class SPF(dict):
                     tube_radius=radius
                     )
 
-        mlab.mesh(x, y, z)
-
-        mlab.setcolormap('viridis')
+        mlab.mesh(x, y, z, colormap='viridis')
 
         mlab.show()
 
@@ -211,7 +224,7 @@ class S1S2(dict):
         Phi = np.linspace(-np.pi,np.pi,100);
 
         args = (1.8, 3e-6, 1e-6, 1, Phi)
-        self['S1'], self['S2'] = GetS1S2(Index      = Parent.Index,
+        self['S1'], self['S2'] = LMTS1S2(Index      = Parent.Index,
                                          Diameter   = Parent.Diameter,
                                          Wavelength = Parent.Source.Wavelength,
                                          nMedium    = Parent.nMedium,
@@ -271,7 +284,7 @@ class ScalarFarField(dict):
 
         Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
 
-        EPhi, ETheta = GetFields(Index        = Parent.Index,
+        EPhi, ETheta = LMTFields(Index        = Parent.Index,
                                  Diameter     = Parent.Diameter,
                                  Wavelength   = Parent.Source.Wavelength,
                                  nMedium      = Parent.nMedium,

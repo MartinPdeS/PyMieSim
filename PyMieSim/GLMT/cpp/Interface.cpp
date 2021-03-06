@@ -27,12 +27,11 @@ an(double SizeParam, double Index, double nMedium, int MaxOrder)
   Cndarray _an = Cndarray(MaxOrder);
   auto an_data = _an.mutable_data();
 
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = MuSp * Psi(order, alpha) * Psi_p(order, beta)  - Mu * M * Psi_p(order, alpha) * Psi(order, beta);
     denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta);
     an_data[order-1] = numerator/denominator;
-
   }
   return _an;
 }
@@ -52,7 +51,7 @@ bn(double SizeParam, double Index, double nMedium, int MaxOrder)
   Cndarray _bn = Cndarray(MaxOrder);
   auto bn_data = _bn.mutable_data();
 
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = Mu * M * Psi(order, alpha) * Psi_p(order, beta) - MuSp * Psi_p(order, alpha) * Psi(order, beta);
     denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp  * Xi_p(order, alpha) * Psi(order, beta);
@@ -77,7 +76,7 @@ cn(double SizeParam, double Index, double nMedium, int MaxOrder)
   Cndarray _cn = Cndarray(MaxOrder);
   auto cn_data = _cn.mutable_data();
 
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = M * MuSp * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) );
     denominator = MuSp * Xi(order, alpha) * Psi_p(order, beta) - Mu * M * Xi_p(order, alpha) * Psi(order, beta);
@@ -101,7 +100,7 @@ dn(double SizeParam, double Index, double nMedium, int MaxOrder)
   Cndarray _dn = Cndarray(MaxOrder);
   auto dn_data = _dn.mutable_data();
 
-  for (long unsigned int order = 1; order < MaxOrder+1; order++)
+  for (auto order = 1; order < MaxOrder+1; order++)
   {
     numerator = Mu * M*M * ( Xi(order, alpha) * Psi_p(order, alpha) - Xi_p(order, alpha) * Psi(order, alpha) );
     denominator = Mu * M * Xi(order, alpha) * Psi_p(order, beta) - MuSp * Xi_p(order, alpha) * Psi(order, beta);
@@ -114,17 +113,65 @@ dn(double SizeParam, double Index, double nMedium, int MaxOrder)
 
 
 std::pair<Cndarray, Cndarray>
-S1(double   Index,
-   double   Diameter,
-   double   Wavelength,
-   double   nMedium,
-   ndarray  Phi,
-   ndarray  Theta,
-   double   Polarization,
-   double   E0,
-   double   R,
-   Cndarray  BSC,
-   int       MaxOrder)
+S1S2(double   Index,
+     double   Diameter,
+     double   Wavelength,
+     double   nMedium,
+     ndarray  Phi,
+     ndarray  Theta,
+     double   Polarization,
+     double   E0,
+     double   R,
+     Cndarray BSC,
+     int      MaxOrder)
+{
+  py::buffer_info PhiBuffer     = Phi.request();
+  py::buffer_info ThetaBuffer   = Theta.request();
+  double *PhiPtr   = (double *) PhiBuffer.ptr,
+         *ThetaPtr = (double *) ThetaBuffer.ptr,
+          SizeParam = PI * Diameter / Wavelength;
+
+  int PhiLenght   = PhiBuffer.size,
+      ThetaLenght = ThetaBuffer.size;
+
+  iVec vec,
+      __an = _an(SizeParam, Index, nMedium, MaxOrder),
+      __bn = _bn(SizeParam, Index, nMedium, MaxOrder);
+
+
+  Cndarray s1 = Cndarray(ThetaLenght),
+           s2 = Cndarray(ThetaLenght);
+
+  complex128 temp0,
+             temp1;
+
+  auto s1_data = s1.mutable_data(),
+       s2_data = s2.mutable_data();
+
+  for(auto l = 0; l < ThetaLenght; l++)
+    {
+      std::tie(temp0, temp1) = Expansion(BSC, __an, __bn, PhiPtr[l], ThetaPtr[l]) ;
+      s1_data[l] = temp0;
+      s2_data[l] = temp1;
+    }
+
+  return std::make_pair(s1, s2);
+}
+
+
+
+std::pair<Cndarray, Cndarray>
+Fields(double   Index,
+       double   Diameter,
+       double   Wavelength,
+       double   nMedium,
+       ndarray  Phi,
+       ndarray  Theta,
+       double   Polarization,
+       double   E0,
+       double   R,
+       Cndarray BSC,
+       int      MaxOrder)
 {
   py::buffer_info PhiBuffer     = Phi.request();
   py::buffer_info ThetaBuffer   = Theta.request();
@@ -133,15 +180,14 @@ S1(double   Index,
          SizeParam = PI * Diameter / Wavelength;
 
   int PhiLenght   = PhiBuffer.size,
-      ThetaLenght = ThetaBuffer.size,
-      TotalLenght = PhiLenght*ThetaLenght;
+      ThetaLenght = ThetaBuffer.size;
 
   iVec vec,
       __an = _an(SizeParam, Index, nMedium, MaxOrder),
       __bn = _bn(SizeParam, Index, nMedium, MaxOrder);
 
-  Cndarray s1 = Cndarray(TotalLenght),
-           s2 = Cndarray(TotalLenght);
+  Cndarray s1 = Cndarray(ThetaLenght),
+           s2 = Cndarray(ThetaLenght);
 
   complex128 temp0,
              temp1;
@@ -149,23 +195,16 @@ S1(double   Index,
   auto s1_data = s1.mutable_data(),
        s2_data = s2.mutable_data();
 
-  int p = 0;
-  for(auto i = 0; i < ThetaLenght; i++)
+  for(auto l = 0; l < ThetaLenght; l++)
     {
-      for(auto l = 0; l < PhiLenght; l++)
-        {
 
-          std::tie(temp0, temp1) = Expansion(BSC, __an, __bn, PhiPtr[l], ThetaPtr[i]) ;
-
-          s1_data[p] = temp0;
-          s2_data[p] = temp1;
-          p++;
-        } 
+      std::tie(temp0, temp1) = Expansion(BSC, __an, __bn, PhiPtr[l], ThetaPtr[l]) ;
+      s1_data[l] = temp0;
+      s2_data[l] = temp1;
     }
 
   return std::make_pair(s1, s2);
 }
-
 
 
 
@@ -174,8 +213,8 @@ PYBIND11_MODULE(Sphere, module) {
 
 
 
-    module.def("S1",
-               &S1,
+    module.def("S1S2",
+               &S1S2,
                py::arg("Index"),
                py::arg("Diameter"),
                py::arg("Wavelength"),
@@ -188,6 +227,22 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("BSC"),
                py::arg("MaxOrder"),
                "Return S1");
+
+
+     module.def("Fields",
+                &Fields,
+                py::arg("Index"),
+                py::arg("Diameter"),
+                py::arg("Wavelength"),
+                py::arg("nMedium"),
+                py::arg("Phi"),
+                py::arg("Theta"),
+                py::arg("Polarization"),
+                py::arg("E0"),
+                py::arg("R"),
+                py::arg("BSC"),
+                py::arg("MaxOrder"),
+                "Return S1");
 
 
    module.def("an",

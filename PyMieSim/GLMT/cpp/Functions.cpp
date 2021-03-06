@@ -138,21 +138,22 @@ Expansion(Cndarray BSC,
          m_f,
          mu = cos(Phi);
 
-  int Lenght = BSCBuffer.shape[0],
+  int Length = BSCBuffer.shape[0],
       Width = BSCBuffer.shape[1],
       m = 0,
       n = 0,
       first = (int)BSCPtr[0].real();
 
 
-  for (auto i = 0; i < Lenght; i++)
+  for (auto i = 0; i < Length; i++)
   {
-      n  = (int)BSCPtr[i*Width + 0].real();
 
-      m  = (int)BSCPtr[i*Width + 1].real();
+      n  = (int)BSCPtr[i].real();
 
-      TE = BSCPtr[i*Width + 2];
-      TM = BSCPtr[i*Width + 3];
+      m  = (int)BSCPtr[i + Length].real();
+
+      TE = BSCPtr[i + Length*2];
+      TM = BSCPtr[i + Length*3];
       n_f = (double)n; m_f = (double)m;
 
       prefactor = (2.*n_f+1.)/( n_f* (n_f+1.) );
@@ -174,6 +175,8 @@ Expansion(Cndarray BSC,
       S2Lterm = __an * TM * _Taunm; S2Rterm = j * m_f * __bn * TE * _Pinm;
 
       S2 += prefactor*(S2Rterm + S2Lterm) * _exp;
+
+
 
 
   }

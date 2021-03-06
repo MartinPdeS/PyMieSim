@@ -10,7 +10,7 @@ pi = np.pi
 Sampling=1000
 
 beam = GaussianBeam(Wavelength = 0.6328e-6,
-                    NA         = 0.14,
+                    NA         = 0.142,
                     Offset     = [5e-6]*3)
 
 mList = np.arange(0,50)

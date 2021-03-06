@@ -13,10 +13,10 @@ from numba import complex128,float64,jit, int64
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
 from PyMieSim.Constants import eps0, mu0
-from PyMieSim.Special import Xi, NPnm
+from PyMieSim.Special import Xi, NPnm, Psi
 
 
-
+Correction = 4*pi*exp(1j*1.0472351410849077)
 EPS = 1e-16
 class PlaneWave(BaseSource):
     """Class representing a focuse plane wave beam as a light source for
@@ -157,7 +157,7 @@ class GaussianBeam(BaseSource):
         self.Polarization = _Polarization(Polarization)
         self.E0 = E0
         self.NA = NA
-        self.w0 = 2 * self.Wavelength / (pi * NA)
+        self.w0 =2.8476e-6# 2 * self.Wavelength / (pi * NA)
         self.s = 1/(self.k*self.w0)
         self.offset = array(Offset)
         self.Offset = self.offset*self.k
@@ -366,7 +366,7 @@ class GaussianBeam(BaseSource):
         #print(f"angle {angle}    term0 {term0} ")
 
 
-        return -term0.real
+        return term0.real
 
     def _Anm_integrandI(self,angle,n,m):
         """
@@ -391,24 +391,10 @@ class GaussianBeam(BaseSource):
         term0 *= self.I_1(*param)
 
 
-        return -term0.imag
+        return term0.imag
 
 
-    def I_1(self, n, m, rhon, Q, theta):
-        """
-        Method returns: :math:`\gamma_1` from ref[2]:Eq:19
 
-        :math:`Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
-        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
-          \\sin(\\theta)`
-        """
-
-        term1 = 1j * Q * self.s**2
-        term1 *= ( self.R0 - rhon * sin(theta) )**2
-        term2 = 1j * rhon * cos(theta)
-        term3 = NPnm(n, abs(m), cos([theta]))[-1] * sin(theta)
-
-        return Q * exp(term1 + term2 ) * term3
 
 
     def Anm(self, n, m, Sampling=200):
@@ -430,7 +416,7 @@ class GaussianBeam(BaseSource):
 
         val  = (val0 + 1j * val1)
 
-        return val * self.I_0(n, m, rhon)
+        return val * self.I_0(n, m, rhon)*Correction
 
 
 
@@ -460,7 +446,7 @@ class GaussianBeam(BaseSource):
             term0 *= self.I_1(*param)
 
 
-            sub.append(-term0)
+            sub.append(term0)
 
         sub = array(sub, copy=False).squeeze()
 
@@ -474,52 +460,17 @@ class GaussianBeam(BaseSource):
         :math:`e^{-\\beta - i m \\xi} I_m(\\beta)`
         """
 
-        X = linspace(0,2*pi, 1000)
-        dx = abs(X[1]-X[0])
-        Y =  exp(-beta*cos(X) - 1j *m*  X)
-
+        #X = linspace(0,2*pi, 1000)
+        #dx = abs(X[1]-X[0])
+        #Y =  exp(-beta*cos(X) - 1j *m*  X)
 
         #a = Y.sum() * dx / (2*pi) * exp(-beta - 1j * m * self.xi )
 
+        #b= iintegrate.trapz(y=Y,x=X) / (2*pi) * exp(-beta - 1j * m * self.xi )
 
-        b= iintegrate.trapz(y=Y,x=X) / (2*pi) * exp(-beta - 1j * m * self.xi )
+        c= self.Im(m, beta)/ (2*pi) * exp(-beta - 1j * m * self.xi )
 
-        #c= self.Im(m, beta)/ (2*pi) * exp(-beta - 1j * m * self.xi )
-
-        return b
-
-
-
-
-    def Bnm_integrand(self, n, m, Sampling=200):
-        """
-        Method returns:
-
-        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
-         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
-          (\\beta) d \\theta`
-        """
-        Phi = linspace(0,2*pi,Num); Theta = linspace(0,pi,Num)
-
-        rhon = (n + 0.5); r = rhon/self.k;
-
-        sub = []
-        for theta in Theta:
-            Q = self.Q_Spherical(r, theta)
-            beta = -2 * 1j * Q * self.s**2 * self.R0 * rhon *sin(theta)
-            param = (n, m, rhon, Q, theta)
-            term0 =  self.ImHat(m+1, beta) - self.ImHat(m-1, beta)
-            term0 *= self.I_2(*param)
-
-            term0 -= self.I_4(*param) * self.ImHat(m, beta)
-            term0 *= self.I_1(*param)
-
-            sub.append(-term0)
-
-        sub = array(sub, copy=False).squeeze()
-
-        return sub
-
+        return c
 
 
 
@@ -556,7 +507,20 @@ class GaussianBeam(BaseSource):
         return term0 / term1 * term2
 
 
+    def I_1(self, n, m, rhon, Q, theta):
+        """
+        Method returns: :math:`\gamma_1` from ref[2]:Eq:19
 
+        :math:`Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
+          \\sin(\\theta)`
+        """
+
+        term1 = (1j * Q * self.s**2) * ( self.R0 - rhon * sin(theta) )**2
+        term2 = 1j * rhon * cos(theta)
+        term3 = NPnm(n, abs(m), cos([theta]))[-1] * sin(theta)
+
+        return Q * exp(term1 + term2 ) * term3
 
 
     def I_2(self, n, m, rhon, Q, theta):

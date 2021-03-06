@@ -38,7 +38,7 @@ def Pnm(n, m, x):
 
 def NPnm(n, m, x):
     """Eq:II.77 """
-    return sqrt( (2*n+1)/2 * nmFactorial(n,m) ) * lpmv(m, n, x)
+    return sqrt( (2*n+1)/2 * abs(nmFactorial(n,m)) ) * lpmv(m, n, x)
 
 
 @np.vectorize

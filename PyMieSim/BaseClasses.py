@@ -17,6 +17,7 @@ from PyMieSim.utils import InterpFull, NA2Angle
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
+from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, Fields as GLMTFields
 
 
 
@@ -290,8 +291,8 @@ class BaseScatterer(object):
 
         """
 
-        if self.Source.GLMT:
-            return GLMTFields(Index        = self.Index,
+        if not self.Source.GLMT:
+            return LMTFields(Index        = self.Index,
                              Diameter     = self.Diameter,
                              Wavelength   = self.Source.Wavelength,
                              nMedium      = self.nMedium,
@@ -303,7 +304,7 @@ class BaseScatterer(object):
                              Lenght       = Phi.flatten().size)
 
         else:
-            return LMTFields(Index        = self.Index,
+            return GLMTFields(Index       = self.Index,
                              Diameter     = self.Diameter,
                              Wavelength   = self.Source.Wavelength,
                              nMedium      = self.nMedium,
@@ -312,7 +313,7 @@ class BaseScatterer(object):
                              Polarization = self.Source.Polarization.Radian,
                              E0           = float(self.Source.E0),
                              R            = 1.,
-                             Lenght       = Phi.flatten().size)
+                             BSC          = self.Source._BSC_)
 
 
 
