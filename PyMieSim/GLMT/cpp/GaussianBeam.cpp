@@ -11,7 +11,7 @@ typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::map<int, double> dict;
 typedef py::array_t<double> ndarray;
-typedef py::array_t<complex128> Cndarray;
+typedef py::array_t<complex128> Cndarray; 
 #define j complex128(0.0,1.0)
 
 #define EPS 1e-10

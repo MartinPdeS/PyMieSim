@@ -58,9 +58,9 @@ def Pin(n, x):
 def Taunm(n, m, x):
     """Eq: III.51 """
     index = np.isclose(x,1,EPS)
-    if len(index) > 0: x[index] = 1-EPS; print('yolo')
+    if len(index) > 0: x[index] = 1-EPS
     index = np.isclose(x,-1,EPS)
-    if len(index) > 0: x[index] = -1+EPS; print('yolo')
+    if len(index) > 0: x[index] = -1+EPS
 
     return sqrt(1-x**2) * Pnm_p(n, m, x)
 

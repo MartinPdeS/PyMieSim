@@ -41,7 +41,7 @@ class PlaneWave(BaseSource):
         self._BSC_ = None
 
 
-    def GetBSC(self, Precision, MaxOrder=30, save=False):
+    def GetBSC(self, Precision=None, MaxOrder=30, save=False):
 
         nOrder = range(1,MaxOrder+1)
         mOrder = [-1,1]

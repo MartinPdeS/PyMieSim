@@ -25,7 +25,7 @@ an(double SizeParam, double Index, double nMedium, int MaxOrder)
 
   complex128 numerator, denominator;
   Cndarray _an = Cndarray(MaxOrder);
-  auto an_data = _an.mutable_data();
+  auto an_data = _an.mutable_data(); 
 
   for (auto order = 1; order < MaxOrder+1; order++)
   {

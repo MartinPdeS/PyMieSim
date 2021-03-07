@@ -7,7 +7,7 @@ from numpy import linspace, pi
 from PyMieSim.Scatterer import Sphere, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
-from PyMieSim.GLMT.Sphere import S1
+from PyMieSim.GLMT.Sphere import S1S2
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
 
@@ -23,19 +23,19 @@ theta       = linspace(-pi, pi,4)
 class PrintingTest(TestCase):
 
     def Run(self):
-        #self.test00()
-        #self.test01()
-        #self.test02()
-        #self.test03()
-        #self.test04()
-        #self.test05()
-        #self.test06()
-        #self.test07()
-        #self.test08()
-        #self.test09()
+        self.test00()
+        self.test01()
+        self.test02()
+        self.test03()
+        self.test04()
+        self.test05()
+        self.test06()
+        self.test07()
+        self.test08()
+        self.test09()
         self.test10()
-        #self.test11()
-        #self.test12()
+        self.test11()
+        self.test12()
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -112,7 +112,6 @@ class PrintingTest(TestCase):
 
 
     def test10(self):
-        print(LightSource)
         spf = SPF(Scat, LightSource, phi, theta)
 
         print('Test 10: passed')
@@ -135,6 +134,7 @@ class PrintingTest(TestCase):
         beam.GetBSC(MaxOrder=1, save=False)
 
         print('Test 12: passed')
+
 
 if __name__ == '__main__':
     test = PrintingTest()
