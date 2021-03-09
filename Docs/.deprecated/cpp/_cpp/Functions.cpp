@@ -24,7 +24,40 @@ int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizePar
 
 
 
+void
+CoefficientAnBn(const double &SizeParam,
+                const double &Index,
+                const double &nMedium,
+                const int    &MaxOrder,
+                complex128   *an,
+                complex128   *bn)
+{
+  double alpha = SizeParam,
+         beta  = alpha * Index,
+         MuSp  = 1.,
+         Mu    = 1.,
+         M     = Index/nMedium;
 
+  complex128 numerator, denominator, PsiAlpha, PsiBeta, PsiPBeta, PsiPAlpha, XiAlpha, XiPAlpha;
+
+  for (auto order = 1; order < MaxOrder+1; order++)
+  {
+    PsiAlpha  = Psi(order, alpha);
+    PsiBeta   = Psi(order, beta);
+    PsiPBeta  = Psi_p(order, beta);
+    PsiPAlpha = Psi_p(order, alpha);
+    XiAlpha   = Xi(order, alpha);
+    XiPAlpha  = Xi_p(order, alpha);
+
+    numerator = MuSp * PsiAlpha * PsiPBeta  - Mu * M * PsiPAlpha * PsiBeta;
+    denominator = MuSp * XiAlpha * PsiPBeta - Mu * M * XiPAlpha * PsiBeta;
+    an[order-1] = numerator/denominator;
+
+    numerator = Mu * M * PsiAlpha * PsiPBeta - MuSp * PsiPAlpha * PsiBeta;
+    denominator = Mu * M * XiAlpha * PsiPBeta - MuSp  * XiPAlpha * PsiBeta;
+    bn[order-1] = numerator/denominator;
+  }
+}
 
 
 iVec
@@ -112,16 +145,18 @@ _dn(double SizeParam, double Index, double nMedium, int MaxOrder)
   return _dn;
 }
 
-inline std::tuple<complex128,complex128>
-Expansion(Cndarray    BSC,
-          double      Phi,
-          double      Theta,
-          complex128* an,
-          complex128* bn,
-          double*     pin,
-          double*     taun)
+
+
+/*
+std::tuple<complex128,complex128>
+Expansion(Cndarray   BSC,
+          complex128 *_an,
+          complex128 *_bn,
+          double     Phi,
+          double     Theta)
 {
 
+  return std::make_tuple(1., 1.);
   py::buffer_info BSCBuffer = BSC.request();
 
 
@@ -130,7 +165,9 @@ Expansion(Cndarray    BSC,
              S2=0.,
              TE,
              TM,
-             _exp;
+             _exp,
+             __an,
+             __bn;
 
   double prefactor,
          n_f,
@@ -143,7 +180,6 @@ Expansion(Cndarray    BSC,
       n = 0,
       first = (int)BSCPtr[0].real();
 
-
   for (auto i = 0; i < Length; i++)
   {
 
@@ -153,18 +189,18 @@ Expansion(Cndarray    BSC,
 
       TE = BSCPtr[i + Length*2];
       TM = BSCPtr[i + Length*3];
+      n_f = (double)n; m_f = (double)m;
 
-      prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+      prefactor = (2.*n_f+1.)/( n_f* (n_f+1.) );
 
-      if (TE == 0. || TM == 0.){continue;}
-
-      _exp   = exp( j * (double)m * Theta );
-
-      S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
-
-      S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+      _exp   = exp(j*m_f*Theta);
+      __an   = _an[n-first+1];
+      __bn   = _bn[n-first+1];
 
 
+      S1 += prefactor * ( ( j * __bn * TE * Taunm[i]) + (m_f * __an * TM * Pinm[i] ) ) * _exp;
+
+      S2 += prefactor * ( ( j * m_f * __bn * TE * Pinm[i]) + (__an * TM * Taunm[i] ) ) * _exp;
 
 
   }
@@ -172,6 +208,7 @@ Expansion(Cndarray    BSC,
 }
 
 
+*/
 
 
 

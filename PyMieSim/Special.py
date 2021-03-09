@@ -24,8 +24,6 @@ def nmFactorial(n,m):
     return nSign*mSign * np.exp(mtemp-ntemp)
 
 
-
-
 def Pnm_(n, m, x):
     """Eq:II.77 """
     return lpmv(m, n, x)

@@ -1,3 +1,4 @@
+
 #include <vector>
 #include <complex>
 #include <boost/math/special_functions/legendre.hpp>
@@ -7,9 +8,15 @@
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
+namespace py = pybind11;
+
+typedef py::array_t<complex128> Cndarray;
+
+
+using namespace std;
 
 #define j complex128(0.0,1.0)
-using namespace std;
+
 
 std::tuple<Vec, Vec, Vec>
 Cart2sph(Vec X, Vec Y, Vec Z){
@@ -24,9 +31,7 @@ Cart2sph(Vec X, Vec Y, Vec Z){
 
 
 std::tuple<Vec, Vec, Vec>
-Fibonacci_sphere(int samples,
-                 double maxAngle){
-
+Fibonacci_sphere(int samples, double maxAngle){
 
     Vec X, Y , Z;
 
@@ -138,6 +143,78 @@ Pinm(int n, int m, double x)
 }
 
 
+
+void
+_SymetricPinmTaunm(int   MaxOrder,
+                   double phi,
+                   Vec    &pin,
+                   Vec    &taun)
+
+{
+  //if (mu >= 1-1e-6){mu = 1-1e-6;}
+  //if (mu <= -1+1e-6){mu = -1+1e-6;}
+  double mu = cos(phi);
+  pin[0] = 1.;
+
+  pin[1] = 3. * mu;
+
+  taun[0] = mu;
+
+  taun[1] = 3.0 * cos(2. * acos(mu) );
+
+  double n = 0;
+  for (auto i = 2; i < pin.size(); i++)
+      {
+       n = (double)i;
+
+       pin[i] = ( (2. * n + 1.) * mu * pin[i-2] - (n + 1.) * pin[i-4] ) / n;
+
+       taun[i] = (n + 1.) * mu * pin[i] - (n + 2.) * pin[i-2];
+
+     }
+
+}
+
+
+
+inline void
+SymetricPinmTaunm(const int    Length,
+                  const double phi,
+                  double       *pin,
+                  double       *taun)
+
+{
+
+  double mu = cos(phi);
+
+  if (mu >= 1-1e-6){mu = 1-1e-6;}
+  if (mu <= -1+1e-6){mu = -1+1e-6;}
+
+  double su = sin(phi);
+
+  pin[0] = 1.;
+
+  pin[1] = 3. * mu;
+
+  taun[0] = mu;
+
+  taun[1] = 3. * (mu*mu - su*su);
+
+  double n = 0;
+  for (unsigned int i = 2; i < Length; i++)
+      {
+       n = (double)i;
+
+       pin[i] = ( (2. * n + 1.) * mu * pin[i-1] - (n + 1.) * pin[i-2] ) / n;
+
+       taun[i] = (n + 1.) * mu * pin[i] - (n + 2.) * pin[i-1];
+
+     }
+}
+
+
+
+
 double
 Taunm(int n, int m, double x)
 {
@@ -158,82 +235,8 @@ complex128 Xi_p(int n, double x){return x * _Psi_p(4,n,x) + _Psi(4,n,x); }
 
 
 
-inline void
-SymetricPinmTaunm(const int    Length,
-                  const double phi,
-                  double      *pin,
-                  double      *taun)
-
-{
-
-  double mu = cos(phi);
-
-  //if (mu >= 1-1e-6){mu = 1-1e-6;}
-  //if (mu <= -1+1e-6){mu = -1+1e-6;}
-
-  double su = sin(phi);
 
 
-  pin[0] = 0.;
-
-  taun[0] = 0.;
-
-  pin[1] = 1.;
-
-  pin[2] = 3. * mu;
-
-  taun[1] = mu;
-
-  taun[2] = 3. *cos(2*acos(mu));
-
-  double n = 0;
-  for (long unsigned i = 3; i < Length; i++)
-      {
-       n = (double)i;
-       pin[i] = ( (2. * n + 1.) * mu * pin[i-1] - (n + 1.) * pin[i-2] ) / n;
-
-       taun[i] = (n + 1.) * mu * pin[i] - (n + 2.) * pin[i-1];
-     }
-
-}
-
-
-
-
-void
-CoefficientAnBn(const double &SizeParam,
-                const double &Index,
-                const double &nMedium,
-                const int    &MaxOrder,
-                complex128   *an,
-                complex128   *bn)
-{
-  double alpha = SizeParam,
-         beta  = alpha * Index,
-         MuSp  = 1.,
-         Mu    = 1.,
-         M     = Index/nMedium;
-
-  complex128 numerator, denominator, PsiAlpha, PsiBeta, PsiPBeta, PsiPAlpha, XiAlpha, XiPAlpha;
-
-  for (auto order = 1; order < MaxOrder+1; order++)
-  {
-    PsiAlpha  = Psi(order, alpha);
-    PsiBeta   = Psi(order, beta);
-    PsiPBeta  = Psi_p(order, beta);
-    PsiPAlpha = Psi_p(order, alpha);
-    XiAlpha   = Xi(order, alpha);
-    XiPAlpha  = Xi_p(order, alpha);
-
-    numerator = MuSp * PsiAlpha * PsiPBeta  - Mu * M * PsiPAlpha * PsiBeta;
-    denominator = MuSp * XiAlpha * PsiPBeta - Mu * M * XiPAlpha * PsiBeta;
-    an[order-1] = numerator/denominator;
-
-    numerator = Mu * M * PsiAlpha * PsiPBeta - MuSp * PsiPAlpha * PsiBeta;
-    denominator = Mu * M * XiAlpha * PsiPBeta - MuSp  * XiPAlpha * PsiBeta;
-    bn[order-1] = numerator/denominator;
-  }
-}
 
 
 

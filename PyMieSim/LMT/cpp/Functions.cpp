@@ -234,12 +234,12 @@ C_Qext(iVec           an,
 
 static int
 _S1S2(const double            index,
-     const double            diameter,
-     const double            wavelength,
-     const double            nMedium,
-     double                  *PhiPtr,
-     const long unsigned int lenght,
-     complex128*             s1s2)
+      const double            diameter,
+      const double            wavelength,
+      const double            nMedium,
+      double                  *PhiPtr,
+      const long unsigned int lenght,
+      complex128*             s1s2)
 
 {
     iVec an, bn;
@@ -262,7 +262,8 @@ _S1S2(const double            index,
          pin = iVec(OrderMax), taun = iVec(OrderMax);
 
     complex128 j (0., 1.0),
-               *temp0 = &s1s2[0], *temp1 = &s1s2[lenght] ;
+               *temp0 = &s1s2[0],
+               *temp1 = &s1s2[lenght] ;
 
     for (long unsigned int i = 0; i < lenght; i++){
 

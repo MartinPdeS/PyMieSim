@@ -11,7 +11,7 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
-from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, Fields as GLMTFields
+from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, FieldsStructured as GLMTFieldsStructured
 
 class Stokes(np.ndarray):
     """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B
@@ -136,20 +136,22 @@ class SPF(dict):
 
     def __init__(self, Parent, Num):
 
-        self['Phi'], self['Theta'] = np.mgrid[-np.pi/2:np.pi/2:complex(Num), -np.pi:np.pi:complex(Num)]
-        print(Parent.Source.GLMT)
+        phi, theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
+        self['Phi'], self['Theta'] = np.meshgrid(phi, theta)
+
+
         if Parent.Source.GLMT:
-            Para, Perp = GLMTFields(Index        = Parent.Index,
-                                    Diameter     = Parent.Diameter,
-                                    Wavelength   = Parent.Source.Wavelength,
-                                    nMedium      = Parent.nMedium,
-                                    Phi          = self['Phi']+np.pi/2,
-                                    Theta        = self['Theta'],
-                                    Polarization = Parent.Source.Polarization.Radian,
-                                    E0           = float(Parent.Source.E0),
-                                    R            = 1.,
-                                    BSC          = Parent.Source._BSC_,
-                                    MaxOrder     = Parent.Source.MaxOrder)
+            Para, Perp = GLMTFieldsStructured(Index        = Parent.Index,
+                                              Diameter     = Parent.Diameter,
+                                              Wavelength   = Parent.Source.Wavelength,
+                                              nMedium      = Parent.nMedium,
+                                              Phi          = phi+np.pi/2,
+                                              Theta        = theta,
+                                              Polarization = Parent.Source.Polarization.Radian,
+                                              E0           = float(Parent.Source.E0),
+                                              R            = 1.,
+                                              BSC          = Parent.Source._BSC_,
+                                              MaxOrder     = Parent.Source.MaxOrder)
 
 
         else:
@@ -166,7 +168,7 @@ class SPF(dict):
 
         self['EPhi'], self['ETheta'] = Para, Perp
 
-        self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape(self['Theta'].shape)
+        self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape([Num, Num])
 
 
     def Plot(self):
