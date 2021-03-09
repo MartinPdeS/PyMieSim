@@ -17,7 +17,7 @@ from PyMieSim.utils import InterpFull, NA2Angle
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
-from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, FieldsStructured as GLMTFields
+from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTFields
 
 
 

@@ -11,7 +11,7 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, Fields as LMTFields
-from PyMieSim.GLMT.Sphere import S1S2 as GLMTS1S2, FieldsStructured as GLMTFieldsStructured
+from PyMieSim.GLMT.Sphere import S1S2Structured as GLMTS1S2, FieldsStructured as GLMTFieldsStructured
 
 class Stokes(np.ndarray):
     """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B
@@ -145,13 +145,17 @@ class SPF(dict):
                                               Diameter     = Parent.Diameter,
                                               Wavelength   = Parent.Source.Wavelength,
                                               nMedium      = Parent.nMedium,
-                                              Phi          = phi+np.pi/2,
+                                              Phi          = phi-np.pi/2,
                                               Theta        = theta,
                                               Polarization = Parent.Source.Polarization.Radian,
                                               E0           = float(Parent.Source.E0),
                                               R            = 1.,
                                               BSC          = Parent.Source._BSC_,
                                               MaxOrder     = Parent.Source.MaxOrder)
+
+            self['EPhi'], self['ETheta'] = Para, Perp
+
+            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape([Num, Num]).T
 
 
         else:
@@ -166,9 +170,9 @@ class SPF(dict):
                                    R            = 1.,
                                    Lenght       = self['Theta'].flatten().size)
 
-        self['EPhi'], self['ETheta'] = Para, Perp
+            self['EPhi'], self['ETheta'] = Para, Perp
 
-        self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape([Num, Num])
+            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape([Num, Num])
 
 
     def Plot(self):

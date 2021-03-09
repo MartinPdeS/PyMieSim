@@ -23,10 +23,6 @@ using namespace std;
 int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
 
-
-
-
-
 iVec
 _an(double SizeParam, double Index, double nMedium, int MaxOrder)
 {
@@ -110,65 +106,6 @@ _dn(double SizeParam, double Index, double nMedium, int MaxOrder)
     _dn.push_back(numerator/denominator);
   }
   return _dn;
-}
-
-inline std::tuple<complex128,complex128>
-Expansion(Cndarray    BSC,
-          double      Phi,
-          double      Theta,
-          complex128* an,
-          complex128* bn,
-          double*     pin,
-          double*     taun)
-{
-
-  py::buffer_info BSCBuffer = BSC.request();
-
-
-  complex128 *BSCPtr = (complex128 *) BSCBuffer.ptr,
-             S1=0.,
-             S2=0.,
-             TE,
-             TM,
-             _exp;
-
-  double prefactor,
-         n_f,
-         m_f,
-         mu = cos(Phi);
-
-  int Length = BSCBuffer.shape[0],
-      Width = BSCBuffer.shape[1],
-      m = 0,
-      n = 0,
-      first = (int)BSCPtr[0].real();
-
-
-  for (auto i = 0; i < Length; i++)
-  {
-
-      n  = (int)BSCPtr[i].real();
-
-      m  = (int)BSCPtr[i + Length].real();
-
-      TE = BSCPtr[i + Length*2];
-      TM = BSCPtr[i + Length*3];
-
-      prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
-
-      if (TE == 0. || TM == 0.){continue;}
-
-      _exp   = exp( j * (double)m * Theta );
-
-      S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
-
-      S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
-
-
-
-
-  }
-  return std::make_tuple(S1, S2);
 }
 
 

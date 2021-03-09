@@ -204,9 +204,9 @@ class GaussianBeam(BaseSource):
         return tuple( zip( nlist, mlist ) )
 
 
-    def GetBSC(self, Precision=5, maxDegree=3, save=False, Sampling=200):
-        MaxOrder = self.GetMaxOrder(Precision)
-
+    def GetBSC(self, MaxOrder=5, save=False, Sampling=200):
+        #MaxOrder = self.GetMaxOrder(Precision)
+        MaxOrder = (1,MaxOrder)
         idx = self.Getidx(MaxOrder)
         index = pd.MultiIndex.from_tuples(idx, names=["n", "m"])
 

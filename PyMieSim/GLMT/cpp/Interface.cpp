@@ -112,53 +112,6 @@ dn(double SizeParam, double Index, double nMedium, int MaxOrder)
 
 
 
-std::pair<Cndarray, Cndarray>
-S1S2(double   Index,
-     double   Diameter,
-     double   Wavelength,
-     double   nMedium,
-     ndarray  Phi,
-     ndarray  Theta,
-     double   Polarization,
-     double   E0,
-     double   R,
-     Cndarray BSC,
-     int      MaxOrder)
-{
-  py::buffer_info PhiBuffer     = Phi.request();
-  py::buffer_info ThetaBuffer   = Theta.request();
-  double *PhiPtr   = (double *) PhiBuffer.ptr,
-         *ThetaPtr = (double *) ThetaBuffer.ptr,
-          SizeParam = PI * Diameter / Wavelength;
-
-  int PhiLenght   = PhiBuffer.size,
-      ThetaLenght = ThetaBuffer.size;
-
-  iVec vec,
-      __an = _an(SizeParam, Index, nMedium, MaxOrder),
-      __bn = _bn(SizeParam, Index, nMedium, MaxOrder);
-
-
-  Cndarray s1 = Cndarray(ThetaLenght),
-           s2 = Cndarray(ThetaLenght);
-
-  complex128 temp0,
-             temp1;
-
-  auto s1_data = s1.mutable_data(),
-       s2_data = s2.mutable_data();
-
-  for(auto l = 0; l < ThetaLenght; l++)
-    {
-      //std::tie(temp0, temp1) = Expansion(BSC, __an, __bn, PhiPtr[l], ThetaPtr[l]) ;
-      s1_data[l] = temp0;
-      s2_data[l] = temp1;
-    }
-
-  return std::make_pair(s1, s2);
-}
-
-
 
 std::pair<Cndarray, Cndarray>
 FieldsUnstructured(double   Index,
@@ -186,8 +139,9 @@ FieldsUnstructured(double   Index,
    double *PhiPtr    = (double *) PhiBuffer.ptr,
           *ThetaPtr  = (double *) ThetaBuffer.ptr,
            SizeParam = PI * Diameter / Wavelength,
-          *pin       = (double*)    malloc(sizeof(complex128)*Length),
-          *taun      = (double*)   malloc(sizeof(complex128)*Length),
+           k         = 2. * PI / Wavelength,
+          *pin       = (double*) malloc(sizeof(complex128)*Length),
+          *taun      = (double*) malloc(sizeof(complex128)*Length),
            prefactor = 0.;
 
    complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
@@ -197,7 +151,8 @@ FieldsUnstructured(double   Index,
                S1     = 0.,
                S2     = 0.,
                TE     = 0.,
-               TM     = 0.;
+               TM     = 0.,
+               propagator = E0 / (k * R) * exp(-j*k*R);
 
    CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
 
@@ -218,15 +173,15 @@ FieldsUnstructured(double   Index,
              TE = BSCPtr[b + Length*2];
              TM = BSCPtr[b + Length*3];
              prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
-             _exp   = exp( j * (double)m * ThetaPtr[l] );
+             _exp   = exp( j * (double)m * ThetaPtr[l] + Polarization );
 
              S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
 
              S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
 
         }
-        s1_data[l] = S1;
-        s2_data[l] = S2;
+        s1_data[l] = S1 * propagator;
+        s2_data[l] = S2 * propagator;
 
      }
 
@@ -265,19 +220,21 @@ FieldsUnstructured(double   Index,
 
     double *PhiPtr    = (double *) PhiBuffer.ptr,
            *ThetaPtr  = (double *) ThetaBuffer.ptr,
+            k         = 2. * PI / Wavelength,
             SizeParam = PI * Diameter / Wavelength,
            *pin       = (double*)    malloc(sizeof(complex128)*Length),
            *taun      = (double*)   malloc(sizeof(complex128)*Length),
             prefactor = 0.;
 
-    complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
-               *bn     = (complex128*) malloc(sizeof(complex128)*Length),
-               *BSCPtr = (complex128 *) BSCBuffer.ptr,
-                _exp   = 0.,
-                S1     = 0.,
-                S2     = 0.,
-                TE     = 0.,
-                TM     = 0.;
+    complex128 *an         = (complex128*) malloc(sizeof(complex128)*Length),
+               *bn         = (complex128*) malloc(sizeof(complex128)*Length),
+               *BSCPtr     = (complex128 *) BSCBuffer.ptr,
+                _exp       = 0.,
+                S1         = 0.,
+                S2         = 0.,
+                TE         = 0.,
+                TM         = 0.,
+                propagator = E0 / (k * R) * exp(-j*k*R);
 
     CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
 
@@ -303,15 +260,15 @@ FieldsUnstructured(double   Index,
                     TE = BSCPtr[b + Length*2];
                     TM = BSCPtr[b + Length*3];
                     prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
-                    _exp   = exp( j * (double)m * ThetaPtr[t] );
+                    _exp   = exp( j * (double)m * ThetaPtr[t] + Polarization );
 
                     S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
 
                     S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
 
                }
-               s1_data[index] = S1;
-               s2_data[index] = S2;
+               s1_data[index] = S1 * propagator;
+               s2_data[index] = S2 * propagator;
                index++;
           }
 
@@ -321,10 +278,508 @@ FieldsUnstructured(double   Index,
      free(bn);
      free(pin);
      free(taun);
-     s1.resize({150,150}); s2.resize({150,150});
-    return std::make_pair(s1, s2);
+     s1.resize({PhiLenght,ThetaLenght}); s2.resize({PhiLenght,ThetaLenght});
+     return std::make_pair(s1, s2);
   }
 
+
+
+
+
+std::pair<Cndarray, Cndarray>
+FieldsUnstructuredUnpolarized(double   Index,
+                               double   Diameter,
+                               double   Wavelength,
+                               double   nMedium,
+                               ndarray  Phi,
+                               ndarray  Theta,
+                               double   E0,
+                               double   R,
+                               Cndarray BSC,
+                               int      MaxOrder)
+ {
+   py::buffer_info PhiBuffer     = Phi.request();
+   py::buffer_info ThetaBuffer   = Theta.request();
+   py::buffer_info BSCBuffer = BSC.request();
+
+   int PhiLenght   = PhiBuffer.size,
+       ThetaLenght = ThetaBuffer.size,
+       Length      = BSCBuffer.shape[0],
+       n           = 0,
+       m           = 0;
+
+   double *PhiPtr    = (double *) PhiBuffer.ptr,
+          *ThetaPtr  = (double *) ThetaBuffer.ptr,
+           SizeParam = PI * Diameter / Wavelength,
+           k         = 2. * PI / Wavelength,
+          *pin       = (double*) malloc(sizeof(complex128)*Length),
+          *taun      = (double*) malloc(sizeof(complex128)*Length),
+           prefactor = 0.;
+
+   complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
+              *bn     = (complex128*) malloc(sizeof(complex128)*Length),
+              *BSCPtr = (complex128 *) BSCBuffer.ptr,
+               _exp   = 1./sqrt(2.),
+               S1     = 0.,
+               S2     = 0.,
+               TE     = 0.,
+               TM     = 0.,
+               propagator = E0 / (k * R) * exp(-j*k*R);
+
+   CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
+
+   Cndarray s1 = Cndarray(ThetaLenght),
+            s2 = Cndarray(ThetaLenght);
+
+   auto s1_data = s1.mutable_data(),
+        s2_data = s2.mutable_data();
+
+   for(auto l = 0; l < ThetaLenght; l++)
+     {
+       SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+       S1 = 0.; S2=0.;
+       for (auto b = 0; b < Length; b++)
+         {
+             n  = (int)BSCPtr[b].real();
+             m  = (int)BSCPtr[b + Length].real();
+             TE = BSCPtr[b + Length*2];
+             TM = BSCPtr[b + Length*3];
+             prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+
+             S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
+
+             S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+
+        }
+        s1_data[l] = S1 * propagator;
+        s2_data[l] = S2 * propagator;
+
+     }
+
+    free(an);
+    free(bn);
+    free(pin);
+    free(taun);
+   return std::make_pair(s1, s2);
+ }
+
+
+
+ std::pair<Cndarray, Cndarray>
+ FieldsStructuredUnpolarized(double   Index,
+                              double   Diameter,
+                              double   Wavelength,
+                              double   nMedium,
+                              ndarray  Phi,
+                              ndarray  Theta,
+                              double   E0,
+                              double   R,
+                              Cndarray BSC,
+                              int      MaxOrder)
+  {
+    py::buffer_info PhiBuffer     = Phi.request();
+    py::buffer_info ThetaBuffer   = Theta.request();
+    py::buffer_info BSCBuffer = BSC.request();
+
+    int PhiLenght   = PhiBuffer.size,
+        ThetaLenght = ThetaBuffer.size,
+        Length      = BSCBuffer.shape[0],
+        n           = 0,
+        m           = 0,
+        index       = 0;
+
+    double *PhiPtr    = (double *) PhiBuffer.ptr,
+           *ThetaPtr  = (double *) ThetaBuffer.ptr,
+            k         = 2. * PI / Wavelength,
+            SizeParam = PI * Diameter / Wavelength,
+           *pin       = (double*)    malloc(sizeof(complex128)*Length),
+           *taun      = (double*)   malloc(sizeof(complex128)*Length),
+            prefactor = 0.;
+
+    complex128 *an         = (complex128*) malloc(sizeof(complex128)*Length),
+               *bn         = (complex128*) malloc(sizeof(complex128)*Length),
+               *BSCPtr     = (complex128 *) BSCBuffer.ptr,
+                _exp       = 1./sqrt(2.),
+                S1         = 0.,
+                S2         = 0.,
+                TE         = 0.,
+                TM         = 0.,
+                propagator = E0 / (k * R) * exp(-j*k*R);
+
+    CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
+
+    Cndarray s1 = Cndarray(ThetaLenght*PhiLenght),
+             s2 = Cndarray(ThetaLenght*PhiLenght);
+
+
+
+    auto s1_data = s1.mutable_data(),
+         s2_data = s2.mutable_data();
+
+    for(auto p = 0; p < PhiLenght; p++)
+      {
+        SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+
+        for(auto t = 0; t < ThetaLenght; t++)
+          {
+              S1 = 0.; S2=0.;
+              for (auto b = 0; b < Length; b++)
+                {
+                    n  = (int)BSCPtr[b].real();
+                    m  = (int)BSCPtr[b + Length].real();
+                    TE = BSCPtr[b + Length*2];
+                    TM = BSCPtr[b + Length*3];
+                    prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+
+                    S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
+
+                    S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+
+               }
+               s1_data[index] = S1 * propagator;
+               s2_data[index] = S2 * propagator;
+               index++;
+          }
+
+      }
+
+     free(an);
+     free(bn);
+     free(pin);
+     free(taun);
+     s1.resize({PhiLenght,ThetaLenght}); s2.resize({PhiLenght,ThetaLenght});
+     return std::make_pair(s1, s2);
+  }
+
+
+
+
+
+
+std::pair<Cndarray, Cndarray>
+S1S2Unstructured(double   Index,
+                 double   Diameter,
+                 double   Wavelength,
+                 double   nMedium,
+                 ndarray  Phi,
+                 ndarray  Theta,
+                 double   Polarization,
+                 Cndarray BSC,
+                 int      MaxOrder)
+  {
+ py::buffer_info PhiBuffer     = Phi.request();
+ py::buffer_info ThetaBuffer   = Theta.request();
+ py::buffer_info BSCBuffer = BSC.request();
+
+ int PhiLenght   = PhiBuffer.size,
+     ThetaLenght = ThetaBuffer.size,
+     Length      = BSCBuffer.shape[0],
+     n           = 0,
+     m           = 0;
+
+ double *PhiPtr    = (double *) PhiBuffer.ptr,
+        *ThetaPtr  = (double *) ThetaBuffer.ptr,
+         SizeParam = PI * Diameter / Wavelength,
+        *pin       = (double*)    malloc(sizeof(complex128)*Length),
+        *taun      = (double*)   malloc(sizeof(complex128)*Length),
+         prefactor = 0.;
+
+ complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
+            *bn     = (complex128*) malloc(sizeof(complex128)*Length),
+            *BSCPtr = (complex128 *) BSCBuffer.ptr,
+             _exp   = 0.,
+             S1     = 0.,
+             S2     = 0.,
+             TE     = 0.,
+             TM     = 0.;
+
+ CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
+
+ Cndarray s1 = Cndarray(ThetaLenght),
+          s2 = Cndarray(ThetaLenght);
+
+ auto s1_data = s1.mutable_data(),
+      s2_data = s2.mutable_data();
+
+ for(auto l = 0; l < ThetaLenght; l++)
+   {
+     SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+     S1 = 0.; S2=0.;
+     for (auto b = 0; b < Length; b++)
+       {
+           n  = (int)BSCPtr[b].real();
+           m  = (int)BSCPtr[b + Length].real();
+           TE = BSCPtr[b + Length*2];
+           TM = BSCPtr[b + Length*3];
+           prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+           _exp   = exp( j * (double)m * ThetaPtr[l] + Polarization );
+
+           S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
+
+           S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+
+      }
+      s1_data[l] = S1;
+      s2_data[l] = S2;
+
+   }
+
+  free(an);
+  free(bn);
+  free(pin);
+  free(taun);
+ return std::make_pair(s1, s2);
+}
+
+
+
+std::pair<Cndarray, Cndarray>
+S1S2Structured(double   Index,
+               double   Diameter,
+               double   Wavelength,
+               double   nMedium,
+               ndarray  Phi,
+               ndarray  Theta,
+               double   Polarization,
+               Cndarray BSC,
+               int      MaxOrder)
+{
+  py::buffer_info PhiBuffer     = Phi.request();
+  py::buffer_info ThetaBuffer   = Theta.request();
+  py::buffer_info BSCBuffer = BSC.request();
+
+  int PhiLenght   = PhiBuffer.size,
+      ThetaLenght = ThetaBuffer.size,
+      Length      = BSCBuffer.shape[0],
+      n           = 0,
+      m           = 0,
+      index       = 0;
+
+  double *PhiPtr    = (double *) PhiBuffer.ptr,
+         *ThetaPtr  = (double *) ThetaBuffer.ptr,
+          SizeParam = PI * Diameter / Wavelength,
+         *pin       = (double*)    malloc(sizeof(complex128)*Length),
+         *taun      = (double*)   malloc(sizeof(complex128)*Length),
+          prefactor = 0.;
+
+  complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
+             *bn     = (complex128*) malloc(sizeof(complex128)*Length),
+             *BSCPtr = (complex128 *) BSCBuffer.ptr,
+              _exp   = 0.,
+              S1     = 0.,
+              S2     = 0.,
+              TE     = 0.,
+              TM     = 0.;
+
+  CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
+
+  Cndarray s1 = Cndarray(ThetaLenght*PhiLenght),
+           s2 = Cndarray(ThetaLenght*PhiLenght);
+
+
+
+  auto s1_data = s1.mutable_data(),
+       s2_data = s2.mutable_data();
+
+  for(auto p = 0; p < PhiLenght; p++)
+    {
+      SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+
+      for(auto t = 0; t < ThetaLenght; t++)
+        {
+            S1 = 0.; S2=0.;
+            for (auto b = 0; b < Length; b++)
+              {
+                  n  = (int)BSCPtr[b].real();
+                  m  = (int)BSCPtr[b + Length].real();
+                  TE = BSCPtr[b + Length*2];
+                  TM = BSCPtr[b + Length*3];
+                  prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+                  _exp   = exp( j * (double)m * ThetaPtr[t] + Polarization );
+
+                  S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
+
+                  S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+
+             }
+             s1_data[index] = S1;
+             s2_data[index] = S2;
+             index++;
+        }
+
+    }
+
+   free(an);
+   free(bn);
+   free(pin);
+   free(taun);
+   s1.resize({PhiLenght,ThetaLenght}); s2.resize({PhiLenght,ThetaLenght});
+   return std::make_pair(s1, s2);
+}
+
+
+
+
+
+
+
+
+std::pair<Cndarray, Cndarray>
+S1S2UnstructuredUnpolarized(double  Index,
+                           double   Diameter,
+                           double   Wavelength,
+                           double   nMedium,
+                           ndarray  Phi,
+                           ndarray  Theta,
+                           Cndarray BSC,
+                           int      MaxOrder)
+  {
+ py::buffer_info PhiBuffer     = Phi.request();
+ py::buffer_info ThetaBuffer   = Theta.request();
+ py::buffer_info BSCBuffer = BSC.request();
+
+ int PhiLenght   = PhiBuffer.size,
+     ThetaLenght = ThetaBuffer.size,
+     Length      = BSCBuffer.shape[0],
+     n           = 0,
+     m           = 0;
+
+ double *PhiPtr    = (double *) PhiBuffer.ptr,
+        *ThetaPtr  = (double *) ThetaBuffer.ptr,
+         SizeParam = PI * Diameter / Wavelength,
+        *pin       = (double*)    malloc(sizeof(complex128)*Length),
+        *taun      = (double*)   malloc(sizeof(complex128)*Length),
+         prefactor = 0.;
+
+ complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
+            *bn     = (complex128*) malloc(sizeof(complex128)*Length),
+            *BSCPtr = (complex128 *) BSCBuffer.ptr,
+             _exp   = 1./sqrt(2.),
+             S1     = 0.,
+             S2     = 0.,
+             TE     = 0.,
+             TM     = 0.;
+
+ CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
+
+ Cndarray s1 = Cndarray(ThetaLenght),
+          s2 = Cndarray(ThetaLenght);
+
+ auto s1_data = s1.mutable_data(),
+      s2_data = s2.mutable_data();
+
+ for(auto l = 0; l < ThetaLenght; l++)
+   {
+     SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+     S1 = 0.; S2=0.;
+     for (auto b = 0; b < Length; b++)
+       {
+           n  = (int)BSCPtr[b].real();
+           m  = (int)BSCPtr[b + Length].real();
+           TE = BSCPtr[b + Length*2];
+           TM = BSCPtr[b + Length*3];
+           prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+
+           S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
+
+           S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+
+      }
+      s1_data[l] = S1;
+      s2_data[l] = S2;
+
+   }
+
+  free(an);
+  free(bn);
+  free(pin);
+  free(taun);
+ return std::make_pair(s1, s2);
+}
+
+
+
+std::pair<Cndarray, Cndarray>
+S1S2StructuredUnpolarized(double   Index,
+                         double   Diameter,
+                         double   Wavelength,
+                         double   nMedium,
+                         ndarray  Phi,
+                         ndarray  Theta,
+                         Cndarray BSC,
+                         int      MaxOrder)
+{
+  py::buffer_info PhiBuffer     = Phi.request();
+  py::buffer_info ThetaBuffer   = Theta.request();
+  py::buffer_info BSCBuffer = BSC.request();
+
+  int PhiLenght   = PhiBuffer.size,
+      ThetaLenght = ThetaBuffer.size,
+      Length      = BSCBuffer.shape[0],
+      n           = 0,
+      m           = 0,
+      index       = 0;
+
+  double *PhiPtr    = (double *) PhiBuffer.ptr,
+         *ThetaPtr  = (double *) ThetaBuffer.ptr,
+          SizeParam = PI * Diameter / Wavelength,
+         *pin       = (double*)    malloc(sizeof(complex128)*Length),
+         *taun      = (double*)   malloc(sizeof(complex128)*Length),
+          prefactor = 0.;
+
+  complex128 *an     = (complex128*) malloc(sizeof(complex128)*Length),
+             *bn     = (complex128*) malloc(sizeof(complex128)*Length),
+             *BSCPtr = (complex128 *) BSCBuffer.ptr,
+              _exp   = 1./sqrt(2.),
+              S1     = 0.,
+              S2     = 0.,
+              TE     = 0.,
+              TM     = 0.;
+
+  CoefficientAnBn(SizeParam, Index, nMedium, MaxOrder, an, bn);
+
+  Cndarray s1 = Cndarray(ThetaLenght*PhiLenght),
+           s2 = Cndarray(ThetaLenght*PhiLenght);
+
+
+
+  auto s1_data = s1.mutable_data(),
+       s2_data = s2.mutable_data();
+
+  for(auto p = 0; p < PhiLenght; p++)
+    {
+      SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+
+      for(auto t = 0; t < ThetaLenght; t++)
+        {
+            S1 = 0.; S2=0.;
+            for (auto b = 0; b < Length; b++)
+              {
+                  n  = (int)BSCPtr[b].real();
+                  m  = (int)BSCPtr[b + Length].real();
+                  TE = BSCPtr[b + Length*2];
+                  TM = BSCPtr[b + Length*3];
+                  prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
+
+                  S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
+
+                  S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
+
+             }
+             s1_data[index] = S1;
+             s2_data[index] = S2;
+             index++;
+        }
+
+    }
+
+   free(an);
+   free(bn);
+   free(pin);
+   free(taun);
+   s1.resize({150,150}); s2.resize({150,150});
+   return std::make_pair(s1, s2);
+}
 
 
 PYBIND11_MODULE(Sphere, module) {
@@ -332,8 +787,8 @@ PYBIND11_MODULE(Sphere, module) {
 
 
 
-    module.def("S1S2",
-               &S1S2,
+    module.def("S1S2Structured",
+               &S1S2Structured,
                py::arg("Index"),
                py::arg("Diameter"),
                py::arg("Wavelength"),
@@ -341,11 +796,23 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("Phi"),
                py::arg("Theta"),
                py::arg("Polarization"),
-               py::arg("E0"),
-               py::arg("R"),
                py::arg("BSC"),
                py::arg("MaxOrder"),
                "Return S1");
+
+
+     module.def("S1S2Unstructured",
+                &S1S2Unstructured,
+                py::arg("Index"),
+                py::arg("Diameter"),
+                py::arg("Wavelength"),
+                py::arg("nMedium"),
+                py::arg("Phi"),
+                py::arg("Theta"),
+                py::arg("Polarization"),
+                py::arg("BSC"),
+                py::arg("MaxOrder"),
+                "Return S1");
 
 
      module.def("FieldsStructured",
@@ -379,6 +846,66 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("BSC"),
                py::arg("MaxOrder"),
                "Return S1");
+
+
+
+
+     module.def("S1S2StructuredUnpolarized",
+                &S1S2StructuredUnpolarized,
+                py::arg("Index"),
+                py::arg("Diameter"),
+                py::arg("Wavelength"),
+                py::arg("nMedium"),
+                py::arg("Phi"),
+                py::arg("Theta"),
+                py::arg("BSC"),
+                py::arg("MaxOrder"),
+                "Return S1");
+
+
+      module.def("S1S2UnstructuredUnpolarized",
+                 &S1S2UnstructuredUnpolarized,
+                 py::arg("Index"),
+                 py::arg("Diameter"),
+                 py::arg("Wavelength"),
+                 py::arg("nMedium"),
+                 py::arg("Phi"),
+                 py::arg("Theta"),
+                 py::arg("BSC"),
+                 py::arg("MaxOrder"),
+                 "Return S1");
+
+
+      module.def("FieldsStructuredUnpolarized",
+                 &FieldsStructuredUnpolarized,
+                 py::arg("Index"),
+                 py::arg("Diameter"),
+                 py::arg("Wavelength"),
+                 py::arg("nMedium"),
+                 py::arg("Phi"),
+                 py::arg("Theta"),
+                 py::arg("E0"),
+                 py::arg("R"),
+                 py::arg("BSC"),
+                 py::arg("MaxOrder"),
+                 "Return S1");
+
+
+
+     module.def("FieldsUnstructuredUnpolarized",
+                &FieldsUnstructuredUnpolarized,
+                py::arg("Index"),
+                py::arg("Diameter"),
+                py::arg("Wavelength"),
+                py::arg("nMedium"),
+                py::arg("Phi"),
+                py::arg("Theta"),
+                py::arg("E0"),
+                py::arg("R"),
+                py::arg("BSC"),
+                py::arg("MaxOrder"),
+                "Return S1");
+
 
 
    module.def("an",
