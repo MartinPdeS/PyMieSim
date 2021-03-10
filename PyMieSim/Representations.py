@@ -10,8 +10,20 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.utils import PlotStructuredSphere, LoadLibraries
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, FieldsUnstructured as LMTFields
-from PyMieSim.GLMT.Sphere import S1S2Structured as GLMTS1S2, FieldsStructured as GLMTFieldsStructured
+
+from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
+from PyMieSim.LMT.Sphere import FieldsStructured as LMTFieldsStructured
+from PyMieSim.LMT.Sphere import FieldsUnstructured as LMTFieldsUnstructured
+from PyMieSim.LMT.Sphere import FieldsStructuredUnpolarized as LMTFieldsStructuredUnpolarized
+from PyMieSim.LMT.Sphere import FieldsUnstructuredUnpolarized as LMTFieldsUnstructuredUnpolarized
+
+
+from PyMieSim.GLMT.Sphere import S1S2Structured as GLMTS1S2
+from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTFieldsStructured
+from PyMieSim.GLMT.Sphere import FieldsUnstructured as GLMTFieldsUnstructured
+from PyMieSim.GLMT.Sphere import FieldsStructuredUnpolarized as GLMTFieldsStructuredUnpolarized
+from PyMieSim.GLMT.Sphere import FieldsUnstructuredUnpolarized as GLMTFieldsUnstructuredUnpolarized
+
 
 class Stokes(np.ndarray):
     """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B
@@ -141,37 +153,55 @@ class SPF(dict):
 
 
         if Parent.Source.GLMT:
-            Para, Perp = GLMTFieldsStructured(Index        = Parent.Index,
-                                              Diameter     = Parent.Diameter,
-                                              Wavelength   = Parent.Source.Wavelength,
-                                              nMedium      = Parent.nMedium,
-                                              Phi          = phi,
-                                              Theta        = theta,
-                                              Polarization = Parent.Source.Polarization.Radian,
-                                              E0           = float(Parent.Source.E0),
-                                              R            = 1.,
-                                              BSC          = Parent.Source._BSC_,
-                                              MaxOrder     = Parent.Source.MaxOrder)
+            if Parent.Source.Polarization:
+                self['EPhi'], self['ETheta'] = GLMTFieldsStructured(Index        = Parent.Index,
+                                                                      Diameter     = Parent.Diameter,
+                                                                      Wavelength   = Parent.Source.Wavelength,
+                                                                      nMedium      = Parent.nMedium,
+                                                                      Phi          = phi,
+                                                                      Theta        = theta,
+                                                                      Polarization = Parent.Source.Polarization.Radian,
+                                                                      E0           = float(Parent.Source.E0),
+                                                                      R            = 1.,
+                                                                      BSC          = Parent.Source._BSC_,
+                                                                      MaxOrder     = Parent.Source.MaxOrder)
 
-            self['EPhi'], self['ETheta'] = Para, Perp
-
-            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 )
+            else:
+                self['EPhi'], self['ETheta'] = GLMTFieldsStructuredUnpolarized(Index        = Parent.Index,
+                                                                              Diameter     = Parent.Diameter,
+                                                                              Wavelength   = Parent.Source.Wavelength,
+                                                                              nMedium      = Parent.nMedium,
+                                                                              Phi          = phi,
+                                                                              Theta        = theta,
+                                                                              E0           = float(Parent.Source.E0),
+                                                                              R            = 1.,
+                                                                              BSC          = Parent.Source._BSC_,
+                                                                              MaxOrder     = Parent.Source.MaxOrder)
 
 
         else:
-            Para, Perp = GLMTFieldsStructured(Index        = Parent.Index,
-                                               Diameter     = Parent.Diameter,
-                                               Wavelength   = Parent.Source.Wavelength,
-                                               nMedium      = 1.0,
-                                               Phi          = self['Phi'],
-                                               Theta        = self['Theta'],
-                                               Polarization = 0.,
-                                               E0           = Parent.Source.E0,
-                                               R            = 1.)
+            if Parent.Source.Polarization:
+                self['EPhi'], self['ETheta'] = LMTFieldsStructured(Index        = Parent.Index,
+                                                                  Diameter     = Parent.Diameter,
+                                                                  Wavelength   = Parent.Source.Wavelength,
+                                                                  nMedium      = 1.0,
+                                                                  Phi          = self['Phi'],
+                                                                  Theta        = self['Theta'],
+                                                                  Polarization = 0.,
+                                                                  E0           = Parent.Source.E0,
+                                                                  R            = 1.)
+            else:
+                self['EPhi'], self['ETheta'] = LMTFieldsStructuredUnpolarized(Index        = Parent.Index,
+                                                                              Diameter     = Parent.Diameter,
+                                                                              Wavelength   = Parent.Source.Wavelength,
+                                                                              nMedium      = 1.0,
+                                                                              Phi          = self['Phi'],
+                                                                              Theta        = self['Theta'],
+                                                                              E0           = Parent.Source.E0,
+                                                                              R            = 1.)
 
-            self['EPhi'], self['ETheta'] = Para, Perp
 
-            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 )
+        self['SPF'] = np.sqrt( EPhi.__abs__()**2 + ETheta.__abs__()**2 )
 
 
     def Plot(self):
@@ -287,33 +317,109 @@ class ScalarFarField(dict):
 
     def __init__(self, Num = 200, Parent = None, Distance=1):
 
-        Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
+        #Theta, Phi = np.mgrid[0:2*np.pi:complex(Num), -np.pi/2:np.pi/2:complex(Num)]
+        phi, theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
+        self['Phi'], self['Theta'] = np.meshgrid(phi, theta)
 
-        EPhi, ETheta = LMTFields(Index        = Parent.Index,
-                                 Diameter     = Parent.Diameter,
-                                 Wavelength   = Parent.Source.Wavelength,
-                                 nMedium      = Parent.nMedium,
-                                 Phi          = Phi.flatten() - np.pi/2,
-                                 Theta        = Theta.flatten(),
-                                 Polarization = Parent.Source.Polarization.Radian,
-                                 E0           = Parent.Source.E0,
-                                 R            = Distance,
-                                 Lenght       = Phi.flatten().size)
+
+        if Parent.Source.GLMT:
+            if Parent.Source.Polarization:
+                EPhi, ETheta = GLMTFieldsStructured(Index        = Parent.Index,
+                                                  Diameter     = Parent.Diameter,
+                                                  Wavelength   = Parent.Source.Wavelength,
+                                                  nMedium      = Parent.nMedium,
+                                                  Phi          = phi,
+                                                  Theta        = theta,
+                                                  Polarization = Parent.Source.Polarization.Radian,
+                                                  E0           = float(Parent.Source.E0),
+                                                  R            = 1.,
+                                                  BSC          = Parent.Source._BSC_,
+                                                  MaxOrder     = Parent.Source.MaxOrder)
+
+            else:
+                EPhi, ETheta = GLMTFieldsStructuredUnpolarized(Index        = Parent.Index,
+                                                              Diameter     = Parent.Diameter,
+                                                              Wavelength   = Parent.Source.Wavelength,
+                                                              nMedium      = Parent.nMedium,
+                                                              Phi          = phi,
+                                                              Theta        = theta,
+                                                              E0           = float(Parent.Source.E0),
+                                                              R            = 1.,
+                                                              BSC          = Parent.Source._BSC_,
+                                                              MaxOrder     = Parent.Source.MaxOrder)
+
+
+        else:
+            if Parent.Source.Polarization:
+                EPhi, ETheta = LMTFieldsStructured(Index        = Parent.Index,
+                                                  Diameter     = Parent.Diameter,
+                                                  Wavelength   = Parent.Source.Wavelength,
+                                                  nMedium      = 1.0,
+                                                  Phi          = self['Phi'],
+                                                  Theta        = self['Theta'],
+                                                  Polarization = 0.,
+                                                  E0           = Parent.Source.E0,
+                                                  R            = 1.)
+            else:
+                EPhi, ETheta = LMTFieldsStructuredUnpolarized(Index        = Parent.Index,
+                                                              Diameter     = Parent.Diameter,
+                                                              Wavelength   = Parent.Source.Wavelength,
+                                                              nMedium      = 1.0,
+                                                              Phi          = self['Phi'],
+                                                              Theta        = self['Theta'],
+                                                              E0           = Parent.Source.E0,
+                                                              R            = 1.)
+
 
 
         self['Distance'] = Distance
 
-        self['Theta'] = Theta
+        self['EPhi'] = EPhi
 
-        self['Phi'] = Phi
+        self['ETheta'] = ETheta
 
-        self['EPhi'] = EPhi.reshape(self['Theta'].shape)
-
-        self['ETheta'] = ETheta.reshape(self['Theta'].shape)
-
+        self['SPF'] = np.sqrt( EPhi.__abs__()**2 + ETheta.__abs__()**2 )
 
 
     def Plot(self):
+
+        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
+
+        X = np.linspace(np.min(x),np.max(x),10)*1.3
+        Y = np.linspace(np.min(y),np.max(y),10)*1.3
+        Z = np.linspace(np.min(z),np.max(z),10)*1.3
+
+        radius = np.abs( min(np.min(x), np.min(y), np.min(z))/100 )
+
+        mlab.plot3d(X,
+                    np.zeros_like(X),
+                    np.zeros_like(X),
+                    line_width=1e-12,
+                    tube_radius=radius
+                    )
+
+        mlab.plot3d(np.zeros_like(Y),
+                    Y,
+                    np.zeros_like(Y),
+                    line_width=1e-12,
+                    tube_radius=radius
+                    )
+
+        mlab.plot3d(np.zeros_like(Z),
+                    np.zeros_like(Z),
+                    Z,
+                    line_width=1e-12,
+                    tube_radius=radius
+                    )
+
+        surface = mlab.mesh(x, y, z, scalars=self['EPhi'].real, colormap='viridis')
+
+
+
+        mlab.show()
+
+
+    def _Plot(self):
         """Method plots the scattered Far-Field
         :math:`E_{\\phi}(\\phi,\\theta)^2 , E_{\\theta}(\\phi,\\theta)^2`.
 
@@ -333,7 +439,7 @@ class ScalarFarField(dict):
                 if m == 0: data = self[Name].real
                 if m == 1: data = self[Name].imag
 
-                im0 = axes[m,F].contourf(np.rad2deg(self['Theta']),
+                im0 = axes[m,F].contourf(np.rad2deg(self['Theta'])+np.pi,
                                          np.rad2deg(self['Phi']),
                                          data,
                                          antialiased=False,

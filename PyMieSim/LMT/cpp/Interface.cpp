@@ -126,7 +126,7 @@ FieldsStructured(double     index,
 
   complex128 *ptr0 = (complex128 *) buf0.ptr,
              *ptr1 = (complex128 *) buf1.ptr,
-             temp2, 
+             temp2,
              propagator = E0 / (k * R) * exp(-j*k*R),
              *s1s2 = (complex128*) calloc(2 * PhiLength , sizeof(complex128));
 

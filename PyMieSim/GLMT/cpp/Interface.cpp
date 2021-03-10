@@ -278,7 +278,8 @@ FieldsUnstructured(double   Index,
      free(bn);
      free(pin);
      free(taun);
-     s1.resize({PhiLenght,ThetaLenght}); s2.resize({PhiLenght,ThetaLenght});
+     s1.resize({PhiLenght,ThetaLenght}).transpose();
+     s2.resize({PhiLenght,ThetaLenght}).transpose();
      return std::make_pair(s1, s2);
   }
 
@@ -447,7 +448,8 @@ FieldsUnstructuredUnpolarized(double   Index,
      free(bn);
      free(pin);
      free(taun);
-     s1.resize({PhiLenght,ThetaLenght}); s2.resize({PhiLenght,ThetaLenght});
+     s1.resize({PhiLenght,ThetaLenght}).transpose();
+     s2.resize({PhiLenght,ThetaLenght}).transpose();
      return std::make_pair(s1, s2);
   }
 
@@ -613,7 +615,8 @@ S1S2Structured(double   Index,
    free(bn);
    free(pin);
    free(taun);
-   s1.resize({PhiLenght,ThetaLenght}); s2.resize({PhiLenght,ThetaLenght});
+   s1.resize({PhiLenght,ThetaLenght}).transpose();
+   s2.resize({PhiLenght,ThetaLenght}).transpose();
    return std::make_pair(s1, s2);
 }
 
@@ -777,7 +780,8 @@ S1S2StructuredUnpolarized(double   Index,
    free(bn);
    free(pin);
    free(taun);
-   s1.resize({150,150}); s2.resize({150,150});
+   s1.resize({PhiLenght,ThetaLenght}).transpose();
+   s2.resize({PhiLenght,ThetaLenght}).transpose();
    return std::make_pair(s1, s2);
 }
 
