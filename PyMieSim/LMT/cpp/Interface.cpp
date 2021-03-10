@@ -93,21 +93,85 @@ S1S2(const double            index,
 }
 
 
+
 std::pair<Cndarray, Cndarray>
-Fields(double     index,
-       double     diameter,
-       double     wavelength,
-       double     nMedium,
-       ndarray    Phi,
-       ndarray    Theta,
-       double     Polarization,
-       double     E0,
-       double     R,
-       int        Lenght)
+FieldsStructured(double     index,
+                   double     diameter,
+                   double     wavelength,
+                   double     nMedium,
+                   ndarray    Phi,
+                   ndarray    Theta,
+                   double     Polarization,
+                   double     E0,
+                   double     R)
 {
 
   py::buffer_info PhiBuffer   = Phi.request();
   py::buffer_info ThetaBuffer = Theta.request();
+
+  int PhiLength    = PhiBuffer.shape[0],
+      ThetaLength  = ThetaBuffer.shape[0],
+      w            = 0;
+
+  py::array_t<complex128> result0 = py::array_t<complex128>(PhiLength * ThetaLength);
+  py::array_t<complex128> result1 = py::array_t<complex128>(PhiLength * ThetaLength);
+
+  py::buffer_info buf0 = result0.request();
+  py::buffer_info buf1 = result1.request();
+
+  double *PhiPtr   = (double *) PhiBuffer.ptr,
+         *ThetaPtr = (double *) ThetaBuffer.ptr,
+          k = 2. * PI / wavelength,
+          temp0 ;
+
+  complex128 *ptr0 = (complex128 *) buf0.ptr,
+             *ptr1 = (complex128 *) buf1.ptr,
+             temp2, 
+             propagator = E0 / (k * R) * exp(-j*k*R),
+             *s1s2 = (complex128*) calloc(2 * PhiLength , sizeof(complex128));
+
+  _S1S2(index, diameter, wavelength, nMedium, PhiPtr, PhiLength, s1s2);
+
+  for (auto p=0; p < PhiLength; p++ )
+  {
+    for (auto t=0; t < ThetaLength; t++ )
+        {
+          temp0 = ThetaPtr[t] ;
+          ptr0[w] = j* propagator * s1s2[p] * (complex128) abs(cos(temp0 + Polarization));
+          ptr1[w] =- propagator * s1s2[p + PhiLength] * (complex128) abs(sin(temp0 + Polarization));
+          w++;
+       }
+  }
+
+  free(s1s2);
+  result0.resize({PhiLength,ThetaLength});
+  result1.resize({PhiLength,ThetaLength});
+
+  return std::make_pair(result0,result1);
+}
+
+
+
+
+
+
+std::pair<Cndarray, Cndarray>
+FieldsUnstructured(double     index,
+                   double     diameter,
+                   double     wavelength,
+                   double     nMedium,
+                   ndarray    Phi,
+                   ndarray    Theta,
+                   double     Polarization,
+                   double     E0,
+                   double     R)
+{
+
+  py::buffer_info PhiBuffer   = Phi.request();
+  py::buffer_info ThetaBuffer = Theta.request();
+
+  int PhiLength    = PhiBuffer.shape[0],
+      ThetaLength  = ThetaBuffer.shape[0];
 
   py::array_t<complex128> result0 = py::array_t<complex128>(Phi.size());
   py::array_t<complex128> result1 = py::array_t<complex128>(Phi.size());
@@ -124,23 +188,15 @@ Fields(double     index,
              *ptr1 = (complex128 *) buf1.ptr,
              temp2,
              propagator = E0 / (k * R) * exp(-j*k*R),
-             *s1s2 = (complex128*) calloc(2 * Lenght , sizeof(complex128));
+             *s1s2 = (complex128*) calloc(2 * PhiLength , sizeof(complex128));
 
-  ndarray Parallel, Perpendicular;
+  _S1S2(index, diameter, wavelength, nMedium, PhiPtr, PhiLength, s1s2);
 
-  _S1S2(index,
-       diameter,
-       wavelength,
-       nMedium,
-       PhiPtr,
-       Lenght,
-       s1s2);
-
-  for (auto k=0; k < Lenght; k++ )
+  for (auto k=0; k < PhiLength; k++ )
   {
     temp0 = ThetaPtr[k] ;
     ptr0[k] = j* propagator * s1s2[k] * (complex128) abs(cos(temp0 + Polarization));
-    ptr1[k] =- propagator * s1s2[k + Lenght] * (complex128) abs(sin(temp0 + Polarization));
+    ptr1[k] =- propagator * s1s2[k + PhiLength] * (complex128) abs(sin(temp0 + Polarization));
 
   }
 
@@ -150,11 +206,126 @@ Fields(double     index,
 }
 
 
+
+
+
+
+
+
+
+
+std::pair<Cndarray, Cndarray>
+FieldsStructuredUnpolarized(double     index,
+                             double     diameter,
+                             double     wavelength,
+                             double     nMedium,
+                             ndarray    Phi,
+                             ndarray    Theta,
+                             double     E0,
+                             double     R)
+{
+
+  py::buffer_info PhiBuffer   = Phi.request();
+  py::buffer_info ThetaBuffer = Theta.request();
+
+  int PhiLength    = PhiBuffer.shape[0],
+      ThetaLength  = ThetaBuffer.shape[0],
+      w            = 0;
+
+  py::array_t<complex128> result0 = py::array_t<complex128>(PhiLength * ThetaLength);
+  py::array_t<complex128> result1 = py::array_t<complex128>(PhiLength * ThetaLength);
+
+  py::buffer_info buf0 = result0.request();
+  py::buffer_info buf1 = result1.request();
+
+  double *PhiPtr   = (double *) PhiBuffer.ptr,
+         *ThetaPtr = (double *) ThetaBuffer.ptr,
+          k = 2. * PI / wavelength,
+          temp0, temp1 = 1./sqrt(2.) ;
+
+  complex128 *ptr0 = (complex128 *) buf0.ptr,
+             *ptr1 = (complex128 *) buf1.ptr,
+              propagator = E0 / (k * R) * exp(-j*k*R),
+             *s1s2 = (complex128*) calloc(2 * PhiLength , sizeof(complex128));
+
+  _S1S2(index, diameter, wavelength, nMedium, PhiPtr, PhiLength, s1s2);
+
+  for (auto p=0; p < PhiLength; p++ )
+  {
+    for (auto t=0; t < ThetaLength; t++ )
+        {
+          temp0 = ThetaPtr[t] ;
+          ptr0[w] = j* propagator * s1s2[p] * temp1;
+          ptr1[w] =- propagator * s1s2[p + PhiLength] * temp1;
+          w++;
+       }
+  }
+
+  free(s1s2);
+  result0.resize({PhiLength,ThetaLength});
+  result1.resize({PhiLength,ThetaLength});
+
+  return std::make_pair(result0,result1);
+}
+
+
+
+
+
+std::pair<Cndarray, Cndarray>
+FieldsUnstructuredUnpolarized(double     index,
+                               double     diameter,
+                               double     wavelength,
+                               double     nMedium,
+                               ndarray    Phi,
+                               ndarray    Theta,
+                               double     E0,
+                               double     R)
+{
+
+  py::buffer_info PhiBuffer   = Phi.request();
+  py::buffer_info ThetaBuffer = Theta.request();
+
+  int PhiLength    = PhiBuffer.shape[0],
+      ThetaLength  = ThetaBuffer.shape[0];
+
+  py::array_t<complex128> result0 = py::array_t<complex128>(Phi.size());
+  py::array_t<complex128> result1 = py::array_t<complex128>(Phi.size());
+
+  py::buffer_info buf0 = result0.request();
+  py::buffer_info buf1 = result1.request();
+
+  double *PhiPtr   = (double *) PhiBuffer.ptr,
+         *ThetaPtr = (double *) ThetaBuffer.ptr,
+          k = 2. * PI / wavelength,
+          temp0, temp1 = 1./sqrt(2.) ;
+
+  complex128 *ptr0 = (complex128 *) buf0.ptr,
+             *ptr1 = (complex128 *) buf1.ptr,
+              propagator = E0 / (k * R) * exp(-j*k*R),
+             *s1s2 = (complex128*) calloc(2 * PhiLength , sizeof(complex128));
+
+  _S1S2(index, diameter, wavelength, nMedium, PhiPtr, PhiLength, s1s2);
+
+  for (auto k=0; k < PhiLength; k++ )
+  {
+    temp0 = ThetaPtr[k] ;
+    ptr0[k] = j* propagator * s1s2[k] * temp1;
+    ptr1[k] =- propagator * s1s2[k + PhiLength] * temp1;
+  }
+
+  free(s1s2);
+
+  return std::make_pair(result0,result1);
+}
+
+
+
 PYBIND11_MODULE(Sphere, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) c++ binding module for light scattering from a spherical scatterer";
 
-    module.def("Fields",
-               &Fields,
+    module.def("FieldsUnstructured",
+               &FieldsUnstructured,
                py::arg("Index"),
                py::arg("Diameter"),
                py::arg("Wavelength"),
@@ -164,8 +335,47 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("Polarization"),
                py::arg("E0"),
                py::arg("R"),
-               py::arg("Lenght"),
                "Compute the scattering far-field for a spherical scatterer");
+
+
+   module.def("FieldsStructured",
+              &FieldsStructured,
+              py::arg("Index"),
+              py::arg("Diameter"),
+              py::arg("Wavelength"),
+              py::arg("nMedium"),
+              py::arg("Phi"),
+              py::arg("Theta"),
+              py::arg("Polarization"),
+              py::arg("E0"),
+              py::arg("R"),
+              "Compute the scattering far-field for a spherical scatterer");
+
+
+    module.def("FieldsUnstructuredUnpolarized",
+               &FieldsUnstructuredUnpolarized,
+               py::arg("Index"),
+               py::arg("Diameter"),
+               py::arg("Wavelength"),
+               py::arg("nMedium"),
+               py::arg("Phi"),
+               py::arg("Theta"),
+               py::arg("E0"),
+               py::arg("R"),
+               "Compute the scattering far-field for a spherical scatterer");
+
+
+   module.def("FieldsStructuredUnpolarized",
+              &FieldsStructuredUnpolarized,
+              py::arg("Index"),
+              py::arg("Diameter"),
+              py::arg("Wavelength"),
+              py::arg("nMedium"),
+              py::arg("Phi"),
+              py::arg("Theta"),
+              py::arg("E0"),
+              py::arg("R"),
+              "Compute the scattering far-field for a spherical scatterer");
 
 
      module.def("S1S2",

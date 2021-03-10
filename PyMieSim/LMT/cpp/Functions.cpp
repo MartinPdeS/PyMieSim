@@ -232,7 +232,7 @@ C_Qext(iVec           an,
 
 
 
-static int
+static void
 _S1S2(const double            index,
       const double            diameter,
       const double            wavelength,
@@ -259,7 +259,7 @@ _S1S2(const double            index,
 
     iVec S1 = iVec(lenght),
          S2 = iVec(lenght),
-         pin = iVec(OrderMax), taun = iVec(OrderMax);
+         pin =iVec(OrderMax), taun = iVec(OrderMax);
 
     complex128 j (0., 1.0),
                *temp0 = &s1s2[0],
@@ -267,7 +267,7 @@ _S1S2(const double            index,
 
     for (long unsigned int i = 0; i < lenght; i++){
 
-        std::tie(pin, taun) = MiePiTau(cos( PhiPtr[i] ), OrderMax);
+        std::tie(pin, taun) = MiePiTau(cos( PhiPtr[i]-PI/2 ), OrderMax);
 
         for (auto k = 0; k < OrderMax ; k++){
             *temp0 += n2[k] * ( an[k] * pin[k] +  bn[k] * taun[k] );
@@ -278,7 +278,7 @@ _S1S2(const double            index,
     temp1++ ;
     }
 
-    return 1;
+
 }
 
 

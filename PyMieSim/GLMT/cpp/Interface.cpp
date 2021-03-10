@@ -164,7 +164,7 @@ FieldsUnstructured(double   Index,
 
    for(auto l = 0; l < ThetaLenght; l++)
      {
-       SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+       SymetricPinmTaunm(Length, PhiPtr[l]-PI/2, pin, taun);
        S1 = 0.; S2=0.;
        for (auto b = 0; b < Length; b++)
          {
@@ -248,7 +248,7 @@ FieldsUnstructured(double   Index,
 
     for(auto p = 0; p < PhiLenght; p++)
       {
-        SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+        SymetricPinmTaunm(Length, PhiPtr[p]-PI/2, pin, taun);
 
         for(auto t = 0; t < ThetaLenght; t++)
           {
@@ -336,7 +336,7 @@ FieldsUnstructuredUnpolarized(double   Index,
 
    for(auto l = 0; l < ThetaLenght; l++)
      {
-       SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+       SymetricPinmTaunm(Length, PhiPtr[l]-PI/2, pin, taun);
        S1 = 0.; S2=0.;
        for (auto b = 0; b < Length; b++)
          {
@@ -418,7 +418,7 @@ FieldsUnstructuredUnpolarized(double   Index,
 
     for(auto p = 0; p < PhiLenght; p++)
       {
-        SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+        SymetricPinmTaunm(Length, PhiPtr[p]-PI/2, pin, taun);
 
         for(auto t = 0; t < ThetaLenght; t++)
           {
@@ -503,7 +503,7 @@ S1S2Unstructured(double   Index,
 
  for(auto l = 0; l < ThetaLenght; l++)
    {
-     SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+     SymetricPinmTaunm(Length, PhiPtr[l]-PI/2, pin, taun);
      S1 = 0.; S2=0.;
      for (auto b = 0; b < Length; b++)
        {
@@ -583,7 +583,7 @@ S1S2Structured(double   Index,
 
   for(auto p = 0; p < PhiLenght; p++)
     {
-      SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+      SymetricPinmTaunm(Length, PhiPtr[p]-PI/2, pin, taun);
 
       for(auto t = 0; t < ThetaLenght; t++)
         {
@@ -670,7 +670,7 @@ S1S2UnstructuredUnpolarized(double  Index,
 
  for(auto l = 0; l < ThetaLenght; l++)
    {
-     SymetricPinmTaunm(Length, PhiPtr[l], pin, taun);
+     SymetricPinmTaunm(Length, PhiPtr[l]-PI/2, pin, taun);
      S1 = 0.; S2=0.;
      for (auto b = 0; b < Length; b++)
        {
@@ -748,7 +748,7 @@ S1S2StructuredUnpolarized(double   Index,
 
   for(auto p = 0; p < PhiLenght; p++)
     {
-      SymetricPinmTaunm(Length, PhiPtr[p], pin, taun);
+      SymetricPinmTaunm(Length, PhiPtr[p]-PI/2, pin, taun);
 
       for(auto t = 0; t < ThetaLenght; t++)
         {

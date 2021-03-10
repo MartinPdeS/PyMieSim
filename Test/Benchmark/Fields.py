@@ -5,7 +5,7 @@ import timeit
 from PyMieSim.utils import PlotField
 from PyMieSim.LMT.python.Sphere import Fields as PyField
 from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTCppFields
-from PyMieSim.LMT.Sphere import Fields as LMTCppFields
+from PyMieSim.LMT.Sphere import FieldsStructured as LMTCppFields
 
 
 
@@ -31,18 +31,15 @@ def Speed(setup):
 
 
 def Correctness():
-    Phi = np.linspace(-np.pi/2,np.pi/2,1000); Theta = np.linspace(-np.pi,np.pi,10020)
+    Phi = np.linspace(-np.pi/2,np.pi/2,100); Theta = np.linspace(-np.pi,np.pi,100)
     THETA, PHI = np.meshgrid(Theta, Phi)
 
-    args0 = (1.4, 10e-6, 1e-6, 1, Phi.flatten(), Theta.flatten(), 0,1,1)
-    args1 = (1.4, 10e-6, 1e-6, 1, PHI.flatten(), THETA.flatten(), 0,1,1, THETA.flatten().size)
+    args0 = (1.4, 10e-6, 1e-6, 1, Phi, Theta, 0,1,1)
+    args1 = (1.4, 10e-6, 1e-6, 1, Phi, Theta, 0,1,1)
 
     PyParallel, PyPerpendicular = PyField(*args0);
 
     CppParallel, CppPerpendicular = LMTCppFields(*args1);
-
-    CppParallel = np.array(CppParallel).reshape([Phi.size, Theta.size])
-    CppPerpendicular = np.array(CppPerpendicular).reshape([Phi.size, Theta.size])
 
     PlotField(Theta, Phi, CppParallel, CppPerpendicular)
 
@@ -55,7 +52,7 @@ def Correctness():
 setup = """
 import numpy as np
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.LMT.Sphere import Fields as LMTCppFields
+from PyMieSim.LMT.Sphere import FieldsStructured as LMTCppFields
 from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTCppFields
 from PyMieSim.Source import PlaneWave
 
@@ -65,7 +62,7 @@ Phi = np.linspace(-np.pi/2,np.pi/2,100); Theta = np.linspace(-np.pi,np.pi,100)
 PHI, THETA = np.meshgrid(Theta, Phi)
 
 args0 = (1.4, 1e-6, 1e-6, 1, Phi.flatten(), Theta.flatten(), 0,1,1)
-args1 = (1.4, 1e-6, 1e-6, 1, PHI.flatten(), THETA.flatten(), 0,1,1, Phi.flatten().size)
+args1 = (1.4, 1e-6, 1e-6, 1, Phi.flatten(), Theta.flatten(), 0,1,1)
 args2 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1, beam._BSC_, beam.MaxOrder)
 
 
@@ -74,7 +71,7 @@ args2 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1, beam._BSC_, beam.MaxOrder)
 
 if __name__=='__main__':
     Speed(setup)
-    #Correctness()
+    Correctness()
 
 
 """
