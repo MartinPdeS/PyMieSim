@@ -341,9 +341,6 @@ def PlotFarField(Scalar, Phi, Theta, Name=''):
     axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
 
 
-    #axes[0].set_extent([-12755636.1863, 12755636.1863, -12727770.598700099, 12727770.598700099])
-    #axes[1].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
-
     fig.tight_layout()
 
     plt.show()

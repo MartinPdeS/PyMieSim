@@ -10,7 +10,8 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.utils import PlotStructuredSphere, GetFieldBinding
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-
+from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
+from PyMieSim.GLMT.Sphere import S1S2Structured as GLMTS1S2
 
 
 class Stokes(np.ndarray):
@@ -136,8 +137,8 @@ class SPF(dict):
 
     def __init__(self, Parent, Num=100, Distance=1.):
 
-        phi, theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
-        self['Phi'], self['Theta'] = np.meshgrid(phi, theta)
+        Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
+        self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
 
         self['EPhi'], self['ETheta'] = GetFieldBinding(Scatterer  = Parent,
                                                        Structured = True,

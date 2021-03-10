@@ -34,14 +34,14 @@ def Correctness():
     Phi = np.linspace(-np.pi/2,np.pi/2,100); Theta = np.linspace(-np.pi,np.pi,100)
     THETA, PHI = np.meshgrid(Theta, Phi)
 
-    args0 = (1.4, 10e-6, 1e-6, 1, Phi, Theta, 0,1,1)
+    args0 = (1.4, 10e-6, 1e-6, 1, Phi-np.pi/2, Theta-np.pi/2, 0,1,1)
     args1 = (1.4, 10e-6, 1e-6, 1, Phi, Theta, 0,1,1)
 
     PyParallel, PyPerpendicular = PyField(*args0);
 
     CppParallel, CppPerpendicular = LMTCppFields(*args1);
 
-    PlotField(Theta, Phi, CppParallel, CppPerpendicular)
+    PlotField(Theta, Phi, CppParallel.T, CppPerpendicular.T)
 
     PlotField(Theta, Phi, PyParallel, PyPerpendicular)
 
