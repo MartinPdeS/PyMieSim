@@ -123,7 +123,7 @@ class PrintingTest(TestCase):
                             Polarization = 0,
                             Offset       = [0e-6,0e-6,0e-6])
 
-        beam.GetBSC(Precision=1, save=False, Sampling=100)
+        beam.GetBSC(MaxOrder=3, save=False, Sampling=100)
 
         print('Test 11: passed')
 

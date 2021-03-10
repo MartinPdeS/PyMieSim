@@ -41,20 +41,37 @@ class PlaneWave(BaseSource):
         self._BSC_ = None
 
 
+    def Getidx(self, MaxOrder):
+        nlist = []
+        mlist = []
+        if all( self.offset <= EPS):
+            for n in range(*MaxOrder):
+                for m in [-1,1]:
+                    nlist.append(n)
+                    mlist.append(m)
+
+        else:
+            for n in range(*MaxOrder):
+                for m in range(-n,n+1):
+                    nlist.append(n)
+                    mlist.append(m)
+
+        return tuple( zip( nlist, mlist ) )
+        
+
     def GetBSC(self, Precision=None, MaxOrder=30, save=False):
 
-        nOrder = range(1,MaxOrder+1)
-        mOrder = [-1,1]
+        MaxOrder = (1,MaxOrder)
+        idx = self.Getidx(MaxOrder)
+        index = pd.MultiIndex.from_tuples(idx, names=["n", "m"])
 
-        index = pd.MultiIndex.from_product([nOrder,mOrder], names=["n", "m"])
-        BSCTE = r'$BSC_{TE}$'
-        BSCTM = r'$BSC_{TM}$'
+        BSCTE = r'$BSC_{TE}$'; BSCTM = r'$BSC_{TM}$'
         BSC = pd.DataFrame(columns=[BSCTE, BSCTM], index=index)
 
-        for n in nOrder:
-            for m in mOrder:
-                BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE' )
-                BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM' )
+        for n, m in idx:
+
+            BSC.at[(n,m), BSCTE] = self.BSC( n, m, mode='TE')
+            BSC.at[(n,m), BSCTM] = self.BSC( n, m, mode='TM')
 
         if save:
             fileName = f"./PyMieSim/BSC/PW_{self.Wavelength}.csv"

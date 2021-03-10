@@ -12,78 +12,76 @@ from ai import cs
 
 from PyMieSim.Physics import Angle
 
-
-def LoadLibraries(*args):
-    func = []
-    for argument in args:
-        if 'S1S2' in argument:
-            try:
-                from PyMieSim.LMT.Sphere import S1S2
-                func.append(S1S2); print('[S1S2] C++ module loaded')
-            except ImportError:
-                raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
-
-        if 'Efficiencies' in argument:
-            try:
-                from PyMieSim.LMT.Sphere import Efficiencies
-                func.append(Efficiencies); print('[Efficiencies] C++ module loaded')
-            except ImportError:
-                raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
+from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
+from PyMieSim.LMT.Sphere import FieldsStructured as LMTFieldsStructured
+from PyMieSim.LMT.Sphere import FieldsUnstructured as LMTFieldsUnstructured
+from PyMieSim.LMT.Sphere import FieldsStructuredUnpolarized as LMTFieldsStructuredUnpolarized
+from PyMieSim.LMT.Sphere import FieldsUnstructuredUnpolarized as LMTFieldsUnstructuredUnpolarized
 
 
-        if 'Fields' in argument:
-            try:
-                from PyMieSim.LMT.Sphere import Fields
-                func.append(Fields); print('[GetFields] C++ module loaded')
-            except ImportError:
-                raise ImportError(f'[GetFields] C++ module load fail in {__file__}-> no fallback')
-
-    return func
+from PyMieSim.GLMT.Sphere import S1S2Structured as GLMTS1S2
+from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTFieldsStructured
+from PyMieSim.GLMT.Sphere import FieldsUnstructured as GLMTFieldsUnstructured
+from PyMieSim.GLMT.Sphere import FieldsStructuredUnpolarized as GLMTFieldsStructuredUnpolarized
+from PyMieSim.GLMT.Sphere import FieldsUnstructuredUnpolarized as GLMTFieldsUnstructuredUnpolarized
 
 
 
 
-def _LoadLibraries(lib=[]):
-    func = []
-    if 'S1S2' in lib:
-        try:
-            from PyMieSim.LMT.Sphere import GetS1S2
-            func.append(GetS1S2)
-            print('[S1S2] C++ module loaded')
-        except:
-            print(f'[S1S2] C++ module load fail in {__file__}-> fallback to Cython module')
-            try:
-                from PyMieSim.cython.S1S2 import GetS1S2
-                func.append(GetS1S2)
-                print('[S1S2] Cython module loaded')
-            except:
-                print(f'[S1S2] C++ module load fail in {__file__}-> fallback to Python module')
-                try:
-                    from PyMieSim.cython.S1S2 import GetS1S2
-                    func.append(GetS1S2)
-                    print('[S1S2] Python module loaded')
+def GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
 
-                except ImportError:
-                    raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
+    kwarg = { 'Index'       : Scatterer.Index,
+               'Diameter'   : Scatterer.Diameter,
+               'Wavelength' : Scatterer.Source.Wavelength,
+               'nMedium'    : Scatterer.nMedium,
+               'Phi'        : Phi,
+               'Theta'      : Theta,
+               'R'          : R,
+               'E0'         : Scatterer.Source.E0}
 
-    if 'Efficiencies' in lib:
-        try:
-            from PyMieSim.LMT.Sphere import GetEfficiencies
-            func.append(GetEfficiencies)
-            print('[Efficiencies] C++ module loaded')
-        except ImportError:
-            raise ImportError(f'[Efficiencies] C++ module load fail in {__file__}-> no fallback')
+    if Structured:
+        if Scatterer.Source.GLMT:
+            if Scatterer.Source.Polarization:
+                return GLMTFieldsStructured(**kwarg,
+                                              Polarization = Scatterer.Source.Polarization.Radian,
+                                              BSC          = Scatterer.Source._BSC_,
+                                              MaxOrder     = Scatterer.Source.MaxOrder)
+
+            else:
+                return GLMTFieldsStructuredUnpolarized(**kwarg,
+                                                         BSC          = Scatterer.Source._BSC_,
+                                                         MaxOrder     = Scatterer.Source.MaxOrder)
 
 
-    if 'Fields' in lib:
-        try:
-            from PyMieSim.LMT.Sphere import GetFields
-            func.append(GetFields)
-            print('[GetFields] Cython module loaded')
-        except ImportError:
-            raise ImportError(f'[GetFields] Cython module load fail in {__file__}-> no fallback')
+        else:
+            if Scatterer.Source.Polarization:
+                return LMTFieldsStructured(**kwarg,
+                                             Polarization = Scatterer.Source.Polarization.Radian)
+            else:
+                return LMTFieldsStructuredUnpolarized(**kwarg)
 
-    return func
+    else:
+
+        if Scatterer.Source.GLMT:
+            if Scatterer.Source.Polarization:
+                return GLMTFieldsUnstructured(**kwarg,
+                                              Polarization = Scatterer.Source.Polarization.Radian,
+                                              BSC          = Scatterer.Source._BSC_,
+                                              MaxOrder     = Scatterer.Source.MaxOrder)
+
+            else:
+                return GLMTFieldsUnstructuredUnpolarized(**kwarg,
+                                                         BSC          = Scatterer.Source._BSC_,
+                                                         MaxOrder     = Scatterer.Source.MaxOrder)
+
+
+        else:
+            if Scatterer.Source.Polarization:
+                return LMTFieldsUnstructured(**kwarg,
+                                             Polarization = Scatterer.Source.Polarization.Radian)
+            else:
+                return LMTFieldsUnstructuredUnpolarized(**kwarg)
+
 
 
 

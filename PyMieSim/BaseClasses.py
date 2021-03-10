@@ -10,15 +10,11 @@ import matplotlib
 import cartopy.crs as ccrs
 from ai import cs
 
-from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField
-from PyMieSim.Representations import Footprint
+from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle
+from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
-from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2, FieldsStructured as LMTFields
-from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTFields
-
 
 
 class BaseSource(object):
@@ -275,7 +271,7 @@ class BaseScatterer(object):
 
 
     def _FarField(self, Phi, Theta):
-        """Method Compute scattering Far Field.
+        """Method Compute scattering Far Field for unstructured coordinate.
 
         Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
 
@@ -291,30 +287,11 @@ class BaseScatterer(object):
 
         """
 
-        if not self.Source.GLMT:
-            return LMTFields(Index        = self.Index,
-                             Diameter     = self.Diameter,
-                             Wavelength   = self.Source.Wavelength,
-                             nMedium      = self.nMedium,
-                             Phi          = Phi,
-                             Theta        = Theta,
-                             Polarization = self.Source.Polarization.Radian,
-                             E0           = float(self.Source.E0),
-                             R            = 1.,
-                             Lenght       = Phi.flatten().size)
-
-        else:
-            return GLMTFields(Index       = self.Index,
-                             Diameter     = self.Diameter,
-                             Wavelength   = self.Source.Wavelength,
-                             nMedium      = self.nMedium,
-                             Phi          = Phi,
-                             Theta        = Theta,
-                             Polarization = self.Source.Polarization.Radian,
-                             E0           = float(self.Source.E0),
-                             R            = 1.,
-                             BSC          = self.Source._BSC_)
-
+        return GetFieldBinding(Scatterer  = self,
+                               Structured = False,
+                               R          = 1.,
+                               Phi        = Phi,
+                               Theta      = Theta)
 
 
 

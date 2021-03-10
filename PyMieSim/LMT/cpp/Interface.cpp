@@ -147,7 +147,7 @@ FieldsStructured(double     index,
   result0.resize({PhiLength,ThetaLength});
   result1.resize({PhiLength,ThetaLength});
 
-  return std::make_pair(result0,result1);
+  return std::make_pair(result0.attr("transpose")(), result1.attr("transpose")());
 }
 
 
@@ -202,7 +202,7 @@ FieldsUnstructured(double     index,
 
   free(s1s2);
 
-  return std::make_pair(result0,result1);
+  return std::make_pair(result0.attr("transpose")(), result1.attr("transpose")());
 }
 
 
@@ -265,7 +265,7 @@ FieldsStructuredUnpolarized(double     index,
   result0.resize({PhiLength,ThetaLength});
   result1.resize({PhiLength,ThetaLength});
 
-  return std::make_pair(result0,result1);
+  return std::make_pair(result0.attr("transpose")(), result1.attr("transpose")());
 }
 
 
@@ -316,7 +316,7 @@ FieldsUnstructuredUnpolarized(double     index,
 
   free(s1s2);
 
-  return std::make_pair(result0,result1);
+  return std::make_pair(result0.attr("transpose")(), result1.attr("transpose")());
 }
 
 

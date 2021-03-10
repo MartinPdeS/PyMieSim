@@ -5,7 +5,7 @@
 import numpy as np
 import pandas as pd
 
-from PyMieSim.utils import LoadLibraries
+
 from PyMieSim.Source import PlaneWave
 from PyMieSim.Optimizer import OptArray
 from PyMieSim.Detector import LPmode, Photodiode

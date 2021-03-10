@@ -6,7 +6,6 @@ from scipy.special import gamma
 from PyMieSim.utils import PlotFarField
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Field, Stokes
-from PyMieSim.Special import Psi, Psi_p, Xi, Xi_p
 from PyMieSim.GLMT.Sphere import an, bn, cn, dn
 
 

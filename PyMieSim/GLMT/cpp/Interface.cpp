@@ -130,8 +130,7 @@ FieldsUnstructured(double   Index,
    py::buffer_info ThetaBuffer   = Theta.request();
    py::buffer_info BSCBuffer = BSC.request();
 
-   int PhiLenght   = PhiBuffer.size,
-       ThetaLenght = ThetaBuffer.size,
+   int ThetaLenght = ThetaBuffer.size,
        Length      = BSCBuffer.shape[0],
        n           = 0,
        m           = 0;
@@ -189,7 +188,7 @@ FieldsUnstructured(double   Index,
     free(bn);
     free(pin);
     free(taun);
-   return std::make_pair(s1, s2);
+   return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
  }
 
 
@@ -243,8 +242,8 @@ FieldsUnstructured(double   Index,
 
 
 
-    auto s1_data = s1.mutable_data(),
-         s2_data = s2.mutable_data();
+    complex128 *s1_data = s1.mutable_data(),
+               *s2_data = s2.mutable_data();
 
     for(auto p = 0; p < PhiLenght; p++)
       {
@@ -266,7 +265,9 @@ FieldsUnstructured(double   Index,
 
                     S2 += prefactor*(j * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
 
+
                }
+
                s1_data[index] = S1 * propagator;
                s2_data[index] = S2 * propagator;
                index++;
@@ -278,9 +279,10 @@ FieldsUnstructured(double   Index,
      free(bn);
      free(pin);
      free(taun);
-     s1.resize({PhiLenght,ThetaLenght}).transpose();
-     s2.resize({PhiLenght,ThetaLenght}).transpose();
-     return std::make_pair(s1, s2);
+
+     s1.resize({PhiLenght,ThetaLenght});
+     s2.resize({PhiLenght,ThetaLenght});
+     return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
   }
 
 
@@ -303,14 +305,12 @@ FieldsUnstructuredUnpolarized(double   Index,
    py::buffer_info ThetaBuffer   = Theta.request();
    py::buffer_info BSCBuffer = BSC.request();
 
-   int PhiLenght   = PhiBuffer.size,
-       ThetaLenght = ThetaBuffer.size,
+   int ThetaLenght = ThetaBuffer.size,
        Length      = BSCBuffer.shape[0],
        n           = 0,
        m           = 0;
 
    double *PhiPtr    = (double *) PhiBuffer.ptr,
-          *ThetaPtr  = (double *) ThetaBuffer.ptr,
            SizeParam = PI * Diameter / Wavelength,
            k         = 2. * PI / Wavelength,
           *pin       = (double*) malloc(sizeof(complex128)*Length),
@@ -361,7 +361,7 @@ FieldsUnstructuredUnpolarized(double   Index,
     free(bn);
     free(pin);
     free(taun);
-   return std::make_pair(s1, s2);
+   return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
  }
 
 
@@ -383,14 +383,13 @@ FieldsUnstructuredUnpolarized(double   Index,
     py::buffer_info BSCBuffer = BSC.request();
 
     int PhiLenght   = PhiBuffer.size,
-        ThetaLenght = ThetaBuffer.size,
+        ThetaLenght = PhiBuffer.size,
         Length      = BSCBuffer.shape[0],
         n           = 0,
         m           = 0,
         index       = 0;
 
     double *PhiPtr    = (double *) PhiBuffer.ptr,
-           *ThetaPtr  = (double *) ThetaBuffer.ptr,
             k         = 2. * PI / Wavelength,
             SizeParam = PI * Diameter / Wavelength,
            *pin       = (double*)    malloc(sizeof(complex128)*Length),
@@ -448,9 +447,9 @@ FieldsUnstructuredUnpolarized(double   Index,
      free(bn);
      free(pin);
      free(taun);
-     s1.resize({PhiLenght,ThetaLenght}).transpose();
-     s2.resize({PhiLenght,ThetaLenght}).transpose();
-     return std::make_pair(s1, s2);
+     s1.resize({PhiLenght,ThetaLenght});
+     s2.resize({PhiLenght,ThetaLenght});
+     return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
   }
 
 
@@ -473,8 +472,7 @@ S1S2Unstructured(double   Index,
  py::buffer_info ThetaBuffer   = Theta.request();
  py::buffer_info BSCBuffer = BSC.request();
 
- int PhiLenght   = PhiBuffer.size,
-     ThetaLenght = ThetaBuffer.size,
+ int ThetaLenght = ThetaBuffer.size,
      Length      = BSCBuffer.shape[0],
      n           = 0,
      m           = 0;
@@ -530,7 +528,7 @@ S1S2Unstructured(double   Index,
   free(bn);
   free(pin);
   free(taun);
- return std::make_pair(s1, s2);
+ return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
 }
 
 
@@ -615,9 +613,10 @@ S1S2Structured(double   Index,
    free(bn);
    free(pin);
    free(taun);
-   s1.resize({PhiLenght,ThetaLenght}).transpose();
-   s2.resize({PhiLenght,ThetaLenght}).transpose();
-   return std::make_pair(s1, s2);
+   s1.resize({PhiLenght,ThetaLenght});
+   s2.resize({PhiLenght,ThetaLenght});
+
+   return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
 }
 
 
@@ -641,14 +640,12 @@ S1S2UnstructuredUnpolarized(double  Index,
  py::buffer_info ThetaBuffer   = Theta.request();
  py::buffer_info BSCBuffer = BSC.request();
 
- int PhiLenght   = PhiBuffer.size,
-     ThetaLenght = ThetaBuffer.size,
+ int ThetaLenght = ThetaBuffer.size,
      Length      = BSCBuffer.shape[0],
      n           = 0,
      m           = 0;
 
  double *PhiPtr    = (double *) PhiBuffer.ptr,
-        *ThetaPtr  = (double *) ThetaBuffer.ptr,
          SizeParam = PI * Diameter / Wavelength,
         *pin       = (double*)    malloc(sizeof(complex128)*Length),
         *taun      = (double*)   malloc(sizeof(complex128)*Length),
@@ -697,7 +694,7 @@ S1S2UnstructuredUnpolarized(double  Index,
   free(bn);
   free(pin);
   free(taun);
- return std::make_pair(s1, s2);
+ return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
 }
 
 
@@ -714,7 +711,7 @@ S1S2StructuredUnpolarized(double   Index,
 {
   py::buffer_info PhiBuffer     = Phi.request();
   py::buffer_info ThetaBuffer   = Theta.request();
-  py::buffer_info BSCBuffer = BSC.request();
+  py::buffer_info BSCBuffer     = BSC.request();
 
   int PhiLenght   = PhiBuffer.size,
       ThetaLenght = ThetaBuffer.size,
@@ -724,7 +721,6 @@ S1S2StructuredUnpolarized(double   Index,
       index       = 0;
 
   double *PhiPtr    = (double *) PhiBuffer.ptr,
-         *ThetaPtr  = (double *) ThetaBuffer.ptr,
           SizeParam = PI * Diameter / Wavelength,
          *pin       = (double*)    malloc(sizeof(complex128)*Length),
          *taun      = (double*)   malloc(sizeof(complex128)*Length),
@@ -758,10 +754,10 @@ S1S2StructuredUnpolarized(double   Index,
             S1 = 0.; S2=0.;
             for (auto b = 0; b < Length; b++)
               {
-                  n  = (int)BSCPtr[b].real();
-                  m  = (int)BSCPtr[b + Length].real();
-                  TE = BSCPtr[b + Length*2];
-                  TM = BSCPtr[b + Length*3];
+                  n         = (int)BSCPtr[b].real();
+                  m         = (int)BSCPtr[b + Length].real();
+                  TE        = BSCPtr[b + Length*2];
+                  TM        = BSCPtr[b + Length*3];
                   prefactor = (2. * (double)n + 1.) / ( (double)n * ( (double)n + 1. ) );
 
                   S1 += prefactor*(j * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
@@ -780,9 +776,9 @@ S1S2StructuredUnpolarized(double   Index,
    free(bn);
    free(pin);
    free(taun);
-   s1.resize({PhiLenght,ThetaLenght}).transpose();
-   s2.resize({PhiLenght,ThetaLenght}).transpose();
-   return std::make_pair(s1, s2);
+   s1.resize({PhiLenght,ThetaLenght});
+   s2.resize({PhiLenght,ThetaLenght});
+   return std::make_pair(s1.attr("transpose")(), s2.attr("transpose")());
 }
 
 

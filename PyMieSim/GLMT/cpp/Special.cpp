@@ -184,9 +184,9 @@ SymetricPinmTaunm(const int    Length,
 
   taun[1] = mu;
 
-  taun[2] = 3. *cos(2*acos(mu));
+  taun[2] = 3. * (mu*mu -su*su );//3. *cos(2*acos(mu));
 
-  double n = 0;
+  double n = 0.;
   for (long unsigned i = 3; i < Length; i++)
       {
        n = (double)i;
@@ -227,11 +227,11 @@ CoefficientAnBn(const double &SizeParam,
 
     numerator = MuSp * PsiAlpha * PsiPBeta  - Mu * M * PsiPAlpha * PsiBeta;
     denominator = MuSp * XiAlpha * PsiPBeta - Mu * M * XiPAlpha * PsiBeta;
-    an[order-1] = numerator/denominator;
+    an[order] = numerator/denominator;
 
     numerator = Mu * M * PsiAlpha * PsiPBeta - MuSp * PsiPAlpha * PsiBeta;
     denominator = Mu * M * XiAlpha * PsiPBeta - MuSp  * XiPAlpha * PsiBeta;
-    bn[order-1] = numerator/denominator;
+    bn[order] = numerator/denominator;
   }
 }
 
