@@ -145,7 +145,7 @@ class SPF(dict):
                                               Diameter     = Parent.Diameter,
                                               Wavelength   = Parent.Source.Wavelength,
                                               nMedium      = Parent.nMedium,
-                                              Phi          = phi-np.pi/2,
+                                              Phi          = phi,
                                               Theta        = theta,
                                               Polarization = Parent.Source.Polarization.Radian,
                                               E0           = float(Parent.Source.E0),
@@ -155,29 +155,28 @@ class SPF(dict):
 
             self['EPhi'], self['ETheta'] = Para, Perp
 
-            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape([Num, Num]).T
+            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 )
 
 
         else:
-            Para, Perp = LMTFields(Index        = Parent.Index,
-                                   Diameter     = Parent.Diameter,
-                                   Wavelength   = Parent.Source.Wavelength,
-                                   nMedium      = 1.0,
-                                   Phi          = self['Phi'].flatten()-np.pi/2,
-                                   Theta        = self['Theta'].flatten(),
-                                   Polarization = 0.,
-                                   E0           = Parent.Source.E0,
-                                   R            = 1.,
-                                   Lenght       = self['Theta'].flatten().size)
+            Para, Perp = GLMTFieldsStructured(Index        = Parent.Index,
+                                               Diameter     = Parent.Diameter,
+                                               Wavelength   = Parent.Source.Wavelength,
+                                               nMedium      = 1.0,
+                                               Phi          = self['Phi'],
+                                               Theta        = self['Theta'],
+                                               Polarization = 0.,
+                                               E0           = Parent.Source.E0,
+                                               R            = 1.)
 
             self['EPhi'], self['ETheta'] = Para, Perp
 
-            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 ).reshape([Num, Num])
+            self['SPF'] = np.sqrt( Para.__abs__()**2 + Perp.__abs__()**2 )
 
 
     def Plot(self):
 
-        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
+        x, y, z = cs.sp2cart(self['SPF'].T, self['Phi'], self['Theta'])
 
         X = np.linspace(np.min(x),np.max(x),10)*1.3
         Y = np.linspace(np.min(y),np.max(y),10)*1.3
