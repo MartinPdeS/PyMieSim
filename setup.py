@@ -27,7 +27,6 @@ VERSION         = '0.1.10'
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',
           'matplotlib',
-          'numpy',
           'pandas',
           'mayavi',
           'ai.cs',
