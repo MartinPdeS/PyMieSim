@@ -1,15 +1,18 @@
-
+|build-status| |docs| |coverage|
 ![figure](./Docs/images/Logo2Use.png)
 
 [![Travis CI](https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
 [![codecov](https://codecov.io/gh/MartinPdeS/PyMieSim/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinPdeS/PyMieSim)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing)
+[![Documentation Status](https://readthedocs.org/projects/pymiesim/badge/?version=latest)](https://pymiesim.readthedocs.io/en/latest/?badge=latest)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg)](https://doi.org/10.5281/zenodo.4556074)
 
 Welcome to PyMieSim's documentation!
 ====================================
+
+
 
 PyMieSim is a very easy to install/use tool for extensive Mie scattering analysis. It allows to study the light scattering
 on different kind of object, at the moment spherical scatterer and continous sample under the Born approximation.
@@ -19,8 +22,8 @@ Using this package, one can easily set a **LightSource** a **Scatterer** and a *
 <li>LightSource wavelength</li>
 <li>LightSource Polarization</li>
 <li>Scatterer diameter</li>
-<li>Scatterer refractive index</li>  
-<li>Medium refractive index</li>  
+<li>Scatterer refractive index</li>
+<li>Medium refractive index</li>
 <li>Detector type (photodiode or LPMode)</li>
 <li>Detector numerical aperture</li>
 <li>Detector angle offfset in polariation parallel axis (&phi;)</li>
@@ -52,24 +55,23 @@ In order to install the package you first need to install some dependencies, whi
 sudo apt-get install libproj-dev proj-data proj-bin    --> Plottings library
 sudo apt-get install libgeos-dev                       --> Plottings library
 sudo apt-get install libboost-all-dev                  --> Boost library
-sudo apt-get install libeigen3-dev
 ```
 
 Installation
 ============
 It's pretty simple:
 ```console
-pip3 install -v git+https://github.com/MartinPdeS/PyMieSim.git
+pip install PyMieSim
 ```
 
 
 Running Unittest
 ================
 
-To run the Unittests one need the coverage library.
+To run the Unit-tests one need the coverage library.
 
 ```console
-   python -m unittest Test/Unittest.py
+   python -m unittest tests/Unittest.py
 ```
 
 
