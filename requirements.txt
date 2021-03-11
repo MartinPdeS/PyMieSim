@@ -6,7 +6,6 @@ scipy
 fibermodes @ git+https://github.com/cbrunet/fibermodes.git
 mayavi
 ai.cs
-cartopy
 coverage
 pyyaml
 pybind11
