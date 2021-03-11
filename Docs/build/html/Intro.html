@@ -39,9 +39,7 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Theoretical background" href="Theory.html" />
-    <link rel="prev" title="Welcome to PyMieSim’s documentation!" href="index.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,19 +84,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Table of contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting started</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installing-package">Installing package</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-test-simulation">Run test simulation</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li><a class="reference internal" href="#installing-package">Installing package</a></li>
+<li><a class="reference internal" href="#run-tests">Run tests</a></li>
+<li><a class="reference internal" href="#citing-this-work">Citing this work?</a></li>
+<li><a class="reference internal" href="#author-contact-information">Author contact information</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Code.html">Code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
 </ul>
-
+</div>
             
           
         </div>
@@ -166,7 +163,10 @@
             
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>This project (SuPyModes) aims to create a python library that gives the necesary tool to simulate propagation mode of light inside fibers coupler.</p>
+<p>This project aims to be a flexible and usefull tool for Mie scattering analysis.
+At the moment the Lorenz-Mie theory (LMT) is available and the framework for
+the generalize Lorenz-Mie theory (GLMT) is under developpement.
+I invite you to go to the Examples section to see what the package is capable of.</p>
 <div class="section" id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
@@ -183,19 +183,10 @@
 </ul>
 </dd>
 </dl>
-<p>Those depedencies are included in the “requirements.txt” file and can be installed using the command
-.. code-block:: console</p>
-<blockquote>
-<div><table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">linenos:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
-<p>pip3 install -r requirements.txt</p>
-</div></blockquote>
+<p>Those depedencies are included in the “requirements.txt” file and can be installed using the command:</p>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">pip3 install -r requirements.txt</span>
+</pre></div>
+</td></tr></table></div>
 </div>
 <div class="section" id="installing-package">
 <h2>Installing package<a class="headerlink" href="#installing-package" title="Permalink to this headline">¶</a></h2>
@@ -216,12 +207,22 @@ necessitate compilation of c++ core it might not be easily exportable to Windows
 However I am currently working on the Google COLAB notebook to share with any interested
 user so you wont need to install anything to use the package.</p>
 </div>
-<div class="section" id="run-test-simulation">
-<h2>Run test simulation<a class="headerlink" href="#run-test-simulation" title="Permalink to this headline">¶</a></h2>
-<p>Here an example of command to run a simulation on linux (ubuntu 16.04).</p>
-<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>
+<div class="section" id="run-tests">
+<h2>Run tests<a class="headerlink" href="#run-tests" title="Permalink to this headline">¶</a></h2>
+<p>To runs tests use the following command (ubuntu 16.04).</p>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">python3 ./Test/Unittest.py</span>
 </pre></div>
 </td></tr></table></div>
+</div>
+<div class="section" id="citing-this-work">
+<h2>Citing this work?<a class="headerlink" href="#citing-this-work" title="Permalink to this headline">¶</a></h2>
+<p>DOI: <a class="reference external" href="https://doi.org/10.5281/zenodo.4556074">https://doi.org/10.5281/zenodo.4556074</a></p>
+</div>
+<div class="section" id="author-contact-information">
+<h2>Author contact information<a class="headerlink" href="#author-contact-information" title="Permalink to this headline">¶</a></h2>
+<p>As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.</p>
+<p>PyMieSim was written by <a class="reference external" href="https://github.com/MartinPdS">Martin Poinsinet de Sivry-Houle</a>.</p>
+<p>Email: <a class="reference external" href="mailto:martin&#46;poinsinet-de-sivry&#37;&#52;&#48;polymtl&#46;ca?subject=PyMieSim">martin<span>&#46;</span>poinsinet-de-sivry<span>&#64;</span>polymtl<span>&#46;</span>ca</a></p>
 </div>
 </div>
 
@@ -230,10 +231,6 @@ user so you wont need to install anything to use the package.</p>
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Theory.html" class="btn btn-neutral float-right" title="Theoretical background" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to PyMieSim’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

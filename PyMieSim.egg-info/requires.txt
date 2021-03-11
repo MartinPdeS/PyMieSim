@@ -1,11 +1,8 @@
 ai.cs
 cartopy
 cython
-fibermodes@ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0
 geos
 matplotlib
 mayavi
-numpy
 pandas
-pybind11
 scipy

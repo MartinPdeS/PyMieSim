@@ -44,12 +44,6 @@ Class: Representations
     :undoc-members:
     :show-inheritance:
 
-Functions: GLMT
-----------------
-.. automodule:: PyMieSim.GLMT.python
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 
 Function: Coupling

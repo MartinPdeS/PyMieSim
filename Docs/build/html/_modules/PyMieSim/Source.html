@@ -84,14 +84,8 @@
               
             
             
-              <p class="caption"><span class="caption-text">Table of contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../../Intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Theory.html">Theoretical background</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Code</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
-</ul>
-
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
             
           
         </div>
@@ -161,21 +155,15 @@
 
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">trapz</span>
-<span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">iintegrate</span>
-
-<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">spherical_jn</span> <span class="k">as</span> <span class="n">jn</span>
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">arccos</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="nb">all</span><span class="p">,</span> <span class="nb">sum</span>
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">complex128</span><span class="p">,</span><span class="n">float64</span><span class="p">,</span><span class="n">jit</span><span class="p">,</span> <span class="n">int64</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">cos</span><span class="p">,</span> <span class="n">sin</span><span class="p">,</span> <span class="n">exp</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span><span class="p">,</span> <span class="n">linspace</span><span class="p">,</span> <span class="nb">abs</span><span class="p">,</span> <span class="n">arccos</span><span class="p">,</span> <span class="n">array</span><span class="p">,</span> <span class="nb">all</span>
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Constants</span> <span class="kn">import</span> <span class="n">eps0</span><span class="p">,</span> <span class="n">mu0</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Special</span> <span class="kn">import</span> <span class="n">Xi</span><span class="p">,</span> <span class="n">NPnm</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.GLMT.GaussianBeam</span> <span class="kn">import</span> <span class="n">Anm</span><span class="p">,</span> <span class="n">Anm_integrand</span><span class="p">,</span> <span class="n">Bnm</span><span class="p">,</span> <span class="n">Bnm_integrand</span>
 
 
-<span class="n">EPS</span> <span class="o">=</span> <span class="mf">1e-16</span>
+<span class="n">EPS</span> <span class="o">=</span> <span class="mf">1e-20</span>
 <div class="viewcode-block" id="PlaneWave"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.PlaneWave">[docs]</a><span class="k">class</span> <span class="nc">PlaneWave</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Class representing a focuse plane wave beam as a light source for</span>
 <span class="sd">    light scattering.</span>
@@ -202,23 +190,40 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">E0</span> <span class="o">=</span> <span class="n">E0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">eps0</span><span class="o">/</span><span class="n">mu0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-<div class="viewcode-block" id="PlaneWave.GetBSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.PlaneWave.GetBSC">[docs]</a>    <span class="k">def</span> <span class="nf">GetBSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="PlaneWave.Getidx"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.PlaneWave.Getidx">[docs]</a>    <span class="k">def</span> <span class="nf">Getidx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="p">):</span>
+        <span class="n">nlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">mlist</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">&lt;=</span> <span class="n">EPS</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">MaxOrder</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="n">nlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                    <span class="n">mlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-        <span class="n">nOrder</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">MaxOrder</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">mOrder</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">*</span><span class="n">MaxOrder</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">nlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+                    <span class="n">mlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-        <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_product</span><span class="p">([</span><span class="n">nOrder</span><span class="p">,</span><span class="n">mOrder</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">])</span>
-        <span class="n">BSCTE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$BSC_</span><span class="si">{TE}</span><span class="s1">$&#39;</span>
-        <span class="n">BSCTM</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$BSC_</span><span class="si">{TM}</span><span class="s1">$&#39;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span> <span class="n">nlist</span><span class="p">,</span> <span class="n">mlist</span> <span class="p">)</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PlaneWave.GetBSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.PlaneWave.GetBSC">[docs]</a>    <span class="k">def</span> <span class="nf">GetBSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="n">MaxOrder</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">MaxOrder</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Getidx</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">])</span>
+
+        <span class="n">BSCTE</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$BSC_</span><span class="si">{TE}</span><span class="s1">$&#39;</span><span class="p">;</span> <span class="n">BSCTM</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$BSC_</span><span class="si">{TM}</span><span class="s1">$&#39;</span>
         <span class="n">BSC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">BSCTE</span><span class="p">,</span> <span class="n">BSCTM</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nOrder</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mOrder</span><span class="p">:</span>
-                <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span> <span class="p">)</span>
-                <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTM</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span> <span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
 
+            <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">)</span>
+            <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTM</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
             <span class="n">fileName</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;./PyMieSim/BSC/PW_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span><span class="si">}</span><span class="s2">.csv&quot;</span>
@@ -226,7 +231,22 @@
             <span class="n">BSC</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;./</span><span class="si">{</span><span class="n">fileName</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="n">BSC</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">MaxOrder</span> <span class="o">=</span> <span class="n">MaxOrder</span><span class="c1">#int(self._BSC_[:,0].max().real)</span>
+
         <span class="k">return</span> <span class="n">BSC</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_BSC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Need to compute BSC before computing light scattering. [&lt;beam&gt;.GetBSC(Precision=20)]&#39;</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+
+
 
 <div class="viewcode-block" id="PlaneWave.BSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.PlaneWave.BSC">[docs]</a>    <span class="k">def</span> <span class="nf">BSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the beam shape coefficients</span>
@@ -235,16 +255,16 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : class:`int`</span>
+<span class="sd">        n : :class:`int`</span>
 <span class="sd">            Order of the expansion.</span>
-<span class="sd">        m : class:`int`</span>
+<span class="sd">        m : :class:`int`</span>
 <span class="sd">            Description of parameter `m`.</span>
-<span class="sd">        mode : class:`str`</span>
+<span class="sd">        mode : :class:`str`</span>
 <span class="sd">            Mode of the plane wave, either &#39;TE&#39; or &#39;TM&#39;.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        class:`float`</span>
+<span class="sd">        :class:`float`</span>
 <span class="sd">            Expansion coefficient.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -253,6 +273,7 @@
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TM&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span>
 
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TE&#39;</span><span class="p">:</span> <span class="k">return</span>  <span class="o">-</span><span class="n">m</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">/</span> <span class="mi">2</span></div>
+
 
 <div class="viewcode-block" id="PlaneWave.EField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.PlaneWave.EField">[docs]</a>    <span class="k">def</span> <span class="nf">EField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Value of the electric field.</span>
@@ -278,7 +299,16 @@
         <span class="n">FPhase</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">z0</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">*</span> <span class="n">FPhase</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">Pol</span><span class="p">),</span> \
                <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">*</span> <span class="n">FPhase</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">Pol</span><span class="p">),</span> \
-               <span class="mi">0</span></div></div>
+               <span class="mi">0</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                PlaneWave source beam</span>
+<span class="s2">                Wavelenght:   </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                Polarization: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                &quot;&quot;&quot;</span></div>
 
 
 
@@ -308,7 +338,7 @@
                  <span class="n">E0</span><span class="p">:</span>           <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
                  <span class="n">Offset</span><span class="p">:</span>       <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">LGMT</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GLMT</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">Offset</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">Offset</span><span class="p">);</span> <span class="n">Offset</span><span class="p">[</span><span class="n">Offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">EPS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span> <span class="o">=</span> <span class="n">Wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">Wavelength</span>
@@ -321,6 +351,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">xi</span> <span class="o">=</span> <span class="n">arccos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="kc">None</span>
 
 
 
@@ -342,11 +373,9 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span> <span class="nb">zip</span><span class="p">(</span> <span class="n">nlist</span><span class="p">,</span> <span class="n">mlist</span> <span class="p">)</span> <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GaussianBeam.GetBSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.GetBSC">[docs]</a>    <span class="k">def</span> <span class="nf">GetBSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Precision</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">maxDegree</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
-        <span class="n">MaxOrder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetMaxOrder</span><span class="p">(</span><span class="n">Precision</span><span class="p">)</span>
-
-
-
+<div class="viewcode-block" id="GaussianBeam.GetBSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.GetBSC">[docs]</a>    <span class="k">def</span> <span class="nf">GetBSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+        <span class="c1">#MaxOrder = self.GetMaxOrder(Precision)</span>
+        <span class="n">MaxOrder</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">MaxOrder</span><span class="p">)</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Getidx</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">])</span>
 
@@ -354,7 +383,6 @@
         <span class="n">BSC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">BSCTE</span><span class="p">,</span> <span class="n">BSCTM</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;order: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">MaxOrder</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
             <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTE</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">)</span>
             <span class="n">BSC</span><span class="o">.</span><span class="n">at</span><span class="p">[(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">BSCTM</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BSC</span><span class="p">(</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TM&#39;</span><span class="p">)</span>
@@ -365,30 +393,43 @@
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; Saving BSC into file:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">fileName</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">BSC</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;./</span><span class="si">{</span><span class="n">fileName</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="n">BSC</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">MaxOrder</span> <span class="o">=</span> <span class="n">MaxOrder</span><span class="c1">#int(self._BSC_[:,0].max().real)</span>
+
         <span class="k">return</span> <span class="n">BSC</span></div>
+
+    <span class="k">def</span> <span class="nf">_BSC</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Need to compute BSC before computing light scattering. [&lt;beam&gt;.GetBSC(Precision=20)]&#39;</span><span class="p">)</span>
+            <span class="k">raise</span>
 
 
 <div class="viewcode-block" id="GaussianBeam.LoadBSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.LoadBSC">[docs]</a>    <span class="k">def</span> <span class="nf">LoadBSC</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
         <span class="n">BSC</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">dir</span><span class="p">)</span></div>
 
+
 <div class="viewcode-block" id="GaussianBeam.BSC"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.BSC">[docs]</a>    <span class="k">def</span> <span class="nf">BSC</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;TE&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the beam shape coefficients for a focused Gaussian</span>
 <span class="sd">        beam using the quadrature method (ref[2]:Eq:17).</span>
 
-<span class="sd">        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) f</span>
+<span class="sd">        (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`)</span>
+
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : class:`int`</span>
+<span class="sd">        n : :class:`int`</span>
 <span class="sd">            Order of the expansion.</span>
-<span class="sd">        m : class:`int`</span>
+<span class="sd">        m : :class:`int`</span>
 <span class="sd">            Description of parameter `m`.</span>
 <span class="sd">        mode : :class:`str`</span>
 <span class="sd">            Mode of the plane wave, either &#39;TE&#39; or &#39;TM&#39;.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        class:`float`</span>
+<span class="sd">        :class:`float`</span>
 <span class="sd">            Beam shape coefficient of order n and degree m.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -398,7 +439,7 @@
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;TE&#39;</span><span class="p">:</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bnm</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="GaussianBeam.GetMaxOrder"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.GetMaxOrder">[docs]</a>    <span class="k">def</span> <span class="nf">GetMaxOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Precision</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<div class="viewcode-block" id="GaussianBeam.GetMaxOrder"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.GetMaxOrder">[docs]</a>    <span class="k">def</span> <span class="nf">GetMaxOrder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Precision</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method return the range of order to evaluate the BSC&#39;s.</span>
 <span class="sd">        However one should be cautious as a high precision will lead to</span>
 <span class="sd">        numerical overflow.</span>
@@ -419,6 +460,7 @@
         <span class="n">Orders</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="n">termP</span><span class="p">)</span> <span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">termP</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Orders</span> <span class="o">=</span> <span class="n">Orders</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">NOrders</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">Orders</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">Orders</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
         <span class="k">return</span> <span class="n">Orders</span></div>
 
 
@@ -485,11 +527,7 @@
                    <span class="n">m</span>        <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
                    <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
                    <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
-                   <span class="n">s</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
-                   <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">,</span>
-                   <span class="n">offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
-                   <span class="n">R0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">,</span>
-                   <span class="n">xi</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span></div>
+                   <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">)</span></div>
 
 
 
@@ -530,11 +568,7 @@
                    <span class="n">m</span>        <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
                    <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
                    <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
-                   <span class="n">s</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
-                   <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">,</span>
-                   <span class="n">offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
-                   <span class="n">R0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">,</span>
-                   <span class="n">xi</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span></div>
+                   <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">)</span></div>
 
 
 
@@ -555,42 +589,26 @@
                              <span class="n">sampling</span> <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
                              <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
                              <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
-                             <span class="n">s</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
-                             <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">,</span>
-                             <span class="n">offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
-                             <span class="n">R0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span><span class="p">,</span>
-                             <span class="n">xi</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">)</span></div>
-
+                             <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GaussianBeam.Bnm_integrand"><a class="viewcode-back" href="../../Code.html#PyMieSim.Source.GaussianBeam.Bnm_integrand">[docs]</a>    <span class="k">def</span> <span class="nf">Bnm_integrand</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">Sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method returns:</span>
 
-<span class="sd">        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
-<span class="sd">         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\</span>
-<span class="sd">          (\\beta) d \\theta`</span>
+<span class="sd">        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
+<span class="sd">         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\</span>
+<span class="sd">         (\\beta) d \\theta`</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Phi</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">,</span><span class="n">Num</span><span class="p">);</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">pi</span><span class="p">,</span><span class="n">Num</span><span class="p">)</span>
 
-        <span class="n">rhon</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">);</span> <span class="n">r</span> <span class="o">=</span> <span class="n">rhon</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Bnm_integrand</span><span class="p">(</span><span class="n">n</span>        <span class="o">=</span> <span class="n">n</span><span class="p">,</span>
+                             <span class="n">m</span>        <span class="o">=</span> <span class="n">m</span><span class="p">,</span>
+                             <span class="n">sampling</span> <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
+                             <span class="n">k</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span>
+                             <span class="n">w0</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="p">,</span>
+                             <span class="n">Offset</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Offset</span><span class="p">)</span></div>
 
-        <span class="n">sub</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">theta</span> <span class="ow">in</span> <span class="n">Theta</span><span class="p">:</span>
-            <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_Spherical</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">beta</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">R0</span> <span class="o">*</span> <span class="n">rhon</span> <span class="o">*</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
-            <span class="n">param</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">rhon</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_2</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-
-            <span class="n">term0</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_4</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ImHat</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
-            <span class="n">term0</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">I_1</span><span class="p">(</span><span class="o">*</span><span class="n">param</span><span class="p">)</span>
-
-            <span class="n">sub</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">term0</span><span class="p">)</span>
-
-        <span class="n">sub</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">sub</span></div>
 
 
 
@@ -680,7 +698,18 @@
 
         <span class="n">Hr</span> <span class="o">=</span> <span class="n">term0</span> <span class="o">*</span> <span class="p">(</span><span class="n">term1</span> <span class="o">-</span> <span class="n">term2</span> <span class="o">*</span> <span class="n">term3</span><span class="p">)</span> <span class="o">*</span> <span class="n">FPhase</span>
 
-        <span class="k">return</span> <span class="n">Hr</span></div></div>
+        <span class="k">return</span> <span class="n">Hr</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">                Gaussian source beam</span>
+<span class="s2">                Wavelenght:   </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                Polarization: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                NA:           </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                Waist (w_0)   </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">w0</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">                &quot;&quot;&quot;</span></div>
 </pre></div>
 
            </div>

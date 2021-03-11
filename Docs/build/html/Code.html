@@ -39,9 +39,7 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="Examples.html" />
-    <link rel="prev" title="Theoretical background" href="Theory.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,27 +84,23 @@
               
             
             
-              <p class="caption"><span class="caption-text">Table of contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Code</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Scatterer">Class: Scatterering</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Source">Class: Sources</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Detector">Class: Detector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Mesh">Class: Mesh</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Sets">Class: Sets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Representations">Class: Representations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.GLMT.python">Functions: GLMT</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#function-coupling">Function: Coupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#function-centeredcoupling">Function: CenteredCoupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#function-meancoupling">Function: MeanCoupling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#function-footprint">Function: Footprint</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Code</a><ul>
+<li><a class="reference internal" href="#module-PyMieSim.Scatterer">Class: Scatterering</a></li>
+<li><a class="reference internal" href="#module-PyMieSim.Source">Class: Sources</a></li>
+<li><a class="reference internal" href="#module-PyMieSim.Detector">Class: Detector</a></li>
+<li><a class="reference internal" href="#module-PyMieSim.Mesh">Class: Mesh</a></li>
+<li><a class="reference internal" href="#module-PyMieSim.Sets">Class: Sets</a></li>
+<li><a class="reference internal" href="#module-PyMieSim.Representations">Class: Representations</a></li>
+<li><a class="reference internal" href="#function-coupling">Function: Coupling</a></li>
+<li><a class="reference internal" href="#function-centeredcoupling">Function: CenteredCoupling</a></li>
+<li><a class="reference internal" href="#function-meancoupling">Function: MeanCoupling</a></li>
+<li><a class="reference internal" href="#function-footprint">Function: Footprint</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
 </ul>
-
+</div>
             
           
         </div>
@@ -445,7 +439,7 @@ using the first Born approximation .</p>
 <span id="class-sources"></span><h2>Class: Sources<a class="headerlink" href="#module-PyMieSim.Source" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="PyMieSim.Source.GaussianBeam">
-<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float, NA: float, Polarization: float = 0.0, E0: float = 1.0, Offset: list = [1e-16, 1e-16, 1e-16]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Source.</code><code class="descname">GaussianBeam</code><span class="sig-paren">(</span><em>Wavelength: float, NA: float, Polarization: float = 0.0, E0: float = 1.0, Offset: list = [1e-20, 1e-20, 1e-20]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class representing a focuse Gaussian beam as a light source for
 light scattering.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -502,16 +496,16 @@ Method returns:</p>
 <code class="descname">BSC</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>mode='TE'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.BSC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the beam shape coefficients for a focused Gaussian
 beam using the quadrature method (ref[2]:Eq:17).</p>
-<p>(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) f</p>
+<p>(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>)</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>n</strong> <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dt><strong>n</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd><p class="first last">Order of the expansion.</p>
 </dd>
-<dt><strong>m</strong> <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dt><strong>m</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd><p class="first last">Description of parameter <cite>m</cite>.</p>
 </dd>
 <dt><strong>mode</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></dt>
@@ -521,7 +515,7 @@ beam using the quadrature method (ref[2]:Eq:17).</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>class:<cite>float</cite></dt>
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></dt>
 <dd><p class="first last">Beam shape coefficient of order n and degree m.</p>
 </dd>
 </dl>
@@ -552,7 +546,7 @@ Method returns:</p>
 <dt id="PyMieSim.Source.GaussianBeam.Bnm_integrand">
 <code class="descname">Bnm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm_integrand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
-<p><span class="math notranslate nohighlight">\(B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}          (\beta) d \theta\)</span></p>
+<p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}         (\beta) d \theta\)</span></p>
 </dd></dl>
 
 <dl class="method">
@@ -573,12 +567,12 @@ ref[2]:Eq:10
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.GetBSC">
-<code class="descname">GetBSC</code><span class="sig-paren">(</span><em>Precision=20</em>, <em>maxDegree=3</em>, <em>save=False</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetBSC" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetBSC</code><span class="sig-paren">(</span><em>MaxOrder=5</em>, <em>save=False</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetBSC" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.GetMaxOrder">
-<code class="descname">GetMaxOrder</code><span class="sig-paren">(</span><em>Precision=20</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetMaxOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetMaxOrder" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetMaxOrder</code><span class="sig-paren">(</span><em>Precision=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.GetMaxOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.GetMaxOrder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method return the range of order to evaluate the BSC’s.
 However one should be cautious as a high precision will lead to
 numerical overflow.</p>
@@ -681,20 +675,20 @@ light scattering.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>n</strong> <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dt><strong>n</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd><p class="first last">Order of the expansion.</p>
 </dd>
-<dt><strong>m</strong> <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>int</cite></span></dt>
+<dt><strong>m</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
 <dd><p class="first last">Description of parameter <cite>m</cite>.</p>
 </dd>
-<dt><strong>mode</strong> <span class="classifier-delimiter">:</span> <span class="classifier">class:<cite>str</cite></span></dt>
+<dt><strong>mode</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></dt>
 <dd><p class="first last">Mode of the plane wave, either ‘TE’ or ‘TM’.</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt>class:<cite>float</cite></dt>
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></dt>
 <dd><p class="first last">Expansion coefficient.</p>
 </dd>
 </dl>
@@ -713,7 +707,12 @@ light scattering.</p>
 
 <dl class="method">
 <dt id="PyMieSim.Source.PlaneWave.GetBSC">
-<code class="descname">GetBSC</code><span class="sig-paren">(</span><em>MaxOrder=20</em>, <em>save=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.GetBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.GetBSC" title="Permalink to this definition">¶</a></dt>
+<code class="descname">GetBSC</code><span class="sig-paren">(</span><em>Precision=None</em>, <em>MaxOrder=30</em>, <em>save=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.GetBSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.GetBSC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Source.PlaneWave.Getidx">
+<code class="descname">Getidx</code><span class="sig-paren">(</span><em>MaxOrder</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.Getidx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.Getidx" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -1340,9 +1339,6 @@ and refractive index.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-PyMieSim.GLMT.python">
-<span id="functions-glmt"></span><h2>Functions: GLMT<a class="headerlink" href="#module-PyMieSim.GLMT.python" title="Permalink to this headline">¶</a></h2>
-</div>
 <div class="section" id="function-coupling">
 <h2>Function: Coupling<a class="headerlink" href="#function-coupling" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -1362,10 +1358,6 @@ and refractive index.</p>
            
           </div>
           <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Theory.html" class="btn btn-neutral float-left" title="Theoretical background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
 
   <hr/>
 

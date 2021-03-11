@@ -1,12 +1,14 @@
-Metadata-Version: 1.0
+Metadata-Version: 2.1
 Name: PyMieSim
-Version: 1.0.0
-Summary: A package for light scattering simulations
+Version: 0.1.10
+Summary: A package for light scattering simulations.
 Home-page: https://gitlab.com/MartinPdeS/PyMieSim
-Author: Martin Poinsinet de Sivry
+Author: ('Martin Poinsinet de Sivry',)
 Author-email: Martin.poinsinet.de.sivry@gmail.com
-License: MIT license
+License: MIT
+Project-URL: Bug Tracker, https://github.com/MartinPdeS/PyMieSim/issues
 Description: 
+        
         ![figure](./Docs/images/Logo2Use.png)
         
         [![Travis CI](https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
@@ -23,6 +25,7 @@ Description:
         on different kind of object, at the moment spherical scatterer and continous sample under the Born approximation.
         Using this package, one can easily set a **LightSource** a **Scatterer** and a **Detector** within a very wide range of parameters such as:
         <ol>
+        <li>LightSource structure (e.g. plane wave or Gaussian focused)</li>
         <li>LightSource wavelength</li>
         <li>LightSource Polarization</li>
         <li>Scatterer diameter</li>
@@ -108,5 +111,12 @@ Description:
         
         Email: [martin.poinsinet-de-sivry@polymtl.ca](mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim)
         
-Platform: Linux
-Platform: Max OSX
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown

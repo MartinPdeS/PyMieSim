@@ -1,15 +1,69 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from glob import glob
+# Note: To use the 'upload' functionality of this file, you must:
+#   $ pipenv install twine --dev
+
+import io
+import os
 import sys
-from setuptools import setup, find_packages
-from Cython.Build import cythonize
-from Cython.Distutils import build_ext
-from distutils.extension import Extension
-import numpy
+from shutil import rmtree
 from setuptools import setup, Extension
-import pybind11
+#from Cython.Distutils import build_ext
+
+from setuptools import find_packages, setup, Command
+from setuptools.command.build_ext import build_ext as _build_ext
+
+
+# Package meta-data.
+NAME            = 'PyMieSim'
+DESCRIPTION     = 'A package for light scattering simulations.'
+URL             = 'https://gitlab.com/MartinPdeS/PyMieSim'
+EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
+AUTHOR          = 'Martin Poinsinet de Sivry',
+REQUIRES_PYTHON = '>=3.6.0'
+VERSION         = '0.1.10'
+
+# What packages are required for this module to be executed?
+REQUIRED = ['scipy',
+          'matplotlib',
+          'pandas',
+          'mayavi',
+          'ai.cs',
+          'geos',
+          'cartopy',
+
+          ]
+
+
+class get_pybind11_include(object):
+    """Defer numpy.get_include() until after numpy is installed."""
+
+    def __str__(self):
+        import pybind11
+        return pybind11.get_include()
+
+class get_numpy_include(object):
+    """Defer numpy.get_include() until after numpy is installed."""
+
+    def __str__(self):
+        import numpy
+        return numpy.get_include()
+
+
+
+# What packages are optional?
+EXTRAS = {
+    # 'fancy feature': ['django'],
+}
+
+# The rest you shouldn't have to touch too much :)
+# ------------------------------------------------
+# Except, perhaps the License and Trove Classifiers!
+# If you do change the License, remember to change the Trove Classifier for that!
+
+here = os.path.abspath(os.path.dirname(__file__))
+
 
 macro = [('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
 compile_args=["-std=c++14",
@@ -26,18 +80,10 @@ link_args=["-std=c++14",
            '-O3',
            '-march=native']
 
-# Remove the "-Wstrict-prototypes" compiler option, which isn't valid for C++.
-import distutils.sysconfig
-cfg_vars = distutils.sysconfig.get_config_vars()
-for key, value in cfg_vars.items():
-    if type(value) == str:
-        cfg_vars[key] = value.replace("-Wstrict-prototypes", "")
-
-
 ext_modules = [
                 Extension(name               = "PyMieSim._Coupling",
                           sources            = ["PyMieSim/Coupling.pyx"],
-                          include_dirs        = [numpy.get_include()],
+                          include_dirs        = [get_numpy_include()],
                           language            = "c++",
                           define_macros       = macro,
                           extra_compile_args  = compile_args,
@@ -47,74 +93,118 @@ ext_modules = [
 
                 Extension(name               = "PyMieSim.LMT.Sphere",
                           sources            = ["PyMieSim/LMT/cpp/Interface.cpp"],
-                          include_dirs       = [numpy.get_include(), pybind11.get_include()],
+                          include_dirs       = [get_numpy_include(), get_pybind11_include()],
                           language           = "c++",
                          ),
 
                 Extension(name         = 'PyMieSim.GLMT.Sphere',
                           sources      = ['PyMieSim/GLMT/cpp/Interface.cpp'],
-                          include_dirs = [pybind11.get_include()],
+                          include_dirs = [get_numpy_include(), get_pybind11_include()],
                           language     = 'c++',
                 ),
 
                 Extension(name         = 'PyMieSim.GLMT.GaussianBeam',
                           sources      = ['PyMieSim/GLMT/cpp/GaussianBeam.cpp'],
-                          include_dirs = [numpy.get_include(), pybind11.get_include()],
+                          include_dirs = [get_numpy_include(), get_pybind11_include()],
                           language     = 'c++',
                           extra_compile_args  = compile_args
-                ),
+                )
+                ]
 
 
-                         ]
+# Import the README and use it as the long-description.
+# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
+try:
+    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+        long_description = '\n' + f.read()
+except FileNotFoundError:
+    long_description = DESCRIPTION
 
-setup_dict = dict(
-      name               = 'PyMieSim',
-      description        = 'A package for light scattering simulations',
-      version            = '1.0.0',
-      #python_requires    = ">=3.0*",
-      install_requires   = ['numpy',
-                            'scipy',
-                            'matplotlib',
-                            'pandas',
-                            'cython',
-                            'mayavi',
-                            'ai.cs',
-                            'geos',
-                            'pybind11',
-                            'cartopy',
-                            "fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0",
-                            ],
-      author             = 'Martin Poinsinet de Sivry',
-      author_email       = 'Martin.poinsinet.de.sivry@gmail.com',
-      cmdclass           = {'build_ext': build_ext},
-      packages           = ['PyMieSim'],
-      license            = 'MIT license',
-      url                = 'https://gitlab.com/MartinPdeS/PyMieSim',
-      long_description   = open('README.md').read(),
-      platforms          = ['Linux', 'Max OSX'],
-      include_dirs       = [numpy.get_include()],
-      ext_modules        = ext_modules,
-      zip_safe           = False)
+# Load the package's __version__.py module as a dictionary.
+about = {}
+if not VERSION:
+    project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
+    with open(os.path.join(here, project_slug, '__version__.py')) as f:
+        exec(f.read(), about)
+else:
+    about['__version__'] = VERSION
 
 
-setup(**setup_dict)
+class UploadCommand(Command):
+    """Support setup.py upload."""
+
+    description = 'Build and publish the package.'
+    user_options = []
+
+    @staticmethod
+    def status(s):
+        """Prints things in bold."""
+        print('\033[1m{0}\033[0m'.format(s))
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        try:
+            self.status('Removing previous builds…')
+            rmtree(os.path.join(here, 'dist'))
+        except OSError:
+            pass
+
+        self.status('Building Source and Wheel (universal) distribution…')
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+
+        self.status('Uploading the package to PyPI via Twine…')
+        os.system('twine upload dist/*')
+
+        self.status('Pushing git tags…')
+        os.system('git tag v{0}'.format(about['__version__']))
+        os.system('git push --tags')
+
+        sys.exit()
 
 
+# Where the magic happens:
+setup(
+    name=NAME,
+    version=about['__version__'],
+    description=DESCRIPTION,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author=AUTHOR,
+    author_email=EMAIL,
+    setup_requires=['numpy', 'pybind11','cython'],
+    python_requires=REQUIRES_PYTHON,
+    url=URL,
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    # If your package is a single module, use this instead of 'packages':
+    # py_modules=['mypackage'],
 
-
-
-
-
-
-
-
-"""
-Extension(name               = "PyMieSim.LMT.Cython.Sphere",
-          sources            = ["PyMieSim/LMT/cpp/Sphere.pyx"],
-          include_dirs       = [numpy.get_include(), pybind11.get_include()],
-          language           = "c++",
-          define_macros      = macro,
-          extra_compile_args = compile_args,
-          extra_link_args    = link_args
-         ),
-"""
+    # entry_points={
+    #     'console_scripts': ['mycli=mymodule:cli'],
+    # },
+    install_requires=REQUIRED,
+    extras_require=EXTRAS,
+    dependency_links = ["fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0"],
+    include_package_data = True,
+    ext_modules          = ext_modules,
+    license='MIT',
+    classifiers=[
+        # Trove classifiers
+        # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Programming Language :: Python :: Implementation :: PyPy'
+    ],
+    # $ setup.py publish support.
+    cmdclass={
+        'upload': UploadCommand,
+        #'build_ext': build_ext
+    },
+)

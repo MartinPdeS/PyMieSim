@@ -1,7 +1,12 @@
+
+
 Introduction
 ============
 
-This project (SuPyModes) aims to create a python library that gives the necesary tool to simulate propagation mode of light inside fibers coupler.
+This project aims to be a flexible and usefull tool for Mie scattering analysis.
+At the moment the Lorenz-Mie theory (LMT) is available and the framework for
+the generalize Lorenz-Mie theory (GLMT) is under developpement.
+I invite you to go to the Examples section to see what the package is capable of.
 
 
 Getting started
@@ -19,7 +24,8 @@ Here is the list of packages you need to use this library:
     - cartopy
 
 
-Those depedencies are included in the "requirements.txt" file and can be installed using the command
+Those depedencies are included in the "requirements.txt" file and can be installed using the command:
+
 .. code-block:: console
    :linenos:
 
@@ -57,10 +63,29 @@ user so you wont need to install anything to use the package.
 
 
 
-Run test simulation
--------------------
+Run tests
+---------
 
-Here an example of command to run a simulation on linux (ubuntu 16.04).
+To runs tests use the following command (ubuntu 16.04).
 
 .. code-block:: console
    :linenos:
+
+
+   python3 ./Test/Unittest.py
+
+
+Citing this work?
+----------------
+
+DOI: https://doi.org/10.5281/zenodo.4556074
+
+
+Author contact information
+--------------------------
+
+As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
+
+PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_.
+
+Email: `martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_
