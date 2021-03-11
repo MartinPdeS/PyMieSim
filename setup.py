@@ -29,9 +29,9 @@ REQUIRED = ['scipy',
           'matplotlib',
           'pandas',
           'mayavi',
-          'ai.cs',
-          'geos',
-          'cartopy',
+          #'ai.cs',
+          #'geos',
+          #'cartopy',
 
           ]
 
