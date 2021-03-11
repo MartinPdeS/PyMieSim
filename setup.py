@@ -31,7 +31,7 @@ REQUIRED = ['scipy',
           'mayavi',
           'ai.cs',
           'geos',
-          #'cartopy',
+          'cartopy',
 
           ]
 
