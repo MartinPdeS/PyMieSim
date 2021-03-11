@@ -28,7 +28,7 @@ VERSION         = '0.1.10'
 REQUIRED = ['scipy',
           'matplotlib',
           'pandas',
-          'mayavi',
+          #'mayavi',
           #'ai.cs',
           #'geos',
           #'cartopy',
