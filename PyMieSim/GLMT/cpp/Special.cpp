@@ -1,14 +1,17 @@
-#include <vector>
+#include <iostream>
 #include <complex>
 #include <boost/math/special_functions/legendre.hpp>
 #include <boost/math/special_functions/bessel_prime.hpp>
 #include <boost/math/quadrature/trapezoidal.hpp>
 #include <boost/math/special_functions/gamma.hpp>
+
 typedef std::complex<double> complex128;
-typedef std::vector<complex128> iVec;
-typedef std::vector<double> Vec;
+
 
 #define j complex128(0.0,1.0)
+#define PI (double) 3.14159265358979323846264338
+
+
 using namespace std;
 
 std::tuple<Vec, Vec, Vec>
@@ -21,6 +24,8 @@ Cart2sph(Vec X, Vec Y, Vec Z){
   }
   return std::make_tuple(R, PHI, THETA);
 }
+
+int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
 
 std::tuple<Vec, Vec, Vec>
@@ -84,7 +89,17 @@ nmFactorial(int n, int m)
 }
 
 
+double Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
 
+double Jn(int order, double x){ return boost::math::cyl_bessel_j(order, x); }
+
+double Yn_p(int order, double x){ return boost::math::cyl_neumann_prime(order, x); }
+
+double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
+
+complex128 Hn(int order, double x){ return Jn(order,x) + j * Yn(order,x); }
+
+complex128 Hn_p(int order, double x){ return Jn_p(order,x) + j * Yn_p(order,x); }
 
 double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
 
@@ -96,8 +111,8 @@ double yn_p(int order, double x){ return boost::math::sph_neumann_prime(order, x
 
 double Pnm(int n, int m, double x){return boost::math::legendre_p(n, m, x); }
 
-double NPnm(int n, int m, double x){return sqrt((2.*(double)n + 1.)/2. * nmFactorial(n,m)) * Pnm(n,m,x); };
-//double NPnm(int n, int m, double x){return nmFactorial(n,m);};
+double NPnm(int n, int m, double x){return sqrt((2.*(double)n + 1.)/2. * nmFactorial(n,m)) * Pnm(n,m,x); }
+
 complex128 _Psi_p(int type, int n, double x)
 {
   if (type == 0){return (complex128) (x * jn_p(n, x) + jn(n, x));}
@@ -200,40 +215,7 @@ SymetricPinmTaunm(const int    Length,
 
 
 
-void
-CoefficientAnBn(const double &SizeParam,
-                const double &Index,
-                const double &nMedium,
-                const int    &MaxOrder,
-                complex128   *an,
-                complex128   *bn)
-{
-  double alpha = SizeParam,
-         beta  = alpha * Index,
-         MuSp  = 1.,
-         Mu    = 1.,
-         M     = Index/nMedium;
 
-  complex128 numerator, denominator, PsiAlpha, PsiBeta, PsiPBeta, PsiPAlpha, XiAlpha, XiPAlpha;
-
-  for (auto order = 1; order < MaxOrder+1; order++)
-  {
-    PsiAlpha  = Psi(order, alpha);
-    PsiBeta   = Psi(order, beta);
-    PsiPBeta  = Psi_p(order, beta);
-    PsiPAlpha = Psi_p(order, alpha);
-    XiAlpha   = Xi(order, alpha);
-    XiPAlpha  = Xi_p(order, alpha);
-
-    numerator = MuSp * PsiAlpha * PsiPBeta  - Mu * M * PsiPAlpha * PsiBeta;
-    denominator = MuSp * XiAlpha * PsiPBeta - Mu * M * XiPAlpha * PsiBeta;
-    an[order] = numerator/denominator;
-
-    numerator = Mu * M * PsiAlpha * PsiPBeta - MuSp * PsiPAlpha * PsiBeta;
-    denominator = Mu * M * XiAlpha * PsiPBeta - MuSp  * XiPAlpha * PsiBeta;
-    bn[order] = numerator/denominator;
-  }
-}
 
 
 

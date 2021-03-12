@@ -38,6 +38,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                  MuSphere:    float  = 1.0,
                  MuMedium:    float  = 1.0):
 
+        self.type = 'Sphere'
+
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
         self.nMedium = IndexMedium
@@ -136,6 +138,56 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         return self._dn
 
+
+
+
+
+class Cylinder(BaseScatterer, EfficienciesProperties):
+    """Short summary.
+
+    Parameters
+    ----------
+    Diameter : :class:`float`
+        Diameter of the single scatterer in unit of meter.
+    Source : :class:`BaseSource`
+        Light source object containing info on polarization and wavelength.
+    Index : :class:`float`
+        Refractive index of scatterer
+
+    Attributes
+    ----------
+    Area : :class:`float`
+        Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
+    SizeParam : :class:`float`
+        Size parameter of the scatterer [:math:`k r`].
+
+    """
+
+    def __init__(self,
+                 Diameter:    float,
+                 Source:      BaseSource,
+                 Index:       float,
+                 IndexMedium: float  = 1.0,
+                 MuSphere:    float  = 1.0,
+                 MuMedium:    float  = 1.0):
+
+        self.type = 'Cylinder'
+
+        self.Diameter, self.Source, self.Index = Diameter, Source, Index
+
+        self.nMedium = IndexMedium
+
+        self.Area = np.pi * (Diameter/2)**2
+
+        self.SizeParam = Source.k * ( self.Diameter / 2 )
+
+        self._Qsca, self.Q_ext, self._Qabs = None, None, None
+
+        self.MuSp = MuSphere
+
+        self.Mu = MuMedium
+
+        self._an, self._bn, self._cn, self._dn = [], [], [], []
 
 
 class WMSample(object):

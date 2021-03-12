@@ -324,7 +324,11 @@ FieldsUnstructuredUnpolarized(double     index,
 PYBIND11_MODULE(Sphere, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) c++ binding module for light scattering from a spherical scatterer";
 
-    module.def("FieldsUnstructured",
+    py::module_ Structured = module.def_submodule("Structured", "Structured fields data");
+
+    py::module_ Unstructured = module.def_submodule("Unstructured", "Unstructured fields data");
+
+    Unstructured.def("Fields",
                &FieldsUnstructured,
                py::arg("Index"),
                py::arg("Diameter"),
@@ -338,7 +342,7 @@ PYBIND11_MODULE(Sphere, module) {
                "Compute the scattering far-field for a spherical scatterer");
 
 
-   module.def("FieldsStructured",
+   Structured.def("Fields",
               &FieldsStructured,
               py::arg("Index"),
               py::arg("Diameter"),
@@ -352,7 +356,7 @@ PYBIND11_MODULE(Sphere, module) {
               "Compute the scattering far-field for a spherical scatterer");
 
 
-    module.def("FieldsUnstructuredUnpolarized",
+    Unstructured.def("FieldsUnpolarized",
                &FieldsUnstructuredUnpolarized,
                py::arg("Index"),
                py::arg("Diameter"),
@@ -365,7 +369,7 @@ PYBIND11_MODULE(Sphere, module) {
                "Compute the scattering far-field for a spherical scatterer");
 
 
-   module.def("FieldsStructuredUnpolarized",
+   Structured.def("FieldsUnpolarized",
               &FieldsStructuredUnpolarized,
               py::arg("Index"),
               py::arg("Diameter"),

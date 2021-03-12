@@ -7,25 +7,10 @@ plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 import cartopy.crs as ccrs
 from scipy.interpolate import griddata
-import scipy
 from ai import cs
 
 from PyMieSim.Physics import Angle
-
-from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
-from PyMieSim.LMT.Sphere import FieldsStructured as LMTFieldsStructured
-from PyMieSim.LMT.Sphere import FieldsUnstructured as LMTFieldsUnstructured
-from PyMieSim.LMT.Sphere import FieldsStructuredUnpolarized as LMTFieldsStructuredUnpolarized
-from PyMieSim.LMT.Sphere import FieldsUnstructuredUnpolarized as LMTFieldsUnstructuredUnpolarized
-
-
-from PyMieSim.GLMT.Sphere import S1S2Structured as GLMTS1S2
-from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTFieldsStructured
-from PyMieSim.GLMT.Sphere import FieldsUnstructured as GLMTFieldsUnstructured
-from PyMieSim.GLMT.Sphere import FieldsStructuredUnpolarized as GLMTFieldsStructuredUnpolarized
-from PyMieSim.GLMT.Sphere import FieldsUnstructuredUnpolarized as GLMTFieldsUnstructuredUnpolarized
-
-
+import PyMieSim
 
 
 def GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
@@ -39,49 +24,94 @@ def GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
                'R'          : R,
                'E0'         : Scatterer.Source.E0}
 
+
+    lib = PyMieSim
+    if Scatterer.Source.GLMT:
+        lib = lib.GLMT
+        kwarg['BSC'] = Scatterer.Source._BSC_
+        kwarg['MaxOrder'] = Scatterer.Source.MaxOrder
+
+    else:
+        lib = lib.LMT
+
+    if Scatterer.type == 'Sphere': lib = lib.Sphere
+
+    if Scatterer.type == 'Cylinder': lib = lib.Cylinder
+
+    if Structured:
+        lib = lib.Structured
+    else:
+        lib = lib.Unstructured
+
+    if Scatterer.Source.Polarization:
+        return lib.Fields(**kwarg,
+                            Polarization = Scatterer.Source.Polarization.Radian )
+    else:
+        return lib.FieldsUnpolarized(**kwarg)
+
+
+
+def _GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
+
+    kwarg = { 'Index'       : Scatterer.Index,
+               'Diameter'   : Scatterer.Diameter,
+               'Wavelength' : Scatterer.Source.Wavelength,
+               'nMedium'    : Scatterer.nMedium,
+               'Phi'        : Phi,
+               'Theta'      : Theta,
+               'R'          : R,
+               'E0'         : Scatterer.Source.E0}
+
     if Structured:
         if Scatterer.Source.GLMT:
             if Scatterer.Source.Polarization:
-                return GLMTFieldsStructured(**kwarg,
-                                              Polarization = Scatterer.Source.Polarization.Radian,
-                                              BSC          = Scatterer.Source._BSC_,
-                                              MaxOrder     = Scatterer.Source.MaxOrder)
+                from PyMieSim.GLMT.Sphere import FieldsStructured
+                return FieldsStructured(**kwarg,
+                                          Polarization = Scatterer.Source.Polarization.Radian,
+                                          BSC          = Scatterer.Source._BSC_,
+                                          MaxOrder     = Scatterer.Source.MaxOrder)
 
             else:
-                return GLMTFieldsStructuredUnpolarized(**kwarg,
-                                                         BSC          = Scatterer.Source._BSC_,
-                                                         MaxOrder     = Scatterer.Source.MaxOrder)
+                from PyMieSim.GLMT.Sphere import FieldsStructuredUnpolarized
+                return FieldsStructuredUnpolarized(**kwarg,
+                                                     BSC          = Scatterer.Source._BSC_,
+                                                     MaxOrder     = Scatterer.Source.MaxOrder)
 
 
         else:
             if Scatterer.Source.Polarization:
-                return LMTFieldsStructured(**kwarg,
-                                             Polarization = Scatterer.Source.Polarization.Radian)
+                from PyMieSim.LMT.Sphere import FieldsStructured
+                return FieldsStructured(**kwarg,
+                                          Polarization = Scatterer.Source.Polarization.Radian)
             else:
-                return LMTFieldsStructuredUnpolarized(**kwarg)
+                from PyMieSim.LMT.Sphere import FieldsStructuredUnpolarized
+                return FieldsStructuredUnpolarized(**kwarg)
 
     else:
 
         if Scatterer.Source.GLMT:
             if Scatterer.Source.Polarization:
-                return GLMTFieldsUnstructured(**kwarg,
-                                              Polarization = Scatterer.Source.Polarization.Radian,
-                                              BSC          = Scatterer.Source._BSC_,
-                                              MaxOrder     = Scatterer.Source.MaxOrder)
+                from PyMieSim.GLMT.Sphere import FieldsUnstructured
+                return FieldsUnstructured(**kwarg,
+                                            Polarization = Scatterer.Source.Polarization.Radian,
+                                            BSC          = Scatterer.Source._BSC_,
+                                            MaxOrder     = Scatterer.Source.MaxOrder)
 
             else:
-                return GLMTFieldsUnstructuredUnpolarized(**kwarg,
-                                                         BSC          = Scatterer.Source._BSC_,
-                                                         MaxOrder     = Scatterer.Source.MaxOrder)
+                from PyMieSim.GLMT.Sphere import FieldsUnstructuredUnpolarized
+                return FieldsUnstructuredUnpolarized(**kwarg,
+                                                       BSC          = Scatterer.Source._BSC_,
+                                                       MaxOrder     = Scatterer.Source.MaxOrder)
 
 
         else:
             if Scatterer.Source.Polarization:
-                return LMTFieldsUnstructured(**kwarg,
-                                             Polarization = Scatterer.Source.Polarization.Radian)
+                from PyMieSim.LMT.Sphere import FieldsUnstructured
+                return FieldsUnstructured(**kwarg,
+                                            Polarization = Scatterer.Source.Polarization.Radian)
             else:
-                return LMTFieldsUnstructuredUnpolarized(**kwarg)
-
+                from PyMieSim.LMT.Sphere import FieldsUnstructuredUnpolarized
+                return FieldsUnstructuredUnpolarized(**kwarg)
 
 
 

@@ -8,9 +8,6 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 from PyMieSim.Physics import Angle
 
 
-
-
-
 class FibonacciMesh(object):
     """
     Class wich represent an angular mesh. The distribution of points inside
