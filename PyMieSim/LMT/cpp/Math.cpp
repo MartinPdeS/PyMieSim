@@ -13,6 +13,10 @@ typedef std::vector<double> Vec;
 
 #define PI (double)3.14159265358979323846264338
 
+double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
+
+double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
+
 int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
 double Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
@@ -105,7 +109,7 @@ void printVector(std::vector <T> const &a) {
 std::pair<std::vector<double> , std::vector<double>>
 Arrange(const double start,
         const double stop)
-{
+{ 
   std::vector<double> Vec0 ;
   std::vector<double> Vec1 ;
   for (double i = start; i < stop; i++)
@@ -169,7 +173,7 @@ Meshgrid(int num)
   for(int i=0; i < num; ++i)
   {
     Phi.insert( end(Phi), begin(phi), end(phi) );
-    for(int j=0; j < num; ++j)
+    for(int k=0; k< num; ++k)
     {
       Theta.push_back(theta[i]);
     }

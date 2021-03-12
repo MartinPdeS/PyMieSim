@@ -1,4 +1,5 @@
 #include "Math.cpp"
+#include "Functions.cpp"
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
 #include <pybind11/pybind11.h>
@@ -10,7 +11,7 @@ namespace py = pybind11;
 typedef std::complex<double> complex128;
 
 typedef py::array_t<double> ndarray;
-typedef py::array_t<complex128> Cndarray;
+typedef py::array_t<complex128> Cndarray ;
 
 
 
@@ -29,7 +30,7 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("Diameter"),
                py::arg("Wavelength"),
                py::arg("nMedium"),
-               py::arg("Phi"),
+               py::arg("Phi"), 
                py::arg("Theta"),
                py::arg("Polarization"),
                py::arg("E0"),
@@ -87,11 +88,13 @@ PYBIND11_MODULE(Sphere, module) {
                 "Compute the scattering coefficient S1 & S2");
 
 
-      module.def("Efficiencies",
-                 &Sphere::Efficiencies,
-                 py::arg("Index"),
-                 py::arg("SizeParameter"),
-                 "Compute the scattering efficiencies");
+    module.def("Efficiencies",
+               &Sphere::Efficiencies,
+               py::arg("Diameter"),
+               py::arg("Wavelength"),
+               py::arg("Index"),
+               py::arg("nMedium"),
+               "Compute the scattering efficiencies");
 
 }
 
@@ -170,8 +173,10 @@ PYBIND11_MODULE(Cylinder, module) {
 
       module.def("Efficiencies",
                  &Cylinder::Efficiencies,
+                 py::arg("Diameter"),
+                 py::arg("Wavelength"),
                  py::arg("Index"),
-                 py::arg("SizeParameter"),
+                 py::arg("nMedium"),
                  "Compute the scattering efficiencies");
 
 }

@@ -4,8 +4,8 @@ import timeit
 
 from PyMieSim.utils import PlotField
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTCppFields
-from PyMieSim.LMT.Sphere import FieldsStructured as LMTCppFields
+from PyMieSim.GLMT.Sphere.Structured import Fields as GLMTCppFields
+from PyMieSim.LMT.Sphere.Structured import Fields as LMTCppFields
 
 
 
@@ -41,7 +41,7 @@ def Correctness():
 
     CppParallel, CppPerpendicular = LMTCppFields(*args1);
 
-    PlotField(Theta, Phi, CppParallel.T, CppPerpendicular.T)
+    PlotField(Theta, Phi, CppParallel, CppPerpendicular)
 
     PlotField(Theta, Phi, PyParallel, PyPerpendicular)
 
@@ -52,8 +52,8 @@ def Correctness():
 setup = """
 import numpy as np
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.LMT.Sphere import FieldsStructured as LMTCppFields
-from PyMieSim.GLMT.Sphere import FieldsStructured as GLMTCppFields
+from PyMieSim.LMT.Sphere.Structured import Fields as LMTCppFields
+from PyMieSim.GLMT.Sphere.Structured import Fields as GLMTCppFields
 from PyMieSim.Source import PlaneWave
 
 beam = PlaneWave(Wavelength=1e-6)
@@ -67,7 +67,7 @@ args2 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1, beam._BSC_, beam.MaxOrder)
 
 
 
-"""
+""" 
 
 if __name__=='__main__':
     Speed(setup)
@@ -76,9 +76,7 @@ if __name__=='__main__':
 
 """
 
-0.16491000000678468
-
-0.130888280000363
+0.0003437309933360666
 """
 
 

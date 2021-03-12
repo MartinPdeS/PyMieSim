@@ -81,7 +81,7 @@ class PlaneWave(BaseSource):
 
         self._BSC_ = BSC.reset_index(level=[0,1]).to_numpy().astype(complex)
 
-        self.MaxOrder = MaxOrder#int(self._BSC_[:,0].max().real)
+        self.MaxOrder = MaxOrder[1]#int(self._BSC_[:,0].max().real)
 
         return BSC
 
@@ -243,7 +243,7 @@ class GaussianBeam(BaseSource):
 
         self._BSC_ = BSC.reset_index(level=[0,1]).to_numpy().astype(complex)
 
-        self.MaxOrder = MaxOrder#int(self._BSC_[:,0].max().real)
+        self.MaxOrder = MaxOrder[1]#int(self._BSC_[:,0].max().real)
 
         return BSC
 
