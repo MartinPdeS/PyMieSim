@@ -27,12 +27,7 @@ CoefficientAnBn(const double &SizeParam,  // ref: https://doi.org/10.1364/AO.44.
 
   for (auto order = 1; order < MaxOrder+1; order++)
   {
-    PsiAlpha  = Psi(order, alpha);
-    PsiBeta   = Psi(order, beta);
-    PsiPBeta  = Psi_p(order, beta);
-    PsiPAlpha = Psi_p(order, alpha);
-    XiAlpha   = Xi(order, alpha);
-    XiPAlpha  = Xi_p(order, alpha);
+
 
 
 

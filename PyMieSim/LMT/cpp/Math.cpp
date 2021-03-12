@@ -3,21 +3,31 @@
 #include <complex>
 #include <tuple>
 #include <boost/math/special_functions/legendre.hpp>
+#include <boost/math/special_functions/bessel_prime.hpp>
 
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
 
-#include <pybind11/pybind11.h>
-#include <pybind11/complex.h>
-#include <pybind11/numpy.h>
 
-namespace py = pybind11;
-
-typedef py::array_t<double> ndarray;
-typedef py::array_t<complex128> Cndarray;
 
 #define PI (double)3.14159265358979323846264338
+
+int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
+
+double Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
+
+double Jn(int order, double x){ return boost::math::cyl_bessel_j(order, x); }
+
+double Yn_p(int order, double x){ return boost::math::cyl_neumann_prime(order, x); }
+
+double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
+
+complex128 Hn(int order, double x){ return Jn(order,x) + complex128(0.0,1.0) * Yn(order,x); }
+
+complex128 Hn_p(int order, double x){ return Jn_p(order,x) + complex128(0.0,1.0) * Yn_p(order,x); }
+
+
 
 std::vector<double>
 linespace(const double start,
