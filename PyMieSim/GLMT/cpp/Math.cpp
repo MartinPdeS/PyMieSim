@@ -1,7 +1,13 @@
 #include <iostream>
 #include <complex>
+#include <vector>
+#include <tuple>
 
+typedef std::vector<double> Vec;
+typedef std::complex<double> complex128;
+typedef std::vector<complex128> iVec;
 
+#define PI (double)3.14159265358979323846264338
 
 std::vector<double>
 linespace(const double start,

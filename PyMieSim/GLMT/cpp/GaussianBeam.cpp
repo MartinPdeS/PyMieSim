@@ -1,24 +1,30 @@
+#include "Math.cpp"
+#include "Special.cpp"
 #include <iostream>
+
 #include <stdio.h>
 #include <tgmath.h>
 #include <math.h>
 #include <complex.h>
+#include <boost/math/quadrature/trapezoidal.hpp>
+
+
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
 #include <pybind11/numpy.h>
+
 
 namespace py = pybind11;
 
 typedef std::vector<double> Vec;
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
-typedef std::map<int, double> dict;
-typedef py::array_t<double> ndarray;
+typedef py::array_t<double> ndarray; 
 typedef py::array_t<complex128> Cndarray;
-#define j complex128(0.0,1.0)
+#define J complex128(0.0,1.0)
 
 #define EPS 1e-10
-#define Correction 1.//2.*exp(j*1.0472351410849077)
+#define Correction 1.//2.*exp(J*1.0472351410849077)
 
 using boost::math::quadrature::trapezoidal;
 using boost::math::constants::two_pi;
@@ -39,11 +45,12 @@ template <typename func_type>
 complex128 simpson_rule(func_type f,
                         double a,
                         double b,
-                        int n
+                        int n // Number of intervals
                         )
 {
     double h = (b - a) / n;
 
+    // Internal sample points, there should be n - 1 of them
     complex128 sum_odds = 0.0;
     for (int i = 1; i < n; i += 2)
     {
@@ -70,7 +77,7 @@ Q_(double r,
    iVec result;
    for (auto const& angle: theta)
    {
-     result.push_back(1./( 2. * ( r * cos(angle) - Offset[2]/k )/(k * w0*w0 ) - j ) ) ;
+     result.push_back(1./( 2. * ( r * cos(angle) - Offset[2]/k )/(k * w0*w0 ) - J ) ) ;
    }
    return result;
 }
@@ -84,14 +91,14 @@ Q(double r,
   Vec    Offset,
   double k)
 {
-  return 1./( 2. * ( r * cos(theta) - Offset[2]/k)/(k * w0*w0 ) - j )  ;
+  return 1./( 2. * ( r * cos(theta) - Offset[2]/k)/(k * w0*w0 ) - J )  ;
 }
 
 
 complex128
 ImSimpson(int m, complex128 beta)
 {
- auto func = [=](double angle){return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
+ auto func = [=](double angle){return exp( beta * cos(angle)  - J *  (double)m * angle) ;};
 
  complex128 integral = simpson_rule(func,  0.0, two_pi<double>(), 1000);
 
@@ -101,7 +108,7 @@ ImSimpson(int m, complex128 beta)
 complex128
 ImTrapz(int m, complex128 beta)
 {
- auto func = [=](double angle)->complex128{return exp( beta * cos(angle)  - j *  (double)m * angle) ;};
+ auto func = [=](double angle)->complex128{return exp( beta * cos(angle)  - J *  (double)m * angle) ;};
 
  complex128 integral = trapezoidal(func, 0.0, two_pi<double>(), EPS);
 
@@ -115,7 +122,7 @@ ImHat(double     m,
       complex128 beta,
       double     xi)
 {
-  return ImTrapz(m, beta) * exp(-beta - j * m * xi ) ;
+  return ImTrapz(m, beta) * exp(-beta - J * m * xi ) ;
 }
 
 
@@ -125,9 +132,9 @@ complex128
 I_0(argument arg)
 {
 
-  complex128 term0 = pow(-j, arg.n) * arg.rhon*arg.rhon,
+  complex128 term0 = pow(-J, arg.n) * arg.rhon*arg.rhon,
              term1 = (2. * (double)arg.n + 1.) * _Psi(0,arg.n, arg.rhon),
-             term2 = exp(-j * arg.Offset[2]);
+             term2 = exp(-J * arg.Offset[2]);
 
   return term0 / term1 * term2;
 }
@@ -141,8 +148,8 @@ complex128 I_4(argument arg){ return 4. * arg.Q * arg.s*arg.s * arg.Offset[1] * 
 complex128
 I_1(argument arg)
 {
-  complex128 term0 = j * arg.Q * arg.s*arg.s * pow(arg.R0 - arg.rhon * sin(arg.angle), 2. ),
-             term2 = j * arg.rhon * cos(arg.angle),
+  complex128 term0 = J * arg.Q * arg.s*arg.s * pow(arg.R0 - arg.rhon * sin(arg.angle), 2. ),
+             term2 = J * arg.rhon * cos(arg.angle),
              term3 = NPnm(arg.n, abs(arg.m), cos(arg.angle)) * sin(arg.angle) ;
 
   return arg.Q * exp(term0 + term2 ) * term3;
@@ -162,7 +169,7 @@ Bnm_integrand(double angle, argument args0)
 
   args0.angle = angle;
 
-  complex128 beta = -2. * j * args0.Q * args0.s*args0.s * args0.R0 * args0.rhon * sin(angle);
+  complex128 beta = -2. * J * args0.Q * args0.s*args0.s * args0.R0 * args0.rhon * sin(angle);
 
   complex128 term0 =  ImHat(args0.m+1, beta, args0.xi) - ImHat(args0.m-1, beta, args0.xi);
 
@@ -188,7 +195,7 @@ Anm_integrand(double angle, argument args0)
 
   args0.angle = angle;
 
-  complex128 beta = -2. * j * args0.Q * args0.s*args0.s * args0.R0 * args0.rhon * sin(angle);
+  complex128 beta = -2. * J * args0.Q * args0.s*args0.s * args0.R0 * args0.rhon * sin(angle);
 
   complex128 term0 =  ImHat(args0.m+1, beta, args0.xi) + ImHat(args0.m-1, beta, args0.xi);
 

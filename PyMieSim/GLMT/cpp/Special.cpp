@@ -8,7 +8,7 @@
 typedef std::complex<double> complex128;
 
 
-#define j complex128(0.0,1.0)
+#define J complex128(0.0,1.0)
 #define PI (double) 3.14159265358979323846264338
 
 
@@ -97,9 +97,9 @@ double Yn_p(int order, double x){ return boost::math::cyl_neumann_prime(order, x
 
 double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
 
-complex128 Hn(int order, double x){ return Jn(order,x) + j * Yn(order,x); }
+complex128 Hn(int order, double x){ return Jn(order,x) + J * Yn(order,x); }
 
-complex128 Hn_p(int order, double x){ return Jn_p(order,x) + j * Yn_p(order,x); }
+complex128 Hn_p(int order, double x){ return Jn_p(order,x) + J * Yn_p(order,x); }
 
 double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
 
@@ -118,8 +118,8 @@ complex128 _Psi_p(int type, int n, double x)
   if (type == 0){return (complex128) (x * jn_p(n, x) + jn(n, x));}
   if (type == 1){return (complex128) jn_p(n, x);}
   if (type == 2){return (complex128) yn_p(n, x);}
-  if (type == 3){return (complex128) jn_p(n, x) + j * yn_p(n, x);}
-  if (type == 4){return (complex128) jn_p(n, x) - j * yn_p(n, x);}
+  if (type == 3){return (complex128) jn_p(n, x) + J * yn_p(n, x);}
+  if (type == 4){return (complex128) jn_p(n, x) - J * yn_p(n, x);}
 
   return 0.;
 }
@@ -129,8 +129,8 @@ complex128 _Psi(int type, int n, double x)
   if (type == 0){return (complex128) x * jn(n, x) ;}
   if (type == 1){return (complex128) jn(n, x) ;}
   if (type == 2){return (complex128) yn(n, x) ;}
-  if (type == 3){return (complex128) _Psi(1, n, x) + j * _Psi(2, n, x) ;}
-  if (type == 4){return (complex128) _Psi(1, n, x) - j * _Psi(2, n, x) ;}
+  if (type == 3){return (complex128) _Psi(1, n, x) + J * _Psi(2, n, x) ;}
+  if (type == 4){return (complex128) _Psi(1, n, x) - J * _Psi(2, n, x) ;}
 
   return 0.;
 }
@@ -202,7 +202,7 @@ SymetricPinmTaunm(const int    Length,
   taun[2] = 3. * (mu*mu -su*su );//3. *cos(2*acos(mu));
 
   double n = 0.;
-  for (long unsigned i = 3; i < Length; i++)
+  for (auto i = 3; i < Length; i++)
       {
        n = (double)i;
        pin[i] = ( (2. * n + 1.) * mu * pin[i-1] - (n + 1.) * pin[i-2] ) / n;
