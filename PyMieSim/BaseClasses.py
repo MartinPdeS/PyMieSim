@@ -111,7 +111,8 @@ class BaseDetector(object):
         """Return the footprint of the scattererd light coupling with the
         detector as computed as:
 
-        :math:`\\mathcal{F} \\Big\{ | \\iint_{\\Omega} \\Phi_{det} \, . \, \\Psi_{scat}^* \,  d \\Omega|^2 \\Big\}`
+        :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
+         \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.
 
         where :math:`\Phi_{det}` is the capturing field of the detector and
         :math:`\Psi_{scat}` is the scattered field.
@@ -305,7 +306,7 @@ class BaseScatterer(object):
     def FarField(self, Num: int = 200):
         """Method Compute scattering Far Field.
 
-        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`.
+        Fields = :math:`\\Big\{ E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2 \\Big\}`.
 
         The Fields are up to a constant phase value: :math:`\\exp{(-i k r )}`
 
@@ -369,24 +370,6 @@ class BaseScatterer(object):
         return SPF(Parent=self, Num=Num)
 
 
-    def Footprint(self, Detector):
-        """Method return the scattering footprint of the scatterer defined as.
-
-        :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
-         \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.
-
-        Parameters
-        ----------
-        Detector : type
-            Description of parameter `Detector`.
-
-        Returns
-        -------
-        type
-            Description of returned object.
-
-        """
-        return GetFootprint(Scatterer = self, Detector = Detector)
 
 
 
