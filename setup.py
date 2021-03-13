@@ -9,6 +9,7 @@ import os
 import sys
 from shutil import rmtree
 from setuptools import setup, Extension
+import numpy
 #from Cython.Distutils import build_ext
 
 from setuptools import find_packages, setup, Command
@@ -83,7 +84,7 @@ link_args=["-std=c++14",
 ext_modules = [
                 Extension(name               = "PyMieSim._Coupling",
                           sources            = ["PyMieSim/Coupling.pyx"],
-                          #include_dirs        = [get_numpy_include()],
+                          include_dirs        = [numpy.get_include()],
                           language            = "c++",
                           define_macros       = macro,
                           extra_compile_args  = compile_args,
