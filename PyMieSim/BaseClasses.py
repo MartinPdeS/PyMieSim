@@ -86,10 +86,39 @@ class BaseDetector(object):
 
     """
     def Coupling(self, Scatterer):
+        """Return the value of the scattererd light coupling as computed as:
+        :math:`|\\int_{\\Omega} \Phi \\Psi^*  d \\Omega|^2`
+
+        Parameters
+        ----------
+        Scatterer : :class`Scatterer`:
+            Scatterer instance (sphere, cylinder, ...).
+
+        Returns
+        -------
+        :class`float`:
+            Value of the coupling.
+
+        """
         return Coupling(Scatterer = Scatterer, Detector = self)
 
 
     def Footprint(self, Scatterer, Num = 200):
+        """Return the footprint of the scattererd light coupling with the
+        detector as computed as:
+        :math:`\\mathcal{F} \\Big{|\\int_{\\Omega} \Phi \\Psi^*  d \\Omega|^2\\Big}`
+
+        Parameters
+        ----------
+        Scatterer : :class`Scatterer`:
+            Scatterer instance (sphere, cylinder, ...).
+
+        Returns
+        -------
+        :class`Footprint`:
+            Dictionnary subclass with all pertienent information.
+
+        """
         return Footprint(Scatterer = Scatterer, Detector = self, Num=Num)
 
 

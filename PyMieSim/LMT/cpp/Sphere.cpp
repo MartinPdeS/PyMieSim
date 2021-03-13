@@ -51,15 +51,14 @@ LowFrequencyMie_ab(const double Index,
 
 
 void
-HighFrequencyMie_ab(const double               m,
+HighFrequencyMie_ab(const double               Index,
                     const double               SizeParam,
                     const long unsigned int    OrderMax,
-                    const                      Vec n,
                     complex128*                an,
                     complex128*                bn)
 
 {
-  const double mx = m * SizeParam,
+  const double mx = Index * SizeParam,
                temp  = sqrt(0.5 * PI * SizeParam);
 
   const long unsigned int nmx = (long unsigned int) ( std::max( OrderMax, (long unsigned int) abs(mx) ) + 16 );
@@ -75,8 +74,8 @@ HighFrequencyMie_ab(const double               m,
 
   for (long unsigned int i = 0; i < OrderMax; i++)
   {
-    px.push_back(  temp * jn( n[i], SizeParam ) );
-    chx.push_back(-temp * yn( n[i], SizeParam ) );
+    px.push_back(  temp * jn( (double)(i+1), SizeParam ) );
+    chx.push_back(-temp * yn( (double)(i+1), SizeParam ) );
 
     p1x.push_back(px[i]);
     ch1x.push_back(chx[i]);
@@ -86,8 +85,8 @@ HighFrequencyMie_ab(const double               m,
 
     D.push_back(Dn[i+1]);
 
-    da.push_back( D[i] / m + n[i] / SizeParam );
-    db.push_back( m * D[i] + n[i] / SizeParam );
+    da.push_back( D[i] / Index + (double)(i+1) / SizeParam );
+    db.push_back( Index * D[i] + (double)(i+1) / SizeParam );
 
     an[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
     bn[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
@@ -106,14 +105,12 @@ CoefficientAnBn(const double &Diameter,
                 complex128   *an,
                 complex128   *bn)
 {
-  Vec n, n2;
-  double SizeParam = GetSizeParameter(Diameter, Wavelength, nMedium);
 
-  std::tie(n, n2) = Arrange(1, MaxOrder + 1);
+  double SizeParam = GetSizeParameter(Diameter, Wavelength, nMedium);
 
   if (SizeParam < 0.5){LowFrequencyMie_ab(Index, SizeParam, an, bn); }
 
-  else{HighFrequencyMie_ab(Index, SizeParam, MaxOrder, n, an, bn);}
+  else{HighFrequencyMie_ab(Index, SizeParam, MaxOrder, an, bn);}
 }
 
 

@@ -5,10 +5,10 @@
 #include <pybind11/complex.h>
 #include <pybind11/numpy.h>
 
-namespace py = pybind11; 
+namespace py = pybind11;
 
 typedef std::complex<double> complex128;
-
+  
 typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray ;
 
