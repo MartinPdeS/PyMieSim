@@ -221,7 +221,9 @@ class BaseScatterer(object):
         """
 
         self._Qsca, self._Qext, self._Qabs = GetEfficiencies(Index         = self.Index,
-                                                             SizeParameter = self.SizeParam)
+                                                             Diameter      = self.Diameter,
+                                                             Wavelength    = self.Source.Wavelength,
+                                                             nMedium       = self.nMedium)
 
 
     def S1S2(self, Num=200):

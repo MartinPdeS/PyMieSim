@@ -69,7 +69,9 @@ class ScattererSet(object):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
                 Qsca, Qext, Qabs = GetEfficiencies(Index         = RI,
-                                                   SizeParameter = SizeParam);
+                                                   Diameter      = Diameter,
+                                                   Wavelength    = self.Source.Wavelength,
+                                                   nMedium       = self.nMedium)
 
                 df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
 

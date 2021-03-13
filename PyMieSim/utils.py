@@ -44,8 +44,7 @@ def GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
         lib = lib.Unstructured
 
     if Scatterer.Source.Polarization:
-        return lib.Fields(**kwarg,
-                            Polarization = Scatterer.Source.Polarization.Radian )
+        return lib.Fields(**kwarg, Polarization = Scatterer.Source.Polarization.Radian )
     else:
         return lib.FieldsUnpolarized(**kwarg)
 

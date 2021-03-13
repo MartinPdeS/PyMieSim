@@ -51,32 +51,31 @@ LowFrequencyMie_ab(const double Index,
 
 void
 HighFrequencyMie_ab(const double               m,
-                    const double               x,
+                    const double               SizeParam,
                     const long unsigned int    OrderMax,
                     const                      Vec n,
                     complex128*                an,
                     complex128*                bn)
 
 {
-  const double mx = m * x;
-  const double temp  = sqrt(0.5 * PI * x);
+  const double mx = m * SizeParam,
+               temp  = sqrt(0.5 * PI * SizeParam);
+
   const long unsigned int nmx = (long unsigned int) ( std::max( OrderMax, (long unsigned int) abs(mx) ) + 16 );
-  iVec gsx, gs1x;
-  iVec px, chx, p1x, ch1x, D, da, db;
+
+  iVec gsx, gs1x, px, chx, p1x, ch1x, D, da, db;
+
   Vec Dn = Vec(nmx);
 
-  p1x.push_back( sin(x) );
-  ch1x.push_back( cos(x) );
+  p1x.push_back( sin(SizeParam) );
+  ch1x.push_back( cos(SizeParam) );
 
-  for (double i = nmx - 1; i > 1; i--)
-  {
-      Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );
-  }
+  for (double i = nmx - 1; i > 1; i--){  Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );}
 
   for (long unsigned int i = 0; i < OrderMax; i++)
   {
-    px.push_back(  temp * jn( n[i], x ) );
-    chx.push_back(-temp * yn( n[i], x ) );
+    px.push_back(  temp * jn( n[i], SizeParam ) );
+    chx.push_back(-temp * yn( n[i], SizeParam ) );
 
     p1x.push_back(px[i]);
     ch1x.push_back(chx[i]);
@@ -86,8 +85,8 @@ HighFrequencyMie_ab(const double               m,
 
     D.push_back(Dn[i+1]);
 
-    da.push_back( D[i] / m + n[i] / x );
-    db.push_back( m * D[i] + n[i] / x );
+    da.push_back( D[i] / m + n[i] / SizeParam );
+    db.push_back( m * D[i] + n[i] / SizeParam );
 
     an[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
     bn[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
@@ -147,37 +146,32 @@ MiePiTau(const double  mu,
 static double
 C_Qsca(complex128    *an,
        complex128    *bn,
-       const double   SizeParam,
-       const Vec      n)
+       const double   SizeParam)
 
 {
-     int MaxOrder = GetMaxOrder(SizeParam);
-     double Qsca = 2. / (SizeParam * SizeParam);
-     complex128 temp;
+     int        MaxOrder = GetMaxOrder(SizeParam);
+     double     Qsca     = 2. / (SizeParam * SizeParam);
+     complex128 temp     = 0.;
+
      for(auto it = 0; it < MaxOrder; ++it)
      {
-       temp += (2.*n[it]+1) * (   std::real( an[it] ) * std::real( an[it] )
-                                + std::imag( an[it] ) * std::imag( an[it] )
-                                + std::real( bn[it] ) * std::real( bn[it] )
-                                + std::imag( bn[it] ) * std::imag( bn[it] ) );
+       temp += (2.* (double)(it+1) + 1.) * (   std::real( an[it] ) * std::real( an[it] )
+                                             + std::imag( an[it] ) * std::imag( an[it] )
+                                             + std::real( bn[it] ) * std::real( bn[it] )
+                                             + std::imag( bn[it] ) * std::imag( bn[it] ) );
      }
      return Qsca * std::real(temp);
 }
 
 static double
-C_Qext(complex128    *an,
-       complex128    *bn,
-       const double   SizeParam,
-       const Vec      n)
-
+C_Qext(complex128 *an, complex128 *bn, double &SizeParam)
 {
-     int MaxOrder = GetMaxOrder(SizeParam);
-     double Qsca = 2. / (SizeParam * SizeParam);
-     complex128 temp;
-     for(auto it = 0; it < MaxOrder; ++it)
-     {
-       temp += (2.*n[it]+1) * ( std::real( an[it] + an[it] ) );
-     }
+     int        MaxOrder = GetMaxOrder(SizeParam);
+     double     Qsca     = 2. / (SizeParam * SizeParam);
+     complex128 temp     = 0.;
+
+     for(auto it = 0; it < MaxOrder; ++it){ temp += ( 2.*(double)(it+1) + 1.) * ( std::real( an[it] + an[it] ) ); }
+
      return Qsca * std::real(temp);
 }
 
@@ -190,29 +184,26 @@ Efficiencies(const double  Diameter,
 
 {
 
-    Vec n, n2;
+    double      SizeParam = GetSizeParameter(Diameter, Wavelength, nMedium),
+                Qsca      = 0.,
+                Qext      = 0.,
+                Qabs      = 0.;
 
-    double SizeParam = GetSizeParameter(Diameter, Wavelength, nMedium),
-           Qsca      = 0.,
-           Qext      = 0.,
-           Qabs      = 0.;
-
-    int MaxOrder = GetMaxOrder(SizeParam);
-
-    std::tie(n, n2) = Arrange(1, MaxOrder + 1);
+    int         MaxOrder = GetMaxOrder(SizeParam);
 
     complex128 *an     = (complex128*) malloc(sizeof(complex128)*MaxOrder),
                *bn     = (complex128*) malloc(sizeof(complex128)*MaxOrder);
 
     CoefficientAnBn(Diameter, Wavelength, Index, nMedium, MaxOrder, an, bn);
 
-    Qsca = C_Qsca(an, bn, SizeParam, n);
+    Qsca = C_Qsca(an, bn, SizeParam);
 
-    Qext = C_Qext(an, bn, SizeParam, n);
+    Qext = C_Qext(an, bn, SizeParam);
 
     Qabs = Qext - Qsca;
-    free(an);
-    free(bn);
+
+    free(an); free(bn);
+
     return std::make_tuple(Qsca, Qext, Qabs);
 }
 
@@ -223,13 +214,13 @@ GetS1S2(const double            Index,
         const double            Wavelength,
         const double            nMedium,
         double                 *PhiPtr,
-        const long unsigned int lenght,
+        const long unsigned int Philenght,
         complex128*             s1s2)
 
 {
 
-    iVec S1   = iVec(lenght),
-         S2   = iVec(lenght);
+    iVec S1   = iVec(Philenght),
+         S2   = iVec(Philenght);
 
     int MaxOrder = GetMaxOrder( GetSizeParameter(Diameter, Wavelength, nMedium) );
 
@@ -238,12 +229,12 @@ GetS1S2(const double            Index,
                *pin       = (complex128*) malloc(sizeof(complex128)*MaxOrder),
                *taun      = (complex128*) malloc(sizeof(complex128)*MaxOrder),
                *temp0     = &s1s2[0],
-               *temp1     = &s1s2[lenght],
+               *temp1     = &s1s2[Philenght],
                 prefactor = 0.;
 
     CoefficientAnBn(Diameter, Wavelength, Index, nMedium, MaxOrder, an, bn);
 
-    for (long unsigned int i = 0; i < lenght; i++){
+    for (long unsigned int i = 0; i < Philenght; i++){
 
         MiePiTau(cos( PhiPtr[i]-PI/2 ), MaxOrder, pin, taun);
 
@@ -251,8 +242,8 @@ GetS1S2(const double            Index,
              prefactor = (double) ( 2 * (k+1) + 1 ) / ( (k+1) * ( (k+1) + 1 ) );
             *temp0    += prefactor * ( an[k] * pin[k] +  bn[k] * taun[k] );
             *temp1    += prefactor * ( an[k] * taun[k] + bn[k] * pin[k] ) ;
-
           }
+
     temp0++ ;
     temp1++ ;
     }
@@ -275,13 +266,11 @@ S1S2(const double  Index,
 {
     info        PhiBuffer = Phi.request();
 
-    double     *PhiPtr    = (double *) PhiBuffer.ptr;
+    double     *PhiPtr    = (double *) PhiBuffer.ptr,
+                prefactor = 0.;
 
-    int         lenght    = PhiBuffer.size,
+    int         Philenght = PhiBuffer.size,
                 MaxOrder  = GetMaxOrder( GetSizeParameter(Diameter, Wavelength, nMedium) );
-
-    Vec         n,
-                n2;
 
     complex128 *an      = (complex128*) malloc(sizeof(complex128)*MaxOrder),
                *bn      = (complex128*) malloc(sizeof(complex128)*MaxOrder),
@@ -290,29 +279,28 @@ S1S2(const double  Index,
                 temp0   = 0.,
                 temp1   = 0.;
 
-    Cndarray   S1       = ndarray(lenght,0),
-               S2       = ndarray(lenght,0);
+    Cndarray   S1       = ndarray(Philenght,0),
+               S2       = ndarray(Philenght,0);
 
     auto       S1_data  = S1.mutable_data(),
                S2_data  = S2.mutable_data();
 
-    std::tie(n, n2) = Arrange(1, MaxOrder + 1);
-
     CoefficientAnBn(Diameter, Wavelength, Index, nMedium, MaxOrder, an, bn);
 
-    for (auto i = 0; i < lenght; i++){
+    for (auto i = 0; i < Philenght; i++){
 
         MiePiTau(cos( PhiPtr[i]-PI/2 ), MaxOrder, pin, taun);
 
         for (auto k = 0; k < MaxOrder ; k++){
-            temp0 += n2[k] * ( an[k] * pin[k] +  bn[k] * taun[k] );
-            temp1 += n2[k] * ( an[k] * taun[k] + bn[k] * pin[k]  );
+            prefactor = (double) ( 2 * (k+1) + 1 ) / ( (k+1) * ( (k+1) + 1 ) );
+            temp0    += prefactor * ( an[k] * pin[k] +  bn[k] * taun[k] );
+            temp1    += prefactor * ( an[k] * taun[k] + bn[k] * pin[k]  );
           }
+
         S1_data[i] = temp0;
         S2_data[i] = temp1;
 
         temp0 = 0.; temp1=0.;
-
     }
     free(an);
     free(bn);
@@ -337,14 +325,11 @@ FieldsStructured(double     Index,
                    double     R)
 {
 
-
-
   info        PhiBuffer    = Phi.request(),
               ThetaBuffer  = Theta.request();
 
   int         PhiLength    = PhiBuffer.shape[0],
-              ThetaLength  = ThetaBuffer.shape[0],
-              w            = 0;
+              ThetaLength  = ThetaBuffer.shape[0];
 
   Cndarray    EPhi         = Cndarray(PhiLength * ThetaLength),
               ETheta       = Cndarray(PhiLength * ThetaLength);
@@ -392,11 +377,10 @@ FieldsUnstructured(double     Index,
               ThetaBuffer  = Theta.request();
 
   int         PhiLength    = PhiBuffer.shape[0],
-              ThetaLength  = ThetaBuffer.shape[0],
-              w            = 0;
+              ThetaLength  = ThetaBuffer.shape[0];
 
-  Cndarray    EPhi         = Cndarray(PhiLength * ThetaLength),
-              ETheta       = Cndarray(PhiLength * ThetaLength);
+  Cndarray    EPhi         = Cndarray(PhiLength),
+              ETheta       = Cndarray(PhiLength);
 
   info        buf0         = EPhi.request(),
               buf1         = ETheta.request();
@@ -430,13 +414,11 @@ FieldsStructuredUnpolarized(double     Index,
                             double     E0,
                             double     R)
 {
-
   info        PhiBuffer    = Phi.request(),
               ThetaBuffer  = Theta.request();
 
   int         PhiLength    = PhiBuffer.shape[0],
-              ThetaLength  = ThetaBuffer.shape[0],
-              w            = 0;
+              ThetaLength  = ThetaBuffer.shape[0];
 
   Cndarray    EPhi         = Cndarray(PhiLength * ThetaLength),
               ETheta       = Cndarray(PhiLength * ThetaLength);
@@ -478,15 +460,14 @@ FieldsUnstructuredUnpolarized(double     Index,
                               double     E0,
                               double     R)
 {
-
   info        PhiBuffer    = Phi.request(),
               ThetaBuffer  = Theta.request();
 
   int         PhiLength    = PhiBuffer.shape[0],
               ThetaLength  = ThetaBuffer.shape[0];
 
-  Cndarray    EPhi         = Cndarray(PhiLength * ThetaLength),
-              ETheta       = Cndarray(PhiLength * ThetaLength);
+  Cndarray    EPhi         = Cndarray(PhiLength),
+              ETheta       = Cndarray(PhiLength);
 
   info        buf0         = EPhi.request(),
               buf1         = ETheta.request();

@@ -54,6 +54,7 @@ class PrintingTest(TestCase):
                           GammaOffset  = 0,
                           PhiOffset    = 0,
                           CouplingMode = 'Centered')
+
         print('Test 1: passed')
 
     def test02(self):

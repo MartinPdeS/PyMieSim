@@ -83,7 +83,7 @@ link_args=["-std=c++14",
 ext_modules = [
                 Extension(name               = "PyMieSim._Coupling",
                           sources            = ["PyMieSim/Coupling.pyx"],
-                          include_dirs        = [get_numpy_include()],
+                          #include_dirs        = [get_numpy_include()],
                           language            = "c++",
                           define_macros       = macro,
                           extra_compile_args  = compile_args,

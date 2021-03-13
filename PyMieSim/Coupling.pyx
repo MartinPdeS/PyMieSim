@@ -72,7 +72,7 @@ cpdef Coupling(Scatterer, Detector):
              return Para + Perp
 
 
-             
+
 
 cpdef IntensityPointCoupling(Scalar0,
                             Parallel,
@@ -115,6 +115,7 @@ cpdef AmplitudePointCoupling(Scalar0,
                              Filter = None):
 
     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
+    
     else: ParaFiltering = 1;  PerpFiltering = 1
 
     Para = np.abs( np.sum( Scalar0 * Parallel * SinMesh) )**2 * dOmega**2

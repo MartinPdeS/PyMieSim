@@ -1,12 +1,11 @@
 #include "Math.cpp"
-#include "Functions.cpp"
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
 #include <pybind11/numpy.h>
 
-namespace py = pybind11;
+namespace py = pybind11; 
 
 typedef std::complex<double> complex128;
 
@@ -30,7 +29,7 @@ PYBIND11_MODULE(Sphere, module) {
                py::arg("Diameter"),
                py::arg("Wavelength"),
                py::arg("nMedium"),
-               py::arg("Phi"), 
+               py::arg("Phi"),
                py::arg("Theta"),
                py::arg("Polarization"),
                py::arg("E0"),
