@@ -30,9 +30,11 @@ class BaseSource(object):
 
 
 class MeshProperty(object):
-    """Short summary.
+    """Base class for :class:`Detector` class used to define the properties
+    of the angular mesh for Far-Field computations.
 
     """
+
     def __init__(self):
         pass
 
@@ -79,7 +81,10 @@ class MeshProperty(object):
 
 
 class BaseDetector(object):
+    """Base class for :class:`Detector` class used to define the properties
+    of the angular mesh for Far-Field computations.
 
+    """
     def Coupling(self, Scatterer):
         return Coupling(Scatterer = Scatterer, Detector = self)
 

@@ -3,6 +3,10 @@
 #include <tgmath.h>
 #include <math.h>
 #include <complex.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/complex.h>
+#include <pybind11/numpy.h>
+
 namespace py = pybind11;
 
 typedef std::vector<double> Vec;
@@ -35,12 +39,11 @@ template <typename func_type>
 complex128 simpson_rule(func_type f,
                         double a,
                         double b,
-                        int n // Number of intervals
+                        int n
                         )
 {
     double h = (b - a) / n;
 
-    // Internal sample points, there should be n - 1 of them
     complex128 sum_odds = 0.0;
     for (int i = 1; i < n; i += 2)
     {
