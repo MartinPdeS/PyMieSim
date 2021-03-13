@@ -25,12 +25,10 @@ PyMieSim.egg-info/SOURCES.txt
 PyMieSim.egg-info/dependency_links.txt
 PyMieSim.egg-info/requires.txt
 PyMieSim.egg-info/top_level.txt
-PyMieSim/GLMT/cpp/Functions.cpp
 PyMieSim/GLMT/cpp/GaussianBeam.cpp
 PyMieSim/GLMT/cpp/Interface.cpp
 PyMieSim/GLMT/cpp/Math.cpp
 PyMieSim/GLMT/cpp/Special.cpp
 PyMieSim/GLMT/cpp/utils.cpp
-PyMieSim/LMT/cpp/Functions.cpp
 PyMieSim/LMT/cpp/Interface.cpp
 PyMieSim/LMT/cpp/Math.cpp

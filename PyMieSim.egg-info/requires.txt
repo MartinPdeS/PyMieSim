@@ -1,7 +1,7 @@
-ai.cs
-cartopy
-geos
-matplotlib
-mayavi
-pandas
 scipy
+matplotlib
+pandas
+mayavi
+ai.cs
+geos
+cartopy

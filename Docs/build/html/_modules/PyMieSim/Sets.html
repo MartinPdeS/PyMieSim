@@ -84,8 +84,14 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory.html">Theoretical background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
+</ul>
+
             
           
         </div>
@@ -221,7 +227,9 @@
                 <span class="n">SizeParam</span> <span class="o">=</span>  <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">Diameter</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span>
 
                 <span class="n">Qsca</span><span class="p">,</span> <span class="n">Qext</span><span class="p">,</span> <span class="n">Qabs</span> <span class="o">=</span> <span class="n">GetEfficiencies</span><span class="p">(</span><span class="n">Index</span>         <span class="o">=</span> <span class="n">RI</span><span class="p">,</span>
-                                                   <span class="n">SizeParameter</span> <span class="o">=</span> <span class="n">SizeParam</span><span class="p">);</span>
+                                                   <span class="n">Diameter</span>      <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+                                                   <span class="n">Wavelength</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
+                                                   <span class="n">nMedium</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">)</span>
 
                 <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">Diameter</span><span class="p">,</span> <span class="n">RI</span><span class="p">),</span><span class="s1">&#39;Qsca&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
 

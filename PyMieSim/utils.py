@@ -497,23 +497,6 @@ def PlotField(Theta, Phi, Parallel, Perpendicular):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 """ Ref: https://optiwave.com/optifdtd-manuals/fdtd-far-field-transform/"""
 
 

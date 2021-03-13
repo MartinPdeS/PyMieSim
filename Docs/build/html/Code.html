@@ -39,7 +39,9 @@
 
     
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="Examples.html" />
+    <link rel="prev" title="Theoretical background" href="Theory.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,23 +86,26 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">Code</a><ul>
-<li><a class="reference internal" href="#module-PyMieSim.Scatterer">Class: Scatterering</a></li>
-<li><a class="reference internal" href="#module-PyMieSim.Source">Class: Sources</a></li>
-<li><a class="reference internal" href="#module-PyMieSim.Detector">Class: Detector</a></li>
-<li><a class="reference internal" href="#module-PyMieSim.Mesh">Class: Mesh</a></li>
-<li><a class="reference internal" href="#module-PyMieSim.Sets">Class: Sets</a></li>
-<li><a class="reference internal" href="#module-PyMieSim.Representations">Class: Representations</a></li>
-<li><a class="reference internal" href="#function-coupling">Function: Coupling</a></li>
-<li><a class="reference internal" href="#function-centeredcoupling">Function: CenteredCoupling</a></li>
-<li><a class="reference internal" href="#function-meancoupling">Function: MeanCoupling</a></li>
-<li><a class="reference internal" href="#function-footprint">Function: Footprint</a></li>
+              <p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Scatterer">Class: Scatterering</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Source">Class: Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Detector">Class: Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Mesh">Class: Mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Sets">Class: Sets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Representations">Class: Representations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-coupling">Function: Coupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-centeredcoupling">Function: CenteredCoupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-meancoupling">Function: MeanCoupling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#function-footprint">Function: Footprint</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
 </ul>
-</div>
+
             
           
         </div>
@@ -170,6 +175,180 @@
 <h1>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-PyMieSim.Scatterer">
 <span id="class-scatterering"></span><h2>Class: Scatterering<a class="headerlink" href="#module-PyMieSim.Scatterer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="PyMieSim.Scatterer.Cylinder">
+<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Cylinder</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieSim.BaseClasses.BaseSource</em>, <em>Index: float</em>, <em>IndexMedium: float = 1.0</em>, <em>MuSphere: float = 1.0</em>, <em>MuMedium: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Short summary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Diameter</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
+<dd><p class="first last">Diameter of the single scatterer in unit of meter.</p>
+</dd>
+<dt><strong>Source</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSource</span></code></span></dt>
+<dd><p class="first last">Light source object containing info on polarization and wavelength.</p>
+</dd>
+<dt><strong>Index</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
+<dd><p class="first last">Refractive index of scatterer</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Attributes:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>Area</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
+<dd><p class="first last">Mathematical 2D area of the scatterer [<span class="math notranslate nohighlight">\(\pi r^2\)</span>].</p>
+</dd>
+<dt><strong>SizeParam</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></dt>
+<dd><p class="first last">Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.FarField">
+<code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.FarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span>.</p>
+<p>The Fields are up to a constant phase value: <span class="math notranslate nohighlight">\(\exp{(-i k r )}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Num</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd><p class="first last">Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code></dt>
+<dd><p class="first last">Dictionnay sub-class with all pertient information as keys.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.Footprint">
+<code class="descname">Footprint</code><span class="sig-paren">(</span><em>Detector</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Footprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return the scattering footprint of the scatterer defined as.</p>
+<p><span class="math notranslate nohighlight">\(\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),         \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Detector</strong> <span class="classifier-delimiter">:</span> <span class="classifier">type</span></dt>
+<dd><p class="first last">Description of parameter <cite>Detector</cite>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt>type</dt>
+<dd><p class="first last">Description of returned object.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.GetEfficiencies">
+<code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
+for the scatterer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Cylinder.Qabs">
+<code class="descname">Qabs</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qabs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Absorption efficiency:
+<span class="math notranslate nohighlight">\(Q_{abs}=Q_{ext}-Q_{sca}\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Cylinder.Qext">
+<code class="descname">Qext</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extinction efficiency:
+<span class="math notranslate nohighlight">\(Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Cylinder.Qsca">
+<code class="descname">Qsca</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qsca" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering efficiency:
+<span class="math notranslate nohighlight">\(Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\)</span></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.S1S2">
+<code class="descname">S1S2</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.S1S2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> &amp; <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
+For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
+<p><span class="math notranslate nohighlight">\(S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)\)</span></p>
+<p><span class="math notranslate nohighlight">\(S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Num</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd><p class="first last">Number of point (<span class="math notranslate nohighlight">\(\phi\)</span>) to evaluate <span class="math notranslate nohighlight">\(S_1\)</span> &amp; <span class="math notranslate nohighlight">\(S_2\)</span>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#PyMieSim.Scatterer.Cylinder.S1S2" title="PyMieSim.Scatterer.Cylinder.S1S2"><code class="xref py py-class docutils literal notranslate"><span class="pre">S1S2</span></code></a></dt>
+<dd><p class="first last">Description of returned object.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.SPF">
+<code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.SPF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering phase function.</p>
+<p>SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Num</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></dt>
+<dd><p class="first last">Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#PyMieSim.Scatterer.Cylinder.SPF" title="PyMieSim.Scatterer.Cylinder.SPF"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPF</span></code></a></dt>
+<dd><p class="first last">Dictionnay subclass with all pertient information as keys.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="class">
 <dt id="PyMieSim.Scatterer.Sphere">
 <em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieSim.BaseClasses.BaseSource</em>, <em>Index: float</em>, <em>IndexMedium: float = 1.0</em>, <em>MuSphere: float = 1.0</em>, <em>MuMedium: float = 1.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere" title="Permalink to this definition">¶</a></dt>
@@ -769,7 +948,31 @@ thus dependant of the phase of the latter.</p>
 <dl class="method">
 <dt id="PyMieSim.Detector.LPmode.Coupling">
 <code class="descname">Coupling</code><span class="sig-paren">(</span><em>Scatterer</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Coupling" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the value of the scattererd light coupling as computed as:</p>
+<p><span class="math notranslate nohighlight">\(|\iint_{\Omega}  \Phi_{det} \,\, \Psi_{scat}^* \,  d \Omega|^2\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
+<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Scatterer</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code></span></dt>
+<dd><p class="first last">Scatterer instance (sphere, cylinder, …).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></dt>
+<dd><p class="first last">Value of the coupling.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Detector.LPmode.FarField">
@@ -808,7 +1011,32 @@ thus dependant of the phase of the latter.</p>
 <dl class="method">
 <dt id="PyMieSim.Detector.LPmode.Footprint">
 <code class="descname">Footprint</code><span class="sig-paren">(</span><em>Scatterer</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Footprint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the footprint of the scattererd light coupling with the
+detector as computed as:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{F} \Big\{ | \iint_{\Omega} \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega|^2 \Big\}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
+<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Scatterer</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code>.</span></dt>
+<dd><p class="first last">Scatterer instance (sphere, cylinder, …).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#PyMieSim.Detector.LPmode.Footprint" title="PyMieSim.Detector.LPmode.Footprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Footprint</span></code></a>.</dt>
+<dd><p class="first last">Dictionnary subclass with all pertienent information.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Detector.LPmode.GammaOffset">
@@ -828,12 +1056,17 @@ thus dependant of the phase of the latter.</p>
 <dl class="method">
 <dt id="PyMieSim.Detector.LPmode.Plot">
 <code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Method that plot the real part of the scattered field
+(<span class="math notranslate nohighlight">\(E_{\theta}\)</span> and <span class="math notranslate nohighlight">\(E_{\phi}\)</span>).</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Detector.LPmode.SphericalMesh">
 <code class="descname">SphericalMesh</code><span class="sig-paren">(</span><em>Sampling</em>, <em>MaxAngle</em>, <em>PhiOffset=0</em>, <em>GammaOffset=0</em>, <em>Structured=True</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.SphericalMesh" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Method that return an angular mesh (<span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\phi\)</span>)
+which is either structured or not. If not the pattern follow a
+Fibonacci mesh.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -873,7 +1106,31 @@ thus independant of the phase of the latter.</p>
 <dl class="method">
 <dt id="PyMieSim.Detector.Photodiode.Coupling">
 <code class="descname">Coupling</code><span class="sig-paren">(</span><em>Scatterer</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Coupling" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the value of the scattererd light coupling as computed as:</p>
+<p><span class="math notranslate nohighlight">\(|\iint_{\Omega}  \Phi_{det} \,\, \Psi_{scat}^* \,  d \Omega|^2\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
+<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Scatterer</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code></span></dt>
+<dd><p class="first last">Scatterer instance (sphere, cylinder, …).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></dt>
+<dd><p class="first last">Value of the coupling.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Detector.Photodiode.Filter">
@@ -883,7 +1140,32 @@ thus independant of the phase of the latter.</p>
 <dl class="method">
 <dt id="PyMieSim.Detector.Photodiode.Footprint">
 <code class="descname">Footprint</code><span class="sig-paren">(</span><em>Scatterer</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Footprint" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the footprint of the scattererd light coupling with the
+detector as computed as:</p>
+<p><span class="math notranslate nohighlight">\(\mathcal{F} \Big\{ | \iint_{\Omega} \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega|^2 \Big\}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
+<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<dt><strong>Scatterer</strong> <span class="classifier-delimiter">:</span> <span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code>.</span></dt>
+<dd><p class="first last">Scatterer instance (sphere, cylinder, …).</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><a class="reference internal" href="#PyMieSim.Detector.Photodiode.Footprint" title="PyMieSim.Detector.Photodiode.Footprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Footprint</span></code></a>.</dt>
+<dd><p class="first last">Dictionnary subclass with all pertienent information.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Detector.Photodiode.GammaOffset">
@@ -903,12 +1185,17 @@ thus independant of the phase of the latter.</p>
 <dl class="method">
 <dt id="PyMieSim.Detector.Photodiode.Plot">
 <code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Plot" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Method that plot the real part of the scattered field
+(<span class="math notranslate nohighlight">\(E_{\theta}\)</span> and <span class="math notranslate nohighlight">\(E_{\phi}\)</span>).</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Detector.Photodiode.SphericalMesh">
 <code class="descname">SphericalMesh</code><span class="sig-paren">(</span><em>Sampling</em>, <em>MaxAngle</em>, <em>PhiOffset=0</em>, <em>GammaOffset=0</em>, <em>Structured=True</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.SphericalMesh" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Method that return an angular mesh (<span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\phi\)</span>)
+which is either structured or not. If not the pattern follow a
+Fibonacci mesh.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Detector.Photodiode.StructuredFarField">
@@ -1358,6 +1645,10 @@ and refractive index.</p>
            
           </div>
           <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Theory.html" class="btn btn-neutral float-left" title="Theoretical background" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
 
   <hr/>
 

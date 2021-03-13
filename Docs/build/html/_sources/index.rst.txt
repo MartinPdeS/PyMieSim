@@ -5,3 +5,40 @@
 
 Welcome to PyMieSim's documentation!
 ====================================
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Table of contents:
+
+   Intro
+   Theory
+   Code
+   Examples
+
+
+To-Do List
+----------
+
+- Adding docstring
+- Adding monotonic metric to optimizer class
+- Comments on c++ codes
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+
+
+
+
+
+
+Author Contact Information
+--------------------------
+PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_.
+
+Email: `martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_

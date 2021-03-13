@@ -84,8 +84,14 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory.html">Theoretical background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
+</ul>
+
             
           
         </div>
@@ -190,6 +196,8 @@
                  <span class="n">MuSphere</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
                  <span class="n">MuMedium</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Index</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span> <span class="o">=</span> <span class="n">IndexMedium</span>
@@ -288,6 +296,56 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span></div></div>
 
+
+
+
+
+<div class="viewcode-block" id="Cylinder"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder">[docs]</a><span class="k">class</span> <span class="nc">Cylinder</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Short summary.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Diameter : :class:`float`</span>
+<span class="sd">        Diameter of the single scatterer in unit of meter.</span>
+<span class="sd">    Source : :class:`BaseSource`</span>
+<span class="sd">        Light source object containing info on polarization and wavelength.</span>
+<span class="sd">    Index : :class:`float`</span>
+<span class="sd">        Refractive index of scatterer</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Area : :class:`float`</span>
+<span class="sd">        Mathematical 2D area of the scatterer [:math:`\\pi r^2`].</span>
+<span class="sd">    SizeParam : :class:`float`</span>
+<span class="sd">        Size parameter of the scatterer [:math:`k r`].</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">Diameter</span><span class="p">:</span>    <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">Source</span><span class="p">:</span>      <span class="n">BaseSource</span><span class="p">,</span>
+                 <span class="n">Index</span><span class="p">:</span>       <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">IndexMedium</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">MuSphere</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">MuMedium</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Cylinder&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Index</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span> <span class="o">=</span> <span class="n">IndexMedium</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span> <span class="o">=</span> <span class="n">MuSphere</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="n">MuMedium</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span></div>
 
 
 <div class="viewcode-block" id="WMSample"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample">[docs]</a><span class="k">class</span> <span class="nc">WMSample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

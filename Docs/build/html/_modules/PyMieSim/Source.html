@@ -84,8 +84,14 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"></div>
+              <p class="caption"><span class="caption-text">Table of contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../Intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Theory.html">Theoretical background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Code.html">Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
+</ul>
+
             
           
         </div>
@@ -233,7 +239,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="n">BSC</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">MaxOrder</span> <span class="o">=</span> <span class="n">MaxOrder</span><span class="c1">#int(self._BSC_[:,0].max().real)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MaxOrder</span> <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="c1">#int(self._BSC_[:,0].max().real)</span>
 
         <span class="k">return</span> <span class="n">BSC</span></div>
 
@@ -395,7 +401,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="n">BSC</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">complex</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">MaxOrder</span> <span class="o">=</span> <span class="n">MaxOrder</span><span class="c1">#int(self._BSC_[:,0].max().real)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MaxOrder</span> <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="c1">#int(self._BSC_[:,0].max().real)</span>
 
         <span class="k">return</span> <span class="n">BSC</span></div>
 

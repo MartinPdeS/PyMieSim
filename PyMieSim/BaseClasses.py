@@ -87,16 +87,20 @@ class BaseDetector(object):
     """
     def Coupling(self, Scatterer):
         """Return the value of the scattererd light coupling as computed as:
-        :math:`|\\int_{\\Omega} \Phi \\Psi^*  d \\Omega|^2`
+
+        :math:`|\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2`
+
+        where :math:`\Phi_{det}` is the capturing field of the detector and
+        :math:`\Psi_{scat}` is the scattered field.
 
         Parameters
         ----------
-        Scatterer : :class`Scatterer`:
+        Scatterer : :class:`Scatterer`
             Scatterer instance (sphere, cylinder, ...).
 
         Returns
         -------
-        :class`float`:
+        :class:`float`
             Value of the coupling.
 
         """
@@ -106,16 +110,20 @@ class BaseDetector(object):
     def Footprint(self, Scatterer, Num = 200):
         """Return the footprint of the scattererd light coupling with the
         detector as computed as:
-        :math:`\\mathcal{F} \\Big{|\\int_{\\Omega} \Phi \\Psi^*  d \\Omega|^2\\Big}`
+
+        :math:`\\mathcal{F} \\Big\{ | \\iint_{\\Omega} \\Phi_{det} \, . \, \\Psi_{scat}^* \,  d \\Omega|^2 \\Big\}`
+
+        where :math:`\Phi_{det}` is the capturing field of the detector and
+        :math:`\Psi_{scat}` is the scattered field.
 
         Parameters
         ----------
-        Scatterer : :class`Scatterer`:
+        Scatterer : :class:`Scatterer`.
             Scatterer instance (sphere, cylinder, ...).
 
         Returns
         -------
-        :class`Footprint`:
+        :class:`Footprint`.
             Dictionnary subclass with all pertienent information.
 
         """
@@ -128,6 +136,11 @@ class BaseDetector(object):
                       PhiOffset   = 0,
                       GammaOffset = 0,
                       Structured  = True):
+        """Method that return an angular mesh (:math:`\\theta`, :math:`\\phi`)
+        which is either structured or not. If not the pattern follow a
+        Fibonacci mesh.
+
+        """
 
         if Structured:
             x, y = np.mgrid[-50: 50: complex(Sampling), -50: 50: complex(Sampling)]
@@ -143,6 +156,11 @@ class BaseDetector(object):
                                  GammaOffset = GammaOffset)
 
     def Plot(self):
+        """Method that plot the real part of the scattered field
+        (:math:`E_{\\theta}` and :math:`E_{\\phi}`).
+
+        """
+
         Name = 'Mode Field'
         ThetaMean = np.mean(self.Mesh.Theta.Degree).round(1)
         PhiMean = np.mean(self.Mesh.Phi.Degree).round(1)
