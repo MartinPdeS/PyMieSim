@@ -8,5 +8,6 @@ mayavi
 ai.cs
 coverage
 pyyaml
+cartopy
 pybind11
 numpydoc

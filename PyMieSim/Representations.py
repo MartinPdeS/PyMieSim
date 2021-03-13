@@ -152,7 +152,7 @@ class SPF(dict):
 
     def Plot(self):
 
-        x, y, z = cs.sp2cart(self['SPF'].T, self['Phi'], self['Theta'])
+        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
 
         X = np.linspace(np.min(x),np.max(x),10)*1.3
         Y = np.linspace(np.min(y),np.max(y),10)*1.3

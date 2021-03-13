@@ -352,7 +352,7 @@ FieldsStructured(double     Index,
 
   free(s1s2);
 
-  return std::make_pair(EPhi,ETheta);
+  return std::make_pair(EPhi.attr("transpose")(), ETheta.attr("transpose")());
 
 }
 
@@ -398,7 +398,7 @@ FieldsUnstructured(double     Index,
 
   free(s1s2);
 
-  return std::make_pair(EPhi.attr("transpose")(), ETheta.attr("transpose")());
+  return std::make_pair(EPhi, ETheta);
 }
 
 
@@ -485,7 +485,7 @@ FieldsUnstructuredUnpolarized(double     Index,
 
   free(s1s2);
 
-  return std::make_pair(EPhi.attr("transpose")(), ETheta.attr("transpose")());
+  return std::make_pair(EPhi, ETheta);
 }
 
 

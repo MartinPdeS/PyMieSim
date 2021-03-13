@@ -8,14 +8,14 @@
 namespace py = pybind11;
 
 typedef std::complex<double> complex128;
-  
+
 typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray ;
 
 
 
 
-
+ 
 PYBIND11_MODULE(Sphere, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) c++ binding module for light scattering from a spherical scatterer";
 

@@ -18,7 +18,7 @@ from setuptools.command.build_ext import build_ext as _build_ext
 # Package meta-data.
 NAME            = 'PyMieSim'
 DESCRIPTION     = 'A package for light scattering simulations.'
-URL             = 'https://gitlab.com/MartinPdeS/PyMieSim'
+URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
 REQUIRES_PYTHON = '>=3.6.0'
