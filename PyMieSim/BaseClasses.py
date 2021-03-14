@@ -316,6 +316,10 @@ class BaseScatterer(object):
         Num : :class:`int`
             Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
 
+        Returns
+        -------
+        :class:`PyMieSim.Representations.SPF`
+            Dictionnay subclass with all pertient information as keys.
 
         """
 
