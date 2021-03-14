@@ -16,6 +16,10 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
 
+print('#### YOLO', os.getcwd())
+
+print('#### YOLO2', os.getcwd('../..'))
+
 
 # -- Project information -----------------------------------------------------
 
