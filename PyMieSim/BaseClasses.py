@@ -307,7 +307,12 @@ class BaseScatterer(object):
 
 
     def SPF(self, Num=100):
+        """Scattering phase function.
 
+        SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
+
+
+        """
 
         return SPF(Parent=self, Num=Num)
 
