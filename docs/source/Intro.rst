@@ -72,7 +72,7 @@ To runs tests use the following command (ubuntu 16.04).
    :linenos:
 
 
-   python3 ./Test/Unittest.py
+   python3 ./tests/Unittest.py
 
 
 Citing this work?
