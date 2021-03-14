@@ -1,9 +1,8 @@
 import numpy as np
 from mayavi import mlab
 import matplotlib.pyplot as plt
-import matplotlib
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
+#plt.rcParams["font.family"] = "serif"
+#plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 
 from PyMieSim.utils import GetFieldBinding
@@ -144,7 +143,7 @@ class S1S2(dict):
                                          Phi        = self['Phi'])
 
 
-    def Plot(self) -> None:
+    def Plot(self):
 
 
         S1 = np.abs(self['S1'])
