@@ -17,7 +17,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('.'))
-print(os.path)
+print('='*30,os.path)
 # -- Project information -----------------------------------------------------
 
 project = 'PyMieSim'
