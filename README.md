@@ -1,5 +1,5 @@
-|build-status| |docs| |coverage|
-![figure](./Docs/images/Logo2Use.png)
+
+![figure](./docs/images/Logo2Use.png)
 
 [![Travis CI](https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
 [![codecov](https://codecov.io/gh/MartinPdeS/PyMieSim/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinPdeS/PyMieSim)
