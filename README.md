@@ -45,7 +45,7 @@ I invite you to open it, in order to checkout some pre-defined examples.
 Google Colab
 ============
 It's 2021, you don't need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
-You can open the PyMieSim.ipynb in the file to access it.
+You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" badge) to access it.
 
 
 dependencies

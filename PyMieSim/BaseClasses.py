@@ -103,8 +103,8 @@ class BaseDetector(object):
         :math:`\\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
          \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2`.
 
-        where :math:`\Phi_{det}` is the capturing field of the detector and
-        :math:`\Psi_{scat}` is the scattered field.
+        where :math:`\\Phi_{det}` is the capturing field of the detector and
+        :math:`\\Psi_{scat}` is the scattered field.
 
         Parameters
         ----------

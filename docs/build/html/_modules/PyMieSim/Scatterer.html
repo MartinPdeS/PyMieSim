@@ -1,13 +1,13 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>PyMieSim.Scatterer &mdash; PyMieSim 0.0.1 documentation</title>
+  <title>PyMieSim.Scatterer &mdash; PyMieSim 0.1.11 documentation</title>
   
 
   
@@ -29,10 +29,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -160,9 +161,8 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">gamma</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotFarField</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">,</span> <span class="n">BaseSource</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Stokes</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.GLMT.Sphere</span> <span class="kn">import</span> <span class="n">an</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">dn</span>
 
 
@@ -399,13 +399,9 @@
 
         <span class="n">Scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="n">fig0</span> <span class="o">=</span> <span class="n">PlotFarField</span><span class="p">(</span><span class="n">Phi</span>     <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span>
-                            <span class="n">Theta</span>   <span class="o">=</span> <span class="n">Theta</span><span class="p">,</span>
-                            <span class="n">Scalar</span>  <span class="o">=</span> <span class="n">Scalar</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="n">num</span><span class="p">,</span><span class="n">num</span><span class="p">]),</span>
-                            <span class="n">Mesh</span>  <span class="o">=</span> <span class="n">scatter</span><span class="p">,</span>
-                            <span class="n">scatter</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                            <span class="n">Name</span>    <span class="o">=</span> <span class="s1">&#39;Scattered field&#39;</span><span class="p">)</span></div></div>
+        <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotUnstructured</span>
 
+        <span class="n">PlotUnstructuredAmplitude</span><span class="p">(</span><span class="n">Scalar</span> <span class="o">=</span> <span class="n">Scalar</span><span class="p">,</span> <span class="n">Phi</span><span class="o">=</span><span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">Name</span><span class="o">=</span><span class="s1">&#39;Mode field&#39;</span><span class="p">)</span></div></div>
 
 
 

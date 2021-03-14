@@ -1,13 +1,13 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html4" lang="en" >
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>PyMieSim.Mesh &mdash; PyMieSim 0.0.1 documentation</title>
+  <title>PyMieSim.Mesh &mdash; PyMieSim 0.1.11 documentation</title>
   
 
   
@@ -29,10 +29,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -156,14 +157,14 @@
             
   <h1>Source code for PyMieSim.Mesh</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">ai</span> <span class="kn">import</span> <span class="n">cs</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.family&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;serif&quot;</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;mathtext.fontset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dejavuserif&quot;</span>
+<span class="c1">#plt.rcParams[&quot;font.family&quot;] = &quot;serif&quot;</span>
+<span class="c1">#plt.rcParams[&quot;mathtext.fontset&quot;] = &quot;dejavuserif&quot;</span>
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">Angle</span>
-
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">sp2cart</span><span class="p">,</span> <span class="n">mx_apply</span><span class="p">,</span> <span class="n">mx_rot_z</span><span class="p">,</span> <span class="n">mx_rot_y</span><span class="p">,</span> <span class="n">mx_rot_x</span><span class="p">,</span> <span class="n">cart2sp</span>
+<span class="n">pi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
 
 <div class="viewcode-block" id="FibonacciMesh"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh">[docs]</a><span class="k">class</span> <span class="nc">FibonacciMesh</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -189,7 +190,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">MaxAngle</span><span class="p">:</span>    <span class="nb">float</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span>
+                 <span class="n">MaxAngle</span><span class="p">:</span>    <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>
                  <span class="n">Sampling</span><span class="p">:</span>    <span class="nb">int</span>   <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
                  <span class="n">PhiOffset</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">GammaOffset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
@@ -212,25 +213,21 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Sampling</span> <span class="o">=</span> <span class="n">Theta</span><span class="o">.</span><span class="n">size</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">SinMesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">Phi</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SinMesh</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">Phi</span> <span class="o">-</span> <span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dOmega</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Radian&#39;</span><span class="p">);</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dOmega</span><span class="o">.</span><span class="n">Radian</span> <span class="o">=</span> <span class="n">dOmega</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dOmega</span><span class="o">.</span><span class="n">Degree</span> <span class="o">=</span> <span class="n">dOmega</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dOmega</span><span class="o">.</span><span class="n">Degree</span> <span class="o">=</span> <span class="n">dOmega</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span><span class="o">/</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Omega</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Radian&#39;</span><span class="p">);</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Omega</span><span class="o">.</span><span class="n">Radian</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">dOmega</span><span class="o">.</span><span class="n">Radian</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Omega</span><span class="o">.</span><span class="n">Degree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Omega</span><span class="o">.</span><span class="n">Radian</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span></div>
-
-
-
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">Omega</span><span class="o">.</span><span class="n">Degree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Omega</span><span class="o">.</span><span class="n">Radian</span> <span class="o">*</span> <span class="p">(</span><span class="mi">180</span><span class="o">/</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span></div>
 
 
 <div class="viewcode-block" id="FibonacciMesh.Plot"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh.Plot">[docs]</a>    <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">sp2cart</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sp2cart</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+                          <span class="bp">self</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
 
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;3d&#39;</span><span class="p">)</span>
@@ -248,7 +245,7 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">arrow_length_ratio</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">length</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">arrow_length_ratio</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
-        <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mf">0.0</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">20</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">:</span><span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="mi">20</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mf">0.0</span><span class="p">:</span><span class="n">pi</span><span class="p">:</span><span class="mi">20</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">:</span><span class="mf">2.0</span><span class="o">*</span><span class="n">pi</span><span class="p">:</span><span class="mi">20</span><span class="n">j</span><span class="p">]</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
                         <span class="n">Y</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
@@ -272,15 +269,15 @@
 
         <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">AvoidPoles</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>
 
-        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">cart2sp</span><span class="p">(</span><span class="o">*</span><span class="n">base</span><span class="p">)</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cart2sp</span><span class="p">(</span><span class="o">*</span><span class="n">base</span><span class="p">)</span>
 
-        <span class="n">base</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">sp2cart</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">sp2cart</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">phi</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
 
         <span class="n">base</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RotateOnPhi</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
 
         <span class="c1">#base = self.RotateOnGamma(90 , base)</span>
 
-        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">cart2sp</span><span class="p">(</span><span class="o">*</span><span class="n">base</span><span class="p">)</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cart2sp</span><span class="p">(</span><span class="o">*</span><span class="n">base</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">(</span><span class="n">Phi</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
 
@@ -288,7 +285,7 @@
 
         <span class="n">notbase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">RotateOnGamma</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">GammaOffset</span><span class="p">,</span> <span class="n">notbase</span><span class="p">)</span>
 
-        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">cart2sp</span><span class="p">(</span><span class="o">*</span><span class="n">notbase</span><span class="p">)</span>
+        <span class="n">r</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">cart2sp</span><span class="p">(</span><span class="o">*</span><span class="n">notbase</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">dOmega</span></div>
 
@@ -308,32 +305,32 @@
 
 
 <div class="viewcode-block" id="FibonacciMesh.AvoidPoles"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh.AvoidPoles">[docs]</a>    <span class="k">def</span> <span class="nf">AvoidPoles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
-        <span class="n">Tinitial</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">mx_rot_x</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="n">Tinitial</span> <span class="o">=</span> <span class="n">mx_rot_x</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">pi</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">cs</span><span class="o">.</span><span class="n">mx_apply</span><span class="p">(</span><span class="n">Tinitial</span><span class="p">,</span> <span class="o">*</span><span class="n">base</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">mx_apply</span><span class="p">(</span><span class="n">Tinitial</span><span class="p">,</span> <span class="o">*</span><span class="n">base</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FibonacciMesh.RotateOnGamma"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh.RotateOnGamma">[docs]</a>    <span class="k">def</span> <span class="nf">RotateOnGamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
-        <span class="n">TPhi</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">mx_rot_y</span><span class="p">(</span><span class="n">theta</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">/</span><span class="mi">180</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="n">TPhi</span> <span class="o">=</span> <span class="n">mx_rot_y</span><span class="p">(</span><span class="n">theta</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">/</span><span class="mi">180</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">cs</span><span class="o">.</span><span class="n">mx_apply</span><span class="p">(</span><span class="n">TPhi</span><span class="p">,</span> <span class="o">*</span><span class="n">base</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">mx_apply</span><span class="p">(</span><span class="n">TPhi</span><span class="p">,</span> <span class="o">*</span><span class="n">base</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FibonacciMesh.RotateOnPhi"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh.RotateOnPhi">[docs]</a>    <span class="k">def</span> <span class="nf">RotateOnPhi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
-        <span class="n">TGamma</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">mx_rot_x</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">/</span><span class="mi">180</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="n">TGamma</span> <span class="o">=</span> <span class="n">mx_rot_x</span><span class="p">(</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">rotation</span><span class="o">/</span><span class="mi">180</span><span class="o">*</span><span class="n">pi</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">cs</span><span class="o">.</span><span class="n">mx_apply</span><span class="p">(</span><span class="n">TGamma</span><span class="p">,</span> <span class="o">*</span><span class="n">base</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">mx_apply</span><span class="p">(</span><span class="n">TGamma</span><span class="p">,</span> <span class="o">*</span><span class="n">base</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="FibonacciMesh.ComputeTrueSample"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.FibonacciMesh.ComputeTrueSample">[docs]</a>    <span class="k">def</span> <span class="nf">ComputeTrueSample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Sampling</span><span class="p">):</span>
 
-        <span class="n">SolidAngle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MaxAngle</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+        <span class="n">SolidAngle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">MaxAngle</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
 
-        <span class="n">ratio</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">SolidAngle</span><span class="p">)</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="n">SolidAngle</span><span class="p">)</span>
 
         <span class="n">TrueSampling</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Sampling</span><span class="o">*</span><span class="n">ratio</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">TrueSampling</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">TrueSampling</span></div></div>
+        <span class="k">return</span> <span class="n">TrueSampling</span><span class="p">,</span> <span class="mi">4</span><span class="o">*</span><span class="n">pi</span> <span class="o">/</span> <span class="n">TrueSampling</span></div></div>
 
 
 
@@ -354,32 +351,23 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">Num</span><span class="p">,</span> <span class="n">Num</span><span class="p">]</span>
 
-        <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">)]</span>
+        <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">),</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">Num</span><span class="p">)]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Radian&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Theta</span> <span class="o">=</span> <span class="n">Angle</span><span class="p">(</span><span class="n">Theta</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;Radian&#39;</span><span class="p">)</span></div>
 
 
-
-
-
-
-<div class="viewcode-block" id="Namespace"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.Namespace">[docs]</a><span class="k">class</span> <span class="nc">Namespace</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="fibonacci_sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.fibonacci_sphere">[docs]</a><span class="k">def</span> <span class="nf">fibonacci_sphere</span><span class="p">(</span><span class="n">samples</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxAngle</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">):</span>
+<div class="viewcode-block" id="fibonacci_sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.fibonacci_sphere">[docs]</a><span class="k">def</span> <span class="nf">fibonacci_sphere</span><span class="p">(</span><span class="n">maxAngle</span><span class="p">,</span> <span class="n">samples</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
 
     <span class="n">X</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">Y</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">Z</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="n">phi</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.</span><span class="p">))</span>  <span class="c1">## golden angle in radians</span>
+    <span class="n">phi</span> <span class="o">=</span> <span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">5.</span><span class="p">))</span>  <span class="c1">## golden angle in radians</span>
     <span class="n">MaxY</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">maxAngle</span><span class="p">)</span>
 
-    <span class="n">SolidAngle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">maxAngle</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="n">SolidAngle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">maxAngle</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
 
-    <span class="n">ratio</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">SolidAngle</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="mi">4</span><span class="o">*</span><span class="n">pi</span> <span class="o">/</span> <span class="n">SolidAngle</span>
 
     <span class="n">TrueSampling</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span> <span class="n">samples</span> <span class="o">*</span> <span class="n">ratio</span> <span class="p">)</span>
 
@@ -399,6 +387,12 @@
 
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span></div>
 
+
+
+
+<div class="viewcode-block" id="Namespace"><a class="viewcode-back" href="../../Code.html#PyMieSim.Mesh.Namespace">[docs]</a><span class="k">class</span> <span class="nc">Namespace</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 
