@@ -7,7 +7,7 @@ from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, cart2sp
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
-import PyMieSim
+import PyMieSim.Representations.SPF
 
 class BaseSource(object):
 
@@ -318,7 +318,7 @@ class BaseScatterer(object):
 
         Returns
         -------
-        :class:`dict`
+        :class:`PyMieSim.Representations.SPF`
             Dictionnay subclass with all pertient information as keys.
 
         """
