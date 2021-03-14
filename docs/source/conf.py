@@ -14,12 +14,18 @@
 #
 import os
 import sys
-autodoc_mock_imports = ['numpy', 'pandas', 'matplotlib', 'mayavi', 'scipy', 'numpydoc', 'sphinx.ext.autodoc']
+autodoc_mock_imports = ['ai.cs',
+                        'numpy',
+                        'pandas',
+                        'matplotlib',
+                        'mayavi',
+                        'scipy',
+                        'numpydoc',
+                        'sphinx.ext.autodoc']
 
 
 sys.path.insert(0, os.path.abspath('../../'))
 
-#autodoc_mock_imports = ["numpy"]
 print('='*50, os.path)
 # -- Project information -----------------------------------------------------
 
