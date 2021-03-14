@@ -4,7 +4,7 @@ Code lol
 Class: Representations
 ----------------------
 
-.. automodule:: PyMieSim
+.. automodule:: ../../PyMieSim
     :members:
     :show-inheritance:
 
