@@ -1,5 +1,4 @@
 import numpy as np
-from ai import cs
 from mayavi import mlab
 from scipy.interpolate import griddata
 
@@ -141,15 +140,15 @@ def extrapolate_nans(x, y, v):
 def UnitSphere(Num, Radius=1.):
     pi = np.pi
     phi, theta = np.mgrid[-pi/2:pi/2:complex(Num), -pi:pi:complex(Num)]
-    x, y, z = cs.sp2cart(phi*0+Radius, phi, theta)
+    x, y, z = sp2cart(phi*0+Radius, phi, theta)
 
     return x, y, z
 
 
 def PlotUnstructured(Scalar, Mesh, Name=''):
-    x, y, z = cs.sp2cart(Mesh.Phi.Radian.flatten()*0+1,
-                         Mesh.Phi.Radian.flatten(),
-                         Mesh.Theta.Radian.flatten())
+    x, y, z = sp2cart(Mesh.Phi.Radian.flatten()*0+1,
+                      Mesh.Phi.Radian.flatten(),
+                      Mesh.Theta.Radian.flatten())
 
     offset = 3
     X = np.linspace(-1,1,10)*1.3
@@ -205,7 +204,7 @@ def PlotUnstructured(Scalar, Mesh, Name=''):
 
 def PlotStructuredAbs(Scalar, Phi, Theta, Name=''):
 
-        x, y, z = cs.sp2cart(Scalar, Phi, Theta)
+        x, y, z = sp2cart(Scalar, Phi, Theta)
 
         X = np.linspace(np.min(x),np.max(x),10)*1.3
         Y = np.linspace(np.min(y),np.max(y),10)*1.3
@@ -231,9 +230,8 @@ def PlotStructuredAbs(Scalar, Phi, Theta, Name=''):
 
 
 def PlotStructuredAmplitude(Scalar, Phi, Theta, Name=''):
-    x, y, z = cs.sp2cart(Phi*0+1,
-                         Phi,
-                         Theta)
+
+    x, y, z = sp2cart(Phi*0+1, Phi, Theta)
 
     offset = 3
     X = np.linspace(-1,1,10)*1.3
@@ -325,7 +323,7 @@ def NA2Angle(NA: float) -> np.ndarray:
 def Direct2spherical(X, Y, MaxAngle):
     Z = 50 / np.tan(MaxAngle)
 
-    _, Phi, Theta = cs.cart2sp(X, Y, X*0+Z)
+    _, Phi, Theta = cart2sp(X, Y, X*0+Z)
 
     return Phi, Theta
 
@@ -342,4 +340,143 @@ def AngleUnit2DirectUnit(Angle, k):
     DirectSpace = np.fft.fftshift( np.fft.fftfreq( Angle.shape[0], d = fourier_unit ) )
 
     return DirectSpace
+
+
+
+
+def cart2sp(x, y, z):
+    """Converts data from cartesian coordinates into spherical.
+
+    Args:
+        x (scalar or array_like): X-component of data.
+        y (scalar or array_like): Y-component of data.
+        z (scalar or array_like): Z-component of data.
+
+    Returns:
+        Tuple (r, theta, phi) of data in spherical coordinates.
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+    z = np.asarray(z)
+    scalar_input = False
+    if x.ndim == 0 and y.ndim == 0 and z.ndim == 0:
+        x = x[None]
+        y = y[None]
+        z = z[None]
+        scalar_input = True
+    r = np.sqrt(x**2+y**2+z**2)
+    theta = np.arcsin(z/r)
+    phi = np.arctan2(y, x)
+    if scalar_input:
+        return (r.squeeze(), theta.squeeze(), phi.squeeze())
+    return (r, theta, phi)
+
+def sp2cart(r, theta, phi):
+    """Converts data in spherical coordinates into cartesian.
+
+    Args:
+        r (scalar or array_like): R-component of data.
+        theta (scalar or array_like): Theta-component of data.
+        phi (scalar or array_like): Phi-component of data.
+
+    Returns:
+        Tuple (x, y, z) of data in cartesian coordinates.
+    """
+    r = np.asarray(r)
+    theta = np.asarray(theta)
+    phi = np.asarray(phi)
+    scalar_input = False
+    if r.ndim == 0 and theta.ndim == 0 and phi.ndim == 0:
+        r = r[None]
+        theta = theta[None]
+        phi = phi[None]
+        scalar_input = True
+    x = r*np.cos(theta)*np.cos(phi)
+    y = r*np.cos(theta)*np.sin(phi)
+    z = r*np.sin(theta)
+    if scalar_input:
+        return (x.squeeze(), y.squeeze(), z.squeeze())
+    return (x, y, z)
+
+
+def mx_rot_x(gamma):
+    """Returns rotational matrix for right-handed rotation
+    around X axis.
+
+    Args:
+        gamma (scalar): Rotation angle around X in radians.
+
+    Returns:
+        Numpy rotational matrix.
+    """
+    return np.matrix([
+        [1, 0, 0],
+        [0, np.cos(gamma), -np.sin(gamma)],
+        [0, np.sin(gamma), np.cos(gamma)]
+    ])
+
+def mx_rot_y(theta):
+    """Returns rotational matrix for right-handed rotation
+    around Y axis.
+
+    Args:
+        theta (scalar): Rotation angle around Y in radians.
+
+    Returns:
+        Numpy rotational matrix.
+    """
+    return np.matrix([
+        [np.cos(theta), 0, np.sin(theta)],
+        [0, 1, 0],
+        [-np.sin(theta), 0, np.cos(theta)]
+    ])
+
+
+
+def mx_rot_z(phi):
+    """Returns rotational matrix for right-handed rotation
+    around Z axis.
+
+    Args:
+        phi (scalar): Rotation angle around Z in radians.
+
+    Returns:
+        Numpy rotational matrix.
+    """
+    return np.matrix([
+        [np.cos(phi), -np.sin(phi), 0],
+        [np.sin(phi), np.cos(phi), 0],
+        [0, 0, 1]
+    ])
+
+
+def mx_apply(T, x, y, z):
+    """Applies rotation to data using rotational matrix.
+
+    Args:
+        T (numpy.matrix): Rotational matrix.
+        x (scalar or array_like): X-component of data.
+        y (scalar or array_like): Y-component of data.
+        z (scalar or array_like): Z-component of data.
+
+    Returns:
+        Tuple (x, y, z) of data in cartesian coordinates.
+    """
+    x = np.asarray(x)
+    y = np.asarray(y)
+    z = np.asarray(z)
+    scalar_input = False
+    if x.ndim == 0 and y.ndim == 0 and z.ndim == 0:
+        x = x[None]
+        y = y[None]
+        z = z[None]
+        scalar_input = True
+    x_ = T[0, 0]*x+T[0, 1]*y+T[0, 2]*z
+    y_ = T[1, 0]*x+T[1, 1]*y+T[1, 2]*z
+    z_ = T[2, 0]*x+T[2, 1]*y+T[2, 2]*z
+    if scalar_input:
+        return (x_.squeeze(), y_.squeeze(), z_.squeeze())
+    return (x_, y_, z_)
+
+
 # -

@@ -1,11 +1,11 @@
 import numpy as np
-from ai import cs
 import math
 import matplotlib.pyplot as plt
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.Physics import Angle
+from PyMieSim.utils import sp2cart, mx_apply, mx_rot_z, mx_rot_y, mx_rot_x, cart2sp
 pi = np.pi
 
 class FibonacciMesh(object):
@@ -67,9 +67,9 @@ class FibonacciMesh(object):
 
 
     def Plot(self):
-        x, y, z = cs.sp2cart(np.ones(self.Phi.Radian.shape),
-                             self.Phi.Radian,
-                             self.Theta.Radian)
+        x, y, z = sp2cart(np.ones(self.Phi.Radian.shape),
+                          self.Phi.Radian,
+                          self.Theta.Radian)
 
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
@@ -111,15 +111,15 @@ class FibonacciMesh(object):
 
         base = self.AvoidPoles(base)
 
-        r, phi, theta = cs.cart2sp(*base)
+        r, phi, theta = cart2sp(*base)
 
-        base = cs.sp2cart(np.ones(phi.size), phi, theta)
+        base = sp2cart(np.ones(phi.size), phi, theta)
 
         base = self.RotateOnPhi(-90, base)
 
         #base = self.RotateOnGamma(90 , base)
 
-        r, phi, theta = cs.cart2sp(*base)
+        r, phi, theta = cart2sp(*base)
 
         self.base = Namespace(Phi=phi, Theta=theta)
 
@@ -127,7 +127,7 @@ class FibonacciMesh(object):
 
         notbase = self.RotateOnGamma(self.GammaOffset, notbase)
 
-        r, phi, theta = cs.cart2sp(*notbase)
+        r, phi, theta = cart2sp(*notbase)
 
         return theta, phi, dOmega
 
@@ -147,21 +147,21 @@ class FibonacciMesh(object):
 
 
     def AvoidPoles(self, base):
-        Tinitial = cs.mx_rot_x(gamma = pi)
+        Tinitial = mx_rot_x(gamma = pi)
 
-        return cs.mx_apply(Tinitial, *base)
+        return mx_apply(Tinitial, *base)
 
 
     def RotateOnGamma(self, rotation, base):
-        TPhi = cs.mx_rot_y(theta = rotation/180*pi)
+        TPhi = mx_rot_y(theta = rotation/180*pi)
 
-        return cs.mx_apply(TPhi, *base)
+        return mx_apply(TPhi, *base)
 
 
     def RotateOnPhi(self, rotation, base):
-        TGamma = cs.mx_rot_x(gamma = rotation/180*pi)
+        TGamma = mx_rot_x(gamma = rotation/180*pi)
 
-        return cs.mx_apply(TGamma, *base)
+        return mx_apply(TGamma, *base)
 
 
     def ComputeTrueSample(self, Sampling):

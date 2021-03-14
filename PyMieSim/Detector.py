@@ -2,8 +2,6 @@
 import numpy as np
 import fibermodes
 
-from ai import cs
-
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import interp_at, NA2Angle

@@ -1,5 +1,4 @@
 import numpy as np
-from ai import cs
 from mayavi import mlab
 import matplotlib.pyplot as plt
 import matplotlib
