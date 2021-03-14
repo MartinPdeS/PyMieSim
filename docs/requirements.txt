@@ -3,7 +3,6 @@ numpydoc
 cython
 pybind11
 fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0
-ai.cs
 Babel==2.8.0
 imagesize==1.2.0
 readme-renderer==26.0

@@ -5,7 +5,6 @@ pandas
 scipy
 fibermodes @ git+https://github.com/cbrunet/fibermodes.git
 mayavi
-ai.cs
 coverage
 pyyaml
 pybind11

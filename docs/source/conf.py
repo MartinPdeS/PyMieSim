@@ -14,8 +14,7 @@
 #
 import os
 import sys
-autodoc_mock_imports = ['ai.cs',
-                        'numpy',
+autodoc_mock_imports = ['numpy',
                         'pandas',
                         'matplotlib',
                         'mayavi',

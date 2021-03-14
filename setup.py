@@ -28,8 +28,7 @@ VERSION         = '0.1.10'
 REQUIRED = ['scipy',
             'matplotlib',
             'pandas',
-            'mayavi',
-            'ai.cs']
+            'mayavi']
 
 
 class get_pybind11_include(object):
