@@ -14,7 +14,7 @@
 #
 import os
 import sys
-autodoc_mock_imports = ['numpy', 'numpydoc', 'pandas', 'matplotlib', 'mayavi', 'scipy']
+autodoc_mock_imports = ['numpy', 'numpydoc', 'sphinx.ext.autodoc']
 
 
 sys.path.insert(0, os.path.abspath('../../'))
