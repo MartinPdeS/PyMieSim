@@ -1,4 +1,4 @@
-Code lol
+Code l
 =================
 
 Class: Representations
@@ -8,7 +8,12 @@ Class: Representations
     :members:
     :show-inheritance:
 
+Class: Source
+-------------
 
+.. automodule:: PyMieSim.Source
+    :members:
+    :show-inheritance:
 
 Function: Coupling
 ------------------
