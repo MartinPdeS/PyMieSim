@@ -92,7 +92,11 @@
 <li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Code l</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Representations">Class: Representations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-PyMieSim.Source">Class: Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#source">Source</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#planewave">PlaneWave</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gaussianbeam">GaussianBeam</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#function-coupling">Function: Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#function-centeredcoupling">Function: CenteredCoupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#function-meancoupling">Function: MeanCoupling</a></li>
@@ -208,8 +212,67 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-PyMieSim.Source">
-<span id="class-source"></span><h2>Class: Source<a class="headerlink" href="#module-PyMieSim.Source" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="planewave">
+<h3>PlaneWave<a class="headerlink" href="#planewave" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="PyMieSim.Source.PlaneWave">
+<em class="property">class </em><code class="sig-prename descclassname">PyMieSim.Source.</code><code class="sig-name descname">PlaneWave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Wavelength</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">Polarization</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">E0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieSim.BaseClasses.BaseSource</span></code></p>
+<p>Class representing a focuse plane wave beam as a light source for
+light scattering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Wavelength</strong> (<em>float</em>) – Wavelenght of the light field.</p></li>
+<li><p><strong>Polarization</strong> (<em>float</em>) – Polarization of the light field.</p></li>
+<li><p><strong>E0</strong> (<em>float</em>) – Maximal value of the electric field at focus point.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="PyMieSim.Source.PlaneWave.BSC">
+<code class="sig-name descname">BSC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'TE'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.BSC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the beam shape coefficients
+(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) for a plane wave.
+(Eq: VI.77 of G&amp;G)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Order of the expansion.</p></li>
+<li><p><strong>m</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Description of parameter <cite>m</cite>.</p></li>
+<li><p><strong>mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Mode of the plane wave, either ‘TE’ or ‘TM’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Expansion coefficient.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="PyMieSim.Source.PlaneWave.EField">
+<code class="sig-name descname">EField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.EField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric field.</p>
+<p><span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="PyMieSim.Source.PlaneWave.HField">
+<code class="sig-name descname">HField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.HField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Value of the electric field.</p>
+<p><span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="gaussianbeam">
+<h3>GaussianBeam<a class="headerlink" href="#gaussianbeam" title="Permalink to this headline">¶</a></h3>
 <dl class="py class">
 <dt id="PyMieSim.Source.GaussianBeam">
 <em class="property">class </em><code class="sig-prename descclassname">PyMieSim.Source.</code><code class="sig-name descname">GaussianBeam</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Wavelength</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">NA</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">Polarization</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">E0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">Offset</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">[1e-20, 1e-20, 1e-20]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam" title="Permalink to this definition">¶</a></dt>
@@ -365,60 +428,7 @@ ref[2]:Eq:10
 
 </dd></dl>
 
-<dl class="py class">
-<dt id="PyMieSim.Source.PlaneWave">
-<em class="property">class </em><code class="sig-prename descclassname">PyMieSim.Source.</code><code class="sig-name descname">PlaneWave</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Wavelength</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">Polarization</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">E0</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PyMieSim.BaseClasses.BaseSource</span></code></p>
-<p>Class representing a focuse plane wave beam as a light source for
-light scattering.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Wavelength</strong> (<em>float</em>) – Wavelenght of the light field.</p></li>
-<li><p><strong>Polarization</strong> (<em>float</em>) – Polarization of the light field.</p></li>
-<li><p><strong>E0</strong> (<em>float</em>) – Maximal value of the electric field at focus point.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="PyMieSim.Source.PlaneWave.BSC">
-<code class="sig-name descname">BSC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">m</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'TE'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.BSC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.BSC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the beam shape coefficients
-(<span class="math notranslate nohighlight">\(g^{l}_{n, TE}\)</span>, <span class="math notranslate nohighlight">\(g^{l}_{n, TM}\)</span>) for a plane wave.
-(Eq: VI.77 of G&amp;G)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>n</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Order of the expansion.</p></li>
-<li><p><strong>m</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Description of parameter <cite>m</cite>.</p></li>
-<li><p><strong>mode</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Mode of the plane wave, either ‘TE’ or ‘TM’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Expansion coefficient.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="PyMieSim.Source.PlaneWave.EField">
-<code class="sig-name descname">EField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.EField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric field.</p>
-<p><span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="PyMieSim.Source.PlaneWave.HField">
-<code class="sig-name descname">HField</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.HField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric field.</p>
-<p><span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
-</dd></dl>
-
-</dd></dl>
-
+</div>
 </div>
 <div class="section" id="function-coupling">
 <h2>Function: Coupling<a class="headerlink" href="#function-coupling" title="Permalink to this headline">¶</a></h2>

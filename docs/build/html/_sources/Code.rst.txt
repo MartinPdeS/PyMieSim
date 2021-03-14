@@ -8,10 +8,20 @@ Class: Representations
     :members:
     :show-inheritance:
 
-Class: Source
--------------
+Source
+------
 
-.. automodule:: PyMieSim.Source
+PlaneWave
+~~~~~~~~~
+
+.. autoclass:: PyMieSim.Source.PlaneWave
+    :members:
+    :show-inheritance:
+
+GaussianBeam
+~~~~~~~~~~~~
+
+.. autoclass:: PyMieSim.Source.GaussianBeam
     :members:
     :show-inheritance:
 

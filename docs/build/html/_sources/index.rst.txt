@@ -7,7 +7,7 @@ Welcome to PyMieSim's documentation!
 ====================================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 4
    :caption: Table of contents:
 
    Intro
