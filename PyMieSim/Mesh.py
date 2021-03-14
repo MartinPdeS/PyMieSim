@@ -32,7 +32,7 @@ class FibonacciMesh(object):
     """
 
     def __init__(self,
-                 MaxAngle:    float = np.pi/6,
+                 MaxAngle:    float = 1.5,
                  Sampling:    int   = 1000,
                  PhiOffset:   float = 0,
                  GammaOffset: float = 0):
