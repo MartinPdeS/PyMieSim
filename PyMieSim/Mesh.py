@@ -2,8 +2,8 @@ import numpy as np
 from ai import cs
 import math
 import matplotlib.pyplot as plt
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
+#plt.rcParams["font.family"] = "serif"
+#plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.Physics import Angle
 
