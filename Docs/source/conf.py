@@ -17,7 +17,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('.'))
-print('='*30,os.path)
+autodoc_mock_imports = ["numpy"]
 # -- Project information -----------------------------------------------------
 
 project = 'PyMieSim'
