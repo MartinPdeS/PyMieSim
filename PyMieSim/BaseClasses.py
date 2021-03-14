@@ -311,6 +311,10 @@ class BaseScatterer(object):
 
         SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
 
+        Parameters
+        ----------
+        Num : :class:`int`
+
 
         """
 
