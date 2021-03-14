@@ -3,7 +3,7 @@ Code
 
 Class: Representations
 ----------------------
-.. automodule:: PyMieSim.Representations
+.. automodule:: PyMieSim
     :members:
     :show-inheritance:
 
