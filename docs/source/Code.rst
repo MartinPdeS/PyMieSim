@@ -1,8 +1,9 @@
-Code
+Code lol
 =================
 
 Class: Representations
 ----------------------
+
 .. automodule:: PyMieSim
     :members:
     :show-inheritance:
