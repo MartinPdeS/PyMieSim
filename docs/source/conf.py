@@ -23,12 +23,12 @@ autodoc_mock_imports = ['ai.cs',
                         'numpydoc',
                         'PyMieSim.LMT',
                         'PyMieSim.GLMT',
+                        'PyMieSim._Coupling',
                         'sphinx.ext.autodoc']
 
 
 sys.path.insert(0, os.path.abspath('../../'))
 
-print('='*50, os.path)
 # -- Project information -----------------------------------------------------
 
 project = 'PyMieSim'

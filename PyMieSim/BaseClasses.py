@@ -8,7 +8,7 @@ from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprin
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding
 from PyMieSim.Mesh import FibonacciMesh
-#from PyMieSim._Coupling import Coupling
+from PyMieSim._Coupling import Coupling
 
 
 class BaseSource(object):
