@@ -307,19 +307,7 @@ class BaseScatterer(object):
 
 
     def SPF(self, Num=100):
-        """Scattering phase function.
 
-        Parameters
-        ----------
-        Num : :class:`int`
-            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
-
-        Returns
-        -------
-        :class:`SPF`
-            Dictionnay subclass with all pertient information as keys.
-
-        """
 
         return SPF(Parent=self, Num=Num)
 
