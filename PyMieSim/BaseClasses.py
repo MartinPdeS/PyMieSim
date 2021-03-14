@@ -7,7 +7,7 @@ from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, cart2sp
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
-
+import PyMieSim
 
 class BaseSource(object):
 
