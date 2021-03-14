@@ -10,7 +10,7 @@ import matplotlib
 from PyMieSim.utils import GetFieldBinding
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 #from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
-from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
+#from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
 
 
 class Stokes(np.ndarray):
