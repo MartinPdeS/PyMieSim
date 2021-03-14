@@ -44,68 +44,6 @@ def GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
 
 
 
-def _GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
-
-    kwarg = { 'Index'       : Scatterer.Index,
-               'Diameter'   : Scatterer.Diameter,
-               'Wavelength' : Scatterer.Source.Wavelength,
-               'nMedium'    : Scatterer.nMedium,
-               'Phi'        : Phi,
-               'Theta'      : Theta,
-               'R'          : R,
-               'E0'         : Scatterer.Source.E0}
-
-    if Structured:
-        if Scatterer.Source.GLMT:
-            if Scatterer.Source.Polarization:
-                from PyMieSim.GLMT.Sphere import FieldsStructured
-                return FieldsStructured(**kwarg,
-                                          Polarization = Scatterer.Source.Polarization.Radian,
-                                          BSC          = Scatterer.Source._BSC_,
-                                          MaxOrder     = Scatterer.Source.MaxOrder)
-
-            else:
-                from PyMieSim.GLMT.Sphere import FieldsStructuredUnpolarized
-                return FieldsStructuredUnpolarized(**kwarg,
-                                                     BSC          = Scatterer.Source._BSC_,
-                                                     MaxOrder     = Scatterer.Source.MaxOrder)
-
-
-        else:
-            if Scatterer.Source.Polarization:
-                from PyMieSim.LMT.Sphere import FieldsStructured
-                return FieldsStructured(**kwarg,
-                                          Polarization = Scatterer.Source.Polarization.Radian)
-            else:
-                from PyMieSim.LMT.Sphere import FieldsStructuredUnpolarized
-                return FieldsStructuredUnpolarized(**kwarg)
-
-    else:
-
-        if Scatterer.Source.GLMT:
-            if Scatterer.Source.Polarization:
-                from PyMieSim.GLMT.Sphere import FieldsUnstructured
-                return FieldsUnstructured(**kwarg,
-                                            Polarization = Scatterer.Source.Polarization.Radian,
-                                            BSC          = Scatterer.Source._BSC_,
-                                            MaxOrder     = Scatterer.Source.MaxOrder)
-
-            else:
-                from PyMieSim.GLMT.Sphere import FieldsUnstructuredUnpolarized
-                return FieldsUnstructuredUnpolarized(**kwarg,
-                                                       BSC          = Scatterer.Source._BSC_,
-                                                       MaxOrder     = Scatterer.Source.MaxOrder)
-
-
-        else:
-            if Scatterer.Source.Polarization:
-                from PyMieSim.LMT.Sphere import FieldsUnstructured
-                return FieldsUnstructured(**kwarg,
-                                            Polarization = Scatterer.Source.Polarization.Radian)
-            else:
-                from PyMieSim.LMT.Sphere import FieldsUnstructuredUnpolarized
-                return FieldsUnstructuredUnpolarized(**kwarg)
-
 
 
 
