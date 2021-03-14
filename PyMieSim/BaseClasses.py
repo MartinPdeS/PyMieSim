@@ -318,7 +318,7 @@ class BaseScatterer(object):
 
         Returns
         -------
-        :class:`SPF` in :mod:`PyMieSim.Representations`
+        :class:`SPF` in :mod:`PyMieSim`
             Dictionnay subclass with all pertient information as keys.
 
         """
