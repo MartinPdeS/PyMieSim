@@ -12,9 +12,7 @@ from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
 
 
 class Stokes(np.ndarray):
-    """ http://adsabs.harvard.edu/pdf/1983AuJPh..36..701B
 
-    """
 
     def __new__(cls, Field):
 
