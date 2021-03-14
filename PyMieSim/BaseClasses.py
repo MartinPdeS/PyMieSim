@@ -318,7 +318,7 @@ class BaseScatterer(object):
 
         Returns
         -------
-        int
+        :class:`dict`
             Dictionnay subclass with all pertient information as keys.
 
         """
