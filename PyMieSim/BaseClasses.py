@@ -236,17 +236,17 @@ class BaseScatterer(object):
 
 
     def S1S2(self, Num=200):
-        """Method compute :math:`S_1(\\phi)` & :math:`S_2(\\phi)`.
+        """Method compute :math:`S_1(\\phi)` and :math:`S_2(\\phi)`.
         For spherical Scatterer such as here S1 and S2 are computed as follow:
 
-        :math:`S_1=\sum\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\\tau_n)`
+        :math:`S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)`
 
-        :math:`S_2=\sum\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n\\tau_n+b_n\pi_n)`
+        :math:`S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)`
 
         Parameters
         ----------
         Num : :class:`int`
-            Number of point (:math:`\\phi`) to evaluate :math:`S_1` & :math:`S_2`.
+            Number of point (:math:`\\phi`) to evaluate :math:`S_1` and :math:`S_2`.
 
         Returns
         -------
@@ -308,8 +308,6 @@ class BaseScatterer(object):
 
     def SPF(self, Num=100):
         """Scattering phase function.
-
-        SPF = :math:`E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2`
 
         Parameters
         ----------
