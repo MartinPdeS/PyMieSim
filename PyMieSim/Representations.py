@@ -13,7 +13,6 @@ from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
 
 class Stokes(np.ndarray):
 
-
     def __new__(cls, Field):
 
         cls.Meshes = Field.Meshes

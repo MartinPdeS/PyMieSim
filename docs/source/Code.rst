@@ -1,6 +1,11 @@
 Code
 =================
 
+Class: Representations
+----------------------
+.. automodule:: PyMieSim.Representations
+    :members:
+    :show-inheritance:
 
 
 
