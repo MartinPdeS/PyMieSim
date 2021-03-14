@@ -213,36 +213,5 @@ class Namespace:
         self.__dict__.update(kwargs)
 
 
-def fibonacci_sphere(samples=1, maxAngle=np.pi/2):
-
-    X = []; Y = []; Z = []
-
-    phi = math.pi * (3. - math.sqrt(5.))  ## golden angle in radians
-    MaxY = np.cos(maxAngle)
-
-    SolidAngle = np.abs( 2*np.pi * (np.cos(maxAngle) - np.cos(0)))
-
-    ratio = 4*np.pi / SolidAngle
-
-    TrueSampling = int( samples * ratio )
-
-    for i in range(TrueSampling):
-        y = 1 - (i / float(TrueSampling - 1)) * 2  ## y goes from 1 to -1
-        radius = math.sqrt(1 - y * y)  ## radius at y
-
-        theta = phi * i  ## golden angle increment
-
-        x = math.cos(theta) * radius
-        z = math.sin(theta) * radius
-
-        X.append(x); Y.append(y); Z.append(z)
-
-        if i >= samples - 1: break
-        #if y <= MaxY: break
-
-    return np.asarray(X), np.asarray(Y), np.asarray(Z)
-
-
-
 
 # -
