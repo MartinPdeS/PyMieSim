@@ -7,43 +7,6 @@ Class: Representations
     :members:
     :undoc-members:
     :show-inheritance:
-    
-Class: Scatterering
--------------------
-.. automodule:: PyMieSim.Scatterer
-    :members:
-    :undoc-members:
-    :inherited-members:
-
-Class: Sources
--------------------
-.. automodule:: PyMieSim.Source
-    :members:
-    :undoc-members:
-    :inherited-members:
-
-Class: Detector
----------------
-.. automodule:: PyMieSim.Detector
-    :members:
-    :undoc-members:
-    :inherited-members:
-
-Class: Mesh
------------
-.. automodule:: PyMieSim.Mesh
-    :members:
-    :undoc-members:
-    :inherited-members:
-
-Class: Sets
------------
-.. automodule:: PyMieSim.Sets
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
 
 
 
