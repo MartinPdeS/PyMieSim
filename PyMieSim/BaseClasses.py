@@ -314,6 +314,7 @@ class BaseScatterer(object):
         Parameters
         ----------
         Num : :class:`int`
+            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
 
 
         """
