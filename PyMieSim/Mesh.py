@@ -200,7 +200,7 @@ class StructuredFullMesh(object):
         self.Theta = Angle(Theta, unit='Radian')
 
 
-def fibonacci_sphere(samples=1, maxAngle=pi/2):
+def fibonacci_sphere(maxAngle, samples=100):
 
     X = []; Y = []; Z = []
 
