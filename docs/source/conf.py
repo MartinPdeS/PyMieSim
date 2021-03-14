@@ -21,6 +21,8 @@ autodoc_mock_imports = ['ai.cs',
                         'mayavi',
                         'scipy',
                         'numpydoc',
+                        'PyMieSim.LMT',
+                        'PyMieSim.GLMT',
                         'sphinx.ext.autodoc']
 
 
@@ -48,12 +50,16 @@ release = '0.1.11'
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
 extensions = [
+    'sphinx.ext.napoleon',
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
+    'sphinx.ext.coverage',
     'numpydoc'
 ]
+
 numpydoc_show_class_members = False
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
