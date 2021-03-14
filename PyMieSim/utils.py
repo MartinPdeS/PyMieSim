@@ -1,13 +1,7 @@
 import numpy as np
-import matplotlib
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import matplotlib.pyplot as plt
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
-import cartopy.crs as ccrs
-from scipy.interpolate import griddata
 from ai import cs
+from mayavi import mlab
+from scipy.interpolate import griddata
 
 from PyMieSim.Physics import Angle
 import PyMieSim
@@ -132,23 +126,7 @@ def InterpFull(Meshes, Scalar, Shape):
 
 
 
-def PlotUnstructureData(Scalar, phi, theta):
 
-    fig, ax = plt.subplots(1,2,figsize=(15,8))
-
-    im0 = ax[0].tripcolor(theta, phi, Scalar.real)
-
-    im1 = ax[1].tripcolor(theta, phi, Scalar.imag)
-
-    plt.colorbar(mappable=im0, ax=ax[0])
-
-    plt.colorbar(mappable=im1, ax=ax[1])
-
-    ax[0].plot(theta, phi, 'ko ', markersize=2)
-
-    ax[1].plot(theta, phi, 'ko ', markersize=2)
-
-    plt.show()
 
 
 
@@ -221,280 +199,149 @@ def extrapolate_nans(x, y, v):
 
 
 
-def PlotFarField(Phi, Theta, Scalar, Meshes=None, Name='Field', scatter=True):
 
-        fig, axes = plt.subplots(nrows      = 1,
-                                  ncols      = 2,
-                                  figsize    = (8, 4),
-                                  subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+def UnitSphere(Num, Radius=1.):
+    pi = np.pi
+    phi, theta = np.mgrid[-pi/2:pi/2:complex(Num), -pi:pi:complex(Num)]
+    x, y, z = cs.sp2cart(phi*0+Radius, phi, theta)
 
-        im0 = axes[0].contourf(np.rad2deg(Theta),
-                               np.rad2deg(Phi),
-                               Scalar.real,
-                               cmap      = 'inferno',
-                               transform = ccrs.PlateCarree(),
-                               levels    = 20
-                               )
+    return x, y, z
 
-        gl = axes[0].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-        gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-        gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
 
-        plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[0])
-        axes[0].set_title('Real Part {}'.format(Name))
-        axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
-        axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
-        axes[0].grid(True, which='minor')
+def PlotUnstructured(Scalar, Mesh, Name=''):
+    x, y, z = cs.sp2cart(Mesh.Phi.Radian.flatten()*0+1,
+                         Mesh.Phi.Radian.flatten(),
+                         Mesh.Theta.Radian.flatten())
 
+    offset = 3
+    X = np.linspace(-1,1,10)*1.3
+    Y = np.linspace(-1,1,10)*1.3
+    Z = np.linspace(-1,1,10)*2
 
-        im1 = axes[1].contourf(np.rad2deg(Theta),
-                               np.rad2deg(Phi),
-                               Scalar.imag,
-                               cmap      = 'inferno',
-                               transform = ccrs.PlateCarree(),
-                               levels    = 20
-                               )
+    zeros = np.zeros_like(X)
 
-        gl = axes[1].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-        gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-        gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+    fig = mlab.figure(size=(600,300))
 
-        plt.colorbar(mappable=im1, fraction=0.046, orientation='vertical', ax=axes[1])
-        axes[1].set_title('Imaginary Part {}'.format(Name))
-        axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
-        axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
-        axes[1].grid(True, which='minor')
+    mlab.plot3d(X, zeros, zeros, line_width=1e-12)
+    mlab.plot3d(zeros, Y, zeros, line_width=1e-12)
+    mlab.plot3d(zeros, zeros, Z, line_width=1e-12)
 
+    mlab.plot3d(X+offset, zeros, zeros, line_width=1e-12)
+    mlab.plot3d(zeros+offset, Y, zeros, line_width=1e-12)
+    mlab.plot3d(zeros+offset, zeros, Z, line_width=1e-12)
 
-        fig.tight_layout()
+    mlab.text(0, 0, u'Z', z=2, width=0.01)
+    mlab.text(0, 1.3, u'Y', z=0, width=0.01)
+    mlab.text(1.3, 0, u'X', z=0, width=0.01)
 
-        plt.show()
+    mlab.text(0+offset, 0, u'Z', z=2, width=0.01)
+    mlab.text(0+offset, 1.3, u'Y', z=0, width=0.01)
+    mlab.text(1.3+offset, 0, u'X', z=0, width=0.01)
 
+    mlab.text(offset, 0, u'Imaginary', z=-2., width=0.15)
+    mlab.text(0, 0, u'Real', z=-2, width=0.07)
 
-        return fig
+    mlab.text(offset/2, 0, Name, z=2, width=0.2)
 
+    xp, yp, zp = UnitSphere(Num=50, Radius=1.)
 
+    mlab.mesh(xp, yp, zp, colormap='gray', opacity=0.5)
 
-def PlotStructuredSphere(Scalar, Phi, Theta, Name=''):
+    mlab.mesh(xp+offset, yp, zp, colormap='gray', opacity=0.5)
 
-    fig, axes = plt.subplots(1,2,figsize=(8,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+    im0 = mlab.points3d(x, y, z, Scalar.real, mode='sphere', scale_mode='none', colormap='inferno')
 
-    im0 = axes[0].contourf(Theta,
-                            Phi,
-                            Scalar.real,
-                            antialiased=False,
-                            cmap = 'inferno',
-                            #levels = 100,
-                            transform = ccrs.PlateCarree())
+    im1 = mlab.points3d(x+offset, y, z, Scalar.imag, mode='sphere', scale_mode='none', colormap='inferno')
 
-    im1 = axes[1].contourf(Theta,
-                            Phi,
-                            Scalar.imag,
-                            antialiased=False,
-                            cmap = 'inferno',
-                            #levels = 100,
-                            transform = ccrs.PlateCarree())
+    mlab.colorbar(object = im0, label_fmt="%.0e", nb_labels=5, title='Real part', orientation='horizontal' )
 
+    mlab.colorbar(object = im1, label_fmt="%.0e", nb_labels=5, title='Imaginary part', orientation='vertical' )
 
+    mlab.show()
 
-    gl = axes[0].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
 
-    gl = axes[1].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
 
-    plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[0])
-    plt.colorbar(mappable=im1, fraction=0.046, orientation='vertical', ax=axes[1])
 
-    axes[0].set_title(f'Real Part {Name}')
-    axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
-    axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
 
 
-    axes[1].set_title(f'Imaginary Part {Name}')
-    axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
-    axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
 
+def PlotStructuredAbs(Scalar, Phi, Theta, Name=''):
 
-    #axes[0].set_extent([-12755636.1863, 12755636.1863, -12727770.598700099, 12727770.598700099])
-    #axes[1].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
+        x, y, z = cs.sp2cart(Scalar, Phi, Theta)
 
-    fig.tight_layout()
+        X = np.linspace(np.min(x),np.max(x),10)*1.3
+        Y = np.linspace(np.min(y),np.max(y),10)*1.3
+        Z = np.linspace(np.min(z),np.max(z),10)*1.3
 
-    plt.show()
+        radius = np.abs( min(np.min(x), np.min(y), np.min(z))/100 )
 
+        zeros = np.zeros_like(X)
 
+        mlab.plot3d(X, zeros, zeros, line_width=1e-12, tube_radius=radius)
+        mlab.plot3d(zeros, Y, zeros, line_width=1e-12, tube_radius=radius)
+        mlab.plot3d(zeros, zeros, Z, line_width=1e-12, tube_radius=radius)
 
-def PlotFarField(Scalar, Phi, Theta, Name=''):
+        mlab.text(0, 0, u'Z', z=Z[-1], width=0.01)
+        mlab.text(0, Y[-1], u'Y', z=0, width=0.01)
+        mlab.text(X[-1], 0, u'X', z=0, width=0.01)
 
-    fig, axes = plt.subplots(1,2,figsize=(8,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
+        mlab.text(0, 0, Name, z=Z[-1]*1.15, width=0.5)
 
-    im0 = axes[0].contourf(Theta,
-                            Phi,
-                            Scalar.real,
-                            antialiased=False,
-                            cmap = 'inferno',
-                            #levels = 100,
-                            transform = ccrs.PlateCarree())
+        mlab.mesh(x, y, z, colormap='viridis')
 
-    im1 = axes[1].contourf(Theta,
-                            Phi,
-                            Scalar.imag,
-                            antialiased=False,
-                            cmap = 'inferno',
-                            #levels = 100,
-                            transform = ccrs.PlateCarree())
+        mlab.show()
 
 
+def PlotStructuredAmplitude(Scalar, Phi, Theta, Name=''):
+    x, y, z = cs.sp2cart(Phi*0+1,
+                         Phi,
+                         Theta)
 
-    gl = axes[0].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+    offset = 3
+    X = np.linspace(-1,1,10)*1.3
+    Y = np.linspace(-1,1,10)*1.3
+    Z = np.linspace(-1,1,10)*2
 
-    gl = axes[1].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
+    zeros = np.zeros_like(X)
 
-    plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[0])
-    plt.colorbar(mappable=im1, fraction=0.046, orientation='vertical', ax=axes[1])
+    fig = mlab.figure(size=(600,300))
 
-    axes[0].set_title(f'Real Part {Name}')
-    axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
-    axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
+    mlab.plot3d(X, zeros, zeros, line_width=1e-12)
+    mlab.plot3d(zeros, Y, zeros, line_width=1e-12)
+    mlab.plot3d(zeros, zeros, Z, line_width=1e-12)
 
+    mlab.plot3d(X+offset, zeros, zeros, line_width=1e-12)
+    mlab.plot3d(zeros+offset, Y, zeros, line_width=1e-12)
+    mlab.plot3d(zeros+offset, zeros, Z, line_width=1e-12)
 
-    axes[1].set_title(f'Imaginary Part {Name}')
-    axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
-    axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
+    mlab.text(0, 0, u'Z', z=2, width=0.01)
+    mlab.text(0, 1.3, u'Y', z=0, width=0.01)
+    mlab.text(1.3, 0, u'X', z=0, width=0.01)
 
+    mlab.text(0+offset, 0, u'Z', z=2, width=0.01)
+    mlab.text(0+offset, 1.3, u'Y', z=0, width=0.01)
+    mlab.text(1.3+offset, 0, u'X', z=0, width=0.01)
 
-    fig.tight_layout()
+    mlab.text(offset, 0, u'Imaginary', z=-2., width=0.15)
+    mlab.text(0, 0, u'Real', z=-2, width=0.07)
 
-    plt.show()
+    mlab.text(offset/2, 0, Name, z=2, width=0.2)
 
+    xp, yp, zp = UnitSphere(Num=50, Radius=1.)
 
+    mlab.mesh(xp, yp, zp, colormap='gray', opacity=0.5)
 
-def PlotUnstructuredSphere(Scalar, Phi, Theta, Name=''):
+    mlab.mesh(xp+offset, yp, zp, colormap='gray', opacity=0.5)
 
-    fig, axes = plt.subplots(1,
-                             2,
-                             figsize=(8,4),
-                             subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()}
-    )
+    im0 = mlab.points3d(x, y, z, Scalar.real, mode='sphere', scale_mode='none', colormap='inferno')
 
-    im0 = axes[0].tripcolor(Theta,
-                            Phi,
-                            Scalar.real,
-                            antialiased=False,
-                            transform = ccrs.PlateCarree()
-                            )
+    im1 = mlab.points3d(x+offset, y, z, Scalar.imag, mode='sphere', scale_mode='none', colormap='inferno')
 
-    im1 = axes[1].tricontour(Theta,
-                              Phi,
-                              Scalar.imag,
-                              antialiased=False,
-                              transform = ccrs.PlateCarree()
-                             )
+    mlab.colorbar(object = im0, label_fmt="%.0e", nb_labels=5, title='Real part', orientation='horizontal' )
 
+    mlab.colorbar(object = im1, label_fmt="%.0e", nb_labels=5, title='Imaginary part', orientation='vertical' )
 
-
-    gl = axes[0].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
-
-    gl = axes[1].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-    gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-    gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
-
-    plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[0])
-    plt.colorbar(mappable=im1, fraction=0.046, orientation='vertical', ax=axes[1])
-
-    axes[0].set_title(f'Real Part {Name}')
-    axes[0].set_ylabel(r'Angle $\phi$ [Degree]')
-    axes[0].set_xlabel(r'Angle $\theta$ [Degree]')
-    axes[0].grid(True, which='minor')
-
-    axes[1].set_title(f'Imaginary Part {Name}')
-    axes[1].set_ylabel(r'Angle $\phi$ [Degree]')
-    axes[1].set_xlabel(r'Angle $\theta$ [Degree]')
-    axes[1].grid(True, which='minor')
-
-
-    axes[0].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
-    axes[1].set_extent([-170, 170, -90, 90], crs=ccrs.PlateCarree())
-
-
-    axes[0].plot(Theta,
-                 Phi,
-                 'ko ',
-                 markersize=0.2,
-                 transform = ccrs.PlateCarree()
-                 )
-
-    axes[1].plot(Theta,
-                 Phi,
-                 'ko ',
-                 markersize=0.2,
-                 transform = ccrs.PlateCarree()
-                 )
-    fig.tight_layout()
-
-
-    plt.show()
-
-
-
-
-def PlotField(Theta, Phi, Parallel, Perpendicular):
-
-    fig, axes = plt.subplots(ncols=2, nrows=2, figsize=(10,6))
-    axes[0,0].set_title('Parallel fields')
-    axes[0,1].set_title('Perpendicular fields')
-    axes[0,0].set_ylabel('Real Part')
-    axes[1,0].set_ylabel('Imaginary Part')
-
-    im0 = axes[0,0].pcolormesh(Theta,
-                               Phi,
-                               np.real(Parallel),
-                               shading='auto')
-
-    divider = make_axes_locatable(axes[0,0])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    fig.colorbar(im0, cax=cax, orientation='vertical')
-
-    im1 = axes[0,1].pcolormesh(Theta,
-                               Phi,
-                               np.real(Perpendicular),
-                               shading='auto')
-
-    divider = make_axes_locatable(axes[0,1])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    fig.colorbar(im1, cax=cax, orientation='vertical')
-
-
-    im2 = axes[1,0].pcolormesh(Theta,
-                               Phi,
-                               np.imag(Parallel),
-                               shading='auto')
-
-    divider = make_axes_locatable(axes[1,0])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    fig.colorbar(im2, cax=cax, orientation='vertical')
-
-    im3 = axes[1,1].pcolormesh(Theta,
-                               Phi,
-                               np.imag(Perpendicular),
-                               shading='auto')
-
-    divider = make_axes_locatable(axes[1,1])
-    cax = divider.append_axes('right', size='5%', pad=0.05)
-    fig.colorbar(im3, cax=cax, orientation='vertical')
-
-    fig.tight_layout()
-    plt.show(block=False)
-
+    mlab.show()
 
 
 """ Ref: https://optiwave.com/optifdtd-manuals/fdtd-far-field-transform/"""

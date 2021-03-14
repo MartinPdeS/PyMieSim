@@ -3,9 +3,8 @@
 
 import numpy as np
 from scipy.special import gamma
-from PyMieSim.utils import PlotFarField
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
-from PyMieSim.Representations import S1S2, SPF, Field, Stokes
+from PyMieSim.Representations import S1S2, SPF, Stokes
 from PyMieSim.GLMT.Sphere import an, bn, cn, dn
 
 
@@ -242,13 +241,9 @@ class WMSample(object):
 
         Scalar = self.GetField(Phi, Theta+np.pi/2)
 
-        fig0 = PlotFarField(Phi     = Phi,
-                            Theta   = Theta,
-                            Scalar  = Scalar.reshape([num,num]),
-                            Mesh  = scatter,
-                            scatter = False,
-                            Name    = 'Scattered field')
+        from PyMieSim.utils import PlotUnstructured
 
+        PlotUnstructuredAmplitude(Scalar = Scalar, Phi=Phi, Theta=Theta, Name='Mode field')
 
 
 

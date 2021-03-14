@@ -2,15 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-import matplotlib.pyplot as plt
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
+
 import numpy as np
-import matplotlib
-import cartopy.crs as ccrs
 from ai import cs
 
-from PyMieSim.Representations import S1S2, SPF, Stokes, Field, ScalarFarField, Footprint
+from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding
 from PyMieSim.Mesh import FibonacciMesh
@@ -156,56 +152,22 @@ class BaseDetector(object):
                                  PhiOffset   = PhiOffset,
                                  GammaOffset = GammaOffset)
 
+
     def Plot(self):
         """Method that plot the real part of the scattered field
         (:math:`E_{\\theta}` and :math:`E_{\\phi}`).
 
         """
 
-        Name = 'Mode Field'
-        ThetaMean = np.mean(self.Mesh.Theta.Degree).round(1)
-        PhiMean = np.mean(self.Mesh.Phi.Degree).round(1)
+        from PyMieSim.utils import PlotUnstructured
 
-        fig, (ax0, ax1) = plt.subplots(1,
-                                 2,
-                                 figsize=(8,4),
-                                 subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea(central_latitude=PhiMean, central_longitude=ThetaMean)})
-
-        for iter, ax in enumerate([ax0, ax1]):
-            if iter == 0 : data = self.Scalar.real; Part = 'Real'
-            if iter == 1 : data = self.Scalar.imag; Part = 'Imaginary'
-
-            im = ax.tricontourf(self.Mesh.Theta.Degree,
-                                    self.Mesh.Phi.Degree,
-                                    data,
-                                    levels=13,
-                                    cmap="inferno",
-                                    transform = ccrs.PlateCarree())
-
-            ax.plot(self.Mesh.Theta.Degree,
-                    self.Mesh.Phi.Degree,
-                    'ko',
-                    ms=0.1,
-                    transform = ccrs.PlateCarree())
-
-
-            plt.colorbar(mappable=im, fraction=0.046, orientation='horizontal', ax=ax)
-            gl = ax.gridlines(crs=ccrs.PlateCarree(), draw_labels=True, x_inline=False, y_inline=False)
-
-            gl.top_labels = False
-            gl.left_labels = False
-            gl.right_labels = False
-            gl.bottom_labels = True
-
-            ax.set_title(f'{Part} Part {Name}')
-            ax.set_ylabel(r'Angle $\phi$ [Degree]')
-            ax.set_xlabel(r'Angle $\theta$ [Degree]')
-
-        plt.show()
+        PlotUnstructured(self.Scalar, self.Mesh, Name='Mode field')
 
 
 
 class EfficienciesProperties(object):
+
+
     @property
     def Qext(self):
         """Extinction efficiency:
@@ -217,6 +179,7 @@ class EfficienciesProperties(object):
         else:
             self.GetEfficiencies()
             return self._Qext
+
 
     @property
     def Qsca(self):

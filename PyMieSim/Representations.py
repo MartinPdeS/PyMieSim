@@ -1,14 +1,13 @@
 import numpy as np
 from ai import cs
 from mayavi import mlab
-import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 import matplotlib
 plt.rcParams["font.family"] = "serif"
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 
-from PyMieSim.utils import PlotStructuredSphere, GetFieldBinding
+from PyMieSim.utils import GetFieldBinding
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
 from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
@@ -93,46 +92,6 @@ class Stokes(np.ndarray):
 
 
 
-class Field(object):
-
-    def __init__(self,
-                 Perpendicular: np.ndarray,
-                 Parallel:      np.ndarray,
-                 Parent):
-        """
-        Source -- https://www.physlab.org/wp-content/uploads/2016/07/Ch6-BYUOpticsBook_2013.pdf
-
-        """
-        self.Perpendicular, self.Parallel = Perpendicular, Parallel
-        self.Parent = Parent
-
-
-    def Plot(self):
-        fig, axes = plt.subplots(nrows      = 1,
-                                 ncols      = 2,
-                                 figsize    = (12,3),
-                                 subplot_kw = {'projection':'mollweide'})
-
-        axes[0].pcolormesh(self.Parent.Meshes.Theta.Radian,
-                           -( self.Parent.Meshes.Phi.Radian - np.pi/2),
-                           np.real(self.Perpendicular),
-                           shading='auto')
-
-        axes[1].pcolormesh(self.Parent.Meshes.Theta.Radian,
-                           -( self.Parent.Meshes.Phi.Radian - np.pi/2),
-                           np.imag(self.Perpendicular),
-                           shading='auto')
-
-        [ax.set_ylabel(r'Angle $\phi$ [Degree]') for ax in axes]
-        [ax.set_xlabel(r'Angle $\theta$ [Degree]') for ax in axes]
-        [ax.grid() for ax in axes]
-        axes[0].set_title('Real Part\n Far-Field Spherical Coordinates')
-        axes[1].set_title('Imaginary Part\n Far-Field Spherical Coordinates')
-        fig.tight_layout()
-
-
-
-
 class SPF(dict):
 
     def __init__(self, Parent, Num=100, Distance=1.):
@@ -151,39 +110,13 @@ class SPF(dict):
 
 
     def Plot(self):
+        from PyMieSim.utils import PlotStructuredAbs
+        Name = 'Scattering phase function'
 
-        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
-
-        X = np.linspace(np.min(x),np.max(x),10)*1.3
-        Y = np.linspace(np.min(y),np.max(y),10)*1.3
-        Z = np.linspace(np.min(z),np.max(z),10)*1.3
-
-        radius = np.abs( min(np.min(x), np.min(y), np.min(z))/100 )
-
-        mlab.plot3d(X,
-                    np.zeros_like(X),
-                    np.zeros_like(X),
-                    line_width=1e-12,
-                    tube_radius=radius
-                    )
-
-        mlab.plot3d(np.zeros_like(Y),
-                    Y,
-                    np.zeros_like(Y),
-                    line_width=1e-12,
-                    tube_radius=radius
-                    )
-
-        mlab.plot3d(np.zeros_like(Z),
-                    np.zeros_like(Z),
-                    Z,
-                    line_width=1e-12,
-                    tube_radius=radius
-                    )
-
-        mlab.mesh(x, y, z, colormap='viridis')
-
-        mlab.show()
+        PlotStructured(self['SPF'],
+                       self['Phi'],
+                       self['Theta'],
+                       Name='Scattering phase function')
 
 
     def __repr__(self):
@@ -290,123 +223,15 @@ class ScalarFarField(dict):
             Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
 
         """
-        x, y, z = cs.sp2cart(self['SPF'], self['Phi'], self['Theta'])
 
-        X = np.linspace(np.min(x),np.max(x),10)*1.3
-        Y = np.linspace(np.min(y),np.max(y),10)*1.3
-        Z = np.linspace(np.min(z),np.max(z),10)*1.3
+        from PyMieSim.utils import PlotStructuredAmplitude
 
-        radius = np.abs( min(np.min(x), np.min(y), np.min(z))/100 )
-
-        figure0 = mlab.figure()
-        figure1 = mlab.figure()
-
-        mlab.plot3d(X,
-                    np.zeros_like(X),
-                    np.zeros_like(X),
-                    line_width=1e-12,
-                    tube_radius=radius,
-                    figure = figure0)
-
-        mlab.plot3d(np.zeros_like(Y),
-                    Y,
-                    np.zeros_like(Y),
-                    line_width=1e-12,
-                    tube_radius=radius,
-                    figure = figure0)
-
-        mlab.plot3d(np.zeros_like(Z),
-                    np.zeros_like(Z),
-                    Z,
-                    line_width=1e-12,
-                    tube_radius=radius,
-                    figure = figure0)
-
-        surface = mlab.mesh(x,
-                            y,
-                            z,
-                            scalars=self['EPhi'].real,
-                            colormap='viridis',
-                            figure = figure0)
-
-        mlab.colorbar(object = surface, label_fmt="%.0e", nb_labels=5, title=r"|E| (phi)$" )
-        #mlab.zlabel('Propagation')
-
-        mlab.plot3d(X,
-                    np.zeros_like(X),
-                    np.zeros_like(X),
-                    line_width=1e-12,
-                    tube_radius=radius,
-                    figure = figure1)
-
-        mlab.plot3d(np.zeros_like(Y),
-                    Y,
-                    np.zeros_like(Y),
-                    line_width=1e-12,
-                    tube_radius=radius,
-                    figure = figure1)
-
-        mlab.plot3d(np.zeros_like(Z),
-                    np.zeros_like(Z),
-                    Z,
-                    line_width=1e-12,
-                    tube_radius=radius,
-                    figure = figure1)
-
-        surface = mlab.mesh(x,
-                            y,
-                            z,
-                            scalars=self['ETheta'].real,
-                            colormap='viridis',
-                            figure = figure1)
+        PlotStructuredAmplitude(self['EPhi'],
+                                self['Phi'],
+                                self['Theta'])
 
 
-        mlab.colorbar(object = surface, label_fmt="%.0e", nb_labels=5, title=r"|E| (theta)$" )
-        mlab.show()
 
-
-    def _Plot(self):
-        """Method plots the scattered Far-Field
-        :math:`E_{\\phi}(\\phi,\\theta)^2 , E_{\\theta}(\\phi,\\theta)^2`.
-
-        Parameters
-        ----------
-        Num : :class:`int`
-            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
-
-        """
-
-        fig, axes = plt.subplots(2,2,figsize=(6,4),subplot_kw = {'projection':ccrs.LambertAzimuthalEqualArea()})
-
-        for F, Name in enumerate( ['EPhi', 'ETheta'] ):
-
-            for m, Part in enumerate(['Real', 'Imaginary']) :
-
-                if m == 0: data = self[Name].real
-                if m == 1: data = self[Name].imag
-
-                im0 = axes[m,F].contourf(np.rad2deg(self['Theta'])+np.pi,
-                                         np.rad2deg(self['Phi']),
-                                         data,
-                                         antialiased=False,
-                                         cmap = 'inferno',
-                                         #levels = 100,
-                                         transform = ccrs.PlateCarree())
-
-                gl = axes[m,F].gridlines(crs=ccrs.PlateCarree(), draw_labels=False)
-                gl.xlocator = matplotlib.ticker.FixedLocator(np.arange(-180,181,30))
-                gl.ylocator = matplotlib.ticker.FixedLocator([-90, -60, -30, 0, 30, 60, 90])
-
-                plt.colorbar(mappable=im0, fraction=0.046, orientation='vertical', ax=axes[m,F])
-
-                if F == 0: name = r"$E_{\phi}(\phi, \theta)$"
-                if F == 1: name = r"$E_{\theta}(\phi, \theta)$"
-
-                axes[m,F].set_title(f'{Part} Part' + '\n' +  name, fontsize=8)
-
-        fig.tight_layout()
-
-        plt.show()
 
 
 

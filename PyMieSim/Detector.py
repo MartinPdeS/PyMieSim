@@ -1,8 +1,7 @@
 
 import numpy as np
 import fibermodes
-import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
+
 from ai import cs
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
@@ -77,11 +76,13 @@ class Photodiode(BaseDetector, MeshProperty):
 
         Returns
         -------
-        type
+        :class`numpy.ndarray`:
             Structured FarField value.
 
         """
+
         return np.ones([Num, Num])
+
 
     def __repr__(self):
 
@@ -138,7 +139,9 @@ class LPmode(BaseDetector, MeshProperty):
         assert NA < 1, "Numerical aperture has to be under 1 radian"
 
         self.CouplingMode = ('Amplitude', CouplingMode)
+
         self._Filter = _Polarization(Filter)
+
         self.ModeNumber = Mode[0]+1, Mode[1], Mode[2]
 
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
@@ -148,9 +151,6 @@ class LPmode(BaseDetector, MeshProperty):
                                        Structured  = False)
 
         self.Scalar = self.FarField(Num = InterpSampling, Interpolate=True)
-
-        if False:
-            PlotUnstructureData(self.Scalar, self.Mesh.base.Theta, self.Mesh.base.Phi)
 
 
 
@@ -172,7 +172,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         """
 
-        mode = SMF28(mode = (0,1), Num=Num, SFactor=5)
+        mode = SMF28(mode = (self.ModeNumber[0],self.ModeNumber[1]) , Num=Num, SFactor=15)
 
         if self.ModeNumber[2] == 'h': mode = mode.T
 

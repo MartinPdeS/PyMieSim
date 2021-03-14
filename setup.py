@@ -26,14 +26,10 @@ VERSION         = '0.1.10'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',
-          'matplotlib',
-          'pandas',
-          'mayavi',
-          'ai.cs',
-          'geos',
-          'cartopy',
-
-          ]
+            'matplotlib',
+            'pandas',
+            'mayavi',
+            'ai.cs']
 
 
 class get_pybind11_include(object):
