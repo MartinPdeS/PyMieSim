@@ -2,11 +2,11 @@ import numpy as np
 from ai import cs
 import math
 import matplotlib.pyplot as plt
-#plt.rcParams["font.family"] = "serif"
-#plt.rcParams["mathtext.fontset"] = "dejavuserif"
+plt.rcParams["font.family"] = "serif"
+plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 from PyMieSim.Physics import Angle
-
+pi = np.pi
 
 class FibonacciMesh(object):
     """
@@ -55,19 +55,15 @@ class FibonacciMesh(object):
 
         self.Sampling = Theta.size
 
-        self.SinMesh = np.abs( np.sin(Phi - np.pi/2) )
+        self.SinMesh = np.abs( np.sin(Phi - pi/2) )
 
         self.dOmega = Angle(0, unit='Radian');
         self.dOmega.Radian = dOmega
-        self.dOmega.Degree = dOmega * (180/np.pi)**2
+        self.dOmega.Degree = dOmega * (180/pi)**2
 
         self.Omega = Angle(0, unit='Radian');
         self.Omega.Radian = np.abs( self.dOmega.Radian * self.Sampling)
-        self.Omega.Degree = self.Omega.Radian * (180/np.pi)**2
-
-
-
-
+        self.Omega.Degree = self.Omega.Radian * (180/pi)**2
 
 
     def Plot(self):
@@ -91,7 +87,7 @@ class FibonacciMesh(object):
         ax.quiver(0,0,0,0,1,0,length=1.5, color='k', arrow_length_ratio=0.1)
         ax.quiver(0,0,0,1,0,0,length=1.5, color='k', arrow_length_ratio=0.1)
 
-        phi, theta = np.mgrid[0.0:np.pi:20j, 0.0:2.0*np.pi:20j]
+        phi, theta = np.mgrid[0.0:pi:20j, 0.0:2.0*pi:20j]
 
         ax.plot_surface(X          = np.sin(phi)*np.cos(theta),
                         Y          = np.sin(phi)*np.sin(theta),
@@ -151,32 +147,32 @@ class FibonacciMesh(object):
 
 
     def AvoidPoles(self, base):
-        Tinitial = cs.mx_rot_x(gamma = np.pi)
+        Tinitial = cs.mx_rot_x(gamma = pi)
 
         return cs.mx_apply(Tinitial, *base)
 
 
     def RotateOnGamma(self, rotation, base):
-        TPhi = cs.mx_rot_y(theta = rotation/180*np.pi)
+        TPhi = cs.mx_rot_y(theta = rotation/180*pi)
 
         return cs.mx_apply(TPhi, *base)
 
 
     def RotateOnPhi(self, rotation, base):
-        TGamma = cs.mx_rot_x(gamma = rotation/180*np.pi)
+        TGamma = cs.mx_rot_x(gamma = rotation/180*pi)
 
         return cs.mx_apply(TGamma, *base)
 
 
     def ComputeTrueSample(self, Sampling):
 
-        SolidAngle = np.abs( 2*np.pi * (np.cos(self.MaxAngle) - np.cos(0)))
+        SolidAngle = np.abs( 2*pi * (np.cos(self.MaxAngle) - np.cos(0)))
 
-        ratio = (4*np.pi/SolidAngle)
+        ratio = (4*pi/SolidAngle)
 
         TrueSampling = int(Sampling*ratio)
 
-        return TrueSampling, 4*np.pi / TrueSampling
+        return TrueSampling, 4*pi / TrueSampling
 
 
 
@@ -197,13 +193,41 @@ class StructuredFullMesh(object):
 
         self.shape = [Num, Num]
 
-        Phi, Theta = np.mgrid[-np.pi/2:np.pi/2:complex(Num), 0:2*np.pi:complex(Num)]
+        Phi, Theta = np.mgrid[-pi/2:pi/2:complex(Num), 0:2*pi:complex(Num)]
 
         self.Phi = Angle(Phi, unit='Radian')
 
         self.Theta = Angle(Theta, unit='Radian')
 
 
+def fibonacci_sphere(samples=1, maxAngle=pi/2):
+
+    X = []; Y = []; Z = []
+
+    phi = math.pi * (3. - math.sqrt(5.))  ## golden angle in radians
+    MaxY = np.cos(maxAngle)
+
+    SolidAngle = np.abs( 2*pi * (np.cos(maxAngle) - np.cos(0)))
+
+    ratio = 4*pi / SolidAngle
+
+    TrueSampling = int( samples * ratio )
+
+    for i in range(TrueSampling):
+        y = 1 - (i / float(TrueSampling - 1)) * 2  ## y goes from 1 to -1
+        radius = math.sqrt(1 - y * y)  ## radius at y
+
+        theta = phi * i  ## golden angle increment
+
+        x = math.cos(theta) * radius
+        z = math.sin(theta) * radius
+
+        X.append(x); Y.append(y); Z.append(z)
+
+        if i >= samples - 1: break
+        #if y <= MaxY: break
+
+    return np.asarray(X), np.asarray(Y), np.asarray(Z)
 
 
 

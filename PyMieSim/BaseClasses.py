@@ -71,9 +71,6 @@ class MeshProperty(object):
 
 
 
-
-
-
 class BaseDetector(object):
     """Base class for :class:`Detector` class used to define the properties
     of the angular mesh for Far-Field computations.
