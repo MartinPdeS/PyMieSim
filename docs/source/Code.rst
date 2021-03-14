@@ -1,5 +1,5 @@
-Code l
-=================
+Source code structures
+======================
 
 Class: Representations
 ----------------------
@@ -13,17 +13,55 @@ Source
 
 PlaneWave
 ~~~~~~~~~
-
 .. autoclass:: PyMieSim.Source.PlaneWave
     :members:
     :show-inheritance:
 
+
 GaussianBeam
 ~~~~~~~~~~~~
-
 .. autoclass:: PyMieSim.Source.GaussianBeam
     :members:
     :show-inheritance:
+
+
+
+
+Scatterer
+---------
+
+Sphere
+~~~~~~
+.. autoclass:: PyMieSim.Scatterer.Sphere
+    :members:
+    :show-inheritance:
+
+
+Cylinder
+~~~~~~~~
+.. autoclass:: PyMieSim.Scatterer.Cylinder
+    :members:
+    :show-inheritance:
+
+
+
+Detector
+--------
+
+Photodiode
+~~~~~~~~~~
+.. autoclass:: PyMieSim.Detector.Photodiode
+    :members:
+    :show-inheritance:
+
+
+LPmode
+~~~~~~
+.. autoclass:: PyMieSim.Detector.LPmode
+    :members:
+    :show-inheritance:
+
+
 
 Function: Coupling
 ------------------
