@@ -3,8 +3,8 @@ from ai import cs
 from mayavi import mlab
 import matplotlib.pyplot as plt
 import matplotlib
-plt.rcParams["font.family"] = "serif"
-plt.rcParams["mathtext.fontset"] = "dejavuserif"
+#plt.rcParams["font.family"] = "serif"
+#plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 
 from PyMieSim.utils import GetFieldBinding
