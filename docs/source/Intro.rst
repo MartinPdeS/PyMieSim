@@ -76,7 +76,7 @@ To runs tests use the following command (ubuntu 16.04).
 
 
 Citing this work?
-----------------
+-----------------
 
 DOI: https://doi.org/10.5281/zenodo.4556074
 
