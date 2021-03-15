@@ -15,16 +15,13 @@ typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 
 
- 
+
 //#include "utils.cpp"
 #include "Special.cpp"
 //#include "Math.cpp"
 
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
-
-
-
 
 
 

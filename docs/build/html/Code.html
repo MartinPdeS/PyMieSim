@@ -100,6 +100,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#scatterer">Scatterer</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#sphere">Sphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cylinder">Cylinder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wmsample">WMSample</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#detector">Detector</a><ul>
@@ -569,6 +570,28 @@ ref[2]:Eq:10
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+</div>
+<div class="section" id="wmsample">
+<h3>WMSample<a class="headerlink" href="#wmsample" title="Permalink to this headline">¶</a></h3>
+<dl class="py class">
+<dt id="PyMieSim.Scatterer.WMSample">
+<em class="property">class </em><code class="sig-prename descclassname">PyMieSim.Scatterer.</code><code class="sig-name descname">WMSample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">g</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">lc</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">D</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">Nc</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">Source</span><span class="p">:</span> <span class="n">PyMieSim.BaseClasses.BaseSource</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#WMSample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.WMSample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Sample represented by the Whittle-Matern RI correlation function and
+using the first Born approximation .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Description of parameter <cite>g</cite>.</p></li>
+<li><p><strong>lc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Correlation lenght of RI of the sample</p></li>
+<li><p><strong>D</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Form factor of the sample</p></li>
+<li><p><strong>Nc</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Scalling factor of the sample.</p></li>
+<li><p><strong>Source</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code>) – Light source object containing info on polarization and wavelength.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </div>

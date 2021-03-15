@@ -14,68 +14,8 @@ typedef std::complex<double> complex128;
 
 using namespace std;
 
-std::tuple<Vec, Vec, Vec>
-Cart2sph(Vec X, Vec Y, Vec Z){
-  Vec R, PHI, THETA;
-  for (long unsigned int i = 0; i < X.size(); i++){
-    R.push_back( sqrt( pow( X[i],2) + pow(Y[i],2) + pow(Z[i],2) ) );
-    PHI.push_back( atan( Y[i]/X[i] ) );
-    THETA.push_back( atan( sqrt( pow(Y[i],2) / pow(X[i],2) ) ) );
-  }
-  return std::make_tuple(R, PHI, THETA);
-}
 
 int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
-
-
-std::tuple<Vec, Vec, Vec>
-Fibonacci_sphere(int samples,
-                 double maxAngle){
-
-
-    Vec X, Y , Z;
-
-    Vec R, THETA, PHI;
-    double phi = PI * (3. - sqrt(5.));
-
-
-    double SolidAngle = abs( 2*PI * (cos(maxAngle) - 1));
-
-    double ratio = 4*PI / SolidAngle;
-
-    long unsigned int TrueSampling = (long unsigned int)( samples * ratio );
-
-    for (long unsigned int i = 0; i < TrueSampling; i++){
-
-        double y = 1 - (i / (double)(TrueSampling - 1)) * 2 ;
-        double radius = sqrt(1 - y * y);
-
-        double theta = phi * i;
-
-        double x = cos(theta) * radius;
-        //double z = sin(theta) * radius;
-
-        X.push_back(x);
-        Y.push_back(1.0);
-        Z.push_back(1.0);
-
-        if (i >= (long unsigned int)samples - 1) break;
-      }
-
-    std::tie(R, PHI, THETA) = Cart2sph(X,Y,Z);
-
-    X.clear();
-    Y.clear();
-    Z.clear();
-
-    X.shrink_to_fit();
-    Y.shrink_to_fit();
-    Z.shrink_to_fit();
-
-    return std::make_tuple(R, PHI, THETA);
-
-
-}
 
 
 double

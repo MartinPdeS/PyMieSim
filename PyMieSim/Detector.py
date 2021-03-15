@@ -140,7 +140,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         self._Filter = _Polarization(Filter)
 
-        self.ModeNumber = Mode[0]+1, Mode[1], Mode[2]
+        self.ModeNumber = Mode[0], Mode[1], Mode[2]
 
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
                                        MaxAngle    = NA2Angle(NA).Radian,
@@ -170,7 +170,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         """
 
-        mode = SMF28(mode = (self.ModeNumber[0],self.ModeNumber[1]) , Num=Num, SFactor=15)
+        mode = SMF28(mode = (self.ModeNumber[0],self.ModeNumber[1]) , Num=Num)
 
         if self.ModeNumber[2] == 'h': mode = mode.T
 

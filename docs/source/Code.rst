@@ -44,6 +44,14 @@ Cylinder
     :show-inheritance:
 
 
+WMSample
+~~~~~~~~
+.. autoclass:: PyMieSim.Scatterer.WMSample
+    :members:
+    :show-inheritance:
+
+
+
 
 Detector
 --------
