@@ -23,6 +23,7 @@ autodoc_mock_imports = ['numpy',
                         'PyMieSim.LMT',
                         'PyMieSim.GLMT',
                         'PyMieSim._Coupling',
+                        'PyMieSim._utils',
                         'sphinx.ext.autodoc']
 
 
