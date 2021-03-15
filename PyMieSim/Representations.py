@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 #plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 
-from PyMieSim.utils import GetFieldBinding
+from PyMieSim.utils import GetFieldBinding, PlotStructuredAbs
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
 from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
@@ -108,10 +108,10 @@ class SPF(dict):
         from PyMieSim.utils import PlotStructuredAbs
         Name = 'Scattering phase function'
 
-        PlotStructured(self['SPF'],
-                       self['Phi'],
-                       self['Theta'],
-                       Name='Scattering phase function')
+        PlotStructuredAbs(self['SPF'],
+                          self['Phi'],
+                          self['Theta'],
+                          Name='Scattering phase function')
 
 
     def __repr__(self):
