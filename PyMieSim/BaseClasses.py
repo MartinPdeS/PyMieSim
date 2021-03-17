@@ -4,7 +4,7 @@
 import numpy as np
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, cart2sp
+from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 
@@ -135,7 +135,7 @@ class BaseDetector(object):
         if Structured:
             x, y = np.mgrid[-50: 50: complex(Sampling), -50: 50: complex(Sampling)]
             z = 50 / np.tan(MaxAngle)
-            _, phi, theta = cart2sp(x, y, x*0+z)
+            _, theta, phi = Cart2Sp(x, y, x*0+z)
 
             return phi, theta
 

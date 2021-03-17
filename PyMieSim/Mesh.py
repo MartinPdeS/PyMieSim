@@ -1,13 +1,13 @@
 import numpy as np
-import math
-import matplotlib.pyplot as plt
-#plt.rcParams["font.family"] = "serif"
-#plt.rcParams["mathtext.fontset"] = "dejavuserif"
+from mayavi import mlab
+from PyMieSim.utils import UnitSphere, UnitAxes
 
 from PyMieSim.Physics import Angle
-from PyMieSim._utils import Fibonacci_Cartesian
-from PyMieSim.utils import sp2cart, mx_apply, mx_rot_z, mx_rot_y, mx_rot_x, cart2sp
+from PyMieSim._utils import FibonacciMeshCpp
+from PyMieSim.utils import Sp2Cart, Cart2Sp
 pi = np.pi
+
+
 
 class FibonacciMesh(object):
     """
@@ -35,147 +35,81 @@ class FibonacciMesh(object):
     def __init__(self,
                  MaxAngle:    float = 1.5,
                  Sampling:    int   = 1000,
-                 PhiOffset:   float = 0,
-                 GammaOffset: float = 0):
+                 PhiOffset:   float = 0.,
+                 GammaOffset: float = 0.):
 
-        self.PhiOffset = PhiOffset
+
+        self.Sampling    = Sampling
+        self.MaxAngle    = MaxAngle
+        self.PhiOffset   = PhiOffset
         self.GammaOffset = GammaOffset
-        self.MaxAngle = MaxAngle
-        self.Sampling = Sampling
-        Theta, Phi, dOmega = self.GenerateLedevedMesh()
+        self.GenerateLedevedMesh()
 
 
-        self.MakeProperties(Theta, Phi, dOmega)
+    def MakeProperties(self):
 
+        self.CartCoord = (self.bind.x, self.bind.y, self.bind.z)
 
-    def MakeProperties(self, Theta, Phi, dOmega):
+        self.SphCoord  = (self.bind.r, self.bind.phi, self.bind.theta)
 
-        self.Theta = Angle(Theta, unit='Radian')
+        self.Theta         = self.bind.r
+        self.Theta         = Angle(self.bind.theta, unit='Radian')
+        self.Phi           = Angle(self.SphCoord[1], unit='Radian')
 
-        self.Phi = Angle(Phi, unit='Radian')
+        self.SinMesh       = np.sin( self.SphCoord[1] )
 
-        self.Sampling = Theta.size
+        self.dOmega        = Angle(0, unit='Radian');
+        self.dOmega.Radian = self.bind.dOmega
+        self.dOmega.Degree = self.bind.dOmega * (180/pi)**2
 
-        self.SinMesh = np.abs( np.sin(Phi - pi/2) )
-
-        self.dOmega = Angle(0, unit='Radian');
-        self.dOmega.Radian = dOmega
-        self.dOmega.Degree = dOmega * (180/pi)**2
-
-        self.Omega = Angle(0, unit='Radian');
-        self.Omega.Radian = np.abs( self.dOmega.Radian * self.Sampling)
-        self.Omega.Degree = self.Omega.Radian * (180/pi)**2
+        self.Omega         = Angle(0, unit='Radian');
+        self.Omega.Radian  = self.bind.Omega
+        self.Omega.Degree  = self.bind.Omega * (180/pi)**2
 
 
     def Plot(self):
-        x, y, z = sp2cart(np.ones(self.Phi.Radian.shape),
-                          self.Phi.Radian,
-                          self.Theta.Radian)
 
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        ax.set_xlabel('X-direction [u.a.]')
-        ax.set_ylabel('Y-direction [u.a.]')
-        ax.set_zlabel('Z-direction [u.a.]')
-        ax.scatter(x, y, z,s=10, c='k')
-        ax.set_aspect('auto')
-        ax.set_xlim([-1.3,1.3])
-        ax.set_ylim([-1.3,1.3])
-        ax.set_zlim([-1,1])
+        Name = 'Angular mesh'
 
-        ax.quiver(0,0,-2,0,0,1,length=0.5, color='k',arrow_length_ratio=0.5)
-        ax.quiver(0,0,0,0,0,1.,length=1.5, color='k', arrow_length_ratio=0.1)
-        ax.quiver(0,0,0,0,1,0,length=1.5, color='k', arrow_length_ratio=0.1)
-        ax.quiver(0,0,0,1,0,0,length=1.5, color='k', arrow_length_ratio=0.1)
+        fig = mlab.figure(size=(600,300))
 
-        phi, theta = np.mgrid[0.0:pi:20j, 0.0:2.0*pi:20j]
+        UnitAxes(fig)
 
-        ax.plot_surface(X          = np.sin(phi)*np.cos(theta),
-                        Y          = np.sin(phi)*np.sin(theta),
-                        Z          = np.cos(phi),
-                        rstride    = 1,
-                        cstride    = 1,
-                        color      = 'b',
-                        alpha      = 0.3,
-                        linewidth  = 0.2,
-                        shade      = True,
-                        edgecolors = 'k'
-                        )
-        plt.show()
+        mlab.text(0, 0, Name, z=-2, width=0.2)
+
+        coord = UnitSphere(Num=50, Radius=1.)
+
+        mlab.mesh(*coord, colormap='gray', opacity=0.5)
+
+        im0 = mlab.points3d(*self.CartCoord,
+                             mode         = 'sphere',
+                             scale_mode   = 'none',
+                             scale_factor = 0.03)
+
+        mlab.show()
 
 
     def GenerateLedevedMesh(self):
 
-        self.TrueSample, dOmega = self.ComputeTrueSample(self.Sampling)
+        self.bind = FibonacciMeshCpp(self.Sampling,
+                                     self.MaxAngle,
+                                     np.deg2rad(self.PhiOffset),
+                                     np.deg2rad(self.GammaOffset) )
 
-        base = Fibonacci_Cartesian(Samples=self.Sampling, MaxAngle=self.MaxAngle)
 
-        base = self.AvoidPoles(base)
+        self.base = (self.bind.PhiBase, self.bind.ThetaBase)
 
-        r, phi, theta = cart2sp(*base)
-
-        base = sp2cart(np.ones(phi.size), phi, theta)
-
-        base = self.RotateOnPhi(-90, base)
-
-        #base = self.RotateOnGamma(90 , base)
-
-        r, phi, theta = cart2sp(*base)
-
-        self.base = Namespace(Phi=phi, Theta=theta)
-
-        notbase = self.RotateOnPhi(self.PhiOffset, base)
-
-        notbase = self.RotateOnGamma(self.GammaOffset, notbase)
-
-        r, phi, theta = cart2sp(*notbase)
-
-        return theta, phi, dOmega
-
+        self.MakeProperties()
 
 
     def UpdateSphere(self, **kwargs):
 
-        if 'MaxAngle' in kwargs: self.MaxAngle = kwargs['MaxAngle']
+        if 'MaxAngle'    in kwargs: self.MaxAngle    = kwargs['MaxAngle']
         if 'GammaOffset' in kwargs: self.GammaOffset = kwargs['GammaOffset']
-        if 'PhiOffset' in kwargs: self.PhiOffset = kwargs['PhiOffset']
-        if 'Sampling' in kwargs: self.Sampling = kwargs['Sampling']
+        if 'PhiOffset'   in kwargs: self.PhiOffset   = kwargs['PhiOffset']
+        if 'Sampling'    in kwargs: self.Sampling    = kwargs['Sampling']
 
-        Theta, Phi, dOmega =  self.GenerateLedevedMesh()
-
-        self.MakeProperties(Theta, Phi, dOmega)
-
-
-
-    def AvoidPoles(self, base):
-        Tinitial = mx_rot_x(gamma = pi)
-
-        return mx_apply(Tinitial, *base)
-
-
-    def RotateOnGamma(self, rotation, base):
-        TPhi = mx_rot_y(theta = rotation/180*pi)
-
-        return mx_apply(TPhi, *base)
-
-
-    def RotateOnPhi(self, rotation, base):
-        TGamma = mx_rot_x(gamma = rotation/180*pi)
-
-        return mx_apply(TGamma, *base)
-
-
-    def ComputeTrueSample(self, Sampling):
-
-        SolidAngle = np.abs( 2*pi * (np.cos(self.MaxAngle) - np.cos(0)))
-
-        ratio = (4*pi/SolidAngle)
-
-        TrueSampling = int(Sampling*ratio)
-
-        return TrueSampling, 4*pi / TrueSampling
-
-
+        self.GenerateLedevedMesh()
 
 
 class StructuredFullMesh(object):

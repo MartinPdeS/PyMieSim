@@ -1,10 +1,9 @@
-
 import numpy as np
 import fibermodes
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.Mesh import FibonacciMesh
-from PyMieSim.utils import interp_at, NA2Angle
+from PyMieSim.utils import interp_at, NA2Angle, Sp2Cart
 from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
 
 
@@ -122,7 +121,7 @@ class LPmode(BaseDetector, MeshProperty):
                  Mode:           tuple,
                  NA:             float,
                  Sampling:       int   = 401,
-                 InterpSampling: int   = 251,
+                 InterpSampling: int   = 101,
                  GammaOffset:    float = 0,
                  PhiOffset:      float = 0,
                  Filter:         float =  None,
@@ -188,8 +187,8 @@ class LPmode(BaseDetector, MeshProperty):
         return interp_at(x           = self._phi.flatten(),
                          y           = self._theta.flatten(),
                          v           = mode.astype(np.complex).flatten(),
-                         xp          = self.Mesh.base.Phi,
-                         yp          = self.Mesh.base.Theta,
+                         xp          = self.Mesh.base[0],
+                         yp          = self.Mesh.base[1],
                          algorithm   = 'linear',
                          extrapolate = True)
 
@@ -208,10 +207,27 @@ class LPmode(BaseDetector, MeshProperty):
 
 
 
+def PlotSpherical(phi, theta, scalar=None):
+    from mayavi import mlab
+    X = np.linspace(-1,1,10)*1.3
+    Y = np.linspace(-1,1,10)*1.3
+    Z = np.linspace(-1,1,10)*2
+
+    zeros = np.zeros_like(X)
+
+    fig = mlab.figure(size=(600,300))
+
+    mlab.plot3d(X, zeros, zeros, line_width=1e-12)
+    mlab.plot3d(zeros, Y, zeros, line_width=1e-12)
+    mlab.plot3d(zeros, zeros, Z, line_width=1e-12)
 
 
-
-
+    coord = Sp2Cart(phi*0+1, phi, theta)
+    if isinstance(scalar, np.ndarray):
+        mlab.points3d(*coord, scalar)
+    else:
+        mlab.points3d(*coord)
+    mlab.show()
 
 
 # -
