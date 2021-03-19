@@ -11,8 +11,7 @@ from PyMieSim.Optimizer import OptArray
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieSim.Scatterer import Sphere, WMSample
-from PyMieSim.LMT.Sphere import S1S2 as GetS1S2, Efficiencies as GetEfficiencies
-
+from PyMieSim.LMT.Scatterer import SPHERE
 
 
 class ScattererSet(object):
@@ -34,7 +33,7 @@ class ScattererSet(object):
                  DiameterList:    list,
                  RIList:          list,
                  Source:          PlaneWave,
-                 IndexMedium:     float   = 1.0
+                 nMedium:         float   = 1.0
                  ):
 
         if not isinstance(RIList, (list, np.ndarray)): RIList = [RIList]
@@ -43,7 +42,7 @@ class ScattererSet(object):
 
         self.DiameterList, self.RIList = DiameterList, RIList
 
-        self.nMedium = IndexMedium
+        self.nMedium = nMedium
 
         self.Source = Source
 
@@ -68,10 +67,14 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                Qsca, Qext, Qabs = GetEfficiencies(Index         = RI,
-                                                   Diameter      = Diameter,
-                                                   Wavelength    = self.Source.Wavelength,
-                                                   nMedium       = self.nMedium)
+                Scat = SPHERE(Index        = RI,
+                              Diameter     = Diameter,
+                              Wavelength   = self.Source.Wavelength,
+                              nMedium      = self.nMedium,
+                              Polarization = self.Source.Polarization.Radian,
+                              E0           = self.Source.E0)
+
+                Qsca, Qext, Qabs = Scat.Efficiencies
 
                 df.loc[(Diameter, RI),'Qsca'] = np.abs(Qsca)
 
@@ -101,11 +104,14 @@ class ScattererSet(object):
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 
-                S1, S2 = GetS1S2(Index      = RI,
-                                 Diameter   = Diameter,
-                                 Wavelength = self.Source.Wavelength,
-                                 nMedium    = self.nMedium,
-                                 Phi        = np.linspace(0,2*np.pi,num))
+                Scat = SPHERE(Index        = RI,
+                              Diameter     = Diameter,
+                              Wavelength   = self.Source.Wavelength,
+                              nMedium      = self.nMedium,
+                              Polarization = self.Source.Polarization.Radian,
+                              E0           = self.Source.E0)
+
+                S1, S2 = Scat.S1S2(Phi=np.linspace(0,2*np.pi,num))
 
                 df.loc[(Diameter, RI),'S1'] = np.abs(S1S2[0])
 

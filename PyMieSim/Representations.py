@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 #plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
 
-from PyMieSim.utils import GetFieldBinding, PlotStructuredAbs
+from PyMieSim.Plots import PlotStructuredAbs
+from PyMieSim.utils import GetFieldBinding
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-from PyMieSim.LMT.Sphere import S1S2 as LMTS1S2
 from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
 
 
@@ -94,18 +94,12 @@ class SPF(dict):
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
         self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
 
-        self['EPhi'], self['ETheta'] = GetFieldBinding(Scatterer  = Parent,
-                                                       Structured = True,
-                                                       R          = Distance,
-                                                       Phi        = Phi,
-                                                       Theta      = Theta)
-
+        self['EPhi'], self['ETheta'] = Parent.Bind.SFields(Phi = Phi, Theta=Theta, R=1.)
 
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
     def Plot(self):
-        from PyMieSim.utils import PlotStructuredAbs
         Name = 'Scattering phase function'
 
         PlotStructuredAbs(self['SPF'],
@@ -132,12 +126,7 @@ class S1S2(dict):
 
         Phi = np.linspace(-np.pi,np.pi,100);
 
-        args = (1.8, 3e-6, 1e-6, 1, Phi)
-        self['S1'], self['S2'] = LMTS1S2(Index      = Parent.Index,
-                                         Diameter   = Parent.Diameter,
-                                         Wavelength = Parent.Source.Wavelength,
-                                         nMedium    = Parent.nMedium,
-                                         Phi        = self['Phi'])
+        self['S1'], self['S2'] = Parent.Bind.S1S2(Phi = Phi)
 
 
     def Plot(self):
@@ -192,16 +181,10 @@ class ScalarFarField(dict):
     def __init__(self, Num = 200, Parent = None, Distance=1.):
 
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
+
         self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
 
-
-        self['EPhi'], self['ETheta'] = GetFieldBinding(Scatterer  = Parent,
-                                                       Structured = True,
-                                                       R          = Distance,
-                                                       Phi        = Phi,
-                                                       Theta      = Theta)
-
-
+        self['EPhi'], self['ETheta'] = Parent.Bind.SFields(Phi = Phi, Theta=Theta, R=1.)
 
         self['Distance'] = Distance
 

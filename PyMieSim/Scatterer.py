@@ -6,7 +6,7 @@ from scipy.special import gamma
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Stokes
 from PyMieSim.GLMT.Sphere import an, bn, cn, dn
-
+from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 
 class Sphere(BaseScatterer, EfficienciesProperties):
     """Short summary.
@@ -33,7 +33,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                  Diameter:    float,
                  Source:      BaseSource,
                  Index:       float,
-                 IndexMedium: float  = 1.0,
+                 nMedium:     float  = 1.0,
                  MuSphere:    float  = 1.0,
                  MuMedium:    float  = 1.0):
 
@@ -41,7 +41,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         self.Diameter, self.Source, self.Index = Diameter, Source, Index
 
-        self.nMedium = IndexMedium
+        self.nMedium = nMedium
 
         self.Area = np.pi * (Diameter/2)**2
 
@@ -54,6 +54,13 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         self.Mu = MuMedium
 
         self._an, self._bn, self._cn, self._dn = [], [], [], []
+
+        self.Bind = SPHERE(Index        = Index,
+                           Diameter     = Diameter,
+                           Wavelength   = self.Source.Wavelength,
+                           nMedium      = self.nMedium,
+                           Polarization = self.Source.Polarization.Radian,
+                           E0           = self.Source.E0)
 
 
     def an(self, MaxOrder=5):
@@ -187,6 +194,13 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
         self.Mu = MuMedium
 
         self._an, self._bn, self._cn, self._dn = [], [], [], []
+
+        self.Bind = CYLINDER(Index        = Index,
+                             Diameter     = Diameter,
+                             Wavelength   = self.Source.Wavelength,
+                             nMedium      = self.nMedium,
+                             Polarization = self.Source.Polarization.Radian,
+                             E0           = self.Source.E0)
 
 
 class WMSample(object):

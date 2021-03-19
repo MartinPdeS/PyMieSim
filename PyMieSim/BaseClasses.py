@@ -229,10 +229,8 @@ class BaseScatterer(object):
 
         """
 
-        self._Qsca, self._Qext, self._Qabs = GetEfficiencies(Index         = self.Index,
-                                                             Diameter      = self.Diameter,
-                                                             Wavelength    = self.Source.Wavelength,
-                                                             nMedium       = self.nMedium)
+        self._Qsca, self._Qext, self._Qabs = self.Bind.Efficiencies
+
 
 
     def S1S2(self, Num=200):
@@ -298,11 +296,8 @@ class BaseScatterer(object):
 
         """
 
-        return GetFieldBinding(Scatterer  = self,
-                               Structured = False,
-                               R          = 1.,
-                               Phi        = Phi,
-                               Theta      = Theta)
+        return self.Bind.UFields(Phi = Phi, Theta=Theta, R=1.)
+
 
 
 

@@ -2,6 +2,3 @@ scipy
 matplotlib
 pandas
 mayavi
-ai.cs
-geos
-cartopy

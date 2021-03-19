@@ -10,6 +10,7 @@ typedef std::vector<complex128> iVec;
 typedef std::vector<double> Vec;
 
 
+#define J std::complex<double>(0.0,1.0)
 
 #define PI (double)3.14159265358979323846264338
 
@@ -109,7 +110,7 @@ void printVector(std::vector <T> const &a) {
 std::pair<std::vector<double> , std::vector<double>>
 Arrange(const double start,
         const double stop)
-{ 
+{
   std::vector<double> Vec0 ;
   std::vector<double> Vec1 ;
   for (double i = start; i < stop; i++)

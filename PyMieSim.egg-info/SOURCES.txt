@@ -19,6 +19,7 @@ PyMieSim/Sets.py
 PyMieSim/Source.py
 PyMieSim/Special.py
 PyMieSim/__init__.py
+PyMieSim/utils.cpp
 PyMieSim/utils.py
 PyMieSim.egg-info/PKG-INFO
 PyMieSim.egg-info/SOURCES.txt

@@ -7,7 +7,7 @@ from PyMieSim.Sets import ScattererSet, ExperimentalSet
 from PyMieSim.Source import PlaneWave
 from scipy import interpolate
 from scipy.integrate import dblquad
-from PyMieSim.LMT.Sphere import S1S2 as GetS1S2
+from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
@@ -45,11 +45,14 @@ def integrand(theta, phi):
 for nD, diameter in enumerate(DiameterList):
     print(f"PROGRESSION: {nD}/{len(DiameterList)}")
 
-    s1, s2 = GetS1S2(1.4,
-                     diameter,
-                     LightSource.Wavelength,
-                     1.0,
-                     Photodiode0.Mesh.Phi.Radian)
+    Scat = SPHERE(Index        = 1.4,
+                  Diameter     = diameter,
+                  Wavelength   = LightSource.Wavelength,
+                  nMedium      = 1.0,
+                  Polarization = LightSource.Polarization.Radian,
+                  E0           = LightSource.E0)
+
+    s1, s2 = Scat.S1S2(Phi= Photodiode0.Mesh.Phi.Radian)
 
     S1 = interpolate.interp1d(Photodiode0.Mesh.Phi.Radian, s1)
     S2 = interpolate.interp1d(Photodiode0.Mesh.Phi.Radian, s2)

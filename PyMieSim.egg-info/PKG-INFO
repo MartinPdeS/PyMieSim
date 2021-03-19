@@ -1,15 +1,15 @@
 Metadata-Version: 2.1
 Name: PyMieSim
-Version: 0.1.10
+Version: 0.1.11
 Summary: A package for light scattering simulations.
-Home-page: https://gitlab.com/MartinPdeS/PyMieSim
+Home-page: https://github.com/MartinPdeS/PyMieSim
 Author: ('Martin Poinsinet de Sivry',)
 Author-email: Martin.poinsinet.de.sivry@gmail.com
 License: MIT
 Project-URL: Bug Tracker, https://github.com/MartinPdeS/PyMieSim/issues
 Description: 
-        |build-status| |docs| |coverage|
-        ![figure](./Docs/images/Logo2Use.png)
+        
+        ![figure](./docs/images/Logo2Use.png)
         
         [![Travis CI](https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI)](https://travis-ci.com/github/numpy/numpy)
         [![codecov](https://codecov.io/gh/MartinPdeS/PyMieSim/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinPdeS/PyMieSim)
@@ -55,7 +55,7 @@ Description:
         Google Colab
         ============
         It's 2021, you don't need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
-        You can open the PyMieSim.ipynb in the file to access it.
+        You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" badge) to access it.
         
         
         dependencies

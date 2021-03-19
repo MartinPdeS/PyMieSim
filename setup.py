@@ -82,40 +82,33 @@ ext_modules = [
                           language            = "c++",
                           define_macros       = macro,
                           extra_compile_args  = compile_args,
-                          extra_link_args     = link_args
-                         ),
+                          extra_link_args     = link_args),
 
-
-                Extension(name               = "PyMieSim.LMT.Sphere",
-                          sources            = ["PyMieSim/LMT/cpp/Interface.cpp"],
+                Extension(name               = "PyMieSim.LMT.Scatterer",
+                          sources            = ["PyMieSim/LMT/cpp/Scat.cpp"],
                           include_dirs       = [get_numpy_include(), get_pybind11_include()],
-                          language           = "c++",
-                         ),
+                          language           = "c++"),
 
                 Extension(name         = 'PyMieSim.GLMT.Sphere',
                           sources      = ['PyMieSim/GLMT/cpp/Interface.cpp'],
                           include_dirs = [get_numpy_include(), get_pybind11_include()],
-                          language     = 'c++',
-                ),
+                          language     = 'c++'),
 
                 Extension(name         = 'PyMieSim.GLMT.Cylinder',
                           sources      = ['PyMieSim/GLMT/cpp/Interface.cpp'],
                           include_dirs = [get_numpy_include(), get_pybind11_include()],
-                          language     = 'c++',
-                ),
+                          language     = 'c++'),
 
                 Extension(name         = 'PyMieSim._utils',
                           sources      = ['PyMieSim/utils.cpp'],
                           include_dirs = [get_numpy_include(), get_pybind11_include()],
-                          language     = 'c++',
-                ),
+                          language     = 'c++'),
 
                 Extension(name         = 'PyMieSim.GLMT.GaussianBeam',
                           sources      = ['PyMieSim/GLMT/cpp/GaussianBeam.cpp'],
                           include_dirs = [get_numpy_include(), get_pybind11_include()],
                           language     = 'c++',
-                          extra_compile_args  = compile_args
-                )
+                          extra_compile_args  = compile_args)
                 ]
 
 

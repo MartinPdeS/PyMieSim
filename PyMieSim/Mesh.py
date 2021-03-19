@@ -1,7 +1,7 @@
 import numpy as np
 from mayavi import mlab
-from PyMieSim.utils import UnitSphere, UnitAxes
 
+from PyMieSim.Plots import UnitSphere, UnitAxes
 from PyMieSim.Physics import Angle
 from PyMieSim._utils import FibonacciMeshCpp
 from PyMieSim.utils import Sp2Cart, Cart2Sp

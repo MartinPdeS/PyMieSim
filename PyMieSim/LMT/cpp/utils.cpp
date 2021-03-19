@@ -4,10 +4,19 @@
 
 
 typedef std::complex<double> complex128;
+typedef std::vector<complex128> iVec;
+typedef std::vector<double> Vec;
 
-#define J std::complex<double>(0.0,1.0)
+#include <pybind11/pybind11.h>
+#include <pybind11/complex.h>
+#include <pybind11/numpy.h>
+namespace py = pybind11;
 
-#define PI (double)3.14159265358979323846264338
+typedef py::array_t<double> ndarray;
+typedef py::array_t<complex128> Cndarray;
+typedef py::buffer_info info;
+
+
 
 
 void
@@ -62,7 +71,6 @@ LoopStructured(int         PhiLength,
           w++;
        }
   }
-
 }
 
 
