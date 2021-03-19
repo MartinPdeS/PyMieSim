@@ -236,11 +236,11 @@ FibonacciMesh::GenCoordinate()
 }
 
 
-PYBIND11_MODULE(_utils, module) {
+PYBIND11_MODULE(Fibonacci, module) {
     module.doc() = "LGeneralized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
 
 
-      py::class_<FibonacciMesh>(module, "FibonacciMeshCpp")
+      py::class_<FibonacciMesh>(module, "Mesh")
       .def(py::init<int, double, double, double>())
       .def_property("x",          &FibonacciMesh::Getx,         &FibonacciMesh::Getx)
       .def_property("y",          &FibonacciMesh::Gety,         &FibonacciMesh::Gety)

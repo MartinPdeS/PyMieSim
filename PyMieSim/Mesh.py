@@ -3,7 +3,7 @@ from mayavi import mlab
 
 from PyMieSim.Plots import UnitSphere, UnitAxes
 from PyMieSim.Physics import Angle
-from PyMieSim._utils import FibonacciMeshCpp
+from PyMieSim.Fibonacci import Mesh as FMesh
 from PyMieSim.utils import Sp2Cart, Cart2Sp
 pi = np.pi
 
@@ -91,10 +91,10 @@ class FibonacciMesh(object):
 
     def GenerateLedevedMesh(self):
 
-        self.bind = FibonacciMeshCpp(self.Sampling,
-                                     self.MaxAngle,
-                                     np.deg2rad(self.PhiOffset),
-                                     np.deg2rad(self.GammaOffset) )
+        self.bind = FMesh(self.Sampling,
+                          self.MaxAngle,
+                          np.deg2rad(self.PhiOffset),
+                          np.deg2rad(self.GammaOffset) )
 
 
         self.base = (self.bind.PhiBase, self.bind.ThetaBase)

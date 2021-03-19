@@ -99,8 +99,8 @@ ext_modules = [
                           include_dirs = [get_numpy_include(), get_pybind11_include()],
                           language     = 'c++'),
 
-                Extension(name         = 'PyMieSim._utils',
-                          sources      = ['PyMieSim/utils.cpp'],
+                Extension(name         = 'PyMieSim.Fibonacci',
+                          sources      = ['PyMieSim/FibonnaciMesh.cpp'],
                           include_dirs = [get_numpy_include(), get_pybind11_include()],
                           language     = 'c++'),
 

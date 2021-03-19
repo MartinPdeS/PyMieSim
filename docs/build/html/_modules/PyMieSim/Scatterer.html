@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -29,11 +29,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -164,7 +164,7 @@
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">,</span> <span class="n">BaseSource</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.GLMT.Sphere</span> <span class="kn">import</span> <span class="n">an</span><span class="p">,</span> <span class="n">bn</span><span class="p">,</span> <span class="n">cn</span><span class="p">,</span> <span class="n">dn</span>
-
+<span class="kn">from</span> <span class="nn">PyMieSim.LMT.Scatterer</span> <span class="kn">import</span> <span class="n">SPHERE</span><span class="p">,</span> <span class="n">CYLINDER</span>
 
 <div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Short summary.</span>
@@ -191,7 +191,7 @@
                  <span class="n">Diameter</span><span class="p">:</span>    <span class="nb">float</span><span class="p">,</span>
                  <span class="n">Source</span><span class="p">:</span>      <span class="n">BaseSource</span><span class="p">,</span>
                  <span class="n">Index</span><span class="p">:</span>       <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">IndexMedium</span><span class="p">:</span> <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">nMedium</span><span class="p">:</span>     <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
                  <span class="n">MuSphere</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
                  <span class="n">MuMedium</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 
@@ -199,7 +199,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Index</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span> <span class="o">=</span> <span class="n">IndexMedium</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span> <span class="o">=</span> <span class="n">nMedium</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
 
@@ -212,6 +212,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="n">MuMedium</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">SPHERE</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="n">Index</span><span class="p">,</span>
+                           <span class="n">Diameter</span>     <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+                           <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
+                           <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                           <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+                           <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Sphere.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
@@ -344,7 +351,51 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="n">MuMedium</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">CYLINDER</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="n">Index</span><span class="p">,</span>
+                             <span class="n">Diameter</span>     <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+                             <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
+                             <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
+                             <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+                             <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Cylinder.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Compute :math:`a_n` coefficient as defined ref[5]:</span>
+
+<span class="sd">        :math:`a_n = \\frac{</span>
+<span class="sd">           m_t J_n(m_t x) J_n^\prime (m x) -</span>
+<span class="sd">           m J_n^\prime (m_t x) J_n(m x) }</span>
+<span class="sd">        {  m_t J_n(m_t x) H_n^\prime (m x) -</span>
+<span class="sd">           m J_n^\prime (m_t x) H_n(m x)}`</span>
+
+<span class="sd">        With :math:`m`being the refractive index of the medium and</span>
+<span class="sd">             :math:`m_t`being the refractive index of the index.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Cylinder.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
+
+<span class="sd">        :math:`a_n = \\frac{</span>
+<span class="sd">           m J_n(m_t x) J_n^\prime (m x) -</span>
+<span class="sd">           m_t J_n^\prime (m_t x) J_n(m x) }</span>
+<span class="sd">        {  m J_n(m_t x) H_n^\prime (m x) -</span>
+<span class="sd">           m_t J_n^\prime (m_t x) H_n(m x)}`</span>
+
+<span class="sd">        With :math:`m`being the refractive index of the medium and</span>
+<span class="sd">             :math:`m_t`being the refractive index of the index.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="k">return</span> <span class="kc">None</span></div></div>
 
 
 <div class="viewcode-block" id="WMSample"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample">[docs]</a><span class="k">class</span> <span class="nc">WMSample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

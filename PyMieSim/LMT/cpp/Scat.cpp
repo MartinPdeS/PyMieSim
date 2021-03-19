@@ -76,6 +76,8 @@ public:
                                    complex128 *S1_data,
                                    complex128 *S2_data);
 
+  Cndarray                           PublicAn(int MaxOrder);
+  Cndarray                           PublicBn(int MaxOrder);
   std::tuple<Cndarray, Cndarray>     FieldsStructured(ndarray Phi, ndarray Theta, double R);
   std::tuple<Cndarray, Cndarray>     FieldsUnstructured(ndarray Phi, ndarray Theta, double R);
   std::tuple<Cndarray, Cndarray>     PublicGetS1S2 (ndarray Phi);
@@ -228,6 +230,59 @@ CYLINDER::PrivateGetS1S2(ndarray Phi, complex128* S1_data, complex128* S2_data)
     }
 }
 
+
+
+Cndarray
+CYLINDER::PublicAn(int MaxOrder)
+{
+  complex128 numerator,
+             denominator;
+
+  double x  = this->SizeParam,
+         m  = this->nMedium,
+         mt = this->Index;
+
+  Cndarray    An           = Cndarray(MaxOrder);
+
+  info        AnBuf        = An.request();
+
+  complex128 *An_data      = (complex128 *) AnBuf.ptr;
+
+  for (auto order = 1; order < MaxOrder+1; order++)
+  {
+    numerator   = mt * Jn(order, mt*x) * Jn_p(order, m*x) - m * Jn_p(order, mt*x) * Jn(order, m*x);
+    denominator = mt * Jn(order, mt*x) * Hn_p(order, m*x) - m * Jn_p(order, mt*x) * Hn(order, m*x);
+    An_data[order-1] = numerator/denominator;
+  }
+  return An;
+}
+
+
+
+Cndarray
+CYLINDER::PublicBn(int MaxOrder)
+{
+  complex128 numerator,
+             denominator;
+
+  double x  = this->SizeParam,
+         m  = this->nMedium,
+         mt = this->Index;
+
+  Cndarray    Bn           = Cndarray(MaxOrder);
+
+  info        BnBuf        = Bn.request();
+
+  complex128 *Bn_data      = (complex128 *) BnBuf.ptr;
+
+  for (auto order = 1; order < MaxOrder+1; order++)
+  {
+    numerator   = m * Jn(order, mt*x) * Jn_p(order, m*x) - mt*Jn_p(order, mt*x) * Jn(order, m*x);
+    denominator = m * Jn(order, mt*x) * Hn_p(order, m*x) - mt*Jn_p(order, mt*x) * Hn(order, m*x);
+    Bn_data[order-1] = numerator/denominator;
+  }
+  return Bn;
+}
 
 
 std::tuple<Cndarray, Cndarray>
@@ -517,9 +572,11 @@ public:
                                    complex128 *S1_data,
                                    complex128 *S2_data);
 
-  std::tuple<Cndarray, Cndarray> FieldsStructured(ndarray Phi, ndarray Theta, double R);
-  std::tuple<Cndarray, Cndarray> FieldsUnstructured(ndarray Phi, ndarray Theta, double R);
-  std::tuple<Cndarray, Cndarray> PublicGetS1S2 (ndarray Phi);
+  Cndarray                           PublicAn(int MaxOrder);
+  Cndarray                           PublicBn(int MaxOrder);
+  std::tuple<Cndarray, Cndarray>     FieldsStructured(ndarray Phi, ndarray Theta, double R);
+  std::tuple<Cndarray, Cndarray>     FieldsUnstructured(ndarray Phi, ndarray Theta, double R);
+  std::tuple<Cndarray, Cndarray>     PublicGetS1S2 (ndarray Phi);
   std::tuple<double, double, double> GetEfficiencies();
 
 
@@ -583,7 +640,8 @@ void
 SPHERE::HighFrequencyMie_ab()
 {
 
-  const double mx = Index * this->SizeParam, temp  = sqrt(0.5 * PI * this->SizeParam);
+  const double mx = Index * this->SizeParam,
+               temp  = sqrt(0.5 * PI * this->SizeParam);
 
   const int nmx = (int) ( std::max( this->MaxOrder, (int) abs(mx) ) + 16 );
 
@@ -598,8 +656,8 @@ SPHERE::HighFrequencyMie_ab()
 
   for (auto i = 0; i < this->MaxOrder; i++)
     {
-        px.push_back(  temp * jn( (double)(i+1), this->SizeParam ) );
-        chx.push_back(-temp * yn( (double)(i+1), this->SizeParam ) );
+        px.push_back(  temp * Jn( (double)(i+1)+0.5, this->SizeParam ) );
+        chx.push_back(-temp * Yn( (double)(i+1)+0.5, this->SizeParam ) );
 
         p1x.push_back(px[i]);
         ch1x.push_back(chx[i]);
@@ -607,10 +665,8 @@ SPHERE::HighFrequencyMie_ab()
         gsx.push_back( px[i] - 1.*J * chx[i] );
         gs1x.push_back( p1x[i] - 1.*J * ch1x[i] );
 
-        D.push_back(Dn[i+1]);
-
-        da.push_back( D[i] / Index + (double)(i+1) / this->SizeParam );
-        db.push_back( Index * D[i] + (double)(i+1) / this->SizeParam );
+        da.push_back( Dn[i+1] / Index + (double)(i+1) / this->SizeParam );
+        db.push_back( Index * Dn[i+1] + (double)(i+1) / this->SizeParam );
 
         this->an[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
         this->bn[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
@@ -757,6 +813,94 @@ SPHERE::PublicGetS1S2(ndarray Phi)
     }
     return std::tie<Cndarray, Cndarray>(S1, S2);
 }
+
+
+Cndarray
+SPHERE::PublicAn(int MaxOrder)
+{
+  Cndarray     An          = Cndarray(MaxOrder);
+
+  info         AnBuf       = An.request();
+
+  complex128  *An_data     = (complex128 *) AnBuf.ptr;
+
+  const double mx          = Index * this->SizeParam,
+               temp        = sqrt(0.5 * PI * this->SizeParam);
+
+  const int    nmx         = (int) ( std::max( this->MaxOrder, (int) abs(mx) ) + 16 );
+
+  iVec gsx, gs1x, px, chx, p1x, ch1x, D, da, db;
+
+  Vec Dn = Vec(nmx);
+
+  p1x.push_back( sin(this->SizeParam) );
+  ch1x.push_back( cos(this->SizeParam) );
+
+  for (double i = nmx - 1; i > 1; i--){  Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );}
+
+  for (auto i = 0; i < this->MaxOrder; i++)
+    {
+        px.push_back(  temp * Jn( (double)(i+1)+0.5, this->SizeParam ) );
+        chx.push_back(-temp * Yn( (double)(i+1)+0.5, this->SizeParam ) );
+
+        p1x.push_back(px[i]);
+        ch1x.push_back(chx[i]);
+
+        gsx.push_back(   px[i] - 1.*J * chx[i]  );
+        gs1x.push_back( p1x[i] - 1.*J * ch1x[i] );
+
+        da.push_back( Dn[i+1] / Index + (double)(i+1) / this->SizeParam );
+
+        An_data[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
+
+    }
+  return An;
+}
+
+
+
+Cndarray
+SPHERE::PublicBn(int MaxOrder)
+{
+  Cndarray     Bn          = Cndarray(MaxOrder);
+
+  info         BnBuf       = Bn.request();
+
+  complex128  *Bn_data     = (complex128 *) BnBuf.ptr;
+
+  const double mx          = Index * this->SizeParam,
+               temp        = sqrt(0.5 * PI * this->SizeParam);
+
+  const int    nmx         = (int) ( std::max( this->MaxOrder, (int) abs(mx) ) + 16 );
+
+  iVec gsx, gs1x, px, chx, p1x, ch1x, D, da, db;
+
+  Vec Dn = Vec(nmx);
+
+  p1x.push_back( sin(this->SizeParam) );
+  ch1x.push_back( cos(this->SizeParam) );
+
+  for (double i = nmx - 1; i > 1; i--){  Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );}
+
+  for (auto i = 0; i < this->MaxOrder; i++)
+    {
+        px.push_back(  temp * Jn( (double)(i+1)+0.5, this->SizeParam ) );
+        chx.push_back(-temp * Yn( (double)(i+1)+0.5, this->SizeParam ) );
+
+        p1x.push_back(px[i]);
+        ch1x.push_back(chx[i]);
+
+        gsx.push_back(   px[i] - 1.*J * chx[i]  );
+        gs1x.push_back( p1x[i] - 1.*J * ch1x[i] );
+
+        db.push_back( Index * Dn[i+1] + (double)(i+1) / this->SizeParam );
+
+        Bn_data[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
+
+    }
+  return Bn;
+}
+
 
 
 void
@@ -960,6 +1104,10 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Theta"),
            py::arg("R")  )
 
+      .def("an", &SPHERE::PublicAn, py::arg("MaxOrder")  = 5)
+
+      .def("bn", &SPHERE::PublicBn, py::arg("MaxOrder")  = 5)
+
       .def_property("Efficiencies", &SPHERE::GetEfficiencies, &SPHERE::GetEfficiencies);
 
 
@@ -988,11 +1136,20 @@ PYBIND11_MODULE(Scatterer, module) {
           py::arg("Theta"),
           py::arg("R")  )
 
+      .def("an", &CYLINDER::PublicAn, py::arg("MaxOrder")  = 5)
+
+      .def("bn", &CYLINDER::PublicBn, py::arg("MaxOrder")  = 5)
+
       .def_property("Efficiencies", &CYLINDER::GetEfficiencies, &CYLINDER::GetEfficiencies);
 
 
 
 }
+
+
+
+
+
 
 
 // -

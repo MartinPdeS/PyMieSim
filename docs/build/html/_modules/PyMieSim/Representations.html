@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html4" lang="en" >
 <head>
   <meta charset="utf-8" />
   
@@ -29,11 +29,11 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -163,13 +163,13 @@
 <span class="c1">#plt.rcParams[&quot;mathtext.fontset&quot;] = &quot;dejavuserif&quot;</span>
 
 
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">GetFieldBinding</span><span class="p">,</span> <span class="n">PlotStructuredAbs</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Plots</span> <span class="kn">import</span> <span class="n">PlotStructuredAbs</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">GetFieldBinding</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">Direct2spherical</span><span class="p">,</span> <span class="n">AngleUnit2DirectUnit</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.LMT.Sphere</span> <span class="kn">import</span> <span class="n">S1S2</span> <span class="k">as</span> <span class="n">LMTS1S2</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.GLMT.Sphere.Structured</span> <span class="kn">import</span> <span class="n">S1S2</span> <span class="k">as</span> <span class="n">GLMTS1S2</span>
 
 
-<span class="k">class</span> <span class="nc">Stokes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+<div class="viewcode-block" id="Stokes"><a class="viewcode-back" href="../../Code.html#PyMieSim.Representations.Stokes">[docs]</a><span class="k">class</span> <span class="nc">Stokes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">Field</span><span class="p">):</span>
 
@@ -241,7 +241,7 @@
         <span class="n">Array</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">Parallel</span> <span class="o">*</span> <span class="n">Perpendicular</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">/</span> <span class="n">I</span>
         <span class="n">Array</span><span class="p">[</span><span class="mi">3</span><span class="p">,:,:]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span> <span class="n">Parallel</span><span class="o">.</span><span class="n">conjugate</span><span class="p">()</span> <span class="o">*</span> <span class="n">Perpendicular</span> <span class="p">)</span><span class="o">.</span><span class="n">imag</span> <span class="o">/</span> <span class="n">I</span>
 
-        <span class="bp">cls</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">Array</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">Array</span> <span class="o">=</span> <span class="n">Array</span></div>
 
 
 
@@ -252,18 +252,12 @@
         <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">Num</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">Num</span><span class="p">)</span>
         <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Phi&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Theta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;EPhi&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ETheta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GetFieldBinding</span><span class="p">(</span><span class="n">Scatterer</span>  <span class="o">=</span> <span class="n">Parent</span><span class="p">,</span>
-                                                       <span class="n">Structured</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                                                       <span class="n">R</span>          <span class="o">=</span> <span class="n">Distance</span><span class="p">,</span>
-                                                       <span class="n">Phi</span>        <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span>
-                                                       <span class="n">Theta</span>      <span class="o">=</span> <span class="n">Theta</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;EPhi&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ETheta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">SFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;SPF&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;EPhi&#39;</span><span class="p">]</span><span class="o">.</span><span class="fm">__abs__</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ETheta&#39;</span><span class="p">]</span><span class="o">.</span><span class="fm">__abs__</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span> <span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">PlotStructuredAbs</span>
         <span class="n">Name</span> <span class="o">=</span> <span class="s1">&#39;Scattering phase function&#39;</span>
 
         <span class="n">PlotStructuredAbs</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s1">&#39;SPF&#39;</span><span class="p">],</span>
@@ -290,12 +284,7 @@
 
         <span class="n">Phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">100</span><span class="p">);</span>
 
-        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">3e-6</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Phi</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;S2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">LMTS1S2</span><span class="p">(</span><span class="n">Index</span>      <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                                         <span class="n">Diameter</span>   <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
-                                         <span class="n">Wavelength</span> <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
-                                         <span class="n">nMedium</span>    <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                                         <span class="n">Phi</span>        <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Phi&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;S1&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;S2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">S1S2</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -350,16 +339,10 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">Parent</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Distance</span><span class="o">=</span><span class="mf">1.</span><span class="p">):</span>
 
         <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">Num</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">Num</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Phi&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Theta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">)</span>
 
-
-        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;EPhi&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ETheta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GetFieldBinding</span><span class="p">(</span><span class="n">Scatterer</span>  <span class="o">=</span> <span class="n">Parent</span><span class="p">,</span>
-                                                       <span class="n">Structured</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                                                       <span class="n">R</span>          <span class="o">=</span> <span class="n">Distance</span><span class="p">,</span>
-                                                       <span class="n">Phi</span>        <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span>
-                                                       <span class="n">Theta</span>      <span class="o">=</span> <span class="n">Theta</span><span class="p">)</span>
-
-
+        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;EPhi&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;ETheta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parent</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">SFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;Distance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Distance</span>
 

@@ -15,21 +15,25 @@ typedef std::vector<double> Vec;
 #define PI (double)3.14159265358979323846264338
 
 double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
-
 double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
 
 int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
+
 double Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
-
 double Jn(int order, double x){ return boost::math::cyl_bessel_j(order, x); }
-
 double Yn_p(int order, double x){ return boost::math::cyl_neumann_prime(order, x); }
 
+
+double Yn(double order, double x){ return boost::math::cyl_neumann(order, x); }
+double Jn(double order, double x){ return boost::math::cyl_bessel_j(order, x); }
+double Yn_p(double order, double x){ return boost::math::cyl_neumann_prime(order, x); }
+
+
 double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
+double Jn_p(double order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
 
 complex128 Hn(int order, double x){ return Jn(order,x) + complex128(0.0,1.0) * Yn(order,x); }
-
 complex128 Hn_p(int order, double x){ return Jn_p(order,x) + complex128(0.0,1.0) * Yn_p(order,x); }
 
 

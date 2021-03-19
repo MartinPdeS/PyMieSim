@@ -76,13 +76,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         """
 
-        self._an = an(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
-
-
-        return self._an
+        return self.Bind.an(MaxOrder)
 
 
     def bn(self, MaxOrder=5):
@@ -97,12 +91,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-        self._bn = bn(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
-
-        return self._bn
+        return self.Bind.bn(MaxOrder)
 
 
     def cn(self, MaxOrder=5):
@@ -201,6 +190,40 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
                              nMedium      = self.nMedium,
                              Polarization = self.Source.Polarization.Radian,
                              E0           = self.Source.E0)
+
+
+    def an(self, MaxOrder=5):
+        """ Compute :math:`a_n` coefficient as defined ref[5]:
+
+        :math:`a_n = \\frac{
+           m_t J_n(m_t x) J_n^\prime (m x) -
+           m J_n^\prime (m_t x) J_n(m x) }
+        {  m_t J_n(m_t x) H_n^\prime (m x) -
+           m J_n^\prime (m_t x) H_n(m x)}`
+
+        With :math:`m`being the refractive index of the medium and
+             :math:`m_t`being the refractive index of the index.
+
+        """
+
+        return self.Bind.an(MaxOrder)
+
+
+    def bn(self, MaxOrder=5):
+        """ Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
+
+        :math:`a_n = \\frac{
+           m J_n(m_t x) J_n^\prime (m x) -
+           m_t J_n^\prime (m_t x) J_n(m x) }
+        {  m J_n(m_t x) H_n^\prime (m x) -
+           m_t J_n^\prime (m_t x) H_n(m x)}`
+
+        With :math:`m`being the refractive index of the medium and
+             :math:`m_t`being the refractive index of the index.
+
+        """
+
+        return self.Bind.bn(MaxOrder)
 
 
 class WMSample(object):
