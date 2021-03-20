@@ -95,21 +95,6 @@ private:
         this->pin           = (complex128*) malloc(sizeof(complex128)*MaxOrder);
         this->taun          = (complex128*) malloc(sizeof(complex128)*MaxOrder);
 
-        this->An            = Cndarray(MaxOrder);
-        this->Bn            = Cndarray(MaxOrder);
-        this->Cn            = Cndarray(MaxOrder);
-        this->Dn            = Cndarray(MaxOrder);
-
-        info AnBuffer       = this->An.request(),
-             BnBuffer       = this->Bn.request(),
-             CnBuffer       = this->Cn.request(),
-             DnBuffer       = this->Dn.request();
-
-        this->An_data       = (complex128 *) AnBuffer.ptr;
-        this->Bn_data       = (complex128 *) BnBuffer.ptr;
-        this->Cn_data       = (complex128 *) CnBuffer.ptr;
-        this->Dn_data       = (complex128 *) DnBuffer.ptr;
-
         if (Polarization == -1.){ this->Polarized = false  ; }
         else                    { this->Polarized = true   ; }
     }
@@ -222,7 +207,7 @@ CYLINDER::PrivateGetS1S2(ndarray Phi)
     this->S1_data       = (complex128 *) S1Buffer.ptr;
     this->S2_data       = (complex128 *) S2Buffer.ptr;
 
-    complex128  temp0     = 0.,
+    complex128  temp0   = 0.,
                 temp1   = 0.;
 
     this->CoefficientAnBn();
@@ -249,6 +234,12 @@ CYLINDER::PrivateGetS1S2(ndarray Phi)
 Cndarray&
 CYLINDER::PublicAn(int MaxOrder)
 {
+  this->An              = Cndarray(MaxOrder);
+
+  info AnBuffer         = this->An.request();
+
+  complex128 * An_data  = (complex128 *) AnBuffer.ptr;
+
   complex128 numerator,
              denominator;
 
@@ -270,18 +261,24 @@ CYLINDER::PublicAn(int MaxOrder)
 Cndarray&
 CYLINDER::PublicBn(int MaxOrder)
 {
-  complex128 numerator,
-             denominator;
+  this->Bn              = Cndarray(MaxOrder);
+
+  info BnBuffer         = this->Bn.request();
+
+  complex128 * Bn_data  = (complex128 *) BnBuffer.ptr;
 
   double x  = this->SizeParam,
          m  = this->nMedium,
          mt = this->Index;
 
+   complex128 numerator,
+              denominator;
+
   for (auto order = 1; order < MaxOrder+1; order++)
   {
-    numerator   = m * Jn(order, mt*x) * Jn_p(order, m*x) - mt*Jn_p(order, mt*x) * Jn(order, m*x);
-    denominator = m * Jn(order, mt*x) * Hn_p(order, m*x) - mt*Jn_p(order, mt*x) * Hn(order, m*x);
-    this->Bn_data[order-1] = numerator/denominator;
+    numerator              = m * Jn(order, mt*x) * Jn_p(order, m*x) - mt*Jn_p(order, mt*x) * Jn(order, m*x);
+    denominator            = m * Jn(order, mt*x) * Hn_p(order, m*x) - mt*Jn_p(order, mt*x) * Hn(order, m*x);
+    Bn_data[order-1] = numerator/denominator;
   }
   return this->Bn;
 }
@@ -290,15 +287,15 @@ CYLINDER::PublicBn(int MaxOrder)
 std::tuple<Cndarray&, Cndarray&>
 CYLINDER::PublicGetS1S2(ndarray Phi)
 {
-    info        PhiBuffer = Phi.request();
+    info     PhiBuffer = Phi.request();
 
-    double     *PhiPtr    = (double *) PhiBuffer.ptr,
-                prefactor = 0.;
+    double  *PhiPtr    = (double *) PhiBuffer.ptr,
+             prefactor = 0.;
 
-    int         PhiLength = PhiBuffer.size;
+    int       PhiLength = PhiBuffer.size;
 
-    complex128  temp0        = 0.,
-                temp1        = 0.;
+    complex128  temp0   = 0.,
+                temp1   = 0.;
 
     this->S1            = Cndarray(PhiLength);
     this->S2            = Cndarray(PhiLength);
@@ -325,7 +322,6 @@ CYLINDER::PublicGetS1S2(ndarray Phi)
         this->S1_data[i] = temp0;
         this->S2_data[i] = temp1;
 
-
         temp0 = 0.; temp1=0.;
     }
     return std::tuple<Cndarray&, Cndarray&>(this->S1, this->S2);
@@ -333,17 +329,14 @@ CYLINDER::PublicGetS1S2(ndarray Phi)
 
 
 void
-CYLINDER::LoopStructuredPol(int         PhiLength,
-                          int         ThetaLength,
-                          double     *PhiPtr,
-                          double     *ThetaPtr)
+CYLINDER::LoopStructuredPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
 {
   int w = 0; double temp0;
   for (auto p=0; p < PhiLength; p++ )
   {
     for (auto t=0; t < ThetaLength; t++ )
         {
-          temp0          = ThetaPtr[t] ;
+          temp0                = ThetaPtr[t] ;
           this->EPhi_data[w]   = J * this->propagator * S1_data[p] * (complex128) abs(cos(temp0 + this->Polarization));
           this->ETheta_data[w] = - this->propagator * S2_data[p] * (complex128) abs(sin(temp0 + this->Polarization));
           w++;
@@ -353,10 +346,7 @@ CYLINDER::LoopStructuredPol(int         PhiLength,
 
 
 void
-CYLINDER::LoopStructuredUPol(int         PhiLength,
-                           int         ThetaLength,
-                           double     *PhiPtr,
-                           double     *ThetaPtr)
+CYLINDER::LoopStructuredUPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
 {
   int w = 0;
   double temp0 = 1./sqrt(2.);
@@ -374,10 +364,7 @@ CYLINDER::LoopStructuredUPol(int         PhiLength,
 
 
 void
-CYLINDER::LoopUnstructuredPol(int         PhiLength,
-                            int         ThetaLength,
-                            double     *PhiPtr,
-                            double     *ThetaPtr)
+CYLINDER::LoopUnstructuredPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
 {
   double temp0;
     for (auto p=0; p < PhiLength; p++ )
@@ -390,10 +377,7 @@ CYLINDER::LoopUnstructuredPol(int         PhiLength,
 
 
 void
-CYLINDER::LoopUnstructuredUPol(int        PhiLength,
-                            int         ThetaLength,
-                            double     *PhiPtr,
-                            double     *ThetaPtr)
+CYLINDER::LoopUnstructuredUPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
   {
   double temp0 = 1./sqrt(2.);
     for (auto p=0; p < PhiLength; p++ )
@@ -416,16 +400,16 @@ CYLINDER::FieldsStructured(ndarray Phi, ndarray Theta, double R)
   double     *PhiPtr       = (double *) PhiBuffer.ptr,
              *ThetaPtr     = (double *) ThetaBuffer.ptr;
 
-  this->EPhi          = Cndarray(PhiLength*ThetaLength);
-  this->ETheta        = Cndarray(PhiLength*ThetaLength);
+  this->EPhi               = Cndarray(PhiLength*ThetaLength);
+  this->ETheta             = Cndarray(PhiLength*ThetaLength);
 
   info EPhiBuffer          = this->EPhi.request(),
        EThetaBuffer        = this->ETheta.request();
 
-  this->EPhi_data     = (complex128 *) EPhiBuffer.ptr;
-  this->ETheta_data   = (complex128 *) EThetaBuffer.ptr;
+  this->EPhi_data           = (complex128 *) EPhiBuffer.ptr;
+  this->ETheta_data         = (complex128 *) EThetaBuffer.ptr;
 
-  this->propagator   = this->E0 / (this->k * R) * exp(-J*this->k*R);
+  this->propagator          = this->E0 / (this->k * R) * exp(-J*this->k*R);
 
   this->PrivateGetS1S2(Phi);
 
@@ -463,7 +447,7 @@ CYLINDER::FieldsUnstructured(ndarray Phi, ndarray Theta, double R)
   this->EPhi_data          = (complex128 *) EPhiBuffer.ptr;
   this->ETheta_data        = (complex128 *) EThetaBuffer.ptr;
 
-  this->propagator   = this->E0 / (this->k * R) * exp(-J*this->k*R);
+  this->propagator         = this->E0 / (this->k * R) * exp(-J*this->k*R);
 
   this->PrivateGetS1S2(Phi);
 

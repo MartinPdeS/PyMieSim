@@ -1,6 +1,7 @@
 import numpy as np
 from mayavi import mlab
 import matplotlib.pyplot as plt
+from PyMieSim.Plots import PlotStructuredAmplitude
 #plt.rcParams["font.family"] = "serif"
 #plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
@@ -202,11 +203,15 @@ class ScalarFarField(dict):
 
         """
 
-        from PyMieSim.utils import PlotStructuredAmplitude
-
         PlotStructuredAmplitude(self['EPhi'],
                                 self['Phi'],
-                                self['Theta'])
+                                self['Theta'],
+                                Name = 'E phi')
+
+        PlotStructuredAmplitude(self['ETheta'],
+                                self['Phi'],
+                                self['Theta'],
+                                Name = 'E theta')
 
 
 

@@ -107,20 +107,21 @@ Detector: LPMode
    :linenos:
 
    from PyMieSim.Source import PlaneWave
-   from PyMieSim.classes.Detector import LPmode
+   from PyMieSim.Detector import LPmode
 
    LightSource = PlaneWave(Wavelength = 450e-9,
                            Polarization = 0)
 
    Detector = LPmode(Mode         = (1, 1,'h'),
                      Sampling     = 201,
-                     NA           = 0.2,
+                     NA           = 0.4,
                      GammaOffset  = 0,
-                     PhiOffset    = 0,
+                     PhiOffset    = 40,
                      CouplingMode = 'Centered')
 
 
    Detector.Plot()
+
 
 .. image:: ../images/LPmode.png
    :width: 600

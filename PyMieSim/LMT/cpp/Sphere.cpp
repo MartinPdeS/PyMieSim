@@ -94,21 +94,6 @@ private:
         this->pin           = (complex128*) malloc(sizeof(complex128)*MaxOrder);
         this->taun          = (complex128*) malloc(sizeof(complex128)*MaxOrder);
 
-        this->An            = Cndarray(MaxOrder);
-        this->Bn            = Cndarray(MaxOrder);
-        this->Cn            = Cndarray(MaxOrder);
-        this->Dn            = Cndarray(MaxOrder);
-
-        info AnBuffer       = this->An.request(),
-             BnBuffer       = this->Bn.request(),
-             CnBuffer       = this->Cn.request(),
-             DnBuffer       = this->Dn.request();
-
-        this->An_data       = (complex128 *) AnBuffer.ptr;
-        this->Bn_data       = (complex128 *) BnBuffer.ptr;
-        this->Cn_data       = (complex128 *) CnBuffer.ptr;
-        this->Dn_data       = (complex128 *) DnBuffer.ptr;
-
         if (Polarization == -1.){ this->Polarized = false  ; }
         else                    { this->Polarized = true   ; }
     }
@@ -335,10 +320,16 @@ SPHERE::PublicGetS1S2(ndarray Phi)
 Cndarray&
 SPHERE::PublicAn(int MaxOrder)
 {
-  const double mx          = Index * this->SizeParam,
-               temp        = sqrt(0.5 * PI * this->SizeParam);
+  this->An              = Cndarray(MaxOrder);
 
-  const int    nmx         = (int) ( std::max( this->MaxOrder, (int) abs(mx) ) + 16 );
+  info AnBuffer         = this->An.request();
+
+  complex128 * An_data  = (complex128 *) AnBuffer.ptr;
+
+  const double mx       = Index * this->SizeParam,
+               temp     = sqrt(0.5 * PI * this->SizeParam);
+
+  const int    nmx      = (int) ( std::max( this->MaxOrder, (int) abs(mx) ) + 16 );
 
   iVec gsx, gs1x, px, chx, p1x, ch1x, D, da, db;
 
@@ -362,17 +353,22 @@ SPHERE::PublicAn(int MaxOrder)
 
         da.push_back( Dn[i+1] / Index + (double)(i+1) / this->SizeParam );
 
-        this->An_data[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
+        An_data[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
 
     }
   return this->An;
 }
 
 
-
 Cndarray&
 SPHERE::PublicBn(int MaxOrder)
 {
+  this->Bn              = Cndarray(MaxOrder);
+
+  info BnBuffer         = this->Bn.request();
+
+  complex128 * Bn_data  = (complex128 *) BnBuffer.ptr;
+
   const double mx          = Index * this->SizeParam,
                temp        = sqrt(0.5 * PI * this->SizeParam);
 
@@ -400,7 +396,7 @@ SPHERE::PublicBn(int MaxOrder)
 
         db.push_back( Index * Dn[i+1] + (double)(i+1) / this->SizeParam );
 
-        this->Bn_data[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
+        Bn_data[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
 
     }
   return this->Bn;
@@ -411,6 +407,12 @@ SPHERE::PublicBn(int MaxOrder)
 Cndarray&
 SPHERE::PublicCn(int MaxOrder)
 {
+  this->Cn              = Cndarray(MaxOrder);
+
+  info CnBuffer         = this->Cn.request();
+
+  complex128 * Cn_data  = (complex128 *) CnBuffer.ptr;
+
   const double mx          = this->Index * this->SizeParam,
                x           = this->SizeParam,
                temp        = sqrt(0.5 * PI * this->SizeParam),
@@ -426,7 +428,7 @@ SPHERE::PublicCn(int MaxOrder)
   {
     numerator        = M * MuSp * ( Xi(order, x) * Psi_p(order, x) - Xi_p(order, x) * Psi(order, x) );
     denominator      = MuSp * Xi(order, x) * Psi_p(order, mx) - Mu * M * Xi_p(order, x) * Psi(order, mx);
-    this->Cn_data[order-1] = numerator / denominator;
+    Cn_data[order-1] = numerator / denominator;
   }
   return this->Cn;
 }
@@ -436,6 +438,12 @@ SPHERE::PublicCn(int MaxOrder)
 Cndarray&
 SPHERE::PublicDn(int MaxOrder)
 {
+  this->Dn              = Cndarray(MaxOrder);
+
+  info DnBuffer         = this->Dn.request();
+
+  complex128 * Dn_data  = (complex128 *) DnBuffer.ptr;
+
   const double mx          = this->Index * this->SizeParam,
                x           = this->SizeParam,
                temp        = sqrt(0.5 * PI * this->SizeParam),
@@ -450,7 +458,7 @@ SPHERE::PublicDn(int MaxOrder)
   {
     numerator        = Mu * M*M * ( Xi(order, x) * Psi_p(order, x) - Xi_p(order, x) * Psi(order, x) );
     denominator      = Mu * M * Xi(order, x) * Psi_p(order, mx) - MuSp * Xi_p(order, x) * Psi(order, mx);
-    this->Dn_data[order-1] = numerator / denominator;
+    Dn_data[order-1] = numerator / denominator;
   }
   return this->Dn;
 }
@@ -459,10 +467,7 @@ SPHERE::PublicDn(int MaxOrder)
 
 
 void
-SPHERE::LoopStructuredPol(int         PhiLength,
-                          int         ThetaLength,
-                          double     *PhiPtr,
-                          double     *ThetaPtr)
+SPHERE::LoopStructuredPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
 {
   int w = 0; double temp0;
   for (auto p=0; p < PhiLength; p++ )
@@ -479,10 +484,7 @@ SPHERE::LoopStructuredPol(int         PhiLength,
 
 
 void
-SPHERE::LoopStructuredUPol(int         PhiLength,
-                           int         ThetaLength,
-                           double     *PhiPtr,
-                           double     *ThetaPtr)
+SPHERE::LoopStructuredUPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
 {
   int w = 0;
   double temp0 = 1./sqrt(2.);
@@ -498,12 +500,8 @@ SPHERE::LoopStructuredUPol(int         PhiLength,
 }
 
 
-
 void
-SPHERE::LoopUnstructuredPol(int         PhiLength,
-                            int         ThetaLength,
-                            double     *PhiPtr,
-                            double     *ThetaPtr)
+SPHERE::LoopUnstructuredPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
 {
   double temp0;
     for (auto p=0; p < PhiLength; p++ )
@@ -516,10 +514,7 @@ SPHERE::LoopUnstructuredPol(int         PhiLength,
 
 
 void
-SPHERE::LoopUnstructuredUPol(int        PhiLength,
-                            int         ThetaLength,
-                            double     *PhiPtr,
-                            double     *ThetaPtr)
+SPHERE::LoopUnstructuredUPol(int PhiLength, int ThetaLength, double *PhiPtr, double *ThetaPtr)
   {
   double temp0 = 1./sqrt(2.);
     for (auto p=0; p < PhiLength; p++ )
@@ -558,9 +553,10 @@ SPHERE::FieldsStructured(ndarray Phi, ndarray Theta, double R)
   if (this->Polarized){ LoopStructuredPol (PhiLength, ThetaLength, PhiPtr, ThetaPtr); }
   else                { LoopStructuredUPol(PhiLength, ThetaLength, PhiPtr, ThetaPtr); }
 
-  this->EPhi.resize({PhiLength,ThetaLength});//.attr("transpose")();
-  this->ETheta.resize({PhiLength,ThetaLength});//.attr("transpose")();
-
+  this->EPhi.resize({PhiLength,ThetaLength});
+  this->ETheta.resize({PhiLength,ThetaLength});
+  this->ETheta = this->ETheta.attr("transpose")();
+  this->EPhi   = this->EPhi.attr("transpose")();
 
 
   return std::tie<Cndarray&, Cndarray&>(this->EPhi, this->ETheta);

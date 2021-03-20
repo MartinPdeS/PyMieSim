@@ -7,6 +7,7 @@ from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
+from PyMieSim.Plots import PlotUnstructured
 
 
 class BaseSource(object):
@@ -151,8 +152,6 @@ class BaseDetector(object):
         (:math:`E_{\\theta}` and :math:`E_{\\phi}`).
 
         """
-
-        from PyMieSim.utils import PlotUnstructured
 
         PlotUnstructured(self.Scalar, self.Mesh, Name='Mode field')
 
