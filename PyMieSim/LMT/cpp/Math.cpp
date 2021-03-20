@@ -14,100 +14,37 @@ typedef std::vector<double> Vec;
 
 #define PI (double)3.14159265358979323846264338
 
+int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
+
+
 double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
 double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
+double yn_p(int order, double x){ return boost::math::sph_neumann_prime(order, x); }
+double jn_p(int order, double x){ return boost::math::sph_bessel_prime(order, x); }
 
-int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
+double jn(double order, double x){ return boost::math::sph_bessel(order, x); }
+double yn(double order, double x){ return boost::math::sph_neumann(order, x); }
+double yn_p(double order, double x){ return boost::math::sph_neumann_prime(order, x); }
+double jn_p(double order, double x){ return boost::math::sph_bessel_prime(order, x); }
 
 
 double Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
 double Jn(int order, double x){ return boost::math::cyl_bessel_j(order, x); }
 double Yn_p(int order, double x){ return boost::math::cyl_neumann_prime(order, x); }
-
+double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
 
 double Yn(double order, double x){ return boost::math::cyl_neumann(order, x); }
 double Jn(double order, double x){ return boost::math::cyl_bessel_j(order, x); }
 double Yn_p(double order, double x){ return boost::math::cyl_neumann_prime(order, x); }
-
-
-double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
 double Jn_p(double order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
+
+
+
 
 complex128 Hn(int order, double x){ return Jn(order,x) + complex128(0.0,1.0) * Yn(order,x); }
 complex128 Hn_p(int order, double x){ return Jn_p(order,x) + complex128(0.0,1.0) * Yn_p(order,x); }
 
 
-
-std::vector<double>
-linespace(const double start,
-          const double end,
-          const long unsigned int N)
-{
-    Vec vector = Vec(N);
-
-    const double delta = (end-start)/N;
-
-    for (long unsigned int i = 0; i < N; i++)
-      {
-        vector[i] = delta*i;
-      }
-      return vector;
-}
-
-
-
-complex128
-Sum(complex128* vector, const long unsigned int N)
-{
-   complex128 sum = 0.;
-   for (long unsigned int i = 0; i < N; i++)
-   {
-     sum += vector[i];
-   }
-   return sum;
-}
-
-
-
-
-double
-Sum(const std::vector<double>* vector)
-{
-   const long unsigned int N = vector->size();
-   double sum = 0.;
-   for (long unsigned int i = 0; i < N; i++)
-   {
-     sum += (*vector)[i];
-   }
-   return sum;
-}
-
-
-
-
-
-
-template <class T>
-T Sum(const std::vector<T>* vector)
-{
-   const long unsigned int N = vector->size();
-   T sum = 0.;
-   for (long unsigned int i = 0; i < N; i++)
-   {
-     sum += (*vector)[i];
-   }
-   return sum;
-}
-
-
-
-
-template <class T>
-void printVector(std::vector <T> const &a) {
-   std::cout << "The vector elements are : ";
-   for(long unsigned int i=0; i < a.size(); i++)
-   std::cout << a.at(i) << ' ';
-}
 
 
 
@@ -127,78 +64,40 @@ Arrange(const double start,
 
 
 
-
-
-
-
-
-
-
-
-
-
-template<typename T>
-Vec
-Linspace(T start_in, T end_in, int num_in)
+complex128 _Psi_p(int type, int n, double x)
 {
+  if (type == 0){return (complex128) (x * jn_p(n, x) + jn(n, x));}
+  if (type == 1){return (complex128) jn_p(n, x);}
+  if (type == 2){return (complex128) yn_p(n, x);}
+  if (type == 3){return (complex128) jn_p(n, x) + J * yn_p(n, x);}
+  if (type == 4){return (complex128) jn_p(n, x) - J * yn_p(n, x);}
 
-  std::vector<double> linspaced;
+  return 0.;
+}
 
-  double start = static_cast<double>(start_in);
-  double end = static_cast<double>(end_in);
-  double num = static_cast<double>(num_in);
+complex128 _Psi(int type, int n, double x)
+{
+  if (type == 0){return (complex128) x * jn(n, x) ;}
+  if (type == 1){return (complex128) jn(n, x) ;}
+  if (type == 2){return (complex128) yn(n, x) ;}
+  if (type == 3){return (complex128) _Psi(1, n, x) + J * _Psi(2, n, x) ;}
+  if (type == 4){return (complex128) _Psi(1, n, x) - J * _Psi(2, n, x) ;}
 
-  if (num == 0) { return linspaced; }
-  if (num == 1)
-    {
-      linspaced.push_back(start);
-      return linspaced;
-    }
-
-  double delta = (end - start) / (num - 1);
-
-  for(int i=0; i < num-1; ++i)
-    {
-      linspaced.push_back(start + delta * i);
-    }
-  linspaced.push_back(end);
-
-  return linspaced;
+  return 0.;
 }
 
 
-std::tuple<Vec, Vec>
-Meshgrid(int num)
-{
-  Vec phi = Linspace(-PI/2, PI/2, num);
-  Vec theta = Linspace(-PI, PI, num);
+complex128 Psi(int n, double x){ return (complex128) x * _Psi(1, n, x) ; }
 
-  Vec Phi, Theta;
-
-  for(int i=0; i < num; ++i)
-  {
-    Phi.insert( end(Phi), begin(phi), end(phi) );
-    for(int k=0; k< num; ++k)
-    {
-      Theta.push_back(theta[i]);
-    }
-  }
+complex128 Psi_p(int n, double x){ return (complex128)  x * _Psi_p(1, n, x) + _Psi(1, n, x) ; }
 
 
-  return std::make_tuple(Phi, Theta);
-}
+complex128 Xi(int n, double x){return x * _Psi(4,n,x); }
+
+complex128 Xi_p(int n, double x){return x * _Psi_p(4,n,x) + _Psi(4,n,x); }
 
 
 
-std::tuple<Vec, Vec, Vec>
-FullMesh(int num)
-{
-  Vec Phi, Theta;
-  std::tie(Phi, Theta) = Meshgrid(num);
-  Vec R(num*num, 10);
-
-  return std::make_tuple(R, Phi, Theta);
-}
 
 
 

@@ -27,7 +27,9 @@ def Speed(setup):
 
 
 def Correctness():
-    Phi = np.linspace(-np.pi/2,np.pi/2,100); Theta = np.linspace(-np.pi,np.pi,100)
+    Phi = np.linspace(-np.pi/2,np.pi/2,100);
+    Theta = np.linspace(-np.pi,np.pi,100)
+
     THETA, PHI = np.meshgrid(Theta, Phi)
 
     args0 = (1.4, 10e-6, 1e-6, 1, Phi-np.pi/2, Theta-np.pi/2, 0,1,1)

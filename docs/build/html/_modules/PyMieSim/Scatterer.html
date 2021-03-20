@@ -233,14 +233,7 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_an</span> <span class="o">=</span> <span class="n">an</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
-                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
-
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_an</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">an</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Sphere.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
@@ -255,12 +248,7 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span> <span class="o">=</span> <span class="n">bn</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
-                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">bn</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Sphere.cn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.cn">[docs]</a>    <span class="k">def</span> <span class="nf">cn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
@@ -275,12 +263,7 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span> <span class="o">=</span> <span class="n">cn</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
-                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">cn</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Sphere.dn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.dn">[docs]</a>    <span class="k">def</span> <span class="nf">dn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
@@ -295,12 +278,7 @@
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="n">dn</span><span class="p">(</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span><span class="p">,</span>
-                      <span class="n">Index</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
-                      <span class="n">nMedium</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
-                      <span class="n">MaxOrder</span>  <span class="o">=</span> <span class="n">MaxOrder</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">dn</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span></div></div>
 
 
 
@@ -364,38 +342,27 @@
 <div class="viewcode-block" id="Cylinder.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`a_n` coefficient as defined ref[5]:</span>
 
-<span class="sd">        :math:`a_n = \\frac{</span>
-<span class="sd">           m_t J_n(m_t x) J_n^\prime (m x) -</span>
-<span class="sd">           m J_n^\prime (m_t x) J_n(m x) }</span>
-<span class="sd">        {  m_t J_n(m_t x) H_n^\prime (m x) -</span>
-<span class="sd">           m J_n^\prime (m_t x) H_n(m x)}`</span>
+<span class="sd">        :math:`a_n = \\frac{m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }</span>
+<span class="sd">        {  m_t J_n(m_t x) H_n^\prime (m x) -  m J_n^\prime (m_t x) H_n(m x)}`</span>
 
 <span class="sd">        With :math:`m`being the refractive index of the medium and</span>
 <span class="sd">             :math:`m_t`being the refractive index of the index.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
-
-
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">an</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Cylinder.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
+        <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in ref[5]:</span>
 
-<span class="sd">        :math:`a_n = \\frac{</span>
-<span class="sd">           m J_n(m_t x) J_n^\prime (m x) -</span>
-<span class="sd">           m_t J_n^\prime (m_t x) J_n(m x) }</span>
-<span class="sd">        {  m J_n(m_t x) H_n^\prime (m x) -</span>
-<span class="sd">           m_t J_n^\prime (m_t x) H_n(m x)}`</span>
+<span class="sd">        :math:`a_n = \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }</span>
+<span class="sd">        {  m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }`</span>
 
 <span class="sd">        With :math:`m`being the refractive index of the medium and</span>
 <span class="sd">             :math:`m_t`being the refractive index of the index.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-
-
-        <span class="k">return</span> <span class="kc">None</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">bn</span><span class="p">(</span><span class="n">MaxOrder</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="WMSample"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample">[docs]</a><span class="k">class</span> <span class="nc">WMSample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

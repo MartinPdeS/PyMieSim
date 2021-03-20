@@ -85,7 +85,7 @@ ext_modules = [
                           extra_link_args     = link_args),
 
                 Extension(name               = "PyMieSim.LMT.Scatterer",
-                          sources            = ["PyMieSim/LMT/cpp/Scat.cpp"],
+                          sources            = ["PyMieSim/LMT/cpp/interface.cpp"],
                           include_dirs       = [get_numpy_include(), get_pybind11_include()],
                           language           = "c++"),
 

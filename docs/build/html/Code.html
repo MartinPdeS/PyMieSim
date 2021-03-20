@@ -620,29 +620,23 @@ ref[2]:Eq:10
 <dt id="PyMieSim.Scatterer.Cylinder.an">
 <code class="descname">an</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder.an"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.an" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined ref[5]:</p>
+<p><span class="math notranslate nohighlight">\(a_n = \frac{m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+{  m_t J_n(m_t x) H_n^\prime (m x) -  m J_n^\prime (m_t x) H_n(m x)}\)</span></p>
 <dl class="docutils">
-<dt>:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>a_n = frac{</dt>
-<dd>m_t J_n(m_t x) J_n^prime (m x) -
-m J_n^prime (m_t x) J_n(m x) }</dd>
-<dt>{  m_t J_n(m_t x) H_n^prime (m x) -</dt>
-<dd>m J_n^prime (m_t x) H_n(m x)}`</dd>
-<dt>With :math:<a href="#id3"><span class="problematic" id="id4">`</span></a>m`being the refractive index of the medium and</dt>
-<dd>:math:<a href="#id5"><span class="problematic" id="id6">`</span></a>m_t`being the refractive index of the index.</dd>
+<dt>With :math:<a href="#id1"><span class="problematic" id="id2">`</span></a>m`being the refractive index of the medium and</dt>
+<dd>:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>m_t`being the refractive index of the index.</dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Scatterer.Cylinder.bn">
 <code class="descname">bn</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder.bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.bn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq:III.89 of B&amp;B:</p>
+<dd><p>Compute <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in ref[5]:</p>
+<p><span class="math notranslate nohighlight">\(a_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+{  m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\)</span></p>
 <dl class="docutils">
-<dt>:math:<a href="#id7"><span class="problematic" id="id8">`</span></a>a_n = frac{</dt>
-<dd>m J_n(m_t x) J_n^prime (m x) -
-m_t J_n^prime (m_t x) J_n(m x) }</dd>
-<dt>{  m J_n(m_t x) H_n^prime (m x) -</dt>
-<dd>m_t J_n^prime (m_t x) H_n(m x)}`</dd>
-<dt>With :math:<a href="#id9"><span class="problematic" id="id10">`</span></a>m`being the refractive index of the medium and</dt>
-<dd>:math:<a href="#id11"><span class="problematic" id="id12">`</span></a>m_t`being the refractive index of the index.</dd>
+<dt>With :math:<a href="#id5"><span class="problematic" id="id6">`</span></a>m`being the refractive index of the medium and</dt>
+<dd>:math:<a href="#id7"><span class="problematic" id="id8">`</span></a>m_t`being the refractive index of the index.</dd>
 </dl>
 </dd></dl>
 

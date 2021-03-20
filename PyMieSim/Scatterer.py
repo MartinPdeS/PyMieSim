@@ -75,7 +75,6 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-
         return self.Bind.an(MaxOrder)
 
 
@@ -106,12 +105,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-        self._cn = cn(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
-
-        return self._cn
+        return self.Bind.cn(MaxOrder)
 
 
     def dn(self, MaxOrder=5):
@@ -126,12 +120,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
         """
-        self._dn = dn(SizeParam = self.SizeParam,
-                      Index     = self.Index,
-                      nMedium   = self.nMedium,
-                      MaxOrder  = MaxOrder)
-
-        return self._dn
+        return self.Bind.dn(MaxOrder)
 
 
 
@@ -195,34 +184,26 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
     def an(self, MaxOrder=5):
         """ Compute :math:`a_n` coefficient as defined ref[5]:
 
-        :math:`a_n = \\frac{
-           m_t J_n(m_t x) J_n^\prime (m x) -
-           m J_n^\prime (m_t x) J_n(m x) }
-        {  m_t J_n(m_t x) H_n^\prime (m x) -
-           m J_n^\prime (m_t x) H_n(m x)}`
+        :math:`a_n = \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+                           { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }`
 
         With :math:`m`being the refractive index of the medium and
              :math:`m_t`being the refractive index of the index.
 
         """
-
         return self.Bind.an(MaxOrder)
 
 
     def bn(self, MaxOrder=5):
-        """ Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
+        """ Compute :math:`b_n` coefficient as defined in ref[5]:
 
-        :math:`a_n = \\frac{
-           m J_n(m_t x) J_n^\prime (m x) -
-           m_t J_n^\prime (m_t x) J_n(m x) }
-        {  m J_n(m_t x) H_n^\prime (m x) -
-           m_t J_n^\prime (m_t x) H_n(m x)}`
+        :math:`b_n = \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+                           { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }`
 
         With :math:`m`being the refractive index of the medium and
              :math:`m_t`being the refractive index of the index.
 
         """
-
         return self.Bind.bn(MaxOrder)
 
 
