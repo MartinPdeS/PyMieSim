@@ -15,8 +15,30 @@ namespace py = pybind11;
 typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 typedef py::buffer_info info;
+typedef unsigned int uint;
 
+/*
+template<class Type, class IndexType>
+py::array_t<Type, py::array::c_style> Multi_array<Type,1,IndexType>::move_py(IndexType n_i)
+{
+	py::capsule free_when_done( ptr, free_func );
+	py::array_t<Type, py::array::c_style> out
+	(
+		{n_i},      // shape
+		{stride_i}, // C-style contiguous strides for double
+		ptr,     	// the data pointer
+		free_when_done // Free method
+	);
 
+	alloc_func = NULL ;
+	free_func = NULL ;
+	ptr = NULL ;
+	n_i = 0 ;
+	stride_i = 0 ;
+
+	return out ;
+};
+*/
 
 
 void

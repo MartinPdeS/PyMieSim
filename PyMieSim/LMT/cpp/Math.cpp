@@ -1,6 +1,7 @@
 
 #include <vector>
 #include <complex>
+#include <math.h>
 #include <tuple>
 #include <boost/math/special_functions/legendre.hpp>
 #include <boost/math/special_functions/bessel_prime.hpp>
@@ -14,11 +15,11 @@ typedef std::vector<double> Vec;
 
 #define PI (double)3.14159265358979323846264338
 
-int GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
+inline double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
 
-double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
-double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
+inline double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
+
 double yn_p(int order, double x){ return boost::math::sph_neumann_prime(order, x); }
 double jn_p(int order, double x){ return boost::math::sph_bessel_prime(order, x); }
 
@@ -28,8 +29,8 @@ double yn_p(double order, double x){ return boost::math::sph_neumann_prime(order
 double jn_p(double order, double x){ return boost::math::sph_bessel_prime(order, x); }
 
 
-double Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
-double Jn(int order, double x){ return boost::math::cyl_bessel_j(order, x); }
+inline double  Yn(int order, double x){ return boost::math::cyl_neumann(order, x); }
+inline double  Jn(int order, double x){ return boost::math::cyl_bessel_j(order, x); }
 double Yn_p(int order, double x){ return boost::math::cyl_neumann_prime(order, x); }
 double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
 

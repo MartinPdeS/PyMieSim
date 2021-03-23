@@ -10,7 +10,7 @@ def Speed(setup):
 
     BenchPython = """PyS1S2(*args);"""
 
-    BenchCpp = """CppS1, CppS2 = scat.S1S2(Phi);"""
+    BenchCpp = """scat.S1S2(Phi);"""
 
     print('\nPYTHON BENCHMARK')
 
@@ -34,9 +34,12 @@ def Correctness():
 
     PyRes = PyS1S2(*args)
 
-    scat = SPHERE(Index = 1.8, Diameter=3e-6,Wavelength=1e-6)
+    scatt = SPHERE(Index = 1.8, Diameter=3e-6,Wavelength=1e-6)
 
-    CppS1, CppS2 = scat.S1S2(Phi+np.pi/2)
+
+    CppS1, CppS2 = scatt.S1S2(Phi+np.pi/2)
+
+    print('##########', CppS2.shape)
 
     fig = plt.figure(figsize=(10,5))
 
@@ -45,8 +48,8 @@ def Correctness():
     ax0.plot(Phi, np.abs(PyRes[0]), 'C0', linewidth=2, label='Python S1');
     ax1.plot(Phi, np.abs(PyRes[1]), 'C0',linewidth=2, label='Python S2')
 
-    ax0.plot(Phi, np.abs(CppS1), 'C1--',linewidth=2, label='C++ S1');
-    ax1.plot(Phi, np.abs(CppS2), 'C1--',linewidth=2, label='C++ S2')
+    ax1.plot(Phi, np.abs(CppS2), 'C1--',linewidth=2, label='C++ S1');
+    ax0.plot(Phi, np.abs(CppS1), 'C1--',linewidth=2, label='C++ S2')
 
     ax0.grid(); ax1.grid();
     ax0.legend(); ax1.legend();

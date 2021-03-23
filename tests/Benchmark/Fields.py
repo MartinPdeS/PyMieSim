@@ -12,9 +12,9 @@ from PyMieSim.LMT.Scatterer import SPHERE
 def Speed(setup):
     BenchPython = """PyField(*args0)"""
 
-    GLMTLMTBenchPyBind = """GLMTCppFields(*args2)"""
+    GLMTLMTBenchPyBind = """GLMTCppFields(*args1)"""
 
-    GLMTLMTBenchPyBindClass = """A=SPHERE(*args3); A.SFields(Phi=Phi, Theta=Theta, R=1. )"""
+    GLMTLMTBenchPyBindClass = """A.SFields(Phi=Phi, Theta=Theta, R=1. ); """
 
     Bench = timeit.timeit(setup = setup,stmt = BenchPython, number = 1)
     print('\nLMT PYTHON BENCHMARK: ', Bench)
@@ -57,27 +57,17 @@ from PyMieSim.LMT.Scatterer import SPHERE
 
 beam = PlaneWave(Wavelength=1e-6)
 BSC = beam.GetBSC(MaxOrder=10)
-Phi = np.linspace(-np.pi/2,np.pi/2,100); Theta = np.linspace(-np.pi,np.pi,100)
-PHI, THETA = np.meshgrid(Theta, Phi)
+Phi = np.linspace(-np.pi/2,np.pi/2,800); Theta = np.linspace(-np.pi,np.pi,800)
 
-args0 = (1.4, 1e-6, 1e-6, 1, Phi.flatten(), Theta.flatten(), 0,1,1)
-args1 = (1.4, 1e-6, 1e-6, 1, Phi.flatten(), Theta.flatten(), 0,1,1)
-args2 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1, beam._BSC_, beam.MaxOrder)
-args3 = (1.4, 1e-6, 1e-6, 1., 0, 1)
-
-
-
+args0 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1)
+args1 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1, beam._BSC_, beam.MaxOrder)
+args2 = (1.4, 1e-6, 1e-6, 1., 0, 1)
+A=SPHERE(*args2);
 """
 
 if __name__=='__main__':
     Speed(setup)
     Correctness()
-
-
-"""
-
-0.0003437309933360666
-"""
 
 
 

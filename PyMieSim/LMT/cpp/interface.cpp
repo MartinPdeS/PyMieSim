@@ -19,33 +19,35 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Wavelength"),
            py::arg("nMedium")      = 1.,
            py::arg("Polarization") = 0.,
-           py::arg("E0")           = 1. ) 
+           py::arg("E0")           = 1. )
 
-      .def("S1S2",
-           &SPHERE::PublicGetS1S2,
-           py::arg("Phi")  )
-
-      .def("SFields",
-           &SPHERE::FieldsStructured,
-           py::arg("Phi"),
-           py::arg("Theta"),
-           py::arg("R")  )
+       .def("S1S2",
+            &SPHERE::S1S2,
+            py::arg("Phi") )
+            //py::arg("Theta"),
+            //py::arg("R")  );
 
       .def("UFields",
-           &SPHERE::FieldsUnstructured,
+           &SPHERE::UFields,
            py::arg("Phi"),
            py::arg("Theta"),
-           py::arg("R")  )
+           py::arg("R") )
 
-      .def("an", &SPHERE::PublicAn, py::arg("MaxOrder")  = 5)
+      .def("SFields",
+           &SPHERE::SFields,
+           py::arg("Phi"),
+           py::arg("Theta"),
+           py::arg("R") )
 
-      .def("bn", &SPHERE::PublicBn, py::arg("MaxOrder")  = 5)
+      .def("an", &SPHERE::An, py::arg("MaxOrder")  = 5)
 
-      .def("cn", &SPHERE::PublicCn, py::arg("MaxOrder")  = 5)
+      .def("bn", &SPHERE::Bn, py::arg("MaxOrder")  = 5)
 
-      .def("dn", &SPHERE::PublicDn, py::arg("MaxOrder")  = 5)
+      .def("cn", &SPHERE::Cn, py::arg("MaxOrder")  = 5)
 
-      .def_property("Efficiencies", &SPHERE::GetEfficiencies, &SPHERE::GetEfficiencies);
+      .def("dn", &SPHERE::Dn, py::arg("MaxOrder")  = 5)
+
+      .def_property_readonly("Efficiencies", &SPHERE::GetEfficiencies);
 
 
      py::class_<CYLINDER>(module, "CYLINDER")

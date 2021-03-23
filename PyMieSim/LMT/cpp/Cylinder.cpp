@@ -1,5 +1,5 @@
 #include <iostream>
-
+#pragma GCC visibility push(hidden)
 
 
 
@@ -67,9 +67,9 @@ private:
         Cndarray&                          PublicBn(int MaxOrder);
         Cndarray&                          PublicCn(int MaxOrder);
         Cndarray&                          PublicDn(int MaxOrder);
-        std::tuple<Cndarray&, Cndarray&>   FieldsStructured(ndarray Phi, ndarray Theta, double R);
-        std::tuple<Cndarray&, Cndarray&>   FieldsUnstructured(ndarray Phi, ndarray Theta, double R);
-        std::tuple<Cndarray&, Cndarray&>   PublicGetS1S2 (ndarray Phi);
+        std::tuple<Cndarray&, Cndarray&>   FieldsStructured(ndarray& Phi, ndarray& Theta, double R);
+        std::tuple<Cndarray&, Cndarray&>   FieldsUnstructured(ndarray& Phi, ndarray& Theta, double R);
+        std::tuple<Cndarray&, Cndarray&>   PublicGetS1S2 (ndarray& Phi);
         std::tuple<double, double, double> GetEfficiencies();
 
 
@@ -285,7 +285,7 @@ CYLINDER::PublicBn(int MaxOrder)
 
 
 std::tuple<Cndarray&, Cndarray&>
-CYLINDER::PublicGetS1S2(ndarray Phi)
+CYLINDER::PublicGetS1S2(ndarray& Phi)
 {
     info     PhiBuffer = Phi.request();
 
@@ -389,7 +389,7 @@ CYLINDER::LoopUnstructuredUPol(int PhiLength, int ThetaLength, double *PhiPtr, d
 
 
 std::tuple<Cndarray&, Cndarray&>
-CYLINDER::FieldsStructured(ndarray Phi, ndarray Theta, double R)
+CYLINDER::FieldsStructured(ndarray& Phi, ndarray& Theta, double R)
 {
   info        PhiBuffer    = Phi.request(),
               ThetaBuffer  = Theta.request();
@@ -416,10 +416,11 @@ CYLINDER::FieldsStructured(ndarray Phi, ndarray Theta, double R)
   if (this->Polarized){ LoopStructuredPol (PhiLength, ThetaLength, PhiPtr, ThetaPtr); }
   else                { LoopStructuredUPol(PhiLength, ThetaLength, PhiPtr, ThetaPtr); }
 
-  this->EPhi.resize({PhiLength,ThetaLength});//.attr("transpose")();
-  this->ETheta.resize({PhiLength,ThetaLength});//.attr("transpose")();
+  this->ETheta.resize({PhiLength,ThetaLength});
+  this->EPhi.resize({PhiLength,ThetaLength});
 
-
+  this->ETheta = this->ETheta.attr("transpose")();
+  this->EPhi   = this->EPhi.attr("transpose")();
 
   return std::tie<Cndarray&, Cndarray&>(this->EPhi, this->ETheta);
 
@@ -427,7 +428,7 @@ CYLINDER::FieldsStructured(ndarray Phi, ndarray Theta, double R)
 
 
 std::tuple<Cndarray&, Cndarray&>
-CYLINDER::FieldsUnstructured(ndarray Phi, ndarray Theta, double R)
+CYLINDER::FieldsUnstructured(ndarray& Phi, ndarray& Theta, double R)
 {
   info        PhiBuffer    = Phi.request(),
               ThetaBuffer  = Theta.request();

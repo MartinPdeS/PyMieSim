@@ -102,7 +102,7 @@ CoefficientAnBn(const double &SizeParam,
            complex128   *bn)
 {
   double alpha = SizeParam,
-         beta  = alpha * Index, 
+         beta  = alpha * Index,
          MuSp  = 1.,
          Mu    = 1.,
          M     = Index/nMedium;
@@ -901,6 +901,44 @@ S1S2StructuredUnpolarized(double   Index,
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
