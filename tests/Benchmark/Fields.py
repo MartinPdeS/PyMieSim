@@ -14,12 +14,12 @@ def Speed(setup):
 
     GLMTLMTBenchPyBind = """GLMTCppFields(*args1)"""
 
-    GLMTLMTBenchPyBindClass = """A.SFields(Phi=Phi, Theta=Theta, R=1. ); """
+    LMTClass = """A.SFields(Phi=Phi, Theta=Theta, R=1. ); """
 
     Bench = timeit.timeit(setup = setup,stmt = BenchPython, number = 1)
     print('\nLMT PYTHON BENCHMARK: ', Bench)
 
-    Bench = timeit.timeit(setup = setup,stmt = GLMTLMTBenchPyBindClass, number = 1)
+    Bench = timeit.timeit(setup = setup,stmt = LMTClass, number = 1)
     print('\n\n'+'='*50 + '\n\n LMT C++ class BENCHMARK', Bench)
 
     Bench = timeit.timeit(setup = setup,stmt = GLMTLMTBenchPyBind, number = 1)

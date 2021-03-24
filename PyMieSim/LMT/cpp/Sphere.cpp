@@ -1,15 +1,10 @@
 #include <iostream>
-
 #include <math.h>
 
 
 
-using namespace std;
 
-uint
-GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
-
-class SPHERE{
+class SPHERE: BASE{
 
 private:
       bool       Polarized;
@@ -25,19 +20,12 @@ private:
                  Mu,
                  MuScat,
                  GetQsca(),
-                 GetQabs(),
                  GetQext();
 
-    void        ComputePrefactor(double* prefactor, uint MaxOrder),
-                ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
+
+    void        ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
                 LowFreqAnBn(complex128* an, complex128* bn),
-                HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
-                Structured(uint ThetaLength, uint PhiLength, complex128 *array0, double *array1, complex128  scalar, complex128 *output),
-                Unstructured(uint ThetaLength, uint PhiLength, complex128 *array0, double *array1, complex128  scalar, complex128 *output);
-
-
-    inline void MiePiTau(double mu, uint MaxOrder, complex128 *pin, complex128 *taun);
-
+                HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder);
 
 
     public:
@@ -69,6 +57,8 @@ private:
         this->SizeParam     = GetSizeParameter(Diameter, Wavelength, nMedium);
         this->Mu            = 1.0;
         this->MuScat        = 1.0;
+
+        this->IsPolarized();
         }
 
         ~SPHERE(){  }
@@ -78,47 +68,12 @@ private:
 
 
 void
-SPHERE::ComputePrefactor(double* prefactor, uint MaxOrder)
-{
-   for (uint m = 0; m < MaxOrder ; m++)
-   {
-      prefactor[m] = (double) ( 2 * (m+1) + 1 ) / ( (m+1) * ( (m+1) + 1 ) );
-   }
-}
-
-
-inline void
-SPHERE::MiePiTau(double      mu,
-                 uint        MaxOrder,
-                 complex128 *pin,
-                 complex128 *taun)
-
-{
-  pin[0] = 1.;
-  pin[1] = 3. * mu;
-
-  taun[0] = mu;
-  taun[1] = 3.0 * cos(2. * acos(mu) );
-
-  double n = 0;
-  for (uint i = 2; i < MaxOrder; i++)
-      {
-       n = (double)i;
-
-       pin[i] = ( (2. * n + 1.) * mu * pin[i-1] - (n + 1.) * pin[i-2] ) / n;
-
-       taun[i] = (n + 1.) * mu * pin[i] - (n + 2.) * pin[i-1];
-     }
-}
-
-
-
-void
 SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
 {
   if (SizeParam < 0.5){LowFreqAnBn(an, bn) ; }
   else                {HighFreqAnBn(an, bn, MaxOrder) ; }
 }
+
 
 void
 SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
@@ -176,8 +131,6 @@ SPHERE::LowFreqAnBn(complex128* an, complex128* bn)
   bn[1] = 0. + 0.*J;
 
 }
-
-
 
 std::tuple<Cndarray,Cndarray>
 SPHERE::S1S2(const ndarray Phi)
@@ -246,11 +199,7 @@ SPHERE::SFields(ndarray Phi, ndarray Theta, double R)
 
   complex128   propagator = E0 / (k * R) * exp(-J*k*R);
 
-  for (uint t = 0; t < ThetaLength; t++)
-  {
-    CosTerm[t] = abs(cos(Polarization + ThetaPtr[t])) ;
-    SinTerm[t] = abs(sin(Polarization + ThetaPtr[t])) ;
-  }
+  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
 
   std::tie(S1, S2) = this->S1S2(Phi);
 
@@ -272,41 +221,6 @@ SPHERE::SFields(ndarray Phi, ndarray Theta, double R)
 
 }
 
-void
-SPHERE::Structured(uint         ThetaLength,
-                   uint         PhiLength,
-                   complex128 *array0,
-                   double     *array1,
-                   complex128  scalar,
-                   complex128 *output)
-{
-  for (uint p=0; p < PhiLength; p++ )
-  {
-    for (uint t=0; t < ThetaLength; t++ )
-    {
-      *output   = scalar * array0[p] * array1[t];
-       output++;
-    }
-  }
-}
-
-
-void
-SPHERE::Unstructured(uint        ThetaLength,
-                     uint        PhiLength,
-                     complex128 *array0,
-                     double     *array1,
-                     complex128  scalar,
-                     complex128 *output)
-{
-  for (uint p=0; p < PhiLength; p++ )
-  {
-    *output   = scalar * array0[p] * array1[p];
-     output++;
-  }
-}
-
-
 std::tuple<Cndarray,Cndarray>
 SPHERE::UFields(ndarray Phi, ndarray Theta, double R)
 {
@@ -325,11 +239,7 @@ SPHERE::UFields(ndarray Phi, ndarray Theta, double R)
 
   complex128   propagator = E0 / (k * R) * exp(-J*k*R);
 
-  for (uint t = 0; t < ThetaLength; t++)
-  {
-    CosTerm[t] = abs(cos(Polarization + ThetaPtr[t])) ;
-    SinTerm[t] = abs(sin(Polarization + ThetaPtr[t])) ;
-  }
+  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
 
   std::tie(S1, S2) = this->S1S2(Phi);
 
