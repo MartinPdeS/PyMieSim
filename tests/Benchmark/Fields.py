@@ -36,7 +36,7 @@ def Correctness():
     BSC = beam.GetBSC(MaxOrder=10)
 
     argsPy = {"Index":        1.4,
-              "Diameter":     1e-6,
+              "Diameter":     10e-6,
               "Wavelength":   1e-6,
               "nMedium":      1.0,
               "Polarization": 0.0,
@@ -46,7 +46,7 @@ def Correctness():
               "Theta":        Theta}
 
     argsLMT = {"Index":        1.4,
-               "Diameter":     1e-6,
+               "Diameter":     10e-6,
                "Wavelength":   1e-6,
                "nMedium":      1.0,
                "Polarization": 0.0,
@@ -54,7 +54,7 @@ def Correctness():
 
 
     argsGLMT = {"Index":        1.4,
-                "Diameter":     1e-6,
+                "Diameter":     10e-6,
                 "Wavelength":   1e-6,
                 "nMedium":      1.0,
                 "Polarization": 0.0,
@@ -88,7 +88,7 @@ BSC = beam.GetBSC(MaxOrder=10)
 Phi = np.linspace(-np.pi/2,np.pi/2,800); Theta = np.linspace(-np.pi,np.pi,800)
 
 argsPy = {"Index":        1.4,
-          "Diameter":     1e-6,
+          "Diameter":     10e-6,
           "Wavelength":   1e-6,
           "nMedium":      1.0,
           "Polarization": 0.0,
@@ -98,7 +98,7 @@ argsPy = {"Index":        1.4,
           "Theta":        Theta}
 
 argsLMT = {"Index":        1.4,
-           "Diameter":     1e-6,
+           "Diameter":     10e-6,
            "Wavelength":   1e-6,
            "nMedium":      1.0,
            "Polarization": 0.0,
@@ -106,7 +106,7 @@ argsLMT = {"Index":        1.4,
 
 
 argsGLMT = {"Index":        1.4,
-            "Diameter":     1e-6,
+            "Diameter":     10e-6,
             "Wavelength":   1e-6,
             "nMedium":      1.0,
             "Polarization": 0.0,

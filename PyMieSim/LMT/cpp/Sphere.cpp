@@ -241,9 +241,9 @@ SPHERE::sFields(ndarray Phi, ndarray Theta, double R)
              * S1Ptr      = (complex128*) S1.request().ptr,
              * S2Ptr      = (complex128*) S2.request().ptr;
 
-  Structured(ThetaLength, PhiLength, S2Ptr, SinTerm, - propagator, EThetaPtr);
+  Structured(ThetaLength, PhiLength, S2Ptr, CosTerm, - propagator, EPhiPtr);
 
-  Structured(ThetaLength, PhiLength, S1Ptr, CosTerm, JJ * propagator, EPhiPtr);
+  Structured(ThetaLength, PhiLength, S1Ptr, SinTerm, JJ * propagator, EThetaPtr);
 
   EPhi.resize({PhiLength,ThetaLength});
   ETheta.resize({PhiLength,ThetaLength});
@@ -281,9 +281,9 @@ SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
              * S1Ptr      = (complex128*) S1.request().ptr,
              * S2Ptr      = (complex128*) S2.request().ptr;
 
-  Unstructured(ThetaLength, PhiLength, S2Ptr, SinTerm, - propagator, EThetaPtr);
+  Unstructured(ThetaLength, PhiLength, S2Ptr, CosTerm, - propagator, EPhiPtr);
 
-  Unstructured(ThetaLength, PhiLength, S1Ptr, CosTerm, JJ * propagator, EPhiPtr);
+  Unstructured(ThetaLength, PhiLength, S1Ptr, SinTerm, JJ * propagator, EThetaPtr);
 
   EPhi.resize({PhiLength,ThetaLength});
   ETheta.resize({PhiLength,ThetaLength});

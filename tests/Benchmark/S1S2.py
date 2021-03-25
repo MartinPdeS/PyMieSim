@@ -45,11 +45,11 @@ def Correctness():
 
     ax0 = fig.add_subplot(211); ax1 = fig.add_subplot(212)
 
-    ax0.plot(Phi, np.abs(PyRes[0]), 'C0', linewidth=2, label='Python S1');
-    ax1.plot(Phi, np.abs(PyRes[1]), 'C0',linewidth=2, label='Python S2')
+    ax0.plot(Phi, np.imag(PyRes[0]), 'C0', linewidth=2, label='Python S1');
+    ax1.plot(Phi, np.imag(PyRes[1]), 'C0',linewidth=2, label='Python S2')
 
-    ax1.plot(Phi, np.abs(CppS2), 'C1--',linewidth=2, label='C++ S1');
-    ax0.plot(Phi, np.abs(CppS1), 'C1--',linewidth=2, label='C++ S2')
+    ax1.plot(Phi, np.imag(CppS2), 'C1--',linewidth=2, label='C++ S1');
+    ax0.plot(Phi, np.imag(CppS1), 'C1--',linewidth=2, label='C++ S2')
 
     ax0.grid(); ax1.grid();
     ax0.legend(); ax1.legend();
