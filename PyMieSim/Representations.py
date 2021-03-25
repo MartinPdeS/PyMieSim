@@ -9,7 +9,7 @@ from PyMieSim.Plots import PlotStructuredAmplitude
 from PyMieSim.Plots import PlotStructuredAbs
 from PyMieSim.utils import GetFieldBinding
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-from PyMieSim.GLMT.Sphere.Structured import S1S2 as GLMTS1S2
+
 
 
 class Stokes(np.ndarray):

@@ -1,312 +1,116 @@
 #include <iostream>
 #include <vector>
 #include <complex>
-#include <tuple>
-#include <boost/math/special_functions/legendre.hpp>
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h>
 #include <pybind11/numpy.h>
+#include "../../includes/SpecialFunc.h"
+#include "../../includes/utils.h"
+#include "../../includes/BaseClass.h"
+
 namespace py = pybind11;
 
-typedef std::vector<double> Vec;
-typedef std::complex<double> complex128;
-typedef std::vector<complex128> iVec;
 typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
+typedef py::buffer_info info;
 
-
-
-//#include "utils.cpp"
-#include "Special.cpp"
-//#include "Math.cpp"
-
-#include "Sphere.cpp"
+#include "Sphere.cpp" 
 #include "Cylinder.cpp"
 
 
-
-
-
-PYBIND11_MODULE(Cylinder, module) {
-    module.doc() = "LGeneralized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
-
-      py::module_ Structured = module.def_submodule("Structured", "Structured fields data");
-
-      py::module_ Unstructured = module.def_submodule("Unstructured", "Unstructured fields data");
-
-    Structured.def("S1S2",
-               &Cylinder::S1S2Structured,
-               py::arg("Index"),
-               py::arg("Diameter"),
-               py::arg("Wavelength"),
-               py::arg("nMedium"),
-               py::arg("Phi"),
-               py::arg("Theta"),
-               py::arg("Polarization"),
-               py::arg("BSC"),
-               py::arg("MaxOrder"),
-               "Return S1");
-
-   Structured.def("S1S2Unpolarized",
-              &Cylinder::S1S2StructuredUnpolarized,
-              py::arg("Index"),
-              py::arg("Diameter"),
-              py::arg("Wavelength"),
-              py::arg("nMedium"),
-              py::arg("Phi"),
-              py::arg("Theta"),
-              py::arg("BSC"),
-              py::arg("MaxOrder"),
-              "Return S1");
-
-
-     Structured.def("Fields",
-                &Cylinder::FieldsStructured,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("Polarization"),
-                py::arg("E0"),
-                py::arg("R"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
-
-
-     Structured.def("FieldsUnpolarized",
-                &Cylinder::FieldsStructuredUnpolarized,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("E0"),
-                py::arg("R"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
-
-     Unstructured.def("S1S2",
-                &Cylinder::S1S2Unstructured,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("Polarization"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
-
-    Unstructured.def("Fields",
-               &Cylinder::FieldsUnstructured,
-               py::arg("Index"),
-               py::arg("Diameter"),
-               py::arg("Wavelength"),
-               py::arg("nMedium"),
-               py::arg("Phi"),
-               py::arg("Theta"),
-               py::arg("Polarization"),
-               py::arg("E0"),
-               py::arg("R"),
-               py::arg("BSC"),
-               py::arg("MaxOrder"),
-               "Return S1");
-
-
-      Unstructured.def("S1S2Unpolarized",
-                 &Cylinder::S1S2UnstructuredUnpolarized,
-                 py::arg("Index"),
-                 py::arg("Diameter"),
-                 py::arg("Wavelength"),
-                 py::arg("nMedium"),
-                 py::arg("Phi"),
-                 py::arg("Theta"),
-                 py::arg("BSC"),
-                 py::arg("MaxOrder"),
-                 "Return S1");
-
-
-     Unstructured.def("FieldsUnpolarized",
-                &Cylinder::FieldsUnstructuredUnpolarized,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("E0"),
-                py::arg("R"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
-
-}
-
-
-
-
-
-PYBIND11_MODULE(Sphere, module) {
+PYBIND11_MODULE(Scatterer, module) {
     module.doc() = "Generalized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
 
-    py::module_ Structured = module.def_submodule("Structured", "Structured fields data");
-
-    py::module_ Unstructured = module.def_submodule("Unstructured", "Unstructured fields data");
-
-    Structured.def("S1S2",
-               &Sphere::S1S2Structured,
-               py::arg("Index"),
-               py::arg("Diameter"),
-               py::arg("Wavelength"),
-               py::arg("nMedium"),
-               py::arg("Phi"),
-               py::arg("Theta"),
-               py::arg("Polarization"),
-               py::arg("BSC"),
-               py::arg("MaxOrder"),
-               "Return S1");
-
-   Structured.def("S1S2Unpolarized",
-              &Sphere::S1S2StructuredUnpolarized,
-              py::arg("Index"),
-              py::arg("Diameter"),
-              py::arg("Wavelength"),
-              py::arg("nMedium"),
-              py::arg("Phi"),
-              py::arg("Theta"),
-              py::arg("BSC"),
-              py::arg("MaxOrder"),
-              "Return S1");
+  py::class_<CYLINDER>(module, "CYLINDER")
+  .def(py::init<double, double, double, double, double, double, Cndarray>(),
+       py::arg("Index"),
+       py::arg("Diameter"),
+       py::arg("Wavelength"),
+       py::arg("nMedium")      = 1.,
+       py::arg("Polarization") = 0.,
+       py::arg("E0")           = 1.,
+       py::arg("BSC")          = 1. )
 
 
-     Structured.def("Fields",
-                &Sphere::FieldsStructured,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("Polarization"),
-                py::arg("E0"),
-                py::arg("R"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
+    .def("sS1S2",
+         &CYLINDER::sS1S2,
+         py::arg("Phi"),
+         py::arg("Theta"))
+
+    .def("uS1S2",
+         &CYLINDER::uS1S2,
+         py::arg("Phi"),
+         py::arg("Theta"))
+
+   .def("uFields",
+        &CYLINDER::uFields,
+        py::arg("Phi"),
+        py::arg("Theta"),
+        py::arg("R") )
+
+   .def("sFields",
+        &CYLINDER::sFields,
+        py::arg("Phi"),
+        py::arg("Theta"),
+        py::arg("R") )
 
 
-     Structured.def("FieldsUnpolarized",
-                &Sphere::FieldsStructuredUnpolarized,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("E0"),
-                py::arg("R"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
+   .def("an", &CYLINDER::An, py::arg("MaxOrder")  = 5)
 
-     Unstructured.def("S1S2",
-                &Sphere::S1S2Unstructured,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("Polarization"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
+   .def("bn", &CYLINDER::Bn, py::arg("MaxOrder")  = 5)
 
-    Unstructured.def("Fields",
-               &Sphere::FieldsUnstructured,
-               py::arg("Index"),
-               py::arg("Diameter"),
-               py::arg("Wavelength"),
-               py::arg("nMedium"),
-               py::arg("Phi"),
-               py::arg("Theta"),
-               py::arg("Polarization"),
-               py::arg("E0"),
-               py::arg("R"),
-               py::arg("BSC"),
-               py::arg("MaxOrder"),
-               "Return S1");
+   .def_property_readonly("Efficiencies", &CYLINDER::GetEfficiencies);
 
 
-      Unstructured.def("S1S2Unpolarized",
-                 &Sphere::S1S2UnstructuredUnpolarized,
-                 py::arg("Index"),
-                 py::arg("Diameter"),
-                 py::arg("Wavelength"),
-                 py::arg("nMedium"),
-                 py::arg("Phi"),
-                 py::arg("Theta"),
-                 py::arg("BSC"),
-                 py::arg("MaxOrder"),
-                 "Return S1");
+py::class_<SPHERE>(module, "SPHERE")
+.def(py::init<double, double, double, double, double, double, Cndarray>(),
+    py::arg("Index"),
+    py::arg("Diameter"),
+    py::arg("Wavelength"),
+    py::arg("nMedium")      = 1.,
+    py::arg("Polarization") = 0.,
+    py::arg("E0")           = 1.,
+    py::arg("BSC")          = 1. )
 
 
-     Unstructured.def("FieldsUnpolarized",
-                &Sphere::FieldsUnstructuredUnpolarized,
-                py::arg("Index"),
-                py::arg("Diameter"),
-                py::arg("Wavelength"),
-                py::arg("nMedium"),
-                py::arg("Phi"),
-                py::arg("Theta"),
-                py::arg("E0"),
-                py::arg("R"),
-                py::arg("BSC"),
-                py::arg("MaxOrder"),
-                "Return S1");
+ .def("sS1S2",
+      &SPHERE::sS1S2,
+      py::arg("Phi"),
+      py::arg("Theta"))
+
+ .def("uS1S2",
+      &SPHERE::uS1S2,
+      py::arg("Phi"),
+      py::arg("Theta"))
+
+.def("uFields",
+     &SPHERE::uFields,
+     py::arg("Phi"),
+     py::arg("Theta"),
+     py::arg("R") )
+
+.def("sFields",
+     &SPHERE::sFields,
+     py::arg("Phi"),
+     py::arg("Theta"),
+     py::arg("R") )
+
+
+.def("an", &SPHERE::An, py::arg("MaxOrder")  = 5)
+
+.def("bn", &SPHERE::Bn, py::arg("MaxOrder")  = 5)
+
+.def("cn", &SPHERE::Cn, py::arg("MaxOrder")  = 5)
+
+.def("dn", &SPHERE::Dn, py::arg("MaxOrder")  = 5)
+
+.def_property_readonly("Efficiencies", &SPHERE::GetEfficiencies);
 
 
 
-   module.def("an",
-              &Sphere::an,
-              py::arg("SizeParam"),
-              py::arg("Index"),
-              py::arg("nMedium"),
-              py::arg("MaxOrder"),
-              "Return an");
 
-   module.def("bn",
-              &Sphere::bn,
-              py::arg("SizeParam"),
-              py::arg("Index"),
-              py::arg("nMedium"),
-              py::arg("MaxOrder"),
-              "Return bn");
-
-   module.def("cn",
-              &Sphere::cn,
-              py::arg("SizeParam"),
-              py::arg("Index"),
-              py::arg("nMedium"),
-              py::arg("MaxOrder"),
-              "Return cn");
-
-   module.def("dn",
-              &Sphere::dn,
-              py::arg("SizeParam"),
-              py::arg("Index"),
-              py::arg("nMedium"),
-              py::arg("MaxOrder"),
-              "Return dn");
 
 }
-
 
 
 

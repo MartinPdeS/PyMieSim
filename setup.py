@@ -90,17 +90,11 @@ ext_modules = [
                           extra_compile_args = compile_args,
                           language           = "c++"),
 
-                Extension(name                = 'PyMieSim.GLMT.Sphere',
+                Extension(name                = 'PyMieSim.GLMT.Scatterer',
                           sources             = ['PyMieSim/GLMT/cpp/Interface.cpp'],
                           include_dirs        = [get_numpy_include(), get_pybind11_include()],
                           extra_compile_args  = compile_args,
                           language            = 'c++'),
-
-                Extension(name         = 'PyMieSim.GLMT.Cylinder',
-                          sources      = ['PyMieSim/GLMT/cpp/Interface.cpp'],
-                          include_dirs = [get_numpy_include(), get_pybind11_include()],
-                          extra_compile_args  = compile_args,
-                          language     = 'c++'),
 
                 Extension(name         = 'PyMieSim.Fibonacci',
                           sources      = ['PyMieSim/FibonnaciMesh.cpp'],

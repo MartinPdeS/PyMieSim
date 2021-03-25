@@ -4,39 +4,42 @@
 
 
 
-class SPHERE: BASE{
+class SPHERE: public BASE{
 
 private:
-      bool       Polarized;
+  bool       Polarized;
 
-      double     Diameter,
-                 Index,
-                 nMedium,
-                 SizeParam,
-                 Polarization,
-                 Wavelength,
-                 k,
-                 E0,
-                 Mu,
-                 MuScat,
-                 GetQsca(),
-                 GetQext();
+  double     Diameter,
+             Index,
+             nMedium,
+             SizeParam,
+             Polarization,
+             Wavelength,
+             k,
+             E0,
+             Mu,
+             MuScat,
+             GetQsca(),
+             GetQext();
 
-
-    void        ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
-                LowFreqAnBn(complex128* an, complex128* bn),
-                HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder);
+    void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
+             LowFreqAnBn(complex128* an, complex128* bn),
+             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
+             IsPolarized(),
+             PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm);
 
 
     public:
-        std::tuple<double, double, double> GetEfficiencies();
-        Cndarray                           An(uint MaxOrder);
-        Cndarray                           Bn(uint MaxOrder);
-        Cndarray                           Cn(uint MaxOrder);
-        Cndarray                           Dn(uint MaxOrder);
-        std::tuple<Cndarray,Cndarray>      S1S2(ndarray Phi);
-        std::tuple<Cndarray,Cndarray>      SFields(ndarray Phi, ndarray Theta, double R);
-        std::tuple<Cndarray,Cndarray>      UFields(ndarray Phi, ndarray Theta, double R);
+      std::tuple<double, double, double> GetEfficiencies();
+
+      Cndarray                           An(uint MaxOrder),
+                                         Bn(uint MaxOrder),
+                                         Cn(uint MaxOrder),
+                                         Dn(uint MaxOrder);
+
+      std::tuple<Cndarray,Cndarray>      S1S2(ndarray Phi),
+                                         sFields(ndarray Phi, ndarray Theta, double R),
+                                         uFields(ndarray Phi, ndarray Theta, double R);
 
 
 
@@ -47,23 +50,53 @@ private:
          double Polarization,
          double E0)
         {
-        this->Diameter      = Diameter;
-        this->Index         = Index;
-        this->nMedium       = nMedium;
-        this->Wavelength    = Wavelength;
-        this->E0            = E0;
-        this->k             = 2 * PI / Wavelength;
-        this->Polarization  = Polarization;
-        this->SizeParam     = GetSizeParameter(Diameter, Wavelength, nMedium);
-        this->Mu            = 1.0;
-        this->MuScat        = 1.0;
-
-        this->IsPolarized();
+          this->Diameter      = Diameter;
+          this->Index         = Index;
+          this->nMedium       = nMedium;
+          this->Wavelength    = Wavelength;
+          this->E0            = E0;
+          this->k             = 2 * PI / Wavelength;
+          this->Polarization  = Polarization;
+          this->SizeParam     = GetSizeParameter(Diameter, Wavelength, nMedium);
+          this->Mu            = 1.0;
+          this->MuScat        = 1.0;
+          this->IsPolarized();
         }
 
         ~SPHERE(){  }
 
 };
+
+
+void
+SPHERE::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm)
+{
+  if (this->Polarized==true)
+  {
+    for (uint t = 0; t < ThetaLength; t++)
+    {
+        CosTerm[t] = abs(cos(Polarization + ThetaPtr[t])) ;
+        SinTerm[t] = abs(sin(Polarization + ThetaPtr[t])) ;
+    }
+  }
+  else
+  {
+    const double term = 1./sqrt(2);
+    for (uint t = 0; t < ThetaLength; t++)
+    {
+        CosTerm[t] = term ;
+        SinTerm[t] = term ;
+    }
+  }
+}
+
+
+void
+SPHERE::IsPolarized()
+{
+  if (Polarization==-1.){Polarized=false;}
+  else                  {Polarized=true;}
+}
 
 
 
@@ -100,8 +133,8 @@ SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
         p1x.push_back(px[i]);
         ch1x.push_back(chx[i]);
 
-        gsx.push_back( px[i] - 1.*J * chx[i] );
-        gs1x.push_back( p1x[i] - 1.*J * ch1x[i] );
+        gsx.push_back( px[i] - 1.*JJ * chx[i] );
+        gs1x.push_back( p1x[i] - 1.*JJ * ch1x[i] );
 
         da.push_back( Dn[i+1] / Index + (double)(i+1) / SizeParam );
         db.push_back( Index * Dn[i+1] + (double)(i+1) / SizeParam );
@@ -125,10 +158,10 @@ SPHERE::LowFreqAnBn(complex128* an, complex128* bn)
   x5          = x4 * SizeParam;
   x6          = x5 * SizeParam;
 
-  an[0] = (-2.*J * x3 / 3.) * LL - (2.*J * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL * LL;
-  an[1] = (-1.*J * x5 / 15.) * (m2 - 1.) / (2. * m2 + 3.);
-  bn[0] = (-1.*J * x5 / 45.) * (m2 - 1.);
-  bn[1] = 0. + 0.*J;
+  an[0] = (-2.*JJ * x3 / 3.) * LL - (2.*JJ * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL * LL;
+  an[1] = (-1.*JJ * x5 / 15.) * (m2 - 1.) / (2. * m2 + 3.);
+  bn[0] = (-1.*JJ * x5 / 45.) * (m2 - 1.);
+  bn[1] = 0. + 0.*JJ;
 
 }
 
@@ -182,7 +215,7 @@ SPHERE::S1S2(const ndarray Phi)
 
 
 std::tuple<Cndarray,Cndarray>
-SPHERE::SFields(ndarray Phi, ndarray Theta, double R)
+SPHERE::sFields(ndarray Phi, ndarray Theta, double R)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -197,7 +230,7 @@ SPHERE::SFields(ndarray Phi, ndarray Theta, double R)
                S1,
                S2;
 
-  complex128   propagator = E0 / (k * R) * exp(-J*k*R);
+  complex128   propagator = E0 / (k * R) * exp(-JJ*k*R);
 
   this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
 
@@ -210,7 +243,7 @@ SPHERE::SFields(ndarray Phi, ndarray Theta, double R)
 
   Structured(ThetaLength, PhiLength, S2Ptr, SinTerm, - propagator, EThetaPtr);
 
-  Structured(ThetaLength, PhiLength, S1Ptr, CosTerm, J * propagator, EPhiPtr);
+  Structured(ThetaLength, PhiLength, S1Ptr, CosTerm, JJ * propagator, EPhiPtr);
 
   EPhi.resize({PhiLength,ThetaLength});
   ETheta.resize({PhiLength,ThetaLength});
@@ -222,7 +255,7 @@ SPHERE::SFields(ndarray Phi, ndarray Theta, double R)
 }
 
 std::tuple<Cndarray,Cndarray>
-SPHERE::UFields(ndarray Phi, ndarray Theta, double R)
+SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -237,7 +270,7 @@ SPHERE::UFields(ndarray Phi, ndarray Theta, double R)
                S1,
                S2;
 
-  complex128   propagator = E0 / (k * R) * exp(-J*k*R);
+  complex128   propagator = E0 / (k * R) * exp(-JJ*k*R);
 
   this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
 
@@ -250,7 +283,7 @@ SPHERE::UFields(ndarray Phi, ndarray Theta, double R)
 
   Unstructured(ThetaLength, PhiLength, S2Ptr, SinTerm, - propagator, EThetaPtr);
 
-  Unstructured(ThetaLength, PhiLength, S1Ptr, CosTerm, J * propagator, EPhiPtr);
+  Unstructured(ThetaLength, PhiLength, S1Ptr, CosTerm, JJ * propagator, EPhiPtr);
 
   EPhi.resize({PhiLength,ThetaLength});
   ETheta.resize({PhiLength,ThetaLength});

@@ -1,5 +1,6 @@
-#include "Math.cpp"
-#include "Special.cpp"
+#include "../../includes/SpecialFunc.h"
+#include "../../includes/utils.h"
+#include "../../includes/BaseClass.h"
 #include <iostream>
 
 #include <stdio.h>

@@ -1,6 +1,6 @@
-#include "Math.cpp"
-#include "utils.cpp"
-#include "BaseClass.cpp"
+#include "../../includes/SpecialFunc.h"
+#include "../../includes/utils.h"
+#include "../../includes/BaseClass.h"
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
 #include <iostream>
@@ -26,14 +26,14 @@ PYBIND11_MODULE(Scatterer, module) {
             &SPHERE::S1S2,
             py::arg("Phi") )
 
-      .def("UFields",
-           &SPHERE::UFields,
+      .def("uFields",
+           &SPHERE::uFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
 
-      .def("SFields",
-           &SPHERE::SFields,
+      .def("sFields",
+           &SPHERE::sFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
@@ -58,18 +58,18 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Polarization") = 0.,
            py::arg("E0")           = 1. )
 
-       .def("S1S2",
+       .def("S1S2", 
             &CYLINDER::S1S2,
             py::arg("Phi") )
 
-      .def("UFields",
-           &CYLINDER::UFields,
+      .def("uFields",
+           &CYLINDER::uFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
 
-      .def("SFields",
-           &CYLINDER::SFields,
+      .def("sFields",
+           &CYLINDER::sFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )

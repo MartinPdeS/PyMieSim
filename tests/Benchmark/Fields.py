@@ -4,17 +4,17 @@ import timeit
 
 from PyMieSim.Plots import PlotField
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.GLMT.Sphere.Structured import Fields as GLMTCppFields
-from PyMieSim.LMT.Scatterer import SPHERE
 
+from PyMieSim.LMT.Scatterer import SPHERE as SPHERELMT
+from PyMieSim.GLMT.Scatterer import SPHERE as SPHEREGLMT
 
 
 def Speed(setup):
     BenchPython = """PyField(*args0)"""
 
-    GLMTLMTBenchPyBind = """GLMTCppFields(*args1)"""
+    GLMTLMTBenchPyBind = """A.sFields(Phi=Phi, Theta=Theta, R=1. );"""
 
-    LMTClass = """A.SFields(Phi=Phi, Theta=Theta, R=1. ); """
+    LMTClass = """A.sFields(Phi=Phi, Theta=Theta, R=1. ); """
 
     Bench = timeit.timeit(setup = setup,stmt = BenchPython, number = 1)
     print('\nLMT PYTHON BENCHMARK: ', Bench)
@@ -38,7 +38,7 @@ def Correctness():
 
     PyParallel, PyPerpendicular = PyField(*args0);
 
-    CppParallel, CppPerpendicular = SPHERE(*args3).SFields(Phi=Phi, Theta=Theta, R=1. );
+    CppParallel, CppPerpendicular = SPHERELMT(*args3).SFields(Phi=Phi, Theta=Theta, R=1. );
 
     PlotField(Theta, Phi, CppParallel, CppPerpendicular)
 
@@ -51,9 +51,10 @@ def Correctness():
 setup = """
 import numpy as np
 from PyMieSim.LMT.python.Sphere import Fields as PyField
-from PyMieSim.GLMT.Sphere.Structured import Fields as GLMTCppFields
+
 from PyMieSim.Source import PlaneWave
-from PyMieSim.LMT.Scatterer import SPHERE
+from PyMieSim.LMT.Scatterer import SPHERELMT
+from PyMieSim.GLMT.Scatterer import SPHEREGLMT
 
 beam = PlaneWave(Wavelength=1e-6)
 BSC = beam.GetBSC(MaxOrder=10)
@@ -62,7 +63,8 @@ Phi = np.linspace(-np.pi/2,np.pi/2,800); Theta = np.linspace(-np.pi,np.pi,800)
 args0 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1)
 args1 = (1.4, 1e-6, 1e-6, 1, Phi, Theta, 0,1,1, beam._BSC_, beam.MaxOrder)
 args2 = (1.4, 1e-6, 1e-6, 1., 0, 1)
-A=SPHERE(*args2);
+A=SPHERELMT(*args2);
+B=SPHEREGLMT(*args1);
 """
 
 if __name__=='__main__':
