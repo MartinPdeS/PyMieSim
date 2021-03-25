@@ -10,7 +10,7 @@
 
 
 PYBIND11_MODULE(Scatterer, module) {
-    module.doc() = "LGeneralized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
+    module.doc() = "Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
 
 
       py::class_<SPHERE>(module, "SPHERE")
@@ -58,7 +58,7 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Polarization") = 0.,
            py::arg("E0")           = 1. )
 
-       .def("S1S2", 
+       .def("S1S2",
             &CYLINDER::S1S2,
             py::arg("Phi") )
 

@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-class CYLINDER{
+class _CYLINDER{
 
 private:
   bool       Polarized;
@@ -47,7 +47,7 @@ private:
 
 
 
-  CYLINDER(double Index,
+  _CYLINDER(double Index,
          double Diameter,
          double Wavelength,
          double nMedium,
@@ -69,13 +69,13 @@ private:
           this->IsPolarized();
         }
 
-        ~CYLINDER(){  }
+        ~_CYLINDER(){  }
 
 };
 
 
 void
-CYLINDER::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm)
+_CYLINDER::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm)
 {
   if (this->Polarized==true)
   {
@@ -98,7 +98,7 @@ CYLINDER::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm
 
 
 void
-CYLINDER::IsPolarized()
+_CYLINDER::IsPolarized()
 {
   if (Polarization==-1.){Polarized=false;}
   else                  {Polarized=true;}
@@ -107,7 +107,7 @@ CYLINDER::IsPolarized()
 
 
 std::tuple<Cndarray,Cndarray>
-CYLINDER::sS1S2(ndarray Phi, ndarray Theta)
+_CYLINDER::sS1S2(ndarray Phi, ndarray Theta)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -164,7 +164,7 @@ CYLINDER::sS1S2(ndarray Phi, ndarray Theta)
 
 
 std::tuple<Cndarray,Cndarray>
-CYLINDER::uS1S2(ndarray Phi, ndarray Theta)
+_CYLINDER::uS1S2(ndarray Phi, ndarray Theta)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -214,7 +214,7 @@ CYLINDER::uS1S2(ndarray Phi, ndarray Theta)
 
 
 std::tuple<Cndarray,Cndarray>
-CYLINDER::sFields(ndarray Phi, ndarray Theta, double R)
+_SPHERE::sFields(ndarray& Phi, ndarray& Theta, double R)
 {
   uint         PhiLength    = Phi.request().shape[0],
                ThetaLength  = Theta.request().shape[0],
@@ -242,7 +242,7 @@ CYLINDER::sFields(ndarray Phi, ndarray Theta, double R)
 
 
 std::tuple<Cndarray,Cndarray>
-CYLINDER::uFields(ndarray Phi, ndarray Theta, double R)
+_SPHERE::uFields(ndarray& Phi, ndarray& Theta, double R)
 {
   uint         PhiLength    = Phi.request().shape[0];
 
@@ -264,14 +264,14 @@ CYLINDER::uFields(ndarray Phi, ndarray Theta, double R)
 
 
 inline void
-CYLINDER::LoopBSC(Cndarray& BSC,
+_SPHERE::LoopBSC(Cndarray& BSC,
                 double* prefactor,
                 complex128* an,
                 complex128* bn,
                 complex128* pin,
                 complex128* taun,
-                complex128  s1,
-                complex128  s2,
+                complex128& s1,
+                complex128& s2,
                 double&     Theta)
 {
   uint BSCLength      = BSC.request().shape[0];
@@ -293,9 +293,8 @@ CYLINDER::LoopBSC(Cndarray& BSC,
 }
 
 
-
 double
-CYLINDER::GetQsca()
+_CYLINDER::GetQsca()
 {
     uint MaxOrder   = GetMaxOrder(SizeParam);
 
@@ -322,7 +321,7 @@ CYLINDER::GetQsca()
 
 
 double
-CYLINDER::GetQext()
+_CYLINDER::GetQext()
 {
     uint MaxOrder   = GetMaxOrder(SizeParam);
 
@@ -343,7 +342,7 @@ CYLINDER::GetQext()
 
 
 std::tuple<double, double, double>
-CYLINDER::GetEfficiencies()
+_CYLINDER::GetEfficiencies()
 {
     double Qsca = GetQsca();
     double Qext = GetQext();
@@ -354,14 +353,14 @@ CYLINDER::GetEfficiencies()
 
 
 void
-CYLINDER::ComputeAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
+_CYLINDER::ComputeAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
 {
   return HighFreqAnBn(anPtr, bnPtr, MaxOrder) ;
 }
 
 
 void
-CYLINDER::HighFreqAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
+_CYLINDER::HighFreqAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
 {
 
   double x = SizeParam;
@@ -382,11 +381,11 @@ CYLINDER::HighFreqAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
 
 
 void
-CYLINDER::LowFreqAnBn(complex128* anPtr, complex128* bnPtr){}
+_CYLINDER::LowFreqAnBn(complex128* anPtr, complex128* bnPtr){}
 
 
 Cndarray
-CYLINDER::Bn(uint MaxOrder)
+_CYLINDER::Bn(uint MaxOrder)
 {
   Cndarray     an         = Cndarray(MaxOrder),
                bn         = Cndarray(MaxOrder);
@@ -400,7 +399,7 @@ CYLINDER::Bn(uint MaxOrder)
 
 
 Cndarray
-CYLINDER::An(uint MaxOrder)
+_CYLINDER::An(uint MaxOrder)
 {
   Cndarray     an         = Cndarray(MaxOrder),
                bn         = Cndarray(MaxOrder);
@@ -414,7 +413,7 @@ CYLINDER::An(uint MaxOrder)
 
 
 inline void
-CYLINDER::MiePiTau(double        mu,
+_CYLINDER::MiePiTau(double        mu,
                  uint        MaxOrder,
                  complex128 *pin,
                  complex128 *taun)
@@ -439,7 +438,7 @@ CYLINDER::MiePiTau(double        mu,
 
 
 void
-CYLINDER::ComputePrefactor(double* prefactor, uint MaxOrder)
+_CYLINDER::ComputePrefactor(double* prefactor, uint MaxOrder)
 {
    for (uint m = 0; m < MaxOrder ; m++)
    {

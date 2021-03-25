@@ -1,7 +1,7 @@
 #include <iostream>
 
 
-class SPHERE{
+class _SPHERE{
 
 private:
   bool          Polarized;
@@ -26,7 +26,7 @@ private:
                 ComputePrefactor(double* prefactor, uint MaxOrder),
                 PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm);
 
-    inline void LoopBSC(Cndarray& BSC, double* prefactor, complex128* an, complex128* bn, complex128* pin, complex128* taun, complex128 s1, complex128 s2, double& Theta),
+    inline void LoopBSC(Cndarray& BSC, double* prefactor, complex128* an, complex128* bn, complex128* pin, complex128* taun, complex128& s1, complex128& s2, double& Theta),
                 MiePiTau(double mu, uint MaxOrder, complex128 *pin, complex128 *taun);
 
     Cndarray    BSC;
@@ -39,13 +39,13 @@ private:
         Cndarray                           Bn(uint MaxOrder);
         Cndarray                           Cn(uint MaxOrder);
         Cndarray                           Dn(uint MaxOrder);
-        std::tuple<Cndarray,Cndarray>      sS1S2(ndarray Phi, ndarray Theta);
-        std::tuple<Cndarray,Cndarray>      uS1S2(ndarray Phi, ndarray Theta);
-        std::tuple<Cndarray,Cndarray>      sFields(ndarray Phi, ndarray Theta, double R);
-        std::tuple<Cndarray,Cndarray>      uFields(ndarray Phi, ndarray Theta, double R);
+        std::tuple<Cndarray,Cndarray>      sS1S2(ndarray& Phi, ndarray& Theta);
+        std::tuple<Cndarray,Cndarray>      uS1S2(ndarray& Phi, ndarray& Theta);
+        std::tuple<Cndarray,Cndarray>      sFields(ndarray& Phi, ndarray& Theta, double R);
+        std::tuple<Cndarray,Cndarray>      uFields(ndarray& Phi, ndarray& Theta, double R);
 
 
-  SPHERE(double Index,
+  _SPHERE(double Index,
          double Diameter,
          double Wavelength,
          double nMedium,
@@ -67,13 +67,13 @@ private:
           this->IsPolarized();
         }
 
-        ~SPHERE(){  }
+        ~_SPHERE(){  }
 
 };
 
 
 void
-SPHERE::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm)
+_SPHERE::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm)
 {
   if (this->Polarized==true)
   {
@@ -96,7 +96,7 @@ SPHERE::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, 
 
 
 void
-SPHERE::IsPolarized()
+_SPHERE::IsPolarized()
 {
   if (Polarization==-1.){Polarized=false;}
   else                  {Polarized=true;}
@@ -105,7 +105,7 @@ SPHERE::IsPolarized()
 
 
 std::tuple<Cndarray,Cndarray>
-SPHERE::sS1S2(ndarray Phi, ndarray Theta)
+_SPHERE::sS1S2(ndarray& Phi, ndarray& Theta)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -157,12 +157,13 @@ SPHERE::sS1S2(ndarray Phi, ndarray Theta)
   free(pin);
   free(taun);
   free(prefactor);
+
   return std::make_tuple(S1, S2);
 }
 
 
 std::tuple<Cndarray,Cndarray>
-SPHERE::uS1S2(ndarray Phi, ndarray Theta)
+_SPHERE::uS1S2(ndarray& Phi, ndarray& Theta)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -212,7 +213,7 @@ SPHERE::uS1S2(ndarray Phi, ndarray Theta)
 
 
 std::tuple<Cndarray,Cndarray>
-SPHERE::sFields(ndarray Phi, ndarray Theta, double R)
+_SPHERE::sFields(ndarray& Phi, ndarray& Theta, double R)
 {
   uint         PhiLength    = Phi.request().shape[0],
                ThetaLength  = Theta.request().shape[0],
@@ -240,7 +241,7 @@ SPHERE::sFields(ndarray Phi, ndarray Theta, double R)
 
 
 std::tuple<Cndarray,Cndarray>
-SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
+_SPHERE::uFields(ndarray& Phi, ndarray& Theta, double R)
 {
   uint         PhiLength    = Phi.request().shape[0];
 
@@ -262,14 +263,14 @@ SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
 
 
 inline void
-SPHERE::LoopBSC(Cndarray& BSC,
+_SPHERE::LoopBSC(Cndarray& BSC,
                 double* prefactor,
                 complex128* an,
                 complex128* bn,
                 complex128* pin,
                 complex128* taun,
-                complex128  s1,
-                complex128  s2,
+                complex128& s1,
+                complex128& s2,
                 double&     Theta)
 {
   uint BSCLength      = BSC.request().shape[0];
@@ -292,7 +293,7 @@ SPHERE::LoopBSC(Cndarray& BSC,
 
 
 double
-SPHERE::GetQsca()
+_SPHERE::GetQsca()
 {
     uint MaxOrder   = GetMaxOrder(SizeParam);
 
@@ -319,7 +320,7 @@ SPHERE::GetQsca()
 
 
 double
-SPHERE::GetQext()
+_SPHERE::GetQext()
 {
     uint MaxOrder   = GetMaxOrder(SizeParam);
 
@@ -340,7 +341,7 @@ SPHERE::GetQext()
 
 
 std::tuple<double, double, double>
-SPHERE::GetEfficiencies()
+_SPHERE::GetEfficiencies()
 {
     double Qsca = GetQsca();
     double Qext = GetQext();
@@ -351,7 +352,7 @@ SPHERE::GetEfficiencies()
 
 
 void
-SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
+_SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
 {
   if (SizeParam < 0.5){LowFreqAnBn(an, bn) ; }
   else                {HighFreqAnBn(an, bn, MaxOrder) ; }
@@ -359,7 +360,7 @@ SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
 
 
 void
-SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
+_SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
 {
 
   const double mx = Index * SizeParam, temp = sqrt(0.5 * PI * SizeParam);
@@ -396,7 +397,7 @@ SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
 
 
 void
-SPHERE::LowFreqAnBn(complex128* an, complex128* bn)
+_SPHERE::LowFreqAnBn(complex128* an, complex128* bn)
 {
 
   double LL, m2, x3, x4, x5, x6;
@@ -417,7 +418,7 @@ SPHERE::LowFreqAnBn(complex128* an, complex128* bn)
 
 
 Cndarray
-SPHERE::Dn(uint MaxOrder)
+_SPHERE::Dn(uint MaxOrder)
 {
   double mx          = Index * SizeParam,
          M           = Index/nMedium;
@@ -439,7 +440,7 @@ SPHERE::Dn(uint MaxOrder)
 
 
 Cndarray
-SPHERE::Cn(uint MaxOrder)
+_SPHERE::Cn(uint MaxOrder)
 {
   double mx          = Index * SizeParam,
          M           = Index/nMedium;
@@ -460,7 +461,7 @@ SPHERE::Cn(uint MaxOrder)
 }
 
 Cndarray
-SPHERE::Bn(uint MaxOrder)
+_SPHERE::Bn(uint MaxOrder)
 {
   Cndarray     an         = Cndarray(MaxOrder),
                bn         = Cndarray(MaxOrder);
@@ -474,7 +475,7 @@ SPHERE::Bn(uint MaxOrder)
 
 
 Cndarray
-SPHERE::An(uint MaxOrder)
+_SPHERE::An(uint MaxOrder)
 {
   Cndarray     an         = Cndarray(MaxOrder),
                bn         = Cndarray(MaxOrder);
@@ -488,7 +489,7 @@ SPHERE::An(uint MaxOrder)
 
 
 inline void
-SPHERE::MiePiTau(double        mu,
+_SPHERE::MiePiTau(double        mu,
                  uint        MaxOrder,
                  complex128 *pin,
                  complex128 *taun)
@@ -513,7 +514,7 @@ SPHERE::MiePiTau(double        mu,
 
 
 void
-SPHERE::ComputePrefactor(double* prefactor, uint MaxOrder)
+_SPHERE::ComputePrefactor(double* prefactor, uint MaxOrder)
 {
    for (uint m = 0; m < MaxOrder ; m++)
    {
