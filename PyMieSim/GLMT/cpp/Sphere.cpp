@@ -41,8 +41,8 @@ private:
         Cndarray                           Dn(uint MaxOrder);
         std::tuple<Cndarray,Cndarray>      sS1S2(ndarray& Phi, ndarray& Theta);
         std::tuple<Cndarray,Cndarray>      uS1S2(ndarray& Phi, ndarray& Theta);
-        std::tuple<Cndarray,Cndarray>      sFields(ndarray& Phi, ndarray& Theta, double R);
-        std::tuple<Cndarray,Cndarray>      uFields(ndarray& Phi, ndarray& Theta, double R);
+        std::tuple<Cndarray,Cndarray>      sFields(ndarray& Phi, ndarray& Theta, double& R);
+        std::tuple<Cndarray,Cndarray>      uFields(ndarray& Phi, ndarray& Theta, double& R);
 
 
   _SPHERE(double Index,
@@ -51,7 +51,7 @@ private:
          double nMedium,
          double Polarization,
          double E0,
-         Cndarray BSC)
+         Cndarray& BSC)
         {
           this->Diameter      = Diameter;
           this->Index         = Index;
@@ -213,7 +213,7 @@ _SPHERE::uS1S2(ndarray& Phi, ndarray& Theta)
 
 
 std::tuple<Cndarray,Cndarray>
-_SPHERE::sFields(ndarray& Phi, ndarray& Theta, double R)
+_SPHERE::sFields(ndarray& Phi, ndarray& Theta, double& R)
 {
   uint         PhiLength    = Phi.request().shape[0],
                ThetaLength  = Theta.request().shape[0],
@@ -241,7 +241,7 @@ _SPHERE::sFields(ndarray& Phi, ndarray& Theta, double R)
 
 
 std::tuple<Cndarray,Cndarray>
-_SPHERE::uFields(ndarray& Phi, ndarray& Theta, double R)
+_SPHERE::uFields(ndarray& Phi, ndarray& Theta, double& R)
 {
   uint         PhiLength    = Phi.request().shape[0];
 

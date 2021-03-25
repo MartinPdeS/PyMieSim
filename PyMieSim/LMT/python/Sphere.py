@@ -17,12 +17,13 @@ def Fields(Index,
            R             = 1):
 
     k = 2*np.pi/Wavelength
+
     SizeParam = k * (Diameter/2)
-    s1s2 = S1S2(Index, Diameter, Wavelength, nMedium, Phi)
+    s1s2 = S1S2(Index, Diameter, Wavelength, nMedium, Phi-np.pi/2)
 
-    Parallel = np.outer(s1s2[0], np.abs(np.sin(Theta) ));
+    Parallel = np.outer(s1s2[0], np.sin(Theta) );
 
-    Perpendicular = np.outer(s1s2[1], np.abs(np.cos(Theta)))
+    Perpendicular = np.outer(s1s2[1], np.cos(Theta) );
 
     propagator =  E0 / (k*R) * np.exp(-1j*k*R)
 

@@ -81,8 +81,8 @@ CYLINDER::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm
   {
     for (uint t = 0; t < ThetaLength; t++)
     {
-        CosTerm[t] = abs(cos(Polarization + ThetaPtr[t])) ;
-        SinTerm[t] = abs(sin(Polarization + ThetaPtr[t])) ;
+        CosTerm[t] = cos(Polarization + ThetaPtr[t]) ;
+        SinTerm[t] = sin(Polarization + ThetaPtr[t]) ;
     }
   }
   else

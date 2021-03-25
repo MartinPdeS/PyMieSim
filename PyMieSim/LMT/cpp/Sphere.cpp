@@ -75,8 +75,8 @@ SPHERE::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, 
   {
     for (uint t = 0; t < ThetaLength; t++)
     {
-        CosTerm[t] = abs(cos(Polarization + ThetaPtr[t])) ;
-        SinTerm[t] = abs(sin(Polarization + ThetaPtr[t])) ;
+        CosTerm[t] = cos(Polarization + ThetaPtr[t]) ;
+        SinTerm[t] = sin(Polarization + ThetaPtr[t]) ;
     }
   }
   else
@@ -250,7 +250,7 @@ SPHERE::sFields(ndarray Phi, ndarray Theta, double R)
 
   free(CosTerm);
   free(SinTerm);
-  return std::make_tuple(ETheta, EPhi)  ;
+  return std::make_tuple(EPhi, ETheta)  ;
 
 }
 
@@ -290,7 +290,7 @@ SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
 
   free(CosTerm);
   free(SinTerm);
-  return std::make_tuple(ETheta, EPhi)  ;
+  return std::make_tuple(EPhi, ETheta)  ;
 
 }
 
