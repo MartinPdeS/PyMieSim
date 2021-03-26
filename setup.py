@@ -4,6 +4,11 @@
 # Note: To use the 'upload' functionality of this file, you must:
 #   $ pipenv install twine --dev
 
+
+
+
+
+# command: sudo python setup.py upload_sphinx
 import io
 import os
 import sys

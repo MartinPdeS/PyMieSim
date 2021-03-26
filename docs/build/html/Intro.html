@@ -169,8 +169,8 @@
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
 <p>This project aims to be a flexible and usefull tool for Mie scattering analysis.
-At the moment the Lorenz-Mie theory (LMT) is available and the framework for
-the generalize Lorenz-Mie theory (GLMT) is under developpement.
+At the moment the Lorenz-Mie Theory (LMT) is available and the framework for
+the Generalized Lorenz-Mie Theory (GLMT) is under development.
 I invite you to go to the Examples section to see what the package is capable of.</p>
 <div class="section" id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
@@ -184,6 +184,7 @@ I invite you to go to the Examples section to see what the package is capable of
 <li>Pandas</li>
 <li>Fibermodes &#64; git+https://github.com/cbrunet/fibermodes#egg=fibermodes-0.2.0</li>
 <li>Mayavi</li>
+<li>Pybind11</li>
 <li>cartopy</li>
 </ul>
 </dd>
@@ -195,22 +196,20 @@ I invite you to go to the Examples section to see what the package is capable of
 </div>
 <div class="section" id="installing-package">
 <h2>Installing package<a class="headerlink" href="#installing-package" title="Permalink to this headline">¶</a></h2>
-<p>First of all, the package has some depedencies that can be installed using the command:</p>
-<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">apt-get install libproj-dev proj-data proj-bin</span>
-<span class="go">apt-get install libgeos-dev</span>
+<p>First of all, the package has some c++ dependencies that can be installed using the command:</p>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">sudo apt-get install libboost-all-dev   -&gt; Boost library</span>
 </pre></div>
 </td></tr></table></div>
 <p>Soon enough you will be able to use “pip” to install PyMieSim but for the moment one can install it manually
 from the <a class="reference external" href="https://github.com/MartinPdS/PyMieSim">github repository</a> or using the command</p>
-<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go"> pip3 install git+https://gitlab.com/Martth/miecoupling.git</span>
+<div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go"> pip3 install PyMieSim</span>
 </pre></div>
 </td></tr></table></div>
-<p>Once downloaded the class command “python setup.py install” should do the trick. If not i invite you o contact me, I answer quickly!</p>
+<p>If there are some probleme with the installation I invite you o contact me, I answer quickly!</p>
 <p>As of today (February 2021) the package was only tested on Ubuntu 20.14lts and as it
 necessitate compilation of c++ core it might not be easily exportable to Windows or MacOS.
 However I am currently working on the Google COLAB notebook to share with any interested
-user so you wont need to install anything to use the package.</p>
+user so you won’t need to install anything to use the package.</p>
 </div>
 <div class="section" id="run-tests">
 <h2>Run tests<a class="headerlink" href="#run-tests" title="Permalink to this headline">¶</a></h2>

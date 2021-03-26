@@ -4,8 +4,8 @@ Introduction
 ============
 
 This project aims to be a flexible and usefull tool for Mie scattering analysis.
-At the moment the Lorenz-Mie theory (LMT) is available and the framework for
-the generalize Lorenz-Mie theory (GLMT) is under developpement.
+At the moment the Lorenz-Mie Theory (LMT) is available and the framework for
+the Generalized Lorenz-Mie Theory (GLMT) is under development.
 I invite you to go to the Examples section to see what the package is capable of.
 
 
@@ -21,6 +21,7 @@ Here is the list of packages you need to use this library:
     - Pandas
     - Fibermodes @ git+https://github.com/cbrunet/fibermodes#egg=fibermodes-0.2.0
     - Mayavi
+    - Pybind11
     - cartopy
 
 
@@ -35,13 +36,12 @@ Those depedencies are included in the "requirements.txt" file and can be install
 Installing package
 ------------------
 
-First of all, the package has some depedencies that can be installed using the command:
+First of all, the package has some c++ dependencies that can be installed using the command:
 
 .. code-block:: console
    :linenos:
 
-   apt-get install libproj-dev proj-data proj-bin
-   apt-get install libgeos-dev
+   sudo apt-get install libboost-all-dev   -> Boost library
 
 
 Soon enough you will be able to use "pip" to install PyMieSim but for the moment one can install it manually
@@ -50,16 +50,16 @@ from the `github repository <https://github.com/MartinPdS/PyMieSim>`_ or using t
 .. code-block:: console
    :linenos:
 
-    pip3 install git+https://gitlab.com/Martth/miecoupling.git
+    pip3 install PyMieSim
 
 
-Once downloaded the class command "python setup.py install" should do the trick. If not i invite you o contact me, I answer quickly!
+If there are some probleme with the installation I invite you o contact me, I answer quickly!
 
 
 As of today (February 2021) the package was only tested on Ubuntu 20.14lts and as it
 necessitate compilation of c++ core it might not be easily exportable to Windows or MacOS.
 However I am currently working on the Google COLAB notebook to share with any interested
-user so you wont need to install anything to use the package.
+user so you won't need to install anything to use the package.
 
 
 

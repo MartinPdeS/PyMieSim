@@ -211,11 +211,12 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
     def an(self, MaxOrder=5):
         """ Compute :math:`a_n` coefficient as defined ref[5]:
 
-        :math:`a_n = \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-                           { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }`
+        :math:`a_n =
+        \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+        { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }`
 
-        With :math:`m`being the refractive index of the medium and
-             :math:`m_t`being the refractive index of the index.
+        With :math:`m` being the refractive index of the medium and
+             :math:`m_t` being the refractive index of the index.
 
         """
         return self.Bind.an(MaxOrder)
@@ -224,11 +225,12 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
     def bn(self, MaxOrder=5):
         """ Compute :math:`b_n` coefficient as defined in ref[5]:
 
-        :math:`b_n = \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-                           { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }`
+        :math:`b_n =
+        \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+        { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }`
 
-        With :math:`m`being the refractive index of the medium and
-             :math:`m_t`being the refractive index of the index.
+        With :math:`m` being the refractive index of the medium and
+             :math:`m_t` being the refractive index of the index.
 
         """
         return self.Bind.bn(MaxOrder)

@@ -318,16 +318,16 @@
 13
 14
 15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.Source import PlaneWave</span>
-<span class="go">from PyMieSim.classes.Detector import LPmode</span>
+<span class="go">from PyMieSim.Detector import LPmode</span>
 
 <span class="go">LightSource = PlaneWave(Wavelength = 450e-9,</span>
 <span class="go">                        Polarization = 0)</span>
 
 <span class="go">Detector = LPmode(Mode         = (1, 1,&#39;h&#39;),</span>
 <span class="go">                  Sampling     = 201,</span>
-<span class="go">                  NA           = 0.2,</span>
+<span class="go">                  NA           = 0.4,</span>
 <span class="go">                  GammaOffset  = 0,</span>
-<span class="go">                  PhiOffset    = 0,</span>
+<span class="go">                  PhiOffset    = 40,</span>
 <span class="go">                  CouplingMode = &#39;Centered&#39;)</span>
 
 
