@@ -33,7 +33,7 @@ def Correctness():
     THETA, PHI = np.meshgrid(Theta, Phi)
 
     beam = PlaneWave(Wavelength=1e-6)
-    BSC = beam.GetBSC(MaxOrder=10)
+    BSC = beam.GetBSC(MaxOrder=30)
 
     argsPy = {"Index":        1.4,
               "Diameter":     10e-6,
@@ -61,15 +61,17 @@ def Correctness():
                 "E0":           1.0,
                 "BSC":          beam._BSC_}
 
-    PyParallel, PyPerpendicular = PyField(**argsPy);
+    PyEPhi, PyETheta = PyField(**argsPy);
 
-    CppParallel, CppPerpendicular = SPHERELMT(**argsLMT).sFields(Phi=Phi, Theta=Theta, R=1. );
+    CppEPhi, CppETheta = SPHERELMT(**argsLMT).sFields(Phi=Phi, Theta=Theta, R=1. );
 
-    GLMTCppParallel, GLMTCppPerpendicular = SPHEREGLMT(**argsGLMT).sFields(Phi=Phi, Theta=Theta, R=1. );
+    GLMTCppEPhi, GLMTCppETheta = SPHEREGLMT(**argsGLMT).sFields(Phi=Phi, Theta=Theta, R=1. );
 
-    PlotField(Theta, Phi, CppParallel, CppPerpendicular)
+    PlotField(Theta, Phi, CppEPhi, CppETheta)
 
-    PlotField(Theta, Phi, PyParallel, PyPerpendicular)
+    PlotField(Theta, Phi, GLMTCppEPhi, GLMTCppETheta)
+
+    #PlotField(Theta, Phi, PyEPhi, PyETheta)
 
     plt.show()
 
@@ -84,7 +86,7 @@ from PyMieSim.LMT.Scatterer import SPHERE as SPHERELMT
 from PyMieSim.GLMT.Scatterer import SPHERE as SPHEREGLMT
 
 beam = PlaneWave(Wavelength=1e-6)
-BSC = beam.GetBSC(MaxOrder=10)
+BSC = beam.GetBSC(MaxOrder=30)
 Phi = np.linspace(-np.pi/2,np.pi/2,800); Theta = np.linspace(-np.pi,np.pi,800)
 
 argsPy = {"Index":        1.4,

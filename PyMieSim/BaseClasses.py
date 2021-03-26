@@ -295,7 +295,7 @@ class BaseScatterer(object):
 
         """
 
-        return self.Bind.UFields(Phi = Phi, Theta=Theta, R=1.)
+        return self.Bind.uFields(Phi = Phi, Theta=Theta, R=1.)
 
 
 

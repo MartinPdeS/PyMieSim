@@ -10,7 +10,7 @@
 
 namespace py = pybind11;
 
-typedef py::array_t<double> ndarray; 
+typedef py::array_t<double> ndarray;
 typedef py::array_t<complex128> Cndarray;
 typedef py::buffer_info info;
 
@@ -41,7 +41,6 @@ PYBIND11_MODULE(Scatterer, module) {
           &_SPHERE::uS1S2,
           py::arg("Phi"),
           py::arg("Theta"))
-
     .def("uFields",
          &_SPHERE::uFields,
          py::arg("Phi"),
@@ -108,7 +107,7 @@ PYBIND11_MODULE(Scatterer, module) {
 
 
 
-}
+}  
 
 
 

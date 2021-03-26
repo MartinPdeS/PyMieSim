@@ -5,7 +5,7 @@ import numpy as np
 from scipy.special import gamma
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Stokes
-from PyMieSim.GLMT.Sphere import an, bn, cn, dn
+from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER 
 from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 
 class Sphere(BaseScatterer, EfficienciesProperties):

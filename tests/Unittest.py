@@ -7,7 +7,6 @@ from numpy import linspace, pi
 from PyMieSim.Scatterer import Sphere, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
-from PyMieSim.GLMT.Sphere.Structured import S1S2
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
 

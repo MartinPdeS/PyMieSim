@@ -1,59 +1,65 @@
-
 #include <iostream>
 
 
 class _CYLINDER{
 
 private:
-  bool       Polarized;
+  bool          Polarized;
 
-  double     Diameter,
-             Index,
-             nMedium,
-             SizeParam,
-             Polarization,
-             Wavelength,
-             k,
-             E0,
-             Mu,
-             MuScat,
-             GetQsca(),
-             GetQext();
+  uint          BSCLength,
+                MaxOrder;
 
-    void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
-             LowFreqAnBn(complex128* an, complex128* bn),
-             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
-             IsPolarized(),
-             ComputePrefactor(double* prefactor, uint MaxOrder),
-             PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm);
+  complex128  * BSCPtr;
 
-    inline void LoopBSC(Cndarray& BSC, double* prefactor, complex128* an, complex128* bn, complex128* pin, complex128* taun, complex128 s1, complex128 s2, double& Theta),
-                MiePiTau(double mu, uint MaxOrder, complex128 *pin, complex128 *taun);
+  double        Diameter,
+                Index,
+                nMedium,
+                SizeParam,
+                Polarization,
+                Wavelength,
+                k,
+                E0,
+                Mu,
+                MuScat,
+                GetQsca(),
+                GetQext();
+
+    void        ComputeAnBn(complex128* an, complex128* bn),
+                LowFreqAnBn(complex128* an, complex128* bn),
+                HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
+                ComputeExpTerm(complex128 * expTerm, int ThetaLength, double* ThetaPtr),
+                ComputeMuTerm(double * muTerm, int PhiLength, double* PhiPtr),
+                ComputeTerms(complex128 * Term1, complex128 * Term2, complex128 * an, complex128 * bn, double * prefactor),
+                PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm),
+                ComputePrefactor(double* prefactor),
+                IsPolarized();
+
+    inline void LoopBSC(double* prefactor, complex128* an, complex128* bn, double* pin, double* taun, complex128& s1, complex128& s2, double& Theta),
+                MiePiTau(double &mu, double *pin, double *taun);
+
+    Cndarray    BSC;
+
 
     public:
-        Cndarray                           BSC;
 
         std::tuple<double, double, double> GetEfficiencies();
-
-        Cndarray                           An(uint MaxOrder),
-                                           Bn(uint MaxOrder),
-                                           Cn(uint MaxOrder),
-                                           Dn(uint MaxOrder);
-
-        std::tuple<Cndarray,Cndarray>      sS1S2(ndarray Phi, ndarray Theta),
-                                           uS1S2(ndarray Phi, ndarray Theta),
-                                           sFields(ndarray Phi, ndarray Theta, double R),
-                                           uFields(ndarray Phi, ndarray Theta, double R);
+        Cndarray                           An(uint MaxOrder);
+        Cndarray                           Bn(uint MaxOrder);
+        Cndarray                           Cn(uint MaxOrder);
+        Cndarray                           Dn(uint MaxOrder);
+        std::tuple<Cndarray,Cndarray>      sS1S2(ndarray& Phi, ndarray& Theta);
+        std::tuple<Cndarray,Cndarray>      uS1S2(ndarray& Phi, ndarray& Theta);
+        std::tuple<Cndarray,Cndarray>      sFields(ndarray& Phi, ndarray& Theta, double R);
+        std::tuple<Cndarray,Cndarray>      uFields(ndarray& Phi, ndarray& Theta, double R);
 
 
-
-  _CYLINDER(double Index,
-         double Diameter,
-         double Wavelength,
-         double nMedium,
-         double Polarization,
-         double E0,
-         Cndarray BSC)
+  _CYLINDER(double   Index,
+          double   Diameter,
+          double   Wavelength,
+          double   nMedium,
+          double   Polarization,
+          double   E0,
+          Cndarray BSC)
         {
           this->Diameter      = Diameter;
           this->Index         = Index;
@@ -66,6 +72,9 @@ private:
           this->Mu            = 1.0;
           this->MuScat        = 1.0;
           this->BSC           = BSC;
+          this->BSCLength     = BSC.request().shape[0];
+          this->BSCPtr        = (complex128*) BSC.request().ptr;
+          this->MaxOrder      = (uint)((complex128 *)BSC.request().ptr)[BSCLength-1].real();
           this->IsPolarized();
         }
 
@@ -107,47 +116,67 @@ _CYLINDER::IsPolarized()
 
 
 std::tuple<Cndarray,Cndarray>
-_CYLINDER::sS1S2(ndarray Phi, ndarray Theta)
+_CYLINDER::sS1S2(ndarray& Phi, ndarray& Theta)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
                ThetaLength  = Theta.request().shape[0],
-               BSCLength    = BSC.request().shape[0],
-               MaxOrder     = (uint)((complex128 *)BSC.request().ptr)[BSCLength-1].real();
+               n            = 0;
 
   double     * ThetaPtr     = (double*) Theta.request().ptr,
              * PhiPtr       = (double*) Phi.request().ptr,
-             * prefactor    = (double*) calloc(MaxOrder+1, sizeof(double));
+             * prefactor    = (double*) calloc(MaxOrder, sizeof(double)),
+             * muTerm       = (double*) calloc(ThetaLength, sizeof(double)),
+             * pin          = (double*) calloc(MaxOrder, sizeof(double)),
+             * taun         = (double*) calloc(MaxOrder, sizeof(double)),
+               m            = 0.;
 
-  Cndarray     S1       = Cndarray(PhiLength*ThetaLength),
-               S2         = Cndarray(PhiLength*ThetaLength);
+  Cndarray     S1           = Cndarray(PhiLength*ThetaLength),
+               S2           = Cndarray(PhiLength*ThetaLength);
 
-  complex128 * an           = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
-             * bn           = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
-             * pin          = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
-             * taun         = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
+  complex128 * an           = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+             * bn           = (complex128*) calloc(MaxOrder, sizeof(complex128)),
              * S1Ptr        = (complex128*) S1.request().ptr,
              * S2Ptr        = (complex128*) S2.request().ptr,
                s1           = 0.,
-               s2           = 0.;
+               s2           = 0.,
+             * expTerm      = (complex128*) calloc(BSCLength*ThetaLength, sizeof(complex128)),
+             * Term1        = (complex128*) calloc(BSCLength, sizeof(complex128)),
+             * Term2        = (complex128*) calloc(BSCLength, sizeof(complex128)),
+               term3;
 
-  this->ComputeAnBn(an, bn, MaxOrder);
+   this->ComputeAnBn(an, bn);
 
-  this->ComputePrefactor(prefactor, MaxOrder+1);
+   this->ComputePrefactor(prefactor);
 
-   uint index     = 0;
+   this->ComputeMuTerm(muTerm, PhiLength, PhiPtr);
+
+   this->ComputeExpTerm(expTerm, ThetaLength, ThetaPtr);
+
+   this->ComputeTerms(Term1, Term2, an, bn, prefactor);
 
    for(uint p = 0; p < PhiLength; p++)
      {
+       this->MiePiTau( muTerm[p], pin, taun );
+
        for(uint t = 0; t < ThetaLength; t++)
          {
-            this->MiePiTau( cos( PhiPtr[p]-PI/2 ), MaxOrder+1, pin, taun );
+           s1=0.;s2=0.;
+           for (uint b = 0; b < BSCLength; b++)
+             {
+                 n             = (uint)BSCPtr[b].real();
+                 m             = BSCPtr[b + BSCLength].real();
+                 term3         = expTerm[t*BSCLength + b];
 
-            this->LoopBSC(BSC, prefactor, an, bn, pin, taun, s1, s2, ThetaPtr[t]);
+                 s1           += (Term1[b] * taun[n] + m * Term2[b] * pin[n] )  * term3;
+                 s2           += (Term1[b] * m * pin[n] +  Term2[b] * taun[n] ) * term3;
+            }
+            *S1Ptr   = s1;
+            *S2Ptr   = s2;
 
-            S1Ptr[index]   = s1;
-            S2Ptr[index]   = s2;
-            index++;
+             S1Ptr++; S2Ptr++;
+
+
          }
     }
 
@@ -159,43 +188,85 @@ _CYLINDER::sS1S2(ndarray Phi, ndarray Theta)
   free(pin);
   free(taun);
   free(prefactor);
+  free(expTerm);
+  free(muTerm);
+  free(Term1);
+  free(Term2);
+
   return std::make_tuple(S1, S2);
+}
+
+void
+_CYLINDER::ComputeTerms(complex128 * Term1, complex128 * Term2, complex128 * an, complex128 * bn, double * prefactor)
+{
+    uint n;
+    for (uint b = 0; b < BSCLength; b++)
+    {
+        n             = (uint)BSCPtr[b].real();
+        Term1[b]      = prefactor[n] * JJ * bn[n] * BSCPtr[b + BSCLength*2] ;
+        Term2[b]      = prefactor[n] * an[n] * BSCPtr[b + BSCLength*3];
+    }
+}
+
+void
+_CYLINDER::ComputeMuTerm(double * muTerm, int PhiLength, double* PhiPtr)
+{
+    for(uint p = 0; p < PhiLength; p++)
+    {
+      muTerm[p] = cos( PhiPtr[p]-PI/2 ) ;
+    }
+}
+
+
+void
+_CYLINDER::ComputeExpTerm(complex128 * expTerm, int ThetaLength, double* ThetaPtr)
+{
+  for(uint t = 0; t < ThetaLength; t++)
+    {
+      for (uint b = 0; b < BSCLength; b++)
+        {
+           double m       = BSCPtr[b + BSCLength].real();
+           expTerm[t*BSCLength + b] = exp( JJ * m * ThetaPtr[t] + Polarization );
+        }
+    }
 }
 
 
 std::tuple<Cndarray,Cndarray>
-_CYLINDER::uS1S2(ndarray Phi, ndarray Theta)
+_CYLINDER::uS1S2(ndarray& Phi, ndarray& Theta)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
-               ThetaLength  = Theta.request().shape[0],
-               BSCLength    = BSC.request().shape[0],
-               MaxOrder     = (uint)((complex128 *)BSC.request().ptr)[BSCLength-1].real();
+               ThetaLength  = Theta.request().shape[0];
 
   double     * ThetaPtr     = (double*) Theta.request().ptr,
              * PhiPtr       = (double*) Phi.request().ptr,
-             * prefactor    = (double*) calloc(MaxOrder+1, sizeof(double));
+             * prefactor    = (double*) calloc(MaxOrder, sizeof(double)),
+             * muTerm       = (double*) calloc(ThetaLength, sizeof(double)),
+             * pin          = (double*) calloc(MaxOrder, sizeof(double)),
+             * taun         = (double*) calloc(MaxOrder, sizeof(double));
 
   Cndarray     S1       = Cndarray(PhiLength*ThetaLength),
                S2         = Cndarray(PhiLength*ThetaLength);
 
   complex128 * an           = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
              * bn           = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
-             * pin          = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
-             * taun         = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
              * S1Ptr        = (complex128*) S1.request().ptr,
              * S2Ptr        = (complex128*) S2.request().ptr,
                s1           = 0.,
                s2           = 0.;
 
-  this->ComputeAnBn(an, bn, MaxOrder);
+  this->ComputeAnBn(an, bn);
 
-  this->ComputePrefactor(prefactor, MaxOrder+1);
+  this->ComputePrefactor(prefactor);
+
+  for(uint p = 0; p < PhiLength; p++){muTerm[p] = cos( PhiPtr[p]-PI/2 ) ;}
 
    for(uint p = 0; p < PhiLength; p++)
      {
-        this->MiePiTau( cos( PhiPtr[p]-PI/2 ), MaxOrder+1, pin, taun );
-        this->LoopBSC(BSC, prefactor, an, bn, pin, taun, s1, s2, ThetaPtr[p]);
+        s1=0.;s2=0.;
+        this->MiePiTau( muTerm[p], pin, taun );
+        this->LoopBSC(prefactor, an, bn, pin, taun, s1, s2, ThetaPtr[p]);
 
         S1Ptr[p]   = s1;
         S2Ptr[p]   = s2;
@@ -214,7 +285,7 @@ _CYLINDER::uS1S2(ndarray Phi, ndarray Theta)
 
 
 std::tuple<Cndarray,Cndarray>
-_SPHERE::sFields(ndarray& Phi, ndarray& Theta, double R)
+_CYLINDER::sFields(ndarray& Phi, ndarray& Theta, double R)
 {
   uint         PhiLength    = Phi.request().shape[0],
                ThetaLength  = Theta.request().shape[0],
@@ -232,17 +303,17 @@ _SPHERE::sFields(ndarray& Phi, ndarray& Theta, double R)
     {
       for(uint t = 0; t < ThetaLength; t++)
         {
-           EPhiPtr[index]   *= JJ  * propagator;
-           EThetaPtr[index] *= - propagator;
+           EThetaPtr[index]   *= JJ  * propagator;
+           EPhiPtr[index]     *= -1. * propagator;
            index++;
         }
    }
-  return std::make_tuple(ETheta, EPhi);
+  return std::make_tuple(EPhi, ETheta);
 }
 
 
 std::tuple<Cndarray,Cndarray>
-_SPHERE::uFields(ndarray& Phi, ndarray& Theta, double R)
+_CYLINDER::uFields(ndarray& Phi, ndarray& Theta, double R)
 {
   uint         PhiLength    = Phi.request().shape[0];
 
@@ -259,33 +330,28 @@ _SPHERE::uFields(ndarray& Phi, ndarray& Theta, double R)
        EPhiPtr[p]   *= JJ * propagator;
        EThetaPtr[p] *= -  propagator;
     }
-  return std::make_tuple(ETheta, EPhi);
+  return std::make_tuple(EPhi, ETheta);
 }
 
 
 inline void
-_SPHERE::LoopBSC(Cndarray& BSC,
-                double* prefactor,
-                complex128* an,
-                complex128* bn,
-                complex128* pin,
-                complex128* taun,
-                complex128& s1,
-                complex128& s2,
-                double&     Theta)
+_CYLINDER::LoopBSC(double*     prefactor,
+                 complex128 *an,
+                 complex128 *bn,
+                 double     *pin,
+                 double     *taun,
+                 complex128& s1,
+                 complex128& s2,
+                 double&     Theta)
 {
-  uint BSCLength      = BSC.request().shape[0];
-
-  complex128 * BSCPtr =  (complex128*)BSC.request().ptr;
-
   for (uint b = 0; b < BSCLength; b++)
     {
         int n         = (int)BSCPtr[b].real();
-        int m         = (int)BSCPtr[b + BSCLength].real();
+        double m      = (double)BSCPtr[b + BSCLength].real();
         complex128 TE = BSCPtr[b + BSCLength*2];
         complex128 TM = BSCPtr[b + BSCLength*3];
 
-        complex128 _exp   = exp( JJ * (double)m * Theta + Polarization );
+        complex128 _exp   = exp( JJ * m * Theta + Polarization );
 
         s1 += prefactor[n]*(JJ * bn[n] * TE * taun[n] + (double)m * an[n] * TM * pin[n]) * _exp;
         s2 += prefactor[n]*(JJ * (double)m * bn[n] * TE * pin[n] +  an[n] * TM * taun[n]) * _exp;
@@ -301,7 +367,7 @@ _CYLINDER::GetQsca()
     complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
                * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
 
-    this->ComputeAnBn(an, bn, MaxOrder);
+    this->ComputeAnBn(an, bn);
 
     complex128 temp = 0.;
 
@@ -328,7 +394,7 @@ _CYLINDER::GetQext()
     complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
                * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
 
-    this->ComputeAnBn(an, bn, MaxOrder);
+    this->ComputeAnBn(an, bn);
 
     complex128 temp = 0.;
 
@@ -352,8 +418,43 @@ _CYLINDER::GetEfficiencies()
 }
 
 
+inline void
+_CYLINDER::MiePiTau(double  &mu,
+                    double  *pin,
+                    double  *taun)
+
+{
+  pin[0] = 1.;
+  pin[1] = 3. * mu;
+
+  taun[0] = mu;
+  taun[1] = 3.0 * cos(2. * acos(mu) );
+
+  double n = 0;
+  for (uint i = 2; i < MaxOrder; i++)
+      {
+       n = (double)i;
+
+       pin[i] = ( (2. * n + 1.) * mu * pin[i-1] - (n + 1.) * pin[i-2] ) / n;
+
+       taun[i] = (n + 1.) * mu * pin[i] - (n + 2.) * pin[i-1];
+     }
+}
+
+
 void
-_CYLINDER::ComputeAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
+_CYLINDER::ComputePrefactor(double* prefactor)
+{
+   for (uint m = 0; m < MaxOrder ; m++)
+   {
+      prefactor[m] = (double) ( 2 * (m+1) + 1 ) / ( (m+1) * ( (m+1) + 1 ) );
+   }
+}
+
+
+
+void
+_CYLINDER::ComputeAnBn(complex128* anPtr, complex128* bnPtr)
 {
   return HighFreqAnBn(anPtr, bnPtr, MaxOrder) ;
 }
@@ -412,39 +513,6 @@ _CYLINDER::An(uint MaxOrder)
 }
 
 
-inline void
-_CYLINDER::MiePiTau(double        mu,
-                 uint        MaxOrder,
-                 complex128 *pin,
-                 complex128 *taun)
-
-{
-  pin[0] = 1.;
-  pin[1] = 3. * mu;
-
-  taun[0] = mu;
-  taun[1] = 3.0 * cos(2. * acos(mu) );
-
-  double n = 0;
-  for (uint i = 2; i < MaxOrder; i++)
-      {
-       n = (double)i;
-
-       pin[i] = ( (2. * n + 1.) * mu * pin[i-1] - (n + 1.) * pin[i-2] ) / n;
-
-       taun[i] = (n + 1.) * mu * pin[i] - (n + 2.) * pin[i-1];
-     }
-}
-
-
-void
-_CYLINDER::ComputePrefactor(double* prefactor, uint MaxOrder)
-{
-   for (uint m = 0; m < MaxOrder ; m++)
-   {
-      prefactor[m] = (double) ( 2 * (m+1) + 1 ) / ( (m+1) * ( (m+1) + 1 ) );
-   }
-}
 
 
 //-

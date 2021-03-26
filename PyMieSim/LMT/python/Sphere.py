@@ -113,6 +113,7 @@ def S1S2(Index, Diameter, Wavelength, nMedium, Phi):
   S1, S2 = [], []
   for mu in muList:
       nmax = np.round(2+SizeParam+4*np.power(SizeParam,1/3))
+      #print('####',nmax)
       an, bn = AutoMie_ab(Index,SizeParam)
       pin, taun = MiePiTau(mu,nmax)
 

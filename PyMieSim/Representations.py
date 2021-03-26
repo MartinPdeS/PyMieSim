@@ -95,7 +95,7 @@ class SPF(dict):
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
         self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
 
-        self['EPhi'], self['ETheta'] = Parent.Bind.SFields(Phi = Phi, Theta=Theta, R=1.)
+        self['EPhi'], self['ETheta'] = Parent.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
 
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
@@ -185,7 +185,7 @@ class ScalarFarField(dict):
 
         self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
 
-        self['EPhi'], self['ETheta'] = Parent.Bind.SFields(Phi = Phi, Theta=Theta, R=1.)
+        self['EPhi'], self['ETheta'] = Parent.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
 
         self['Distance'] = Distance
 
