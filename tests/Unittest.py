@@ -4,7 +4,7 @@
 from unittest import TestCase
 from numpy import linspace, pi
 
-from PyMieSim.Scatterer import Sphere, WMSample
+from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode
@@ -36,6 +36,9 @@ class PrintingTest(TestCase):
         self.test11()
         self.test12()
         self.test13()
+        self.test14()
+        self.test15()
+        self.test16()                
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -138,16 +141,49 @@ class PrintingTest(TestCase):
 
 
     def test13(self):
+        beam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
+
+        Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = beam)
+
+        print('Test 13: passed')
+
+
+    def test14(self):
+        beam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
+
+        Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
+
+        print('Test 14: passed')
+
+
+    def test15(self):
         beam = GaussianBeam(Wavelength   = 1.3e-6,
                             NA           = 0.6,
                             Polarization = 0,
                             Offset       = [0e-6]*3)
 
-        beam.GetBSC(MaxOrder=3, save=False)                    
+        beam.GetBSC(MaxOrder=3, save=False)
 
         Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = beam)
 
-        print('Test 13: passed')
+        Scat.SPF(Num=10)
+
+        print('Test 15: passed')
+
+
+    def test16(self):
+        beam = GaussianBeam(Wavelength   = 1.3e-6,
+                            NA           = 0.6,
+                            Polarization = 0,
+                            Offset       = [0e-6]*3)
+
+        beam.GetBSC(MaxOrder=3, save=False)
+
+        Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
+
+        Scat.SPF(Num=10)
+
+        print('Test 16: passed')
 
 
 if __name__ == '__main__':

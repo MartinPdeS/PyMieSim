@@ -186,12 +186,26 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
 
         self._an, self._bn, self._cn, self._dn = [], [], [], []
 
-        self.Bind = CYLINDER(Index        = Index,
-                             Diameter     = Diameter,
-                             Wavelength   = self.Source.Wavelength,
-                             nMedium      = self.nMedium,
-                             Polarization = self.Source.Polarization.Radian,
-                             E0           = self.Source.E0)
+        if Source.GLMT is True:
+            if self.Source._BSC_ is None:
+                raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
+
+            self.Bind = G_CYLINDER(Index        = Index,
+                                   Diameter     = Diameter,
+                                   Wavelength   = self.Source.Wavelength,
+                                   nMedium      = self.nMedium,
+                                   Polarization = self.Source.Polarization.Radian,
+                                   E0           = self.Source.E0,
+                                   BSC          = self.Source._BSC_)
+
+        else:
+            self.Bind = CYLINDER(Index        = Index,
+                                 Diameter     = Diameter,
+                                 Wavelength   = self.Source.Wavelength,
+                                 nMedium      = self.nMedium,
+                                 Polarization = self.Source.Polarization.Radian,
+                                 E0           = self.Source.E0)
+
 
 
     def an(self, MaxOrder=5):
@@ -218,6 +232,7 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
 
         """
         return self.Bind.bn(MaxOrder)
+
 
 
 class WMSample(object):
