@@ -35,6 +35,7 @@ class PrintingTest(TestCase):
         self.test10()
         self.test11()
         self.test12()
+        self.test13()
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -134,6 +135,19 @@ class PrintingTest(TestCase):
         beam.GetBSC(MaxOrder=1, save=False)
 
         print('Test 12: passed')
+
+
+    def test13(self):
+        beam = GaussianBeam(Wavelength   = 1.3e-6,
+                            NA           = 0.6,
+                            Polarization = 0,
+                            Offset       = [0e-6]*3)
+
+        beam.GetBSC(MaxOrder=3, save=False)                    
+
+        Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = beam)
+
+        print('Test 13: passed')
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ import numpy as np
 from scipy.special import gamma
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Stokes
-from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER 
+from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
 from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 
 class Sphere(BaseScatterer, EfficienciesProperties):
@@ -55,12 +55,25 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
         self._an, self._bn, self._cn, self._dn = [], [], [], []
 
-        self.Bind = SPHERE(Index        = Index,
-                           Diameter     = Diameter,
-                           Wavelength   = self.Source.Wavelength,
-                           nMedium      = self.nMedium,
-                           Polarization = self.Source.Polarization.Radian,
-                           E0           = self.Source.E0)
+        if Source.GLMT is True:
+            if self.Source._BSC_ is None:
+                raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
+
+            self.Bind = G_SPHERE(Index        = Index,
+                                 Diameter     = Diameter,
+                                 Wavelength   = self.Source.Wavelength,
+                                 nMedium      = self.nMedium,
+                                 Polarization = self.Source.Polarization.Radian,
+                                 E0           = self.Source.E0,
+                                 BSC          = self.Source._BSC_)
+
+        else:
+            self.Bind = SPHERE(Index        = Index,
+                               Diameter     = Diameter,
+                               Wavelength   = self.Source.Wavelength,
+                               nMedium      = self.nMedium,
+                               Polarization = self.Source.Polarization.Radian,
+                               E0           = self.Source.E0)
 
 
     def an(self, MaxOrder=5):
