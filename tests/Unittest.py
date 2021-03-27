@@ -63,12 +63,12 @@ class PrintingTest(TestCase):
         print('Test 1: passed')
 
     def test02(self):
-        Scat.S1S2(Num=10).Plot(hold=True)
+        Scat.S1S2(Num=10)#.Plot(hold=True)
         plt.close()
         print('Test 2: passed')
 
     def test03(self):
-        Scat.FarField(Num=10).Plot(hold=True)
+        Scat.FarField(Num=10)#.Plot(hold=True)
         mlab.close()
         print('Test 3: passed')
 
