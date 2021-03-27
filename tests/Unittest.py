@@ -38,7 +38,7 @@ class PrintingTest(TestCase):
         self.test13()
         self.test14()
         self.test15()
-        self.test16()                
+        self.test16()
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -181,9 +181,12 @@ class PrintingTest(TestCase):
 
         Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
 
-        Scat.SPF(Num=10)
+        Scat.SPF(Num=10).Plot()
+
+
 
         print('Test 16: passed')
+
 
 
 if __name__ == '__main__':

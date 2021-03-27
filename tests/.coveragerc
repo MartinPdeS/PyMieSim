@@ -2,6 +2,7 @@
 [run]
 source = ../PyMieSim/
 omit =
+    */Plots/*
     */site-packages/*
     */distutils/*
     */PIL/*
