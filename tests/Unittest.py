@@ -187,7 +187,7 @@ class PrintingTest(TestCase):
 
         Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
 
-        Scat.SPF(Num=10).Plot(hold=True)
+        Scat.SPF(Num=10)
         mlab.close()
 
         print('Test 16: passed')
