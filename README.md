@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/MartinPdeS/PyMieSim/branch/master/graph/badge.svg)](https://codecov.io/gh/MartinPdeS/PyMieSim)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing)
-[![Documentation Status](https://readthedocs.org/projects/pymiesim/badge/?version=latest)](https://pymiesim.readthedocs.io/en/latest/?badge=latest) 
+[![Documentation Status](https://readthedocs.org/projects/pymiesim/badge/?version=latest)](https://pymiesim.readthedocs.io/en/latest/?badge=latest)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg)](https://doi.org/10.5281/zenodo.4556074)
 
@@ -91,6 +91,38 @@ To run the Unit-tests one need the coverage library.
 ```console
    python -m unittest tests/Unittest.py
 ```
+
+
+----
+Usage
+=====
+Here is an example on how to use the library.
+```console
+from PyMieSim.Source import PlaneWave
+from PyMieSim.Detector import LPmode
+from PyMieSim.Scatterer import Sphere
+
+LightSource = PlaneWave(Wavelength = 450e-9,
+                        Polarization = 0)
+
+Detector = LPmode(Mode         = (0, 1,'h'),
+                  Sampling     = 201,
+                  NA           = 0.2,
+                  GammaOffset  = 0,
+                  PhiOffset    = 0,
+                  CouplingMode = 'Centered')
+
+
+Scat = Sphere(Diameter    = 300e-9,
+              Source      = LightSource,
+              Index       = 1.4)
+
+Coupling = Detector.Coupling(Scatterer = Scat)
+
+print(Coupling)
+```
+For more examples I invite you to check the [examples](https://pymiesim.readthedocs.io/en/latest/Examples.html)
+section of the documentations.
 
 
 ----

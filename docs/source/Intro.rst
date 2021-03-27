@@ -22,7 +22,6 @@ Here is the list of packages you need to use this library:
     - Fibermodes @ git+https://github.com/cbrunet/fibermodes#egg=fibermodes-0.2.0
     - Mayavi
     - Pybind11
-    - cartopy
 
 
 Those depedencies are included in the "requirements.txt" file and can be installed using the command:
@@ -44,8 +43,7 @@ First of all, the package has some c++ dependencies that can be installed using 
    sudo apt-get install libboost-all-dev   -> Boost library
 
 
-Soon enough you will be able to use "pip" to install PyMieSim but for the moment one can install it manually
-from the `github repository <https://github.com/MartinPdS/PyMieSim>`_ or using the command
+You can now install the package using the command
 
 .. code-block:: console
    :linenos:

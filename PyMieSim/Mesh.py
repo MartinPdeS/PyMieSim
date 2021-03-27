@@ -4,7 +4,6 @@ from mayavi import mlab
 from PyMieSim.Plots import UnitSphere, UnitAxes
 from PyMieSim.Physics import Angle
 from PyMieSim.Fibonacci import Mesh as FMesh
-from PyMieSim.utils import Sp2Cart, Cart2Sp
 pi = np.pi
 
 
