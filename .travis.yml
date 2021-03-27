@@ -6,10 +6,11 @@ dist: focal
 
 install:
   - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev libboost-all-dev libeigen3-dev
+  - pip3 install vtk==8.1.2
+  - pip3 install PyQt5
   - pip3 install -r requirements.txt
   - python3 setup.py build_ext --inplace
   - pip3 install .
-  - pip3 install wxpython
   - pip3 install codecov
 
 services:
