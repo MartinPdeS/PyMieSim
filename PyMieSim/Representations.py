@@ -12,19 +12,8 @@ from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 
 
 
-class Stokes(np.ndarray):
+class Stokes(dict):
 
-    def __new__(cls, Field):
-
-        cls.Meshes = Field.Meshes
-
-        Stokes = cls.GetStokes(cls, Field.Parallel, Field.Perpendicular)
-
-        this = np.array(Stokes, copy=False)
-
-        this = np.asarray(this).view(cls)
-
-        return this
 
 
     def __array_finalize__(self, obj):
@@ -32,59 +21,6 @@ class Stokes(np.ndarray):
 
     def __init__(self, Field):
         pass
-
-
-    def GenFig(self):
-
-        fig, axes = plt.subplots(1, 2, figsize=(6, 3))
-
-        axes[0].set_title('$S_0$ Stokes parameter of Far-Field \n Projection on [$S_1, S_2$] ')
-
-        axes[1].set_title('$S_3$ Stokes parameter of Far-Field \n Projection on [$S_1, S_2$]')
-
-        [ ax.set_ylabel(r'Angle $\theta$ [Degree]') for ax in axes ]
-
-        [ ax.set_xlabel(r'Angle $\phi$ [Degree]') for ax in axes ]
-
-        return fig, axes
-
-
-    def Plot(cls):
-
-        fig, axes = cls.GenFig()
-        n = 6
-        for n, ax in enumerate(axes):
-            m = n * 3
-
-            im = ax.pcolormesh(cls.Meshes.Phi.Degree,
-                               cls.Meshes.Theta.Degree,
-                               cls.Array[m,:,:],
-                               shading='auto',
-                               )
-
-            ax.streamplot(cls.Meshes.Phi.Degree[::n, ::n].T,
-                          cls.Meshes.Theta.Degree[::n, ::n].T,
-                          cls.Array[1,::n,::n],
-                          cls.Array[2,::n,::n])
-
-            cbar = plt.colorbar(im, ax=ax, pad=0.15, orientation='horizontal')
-            cbar.ax.tick_params(labelsize='small')
-            cbar.ax.locator_params(nbins=3)
-
-        plt.show(block=False)
-
-
-    def GetStokes(cls, Parallel, Perpendicular):
-
-        Array = np.empty( [4, *Parallel.shape] )
-
-        I = Parallel.__abs__()**2 + Perpendicular.__abs__()**2
-        Array[0,:,:] = I
-        Array[1,:,:] = (Parallel.__abs__()**2 - Perpendicular.__abs__()**2)/I
-        Array[2,:,:] = 2 * ( Parallel * Perpendicular.conjugate() ).real / I
-        Array[3,:,:] = -2 * ( Parallel.conjugate() * Perpendicular ).imag / I
-
-        cls.Array = Array
 
 
 
@@ -100,13 +36,16 @@ class SPF(dict):
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
-    def Plot(self):
+    def Plot(self, hold=False):
         Name = 'Scattering phase function'
 
         PlotStructuredAbs(self['SPF'],
                           self['Phi'],
                           self['Theta'],
                           Name='Scattering phase function')
+
+        if hold: return
+        else: mlab.show()
 
 
     def __repr__(self):
@@ -125,13 +64,12 @@ class S1S2(dict):
 
         self['Phi'] = np.linspace(0, 2*np.pi, Num)
 
-        Phi = np.linspace(-np.pi,np.pi,100);
+        Phi = np.linspace(-np.pi,np.pi,Num);
 
         self['S1'], self['S2'] = Parent.Bind.S1S2(Phi = Phi)
 
 
-    def Plot(self):
-
+    def Plot(self, hold=False):
 
         S1 = np.abs(self['S1'])
         S2 = np.abs(self['S2'])
@@ -163,7 +101,8 @@ class S1S2(dict):
                              color = 'C1',
                              alpha = 0.4)
 
-        plt.show()
+        if hold: return
+        else: plt.show()
 
 
     def __repr__(self):
@@ -192,7 +131,7 @@ class ScalarFarField(dict):
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
-    def Plot(self):
+    def Plot(self, hold=False):
         """Method plots the scattered Far-Field
         :math:`E_{\\phi}(\\phi,\\theta)^2 , E_{\\theta}(\\phi,\\theta)^2`.
 
@@ -213,7 +152,8 @@ class ScalarFarField(dict):
                                 self['Theta'],
                                 Name = 'E theta')
 
-
+        if hold: return
+        else: mlab.show()
 
 
 
@@ -243,11 +183,13 @@ class Footprint(dict):
 
         Direct = AngleUnit2DirectUnit(Phi, Scatterer.Source.k)
 
-        Perp =  (Detector.StructuredFarField(Num=Num, SFactor=16) *\
-        Scatterer.Perpendicular( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )
+        FarFieldPara, FarFieldPerp = Scatterer.uFarField(Phi.flatten(), Theta.flatten())
 
-        Para = (Detector.StructuredFarField(Num=Num, SFactor=16) *\
-        Scatterer.Parallel( Phi.flatten(), Theta.flatten() ).reshape(Theta.shape) )
+        Perp =  \
+        Detector.StructuredFarField(Num=Num, SFactor=16) * FarFieldPerp.reshape(Theta.shape)
+
+        Para = \
+        Detector.StructuredFarField(Num=Num, SFactor=16) * FarFieldPara.reshape(Theta.shape)
 
         n = 5
 
@@ -267,7 +209,7 @@ class Footprint(dict):
 
 
 
-    def Plot(self):
+    def Plot(self, hold=False):
 
         fig = plt.figure()
 
@@ -281,7 +223,8 @@ class Footprint(dict):
 
         ax.set_title('Scatterer Footprint')
 
-        plt.show()
+        if hold: return
+        else: plt.show()
 
 
     def __repr__(self):

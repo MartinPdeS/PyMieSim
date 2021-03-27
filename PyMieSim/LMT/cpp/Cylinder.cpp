@@ -190,6 +190,9 @@ CYLINDER::sFields(ndarray Phi, ndarray Theta, double R)
   EPhi.resize({PhiLength,ThetaLength});
   ETheta.resize({PhiLength,ThetaLength});
 
+  EPhi   = EPhi.attr("transpose")();
+  ETheta = ETheta.attr("transpose")();
+
   free(CosTerm);
   free(SinTerm);
   return std::make_tuple(ETheta, EPhi)  ;
@@ -208,8 +211,8 @@ CYLINDER::uFields(ndarray Phi, ndarray Theta, double R)
              * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
              * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
 
-  Cndarray     ETheta     = Cndarray(PhiLength*ThetaLength),
-               EPhi       = Cndarray(PhiLength*ThetaLength),
+  Cndarray     ETheta     = Cndarray(PhiLength),
+               EPhi       = Cndarray(PhiLength),
                S1,
                S2;
 
@@ -227,9 +230,6 @@ CYLINDER::uFields(ndarray Phi, ndarray Theta, double R)
   Unstructured(ThetaLength, PhiLength, S2Ptr, SinTerm, - propagator, EThetaPtr);
 
   Unstructured(ThetaLength, PhiLength, S1Ptr, CosTerm, JJ * propagator, EPhiPtr);
-
-  EPhi.resize({PhiLength,ThetaLength});
-  ETheta.resize({PhiLength,ThetaLength});
 
   free(CosTerm);
   free(SinTerm);

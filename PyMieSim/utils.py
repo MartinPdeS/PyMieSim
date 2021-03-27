@@ -163,7 +163,7 @@ def NA2Angle(NA: float) -> np.ndarray:
 def Direct2spherical(X, Y, MaxAngle):
     Z = 50 / np.tan(MaxAngle)
 
-    _, Phi, Theta = cart2sp(X, Y, X*0+Z)
+    _, Phi, Theta = Cart2Sp(X, Y, X*0+Z)
 
     return Phi, Theta
 

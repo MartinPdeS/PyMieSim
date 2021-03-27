@@ -22,7 +22,7 @@ ctypedef double complex complex128_t
 
 
 cpdef Coupling(Scatterer, Detector):
-     FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+     FarFieldPara, FarFieldPerp = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
 
      if Detector.CouplingMode[1] == 'Centered':
          if Detector.CouplingMode[0] == "Intensity":
@@ -110,7 +110,7 @@ cpdef IntensityMeanCoupling(Scalar0,
 cpdef AmplitudePointCoupling(Scalar0,
                              Parallel,
                              Perpendicular,
-                             SinMesh, 
+                             SinMesh,
                              dOmega,
                              Filter = None):
 

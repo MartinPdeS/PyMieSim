@@ -257,11 +257,11 @@ _SPHERE::uS1S2(ndarray& Phi, ndarray& Theta)
              * pin          = (double*) calloc(MaxOrder, sizeof(double)),
              * taun         = (double*) calloc(MaxOrder, sizeof(double));
 
-  Cndarray     S1       = Cndarray(PhiLength*ThetaLength),
-               S2         = Cndarray(PhiLength*ThetaLength);
+  Cndarray     S1           = Cndarray(PhiLength),
+               S2           = Cndarray(PhiLength);
 
-  complex128 * an           = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
-             * bn           = (complex128*) calloc(MaxOrder+1, sizeof(complex128)),
+  complex128 * an           = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+             * bn           = (complex128*) calloc(MaxOrder, sizeof(complex128)),
              * S1Ptr        = (complex128*) S1.request().ptr,
              * S2Ptr        = (complex128*) S2.request().ptr,
                s1           = 0.,
@@ -282,9 +282,6 @@ _SPHERE::uS1S2(ndarray& Phi, ndarray& Theta)
         S1Ptr[p]   = s1;
         S2Ptr[p]   = s2;
      }
-
-  S1.resize({PhiLength,ThetaLength});
-  S2.resize({PhiLength,ThetaLength});
 
   free(an);
   free(bn);

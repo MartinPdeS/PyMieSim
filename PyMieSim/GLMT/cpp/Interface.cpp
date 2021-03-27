@@ -2,7 +2,7 @@
 #include <vector>
 #include <complex>
 #include <pybind11/pybind11.h>
-#include <pybind11/complex.h>
+#include <pybind11/complex.h> 
 #include <pybind11/numpy.h>
 #include "../../includes/SpecialFunc.h"
 #include "../../includes/utils.h"
@@ -107,7 +107,7 @@ PYBIND11_MODULE(Scatterer, module) {
 
 
 
-}  
+}
 
 
 

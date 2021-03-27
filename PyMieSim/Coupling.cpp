@@ -1786,11 +1786,11 @@ static const char __pyx_k_Scalar0[] = "Scalar0";
 static const char __pyx_k_SinMesh[] = "SinMesh";
 static const char __pyx_k_Centered[] = "Centered";
 static const char __pyx_k_Detector[] = "Detector";
-static const char __pyx_k_FarField[] = "_FarField";
 static const char __pyx_k_Parallel[] = "Parallel";
 static const char __pyx_k_Amplitude[] = "Amplitude";
 static const char __pyx_k_Intensity[] = "Intensity";
 static const char __pyx_k_Scatterer[] = "Scatterer";
+static const char __pyx_k_uFarField[] = "uFarField";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_CouplingMode[] = "CouplingMode";
 static const char __pyx_k_Perpendicular[] = "Perpendicular";
@@ -1801,7 +1801,6 @@ static PyObject *__pyx_n_s_Amplitude;
 static PyObject *__pyx_n_s_Centered;
 static PyObject *__pyx_n_s_CouplingMode;
 static PyObject *__pyx_n_s_Detector;
-static PyObject *__pyx_n_s_FarField;
 static PyObject *__pyx_n_s_Filter;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_n_s_Intensity;
@@ -1831,6 +1830,7 @@ static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_sin;
 static PyObject *__pyx_n_s_sum;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_uFarField;
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_Coupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scatterer, PyObject *__pyx_v_Detector); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_2IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4IntensityMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_Parallel, PyObject *__pyx_v_Perpendicular, PyObject *__pyx_v_SinMesh, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
@@ -1846,7 +1846,7 @@ static PyObject *__pyx_tuple__2;
  * 
  * 
  * cpdef Coupling(Scatterer, Detector):             # <<<<<<<<<<<<<<
- *      FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      FarFieldPara, FarFieldPerp = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
  * 
  */
 
@@ -1879,11 +1879,11 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   /* "PyMieSim/Coupling.pyx":25
  * 
  * cpdef Coupling(Scatterer, Detector):
- *      FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)             # <<<<<<<<<<<<<<
+ *      FarFieldPara, FarFieldPerp = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)             # <<<<<<<<<<<<<<
  * 
  *      if Detector.CouplingMode[1] == 'Centered':
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_Scatterer, __pyx_n_s_FarField); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_Scatterer, __pyx_n_s_uFarField); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -2002,7 +2002,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   __pyx_t_7 = 0;
 
   /* "PyMieSim/Coupling.pyx":27
- *      FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      FarFieldPara, FarFieldPerp = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
  * 
  *      if Detector.CouplingMode[1] == 'Centered':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":
@@ -2332,7 +2332,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
     }
 
     /* "PyMieSim/Coupling.pyx":27
- *      FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      FarFieldPara, FarFieldPerp = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
  * 
  *      if Detector.CouplingMode[1] == 'Centered':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":
@@ -2717,7 +2717,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  * 
  * cpdef Coupling(Scatterer, Detector):             # <<<<<<<<<<<<<<
- *      FarFieldPara, FarFieldPerp = Scatterer._FarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      FarFieldPara, FarFieldPerp = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
  * 
  */
 
@@ -5366,7 +5366,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Centered, __pyx_k_Centered, sizeof(__pyx_k_Centered), 0, 0, 1, 1},
   {&__pyx_n_s_CouplingMode, __pyx_k_CouplingMode, sizeof(__pyx_k_CouplingMode), 0, 0, 1, 1},
   {&__pyx_n_s_Detector, __pyx_k_Detector, sizeof(__pyx_k_Detector), 0, 0, 1, 1},
-  {&__pyx_n_s_FarField, __pyx_k_FarField, sizeof(__pyx_k_FarField), 0, 0, 1, 1},
   {&__pyx_n_s_Filter, __pyx_k_Filter, sizeof(__pyx_k_Filter), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_n_s_Intensity, __pyx_k_Intensity, sizeof(__pyx_k_Intensity), 0, 0, 1, 1},
@@ -5396,6 +5395,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sin, __pyx_k_sin, sizeof(__pyx_k_sin), 0, 0, 1, 1},
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_uFarField, __pyx_k_uFarField, sizeof(__pyx_k_uFarField), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {

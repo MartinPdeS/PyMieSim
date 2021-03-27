@@ -248,6 +248,9 @@ SPHERE::sFields(ndarray Phi, ndarray Theta, double R)
   EPhi.resize({PhiLength,ThetaLength});
   ETheta.resize({PhiLength,ThetaLength});
 
+  EPhi   = EPhi.attr("transpose")();
+  ETheta = ETheta.attr("transpose")();
+
   free(CosTerm);
   free(SinTerm);
   return std::make_tuple(EPhi, ETheta)  ;
@@ -265,8 +268,8 @@ SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
              * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
              * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
 
-  Cndarray     ETheta     = Cndarray(PhiLength*ThetaLength),
-               EPhi       = Cndarray(PhiLength*ThetaLength),
+  Cndarray     ETheta     = Cndarray(PhiLength),
+               EPhi       = Cndarray(PhiLength),
                S1,
                S2;
 
@@ -284,9 +287,6 @@ SPHERE::uFields(ndarray Phi, ndarray Theta, double R)
   Unstructured(ThetaLength, PhiLength, S2Ptr, CosTerm, - propagator, EPhiPtr);
 
   Unstructured(ThetaLength, PhiLength, S1Ptr, SinTerm, JJ * propagator, EThetaPtr);
-
-  EPhi.resize({PhiLength,ThetaLength});
-  ETheta.resize({PhiLength,ThetaLength});
 
   free(CosTerm);
   free(SinTerm);

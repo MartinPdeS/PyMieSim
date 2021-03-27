@@ -23,15 +23,12 @@ def UnitAxes(Figure, Radius=1., xOffset=0.):
     mlab.text(1.3 + xOffset, 0.0, u'X', z=0.0, width=0.01, figure=Figure)
 
 
-
 def UnitSphere(Num, Radius=1.):
     pi = np.pi
     phi, theta = np.mgrid[-pi/2:pi/2:complex(Num), -pi:pi:complex(Num)]
     x, y, z = Sp2Cart(phi*0+Radius, phi, theta)
 
     return x, y, z
-
-
 
 
 def PlotUnstructuredAbs(Scalar, Mesh, Name=''):
@@ -66,8 +63,6 @@ def PlotUnstructuredAbs(Scalar, Mesh, Name=''):
     im0 = mlab.points3d(x + offset, y, z, Scalar.real, mode='sphere', scale_mode='none', colormap='inferno')
 
     mlab.colorbar(object = im0, label_fmt="%.0e", nb_labels=5, title='Real part', orientation='horizontal' )
-
-    mlab.show()
 
 
 def PlotUnstructured(Scalar, Mesh, Name=''):
@@ -107,13 +102,6 @@ def PlotUnstructured(Scalar, Mesh, Name=''):
 
     mlab.colorbar(object = im1, label_fmt="%.0e", nb_labels=5, title='Imaginary part', orientation='vertical' )
 
-    mlab.show()
-
-
-
-
-
-
 
 def PlotStructuredAbs(Scalar, Phi, Theta, Name=''):
 
@@ -138,8 +126,6 @@ def PlotStructuredAbs(Scalar, Phi, Theta, Name=''):
         mlab.text(0, 0, Name, z=Z[-1]*1.15, width=0.5)
 
         mlab.mesh(x, y, z, colormap='viridis')
-
-        mlab.show()
 
 
 def PlotStructuredAmplitude(Scalar, Phi, Theta, Name=''):
@@ -190,7 +176,6 @@ def PlotStructuredAmplitude(Scalar, Phi, Theta, Name=''):
 
     mlab.colorbar(object = im1, label_fmt="%.0e", nb_labels=5, title='Imaginary part', orientation='vertical' )
 
-    mlab.show()
 
 
 

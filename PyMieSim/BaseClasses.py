@@ -17,9 +17,7 @@ class BaseSource(object):
                  Polarization,
                  NA = 0.2):
 
-        self.Wavelength = Wavelength
-        self.k = 2 * np.pi / Wavelength
-        self.Polarization = _Polarization(Polarization)
+        pass
 
 
 class MeshProperty(object):
@@ -278,7 +276,7 @@ class BaseScatterer(object):
 
 
 
-    def _FarField(self, Phi, Theta):
+    def uFarField(self, Phi, Theta):
         """Method Compute scattering Far Field for unstructured coordinate.
 
         Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
@@ -296,6 +294,27 @@ class BaseScatterer(object):
         """
 
         return self.Bind.uFields(Phi = Phi, Theta=Theta, R=1.)
+
+
+
+    def sFarField(self, Phi, Theta):
+        """Method Compute scattering Far Field for structured coordinate.
+
+        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
+
+        The Fields are up to a constant phase value.
+
+        :math:`\\exp{\big(-i k r \big)}`
+
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
+
+        """
+
+        return self.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
 
 
 

@@ -61,11 +61,11 @@ class PrintingTest(TestCase):
         print('Test 1: passed')
 
     def test02(self):
-        Scat.S1S2(Num=10)
+        Scat.S1S2(Num=10).Plot(hold=True)
         print('Test 2: passed')
 
     def test03(self):
-        Scat.FarField(Num=10)
+        Scat.FarField(Num=10).Plot(hold=True)
         print('Test 3: passed')
 
     def test04(self):
@@ -153,6 +153,8 @@ class PrintingTest(TestCase):
 
         Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
 
+        Detector.Footprint(Scatterer=Scat, Num=10)
+
         print('Test 14: passed')
 
 
@@ -181,12 +183,9 @@ class PrintingTest(TestCase):
 
         Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
 
-        Scat.SPF(Num=10).Plot()
-
-
+        Scat.SPF(Num=10).Plot(hold=True)
 
         print('Test 16: passed')
-
 
 
 if __name__ == '__main__':

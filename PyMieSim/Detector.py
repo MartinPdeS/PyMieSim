@@ -150,8 +150,28 @@ class LPmode(BaseDetector, MeshProperty):
         self.Scalar = self.FarField(Num = InterpSampling, Interpolate=True)
 
 
+    def StructuredFarField(self, Num = 100, SFactor = None):
+        """
+        Compute the FarField in a structured Mesh.
 
-    def FarField(self, Num, Interpolate, SFactor=5):
+        Parameters
+        ----------
+        Num : :class:`int`
+            Dimension of the structured mesh [Num, Num].
+        SFactor : :class:`float`
+            Unused parameter added to match :class:`LPmode` class.
+
+        Returns
+        -------
+        :class`numpy.ndarray`:
+            Structured FarField value.
+
+        """
+
+        return self.FarField(Num, Interpolate=False)
+
+
+    def FarField(self, Num, Interpolate):
         """
         Compute the FarField in a structured Mesh and interpolate the Mesh.
 
@@ -159,8 +179,6 @@ class LPmode(BaseDetector, MeshProperty):
         ----------
         Num : :class:`int`
             Dimension of the structured mesh [Num, Num].
-        SFactor : :class:`float`
-            Factor that is used to definie the LP mode numerical aperture (NA).
 
         Returns
         -------
