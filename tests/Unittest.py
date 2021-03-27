@@ -64,12 +64,12 @@ class PrintingTest(TestCase):
 
     def test02(self):
         Scat.S1S2(Num=10)#.Plot(hold=True)
-        plt.close()
+        
         print('Test 2: passed')
 
     def test03(self):
         Scat.FarField(Num=10)#.Plot(hold=True)
-        mlab.close()
+
         print('Test 3: passed')
 
     def test04(self):
@@ -188,7 +188,7 @@ class PrintingTest(TestCase):
         Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
 
         Scat.SPF(Num=10)
-        mlab.close()
+
 
         print('Test 16: passed')
 
