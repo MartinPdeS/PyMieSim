@@ -2,19 +2,22 @@ sudo: True
 language: python
 python: 3.6      # current default Python on Travis CI
 os: linux
+env: RUNTIME=3.6 ETS_TOOLKIT=qt4 VTK=7
 dist: focal
+services:
+  - xvfb
 
 install:
   - sudo apt-get install libproj-dev proj-data proj-bin libgeos-dev libboost-all-dev libeigen3-dev
   - pip3 install vtk==8.1.2
-  - pip3 install PyQt5
+  - pip3 install traitsui>=6.0.0
+  - export ETS_TOOLKIT = 'qt4 = traitsui.qt4:toolkit'
   - pip3 install -r requirements.txt
   - python3 setup.py build_ext --inplace
   - pip3 install .
   - pip3 install codecov
 
-services:
-- xvfb
+
 
 env:
   - CODECOV_TOKEN='8b34d257-0baf-49de-8cd7-d53db530073f'
