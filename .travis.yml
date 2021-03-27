@@ -11,6 +11,9 @@ install:
   - pip3 install .
   - pip3 install codecov
 
+services:
+- xvfb
+
 env:
   - CODECOV_TOKEN='8b34d257-0baf-49de-8cd7-d53db530073f'
 
