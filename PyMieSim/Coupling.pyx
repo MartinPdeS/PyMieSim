@@ -25,7 +25,7 @@ cpdef Coupling(Scatterer, Detector):
 
      if Detector.CouplingMode[1] == 'Centered':
          if Detector.CouplingMode[0] == "Intensity":
-             return IntensityPointCoupling(Scalar0       = Scalar,
+             return NoCoherentPointCoupling(Scalar0       = Scalar,
                                            EPhi          = EPhi,
                                            EThe          = EThe,
                                            dOmega        = dOmega,
@@ -34,7 +34,7 @@ cpdef Coupling(Scatterer, Detector):
 
 
          if Detector.CouplingMode[0] == "Amplitude":
-             return AmplitudePointCoupling(Scalar0       = Scalar,
+             return CoherentPointCoupling(Scalar0       = Scalar,
                                            EPhi          = EPhi,
                                            EThe          = EThe,
                                            dOmega        = dOmega,
@@ -44,7 +44,7 @@ cpdef Coupling(Scatterer, Detector):
 
      if Detector.CouplingMode[1] == 'Mean':
          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
-           return IntensityPointCoupling(Scalar0       = Scalar,
+           return NoCoherentPointCoupling(Scalar0       = Scalar,
                                          EPhi          = EPhi,
                                          EThe          = EThe,
                                          dOmega        = dOmega,
@@ -53,7 +53,7 @@ cpdef Coupling(Scatterer, Detector):
 
 
          if Detector.CouplingMode[0] == "Amplitude":
-             return AmplitudeMeanCoupling(Scalar0       = Scalar,
+             return CoherentMeanCoupling(Scalar0       = Scalar,
                                           EPhi          = EPhi,
                                           EThe          = EThe,
                                           dOmega        = dOmega,
@@ -75,7 +75,7 @@ cpdef GetFiltering(Filter):
 
 
 
-cpdef IntensityPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
+cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 
@@ -87,7 +87,7 @@ cpdef IntensityPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
 
 
-cpdef AmplitudePointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
+cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 
@@ -99,7 +99,7 @@ cpdef AmplitudePointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
 
 
-cpdef AmplitudeMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):
+cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 

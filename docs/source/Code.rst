@@ -6,7 +6,6 @@ Class: Representations
 
 .. automodule:: PyMieSim.Representations
     :members:
-    :inherited-members:
     :show-inheritance:
 
 Source
@@ -17,7 +16,6 @@ PlaneWave
 .. autoclass:: PyMieSim.Source.PlaneWave
     :members:
     :inherited-members:
-    :show-inheritance:
 
 
 GaussianBeam
@@ -25,7 +23,6 @@ GaussianBeam
 .. autoclass:: PyMieSim.Source.GaussianBeam
     :members:
     :inherited-members:
-    :show-inheritance:
 
 
 
@@ -38,7 +35,6 @@ Sphere
 .. autoclass:: PyMieSim.Scatterer.Sphere
     :members:
     :inherited-members:
-    :show-inheritance:
 
 
 Cylinder
@@ -46,7 +42,6 @@ Cylinder
 .. autoclass:: PyMieSim.Scatterer.Cylinder
     :members:
     :inherited-members:
-    :show-inheritance:
 
 
 WMSample
@@ -54,7 +49,6 @@ WMSample
 .. autoclass:: PyMieSim.Scatterer.WMSample
     :members:
     :inherited-members:
-    :show-inheritance:
 
 
 
@@ -67,7 +61,6 @@ Photodiode
 .. autoclass:: PyMieSim.Detector.Photodiode
     :members:
     :inherited-members:
-    :show-inheritance:
 
 
 LPmode
@@ -75,18 +68,3 @@ LPmode
 .. autoclass:: PyMieSim.Detector.LPmode
     :members:
     :inherited-members:
-    :show-inheritance:
-
-
-
-Function: Coupling
-------------------
-
-Function: CenteredCoupling
---------------------------
-
-Function: MeanCoupling
-----------------------
-
-Function: Footprint
--------------------

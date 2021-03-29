@@ -1111,18 +1111,18 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  * cdef inline object PyArray_MultiIterNew1(a):
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
-struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling;
-struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling;
-struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudeMeanCoupling;
+struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling;
+struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling;
+struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling;
 
 /* "PyMieSim/Coupling.pyx":78
  * 
  * 
- * cpdef IntensityPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
-struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling {
+struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
@@ -1130,11 +1130,11 @@ struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling {
 /* "PyMieSim/Coupling.pyx":90
  * 
  * 
- * cpdef AmplitudePointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
-struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling {
+struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
@@ -1142,11 +1142,11 @@ struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling {
 /* "PyMieSim/Coupling.pyx":102
  * 
  * 
- * cpdef AmplitudeMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
-struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudeMeanCoupling {
+struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling {
   int __pyx_n;
   PyObject *Filter;
 };
@@ -1653,9 +1653,9 @@ static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 /* Module declarations from 'PyMieSim._Coupling' */
 static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *, PyObject *, int __pyx_skip_dispatch); /*proto*/
 static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *, int __pyx_skip_dispatch); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling *__pyx_optional_args); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling *__pyx_optional_args); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudeMeanCoupling *__pyx_optional_args); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling *__pyx_optional_args); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling *__pyx_optional_args); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *, PyObject *, PyObject *, PyObject *, PyObject *, int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling *__pyx_optional_args); /*proto*/
 #define __Pyx_MODULE_NAME "PyMieSim._Coupling"
 extern int __pyx_module_is_main_PyMieSim___Coupling;
 int __pyx_module_is_main_PyMieSim___Coupling = 0;
@@ -1730,9 +1730,9 @@ static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_uFarField;
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_Coupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scatterer, PyObject *__pyx_v_Detector); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_2GetFiltering(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Filter); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6AmplitudePointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
-static PyObject *__pyx_pf_8PyMieSim_9_Coupling_8AmplitudeMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4NoCoherentPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6CoherentPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
+static PyObject *__pyx_pf_8PyMieSim_9_Coupling_8CoherentMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter); /* proto */
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
 static PyObject *__pyx_tuple_;
@@ -1766,9 +1766,9 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   PyObject *__pyx_t_7 = NULL;
   PyObject *(*__pyx_t_8)(PyObject *);
   int __pyx_t_9;
-  struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling __pyx_t_10;
-  struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling __pyx_t_11;
-  struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudeMeanCoupling __pyx_t_12;
+  struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling __pyx_t_10;
+  struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling __pyx_t_11;
+  struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling __pyx_t_12;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1967,7 +1967,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Centered':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":
- *              return IntensityPointCoupling(Scalar0       = Scalar,
+ *              return NoCoherentPointCoupling(Scalar0       = Scalar,
  */
   __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -1982,7 +1982,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Centered':
  *          if Detector.CouplingMode[0] == "Intensity":             # <<<<<<<<<<<<<<
- *              return IntensityPointCoupling(Scalar0       = Scalar,
+ *              return NoCoherentPointCoupling(Scalar0       = Scalar,
  *                                            EPhi          = EPhi,
  */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
@@ -1997,7 +1997,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
       /* "PyMieSim/Coupling.pyx":28
  *      if Detector.CouplingMode[1] == 'Centered':
  *          if Detector.CouplingMode[0] == "Intensity":
- *              return IntensityPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
+ *              return NoCoherentPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
  *                                            EPhi          = EPhi,
  *                                            EThe          = EThe,
  */
@@ -2012,7 +2012,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_10.__pyx_n = 1;
       __pyx_t_10.Filter = __pyx_v_Filter;
-      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 28, __pyx_L1_error)
+      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 28, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_r = __pyx_t_7;
       __pyx_t_7 = 0;
@@ -2022,7 +2022,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Centered':
  *          if Detector.CouplingMode[0] == "Intensity":             # <<<<<<<<<<<<<<
- *              return IntensityPointCoupling(Scalar0       = Scalar,
+ *              return NoCoherentPointCoupling(Scalar0       = Scalar,
  *                                            EPhi          = EPhi,
  */
     }
@@ -2031,7 +2031,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
- *              return AmplitudePointCoupling(Scalar0       = Scalar,
+ *              return CoherentPointCoupling(Scalar0       = Scalar,
  *                                            EPhi          = EPhi,
  */
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 36, __pyx_L1_error)
@@ -2046,7 +2046,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
       /* "PyMieSim/Coupling.pyx":37
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":
- *              return AmplitudePointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
+ *              return CoherentPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
  *                                            EPhi          = EPhi,
  *                                            EThe          = EThe,
  */
@@ -2061,7 +2061,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_11.__pyx_n = 1;
       __pyx_t_11.Filter = __pyx_v_Filter;
-      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
+      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
@@ -2071,7 +2071,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
- *              return AmplitudePointCoupling(Scalar0       = Scalar,
+ *              return CoherentPointCoupling(Scalar0       = Scalar,
  *                                            EPhi          = EPhi,
  */
     }
@@ -2081,7 +2081,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Centered':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":
- *              return IntensityPointCoupling(Scalar0       = Scalar,
+ *              return NoCoherentPointCoupling(Scalar0       = Scalar,
  */
   }
 
@@ -2090,7 +2090,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Mean':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
- *            return IntensityPointCoupling(Scalar0       = Scalar,
+ *            return NoCoherentPointCoupling(Scalar0       = Scalar,
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2105,7 +2105,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Mean':
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling             # <<<<<<<<<<<<<<
- *            return IntensityPointCoupling(Scalar0       = Scalar,
+ *            return NoCoherentPointCoupling(Scalar0       = Scalar,
  *                                          EPhi          = EPhi,
  */
     __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
@@ -2120,7 +2120,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
       /* "PyMieSim/Coupling.pyx":47
  *      if Detector.CouplingMode[1] == 'Mean':
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
- *            return IntensityPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
+ *            return NoCoherentPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
  *                                          EPhi          = EPhi,
  *                                          EThe          = EThe,
  */
@@ -2135,7 +2135,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_10.__pyx_n = 1;
       __pyx_t_10.Filter = __pyx_v_Filter;
-      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
@@ -2145,7 +2145,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Mean':
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling             # <<<<<<<<<<<<<<
- *            return IntensityPointCoupling(Scalar0       = Scalar,
+ *            return NoCoherentPointCoupling(Scalar0       = Scalar,
  *                                          EPhi          = EPhi,
  */
     }
@@ -2154,7 +2154,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
- *              return AmplitudeMeanCoupling(Scalar0       = Scalar,
+ *              return CoherentMeanCoupling(Scalar0       = Scalar,
  *                                           EPhi          = EPhi,
  */
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
@@ -2169,7 +2169,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
       /* "PyMieSim/Coupling.pyx":56
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":
- *              return AmplitudeMeanCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
+ *              return CoherentMeanCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
  *                                           EPhi          = EPhi,
  *                                           EThe          = EThe,
  */
@@ -2184,7 +2184,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_12.__pyx_n = 1;
       __pyx_t_12.Filter = __pyx_v_Filter;
-      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_r = __pyx_t_7;
       __pyx_t_7 = 0;
@@ -2194,7 +2194,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
- *              return AmplitudeMeanCoupling(Scalar0       = Scalar,
+ *              return CoherentMeanCoupling(Scalar0       = Scalar,
  *                                           EPhi          = EPhi,
  */
     }
@@ -2204,7 +2204,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  * 
  *      if Detector.CouplingMode[1] == 'Mean':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
- *            return IntensityPointCoupling(Scalar0       = Scalar,
+ *            return NoCoherentPointCoupling(Scalar0       = Scalar,
  */
   }
 
@@ -2549,13 +2549,13 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_2GetFiltering(CYTHON_UNUSED PyObj
 /* "PyMieSim/Coupling.pyx":78
  * 
  * 
- * cpdef IntensityPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
 
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling *__pyx_optional_args) {
   PyObject *__pyx_v_Filter = ((PyObject *)Py_None);
   PyObject *__pyx_v_PhiFiltering = NULL;
   PyObject *__pyx_v_TheFiltering = NULL;
@@ -2573,7 +2573,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *_
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("IntensityPointCoupling", 0);
+  __Pyx_RefNannySetupContext("NoCoherentPointCoupling", 0);
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
       __pyx_v_Filter = __pyx_optional_args->Filter;
@@ -2581,7 +2581,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *_
   }
 
   /* "PyMieSim/Coupling.pyx":80
- * cpdef IntensityPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
+ * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)             # <<<<<<<<<<<<<<
  * 
@@ -2783,7 +2783,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *_
   /* "PyMieSim/Coupling.pyx":78
  * 
  * 
- * cpdef IntensityPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
@@ -2796,7 +2796,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("PyMieSim._Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.NoCoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_PhiFiltering);
@@ -2809,8 +2809,8 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(PyObject *_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_EPhi = 0;
   PyObject *__pyx_v_EThe = 0;
@@ -2821,7 +2821,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject 
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("IntensityPointCoupling (wrapper)", 0);
+  __Pyx_RefNannySetupContext("NoCoherentPointCoupling (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_EPhi,&__pyx_n_s_EThe,&__pyx_n_s_dOmega,&__pyx_n_s_Filter,0};
     PyObject* values[5] = {0,0,0,0,0};
@@ -2852,19 +2852,19 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject 
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EPhi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 78, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 78, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EThe)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 78, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 78, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 78, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 78, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -2874,7 +2874,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject 
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "IntensityPointCoupling") < 0)) __PYX_ERR(0, 78, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "NoCoherentPointCoupling") < 0)) __PYX_ERR(0, 78, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2896,32 +2896,32 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling(PyObject 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("IntensityPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 78, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 78, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim._Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.NoCoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_9_Coupling_4IntensityPointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_9_Coupling_4NoCoherentPointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Filter);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4IntensityPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4NoCoherentPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_9_Coupling_IntensityPointCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("IntensityPointCoupling", 0);
+  __Pyx_RefNannySetupContext("NoCoherentPointCoupling", 0);
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_IntensityPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2930,7 +2930,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4IntensityPointCoupling(CYTHON_UN
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim._Coupling.IntensityPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.NoCoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2941,13 +2941,13 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4IntensityPointCoupling(CYTHON_UN
 /* "PyMieSim/Coupling.pyx":90
  * 
  * 
- * cpdef AmplitudePointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
 
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling *__pyx_optional_args) {
   PyObject *__pyx_v_Filter = ((PyObject *)Py_None);
   PyObject *__pyx_v_PhiFiltering = NULL;
   PyObject *__pyx_v_TheFiltering = NULL;
@@ -2965,7 +2965,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *_
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("AmplitudePointCoupling", 0);
+  __Pyx_RefNannySetupContext("CoherentPointCoupling", 0);
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
       __pyx_v_Filter = __pyx_optional_args->Filter;
@@ -2973,7 +2973,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *_
   }
 
   /* "PyMieSim/Coupling.pyx":92
- * cpdef AmplitudePointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
+ * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)             # <<<<<<<<<<<<<<
  * 
@@ -3175,7 +3175,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *_
   /* "PyMieSim/Coupling.pyx":90
  * 
  * 
- * cpdef AmplitudePointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
@@ -3188,7 +3188,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *_
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("PyMieSim._Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.CoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_PhiFiltering);
@@ -3201,8 +3201,8 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(PyObject *_
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_EPhi = 0;
   PyObject *__pyx_v_EThe = 0;
@@ -3213,7 +3213,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject 
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("AmplitudePointCoupling (wrapper)", 0);
+  __Pyx_RefNannySetupContext("CoherentPointCoupling (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_EPhi,&__pyx_n_s_EThe,&__pyx_n_s_dOmega,&__pyx_n_s_Filter,0};
     PyObject* values[5] = {0,0,0,0,0};
@@ -3244,19 +3244,19 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject 
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EPhi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 90, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 90, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EThe)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 90, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 90, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 90, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 90, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -3266,7 +3266,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject 
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "AmplitudePointCoupling") < 0)) __PYX_ERR(0, 90, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "CoherentPointCoupling") < 0)) __PYX_ERR(0, 90, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3288,32 +3288,32 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling(PyObject 
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("AmplitudePointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 90, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 90, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim._Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.CoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_9_Coupling_6AmplitudePointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_9_Coupling_6CoherentPointCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Filter);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6AmplitudePointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6CoherentPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudePointCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("AmplitudePointCoupling", 0);
+  __Pyx_RefNannySetupContext("CoherentPointCoupling", 0);
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_AmplitudePointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3322,7 +3322,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6AmplitudePointCoupling(CYTHON_UN
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim._Coupling.AmplitudePointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.CoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3333,13 +3333,13 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6AmplitudePointCoupling(CYTHON_UN
 /* "PyMieSim/Coupling.pyx":102
  * 
  * 
- * cpdef AmplitudeMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
 
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudeMeanCoupling *__pyx_optional_args) {
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, CYTHON_UNUSED int __pyx_skip_dispatch, struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling *__pyx_optional_args) {
   PyObject *__pyx_v_Filter = ((PyObject *)Py_None);
   PyObject *__pyx_v_PhiFiltering = NULL;
   PyObject *__pyx_v_TheFiltering = NULL;
@@ -3357,7 +3357,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *__
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("AmplitudeMeanCoupling", 0);
+  __Pyx_RefNannySetupContext("CoherentMeanCoupling", 0);
   if (__pyx_optional_args) {
     if (__pyx_optional_args->__pyx_n > 0) {
       __pyx_v_Filter = __pyx_optional_args->Filter;
@@ -3365,7 +3365,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *__
   }
 
   /* "PyMieSim/Coupling.pyx":104
- * cpdef AmplitudeMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):
+ * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)             # <<<<<<<<<<<<<<
  * 
@@ -3573,7 +3573,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *__
   /* "PyMieSim/Coupling.pyx":102
  * 
  * 
- * cpdef AmplitudeMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
+ * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  */
@@ -3586,7 +3586,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *__
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("PyMieSim._Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.CoherentMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_PhiFiltering);
@@ -3599,8 +3599,8 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(PyObject *__
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_Scalar0 = 0;
   PyObject *__pyx_v_EPhi = 0;
   PyObject *__pyx_v_EThe = 0;
@@ -3612,7 +3612,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *
   int __pyx_clineno = 0;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("AmplitudeMeanCoupling (wrapper)", 0);
+  __Pyx_RefNannySetupContext("CoherentMeanCoupling (wrapper)", 0);
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_Scalar0,&__pyx_n_s_EPhi,&__pyx_n_s_EThe,&__pyx_n_s_dOmega,&__pyx_n_s_Omega,&__pyx_n_s_Filter,0};
     PyObject* values[6] = {0,0,0,0,0,0};
@@ -3645,25 +3645,25 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EPhi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 5, 6, 1); __PYX_ERR(0, 102, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 1); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EThe)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 5, 6, 2); __PYX_ERR(0, 102, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 2); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 5, 6, 3); __PYX_ERR(0, 102, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 3); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Omega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 5, 6, 4); __PYX_ERR(0, 102, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 4); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -3673,7 +3673,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "AmplitudeMeanCoupling") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "CoherentMeanCoupling") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3697,32 +3697,32 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling(PyObject *
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("AmplitudeMeanCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 102, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 102, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("PyMieSim._Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.CoherentMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_8PyMieSim_9_Coupling_8AmplitudeMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
+  __pyx_r = __pyx_pf_8PyMieSim_9_Coupling_8CoherentMeanCoupling(__pyx_self, __pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, __pyx_v_Filter);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_8PyMieSim_9_Coupling_8AmplitudeMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter) {
+static PyObject *__pyx_pf_8PyMieSim_9_Coupling_8CoherentMeanCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Omega, PyObject *__pyx_v_Filter) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
-  struct __pyx_opt_args_8PyMieSim_9_Coupling_AmplitudeMeanCoupling __pyx_t_2;
+  struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling __pyx_t_2;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("AmplitudeMeanCoupling", 0);
+  __Pyx_RefNannySetupContext("CoherentMeanCoupling", 0);
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_AmplitudeMeanCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3731,7 +3731,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_8AmplitudeMeanCoupling(CYTHON_UNU
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("PyMieSim._Coupling.AmplitudeMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("PyMieSim._Coupling.CoherentMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4585,9 +4585,9 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
 static PyMethodDef __pyx_methods[] = {
   {"Coupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_1Coupling, METH_VARARGS|METH_KEYWORDS, 0},
   {"GetFiltering", (PyCFunction)__pyx_pw_8PyMieSim_9_Coupling_3GetFiltering, METH_O, 0},
-  {"IntensityPointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_5IntensityPointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
-  {"AmplitudePointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_7AmplitudePointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
-  {"AmplitudeMeanCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_9AmplitudeMeanCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"NoCoherentPointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"CoherentPointCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling, METH_VARARGS|METH_KEYWORDS, 0},
+  {"CoherentMeanCoupling", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling, METH_VARARGS|METH_KEYWORDS, 0},
   {0, 0, 0, 0}
 };
 
