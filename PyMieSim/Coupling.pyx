@@ -13,7 +13,6 @@ import cython
 cimport numpy as np
 import numpy as np
 
-ctypedef double complex complex128_t
 
 
 cpdef Coupling(Scatterer, Detector):
@@ -26,39 +25,39 @@ cpdef Coupling(Scatterer, Detector):
      if Detector.CouplingMode[1] == 'Centered':
          if Detector.CouplingMode[0] == "Intensity":
              return NoCoherentPointCoupling(Scalar0       = Scalar,
-                                           EPhi          = EPhi,
-                                           EThe          = EThe,
-                                           dOmega        = dOmega,
-                                           Filter        = Filter)
+                                            EPhi          = EPhi,
+                                            EThe          = EThe,
+                                            dOmega        = dOmega,
+                                            Filter        = Filter)
 
 
 
          if Detector.CouplingMode[0] == "Amplitude":
              return CoherentPointCoupling(Scalar0       = Scalar,
-                                           EPhi          = EPhi,
-                                           EThe          = EThe,
-                                           dOmega        = dOmega,
-                                           Filter        = Filter)
+                                          EPhi          = EPhi,
+                                          EThe          = EThe,
+                                          dOmega        = dOmega,
+                                          Filter        = Filter)
 
 
 
      if Detector.CouplingMode[1] == 'Mean':
          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
            return NoCoherentPointCoupling(Scalar0       = Scalar,
-                                         EPhi          = EPhi,
-                                         EThe          = EThe,
-                                         dOmega        = dOmega,
-                                         Filter        = Filter)
+                                          EPhi          = EPhi,
+                                          EThe          = EThe,
+                                          dOmega        = dOmega,
+                                          Filter        = Filter)
 
 
 
          if Detector.CouplingMode[0] == "Amplitude":
              return CoherentMeanCoupling(Scalar0       = Scalar,
-                                          EPhi          = EPhi,
-                                          EThe          = EThe,
-                                          dOmega        = dOmega,
-                                          Omega         = Omega,
-                                          Filter        = Filter)
+                                         EPhi          = EPhi,
+                                         EThe          = EThe,
+                                         dOmega        = dOmega,
+                                         Omega         = Omega,
+                                         Filter        = Filter)
 
 
 

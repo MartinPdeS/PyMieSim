@@ -52,7 +52,6 @@ WMSample
 
 
 
-
 Detector
 --------
 
@@ -68,3 +67,4 @@ LPmode
 .. autoclass:: PyMieSim.Detector.LPmode
     :members:
     :inherited-members:
+    :show-inheritance:

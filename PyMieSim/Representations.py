@@ -13,9 +13,6 @@ from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 
 
 class Stokes(dict):
-
-
-
     def __array_finalize__(self, obj):
         pass
 

@@ -81,8 +81,6 @@ def _PlotUnstructuredAbs(Scalar, Phi, Theta, Name=''):
 
     mlab.mesh(xp + offset, yp, zp, colormap='gray', opacity=0.5)
 
-    print(x.shape, y.shape, Scalar.shape)
-
     im0 = mlab.points3d(x + offset, y, z, np.abs(Scalar), mode='sphere', scale_mode='none', colormap='inferno')
 
     mlab.colorbar(object = im0, label_fmt="%.0e", nb_labels=5, title='Real part', orientation='horizontal' )

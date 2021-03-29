@@ -29,5 +29,6 @@ python:
   version: 3.6
   install:
     - requirements: docs/requirements.txt
-
+    - pip3 install -r requirements.txt
+    - pip3 install .
 # -
