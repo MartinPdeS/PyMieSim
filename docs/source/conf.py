@@ -24,6 +24,7 @@ autodoc_mock_imports = ['numpy',
                         'PyMieSim.GLMT',
                         'PyMieSim._Coupling',
                         'PyMieSim._utils',
+                        'PyMieSim.Fibonacci',
                         'sphinx.ext.autodoc']
 
 
