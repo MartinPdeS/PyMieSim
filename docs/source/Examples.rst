@@ -126,25 +126,25 @@ Detector: LPMode
 .. image:: ../images/LPmode.png
    :width: 600
 
-Coupling: Scatterer-LPMode
---------------------------
+Coupling: Scatterer-Photodiode
+------------------------------
 
 .. code-block:: console
    :linenos:
 
    from PyMieSim.Source import PlaneWave
-   from PyMieSim.Detector import LPmode
+   from PyMieSim.Detector import Photodiode
    from PyMieSim.Scatterer import Sphere
 
    LightSource = PlaneWave(Wavelength = 450e-9,
-                           Polarization = 0)
+                           Polarization = 0,
+                           E0= 1e5)
 
-   Detector = LPmode(Mode         = (0, 1,'h'),
-                     Sampling     = 201,
-                     NA           = 0.2,
-                     GammaOffset  = 0,
-                     PhiOffset    = 0,
-                     CouplingMode = 'Centered')
+   Detector = Photodiode(Sampling     = 201,
+                         NA           = 0.2,
+                         GammaOffset  = 0,
+                         PhiOffset    = 0,
+                         CouplingMode = 'Centered')
 
 
    Scat = Sphere(Diameter    = 300e-9,
@@ -156,7 +156,8 @@ Coupling: Scatterer-LPMode
    print(Coupling)
 
 
-Output: (6.70121870391961e-18)
+
+Output: (6.57e+01 nWatt)
 
 
 ScattererSet: Qscattering
