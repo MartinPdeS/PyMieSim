@@ -4,11 +4,11 @@
 import numpy as np
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp
+from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp, Power
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 from PyMieSim.Plots import PlotUnstructured
-
+from PyMieSim.Constants import *
 
 class BaseSource(object):
 
@@ -61,8 +61,8 @@ class MeshProperty(object):
 
     @NA.setter
     def NA(self, val):
-        if val >= 0.99: val = 0.99
-        if val <= 0.01: val = 0.01
+        if val <= 1e-6: val = 1e-6
+
         self.MaxAngle = NA2Angle(val).Radian
         self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
 
@@ -92,7 +92,12 @@ class BaseDetector(object):
             Value of the coupling.
 
         """
-        return Coupling(Scatterer = Scatterer, Detector = self)
+
+        P = Coupling(Scatterer = Scatterer, Detector = self)# * Scatterer.nMedium * c * eps0 / 2
+
+        return Power(P)
+
+        #return Coupling(Scatterer = Scatterer, Detector = self)
 
 
     def Footprint(self, Scatterer, Num = 200):
@@ -337,6 +342,51 @@ class BaseScatterer(object):
         """
 
         return SPF(Parent=self, Num=Num)
+
+
+    def EnergyFlow(self, Num=100):
+
+        Mesh = FibonacciMesh(MaxAngle    = 1.*np.pi,
+                             Sampling    = Num,
+                             PhiOffset   = 0,
+                             GammaOffset = 0)
+
+        EPhi, ETheta = self.uFarField(Mesh.Phi.Radian, Mesh.Theta.Radian)
+
+        HPhi, HTheta = EPhi/(c*mu0), ETheta/(c*mu0)
+
+        PIPhi = 0.5 * (EPhi*HPhi.conj()).real
+
+        PITheta = 0.5 * (ETheta*HTheta.conj()).real
+
+        WPhi = - np.sum( PIPhi ) * Mesh.dOmega.Radian             # EnergyFlow
+
+        WTheta = - np.sum( np.abs(PITheta) ) * Mesh.dOmega.Radian # EnergyFlow
+
+        Wtotal = (WPhi + WTheta)
+
+        return Wtotal
+
+
+    def _CrossSection(self, Num=100):
+
+        W = self.EnergyFlow(Num)
+
+        return W / self.Source.I
+
+
+
+    def CrossSection(self):
+
+        return self.Qsca * self.Area
+
+
+
+
+
+
+
+
 
 
 

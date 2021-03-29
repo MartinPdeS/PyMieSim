@@ -22,15 +22,20 @@ class ExperimentalDataFrame(pd.DataFrame):
 
     def Plot(self, y='Coupling', **kwargs):
 
-        ax = self.unstack(level=[-3,-1]).plot(y       = y,
+        fig = self.unstack(level=[-3,-1]).plot(y       = y,
                                               grid    = True,
                                               figsize = (8,4),
                                               xlabel  = r'Scatterer diameter [m]',
                                               ylabel  = r'Coupling [u.a.]',
                                               **kwargs)
 
-        ax.legend(prop={'size': 8})
-        plt.show()
+        fig.legend(prop={'size': 8})
+
+        return fig
+
+
+    def Show(self,*args,**kwargs):
+        return plt.show(*args, **kwargs)
 
 
 class S1S2DataFrame(pd.DataFrame):
@@ -50,27 +55,29 @@ class S1S2DataFrame(pd.DataFrame):
 
     def Plot(self, **kwargs):
 
-        ax = self.unstack(level=[0,1]).plot(y       = 'S1',
+        fig = self.unstack(level=[0,1]).plot(y       = 'S1',
                                             grid    = True,
                                             figsize = (8,4),
                                             xlabel  = r'$\phi$ angle [degree]',
                                             ylabel  = r'$|S1|$',
                                             **kwargs)
 
-        ax1 = self.unstack(level=[0,1]).plot(y       = 'S2',
+        fig1 = self.unstack(level=[0,1]).plot(y       = 'S2',
                                              grid    = True,
                                              figsize = (8,4),
                                              xlabel  = r'$\phi$ angle [degree]',
                                              ylabel  = r'$|S2|$',
                                              **kwargs)
 
-        ax.legend(prop={'size': 8})
+        fig.legend(prop={'size': 8})
 
-        ax1.legend(prop={'size': 8})
+        fig1.legend(prop={'size': 8})
 
-        plt.show()
+        return(fig, fig1)
 
 
+    def Show(self,*args,**kwargs):
+        return plt.show(*args, **kwargs)
 
 
 class QscaDataFrame(pd.DataFrame):
@@ -90,17 +97,20 @@ class QscaDataFrame(pd.DataFrame):
 
     def Plot(self, **kwargs):
 
-        ax = self.unstack(level=[1]).plot(y       = 'Qsca',
+        fig = self.unstack(level=[1]).plot(y       = 'Qsca',
                                           grid    = True,
                                           figsize = (8,4),
                                           xlabel  = r'Scatterer diameter [m]',
                                           ylabel  = r'Q$_{Scattering}$',
                                           **kwargs)
 
-        ax.legend(prop={'size': 8})
+        fig.legend(prop={'size': 8})
+
+        return fig
 
 
-        plt.show()
+    def Show(self,*args,**kwargs):
+        return plt.show(*args, **kwargs)
 
 
 

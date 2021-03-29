@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from mayavi import mlab
 from unittest import TestCase
 from numpy import linspace, pi
+import numpy as np
 
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
@@ -41,6 +42,7 @@ class PrintingTest(TestCase):
         self.test14()
         self.test15()
         self.test16()
+        self.test17()
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -64,7 +66,7 @@ class PrintingTest(TestCase):
 
     def test02(self):
         Scat.S1S2(Num=10)#.Plot(hold=True)
-        
+
         print('Test 2: passed')
 
     def test03(self):
@@ -191,6 +193,15 @@ class PrintingTest(TestCase):
 
 
         print('Test 16: passed')
+
+
+    def test17(self):
+        val0 = Scat._CrossSection(100*100)
+        val1 = Scat.CrossSection()
+        error = np.abs(val0-val1)/val0
+        assert error < 1e-2
+
+        print('Test 17: passed')
 
 
 if __name__ == '__main__':

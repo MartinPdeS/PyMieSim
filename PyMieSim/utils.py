@@ -153,11 +153,10 @@ def Direct2Angle(DirectVec: np.ndarray, k: float) -> np.ndarray:
     return AngleVec * 180 / np.pi
 
 
-
 def NA2Angle(NA: float) -> np.ndarray:
-
-    return Angle( np.arcsin(NA), unit='Radian')
-
+    if NA > 2: raise print("Error NA value is not valid, has to be in [0,1]")
+    if NA <=1.0: return Angle( np.arcsin(NA), unit='Radian')
+    if NA >= 1.0: return Angle( np.arcsin(NA-1) + np.pi/2, unit='Radian')
 
 
 def Direct2spherical(X, Y, MaxAngle):
@@ -278,5 +277,44 @@ def mx_apply(T, x, y, z):
     return (x_, y_, z_)
 
 
+
+
+
+class Power(float):
+    """
+    P = :math:`\\int_{A} I dA`
+    I = :math:`\\frac{c n \\epsilon_0}{2} |E|^2`
+    With:
+         I : Energy density
+         n  : Refractive index of the medium
+         :math:`\\epsilon_0` : Vaccum permitivity
+         E  : Electric field
+    """
+
+    def __repr__(self):
+        unitList = {-5: "f",
+                    -4: "p",
+                    -3: "n",
+                    -2: u"\u03bc",
+                    -1: "m",
+                    +0: " ",
+                    +1: "k",
+                    +2: "M",
+                    +3: "G",
+                    +4: "T",
+                    +5: "P"}
+
+        exp = np.log10(self)//3
+
+        try:
+            unit = unitList[exp]
+            x = self * 10**(-3*exp)
+        except:
+            unit=""
+            x = self
+
+
+
+        return f"{x:.2e} {unit}Watt"
 
 # -

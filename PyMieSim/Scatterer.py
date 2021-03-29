@@ -8,6 +8,7 @@ from PyMieSim.Representations import S1S2, SPF, Stokes
 from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
 from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 
+
 class Sphere(BaseScatterer, EfficienciesProperties):
     """Short summary.
 

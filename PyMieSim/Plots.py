@@ -1,16 +1,18 @@
 import numpy as np
+pi = np.pi
 from mayavi import mlab
 from scipy.interpolate import griddata
 
 from PyMieSim.Physics import Angle
 from PyMieSim.utils import Sp2Cart, Cart2Sp
+from pythonlangutil.overload import Overload, signature
 
 
 
 def UnitAxes(Figure, Radius=1., xOffset=0.):
     X = np.linspace(-1.0,1.0,10)*1.3 * Radius
-    Y = np.linspace(-0.5,1.0,10)*2.5 * Radius
-    Z = np.linspace(-1.0,1.0,10)*1.3 * Radius
+    Y = np.linspace(-1.0,1.0,10)*1.3 * Radius
+    Z = np.linspace(-1.0,1.0,10)*2.0 * Radius
 
     zeros = np.zeros_like(X)
 
@@ -24,17 +26,37 @@ def UnitAxes(Figure, Radius=1., xOffset=0.):
 
 
 def UnitSphere(Num, Radius=1.):
-    pi = np.pi
+
     phi, theta = np.mgrid[-pi/2:pi/2:complex(Num), -pi:pi:complex(Num)]
     x, y, z = Sp2Cart(phi*0+Radius, phi, theta)
 
     return x, y, z
 
 
+
 def PlotUnstructuredAbs(Scalar, Mesh, Name=''):
+
     x, y, z = Sp2Cart(Mesh.Phi.Radian.flatten()*0+1,
                       Mesh.Phi.Radian.flatten(),
                       Mesh.Theta.Radian.flatten())
+
+    _PlotUnstructuredAbs(Scalar  = Mesh.Phi.Radian*0+1,
+                         Phi     = Mesh.Phi.Radian,
+                         Theta   = Mesh.Theta.Radian, 
+                         Name    = Name)
+
+
+
+
+def _PlotUnstructuredAbs(Scalar, Phi, Theta, Name=''):
+
+    Phi = Phi.flatten()
+    Theta = Theta.flatten()
+    Scalar = Scalar.flatten()
+
+    x, y, z = Sp2Cart(Phi*0+1,
+                      Phi,
+                      Theta)
 
     offset = 3
     X = np.linspace(-1,1,10)*1.3
@@ -60,9 +82,12 @@ def PlotUnstructuredAbs(Scalar, Mesh, Name=''):
 
     mlab.mesh(xp + offset, yp, zp, colormap='gray', opacity=0.5)
 
-    im0 = mlab.points3d(x + offset, y, z, Scalar.real, mode='sphere', scale_mode='none', colormap='inferno')
+    print(x.shape, y.shape, Scalar.shape)
+
+    im0 = mlab.points3d(x + offset, y, z, np.abs(Scalar), mode='sphere', scale_mode='none', colormap='inferno')
 
     mlab.colorbar(object = im0, label_fmt="%.0e", nb_labels=5, title='Real part', orientation='horizontal' )
+
 
 
 def PlotUnstructured(Scalar, Mesh, Name=''):

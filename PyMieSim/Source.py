@@ -7,7 +7,7 @@ from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
 from PyMieSim.Physics import _Polarization
 from PyMieSim.BaseClasses import BaseSource
-from PyMieSim.Constants import eps0, mu0
+from PyMieSim.Constants import *
 from PyMieSim.GLMT.GaussianBeam import Anm, Anm_integrand, Bnm, Bnm_integrand
 
 
@@ -36,6 +36,7 @@ class PlaneWave(BaseSource):
         self.k = 2 * pi / Wavelength
         self.Polarization = _Polarization(Polarization)
         self.E0 = E0
+        self.H0 = E0 / (mu0*c)
         self.H0 = sqrt(eps0/mu0) * self.E0
         self.offset = array([EPS]*3)
         self._BSC_ = None
@@ -148,6 +149,16 @@ class PlaneWave(BaseSource):
         return self.H0 * FPhase * cos(Pol), \
                self.H0 * FPhase * sin(Pol), \
                0
+
+
+    @property
+    def I(self):
+        """
+        Compute averaged value of Poyinting vector.
+        :math:`I = <S> = \\frac{c \\epsilon_0}{2} E_0^2`
+        """
+
+        return c * eps0 / 2 * self.E0**2
 
 
     def __repr__(self):

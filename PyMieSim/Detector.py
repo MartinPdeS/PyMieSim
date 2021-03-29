@@ -2,7 +2,6 @@ import numpy as np
 import fibermodes
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.utils import interp_at, NA2Angle, Sp2Cart
 from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
 

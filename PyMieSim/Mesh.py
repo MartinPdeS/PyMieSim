@@ -55,7 +55,7 @@ class FibonacciMesh(object):
         self.Theta         = Angle(self.bind.theta, unit='Radian')
         self.Phi           = Angle(self.SphCoord[1], unit='Radian')
 
-        self.SinMesh       = np.sin( self.SphCoord[1] )
+        self.SinMesh       = np.abs( np.sin( self.SphCoord[1] - np.pi/2 ) )
 
         self.dOmega        = Angle(0, unit='Radian');
         self.dOmega.Radian = self.bind.dOmega

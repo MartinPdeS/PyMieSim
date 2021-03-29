@@ -29,7 +29,6 @@ cpdef Coupling(Scatterer, Detector):
              Para, Perp = IntensityPointCoupling(Scalar0       = Detector.Scalar,
                                                  Parallel      = FarFieldPara,
                                                  Perpendicular = FarFieldPerp,
-                                                 SinMesh       = Detector.Mesh.SinMesh,
                                                  dOmega        = Detector.Mesh.dOmega.Radian,
                                                  Filter        = Detector.Filter.Radian)
 
@@ -39,7 +38,6 @@ cpdef Coupling(Scatterer, Detector):
              Para, Perp = AmplitudePointCoupling(Scalar0       = Detector.Scalar,
                                                  Parallel      = FarFieldPara,
                                                  Perpendicular = FarFieldPerp,
-                                                 SinMesh       = Detector.Mesh.SinMesh,
                                                  dOmega        = Detector.Mesh.dOmega.Radian,
                                                  Filter        = Detector.Filter.Radian)
 
@@ -53,7 +51,6 @@ cpdef Coupling(Scatterer, Detector):
              Para, Perp = IntensityMeanCoupling(Scalar0      = Detector.Scalar,
                                                Parallel      = FarFieldPara,
                                                Perpendicular = FarFieldPerp,
-                                               SinMesh       = Detector.Mesh.SinMesh,
                                                dOmega        = Detector.Mesh.dOmega.Radian,
                                                Omega         = Detector.Mesh.Omega.Radian,
                                                Filter        = Detector.Filter.Radian)
@@ -64,10 +61,9 @@ cpdef Coupling(Scatterer, Detector):
              Para, Perp = AmplitudeMeanCoupling(Scalar0       = Detector.Scalar,
                                                 Parallel      = FarFieldPara,
                                                 Perpendicular = FarFieldPerp,
-                                                SinMesh       = Detector.Mesh.SinMesh,
                                                 dOmega        = Detector.Mesh.dOmega.Radian,
                                                 Omega         = Detector.Mesh.Omega.Radian,
-                                               Filter        = Detector.Filter.Radian)
+                                                Filter        = Detector.Filter.Radian)
 
              return Para + Perp
 
@@ -77,16 +73,15 @@ cpdef Coupling(Scatterer, Detector):
 cpdef IntensityPointCoupling(Scalar0,
                             Parallel,
                             Perpendicular,
-                            SinMesh,
                             dOmega,
                             Filter = None):
 
     if Filter != None: ParaFiltering = np.cos(Filter)**2; PerpFiltering = np.sin(Filter)**2
     else: ParaFiltering = 1;  PerpFiltering = 1
 
-    Para = np.sum( np.abs(Scalar0 * Parallel)**2 * SinMesh) * dOmega**2
+    Para = ( np.sum( np.abs(Scalar0 * Parallel) ) * dOmega )**2
 
-    Perp = np.sum( np.abs(Scalar0 * Perpendicular)**2 * SinMesh) * dOmega**2
+    Perp = ( np.sum( np.abs(Scalar0 * Perpendicular)) * dOmega )**2
 
     return Para * ParaFiltering, Perp * PerpFiltering
 
@@ -94,7 +89,6 @@ cpdef IntensityPointCoupling(Scalar0,
 cpdef IntensityMeanCoupling(Scalar0,
                             Parallel,
                             Perpendicular,
-                            SinMesh,
                             dOmega,
                             Omega,
                             Filter = None):
@@ -102,7 +96,6 @@ cpdef IntensityMeanCoupling(Scalar0,
     return IntensityPointCoupling(Scalar0       = Scalar0,
                                   Parallel      = Parallel,
                                   Perpendicular = Perpendicular,
-                                  SinMesh       = SinMesh,
                                   dOmega        = dOmega,
                                   Filter        = Filter)
 
@@ -110,7 +103,6 @@ cpdef IntensityMeanCoupling(Scalar0,
 cpdef AmplitudePointCoupling(Scalar0,
                              Parallel,
                              Perpendicular,
-                             SinMesh,
                              dOmega,
                              Filter = None):
 
@@ -118,9 +110,9 @@ cpdef AmplitudePointCoupling(Scalar0,
 
     else: ParaFiltering = 1;  PerpFiltering = 1
 
-    Para = np.abs( np.sum( Scalar0 * Parallel * SinMesh) )**2 * dOmega**2
+    Para = ( np.abs( np.sum( Scalar0 * Parallel ) ) * dOmega )**2
 
-    Perp = np.abs( np.sum( Scalar0 * Perpendicular * SinMesh) )**2 * dOmega**2
+    Perp = ( np.abs( np.sum( Scalar0 * Perpendicular ) ) * dOmega )**2
 
     return Para * ParaFiltering, Perp * PerpFiltering
 
@@ -129,7 +121,6 @@ cpdef AmplitudePointCoupling(Scalar0,
 cpdef AmplitudeMeanCoupling(Scalar0,
                             Parallel,
                             Perpendicular,
-                            SinMesh,
                             dOmega,
                             Omega,
                             Filter = None):
