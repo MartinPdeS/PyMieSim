@@ -1,6 +1,0 @@
-PlaneWave
--------
-
-.. automodule:: PyMieSim.Source.PlaneWave
-    :members:
-    :show-inheritance:

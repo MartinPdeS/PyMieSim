@@ -4,7 +4,7 @@
 import numpy as np
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp, Power
+from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp, UnitPower
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 from PyMieSim.Plots import PlotUnstructured
@@ -67,13 +67,12 @@ class MeshProperty(object):
         self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
 
 
-
 class BaseDetector(object):
     """Base class for :class:`Detector` class used to define the properties
     of the angular mesh for Far-Field computations.
 
     """
-    def Coupling(self, Scatterer):
+    def _Coupling(self, Scatterer):
         """Return the value of the scattererd light coupling as computed as:
 
         :math:`|\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2`
@@ -93,11 +92,26 @@ class BaseDetector(object):
 
         """
 
-        P = Coupling(Scatterer = Scatterer, Detector = self)# * Scatterer.nMedium * c * eps0 / 2
+        return Coupling(Scatterer = Scatterer, Detector = self)# * Scatterer.nMedium * c * eps0 / 2
 
-        return Power(P)
 
-        #return Coupling(Scatterer = Scatterer, Detector = self)
+    def Coupling(self, Scatterer):
+        """Return coupling power which is detected.
+
+        Parameters
+        ----------
+        Scatterer : :class:`Scatterer`
+            Scatterer instance (sphere, cylinder, ...).
+
+        Returns
+        -------
+        :class:`float`
+            Value of the coupling power [:math:`W`].
+
+        """
+        C = self._Coupling(Scatterer) * eps0 * c*0.5
+
+        return UnitPower(C)
 
 
     def Footprint(self, Scatterer, Num = 200):
@@ -188,6 +202,7 @@ class EfficienciesProperties(object):
             self.GetEfficiencies()
             return self._Qsca
 
+
     @property
     def Qabs(self):
         """Absorption efficiency:
@@ -225,6 +240,7 @@ class BaseScatterer(object):
     def __init__(self):
         pass
 
+
     def GetEfficiencies(self):
         """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs}`)
         for the scatterer.
@@ -232,7 +248,6 @@ class BaseScatterer(object):
         """
 
         self._Qsca, self._Qext, self._Qabs = self.Bind.Efficiencies
-
 
 
     def S1S2(self, Num=200):
@@ -301,7 +316,6 @@ class BaseScatterer(object):
         return self.Bind.uFields(Phi = Phi, Theta=Theta, R=1.)
 
 
-
     def sFarField(self, Phi, Theta):
         """Method Compute scattering Far Field for structured coordinate.
 
@@ -322,8 +336,6 @@ class BaseScatterer(object):
         return self.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
 
 
-
-
     def SPF(self, Num=100):
         """Scattering phase function.
 
@@ -337,48 +349,92 @@ class BaseScatterer(object):
         Returns
         -------
         :class:`SPF` in :mod:`PyMieSim`
-            Dictionnay subclass with all pertient information as keys.
+            Dictionnay subclass with all pertinent information as keys.
 
         """
 
         return SPF(Parent=self, Num=Num)
 
 
-    def EnergyFlow(self, Num=100):
+    def PoyntingVector(self, Mesh):
+        """
+        Method return the Poynting vector norm defined as:
 
-        Mesh = FibonacciMesh(MaxAngle    = 1.*np.pi,
-                             Sampling    = Num,
-                             PhiOffset   = 0,
-                             GammaOffset = 0)
+        :math:`\\vec{S} = \\epsilon c^2 \\vec{E} \\times \\vec{B}`
+
+        Parameters
+        ----------
+        Mesh : :class:`FibonacciMesh`
+            Number of voxel in the 4 pi space to compute energy flow.
+
+        Returns
+        -------
+        :class:`np.array`
+            Poynting field [:math:`W/m^2`]
+        """
 
         EPhi, ETheta = self.uFarField(Mesh.Phi.Radian, Mesh.Theta.Radian)
 
-        HPhi, HTheta = EPhi/(c*mu0), ETheta/(c*mu0)
+        NormE = np.sqrt(np.abs(EPhi)**2 + np.abs(ETheta)**2)
 
-        PIPhi = 0.5 * (EPhi*HPhi.conj()).real
+        NormB = NormE/c
 
-        PITheta = 0.5 * (ETheta*HTheta.conj()).real
+        Poynting = eps0 * c**2 * NormE * NormB    #TODO change eps0 for eps
 
-        WPhi = - np.sum( PIPhi ) * Mesh.dOmega.Radian             # EnergyFlow
-
-        WTheta = - np.sum( np.abs(PITheta) ) * Mesh.dOmega.Radian # EnergyFlow
-
-        Wtotal = (WPhi + WTheta)
-
-        return Wtotal
+        return Poynting,  Mesh.dOmega.Radian
 
 
-    def _CrossSection(self, Num=100):
+    def EnergyFlow(self, Mesh):
+        """
+        Method return energy flow defined as:
 
-        W = self.EnergyFlow(Num)
+        :math:`W_a = \\sigma_{sca} * I_{inc}`
+
+        Where :math:`\\sigma_{sca}` is the scattering cross section.
+
+        More info on wikipedia link:
+        https://en.wikipedia.org/wiki/Cross_section_(physics)#Cross_section_and_Mie_theory
+
+        Parameters
+        ----------
+        Mesh : :class:`FibonacciMesh`
+            Number of voxel in the 4 pi space to compute energy flow.
+
+        Returns
+        -------
+        :class:`float`
+            Energy flow [:math:`W`]
+        """
+
+        Poynting, dOmega = self.PoyntingVector(Mesh)
+
+        if Mesh.Structured:
+            Wtotal = 0.5 * np.sum( Poynting * Mesh.SinMesh ) * Mesh.dOmega.Radian
+
+        else:
+            Wtotal = 0.5 * np.sum( Poynting ) * Mesh.dOmega.Radian
+
+        return UnitPower(Wtotal)
+
+
+    def _CrossSection(self, Mesh):
+        """
+        Method return scattering cross section, see :func:`EnergyFlow`
+
+        Parameters
+        ----------
+        Mesh : :class:`FibonacciMesh`
+            Number of voxel in the 4 pi space to compute scattering cross section.
+
+        Returns
+        -------
+        :class:`float`
+            scattering cross section
+        """
+
+        W = self.EnergyFlow(Mesh)
 
         return W / self.Source.I
-
-
-
-    def CrossSection(self):
-
-        return self.Qsca * self.Area
 
 
 

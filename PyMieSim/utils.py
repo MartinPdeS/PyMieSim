@@ -280,7 +280,7 @@ def mx_apply(T, x, y, z):
 
 
 
-class Power(float):
+class UnitPower(float):
     """
     P = :math:`\\int_{A} I dA`
     I = :math:`\\frac{c n \\epsilon_0}{2} |E|^2`

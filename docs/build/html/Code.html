@@ -190,18 +190,216 @@
 <dt id="PyMieSim.Representations.Footprint">
 <em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">Footprint</code><span class="sig-paren">(</span><em>) -&gt; new empty dictionary dict(mapping) -&gt; new dictionary initialized from a mapping object's (key</em>, <em>value) pairs dict(iterable) -&gt; new dictionary initialized as if via: d = {} for k</em>, <em>v in iterable: d[k] = v dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs in the keyword argument list.  For example:  dict(one=1</em>, <em>two=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#Footprint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.Footprint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#PyMieSim.Representations.Footprint.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#PyMieSim.Representations.Footprint.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.fromkeys">
+<code class="descname">fromkeys</code><span class="sig-paren">(</span><em>iterable</em>, <em>value=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Footprint.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Footprint.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#PyMieSim.Representations.Footprint.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#PyMieSim.Representations.Footprint.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#PyMieSim.Representations.Footprint.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.popitem">
+<code class="descname">popitem</code><span class="sig-paren">(</span><em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Footprint.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.setdefault">
+<code class="descname">setdefault</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Footprint.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#PyMieSim.Representations.Footprint.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Footprint.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#PyMieSim.Representations.Footprint.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="PyMieSim.Representations.S1S2">
 <em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">S1S2</code><span class="sig-paren">(</span><em>) -&gt; new empty dictionary dict(mapping) -&gt; new dictionary initialized from a mapping object's (key</em>, <em>value) pairs dict(iterable) -&gt; new dictionary initialized as if via: d = {} for k</em>, <em>v in iterable: d[k] = v dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs in the keyword argument list.  For example:  dict(one=1</em>, <em>two=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#S1S2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.S1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#PyMieSim.Representations.S1S2.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#PyMieSim.Representations.S1S2.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.fromkeys">
+<code class="descname">fromkeys</code><span class="sig-paren">(</span><em>iterable</em>, <em>value=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.S1S2.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.S1S2.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#PyMieSim.Representations.S1S2.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#PyMieSim.Representations.S1S2.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#PyMieSim.Representations.S1S2.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.popitem">
+<code class="descname">popitem</code><span class="sig-paren">(</span><em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.S1S2.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.setdefault">
+<code class="descname">setdefault</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.S1S2.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#PyMieSim.Representations.S1S2.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.S1S2.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#PyMieSim.Representations.S1S2.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="PyMieSim.Representations.SPF">
 <em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">SPF</code><span class="sig-paren">(</span><em>) -&gt; new empty dictionary dict(mapping) -&gt; new dictionary initialized from a mapping object's (key</em>, <em>value) pairs dict(iterable) -&gt; new dictionary initialized as if via: d = {} for k</em>, <em>v in iterable: d[k] = v dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs in the keyword argument list.  For example:  dict(one=1</em>, <em>two=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#SPF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.SPF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#PyMieSim.Representations.SPF.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#PyMieSim.Representations.SPF.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.fromkeys">
+<code class="descname">fromkeys</code><span class="sig-paren">(</span><em>iterable</em>, <em>value=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.SPF.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.SPF.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#PyMieSim.Representations.SPF.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#PyMieSim.Representations.SPF.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#PyMieSim.Representations.SPF.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.popitem">
+<code class="descname">popitem</code><span class="sig-paren">(</span><em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.SPF.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.setdefault">
+<code class="descname">setdefault</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.SPF.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#PyMieSim.Representations.SPF.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.SPF.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#PyMieSim.Representations.SPF.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -210,7 +408,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <dl class="method">
 <dt id="PyMieSim.Representations.ScalarFarField.Plot">
-<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.Plot" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Plot</code><span class="sig-paren">(</span><em>hold=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.Plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method plots the scattered Far-Field
 <span class="math notranslate nohighlight">\(E_{\phi}(\phi,\theta)^2 , E_{\theta}(\phi,\theta)^2\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -223,12 +421,144 @@
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.fromkeys">
+<code class="descname">fromkeys</code><span class="sig-paren">(</span><em>iterable</em>, <em>value=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.popitem">
+<code class="descname">popitem</code><span class="sig-paren">(</span><em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.setdefault">
+<code class="descname">setdefault</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.ScalarFarField.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="PyMieSim.Representations.Stokes">
-<em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">Stokes</code><span class="sig-paren">(</span><em>Field</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#Stokes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.Stokes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sphinx.ext.autodoc.importer._MockObject</span></code></p>
+<em class="property">class </em><code class="descclassname">PyMieSim.Representations.</code><code class="descname">Stokes</code><span class="sig-paren">(</span><em>) -&gt; new empty dictionary dict(mapping) -&gt; new dictionary initialized from a mapping object's (key</em>, <em>value) pairs dict(iterable) -&gt; new dictionary initialized as if via: d = {} for k</em>, <em>v in iterable: d[k] = v dict(**kwargs) -&gt; new dictionary initialized with the name=value pairs in the keyword argument list.  For example:  dict(one=1</em>, <em>two=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#Stokes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.Stokes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.clear">
+<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#PyMieSim.Representations.Stokes.clear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.copy">
+<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#PyMieSim.Representations.Stokes.copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.fromkeys">
+<code class="descname">fromkeys</code><span class="sig-paren">(</span><em>iterable</em>, <em>value=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Stokes.fromkeys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new dictionary with keys from iterable and values set to value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Stokes.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.items">
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#PyMieSim.Representations.Stokes.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.keys">
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#PyMieSim.Representations.Stokes.keys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.pop">
+<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#PyMieSim.Representations.Stokes.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.popitem">
+<code class="descname">popitem</code><span class="sig-paren">(</span><em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Stokes.popitem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove and return a (key, value) pair as a 2-tuple.</p>
+<p>Pairs are returned in LIFO (last-in, first-out) order.
+Raises KeyError if the dict is empty.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.setdefault">
+<code class="descname">setdefault</code><span class="sig-paren">(</span><em>key</em>, <em>default=None</em>, <em>/</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Representations.Stokes.setdefault" title="Permalink to this definition">¶</a></dt>
+<dd><p>Insert key with a value of default if key is not in the dictionary.</p>
+<p>Return the value for key if key is in the dictionary, else default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#PyMieSim.Representations.Stokes.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Representations.Stokes.values">
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#PyMieSim.Representations.Stokes.values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -294,6 +624,13 @@ light scattering.</p>
 <code class="descname">HField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.HField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Value of the electric field.</p>
 <p><span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Source.PlaneWave.I">
+<code class="descname">I</code><a class="headerlink" href="#PyMieSim.Source.PlaneWave.I" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute averaged value of Poyinting vector.
+<span class="math notranslate nohighlight">\(I = &lt;S&gt; = \frac{c \epsilon_0}{2} E_0^2\)</span></p>
 </dd></dl>
 
 </dd></dl>
@@ -518,6 +855,156 @@ ref[2]:Eq:10
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.EnergyFlow">
+<code class="descname">EnergyFlow</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.EnergyFlow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return energy flow defined as:</p>
+<p><span class="math notranslate nohighlight">\(W_a = \sigma_{sca} * I_{inc}\)</span></p>
+<p>Where <span class="math notranslate nohighlight">\(\sigma_{sca}\)</span> is the scattering cross section.</p>
+<p>More info on wikipedia link:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Cross_section_(physics">https://en.wikipedia.org/wiki/Cross_section_(physics</a>)#Cross_section_and_Mie_theory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code>) – Number of voxel in the 4 pi space to compute energy flow.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Energy flow [<span class="math notranslate nohighlight">\(W\)</span>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.FarField">
+<code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.FarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(\Big\{ E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2 \Big\}\)</span>.</p>
+<p>The Fields are up to a constant phase value: <span class="math notranslate nohighlight">\(\exp{(-i k r )}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnay sub-class with all pertient information as keys.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.GetEfficiencies">
+<code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
+for the scatterer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.PoyntingVector">
+<code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.PoyntingVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return the Poynting vector norm defined as:</p>
+<p><span class="math notranslate nohighlight">\(\vec{S} = \epsilon c^2 \vec{E} \times \vec{B}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code>) – Number of voxel in the 4 pi space to compute energy flow.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Poynting field [<span class="math notranslate nohighlight">\(W/m^2\)</span>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">np.array</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Sphere.Qabs">
+<code class="descname">Qabs</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Qabs" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(Q_{abs}=Q_{ext}-Q_{sca}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Absorption efficiency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Sphere.Qext">
+<code class="descname">Qext</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Qext" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Extinction efficiency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Sphere.Qsca">
+<code class="descname">Qsca</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Qsca" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Scattering efficiency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.S1S2">
+<code class="descname">S1S2</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.S1S2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> and <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
+For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
+<p><span class="math notranslate nohighlight">\(S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\)</span></p>
+<p><span class="math notranslate nohighlight">\(S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point (<span class="math notranslate nohighlight">\(\phi\)</span>) to evaluate <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description of returned object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.S1S2" title="PyMieSim.Scatterer.Sphere.S1S2"><code class="xref py py-class docutils literal notranslate"><span class="pre">S1S2</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.SPF">
+<code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.SPF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering phase function.</p>
+<p>SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnay subclass with all pertinent information as keys.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#PyMieSim.Scatterer.Sphere.SPF" title="PyMieSim.Scatterer.Sphere.SPF"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPF</span></code></a> in <code class="xref py py-mod docutils literal notranslate"><span class="pre">PyMieSim</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.an">
 <code class="descname">an</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere.an"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.an" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq:III.88 of B&amp;B:</p>
@@ -563,6 +1050,40 @@ ref[2]:Eq:10
 {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
 \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}\)</span></p>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.sFarField">
+<code class="descname">sFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.sFarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field for structured coordinate.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<p>The Fields are up to a constant phase value.</p>
+<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.uFarField">
+<code class="descname">uFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.uFarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field for unstructured coordinate.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<p>The Fields are up to a constant phase value.</p>
+<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -617,6 +1138,156 @@ ref[2]:Eq:10
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.EnergyFlow">
+<code class="descname">EnergyFlow</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.EnergyFlow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return energy flow defined as:</p>
+<p><span class="math notranslate nohighlight">\(W_a = \sigma_{sca} * I_{inc}\)</span></p>
+<p>Where <span class="math notranslate nohighlight">\(\sigma_{sca}\)</span> is the scattering cross section.</p>
+<p>More info on wikipedia link:
+<a class="reference external" href="https://en.wikipedia.org/wiki/Cross_section_(physics">https://en.wikipedia.org/wiki/Cross_section_(physics</a>)#Cross_section_and_Mie_theory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code>) – Number of voxel in the 4 pi space to compute energy flow.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Energy flow [<span class="math notranslate nohighlight">\(W\)</span>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.FarField">
+<code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.FarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(\Big\{ E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2 \Big\}\)</span>.</p>
+<p>The Fields are up to a constant phase value: <span class="math notranslate nohighlight">\(\exp{(-i k r )}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnay sub-class with all pertient information as keys.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.GetEfficiencies">
+<code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
+for the scatterer.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.PoyntingVector">
+<code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.PoyntingVector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return the Poynting vector norm defined as:</p>
+<p><span class="math notranslate nohighlight">\(\vec{S} = \epsilon c^2 \vec{E} \times \vec{B}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code>) – Number of voxel in the 4 pi space to compute energy flow.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Poynting field [<span class="math notranslate nohighlight">\(W/m^2\)</span>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">np.array</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Cylinder.Qabs">
+<code class="descname">Qabs</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qabs" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(Q_{abs}=Q_{ext}-Q_{sca}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Absorption efficiency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Cylinder.Qext">
+<code class="descname">Qext</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qext" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Extinction efficiency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="PyMieSim.Scatterer.Cylinder.Qsca">
+<code class="descname">Qsca</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qsca" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math notranslate nohighlight">\(Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Scattering efficiency</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.S1S2">
+<code class="descname">S1S2</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.S1S2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> and <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
+For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
+<p><span class="math notranslate nohighlight">\(S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\)</span></p>
+<p><span class="math notranslate nohighlight">\(S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point (<span class="math notranslate nohighlight">\(\phi\)</span>) to evaluate <span class="math notranslate nohighlight">\(S_1\)</span> and <span class="math notranslate nohighlight">\(S_2\)</span>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Description of returned object.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#PyMieSim.Scatterer.Cylinder.S1S2" title="PyMieSim.Scatterer.Cylinder.S1S2"><code class="xref py py-class docutils literal notranslate"><span class="pre">S1S2</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.SPF">
+<code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.SPF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scattering phase function.</p>
+<p>SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnay subclass with all pertinent information as keys.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#PyMieSim.Scatterer.Cylinder.SPF" title="PyMieSim.Scatterer.Cylinder.SPF"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPF</span></code></a> in <code class="xref py py-mod docutils literal notranslate"><span class="pre">PyMieSim</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Cylinder.an">
 <code class="descname">an</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder.an"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.an" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined ref[5]:</p>
@@ -640,6 +1311,40 @@ ref[2]:Eq:10
 <dt>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and</dt>
 <dd><span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the index.</dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.sFarField">
+<code class="descname">sFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.sFarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field for structured coordinate.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<p>The Fields are up to a constant phase value.</p>
+<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.uFarField">
+<code class="descname">uFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.uFarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method Compute scattering Far Field for unstructured coordinate.</p>
+<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<p>The Fields are up to a constant phase value.</p>
+<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -699,6 +1404,61 @@ thus independant of the phase of the latter.</p>
 </tbody>
 </table>
 <dl class="method">
+<dt id="PyMieSim.Detector.Photodiode.Coupling">
+<code class="descname">Coupling</code><span class="sig-paren">(</span><em>Scatterer</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Coupling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return coupling power which is detected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Scatterer</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code>) – Scatterer instance (sphere, cylinder, …).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Value of the coupling power [<span class="math notranslate nohighlight">\(W\)</span>].</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.Photodiode.Footprint">
+<code class="descname">Footprint</code><span class="sig-paren">(</span><em>Scatterer</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Footprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the footprint of the scattererd light coupling with the
+detector as computed as:</p>
+<p><span class="math notranslate nohighlight">\(\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),         \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
+<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Scatterer</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code>.) – Scatterer instance (sphere, cylinder, …).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnary subclass with all pertienent information.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#PyMieSim.Detector.Photodiode.Footprint" title="PyMieSim.Detector.Photodiode.Footprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Footprint</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.Photodiode.Plot">
+<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that plot the real part of the scattered field
+(<span class="math notranslate nohighlight">\(E_{\theta}\)</span> and <span class="math notranslate nohighlight">\(E_{\phi}\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.Photodiode.SphericalMesh">
+<code class="descname">SphericalMesh</code><span class="sig-paren">(</span><em>Sampling</em>, <em>MaxAngle</em>, <em>PhiOffset=0</em>, <em>GammaOffset=0</em>, <em>Structured=True</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.SphericalMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that return an angular mesh (<span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\phi\)</span>)
+which is either structured or not. If not the pattern follow a
+Fibonacci mesh.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Detector.Photodiode.StructuredFarField">
 <code class="descname">StructuredFarField</code><span class="sig-paren">(</span><em>Num=100</em>, <em>SFactor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#Photodiode.StructuredFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.Photodiode.StructuredFarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the FarField in a structured Mesh.</p>
@@ -752,23 +1512,96 @@ thus dependant of the phase of the latter.</p>
 </tbody>
 </table>
 <dl class="method">
+<dt id="PyMieSim.Detector.LPmode.Coupling">
+<code class="descname">Coupling</code><span class="sig-paren">(</span><em>Scatterer</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Coupling" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return coupling power which is detected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Scatterer</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code>) – Scatterer instance (sphere, cylinder, …).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Value of the coupling power [<span class="math notranslate nohighlight">\(W\)</span>].</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Detector.LPmode.FarField">
-<code class="descname">FarField</code><span class="sig-paren">(</span><em>Num</em>, <em>Interpolate</em>, <em>SFactor=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#LPmode.FarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.LPmode.FarField" title="Permalink to this definition">¶</a></dt>
+<code class="descname">FarField</code><span class="sig-paren">(</span><em>Num</em>, <em>Interpolate</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#LPmode.FarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.LPmode.FarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the FarField in a structured Mesh and interpolate the Mesh.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Dimension of the structured mesh [Num, Num].</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Structured FarField value.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">FraunhoferDiffraction</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.LPmode.Footprint">
+<code class="descname">Footprint</code><span class="sig-paren">(</span><em>Scatterer</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Footprint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the footprint of the scattererd light coupling with the
+detector as computed as:</p>
+<p><span class="math notranslate nohighlight">\(\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),         \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\)</span>.</p>
+<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
+<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Scatterer</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Scatterer</span></code>.) – Scatterer instance (sphere, cylinder, …).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnary subclass with all pertienent information.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#PyMieSim.Detector.LPmode.Footprint" title="PyMieSim.Detector.LPmode.Footprint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Footprint</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.LPmode.Plot">
+<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that plot the real part of the scattered field
+(<span class="math notranslate nohighlight">\(E_{\theta}\)</span> and <span class="math notranslate nohighlight">\(E_{\phi}\)</span>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.LPmode.SphericalMesh">
+<code class="descname">SphericalMesh</code><span class="sig-paren">(</span><em>Sampling</em>, <em>MaxAngle</em>, <em>PhiOffset=0</em>, <em>GammaOffset=0</em>, <em>Structured=True</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.SphericalMesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method that return an angular mesh (<span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(\phi\)</span>)
+which is either structured or not. If not the pattern follow a
+Fibonacci mesh.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Detector.LPmode.StructuredFarField">
+<code class="descname">StructuredFarField</code><span class="sig-paren">(</span><em>Num=100</em>, <em>SFactor=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Detector.html#LPmode.StructuredFarField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Detector.LPmode.StructuredFarField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the FarField in a structured Mesh.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Dimension of the structured mesh [Num, Num].</li>
-<li><strong>SFactor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Factor that is used to definie the LP mode numerical aperture (NA).</li>
+<li><strong>SFactor</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>) – Unused parameter added to match <a class="reference internal" href="#PyMieSim.Detector.LPmode" title="PyMieSim.Detector.LPmode"><code class="xref py py-class docutils literal notranslate"><span class="pre">LPmode</span></code></a> class.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Structured FarField value.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><code class="xref py py-class docutils literal notranslate"><span class="pre">FraunhoferDiffraction</span></code></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class`numpy.ndarray`:</p>
 </td>
 </tr>
 </tbody>

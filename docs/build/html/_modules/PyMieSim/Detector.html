@@ -160,7 +160,6 @@
 <span class="kn">import</span> <span class="nn">fibermodes</span>
 
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">interp_at</span><span class="p">,</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Sp2Cart</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">FraunhoferDiffraction</span><span class="p">,</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">SMF28</span><span class="p">,</span> <span class="n">Angle</span>
 
@@ -308,8 +307,28 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">FarField</span><span class="p">(</span><span class="n">Num</span> <span class="o">=</span> <span class="n">InterpSampling</span><span class="p">,</span> <span class="n">Interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="LPmode.StructuredFarField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.LPmode.StructuredFarField">[docs]</a>    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">SFactor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the FarField in a structured Mesh.</span>
 
-<div class="viewcode-block" id="LPmode.FarField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.LPmode.FarField">[docs]</a>    <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">,</span> <span class="n">Interpolate</span><span class="p">,</span> <span class="n">SFactor</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Dimension of the structured mesh [Num, Num].</span>
+<span class="sd">        SFactor : :class:`float`</span>
+<span class="sd">            Unused parameter added to match :class:`LPmode` class.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class`numpy.ndarray`:</span>
+<span class="sd">            Structured FarField value.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">FarField</span><span class="p">(</span><span class="n">Num</span><span class="p">,</span> <span class="n">Interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="LPmode.FarField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.LPmode.FarField">[docs]</a>    <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">,</span> <span class="n">Interpolate</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the FarField in a structured Mesh and interpolate the Mesh.</span>
 
@@ -317,8 +336,6 @@
 <span class="sd">        ----------</span>
 <span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Dimension of the structured mesh [Num, Num].</span>
-<span class="sd">        SFactor : :class:`float`</span>
-<span class="sd">            Factor that is used to definie the LP mode numerical aperture (NA).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

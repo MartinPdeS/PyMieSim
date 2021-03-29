@@ -38,6 +38,7 @@ class FibonacciMesh(object):
                  GammaOffset: float = 0.):
 
 
+        self.Structured  = False
         self.Sampling    = Sampling
         self.MaxAngle    = MaxAngle
         self.PhiOffset   = PhiOffset
@@ -123,15 +124,27 @@ class StructuredFullMesh(object):
 
     """
     def __init__(self, Num: int = 100):
-        self.Num = Num
 
-        self.shape = [Num, Num]
+        self.Structure     = True
 
-        Phi, Theta = np.mgrid[-pi/2:pi/2:complex(Num), 0:2*pi:complex(Num)]
+        self.Num           = Num
+        self.shape         = [Num, Num]
 
-        self.Phi = Angle(Phi, unit='Radian')
+        Phi, Theta         = np.mgrid[-pi/2:pi/2:complex(Num), 0:2*pi:complex(Num)]
 
-        self.Theta = Angle(Theta, unit='Radian')
+        self.dOmega         = Angle(0, unit='Radian');
+        self.dOmega.Radian  = np.abs( Phi[0,0] - Phi[1,0] ) * np.abs( Theta[0,0] - Theta[0,1] )
+        self.dOmega.Degree  = self.dOmega.Radian * (180/pi)**2
+
+
+        self.Omega         = Angle(0, unit='Radian');
+        self.Omega.Radian  = 4 * pi
+        self.Omega.Degree  = self.dOmega.Radian * (180/pi)**2
+
+        self.Phi           = Angle(Phi.flatten(), unit='Radian')
+        self.Theta         = Angle(Theta.flatten(), unit='Radian')
+
+        self.SinMesh       = np.sin(self.Phi.Radian+pi/2)
 
 
 

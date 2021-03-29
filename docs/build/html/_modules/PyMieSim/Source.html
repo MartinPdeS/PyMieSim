@@ -165,7 +165,7 @@
 
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseSource</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Constants</span> <span class="kn">import</span> <span class="n">eps0</span><span class="p">,</span> <span class="n">mu0</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Constants</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.GLMT.GaussianBeam</span> <span class="kn">import</span> <span class="n">Anm</span><span class="p">,</span> <span class="n">Anm_integrand</span><span class="p">,</span> <span class="n">Bnm</span><span class="p">,</span> <span class="n">Bnm_integrand</span>
 
 
@@ -194,6 +194,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">Wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">E0</span> <span class="o">=</span> <span class="n">E0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">=</span> <span class="n">E0</span> <span class="o">/</span> <span class="p">(</span><span class="n">mu0</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">eps0</span><span class="o">/</span><span class="n">mu0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="kc">None</span>
@@ -306,6 +307,16 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">*</span> <span class="n">FPhase</span> <span class="o">*</span> <span class="n">cos</span><span class="p">(</span><span class="n">Pol</span><span class="p">),</span> \
                <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">*</span> <span class="n">FPhase</span> <span class="o">*</span> <span class="n">sin</span><span class="p">(</span><span class="n">Pol</span><span class="p">),</span> \
                <span class="mi">0</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">I</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute averaged value of Poyinting vector.</span>
+<span class="sd">        :math:`I = &lt;S&gt; = \\frac{c \\epsilon_0}{2} E_0^2`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">c</span> <span class="o">*</span> <span class="n">eps0</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E0</span><span class="o">**</span><span class="mi">2</span>
 
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

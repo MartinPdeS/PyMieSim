@@ -12,6 +12,7 @@ from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
+from PyMieSim.Mesh import FibonacciMesh
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
 Scat        = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
@@ -196,8 +197,13 @@ class PrintingTest(TestCase):
 
 
     def test17(self):
-        val0 = Scat._CrossSection(100*100)
-        val1 = Scat.CrossSection()
+        Mesh = FibonacciMesh(MaxAngle    = pi,
+                             Sampling    = 1000,
+                             PhiOffset   = 0,
+                             GammaOffset = 0)
+
+        val0 = Scat._CrossSection(Mesh)
+        val1 = Scat.Qsca * Scat.Area
         error = np.abs(val0-val1)/val0
         assert error < 1e-2
 
