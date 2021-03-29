@@ -5,7 +5,6 @@ from scipy.interpolate import griddata
 
 from PyMieSim.Physics import Angle
 from PyMieSim.utils import Sp2Cart, Cart2Sp
-from pythonlangutil.overload import Overload, signature
 
 
 
@@ -42,7 +41,7 @@ def PlotUnstructuredAbs(Scalar, Mesh, Name=''):
 
     _PlotUnstructuredAbs(Scalar  = Mesh.Phi.Radian*0+1,
                          Phi     = Mesh.Phi.Radian,
-                         Theta   = Mesh.Theta.Radian, 
+                         Theta   = Mesh.Theta.Radian,
                          Name    = Name)
 
 
