@@ -96,7 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#scatterer-phase-function">Scatterer: phase function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detector-photodiode">Detector: Photodiode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detector-lpmode">Detector: LPMode</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#coupling-scatterer-lpmode">Coupling: Scatterer-LPMode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coupling-scatterer-photodiode">Coupling: Scatterer-Photodiode</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scattererset-qscattering">ScattererSet: Qscattering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#experimentalset-coupling">ExperimentalSet: Coupling</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#optimizer-na">Optimizer: NA</a></li>
@@ -336,8 +336,8 @@
 </td></tr></table></div>
 <a class="reference internal image-reference" href="_images/LPmode.png"><img alt="_images/LPmode.png" src="_images/LPmode.png" style="width: 600px;" /></a>
 </div>
-<div class="section" id="coupling-scatterer-lpmode">
-<h2>Coupling: Scatterer-LPMode<a class="headerlink" href="#coupling-scatterer-lpmode" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="coupling-scatterer-photodiode">
+<h2>Coupling: Scatterer-Photodiode<a class="headerlink" href="#coupling-scatterer-photodiode" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-console notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -360,18 +360,18 @@
 20
 21
 22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">from PyMieSim.Source import PlaneWave</span>
-<span class="go">from PyMieSim.Detector import LPmode</span>
+<span class="go">from PyMieSim.Detector import Photodiode</span>
 <span class="go">from PyMieSim.Scatterer import Sphere</span>
 
 <span class="go">LightSource = PlaneWave(Wavelength = 450e-9,</span>
-<span class="go">                        Polarization = 0)</span>
+<span class="go">                        Polarization = 0,</span>
+<span class="go">                        E0= 1e5)</span>
 
-<span class="go">Detector = LPmode(Mode         = (0, 1,&#39;h&#39;),</span>
-<span class="go">                  Sampling     = 201,</span>
-<span class="go">                  NA           = 0.2,</span>
-<span class="go">                  GammaOffset  = 0,</span>
-<span class="go">                  PhiOffset    = 0,</span>
-<span class="go">                  CouplingMode = &#39;Centered&#39;)</span>
+<span class="go">Detector = Photodiode(Sampling     = 201,</span>
+<span class="go">                      NA           = 0.2,</span>
+<span class="go">                      GammaOffset  = 0,</span>
+<span class="go">                      PhiOffset    = 0,</span>
+<span class="go">                      CouplingMode = &#39;Centered&#39;)</span>
 
 
 <span class="go">Scat = Sphere(Diameter    = 300e-9,</span>
@@ -383,7 +383,7 @@
 <span class="go">print(Coupling)</span>
 </pre></div>
 </td></tr></table></div>
-<p>Output: (6.70121870391961e-18)</p>
+<p>Output: (6.57e+01 nWatt)</p>
 </div>
 <div class="section" id="scattererset-qscattering">
 <h2>ScattererSet: Qscattering<a class="headerlink" href="#scattererset-qscattering" title="Permalink to this headline">¶</a></h2>
@@ -402,7 +402,10 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">import numpy as np</span>
+16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="go">import numpy as np</span>
 <span class="go">from PyMieSim.Source import PlaneWave</span>
 <span class="go">from PyMieSim.Sets import ScattererSet</span>
 
@@ -410,14 +413,17 @@
 <span class="go">                       Polarization = 0)</span>
 
 
-<span class="go">ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 15000e-9, 400),</span>
-<span class="go">                       RIList        = np.linspace(1.5, 1.5, 1).round(1),</span>
+<span class="go">ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 10000e-9, 400),</span>
+<span class="go">                       RIList        = np.linspace(1.5, 1.8, 3).round(1),</span>
 <span class="go">                       Source        = LightSource)</span>
 
 
 <span class="go">Qsca = ScatSet.Qsca()</span>
 
-<span class="go">Qsca.Plot()</span>
+<span class="go">fig = Qsca.Plot()</span>
+
+
+<span class="go">Qsca.Show()</span>
 </pre></div>
 </td></tr></table></div>
 <a class="reference internal image-reference" href="_images/Qsca.png"><img alt="_images/Qsca.png" src="_images/Qsca.png" style="width: 600px;" /></a>

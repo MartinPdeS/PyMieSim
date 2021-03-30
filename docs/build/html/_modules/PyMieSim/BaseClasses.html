@@ -162,7 +162,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">ScalarFarField</span><span class="p">,</span> <span class="n">Footprint</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">GetFieldBinding</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">UnitPower</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">InterpFull</span><span class="p">,</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">UnitPower</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieSim._Coupling</span> <span class="kn">import</span> <span class="n">Coupling</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Plots</span> <span class="kn">import</span> <span class="n">PlotUnstructured</span>
@@ -454,7 +454,7 @@
 
 
 
-    <span class="k">def</span> <span class="nf">uFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">uFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for unstructured coordinate.</span>
 
 <span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
@@ -471,10 +471,10 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">uFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">uFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">sFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for structured coordinate.</span>
 
 <span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
@@ -491,7 +491,47 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">sFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">sFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">uS1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for unstructured coordinate.</span>
+
+<span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
+
+<span class="sd">        The Fields are up to a constant phase value.</span>
+
+<span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">uS1S2</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">sS1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for structured coordinate.</span>
+
+<span class="sd">        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`</span>
+
+<span class="sd">        The Fields are up to a constant phase value.</span>
+
+<span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
+
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">sS1S2</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">SPF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
@@ -531,7 +571,7 @@
 <span class="sd">            Poynting field [:math:`W/m^2`]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">EPhi</span><span class="p">,</span> <span class="n">ETheta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uFarField</span><span class="p">(</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">)</span>
+        <span class="n">EPhi</span><span class="p">,</span> <span class="n">ETheta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uFarField</span><span class="p">(</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Phi</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">Theta</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span><span class="mf">1.</span><span class="p">)</span>
 
         <span class="n">NormE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">EPhi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">ETheta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
@@ -589,10 +629,9 @@
 <span class="sd">        :class:`float`</span>
 <span class="sd">            scattering cross section</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#return self.EnergyFlow(Mesh) / self.Source.I</span>
 
-        <span class="n">W</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">EnergyFlow</span><span class="p">(</span><span class="n">Mesh</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">W</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">I</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Qsca</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Area</span>
 
 
 
