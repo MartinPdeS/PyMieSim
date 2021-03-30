@@ -174,14 +174,17 @@ ScattererSet: Qscattering
                           Polarization = 0)
 
 
-   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 15000e-9, 400),
-                          RIList        = np.linspace(1.5, 1.5, 1).round(1),
+   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 10000e-9, 400),
+                          RIList        = np.linspace(1.5, 1.8, 3).round(1),
                           Source        = LightSource)
 
 
    Qsca = ScatSet.Qsca()
 
-   Qsca.Plot()
+   fig = Qsca.Plot()
+
+
+   Qsca.Show()
 
 
 

@@ -26,7 +26,7 @@ class ExperimentalDataFrame(pd.DataFrame):
                                               grid    = True,
                                               figsize = (8,4),
                                               xlabel  = r'Scatterer diameter [m]',
-                                              ylabel  = r'Coupling [u.a.]',
+                                              ylabel  = r'Coupling [Watt]',
                                               **kwargs)
 
         fig.legend(prop={'size': 8})
@@ -101,10 +101,10 @@ class QscaDataFrame(pd.DataFrame):
                                           grid    = True,
                                           figsize = (8,4),
                                           xlabel  = r'Scatterer diameter [m]',
-                                          ylabel  = r'Q$_{Scattering}$',
+                                          ylabel  = r'Q$_{Scat}$ [Watt.m$^{-2}$]',
                                           **kwargs)
 
-        fig.legend(prop={'size': 8})
+        fig.legend(prop={'size': 8}, title='Refrac. index', loc=4)
 
         return fig
 

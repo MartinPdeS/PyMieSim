@@ -6,40 +6,12 @@ from PyMieSim.Physics import Angle
 import PyMieSim
 
 
-def GetFieldBinding(Scatterer, Structured, R, Phi, Theta):
-
-    kwarg = { 'Index'       : Scatterer.Index,
-               'Diameter'   : Scatterer.Diameter,
-               'Wavelength' : Scatterer.Source.Wavelength,
-               'nMedium'    : Scatterer.nMedium,
-               'Phi'        : Phi,
-               'Theta'      : Theta,
-               'R'          : R,
-               'E0'         : Scatterer.Source.E0}
+def Norm(Scalar):
+    return np.sqrt(np.sum(np.abs(Scalar)**2))
 
 
-    lib = PyMieSim
-    if Scatterer.Source.GLMT:
-        lib = lib.GLMT
-        kwarg['BSC'] = Scatterer.Source._BSC_
-        kwarg['MaxOrder'] = Scatterer.Source.MaxOrder
-
-    else:
-        lib = lib.LMT
-
-    if Scatterer.type == 'Sphere': lib = lib.Sphere
-
-    if Scatterer.type == 'Cylinder': lib = lib.Cylinder
-
-    if Structured:
-        lib = lib.Structured
-    else:
-        lib = lib.Unstructured
-
-    if Scatterer.Source.Polarization:
-        return lib.Fields(**kwarg, Polarization = Scatterer.Source.Polarization.Radian )
-    else:
-        return lib.FieldsUnpolarized(**kwarg)
+def Normalize(Scalar):
+    return Scalar / Norm(Scalar)
 
 
 def InterpFull(Meshes, Scalar, Shape):

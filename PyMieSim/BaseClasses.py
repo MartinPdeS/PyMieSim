@@ -4,7 +4,7 @@
 import numpy as np
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle, GetFieldBinding, Cart2Sp, UnitPower
+from PyMieSim.utils import InterpFull, NA2Angle, Cart2Sp, UnitPower
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 from PyMieSim.Plots import PlotUnstructured
@@ -296,7 +296,7 @@ class BaseScatterer(object):
 
 
 
-    def uFarField(self, Phi, Theta):
+    def uFarField(self, Phi, Theta, R):
         """Method Compute scattering Far Field for unstructured coordinate.
 
         Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
@@ -313,10 +313,10 @@ class BaseScatterer(object):
 
         """
 
-        return self.Bind.uFields(Phi = Phi, Theta=Theta, R=1.)
+        return self.Bind.uFields(Phi = Phi, Theta=Theta, R=R)
 
 
-    def sFarField(self, Phi, Theta):
+    def sFarField(self, Phi, Theta, R):
         """Method Compute scattering Far Field for structured coordinate.
 
         Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
@@ -333,7 +333,47 @@ class BaseScatterer(object):
 
         """
 
-        return self.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
+        return self.Bind.sFields(Phi = Phi, Theta=Theta, R=R)
+
+
+    def uS1S2(self, Phi, Theta):
+        """Method Compute scattering Far Field for unstructured coordinate.
+
+        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
+
+        The Fields are up to a constant phase value.
+
+        :math:`\\exp{\big(-i k r \big)}`
+
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
+
+        """
+
+        return self.Bind.uS1S2(Phi = Phi, Theta=Theta)
+
+
+    def sS1S2(self, Phi, Theta):
+        """Method Compute scattering Far Field for structured coordinate.
+
+        Fields = :math:`E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2`
+
+        The Fields are up to a constant phase value.
+
+        :math:`\\exp{\big(-i k r \big)}`
+
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
+
+        """
+
+        return self.Bind.sS1S2(Phi = Phi, Theta=Theta)
 
 
     def SPF(self, Num=100):
@@ -373,7 +413,7 @@ class BaseScatterer(object):
             Poynting field [:math:`W/m^2`]
         """
 
-        EPhi, ETheta = self.uFarField(Mesh.Phi.Radian, Mesh.Theta.Radian)
+        EPhi, ETheta = self.uFarField(Mesh.Phi.Radian, Mesh.Theta.Radian,1.)
 
         NormE = np.sqrt(np.abs(EPhi)**2 + np.abs(ETheta)**2)
 
@@ -431,10 +471,9 @@ class BaseScatterer(object):
         :class:`float`
             scattering cross section
         """
+        #return self.EnergyFlow(Mesh) / self.Source.I
 
-        W = self.EnergyFlow(Mesh)
-
-        return W / self.Source.I
+        return self.Qsca*self.Area
 
 
 

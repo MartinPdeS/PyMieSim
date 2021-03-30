@@ -1,13 +1,9 @@
 import numpy as np
 from mayavi import mlab
 import matplotlib.pyplot as plt
+
 from PyMieSim.Plots import PlotStructuredAmplitude
-#plt.rcParams["font.family"] = "serif"
-#plt.rcParams["mathtext.fontset"] = "dejavuserif"
-
-
 from PyMieSim.Plots import PlotStructuredAbs
-from PyMieSim.utils import GetFieldBinding
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 
 
@@ -180,7 +176,7 @@ class Footprint(dict):
 
         Direct = AngleUnit2DirectUnit(Phi, Scatterer.Source.k)
 
-        FarFieldPara, FarFieldPerp = Scatterer.uFarField(Phi.flatten(), Theta.flatten())
+        FarFieldPara, FarFieldPerp = Scatterer.uS1S2(Phi.flatten(), Theta.flatten())
 
         Perp =  \
         Detector.StructuredFarField(Num=Num, SFactor=16) * FarFieldPerp.reshape(Theta.shape)

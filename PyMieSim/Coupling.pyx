@@ -7,20 +7,20 @@
 #cython: nonecheck=False
 #cython: wraparound=False
 
-
 cimport cython
 import cython
 cimport numpy as np
 import numpy as np
 
 
-
 cpdef Coupling(Scatterer, Detector):
-     EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+     EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
      dOmega     = Detector.Mesh.dOmega.Radian
      Omega      = Detector.Mesh.Omega.Radian
      Filter     = Detector.Filter.Radian
      Scalar     = Detector.Scalar
+
+
 
      if Detector.CouplingMode[1] == 'Centered':
          if Detector.CouplingMode[0] == "Intensity":
@@ -90,9 +90,9 @@ cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 
-    val0 = ( np.abs( np.sum( Scalar0 * EPhi ) ) * dOmega )**2 * PhiFiltering
+    val0 = np.abs( np.sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
 
-    val1 = ( np.abs( np.sum( Scalar0 * EThe ) ) * dOmega )**2 * TheFiltering
+    val1 = np.abs( np.sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
 
     return val0 + val1
 

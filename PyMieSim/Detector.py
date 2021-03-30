@@ -2,8 +2,9 @@ import numpy as np
 import fibermodes
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.utils import interp_at, NA2Angle, Sp2Cart
+from PyMieSim.utils import interp_at, NA2Angle, Sp2Cart, Normalize
 from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
+
 
 
 class Photodiode(BaseDetector, MeshProperty):
@@ -192,7 +193,9 @@ class LPmode(BaseDetector, MeshProperty):
 
         mode = FraunhoferDiffraction(mode)
 
-        if not Interpolate: return FraunhoferDiffraction(mode)
+        mode = Normalize(mode)
+
+        if not Interpolate: return mode
 
         self._phi, self._theta = self.SphericalMesh(Sampling    = mode.shape[0],
                                                     MaxAngle    = self.Mesh.MaxAngle,
@@ -201,13 +204,16 @@ class LPmode(BaseDetector, MeshProperty):
                                                     Structured  = True)
 
 
-        return interp_at(x           = self._phi.flatten(),
-                         y           = self._theta.flatten(),
-                         v           = mode.astype(np.complex).flatten(),
-                         xp          = self.Mesh.base[0],
-                         yp          = self.Mesh.base[1],
-                         algorithm   = 'linear',
-                         extrapolate = True)
+        Interp = interp_at(x           = self._phi.flatten(),
+                           y           = self._theta.flatten(),
+                           v           = mode.astype(np.complex).flatten(),
+                           xp          = self.Mesh.base[0],
+                           yp          = self.Mesh.base[1],
+                           algorithm   = 'linear',
+                           extrapolate = True)
+
+        return Normalize(Interp)
+
 
 
 

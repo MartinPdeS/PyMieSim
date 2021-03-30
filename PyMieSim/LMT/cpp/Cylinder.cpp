@@ -44,8 +44,10 @@ private:
                                            Dn(uint MaxOrder);
 
         std::tuple<Cndarray,Cndarray>      S1S2(ndarray Phi),
-                                           sFields(ndarray Phi, ndarray Theta, double R),
-                                           uFields(ndarray Phi, ndarray Theta, double R);
+                                           sS1S2(ndarray& Phi, ndarray& Theta),
+                                           uS1S2(ndarray& Phi, ndarray& Theta),
+                                           sFields(ndarray& Phi, ndarray& Theta, double R),
+                                           uFields(ndarray& Phi, ndarray& Theta, double R);
 
 
 
@@ -157,7 +159,7 @@ CYLINDER::S1S2(const ndarray Phi)
 
 
 std::tuple<Cndarray,Cndarray>
-CYLINDER::sFields(ndarray Phi, ndarray Theta, double R)
+CYLINDER::sFields(ndarray& Phi, ndarray& Theta, double R)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -201,7 +203,7 @@ CYLINDER::sFields(ndarray Phi, ndarray Theta, double R)
 
 
 std::tuple<Cndarray,Cndarray>
-CYLINDER::uFields(ndarray Phi, ndarray Theta, double R)
+CYLINDER::uFields(ndarray& Phi, ndarray& Theta, double R)
 {
 
   uint         PhiLength    = Phi.request().shape[0],
@@ -230,6 +232,93 @@ CYLINDER::uFields(ndarray Phi, ndarray Theta, double R)
   Unstructured(ThetaLength, PhiLength, S2Ptr, SinTerm, - propagator, EThetaPtr);
 
   Unstructured(ThetaLength, PhiLength, S1Ptr, CosTerm, JJ * propagator, EPhiPtr);
+
+  free(CosTerm);
+  free(SinTerm);
+  return std::make_tuple(ETheta, EPhi)  ;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+std::tuple<Cndarray,Cndarray>
+CYLINDER::sS1S2(ndarray& Phi, ndarray& Theta)
+{
+
+  uint         PhiLength    = Phi.request().shape[0],
+               ThetaLength  = Theta.request().shape[0];
+
+  double     * ThetaPtr     = (double*) Theta.request().ptr,
+             * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
+             * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
+
+  Cndarray     ETheta     = Cndarray(PhiLength*ThetaLength),
+               EPhi       = Cndarray(PhiLength*ThetaLength),
+               S1,
+               S2;
+
+  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
+
+  std::tie(S1, S2) = this->S1S2(Phi);
+
+  complex128 * EPhiPtr    = (complex128*) ETheta.request().ptr,
+             * EThetaPtr  = (complex128*) EPhi.request().ptr,
+             * S1Ptr      = (complex128*) S1.request().ptr,
+             * S2Ptr      = (complex128*) S2.request().ptr;
+
+  Structured(ThetaLength, PhiLength, S2Ptr, SinTerm, 1., EThetaPtr);
+
+  Structured(ThetaLength, PhiLength, S1Ptr, CosTerm, 1., EPhiPtr);
+
+  EPhi.resize({PhiLength,ThetaLength});
+  ETheta.resize({PhiLength,ThetaLength});
+
+  EPhi   = EPhi.attr("transpose")();
+  ETheta = ETheta.attr("transpose")();
+
+  free(CosTerm);
+  free(SinTerm);
+  return std::make_tuple(ETheta, EPhi)  ;
+
+}
+
+
+std::tuple<Cndarray,Cndarray>
+CYLINDER::uS1S2(ndarray& Phi, ndarray& Theta)
+{
+
+  uint         PhiLength    = Phi.request().shape[0],
+               ThetaLength  = Theta.request().shape[0];
+
+  double     * ThetaPtr     = (double*) Theta.request().ptr,
+             * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
+             * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
+
+  Cndarray     ETheta     = Cndarray(PhiLength),
+               EPhi       = Cndarray(PhiLength),
+               S1,
+               S2;
+
+  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
+
+  std::tie(S1, S2) = this->S1S2(Phi);
+
+  complex128 * EPhiPtr    = (complex128*) ETheta.request().ptr,
+             * EThetaPtr  = (complex128*) EPhi.request().ptr,
+             * S1Ptr      = (complex128*) S1.request().ptr,
+             * S2Ptr      = (complex128*) S2.request().ptr;
+
+  Unstructured(ThetaLength, PhiLength, S2Ptr, SinTerm, 1., EThetaPtr);
+
+  Unstructured(ThetaLength, PhiLength, S1Ptr, CosTerm, 1., EPhiPtr);
 
   free(CosTerm);
   free(SinTerm);
@@ -312,7 +401,7 @@ CYLINDER::HighFreqAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
 
   complex128 numerator, denominator;
 
-  for (int order = 1; order < MaxOrder+1; order++)
+  for (int order = 1; order < (int)MaxOrder+1; order++)
   {
       numerator   = Index * Jn(order, Index*x) * Jn_p(order, nMedium*x) - nMedium * Jn_p(order, Index*x) * Jn(order, nMedium*x);
       denominator = Index * Jn(order, Index*x) * Hn_p(order, nMedium*x) - nMedium * Jn_p(order, Index*x) * Hn(order, nMedium*x);

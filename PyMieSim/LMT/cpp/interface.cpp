@@ -1,6 +1,7 @@
 #include "../../includes/SpecialFunc.h"
 #include "../../includes/utils.h"
 #include "../../includes/BaseClass.h"
+#include "../../includes/BaseFunc.h"
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
 #include <iostream>
@@ -22,7 +23,7 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Polarization") = 0.,
            py::arg("E0")           = 1. )
 
-       .def("S1S2", 
+       .def("S1S2",
             &SPHERE::S1S2,
             py::arg("Phi") )
 
@@ -37,6 +38,16 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
+
+      .def("uS1S2",
+           &SPHERE::uS1S2,
+           py::arg("Phi"),
+           py::arg("Theta"))
+
+      .def("sS1S2",
+           &SPHERE::sS1S2,
+           py::arg("Phi"),
+           py::arg("Theta"))
 
       .def("an", &SPHERE::An, py::arg("MaxOrder")  = 5)
 
@@ -73,6 +84,16 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
+
+      .def("uS1S2",
+           &CYLINDER::uS1S2,
+           py::arg("Phi"),
+           py::arg("Theta"))
+
+      .def("sS1S2",
+           &CYLINDER::sS1S2,
+           py::arg("Phi"),
+           py::arg("Theta"))
 
       .def("an", &CYLINDER::An, py::arg("MaxOrder")  = 5)
 
