@@ -28,7 +28,7 @@ URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION         = '0.1.11'
+VERSION         = '0.1.12'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',
@@ -173,29 +173,23 @@ class UploadCommand(Command):
 
 # Where the magic happens:
 setup(
-    name=NAME,
-    version=about['__version__'],
-    description=DESCRIPTION,
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    author=AUTHOR,
-    author_email=EMAIL,
-    setup_requires=['numpy', 'pybind11','cython'],
-    python_requires=REQUIRES_PYTHON,
-    url=URL,
-    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
-    # If your package is a single module, use this instead of 'packages':
-    # py_modules=['mypackage'],
-
-    # entry_points={
-    #     'console_scripts': ['mycli=mymodule:cli'],
-    # },
-    install_requires=REQUIRED,
-    extras_require=EXTRAS,
-    dependency_links = ["fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0"],
-    include_package_data = True,
-    ext_modules          = ext_modules,
-    license='MIT',
+    name                          = NAME,
+    version                       = about['__version__'],
+    description                   = DESCRIPTION,
+    long_description              = long_description,
+    long_description_content_type = 'text/markdown',
+    author                        = AUTHOR,
+    author_email                  = EMAIL,
+    setup_requires                = ['numpy', 'pybind11','cython'],
+    python_requires               = REQUIRES_PYTHON,
+    url                           = URL,
+    packages                      = find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
+    install_requires              = REQUIRED,
+    extras_require                = EXTRAS,
+    dependency_links              = ["fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0"],
+    include_package_data          = True,
+    ext_modules                   = ext_modules,
+    license                       = 'MIT',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -206,14 +200,11 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy'
+        'Programming Language :: Python :: Implementation :: PyPy',
         'Development Status :: 3 - Alpha',
         'Topic :: Scientific/Engineering :: Physics',
         'Intended Audience :: Science/Research',
     ],
     # $ setup.py publish support.
-    cmdclass={
-        'upload': UploadCommand,
-        #'build_ext': build_ext
-    },
+    cmdclass={'upload': UploadCommand,}, #'build_ext': build_ext
 )

@@ -102,8 +102,9 @@ from PyMieSim.Source import PlaneWave
 from PyMieSim.Detector import LPmode
 from PyMieSim.Scatterer import Sphere
 
-LightSource = PlaneWave(Wavelength = 450e-9,
-                        Polarization = 0)
+LightSource = PlaneWave(Wavelength   = 450e-9,
+                        Polarization = 0,
+                        E0           = 1)
 
 Detector = LPmode(Mode         = (0, 1,'h'),
                   Sampling     = 201,
@@ -119,7 +120,7 @@ Scat = Sphere(Diameter    = 300e-9,
 
 Coupling = Detector.Coupling(Scatterer = Scat)
 
-print(Coupling)
+print(Coupling) # output: 1.66e+02 nWatt
 ```
 For more examples I invite you to check the [examples](https://pymiesim.readthedocs.io/en/latest/Examples.html)
 section of the documentations.

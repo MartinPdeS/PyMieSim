@@ -1,12 +1,11 @@
 Metadata-Version: 2.1
 Name: PyMieSim
-Version: 0.1.11
+Version: 0.1.12
 Summary: A package for light scattering simulations.
 Home-page: https://github.com/MartinPdeS/PyMieSim
 Author: ('Martin Poinsinet de Sivry',)
 Author-email: Martin.poinsinet.de.sivry@gmail.com
 License: MIT
-Project-URL: Bug Tracker, https://github.com/MartinPdeS/PyMieSim/issues
 Description: 
         
         ![figure](./docs/images/Logo2Use.png)
@@ -19,13 +18,14 @@ Description:
         
         [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg)](https://doi.org/10.5281/zenodo.4556074)
         
+        ----
         Welcome to PyMieSim's documentation!
         ====================================
         
         
         
         PyMieSim is a very easy to install/use tool for extensive Mie scattering analysis. It allows to study the light scattering
-        on different kind of object, at the moment spherical scatterer and continous sample under the Born approximation.
+        on different kind of object (scatterer), at the moment I only implemented spherical scatterers.
         Using this package, one can easily set a **LightSource** a **Scatterer** and a **Detector** within a very wide range of parameters such as:
         <ol>
         <li>LightSource structure (e.g. plane wave or Gaussian focused)</li>
@@ -46,27 +46,44 @@ Description:
         in order to study how light scattered by such Set will be coupling in different situations.
         
         
+        ----
         Documentation
         =============
-        For the moment, the documentation for the package is in the Docs/build/html/index.html file.
-        I invite you to open it, in order to checkout some pre-defined examples.
+        All the latest available documentation is available here https://pymiesim.readthedocs.io/en/latest/ or you can click the following badge:
+        
+        [![Documentation Status](https://readthedocs.org/projects/pymiesim/badge/?version=latest)](https://pymiesim.readthedocs.io/en/latest/?badge=latest)
         
         
+        ----
         Google Colab
         ============
         It's 2021, you don't need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
-        You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" badge) to access it.
+        You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" badge) to access it or click on the following badge:
         
+        [![Open In Collab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing)
         
-        dependencies
+        ----
+        Dependencies
         ============
-        In order to install the package you first need to install some dependencies, which are the c++ boost library and some plotting library. To install one can use the command line such as:
+        In order to install the package you first need to install some dependencies, which are the c++ [boost library](https://boost.org) and some plotting library. To install one can use the command line such as:
+        
+        **Linux (Debian)**
         ```console
-        sudo apt-get install libproj-dev proj-data proj-bin    --> Plottings library
-        sudo apt-get install libgeos-dev                       --> Plottings library
-        sudo apt-get install libboost-all-dev                  --> Boost library
+        sudo apt-get install libboost-all-dev
         ```
         
+        **MacOs**
+        ```console
+        brew install boost
+        ```
+        
+        
+        **Windows**
+        
+        [Boost installation guide](https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html)
+        
+        
+        ----
         Installation
         ============
         It's pretty simple:
@@ -74,7 +91,7 @@ Description:
         pip install PyMieSim
         ```
         
-        
+        ----
         Running Unittest
         ================
         
@@ -85,6 +102,39 @@ Description:
         ```
         
         
+        ----
+        Usage
+        =====
+        Here is an example on how to use the library.
+        ```console
+        from PyMieSim.Source import PlaneWave
+        from PyMieSim.Detector import LPmode
+        from PyMieSim.Scatterer import Sphere
+        
+        LightSource = PlaneWave(Wavelength = 450e-9,
+                                Polarization = 0)
+        
+        Detector = LPmode(Mode         = (0, 1,'h'),
+                          Sampling     = 201,
+                          NA           = 0.2,
+                          GammaOffset  = 0,
+                          PhiOffset    = 0,
+                          CouplingMode = 'Centered')
+        
+        
+        Scat = Sphere(Diameter    = 300e-9,
+                      Source      = LightSource,
+                      Index       = 1.4)
+        
+        Coupling = Detector.Coupling(Scatterer = Scat)
+        
+        print(Coupling)
+        ```
+        For more examples I invite you to check the [examples](https://pymiesim.readthedocs.io/en/latest/Examples.html)
+        section of the documentations.
+        
+        
+        ----
         To-Do List
         ----------
         
@@ -99,12 +149,14 @@ Description:
         - adding travis and codecov [DONE]
         
         
+        ----
         Citing this work?
         ================
         
         [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg)](https://doi.org/10.5281/zenodo.4556074)
         
         
+        ----
         Contact Information
         ===================
         As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
@@ -115,10 +167,15 @@ Description:
         
 Platform: UNKNOWN
 Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: C++
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: Implementation :: CPython
 Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Development Status :: 3 - Alpha
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Intended Audience :: Science/Research
 Requires-Python: >=3.6.0
 Description-Content-Type: text/markdown
