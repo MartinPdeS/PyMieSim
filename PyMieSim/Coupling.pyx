@@ -11,10 +11,11 @@ cimport cython
 import cython
 cimport numpy as np
 import numpy as np
-
+sum = np.sum
+abs = np.abs
 
 cpdef Coupling(Scatterer, Detector):
-     EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+     EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian, 1)
      dOmega     = Detector.Mesh.dOmega.Radian
      Omega      = Detector.Mesh.Omega.Radian
      Filter     = Detector.Filter.Radian
@@ -78,9 +79,9 @@ cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 
-    val0 = ( np.sum( np.abs(Scalar0 * EPhi)**2 ) * dOmega ) * PhiFiltering
+    val0 = sum( abs(Scalar0 * EPhi)**2 ) * dOmega * PhiFiltering
 
-    val1 = ( np.sum( np.abs(Scalar0 * EThe)**2 ) * dOmega ) * TheFiltering
+    val1 = sum( abs(Scalar0 * EThe)**2 ) * dOmega * TheFiltering
 
     return val0 + val1
 
@@ -90,9 +91,9 @@ cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 
-    val0 = np.abs( np.sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
+    val0 = abs( sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
 
-    val1 = np.abs( np.sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
+    val1 = abs( sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
 
     return val0 + val1
 
@@ -102,9 +103,9 @@ cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):
 
     PhiFiltering, TheFiltering = GetFiltering(Filter)
 
-    val0 = np.sum( np.abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering
+    val0 = sum( abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering
 
-    val1 = np.sum( np.abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering
+    val1 = sum( abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering
 
     return val0 + val1
 

@@ -7,7 +7,7 @@ from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSour
 from PyMieSim.Representations import S1S2, SPF, Stokes
 from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
 from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
-
+from PyMieSim.units import Area
 
 class Sphere(BaseScatterer, EfficienciesProperties):
     """Short summary.
@@ -38,30 +38,28 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                  MuSphere:    float  = 1.0,
                  MuMedium:    float  = 1.0):
 
-        self.type = 'Sphere'
-
-        self.Diameter, self.Source, self.Index = Diameter, Source, Index
-
-        self.nMedium = nMedium
-
-        self.Area = np.pi * (Diameter/2)**2
-
+        self.type      = 'Sphere'
+        self.Diameter  = Diameter
+        self.Source    = Source
+        self.Index     = Index
+        self.nMedium   = nMedium
+        self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
+        self.MuSp      = MuSphere
+        self.Mu        = MuMedium
 
-        self._Qsca, self.Q_ext, self._Qabs = None, None, None
-
-        self.MuSp = MuSphere
-
-        self.Mu = MuMedium
-
+        self._Qsca, self.Q_ext, self._Qabs     = None, None, None
         self._an, self._bn, self._cn, self._dn = [], [], [], []
+        self.GetBinding()
 
-        if Source.GLMT is True:
+
+    def GetBinding(self):
+        if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
                 raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
 
-            self.Bind = G_SPHERE(Index        = Index,
-                                 Diameter     = Diameter,
+            self.Bind = G_SPHERE(Index        = self.Index,
+                                 Diameter     = self.Diameter,
                                  Wavelength   = self.Source.Wavelength,
                                  nMedium      = self.nMedium,
                                  Polarization = self.Source.Polarization.Radian,
@@ -69,8 +67,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                                  BSC          = self.Source._BSC_)
 
         else:
-            self.Bind = SPHERE(Index        = Index,
-                               Diameter     = Diameter,
+            self.Bind = SPHERE(Index        = self.Index,
+                               Diameter     = self.Diameter,
                                Wavelength   = self.Source.Wavelength,
                                nMedium      = self.nMedium,
                                Polarization = self.Source.Polarization.Radian,
@@ -169,30 +167,28 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
                  MuSphere:    float  = 1.0,
                  MuMedium:    float  = 1.0):
 
-        self.type = 'Cylinder'
-
-        self.Diameter, self.Source, self.Index = Diameter, Source, Index
-
-        self.nMedium = IndexMedium
-
-        self.Area = np.pi * (Diameter/2)**2
-
+        self.type      = 'Cylinder'
+        self.Diameter  = Diameter
+        self.Source    = Source
+        self.Index     = Index
+        self.nMedium   = IndexMedium
+        self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
+        self.MuSp      = MuSphere
+        self.Mu        = MuMedium
 
-        self._Qsca, self.Q_ext, self._Qabs = None, None, None
-
-        self.MuSp = MuSphere
-
-        self.Mu = MuMedium
-
+        self._Qsca, self.Q_ext, self._Qabs     = None, None, None
         self._an, self._bn, self._cn, self._dn = [], [], [], []
+        self.GetBinding()
 
-        if Source.GLMT is True:
+
+    def GetBinding(self):
+        if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
                 raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
 
-            self.Bind = G_CYLINDER(Index        = Index,
-                                   Diameter     = Diameter,
+            self.Bind = G_CYLINDER(Index        = self.Index,
+                                   Diameter     = self.Diameter,
                                    Wavelength   = self.Source.Wavelength,
                                    nMedium      = self.nMedium,
                                    Polarization = self.Source.Polarization.Radian,
@@ -200,8 +196,8 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
                                    BSC          = self.Source._BSC_)
 
         else:
-            self.Bind = CYLINDER(Index        = Index,
-                                 Diameter     = Diameter,
+            self.Bind = CYLINDER(Index        = self.Index,
+                                 Diameter     = self.Diameter,
                                  Wavelength   = self.Source.Wavelength,
                                  nMedium      = self.nMedium,
                                  Polarization = self.Source.Polarization.Radian,

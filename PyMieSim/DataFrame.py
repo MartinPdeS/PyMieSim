@@ -29,7 +29,7 @@ class ExperimentalDataFrame(pd.DataFrame):
                                               ylabel  = r'Coupling [Watt]',
                                               **kwargs)
 
-        fig.legend(prop={'size': 8}, title='Refrac. index',)
+        fig.legend(prop={'size': 8}, title='Detec. , Refrac. index',)
 
         return fig
 

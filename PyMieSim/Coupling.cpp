@@ -1115,7 +1115,7 @@ struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling;
 struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling;
 struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentMeanCoupling;
 
-/* "PyMieSim/Coupling.pyx":77
+/* "PyMieSim/Coupling.pyx":78
  * 
  * 
  * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
@@ -1127,7 +1127,7 @@ struct __pyx_opt_args_8PyMieSim_9_Coupling_NoCoherentPointCoupling {
   PyObject *Filter;
 };
 
-/* "PyMieSim/Coupling.pyx":89
+/* "PyMieSim/Coupling.pyx":90
  * 
  * 
  * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
@@ -1139,7 +1139,7 @@ struct __pyx_opt_args_8PyMieSim_9_Coupling_CoherentPointCoupling {
   PyObject *Filter;
 };
 
-/* "PyMieSim/Coupling.pyx":101
+/* "PyMieSim/Coupling.pyx":102
  * 
  * 
  * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
@@ -1678,7 +1678,6 @@ static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_Omega[] = "Omega";
 static const char __pyx_k_Theta[] = "Theta";
 static const char __pyx_k_numpy[] = "numpy";
-static const char __pyx_k_uS1S2[] = "uS1S2";
 static const char __pyx_k_Filter[] = "Filter";
 static const char __pyx_k_Radian[] = "Radian";
 static const char __pyx_k_Scalar[] = "Scalar";
@@ -1690,6 +1689,7 @@ static const char __pyx_k_Detector[] = "Detector";
 static const char __pyx_k_Amplitude[] = "Amplitude";
 static const char __pyx_k_Intensity[] = "Intensity";
 static const char __pyx_k_Scatterer[] = "Scatterer";
+static const char __pyx_k_uFarField[] = "uFarField";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_CouplingMode[] = "CouplingMode";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
@@ -1727,7 +1727,7 @@ static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_sin;
 static PyObject *__pyx_n_s_sum;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_uS1S2;
+static PyObject *__pyx_n_s_uFarField;
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_Coupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scatterer, PyObject *__pyx_v_Detector); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_2GetFiltering(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Filter); /* proto */
 static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4NoCoherentPointCoupling(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_Scalar0, PyObject *__pyx_v_EPhi, PyObject *__pyx_v_EThe, PyObject *__pyx_v_dOmega, PyObject *__pyx_v_Filter); /* proto */
@@ -1739,11 +1739,11 @@ static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__2;
 /* Late includes */
 
-/* "PyMieSim/Coupling.pyx":16
- * 
+/* "PyMieSim/Coupling.pyx":17
+ * abs = np.abs
  * 
  * cpdef Coupling(Scatterer, Detector):             # <<<<<<<<<<<<<<
- *      EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian, 1)
  *      dOmega     = Detector.Mesh.dOmega.Radian
  */
 
@@ -1774,29 +1774,29 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("Coupling", 0);
 
-  /* "PyMieSim/Coupling.pyx":17
+  /* "PyMieSim/Coupling.pyx":18
  * 
  * cpdef Coupling(Scatterer, Detector):
- *      EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)             # <<<<<<<<<<<<<<
+ *      EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian, 1)             # <<<<<<<<<<<<<<
  *      dOmega     = Detector.Mesh.dOmega.Radian
  *      Omega      = Detector.Mesh.Omega.Radian
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_Scatterer, __pyx_n_s_uS1S2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_Scatterer, __pyx_n_s_uFarField); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_Phi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_Phi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Radian); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Radian); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Theta); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_Theta); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_Radian); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_Radian); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -1813,8 +1813,8 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+    PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_3, __pyx_t_4, __pyx_int_1};
+    __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1823,8 +1823,8 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[3] = {__pyx_t_5, __pyx_t_3, __pyx_t_4};
-    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+    PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_t_3, __pyx_t_4, __pyx_int_1};
+    __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1832,7 +1832,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -1841,9 +1841,12 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
     PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_6, __pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
+    __Pyx_INCREF(__pyx_int_1);
+    __Pyx_GIVEREF(__pyx_int_1);
+    PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, __pyx_int_1);
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -1854,7 +1857,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 17, __pyx_L1_error)
+      __PYX_ERR(0, 18, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -1867,15 +1870,15 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_7);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_8 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -1883,7 +1886,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_7 = __pyx_t_8(__pyx_t_4); if (unlikely(!__pyx_t_7)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_7);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_8(__pyx_t_4), 2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
     __pyx_t_8 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -1891,7 +1894,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_8 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 17, __pyx_L1_error)
+    __PYX_ERR(0, 18, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_EPhi = __pyx_t_2;
@@ -1899,102 +1902,102 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
   __pyx_v_EThe = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "PyMieSim/Coupling.pyx":18
+  /* "PyMieSim/Coupling.pyx":19
  * cpdef Coupling(Scatterer, Detector):
- *      EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian, 1)
  *      dOmega     = Detector.Mesh.dOmega.Radian             # <<<<<<<<<<<<<<
  *      Omega      = Detector.Mesh.Omega.Radian
  *      Filter     = Detector.Filter.Radian
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_dOmega); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 18, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_Radian); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_v_dOmega = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "PyMieSim/Coupling.pyx":19
- *      EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
- *      dOmega     = Detector.Mesh.dOmega.Radian
- *      Omega      = Detector.Mesh.Omega.Radian             # <<<<<<<<<<<<<<
- *      Filter     = Detector.Filter.Radian
- *      Scalar     = Detector.Scalar
- */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Omega); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_dOmega); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_Radian); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_v_Omega = __pyx_t_1;
+  __pyx_v_dOmega = __pyx_t_1;
   __pyx_t_1 = 0;
 
   /* "PyMieSim/Coupling.pyx":20
+ *      EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian, 1)
+ *      dOmega     = Detector.Mesh.dOmega.Radian
+ *      Omega      = Detector.Mesh.Omega.Radian             # <<<<<<<<<<<<<<
+ *      Filter     = Detector.Filter.Radian
+ *      Scalar     = Detector.Scalar
+ */
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Mesh); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Omega); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_Radian); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_v_Omega = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "PyMieSim/Coupling.pyx":21
  *      dOmega     = Detector.Mesh.dOmega.Radian
  *      Omega      = Detector.Mesh.Omega.Radian
  *      Filter     = Detector.Filter.Radian             # <<<<<<<<<<<<<<
  *      Scalar     = Detector.Scalar
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Filter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Filter); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Radian); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_Radian); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_Filter = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "PyMieSim/Coupling.pyx":21
+  /* "PyMieSim/Coupling.pyx":22
  *      Omega      = Detector.Mesh.Omega.Radian
  *      Filter     = Detector.Filter.Radian
  *      Scalar     = Detector.Scalar             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Scalar); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_Scalar); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 22, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_v_Scalar = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "PyMieSim/Coupling.pyx":25
+  /* "PyMieSim/Coupling.pyx":26
  * 
  * 
  *      if Detector.CouplingMode[1] == 'Centered':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":
  *              return NoCoherentPointCoupling(Scalar0       = Scalar,
  */
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_Centered, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 25, __pyx_L1_error)
+  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_Centered, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_9) {
 
-    /* "PyMieSim/Coupling.pyx":26
+    /* "PyMieSim/Coupling.pyx":27
  * 
  *      if Detector.CouplingMode[1] == 'Centered':
  *          if Detector.CouplingMode[0] == "Intensity":             # <<<<<<<<<<<<<<
  *              return NoCoherentPointCoupling(Scalar0       = Scalar,
  *                                             EPhi          = EPhi,
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 27, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_Intensity, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_Intensity, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 27, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_9) {
 
-      /* "PyMieSim/Coupling.pyx":27
+      /* "PyMieSim/Coupling.pyx":28
  *      if Detector.CouplingMode[1] == 'Centered':
  *          if Detector.CouplingMode[0] == "Intensity":
  *              return NoCoherentPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
@@ -2003,7 +2006,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __Pyx_XDECREF(__pyx_r);
 
-      /* "PyMieSim/Coupling.pyx":31
+      /* "PyMieSim/Coupling.pyx":32
  *                                             EThe          = EThe,
  *                                             dOmega        = dOmega,
  *                                             Filter        = Filter)             # <<<<<<<<<<<<<<
@@ -2012,13 +2015,13 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_10.__pyx_n = 1;
       __pyx_t_10.Filter = __pyx_v_Filter;
-      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 27, __pyx_L1_error)
+      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 28, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_r = __pyx_t_7;
       __pyx_t_7 = 0;
       goto __pyx_L0;
 
-      /* "PyMieSim/Coupling.pyx":26
+      /* "PyMieSim/Coupling.pyx":27
  * 
  *      if Detector.CouplingMode[1] == 'Centered':
  *          if Detector.CouplingMode[0] == "Intensity":             # <<<<<<<<<<<<<<
@@ -2027,23 +2030,23 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
     }
 
-    /* "PyMieSim/Coupling.pyx":35
+    /* "PyMieSim/Coupling.pyx":36
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
  *              return CoherentPointCoupling(Scalar0       = Scalar,
  *                                           EPhi          = EPhi,
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 36, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_Amplitude, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_Amplitude, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 36, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_9) {
 
-      /* "PyMieSim/Coupling.pyx":36
+      /* "PyMieSim/Coupling.pyx":37
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":
  *              return CoherentPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
@@ -2052,7 +2055,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __Pyx_XDECREF(__pyx_r);
 
-      /* "PyMieSim/Coupling.pyx":40
+      /* "PyMieSim/Coupling.pyx":41
  *                                           EThe          = EThe,
  *                                           dOmega        = dOmega,
  *                                           Filter        = Filter)             # <<<<<<<<<<<<<<
@@ -2061,13 +2064,13 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_11.__pyx_n = 1;
       __pyx_t_11.Filter = __pyx_v_Filter;
-      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 36, __pyx_L1_error)
+      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_11); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
       goto __pyx_L0;
 
-      /* "PyMieSim/Coupling.pyx":35
+      /* "PyMieSim/Coupling.pyx":36
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
@@ -2076,7 +2079,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
     }
 
-    /* "PyMieSim/Coupling.pyx":25
+    /* "PyMieSim/Coupling.pyx":26
  * 
  * 
  *      if Detector.CouplingMode[1] == 'Centered':             # <<<<<<<<<<<<<<
@@ -2085,39 +2088,39 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
   }
 
-  /* "PyMieSim/Coupling.pyx":44
+  /* "PyMieSim/Coupling.pyx":45
  * 
  * 
  *      if Detector.CouplingMode[1] == 'Mean':             # <<<<<<<<<<<<<<
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
  *            return NoCoherentPointCoupling(Scalar0       = Scalar,
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_Mean, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_Mean, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (__pyx_t_9) {
 
-    /* "PyMieSim/Coupling.pyx":45
+    /* "PyMieSim/Coupling.pyx":46
  * 
  *      if Detector.CouplingMode[1] == 'Mean':
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling             # <<<<<<<<<<<<<<
  *            return NoCoherentPointCoupling(Scalar0       = Scalar,
  *                                           EPhi          = EPhi,
  */
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_7, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_Intensity, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_1, __pyx_n_s_Intensity, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (__pyx_t_9) {
 
-      /* "PyMieSim/Coupling.pyx":46
+      /* "PyMieSim/Coupling.pyx":47
  *      if Detector.CouplingMode[1] == 'Mean':
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling
  *            return NoCoherentPointCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
@@ -2126,7 +2129,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __Pyx_XDECREF(__pyx_r);
 
-      /* "PyMieSim/Coupling.pyx":50
+      /* "PyMieSim/Coupling.pyx":51
  *                                           EThe          = EThe,
  *                                           dOmega        = dOmega,
  *                                           Filter        = Filter)             # <<<<<<<<<<<<<<
@@ -2135,13 +2138,13 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_10.__pyx_n = 1;
       __pyx_t_10.Filter = __pyx_v_Filter;
-      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+      __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_10); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __pyx_r = __pyx_t_1;
       __pyx_t_1 = 0;
       goto __pyx_L0;
 
-      /* "PyMieSim/Coupling.pyx":45
+      /* "PyMieSim/Coupling.pyx":46
  * 
  *      if Detector.CouplingMode[1] == 'Mean':
  *          if Detector.CouplingMode[0] == "Intensity":                            # same thing as intensity point coupling             # <<<<<<<<<<<<<<
@@ -2150,23 +2153,23 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
     }
 
-    /* "PyMieSim/Coupling.pyx":54
+    /* "PyMieSim/Coupling.pyx":55
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
  *              return CoherentMeanCoupling(Scalar0       = Scalar,
  *                                          EPhi          = EPhi,
  */
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_Detector, __pyx_n_s_CouplingMode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_Amplitude, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_t_7, __pyx_n_s_Amplitude, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_9) {
 
-      /* "PyMieSim/Coupling.pyx":55
+      /* "PyMieSim/Coupling.pyx":56
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":
  *              return CoherentMeanCoupling(Scalar0       = Scalar,             # <<<<<<<<<<<<<<
@@ -2175,7 +2178,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __Pyx_XDECREF(__pyx_r);
 
-      /* "PyMieSim/Coupling.pyx":60
+      /* "PyMieSim/Coupling.pyx":61
  *                                          dOmega        = dOmega,
  *                                          Omega         = Omega,
  *                                          Filter        = Filter)             # <<<<<<<<<<<<<<
@@ -2184,13 +2187,13 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
       __pyx_t_12.__pyx_n = 1;
       __pyx_t_12.Filter = __pyx_v_Filter;
-      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 55, __pyx_L1_error)
+      __pyx_t_7 = __pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(__pyx_v_Scalar, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_12); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __pyx_r = __pyx_t_7;
       __pyx_t_7 = 0;
       goto __pyx_L0;
 
-      /* "PyMieSim/Coupling.pyx":54
+      /* "PyMieSim/Coupling.pyx":55
  * 
  * 
  *          if Detector.CouplingMode[0] == "Amplitude":             # <<<<<<<<<<<<<<
@@ -2199,7 +2202,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
     }
 
-    /* "PyMieSim/Coupling.pyx":44
+    /* "PyMieSim/Coupling.pyx":45
  * 
  * 
  *      if Detector.CouplingMode[1] == 'Mean':             # <<<<<<<<<<<<<<
@@ -2208,11 +2211,11 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_Coupling(PyObject *__pyx_v_Scatter
  */
   }
 
-  /* "PyMieSim/Coupling.pyx":16
- * 
+  /* "PyMieSim/Coupling.pyx":17
+ * abs = np.abs
  * 
  * cpdef Coupling(Scatterer, Detector):             # <<<<<<<<<<<<<<
- *      EPhi, EThe = Scatterer.uS1S2(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian)
+ *      EPhi, EThe = Scatterer.uFarField(Detector.Mesh.Phi.Radian, Detector.Mesh.Theta.Radian, 1)
  *      dOmega     = Detector.Mesh.dOmega.Radian
  */
 
@@ -2274,11 +2277,11 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_1Coupling(PyObject *__pyx_self, P
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Detector)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("Coupling", 1, 2, 2, 1); __PYX_ERR(0, 16, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("Coupling", 1, 2, 2, 1); __PYX_ERR(0, 17, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Coupling") < 0)) __PYX_ERR(0, 16, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "Coupling") < 0)) __PYX_ERR(0, 17, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2291,7 +2294,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_1Coupling(PyObject *__pyx_self, P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("Coupling", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 16, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("Coupling", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 17, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim._Coupling.Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2313,7 +2316,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_Coupling(CYTHON_UNUSED PyObject *
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("Coupling", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_Coupling(__pyx_v_Scatterer, __pyx_v_Detector, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_Coupling(__pyx_v_Scatterer, __pyx_v_Detector, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2330,7 +2333,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_Coupling(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "PyMieSim/Coupling.pyx":64
+/* "PyMieSim/Coupling.pyx":65
  * 
  * 
  * cpdef GetFiltering(Filter):             # <<<<<<<<<<<<<<
@@ -2353,28 +2356,28 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetFiltering", 0);
 
-  /* "PyMieSim/Coupling.pyx":66
+  /* "PyMieSim/Coupling.pyx":67
  * cpdef GetFiltering(Filter):
  * 
  *     if Filter != None:             # <<<<<<<<<<<<<<
  *         ParaFiltering = np.cos(Filter)**2
  *         PerpFiltering = np.sin(Filter)**2
  */
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_Filter, Py_None, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 67, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_2) {
 
-    /* "PyMieSim/Coupling.pyx":67
+    /* "PyMieSim/Coupling.pyx":68
  * 
  *     if Filter != None:
  *         ParaFiltering = np.cos(Filter)**2             # <<<<<<<<<<<<<<
  *         PerpFiltering = np.sin(Filter)**2
  *     else:
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_cos); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_t_3 = NULL;
@@ -2389,25 +2392,25 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_4 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_ParaFiltering = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "PyMieSim/Coupling.pyx":68
+    /* "PyMieSim/Coupling.pyx":69
  *     if Filter != None:
  *         ParaFiltering = np.cos(Filter)**2
  *         PerpFiltering = np.sin(Filter)**2             # <<<<<<<<<<<<<<
  *     else:
  *         ParaFiltering = 1
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sin); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_1 = NULL;
@@ -2422,16 +2425,16 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
     }
     __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_v_Filter) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_Filter);
     __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
+    if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_PerpFiltering = __pyx_t_3;
     __pyx_t_3 = 0;
 
-    /* "PyMieSim/Coupling.pyx":66
+    /* "PyMieSim/Coupling.pyx":67
  * cpdef GetFiltering(Filter):
  * 
  *     if Filter != None:             # <<<<<<<<<<<<<<
@@ -2441,7 +2444,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
     goto __pyx_L3;
   }
 
-  /* "PyMieSim/Coupling.pyx":70
+  /* "PyMieSim/Coupling.pyx":71
  *         PerpFiltering = np.sin(Filter)**2
  *     else:
  *         ParaFiltering = 1             # <<<<<<<<<<<<<<
@@ -2452,7 +2455,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
     __Pyx_INCREF(__pyx_int_1);
     __pyx_v_ParaFiltering = __pyx_int_1;
 
-    /* "PyMieSim/Coupling.pyx":71
+    /* "PyMieSim/Coupling.pyx":72
  *     else:
  *         ParaFiltering = 1
  *         PerpFiltering = 1             # <<<<<<<<<<<<<<
@@ -2464,7 +2467,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
   }
   __pyx_L3:;
 
-  /* "PyMieSim/Coupling.pyx":73
+  /* "PyMieSim/Coupling.pyx":74
  *         PerpFiltering = 1
  * 
  *     return ParaFiltering, PerpFiltering             # <<<<<<<<<<<<<<
@@ -2472,7 +2475,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 74, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_ParaFiltering);
   __Pyx_GIVEREF(__pyx_v_ParaFiltering);
@@ -2484,7 +2487,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_GetFiltering(PyObject *__pyx_v_Fil
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/Coupling.pyx":64
+  /* "PyMieSim/Coupling.pyx":65
  * 
  * 
  * cpdef GetFiltering(Filter):             # <<<<<<<<<<<<<<
@@ -2529,7 +2532,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_2GetFiltering(CYTHON_UNUSED PyObj
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("GetFiltering", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2546,7 +2549,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_2GetFiltering(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "PyMieSim/Coupling.pyx":77
+/* "PyMieSim/Coupling.pyx":78
  * 
  * 
  * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
@@ -2580,14 +2583,14 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
     }
   }
 
-  /* "PyMieSim/Coupling.pyx":79
+  /* "PyMieSim/Coupling.pyx":80
  * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)             # <<<<<<<<<<<<<<
  * 
- *     val0 = ( np.sum( np.abs(Scalar0 * EPhi)**2 ) * dOmega ) * PhiFiltering
+ *     val0 = sum( abs(Scalar0 * EPhi)**2 ) * dOmega * PhiFiltering
  */
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 80, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -2595,7 +2598,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 79, __pyx_L1_error)
+      __PYX_ERR(0, 80, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -2608,15 +2611,15 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 79, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 80, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -2624,7 +2627,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 79, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 80, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -2632,7 +2635,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 79, __pyx_L1_error)
+    __PYX_ERR(0, 80, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_PhiFiltering = __pyx_t_2;
@@ -2640,88 +2643,19 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
   __pyx_v_TheFiltering = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/Coupling.pyx":81
+  /* "PyMieSim/Coupling.pyx":82
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  * 
- *     val0 = ( np.sum( np.abs(Scalar0 * EPhi)**2 ) * dOmega ) * PhiFiltering             # <<<<<<<<<<<<<<
+ *     val0 = sum( abs(Scalar0 * EPhi)**2 ) * dOmega * PhiFiltering             # <<<<<<<<<<<<<<
  * 
- *     val1 = ( np.sum( np.abs(Scalar0 * EThe)**2 ) * dOmega ) * TheFiltering
+ *     val1 = sum( abs(Scalar0 * EThe)**2 ) * dOmega * TheFiltering
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EPhi); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EPhi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_7)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_7);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_3)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_3);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6);
-  __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_v_dOmega); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, __pyx_v_PhiFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_val0 = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "PyMieSim/Coupling.pyx":83
- *     val0 = ( np.sum( np.abs(Scalar0 * EPhi)**2 ) * dOmega ) * PhiFiltering
- * 
- *     val1 = ( np.sum( np.abs(Scalar0 * EThe)**2 ) * dOmega ) * TheFiltering             # <<<<<<<<<<<<<<
- * 
- *     return val0 + val1
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_abs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EThe); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
     __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
@@ -2732,55 +2666,112 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(PyObject *
       __Pyx_DECREF_SET(__pyx_t_4, function);
     }
   }
-  __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3);
+  __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Power(__pyx_t_2, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Power(__pyx_t_2, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_6);
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
     if (likely(__pyx_t_2)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_2, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4);
+  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_t_1, __pyx_v_dOmega); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 83, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_v_dOmega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 82, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_6, __pyx_v_TheFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_PhiFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_val0 = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "PyMieSim/Coupling.pyx":84
+ *     val0 = sum( abs(Scalar0 * EPhi)**2 ) * dOmega * PhiFiltering
+ * 
+ *     val1 = sum( abs(Scalar0 * EThe)**2 ) * dOmega * TheFiltering             # <<<<<<<<<<<<<<
+ * 
+ *     return val0 + val1
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_abs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EThe); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Power(__pyx_t_4, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_v_dOmega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_TheFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_val1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/Coupling.pyx":85
- *     val1 = ( np.sum( np.abs(Scalar0 * EThe)**2 ) * dOmega ) * TheFiltering
+  /* "PyMieSim/Coupling.pyx":86
+ *     val1 = sum( abs(Scalar0 * EThe)**2 ) * dOmega * TheFiltering
  * 
  *     return val0 + val1             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Add(__pyx_v_val0, __pyx_v_val1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_v_val0, __pyx_v_val1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/Coupling.pyx":77
+  /* "PyMieSim/Coupling.pyx":78
  * 
  * 
  * cpdef NoCoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
@@ -2852,19 +2843,19 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling(PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EPhi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 77, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 78, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EThe)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 77, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 78, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 77, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 78, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -2874,7 +2865,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling(PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "NoCoherentPointCoupling") < 0)) __PYX_ERR(0, 77, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "NoCoherentPointCoupling") < 0)) __PYX_ERR(0, 78, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -2896,7 +2887,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_5NoCoherentPointCoupling(PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 77, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("NoCoherentPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 78, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim._Coupling.NoCoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2921,7 +2912,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4NoCoherentPointCoupling(CYTHON_U
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_NoCoherentPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2938,7 +2929,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_4NoCoherentPointCoupling(CYTHON_U
   return __pyx_r;
 }
 
-/* "PyMieSim/Coupling.pyx":89
+/* "PyMieSim/Coupling.pyx":90
  * 
  * 
  * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
@@ -2972,14 +2963,14 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
     }
   }
 
-  /* "PyMieSim/Coupling.pyx":91
+  /* "PyMieSim/Coupling.pyx":92
  * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)             # <<<<<<<<<<<<<<
  * 
- *     val0 = np.abs( np.sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
+ *     val0 = abs( sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
  */
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 92, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -2987,7 +2978,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 91, __pyx_L1_error)
+      __PYX_ERR(0, 92, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -3000,15 +2991,15 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 92, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -3016,7 +3007,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 92, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -3024,7 +3015,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 91, __pyx_L1_error)
+    __PYX_ERR(0, 92, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_PhiFiltering = __pyx_t_2;
@@ -3032,87 +3023,18 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
   __pyx_v_TheFiltering = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/Coupling.pyx":93
+  /* "PyMieSim/Coupling.pyx":94
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  * 
- *     val0 = np.abs( np.sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering             # <<<<<<<<<<<<<<
+ *     val0 = abs( sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering             # <<<<<<<<<<<<<<
  * 
- *     val1 = np.abs( np.sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
+ *     val1 = abs( sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_abs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_abs); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EPhi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_7)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_7);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_6);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_6, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, __pyx_v_dOmega); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_v_PhiFiltering); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_v_val0 = __pyx_t_2;
-  __pyx_t_2 = 0;
-
-  /* "PyMieSim/Coupling.pyx":95
- *     val0 = np.abs( np.sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
- * 
- *     val1 = np.abs( np.sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering             # <<<<<<<<<<<<<<
- * 
- *     return val0 + val1
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_abs); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_sum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EThe); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EPhi); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -3124,11 +3046,11 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
       __Pyx_DECREF_SET(__pyx_t_4, function);
     }
   }
-  __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6);
+  __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -3140,39 +3062,96 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(PyObject *__
       __Pyx_DECREF_SET(__pyx_t_3, function);
     }
   }
-  __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_1);
+  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Power(__pyx_t_1, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_dOmega); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Power(__pyx_t_2, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_v_PhiFiltering); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_3, __pyx_v_dOmega); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_2, __pyx_v_TheFiltering); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_val1 = __pyx_t_3;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_v_val0 = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/Coupling.pyx":97
- *     val1 = np.abs( np.sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
+  /* "PyMieSim/Coupling.pyx":96
+ *     val0 = abs( sum( Scalar0 * EPhi ) )**2 * dOmega  * PhiFiltering
+ * 
+ *     val1 = abs( sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering             # <<<<<<<<<<<<<<
+ * 
+ *     return val0 + val1
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_abs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_sum); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EThe); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_1);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_1, function);
+    }
+  }
+  __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_v_dOmega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_TheFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_val1 = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "PyMieSim/Coupling.pyx":98
+ *     val1 = abs( sum( Scalar0 * EThe ) )**2 * dOmega * TheFiltering
  * 
  *     return val0 + val1             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyNumber_Add(__pyx_v_val0, __pyx_v_val1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 97, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
+  __pyx_t_1 = PyNumber_Add(__pyx_v_val0, __pyx_v_val1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/Coupling.pyx":89
+  /* "PyMieSim/Coupling.pyx":90
  * 
  * 
  * cpdef CoherentPointCoupling(Scalar0, EPhi, EThe, dOmega, Filter = None):             # <<<<<<<<<<<<<<
@@ -3244,19 +3223,19 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling(PyObject *
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EPhi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 89, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 1); __PYX_ERR(0, 90, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EThe)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 89, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 2); __PYX_ERR(0, 90, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 89, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, 3); __PYX_ERR(0, 90, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -3266,7 +3245,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling(PyObject *
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "CoherentPointCoupling") < 0)) __PYX_ERR(0, 89, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "CoherentPointCoupling") < 0)) __PYX_ERR(0, 90, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3288,7 +3267,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_7CoherentPointCoupling(PyObject *
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 89, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("CoherentPointCoupling", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 90, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim._Coupling.CoherentPointCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3313,7 +3292,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6CoherentPointCoupling(CYTHON_UNU
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 89, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentPointCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3330,7 +3309,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_6CoherentPointCoupling(CYTHON_UNU
   return __pyx_r;
 }
 
-/* "PyMieSim/Coupling.pyx":101
+/* "PyMieSim/Coupling.pyx":102
  * 
  * 
  * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
@@ -3364,14 +3343,14 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
     }
   }
 
-  /* "PyMieSim/Coupling.pyx":103
+  /* "PyMieSim/Coupling.pyx":104
  * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):
  * 
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)             # <<<<<<<<<<<<<<
  * 
- *     val0 = np.sum( np.abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering
+ *     val0 = sum( abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering
  */
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_GetFiltering(__pyx_v_Filter, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
     PyObject* sequence = __pyx_t_1;
@@ -3379,7 +3358,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 103, __pyx_L1_error)
+      __PYX_ERR(0, 104, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -3392,15 +3371,15 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_4 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_4)->tp_iternext;
@@ -3408,7 +3387,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
     __Pyx_GOTREF(__pyx_t_2);
     index = 1; __pyx_t_3 = __pyx_t_5(__pyx_t_4); if (unlikely(!__pyx_t_3)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_3);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_4), 2) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     goto __pyx_L4_unpacking_done;
@@ -3416,7 +3395,7 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 103, __pyx_L1_error)
+    __PYX_ERR(0, 104, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_PhiFiltering = __pyx_t_2;
@@ -3424,90 +3403,18 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
   __pyx_v_TheFiltering = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "PyMieSim/Coupling.pyx":105
+  /* "PyMieSim/Coupling.pyx":106
  *     PhiFiltering, TheFiltering = GetFiltering(Filter)
  * 
- *     val0 = np.sum( np.abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering             # <<<<<<<<<<<<<<
+ *     val0 = sum( abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering             # <<<<<<<<<<<<<<
  * 
- *     val1 = np.sum( np.abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering
+ *     val1 = sum( abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EPhi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_7 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
-    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_6);
-    if (likely(__pyx_t_7)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
-      __Pyx_INCREF(__pyx_t_7);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_6, function);
-    }
-  }
-  __pyx_t_3 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_7, __pyx_t_4) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_4);
-  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Power(__pyx_t_3, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_6, __pyx_v_dOmega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = NULL;
-  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_6)) {
-      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_6);
-      __Pyx_INCREF(function);
-      __Pyx_DECREF_SET(__pyx_t_2, function);
-    }
-  }
-  __pyx_t_1 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_6, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_v_Omega); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, __pyx_v_PhiFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_v_val0 = __pyx_t_1;
-  __pyx_t_1 = 0;
-
-  /* "PyMieSim/Coupling.pyx":107
- *     val0 = np.sum( np.abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering
- * 
- *     val1 = np.sum( np.abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering             # <<<<<<<<<<<<<<
- * 
- *     return val0 + val1
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 107, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_abs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EThe); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EPhi); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -3522,13 +3429,13 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
   __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyNumber_Power(__pyx_t_2, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_4 = PyNumber_Power(__pyx_t_2, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_4, __pyx_v_dOmega); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_4, __pyx_v_dOmega); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -3544,33 +3451,93 @@ static PyObject *__pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(PyObject *__p
   __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_v_Omega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_v_Omega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_TheFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_PhiFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_val0 = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "PyMieSim/Coupling.pyx":108
+ *     val0 = sum( abs( Scalar0 * EPhi )**2 * dOmega ) / Omega  * PhiFiltering
+ * 
+ *     val1 = sum( abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering             # <<<<<<<<<<<<<<
+ * 
+ *     return val0 + val1
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_abs); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_6 = PyNumber_Multiply(__pyx_v_Scalar0, __pyx_v_EThe); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_4);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_4, function);
+    }
+  }
+  __pyx_t_2 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = PyNumber_Power(__pyx_t_2, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_4, __pyx_v_dOmega); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_t_4 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_v_Omega); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_3, __pyx_v_TheFiltering); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_val1 = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "PyMieSim/Coupling.pyx":109
- *     val1 = np.sum( np.abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering
+  /* "PyMieSim/Coupling.pyx":110
+ *     val1 = sum( abs( Scalar0 * EThe )**2 * dOmega ) / Omega  * TheFiltering
  * 
  *     return val0 + val1             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyNumber_Add(__pyx_v_val0, __pyx_v_val1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_v_val0, __pyx_v_val1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 110, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "PyMieSim/Coupling.pyx":101
+  /* "PyMieSim/Coupling.pyx":102
  * 
  * 
  * cpdef CoherentMeanCoupling(Scalar0, EPhi, EThe, dOmega, Omega, Filter = None):             # <<<<<<<<<<<<<<
@@ -3645,25 +3612,25 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling(PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EPhi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 1); __PYX_ERR(0, 101, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 1); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_EThe)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 2); __PYX_ERR(0, 101, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 2); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dOmega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 3); __PYX_ERR(0, 101, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 3); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_Omega)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 4); __PYX_ERR(0, 101, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, 4); __PYX_ERR(0, 102, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
@@ -3673,7 +3640,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling(PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "CoherentMeanCoupling") < 0)) __PYX_ERR(0, 101, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "CoherentMeanCoupling") < 0)) __PYX_ERR(0, 102, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -3697,7 +3664,7 @@ static PyObject *__pyx_pw_8PyMieSim_9_Coupling_9CoherentMeanCoupling(PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 101, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("CoherentMeanCoupling", 0, 5, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 102, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("PyMieSim._Coupling.CoherentMeanCoupling", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -3722,7 +3689,7 @@ static PyObject *__pyx_pf_8PyMieSim_9_Coupling_8CoherentMeanCoupling(CYTHON_UNUS
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_2.__pyx_n = 1;
   __pyx_t_2.Filter = __pyx_v_Filter;
-  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_8PyMieSim_9_Coupling_CoherentMeanCoupling(__pyx_v_Scalar0, __pyx_v_EPhi, __pyx_v_EThe, __pyx_v_dOmega, __pyx_v_Omega, 0, &__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4665,7 +4632,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_sin, __pyx_k_sin, sizeof(__pyx_k_sin), 0, 0, 1, 1},
   {&__pyx_n_s_sum, __pyx_k_sum, sizeof(__pyx_k_sum), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_uS1S2, __pyx_k_uS1S2, sizeof(__pyx_k_uS1S2), 0, 0, 1, 1},
+  {&__pyx_n_s_uFarField, __pyx_k_uFarField, sizeof(__pyx_k_uFarField), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
@@ -4907,6 +4874,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec__Coupling(PyObject *__pyx_pyinit_m
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -5018,12 +4986,42 @@ if (!__Pyx_RefNanny) {
  * import cython
  * cimport numpy as np
  * import numpy as np             # <<<<<<<<<<<<<<
- * 
- * 
+ * sum = np.sum
+ * abs = np.abs
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "PyMieSim/Coupling.pyx":14
+ * cimport numpy as np
+ * import numpy as np
+ * sum = np.sum             # <<<<<<<<<<<<<<
+ * abs = np.abs
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_sum, __pyx_t_2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "PyMieSim/Coupling.pyx":15
+ * import numpy as np
+ * sum = np.sum
+ * abs = np.abs             # <<<<<<<<<<<<<<
+ * 
+ * cpdef Coupling(Scatterer, Detector):
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_abs); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_abs, __pyx_t_1) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "PyMieSim/Coupling.pyx":1
@@ -5049,6 +5047,7 @@ if (!__Pyx_RefNanny) {
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
       __Pyx_AddTraceback("init PyMieSim._Coupling", __pyx_clineno, __pyx_lineno, __pyx_filename);

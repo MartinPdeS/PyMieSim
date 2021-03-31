@@ -202,23 +202,25 @@ ExperimentalSet: Coupling
    from PyMieSim.Detector import LPmode
    from PyMieSim.Sets import ScattererSet, ExperimentalSet
 
-   LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
+   LightSource = PlaneWave(Wavelength   = 450e-9,
+                           Polarization = 0,
+                           E0           = 1)
 
 
 
    Detector0 = LPmode(NA               = 0.2,
-                     Sampling          = 401,
-                     GammaOffset       = 0,
-                     PhiOffset         = 20,
-                     Mode              = (0,1),
-                     CouplingMode      = 'Mean')
+                      Sampling          = 401,
+                      GammaOffset       = 0,
+                      PhiOffset         = 20,
+                      Mode              = (0,1),
+                      CouplingMode      = 'Mean')
 
    Detector1 = LPmode(NA               = 0.2,
-                     Sampling          = 401,
-                     GammaOffset       = 0,
-                     PhiOffset         = 20,
-                     Mode              = (1,1),
-                     CouplingMode      = 'Mean')
+                      Sampling          = 401,
+                      GammaOffset       = 0,
+                      PhiOffset         = 20,
+                      Mode              = (1,1),
+                      CouplingMode      = 'Mean')
 
 
 
@@ -239,6 +241,8 @@ ExperimentalSet: Coupling
    Data = Set.DataFrame
 
    Data.Plot(y='Coupling')
+   Data.Show()
+
 
 
 .. image:: ../images/ExperimentalSet.png

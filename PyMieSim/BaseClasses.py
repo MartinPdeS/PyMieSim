@@ -4,7 +4,8 @@
 import numpy as np
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle, Cart2Sp, UnitPower
+from PyMieSim.utils import InterpFull, NA2Angle, Cart2Sp
+from PyMieSim.units import Power, Area
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
 from PyMieSim.Plots import PlotUnstructured
@@ -109,9 +110,9 @@ class BaseDetector(object):
             Value of the coupling power [:math:`W`].
 
         """
-        C = self._Coupling(Scatterer) * eps0 * c*0.5
+        C = self._Coupling(Scatterer) * eps0 * c * 0.5
 
-        return UnitPower(C)
+        return Power(C)
 
 
     def Footprint(self, Scatterer, Num = 200):
@@ -415,13 +416,13 @@ class BaseScatterer(object):
 
         EPhi, ETheta = self.uFarField(Mesh.Phi.Radian, Mesh.Theta.Radian,1.)
 
-        NormE = np.sqrt(np.abs(EPhi)**2 + np.abs(ETheta)**2)
+        NormE        = np.sqrt(np.abs(EPhi)**2 + np.abs(ETheta)**2)
 
-        NormB = NormE/c
+        NormB        = NormE/c
 
-        Poynting = eps0 * c**2 * NormE * NormB    #TODO change eps0 for eps
+        Poynting     = eps0 * c**2 * NormE * NormB    #TODO change eps0 for eps
 
-        return Poynting,  Mesh.dOmega.Radian
+        return Poynting
 
 
     def EnergyFlow(self, Mesh):
@@ -430,7 +431,14 @@ class BaseScatterer(object):
 
         :math:`W_a = \\sigma_{sca} * I_{inc}`
 
-        Where :math:`\\sigma_{sca}` is the scattering cross section.
+        P = :math:`\\int_{A} I dA`
+        I = :math:`\\frac{c n \\epsilon_0}{2} |E|^2`
+        With:
+             I : Energy density
+             n  : Refractive index of the medium
+             :math:`\\epsilon_0` : Vaccum permitivity
+             E  : Electric field
+            :math:`\\sigma_{sca}` is the scattering cross section.
 
         More info on wikipedia link:
         https://en.wikipedia.org/wiki/Cross_section_(physics)#Cross_section_and_Mie_theory
@@ -446,7 +454,7 @@ class BaseScatterer(object):
             Energy flow [:math:`W`]
         """
 
-        Poynting, dOmega = self.PoyntingVector(Mesh)
+        Poynting = self.PoyntingVector(Mesh)
 
         if Mesh.Structured:
             Wtotal = 0.5 * np.sum( Poynting * Mesh.SinMesh ) * Mesh.dOmega.Radian
@@ -454,10 +462,10 @@ class BaseScatterer(object):
         else:
             Wtotal = 0.5 * np.sum( Poynting ) * Mesh.dOmega.Radian
 
-        return UnitPower(Wtotal)
+        return Power(Wtotal)
 
 
-    def _CrossSection(self, Mesh):
+    def CrossSection(self, Mesh):
         """
         Method return scattering cross section, see :func:`EnergyFlow`
 
@@ -469,11 +477,11 @@ class BaseScatterer(object):
         Returns
         -------
         :class:`float`
-            scattering cross section
+            scattering cross section [:math:`m^2`]
         """
         #return self.EnergyFlow(Mesh) / self.Source.I
 
-        return self.Qsca*self.Area
+        return Area(self.Qsca*self.Area)
 
 
 

@@ -44,6 +44,7 @@ class PrintingTest(TestCase):
         self.test15()
         self.test16()
         self.test17()
+        self.test18()
 
     def test00(self):
         Detector = LPmode(Mode         = (1, 1,'h'),
@@ -202,12 +203,25 @@ class PrintingTest(TestCase):
                              PhiOffset   = 0,
                              GammaOffset = 0)
 
-        val0 = Scat._CrossSection(Mesh)
+        val0 = Scat.CrossSection(Mesh)
         val1 = Scat.Qsca * Scat.Area
         error = np.abs(val0-val1)/val0
         assert error < 1e-2
 
         print('Test 17: passed')
+
+
+    def test18(self):
+
+        Detector1 = Photodiode(Sampling = 500, NA = 2.0)
+
+
+        val0 = Scat.EnergyFlow(Detector1.Mesh)
+        val1 = Detector1.Coupling(Scat)
+        error = np.abs(val0-val1)/val0
+        assert error < 1e-2
+
+        print('Test 18: passed')
 
 
 if __name__ == '__main__':

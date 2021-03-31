@@ -31,15 +31,15 @@ class PlaneWave(BaseSource):
                  Polarization: float = 0,
                  E0:           float = 1):
 
-        self.GLMT = False
-        self.Wavelength = Wavelength
-        self.k = 2 * pi / Wavelength
+        self.GLMT         = False
+        self.Wavelength   = Wavelength
+        self.k            = 2 * pi / Wavelength
         self.Polarization = _Polarization(Polarization)
-        self.E0 = E0
-        self.H0 = E0 / (mu0*c)
-        self.H0 = sqrt(eps0/mu0) * self.E0
-        self.offset = array([EPS]*3)
-        self._BSC_ = None
+        self.E0           = E0
+        self.H0           = E0 / (mu0*c)
+        self.H0           = sqrt(eps0/mu0) * self.E0
+        self.offset       = array([EPS]*3)
+        self._BSC_        = None
 
 
     def Getidx(self, MaxOrder):
