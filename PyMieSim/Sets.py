@@ -148,8 +148,6 @@ class ExperimentalSet(object):
 
         self.ScattererSet = ScattererSet
 
-        self._Coupling = None
-
 
     @property
     def Coupling(self):
@@ -163,7 +161,7 @@ class ExperimentalSet(object):
             Raw array of detectors coupling.
 
         """
-        temp = np.empty( [len(self.Detectors), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
+        Array = np.empty( [len(self.Detectors), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
 
         for nDetector, Detector in enumerate(self.Detectors):
 
@@ -176,10 +174,36 @@ class ExperimentalSet(object):
 
                     Coupling = Detector.Coupling(Scatterer = Scat)
 
-                    temp[nDetector, nIndex, nDiameter] = Coupling
+                    Array[nDetector, nIndex, nDiameter] = Coupling
 
-        return OptArray(temp)
+        return OptArray(Array)
 
+
+    def _Coupling(self, WhichDetector):
+        """Property method which return a n by m by l OptArray array, n being the
+        number of detectors, m is the point evaluated for the refractive index,
+        l is the nomber of point evaluted for the scatterers diameters.
+
+        Returns
+        -------
+        OptArray
+            Raw array of detectors coupling.
+
+        """
+        Array = np.empty( [len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
+
+        for nIndex, RI in enumerate(self.ScattererSet.RIList):
+            for nDiameter, Diameter in enumerate(self.ScattererSet.DiameterList):
+
+                Scat = Sphere(Diameter  = Diameter,
+                              Index     = RI,
+                              Source    = self.ScattererSet.Source)
+
+                Coupling = self.Detectors[WhichDetector].Coupling(Scatterer = Scat)
+
+                Array[nIndex, nDiameter] = Coupling
+
+        return OptArray(Array)
 
     @property
     def DataFrame(self):

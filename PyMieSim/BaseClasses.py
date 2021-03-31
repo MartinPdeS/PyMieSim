@@ -45,7 +45,7 @@ class MeshProperty(object):
     @PhiOffset.setter
     def PhiOffset(self, val):
         self.Mesh.UpdateSphere(PhiOffset = val)
-        self.GetSpherical()
+        self.UnstructuredFarField()
 
     @property
     def GammaOffset(self):

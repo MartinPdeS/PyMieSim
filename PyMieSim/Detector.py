@@ -36,6 +36,7 @@ class Photodiode(BaseDetector, MeshProperty):
                  Filter:       float  = None,
                  CouplingMode: str    = 'Centered'):
 
+        if NA > 1 or NA < 0: raise print("Error NA value is not valid, has to be in [0,1]")
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -251,6 +252,86 @@ def PlotSpherical(phi, theta, scalar=None):
     else:
         mlab.points3d(*coord)
     mlab.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+class _Photodiode(BaseDetector, MeshProperty):
+    """Detector class for develop use only. Do not use!
+
+    """
+
+    def __init__(self,
+                 NA:           float,
+                 Sampling:     int    = 400,
+                 GammaOffset:  float  = 0,
+                 PhiOffset:    float  = 0,
+                 Filter:       float  = None,
+                 CouplingMode: str    = 'Centered'):
+
+        self.CouplingMode = ('Intensity', CouplingMode)
+
+        self._GammaOffset, self._PhiOffset = GammaOffset, PhiOffset
+
+        self._Filter = _Polarization(Filter)
+
+        self.Mesh = self.SphericalMesh(Sampling    = Sampling,
+                                       MaxAngle    = NA2Angle(NA).Radian,
+                                       PhiOffset   = PhiOffset,
+                                       GammaOffset = GammaOffset,
+                                       Structured  = False)
+
+        self.Scalar = self.UnstructuredFarField()
+
+
+    def UnstructuredFarField(self):
+        return np.ones(self.Mesh.Sampling)
+
+
+    def UpdateUnstructuredFarField(self):
+        self.Scalar = np.ones(self.Mesh.Sampling)
+
+
+    def StructuredFarField(self, Num = 100, SFactor = None):
+        """
+        Compute the FarField in a structured Mesh.
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Dimension of the structured mesh [Num, Num].
+        SFactor : :class:`float`
+            Unused parameter added to match :class:`LPmode` class.
+
+        Returns
+        -------
+        :class`numpy.ndarray`:
+            Structured FarField value.
+
+        """
+
+        return np.ones([Num, Num])
+
+
+    def __repr__(self):
+
+        return f"""
+        Photodiode detector
+        Coupling Mode: Intensity
+        Sampling:      {self.Mesh.Sampling}
+        Gamma offset:  {self.Mesh.GammaOffset}
+        Phi offset:    {self.Mesh.PhiOffset}
+        """
+
 
 
 # -

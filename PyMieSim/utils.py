@@ -126,7 +126,6 @@ def Direct2Angle(DirectVec: np.ndarray, k: float) -> np.ndarray:
 
 
 def NA2Angle(NA: float) -> np.ndarray:
-    if NA > 2: raise print("Error NA value is not valid, has to be in [0,1]")
     if NA <=1.0: return Angle( np.arcsin(NA), unit='Radian')
     if NA >= 1.0: return Angle( np.arcsin(NA-1) + np.pi/2, unit='Radian')
 
@@ -151,8 +150,6 @@ def AngleUnit2DirectUnit(Angle, k):
     DirectSpace = np.fft.fftshift( np.fft.fftfreq( Angle.shape[0], d = fourier_unit ) )
 
     return DirectSpace
-
-
 
 
 def Cart2Sp(x,y,z):

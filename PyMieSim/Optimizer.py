@@ -1,9 +1,82 @@
 import numpy as np
+from scipy.optimize import minimize
+from mayavi import mlab
 
 
 
+class Optimize:
+    def __init__(self,
+                 ExperimentalSet,
+                 Metric,
+                 Parameter,
+                 X0,
+                 WhichDetector,
+                 MinVal,
+                 MaxVal,
+                 FirstStride,
+                 MaxIter=50,
+                 Tol=1e-10):
 
-class Simulator:
+        self.ExperimentalSet = ExperimentalSet
+        self.Metric          = Metric
+        self.Parameters       = Parameter
+        self.X0              = X0
+        self.WhichDetector   = WhichDetector
+        self.MinVal          = MinVal
+        self.MaxVal          = MaxVal
+        self.FirstStride     = FirstStride
+        self.MaxIter         = MaxIter
+        self.Tol             = Tol
+
+        if len(self.Parameters)   == 1: self.Result = self.Optimize1()
+
+        elif len(self.Parameters) == 2: self.Result = self.Optimize2()
+
+
+    def Optimize1(self):
+
+        def EvalFunc(x):
+            Penalty = 0
+            for n in range(len(self.Parameters)):
+                if self.MinVal[n] and x[0]< self.MinVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MinVal[n]
+                if self.MinVal[n] and x[0]> self.MaxVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MaxVal[n]
+
+            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters, x[0])
+
+            return self.ExperimentalSet.Coupling.Cost(self.Metric) + Penalty
+
+        Minimizer = Caller(EvalFunc, ParameterName= Parameter)
+
+        return minimize(fun      = Minimizer.optimize,
+                        x0       = self.X0,
+                        method   = 'COBYLA',
+                        tol      = self.Tol,
+                        options  = {'maxiter': self.MaxIter, 'rhobeg':self.FirstStride})
+
+
+    def Optimize2(self):
+
+        def EvalFunc(x):
+            Penalty = 0
+            for n in range(len(self.Parameters)):
+                if self.MinVal[n] and x[0]< self.MinVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MinVal[n]
+                if self.MinVal[n] and x[0]> self.MaxVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MaxVal[n]
+
+            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters[0], x[0])
+            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters[1], x[1])
+
+            return self.ExperimentalSet._Coupling(self.WhichDetector).Cost(self.Metric) + Penalty
+
+        Minimizer = Caller(EvalFunc, ParameterName = self.Parameters)
+
+        return minimize(fun      = Minimizer.optimize,
+                        x0       = self.X0,
+                        method   = 'COBYLA',
+                        tol      = self.Tol,
+                        options  = {'maxiter': self.MaxIter, 'rhobeg':self.FirstStride})
+
+
+class Caller:
     def __init__(self, function, ParameterName: list):
         self.ParameterName = ParameterName
         self.f = function # actual objective function
@@ -16,7 +89,7 @@ class Simulator:
         self.list_callback_inp = [] # only appends inputs on callback, as such they correspond to the iterations
         self.list_callback_res = [] # only appends results on callback, as such they correspond to the iterations
 
-    def simulate(self, x):
+    def optimize(self, x):
         """Executes the actual simulation and returns the result, while
         updating the lists too. Pass to optimizer without arguments or
         parentheses."""
@@ -32,11 +105,14 @@ class Simulator:
         self.list_calls_inp.append(x)
         self.list_calls_res.append(result)
         self.num_calls += 1
+
+
         if len(self.ParameterName) == 1:
+
             text = """ \
             Call Number : {0} \
             \t {1}: {2:.5e} \
-            \t Result: {3:.5e} \
+            \t Result: {3:.10e} \
             """.format(self.num_calls,
                        self.ParameterName[0],
                        x[0],
@@ -47,7 +123,7 @@ class Simulator:
             Call Number : {0} \
             \t {1}: {2:.5e} \
             \t {3}: {4:.5e} \
-            \t Result: {5:.5e} \
+            \t Result: {5:.10e} \
             """.format(self.num_calls,
                        self.ParameterName[0],
                        x[0],
@@ -58,35 +134,6 @@ class Simulator:
         print(text)
         return result
 
-    def callback(self, xk, *_):
-        """Callback function that can be used by optimizers of scipy.optimize.
-        The third argument "*_" makes sure that it still works when the
-        optimizer calls the callback function with more than one argument. Pass
-        to optimizer without arguments or parentheses."""
-        s1 = ""
-        xk = np.atleast_1d(xk)
-        # search backwards in input list for input corresponding to xk
-        for i, x in reversed(list(enumerate(self.list_calls_inp))):
-            x = np.atleast_1d(x)
-            if np.allclose(x, xk):
-                break
-
-        for comp in xk:
-            s1 += f"{comp:10.5e}\t"
-        s1 += f"{self.list_calls_res[i]:10.5e}"
-
-        self.list_callback_inp.append(xk)
-        self.list_callback_res.append(self.list_calls_res[i])
-
-        if not self.callback_count:
-            s0 = ""
-            for j, _ in enumerate(xk):
-                tmp = f"Comp-{j+1}"
-                s0 += f"{tmp:10s}\t"
-            s0 += "Objective"
-            print(s0)
-        print(s1)
-        self.callback_count += 1
 
 
 
@@ -110,6 +157,12 @@ class OptArray(np.ndarray):
 
         if arg == 'RI_RSD':
             return self.std(axis=0).sum()/self.mean()
+
+        if arg == 'Size_STD':
+            return self.std(axis=1).sum()
+
+        if arg == 'Size_RSD':
+            return self.std(axis=1).sum()/self.mean()
 
         if arg == 'Monotonic':
             return self.Monotonic()

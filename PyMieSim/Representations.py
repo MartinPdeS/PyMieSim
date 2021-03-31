@@ -29,7 +29,7 @@ class SPF(dict):
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
-    def Plot(self, hold=False):
+    def Plot(self):
         Name = 'Scattering phase function'
 
         PlotStructuredAbs(self['SPF'],
@@ -37,8 +37,8 @@ class SPF(dict):
                           self['Theta'],
                           Name='Scattering phase function')
 
-        if hold: return
-        else: mlab.show()
+    def Show(self):
+        mlab.show()
 
 
     def __repr__(self):
@@ -62,7 +62,7 @@ class S1S2(dict):
         self['S1'], self['S2'] = Parent.Bind.S1S2(Phi = Phi)
 
 
-    def Plot(self, hold=False):
+    def Plot(self):
 
         S1 = np.abs(self['S1'])
         S2 = np.abs(self['S2'])
@@ -94,8 +94,8 @@ class S1S2(dict):
                              color = 'C1',
                              alpha = 0.4)
 
-        if hold: return
-        else: plt.show()
+    def Show(self):
+        plt.show()
 
 
     def __repr__(self):
@@ -124,7 +124,7 @@ class ScalarFarField(dict):
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
-    def Plot(self, hold=False):
+    def Plot(self):
         """Method plots the scattered Far-Field
         :math:`E_{\\phi}(\\phi,\\theta)^2 , E_{\\theta}(\\phi,\\theta)^2`.
 
@@ -145,10 +145,8 @@ class ScalarFarField(dict):
                                 self['Theta'],
                                 Name = 'E theta')
 
-        if hold: return
-        else: mlab.show()
-
-
+    def Show(self):
+        mlab.show()
 
 
     def __repr__(self):
@@ -202,7 +200,7 @@ class Footprint(dict):
 
 
 
-    def Plot(self, hold=False):
+    def Plot(self):
 
         fig = plt.figure()
 
@@ -216,8 +214,9 @@ class Footprint(dict):
 
         ax.set_title('Scatterer Footprint')
 
-        if hold: return
-        else: plt.show()
+
+    def Show(self):
+        plt.show()
 
 
     def __repr__(self):

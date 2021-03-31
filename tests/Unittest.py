@@ -10,7 +10,7 @@ import numpy as np
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
-from PyMieSim.Detector import LPmode, Photodiode
+from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
 from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
 from PyMieSim.Mesh import FibonacciMesh
 
@@ -213,7 +213,7 @@ class PrintingTest(TestCase):
 
     def test18(self):
 
-        Detector1 = Photodiode(Sampling = 500, NA = 2.0)
+        Detector1 = _Photodiode(Sampling = 500, NA = 2.0)
 
 
         val0 = Scat.EnergyFlow(Detector1.Mesh)

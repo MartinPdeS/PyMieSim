@@ -15,6 +15,7 @@ class _Polarization(object):
             self.Degree = input
             self.Radian = np.deg2rad(input)
 
+
 def FraunhoferDiffraction(nearField):
     """Function compute the Far-Field of a given Near-Field using Fraunhofer
     relation under approximation of small angle.
