@@ -253,13 +253,68 @@ ExperimentalSet: Coupling
 
 
 
+Optimizer: 1 parameter
+----------------------
+
+.. code-block:: console
+ :linenos:
+
+
+
+ import numpy as np
+ from PyMieSim.Detector import Photodiode, LPmode
+ from PyMieSim.Source import PlaneWave
+ from PyMieSim.Optimizer import Optimize
+ from PyMieSim.Sets import ExperimentalSet, ScattererSet
+
+ LightSource = PlaneWave(Wavelength   = 450e-9,
+                         Polarization = 0,
+                         E0           = 1e7)
+
+ Detector0 = Photodiode(NA               = 0.1,
+                       Sampling          = 300,
+                       GammaOffset       = 20,
+                       PhiOffset         = 0,
+                       CouplingMode      = 'Centered')
+
+ Detector1 = Photodiode(NA                = 0.1,
+                        Sampling          = 300,
+                        GammaOffset       = 30,
+                        PhiOffset         = 0,
+                        CouplingMode      = 'Centered')
+
+
+ ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
+                        RIList        = np.linspace(1.5, 1.8, 1).round(1),
+                        Source        = LightSource)
+
+ Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
+
+
+ Opt    = Optimize(ExperimentalSet = Set,
+                   Metric          = 'Max',  # can be 'Max", "Min", "RI_RSD", "Size_RSD", "Monotonic"
+                   Parameter       = ['NA'],
+                   MinVal          = [1e-1],
+                   MaxVal          = [1],
+                   WhichDetector   = 0,
+                   X0              = [0.1],
+                   MaxIter         = 350,
+                   Tol             = 1e-4,
+                   FirstStride     = 30)
+
+ print(Opt.Result)
+
+ df = Set.DataFrame
+
+ df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+
+ df.Show()
 
 
 
 
-
-Optimizer: NA
-----------------------------
+Optimizer: 2 parameters
+-----------------------
 
 .. code-block:: console
   :linenos:
@@ -267,53 +322,50 @@ Optimizer: NA
 
 
   import numpy as np
-  from scipy.optimize import minimize
   from PyMieSim.Detector import Photodiode, LPmode
   from PyMieSim.Source import PlaneWave
-  from PyMieSim.Optimizer import Simulator
+  from PyMieSim.Optimizer import Optimize
   from PyMieSim.Sets import ExperimentalSet, ScattererSet
 
-  LightSource = PlaneWave(Wavelength = 450e-9,
-                         Polarization = 0)
+  LightSource = PlaneWave(Wavelength   = 450e-9,
+                          Polarization = 0,
+                          E0           = 1e7)
 
-  Detector0 = Photodiode(NA                = 0.2,
-                        Sampling          = 150,
-                        GammaOffset       = 0,
+  Detector0 = Photodiode(NA               = 0.1,
+                        Sampling          = 300,
+                        GammaOffset       = 20,
                         PhiOffset         = 0,
                         CouplingMode      = 'Centered')
 
-  Detector1 = LPmode(NA                = 0.2,
-                    Sampling          = 150,
-                    Mode              = (0,1),
-                    GammaOffset       = 0,
-                    PhiOffset         = 0,
-                    CouplingMode      = 'Centered')
+  Detector1 = Photodiode(NA                = 0.1,
+                         Sampling          = 300,
+                         GammaOffset       = 30,
+                         PhiOffset         = 0,
+                         CouplingMode      = 'Centered')
 
 
-  ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 3500e-9, 100),
-                        RIList        = np.linspace(1.5, 1.5, 1).round(1),
-                        Source        = LightSource)
+  ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
+                         RIList        = np.linspace(1.5, 1.8, 1).round(1),
+                         Source        = LightSource)
 
-  Set = ExperimentalSet(ScattererSet  = ScatSet,
-                       Detectors     = (Detector0, Detector1))
-
-
-  def EvalFunc(x):
-
-     Set.Detectors[1].NA = x[0]
-
-     return Set.Coupling.Cost('Max') # can be: RI_STD  -  RI_RSD  -  Monotonic  -  Mean  -  Max  -  Min
+  Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
 
 
-  Minimizer = Simulator(EvalFunc, ParameterName= ['NA'])
+  Opt    = Optimize(ExperimentalSet = Set,
+                    Metric          = 'Monotonic',  # can be 'Max", "Min", "RI_RSD", "Size_RSD", "Monotonic"
+                    Parameter       = ['NA','PhiOffset'],
+                    MinVal          = [1e-1, None],
+                    MaxVal          = [1, None],
+                    WhichDetector   = 0,
+                    X0              = [0.1,30],
+                    MaxIter         = 350,
+                    Tol             = 1e-4,
+                    FirstStride     = 30)
 
-  Result = minimize(fun      = Minimizer.simulate,
-                   x0       = [0.2],
-                   method   = 'COBYLA',
-                   callback = Minimizer.callback,
-                   tol      = 1e-5,
-                   options  = {'maxiter': 10, 'rhobeg':0.1})
+  print(Opt.Result)
 
-  print(Result)
+  df = Set.DataFrame
 
-  Set.DataFrame.Plot('Coupling') # can be Couplimg  -  STD
+  df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+
+  df.Show()

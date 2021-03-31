@@ -41,11 +41,11 @@ class Optimize:
                 if self.MinVal[n] and x[0]< self.MinVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MinVal[n]
                 if self.MinVal[n] and x[0]> self.MaxVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MaxVal[n]
 
-            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters, x[0])
+            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters[0], x[0])
 
             return self.ExperimentalSet.Coupling.Cost(self.Metric) + Penalty
 
-        Minimizer = Caller(EvalFunc, ParameterName= Parameter)
+        Minimizer = Caller(EvalFunc, ParameterName = self.Parameters)
 
         return minimize(fun      = Minimizer.optimize,
                         x0       = self.X0,
