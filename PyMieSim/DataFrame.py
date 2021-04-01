@@ -37,13 +37,10 @@ class ExperimentalDataFrame(pd.DataFrame):
                                               ylabel  = r'Coupling [Watt]',
                                               **kwargs)
 
-        fig.legend(prop={'size': 8}, title='Detec. , Refrac. index',)
+        fig.legend(prop={'size': 8}, title='Detec. , Refrac. index',loc=2)
 
         return fig
 
-
-    def Show(self,*args,**kwargs):
-        return plt.show(*args, **kwargs)
 
 
 class S1S2DataFrame(pd.DataFrame):
@@ -113,9 +110,6 @@ class QscaDataFrame(pd.DataFrame):
 
         return fig
 
-
-    def Show(self,*args,**kwargs):
-        return plt.show(*args, **kwargs)
 
 
 

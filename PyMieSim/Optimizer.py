@@ -1,7 +1,14 @@
 import numpy as np
 from scipy.optimize import minimize
-from mayavi import mlab
 
+
+MetricList = ['MinCoupling',
+              'MaxCoupling',
+              'MeanCoupling',
+              'MonotonicRI',
+              'MonotonicSize',
+              'RSDSize',
+              'RSDRI']
 
 
 class Optimize:
@@ -13,13 +20,16 @@ class Optimize:
                  WhichDetector,
                  MinVal,
                  MaxVal,
+                 Optimum,
                  FirstStride,
                  MaxIter=50,
                  Tol=1e-10):
 
+        assert Metric in MetricList, f"Metric not in the MetricList \n{MetricList}"
+
         self.ExperimentalSet = ExperimentalSet
         self.Metric          = Metric
-        self.Parameters       = Parameter
+        self.Parameters      = Parameter
         self.X0              = X0
         self.WhichDetector   = WhichDetector
         self.MinVal          = MinVal
@@ -28,22 +38,46 @@ class Optimize:
         self.MaxIter         = MaxIter
         self.Tol             = Tol
 
-        if len(self.Parameters)   == 1: self.Result = self.Optimize1()
+        if Optimum == 'Max':
+            self.sign = -1
+        elif Optimum == 'Min':
+            self.sign = 1
 
-        elif len(self.Parameters) == 2: self.Result = self.Optimize2()
+
+        self.Result = self.Run()
 
 
-    def Optimize1(self):
+
+    def ComputePenalty(self, Parameters, x, MaxVal, MinVal, factor=100):
+        Penalty = 0
+        for n in range(len(Parameters)):
+            if MinVal[n] and x[0]< MinVal[n]:
+                Penalty += np.abs( x[0]*factor );
+                x[0]     = self.MinVal[n]
+
+            if MinVal[n] and x[0]> MaxVal[n]:
+                Penalty += np.abs( x[0]*factor );
+                x[0]     = self.MaxVal[n]
+
+        return Penalty
+
+
+    def UpdateDetector(self, Parameters, x, WhichDetector):
+
+        for n in range(len(Parameters)):
+            setattr(self.ExperimentalSet.Detectors[WhichDetector], Parameters[0], x[0])
+
+
+    def Run(self):
 
         def EvalFunc(x):
-            Penalty = 0
-            for n in range(len(self.Parameters)):
-                if self.MinVal[n] and x[0]< self.MinVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MinVal[n]
-                if self.MinVal[n] and x[0]> self.MaxVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MaxVal[n]
+            Penalty = self.ComputePenalty(self.Parameters, x, self.MaxVal, self.MinVal, factor=100)
 
-            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters[0], x[0])
+            self.UpdateDetector(self.Parameters, x, self.WhichDetector)
 
-            return self.ExperimentalSet.Coupling.Cost(self.Metric) + Penalty
+            Cost = self.ExperimentalSet._Coupling(self.WhichDetector).Cost(self.Metric)
+
+            return self.sign * np.abs(Cost) + Penalty
 
         Minimizer = Caller(EvalFunc, ParameterName = self.Parameters)
 
@@ -53,27 +87,6 @@ class Optimize:
                         tol      = self.Tol,
                         options  = {'maxiter': self.MaxIter, 'rhobeg':self.FirstStride})
 
-
-    def Optimize2(self):
-
-        def EvalFunc(x):
-            Penalty = 0
-            for n in range(len(self.Parameters)):
-                if self.MinVal[n] and x[0]< self.MinVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MinVal[n]
-                if self.MinVal[n] and x[0]> self.MaxVal[n]: Penalty += np.abs( x[0]*100 ); x[0] = self.MaxVal[n]
-
-            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters[0], x[0])
-            setattr(self.ExperimentalSet.Detectors[self.WhichDetector], self.Parameters[1], x[1])
-
-            return self.ExperimentalSet._Coupling(self.WhichDetector).Cost(self.Metric) + Penalty
-
-        Minimizer = Caller(EvalFunc, ParameterName = self.Parameters)
-
-        return minimize(fun      = Minimizer.optimize,
-                        x0       = self.X0,
-                        method   = 'COBYLA',
-                        tol      = self.Tol,
-                        options  = {'maxiter': self.MaxIter, 'rhobeg':self.FirstStride})
 
 
 class Caller:
@@ -152,35 +165,42 @@ class OptArray(np.ndarray):
 
 
     def Cost(self, arg='RI'):
-        if arg == 'RI_STD':
-            return self.std(axis=0).sum()
 
-        if arg == 'RI_RSD':
+        if arg == 'RSDRI':
             return self.std(axis=0).sum()/self.mean()
 
-        if arg == 'Size_STD':
-            return self.std(axis=1).sum()
-
-        if arg == 'Size_RSD':
+        if arg == 'RSDSize':
             return self.std(axis=1).sum()/self.mean()
 
-        if arg == 'Monotonic':
-            return self.Monotonic()
+        if arg == 'MonotonicSize':
+            return self.SizeMonotonic()
 
-        if arg == 'Mean':
-            return -self.mean()
+        if arg == 'MonotonicRI':
+            return self.RIMonotonic()
 
-        if arg == 'Max':
-            return -self.max()
+        if arg == 'MeanCoupling':
+            return self.mean()
 
-        if arg == 'Min':
+        if arg == 'MaxCoupling':
+            return self.max()
+
+        if arg == 'MinCoupling':
             return self.max()
 
 
-    def Monotonic(self):
+    def SizeMonotonic(self):
 
         Grad = np.gradient(self, axis = 1)
 
         STD = Grad.std( axis = 1)
+
+        return STD[0]
+
+
+    def RIMonotonic(self):
+
+        Grad = np.gradient(self, axis = 0)
+
+        STD = Grad.std( axis = 0)
 
         return STD[0]

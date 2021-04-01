@@ -188,7 +188,7 @@ def UnstructuredAmplitude(Mesh, Scalar=None, Name=''):
 @mlab.show
 def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None):
 
-    fig = mlab.figure(figure=Name,size=(500,300))
+    fig = mlab.figure(figure=Name,size=(600,400))
     visual.set_viewer(fig)
 
     O = (0,0,0)
@@ -204,8 +204,8 @@ def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None):
     mlab.colorbar(object      = im,
                   label_fmt   = "%.0e",
                   nb_labels   = 5,
-                  title       = 'Absolute value',
-                  orientation = 'vertical' )
+                  title       = 'Normalized scale',
+                  orientation = 'horizontal' )
 
 
 @mlab.show
