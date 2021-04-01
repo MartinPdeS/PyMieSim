@@ -133,7 +133,7 @@ Here is an example on how to use the library.
 
   print(Coupling) # output: 1.66e+02 nWatt
 
-For more examples I invite you to check the `examples<https://pymiesim.readthedocs.io/en/latest/Examples.html>`_
+For more examples I invite you to check the `examples <https://pymiesim.readthedocs.io/en/latest/Examples.html>`_
 section of the documentations.
 
 
@@ -164,7 +164,7 @@ Contact Information
 ************************
 As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
 
-PyMieSim was written by `Martin Poinsinet de Sivry-Houle<https://github.com/MartinPdS>`_.
+PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
 
 Email: `martin.poinsinet-de-sivry@polymtl.ca<mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_.
 
