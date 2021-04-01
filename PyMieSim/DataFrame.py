@@ -3,6 +3,14 @@ import matplotlib.pyplot as plt
 #plt.rcParams["font.family"] = "serif"
 #plt.rcParams["mathtext.fontset"] = "dejavuserif"
 
+def show(func):
+    def inner(*args, **kwargs):
+        try: return func(*args, **kwargs)
+
+        finally: plt.show()
+
+    return inner
+
 
 
 class ExperimentalDataFrame(pd.DataFrame):
@@ -19,7 +27,7 @@ class ExperimentalDataFrame(pd.DataFrame):
     def Perpendicular(self):
         return self.xs('Perpendicular')
 
-
+    @show
     def Plot(self, y='Coupling', **kwargs):
 
         fig = self.unstack(level=[-3,-1]).plot(y       = y,
@@ -52,7 +60,7 @@ class S1S2DataFrame(pd.DataFrame):
     def Perpendicular(self):
         return self.xs('Perpendicular')
 
-
+    @show
     def Plot(self, **kwargs):
 
         fig = self.unstack(level=[0,1]).plot(y       = 'S1',
@@ -76,9 +84,6 @@ class S1S2DataFrame(pd.DataFrame):
         return(fig, fig1)
 
 
-    def Show(self,*args,**kwargs):
-        return plt.show(*args, **kwargs)
-
 
 class QscaDataFrame(pd.DataFrame):
 
@@ -94,7 +99,7 @@ class QscaDataFrame(pd.DataFrame):
     def Perpendicular(self):
         return self.xs('Perpendicular')
 
-
+    @show
     def Plot(self, **kwargs):
 
         fig = self.unstack(level=[1]).plot(y       = 'Qsca',

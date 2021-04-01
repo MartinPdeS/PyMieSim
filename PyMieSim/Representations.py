@@ -40,8 +40,6 @@ class SPF(dict):
                       Name         = 'Scattering phase function',
                       Polarization = self.Polarization)
 
-    def Show(self):
-        mlab.show()
 
 
     def __repr__(self):
@@ -92,9 +90,6 @@ class S1S2(dict):
                              y1    = S2,
                              color = 'C1',
                              alpha = 0.4)
-
-    def Show(self):
-        plt.show()
 
 
     def __repr__(self):
@@ -148,8 +143,6 @@ class ScalarFarField(dict):
                             Name         = u'E_θ',
                             Polarization = self.Polarization)
 
-    def Show(self):
-        mlab.show()
 
 
     def __repr__(self):
@@ -217,9 +210,6 @@ class Footprint(dict):
 
         ax.set_title('Scatterer Footprint')
 
-
-    def Show(self):
-        plt.show()
 
 
     def __repr__(self):

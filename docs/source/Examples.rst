@@ -10,6 +10,7 @@ Scatterer: S1-S2
    from PyMieSim.Scatterer import Sphere
    from PyMieSim.Source import PlaneWave
 
+
    LightSource = PlaneWave(Wavelength = 450e-9,
                            Polarization = 0)
 
@@ -21,6 +22,7 @@ Scatterer: S1-S2
    S1S2 = Scat.S1S2(Num=100)
 
    S1S2.Plot()
+   
 
 
 .. image:: ../images/S1S2.png
@@ -35,6 +37,7 @@ Scatterer: full far-field
    from PyMieSim.Scatterer import Sphere
    from PyMieSim.Source import PlaneWave
 
+
    LightSource = PlaneWave(Wavelength = 450e-9,
                            Polarization = 0)
 
@@ -46,6 +49,7 @@ Scatterer: full far-field
    Fields = Scat.FarField(Num=100)
 
    Fields.Plot()
+
 
 
 .. image:: ../images/Fields.png
@@ -60,6 +64,7 @@ Scatterer: phase function
    from PyMieSim.Scatterer import Sphere
    from PyMieSim.Source import PlaneWave
 
+
    LightSource = PlaneWave(Wavelength = 450e-9,
                           Polarization = 0)
 
@@ -71,6 +76,7 @@ Scatterer: phase function
    SPF = Scat.SPF(Num=100)
 
    SPF.Plot()
+
 
 
 .. image:: ../images/SPF.png
@@ -85,6 +91,7 @@ Detector: Photodiode
    from PyMieSim.Source import PlaneWave
    from PyMieSim.Detector import Photodiode
 
+
    LightSource = PlaneWave(Wavelength = 450e-9,
                            Polarization = 0)
 
@@ -95,6 +102,7 @@ Detector: Photodiode
 
 
    Detector.Plot()
+
 
 
 .. image:: ../images/Photodiode.png
@@ -109,6 +117,7 @@ Detector: LPMode
    from PyMieSim.Source import PlaneWave
    from PyMieSim.Detector import LPmode
 
+
    LightSource = PlaneWave(Wavelength = 450e-9,
                            Polarization = 0)
 
@@ -121,6 +130,7 @@ Detector: LPMode
 
 
    Detector.Plot()
+
 
 
 .. image:: ../images/LPmode.png
@@ -170,6 +180,7 @@ ScattererSet: Qscattering
    from PyMieSim.Source import PlaneWave
    from PyMieSim.Sets import ScattererSet
 
+
    LightSource = PlaneWave(Wavelength = 450e-9,
                           Polarization = 0)
 
@@ -184,7 +195,6 @@ ScattererSet: Qscattering
    fig = Qsca.Plot()
 
 
-   Qsca.Show()
 
 
 
@@ -201,6 +211,7 @@ ExperimentalSet: Coupling
    from PyMieSim.Source import PlaneWave
    from PyMieSim.Detector import LPmode
    from PyMieSim.Sets import ScattererSet, ExperimentalSet
+
 
    LightSource = PlaneWave(Wavelength   = 450e-9,
                            Polarization = 0,
@@ -241,7 +252,7 @@ ExperimentalSet: Coupling
    Data = Set.DataFrame
 
    Data.Plot(y='Coupling')
-   Data.Show()
+
 
 
 
@@ -266,6 +277,7 @@ Optimizer: 1 parameter
  from PyMieSim.Source import PlaneWave
  from PyMieSim.Optimizer import Optimize
  from PyMieSim.Sets import ExperimentalSet, ScattererSet
+
 
  LightSource = PlaneWave(Wavelength   = 450e-9,
                          Polarization = 0,
@@ -308,7 +320,7 @@ Optimizer: 1 parameter
 
  df.Plot('Coupling') # can be "Couplimg"  or  "STD"
 
- df.Show()
+
 
 
 
@@ -326,6 +338,7 @@ Optimizer: 2 parameters
   from PyMieSim.Source import PlaneWave
   from PyMieSim.Optimizer import Optimize
   from PyMieSim.Sets import ExperimentalSet, ScattererSet
+
 
   LightSource = PlaneWave(Wavelength   = 450e-9,
                           Polarization = 0,
@@ -367,5 +380,3 @@ Optimizer: 2 parameters
   df = Set.DataFrame
 
   df.Plot('Coupling') # can be "Couplimg"  or  "STD"
-
-  df.Show()

@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
 from PyMieSim.utils import InterpFull, NA2Angle, Cart2Sp
 from PyMieSim.units import Power, Area
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
-from PyMieSim.Plots import PlotUnstructured
+import PyMieSim.Plots as plot
 from PyMieSim.Constants import *
 
 class BaseSource(object):
@@ -171,8 +172,10 @@ class BaseDetector(object):
 
         """
 
-        PlotUnstructured(self.Scalar, self.Mesh, Name='Mode field')
-
+        plot.Unstructured(Scalar = self.Scalar,
+                          Mesh   = self.Mesh,
+                          Name   = 'Mode field',
+                          Mode   = 'Amplitude')
 
 
 class EfficienciesProperties(object):

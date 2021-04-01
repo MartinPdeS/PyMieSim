@@ -1,7 +1,7 @@
 import numpy as np
 from mayavi import mlab
 
-from PyMieSim.Plots import UnitSphere, UnitAxes
+from PyMieSim.Plots import Unstructured
 from PyMieSim.Physics import Angle
 from PyMieSim.Fibonacci import Mesh as FMesh
 pi = np.pi
@@ -48,7 +48,7 @@ class FibonacciMesh(object):
 
     def MakeProperties(self):
 
-        self.CartCoord = (self.bind.x, self.bind.y, self.bind.z)
+        self.CartCoord = np.asarray([self.bind.x, self.bind.y, self.bind.z])
 
         self.SphCoord  = (self.bind.r, self.bind.phi, self.bind.theta)
 
@@ -71,20 +71,7 @@ class FibonacciMesh(object):
 
         Name = 'Angular mesh'
 
-        fig = mlab.figure(size=(600,300))
-
-        UnitAxes(fig)
-
-        mlab.text(0, 0, Name, z=-2, width=0.2)
-
-        coord = UnitSphere(Num=50, Radius=1.)
-
-        mlab.mesh(*coord, colormap='gray', opacity=0.5)
-
-        im0 = mlab.points3d(*self.CartCoord,
-                             mode         = 'sphere',
-                             scale_mode   = 'none',
-                             scale_factor = 0.03)
+        Unstructured(Mesh=self, Name=Name, Mode='Amplitude')
 
         mlab.show()
 
