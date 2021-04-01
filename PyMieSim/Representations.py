@@ -2,10 +2,9 @@ import numpy as np
 from mayavi import mlab
 import matplotlib.pyplot as plt
 
-from PyMieSim.Plots import PlotStructuredAmplitude
-from PyMieSim.Plots import PlotStructuredAbs
+from PyMieSim.Plots import StructuredAmplitude
+from PyMieSim.Plots import StructuredAbs
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-
 
 
 class Stokes(dict):
@@ -21,7 +20,10 @@ class SPF(dict):
 
     def __init__(self, Parent, Num=100, Distance=1.):
 
+        self.Polarization = Parent.Source.Polarization.Radian
+
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
+
         self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
 
         self['EPhi'], self['ETheta'] = Parent.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
@@ -32,10 +34,11 @@ class SPF(dict):
     def Plot(self):
         Name = 'Scattering phase function'
 
-        PlotStructuredAbs(self['SPF'],
-                          self['Phi'],
-                          self['Theta'],
-                          Name='Scattering phase function')
+        StructuredAbs(Scalar       = self['SPF'],
+                      Phi          = self['Phi'],
+                      Theta        = self['Theta'],
+                      Name         = 'Scattering phase function',
+                      Polarization = self.Polarization)
 
     def Show(self):
         mlab.show()
@@ -73,9 +76,7 @@ class S1S2(dict):
 
         axes[0].set_title('S1 function'); axes[1].set_title('S2 function')
 
-        axes[0].plot(self['Phi'],
-                     S1,
-                     color = 'k')
+        axes[0].plot(self['Phi'], S1,  color = 'k')
 
         axes[0].fill_between(x     = self['Phi'],
                              y2    = 0,
@@ -84,9 +85,7 @@ class S1S2(dict):
                              alpha = 0.4)
 
 
-        axes[1].plot(self['Phi'],
-                     S2,
-                     color = 'k')
+        axes[1].plot(self['Phi'], S2, color = 'k')
 
         axes[1].fill_between(x     = self['Phi'],
                              y2    = 0,
@@ -113,6 +112,8 @@ class ScalarFarField(dict):
 
     def __init__(self, Num = 200, Parent = None, Distance=1.):
 
+        self.Polarization = Parent.Source.Polarization.Radian
+
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
 
         self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
@@ -135,15 +136,17 @@ class ScalarFarField(dict):
 
         """
 
-        PlotStructuredAmplitude(self['EPhi'],
-                                self['Phi'],
-                                self['Theta'],
-                                Name = 'E phi')
+        StructuredAmplitude(Scalar       = self['EPhi'],
+                            Phi          = self['Phi'],
+                            Theta        = self['Theta'],
+                            Name         = u'E_φ',
+                            Polarization = self.Polarization)
 
-        PlotStructuredAmplitude(self['ETheta'],
-                                self['Phi'],
-                                self['Theta'],
-                                Name = 'E theta')
+        StructuredAmplitude(Scalar       = self['ETheta'],
+                            Phi          = self['Phi'],
+                            Theta        = self['Theta'],
+                            Name         = u'E_θ',
+                            Polarization = self.Polarization)
 
     def Show(self):
         mlab.show()
