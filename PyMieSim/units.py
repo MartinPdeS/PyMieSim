@@ -16,15 +16,6 @@ unitList = {-5: "f",
 
 
 class Area(float):
-    """
-    P = :math:`\\int_{A} I dA`
-    I = :math:`\\frac{c n \\epsilon_0}{2} |E|^2`
-    With:
-         I : Energy density
-         n  : Refractive index of the medium
-         :math:`\\epsilon_0` : Vaccum permitivity
-         E  : Electric field
-    """
 
     def __repr__(self):
 

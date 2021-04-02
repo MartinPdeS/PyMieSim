@@ -34,7 +34,7 @@ class PlaneWave(BaseSource):
         self.GLMT         = False
         self.Wavelength   = Wavelength
         self.k            = 2 * pi / Wavelength
-        self.Polarization = _Polarization(Polarization)
+        self.Polarization = Polarization
         self.E0           = E0
         self.H0           = E0 / (mu0*c)
         self.H0           = sqrt(eps0/mu0) * self.E0
@@ -195,13 +195,13 @@ class GaussianBeam(BaseSource):
                  NA:           float,
                  Polarization: float = 0.,
                  E0:           float = 1.,
-                 Offset:       list = [EPS]*3) :
+                 Offset:       list  = [EPS]*3) :
 
         self.GLMT = True
         Offset = array(Offset); Offset[Offset == 0] = EPS
         self.Wavelength = Wavelength
         self.k = 2 * pi / Wavelength
-        self.Polarization = _Polarization(Polarization)
+        self.Polarization = Polarization
         self.E0 = E0
         self.NA = NA
         self.w0 = 2 * self.Wavelength / (pi * NA)

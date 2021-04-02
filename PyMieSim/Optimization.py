@@ -10,8 +10,18 @@ MetricList = ['MinCoupling',
               'RSDSize',
               'RSDRI']
 
+DetectorParamList = ['NA',
+                     'PhiOffset',
+                     'ThetaOffset',
+                     'Filter']
 
-class Optimize:
+SourceParamList = ['E0',
+                   'Polarization',
+                   'Wavelength']
+
+ParameterList = DetectorParamList + SourceParamList
+
+class Optimizer:
     def __init__(self,
                  ExperimentalSet,
                  Metric,
@@ -26,6 +36,7 @@ class Optimize:
                  Tol=1e-10):
 
         assert Metric in MetricList, f"Metric not in the MetricList \n{MetricList}"
+        assert all(len(x)==len(Parameter) for x in [X0, MinVal, MaxVal ]  ), f'Lenght of parameters, X0, MinVal, MaxVal not equal'
 
         self.ExperimentalSet = ExperimentalSet
         self.Metric          = Metric
@@ -62,10 +73,14 @@ class Optimize:
         return Penalty
 
 
-    def UpdateDetector(self, Parameters, x, WhichDetector):
+    def UpdateConfiguration(self, Parameters, x, WhichDetector):
 
         for n in range(len(Parameters)):
-            setattr(self.ExperimentalSet.Detectors[WhichDetector], Parameters[0], x[0])
+            if Parameters[n] in DetectorParamList:
+                setattr(self.ExperimentalSet.Detectors[WhichDetector], Parameters[0], x[0])
+
+            elif Parameters[n] in SourceParamList:
+                setattr(self.ExperimentalSet.ScattererSet.Source, Parameters[0], x[0])
 
 
     def Run(self):
@@ -73,7 +88,7 @@ class Optimize:
         def EvalFunc(x):
             Penalty = self.ComputePenalty(self.Parameters, x, self.MaxVal, self.MinVal, factor=100)
 
-            self.UpdateDetector(self.Parameters, x, self.WhichDetector)
+            self.UpdateConfiguration(self.Parameters, x, self.WhichDetector)
 
             Cost = self.ExperimentalSet._Coupling(self.WhichDetector).Cost(self.Metric)
 

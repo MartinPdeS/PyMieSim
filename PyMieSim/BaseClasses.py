@@ -21,6 +21,14 @@ class BaseSource(object):
 
         pass
 
+    @property
+    def Polarization(self):
+        return self._Polarization
+
+    @Polarization.setter
+    def Polarization(self, val):
+        self._Polarization = _Polarization(val)
+
 
 class MeshProperty(object):
     """Base class for :class:`Detector` class used to define the properties
@@ -37,7 +45,7 @@ class MeshProperty(object):
 
     @Filter.setter
     def Filter(self, val):
-        self._Filter = Polarization(val)
+        self._Filter = _Polarization(val)
 
     @property
     def PhiOffset(self):
