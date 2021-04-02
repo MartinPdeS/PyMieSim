@@ -25,8 +25,6 @@ GaussianBeam
     :inherited-members:
 
 
-
-
 Scatterer
 ---------
 

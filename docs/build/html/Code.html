@@ -55,9 +55,12 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> PyMieSim
+            <a href="index.html">
           
 
+          
+            
+            <img src="_static/Logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -206,7 +209,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
 <dl class="method">
 <dt id="PyMieSim.Representations.ScalarFarField.Plot">
-<code class="descname">Plot</code><span class="sig-paren">(</span><em>hold=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.Plot" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Plot</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Representations.html#ScalarFarField.Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Representations.ScalarFarField.Plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method plots the scattered Far-Field
 <span class="math notranslate nohighlight">\(E_{\phi}(\phi,\theta)^2 , E_{\theta}(\phi,\theta)^2\)</span>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -518,13 +521,42 @@ ref[2]:Eq:10
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.CrossSection">
+<code class="descname">CrossSection</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.CrossSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return scattering cross section, see <a class="reference internal" href="#PyMieSim.Scatterer.Sphere.EnergyFlow" title="PyMieSim.Scatterer.Sphere.EnergyFlow"><code class="xref py py-func docutils literal notranslate"><span class="pre">EnergyFlow()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code>) – Number of voxel in the 4 pi space to compute scattering cross section.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">scattering cross section [<span class="math notranslate nohighlight">\(m^2\)</span>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.EnergyFlow">
 <code class="descname">EnergyFlow</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.EnergyFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method return energy flow defined as:</p>
-<p><span class="math notranslate nohighlight">\(W_a = \sigma_{sca} * I_{inc}\)</span></p>
-<p>Where <span class="math notranslate nohighlight">\(\sigma_{sca}\)</span> is the scattering cross section.</p>
-<p>More info on wikipedia link:
-<a class="reference external" href="https://en.wikipedia.org/wiki/Cross_section_(physics">https://en.wikipedia.org/wiki/Cross_section_(physics</a>)#Cross_section_and_Mie_theory</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}W_a &amp;= \sigma_{sca} * I_{inc}\\P &amp;= \int_{A} I dA\\I &amp;= \frac{c n \epsilon_0}{2} |E|^2\end{aligned}\end{align} \]</div>
+<div class="line-block">
+<div class="line">With:</div>
+<div class="line-block">
+<div class="line-block">
+<div class="line">I : Energy density</div>
+<div class="line">n  : Refractive index of the medium</div>
+<div class="line"><span class="math notranslate nohighlight">\(\epsilon_0\)</span> : Vaccum permitivity</div>
+<div class="line">E  : Electric field</div>
+</div>
+<div class="line"><span class="math notranslate nohighlight">\(\sigma_{sca}\)</span>: Scattering cross section.</div>
+</div>
+</div>
+<p>More info on wikipedia link (see ref[6]).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -543,8 +575,12 @@ ref[2]:Eq:10
 <dt id="PyMieSim.Scatterer.Sphere.FarField">
 <code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.FarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(\Big\{ E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2 \Big\}\)</span>.</p>
-<p>The Fields are up to a constant phase value: <span class="math notranslate nohighlight">\(\exp{(-i k r )}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
+<p>The Fields are up to a constant phase value:</p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -560,6 +596,12 @@ ref[2]:Eq:10
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.GetBinding">
+<code class="descname">GetBinding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere.GetBinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetBinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method call and bind c++ scatterer class</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.GetEfficiencies">
 <code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
@@ -570,7 +612,8 @@ for the scatterer.</p>
 <dt id="PyMieSim.Scatterer.Sphere.PoyntingVector">
 <code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.PoyntingVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method return the Poynting vector norm defined as:</p>
-<p><span class="math notranslate nohighlight">\(\vec{S} = \epsilon c^2 \vec{E} \times \vec{B}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\vec{S} = \epsilon c^2 \vec{E} \times \vec{B}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -588,43 +631,25 @@ for the scatterer.</p>
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.Qabs">
 <code class="descname">Qabs</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Qabs" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(Q_{abs}=Q_{ext}-Q_{sca}\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Absorption efficiency</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Absorption efficiency.</p>
+<div class="math notranslate nohighlight">
+\[Q_{abs}=Q_{ext}-Q_{sca}\]</div>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.Qext">
 <code class="descname">Qext</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Qext" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Extinction efficiency</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Extinction efficiency.</p>
+<div class="math notranslate nohighlight">
+\[Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\]</div>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.Qsca">
 <code class="descname">Qsca</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Qsca" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Scattering efficiency</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Scattering efficiency.</p>
+<div class="math notranslate nohighlight">
+\[Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\]</div>
 </dd></dl>
 
 <dl class="method">
@@ -632,8 +657,8 @@ for the scatterer.</p>
 <code class="descname">S1S2</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.S1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> and <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
 For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
-<p><span class="math notranslate nohighlight">\(S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\)</span></p>
-<p><span class="math notranslate nohighlight">\(S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\)</span></p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\\S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\end{aligned}\end{align} \]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -652,7 +677,8 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.SPF">
 <code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.SPF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scattering phase function.</p>
-<p>SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -671,11 +697,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.an">
 <code class="descname">an</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere.an"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.an" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq:III.88 of B&amp;B:</p>
-<p><span class="math notranslate nohighlight">\(a_n = \frac{
+<div class="math notranslate nohighlight">
+\[a_n = \frac{
 \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) -
 \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
 {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-\mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\)</span></p>
+\mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 </dd></dl>
 
@@ -683,11 +710,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.bn">
 <code class="descname">bn</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere.bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.bn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq:III.89 of B&amp;B:</p>
-<p><span class="math notranslate nohighlight">\(b_n = \frac{
+<div class="math notranslate nohighlight">
+\[b_n = \frac{
 \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -
 \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
 {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-\mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}\)</span></p>
+\mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 </dd></dl>
 
@@ -695,11 +723,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.cn">
 <code class="descname">cn</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere.cn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.cn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as defined in Eq:III.90 of B&amp;B:</p>
-<p><span class="math notranslate nohighlight">\(c_n = \frac{
+<div class="math notranslate nohighlight">
+\[c_n = \frac{
 \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
 \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
 {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-\mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\)</span></p>
+\mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 </dd></dl>
 
@@ -707,11 +736,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.dn">
 <code class="descname">dn</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere.dn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.dn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as defined in Eq:III.91 of B&amp;B:</p>
-<p><span class="math notranslate nohighlight">\(d_n = \frac{
+<div class="math notranslate nohighlight">
+\[d_n = \frac{
 \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
 \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
 {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-\mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}\)</span></p>
+\mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 </dd></dl>
 
@@ -719,9 +749,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.sFarField">
 <code class="descname">sFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em>, <em>R</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.sFarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for structured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
-<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -736,7 +769,9 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.sS1S2">
 <code class="descname">sS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.sS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for structured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
 <p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -753,9 +788,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.uFarField">
 <code class="descname">uFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em>, <em>R</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.uFarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for unstructured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
-<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -770,9 +808,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Sphere.uS1S2">
 <code class="descname">uS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.uS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for unstructured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
-<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -834,13 +875,42 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.CrossSection">
+<code class="descname">CrossSection</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.CrossSection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method return scattering cross section, see <a class="reference internal" href="#PyMieSim.Scatterer.Cylinder.EnergyFlow" title="PyMieSim.Scatterer.Cylinder.EnergyFlow"><code class="xref py py-func docutils literal notranslate"><span class="pre">EnergyFlow()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Mesh</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">FibonacciMesh</span></code>) – Number of voxel in the 4 pi space to compute scattering cross section.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">scattering cross section [<span class="math notranslate nohighlight">\(m^2\)</span>]</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Cylinder.EnergyFlow">
 <code class="descname">EnergyFlow</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.EnergyFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method return energy flow defined as:</p>
-<p><span class="math notranslate nohighlight">\(W_a = \sigma_{sca} * I_{inc}\)</span></p>
-<p>Where <span class="math notranslate nohighlight">\(\sigma_{sca}\)</span> is the scattering cross section.</p>
-<p>More info on wikipedia link:
-<a class="reference external" href="https://en.wikipedia.org/wiki/Cross_section_(physics">https://en.wikipedia.org/wiki/Cross_section_(physics</a>)#Cross_section_and_Mie_theory</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}W_a &amp;= \sigma_{sca} * I_{inc}\\P &amp;= \int_{A} I dA\\I &amp;= \frac{c n \epsilon_0}{2} |E|^2\end{aligned}\end{align} \]</div>
+<div class="line-block">
+<div class="line">With:</div>
+<div class="line-block">
+<div class="line-block">
+<div class="line">I : Energy density</div>
+<div class="line">n  : Refractive index of the medium</div>
+<div class="line"><span class="math notranslate nohighlight">\(\epsilon_0\)</span> : Vaccum permitivity</div>
+<div class="line">E  : Electric field</div>
+</div>
+<div class="line"><span class="math notranslate nohighlight">\(\sigma_{sca}\)</span>: Scattering cross section.</div>
+</div>
+</div>
+<p>More info on wikipedia link (see ref[6]).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -859,8 +929,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.FarField">
 <code class="descname">FarField</code><span class="sig-paren">(</span><em>Num: int = 200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.FarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(\Big\{ E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2 \Big\}\)</span>.</p>
-<p>The Fields are up to a constant phase value: <span class="math notranslate nohighlight">\(\exp{(-i k r )}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
+<p>The Fields are up to a constant phase value:</p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -876,6 +950,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.GetBinding">
+<code class="descname">GetBinding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder.GetBinding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.GetBinding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method call and bind c++ scatterer class</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Cylinder.GetEfficiencies">
 <code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
 <dd><p>Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs}\)</span>)
@@ -886,7 +966,8 @@ for the scatterer.</p>
 <dt id="PyMieSim.Scatterer.Cylinder.PoyntingVector">
 <code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.PoyntingVector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method return the Poynting vector norm defined as:</p>
-<p><span class="math notranslate nohighlight">\(\vec{S} = \epsilon c^2 \vec{E} \times \vec{B}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\vec{S} = \epsilon c^2 \vec{E} \times \vec{B}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -904,43 +985,25 @@ for the scatterer.</p>
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Cylinder.Qabs">
 <code class="descname">Qabs</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qabs" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(Q_{abs}=Q_{ext}-Q_{sca}\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Absorption efficiency</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Absorption efficiency.</p>
+<div class="math notranslate nohighlight">
+\[Q_{abs}=Q_{ext}-Q_{sca}\]</div>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Cylinder.Qext">
 <code class="descname">Qext</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qext" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Extinction efficiency</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Extinction efficiency.</p>
+<div class="math notranslate nohighlight">
+\[Q_{ext}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \text{real} \{ a_n+b_n \}\]</div>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Cylinder.Qsca">
 <code class="descname">Qsca</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Qsca" title="Permalink to this definition">¶</a></dt>
-<dd><p><span class="math notranslate nohighlight">\(Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\)</span></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Scattering efficiency</td>
-</tr>
-</tbody>
-</table>
+<dd><p>Scattering efficiency.</p>
+<div class="math notranslate nohighlight">
+\[Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\]</div>
 </dd></dl>
 
 <dl class="method">
@@ -948,8 +1011,8 @@ for the scatterer.</p>
 <code class="descname">S1S2</code><span class="sig-paren">(</span><em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.S1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> and <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
 For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
-<p><span class="math notranslate nohighlight">\(S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\)</span></p>
-<p><span class="math notranslate nohighlight">\(S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\)</span></p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\\S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\end{aligned}\end{align} \]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -968,7 +1031,8 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.SPF">
 <code class="descname">SPF</code><span class="sig-paren">(</span><em>Num=100</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.SPF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scattering phase function.</p>
-<p>SPF = <span class="math notranslate nohighlight">\(E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -987,9 +1051,9 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.an">
 <code class="descname">an</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder.an"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.an" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined ref[5]:</p>
-<p><span class="math notranslate nohighlight">\(a_n =
-\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-{ m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\)</span></p>
+<div class="math notranslate nohighlight">
+\[a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+{ m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\]</div>
 <dl class="docutils">
 <dt>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and</dt>
 <dd><span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the index.</dd>
@@ -1000,9 +1064,9 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.bn">
 <code class="descname">bn</code><span class="sig-paren">(</span><em>MaxOrder=5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder.bn"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.bn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in ref[5]:</p>
-<p><span class="math notranslate nohighlight">\(b_n =
-\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-{ m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\)</span></p>
+<div class="math notranslate nohighlight">
+\[b_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+{ m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\]</div>
 <dl class="docutils">
 <dt>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and</dt>
 <dd><span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the index.</dd>
@@ -1013,9 +1077,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.sFarField">
 <code class="descname">sFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em>, <em>R</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.sFarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for structured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
-<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1030,7 +1097,9 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.sS1S2">
 <code class="descname">sS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.sS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for structured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
 <p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1047,9 +1116,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.uFarField">
 <code class="descname">uFarField</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em>, <em>R</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.uFarField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for unstructured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
-<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1064,9 +1136,12 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <dt id="PyMieSim.Scatterer.Cylinder.uS1S2">
 <code class="descname">uS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.uS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method Compute scattering Far Field for unstructured coordinate.</p>
-<p>Fields = <span class="math notranslate nohighlight">\(E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{Fields} = E_{||}(\phi,\theta)^2,
+                 E_{\perp}(\phi,\theta)^2\]</div>
 <p>The Fields are up to a constant phase value.</p>
-<p><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\exp{\big(-i k r \big)}\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1154,9 +1229,15 @@ thus independant of the phase of the latter.</p>
 <code class="descname">Footprint</code><span class="sig-paren">(</span><em>Scatterer</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.Photodiode.Footprint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the footprint of the scattererd light coupling with the
 detector as computed as:</p>
-<p><span class="math notranslate nohighlight">\(\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),         \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\)</span>.</p>
-<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
-<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<div class="math notranslate nohighlight">
+\[\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),                   \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\]</div>
+<div class="line-block">
+<div class="line">Where</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and</div>
+<div class="line"><span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</div>
+</div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1280,9 +1361,15 @@ thus dependant of the phase of the latter.</p>
 <code class="descname">Footprint</code><span class="sig-paren">(</span><em>Scatterer</em>, <em>Num=200</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Detector.LPmode.Footprint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the footprint of the scattererd light coupling with the
 detector as computed as:</p>
-<p><span class="math notranslate nohighlight">\(\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),         \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\)</span>.</p>
-<p>where <span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and
-<span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</p>
+<div class="math notranslate nohighlight">
+\[\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),                   \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\]</div>
+<div class="line-block">
+<div class="line">Where</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and</div>
+<div class="line"><span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</div>
+</div>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

@@ -53,9 +53,12 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> PyMieSim
+            <a href="../../index.html">
           
 
+          
+            
+            <img src="../../_static/Logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -165,7 +168,7 @@
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.GLMT.Scatterer</span> <span class="kn">import</span> <span class="n">SPHERE</span> <span class="k">as</span> <span class="n">G_SPHERE</span><span class="p">,</span> <span class="n">CYLINDER</span> <span class="k">as</span> <span class="n">G_CYLINDER</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.LMT.Scatterer</span> <span class="kn">import</span> <span class="n">SPHERE</span><span class="p">,</span> <span class="n">CYLINDER</span>
-
+<span class="kn">from</span> <span class="nn">PyMieSim.units</span> <span class="kn">import</span> <span class="n">Area</span>
 
 <div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Short summary.</span>
@@ -196,30 +199,31 @@
                  <span class="n">MuSphere</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
                  <span class="n">MuMedium</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Index</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span> <span class="o">=</span> <span class="n">nMedium</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>      <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>  <span class="o">=</span> <span class="n">Diameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>    <span class="o">=</span> <span class="n">Source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>     <span class="o">=</span> <span class="n">Index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>   <span class="o">=</span> <span class="n">nMedium</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>      <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span>      <span class="o">=</span> <span class="n">MuSphere</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span>        <span class="o">=</span> <span class="n">MuMedium</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span> <span class="o">=</span> <span class="n">MuSphere</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="n">MuMedium</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span>     <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">Source</span><span class="o">.</span><span class="n">GLMT</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Sphere.GetBinding"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.GetBinding">[docs]</a>    <span class="k">def</span> <span class="nf">GetBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method call and bind c++ scatterer class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">GLMT</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">_BSC_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)&quot;</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">G_SPHERE</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="n">Index</span><span class="p">,</span>
-                                 <span class="n">Diameter</span>     <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">G_SPHERE</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                                 <span class="n">Diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
                                  <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
                                  <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
                                  <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
@@ -227,22 +231,23 @@
                                  <span class="n">BSC</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">_BSC_</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">SPHERE</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="n">Index</span><span class="p">,</span>
-                               <span class="n">Diameter</span>     <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">SPHERE</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                               <span class="n">Diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
                                <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
                                <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
                                <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
-                               <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">)</span>
+                               <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Sphere.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&amp;B:</span>
 
-<span class="sd">        :math:`a_n = \\frac{</span>
-<span class="sd">        \mu_{sp} \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -</span>
-<span class="sd">        \\mu M \Psi_n^\prime(\\alpha) \\Psi_n(\\beta)}</span>
-<span class="sd">        {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-</span>
-<span class="sd">        \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            a_n = \\frac{</span>
+<span class="sd">            \mu_{sp} \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -</span>
+<span class="sd">            \\mu M \Psi_n^\prime(\\alpha) \\Psi_n(\\beta)}</span>
+<span class="sd">            {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-</span>
+<span class="sd">            \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}</span>
 
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
@@ -253,11 +258,12 @@
 <div class="viewcode-block" id="Sphere.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
 
-<span class="sd">        :math:`b_n = \\frac{</span>
-<span class="sd">        \mu M \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -</span>
-<span class="sd">        \\mu_{sp} \Psi_n^\prime(\\alpha) \Psi_n(\\beta)}</span>
-<span class="sd">        {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-</span>
-<span class="sd">        \\mu_{sp} \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            b_n = \\frac{</span>
+<span class="sd">            \mu M \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -</span>
+<span class="sd">            \\mu_{sp} \Psi_n^\prime(\\alpha) \Psi_n(\\beta)}</span>
+<span class="sd">            {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-</span>
+<span class="sd">            \\mu_{sp} \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}</span>
 
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
@@ -268,11 +274,12 @@
 <div class="viewcode-block" id="Sphere.cn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.cn">[docs]</a>    <span class="k">def</span> <span class="nf">cn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&amp;B:</span>
 
-<span class="sd">        :math:`c_n = \\frac{</span>
-<span class="sd">        \mu_{sp} M \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -</span>
-<span class="sd">        \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}</span>
-<span class="sd">        {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\\prime(\\beta)-</span>
-<span class="sd">        \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            c_n = \\frac{</span>
+<span class="sd">            \mu_{sp} M \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -</span>
+<span class="sd">            \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}</span>
+<span class="sd">            {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\\prime(\\beta)-</span>
+<span class="sd">            \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}</span>
 
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
@@ -283,11 +290,12 @@
 <div class="viewcode-block" id="Sphere.dn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.dn">[docs]</a>    <span class="k">def</span> <span class="nf">dn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&amp;B:</span>
 
-<span class="sd">        :math:`d_n = \\frac{</span>
-<span class="sd">        \mu M^2 \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -</span>
-<span class="sd">        \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}</span>
-<span class="sd">        {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-</span>
-<span class="sd">        \\mu_{sp} M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            d_n = \\frac{</span>
+<span class="sd">            \mu M^2 \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -</span>
+<span class="sd">            \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}</span>
+<span class="sd">            {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-</span>
+<span class="sd">            \\mu_{sp} M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}</span>
 
 <span class="sd">        With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)</span>
 
@@ -327,30 +335,31 @@
                  <span class="n">MuSphere</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
                  <span class="n">MuMedium</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="s1">&#39;Cylinder&#39;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span> <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span> <span class="n">Source</span><span class="p">,</span> <span class="n">Index</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span> <span class="o">=</span> <span class="n">IndexMedium</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>      <span class="o">=</span> <span class="s1">&#39;Cylinder&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>  <span class="o">=</span> <span class="n">Diameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>    <span class="o">=</span> <span class="n">Source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>     <span class="o">=</span> <span class="n">Index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>   <span class="o">=</span> <span class="n">IndexMedium</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>      <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span>      <span class="o">=</span> <span class="n">MuSphere</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span>        <span class="o">=</span> <span class="n">MuMedium</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">MuSp</span> <span class="o">=</span> <span class="n">MuSphere</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">Mu</span> <span class="o">=</span> <span class="n">MuMedium</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_ext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span>     <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_an</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">Source</span><span class="o">.</span><span class="n">GLMT</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+
+<div class="viewcode-block" id="Cylinder.GetBinding"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.GetBinding">[docs]</a>    <span class="k">def</span> <span class="nf">GetBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method call and bind c++ scatterer class</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">GLMT</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">_BSC_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)&quot;</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">G_CYLINDER</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="n">Index</span><span class="p">,</span>
-                                   <span class="n">Diameter</span>     <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">G_CYLINDER</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                                   <span class="n">Diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
                                    <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
                                    <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
                                    <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
@@ -358,21 +367,21 @@
                                    <span class="n">BSC</span>          <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">_BSC_</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">CYLINDER</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="n">Index</span><span class="p">,</span>
-                                 <span class="n">Diameter</span>     <span class="o">=</span> <span class="n">Diameter</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span> <span class="o">=</span> <span class="n">CYLINDER</span><span class="p">(</span><span class="n">Index</span>        <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Index</span><span class="p">,</span>
+                                 <span class="n">Diameter</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span><span class="p">,</span>
                                  <span class="n">Wavelength</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">,</span>
                                  <span class="n">nMedium</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span><span class="p">,</span>
                                  <span class="n">Polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">Polarization</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
-                                 <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">)</span>
+                                 <span class="n">E0</span>           <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">E0</span><span class="p">)</span></div>
 
 
 
 <div class="viewcode-block" id="Cylinder.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Compute :math:`a_n` coefficient as defined ref[5]:</span>
 
-<span class="sd">        :math:`a_n =</span>
-<span class="sd">        \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }</span>
-<span class="sd">        { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }`</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            a_n = \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }</span>
+<span class="sd">            { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }</span>
 
 <span class="sd">        With :math:`m` being the refractive index of the medium and</span>
 <span class="sd">             :math:`m_t` being the refractive index of the index.</span>
@@ -382,11 +391,12 @@
 
 
 <div class="viewcode-block" id="Cylinder.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in ref[5]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute :math:`b_n` coefficient as defined in ref[5]:</span>
 
-<span class="sd">        :math:`b_n =</span>
-<span class="sd">        \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }</span>
-<span class="sd">        { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }`</span>
+<span class="sd">        .. math::</span>
+<span class="sd">            b_n = \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }</span>
+<span class="sd">            { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }</span>
 
 <span class="sd">        With :math:`m` being the refractive index of the medium and</span>
 <span class="sd">             :math:`m_t` being the refractive index of the index.</span>

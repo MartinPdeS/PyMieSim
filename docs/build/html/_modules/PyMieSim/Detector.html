@@ -53,9 +53,12 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> PyMieSim
+            <a href="../../index.html">
           
 
+          
+            
+            <img src="../../_static/Logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -194,6 +197,7 @@
                  <span class="n">Filter</span><span class="p">:</span>       <span class="nb">float</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">CouplingMode</span><span class="p">:</span> <span class="nb">str</span>    <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">):</span>
 
+        <span class="k">if</span> <span class="n">NA</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">NA</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span> <span class="k">raise</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error NA value is not valid, has to be in [0,1]&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">CouplingMode</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Intensity&#39;</span><span class="p">,</span> <span class="n">CouplingMode</span><span class="p">)</span>
 
@@ -201,8 +205,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_Filter</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Filter</span><span class="p">)</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_NA</span> <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SphericalMesh</span><span class="p">(</span><span class="n">Sampling</span>    <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
-                                       <span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+                                       <span class="n">MaxAngle</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_NA</span><span class="p">,</span>
                                        <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="n">PhiOffset</span><span class="p">,</span>
                                        <span class="n">GammaOffset</span> <span class="o">=</span> <span class="n">GammaOffset</span><span class="p">,</span>
                                        <span class="n">Structured</span>  <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
@@ -409,6 +415,86 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">mlab</span><span class="o">.</span><span class="n">points3d</span><span class="p">(</span><span class="o">*</span><span class="n">coord</span><span class="p">)</span>
     <span class="n">mlab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="k">class</span> <span class="nc">_Photodiode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Detector class for develop use only. Do not use!</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">NA</span><span class="p">:</span>           <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">Sampling</span><span class="p">:</span>     <span class="nb">int</span>    <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+                 <span class="n">GammaOffset</span><span class="p">:</span>  <span class="nb">float</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">PhiOffset</span><span class="p">:</span>    <span class="nb">float</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                 <span class="n">Filter</span><span class="p">:</span>       <span class="nb">float</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">CouplingMode</span><span class="p">:</span> <span class="nb">str</span>    <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">CouplingMode</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Intensity&#39;</span><span class="p">,</span> <span class="n">CouplingMode</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_GammaOffset</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PhiOffset</span> <span class="o">=</span> <span class="n">GammaOffset</span><span class="p">,</span> <span class="n">PhiOffset</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Filter</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Filter</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SphericalMesh</span><span class="p">(</span><span class="n">Sampling</span>    <span class="o">=</span> <span class="n">Sampling</span><span class="p">,</span>
+                                       <span class="n">MaxAngle</span>    <span class="o">=</span> <span class="n">NA2Angle</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span><span class="o">.</span><span class="n">Radian</span><span class="p">,</span>
+                                       <span class="n">PhiOffset</span>   <span class="o">=</span> <span class="n">PhiOffset</span><span class="p">,</span>
+                                       <span class="n">GammaOffset</span> <span class="o">=</span> <span class="n">GammaOffset</span><span class="p">,</span>
+                                       <span class="n">Structured</span>  <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UnstructuredFarField</span><span class="p">()</span>
+
+
+    <span class="k">def</span> <span class="nf">UnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">UpdateUnstructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Scalar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Sampling</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">StructuredFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">SFactor</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the FarField in a structured Mesh.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Dimension of the structured mesh [Num, Num].</span>
+<span class="sd">        SFactor : :class:`float`</span>
+<span class="sd">            Unused parameter added to match :class:`LPmode` class.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class`numpy.ndarray`:</span>
+<span class="sd">            Structured FarField value.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">Num</span><span class="p">,</span> <span class="n">Num</span><span class="p">])</span>
+
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        Photodiode detector</span>
+<span class="s2">        Coupling Mode: Intensity</span>
+<span class="s2">        Sampling:      </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">Sampling</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Gamma offset:  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">GammaOffset</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        Phi offset:    </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Mesh</span><span class="o">.</span><span class="n">PhiOffset</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
 
 
 <span class="c1"># -</span>

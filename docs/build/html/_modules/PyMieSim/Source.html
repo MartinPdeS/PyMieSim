@@ -53,9 +53,12 @@
           
 
           
-            <a href="../../index.html" class="icon icon-home"> PyMieSim
+            <a href="../../index.html">
           
 
+          
+            
+            <img src="../../_static/Logo.png" class="logo" alt="Logo"/>
           
           </a>
 
@@ -189,15 +192,15 @@
                  <span class="n">Polarization</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                  <span class="n">E0</span><span class="p">:</span>           <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">GLMT</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span> <span class="o">=</span> <span class="n">Wavelength</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">Wavelength</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">E0</span> <span class="o">=</span> <span class="n">E0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">=</span> <span class="n">E0</span> <span class="o">/</span> <span class="p">(</span><span class="n">mu0</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">H0</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">eps0</span><span class="o">/</span><span class="n">mu0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">GLMT</span>         <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="n">Wavelength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span>            <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">Wavelength</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">Polarization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E0</span>           <span class="o">=</span> <span class="n">E0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H0</span>           <span class="o">=</span> <span class="n">E0</span> <span class="o">/</span> <span class="p">(</span><span class="n">mu0</span><span class="o">*</span><span class="n">c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">H0</span>           <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">eps0</span><span class="o">/</span><span class="n">mu0</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">E0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>       <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_BSC_</span>        <span class="o">=</span> <span class="kc">None</span>
 
 
     <span class="k">def</span> <span class="nf">Getidx</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="p">):</span>
@@ -353,13 +356,13 @@
                  <span class="n">NA</span><span class="p">:</span>           <span class="nb">float</span><span class="p">,</span>
                  <span class="n">Polarization</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
                  <span class="n">E0</span><span class="p">:</span>           <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
-                 <span class="n">Offset</span><span class="p">:</span>       <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span>
+                 <span class="n">Offset</span><span class="p">:</span>       <span class="nb">list</span>  <span class="o">=</span> <span class="p">[</span><span class="n">EPS</span><span class="p">]</span><span class="o">*</span><span class="mi">3</span><span class="p">)</span> <span class="p">:</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">GLMT</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">Offset</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">Offset</span><span class="p">);</span> <span class="n">Offset</span><span class="p">[</span><span class="n">Offset</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">EPS</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span> <span class="o">=</span> <span class="n">Wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">pi</span> <span class="o">/</span> <span class="n">Wavelength</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">_Polarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Polarization</span> <span class="o">=</span> <span class="n">Polarization</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">E0</span> <span class="o">=</span> <span class="n">E0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="n">NA</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">w0</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Wavelength</span> <span class="o">/</span> <span class="p">(</span><span class="n">pi</span> <span class="o">*</span> <span class="n">NA</span><span class="p">)</span>

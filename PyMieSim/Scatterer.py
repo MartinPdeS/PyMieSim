@@ -54,6 +54,9 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
     def GetBinding(self):
+        """
+        Method call and bind c++ scatterer class
+        """
         if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
                 raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
@@ -78,11 +81,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     def an(self, MaxOrder=5):
         """ Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
-        :math:`a_n = \\frac{
-        \mu_{sp} \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -
-        \\mu M \Psi_n^\prime(\\alpha) \\Psi_n(\\beta)}
-        {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
-        \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+        .. math::
+            a_n = \\frac{
+            \mu_{sp} \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -
+            \\mu M \Psi_n^\prime(\\alpha) \\Psi_n(\\beta)}
+            {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
+            \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}
 
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
@@ -93,11 +97,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     def bn(self, MaxOrder=5):
         """ Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
-        :math:`b_n = \\frac{
-        \mu M \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -
-        \\mu_{sp} \Psi_n^\prime(\\alpha) \Psi_n(\\beta)}
-        {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
-        \\mu_{sp} \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+        .. math::
+            b_n = \\frac{
+            \mu M \\Psi_n(\\alpha) \\Psi_n^\prime(\\beta) -
+            \\mu_{sp} \Psi_n^\prime(\\alpha) \Psi_n(\\beta)}
+            {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
+            \\mu_{sp} \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}
 
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
@@ -108,11 +113,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     def cn(self, MaxOrder=5):
         """ Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
 
-        :math:`c_n = \\frac{
-        \mu_{sp} M \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -
-        \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}
-        {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\\prime(\\beta)-
-        \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+        .. math::
+            c_n = \\frac{
+            \mu_{sp} M \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -
+            \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}
+            {\mu_{sp} \\xi_n(\\alpha) \\Psi_n^\\prime(\\beta)-
+            \\mu M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}
 
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
@@ -123,11 +129,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     def dn(self, MaxOrder=5):
         """ Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
 
-        :math:`d_n = \\frac{
-        \mu M^2 \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -
-        \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}
-        {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
-        \\mu_{sp} M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}`
+        .. math::
+            d_n = \\frac{
+            \mu M^2 \\big[ \\xi_n(\\alpha) \\Psi_n^\prime(\\alpha) -
+            \\xi_n^\prime(\\alpha) \\Psi_n(\\alpha) \\big]}
+            {\mu M \\xi_n(\\alpha) \\Psi_n^\prime(\\beta)-
+            \\mu_{sp} M \\xi_n^\\prime (\\alpha) \\Psi_n(\\beta)}
 
         With :math:`M = \\frac{k_{sp}}{k}` (Eq:I.103)
 
@@ -183,6 +190,9 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
 
 
     def GetBinding(self):
+        """
+        Method call and bind c++ scatterer class
+        """        
         if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
                 raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
@@ -208,9 +218,9 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
     def an(self, MaxOrder=5):
         """ Compute :math:`a_n` coefficient as defined ref[5]:
 
-        :math:`a_n =
-        \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-        { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }`
+        .. math::
+            a_n = \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+            { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
 
         With :math:`m` being the refractive index of the medium and
              :math:`m_t` being the refractive index of the index.
@@ -220,11 +230,12 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
 
 
     def bn(self, MaxOrder=5):
-        """ Compute :math:`b_n` coefficient as defined in ref[5]:
+        """
+        Compute :math:`b_n` coefficient as defined in ref[5]:
 
-        :math:`b_n =
-        \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-        { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }`
+        .. math::
+            b_n = \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+            { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
 
         With :math:`m` being the refractive index of the medium and
              :math:`m_t` being the refractive index of the index.
