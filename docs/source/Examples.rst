@@ -22,7 +22,7 @@ Scatterer: S1-S2
    S1S2 = Scat.S1S2(Num=100)
 
    S1S2.Plot()
-   
+
 
 
 .. image:: ../images/S1S2.png
@@ -92,8 +92,9 @@ Detector: Photodiode
    from PyMieSim.Detector import Photodiode
 
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                           Polarization = 0)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1.)
 
    Detector = Photodiode(NA                = 0.8,
                          Sampling          = 1001,
@@ -118,8 +119,9 @@ Detector: LPMode
    from PyMieSim.Detector import LPmode
 
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                           Polarization = 0)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 0)
 
    Detector = LPmode(Mode         = (1, 1,'h'),
                      Sampling     = 201,
@@ -130,7 +132,6 @@ Detector: LPMode
 
 
    Detector.Plot()
-
 
 
 .. image:: ../images/LPmode.png

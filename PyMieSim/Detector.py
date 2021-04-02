@@ -44,8 +44,10 @@ class Photodiode(BaseDetector, MeshProperty):
 
         self._Filter = _Polarization(Filter)
 
+        self._NA = NA2Angle(NA).Radian
+
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
-                                       MaxAngle    = NA2Angle(NA).Radian,
+                                       MaxAngle    = self._NA,
                                        PhiOffset   = PhiOffset,
                                        GammaOffset = GammaOffset,
                                        Structured  = False)

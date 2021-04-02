@@ -222,9 +222,13 @@ def UnstructuredAmplitude(Mesh, Scalar=None, Name=''):
                   orientation = 'vertical' )
 
 @mlab.show
-def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None):
+def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None, Figure=None):
 
-    fig = mlab.figure(figure=Name,size=(600,400))
+    if Figure is None:
+        fig = mlab.figure(figure=Name,size=(600,400))
+    else:
+        fig = Figure
+
     visual.set_viewer(fig)
 
     O = (0,0,0)
@@ -245,7 +249,7 @@ def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None):
 
 
 @mlab.show
-def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None):
+def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None, Figure=None):
 
     x, y, z = Sp2Cart(Phi*0+1, Phi, Theta)
 
@@ -253,8 +257,10 @@ def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None):
     O0      = (+3,0,0)
     O1      = (-3,0,0)
 
-    fig = mlab.figure(figure=Name,size=(600,300))
-    visual.set_viewer(fig)
+    if Figure is None:
+        fig = mlab.figure(figure=Name,size=(600,300))
+    else:
+        fig = Figure
 
     if Polarization is not None:
         PolarizationArrow(O0, Polarization, Scale=1.1)
@@ -296,6 +302,57 @@ def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None):
 
 
 
+@mlab.show
+def PlotConfiguration(Detector, Scatterer):
+    """Still experimental"""
+    from mayavi import mlab
+    from tvtk.tools import visual
+    from tvtk.api import tvtk
+    from numpy import sqrt
+
+
+
+    fig = mlab.figure(figure = 'Optical configuration', size=(600,300))
+    visual.set_viewer(fig)
+
+    Origin = [0,0,0]
+
+    PlotUnitSphere(Num=50, Radius=0.1, Origin=(0,0,0), Figure=fig)
+
+    PlotUnitAxes(Scale=3, Origin=(0,0,0), Figure=fig)
+
+    PlotUnitAxes(Scale=0.8, Origin=(0,0,-2), Figure=fig, Label=False, ScaleTube=0.5)
+
+    PolarizationArrow(Origin=(0,0,-2), Pol=0, Scale=1)
+
+    Ydir = np.sin(Detector.PhiOffset)
+    Xdir = np.sin(Detector.GammaOffset)
+
+    Direction = np.array([Xdir,Ydir,-1])
+
+    dist = sqrt(Direction[0]**2 + Direction[1]**2 + Direction[2]**2)
+
+    Height = 2.0
+
+    Origin = Origin - Direction/dist*Height/2.5
+
+
+    SPF = Scatterer.SPF(100)
+    SPF['SPF'] = SPF['SPF']/np.max(SPF['SPF'])*2
+
+    x, y, z = Sp2Cart(SPF['SPF'], SPF['Phi'], SPF['Theta'] )
+
+    im = mlab.mesh(x, y, z, colormap='viridis', figure=fig)
+
+
+    PlotCone(Origin     = Origin,
+             Radius     = Detector.NA*Height,
+             Height     = Height,
+             Resolution = 100,
+             Figure     = fig,
+             Direction  = Direction)
+
+    mlab.view(azimuth=0, elevation=180, distance=None)
 
 
 

@@ -247,43 +247,6 @@ class ExperimentalSet(object):
 
         return df
 
-    def Plot(self):
-        """Still experimental"""
-        from mayavi import mlab
-        from tvtk.tools import visual
-        from tvtk.api import tvtk
-        from numpy import sqrt
-        from PyMieSim.Plots import PlotUnitSphere, PlotUnitAxes, implicit_plot, PolarizationArrow, PlotCone
-
-
-        fig = mlab.figure(figure = 'Optical configuration', size=(600,300))
-        visual.set_viewer(fig)
-
-        Origin = [0,0,0]
-
-        PlotUnitSphere(Num=50, Radius=0.2, Origin=(0,0,0), Figure=fig)
-
-        PlotUnitAxes(Scale=3, Origin=(0,0,0), Figure=fig)
-
-        PlotUnitAxes(Scale=0.8, Origin=(0,0,-2), Figure=fig, Label=False, ScaleTube=0.5)
-
-        PolarizationArrow(Origin=(0,0,-2), Pol=0, Scale=1)
-
-        print(self.Detectors[0].GammaOffset)
-
-        Ydir = np.cos(self.Detectors[0].PhiOffset)
-        Xdir = np.cos(self.Detectors[0].GammaOffset)
-
-        Direction = np.array([Xdir,Ydir,-1])*0
-
-        dist = sqrt(Direction[0]**2 + Direction[1]**2 + Direction[2]**2)
-
-        Origin = Origin - Direction/dist
-
-        PlotCone(Origin=Origin, Radius=1, Height=2.0, Resolution=100, Figure=fig, Direction=Direction)
-
-        mlab.show()
-
 
 
 

@@ -12,6 +12,8 @@ from PyMieSim._Coupling import Coupling
 import PyMieSim.Plots as plot
 from PyMieSim.Constants import *
 
+EPS = 1e-6
+
 class BaseSource(object):
 
     def __init__(self,
@@ -71,7 +73,7 @@ class MeshProperty(object):
 
     @NA.setter
     def NA(self, val):
-        if val <= 1e-6: val = 1e-6
+        if val <= EPS: val = EPS
 
         self.MaxAngle = NA2Angle(val).Radian
         self.Mesh.UpdateSphere(MaxAngle = self.MaxAngle)
