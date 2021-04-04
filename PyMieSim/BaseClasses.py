@@ -33,7 +33,8 @@ class BaseSource(object):
 
 
 class MeshProperty(object):
-    """Base class for :class:`Detector` class used to define the properties
+    """
+    Base class for :class:`Detector` class used to define the properties
     of the angular mesh for Far-Field computations.
 
     """
@@ -80,12 +81,14 @@ class MeshProperty(object):
 
 
 class BaseDetector(object):
-    """Base class for :class:`Detector` class used to define the properties
+    """
+    Base class for :class:`Detector` class used to define the properties
     of the angular mesh for Far-Field computations.
 
     """
     def _Coupling(self, Scatterer):
-        """Return the value of the scattererd light coupling as computed as:
+        """
+        Return the value of the scattererd light coupling as computed as:
 
         .. math::
             :math:`|\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2
@@ -110,7 +113,8 @@ class BaseDetector(object):
 
 
     def Coupling(self, Scatterer):
-        """Return coupling power which is detected.
+        """
+        Return coupling power which is detected.
 
         Parameters
         ----------
@@ -129,7 +133,8 @@ class BaseDetector(object):
 
 
     def Footprint(self, Scatterer, Num = 200):
-        """Return the footprint of the scattererd light coupling with the
+        """
+        Return the footprint of the scattererd light coupling with the
         detector as computed as:
 
         .. math::

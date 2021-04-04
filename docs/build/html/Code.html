@@ -284,21 +284,24 @@ light scattering.</p>
 <dt id="PyMieSim.Source.PlaneWave.EField">
 <code class="descname">EField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.EField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Value of the electric field.</p>
-<p><span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+<div class="math notranslate nohighlight">
+\[E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.PlaneWave.HField">
 <code class="descname">HField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#PlaneWave.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.PlaneWave.HField" title="Permalink to this definition">¶</a></dt>
 <dd><p>Value of the electric field.</p>
-<p><span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span></p>
+<div class="math notranslate nohighlight">
+\[H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="PyMieSim.Source.PlaneWave.I">
 <code class="descname">I</code><a class="headerlink" href="#PyMieSim.Source.PlaneWave.I" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute averaged value of Poyinting vector.
-<span class="math notranslate nohighlight">\(I = &lt;S&gt; = \frac{c \epsilon_0}{2} E_0^2\)</span></p>
+<dd><p>Compute averaged value of Poyinting vector.</p>
+<div class="math notranslate nohighlight">
+\[I = &lt;S&gt; = \frac{c \epsilon_0}{2} E_0^2\]</div>
 </dd></dl>
 
 </dd></dl>
@@ -331,23 +334,19 @@ light scattering.</p>
 <code class="descname">Anm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm" title="Permalink to this definition">¶</a></dt>
 <dd><p>From ref[2]:Eq:18-19
 Method returns:</p>
-<p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}         (\beta) d \theta\)</span></p>
+<div class="math notranslate nohighlight">
+\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}            (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}            (\beta) d \theta\]</div>
 <p>Where:</p>
-<p><span class="math notranslate nohighlight">\(\gamma_0 = \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_1 = Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2         + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )         \sin(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_2 = \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_3 = 4 Q s^2 X_0 \cos(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_4 = 4 Q s^2 Y_0 \cos(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(I_m(\beta) = \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
-<p><span class="math notranslate nohighlight">\(\tilde{I}_m(\beta) = e^{-\beta - i m \xi} I_m(\beta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(Q_{spherical} = \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\)</span></p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\gamma_0 &amp;= \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\\\gamma_1 &amp;= Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2             + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )             \sin(\theta)\\\gamma_2 &amp;= \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\\\gamma_3 &amp;= 4 Q s^2 X_0 \cos(\theta)\\\gamma_4 &amp;= 4 Q s^2 Y_0 \cos(\theta)\\I_m(\beta) &amp;= \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi) - i m \phi} d\phi\\\tilde{I}_m(\beta) &amp;= e^{-\beta - i m \xi} I_m(\beta)\\Q_{spherical} &amp;= \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\end{aligned}\end{align} \]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Anm_integrand">
 <code class="descname">Anm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Anm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Anm_integrand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
-<p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}         (\beta) d \theta\)</span></p>
+<div class="math notranslate nohighlight">
+\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}            (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}            (\beta) d \theta\]</div>
 </dd></dl>
 
 <dl class="method">
@@ -382,39 +381,35 @@ beam using the quadrature method (ref[2]:Eq:17).</p>
 <code class="descname">Bnm</code><span class="sig-paren">(</span><em>n</em>, <em>m</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm" title="Permalink to this definition">¶</a></dt>
 <dd><p>From ref[2]:Eq:18-19
 Method returns:</p>
-<p><span class="math notranslate nohighlight">\(B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}         (\beta) d \theta\)</span></p>
+<div class="math notranslate nohighlight">
+\[B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}            (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}            (\beta) d \theta\]</div>
 <p>Where:</p>
-<p><span class="math notranslate nohighlight">\(\gamma_0 = \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_1 = Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2         + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )         \sin(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_2 = \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_3 = 4 Q s^2 X_0 \cos(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(\gamma_4 = 4 Q s^2 Y_0 \cos(\theta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(I_m(\beta) = \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi) - i m \phi} d\phi\)</span></p>
-<p><span class="math notranslate nohighlight">\(\tilde{I}_m(\beta) = e^{-\beta - i m \xi} I_m(\beta)\)</span></p>
-<p><span class="math notranslate nohighlight">\(Q_{spherical} = \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\)</span></p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\gamma_0 &amp;= \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\\\gamma_1 &amp;= Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2             + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )             \sin(\theta)\\\gamma_2 &amp;= \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\\\gamma_3 &amp;= 4 Q s^2 X_0 \cos(\theta)\\\gamma_4 &amp;= 4 Q s^2 Y_0 \cos(\theta)\\I_m(\beta) &amp;= \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi) - i m \phi} d\phi\\\tilde{I}_m(\beta) &amp;= e^{-\beta - i m \xi} I_m(\beta)\\Q_{spherical} &amp;= \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\end{aligned}\end{align} \]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Bnm_integrand">
 <code class="descname">Bnm_integrand</code><span class="sig-paren">(</span><em>n</em>, <em>m</em>, <em>Sampling=200</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Bnm_integrand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Bnm_integrand" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
-<p><span class="math notranslate nohighlight">\(A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}         (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}         (\beta) d \theta\)</span></p>
+<div class="math notranslate nohighlight">
+\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}            (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}            (\beta) d \theta\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.EField">
 <code class="descname">EField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.EField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.EField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric Field (First Order)
-ref[2]:Eq:6
-<span class="math notranslate nohighlight">\(E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span>.</p>
+<dd><p>Value of the electric Field (First Order), ref[2]:Eq:6</p>
+<div class="math notranslate nohighlight">
+\[E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Er">
 <code class="descname">Er</code><span class="sig-paren">(</span><em>r</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Er"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Er" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric Field (First Order)
-ref[2]:Eq:10
-<span class="math notranslate nohighlight">\(E_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -x_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\)</span>.</p>
+<dd><p>Value of the electric Field (First Order), ref[2]:Eq:10</p>
+<div class="math notranslate nohighlight">
+\[E_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -x_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\]</div>
 </dd></dl>
 
 <dl class="method">
@@ -440,31 +435,33 @@ numerical overflow.</p>
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.HField">
 <code class="descname">HField</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.HField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.HField" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the electric Field (First Order)
-ref[2]:Eq:6
-<span class="math notranslate nohighlight">\(H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\)</span>.</p>
+<dd><p>Value of the electric Field (First Order), ref[2]:Eq:6</p>
+<div class="math notranslate nohighlight">
+\[H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Hr">
 <code class="descname">Hr</code><span class="sig-paren">(</span><em>r</em>, <em>theta</em>, <em>phi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Hr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Hr" title="Permalink to this definition">¶</a></dt>
-<dd><p>Value of the magnetic Field (First Order)
-ref[2]:Eq:10
-<span class="math notranslate nohighlight">\(H_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -y_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\)</span>.</p>
+<dd><p>Value of the magnetic Field (First Order), ref[2]:Eq:10</p>
+<div class="math notranslate nohighlight">
+\[H_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -y_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Phi0">
 <code class="descname">Phi0</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Phi0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Phi0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
-<p><span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \Big]\)</span></p>
+<div class="math notranslate nohighlight">
+\[\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \Big]\]</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="PyMieSim.Source.GaussianBeam.Phi0_Spherical">
 <code class="descname">Phi0_Spherical</code><span class="sig-paren">(</span><em>r</em>, <em>phi</em>, <em>theta</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Source.html#GaussianBeam.Phi0_Spherical"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Source.GaussianBeam.Phi0_Spherical" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method returns:</p>
-<p><span class="math notranslate nohighlight">\(\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r \sin (\theta) \cos (\phi) - x_0^2 ) + (r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\)</span></p>
+<div class="math notranslate nohighlight">
+\[\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r \sin (\theta) \cos (\phi) - x_0^2 ) + (r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\]</div>
 </dd></dl>
 
 </dd></dl>
@@ -1232,7 +1229,7 @@ detector as computed as:</p>
 <div class="math notranslate nohighlight">
 \[\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),                   \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\]</div>
 <div class="line-block">
-<div class="line">Where</div>
+<div class="line">Where:</div>
 <div class="line-block">
 <div class="line"><span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and</div>
 <div class="line"><span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</div>
@@ -1364,7 +1361,7 @@ detector as computed as:</p>
 <div class="math notranslate nohighlight">
 \[\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),                   \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}(\delta_x, \delta_y) \big|^2\]</div>
 <div class="line-block">
-<div class="line">Where</div>
+<div class="line">Where:</div>
 <div class="line-block">
 <div class="line"><span class="math notranslate nohighlight">\(\Phi_{det}\)</span> is the capturing field of the detector and</div>
 <div class="line"><span class="math notranslate nohighlight">\(\Psi_{scat}\)</span> is the scattered field.</div>

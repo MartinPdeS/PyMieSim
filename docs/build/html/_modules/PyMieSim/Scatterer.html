@@ -171,7 +171,8 @@
 <span class="kn">from</span> <span class="nn">PyMieSim.units</span> <span class="kn">import</span> <span class="n">Area</span>
 
 <div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Short summary.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Short summary.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -240,7 +241,8 @@
 
 
 <div class="viewcode-block" id="Sphere.an"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.an">[docs]</a>    <span class="k">def</span> <span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&amp;B:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&amp;B:</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            a_n = \\frac{</span>
@@ -256,7 +258,8 @@
 
 
 <div class="viewcode-block" id="Sphere.bn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.bn">[docs]</a>    <span class="k">def</span> <span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            b_n = \\frac{</span>
@@ -272,7 +275,8 @@
 
 
 <div class="viewcode-block" id="Sphere.cn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.cn">[docs]</a>    <span class="k">def</span> <span class="nf">cn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&amp;B:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&amp;B:</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            c_n = \\frac{</span>
@@ -288,7 +292,8 @@
 
 
 <div class="viewcode-block" id="Sphere.dn"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere.dn">[docs]</a>    <span class="k">def</span> <span class="nf">dn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">MaxOrder</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&amp;B:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&amp;B:</span>
 
 <span class="sd">        .. math::</span>
 <span class="sd">            d_n = \\frac{</span>
@@ -307,7 +312,8 @@
 
 
 <div class="viewcode-block" id="Cylinder"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder">[docs]</a><span class="k">class</span> <span class="nc">Cylinder</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">EfficienciesProperties</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Short summary.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Short summary.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -353,7 +359,7 @@
 <div class="viewcode-block" id="Cylinder.GetBinding"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder.GetBinding">[docs]</a>    <span class="k">def</span> <span class="nf">GetBinding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Method call and bind c++ scatterer class</span>
-<span class="sd">        &quot;&quot;&quot;</span>        
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">GLMT</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Source</span><span class="o">.</span><span class="n">_BSC_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)&quot;</span><span class="p">)</span>

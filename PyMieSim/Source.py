@@ -13,7 +13,8 @@ from PyMieSim.GLMT.GaussianBeam import Anm, Anm_integrand, Bnm, Bnm_integrand
 
 EPS = 1e-20
 class PlaneWave(BaseSource):
-    """Class representing a focuse plane wave beam as a light source for
+    """
+    Class representing a focuse plane wave beam as a light source for
     light scattering.
 
     Parameters
@@ -98,7 +99,8 @@ class PlaneWave(BaseSource):
 
 
     def BSC(self, n, m, mode='TE'):
-        """Return the beam shape coefficients
+        """
+        Return the beam shape coefficients
         (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`) for a plane wave.
         (Eq: VI.77 of G&G)
 
@@ -127,7 +129,8 @@ class PlaneWave(BaseSource):
     def EField(self, x, y, z):
         """Value of the electric field.
 
-        :math:`E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`
+        .. math::
+            E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
 
         """
         z0 = 0
@@ -138,9 +141,11 @@ class PlaneWave(BaseSource):
                0
 
     def HField(self, x, y, z):
-        """Value of the electric field.
+        """
+        Value of the electric field.
 
-        :math:`H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`
+        .. math::
+            H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
 
         """
         z0 = 0
@@ -155,7 +160,10 @@ class PlaneWave(BaseSource):
     def I(self):
         """
         Compute averaged value of Poyinting vector.
-        :math:`I = <S> = \\frac{c \\epsilon_0}{2} E_0^2`
+
+        .. math::
+            I = <S> = \\frac{c \\epsilon_0}{2} E_0^2
+
         """
 
         return c * eps0 / 2 * self.E0**2
@@ -173,7 +181,8 @@ class PlaneWave(BaseSource):
 
 
 class GaussianBeam(BaseSource):
-    """Class representing a focuse Gaussian beam as a light source for
+    """
+    Class representing a focuse Gaussian beam as a light source for
     light scattering.
 
     Parameters
@@ -271,7 +280,8 @@ class GaussianBeam(BaseSource):
 
 
     def BSC(self, n, m, mode='TE'):
-        """Return the beam shape coefficients for a focused Gaussian
+        """
+        Return the beam shape coefficients for a focused Gaussian
         beam using the quadrature method (ref[2]:Eq:17).
 
         (:math:`g^{l}_{n, TE}`, :math:`g^{l}_{n, TM}`)
@@ -299,7 +309,8 @@ class GaussianBeam(BaseSource):
 
 
     def GetMaxOrder(self, Precision=5):
-        """Method return the range of order to evaluate the BSC's.
+        """
+        Method return the range of order to evaluate the BSC's.
         However one should be cautious as a high precision will lead to
         numerical overflow.
 
@@ -324,9 +335,11 @@ class GaussianBeam(BaseSource):
 
 
     def Phi0(self, x, y, z):
-        """Method returns:
+        """
+        Method returns:
 
-        :math:`\\Phi_0 = -i Q \\exp \\Big[ i Q \\frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \\Big]`
+        .. math::
+            \\Phi_0 = -i Q \\exp \\Big[ i Q \\frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \\Big]
         """
 
         Q = self.Q(x,y,z)
@@ -338,9 +351,11 @@ class GaussianBeam(BaseSource):
 
 
     def Phi0_Spherical(self, r, phi, theta):
-        """Method returns:
+        """
+        Method returns:
 
-        :math:`\\Phi_0 = -i Q \\exp \\Big[ \\frac{i Q}{w_0^2} \\Big(  (r \\sin (\\theta) \\cos (\\phi) - x_0^2 ) + (r \\sin (\\theta) \\sin (\\phi) - y_0^2 ) \\Big) \\Big]`
+        .. math::
+            \\Phi_0 = -i Q \\exp \\Big[ \\frac{i Q}{w_0^2} \\Big(  (r \\sin (\\theta) \\cos (\\phi) - x_0^2 ) + (r \\sin (\\theta) \\sin (\\phi) - y_0^2 ) \\Big) \\Big]
         """
         Q = self.Q_Spherical(r, theta)
         term0 = -1j * Q
@@ -356,29 +371,31 @@ class GaussianBeam(BaseSource):
         From ref[2]:Eq:18-19
         Method returns:
 
-        :math:`B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
-         (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
-         (\\beta) d \\theta`
+        .. math::
+            B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+            (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\
+            (\\beta) d \\theta
 
         Where:
 
-        :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
+        .. math::
+            \\gamma_0 &= \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}
 
-        :math:`\\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
-        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
-        \\sin(\\theta)`
+            \\gamma_1 &= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+            + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
+            \\sin(\\theta)
 
-        :math:`\\gamma_2 = \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
+            \\gamma_2 &= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)
 
-        :math:`\\gamma_3 = 4 Q s^2 X_0 \\cos(\\theta)`
+            \\gamma_3 &= 4 Q s^2 X_0 \\cos(\\theta)
 
-        :math:`\\gamma_4 = 4 Q s^2 Y_0 \\cos(\\theta)`
+            \\gamma_4 &= 4 Q s^2 Y_0 \\cos(\\theta)
 
-        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi`
+            I_m(\\beta) &= \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi
 
-        :math:`\\tilde{I}_m(\\beta) = e^{-\\beta - i m \\xi} I_m(\\beta)`
+            \\tilde{I}_m(\\beta) &= e^{-\\beta - i m \\xi} I_m(\\beta)
 
-        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
+            Q_{spherical} &= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}
 
         """
 
@@ -397,29 +414,31 @@ class GaussianBeam(BaseSource):
         From ref[2]:Eq:18-19
         Method returns:
 
-        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
-         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
-         (\\beta) d \\theta`
+        .. math::
+            A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+            (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+            (\\beta) d \\theta
 
         Where:
 
-        :math:`\\gamma_0 = \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}`
+        .. math::
+            \\gamma_0 &= \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}
 
-        :math:`\\gamma_1 = Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
-        + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
-        \\sin(\\theta)`
+            \\gamma_1 &= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \
+            + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \
+            \\sin(\\theta)
 
-        :math:`\\gamma_2 = \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)`
+            \\gamma_2 &= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)
 
-        :math:`\\gamma_3 = 4 Q s^2 X_0 \\cos(\\theta)`
+            \\gamma_3 &= 4 Q s^2 X_0 \\cos(\\theta)
 
-        :math:`\\gamma_4 = 4 Q s^2 Y_0 \\cos(\\theta)`
+            \\gamma_4 &= 4 Q s^2 Y_0 \\cos(\\theta)
 
-        :math:`I_m(\\beta) = \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi`
+            I_m(\\beta) &= \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi
 
-        :math:`\\tilde{I}_m(\\beta) = e^{-\\beta - i m \\xi} I_m(\\beta)`
+            \\tilde{I}_m(\\beta) &= e^{-\\beta - i m \\xi} I_m(\\beta)
 
-        :math:`Q_{spherical} = \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}`
+            Q_{spherical} &= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}
 
         """
 
@@ -437,9 +456,10 @@ class GaussianBeam(BaseSource):
         """
         Method returns:
 
-        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
-         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
-         (\\beta) d \\theta`
+        .. math::
+            A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+            (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+            (\\beta) d \\theta
 
         """
 
@@ -455,9 +475,10 @@ class GaussianBeam(BaseSource):
         """
         Method returns:
 
-        :math:`A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
-         (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
-         (\\beta) d \\theta`
+        .. math::
+            A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\
+            (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\
+            (\\beta) d \\theta
 
         """
 
@@ -472,9 +493,11 @@ class GaussianBeam(BaseSource):
 
 
     def EField(self, x, y, z):
-        """ Value of the electric Field (First Order)
-        ref[2]:Eq:6
-        :math:`E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`.
+        """
+        Value of the electric Field (First Order), ref[2]:Eq:6
+
+        .. math::
+            E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
         """
 
         w0 = 1e-5
@@ -493,9 +516,11 @@ class GaussianBeam(BaseSource):
 
 
     def HField(self, x, y, z):
-        """ Value of the electric Field (First Order)
-        ref[2]:Eq:6
-        :math:`H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}`.
+        """
+        Value of the electric Field (First Order), ref[2]:Eq:6
+
+        .. math::
+            H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
         """
 
 
@@ -510,9 +535,11 @@ class GaussianBeam(BaseSource):
 
 
     def Er(self, r, phi, theta):
-        """ Value of the electric Field (First Order)
-        ref[2]:Eq:10
-        :math:`E_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -x_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}`.
+        """
+        Value of the electric Field (First Order), ref[2]:Eq:10
+
+        .. math::
+            E_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -x_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}
         """
 
         _Q = self.Q_Spherical(r, theta)
@@ -536,9 +563,11 @@ class GaussianBeam(BaseSource):
 
 
     def Hr(self, r, theta, phi):
-        """ Value of the magnetic Field (First Order)
-        ref[2]:Eq:10
-        :math:`H_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -y_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}`.
+        """
+        Value of the magnetic Field (First Order), ref[2]:Eq:10
+
+        .. math::
+            H_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -y_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}
         """
 
         _Q = self.Q_Spherical(r, theta)

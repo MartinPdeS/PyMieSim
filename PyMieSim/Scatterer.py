@@ -10,7 +10,8 @@ from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 from PyMieSim.units import Area
 
 class Sphere(BaseScatterer, EfficienciesProperties):
-    """Short summary.
+    """
+    Short summary.
 
     Parameters
     ----------
@@ -79,7 +80,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
     def an(self, MaxOrder=5):
-        """ Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
+        """
+        Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
         .. math::
             a_n = \\frac{
@@ -95,7 +97,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
     def bn(self, MaxOrder=5):
-        """ Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
+        """
+        Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
         .. math::
             b_n = \\frac{
@@ -111,7 +114,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
     def cn(self, MaxOrder=5):
-        """ Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
+        """
+        Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
 
         .. math::
             c_n = \\frac{
@@ -127,7 +131,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
     def dn(self, MaxOrder=5):
-        """ Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
+        """
+        Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
 
         .. math::
             d_n = \\frac{
@@ -146,7 +151,8 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
 class Cylinder(BaseScatterer, EfficienciesProperties):
-    """Short summary.
+    """
+    Short summary.
 
     Parameters
     ----------
@@ -192,7 +198,7 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
     def GetBinding(self):
         """
         Method call and bind c++ scatterer class
-        """        
+        """
         if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
                 raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
