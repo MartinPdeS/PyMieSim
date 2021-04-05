@@ -420,7 +420,7 @@ Optimization: 2 parameters
 
 
   Opt    = Optimize(ExperimentalSet = Set,
-                    Metric          = 'Monotonic',  # can be 'Max", "Min", "RI_RSD", "Size_RSD", "Monotonic"
+                    Metric          = 'Monotonic',
                     Parameter       = ['NA','PhiOffset'],
                     MinVal          = [1e-1, None],
                     MaxVal          = [1, None],
@@ -435,3 +435,41 @@ Optimization: 2 parameters
   df = Set.DataFrame
 
   df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+
+
+
+
+LP-modes: Generate files
+------------------------
+
+I have prealably compilated 12 LP-modes which are:
+1. LP01
+2. LP11
+3. LP21
+4. LP02
+5. LP31
+6. LP12
+7. LP41
+8. LP22
+9. LP03
+10. LP51
+11. LP32
+12. LP13
+
+So you can already use them, no need to reproduce. However if you want to
+use another mode you first need to install the fibermodes package using the
+following command:
+
+.. code-block:: python
+  :linenos:
+
+  pip install https://github.com/cbrunet/fibermodes.git
+
+Then you can use the PyMieSIm FiberModes module as follow:
+
+.. code-block:: python
+  :linenos:
+
+  from PyMieSim.FiberModes import Genfiles
+
+  Genfiles([(5,2)], padWidth = 2000, Num = 251)

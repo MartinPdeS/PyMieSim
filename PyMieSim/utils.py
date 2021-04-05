@@ -1,9 +1,9 @@
 import numpy as np
-
 from scipy.interpolate import griddata
 
-from PyMieSim.Physics import Angle
 import PyMieSim
+from PyMieSim.Physics import Angle
+
 
 
 def Norm(Scalar):

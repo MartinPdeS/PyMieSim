@@ -1,9 +1,9 @@
 import numpy as np
-import fibermodes
+import os.path
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.utils import interp_at, NA2Angle, Sp2Cart, Normalize
-from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, SMF28, Angle
+from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, Angle
 
 
 
@@ -123,6 +123,7 @@ class LPmode(BaseDetector, MeshProperty):
     def __init__(self,
                  Mode:           tuple,
                  NA:             float,
+                 Rotation:       float = 0,
                  Sampling:       int   = 401,
                  InterpSampling: int   = 101,
                  GammaOffset:    float = 0,
@@ -190,13 +191,18 @@ class LPmode(BaseDetector, MeshProperty):
 
         """
 
-        mode = SMF28(mode = (self.ModeNumber[0],self.ModeNumber[1]) , Num=Num)
+        filename = f'PyMieSim/LPmodes/FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
 
-        if self.ModeNumber[2] == 'h': mode = mode.T
+        exist = os.path.exists(filename)
 
-        mode = FraunhoferDiffraction(mode)
+        if not exist:
+            raise ValueError("The LP mode has not been previously compilated. "
+                              "Please consult the documentation to do so. "
+                              "Doc available at: "
+                              "https://pymiesim.readthedocs.io/en/latest/Intro.html")
 
-        mode = Normalize(mode)
+
+        mode = np.load(filename)
 
         if not Interpolate: return mode
 
