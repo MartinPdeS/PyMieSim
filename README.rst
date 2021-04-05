@@ -10,26 +10,26 @@
 |colab|
 |docs|
 
-Welcome to PyMieSim's documentation!
-***************************************
+PyMieSim
+========
 
 
 
 PyMieSim is a very easy to install/use tool for extensive Mie scattering analysis. It allows to study the light scattering
 on different kind of object (scatterer), at the moment I only implemented spherical scatterers.
-Using this package, one can easily set a **LightSource** a **Scatterer** and a **Detector** within a very wide range of parameters such as:
+Using this package, one can easily set a **Source** a **Scatterer** and a **Detector** within a very wide range of parameters such as:
 
-1. LightSource structure (e.g. plane wave or Gaussian focused)
-2. LightSource wavelength
-3. LightSource Polarization
-4. Scatterer diameter
-5. Scatterer refractive index
+1. **Source** structure (e.g. plane wave or Gaussian focused)
+2. **Source** wavelength
+3. **Source** Polarization
+4. **Scatterer** diameter
+5. **Scatterer** refractive index
 6. Medium refractive index
-7. Detector type (photodiode or LPMode)
-8. Detector numerical aperture
-9. Detector angle offfset in polariation parallel axis (&phi;)
-10. Detector angle offfset in polariation perpendicular axis (&theta;)
-11. Detector coupling mode (Mean coupling or centered coupling)
+7. **Detector** type (photodiode or LPMode)
+8. **Detector** numerical aperture
+9. **Detector** angle offfset in polariation parallel axis (&phi;)
+10. **Detector** angle offfset in polariation perpendicular axis (&theta;)
+11. **Detector** coupling mode (Mean coupling or centered coupling)
 
 
 
@@ -37,7 +37,7 @@ The package also let you use a **ScattererSet** which define a range of scattere
 in order to study how light scattered by such Set will be coupling in different situations.
 
 
-
+----
 
 Documentation
 **************
@@ -45,6 +45,7 @@ All the latest available documentation is available `here <https://pymiesim.read
 
 |docs|
 
+----
 
 Google Colab
 **************
@@ -53,7 +54,9 @@ You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" bad
 
 |colab|
 
+----
 
+**Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04)
 
 
 Dependencies
@@ -64,14 +67,14 @@ In order to install the package you first need to install some dependencies, whi
 Linux (Debian)
 --------------
 
-.. code-block:: language
+.. code-block:: python
 
    sudo apt-get install libboost-all-dev
 
 MacOs
 -----
 
-.. code-block:: language
+.. code-block:: python
 
    brew install boost
 
@@ -81,35 +84,35 @@ Windows
 `Boost installation guide <https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html>`_
 
 
-
+----
 
 Installation
 ************
 It's pretty simple:
 
-.. code-block:: language
+.. code-block:: python
 
    pip install PyMieSim
 
-
+----
 
 Running Unittest
 *****************
 To run the Unit-tests one need the coverage library.
 
-.. code-block:: language
+.. code-block:: python
 
    python -m unittest tests/Unittest.py
 
-
+----
 
 Usage
 ******
 Here is an example on how to use the library.
 
-.. code-block:: language
+.. code-block:: python
 
- from PyMieSim.Source import PlaneWave
+  from PyMieSim.Source import PlaneWave
   from PyMieSim.Detector import LPmode
   from PyMieSim.Scatterer import Sphere
 
@@ -137,6 +140,7 @@ For more examples I invite you to check the `examples <https://pymiesim.readthed
 section of the documentations.
 
 
+----
 
 To-Do List
 **********
@@ -152,13 +156,14 @@ To-Do List
 
 
 
-
+----
 
 Citing this work?
 ******************
 |zenodo|
 
 
+----
 
 Contact Information
 ************************

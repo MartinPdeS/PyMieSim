@@ -64,7 +64,9 @@ extensions = [
 
 numpydoc_show_class_members = False
 # Add any paths that contain templates here, relative to this directory.
+
 templates_path = ['_templates']
+
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -88,32 +90,42 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+#pygments_style = None
 
-
+pygments_style = 'sphinx'
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+#html_theme = 'sphinx_rtd_theme'
+#html_theme = 'groundwork'
+#import ovs_sphinx_theme
+html_theme = 'sphinxdoc'
+#html_theme = "ovs"
+#print('############', ovs_sphinx_theme.get_theme_dir())
+#html_theme_path = [ovs_sphinx_theme.get_theme_dir()]
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#
-# html_theme_options = {}
+#html_theme_options = {}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
+
+
 html_static_path = ['_static']
 html_logo = 'Logo.png'
+
+"""
 html_theme_options = {
     'logo_only': True,
     'display_version': True,
 }
-
+"""
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
 #

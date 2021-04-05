@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Note: To use the 'upload' functionality of this file, you must:
-#   $ pipenv install twine --dev
 
-
+# python3 setup.py build
+# python3 -m twine upload --repository pypi dist/*.tar.gz
 
 
 
@@ -28,7 +27,7 @@ URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION         = '0.1.12'
+VERSION         = '0.1.18'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',
@@ -92,7 +91,7 @@ ext_modules = [
 
                 Extension(name               = "PyMieSim.LMT.Scatterer",
                           sources            = ["PyMieSim/LMT/cpp/interface.cpp"],
-                          include_dirs       = [get_numpy_include(), get_pybind11_include()],
+                          include_dirs       = [get_numpy_include(), get_pybind11_include(), "PyMieSim.includes/SpecialFunc.h"],
                           extra_compile_args = compile_args,
                           language           = "c++"),
 
@@ -119,7 +118,7 @@ ext_modules = [
 # Import the README and use it as the long-description.
 # Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 try:
-    with io.open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+    with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
         long_description = '\n' + f.read()
 except FileNotFoundError:
     long_description = DESCRIPTION

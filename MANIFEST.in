@@ -1,3 +1,19 @@
-include README.md
+include README.rst
 include requirements.txt
 include PyMieSim/*.cpp
+include PyMieSim/*.h
+
+include PyMieSim/GLMT/cpp/GaussianBeam.cpp
+include PyMieSim/GLMT/cpp/Cylinder.cpp
+include PyMieSim/GLMT/cpp/Sphere.cpp
+include PyMieSim/GLMT/cpp/Interface.cpp
+
+include PyMieSim/LMT/cpp/MultiArray.cpp
+include PyMieSim/LMT/cpp/Cylinder.cpp
+include PyMieSim/LMT/cpp/Sphere.cpp
+include PyMieSim/LMT/cpp/interface.cpp
+
+include PyMieSim/includes/SpecialFunc.h
+include PyMieSim/includes/BaseClass.h
+include PyMieSim/includes/utils.h
+include PyMieSim/includes/BaseFunc.h

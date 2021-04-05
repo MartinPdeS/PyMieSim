@@ -1,170 +1,97 @@
 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<!DOCTYPE html>
-<html class="writer-html4" lang="en" >
-<head>
-  <meta charset="utf-8" />
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Theoretical background &mdash; PyMieSim 0.1.11 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-
-    
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Theoretical background &#8212; PyMieSim 0.1.11 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Source code structures" href="Code.html" />
-    <link rel="prev" title="Introduction" href="Intro.html" /> 
-</head>
+    <link rel="prev" title="PyMieSim" href="Intro.html" /> 
+  </head><body>
 
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
-    
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="index.html">
-          
-
-          
-            
-            <img src="_static/Logo.png" class="logo" alt="Logo"/>
-          
-          </a>
-
-          
-            
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+<div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><h1 style="font-size: 3em;">PyMieSim</h1></a>
 </div>
 
-          
-        </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Code.html" title="Source code structures"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Intro.html" title="PyMieSim"
+             accesskey="P">previous</a> |</li>
+        <li><a href="Intro.html">Introduction</a>|&nbsp;</li>
+        <li><a href="#">Theory</a>|&nbsp;</li>
+        <li><a href="Code.html">Code</a>|&nbsp;</li>
+        <li><a href="Examples.html">Examples</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
 
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Table of contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="Intro.html">Introduction</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Theoretical background</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#lorenz-mie-theory-lmt">Lorenz-Mie Theory (LMT)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#generalized-lorenz-mie-theory-glmt">Generalized Lorenz-Mie Theory (GLMT)</a></li>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Theoretical background</a><ul>
+<li><a class="reference internal" href="#lorenz-mie-theory-lmt">Lorenz-Mie Theory (LMT)</a></li>
+<li><a class="reference internal" href="#generalized-lorenz-mie-theory-glmt">Generalized Lorenz-Mie Theory (GLMT)</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Code.html">Source code structures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
 </ul>
 
-            
-          
-        </div>
-        
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">PyMieSim</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-        
-      <li>Theoretical background</li>
-    
-    
-      <li class="wy-breadcrumbs-aside">
-        
-          
-            <a href="_sources/Theory.rst.txt" rel="nofollow"> View page source</a>
-          
-        
-      </li>
-    
-  </ul>
-
-  
-  <hr/>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Intro.html"
+                        title="previous chapter">PyMieSim</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Code.html"
+                        title="next chapter">Source code structures</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Theory.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
             
   <div class="section" id="theoretical-background">
 <h1>Theoretical background<a class="headerlink" href="#theoretical-background" title="Permalink to this headline">¶</a></h1>
@@ -179,72 +106,70 @@
 <p><span class="math notranslate nohighlight">\({\displaystyle S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)}\)</span></p>
 </div></blockquote>
 <p>Computes Mie efficencies <em>Q</em> and asymmetry parameter <em>g</em> of a single, homogeneous particle:</p>
-<blockquote>
-<div><p><span class="math notranslate nohighlight">\({\displaystyle Q_{sca}=\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)}\)</span></p>
-<p><span class="math notranslate nohighlight">\({\displaystyle Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}}\)</span></p>
-<p><span class="math notranslate nohighlight">\(Q_{abs}=Q_{ext}-Q_{sca}\)</span></p>
-<p><span class="math notranslate nohighlight">\({\displaystyle a_n = \frac{\mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)} }\)</span></p>
-<p><span class="math notranslate nohighlight">\({\displaystyle b_n = \frac{\mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -\mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)} }\)</span></p>
-<p><span class="math notranslate nohighlight">\({\displaystyle c_n = \frac{\mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)} }\)</span></p>
-<p><span class="math notranslate nohighlight">\({\displaystyle d_n = \frac{ \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -\xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)} }\)</span></p>
 </div></blockquote>
-</div></blockquote>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}Q_{sca} &amp;= \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\Q_{ext} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}\\Q_{abs} &amp;= Q_{ext}-Q_{sca}\end{aligned}\end{align} \]</div>
+<p><strong>For spherical scatterer</strong></p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a_n &amp;= \frac{\mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\\b_n &amp;= \frac{\mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -\mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}\\c_n &amp;= \frac{\mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
+{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\\d_n &amp;= \frac{ \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -\xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
+{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}\end{aligned}\end{align} \]</div>
+<div class="line-block">
+<div class="line">With:</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span></div>
+</div>
+</div>
+<p><strong>For cylindrical scatterer</strong></p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a_n &amp; = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+{ m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\\b_n &amp; = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+{ m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\end{aligned}\end{align} \]</div>
+<div class="line-block">
+<div class="line">With:</div>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and</div>
+<div class="line"><span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the index.</div>
+</div>
+</div>
 </div>
 <div class="section" id="generalized-lorenz-mie-theory-glmt">
 <h2>Generalized Lorenz-Mie Theory (GLMT)<a class="headerlink" href="#generalized-lorenz-mie-theory-glmt" title="Permalink to this headline">¶</a></h2>
+<p><strong>Coming soon</strong></p>
 </div>
 </div>
 
 
-           </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Code.html" class="btn btn-neutral float-right" title="Source code structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-    </div>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-
-    </p>
-  </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
         </div>
       </div>
-
-    </section>
-
-  </div>
-  
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
-    
-   
-
-</body>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="Code.html" title="Source code structures"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Intro.html" title="PyMieSim"
+             >previous</a> |</li>
+        <li><a href="Intro.html">Introduction</a>|&nbsp;</li>
+        <li><a href="#">Theory</a>|&nbsp;</li>
+        <li><a href="Code.html">Code</a>|&nbsp;</li>
+        <li><a href="Examples.html">Examples</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
 </html>

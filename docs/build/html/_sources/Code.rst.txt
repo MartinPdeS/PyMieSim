@@ -1,12 +1,6 @@
 Source code structures
 ======================
 
-Class: Representations
-----------------------
-
-.. automodule:: PyMieSim.Representations
-    :members:
-    :show-inheritance:
 
 Source
 ------

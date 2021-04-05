@@ -1,10 +1,13 @@
 Examples
 ========
 
+-----
+
+
 Scatterer: S1-S2
 ----------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    from PyMieSim.Scatterer import Sphere
@@ -28,10 +31,12 @@ Scatterer: S1-S2
 .. image:: ../images/S1S2.png
    :width: 600
 
+-----
+
 Scatterer: full far-field
 -------------------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    from PyMieSim.Scatterer import Sphere
@@ -55,10 +60,12 @@ Scatterer: full far-field
 .. image:: ../images/Fields.png
    :width: 600
 
+-----
+
 Scatterer: phase function
 -------------------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    from PyMieSim.Scatterer import Sphere
@@ -82,10 +89,12 @@ Scatterer: phase function
 .. image:: ../images/SPF.png
    :width: 600
 
+-----
+
 Detector: Photodiode
 --------------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    from PyMieSim.Source import PlaneWave
@@ -109,10 +118,12 @@ Detector: Photodiode
 .. image:: ../images/Photodiode.png
    :width: 600
 
+-----
+
 Detector: LPMode
 ----------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    from PyMieSim.Source import PlaneWave
@@ -137,10 +148,12 @@ Detector: LPMode
 .. image:: ../images/LPmode.png
    :width: 600
 
+-----
+
 Coupling: Scatterer-Photodiode
 ------------------------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    from PyMieSim.Source import PlaneWave
@@ -170,11 +183,12 @@ Coupling: Scatterer-Photodiode
 
 Output: (6.57e+01 nWatt)
 
+-----
 
 ScattererSet: Qscattering
 --------------------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    import numpy as np
@@ -202,10 +216,12 @@ ScattererSet: Qscattering
 .. image:: ../images/Qsca.png
    :width: 600
 
+-----
+
 ExperimentalSet: Coupling
 ----------------------------
 
-.. code-block:: console
+.. code-block:: python
    :linenos:
 
    import numpy as np
@@ -263,73 +279,111 @@ ExperimentalSet: Coupling
 
 
 
+-----
 
+Optimization: 1 parameter
+-------------------------
 
-Optimizer: 1 parameter
-----------------------
-
-.. code-block:: console
- :linenos:
-
-
-
- import numpy as np
- from PyMieSim.Detector import Photodiode, LPmode
- from PyMieSim.Source import PlaneWave
- from PyMieSim.Optimizer import Optimize
- from PyMieSim.Sets import ExperimentalSet, ScattererSet
-
-
- LightSource = PlaneWave(Wavelength   = 450e-9,
-                         Polarization = 0,
-                         E0           = 1e7)
-
- Detector0 = Photodiode(NA               = 0.1,
-                       Sampling          = 300,
-                       GammaOffset       = 20,
-                       PhiOffset         = 0,
-                       CouplingMode      = 'Centered')
-
- Detector1 = Photodiode(NA                = 0.1,
-                        Sampling          = 300,
-                        GammaOffset       = 30,
-                        PhiOffset         = 0,
-                        CouplingMode      = 'Centered')
-
-
- ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
-                        RIList        = np.linspace(1.5, 1.8, 1).round(1),
-                        Source        = LightSource)
-
- Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
-
-
- Opt    = Optimize(ExperimentalSet = Set,
-                   Metric          = 'Max',  # can be 'Max", "Min", "RI_RSD", "Size_RSD", "Monotonic"
-                   Parameter       = ['NA'],
-                   MinVal          = [1e-1],
-                   MaxVal          = [1],
-                   WhichDetector   = 0,
-                   X0              = [0.1],
-                   MaxIter         = 350,
-                   Tol             = 1e-4,
-                   FirstStride     = 30)
-
- print(Opt.Result)
-
- df = Set.DataFrame
-
- df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+.. code-block:: python
+  :linenos:
 
 
 
+   import numpy as np
+   from PyMieSim.Detector import Photodiode, LPmode
+   from PyMieSim.Source import PlaneWave
+   from PyMieSim.Optimizer import Optimize
+   from PyMieSim.Sets import ExperimentalSet, ScattererSet
 
 
+   LightSource = PlaneWave(Wavelength   = 450e-9,
+                           Polarization = 0,
+                           E0           = 1e7)
 
-Optimizer: 2 parameters
------------------------
+   Detector0 = Photodiode(NA               = 0.1,
+                         Sampling          = 300,
+                         GammaOffset       = 20,
+                         PhiOffset         = 0,
+                         CouplingMode      = 'Centered')
 
-.. code-block:: console
+   Detector1 = Photodiode(NA                = 0.1,
+                          Sampling          = 300,
+                          GammaOffset       = 30,
+                          PhiOffset         = 0,
+                          CouplingMode      = 'Centered')
+
+
+   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
+                          RIList        = np.linspace(1.5, 1.8, 1).round(1),
+                          Source        = LightSource)
+
+   Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
+
+
+   Opt    = Optimize(ExperimentalSet = Set,
+                     Metric          = 'Max',  # can be 'Max", "Min", "RI_RSD", "Size_RSD", "Monotonic"
+                     Parameter       = ['NA'],
+                     MinVal          = [1e-1],
+                     MaxVal          = [1],
+                     WhichDetector   = 0,
+                     X0              = [0.1],
+                     MaxIter         = 350,
+                     Tol             = 1e-4,
+                     FirstStride     = 30)
+
+   print(Opt.Result)
+
+   df = Set.DataFrame
+
+   df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+
+
+**Output:**
+
+
+| Call Number : 1             	 PhiOffset: 1.00000e-01             	 Result: -7.3947105131e-03
+| Call Number : 2             	 PhiOffset: 1.01000e+01             	 Result: -4.5216666010e-03
+| Call Number : 3             	 PhiOffset: -9.90000e+00             	 Result: -4.6103038869e-03
+| Call Number : 4             	 PhiOffset: -4.90000e+00             	 Result: -6.5239220916e-03
+| Call Number : 5             	 PhiOffset: 2.60000e+00             	 Result: -7.1347913938e-03
+| Call Number : 6             	 PhiOffset: -1.15000e+00             	 Result: -7.3444635289e-03
+| Call Number : 7             	 PhiOffset: 7.25000e-01             	 Result: -7.3742571154e-03
+| Call Number : 8             	 PhiOffset: -2.12500e-01             	 Result: -7.3935287699e-03
+| Call Number : 9             	 PhiOffset: 2.56250e-01             	 Result: -7.3924460072e-03
+| Call Number : 10             	 PhiOffset: 2.18750e-02             	 Result: -7.3951290146e-03
+| Call Number : 11             	 PhiOffset: -5.62500e-02             	 Result: -7.3950715369e-03
+| Call Number : 12             	 PhiOffset: -1.71875e-02             	 Result: -7.3951597748e-03
+| Call Number : 13             	 PhiOffset: -5.62500e-02             	 Result: -7.3950715369e-03
+| Call Number : 14             	 PhiOffset: -3.67188e-02             	 Result: -7.3951305305e-03
+| Call Number : 15             	 PhiOffset: -7.42188e-03             	 Result: -7.3951632409e-03
+| Call Number : 16             	 PhiOffset: 2.34375e-03             	 Result: -7.3951592695e-03
+| Call Number : 17             	 PhiOffset: -2.53906e-03             	 Result: -7.3951621849e-03
+| Call Number : 18             	 PhiOffset: -9.86328e-03             	 Result: -7.3951630716e-03
+| Call Number : 19             	 PhiOffset: -6.20117e-03             	 Result: -7.3951631512e-03
+| Call Number : 20             	 PhiOffset: -8.03223e-03             	 Result: -7.3951632421e-03
+| Call Number : 21             	 PhiOffset: -8.33740e-03             	 Result: -7.3951632319e-03
+| Call Number : 22             	 PhiOffset: -7.87964e-03             	 Result: -7.3951632446e-03
+| Call Number : 23             	 PhiOffset: -7.72705e-03             	 Result: -7.3951632451e-03
+| Call Number : 24             	 PhiOffset: -7.57446e-03             	 Result: -7.3951632439e-03
+| Call Number : 25             	 PhiOffset: -7.82705e-03             	 Result: -7.3951632450e-03
+| fun: -0.007395163244966126
+| maxcv: 0.0
+| message: 'Optimization terminated successfully.'
+| nfev: 25
+| status: 1
+| success: True
+| x: array([-0.00782705])
+
+.. image:: ../images/Opt1Param.png
+   :width: 600
+
+
+-----
+
+Optimization: 2 parameters
+--------------------------
+
+.. code-block:: python
   :linenos:
 
 

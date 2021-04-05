@@ -1,0 +1,23 @@
+{% extends "!layout.html" %}
+
+
+{% block rootrellink %}
+        <li><a href="{{ pathto('Intro') }}">Introduction</a>|&nbsp;</li>
+        <li><a href="{{ pathto('Theory') }}">Theory</a>|&nbsp;</li>
+        <li><a href="{{ pathto('Code') }}">Code</a>|&nbsp;</li>
+        <li><a href="{{ pathto('Examples') }}">Examples</a>|&nbsp;</li>
+        <li><a href="{{ pathto('search') }}">search</a>|&nbsp;</li>
+{% endblock %}
+
+
+{% block relbar1 %}
+
+<div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
+<a href="{{ pathto('index') }}"><h1 style="font-size: 3em;">PyMieSim</h1></a>
+</div>
+{{ super() }}
+{% endblock %}
+
+{# put the sidebar before the body #}
+{% block sidebar1 %}{{ sidebar() }}{% endblock %}
+{% block sidebar2 %}{% endblock %}
