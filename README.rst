@@ -1,5 +1,5 @@
 
-.. image:: Logo.png
+.. image:: ./docs/images/Logo.png
 
 
 
