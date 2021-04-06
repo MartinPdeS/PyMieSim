@@ -116,21 +116,21 @@ Here is an example on how to use the library.
   from PyMieSim.Detector import LPmode
   from PyMieSim.Scatterer import Sphere
 
-  LightSource = PlaneWave(Wavelength   = 450e-9,
-                         Polarization = 0,
-                         E0           = 1)
+  Source = PlaneWave(Wavelength   = 450e-9,
+                     Polarization = 0,
+                     E0           = 1)
 
   Detector = LPmode(Mode         = (0, 1,'h'),
-                   Sampling     = 201,
-                   NA           = 0.2,
-                   GammaOffset  = 0,
-                   PhiOffset    = 0,
-                   CouplingMode = 'Centered')
+                    Sampling     = 201,
+                    NA           = 0.2,
+                    GammaOffset  = 0,
+                    PhiOffset    = 0,
+                    CouplingMode = 'Centered')
 
 
   Scat = Sphere(Diameter    = 300e-9,
-               Source      = LightSource,
-               Index       = 1.4)
+                Source      = Source,
+                Index       = 1.4)
 
   Coupling = Detector.Coupling(Scatterer = Scat)
 

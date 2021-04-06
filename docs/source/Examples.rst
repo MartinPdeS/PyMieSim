@@ -14,11 +14,12 @@ Scatterer: S1-S2
    from PyMieSim.Source import PlaneWave
 
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                           Polarization = 0)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
    Scat = Sphere(Diameter    = 300e-9,
-                 Source      = LightSource,
+                 Source      = Source,
                  Index       = 1.4)
 
 
@@ -43,11 +44,12 @@ Scatterer: full far-field
    from PyMieSim.Source import PlaneWave
 
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                           Polarization = 0)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
    Scat = Sphere(Diameter    = 300e-9,
-                 Source      = LightSource,
+                 Source      = Source,
                  Index       = 1.4)
 
 
@@ -72,11 +74,12 @@ Scatterer: phase function
    from PyMieSim.Source import PlaneWave
 
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                          Polarization = 0)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
    Scat = Sphere(Diameter    = 800e-9,
-                Source      = LightSource,
+                Source      = Source,
                 Index       = 1.4)
 
 
@@ -103,7 +106,7 @@ Detector: Photodiode
 
    Source = PlaneWave(Wavelength   = 450e-9,
                       Polarization = 0,
-                      E0           = 1.)
+                      E0           = 1)
 
    Detector = Photodiode(NA                = 0.8,
                          Sampling          = 1001,
@@ -160,9 +163,9 @@ Coupling: Scatterer-Photodiode
    from PyMieSim.Detector import Photodiode
    from PyMieSim.Scatterer import Sphere
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                           Polarization = 0,
-                           E0= 1e5)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
    Detector = Photodiode(Sampling     = 201,
                          NA           = 0.2,
@@ -172,7 +175,7 @@ Coupling: Scatterer-Photodiode
 
 
    Scat = Sphere(Diameter    = 300e-9,
-                 Source      = LightSource,
+                 Source      = Source,
                  Index       = 1.4)
 
    Coupling = Detector.Coupling(Scatterer = Scat)
@@ -196,13 +199,14 @@ ScattererSet: Qscattering
    from PyMieSim.Sets import ScattererSet
 
 
-   LightSource = PlaneWave(Wavelength = 450e-9,
-                          Polarization = 0)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
 
    ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 10000e-9, 400),
                           RIList        = np.linspace(1.5, 1.8, 3).round(1),
-                          Source        = LightSource)
+                          Source        = Source)
 
 
    Qsca = ScatSet.Qsca()
@@ -230,9 +234,9 @@ ExperimentalSet: Coupling
    from PyMieSim.Sets import ScattererSet, ExperimentalSet
 
 
-   LightSource = PlaneWave(Wavelength   = 450e-9,
-                           Polarization = 0,
-                           E0           = 1)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
 
 
@@ -256,7 +260,7 @@ ExperimentalSet: Coupling
 
    ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 500),
                           RIList        = np.linspace(1.5, 1.5, 1).round(1),
-                          Source        = LightSource)
+                          Source        = Source)
 
 
 
@@ -296,9 +300,9 @@ Optimization: 1 parameter
    from PyMieSim.Sets import ExperimentalSet, ScattererSet
 
 
-   LightSource = PlaneWave(Wavelength   = 450e-9,
-                           Polarization = 0,
-                           E0           = 1e7)
+   Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
    Detector0 = Photodiode(NA               = 0.1,
                          Sampling          = 300,
@@ -315,7 +319,7 @@ Optimization: 1 parameter
 
    ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
                           RIList        = np.linspace(1.5, 1.8, 1).round(1),
-                          Source        = LightSource)
+                          Source        = Source)
 
    Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
 
@@ -395,9 +399,9 @@ Optimization: 2 parameters
   from PyMieSim.Sets import ExperimentalSet, ScattererSet
 
 
-  LightSource = PlaneWave(Wavelength   = 450e-9,
-                          Polarization = 0,
-                          E0           = 1e7)
+  Source = PlaneWave(Wavelength   = 450e-9,
+                     Polarization = 0,
+                     E0           = 1e5)
 
   Detector0 = Photodiode(NA               = 0.1,
                         Sampling          = 300,
@@ -414,7 +418,7 @@ Optimization: 2 parameters
 
   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
                          RIList        = np.linspace(1.5, 1.8, 1).round(1),
-                         Source        = LightSource)
+                         Source        = Source)
 
   Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
 
