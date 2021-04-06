@@ -1,20 +1,19 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Theoretical background &#8212; PyMieSim 0.1.11 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Source code structures" href="Code.html" />
@@ -42,7 +41,8 @@
         <li><a href="Code.html">Code</a>|&nbsp;</li>
         <li><a href="Examples.html">Examples</a>|&nbsp;</li>
         <li><a href="search.html">search</a>|&nbsp;</li>
- 
+
+        <li class="nav-item nav-item-this"><a href="">Theoretical background</a></li> 
       </ul>
     </div>
 
@@ -56,6 +56,7 @@
 <li><a class="reference internal" href="#">Theoretical background</a><ul>
 <li><a class="reference internal" href="#lorenz-mie-theory-lmt">Lorenz-Mie Theory (LMT)</a></li>
 <li><a class="reference internal" href="#generalized-lorenz-mie-theory-glmt">Generalized Lorenz-Mie Theory (GLMT)</a></li>
+<li><a class="reference internal" href="#coupling-mechanism">Coupling mechanism</a></li>
 </ul>
 </li>
 </ul>
@@ -74,17 +75,15 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
 
@@ -135,13 +134,38 @@
 </div>
 </div>
 </div>
+<hr class="docutils" />
 <div class="section" id="generalized-lorenz-mie-theory-glmt">
 <h2>Generalized Lorenz-Mie Theory (GLMT)<a class="headerlink" href="#generalized-lorenz-mie-theory-glmt" title="Permalink to this headline">¶</a></h2>
 <p><strong>Coming soon</strong></p>
 </div>
+<hr class="docutils" />
+<div class="section" id="coupling-mechanism">
+<h2>Coupling mechanism<a class="headerlink" href="#coupling-mechanism" title="Permalink to this headline">¶</a></h2>
+<p>There is two main coupling mechanism, <strong>coherent coupling</strong> and non-coherent coupling.
+For instance photodiode collect light via an <strong>non-coherent mechanism</strong>, on the other part
+fiber optic LP mode collect light in a coherent way and as such they usually
+collect a lot less light but they add additional information on the sample studied.</p>
+<p>Mathematically they are defined as follows:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}C_{coh.} &amp;= \Big| \iint_{\\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2\end{split}\\\begin{split}C_{Noncoh.} &amp;=  \iint_{\\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega\end{split}\end{aligned}\end{align} \]</div>
+<p>It is to be noted that the <strong>coherent coupling</strong> definition is derived from the coupled mode theory
+which remains true as long as the parallax approximation is also true.
+Also this coupling are what we would call <strong>centered coupling</strong>. It means that the
+scatterer is perfectly centered with the detector. As much as it doesn’t affect
+so much the <strong>non-coherent coupling</strong> coupling, it can largely affect <strong>coherent coupling</strong>.</p>
+<p>In order to take account of the effect of transversal offset of the scatterer we define
+the footprint of the scatterer.</p>
+<div class="math notranslate nohighlight">
+\[\eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2\]</div>
+<p>Thus we can compute the <strong>mean coupling</strong> as the mean value of <span class="math notranslate nohighlight">\(\eta_{l,m}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\widetilde{\eta}_{l,m} = \big&lt; \eta_{l,m}(\delta_x, \delta_y) \big&gt;\]</div>
+</div>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -164,12 +188,13 @@
         <li><a href="Code.html">Code</a>|&nbsp;</li>
         <li><a href="Examples.html">Examples</a>|&nbsp;</li>
         <li><a href="search.html">search</a>|&nbsp;</li>
- 
+
+        <li class="nav-item nav-item-this"><a href="">Theoretical background</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
   </body>
 </html>

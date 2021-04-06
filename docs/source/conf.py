@@ -30,7 +30,10 @@ autodoc_mock_imports = ['numpy',
 
 
 sys.path.insert(0, os.path.abspath('../..'))
+import os
+import sys
 
+sys.path.insert(0, os.path.abspath('../images/'))
 # -- Project information -----------------------------------------------------
 
 project = 'PyMieSim'

@@ -2,8 +2,8 @@ import numpy as np
 import os.path
 
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.utils import interp_at, NA2Angle, Sp2Cart, Normalize
-from PyMieSim.Physics import FraunhoferDiffraction, _Polarization, Angle
+from PyMieSim.utils import interp_at, NA2Angle, Normalize, RescaleComplex
+from PyMieSim.Physics import _Polarization, Angle
 
 
 
@@ -52,36 +52,29 @@ class Photodiode(BaseDetector, MeshProperty):
                                        GammaOffset = GammaOffset,
                                        Structured  = False)
 
-        self.Scalar = self.UnstructuredFarField()
+        self.Scalar = self.FarField(Num=self.Mesh.Sampling, Structured=False)
 
 
-    def UnstructuredFarField(self):
-        return np.ones(self.Mesh.Sampling)
-
-
-    def UpdateUnstructuredFarField(self):
-        self.Scalar = np.ones(self.Mesh.Sampling)
-
-
-    def StructuredFarField(self, Num = 100, SFactor = None):
+    def FarField(self, Num=251, Structured=False):
         """
-        Compute the FarField in a structured Mesh.
+        Compute the FarField in a structured or unstructured Mesh.
 
         Parameters
         ----------
         Num : :class:`int`
             Dimension of the structured mesh [Num, Num].
-        SFactor : :class:`float`
-            Unused parameter added to match :class:`LPmode` class.
+
+        Structured : :class:`bool`
+            Indicate how to compute the far field.
 
         Returns
         -------
         :class`numpy.ndarray`:
-            Structured FarField value.
+            FarField array.
 
         """
-
-        return np.ones([Num, Num])
+        if Structured: return np.ones([Num, Num])
+        else:          return np.ones(Num)
 
 
     def __repr__(self):
@@ -151,67 +144,49 @@ class LPmode(BaseDetector, MeshProperty):
                                        GammaOffset = GammaOffset,
                                        Structured  = False)
 
-        self.Scalar = self.FarField(Num = InterpSampling, Interpolate=True)
+        self.Scalar = self.FarField(Num=self.Mesh.Sampling, Structured=False)
 
 
-    def StructuredFarField(self, Num = 100, SFactor = None):
+    def FarField(self, Num=251, Structured=False):
         """
-        Compute the FarField in a structured Mesh.
+        Compute the FarField in a structured or unstructured Mesh.
+        The unstructured far field is computed using linear interpolation
+        on a structured mesh.
 
         Parameters
         ----------
         Num : :class:`int`
             Dimension of the structured mesh [Num, Num].
-        SFactor : :class:`float`
-            Unused parameter added to match :class:`LPmode` class.
+
+        Structured : :class:`bool`
+            Indicate how to compute the far field.
 
         Returns
         -------
         :class`numpy.ndarray`:
-            Structured FarField value.
-
-        """
-
-        return self.FarField(Num, Interpolate=False)
-
-
-    def FarField(self, Num, Interpolate):
-        """
-        Compute the FarField in a structured Mesh and interpolate the Mesh.
-
-        Parameters
-        ----------
-        Num : :class:`int`
-            Dimension of the structured mesh [Num, Num].
-
-        Returns
-        -------
-        :class:`FraunhoferDiffraction`
-            Structured FarField value.
+            FarField array.
 
         """
 
         filename = f'PyMieSim/LPmodes/FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
 
-        exist = os.path.exists(filename)
-
-        if not exist:
+        if not os.path.exists(filename):
             raise ValueError("The LP mode has not been previously compilated. "
                               "Please consult the documentation to do so. "
                               "Doc available at: "
                               "https://pymiesim.readthedocs.io/en/latest/Intro.html")
 
-
         mode = np.load(filename)
 
-        if not Interpolate: return mode
+        if Num != mode.shape[0]: mode = RescaleComplex(Input=mode, Scale=Num/mode.shape[0])
+
+        if Structured: return mode
 
         self._phi, self._theta = self.SphericalMesh(Sampling    = mode.shape[0],
                                                     MaxAngle    = self.Mesh.MaxAngle,
                                                     PhiOffset   = 0,
                                                     GammaOffset = 0,
                                                     Structured  = True)
-
 
         Interp = interp_at(x           = self._phi.flatten(),
                            y           = self._theta.flatten(),
@@ -236,41 +211,6 @@ class LPmode(BaseDetector, MeshProperty):
         Gamma offset:  {self.Mesh.GammaOffset}
         Phi offset:    {self.Mesh.PhiOffset}
         """
-
-
-
-def PlotSpherical(phi, theta, scalar=None):
-    from mayavi import mlab
-    X = np.linspace(-1,1,10)*1.3
-    Y = np.linspace(-1,1,10)*1.3
-    Z = np.linspace(-1,1,10)*2
-
-    zeros = np.zeros_like(X)
-
-    fig = mlab.figure(size=(600,300))
-
-    mlab.plot3d(X, zeros, zeros, line_width=1e-12)
-    mlab.plot3d(zeros, Y, zeros, line_width=1e-12)
-    mlab.plot3d(zeros, zeros, Z, line_width=1e-12)
-
-
-    coord = Sp2Cart(phi*0+1, phi, theta)
-    if isinstance(scalar, np.ndarray):
-        mlab.points3d(*coord, scalar)
-    else:
-        mlab.points3d(*coord)
-    mlab.show()
-
-
-
-
-
-
-
-
-
-
-
 
 
 class _Photodiode(BaseDetector, MeshProperty):
@@ -298,36 +238,29 @@ class _Photodiode(BaseDetector, MeshProperty):
                                        GammaOffset = GammaOffset,
                                        Structured  = False)
 
-        self.Scalar = self.UnstructuredFarField()
+        self.Scalar = self.FarField(Num=self.Mesh.Sampling, Structured=False)
 
 
-    def UnstructuredFarField(self):
-        return np.ones(self.Mesh.Sampling)
-
-
-    def UpdateUnstructuredFarField(self):
-        self.Scalar = np.ones(self.Mesh.Sampling)
-
-
-    def StructuredFarField(self, Num = 100, SFactor = None):
+    def FarField(self, Num=251, Structured=False):
         """
-        Compute the FarField in a structured Mesh.
+        Compute the FarField in a structured or unstructured Mesh.
 
         Parameters
         ----------
         Num : :class:`int`
             Dimension of the structured mesh [Num, Num].
-        SFactor : :class:`float`
-            Unused parameter added to match :class:`LPmode` class.
+
+        Structured : :class:`bool`
+            Indicate how to compute the far field.
 
         Returns
         -------
         :class`numpy.ndarray`:
-            Structured FarField value.
+            FarField array.
 
         """
-
-        return np.ones([Num, Num])
+        if Structured: return np.ones([Num, Num])
+        else:          return np.ones(Num)
 
 
     def __repr__(self):

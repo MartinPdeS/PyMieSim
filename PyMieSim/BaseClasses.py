@@ -91,7 +91,7 @@ class BaseDetector(object):
         Return the value of the scattererd light coupling as computed as:
 
         .. math::
-            :math:`|\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2
+            |\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2
 
         | Where:
         |   :math:`\Phi_{det}` is the capturing field of the detector and
@@ -156,7 +156,7 @@ class BaseDetector(object):
             Dictionnary subclass with all pertienent information.
 
         """
-        return Footprint(Scatterer = Scatterer, Detector = self, Num=Num)
+        return Footprint(Scatterer = Scatterer, Detector = self, Num = Num)
 
 
     def SphericalMesh(self,

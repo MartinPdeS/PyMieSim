@@ -45,159 +45,153 @@ class PrintingTest(TestCase):
         self.test16()
         self.test17()
         self.test18()
+        self.test19()
+        self.test20()
+        self.test21()
+        self.test22()
 
     def test00(self):
-        Detector = LPmode(Mode         = (1, 1,'h'),
-                          Sampling     = 11,
-                          NA           = 0.2,
-                          GammaOffset  = 0,
-                          PhiOffset    = 0,
-                          CouplingMode = 'Centered')
+        self.Photodiode = Photodiode(Sampling     = 11,
+                                     NA           = 0.2,
+                                     GammaOffset  = 0,
+                                     PhiOffset    = 0,
+                                     CouplingMode = 'Centered')
 
-        print('Test 0: passed')
+        print('Test 00: Photodiode initialisation passed')
+
 
     def test01(self):
-        Detector = LPmode(Mode         = (1, 1,'h'),
-                          Sampling     = 11,
-                          NA           = 0.2,
-                          GammaOffset  = 0,
-                          PhiOffset    = 0,
-                          CouplingMode = 'Centered')
+        self.LPMode = LPmode(Mode         = (1, 1,'h'),
+                             Sampling     = 11,
+                             NA           = 0.2,
+                             GammaOffset  = 0,
+                             PhiOffset    = 0,
+                             CouplingMode = 'Centered')
 
-        print('Test 1: passed')
+        print('Test 01: LPmode initialisation passed')
+
 
     def test02(self):
-        Scat.S1S2(Num=10)#.Plot(hold=True)
+        self.Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+        print('Test 02: Spherical scatterer initialisation passed')
 
-        print('Test 2: passed')
 
     def test03(self):
-        Scat.FarField(Num=10)#.Plot(hold=True)
+        self.Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+        print('Test 03: Cylindrical scatterer initialisation passed')
 
-        print('Test 3: passed')
 
     def test04(self):
-        Scat.SPF(Num=10)
-        print('Test 4: passed')
+        self.Scat.S1S2(Num=10)
+        print('Test 04: Scatterer <S1S2> compute passed')
+
 
     def test05(self):
-        Detector.Coupling(Scatterer = Scat)
-        Detector1.Coupling(Scatterer = Scat)
+        Scat.FarField(Num=10)
+        print('Test 05: Scatterer <FarField> compute passed')
 
-        print('Test 5: passed')
 
     def test06(self):
-        ScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
-                               RIList        = 1.5,
-                               Source        = LightSource)
+        Scat.SPF(Num=10)
+        print('Test 06: Scatterer <SPF> compute passed')
 
-        ScatSet.Qsca()
-
-        print('Test 6: passed')
 
     def test07(self):
-        Set = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
-        Set.DataFrame
-        Set.Coupling
+        self.Photodiode.Coupling(Scatterer = Scat)
+        print('Test 07: <Photodiode> coupling passed')
 
-        print('Test 7: passed')
 
     def test08(self):
-        Sample = WMSample(g      = 0.8,
-                          lc     = 4e-5,
-                          D      = 3/2,
-                          Nc     = 1e4,
-                          Source = LightSource)
+        self.LPMode.Coupling(Scatterer = Scat)
+        print('Test 08: <LPMode> coupling passed')
 
-        print('Test 8: passed')
 
     def test09(self):
-        ScatSet = SampleSet(gList    = [0.8, 0.9],
-                            LcList   = [1e-5, 2e-5],
-                            D        = 3/2,
-                            Nc       = 1e4,
-                            Detector = Detector,
-                            Source   = LightSource,
-                            Npts     = 201)
+        self.ScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
+                                    RIList        = 1.5,
+                                    Source        = LightSource)
 
-        print('Test 9: passed')
+        print('Test 09: <ScattererSet> initialisation passed')
 
 
     def test10(self):
-        spf = SPF(Scat, LightSource, phi, theta)
-
-        print('Test 10: passed')
+        self.ScatSet.Qsca()
+        print('Test 10: <ScattererSet> Qsca passed')
 
 
     def test11(self):
-        beam = GaussianBeam(Wavelength   = 1.3e-6,
+        self.ExpSet = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
+        print('Test 11: <ExperimentalSet> initialisation passed')
+
+
+    def test12(self):
+        self.ExpSet.DataFrame; self.ExpSet.Coupling
+        print('Test 12: <ExperimentalSet> dataframe compute passed')
+
+
+    def test13(self):
+        self.WMSample = WMSample(g      = 0.8,
+                                 lc     = 4e-5,
+                                 D      = 3/2,
+                                 Nc     = 1e4,
+                                 Source = LightSource)
+
+        print('Test 13: WM sample initialisation passed')
+
+
+    def test14(self):
+        self.SampleSet = SampleSet(gList    = [0.8, 0.9],
+                                   LcList   = [1e-5, 2e-5],
+                                   D        = 3/2,
+                                   Nc       = 1e4,
+                                   Detector = Detector,
+                                   Source   = LightSource,
+                                   Npts     = 201)
+
+        print('Test 14: SampleSet initialisation passed')
+
+
+    def test15(self):
+        self.Gbeam = GaussianBeam(Wavelength   = 1.3e-6,
                             NA           = 0.6,
                             Polarization = 0,
                             Offset       = [0e-6,0e-6,0e-6])
 
-        beam.GetBSC(MaxOrder=3, save=False, Sampling=100)
-
-        print('Test 11: passed')
-
-
-    def test12(self):
-        beam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
-
-        beam.GetBSC(MaxOrder=1, save=False)
-
-        print('Test 12: passed')
-
-
-    def test13(self):
-        beam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
-
-        Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = beam)
-
-        print('Test 13: passed')
-
-
-    def test14(self):
-        beam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
-
-        Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
-
-        Detector.Footprint(Scatterer=Scat, Num=10)
-
-        print('Test 14: passed')
-
-
-    def test15(self):
-        beam = GaussianBeam(Wavelength   = 1.3e-6,
-                            NA           = 0.6,
-                            Polarization = 0,
-                            Offset       = [0e-6]*3)
-
-        beam.GetBSC(MaxOrder=3, save=False)
-
-        Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = beam)
-
-        Scat.SPF(Num=10)
-
-        print('Test 15: passed')
+        print('Test 15: GaussianBeam beam initialisation passed')
 
 
     def test16(self):
-        beam = GaussianBeam(Wavelength   = 1.3e-6,
-                            NA           = 0.6,
-                            Polarization = 0,
-                            Offset       = [0e-6]*3)
-
-        beam.GetBSC(MaxOrder=3, save=False)
-
-        Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = beam)
-
-        Scat.SPF(Num=10)
-
-
-        print('Test 16: passed')
+        self.Gbeam.GetBSC(MaxOrder=3, save=False, Sampling=100)
+        print('Test 16: GaussianBeam beam BSC compute passed')
 
 
     def test17(self):
+        self.PWbeam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
+        print('Test 17: PlaneWave beam initialisation passed')
+
+
+    def test18(self):
+        self.PWbeam.GetBSC(MaxOrder=1, save=False)
+        print('Test 18: GaussianBeam beam BSC compute passed')
+
+
+    def test19(self):
+        self.Photodiode.Footprint(Scatterer=self.Scat, Num=10)
+        print('Test 19: Photodiode footprint compute passed')
+
+
+    def test20(self):
+        self.LPMode.Footprint(Scatterer=self.Scat, Num=10)
+        print('Test 20: LPmode footprint compute passed')
+
+
+    def test21(self):
+        Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = self.Gbeam)
+        Scat.SPF(Num=10)
+        print('Test 21: SPF compute with GLMT')
+
+
+    def test22(self):
         Mesh = FibonacciMesh(MaxAngle    = pi,
                              Sampling    = 1000,
                              PhiOffset   = 0,
@@ -205,23 +199,18 @@ class PrintingTest(TestCase):
 
         val0 = Scat.CrossSection(Mesh)
         val1 = Scat.Qsca * Scat.Area
-        error = np.abs(val0-val1)/val0
-        assert error < 1e-2
+        Rerror = np.abs(val0-val1)/val0
+        assert Rerror < 1e-2
+        print('Test 22: Validation QSca - CrossSection passed')
 
-        print('Test 17: passed')
 
-
-    def test18(self):
-
+    def test23(self):
         Detector1 = _Photodiode(Sampling = 500, NA = 2.0)
-
-
-        val0 = Scat.EnergyFlow(Detector1.Mesh)
-        val1 = Detector1.Coupling(Scat)
-        error = np.abs(val0-val1)/val0
+        val0      = Scat.EnergyFlow(Detector1.Mesh)
+        val1      = Detector1.Coupling(Scat)
+        error     = np.abs(val0-val1)/val0
         assert error < 1e-2
-
-        print('Test 18: passed')
+        print('Test 23: Validation EnergyFlow - coupling passed')
 
 
 if __name__ == '__main__':

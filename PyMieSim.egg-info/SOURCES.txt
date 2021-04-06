@@ -9,6 +9,7 @@ PyMieSim/Coupling.cpp
 PyMieSim/Coupling.pyx
 PyMieSim/DataFrame.py
 PyMieSim/Detector.py
+PyMieSim/FiberModes.py
 PyMieSim/FibonnaciMesh.cpp
 PyMieSim/Mesh.py
 PyMieSim/Optimization.py

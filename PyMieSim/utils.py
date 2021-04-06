@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import griddata
+import scipy.ndimage
 
 import PyMieSim
 from PyMieSim.Physics import Angle
@@ -29,6 +30,12 @@ def InterpFull(Meshes, Scalar, Shape):
 
     return Scalar.reshape(Shape), Phi, Theta
 
+
+def RescaleComplex(Input, Scale):
+
+    InputReal = scipy.ndimage.interpolation.zoom(input=Input.real, zoom=(Scale), order = 2)
+    InputImag = scipy.ndimage.interpolation.zoom(input=Input.imag, zoom=(Scale), order = 2)
+    return InputReal + 1j * InputImag
 
 def interp_at(x, y, v, xp, yp, algorithm='cubic', extrapolate=False):
     """

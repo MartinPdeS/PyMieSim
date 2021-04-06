@@ -1,20 +1,19 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Examples &#8212; PyMieSim 0.1.11 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Source code structures" href="Code.html" /> 
@@ -38,7 +37,8 @@
         <li><a href="Code.html">Code</a>|&nbsp;</li>
         <li><a href="#">Examples</a>|&nbsp;</li>
         <li><a href="search.html">search</a>|&nbsp;</li>
- 
+
+        <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>
 
@@ -60,6 +60,7 @@
 <li><a class="reference internal" href="#experimentalset-coupling">ExperimentalSet: Coupling</a></li>
 <li><a class="reference internal" href="#optimization-1-parameter">Optimization: 1 parameter</a></li>
 <li><a class="reference internal" href="#optimization-2-parameters">Optimization: 2 parameters</a></li>
+<li><a class="reference internal" href="#lp-modes-generate-files">LP-modes: Generate files</a></li>
 </ul>
 </li>
 </ul>
@@ -75,17 +76,15 @@
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
 
@@ -682,7 +681,7 @@
 
 
 <span class="n">Opt</span>    <span class="o">=</span> <span class="n">Optimize</span><span class="p">(</span><span class="n">ExperimentalSet</span> <span class="o">=</span> <span class="n">Set</span><span class="p">,</span>
-                  <span class="n">Metric</span>          <span class="o">=</span> <span class="s1">&#39;Monotonic&#39;</span><span class="p">,</span>  <span class="c1"># can be &#39;Max&quot;, &quot;Min&quot;, &quot;RI_RSD&quot;, &quot;Size_RSD&quot;, &quot;Monotonic&quot;</span>
+                  <span class="n">Metric</span>          <span class="o">=</span> <span class="s1">&#39;Monotonic&#39;</span><span class="p">,</span>
                   <span class="n">Parameter</span>       <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;PhiOffset&#39;</span><span class="p">],</span>
                   <span class="n">MinVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mf">1e-1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
                   <span class="n">MaxVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
@@ -700,9 +699,40 @@
 </pre></div>
 </td></tr></table></div>
 </div>
+<div class="section" id="lp-modes-generate-files">
+<h2>LP-modes: Generate files<a class="headerlink" href="#lp-modes-generate-files" title="Permalink to this headline">¶</a></h2>
+<p>I have prealably compilated 12 LP-modes which are:
+1. LP01
+2. LP11
+3. LP21
+4. LP02
+5. LP31
+6. LP12
+7. LP41
+8. LP22
+9. LP03
+10. LP51
+11. LP32
+12. LP13</p>
+<p>So you can already use them, no need to reproduce. However if you want to
+use another mode you first need to install the fibermodes package using the
+following command:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">cbrunet</span><span class="o">/</span><span class="n">fibermodes</span><span class="o">.</span><span class="n">git</span>
+</pre></div>
+</td></tr></table></div>
+<p>Then you can use the PyMieSIm FiberModes module as follow:</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim.FiberModes</span> <span class="kn">import</span> <span class="n">Genfiles</span>
+
+<span class="n">Genfiles</span><span class="p">([(</span><span class="mi">5</span><span class="p">,</span><span class="mi">2</span><span class="p">)],</span> <span class="n">padWidth</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">251</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
 </div>
 
 
+            <div class="clearer"></div>
           </div>
         </div>
       </div>
@@ -722,12 +752,13 @@
         <li><a href="Code.html">Code</a>|&nbsp;</li>
         <li><a href="#">Examples</a>|&nbsp;</li>
         <li><a href="search.html">search</a>|&nbsp;</li>
- 
+
+        <li class="nav-item nav-item-this"><a href="">Examples</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
     </div>
   </body>
 </html>

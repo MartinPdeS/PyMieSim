@@ -173,10 +173,10 @@ class Footprint(dict):
         FarFieldPara, FarFieldPerp = Scatterer.uS1S2(Phi.flatten(), Theta.flatten())
 
         Perp =  \
-        Detector.StructuredFarField(Num=Num, SFactor=16) * FarFieldPerp.reshape(Theta.shape)
+        Detector.FarField(Num=Num, Structured=True) * FarFieldPerp.reshape(Theta.shape)
 
         Para = \
-        Detector.StructuredFarField(Num=Num, SFactor=16) * FarFieldPara.reshape(Theta.shape)
+        Detector.FarField(Num=Num, Structured=True) * FarFieldPara.reshape(Theta.shape)
 
         n = 5
 

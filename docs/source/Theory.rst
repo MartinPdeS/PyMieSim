@@ -3,6 +3,7 @@ Theoretical background
 
 
 
+
 Lorenz-Mie Theory (LMT)
 -----------------------
 
@@ -61,10 +62,52 @@ Calculates S\ :sub:`1` and S\ :sub:`2` at μ=cos(θ), where θ is the scattering
 |   :math:`m` being the refractive index of the medium and
 |   :math:`m_t` being the refractive index of the index.
 
-
+-----
 
 Generalized Lorenz-Mie Theory (GLMT)
 ------------------------------------
 
 
 **Coming soon**
+
+
+
+
+-----
+
+Coupling mechanism
+-------------------
+
+
+There is two main coupling mechanism, **coherent coupling** and non-coherent coupling.
+For instance photodiode collect light via an **non-coherent mechanism**, on the other part
+fiber optic LP mode collect light in a coherent way and as such they usually
+collect a lot less light but they add additional information on the sample studied.
+
+
+Mathematically they are defined as follows:
+
+.. math::
+    C_{coh.} &= \Big| \iint_{\\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2
+
+    C_{Noncoh.} &=  \iint_{\\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega
+
+
+
+It is to be noted that the **coherent coupling** definition is derived from the coupled mode theory
+which remains true as long as the parallax approximation is also true.
+Also this coupling are what we would call **centered coupling**. It means that the
+scatterer is perfectly centered with the detector. As much as it doesn't affect
+so much the **non-coherent coupling** coupling, it can largely affect **coherent coupling**.
+
+In order to take account of the effect of transversal offset of the scatterer we define
+the footprint of the scatterer.
+
+
+.. math::
+  \eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2
+
+Thus we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
+
+.. math::
+  \widetilde{\eta}_{l,m} = \big< \eta_{l,m}(\delta_x, \delta_y) \big>
