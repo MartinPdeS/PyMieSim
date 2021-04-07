@@ -12,6 +12,243 @@ from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, QscaDataFrame
 from PyMieSim.Scatterer import Sphere, WMSample
 from PyMieSim.LMT.Scatterer import SPHERE
+from PyMieSim.Source import PlaneWave
+
+class ScatSet(object):
+
+    def __init__(self,
+                 DiameterList:    list,
+                 RIList:          list,
+                 nMedium:         float   = 1.0,
+                 ScattererType:   str     = 'Sphere'
+                 ):
+
+        if not isinstance(RIList, (list, np.ndarray)): RIList = [RIList]
+
+        if not isinstance(DiameterList, (list, np.ndarray)): DiameterList = [DiameterList]
+
+        self.DiameterList, self.RIList = DiameterList, RIList
+
+        self.nMedium = nMedium
+
+        self.shape = [DiameterList, RIList]
+
+
+    def Generator(self, Source):
+        for diameter in self.DiameterList:
+            for RI in self.RIList:
+                yield Sphere(Diameter  = diameter,
+                             Source    = Source,
+                             Index     = RI,
+                             nMedium   = self.nMedium,
+                             MuSphere  = 1.0,
+                             MuMedium  = 1.0)
+
+
+
+class SourceSet(object):
+
+    def __init__(self,
+                 WavelengthList:      list,
+                 PolarizationList:    list = [0],
+                 SourceType:          str  = 'PlaneWave'):
+
+        if not isinstance(WavelengthList, (list, np.ndarray)): WavelengthList = [WavelengthList]
+
+        if not isinstance(PolarizationList, (list, np.ndarray)): PolarizationList = [PolarizationList]
+
+        self.WavelengthList = WavelengthList
+
+        self.PolarizationList = PolarizationList
+
+        self.SourceType = SourceType
+
+        self.shape = [WavelengthList, PolarizationList]
+
+
+    def Generator(self):
+        for wavelength in self.WavelengthList:
+            for polarization in self.PolarizationList:
+                yield PlaneWave(Wavelength   = wavelength,
+                                Polarization = polarization,
+                                E0           = 1)
+
+
+class Experiment(object):
+
+    def __init__(self,
+                 ScattererSet: ScatSet      = None,
+                 SourceSet:    SourceSet    = None,
+                 DetectorSet:  tuple        = None):
+
+        if not isinstance(DetectorSet, (list, np.ndarray)): DetectorSet = [DetectorSet]
+
+        self.DetectorSet  = DetectorSet
+
+        self.SourceSet    = SourceSet
+
+        self.ScattererSet = ScattererSet
+
+
+    def Efficiences(self):
+        """Methode generate a Pandas Dataframe of scattering efficiencies
+        (Qsca, Qext, Qabs) vs. scatterer diameter vs. scatterer refractive index.
+
+        Returns
+        -------
+        :class:`pandas.DataFrame`
+            Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
+
+        """
+
+        conf = [self.SourceSet.WavelengthList,
+                self.SourceSet.PolarizationList,
+                self.ScattererSet.DiameterList,
+                self.ScattererSet.RIList]
+
+        MI = pd.MultiIndex.from_product(conf, names=['Wavelength', 'Polarization', 'Diameter', 'RI'])
+
+        df = pd.DataFrame(index = MI, columns = ['Qsca', 'Qext', 'Qabs'])
+
+        for source in self.SourceSet.Generator():
+            for scat in self.ScattererSet.Generator(Source=source):
+                Qsca, Qext, Qabs = scat.GetEfficiencies()
+
+                df.loc[(source.Wavelength, source.Polarization.Degree, scat.Diameter, scat.Index)] = Qsca, Qext, Qabs
+
+        return df
+
+
+    def Qsca(self):
+        """Methode generate a Pandas Dataframe of scattering efficiencies
+        (Qsca) vs. scatterer diameter vs. scatterer refractive index.
+
+        Returns
+        -------
+        :class:`pandas.DataFrame`
+            Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
+
+        """
+
+        conf = [self.SourceSet.WavelengthList,
+                self.SourceSet.PolarizationList,
+                self.ScattererSet.DiameterList,
+                self.ScattererSet.RIList]
+
+        MI = pd.MultiIndex.from_product(conf, names=['Wavelength', 'Polarization', 'Diameter', 'RI'])
+
+        df = pd.DataFrame(index = MI, columns = ['Qsca'])
+
+        for source in self.SourceSet.Generator():
+            for scat in self.ScattererSet.Generator(Source=source):
+                Qsca, _, _ = scat.GetEfficiencies()
+
+                df.loc[(source.Wavelength, source.Polarization.Degree, scat.Diameter, scat.Index)] = Qsca
+
+        return df
+
+
+    def Qext(self):
+        """Methode generate a Pandas Dataframe of scattering efficiencies
+        (Qext) vs. scatterer diameter vs. scatterer refractive index.
+
+        Returns
+        -------
+        :class:`pandas.DataFrame`
+            Dataframe containing Qext vs. Wavelength, Diameter vs. Index.
+
+        """
+
+        conf = [self.SourceSet.WavelengthList,
+                self.SourceSet.PolarizationList,
+                self.ScattererSet.DiameterList,
+                self.ScattererSet.RIList]
+
+        MI = pd.MultiIndex.from_product(conf, names=['Wavelength', 'Polarization', 'Diameter', 'RI'])
+
+        df = pd.DataFrame(index = MI, columns = ['Qext'])
+
+        for source in self.SourceSet.Generator():
+            for scat in self.ScattererSet.Generator(Source=source):
+                _, Qext, _ = scat.GetEfficiencies()
+
+                df.loc[(source.Wavelength, source.Polarization.Degree, scat.Diameter, scat.Index)] = Qext
+
+        return df
+
+
+    def Qabs(self):
+        """Methode generate a Pandas Dataframe of scattering efficiencies
+        (Qabs) vs. scatterer diameter vs. scatterer refractive index.
+
+        Returns
+        -------
+        :class:`pandas.DataFrame`
+            Dataframe containing Qabs vs. Wavelength, Diameter vs. Index.
+
+        """
+
+        conf = [self.SourceSet.WavelengthList,
+                self.SourceSet.PolarizationList,
+                self.ScattererSet.DiameterList,
+                self.ScattererSet.RIList]
+
+        MI = pd.MultiIndex.from_product(conf, names=['Wavelength', 'Polarization', 'Diameter', 'RI'])
+
+        df = pd.DataFrame(index = MI, columns = ['Qabs'])
+
+        for source in self.SourceSet.Generator():
+            for scat in self.ScattererSet.Generator(Source=source):
+                _, _, Qabs = scat.GetEfficiencies()
+
+                df.loc[(source.Wavelength,
+                        source.Polarization.Degree,
+                        scat.Diameter,
+                        scat.Index)] = Qabs
+
+        return df
+
+
+    @property
+    def Coupling(self):
+        """Property method which return a n by m by l OptArray array, n being the
+        number of detectors, m is the point evaluated for the refractive index,
+        l is the nomber of point evaluted for the scatterers diameters.
+
+        Returns
+        -------
+        OptArray
+            Raw array of detectors coupling.
+
+        """
+
+        conf = [self.DetectorSet,
+                self.SourceSet.WavelengthList,
+                self.SourceSet.PolarizationList,
+                self.ScattererSet.DiameterList,
+                self.ScattererSet.RIList]
+
+        MI = pd.MultiIndex.from_product(conf, names=['Detector',
+                                                     'Wavelength',
+                                                     'Polarization',
+                                                     'Diameter',
+                                                     'RI'])
+
+        df = pd.DataFrame(index = MI, columns = ['Coupling'])
+
+        for nd, detector in enumerate(self.DetectorSet):
+            for source in self.SourceSet.Generator():
+                for scat in self.ScattererSet.Generator(Source=source):
+
+                    df.loc[(nd,
+                            source.Wavelength,
+                            source.Polarization.Degree,
+                            scat.Diameter,
+                            scat.Index)] = detector.Coupling(Scatterer = scat)
+
+        return df
+
+
 
 
 class ScattererSet(object):
@@ -100,7 +337,6 @@ class ScattererSet(object):
         df = S1S2DataFrame(index = MI, columns = ['S1', 'S2'])
 
         for nr, RI in enumerate(self.RIList):
-
             for nd, Diameter in enumerate(self.DiameterList):
                 SizeParam =  2 * np.pi * Diameter/self.Source.Wavelength
 

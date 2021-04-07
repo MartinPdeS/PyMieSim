@@ -282,6 +282,8 @@ class BaseScatterer(object):
 
         self._Qsca, self._Qext, self._Qabs = self.Bind.Efficiencies
 
+        return self._Qsca, self._Qext, self._Qabs
+
 
     def S1S2(self, Num=200):
         """

@@ -174,7 +174,7 @@ class PlaneWave(BaseSource):
         return f"""
                 PlaneWave source beam
                 Wavelenght:   {self.Wavelength}
-                Polarization: {self.Polarization}
+                Polarization: {self.Polarization.Degree}
                 """
 
 
@@ -594,7 +594,7 @@ class GaussianBeam(BaseSource):
         return f"""
                 Gaussian source beam
                 Wavelenght:   {self.Wavelength}
-                Polarization: {self.Polarization}
+                Polarization: {self.Polarization.Degree}
                 NA:           {self.NA}
                 Waist (w_0)   {self.w0}
                 """

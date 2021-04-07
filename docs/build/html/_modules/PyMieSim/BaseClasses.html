@@ -365,12 +365,41 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        :class:`S1S2`</span>
-<span class="sd">            Description of returned object.</span>
+<span class="sd">        :class:`dict`</span>
+<span class="sd">            Dictionnay sub-class with all pertient information as keys.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="n">S1S2</span><span class="p">(</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">Stokes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method compute and return the Stokes parameters: I, Q, U, V.</span>
+<span class="sd">        Those parameters are defined as:</span>
+
+<span class="sd">        .. math:</span>
+<span class="sd">            I &amp;= \\big| E_x \big|^2 + \\big| E_y \\big|^2</span>
+
+<span class="sd">            Q &amp;= \\big| E_x \big|^2 - \\big| E_y \\big|^2</span>
+
+<span class="sd">            U &amp;= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}</span>
+
+<span class="sd">            V &amp;= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Num : :class:`int`</span>
+<span class="sd">            Number of point (:math:`\\phi`) to evaluate :math:`S_1` and :math:`S_2`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`dict`</span>
+<span class="sd">            Dictionnay sub-class with all pertient information as keys.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">Stokes</span><span class="p">(</span><span class="n">Parent</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="n">Num</span><span class="p">)</span>
 
 
 
@@ -394,7 +423,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        :class:`ScalarField`</span>
+<span class="sd">        :class:`dict`</span>
 <span class="sd">            Dictionnay sub-class with all pertient information as keys.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -421,6 +450,11 @@
 <span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`np.array`</span>
+<span class="sd">            The unstructured far-field</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">uFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
@@ -445,6 +479,11 @@
 <span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`np.array`</span>
+<span class="sd">            The structured far-field</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">sFields</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">)</span>
@@ -468,6 +507,12 @@
 <span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`np.array`</span>
+<span class="sd">            The unstructured non-propagated far-field</span>
+
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">uS1S2</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">)</span>
@@ -490,6 +535,11 @@
 <span class="sd">        Num : :class:`int`</span>
 <span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`np.array`</span>
+<span class="sd">            The structured non-propagated far-field</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">sS1S2</span><span class="p">(</span><span class="n">Phi</span> <span class="o">=</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">)</span>
@@ -508,7 +558,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        :class:`SPF` in :mod:`PyMieSim`</span>
+<span class="sd">        :class:`dict`</span>
 <span class="sd">            Dictionnay subclass with all pertinent information as keys.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -2,8 +2,6 @@ Theoretical background
 ======================
 
 
-
-
 Lorenz-Mie Theory (LMT)
 -----------------------
 
