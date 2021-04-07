@@ -175,12 +175,9 @@ def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None, Figure=N
 @mlab.show
 def PlotConfiguration(Detector, Scatterer):
     """Still experimental"""
-    from mayavi import mlab
     from tvtk.tools import visual
     from tvtk.api import tvtk
     from numpy import sqrt
-
-
 
     Figure = mlab.figure(figure = 'Optical configuration', size=(600,300))
     visual.set_viewer(Figure)
@@ -222,6 +219,69 @@ def PlotConfiguration(Detector, Scatterer):
              Direction  = Direction)
 
     mlab.view(azimuth=0, elevation=180, distance=None)
+
+
+
+
+@mlab.show
+def StokesPlot(I, Q, U, V, Phi, Theta, Name='', Polarization=None, Figure=None):
+    Figure = mlab.figure(figure=Name, size=(600,300))
+    visual.set_viewer(Figure)
+
+    dic = {'I': (I, -6),
+           'Q': (Q, -2),
+           'U': (U, +2),
+           'V': (V, +6)}
+
+    for keys, (stokes, val) in dic.items():
+        Origin = (val, 0, -3)
+
+        x, y, z = Sp2Cart(Phi*0+1, Phi, Theta)
+        im = mlab.points3d(x.flatten() + Origin[0],
+                           y.flatten(),
+                           z.flatten(),
+                           stokes.flatten()/np.max(I),
+                           colormap     = CMAP,
+                           figure       = Figure,
+                           mode         = 'sphere',
+                           scale_mode   = 'none')
+
+        mlab.text3d(Origin[0], Origin[1], 3, keys, scale = 0.5)
+
+        lut_manager = mlab.colorbar(object      = im,
+                                    label_fmt   = "%.0e",
+                                    nb_labels   = 5,
+                                    title       = 'Normalized scale',
+                                    orientation = 'horizontal' )
+
+        lut_manager.data_range = (0, 1)
+
+        if Polarization is not None:
+            AddSource(Figure, Origin, Polarization, Scale=1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

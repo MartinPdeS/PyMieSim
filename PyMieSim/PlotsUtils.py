@@ -108,7 +108,7 @@ def WavenumberArrow(Figure, Origin, Scale=0.5):
 
 
 def MagneticFieldArrow(Figure, Origin, Pol, Scale=0.5):
-    Vec = [cos(Pol),sin(Pol),0]
+    Vec = [cos(Pol),-sin(Pol),0]
 
     ArrowAVec(Origin = Origin,
               Vec    = Vec,

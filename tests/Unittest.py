@@ -49,6 +49,8 @@ class PrintingTest(TestCase):
         self.test20()
         self.test21()
         self.test22()
+        self.test23()
+        self.test24()
 
     def test00(self):
         self.Photodiode = Photodiode(Sampling     = 11,
@@ -72,17 +74,17 @@ class PrintingTest(TestCase):
 
 
     def test02(self):
-        self.Scat = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+        self.sScat = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
         print('Test 02: Spherical scatterer initialisation passed')
 
 
     def test03(self):
-        self.Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+        self.cScat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = LightSource)
         print('Test 03: Cylindrical scatterer initialisation passed')
 
 
     def test04(self):
-        self.Scat.S1S2(Num=10)
+        self.sScat.S1S2(Num=10)
         print('Test 04: Scatterer <S1S2> compute passed')
 
 
@@ -107,7 +109,7 @@ class PrintingTest(TestCase):
 
 
     def test09(self):
-        self.ScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
+        self.sScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
                                     RIList        = 1.5,
                                     Source        = LightSource)
 
@@ -115,7 +117,7 @@ class PrintingTest(TestCase):
 
 
     def test10(self):
-        self.ScatSet.Qsca()
+        self.sScatSet.Qsca()
         print('Test 10: <ScattererSet> Qsca passed')
 
 
@@ -176,12 +178,12 @@ class PrintingTest(TestCase):
 
 
     def test19(self):
-        self.Photodiode.Footprint(Scatterer=self.Scat, Num=10)
+        self.Photodiode.Footprint(Scatterer=self.sScat, Num=10)
         print('Test 19: Photodiode footprint compute passed')
 
 
     def test20(self):
-        self.LPMode.Footprint(Scatterer=self.Scat, Num=10)
+        self.LPMode.Footprint(Scatterer=self.sScat, Num=10)
         print('Test 20: LPmode footprint compute passed')
 
 
@@ -211,6 +213,11 @@ class PrintingTest(TestCase):
         error     = np.abs(val0-val1)/val0
         assert error < 1e-2
         print('Test 23: Validation EnergyFlow - coupling passed')
+
+
+    def test24(self):
+        self.sScat.Stokes(Num=10)
+        print('Test 24: Scatterer <Stokes> compute passed')
 
 
 if __name__ == '__main__':

@@ -2,18 +2,50 @@ import numpy as np
 from mayavi import mlab
 import matplotlib.pyplot as plt
 
-from PyMieSim.Plots import StructuredAmplitude
-from PyMieSim.Plots import StructuredAbs
+from PyMieSim.Plots import StructuredAmplitude, StokesPlot, StructuredAbs
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
 
 
-class Stokes(dict):
-    def __array_finalize__(self, obj):
-        pass
+class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
 
-    def __init__(self, Field):
-        pass
+    def __init__(self, Parent, Num=100, Distance=1.):
 
+        self.Polarization = Parent.Source.Polarization.Radian
+
+        Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
+
+        self['Phi'], self['Theta'] = np.meshgrid(Phi, Theta)
+
+        EPhi, ETheta = Parent.Bind.sFields(Phi = Phi, Theta=Theta, R=1.)
+
+        self['I'] = np.abs(EPhi)**2 + np.abs(ETheta)**2
+
+        self['Q'] = np.abs(EPhi)**2 - np.abs(ETheta)**2
+
+        self['U'] = +2 * np.real(EPhi*ETheta.conjugate())
+
+        self['V'] = -2 * np.imag(EPhi*ETheta.conjugate())
+
+
+    def Plot(self):
+        Name = 'Scattering phase function'
+
+        StokesPlot(I            = self['I'],
+                   Q            = self['Q'],
+                   U            = self['U'],
+                   V            = self['V'],
+                   Phi          = self['Phi'],
+                   Theta        = self['Theta'],
+                   Name         = 'Stokes Parameter',
+                   Polarization = self.Polarization)
+
+    def __repr__(self):
+        return f"""
+        Object:          Dictionary
+        Keys:            S1, S2, S3,, S4, Theta, Phi
+        Structured data: Yes
+        Method:          <Plot>
+        Shape:           {self['S1'].shape}"""
 
 
 class SPF(dict):

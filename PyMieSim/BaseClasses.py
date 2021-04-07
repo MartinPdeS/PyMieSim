@@ -300,12 +300,41 @@ class BaseScatterer(object):
 
         Returns
         -------
-        :class:`S1S2`
-            Description of returned object.
+        :class:`dict`
+            Dictionnay sub-class with all pertient information as keys.
 
         """
 
         return S1S2(Parent=self, Num=Num)
+
+
+    def Stokes(self, Num=200):
+        """
+        Method compute and return the Stokes parameters: I, Q, U, V.
+        Those parameters are defined as:
+
+        .. math:
+            I &= \\big| E_x \big|^2 + \\big| E_y \\big|^2
+
+            Q &= \\big| E_x \big|^2 - \\big| E_y \\big|^2
+
+            U &= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}
+
+            V &= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}
+
+        Parameters
+        ----------
+        Num : :class:`int`
+            Number of point (:math:`\\phi`) to evaluate :math:`S_1` and :math:`S_2`.
+
+        Returns
+        -------
+        :class:`dict`
+            Dictionnay sub-class with all pertient information as keys.
+
+        """
+
+        return Stokes(Parent=self, Num=Num)
 
 
 
@@ -329,7 +358,7 @@ class BaseScatterer(object):
 
         Returns
         -------
-        :class:`ScalarField`
+        :class:`dict`
             Dictionnay sub-class with all pertient information as keys.
 
         """
@@ -356,6 +385,11 @@ class BaseScatterer(object):
         Num : :class:`int`
             Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
 
+        Returns
+        -------
+        :class:`np.array`
+            The unstructured far-field
+
         """
 
         return self.Bind.uFields(Phi = Phi, Theta=Theta, R=R)
@@ -380,6 +414,11 @@ class BaseScatterer(object):
         Num : :class:`int`
             Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
 
+        Returns
+        -------
+        :class:`np.array`
+            The structured far-field
+
         """
 
         return self.Bind.sFields(Phi = Phi, Theta=Theta, R=R)
@@ -403,6 +442,12 @@ class BaseScatterer(object):
         Num : :class:`int`
             Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
 
+        Returns
+        -------
+        :class:`np.array`
+            The unstructured non-propagated far-field
+
+
         """
 
         return self.Bind.uS1S2(Phi = Phi, Theta=Theta)
@@ -425,6 +470,11 @@ class BaseScatterer(object):
         Num : :class:`int`
             Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
 
+        Returns
+        -------
+        :class:`np.array`
+            The structured non-propagated far-field
+
         """
 
         return self.Bind.sS1S2(Phi = Phi, Theta=Theta)
@@ -443,7 +493,7 @@ class BaseScatterer(object):
 
         Returns
         -------
-        :class:`SPF` in :mod:`PyMieSim`
+        :class:`dict`
             Dictionnay subclass with all pertinent information as keys.
 
         """
