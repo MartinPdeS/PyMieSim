@@ -29,13 +29,20 @@ class ExperimentDF(pd.DataFrame):
     def Plot(self, y='Coupling', x = 'Diameter', **kwargs):
 
 
-        if   x == 'Diameter':   index = [0,1,2,4]; title = 'Det./Pol/Wav/RI'
-        elif x == 'Wavelength': index = [0,2,3,4]; title = 'Det./Pol/Dia/RI'
+        if   x == 'Diameter':
+            index  = [0,1,2,4];
+            title  = 'Det/Wav/Pol/RI';
+            xlabel = r'Scatterer diameter [m]'
+
+        elif x == 'Wavelength':
+            index = [0,2,3,4];
+            title = 'Det/Dia/Pol/RI';
+            xlabel = r'Source wavelength [m]' ;
 
         fig = self.unstack(level=index).plot(y       = y,
                                               grid    = True,
                                               figsize = (8,4),
-                                              xlabel  = r'Scatterer diameter [m]',
+                                              xlabel  = xlabel,
                                               ylabel  = r'Coupling [Watt]',
                                               **kwargs)
 
@@ -63,14 +70,20 @@ class EfficiencesDF(pd.DataFrame):
     @show
     def Plot(self, y='Coupling', x = 'Diameter', **kwargs):
 
-        index = [0,1,2,3,4]
-        if   x == 'Diameter':   index = [0,1,3]; title = 'Det./Pol/Wav/RI'
-        elif x == 'Wavelength': index = [1,2,3]; title = 'Det./Pol/Dia/RI'
+        if   x == 'Diameter':
+            index  = [0,1,2,4];
+            title  = 'Det./Pol/Wav/RI'
+            xlabel = r'Scatterer diameter [m]'
+
+        elif x == 'Wavelength':
+            index = [0,2,3,4];
+            title = 'Det./Pol/Dia/RI'
+            xlabel = r'Source wavelength [m]' ;
 
         fig = self.unstack(level=index).plot(y       = y,
                                               grid    = True,
                                               figsize = (8,4),
-                                              xlabel  = r'Scatterer diameter [m]',
+                                              xlabel  = xlabel,
                                               ylabel  = f'{self.name}',
                                               **kwargs)
 

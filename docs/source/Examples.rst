@@ -294,11 +294,6 @@ Experiment: Qsca vs. diameter
    Qsca.Plot(y='Qsca', x='Diameter')
 
 
-   # can be "max" - "min" - "mean"
-   #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
-   #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
-
-
 .. image:: ../images/QscaVSDiameter.png
   :width: 600
 
@@ -340,11 +335,6 @@ Experiment: Qsca vs. wavelength
    Qsca = Experiment.Qsca(AsDataframe=True)
 
    Qsca.Plot(y='Qsca', x='Wavelength')
-
-
-   # can be "max" - "min" - "mean"
-   #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
-   #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
 
 
 .. image:: ../images/QscaVSWavelength.png
@@ -391,10 +381,6 @@ Experiment: Coupling vs. diameter
 
    DF.Plot(y='Coupling', x='Diameter')
 
-   # can be "max" - "min" - "mean"
-   #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
-   #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
-
 
 .. image:: ../images/CouplingVSDiameter.png
   :width: 600
@@ -438,9 +424,7 @@ Experiment: Coupling vs. wavelength
   DF = Experiment.Coupling(AsDataframe=True)
 
   DF.Plot(y='Coupling', x='Wavelength')
-  # can be "max" - "min" - "mean"
-  #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
-  #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
+
 
 .. image:: ../images/CouplingVSWavelength.png
    :width: 600
@@ -459,50 +443,52 @@ Optimization: 1 parameter
   from PyMieSim.Detector import Photodiode, LPmode
   from PyMieSim.Source import PlaneWave
   from PyMieSim.Optimization import Optimizer
-  from PyMieSim.Sets import ExperimentalSet, ScattererSet
+  from PyMieSim.Experiment import ScatSet, SourceSet, Setup
 
+  DiameterList   = np.linspace(100e-9, 1000e-9, 200)
 
-  Source = PlaneWave(Wavelength   = 450e-9,
-                     Polarization = 0,
-                     E0           = 1e5)
-
-  Detector0 = Photodiode(NA               = 0.1,
-                     Sampling          = 300,
-                     GammaOffset       = 20,
-                     PhiOffset         = 0,
-                     CouplingMode      = 'Centered')
-
-  Detector1 = Photodiode(NA                = 0.1,
+  Detector0 = Photodiode(NA                 = 0.1,
                          Sampling          = 300,
-                         GammaOffset       = 30,
+                         GammaOffset       = 20,
                          PhiOffset         = 0,
                          CouplingMode      = 'Centered')
 
+  scat = ScatSet(DiameterList   = DiameterList,
+                 IndexList      = [1.5],
+                 nMedium        = 1,
+                 ScattererType  = 'Sphere')
 
-  ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
-                      RIList        = np.linspace(1.5, 1.8, 1).round(1),
-                      Source        = Source)
-
-  Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0, Detector1))
+  source = SourceSet(WavelengthList  = 400e-9,
+                     PolarizationList  = [0],
+                     SourceType        = 'PlaneWave')
 
 
-  Opt    = Optimizer(ExperimentalSet = Set,
-                     Metric          = 'MaxCoupling',  # can be 'MaxCoupling", "MinCoupling", "RI_RSD", "Size_RSD", "Monotonic"
+  Experiment = Setup(ScattererSet = scat,
+                     SourceSet    = source,
+                     DetectorSet  = [Detector0])
+
+
+  # Metric can be "max" - "min" - "mean"
+  #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
+  #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
+
+  Opt    = Optimizer(Setup           = Experiment,
+                     Metric          = 'mean',
                      Parameter       = ['PhiOffset'],
-                     Optimum         = 'Max',
-                     MinVal          = [1e-1],
-                     MaxVal          = [1],
+                     Optimum         = 'Maximum',
+                     MinVal          = [1e-5],
+                     MaxVal          = [180],
                      WhichDetector   = 0,
-                     X0              = [0.1],
+                     X0              = [0.6],
                      MaxIter         = 350,
                      Tol             = 1e-4,
                      FirstStride     = 30)
 
   print(Opt.Result)
 
-  df = Set.DataFrame
+  df = Experiment.Coupling(AsDataframe=True)
 
-  df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+  df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
 
 
 **Output:**

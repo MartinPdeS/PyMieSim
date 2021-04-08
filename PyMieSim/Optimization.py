@@ -2,13 +2,19 @@ import numpy as np
 from scipy.optimize import minimize
 
 
-MetricList = ['MinCoupling',
-              'MaxCoupling',
-              'MeanCoupling',
-              'MonotonicRI',
-              'MonotonicSize',
-              'RSDSize',
-              'RSDRI']
+MetricList = ["max",
+              "min",
+              "mean",
+              "rsd+ri",
+              "rsd+diameter",
+              "rsd+polarization"
+              "rsd+wavelength"
+              "rsd+detector",
+              "monotonic+ri",
+              "monotonic+diameter",
+              "monotonic+polarization",
+              "monotonic+wavelength",
+              "monotonic+detector"]
 
 DetectorParamList = ['NA',
                      'PhiOffset',
@@ -23,7 +29,7 @@ ParameterList = DetectorParamList + SourceParamList
 
 class Optimizer:
     def __init__(self,
-                 ExperimentalSet,
+                 Setup,
                  Metric,
                  Parameter,
                  X0,
@@ -35,10 +41,10 @@ class Optimizer:
                  MaxIter=50,
                  Tol=1e-10):
 
-        assert Metric in MetricList, f"Metric not in the MetricList \n{MetricList}"
+        assert Metric.lower() in MetricList, f"Metric {Metric} not in the MetricList \n{MetricList}"
         assert all(len(x)==len(Parameter) for x in [X0, MinVal, MaxVal ]  ), f'Lenght of parameters, X0, MinVal, MaxVal not equal'
 
-        self.ExperimentalSet = ExperimentalSet
+        self.Setup           = Setup
         self.Metric          = Metric
         self.Parameters      = Parameter
         self.X0              = X0
@@ -49,9 +55,9 @@ class Optimizer:
         self.MaxIter         = MaxIter
         self.Tol             = Tol
 
-        if Optimum == 'Max':
+        if Optimum.lower()   == 'maximum':
             self.sign = -1
-        elif Optimum == 'Min':
+        elif Optimum.lower() == 'minimum':
             self.sign = 1
 
 
@@ -77,10 +83,10 @@ class Optimizer:
 
         for n in range(len(Parameters)):
             if Parameters[n] in DetectorParamList:
-                setattr(self.ExperimentalSet.Detectors[WhichDetector], Parameters[0], x[0])
+                setattr(self.Setup.DetectorSet[WhichDetector], Parameters[0], x[0])
 
             elif Parameters[n] in SourceParamList:
-                setattr(self.ExperimentalSet.ScattererSet.Source, Parameters[0], x[0])
+                setattr(self.Setup.SourceSet.Source, Parameters[0], x[0])
 
 
     def Run(self):
@@ -90,7 +96,7 @@ class Optimizer:
 
             self.UpdateConfiguration(self.Parameters, x, self.WhichDetector)
 
-            Cost = self.ExperimentalSet._Coupling(self.WhichDetector).Cost(self.Metric)
+            Cost = self.Setup.Coupling(AsDataframe=False).Cost(self.Metric)
 
             return self.sign * np.abs(Cost) + Penalty
 
@@ -140,7 +146,7 @@ class Caller:
             text = """ \
             Call Number : {0} \
             \t {1}: {2:.5e} \
-            \t Result: {3:.10e} \
+            \t Cost+Penalty: {3:.10e} \
             """.format(self.num_calls,
                        self.ParameterName[0],
                        x[0],
@@ -151,7 +157,7 @@ class Caller:
             Call Number : {0} \
             \t {1}: {2:.5e} \
             \t {3}: {4:.5e} \
-            \t Result: {5:.10e} \
+            \t Cost+Penalty: {5:.10e} \
             """.format(self.num_calls,
                        self.ParameterName[0],
                        x[0],
@@ -165,10 +171,16 @@ class Caller:
 
 
 
-class OptArray(np.ndarray):
+class Opt5DArray(np.ndarray):
     def __new__(cls, *args, **kwargs):
         this = np.array(*args, **kwargs, copy=False)
         this = np.asarray(this).view(cls)
+
+        this.dimensions = ['Detector',
+                           'Wavelength',
+                           'Polarization',
+                           'Diameter',
+                           'Index']
         return this
 
     def __array_finalize__(self, obj):
@@ -179,37 +191,39 @@ class OptArray(np.ndarray):
         pass
 
 
-    def Cost(self, arg='RI'):
+    def Cost(self, arg = 'max'):
 
-        if arg == 'RSDRI':
-            return self.std(axis=0).sum()/self.mean()
+        arg = arg.lower().split('+', 2)
 
-        if arg == 'RSDSize':
-            return self.std(axis=1).sum()/self.mean()
+        if len(arg) == 1:
+            if   'max' in arg:  return np.max(self)
+            elif 'min' in arg:  return np.min(self)
+            elif 'mean' in arg: return np.mean(self)
 
-        if arg == 'MonotonicSize':
-            return self.SizeMonotonic()
+        if len(arg) == 2:
+            if   arg[0] == 'rsd':        func = self.rsd
+            elif arg[0] == 'monotonic':  func = self.Monotonic
 
-        if arg == 'MonotonicRI':
-            return self.RIMonotonic()
+            if   arg[1] == 'ri':           return np.mean( func(self, axis = 4) )
+            elif arg[1] == 'diameter':     return np.mean( func(self, axis = 3) )
+            elif arg[1] == 'polarization': return np.mean( func(self, axis = 2) )
+            elif arg[1] == 'wavelength':   return np.mean( func(self, axis = 1) )
+            elif arg[1] == 'detector':     return np.mean( func(self, axis = 0) )
 
-        if arg == 'MeanCoupling':
-            return self.mean()
-
-        if arg == 'MaxCoupling':
-            return self.max()
-
-        if arg == 'MinCoupling':
-            return self.max()
+        raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
 
 
-    def SizeMonotonic(self):
+    def Monotonic(self, axis):
 
-        Grad = np.gradient(self, axis = 1)
+        Grad = np.gradient(self, axis = axis)
 
-        STD = Grad.std( axis = 1)
+        STD = Grad.std( axis = axis)
 
         return STD[0]
+
+
+    def rsd(self, array, axis):
+        return np.std(array, axis)/np.mean(array, axis)
 
 
     def RIMonotonic(self):
