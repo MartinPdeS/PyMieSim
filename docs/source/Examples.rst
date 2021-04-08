@@ -252,68 +252,198 @@ ScattererSet: Qscattering
 .. image:: ../images/Qsca.png
    :width: 600
 
+
 -----
 
-ExperimentalSet: Coupling
-----------------------------
+
+Experiment: Qsca vs. diameter
+------------------------------
 
 .. code-block:: python
    :linenos:
 
+   from PyMieSim.Scatterer import Sphere
+   from PyMieSim.Detector import Photodiode
+   from PyMieSim.Experiment import ScatSet, SourceSet, Setup
    import numpy as np
-   from PyMieSim.Source import PlaneWave
-   from PyMieSim.Detector import LPmode
-   from PyMieSim.Sets import ScattererSet, ExperimentalSet
+
+   DiameterList   = np.linspace(400e-9, 1000e-9, 200)
+
+   Detector0 = Photodiode(NA                = 0.1,
+                         Sampling          = 300,
+                         GammaOffset       = 20,
+                         PhiOffset         = 30,
+                         CouplingMode      = 'Centered')
+
+   scat = ScatSet(DiameterList  = DiameterList,
+                  RIList         = [1.5],
+                  nMedium        = 1,
+                  ScattererType  = 'Sphere')
+
+   source = SourceSet(WavelengthList   = 400e-9,
+                     PolarizationList  = [0],
+                     SourceType        = 'PlaneWave')
 
 
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
+   Experiment = Setup(ScattererSet = scat,
+                      SourceSet    = source,
+                      DetectorSet  = [Detector0])
+
+   Qsca = Experiment.Qsca(AsDataframe=True)
+
+   Qsca.Plot(y='Qsca', x='Diameter')
 
 
-
-   Detector0 = LPmode(NA               = 0.2,
-                      Sampling          = 401,
-                      GammaOffset       = 0,
-                      PhiOffset         = 20,
-                      Mode              = (0,1),
-                      CouplingMode      = 'Mean')
-
-   Detector1 = LPmode(NA               = 0.2,
-                      Sampling          = 401,
-                      GammaOffset       = 0,
-                      PhiOffset         = 20,
-                      Mode              = (1,1),
-                      CouplingMode      = 'Mean')
+   # can be "max" - "min" - "mean"
+   #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
+   #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
 
 
+.. image:: ../images/QscaVSDiameter.png
+  :width: 600
+
+-----
+
+Experiment: Qsca vs. wavelength
+-------------------------------
+
+.. code-block:: python
+   :linenos:
+
+   from PyMieSim.Scatterer import Sphere
+   from PyMieSim.Detector import Photodiode
+   from PyMieSim.Experiment import ScatSet, SourceSet, Setup
+   import numpy as np
+
+   WavelengthList   = np.linspace(400e-9, 1000e-9, 200)
+
+   Detector0 = Photodiode(NA               = 0.1,
+                         Sampling          = 300,
+                         GammaOffset       = 20,
+                         PhiOffset         = 30,
+                         CouplingMode      = 'Centered')
+
+   scat = ScatSet(DiameterList   = 200e-9,
+                  RIList         = [1.5],
+                  nMedium        = 1,
+                  ScattererType  = 'Sphere')
+
+   source = SourceSet(WavelengthList   = WavelengthList,
+                     PolarizationList  = [0],
+                     SourceType        = 'PlaneWave')
 
 
+   Experiment = Setup(ScattererSet = scat,
+                      SourceSet    = source,
+                      DetectorSet  = [Detector0])
 
-   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 500),
-                          RIList        = np.linspace(1.5, 1.5, 1).round(1),
-                          Source        = Source)
+   Qsca = Experiment.Qsca(AsDataframe=True)
 
-
-
-
-
-   Set = ExperimentalSet(ScattererSet  = ScatSet,
-                         Detectors     = (Detector0, Detector1))
+   Qsca.Plot(y='Qsca', x='Wavelength')
 
 
-   Data = Set.DataFrame
-
-   Data.Plot(y='Coupling')
-
-
+   # can be "max" - "min" - "mean"
+   #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
+   #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
 
 
-.. image:: ../images/ExperimentalSet.png
+.. image:: ../images/QscaVSWavelength.png
+  :width: 600
+
+-----
+
+Experiment: Coupling vs. diameter
+---------------------------------
+
+.. code-block:: python
+   :linenos:
+
+   from PyMieSim.Scatterer import Sphere
+   from PyMieSim.Detector import Photodiode
+   from PyMieSim.Experiment import ScatSet, SourceSet, Setup
+   import numpy as np
+
+   DiameterList   = np.linspace(400e-9, 1000e-9, 200)
+
+   Detector0 = Photodiode(NA                = 0.1,
+                         Sampling          = 300,
+                         GammaOffset       = 20,
+                         PhiOffset         = 30,
+                         CouplingMode      = 'Centered')
+
+   scat = ScatSet(DiameterList  = DiameterList,
+                  RIList         = [1.5],
+                  nMedium        = 1,
+                  ScattererType  = 'Sphere')
+
+   source = SourceSet(WavelengthList   = 400e-9,
+                      PolarizationList = [0],
+                      SourceType       = 'PlaneWave')
+
+
+   Experiment = Setup(ScattererSet = scat,
+                      SourceSet    = source,
+                      DetectorSet  = [Detector0])
+
+   Array = Experiment.Coupling(AsDataframe=True)
+
+   DF = Experiment.Coupling(AsDataframe=True)
+
+   DF.Plot(y='Coupling', x='Diameter')
+
+   # can be "max" - "min" - "mean"
+   #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
+   #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
+
+
+.. image:: ../images/CouplingVSDiameter.png
+  :width: 600
+
+
+-----
+
+Experiment: Coupling vs. wavelength
+---------------------------------
+
+.. code-block:: python
+  :linenos:
+
+  from PyMieSim.Scatterer import Sphere
+  from PyMieSim.Detector import Photodiode
+  from PyMieSim.Experiment import ScatSet, SourceSet, Setup
+  import numpy as np
+
+  WavelengthList = np.linspace(400e-9, 1000e-9, 100)
+
+  Detector0 = Photodiode(NA                = 2.0,
+                         Sampling          = 300,
+                         GammaOffset       = 0,
+                         PhiOffset         = 0,
+                         CouplingMode      = 'Centered')
+
+  scat = ScatSet(DiameterList  = [200e-9],
+                 RIList        = [4],
+                 nMedium       = 1,
+                 ScattererType = 'Sphere')
+
+  source = SourceSet(WavelengthList   = WavelengthList,
+                     PolarizationList = [0],
+                     SourceType       = 'PlaneWave')
+
+
+  Experiment = Setup(ScattererSet = scat,
+                     SourceSet    = source,
+                     DetectorSet  = [Detector0])
+
+  DF = Experiment.Coupling(AsDataframe=True)
+
+  DF.Plot(y='Coupling', x='Wavelength')
+  # can be "max" - "min" - "mean"
+  #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
+  #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
+
+.. image:: ../images/CouplingVSWavelength.png
    :width: 600
-
-
-
 
 -----
 
@@ -325,40 +455,41 @@ Optimization: 1 parameter
 
 
 
-   import numpy as np
-   from PyMieSim.Detector import Photodiode, LPmode
-   from PyMieSim.Source import PlaneWave
-   from PyMieSim.Optimizer import Optimize
-   from PyMieSim.Sets import ExperimentalSet, ScattererSet
+  import numpy as np
+  from PyMieSim.Detector import Photodiode, LPmode
+  from PyMieSim.Source import PlaneWave
+  from PyMieSim.Optimization import Optimizer
+  from PyMieSim.Sets import ExperimentalSet, ScattererSet
 
 
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
+  Source = PlaneWave(Wavelength   = 450e-9,
+                     Polarization = 0,
+                     E0           = 1e5)
 
-   Detector0 = Photodiode(NA               = 0.1,
+  Detector0 = Photodiode(NA               = 0.1,
+                     Sampling          = 300,
+                     GammaOffset       = 20,
+                     PhiOffset         = 0,
+                     CouplingMode      = 'Centered')
+
+  Detector1 = Photodiode(NA                = 0.1,
                          Sampling          = 300,
-                         GammaOffset       = 20,
+                         GammaOffset       = 30,
                          PhiOffset         = 0,
                          CouplingMode      = 'Centered')
 
-   Detector1 = Photodiode(NA                = 0.1,
-                          Sampling          = 300,
-                          GammaOffset       = 30,
-                          PhiOffset         = 0,
-                          CouplingMode      = 'Centered')
+
+  ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
+                      RIList        = np.linspace(1.5, 1.8, 1).round(1),
+                      Source        = Source)
+
+  Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0, Detector1))
 
 
-   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
-                          RIList        = np.linspace(1.5, 1.8, 1).round(1),
-                          Source        = Source)
-
-   Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
-
-
-   Opt    = Optimize(ExperimentalSet = Set,
-                     Metric          = 'Max',  # can be 'Max", "Min", "RI_RSD", "Size_RSD", "Monotonic"
-                     Parameter       = ['NA'],
+  Opt    = Optimizer(ExperimentalSet = Set,
+                     Metric          = 'MaxCoupling',  # can be 'MaxCoupling", "MinCoupling", "RI_RSD", "Size_RSD", "Monotonic"
+                     Parameter       = ['PhiOffset'],
+                     Optimum         = 'Max',
                      MinVal          = [1e-1],
                      MaxVal          = [1],
                      WhichDetector   = 0,
@@ -367,11 +498,11 @@ Optimization: 1 parameter
                      Tol             = 1e-4,
                      FirstStride     = 30)
 
-   print(Opt.Result)
+  print(Opt.Result)
 
-   df = Set.DataFrame
+  df = Set.DataFrame
 
-   df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+  df.Plot('Coupling') # can be "Couplimg"  or  "STD"
 
 
 **Output:**
@@ -479,6 +610,7 @@ LP-modes: Generate files
 ------------------------
 
 I have prealably compilated 12 LP-modes which are:
+
 1. LP01
 2. LP11
 3. LP21

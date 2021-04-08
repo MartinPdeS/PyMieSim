@@ -36,8 +36,6 @@ class Photodiode(BaseDetector, MeshProperty):
                  Filter:       float  = None,
                  CouplingMode: str    = 'Centered'):
 
-        if NA > 1 or NA < 0: raise print("Error NA value is not valid, has to be in [0,1]")
-
         self.CouplingMode = ('Intensity', CouplingMode)
 
         self._GammaOffset, self._PhiOffset = GammaOffset, PhiOffset
@@ -130,7 +128,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
 
-        assert NA < 1, "Numerical aperture has to be under 1 radian"
+        if NA > 1 or NA < 0: print("WARNING: High values of NA do not comply with paraxial approximation. Value under 0.4 are prefered")
 
         self.CouplingMode = ('Amplitude', CouplingMode)
 

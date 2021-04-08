@@ -11,7 +11,7 @@ from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
-from PyMieSim.Sets import ScattererSet, ExperimentalSet, SampleSet
+from PyMieSim.Experiment import ScatSet, Setup, SourceSet, SampleSet
 from PyMieSim.Mesh import FibonacciMesh
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
@@ -19,7 +19,6 @@ Scat        = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
 Samp        = WMSample(g = 0.8, lc = 1e-5, D = 2.5, Nc = 1e4, Source = LightSource)
 Detector    = LPmode(Mode = (0, 1,'h'), Sampling = 11, NA = 0.2)
 Detector1   = Photodiode(Sampling = 11, NA = 0.2)
-ScatSet     = ScattererSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5, Source = LightSource)
 phi         = linspace(-pi/2, pi/2,4)
 theta       = linspace(-pi, pi,4)
 
@@ -109,26 +108,24 @@ class PrintingTest(TestCase):
 
 
     def test09(self):
-        self.sScatSet = ScattererSet(DiameterList  = linspace(100e-9, 4500e-9, 11),
-                                    RIList        = 1.5,
-                                    Source        = LightSource)
-
+        self.sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5)
         print('Test 09: <ScattererSet> initialisation passed')
 
 
     def test10(self):
-        self.sScatSet.Qsca()
-        print('Test 10: <ScattererSet> Qsca passed')
+        self.source = SourceSet(WavelengthList = 400e-9,PolarizationList = 0, SourceType = 'PlaneWave')
+        self.ExpSet = Setup(ScattererSet = self.sScatSet, SourceSet = self.source, DetectorSet = self.Photodiode)
+        print('Test 10: <Setup> initialisation passed')
 
 
     def test11(self):
-        self.ExpSet = ExperimentalSet(ScattererSet = ScatSet,  Detectors = Detector)
-        print('Test 11: <ExperimentalSet> initialisation passed')
+        self.ExpSet.Qsca()
+        print('Test 11: <ScattererSet> Qsca passed')
 
 
     def test12(self):
-        self.ExpSet.DataFrame; self.ExpSet.Coupling
-        print('Test 12: <ExperimentalSet> dataframe compute passed')
+        self.ExpSet.Coupling
+        print('Test 12: <Setup> dataframe compute passed')
 
 
     def test13(self):

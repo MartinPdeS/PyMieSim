@@ -11,6 +11,74 @@ def show(func):
 
 
 
+class ExperimentDF(pd.DataFrame):
+
+    def __init__(self, *args, **kwargs):
+        pd.DataFrame.__init__(self, *args, **kwargs)
+        self.ax = None
+
+    @property
+    def Parallel(self):
+        return self.xs('Parallel')
+
+    @property
+    def Perpendicular(self):
+        return self.xs('Perpendicular')
+
+    @show
+    def Plot(self, y='Coupling', x = 'Diameter', **kwargs):
+
+
+        if   x == 'Diameter':   index = [0,1,2,4]; title = 'Det./Pol/Wav/RI'
+        elif x == 'Wavelength': index = [0,2,3,4]; title = 'Det./Pol/Dia/RI'
+
+        fig = self.unstack(level=index).plot(y       = y,
+                                              grid    = True,
+                                              figsize = (8,4),
+                                              xlabel  = r'Scatterer diameter [m]',
+                                              ylabel  = r'Coupling [Watt]',
+                                              **kwargs)
+
+        fig.legend(prop={'size': 8}, title=title,loc=2)
+
+        return fig
+
+
+
+class EfficiencesDF(pd.DataFrame):
+
+    def __init__(self, *args, **kwargs):
+        pd.DataFrame.__init__(self, *args, **kwargs)
+        self.ax = None
+        self.name = kwargs['columns'][0]
+
+    @property
+    def Parallel(self):
+        return self.xs('Parallel')
+
+    @property
+    def Perpendicular(self):
+        return self.xs('Perpendicular')
+
+    @show
+    def Plot(self, y='Coupling', x = 'Diameter', **kwargs):
+
+        index = [0,1,2,3,4]
+        if   x == 'Diameter':   index = [0,1,3]; title = 'Det./Pol/Wav/RI'
+        elif x == 'Wavelength': index = [1,2,3]; title = 'Det./Pol/Dia/RI'
+
+        fig = self.unstack(level=index).plot(y       = y,
+                                              grid    = True,
+                                              figsize = (8,4),
+                                              xlabel  = r'Scatterer diameter [m]',
+                                              ylabel  = f'{self.name}',
+                                              **kwargs)
+
+        fig.legend(prop={'size': 8}, title=title,loc=2)
+
+        return fig
+
+
 class ExperimentalDataFrame(pd.DataFrame):
 
     def __init__(self,**kwargs):
