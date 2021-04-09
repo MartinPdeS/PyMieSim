@@ -4,7 +4,7 @@ import os.path
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.utils import interp_at, NA2Angle, Normalize, RescaleComplex
 from PyMieSim.Physics import _Polarization, Angle
-
+import PyMieSim
 
 
 class Photodiode(BaseDetector, MeshProperty):
@@ -162,7 +162,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         """
 
-        filename = f'PyMieSim/LPmodes/FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
+        filename = PyMieSim.__path__[0] + f'/LPmodes/FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
 
         if not os.path.exists(filename):
             raise ValueError("The LP mode has not been previously compilated. "
