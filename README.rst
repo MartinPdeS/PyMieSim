@@ -120,7 +120,7 @@ Here is an example on how to use the library.
                      Polarization = 0,
                      E0           = 1)
 
-  Detector = LPmode(Mode         = (0, 1,'h'),
+  Detector = LPmode(Mode         = (0, 1),
                     Sampling     = 201,
                     NA           = 0.2,
                     GammaOffset  = 0,

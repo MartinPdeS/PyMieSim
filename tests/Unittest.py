@@ -66,7 +66,7 @@ class PrintingTest(TestCase):
 
 
     def test01(self):
-        self.LPMode = LPmode(Mode         = (1, 1,'h'),
+        self.LPMode = LPmode(Mode         = (1, 1),
                              Sampling     = 11,
                              NA           = 0.2,
                              GammaOffset  = 0,

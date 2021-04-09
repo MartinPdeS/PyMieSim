@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.interpolate import griddata
-import scipy.ndimage
+from scipy import ndimage
 
 import PyMieSim
 from PyMieSim.Physics import Angle
@@ -32,10 +32,16 @@ def InterpFull(Meshes, Scalar, Shape):
 
 
 def RescaleComplex(Input, Scale):
-
-    InputReal = scipy.ndimage.interpolation.zoom(input=Input.real, zoom=(Scale), order = 2)
-    InputImag = scipy.ndimage.interpolation.zoom(input=Input.imag, zoom=(Scale), order = 2)
+    InputReal = ndimage.interpolation.zoom(input=Input.real, zoom=(Scale), order = 2)
+    InputImag = ndimage.interpolation.zoom(input=Input.imag, zoom=(Scale), order = 2)
     return InputReal + 1j * InputImag
+
+
+def RotateComplex(Input, Rotation):
+    InputReal =  ndimage.rotate(Input.real, Rotation, reshape=False)
+    InputImag =  ndimage.rotate(Input.imag, Rotation, reshape=False)
+    return InputReal + 1j * InputImag
+
 
 def interp_at(x, y, v, xp, yp, algorithm='cubic', extrapolate=False):
     """

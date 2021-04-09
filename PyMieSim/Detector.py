@@ -1,8 +1,9 @@
 import numpy as np
 import os.path
 
+
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.utils import interp_at, NA2Angle, Normalize, RescaleComplex
+from PyMieSim.utils import interp_at, NA2Angle, Normalize, RescaleComplex, RotateComplex
 from PyMieSim.Physics import _Polarization, Angle
 import PyMieSim
 
@@ -138,10 +139,12 @@ class LPmode(BaseDetector, MeshProperty):
                                        GammaOffset = GammaOffset,
                                        Structured  = False)
 
-        self.Scalar = self.FarField(Num=self.Mesh.Sampling, Structured=False)
+        self.Scalar = self.FarField(Num        = self.Mesh.Sampling,
+                                    Structured = False,
+                                    Rotation   = Rotation)
 
 
-    def FarField(self, Num=251, Structured=False):
+    def FarField(self, Num=251, Structured=False, Rotation=0):
         """
         Compute the FarField in a structured or unstructured Mesh.
         The unstructured far field is computed using linear interpolation
@@ -171,6 +174,8 @@ class LPmode(BaseDetector, MeshProperty):
                               "https://pymiesim.readthedocs.io/en/latest/Intro.html")
 
         mode = np.load(filename)
+
+        if Rotation !=0: mode = RotateComplex(mode, Rotation)
 
         if Num != mode.shape[0]: mode = RescaleComplex(Input=mode, Scale=Num/mode.shape[0])
 

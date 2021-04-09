@@ -169,7 +169,8 @@ Detector: LPMode
                       Polarization = 0,
                       E0           = 0)
 
-   Detector = LPmode(Mode         = (1, 1,'h'),
+   Detector = LPmode(Mode         = (1, 1),
+                     Rotation     = 0.,
                      Sampling     = 201,
                      NA           = 0.4,
                      GammaOffset  = 0,
