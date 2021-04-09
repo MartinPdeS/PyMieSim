@@ -50,6 +50,10 @@ class PrintingTest(TestCase):
         self.test22()
         self.test23()
         self.test24()
+        self.test25()
+        self.test26()
+        self.test27()
+        self.test28()
 
     def test00(self):
         self.Photodiode = Photodiode(Sampling     = 11,
@@ -108,7 +112,7 @@ class PrintingTest(TestCase):
 
 
     def test09(self):
-        self.sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11), RIList = 1.5)
+        self.sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11), IndexList = 1.5)
         print('Test 09: <ScattererSet> initialisation passed')
 
 
@@ -214,7 +218,32 @@ class PrintingTest(TestCase):
 
     def test24(self):
         self.sScat.Stokes(Num=10)
-        print('Test 24: Scatterer <Stokes> compute passed')
+        print("Test 24: Scatterer <Stokes> compute passed")
+
+
+    def test25(self):
+        self.ExpSet.Coupling(AsType='numpy')
+        print("Test 25: <Experiment> 'numpy' output passed")
+
+
+    def test26(self):
+        self.ExpSet.Coupling(AsType='ndarray')
+        print("Test 26: <Experiment> 'ndarray' output passed")
+
+
+    def test27(self):
+        self.ExpSet.Coupling(AsType='dataframe')
+        print("Test 27: <Experiment> 'dataframe' output passed")
+
+
+    def test28(self):
+        self.ExpSet.Coupling(AsType='optimizer')
+        print("Test 28: <Experiment> 'optimizer' output passed")
+
+
+
+
+
 
 
 if __name__ == '__main__':

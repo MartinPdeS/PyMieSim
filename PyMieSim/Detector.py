@@ -122,10 +122,6 @@ class LPmode(BaseDetector, MeshProperty):
                  Filter:         float =  None,
                  CouplingMode:   str   = 'Centered'):
 
-        if len(Mode) <= 2: Mode = Mode[0], Mode[1], 'h'
-
-        assert Mode[2] in ['v','h',''], "Mode orientation should either be v [vertical] or h [horizontal]"
-
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
 
         if NA > 1 or NA < 0: print("WARNING: High values of NA do not comply with paraxial approximation. Value under 0.4 are prefered")
@@ -134,7 +130,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         self._Filter = _Polarization(Filter)
 
-        self.ModeNumber = Mode[0], Mode[1], Mode[2]
+        self.ModeNumber = Mode[0], Mode[1]
 
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
                                        MaxAngle    = NA2Angle(NA).Radian,

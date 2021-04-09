@@ -1,4 +1,5 @@
 import numpy as np
+from collections import OrderedDict
 from scipy.optimize import minimize
 
 
@@ -96,7 +97,7 @@ class Optimizer:
 
             self.UpdateConfiguration(self.Parameters, x, self.WhichDetector)
 
-            Cost = self.Setup.Coupling(AsDataframe=False).Cost(self.Metric)
+            Cost = self.Setup.Coupling(AsType='Optimizer').Cost(self.Metric)
 
             return self.sign * np.abs(Cost) + Penalty
 
@@ -171,24 +172,208 @@ class Caller:
 
 
 
-class Opt5DArray(np.ndarray):
+class Opt4DArray(np.ndarray):
     def __new__(cls, *args, **kwargs):
         this = np.array(*args, **kwargs, copy=False)
         this = np.asarray(this).view(cls)
 
-        this.dimensions = ['Detector',
-                           'Wavelength',
-                           'Polarization',
-                           'Diameter',
-                           'Index']
         return this
+
+
 
     def __array_finalize__(self, obj):
         pass
 
 
-    def __init__(self, arr):
+    def __init__(self, arr, Name=''):
+        self.Name = Name
+
+
+    def Cost(self, arg = 'max'):
+
+        arg = arg.lower().split('+', 2)
+
+        if len(arg) == 1:
+            if   'max' in arg:  return np.max(self)
+            elif 'min' in arg:  return np.min(self)
+            elif 'mean' in arg: return np.mean(self)
+
+        if len(arg) == 2:
+            if   arg[0] == 'rsd':        func = self.rsd
+            elif arg[0] == 'monotonic':  func = self.Monotonic
+
+            if   arg[1] == 'ri':           return np.mean( func(self, axis = 4) )
+            elif arg[1] == 'diameter':     return np.mean( func(self, axis = 3) )
+            elif arg[1] == 'polarization': return np.mean( func(self, axis = 2) )
+            elif arg[1] == 'wavelength':   return np.mean( func(self, axis = 1) )
+            elif arg[1] == 'detector':     return np.mean( func(self, axis = 0) )
+
+        raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
+
+
+    def Monotonic(self, axis):
+
+        Grad = np.gradient(self, axis = axis)
+
+        STD = Grad.std( axis = axis)
+
+        return STD[0]
+
+
+    def rsd(self, array, axis):
+        return np.std(array, axis)/np.mean(array, axis)
+
+
+    def RIMonotonic(self):
+
+        Grad = np.gradient(self, axis = 0)
+
+        STD = Grad.std( axis = 0)
+
+        return STD[0]
+
+
+
+
+class NDArray(object):
+
+    def __init__(self, array, Name, paramList):
+        self.data = array
+        self.Name = Name
+
+        self.conf = OrderedDict()
+
+        for np, param in enumerate(paramList):
+            self.conf[param] = np
+
+
+    def Cost(self, arg = 'max'):
+
+        arg = arg.lower().split('+', 2)
+
+        if len(arg) == 1:
+            if   'max' in arg:  return np.max(self)
+            elif 'min' in arg:  return np.min(self)
+            elif 'mean' in arg: return np.mean(self)
+
+        if len(arg) == 2:
+            if   arg[0] == 'rsd':        func = self.rsd
+            elif arg[0] == 'monotonic':  func = self.Monotonic
+
+            if   arg[1] == 'ri':           return np.mean( func(self, axis = 4) )
+            elif arg[1] == 'diameter':     return np.mean( func(self, axis = 3) )
+            elif arg[1] == 'polarization': return np.mean( func(self, axis = 2) )
+            elif arg[1] == 'wavelength':   return np.mean( func(self, axis = 1) )
+            elif arg[1] == 'detector':     return np.mean( func(self, axis = 0) )
+
+        raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
+
+
+
+    def Monotonic(self, axis):
+
+        axis = axis.lower()
+
+        arr = np.gradient(self.data, axis = self.conf[axis]).std( axis = self.conf[axis])
+
+        conf = list( self.conf.keys() )
+
+        conf.remove(axis)
+
+        return NDArray(array=arr, Name=self.Name, paramList=conf)
+
+
+    def Mean(self, axis):
+
+        axis = axis.lower()
+
+        arr = np.mean(self.data, axis=self.conf[axis] )
+
+        conf = list( self.conf.keys() )
+
+        conf.remove(axis)
+
+        return NDArray(array=arr, Name=self.Name, paramList=conf)
+
+
+    def Std(self, axis):
+
+        axis = axis.lower()
+
+        arr = np.std(self.data, axis=self.conf[axis] )
+
+        conf = list( self.conf.keys() )
+
+        conf.remove(axis)
+
+        return NDArray(array=arr, Name=self.Name, paramList=conf)
+
+
+    def Rsd(self, axis):
+
+        axis = axis.lower()
+
+        arr = np.std(self.data, axis=self.conf[axis] ) /np.mean(self.data, axis=self.conf[axis] )
+
+        conf = list( self.conf.keys() )
+
+        conf.remove(axis)
+
+        return NDArray(array=arr, Name=self.Name, paramList=conf)
+
+
+    def __getitem__(self, key):
+        return self.data[key]
+
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
+
+
+
+    def __str__(self):
+        text = f'Parameter: {self.Name}\n' + '='*20 + '\n'
+        for key, val in self.conf.items():
+
+            text += f"""{key:15s}\
+                        : dimension = {val:2d}\
+                        : size = {self.data.shape[val]:2d}\
+                         \n"""
+        return text
+
+
+
+
+
+
+
+
+
+
+
+
+class Opt5DArray(np.ndarray):
+    def __new__(cls, *args, **kwargs):
+        this = np.array(*args, **kwargs, copy=False)
+        this = np.asarray(this).view(cls)
+
+        return this
+
+
+    def __array_finalize__(self, obj):
         pass
+
+
+    def __init__(self, arr, Name=''):
+        self.Name         = Name
+
+        self.dim = { 'detector'      : True,
+                      'wavelength'   : True,
+                      'polarization' : True,
+                      'diameter'     : True,
+                      'index'        : True}
+
+
 
 
     def Cost(self, arg = 'max'):

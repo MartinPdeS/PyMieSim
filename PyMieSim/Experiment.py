@@ -7,7 +7,7 @@ import pandas as pd
 
 
 from PyMieSim.Source import PlaneWave
-from PyMieSim.Optimization import Opt5DArray
+from PyMieSim.Optimization import NDArray, Opt4DArray, Opt5DArray
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, EfficiencesDF, ExperimentDF
 from PyMieSim.Scatterer import Sphere, WMSample
@@ -146,7 +146,7 @@ class Setup(object):
             self.DetectorSetName.append( f"Detector {nd }" )
 
 
-    def Qsca(self, AsDataframe=True):
+    def Qsca(self, AsType='numpy'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qsca) vs. scatterer diameter vs. scatterer refractive index.
 
@@ -157,10 +157,11 @@ class Setup(object):
 
         """
 
-        conf = {'Wavelength':   self.SourceSet.WavelengthList,
-                'Polarization': self.SourceSet.PolarizationList,
-                'Diameter':     self.ScattererSet.DiameterList,
-                'RI':           self.ScattererSet.IndexList}
+        conf = {'wavelength':   self.SourceSet.WavelengthList,
+                'polarization': self.SourceSet.PolarizationList,
+                'diameter':     self.ScattererSet.DiameterList,
+                'ri':           self.ScattererSet.IndexList}
+
 
         shape, size = self.GetShape(conf)
 
@@ -174,13 +175,12 @@ class Setup(object):
                 Array[i] = Qsca
                 i+=1
 
-        if AsDataframe is False: return Opt5DArray(Array.reshape(shape))
+        return self.ReturnType(Array     = Array.reshape(shape),
+                               AsType    = AsType,
+                               conf      = conf)
 
-        else:
-            return self.MakeDF(conf, Array, Param='Qsca')
 
-
-    def Qext(self, AsDataframe=True):
+    def Qext(self, AsType='numpy'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qext) vs. scatterer diameter vs. scatterer refractive index.
 
@@ -191,10 +191,11 @@ class Setup(object):
 
         """
 
-        conf = {'Wavelength':   self.SourceSet.WavelengthList,
-                'Polarization': self.SourceSet.PolarizationList,
-                'Diameter':     self.ScattererSet.DiameterList,
-                'RI':           self.ScattererSet.IndexList}
+        conf = {'wavelength':   self.SourceSet.WavelengthList,
+                'polarization': self.SourceSet.PolarizationList,
+                'diameter':     self.ScattererSet.DiameterList,
+                'ri':           self.ScattererSet.IndexList}
+
 
         shape, size = self.GetShape(conf)
 
@@ -208,13 +209,12 @@ class Setup(object):
                 Array[i] = Qext
                 i+=1
 
-        if AsDataframe is False: return Opt5DArray(Array.reshape(shape))
+        return self.ReturnType(Array     = Array.reshape(shape),
+                               AsType    = AsType,
+                               conf      = conf)
 
-        else:
-            return self.MakeDF(conf, Array, Param='Qext')
 
-
-    def Qabs(self, AsDataframe=True):
+    def Qabs(self, AsType='numpy'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qabs) vs. scatterer diameter vs. scatterer refractive index.
 
@@ -225,10 +225,10 @@ class Setup(object):
 
         """
 
-        conf = {'Wavelength':   self.SourceSet.WavelengthList,
-                'Polarization': self.SourceSet.PolarizationList,
-                'Diameter':     self.ScattererSet.DiameterList,
-                'RI':           self.ScattererSet.IndexList}
+        conf = {'wavelength':   self.SourceSet.WavelengthList,
+                'polarization': self.SourceSet.PolarizationList,
+                'diameter':     self.ScattererSet.DiameterList,
+                'ri':           self.ScattererSet.IndexList}
 
         shape, size = self.GetShape(conf)
 
@@ -243,13 +243,12 @@ class Setup(object):
                 i+=1
 
 
-        if AsDataframe is False: return Opt5DArray(Array.reshape(shape))
+        return self.ReturnType(Array     = Array.reshape(shape),
+                               AsType    = AsType,
+                               conf      = conf)
 
-        else:
-            return self.MakeDF(conf, Array, Param='Qabs')
 
-
-    def Coupling(self, AsDataframe=False):
+    def Coupling(self, AsType='numpy'):
         """Property method which return a n by m by l OptArray array, n being the
         number of detectors, m is the point evaluated for the refractive index,
         l is the nomber of point evaluted for the scatterers diameters.
@@ -261,11 +260,11 @@ class Setup(object):
 
         """
 
-        conf = {'Coupling':     self.DetectorSetName,
-                'Wavelength':   self.SourceSet.WavelengthList,
-                'Polarization': self.SourceSet.PolarizationList,
-                'Diameter':     self.ScattererSet.DiameterList,
-                'RI':           self.ScattererSet.IndexList}
+        conf = {'detector':     self.DetectorSetName,
+                'wavelength':   self.SourceSet.WavelengthList,
+                'polarization': self.SourceSet.PolarizationList,
+                'diameter':     self.ScattererSet.DiameterList,
+                'ri':           self.ScattererSet.IndexList}
 
         shape, size = self.GetShape(conf)
 
@@ -279,9 +278,25 @@ class Setup(object):
                     Array[i] = detector.Coupling(Scatterer = scat)
                     i += 1;
 
-        if AsDataframe is False: return Opt5DArray(Array.reshape(shape))
+        return self.ReturnType(Array     = Array.reshape(shape),
+                               AsType    = AsType,
+                               conf      = conf)
 
-        else:
+
+    def ReturnType(self, Array, AsType, conf):
+
+        if AsType.lower() == 'optimizer':
+            return Opt5DArray(Array)
+
+        elif AsType.lower() == 'numpy':
+            return Array
+
+        elif AsType.lower() == 'ndarray':
+            return NDArray(array     = Array,
+                           Name      = 'Coupling',
+                           paramList = list(conf.keys()))
+
+        elif AsType.lower() == 'dataframe':
             return self.MakeDF(conf, Array, Param='Coupling')
 
 
@@ -310,6 +325,102 @@ class Setup(object):
 
 
 
+
+class SampleSet(object):
+
+    def __init__(self,
+                 gList:           list,
+                 LcList:          list,
+                 D:               float,
+                 Nc:              float,
+                 Detector:        Photodiode,
+                 Source:          PlaneWave,
+                 Npts:            int = 201,
+                 ):
+
+        self.gList, self.LcList = gList, LcList
+
+        self.D = D; self.Nc = Nc
+
+        self.Detector, self.Source = Detector, Source
+
+
+
+    @property
+    def DataFrame(self):
+        """Property method which return pandas.DataFrame of the scattering-
+        detector coupling for the different diameter and refracive index
+        evaluated.
+        Returns
+        -------
+        :class:`pd.DataFrame`
+            DataFrame of detectors coupling.
+        """
+        MI = pd.MultiIndex.from_product([range(len(self.Detectors)), self.ScattererSet.DiameterList, self.ScattererSet.RIList],
+                                        names=['Detectors','Diameter','RI',])
+
+
+        df = ExperimentalDataFrame(index = MI, columns = ['Coupling'])
+
+        df.attrs['Detectors'] = self.Detectors
+
+        for nr, RI in enumerate( self.ScattererSet.RIList ):
+
+            for nd, Diameter in enumerate(self.ScattererSet.DiameterList):
+
+                for nDetector, Detector in enumerate(self.Detectors):
+
+                    Scat = Sample(g           = g,
+                                  lc          = lc,
+                                  D           = self.D,
+                                  Nc          = self.Nc,
+                                  Source      = LightSource,
+                                  Meshes      = self.Detector.Meshes)
+
+                    Coupling = Detector.Coupling(Scatterer = Scat)
+
+                    df.at[(nDetector, Diameter, RI),'Coupling'] = Coupling
+
+        df.Coupling = df.Coupling.astype(float)
+
+        df['Mean'] = df.groupby(['Detectors','Diameter']).Coupling.transform('mean')
+
+        df['STD'] = df.groupby(['Detectors','Diameter']).Coupling.transform('std')
+
+        return df
+
+
+
+
+    @property
+    def Coupling(self):
+        """Property method which return a n by m by l OptArray array, n being the
+        number of detectors, m is the point evaluated for the refractive index,
+        l is the nomber of point evaluted for the scatterers diameters.
+        Returns
+        -------
+        OptArray
+            Raw array of detectors coupling.
+        """
+        temp = np.empty( [len(self.Detectors), len(self.ScattererSet.RIList), len(self.ScattererSet.DiameterList) ] )
+
+        for nDetector, Detector in enumerate(self.Detectors):
+
+            for nIndex, RI in enumerate(self.ScattererSet.RIList):
+                for nDiameter, Diameter in enumerate(self.ScattererSet.DiameterList):
+
+                    Samp = Sample(g           = g,
+                                  lc          = lc,
+                                  D           = self.D,
+                                  Nc          = self.Nc,
+                                  Source      = self.Source,
+                                  Meshes      = self.Detector.Meshes)
+
+                    Coupling = Detector.Coupling(Scatterer = Samp)
+
+                    temp[nDetector, nIndex, nDiameter] = Coupling
+
+        return OptArray(temp)
 
 
 # -
