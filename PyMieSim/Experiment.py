@@ -1,73 +1,63 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 import numpy as np
 import pandas as pd
-
+from beartype import beartype
+from typing import Union
+from multiprocessing import Process
 
 from PyMieSim.Source import PlaneWave
-from PyMieSim.Optimization import NDArray, Opt4DArray, Opt5DArray
+from PyMieSim.Optimization import PMSArray, Opt5DArray
 from PyMieSim.Detector import LPmode, Photodiode
 from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, EfficiencesDF, ExperimentDF
 from PyMieSim.Scatterer import Sphere, WMSample
-from PyMieSim.LMT.Scatterer import SPHERE
-from PyMieSim.Source import PlaneWave
 
 
-MetricList = ["max",
-              "min",
-              "mean",
-              "rsd+RI",
-              "rsd+Diameter",
-              "rsd+Polarization"
-              "rsd+Wavelength"
-              "rsd+Detector",
-              "monotonic+RI",
-              "monotonic+Diameter",
-              "monotonic+Polarization",
-              "monotonic+Wavelength",
-              "monotonic+Detector"]
-
+OUTPUTTYPE = ['optimizer','numpy', 'ndarray', 'dataframe']
+exList = Union[list, np.ndarray]
+exfloat = Union[bool, int, float]
+exArg = Union[float, int, list, np.ndarray]
 
 class ScatSet(object):
 
+    @beartype
     def __init__(self,
-                 DiameterList:    list,
-                 IndexList:       list,
-                 nMedium:         float   = 1.0,
-                 ScattererType:   str     = 'Sphere'
-                 ):
+                 DiameterList:    exList,
+                 IndexList:       exList,
+                 nMedium:         exfloat    = 1.0,
+                 ScattererType:   str        = 'Sphere'):
 
-        if not isinstance(IndexList, (list, np.ndarray)): IndexList = [IndexList]
+        self._Diameter, self._Index = None, None
 
-        if not isinstance(DiameterList, (list, np.ndarray)): DiameterList = [DiameterList]
-
-        self.DiameterList, self.IndexList = DiameterList, IndexList
+        self.Diameter, self.Index = DiameterList, IndexList
 
         self.nMedium = nMedium
 
-        self.shape = [DiameterList, IndexList]
+        self.shape = np.shape(self.Diameter) + np.shape(self.Index)
+
 
     @property
     def Diameter(self):
-        return self.DiameterList
+        return self._Diameter
 
     @Diameter.setter
     def Diameter(self, val):
-        self.DiameterList = [val]
+        if not isinstance(val, (list, np.ndarray)): val = [val]
+        self._Diameter = val
 
     @property
     def Index(self):
-        return self.IndexList
+        return self._Index
 
     @Index.setter
     def Index(self, val):
-        self.IndexList = [val]
+        if not isinstance(val, (list, np.ndarray)): val = [val]
+        self._Index = val
 
     def Generator(self, Source):
-        for diameter in self.DiameterList:
-            for RI in self.IndexList:
+        for diameter in self.Diameter:
+            for RI in self.Index:
                 yield Sphere(Diameter  = diameter,
                              Source    = Source,
                              Index     = RI,
@@ -79,44 +69,46 @@ class ScatSet(object):
 
 class SourceSet(object):
 
+    @beartype
     def __init__(self,
-                 WavelengthList:      list,
-                 PolarizationList:    list = [0],
-                 SourceType:          str  = 'PlaneWave'):
+                 WavelengthList:      exArg,
+                 PolarizationList:    exArg = [0],
+                 SourceType:          str   = 'PlaneWave'):
 
-        if not isinstance(WavelengthList, (list, np.ndarray)): WavelengthList = [WavelengthList]
 
-        if not isinstance(PolarizationList, (list, np.ndarray)): PolarizationList = [PolarizationList]
+        self._Wavelength, self._Polarization = None, None
 
-        self.WavelengthList = WavelengthList
+        self.Wavelength = WavelengthList
 
-        self.PolarizationList = PolarizationList
+        self.Polarization = PolarizationList
 
         self.SourceType = SourceType
 
-        self.shape = [WavelengthList, PolarizationList]
+        self.shape = np.shape(self.Wavelength) + np.shape(self.Polarization)
 
 
     @property
     def Wavelength(self):
-        return self.WavelengthList
+        return self._Wavelength
 
     @Wavelength.setter
     def Wavelength(self, val):
-        self.WavelengthList = [val]
+        if not isinstance(val, (list, np.ndarray)): val = [val]
+        self._Wavelength = val
 
     @property
     def Polarization(self):
-        return self.WavelengthList
+        return self._Polarization
 
     @Polarization.setter
     def Polarization(self, val):
-        self.PolarizationList = [val]
+        if not isinstance(val, (list, np.ndarray)): val = [val]
+        self._Polarization = val
 
 
     def Generator(self):
-        for wavelength in self.WavelengthList:
-            for polarization in self.PolarizationList:
+        for wavelength in self.Wavelength:
+            for polarization in self.Polarization:
                 yield PlaneWave(Wavelength   = wavelength,
                                 Polarization = polarization,
                                 E0           = 1)
@@ -128,10 +120,11 @@ class SourceSet(object):
 
 class Setup(object):
 
+    @beartype
     def __init__(self,
-                 ScattererSet: ScatSet      = None,
-                 SourceSet:    SourceSet    = None,
-                 DetectorSet:  tuple        = None):
+                 ScattererSet: ScatSet            = None,
+                 SourceSet:    SourceSet          = None,
+                 DetectorSet:  Union[tuple, list] = None):
 
         if not isinstance(DetectorSet, (list, np.ndarray)): DetectorSet = [DetectorSet]
 
@@ -143,10 +136,10 @@ class Setup(object):
 
         self.DetectorSetName = []
         for nd, dectector in enumerate(self.DetectorSet):
-            self.DetectorSetName.append( f"Detector {nd }" )
+            self.DetectorSetName.append( f"Detector {nd}" )
 
 
-    def Qsca(self, AsType='numpy'):
+    def Efficiencies(self, AsType='numpy'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qsca) vs. scatterer diameter vs. scatterer refractive index.
 
@@ -157,93 +150,37 @@ class Setup(object):
 
         """
 
-        conf = {'wavelength':   self.SourceSet.WavelengthList,
-                'polarization': self.SourceSet.PolarizationList,
-                'diameter':     self.ScattererSet.DiameterList,
-                'ri':           self.ScattererSet.IndexList}
+        assert AsType.lower() in OUTPUTTYPE, \
+        f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
 
+        conf = {'name'         : 'efficiencies',
+                'order'        : {
+                        'wavelength'   : 0,
+                        'polarization' : 1,
+                        'diameter'     : 2,
+                        'ri'           : 3},
+                'dimension'    : {
+                        'wavelength'   : self.SourceSet.Wavelength,
+                        'polarization' : self.SourceSet.Polarization,
+                        'diameter'     : self.ScattererSet.Diameter,
+                        'ri'           : self.ScattererSet.Index}
+               }
 
-        shape, size = self.GetShape(conf)
+        self.GetShape(conf)
 
-        Array = np.empty(size)
+        Array = np.empty(conf['size']*3)
+
 
         i = 0
         for source in self.SourceSet.Generator():
             for scat in self.ScattererSet.Generator(Source=source):
-                Qsca, _, _ = scat.GetEfficiencies()
+                Qsca, Qext, Qabs = scat.GetEfficiencies()
+                Array[i]   = Qsca
+                Array[i+1] = Qext
+                Array[i+2] = Qabs
+                i+=3
 
-                Array[i] = Qsca
-                i+=1
-
-        return self.ReturnType(Array     = Array.reshape(shape),
-                               AsType    = AsType,
-                               conf      = conf)
-
-
-    def Qext(self, AsType='numpy'):
-        """Methode generate a Pandas Dataframe of scattering efficiencies
-        (Qext) vs. scatterer diameter vs. scatterer refractive index.
-
-        Returns
-        -------
-        :class:`pandas.DataFrame`
-            Dataframe containing Qext vs. Wavelength, Diameter vs. Index.
-
-        """
-
-        conf = {'wavelength':   self.SourceSet.WavelengthList,
-                'polarization': self.SourceSet.PolarizationList,
-                'diameter':     self.ScattererSet.DiameterList,
-                'ri':           self.ScattererSet.IndexList}
-
-
-        shape, size = self.GetShape(conf)
-
-        Array = np.empty(size)
-
-        i = 0
-        for source in self.SourceSet.Generator():
-            for scat in self.ScattererSet.Generator(Source=source):
-                _, Qext, _ = scat.GetEfficiencies()
-
-                Array[i] = Qext
-                i+=1
-
-        return self.ReturnType(Array     = Array.reshape(shape),
-                               AsType    = AsType,
-                               conf      = conf)
-
-
-    def Qabs(self, AsType='numpy'):
-        """Methode generate a Pandas Dataframe of scattering efficiencies
-        (Qabs) vs. scatterer diameter vs. scatterer refractive index.
-
-        Returns
-        -------
-        :class:`pandas.DataFrame`
-            Dataframe containing Qabs vs. Wavelength, Diameter vs. Index.
-
-        """
-
-        conf = {'wavelength':   self.SourceSet.WavelengthList,
-                'polarization': self.SourceSet.PolarizationList,
-                'diameter':     self.ScattererSet.DiameterList,
-                'ri':           self.ScattererSet.IndexList}
-
-        shape, size = self.GetShape(conf)
-
-        Array = np.empty(size)
-
-        i = 0
-        for source in self.SourceSet.Generator():
-            for scat in self.ScattererSet.Generator(Source=source):
-                _, _, Qabs = scat.GetEfficiencies()
-
-                Array[i] = Qabs
-                i+=1
-
-
-        return self.ReturnType(Array     = Array.reshape(shape),
+        return self.ReturnType(Array     = Array.reshape([3]+conf['shape']),
                                AsType    = AsType,
                                conf      = conf)
 
@@ -252,23 +189,36 @@ class Setup(object):
         """Property method which return a n by m by l OptArray array, n being the
         number of detectors, m is the point evaluated for the refractive index,
         l is the nomber of point evaluted for the scatterers diameters.
-
         Returns
         -------
         OptArray
             Raw array of detectors coupling.
-
         """
 
-        conf = {'detector':     self.DetectorSetName,
-                'wavelength':   self.SourceSet.WavelengthList,
-                'polarization': self.SourceSet.PolarizationList,
-                'diameter':     self.ScattererSet.DiameterList,
-                'ri':           self.ScattererSet.IndexList}
 
-        shape, size = self.GetShape(conf)
+        assert AsType.lower() in OUTPUTTYPE, \
+        f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
 
-        Array = np.empty(size)
+        conf = {'name'         : 'efficiencies',
+                'order'        : {
+                        'detector'     : 0,
+                        'wavelength'   : 1,
+                        'polarization' : 2,
+                        'diameter'     : 3,
+                        'ri'           : 4},
+
+                'dimension'    : {
+                        'detector'     : self.DetectorSetName,
+                        'wavelength'   : self.SourceSet.Wavelength,
+                        'polarization' : self.SourceSet.Polarization,
+                        'diameter'     : self.ScattererSet.Diameter,
+                        'ri'           : self.ScattererSet.Index}
+               }
+
+
+        self.GetShape(conf)
+
+        Array = np.empty(conf['size'])
 
         i = 0
         for nd, detector in enumerate(self.DetectorSet):
@@ -278,9 +228,10 @@ class Setup(object):
                     Array[i] = detector.Coupling(Scatterer = scat)
                     i += 1;
 
-        return self.ReturnType(Array     = Array.reshape(shape),
+        return self.ReturnType(Array     = Array.reshape(conf['shape']),
                                AsType    = AsType,
                                conf      = conf)
+
 
 
     def ReturnType(self, Array, AsType, conf):
@@ -292,38 +243,41 @@ class Setup(object):
             return Array
 
         elif AsType.lower() == 'ndarray':
-            return NDArray(array     = Array,
-                           Name      = 'Coupling',
-                           paramList = list(conf.keys()))
+            return PMSArray(array     = Array,
+                            Name      = 'Coupling',
+                            conf      = conf)
 
         elif AsType.lower() == 'dataframe':
-            return self.MakeDF(conf, Array, Param='Coupling')
+            return self.MakeDF(conf, Array)
 
 
-    def MakeDF(self, conf, Array, Param):
-        names = list(conf.keys())
-        index = list(conf.values())
+    def MakeDF(self, conf, Array):
 
-        MI = pd.MultiIndex.from_product(index, names=names)
+        MI = pd.MultiIndex.from_product(list(conf['dimension'].values()),
+                                        names = list(conf['dimension'].keys()))
 
-        if Param == 'Coupling':
-            return ExperimentDF(Array.flatten(), index=MI, columns=[Param])
+        if conf['Name'] == 'efficiencies':
+            return EfficiencesDF(Array.reshape([conf['size'],3]),
+                                 index   = MI,
+                                 columns = ['Qsca', 'Qext', 'Qabs'])
 
-        elif Param in ['Qsca', 'Qext', 'Qabs']:
-            return EfficiencesDF(Array.flatten(), index = MI, columns = [Param])
+
+        elif  conf['Name'] == 'Coupling':
+            return ExperimentDF(Array.flatten(),
+                                index   = MI,
+                                columns = ['Coupling'])
+
 
 
     def GetShape(self, conf):
         shape = []
         size  = 1
-        for item in conf.values():
+        for item in conf['dimension'].values():
             shape += [len(item)]
             size  *= len(item)
 
-        return shape, size
-
-
-
+        conf['shape'] = shape
+        conf['size']  = size
 
 
 class SampleSet(object):

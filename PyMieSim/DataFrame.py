@@ -57,7 +57,7 @@ class EfficiencesDF(pd.DataFrame):
     def __init__(self, *args, **kwargs):
         pd.DataFrame.__init__(self, *args, **kwargs)
         self.ax = None
-        self.name = kwargs['columns'][0]
+
 
     @property
     def Parallel(self):
@@ -68,23 +68,25 @@ class EfficiencesDF(pd.DataFrame):
         return self.xs('Perpendicular')
 
     @show
-    def Plot(self, y='Coupling', x = 'Diameter', **kwargs):
+    def Plot(self, y='Qsca', x = 'Diameter', **kwargs):
 
         if   x == 'Diameter':
-            index  = [0,1,2,4];
-            title  = 'Det./Pol/Wav/RI'
+            index  = [0,1,3];
+            title  = 'Pol/Wav/RI'
             xlabel = r'Scatterer diameter [m]'
 
         elif x == 'Wavelength':
-            index = [0,2,3,4];
-            title = 'Det./Pol/Dia/RI'
+            index = [0,1,2];
+            title = 'Pol/Dia/RI'
             xlabel = r'Source wavelength [m]' ;
+
+        Name = 'Efficiency'
 
         fig = self.unstack(level=index).plot(y       = y,
                                               grid    = True,
                                               figsize = (8,4),
                                               xlabel  = xlabel,
-                                              ylabel  = f'{self.name}',
+                                              ylabel  = f'{Name}',
                                               **kwargs)
 
         fig.legend(prop={'size': 8}, title=title,loc=2)
@@ -94,7 +96,7 @@ class EfficiencesDF(pd.DataFrame):
 
 class ExperimentalDataFrame(pd.DataFrame):
 
-    def __init__(self,**kwargs):
+    def __init__(self, **kwargs):
         pd.DataFrame.__init__(self, **kwargs)
         self.ax = None
 

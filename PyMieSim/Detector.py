@@ -1,4 +1,6 @@
 import numpy as np
+from typing import Union
+from beartype import beartype
 import os.path
 
 
@@ -28,14 +30,14 @@ class Photodiode(BaseDetector, MeshProperty):
         Methode for computing mode coupling. Either Centered or Mean.
 
     """
-
+    @beartype
     def __init__(self,
-                 NA:           float,
-                 Sampling:     int    = 400,
-                 GammaOffset:  float  = 0,
-                 PhiOffset:    float  = 0,
-                 Filter:       float  = None,
-                 CouplingMode: str    = 'Centered'):
+                 NA:           Union[int, float],
+                 Sampling:     int                      = 400,
+                 CouplingMode: str                      = 'Centered',
+                 GammaOffset:  Union[int, float]        = 0,
+                 PhiOffset:    Union[int, float]        = 0,
+                 Filter:       Union[int, float, bool]  = None):
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -112,16 +114,16 @@ class LPmode(BaseDetector, MeshProperty):
 
     """
 
+    @beartype
     def __init__(self,
-                 Mode:           tuple,
+                 Mode:           Union[tuple, list],
                  NA:             float,
-                 Rotation:       float = 0,
-                 Sampling:       int   = 401,
-                 InterpSampling: int   = 101,
-                 GammaOffset:    float = 0,
-                 PhiOffset:      float = 0,
-                 Filter:         float =  None,
-                 CouplingMode:   str   = 'Centered'):
+                 Rotation:       Union[int, float]        = 0,
+                 Sampling:       int                      = 401,
+                 GammaOffset:    Union[int, float]        = 0,
+                 PhiOffset:      Union[int, float]        = 0,
+                 Filter:         Union[int, float, bool]  =  None,
+                 CouplingMode:   str                      = 'Centered'):
 
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
 
@@ -131,7 +133,7 @@ class LPmode(BaseDetector, MeshProperty):
 
         self._Filter = _Polarization(Filter)
 
-        self.ModeNumber = Mode[0], Mode[1]
+        self.ModeNumber = Mode
 
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
                                        MaxAngle    = NA2Angle(NA).Radian,
@@ -217,13 +219,14 @@ class _Photodiode(BaseDetector, MeshProperty):
 
     """
 
+    @beartype
     def __init__(self,
-                 NA:           float,
-                 Sampling:     int    = 400,
-                 GammaOffset:  float  = 0,
-                 PhiOffset:    float  = 0,
-                 Filter:       float  = None,
-                 CouplingMode: str    = 'Centered'):
+                 NA:           Union[int, float],
+                 Sampling:     int                      = 400,
+                 CouplingMode: str                      = 'Centered',
+                 GammaOffset:  Union[int, float]        = 0,
+                 PhiOffset:    Union[int, float]        = 0,
+                 Filter:       Union[int, float, bool]  = None):
 
         self.CouplingMode = ('Intensity', CouplingMode)
 

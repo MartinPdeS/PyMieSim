@@ -9,3 +9,4 @@ coverage
 pyyaml
 pybind11
 numpydoc
+beartype

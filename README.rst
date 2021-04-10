@@ -24,7 +24,7 @@ Using this package, one can easily set a **Source** a **Scatterer** and a **Dete
 3. **Source** Polarization
 4. **Scatterer** diameter
 5. **Scatterer** refractive index
-6. Medium refractive index
+6. **Medium** refractive index
 7. **Detector** type (photodiode or LPMode)
 8. **Detector** numerical aperture
 9. **Detector** angle offfset in polariation parallel axis (&phi;)
@@ -121,6 +121,7 @@ Here is an example on how to use the library.
                      E0           = 1)
 
   Detector = LPmode(Mode         = (0, 1),
+                    Rotation     = 0.,
                     Sampling     = 201,
                     NA           = 0.2,
                     GammaOffset  = 0,
@@ -144,14 +145,15 @@ section of the documentations.
 
 To-Do List
 **********
-- Adding T-matrix formalism
-- Addind cylindrical scatterer
+- Adding dumb-proof assertions
 - Adding docstring
-- Adding Stokes parameter representations
+- Adding Stokes parameter representations [DONE]
+- Multiprocess Experiment class
 - Adding more unittests
-- Adding monotonic metric to optimizer class
+- Adding monotonic metric to optimizer class [DONE]
 - Comments on c++ codes
-- verify if changes of NA for <LPmode> class can be simplified (it takes way too much time)
+- Multiclass c++ codes
+- verify if changes of NA for <LPmode> class can be simplified [DONE]
 - adding travis and codecov [DONE]
 
 

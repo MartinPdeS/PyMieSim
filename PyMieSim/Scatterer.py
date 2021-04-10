@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
+from beartype import beartype
 from scipy.special import gamma
+from typing import Union
+
 from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Stokes
 from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
 from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
 from PyMieSim.units import Area
+from PyMieSim.Source import PlaneWave, GaussianBeam
 
 class Sphere(BaseScatterer, EfficienciesProperties):
     """
@@ -30,14 +34,14 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         Size parameter of the scatterer [:math:`k r`].
 
     """
-
+    @beartype
     def __init__(self,
                  Diameter:    float,
-                 Source:      BaseSource,
-                 Index:       float,
-                 nMedium:     float  = 1.0,
-                 MuSphere:    float  = 1.0,
-                 MuMedium:    float  = 1.0):
+                 Source:      Union[PlaneWave, GaussianBeam],
+                 Index:       Union[int, float],
+                 nMedium:     Union[int, float]  = 1.0,
+                 MuSphere:    Union[int, float]  = 1.0,
+                 MuMedium:    Union[int, float]  = 1.0):
 
         self.type      = 'Sphere'
         self.Diameter  = Diameter

@@ -238,7 +238,7 @@ ScattererSet: Qscattering
 
 
    ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 10000e-9, 400),
-                          RIList        = np.linspace(1.5, 1.8, 3).round(1),
+                          IndexList        = np.linspace(1.5, 1.8, 3).round(1),
                           Source        = Source)
 
 
@@ -277,7 +277,7 @@ Experiment: Qsca vs. diameter
                          CouplingMode      = 'Centered')
 
    scat = ScatSet(DiameterList  = DiameterList,
-                  RIList         = [1.5],
+                  IndexList         = [1.5],
                   nMedium        = 1,
                   ScattererType  = 'Sphere')
 
@@ -290,7 +290,7 @@ Experiment: Qsca vs. diameter
                       SourceSet    = source,
                       DetectorSet  = [Detector0])
 
-   Qsca = Experiment.Qsca(AsDataframe=True)
+   Qsca = Experiment.Qsca(AsType='dataframe')
 
    Qsca.Plot(y='Qsca', x='Diameter')
 
@@ -320,7 +320,7 @@ Experiment: Qsca vs. wavelength
                          CouplingMode      = 'Centered')
 
    scat = ScatSet(DiameterList   = 200e-9,
-                  RIList         = [1.5],
+                  IndexList         = [1.5],
                   nMedium        = 1,
                   ScattererType  = 'Sphere')
 
@@ -333,7 +333,7 @@ Experiment: Qsca vs. wavelength
                       SourceSet    = source,
                       DetectorSet  = [Detector0])
 
-   Qsca = Experiment.Qsca(AsDataframe=True)
+   Qsca = Experiment.Qsca(AsType='dataframe')
 
    Qsca.Plot(y='Qsca', x='Wavelength')
 
@@ -357,13 +357,13 @@ Experiment: Coupling vs. diameter
    DiameterList   = np.linspace(400e-9, 1000e-9, 200)
 
    Detector0 = Photodiode(NA                = 0.1,
-                         Sampling          = 300,
-                         GammaOffset       = 20,
-                         PhiOffset         = 30,
-                         CouplingMode      = 'Centered')
+                          Sampling          = 300,
+                          GammaOffset       = 20,
+                          PhiOffset         = 30,
+                          CouplingMode      = 'Centered')
 
    scat = ScatSet(DiameterList  = DiameterList,
-                  RIList         = [1.5],
+                  IndexList         = [1.5],
                   nMedium        = 1,
                   ScattererType  = 'Sphere')
 
@@ -376,9 +376,7 @@ Experiment: Coupling vs. diameter
                       SourceSet    = source,
                       DetectorSet  = [Detector0])
 
-   Array = Experiment.Coupling(AsDataframe=True)
-
-   DF = Experiment.Coupling(AsDataframe=True)
+   DF = Experiment.Coupling(AsType='dataframe')
 
    DF.Plot(y='Coupling', x='Diameter')
 
@@ -409,7 +407,7 @@ Experiment: Coupling vs. wavelength
                          CouplingMode      = 'Centered')
 
   scat = ScatSet(DiameterList  = [200e-9],
-                 RIList        = [4],
+                 IndexList        = [4],
                  nMedium       = 1,
                  ScattererType = 'Sphere')
 
@@ -422,7 +420,7 @@ Experiment: Coupling vs. wavelength
                      SourceSet    = source,
                      DetectorSet  = [Detector0])
 
-  DF = Experiment.Coupling(AsDataframe=True)
+  DF = Experiment.Coupling(AsType='dataframe')
 
   DF.Plot(y='Coupling', x='Wavelength')
 
@@ -487,7 +485,7 @@ Optimization: 1 parameter
 
   print(Opt.Result)
 
-  df = Experiment.Coupling(AsDataframe=True)
+  df = Experiment.Coupling(AsType='dataframe')
 
   df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
 
@@ -567,7 +565,7 @@ Optimization: 2 parameters
 
 
   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
-                         RIList        = np.linspace(1.5, 1.8, 1).round(1),
+                         IndexList        = np.linspace(1.5, 1.8, 1).round(1),
                          Source        = Source)
 
   Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
