@@ -1,13 +1,17 @@
 import numpy as np
-from typing import Union
-from beartype import beartype
 import os.path
+from typing   import Union
+from beartype import beartype
 
 
-from PyMieSim.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.utils import interp_at, NA2Angle, Normalize, RescaleComplex, RotateComplex
-from PyMieSim.Physics import _Polarization, Angle
 import PyMieSim
+from PyMieSim.BaseClasses import BaseDetector, MeshProperty
+from PyMieSim.Physics     import _Polarization, Angle
+from PyMieSim.utils       import ( interp_at,
+                                   NA2Angle,
+                                   Normalize,
+                                   RescaleComplex,
+                                   RotateComplex )
 
 
 class Photodiode(BaseDetector, MeshProperty):
@@ -32,12 +36,12 @@ class Photodiode(BaseDetector, MeshProperty):
     """
     @beartype
     def __init__(self,
-                 NA:           Union[int, float],
-                 Sampling:     int                      = 400,
-                 CouplingMode: str                      = 'Centered',
-                 GammaOffset:  Union[int, float]        = 0,
-                 PhiOffset:    Union[int, float]        = 0,
-                 Filter:       Union[int, float, bool]  = None):
+                 NA           : Union[int, float],
+                 Sampling     : int                      = 400,
+                 CouplingMode : str                      = 'Centered',
+                 GammaOffset  : Union[int, float]        = 0,
+                 PhiOffset    : Union[int, float]        = 0,
+                 Filter       : Union[int, float, bool]  = None):
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -116,24 +120,26 @@ class LPmode(BaseDetector, MeshProperty):
 
     @beartype
     def __init__(self,
-                 Mode:           Union[tuple, list],
-                 NA:             float,
-                 Rotation:       Union[int, float]        = 0,
-                 Sampling:       int                      = 401,
-                 GammaOffset:    Union[int, float]        = 0,
-                 PhiOffset:      Union[int, float]        = 0,
-                 Filter:         Union[int, float, bool]  =  None,
-                 CouplingMode:   str                      = 'Centered'):
+                 Mode         : Union[tuple, list],
+                 NA           : float,
+                 Rotation     : Union[int, float]        = 0,
+                 Sampling     : int                      = 401,
+                 GammaOffset  : Union[int, float]        = 0,
+                 PhiOffset    : Union[int, float]        = 0,
+                 Filter       : Union[int, float, bool]  =  None,
+                 CouplingMode : str                      = 'Centered'):
 
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
 
-        if NA > 1 or NA < 0: print("WARNING: High values of NA do not comply with paraxial approximation. Value under 0.4 are prefered")
+        if NA > 1 or NA < 0: print("WARNING: High values of NA do not comply \
+                                   with paraxial approximation. Value \
+                                   under 0.4 are prefered")
 
         self.CouplingMode = ('Amplitude', CouplingMode)
 
-        self._Filter = _Polarization(Filter)
+        self._Filter      = _Polarization(Filter)
 
-        self.ModeNumber = Mode
+        self.ModeNumber   = Mode
 
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
                                        MaxAngle    = NA2Angle(NA).Radian,
@@ -221,12 +227,12 @@ class _Photodiode(BaseDetector, MeshProperty):
 
     @beartype
     def __init__(self,
-                 NA:           Union[int, float],
-                 Sampling:     int                      = 400,
-                 CouplingMode: str                      = 'Centered',
-                 GammaOffset:  Union[int, float]        = 0,
-                 PhiOffset:    Union[int, float]        = 0,
-                 Filter:       Union[int, float, bool]  = None):
+                 NA           : Union[int, float],
+                 Sampling     : int                      = 400,
+                 CouplingMode : str                      = 'Centered',
+                 GammaOffset  : Union[int, float]        = 0,
+                 PhiOffset    : Union[int, float]        = 0,
+                 Filter       : Union[int, float, bool]  = None):
 
         self.CouplingMode = ('Intensity', CouplingMode)
 

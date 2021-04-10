@@ -1,20 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
+import numpy  as np
 import pandas as pd
-from beartype import beartype
-from typing import Union
-from multiprocessing import Process
+from beartype           import beartype
+from typing             import Union
+from multiprocessing    import Process
+from scipy.optimize     import minimize
 
-from PyMieSim.Source import PlaneWave
-from PyMieSim.Optimization import PMSArray, Opt5DArray
-from PyMieSim.Detector import LPmode, Photodiode
-from PyMieSim.DataFrame import ExperimentalDataFrame, S1S2DataFrame, EfficiencesDF, ExperimentDF
+from PyMieSim.Source    import PlaneWave
+from PyMieSim.NdArray   import PMSArray, Opt5DArray
+from PyMieSim.Detector  import LPmode, Photodiode
 from PyMieSim.Scatterer import Sphere, WMSample
 
+from PyMieSim.DataFrame import ( ExperimentalDataFrame,
+                                 S1S2DataFrame,
+                                 EfficiencesDF,
+                                 ExperimentDF)
 
-OUTPUTTYPE = ['optimizer','numpy', 'ndarray', 'dataframe']
+from PyMieSim.Config    import ( MetricList,
+                                 DetectorParamList,
+                                 SourceParamList,
+                                 DefaultConfig,
+                                 DefaultConfigEff )
+
+
+OUTPUTTYPE = ['optimizer','numpy', 'pymiesim', 'dataframe']
 exList = Union[list, np.ndarray]
 exfloat = Union[bool, int, float]
 exArg = Union[float, int, list, np.ndarray]
@@ -23,10 +34,10 @@ class ScatSet(object):
 
     @beartype
     def __init__(self,
-                 DiameterList:    exList,
-                 IndexList:       exList,
-                 nMedium:         exfloat    = 1.0,
-                 ScattererType:   str        = 'Sphere'):
+                 DiameterList  :  exList,
+                 IndexList     :  exList,
+                 nMedium       :  exfloat    = 1.0,
+                 ScattererType :  str        = 'Sphere'):
 
         self._Diameter, self._Index = None, None
 
@@ -66,14 +77,13 @@ class ScatSet(object):
                              MuMedium  = 1.0)
 
 
-
 class SourceSet(object):
 
     @beartype
     def __init__(self,
-                 WavelengthList:      exArg,
-                 PolarizationList:    exArg = [0],
-                 SourceType:          str   = 'PlaneWave'):
+                 WavelengthList   :   exArg,
+                 PolarizationList :   exArg = [0],
+                 SourceType       :   str   = 'PlaneWave'):
 
 
         self._Wavelength, self._Polarization = None, None
@@ -114,19 +124,16 @@ class SourceSet(object):
                                 E0           = 1)
 
 
-
-
-
-
 class Setup(object):
 
     @beartype
     def __init__(self,
-                 ScattererSet: ScatSet            = None,
-                 SourceSet:    SourceSet          = None,
-                 DetectorSet:  Union[tuple, list] = None):
+                 ScattererSet : ScatSet            = None,
+                 SourceSet    : SourceSet          = None,
+                 DetectorSet  : Union[tuple, list] = None):
 
-        if not isinstance(DetectorSet, (list, np.ndarray)): DetectorSet = [DetectorSet]
+
+        self.MetricList   = MetricList
 
         self.DetectorSet  = DetectorSet
 
@@ -153,22 +160,17 @@ class Setup(object):
         assert AsType.lower() in OUTPUTTYPE, \
         f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
 
-        conf = {'name'         : 'efficiencies',
-                'order'        : {
-                        'wavelength'   : 0,
-                        'polarization' : 1,
-                        'diameter'     : 2,
-                        'ri'           : 3},
-                'dimension'    : {
-                        'wavelength'   : self.SourceSet.Wavelength,
-                        'polarization' : self.SourceSet.Polarization,
-                        'diameter'     : self.ScattererSet.Diameter,
-                        'ri'           : self.ScattererSet.Index}
-               }
+        config = DefaultConfigEff
 
-        self.GetShape(conf)
+        config['dimension'] = { 'wavelength'   : self.SourceSet.Wavelength,
+                                'polarization' : self.SourceSet.Polarization,
+                                'diameter'     : self.ScattererSet.Diameter,
+                                'ri'           : self.ScattererSet.Index}
 
-        Array = np.empty(conf['size']*3)
+
+        self.GetShape(config)
+
+        Array = np.empty(config['size']*3)
 
 
         i = 0
@@ -180,45 +182,38 @@ class Setup(object):
                 Array[i+2] = Qabs
                 i+=3
 
-        return self.ReturnType(Array     = Array.reshape([3]+conf['shape']),
+        return self.ReturnType(Array     = Array.reshape([3]+config['shape']),
                                AsType    = AsType,
-                               conf      = conf)
+                               conf      = config)
 
 
     def Coupling(self, AsType='numpy'):
         """Property method which return a n by m by l OptArray array, n being the
         number of detectors, m is the point evaluated for the refractive index,
         l is the nomber of point evaluted for the scatterers diameters.
+
         Returns
         -------
         OptArray
             Raw array of detectors coupling.
+
         """
 
 
         assert AsType.lower() in OUTPUTTYPE, \
         f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
 
-        conf = {'name'         : 'efficiencies',
-                'order'        : {
-                        'detector'     : 0,
-                        'wavelength'   : 1,
-                        'polarization' : 2,
-                        'diameter'     : 3,
-                        'ri'           : 4},
+        config = DefaultConfig
 
-                'dimension'    : {
-                        'detector'     : self.DetectorSetName,
-                        'wavelength'   : self.SourceSet.Wavelength,
-                        'polarization' : self.SourceSet.Polarization,
-                        'diameter'     : self.ScattererSet.Diameter,
-                        'ri'           : self.ScattererSet.Index}
-               }
+        config['dimension'] = { 'detector'     : self.DetectorSetName,
+                                'wavelength'   : self.SourceSet.Wavelength,
+                                'polarization' : self.SourceSet.Polarization,
+                                'diameter'     : self.ScattererSet.Diameter,
+                                'ri'           : self.ScattererSet.Index}
 
+        self.GetShape(config)
 
-        self.GetShape(conf)
-
-        Array = np.empty(conf['size'])
+        Array = np.empty(config['size'])
 
         i = 0
         for nd, detector in enumerate(self.DetectorSet):
@@ -228,10 +223,9 @@ class Setup(object):
                     Array[i] = detector.Coupling(Scatterer = scat)
                     i += 1;
 
-        return self.ReturnType(Array     = Array.reshape(conf['shape']),
+        return self.ReturnType(Array     = Array.reshape(config['shape']),
                                AsType    = AsType,
-                               conf      = conf)
-
+                               conf      = config)
 
 
     def ReturnType(self, Array, AsType, conf):
@@ -242,10 +236,8 @@ class Setup(object):
         elif AsType.lower() == 'numpy':
             return Array
 
-        elif AsType.lower() == 'ndarray':
-            return PMSArray(array     = Array,
-                            Name      = 'Coupling',
-                            conf      = conf)
+        elif AsType.lower() == 'pymiesim':
+            return PMSArray(array = Array, conf = conf)
 
         elif AsType.lower() == 'dataframe':
             return self.MakeDF(conf, Array)
@@ -256,17 +248,16 @@ class Setup(object):
         MI = pd.MultiIndex.from_product(list(conf['dimension'].values()),
                                         names = list(conf['dimension'].keys()))
 
-        if conf['Name'] == 'efficiencies':
+        if conf['name'].lower() == 'efficiencies':
             return EfficiencesDF(Array.reshape([conf['size'],3]),
                                  index   = MI,
                                  columns = ['Qsca', 'Qext', 'Qabs'])
 
 
-        elif  conf['Name'] == 'Coupling':
+        elif  conf['name'].lower() == 'coupling':
             return ExperimentDF(Array.flatten(),
                                 index   = MI,
                                 columns = ['Coupling'])
-
 
 
     def GetShape(self, conf):
@@ -278,6 +269,149 @@ class Setup(object):
 
         conf['shape'] = shape
         conf['size']  = size
+
+
+    def Optimize(self, *args, **kwargs):
+        return Optimizer(Setup = self, *args, **kwargs)
+
+
+class Optimizer:
+
+    @beartype
+    def __init__(self,
+                 Setup         : Setup,
+                 Metric        : str,
+                 Parameter     : list,
+                 X0            : list,
+                 WhichDetector : int,
+                 MinVal        : list,
+                 MaxVal        : list,
+                 Optimum       : str,
+                 FirstStride   : Union[float, int],
+                 MaxIter       : int               = 50,
+                 Tol           : Union[float, int] = 1e-10):
+
+        assert Metric.lower() in MetricList, f"Metric {Metric} not in the MetricList \n{MetricList}"
+        assert all(len(x)==len(Parameter) for x in [X0, MinVal, MaxVal ]  ), f'Lenght of parameters, X0, MinVal, MaxVal not equal'
+
+        self.Setup           = Setup
+        self.Metric          = Metric
+        self.Parameters      = Parameter
+        self.X0              = X0
+        self.WhichDetector   = WhichDetector
+        self.MinVal          = MinVal
+        self.MaxVal          = MaxVal
+        self.FirstStride     = FirstStride
+        self.MaxIter         = MaxIter
+        self.Tol             = Tol
+
+        if Optimum.lower()   == 'maximum': self.sign = -1
+        elif Optimum.lower() == 'minimum': self.sign = 1
+
+        self.Result = self.Run()
+
+
+    def ComputePenalty(self, Parameters, x, MaxVal, MinVal, factor=100):
+        Penalty = 0
+        for n in range(len(Parameters)):
+            if MinVal[n] and x[0]< MinVal[n]:
+                Penalty += np.abs( x[0]*factor );
+                x[0]     = self.MinVal[n]
+
+            if MinVal[n] and x[0]> MaxVal[n]:
+                Penalty += np.abs( x[0]*factor );
+                x[0]     = self.MaxVal[n]
+
+        return Penalty
+
+
+    def UpdateConfiguration(self, Parameters, x, WhichDetector):
+
+        for n in range(len(Parameters)):
+            if Parameters[n] in DetectorParamList:
+                setattr(self.Setup.DetectorSet[WhichDetector], Parameters[0], x[0])
+
+            elif Parameters[n] in SourceParamList:
+                setattr(self.Setup.SourceSet.Source, Parameters[0], x[0])
+
+
+    def Run(self):
+
+        def EvalFunc(x):
+            Penalty = self.ComputePenalty(self.Parameters, x, self.MaxVal, self.MinVal, factor=100)
+
+            self.UpdateConfiguration(self.Parameters, x, self.WhichDetector)
+
+            Cost = self.Setup.Coupling(AsType='Optimizer').Cost(self.Metric)
+
+            return self.sign * np.abs(Cost) + Penalty
+
+        Minimizer = Caller(EvalFunc, ParameterName = self.Parameters)
+
+        return minimize(fun      = Minimizer.optimize,
+                        x0       = self.X0,
+                        method   = 'COBYLA',
+                        tol      = self.Tol,
+                        options  = {'maxiter': self.MaxIter, 'rhobeg':self.FirstStride})
+
+
+class Caller:
+    def __init__(self, function, ParameterName: list):
+        self.ParameterName = ParameterName
+        self.f = function # actual objective function
+        self.num_calls = 0 # how many times f has been called
+        self.callback_count = 0 # number of times callback has been called, also measures iteration count
+        self.list_calls_inp = [] # input of all calls
+        self.list_calls_res = [] # result of all calls
+        self.decreasing_list_calls_inp = [] # input of calls that resulted in decrease
+        self.decreasing_list_calls_res = [] # result of calls that resulted in decrease
+        self.list_callback_inp = [] # only appends inputs on callback, as such they correspond to the iterations
+        self.list_callback_res = [] # only appends results on callback, as such they correspond to the iterations
+
+    def optimize(self, x):
+        """Executes the actual simulation and returns the result, while
+        updating the lists too. Pass to optimizer without arguments or
+        parentheses."""
+        result = self.f(x) # the actual evaluation of the function
+        if not self.num_calls: # first call is stored in all lists
+            self.decreasing_list_calls_inp.append(x)
+            self.decreasing_list_calls_res.append(result)
+            self.list_callback_inp.append(x)
+            self.list_callback_res.append(result)
+        elif result < self.decreasing_list_calls_res[-1]:
+            self.decreasing_list_calls_inp.append(x)
+            self.decreasing_list_calls_res.append(result)
+        self.list_calls_inp.append(x)
+        self.list_calls_res.append(result)
+        self.num_calls += 1
+
+
+        if len(self.ParameterName) == 1:
+
+            text = """ \
+            Call Number : {0} \
+            \t {1}: {2:.5e} \
+            \t Cost+Penalty: {3:.10e} \
+            """.format(self.num_calls,
+                       self.ParameterName[0],
+                       x[0],
+                       result)
+
+        if len(self.ParameterName) == 2:
+            text = """ \
+            Call Number : {0} \
+            \t {1}: {2:.5e} \
+            \t {3}: {4:.5e} \
+            \t Cost+Penalty: {5:.10e} \
+            """.format(self.num_calls,
+                       self.ParameterName[0],
+                       x[0],
+                       self.ParameterName[1],
+                       x[1],
+                       result)
+
+        print(text)
+        return result
 
 
 class SampleSet(object):

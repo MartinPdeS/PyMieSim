@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from beartype import beartype
+from beartype      import beartype
 from scipy.special import gamma
-from typing import Union
+from typing        import Union
 
-from PyMieSim.BaseClasses import BaseScatterer, EfficienciesProperties, BaseSource
 from PyMieSim.Representations import S1S2, SPF, Stokes
-from PyMieSim.GLMT.Scatterer import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
-from PyMieSim.LMT.Scatterer import SPHERE, CYLINDER
-from PyMieSim.units import Area
-from PyMieSim.Source import PlaneWave, GaussianBeam
+from PyMieSim.GLMT.Scatterer  import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
+from PyMieSim.LMT.Scatterer   import SPHERE, CYLINDER
+from PyMieSim.units           import Area
+from PyMieSim.Source          import PlaneWave, GaussianBeam
+from PyMieSim.BaseClasses     import ( BaseScatterer,
+                                       EfficienciesProperties,
+                                       BaseSource )
 
 class Sphere(BaseScatterer, EfficienciesProperties):
     """
@@ -36,12 +38,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     """
     @beartype
     def __init__(self,
-                 Diameter:    float,
-                 Source:      Union[PlaneWave, GaussianBeam],
-                 Index:       Union[int, float],
-                 nMedium:     Union[int, float]  = 1.0,
-                 MuSphere:    Union[int, float]  = 1.0,
-                 MuMedium:    Union[int, float]  = 1.0):
+                 Diameter : float,
+                 Source   : Union[PlaneWave, GaussianBeam],
+                 Index    : Union[int, float],
+                 nMedium  : Union[int, float]  = 1.0,
+                 MuSphere : Union[int, float]  = 1.0,
+                 MuMedium : Union[int, float]  = 1.0):
 
         self.type      = 'Sphere'
         self.Diameter  = Diameter
@@ -64,7 +66,9 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         """
         if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
-                raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
+                raise Exception("For GLMT use the LightSource BSC must be \
+                                previously computed. Use \
+                                LightSource.GetBSC(MaxOrder=1, save=False)")
 
             self.Bind = G_SPHERE(Index        = self.Index,
                                  Diameter     = self.Diameter,
@@ -177,12 +181,12 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
     """
 
     def __init__(self,
-                 Diameter:    float,
-                 Source:      BaseSource,
-                 Index:       float,
-                 IndexMedium: float  = 1.0,
-                 MuSphere:    float  = 1.0,
-                 MuMedium:    float  = 1.0):
+                 Diameter    : float,
+                 Source      : BaseSource,
+                 Index       : float,
+                 IndexMedium : float  = 1.0,
+                 MuSphere    : float  = 1.0,
+                 MuMedium    : float  = 1.0):
 
         self.type      = 'Cylinder'
         self.Diameter  = Diameter
@@ -275,11 +279,11 @@ class WMSample(object):
 
     """
     def __init__(self,
-                 g:       float,
-                 lc:      float,
-                 D:       float,
-                 Nc:      float,
-                 Source:  BaseSource):
+                 g      : float,
+                 lc     : float,
+                 D      : float,
+                 Nc     : float,
+                 Source : BaseSource):
 
         self.g  = g; self.lc = lc; self.D  = D; self.Nc = Nc
 

@@ -5,10 +5,13 @@
 import pandas as pd
 from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
-from PyMieSim.Physics import _Polarization
-from PyMieSim.BaseClasses import BaseSource
-from PyMieSim.Constants import *
-from PyMieSim.GLMT.GaussianBeam import Anm, Anm_integrand, Bnm, Bnm_integrand
+from PyMieSim.Physics           import _Polarization
+from PyMieSim.BaseClasses       import BaseSource
+from PyMieSim.Constants         import *
+from PyMieSim.GLMT.GaussianBeam import ( Anm,
+                                         Anm_integrand,
+                                         Bnm,
+                                         Bnm_integrand
 
 
 EPS = 1e-20
@@ -28,9 +31,9 @@ class PlaneWave(BaseSource):
 
     """
     def __init__(self,
-                 Wavelength:   float,
-                 Polarization: float = 0,
-                 E0:           float = 1):
+                 Wavelength   : float,
+                 Polarization : float = 0,
+                 E0           : float = 1):
 
         self.GLMT         = False
         self.Wavelength   = Wavelength
@@ -200,11 +203,11 @@ class GaussianBeam(BaseSource):
 
     """
     def __init__(self,
-                 Wavelength:   float,
-                 NA:           float,
-                 Polarization: float = 0.,
-                 E0:           float = 1.,
-                 Offset:       list  = [EPS]*3) :
+                 Wavelength   : float,
+                 NA           : float,
+                 Polarization : float = 0.,
+                 E0           : float = 1.,
+                 Offset       : list  = [EPS]*3) :
 
         self.GLMT = True
         Offset = array(Offset); Offset[Offset == 0] = EPS
