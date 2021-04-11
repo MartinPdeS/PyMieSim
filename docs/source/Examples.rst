@@ -300,8 +300,8 @@ Experiment: Qsca vs. diameter
 
 -----
 
-Experiment: Qsca vs. wavelength
--------------------------------
+Experiment: Mie resonances
+--------------------------
 
 .. code-block:: python
    :linenos:

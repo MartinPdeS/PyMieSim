@@ -19,30 +19,45 @@ class PMSArray(object):
         arg = arg.lower().split('+', 2)
 
         if len(arg) == 1:
-            if   'max' in arg:  return np.max(self)
-            elif 'min' in arg:  return np.min(self)
-            elif 'mean' in arg: return np.mean(self)
+            if   'max'  in arg : return np.max(self)
+            elif 'min'  in arg : return np.min(self)
+            elif 'mean' in arg : return np.mean(self)
 
         if len(arg) == 2:
-            if   arg[0] == 'rsd':        func = self.rsd
-            elif arg[0] == 'monotonic':  func = self.Monotonic
+            if   arg[0] == 'rsd'          : func = self.rsd
+            elif arg[0] == 'monotonic'    : func = self.Monotonic
 
-            if   arg[1] == 'ri':           return np.mean( func(self, axis = 4) )
-            elif arg[1] == 'diameter':     return np.mean( func(self, axis = 3) )
-            elif arg[1] == 'polarization': return np.mean( func(self, axis = 2) )
-            elif arg[1] == 'wavelength':   return np.mean( func(self, axis = 1) )
-            elif arg[1] == 'detector':     return np.mean( func(self, axis = 0) )
+            if   arg[1] == 'ri'           : return np.mean( func(self.data, axis = 4) )
+            elif arg[1] == 'diameter'     : return np.mean( func(self.data, axis = 3) )
+            elif arg[1] == 'polarization' : return np.mean( func(self.data, axis = 2) )
+            elif arg[1] == 'wavelength'   : return np.mean( func(self.data, axis = 1) )
+            elif arg[1] == 'detector'     : return np.mean( func(self.data, axis = 0) )
 
         raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
 
 
 
     def Monotonic(self, axis):
+        """Method compute and the monotonic value of specified axis.
+        The method then return a new PMSArray daughter object compressed in
+        the said axis.
 
+        Parameters
+        ----------
+        axis : :class:`str`
+            Axis for which to perform the operation.
+
+        Returns
+        -------
+        :class:`PMSArray`
+            New PMSArray instance containing the monotonic metric value of axis.
+
+        """
         axis = axis.lower()
 
-        arr = np.gradient(self.data,
-                          axis = self.conf['order'][axis]).std( axis = self.conf['order'][axis])
+        arr  = np.gradient(self.data,
+                           axis = self.conf['order'][axis])\
+                           .std( axis = self.conf['order'][axis])
 
         conf = self.UpdateConf(axis)
 
@@ -50,10 +65,24 @@ class PMSArray(object):
 
 
     def Mean(self, axis):
+        """Method compute and the mean value of specified axis.
+        The method then return a new PMSArray daughter object compressed in
+        the said axis.
 
+        Parameters
+        ----------
+        axis : :class:`str`
+            Axis for which to perform the operation.
+
+        Returns
+        -------
+        :class:`PMSArray`
+            New PMSArray instance containing the mean value of axis.
+
+        """
         axis = axis.lower()
 
-        arr = np.mean(self.data, axis=self.conf['order'][axis] )
+        arr  = np.mean(self.data, axis=self.conf['order'][axis] )
 
         conf = self.UpdateConf(axis)
 
@@ -61,10 +90,24 @@ class PMSArray(object):
 
 
     def Std(self, axis):
+        """Method compute and the std value of specified axis.
+        The method then return a new PMSArray daughter object compressed in
+        the said axis.
 
+        Parameters
+        ----------
+        axis : :class:`str`
+            Axis for which to perform the operation.
+
+        Returns
+        -------
+        :class:`PMSArray`
+            New PMSArray instance containing the std value of axis.
+
+        """
         axis = axis.lower()
 
-        arr = np.std(self.data, axis=self.conf['order'][axis] )
+        arr  = np.std(self.data, axis=self.conf['order'][axis] )
 
         conf = self.UpdateConf(axis)
 
@@ -72,11 +115,26 @@ class PMSArray(object):
 
 
     def Rsd(self, axis):
+        """Method compute and the rsd value of specified axis.
+        The method then return a new PMSArray daughter object compressed in
+        the said axis.
+        rsd is defined as std/mean.
 
+        Parameters
+        ----------
+        axis : :class:`str`
+            Axis for which to perform the operation.
+
+        Returns
+        -------
+        :class:`PMSArray`
+            New PMSArray instance containing the rsd value of axis.
+
+        """
         axis = axis.lower()
 
-        arr = np.std(self.data, axis=self.conf['order'][axis] ) \
-             /np.mean(self.data, axis=self.conf['order'][axis] )
+        arr  = np.std(self.data, axis=self.conf['order'][axis] ) \
+              /np.mean(self.data, axis=self.conf['order'][axis] )
 
         conf = self.UpdateConf(axis)
 
@@ -85,7 +143,7 @@ class PMSArray(object):
 
     def UpdateConf(self, axis):
 
-        newConf = copy.deepcopy(self.conf)
+        newConf = copy.copy(self.conf)
 
         newConf['order'].pop(axis)
         newConf['dimension'].pop(axis)
@@ -97,20 +155,21 @@ class PMSArray(object):
 
 
     def Plot(self, x):
-        fig = plt.figure(figsize=(8,4))
-        x = x.lower()
+        fig   = plt.figure(figsize=(8,4))
+        x     = x.lower()
         shape = list(self.data.shape)
+
         for key, order in self.conf['order'].items():
             if x == key:
                 shape[order] = None
-                xlabel = self.conf['label'][key]
-                xval   = self.conf['dimension'][key]
+                xlabel       = self.conf['label'][key]
+                xval         = self.conf['dimension'][key]
 
-
-        for idx in product(*[range(s) if s is not None else [slice(None)] for s in shape]):
+        DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
+        for idx in product(*DimSlicer):
             plt.plot(xval,
                      self.data[idx],
-                     label = self.GetLabel(x, idx))
+                     label = self.GetLegend(x, idx))
 
         plt.xlabel(xlabel)
         plt.ylabel(self.conf['label']['variable'])
@@ -119,14 +178,29 @@ class PMSArray(object):
         plt.show()
 
 
-    def GetLabel(self, x, idx):
+    def GetLegend(self, axis, idx):
+        """Method generate and return the legend text for the specific plot.
+
+        Parameters
+        ----------
+        axis : :class:`str`
+            Axis which is used for x-axis of the specific plot
+        idx : :class:`tuple`
+            Dimension indices of the specific plot
+
+        Returns
+        -------
+        :class:`str`
+            Text for the legend
+
+        """
         label = ''
 
         for key in self.conf['order']:
 
-            if x != key:
-                index = idx[self.conf['order'][key]]
-                val = self.conf['dimension'][key][index]
+            if axis != key:
+                index  = idx[self.conf['order'][key]]
+                val    = self.conf['dimension'][key][index]
                 label += f"{key[:3]}.:{val} | "
 
         return label
@@ -141,8 +215,8 @@ class PMSArray(object):
 
 
     def __str__(self):
-        print(self.conf['name'])
-        text = f'PyMieArray \nVariable: {self.Name}\n' + '='*90 + '\n'
+        name = self.conf['name']
+        text =  f'PyMieArray \nVariable: {name}\n' + '='*90 + '\n'
         text += f"{'Parameter':13s}\n" + '-'*90 + '\n'
         for key, val in self.conf['order'].items():
             text += f"""{key:13s}\
@@ -169,11 +243,11 @@ class Opt5DArray(np.ndarray):
     def __init__(self, arr, Name=''):
         self.Name         = Name
 
-        self.dim = { 'detector'      : True,
-                      'wavelength'   : True,
-                      'polarization' : True,
-                      'diameter'     : True,
-                      'index'        : True}
+        self.dim = { 'detector'     : True,
+                     'wavelength'   : True,
+                     'polarization' : True,
+                     'diameter'     : True,
+                     'index'        : True}
 
 
     def Cost(self, arg = 'max'):
@@ -181,19 +255,19 @@ class Opt5DArray(np.ndarray):
         arg = arg.lower().split('+', 2)
 
         if len(arg) == 1:
-            if   'max' in arg:  return np.max(self)
-            elif 'min' in arg:  return np.min(self)
-            elif 'mean' in arg: return np.mean(self)
+            if   'max'  in arg : return np.max(self)
+            elif 'min'  in arg : return np.min(self)
+            elif 'mean' in arg : return np.mean(self)
 
         if len(arg) == 2:
-            if   arg[0] == 'rsd':        func = self.rsd
-            elif arg[0] == 'monotonic':  func = self.Monotonic
+            if   arg[0] == 'rsd'       : func = self.rsd
+            elif arg[0] == 'monotonic' : func = self.Monotonic
 
-            if   arg[1] == 'ri':           return np.mean( func(self, axis = 4) )
-            elif arg[1] == 'diameter':     return np.mean( func(self, axis = 3) )
-            elif arg[1] == 'polarization': return np.mean( func(self, axis = 2) )
-            elif arg[1] == 'wavelength':   return np.mean( func(self, axis = 1) )
-            elif arg[1] == 'detector':     return np.mean( func(self, axis = 0) )
+            if   arg[1] == 'ri'           : return np.mean( func(self, axis = 4) )
+            elif arg[1] == 'diameter'     : return np.mean( func(self, axis = 3) )
+            elif arg[1] == 'polarization' : return np.mean( func(self, axis = 2) )
+            elif arg[1] == 'wavelength'   : return np.mean( func(self, axis = 1) )
+            elif arg[1] == 'detector'     : return np.mean( func(self, axis = 0) )
 
         raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
 

@@ -1,10 +1,9 @@
 import numpy as np
-from numpy import pi, cos, sin, abs
-from mayavi import mlab
-from tvtk.tools import visual
-from tvtk.api import tvtk
-from tvtk.common import configure_input_data
-
+from numpy          import pi, cos, sin, abs
+from mayavi         import mlab
+from tvtk.tools     import visual
+from tvtk.api       import tvtk
+from tvtk.common    import configure_input_data
 from PyMieSim.utils import Sp2Cart
 
 CMAP   = 'jet'
@@ -25,7 +24,11 @@ def ArrowAB(x1, y1, z1, x2, y2, z2, Scale=1):
     ar1.axis        = [x2-x1, y2-y1, z2-z1]
 
 
-def ArrowAVec(Origin, Vec, Scale=0.5, Color=WHITE, ScaleTube=1.0):
+def ArrowAVec(Origin,
+              Vec,
+              Scale     = 0.5,
+              Color     = WHITE,
+              ScaleTube = 1.0):
 
     Vec = np.asarray(Vec)
 
@@ -184,9 +187,18 @@ def UnitSphere(Num, Radius=1.):
     return Sp2Cart(phi*0+Radius, phi, theta)
 
 
-def implicit_plot(expr, ext_grid, fig_handle=None, Nx=101, Ny=101, Nz=101,
-                 col_isurf=(50/255, 199/255, 152/255), col_osurf=(240/255,36/255,87/255),
-                 opa_val=0.8, opaque=True, ori_axis=True, **kwargs):
+def implicit_plot(expr,
+                 ext_grid,
+                 fig_handle = None,
+                 Nx         = 101,
+                 Ny         = 101,
+                 Nz         = 101,
+                 col_isurf  = (50/255, 199/255, 152/255),
+                 col_osurf  = (240/255, 36/255, 87/255),
+                 opa_val    = 0.8,
+                 opaque     = True,
+                 ori_axis   = True,
+                 **kwargs):
     """Function to plot algebraic surfaces described by implicit equations in Mayavi
 
     Implicit functions are functions of the form

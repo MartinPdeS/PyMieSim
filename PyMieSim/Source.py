@@ -11,7 +11,7 @@ from PyMieSim.Constants         import *
 from PyMieSim.GLMT.GaussianBeam import ( Anm,
                                          Anm_integrand,
                                          Bnm,
-                                         Bnm_integrand
+                                         Bnm_integrand )
 
 
 EPS = 1e-20
