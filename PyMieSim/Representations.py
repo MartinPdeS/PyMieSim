@@ -10,7 +10,7 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
 
     def __init__(self, Parent, Num=100, Distance=1.):
 
-        self.Polarization = Parent.Source.Polarization.Radian
+        self.Parent       = Parent
 
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
 
@@ -37,7 +37,8 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
                    Phi          = self['Phi'],
                    Theta        = self['Theta'],
                    Name         = 'Stokes Parameter',
-                   Polarization = self.Polarization)
+                   Polarization = self.Parent.Source.Polarization.Radian,
+                   Testing      = self.Parent.Testing)
 
     def __repr__(self):
         return f"""
@@ -52,7 +53,7 @@ class SPF(dict):
 
     def __init__(self, Parent, Num=100, Distance=1.):
 
-        self.Polarization = Parent.Source.Polarization.Radian
+        self.Parent = Parent
 
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
 
@@ -70,7 +71,8 @@ class SPF(dict):
                       Phi          = self['Phi'],
                       Theta        = self['Theta'],
                       Name         = 'Scattering phase function',
-                      Polarization = self.Polarization)
+                      Polarization = self.Parent.Source.Polarization.Radian,
+                      Testing      = self.Parent.Testing)
 
 
 
@@ -139,7 +141,7 @@ class ScalarFarField(dict):
 
     def __init__(self, Num = 200, Parent = None, Distance=1.):
 
-        self.Polarization = Parent.Source.Polarization.Radian
+        self.Parent = Parent
 
         Phi, Theta = np.linspace(-np.pi/2, np.pi/2, Num), np.linspace(-np.pi, np.pi, Num)
 
@@ -167,13 +169,15 @@ class ScalarFarField(dict):
                             Phi          = self['Phi'],
                             Theta        = self['Theta'],
                             Name         = u'E_φ',
-                            Polarization = self.Polarization)
+                            Polarization = self.Parent.Source.Polarization.Radian,
+                            Testing      = self.Parent.Testing)
 
         StructuredAmplitude(Scalar       = self['ETheta'],
                             Phi          = self['Phi'],
                             Theta        = self['Theta'],
                             Name         = u'E_θ',
-                            Polarization = self.Polarization)
+                            Polarization = self.Parent.Source.Polarization.Radian,
+                            Testing      = self.Parent.Testing)
 
 
 

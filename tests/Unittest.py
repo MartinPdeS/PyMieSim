@@ -17,6 +17,7 @@ from PyMieSim.Plots import *
 from unittest.mock import patch
 from PyMieSim.Representations import S1S2
 
+
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
 Scat        = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
 Samp        = WMSample(g = 0.8, lc = 1e-5, D = 2.5, Nc = 1e4, Source = LightSource)
@@ -60,6 +61,7 @@ class PrintingTest(TestCase):
         self.test29()
         self.test30()
         self.test31()
+        self.test32()        
 
     def test00(self):
         self.Photodiode = Photodiode(Sampling     = 11,
@@ -83,12 +85,12 @@ class PrintingTest(TestCase):
 
 
     def test02(self):
-        self.sScat = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+        self.sScat = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource, Testing=True)
         print('Test 02: Spherical scatterer initialisation passed')
 
 
     def test03(self):
-        self.cScat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = LightSource)
+        self.cScat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = LightSource, Testing=True)
         print('Test 03: Cylindrical scatterer initialisation passed')
 
 
@@ -257,17 +259,19 @@ class PrintingTest(TestCase):
     def test30(self):
         self.addCleanup(mlab.close(all=True))
         a = self.sScat.FarField(Num=10)
-        #a.Plot();
-        mlab.close(all=True)
+        a.Plot();
         print('Test 30: Scatterer <FarField> plot passed')
 
 
     def test31(self):
         a = self.sScat.SPF(Num=10)
-        #a.Plot(); mlab.close()
+        a.Plot()
         print('Test 31: Scatterer <SPF> plot passed')
 
-
+    def test32(self):
+        a = self.sScat.Stokes(Num=10)
+        a.Plot()
+        print('Test 32: Scatterer <Stokes> plot passed')
 
 
 if __name__ == '__main__':

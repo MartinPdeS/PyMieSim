@@ -6,7 +6,7 @@ from tvtk.api import tvtk
 
 from PyMieSim.utils import Sp2Cart
 from PyMieSim.PlotsUtils import *
-
+from pyface.api import GUI
 
 def Unstructured(**kwargs):
     fig = mlab.figure(figure=kwargs['Name'],size=(600,300))
@@ -33,7 +33,12 @@ def Structured(**kwargs):
 
 
 @mlab.show
-def UnstructuredAbs(Mesh, Scalar=None, Name='', Figure=None):
+def UnstructuredAbs(Mesh,
+                    Scalar  = None,
+                    Name    = '',
+                    Figure  = None,
+                    Testing = False):
+
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
 
@@ -61,10 +66,16 @@ def UnstructuredAbs(Mesh, Scalar=None, Name='', Figure=None):
                   title            = 'Real part',
                   orientation      = 'horizontal' )
 
+    if Testing: GUI.invoke_after(100, close)
 
 
 @mlab.show
-def UnstructuredAmplitude(Mesh, Scalar=None, Name='', Figure=None):
+def UnstructuredAmplitude(Mesh,
+                          Scalar  = None,
+                          Name    = '',
+                          Figure  = None,
+                          Testing = False):
+
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
 
@@ -110,9 +121,18 @@ def UnstructuredAmplitude(Mesh, Scalar=None, Name='', Figure=None):
 
         WavenumberArrow(Figure, Origin=(val,0,-3), Scale=1)
 
+    if Testing: GUI.invoke_after(100, close)
+
 
 @mlab.show
-def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None, Figure=None):
+def StructuredAbs(Scalar,
+                  Phi,
+                  Theta,
+                  Name         = '',
+                  Polarization = None,
+                  Figure       = None,
+                  Testing      = False):
+
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
 
@@ -134,6 +154,16 @@ def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None, Figure=None):
     if Polarization is not None:
         AddSource(Figure, O1, Polarization, Scale=1)
 
+    if Testing: GUI.invoke_after(100, close)
+
+
+def close():
+    """Close the scene."""
+    f = mlab.gcf()
+    e = mlab.get_engine()
+    v = e.get_viewer(f)
+    v.close()
+
 
 
 @mlab.show
@@ -143,7 +173,8 @@ def StructuredAmplitude(Scalar,
                         Name         = '',
                         Polarization = None,
                         Figure       = None,
-                        Source       = None):
+                        Source       = None,
+                        Testing      = False):
 
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
@@ -176,6 +207,8 @@ def StructuredAmplitude(Scalar,
                       nb_labels        = 5,
                       title            = f'{keys} part',
                       orientation      = ax )
+
+    if Testing: GUI.invoke_after(100, close)
 
 
 
@@ -232,7 +265,17 @@ def PlotConfiguration(Detector, Scatterer):
 
 
 @mlab.show
-def StokesPlot(I, Q, U, V, Phi, Theta, Name='', Polarization=None, Figure=None):
+def StokesPlot(I,
+               Q,
+               U,
+               V,
+               Phi,
+               Theta,
+               Name         = '',
+               Polarization = None,
+               Figure       = None,
+               Testing      = False):
+
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
 
@@ -266,6 +309,9 @@ def StokesPlot(I, Q, U, V, Phi, Theta, Name='', Polarization=None, Figure=None):
 
         if Polarization is not None:
             AddSource(Figure, Origin, Polarization, Scale=1)
+
+
+    if Testing: GUI.invoke_after(100, close)
 
 
 
