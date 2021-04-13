@@ -154,7 +154,19 @@ class PMSArray(object):
         return newConf
 
 
-    def Plot(self, x):
+    def Plot(self, Scale = 'linear', *args, **kwargs):
+
+        if Scale == 'linear'     : plot = plt.plot
+        if Scale == 'logarithmic': plot = plt.loglog
+
+        if self.conf['name'] == 'Efficiencies [Qsca, Qext, Qabs]':
+            return self.PlotEfficiencies(*args, **kwargs, plot=plot)
+
+        if self.conf['name'] == 'Coupling':
+            return self.PlotCoupling(*args, **kwargs, plot=plot)
+
+
+    def PlotCoupling(self, x, plot, *args, **kwargs):
         fig   = plt.figure(figsize=(8,4))
         x     = x.lower()
         shape = list(self.data.shape)
@@ -167,9 +179,12 @@ class PMSArray(object):
 
         DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
         for idx in product(*DimSlicer):
-            plt.plot(xval,
-                     self.data[idx],
-                     label = self.GetLegend(x, idx))
+
+            plot(xval,
+                 self.data[idx],
+                 label = self.GetLegend(x, idx),
+                 *args,
+                 **kwargs)
 
         plt.xlabel(xlabel)
         plt.ylabel(self.conf['label']['variable'])
@@ -177,6 +192,41 @@ class PMSArray(object):
         plt.legend(fontsize=8)
         plt.show()
 
+
+    def PlotEfficiencies(self, x, plot, y='all', *args, **kwargs):
+        y = y.lower()
+        if   y == 'all'  : Eff = [0, 1, 2] ; label = ['Qsca', 'Qext', 'Qabs']
+        elif y == 'qsca' : Eff = [0]       ; label = [r'Q$_{sca}$']
+        elif y == 'qext' : Eff = [1]       ; label = [r'Q$_{ext}$']
+        elif y == 'qabs' : Eff = [2]       ; label = [r'Q$_{abs}$']
+        else: ValueError("Invalid y input, y must be in ['all' 'Qsca', 'Qext', 'Qabs']")
+
+        fig   = plt.figure(figsize=(8,4))
+        x     = x.lower()
+        shape = list(self.data.shape)
+
+        for key, order in self.conf['order'].items():
+            if x == key:
+                shape[order] = None
+                xlabel       = self.conf['label'][key]
+                xval         = self.conf['dimension'][key]
+
+
+        DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
+        DimSlicer[0] = Eff
+        for ni, idx in enumerate( product(*DimSlicer) ):
+            plot(xval,
+                 self.data[idx],
+                 label = label[idx[0]] + '| ' + self.GetLegend(x, idx),
+                 *args,
+                 **kwargs)
+
+
+        plt.xlabel(xlabel)
+        plt.ylabel(self.conf['label']['variable'])
+        plt.grid()
+        plt.legend(fontsize=8)
+        plt.show()
 
     def GetLegend(self, axis, idx):
         """Method generate and return the legend text for the specific plot.
@@ -201,7 +251,7 @@ class PMSArray(object):
             if axis != key:
                 index  = idx[self.conf['order'][key]]
                 val    = self.conf['dimension'][key][index]
-                label += f"{key[:3]}.:{val} | "
+                label += f"{key[:3]}={val} | "
 
         return label
 

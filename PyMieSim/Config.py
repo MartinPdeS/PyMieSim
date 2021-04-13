@@ -40,7 +40,7 @@ DefaultConfig = {'name'         : 'Coupling',
 
        }
 
-DefaultConfigEff = {'name'         : 'Coupling',
+DefaultConfigEff = {'name'         : 'Efficiencies [Qsca, Qext, Qabs]',
                     'order'        : {
 
                             'wavelength'   : 1,

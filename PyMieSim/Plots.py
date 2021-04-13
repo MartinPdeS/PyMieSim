@@ -137,7 +137,14 @@ def StructuredAbs(Scalar, Phi, Theta, Name='', Polarization=None, Figure=None):
 
 
 @mlab.show
-def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None, Figure=None, Source=None):
+def StructuredAmplitude(Scalar,
+                        Phi,
+                        Theta,
+                        Name         = '',
+                        Polarization = None,
+                        Figure       = None,
+                        Source       = None):
+
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
 
@@ -169,6 +176,7 @@ def StructuredAmplitude(Scalar, Phi, Theta, Name='', Polarization=None, Figure=N
                       nb_labels        = 5,
                       title            = f'{keys} part',
                       orientation      = ax )
+
 
 
 

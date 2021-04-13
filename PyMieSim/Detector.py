@@ -93,6 +93,62 @@ class Photodiode(BaseDetector, MeshProperty):
         """
 
 
+
+
+class IntegratingSphere(Photodiode):
+    """Detector type class representing a photodiode, light coupling is
+    thus independant of the phase of the latter.
+
+    Parameters
+    ----------
+    NA : :class:`float`
+        Numerical aperture of imaging system.
+    Sampling : :class:`int`
+        Number of sampling points for the mode (inside NA).
+    GammaOffset : :class:`float`
+        Angle offset of detector in the direction perpendicular to polarization.
+    PhiOffset : :class:`float`
+        Angle offset of detector in the direction parallel to polarization.
+    Filter : :class:`float`
+        Angle of polarization filter in front of detector. Default is "None"
+    CouplingMode : :class:`str`
+        Methode for computing mode coupling. Either Centered or Mean.
+
+    """
+    @beartype
+    def __init__(self,
+                 Sampling     : int                      = 400,
+                 CouplingMode : str                      = 'Centered',
+                 Filter       : Union[int, float, bool]  = None):
+
+        self.CouplingMode = ('Intensity', CouplingMode)
+
+        self._GammaOffset, self._PhiOffset = 0, 0
+
+        self._Filter = _Polarization(Filter)
+
+        self._NA = 2.0
+
+        self.Mesh = self.SphericalMesh(Sampling    = Sampling,
+                                       MaxAngle    = self._NA,
+                                       PhiOffset   = 0,
+                                       GammaOffset = 0,
+                                       Structured  = False)
+
+        self.Scalar = self.FarField(Num=self.Mesh.Sampling, Structured=False)
+
+
+    def __repr__(self):
+
+        return f"""
+        Integrating sphere
+        Coupling Mode: Intensity
+        Sampling:      {self.Mesh.Sampling}
+        """
+
+
+
+
 class LPmode(BaseDetector, MeshProperty):
     """Detector type class representing a fiber LP mode, light coupling is
     thus dependant of the phase of the latter.
@@ -218,6 +274,10 @@ class LPmode(BaseDetector, MeshProperty):
         Gamma offset:  {self.Mesh.GammaOffset}
         Phi offset:    {self.Mesh.PhiOffset}
         """
+
+
+
+
 
 
 class _Photodiode(BaseDetector, MeshProperty):

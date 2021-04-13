@@ -13,6 +13,9 @@ from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
 from PyMieSim.Experiment import ScatSet, Setup, SourceSet, SampleSet
 from PyMieSim.Mesh import FibonacciMesh
+from PyMieSim.Plots import *
+from unittest.mock import patch
+from PyMieSim.Representations import S1S2
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)
 Scat        = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource)
@@ -54,6 +57,9 @@ class PrintingTest(TestCase):
         self.test26()
         self.test27()
         self.test28()
+        self.test29()
+        self.test30()
+        self.test31()
 
     def test00(self):
         self.Photodiode = Photodiode(Sampling     = 11,
@@ -92,12 +98,12 @@ class PrintingTest(TestCase):
 
 
     def test05(self):
-        Scat.FarField(Num=10)
+        self.sScat.FarField(Num=10)
         print('Test 05: Scatterer <FarField> compute passed')
 
 
     def test06(self):
-        Scat.SPF(Num=10)
+        self.sScat.SPF(Num=10)
         print('Test 06: Scatterer <SPF> compute passed')
 
 
@@ -117,13 +123,13 @@ class PrintingTest(TestCase):
 
 
     def test10(self):
-        self.source = SourceSet(WavelengthList = 400e-9,PolarizationList = 0, SourceType = 'PlaneWave')
+        self.source = SourceSet(WavelengthList = 400e-9, PolarizationList = 0, SourceType = 'PlaneWave')
         self.ExpSet = Setup(ScattererSet = self.sScatSet, SourceSet = self.source, DetectorSet = self.Photodiode)
         print('Test 10: <Setup> initialisation passed')
 
 
     def test11(self):
-        self.ExpSet.Qsca()
+        self.ExpSet.Efficiencies()
         print('Test 11: <ScattererSet> Qsca passed')
 
 
@@ -227,7 +233,7 @@ class PrintingTest(TestCase):
 
 
     def test26(self):
-        self.ExpSet.Coupling(AsType='ndarray')
+        self.ExpSet.Coupling(AsType='pymiesim')
         print("Test 26: <Experiment> 'ndarray' output passed")
 
 
@@ -241,7 +247,25 @@ class PrintingTest(TestCase):
         print("Test 28: <Experiment> 'optimizer' output passed")
 
 
+    def test29(self):
+        with patch('matplotlib.pyplot') as p:
+            a = self.sScat.S1S2(Num=10)
+            assert a.Plot() == None
+            print('Test 29: Scatterer <S1S2> plot passed')
 
+
+    def test30(self):
+        self.addCleanup(mlab.close(all=True))
+        a = self.sScat.FarField(Num=10)
+        #a.Plot();
+        mlab.close(all=True)
+        print('Test 30: Scatterer <FarField> plot passed')
+
+
+    def test31(self):
+        a = self.sScat.SPF(Num=10)
+        #a.Plot(); mlab.close()
+        print('Test 31: Scatterer <SPF> plot passed')
 
 
 

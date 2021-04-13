@@ -26,9 +26,10 @@ from PyMieSim.Config    import ( MetricList,
 
 
 OUTPUTTYPE = ['optimizer','numpy', 'pymiesim', 'dataframe']
-exList = Union[list, np.ndarray]
+exList  = Union[int, float, list, np.ndarray, tuple]
+UlistLike = (list, np.ndarray, tuple)
 exfloat = Union[bool, int, float]
-exArg = Union[float, int, list, np.ndarray]
+DetecArg = Union[LPmode, Photodiode, list, tuple]
 
 class ScatSet(object):
 
@@ -38,6 +39,9 @@ class ScatSet(object):
                  IndexList     :  exList,
                  nMedium       :  exfloat    = 1.0,
                  ScattererType :  str        = 'Sphere'):
+
+        if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
+        if not isinstance(DiameterList, UlistLike) : DiameterList = [DiameterList]
 
         self._Diameter, self._Index = None, None
 
@@ -81,10 +85,13 @@ class SourceSet(object):
 
     @beartype
     def __init__(self,
-                 WavelengthList   :   exArg,
-                 PolarizationList :   exArg = [0],
-                 SourceType       :   str   = 'PlaneWave'):
+                 WavelengthList   :   exList,
+                 PolarizationList :   exList = [0],
+                 SourceType       :   str    = 'PlaneWave'):
 
+        if not isinstance(WavelengthList, UlistLike)   : WavelengthList   = [WavelengthList]
+
+        if not isinstance(PolarizationList, UlistLike) : PolarizationList = [PolarizationList]
 
         self._Wavelength, self._Polarization = None, None
 
@@ -130,8 +137,9 @@ class Setup(object):
     def __init__(self,
                  ScattererSet : ScatSet            = None,
                  SourceSet    : SourceSet          = None,
-                 DetectorSet  : Union[tuple, list] = None):
+                 DetectorSet  : DetecArg           = []):
 
+        if not isinstance(DetectorSet, UlistLike): DetectorSet = [DetectorSet]
 
         self.MetricList   = MetricList
 
@@ -141,9 +149,9 @@ class Setup(object):
 
         self.ScattererSet = ScattererSet
 
-        self.DetectorSetName = []
         for nd, dectector in enumerate(self.DetectorSet):
-            self.DetectorSetName.append( f"Detector {nd}" )
+            dectector.Name = f"Detector {nd}"
+
 
 
     def Efficiencies(self, AsType='numpy'):
@@ -172,20 +180,26 @@ class Setup(object):
 
         Array = np.empty(config['size']*3)
 
-
         i = 0
         for source in self.SourceSet.Generator():
             for scat in self.ScattererSet.Generator(Source=source):
                 Qsca, Qext, Qabs = scat.GetEfficiencies()
-                Array[i]   = Qsca
-                Array[i+1] = Qext
-                Array[i+2] = Qabs
-                i+=3
+                Array[i]         = Qsca
+                Array[i+1]       = Qext
+                Array[i+2]       = Qabs
+                print(Qsca - Qext, Qabs)
+                i               += 3
 
-        return self.ReturnType(Array     = Array.reshape([3]+config['shape']),
+        Array = Array.reshape(config['shape']+[3])
+
+        return self.ReturnType(Array     = np.rollaxis(Array, 4),
                                AsType    = AsType,
                                conf      = config)
 
+
+
+    def AssertionEff(self, AsType, ):
+        pass
 
     def Coupling(self, AsType='numpy'):
         """Property method which return a n by m by l OptArray array, n being the
@@ -205,7 +219,7 @@ class Setup(object):
 
         config = DefaultConfig
 
-        config['dimension'] = { 'detector'     : self.DetectorSetName,
+        config['dimension'] = { 'detector'     : [Det.Name for Det in self.DetectorSet],
                                 'wavelength'   : self.SourceSet.Wavelength,
                                 'polarization' : self.SourceSet.Polarization,
                                 'diameter'     : self.ScattererSet.Diameter,
