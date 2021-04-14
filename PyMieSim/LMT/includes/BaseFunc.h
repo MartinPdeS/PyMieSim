@@ -81,8 +81,9 @@ PolarizationTerm(uint ThetaLength,
                  double * ThetaPtr,
                  double * CosTerm,
                  double * SinTerm,
-                 bool   & Polarized)
+                 double & Polarization)
 {
+  bool Polarized = IsPolarized(Polarization);
   if (Polarized==true)
   {
     for (uint t = 0; t < ThetaLength; t++)

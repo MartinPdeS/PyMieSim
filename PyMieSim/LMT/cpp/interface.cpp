@@ -1,7 +1,7 @@
-#include "../../includes/SpecialFunc.h"
-#include "../../includes/utils.h"
-#include "../../includes/BaseClass.h"
-#include "../../includes/BaseFunc.h"
+#include "../includes/SpecialFunc.h"
+#include "../includes/utils.h"
+#include "../includes/BaseClass.h"
+#include "../includes/BaseFunc.h"
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
 #include <iostream>
@@ -17,7 +17,7 @@ PYBIND11_MODULE(Scatterer, module) {
       py::class_<SPHERE>(module, "SPHERE")
       .def(py::init<double, double, double, double, double, double>(),
            py::arg("Index"),
-           py::arg("Diameter"),
+           py::arg("Diameter"), 
            py::arg("Wavelength"),
            py::arg("nMedium")      = 1.,
            py::arg("Polarization") = 0.,
@@ -25,7 +25,7 @@ PYBIND11_MODULE(Scatterer, module) {
 
        .def("S1S2",
             &SPHERE::S1S2,
-            py::arg("Phi") ) 
+            py::arg("Phi") )
 
       .def("uFields",
            &SPHERE::uFields,

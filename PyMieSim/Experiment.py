@@ -32,6 +32,8 @@ UlistLike = (list, np.ndarray, tuple)
 exfloat = Union[bool, int, float]
 DetecArg = Union[LPmode, Photodiode, list, tuple]
 
+
+
 class ScatSet(object):
 
     @beartype
@@ -42,6 +44,7 @@ class ScatSet(object):
                  ScattererType :  str        = 'Sphere'):
 
         if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
+        
         if not isinstance(DiameterList, UlistLike) : DiameterList = [DiameterList]
 
         self._Diameter, self._Index = None, None
@@ -219,8 +222,7 @@ class Setup(object):
         """
 
 
-        assert AsType.lower() in OUTPUTTYPE, \
-        f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
+        self.AssertionType(AsType=AsType)
 
         config = DefaultConfig
 
@@ -268,9 +270,9 @@ class Setup(object):
                                         names = list(conf['dimension'].keys()))
 
         if conf['name'].lower() == 'efficiencies':
-            return EfficiencesDF(Array.reshape([conf['size'],3]),
+            return EfficiencesDF(Array.reshape([conf['size'], len(config['NameList'])]),
                                  index   = MI,
-                                 columns = ['Qsca', 'Qext', 'Qabs'])
+                                 columns = config['NameList'])
 
 
         elif  conf['name'].lower() == 'coupling':
@@ -354,6 +356,7 @@ class Optimizer:
                 setattr(self.Setup.SourceSet.Source, Parameters[0], x[0])
 
 
+
     def Run(self):
 
         def EvalFunc(x):
@@ -361,9 +364,11 @@ class Optimizer:
 
             self.UpdateConfiguration(self.Parameters, x, self.WhichDetector)
 
-            Cost = self.Setup.Coupling(AsType='Optimizer').Cost(self.Metric)
+            Array = self.Setup.Coupling(AsType='Optimizer')
 
-            return self.sign * np.abs(Cost) + Penalty
+            Array.DefineCostFunc(self.Metric)
+
+            return self.sign * np.abs(Array.Cost()) + Penalty
 
         Minimizer = Caller(EvalFunc, ParameterName = self.Parameters)
 

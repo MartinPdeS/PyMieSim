@@ -249,7 +249,7 @@ class PMSArray(object):
             if axis != key:
                 index  = idx[self.conf['order'][key]]
                 val    = self.conf['dimension'][key][index]
-                label += f"{key[:3]}={val} | "
+                label += f"{key[:3]}={val:.1e} | "
 
         return label
 
@@ -297,27 +297,38 @@ class Opt5DArray(np.ndarray):
                      'diameter'     : True,
                      'index'        : True}
 
-
-    def Cost(self, arg = 'max'):
-
+    def DefineCostFunc(self, arg):
         arg = arg.lower().split('+', 2)
 
         if len(arg) == 1:
-            if   'max'  in arg : return np.max(self)
-            elif 'min'  in arg : return np.min(self)
-            elif 'mean' in arg : return np.mean(self)
+            if   'max'  in arg : self.CostFunc = np.max
+            elif 'min'  in arg : self.CostFunc = np.min
+            elif 'mean' in arg : self.CostFunc = np.mean
 
         if len(arg) == 2:
             if   arg[0] == 'rsd'       : func = self.rsd
             elif arg[0] == 'monotonic' : func = self.Monotonic
+            elif arg[0] == 'max'       : func = np.max
+            elif arg[0] == 'min'       : func = np.min
+            elif arg[0] == 'mean'      : func = np.mean
 
-            if   arg[1] == 'ri'           : return np.mean( func(self, axis = 4) )
-            elif arg[1] == 'diameter'     : return np.mean( func(self, axis = 3) )
-            elif arg[1] == 'polarization' : return np.mean( func(self, axis = 2) )
-            elif arg[1] == 'wavelength'   : return np.mean( func(self, axis = 1) )
-            elif arg[1] == 'detector'     : return np.mean( func(self, axis = 0) )
 
-        raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
+            if   arg[1] == 'all'          : self.CostFunc = np.mean( func(self) )
+            elif arg[1] == 'ri'           : self.CostFunc = np.mean( func(self, axis = 4) )
+            elif arg[1] == 'diameter'     : self.CostFunc = np.mean( func(self, axis = 3) )
+            elif arg[1] == 'polarization' : self.CostFunc = np.mean( func(self, axis = 2) )
+            elif arg[1] == 'wavelength'   : self.CostFunc = np.mean( func(self, axis = 1) )
+            elif arg[1] == 'detector'     : self.CostFunc = np.mean( func(self, axis = 0) )
+
+            raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
+
+
+
+    def Cost(self):
+
+        return self.CostFunc(self)
+
+
 
 
     def Monotonic(self, axis):

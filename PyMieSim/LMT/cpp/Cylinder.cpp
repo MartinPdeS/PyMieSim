@@ -24,19 +24,16 @@ private:
              k,
              E0,
              Mu,
-             MuScat,
-             GetQsca(),
-             GetQext();
+             MuScat;
 
     void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
              LowFreqAnBn(complex128* an, complex128* bn),
              HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
-             IsPolarized(),
              PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm);
 
 
     public:
-        std::tuple<double, double, double> GetEfficiencies();
+        std::tuple<double, double, double, double, double, double, double> GetEfficiencies();
 
         Cndarray                           An(uint MaxOrder),
                                            Bn(uint MaxOrder),
@@ -68,7 +65,7 @@ private:
           this->SizeParam     = GetSizeParameter(Diameter, Wavelength, nMedium);
           this->Mu            = 1.0;
           this->MuScat        = 1.0;
-          this->IsPolarized();
+          Polarized           = IsPolarized(Polarization);
         }
 
         ~CYLINDER(){  }
@@ -97,16 +94,6 @@ CYLINDER::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm
     }
   }
 }
-
-
-void
-CYLINDER::IsPolarized()
-{
-  if (Polarization==-1.){Polarized=false;}
-  else                  {Polarized=true;}
-}
-
-
 
 
 std::tuple<Cndarray,Cndarray>
@@ -327,64 +314,6 @@ CYLINDER::uS1S2(ndarray& Phi, ndarray& Theta)
 }
 
 
-double
-CYLINDER::GetQsca()
-{
-    uint MaxOrder   = GetMaxOrder(SizeParam);
-
-    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
-               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
-
-    this->ComputeAnBn(an, bn, MaxOrder);
-
-    complex128 temp = 0.;
-
-    for(uint it = 0; it < MaxOrder; ++it)
-    {
-         temp += (2.* (double)(it+1) + 1.) * (   std::real( an[it] ) * std::real( an[it] )
-                                               + std::imag( an[it] ) * std::imag( an[it] )
-                                               + std::real( bn[it] ) * std::real( bn[it] )
-                                               + std::imag( bn[it] ) * std::imag( bn[it] ) );
-    }
-
-    free(an);
-    free(bn);
-
-    return 2. / (SizeParam * SizeParam)  * std::real(temp);
-}
-
-
-double
-CYLINDER::GetQext()
-{
-    uint MaxOrder   = GetMaxOrder(SizeParam);
-
-    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
-               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
-
-    this->ComputeAnBn(an, bn, MaxOrder);
-
-    complex128 temp = 0.;
-
-    for(uint it = 0; it < MaxOrder; ++it){ temp += ( 2.*(double)(it+1) + 1.) * ( std::real( an[it] + an[it] ) ); }
-
-    free(an);
-    free(bn);
-
-    return 2. / (SizeParam * SizeParam) * std::real(temp);
-}
-
-
-std::tuple<double, double, double>
-CYLINDER::GetEfficiencies()
-{
-    double Qsca = GetQsca();
-    double Qext = GetQext();
-    double Qabs = Qext - Qsca;
-
-    return std::make_tuple(Qsca, Qext, Qabs);
-}
-
 
 void
 CYLINDER::ComputeAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
@@ -459,3 +388,35 @@ CYLINDER::An(uint MaxOrder)
   this->HighFreqAnBn(anPtr, bnPtr, MaxOrder);
   return an;
 }
+
+
+
+std::tuple<double, double, double, double, double, double, double>
+CYLINDER::GetEfficiencies()
+{
+    uint MaxOrder   = GetMaxOrder(SizeParam);
+
+    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
+
+    this->ComputeAnBn(an, bn, MaxOrder);
+
+    double Qsca   = GetQsca(an, bn, MaxOrder, SizeParam);
+    double Qext   = GetQext(an, bn, MaxOrder, SizeParam);
+    double g      = Getg(an, bn, MaxOrder, SizeParam, Qsca);
+    double Qabs   = Qext - Qsca;
+    double Qback  = GetQback(an, bn, MaxOrder, SizeParam);
+    double Qpr    = Qext - g * Qsca;
+    double Qratio = Qback / Qsca;
+
+    free(an);
+    free(bn);
+    return std::make_tuple(Qsca, Qext, Qabs, Qback, Qratio, g, Qpr);
+}
+
+
+
+
+
+
+// -

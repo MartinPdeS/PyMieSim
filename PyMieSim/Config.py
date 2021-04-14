@@ -50,7 +50,7 @@ DefaultConfigEff = {'name'         : 'Efficiencies [Qsca, Qext, Qabs]',
 
                     'label'        : {
                             'variable'     : 'Efficiencies',
-                            'wavelength'   : '$\lambda$ [m]',
+                            'wavelength'   : 'Wavelength $\lambda$ [m]',
                             'polarization' : 'Polarization [Degree]',
                             'diameter'     : 'Diameter [m]',
                             'ri'           : 'Refracive index'},

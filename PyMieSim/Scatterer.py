@@ -46,7 +46,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                  MuMedium : Union[int, float]  = 1.0,
                  Testing  : bool               = False):
 
-        super(Sphere, self).__init__()
+        super().__init__()
         self.type      = 'Sphere'
         self.Diameter  = Diameter
         self.Source    = Source
@@ -190,7 +190,7 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
                  MuMedium    : float  = 1.0,
                  Testing     : bool   = False):
 
-        super(Sphere, self).__init__()
+        super().__init__()
         self.type      = 'Cylinder'
         self.Diameter  = Diameter
         self.Source    = Source
