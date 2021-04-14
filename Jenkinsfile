@@ -12,7 +12,7 @@ pipeline {
                 sh 'apt-get update && apt-get install -y python3-opencv'
                 sh 'pip3 install opencv-python'
                 sh 'pip3 install -r requirements.txt'
-                sh 'apt-get install libboost-all-dev'
+                sh 'apt-get install -y libboost-all-dev'
             }
         }
     }
