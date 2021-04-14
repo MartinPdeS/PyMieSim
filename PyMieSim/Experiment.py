@@ -26,6 +26,7 @@ from PyMieSim.Config    import ( MetricList,
 
 
 OUTPUTTYPE = ['optimizer','numpy', 'pymiesim', 'dataframe']
+EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
 exList  = Union[int, float, list, np.ndarray, tuple]
 UlistLike = (list, np.ndarray, tuple)
 exfloat = Union[bool, int, float]
@@ -154,7 +155,7 @@ class Setup(object):
 
 
 
-    def Efficiencies(self, AsType='numpy'):
+    def Efficiencies(self, Eff='Qsca', AsType='numpy'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qsca) vs. scatterer diameter vs. scatterer refractive index.
 
@@ -164,11 +165,13 @@ class Setup(object):
             Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
 
         """
+        if not isinstance(Eff, UlistLike) : Eff = [Eff]
 
-        assert AsType.lower() in OUTPUTTYPE, \
-        f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
+        self.AssertionType(AsType=AsType, Eff=Eff)
 
         config = DefaultConfigEff
+
+        config['NameList'] = Eff
 
         config['dimension'] = { 'wavelength'   : self.SourceSet.Wavelength,
                                 'polarization' : self.SourceSet.Polarization,
@@ -178,19 +181,16 @@ class Setup(object):
 
         self.GetShape(config)
 
-        Array = np.empty(config['size']*3)
+        Array = np.empty(config['size'] * len(Eff))
 
         i = 0
         for source in self.SourceSet.Generator():
             for scat in self.ScattererSet.Generator(Source=source):
-                Qsca, Qext, Qabs = scat.GetEfficiencies()
-                Array[i]         = Qsca
-                Array[i+1]       = Qext
-                Array[i+2]       = Qabs
-                print(Qsca - Qext, Qabs)
-                i               += 3
+                for eff in Eff:
+                    Array[i]         = getattr(scat, eff)
+                    i               += 1
 
-        Array = Array.reshape(config['shape']+[3])
+        Array = Array.reshape(config['shape']+[len(Eff)])
 
         return self.ReturnType(Array     = np.rollaxis(Array, 4),
                                AsType    = AsType,
@@ -198,8 +198,13 @@ class Setup(object):
 
 
 
-    def AssertionEff(self, AsType, ):
-        pass
+    def AssertionType(self, AsType=None, Eff=None):
+        if AsType:
+            assert AsType.lower() in OUTPUTTYPE, f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
+
+        if Eff:
+            assert set(Eff).issubset(EFFTYPE), f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}'
+
 
     def Coupling(self, AsType='numpy'):
         """Property method which return a n by m by l OptArray array, n being the

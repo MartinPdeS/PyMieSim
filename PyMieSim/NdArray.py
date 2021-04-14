@@ -166,6 +166,7 @@ class PMSArray(object):
             return self.PlotCoupling(*args, **kwargs, plot=plot)
 
 
+
     def PlotCoupling(self, x, plot, *args, **kwargs):
         fig   = plt.figure(figsize=(8,4))
         x     = x.lower()
@@ -193,13 +194,8 @@ class PMSArray(object):
         plt.show()
 
 
-    def PlotEfficiencies(self, x, plot, y='all', *args, **kwargs):
-        y = y.lower()
-        if   y == 'all'  : Eff = [0, 1, 2] ; label = ['Qsca', 'Qext', 'Qabs']
-        elif y == 'qsca' : Eff = [0]       ; label = [r'Q$_{sca}$']
-        elif y == 'qext' : Eff = [1]       ; label = [r'Q$_{ext}$']
-        elif y == 'qabs' : Eff = [2]       ; label = [r'Q$_{abs}$']
-        else: ValueError("Invalid y input, y must be in ['all' 'Qsca', 'Qext', 'Qabs']")
+    def PlotEfficiencies(self, x, plot, *args, **kwargs):
+
 
         fig   = plt.figure(figsize=(8,4))
         x     = x.lower()
@@ -213,11 +209,12 @@ class PMSArray(object):
 
 
         DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
-        DimSlicer[0] = Eff
+        DimSlicer[0] = range(len(self.conf['NameList']))
+
         for ni, idx in enumerate( product(*DimSlicer) ):
             plot(xval,
                  self.data[idx],
-                 label = label[idx[0]] + '| ' + self.GetLegend(x, idx),
+                 label = self.conf['NameList'][idx[0]] + '| ' + self.GetLegend(x, idx),
                  *args,
                  **kwargs)
 
@@ -227,6 +224,7 @@ class PMSArray(object):
         plt.grid()
         plt.legend(fontsize=8)
         plt.show()
+
 
     def GetLegend(self, axis, idx):
         """Method generate and return the legend text for the specific plot.
