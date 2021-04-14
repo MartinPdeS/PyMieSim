@@ -25,7 +25,7 @@ PYBIND11_MODULE(Scatterer, module) {
 
        .def("S1S2",
             &SPHERE::S1S2,
-            py::arg("Phi") )
+            py::arg("Phi") ) 
 
       .def("uFields",
            &SPHERE::uFields,

@@ -39,9 +39,6 @@ class MeshProperty(object):
 
     """
 
-    def __init__(self):
-        pass
-
     @property
     def Filter(self):
         return self._Filter
@@ -86,6 +83,7 @@ class BaseDetector(object):
     of the angular mesh for Far-Field computations.
 
     """
+
     def _Coupling(self, Scatterer):
         """
         Return the value of the scattererd light coupling as computed as:
@@ -207,7 +205,7 @@ class EfficienciesProperties(object):
         Extinction efficiency.
 
         .. math::
-            Q_{ext}=\\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1) / \\text{real} \{ a_n+b_n \}
+            Q_{ext}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}  (2n+1) / \\text{real} \{ a_n+b_n \}
 
         """
         if self._Qext:
@@ -223,7 +221,7 @@ class EfficienciesProperties(object):
         Scattering efficiency.
 
         .. math::
-            Q_{sca}=\\frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)
+            Q_{sca}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}} (2n+1)(|a_n|^2+|b_n|^2)
 
         """
         if self._Qsca:
@@ -239,7 +237,7 @@ class EfficienciesProperties(object):
         Absorption efficiency.
 
         .. math::
-            Q_{abs}=Q_{ext}-Q_{sca}
+            Q_{abs} = Q_{ext}-Q_{sca}
 
         """
         if self._Qabs:
@@ -248,6 +246,84 @@ class EfficienciesProperties(object):
             self.GetEfficiencies()
             return self._Qabs
 
+
+    @property
+    def Qback(self):
+        """
+        Backscattering efficiency.
+
+        .. math::
+            Q_{back} = \\frac{1}{x^2} \\Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \\Big|^2
+
+        """
+        if self._Qback:
+            return self._Qback
+        else:
+            self.GetEfficiencies()
+            return self._Qback
+
+
+    @property
+    def Qratio(self):
+        """
+        Ratio of backscattering over total scattering.
+
+        .. math::
+            Q_{ratio} = \\frac{Q_{back}}{Q_{sca}}
+
+        """
+        if self._Qratio:
+            return self._Qratio
+        else:
+            self.GetEfficiencies()
+            return self._Qratio
+
+    @property
+    def g(self):
+        """
+        Ratio of backscattering over total scattering.
+
+        .. math::
+            g = \\frac{4}{Q_{sca} x^2}
+            \\left[ \\sum\\limits_{n=1}^{n_{max}} \\frac{n(n+2)}{n+1} \\text{Re} \\left
+            \{a_n a_{n+1}^* + b_n b_{n+1}^*\\right\} + \\sum\\limits_{n=1}^{n_{max}}
+            \\frac{2n+1}{n(n+1)} \\text{Re} \\left\{ a_n b_n^* \\right\} \\right]}
+
+        """
+        if self._g:
+            return self._g
+        else:
+            self.GetEfficiencies()
+            return self._g
+
+
+    @property
+    def Qpr(self):
+        """
+        Ratio of backscattering over total scattering.
+
+        .. math::
+            Q_{pr} = Q_{ext} - g * Q_{sca}
+
+        """
+        if self._Qpr:
+            return self._Qpr
+        else:
+            self.GetEfficiencies()
+            return self._Qpr
+
+
+    @property
+    def Efficiencies(self):
+        """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},
+        Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
+
+        """
+        if self._Efficiencies:
+            return self._Efficiencies
+        else:
+            self._Efficiencies = self.GetEfficiencies()
+            return self._Efficiencies
 
 
 class BaseScatterer(object):
@@ -271,18 +347,29 @@ class BaseScatterer(object):
     """
 
     def __init__(self):
-        pass
+        self._Qsca   = None
+        self._Qext   = None
+        self._Qabs   = None
+        self._Qback  = None
+        self._Qratio = None
+        self._g      = None
+        self._Qpr    = None
+        self._an     = []
+        self._bn     = []
+        self._cn     = []
+        self._dn     = []
+        self._Efficiencies = None
 
 
     def GetEfficiencies(self):
-        """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs}`)
-        for the scatterer.
+        """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},
+        Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
 
         """
 
-        self._Qsca, self._Qext, self._Qabs = self.Bind.Efficiencies
+        self._Qsca, self._Qext, self._Qabs, self._Qback, self._Qratio, self._g, self._Qpr = self.Bind.Efficiencies
 
-        return self._Qsca, self._Qext, self._Qabs
+        return self._Qsca, self._Qext, self._Qabs, self._Qback, self._Qratio, self._g, self._Qpr
 
 
     def S1S2(self, Num=200):

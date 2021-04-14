@@ -46,6 +46,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                  MuMedium : Union[int, float]  = 1.0,
                  Testing  : bool               = False):
 
+        super(Sphere, self).__init__()
         self.type      = 'Sphere'
         self.Diameter  = Diameter
         self.Source    = Source
@@ -57,8 +58,6 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         self.Mu        = MuMedium
         self.Testing   = Testing
 
-        self._Qsca, self.Q_ext, self._Qabs     = None, None, None
-        self._an, self._bn, self._cn, self._dn = [], [], [], []
         self.GetBinding()
 
 
@@ -191,6 +190,7 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
                  MuMedium    : float  = 1.0,
                  Testing     : bool   = False):
 
+        super(Sphere, self).__init__()
         self.type      = 'Cylinder'
         self.Diameter  = Diameter
         self.Source    = Source
@@ -202,8 +202,6 @@ class Cylinder(BaseScatterer, EfficienciesProperties):
         self.Mu        = MuMedium
         self.Testing   = Testing
 
-        self._Qsca, self.Q_ext, self._Qabs     = None, None, None
-        self._an, self._bn, self._cn, self._dn = [], [], [], []
         self.GetBinding()
 
 

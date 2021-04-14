@@ -18,9 +18,7 @@ private:
              k,
              E0,
              Mu,
-             MuScat,
-             GetQsca(),
-             GetQext();
+             MuScat;
 
     void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
              LowFreqAnBn(complex128* an, complex128* bn),
@@ -30,7 +28,7 @@ private:
 
 
     public:
-      std::tuple<double, double, double> GetEfficiencies();
+      std::tuple<double, double, double, double, double, double, double> GetEfficiencies();
 
       Cndarray                           An(uint MaxOrder),
                                          Bn(uint MaxOrder),
@@ -375,10 +373,6 @@ SPHERE::uS1S2(ndarray& Phi, ndarray& Theta)
 
 
 
-
-
-
-
 Cndarray
 SPHERE::Dn(uint MaxOrder)
 {
@@ -451,63 +445,48 @@ SPHERE::An(uint MaxOrder)
 }
 
 
-
-double
-SPHERE::GetQsca()
-{
-    uint MaxOrder   = GetMaxOrder(SizeParam);
-
-    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
-               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
-
-    this->ComputeAnBn(an, bn, MaxOrder);
-
-    complex128 temp = 0.;
-
-    for(uint it = 0; it < MaxOrder; ++it)
-    {
-         temp += (2.* (double)(it+1) + 1.) * (   std::real( an[it] ) * std::real( an[it] )
-                                               + std::imag( an[it] ) * std::imag( an[it] )
-                                               + std::real( bn[it] ) * std::real( bn[it] )
-                                               + std::imag( bn[it] ) * std::imag( bn[it] ) );
-    }
-
-    free(an);
-    free(bn);
-
-    return 2. / (SizeParam * SizeParam)  * std::real(temp);
-}
-
-
-double
-SPHERE::GetQext()
-{
-    uint MaxOrder   = GetMaxOrder(SizeParam);
-
-    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
-               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
-
-    this->ComputeAnBn(an, bn, MaxOrder);
-
-    complex128 temp = 0.;
-
-    for(uint it = 0; it < MaxOrder; ++it){ temp += ( 2.*(double)(it+1) + 1.) * ( std::real( an[it] + an[it] ) ); }
-
-    free(an);
-    free(bn);
-
-    return 2. / (SizeParam * SizeParam) * std::real(temp);
-}
-
-
-std::tuple<double, double, double>
+std::tuple<double, double, double, double, double, double, double>
 SPHERE::GetEfficiencies()
 {
-    double Qsca = GetQsca();
-    double Qext = GetQext();
-    double Qabs = Qext - Qsca;
+    uint MaxOrder   = GetMaxOrder(SizeParam);
 
-    return std::make_tuple(Qsca, Qext, Qabs);
+    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
+
+    this->ComputeAnBn(an, bn, MaxOrder);
+
+    double Qsca   = GetQsca(an, bn, MaxOrder, SizeParam);
+    double Qext   = GetQext(an, bn, MaxOrder, SizeParam);
+    double g      = Getg(an, bn, MaxOrder, SizeParam, Qsca);
+    double Qabs   = Qext - Qsca;
+    double Qback  = GetQback(an, bn, MaxOrder, SizeParam);
+    double Qpr    = Qext - g * Qsca;
+    double Qratio = Qback / Qsca;
+
+    free(an);
+    free(bn);
+    return std::make_tuple(Qsca, Qext, Qabs, Qback, Qratio, g, Qpr);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // -
