@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'sudo apt-get install -y python'
+                sh 'apt-get install -y python'
                 sh 'python3 --version'
                 sh 'pip3 install vtk'
                 sh 'apt-get update && apt-get install -y python3-opencv'
