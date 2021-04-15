@@ -13,6 +13,10 @@ pipeline {
                 sh 'pip3 install opencv-python'
                 sh 'pip3 install -r requirements.txt'
                 sh 'apt-get install -y libboost-all-dev'
+                sh 'python3 setup.py build_ext'
+                sh 'pip3 install .'
+                sh 'pip3 install codecov'
+
             }
         }
     }
