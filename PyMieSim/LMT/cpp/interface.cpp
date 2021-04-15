@@ -17,10 +17,10 @@ PYBIND11_MODULE(Scatterer, module) {
       py::class_<SPHERE>(module, "SPHERE")
       .def(py::init<double, double, double, double, double, double>(),
            py::arg("Index"),
-           py::arg("Diameter"), 
+           py::arg("Diameter"),
            py::arg("Wavelength"),
            py::arg("nMedium")      = 1.,
-           py::arg("Polarization") = 0.,
+           py::arg("Polarization") = 0., 
            py::arg("E0")           = 1. )
 
        .def("S1S2",

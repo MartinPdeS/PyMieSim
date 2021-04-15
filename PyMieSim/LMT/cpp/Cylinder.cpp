@@ -28,8 +28,7 @@ private:
 
     void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
              LowFreqAnBn(complex128* an, complex128* bn),
-             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
-             PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm);
+             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder);
 
 
     public:
@@ -65,35 +64,11 @@ private:
           this->SizeParam     = GetSizeParameter(Diameter, Wavelength, nMedium);
           this->Mu            = 1.0;
           this->MuScat        = 1.0;
-          Polarized           = IsPolarized(Polarization);
         }
 
         ~CYLINDER(){  }
 
 };
-
-
-void
-CYLINDER::PolarizationTerm(uint ThetaLength, double * ThetaPtr, double * CosTerm, double * SinTerm)
-{
-  if (this->Polarized==true)
-  {
-    for (uint t = 0; t < ThetaLength; t++)
-    {
-        CosTerm[t] = cos(Polarization + ThetaPtr[t]) ;
-        SinTerm[t] = sin(Polarization + ThetaPtr[t]) ;
-    }
-  }
-  else
-  {
-    const double term = 1./sqrt(2);
-    for (uint t = 0; t < ThetaLength; t++)
-    {
-        CosTerm[t] = term ;
-        SinTerm[t] = term ;
-    }
-  }
-}
 
 
 std::tuple<Cndarray,Cndarray>
@@ -163,7 +138,7 @@ CYLINDER::sFields(ndarray& Phi, ndarray& Theta, double R)
 
   complex128   propagator = E0 / (k * R) * exp(-JJ*k*R);
 
-  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, Polarization);
 
   std::tie(S1, S2) = this->S1S2(Phi);
 
@@ -207,7 +182,7 @@ CYLINDER::uFields(ndarray& Phi, ndarray& Theta, double R)
 
   complex128   propagator = E0 / (k * R) * exp(-JJ*k*R);
 
-  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, Polarization);
 
   std::tie(S1, S2) = this->S1S2(Phi);
 
@@ -227,15 +202,6 @@ CYLINDER::uFields(ndarray& Phi, ndarray& Theta, double R)
 }
 
 
-
-
-
-
-
-
-
-
-
 std::tuple<Cndarray,Cndarray>
 CYLINDER::sS1S2(ndarray& Phi, ndarray& Theta)
 {
@@ -252,7 +218,7 @@ CYLINDER::sS1S2(ndarray& Phi, ndarray& Theta)
                S1,
                S2;
 
-  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, Polarization);
 
   std::tie(S1, S2) = this->S1S2(Phi);
 
@@ -294,7 +260,7 @@ CYLINDER::uS1S2(ndarray& Phi, ndarray& Theta)
                S1,
                S2;
 
-  this->PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm);
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, Polarization);
 
   std::tie(S1, S2) = this->S1S2(Phi);
 
