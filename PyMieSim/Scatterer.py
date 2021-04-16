@@ -7,7 +7,7 @@ from scipy.special import gamma
 from typing        import Union
 
 from PyMieSim.Representations import S1S2, SPF, Stokes
-from PyMieSim.GLMT.Scatterer  import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
+#from PyMieSim.GLMT.Scatterer  import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
 from PyMieSim.LMT.Scatterer   import SPHERE, CYLINDER
 from PyMieSim.units           import Area
 from PyMieSim.Source          import PlaneWave, GaussianBeam
