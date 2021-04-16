@@ -143,7 +143,7 @@ class PMSArray(object):
 
     def UpdateConf(self, axis):
 
-        newConf = copy.copy(self.conf)
+        newConf = self.conf.copy()#copy.copy(self.conf)
 
         newConf['order'].pop(axis)
         newConf['dimension'].pop(axis)
@@ -247,9 +247,18 @@ class PMSArray(object):
         for key in self.conf['order']:
 
             if axis != key:
-                index  = idx[self.conf['order'][key]]
-                val    = self.conf['dimension'][key][index]
-                label += f"{key[:3]}={val:.1e} | "
+
+                if key == 'material':
+                    index  = idx[self.conf['order'][key]]
+                    val    = self.conf['dimension'][key][index]
+                    format = self.conf['format']['material']
+                    label += f"{key}: { val } | "
+
+                else:
+                    index  = idx[self.conf['order'][key]]
+                    val    = self.conf['dimension'][key][index]
+                    format = self.conf['format'][key]
+                    label += f"{key}= {val:{format}} | "
 
         return label
 

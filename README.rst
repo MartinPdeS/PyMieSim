@@ -155,6 +155,7 @@ To-Do List
 - Multiclass c++ codes
 - verify if changes of NA for <LPmode> class can be simplified [DONE]
 - adding travis and codecov [DONE]
+- adding mateiral Sellmeier boundary
 
 
 

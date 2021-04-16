@@ -42,18 +42,21 @@ class ScatSet(object):
                  IndexList     :  exList     = None,
                  nMedium       :  exfloat    = 1.0,
                  ScattererType :  str        = 'Sphere',
-                 Material                    = None):
+                 MaterialList  : list        = None):
+
+        if MaterialList:
+            assert IndexList is None,"You should either choose a material or the RI, not both."
+            self.Material = MaterialList
+
+        if IndexList:
+            assert Material is None,"You should either choose a material or the RI, not both."
+            self.Material = None
+
+        if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
 
         if not isinstance(DiameterList, UlistLike) : DiameterList = [DiameterList]
 
-        if Material:
-            assert IndexList is None,"You should either choose a material or the RI not both"
-            self.Material = Material
-
-        if IndexList:
-            if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
-            assert Material is None,"You should either choose a material or the RI not both"
-            self.Material = None
+        if not isinstance(MaterialList, UlistLike) : MaterialList = [MaterialList]
 
         self._Diameter, self._Index = None, None
 
@@ -84,16 +87,24 @@ class ScatSet(object):
 
     def Generator(self, Source):
         if self.Material:
-            self.Index = self.Material(Source.Wavelength)
+            for material in self.Material:
+                for diameter in self.Diameter:
+                    yield Sphere(Diameter  = diameter,
+                                 Source    = Source,
+                                 Index     = material(Source.Wavelength),
+                                 nMedium   = self.nMedium,
+                                 MuSphere  = 1.0,
+                                 MuMedium  = 1.0)
 
-        for diameter in self.Diameter:
-            for RI in self.Index:
-                yield Sphere(Diameter  = diameter,
-                             Source    = Source,
-                             Index     = RI,
-                             nMedium   = self.nMedium,
-                             MuSphere  = 1.0,
-                             MuMedium  = 1.0)
+        else:
+            for diameter in self.Diameter:
+                for RI in self.Index:
+                    yield Sphere(Diameter  = diameter,
+                                 Source    = Source,
+                                 Index     = RI,
+                                 nMedium   = self.nMedium,
+                                 MuSphere  = 1.0,
+                                 MuMedium  = 1.0)
 
 
 class SourceSet(object):
@@ -183,17 +194,7 @@ class Setup(object):
 
         self.AssertionType(AsType=AsType, Eff=Eff)
 
-        config = DefaultConfigEff
-
-        config['NameList'] = Eff
-
-        config['dimension'] = { 'wavelength'   : self.SourceSet.Wavelength,
-                                'polarization' : self.SourceSet.Polarization,
-                                'diameter'     : self.ScattererSet.Diameter,
-                                'ri'           : self.ScattererSet.Index}
-
-
-        self.GetShape(config)
+        config = self.MakeConfig(Type = 'efficiency', Eff=Eff)
 
         Array = np.empty(config['size'] * len(Eff))
 
@@ -220,6 +221,43 @@ class Setup(object):
             assert set(Eff).issubset(EFFTYPE), f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}'
 
 
+    def MakeConfig(self, Type, Eff = None):
+
+        if Type == 'efficiency' :
+            config = DefaultConfigEff
+            config['NameList'] = Eff
+            config['dimension'] = { 'wavelength'   : self.SourceSet.Wavelength,
+                                    'polarization' : self.SourceSet.Polarization,
+                                    'diameter'     : self.ScattererSet.Diameter}
+
+
+        elif Type == 'coupling':
+            config = DefaultConfig
+            config['dimension'] = { 'detector'     : [Det.Name for Det in self.DetectorSet],
+                                    'wavelength'   : self.SourceSet.Wavelength,
+                                    'polarization' : self.SourceSet.Polarization,
+                                    'diameter'     : self.ScattererSet.Diameter}
+
+        if self.ScattererSet.Material:
+            config['material'] = True
+            config['order'].pop('ri')
+            config['format'].pop('ri')
+            config['label'].pop('ri')
+            config['dimension']['material'] = [mat.__name__ for mat in self.ScattererSet.Material]
+
+        else:
+            config['order'].pop('material')
+            config['format'].pop('material')
+            config['label'].pop('material')
+            config['dimension']['ri'] = self.ScattererSet.Index
+
+        self.GetShape(config)
+
+        print(config)
+
+        return config
+
+
     def Coupling(self, AsType='numpy'):
         """Property method which return a n by m by l OptArray array, n being the
         number of detectors, m is the point evaluated for the refractive index,
@@ -232,18 +270,11 @@ class Setup(object):
 
         """
 
-
         self.AssertionType(AsType=AsType)
 
-        config = DefaultConfig
+        config = self.MakeConfig(Type = 'coupling')
 
-        config['dimension'] = { 'detector'     : [Det.Name for Det in self.DetectorSet],
-                                'wavelength'   : self.SourceSet.Wavelength,
-                                'polarization' : self.SourceSet.Polarization,
-                                'diameter'     : self.ScattererSet.Diameter,
-                                'ri'           : self.ScattererSet.Index}
-
-        self.GetShape(config)
+        print(config)
 
         Array = np.empty(config['size'])
 

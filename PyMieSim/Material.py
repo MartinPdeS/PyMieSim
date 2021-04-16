@@ -87,7 +87,11 @@ def Getn(A, B, C, wavelength):
     term1 = B[0]*wavelength**2/(wavelength**2 - C[0])
     term2 = B[1]*wavelength**2/(wavelength**2 - C[1])
     term3 = B[2]*wavelength**2/(wavelength**2 - C[2])
+    sum = term0 + term1 + term2 + term3
+    #sum = 2.6708254257402237
+    print('$$$$',sum)
+    print('####',sum , np.sqrt(sum))
 
-    return np.sqrt(term0 + term1 + term2 + term3)
+    return np.sqrt(sum)
 
 #-
