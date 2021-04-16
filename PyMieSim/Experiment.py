@@ -38,14 +38,22 @@ class ScatSet(object):
 
     @beartype
     def __init__(self,
-                 DiameterList  :  exList,
-                 IndexList     :  exList,
+                 DiameterList  :  exList     = None,
+                 IndexList     :  exList     = None,
                  nMedium       :  exfloat    = 1.0,
-                 ScattererType :  str        = 'Sphere'):
+                 ScattererType :  str        = 'Sphere',
+                 Material                    = None):
 
-        if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
-        
         if not isinstance(DiameterList, UlistLike) : DiameterList = [DiameterList]
+
+        if Material:
+            assert IndexList is None,"You should either choose a material or the RI not both"
+            self.Material = Material
+
+        if IndexList:
+            if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
+            assert Material is None,"You should either choose a material or the RI not both"
+            self.Material = None
 
         self._Diameter, self._Index = None, None
 
@@ -75,6 +83,9 @@ class ScatSet(object):
         self._Index = val
 
     def Generator(self, Source):
+        if self.Material:
+            self.Index = self.Material(Source.Wavelength)
+
         for diameter in self.Diameter:
             for RI in self.Index:
                 yield Sphere(Diameter  = diameter,

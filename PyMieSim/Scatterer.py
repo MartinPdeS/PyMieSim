@@ -15,6 +15,7 @@ from PyMieSim.BaseClasses     import ( BaseScatterer,
                                        EfficienciesProperties,
                                        BaseSource )
 
+
 class Sphere(BaseScatterer, EfficienciesProperties):
     """
     Short summary.
@@ -40,17 +41,26 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     def __init__(self,
                  Diameter : float,
                  Source   : Union[PlaneWave, GaussianBeam],
-                 Index    : Union[int, float],
+                 Index    : Union[int, float]  = None,
                  nMedium  : Union[int, float]  = 1.0,
                  MuSphere : Union[int, float]  = 1.0,
                  MuMedium : Union[int, float]  = 1.0,
-                 Testing  : bool               = False):
+                 Testing  : bool               = False,
+                 Material                      = None):
 
         super().__init__()
+        if Material:
+            assert Index is None,"You should either choose a material or the RI not both"
+            self.Material = Material
+            self.Index    = Material(Source.Wavelength)
+        if Index:
+            assert Material is None,"You should either choose a material or the RI not both"
+            self.Material = None
+            self.Index    = Index
+
         self.type      = 'Sphere'
         self.Diameter  = Diameter
         self.Source    = Source
-        self.Index     = Index
         self.nMedium   = nMedium
         self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )

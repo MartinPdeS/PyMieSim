@@ -156,10 +156,10 @@ class PMSArray(object):
 
     def Plot(self, Scale = 'linear', *args, **kwargs):
 
-        if Scale == 'linear'     : plot = plt.plot
-        if Scale == 'logarithmic': plot = plt.loglog
+        if Scale.lower() in ['lin', 'linear']      : plot = plt.plot
+        if Scale.lower() in ['log', 'logarithmic'] : plot = plt.loglog;
 
-        if self.conf['name'] == 'Efficiencies [Qsca, Qext, Qabs]':
+        if self.conf['name'] == 'Efficiencies':
             return self.PlotEfficiencies(*args, **kwargs, plot=plot)
 
         if self.conf['name'] == 'Coupling':
@@ -188,7 +188,7 @@ class PMSArray(object):
                  **kwargs)
 
         plt.xlabel(xlabel)
-        plt.ylabel(self.conf['label']['variable'])
+        plt.ylabel(self.conf['name'] + ' ' + self.conf['unit'])
         plt.grid()
         plt.legend(fontsize=8)
         plt.show()
@@ -220,7 +220,7 @@ class PMSArray(object):
 
 
         plt.xlabel(xlabel)
-        plt.ylabel(self.conf['label']['variable'])
+        plt.ylabel(self.conf['name'] + ' ' + self.conf['unit'])
         plt.grid()
         plt.legend(fontsize=8)
         plt.show()

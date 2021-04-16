@@ -23,6 +23,7 @@ SourceParamList = ['E0',
                    'Wavelength']
 
 DefaultConfig = {'name'         : 'Coupling',
+                 'unit'         : 'Watt',
                  'order'        : {
                         'detector'     : 0,
                         'wavelength'   : 1,
@@ -31,7 +32,7 @@ DefaultConfig = {'name'         : 'Coupling',
                         'ri'           : 4},
 
                  'label'        : {
-                        'variable'     : 'Coupling [Watt]',
+                        'variable'     : 'Coupling',
                         'detector'     : 'Detector',
                         'wavelength'   : '$\lambda$ [m]',
                         'polarization' : 'Polarization [Degree]',
@@ -40,7 +41,8 @@ DefaultConfig = {'name'         : 'Coupling',
 
        }
 
-DefaultConfigEff = {'name'         : 'Efficiencies [Qsca, Qext, Qabs]',
+DefaultConfigEff = {'name'         : 'Efficiencies',
+                    'unit'         : '[1]',
                     'order'        : {
 
                             'wavelength'   : 1,

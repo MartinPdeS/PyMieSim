@@ -90,6 +90,8 @@ class S1S2(dict):
 
     def __init__(self, Parent, Num):
 
+        self.Parent = Parent
+
         self['Phi'] = np.linspace(0, 2*np.pi, Num)
 
         Phi = np.linspace(-np.pi,np.pi,Num);
@@ -104,6 +106,7 @@ class S1S2(dict):
 
         fig, axes = plt.subplots(nrows      = 1,
                                  ncols      = 2,
+                                 figsize    = (7,4),
                                  subplot_kw = {'projection':'polar'})
 
         axes[0].set_title('S1 function'); axes[1].set_title('S2 function')
@@ -124,6 +127,11 @@ class S1S2(dict):
                              y1    = S2,
                              color = 'C1',
                              alpha = 0.4)
+
+        if self.Parent.Testing:
+            plt.close()
+        else:
+            plt.show()
 
 
     def __repr__(self):
