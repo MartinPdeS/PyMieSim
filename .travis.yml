@@ -9,7 +9,7 @@ services:
 
 install:
   - sudo apt-get install libboost-all-dev
-  - apt-get install -qq libegl1-mesa
+  - sudo apt-get install -qq libegl1-mesa
   - pip3 install vtk==8.1.2
   - pip3 install -r requirements.txt
   - python3 setup.py build_ext
