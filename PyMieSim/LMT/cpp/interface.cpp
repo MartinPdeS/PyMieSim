@@ -20,13 +20,13 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Diameter"),
            py::arg("Wavelength"),
            py::arg("nMedium")      = 1.,
-           py::arg("Polarization") = 0., 
+           py::arg("Polarization") = 0.,
            py::arg("E0")           = 1. )
 
        .def("S1S2",
             &SPHERE::S1S2,
             py::arg("Phi") )
-
+ 
       .def("uFields",
            &SPHERE::uFields,
            py::arg("Phi"),

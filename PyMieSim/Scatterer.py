@@ -7,7 +7,7 @@ from scipy.special import gamma
 from typing        import Union
 
 from PyMieSim.Representations import S1S2, SPF, Stokes
-#from PyMieSim.GLMT.Scatterer  import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
+from PyMieSim.GLMT.Scatterer  import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
 from PyMieSim.LMT.Scatterer   import SPHERE, CYLINDER
 from PyMieSim.units           import Area
 from PyMieSim.Source          import PlaneWave, GaussianBeam
@@ -41,12 +41,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
     def __init__(self,
                  Diameter : float,
                  Source   : Union[PlaneWave, GaussianBeam],
-                 Index    : Union[int, float]  = None,
-                 nMedium  : Union[int, float]  = 1.0,
-                 MuSphere : Union[int, float]  = 1.0,
-                 MuMedium : Union[int, float]  = 1.0,
-                 Testing  : bool               = False,
-                 Material                      = None):
+                 Index    : Union[int, float, complex]     = None,
+                 nMedium  : Union[int, float, complex]     = 1.0,
+                 MuSphere : Union[int, float]              = 1.0,
+                 MuMedium : Union[int, float]              = 1.0,
+                 Testing  : bool                           = False,
+                 Material                                  = None):
 
         super().__init__()
         if Material:
@@ -56,12 +56,12 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         if Index:
             assert Material is None,"You should either choose a material or the RI not both"
             self.Material = None
-            self.Index    = Index
+            self.Index    = Index.real#.astype(complex)
 
         self.type      = 'Sphere'
         self.Diameter  = Diameter
         self.Source    = Source
-        self.nMedium   = nMedium
+        self.nMedium   = nMedium.real#.astype(complex)
         self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
         self.MuSp      = MuSphere
