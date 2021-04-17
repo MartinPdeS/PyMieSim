@@ -49,7 +49,7 @@ class ScatSet(object):
             self.Material = MaterialList
 
         if IndexList:
-            assert Material is None,"You should either choose a material or the RI, not both."
+            assert MaterialList is None,"You should either choose a material or the RI, not both."
             self.Material = None
 
         if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
@@ -240,20 +240,18 @@ class Setup(object):
 
         if self.ScattererSet.Material:
             config['material'] = True
-            config['order'].pop('ri')
-            config['format'].pop('ri')
-            config['label'].pop('ri')
+            config['order'].pop('ri', None)
+            config['format'].pop('ri', None)
+            config['label'].pop('ri', None)
             config['dimension']['material'] = [mat.__name__ for mat in self.ScattererSet.Material]
 
         else:
-            config['order'].pop('material')
-            config['format'].pop('material')
-            config['label'].pop('material')
+            config['order'].pop('material', None)
+            config['format'].pop('material', None)
+            config['label'].pop('material', None)
             config['dimension']['ri'] = self.ScattererSet.Index
 
         self.GetShape(config)
-
-        print(config)
 
         return config
 
@@ -273,8 +271,6 @@ class Setup(object):
         self.AssertionType(AsType=AsType)
 
         config = self.MakeConfig(Type = 'coupling')
-
-        print(config)
 
         Array = np.empty(config['size'])
 

@@ -167,7 +167,7 @@ class PMSArray(object):
 
 
 
-    def PlotCoupling(self, x, plot, *args, **kwargs):
+    def PlotCoupling(self, x, plot, Testing=False, *args, **kwargs):
         fig   = plt.figure(figsize=(8,4))
         x     = x.lower()
         shape = list(self.data.shape)
@@ -191,10 +191,14 @@ class PMSArray(object):
         plt.ylabel(self.conf['name'] + ' ' + self.conf['unit'])
         plt.grid()
         plt.legend(fontsize=8)
-        plt.show()
+
+        if Testing == False:
+            plt.show()
+        else:
+            plt.close('all')
 
 
-    def PlotEfficiencies(self, x, plot, *args, **kwargs):
+    def PlotEfficiencies(self, x, plot, Testing=False,  *args, **kwargs):
 
 
         fig   = plt.figure(figsize=(8,4))
@@ -223,7 +227,11 @@ class PMSArray(object):
         plt.ylabel(self.conf['name'] + ' ' + self.conf['unit'])
         plt.grid()
         plt.legend(fontsize=8)
-        plt.show()
+
+        if Testing == False:
+            plt.show()
+        else:
+            plt.close('all')
 
 
     def GetLegend(self, axis, idx):

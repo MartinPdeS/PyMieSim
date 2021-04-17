@@ -7,6 +7,7 @@ from unittest import TestCase
 from numpy import linspace, pi
 import numpy as np
 import unittest
+from PyMieSim.Material import BK7Glass
 
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
@@ -161,136 +162,117 @@ class ScattererTestCase(unittest.TestCase):
         print('<SPF> coupling passed')
 
 
-
-
-class ExperiementTestCase(unittest.TestCase):
-
-    def test00(self):
-        global sScatSet
-        sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11),
-                           IndexList      = 1.5)
-        print('<ScattererSet> initialisation passed')
-
-
-
-
-
-
-
-
-
-"""
-
-class PrintingTest(TestCase):
-
-    def Run(self):
-        self.test09()
-        self.test10()
-        self.test11()
-        self.test12()
-        self.test13()
-        self.test14()
-        self.test15()
-        self.test16()
-        self.test17()
-        self.test18()
-        self.test19()
-        self.test20()
-        self.test21()
-        self.test22()
-        self.test23()
-        self.test24()
-        self.test25()
-        self.test26()
-        self.test27()
-        self.test28()
-        self.test29()
-
-
-    def test09(self):
-        self.sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11), IndexList = 1.5)
-        print('Test 09: <ScattererSet> initialisation passed')
-
-
-    def test10(self):
-        self.source = SourceSet(WavelengthList = 400e-9, PolarizationList = 0, SourceType = 'PlaneWave')
-        self.ExpSet = Setup(ScattererSet = self.sScatSet, SourceSet = self.source, DetectorSet = self.Photodiode)
-        print('Test 10: <Setup> initialisation passed')
-
-
-    def test11(self):
-        self.ExpSet.Efficiencies()
-        print('Test 11: <ScattererSet> Qsca passed')
-
-
-    def test12(self):
-        self.ExpSet.Coupling
-        print('Test 12: <Setup> dataframe compute passed')
-
-
     def test13(self):
-        self.WMSample = WMSample(g      = 0.8,
-                                 lc     = 4e-5,
-                                 D      = 3/2,
-                                 Nc     = 1e4,
-                                 Source = LightSource)
-
-        print('Test 13: WM sample initialisation passed')
+        Photodiode.Footprint(Scatterer=sScat, Num=10)
+        print('Photodiode footprint compute passed')
 
 
     def test14(self):
-        self.SampleSet = SampleSet(gList    = [0.8, 0.9],
-                                   LcList   = [1e-5, 2e-5],
-                                   D        = 3/2,
-                                   Nc       = 1e4,
-                                   Detector = Detector,
-                                   Source   = LightSource,
-                                   Npts     = 201)
-
-        print('Test 14: SampleSet initialisation passed')
+        LPmode.Footprint(Scatterer=sScat, Num=10)
+        print('LPmode footprint compute passed')
 
 
-    def test15(self):
-        self.Gbeam = GaussianBeam(Wavelength   = 1.3e-6,
-                            NA           = 0.6,
-                            Polarization = 0,
-                            Offset       = [0e-6,0e-6,0e-6])
-
-        print('Test 15: GaussianBeam beam initialisation passed')
 
 
-    def test16(self):
-        self.Gbeam.GetBSC(MaxOrder=3, save=False, Sampling=100)
-        print('Test 16: GaussianBeam beam BSC compute passed')
+class ExperiementTestCase(unittest.TestCase):
+    def test00(self):
+        global sScatSet
+        sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11),
+                           IndexList    = 1.5)
+
+        print('<ScattererSet> initialisation passed')
 
 
-    def test17(self):
-        self.PWbeam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
-        print('Test 17: PlaneWave beam initialisation passed')
+    def test01(self):
+        global sourceSet
+        sourceSet = SourceSet(WavelengthList   = 400e-9,
+                              PolarizationList = 0,
+                              SourceType       = 'PlaneWave')
+
+        print('<SourceSet> initialisation passed')
 
 
-    def test18(self):
-        self.PWbeam.GetBSC(MaxOrder=1, save=False)
-        print('Test 18: GaussianBeam beam BSC compute passed')
+    def test02(self):
+        global ExpSet
+        ExpSet = Setup(ScattererSet = sScatSet,
+                       SourceSet    = sourceSet,
+                       DetectorSet  = Photodiode)
+
+        print('<Setup> initialisation passed')
 
 
-    def test19(self):
-        self.Photodiode.Footprint(Scatterer=self.sScat, Num=10)
-        print('Test 19: Photodiode footprint compute passed')
+    def test03(self):
+        global pymieArrayEff
+        pymieArrayEff = ExpSet.Efficiencies('Qsca', AsType='pymiesim')
+        print('Experiment Efficiencies computing passed')
 
 
-    def test20(self):
-        self.LPMode.Footprint(Scatterer=self.sScat, Num=10)
-        print('Test 20: LPmode footprint compute passed')
+    def test04(self):
+        global pymieArrayCoupling
+        pymieArrayCoupling = ExpSet.Coupling(AsType='pymiesim')
+        print('Experiment Coupling computing passed')
 
 
-    def test21(self):
-        Scat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = self.Gbeam)
-        Scat.SPF(Num=10)
-        print('Test 21: SPF compute with GLMT')
+    def test05(self):
+        with patch('matplotlib.pyplot') as p:
+            pymieArrayEff.Plot(x='diameter', Testing=True)
+        print('PyMieSim Array Efficiencies plotting passed')
 
 
-    def test22(self):
+    def test06(self):
+        with patch('matplotlib.pyplot') as p:
+            pymieArrayCoupling.Plot(x='diameter', Testing=True)
+        print('PyMieSim Array Coupling plotting passed')
+
+
+    def test07(self):
+        ExpSet.Coupling(AsType='numpy')
+        print("<Experiment> 'numpy' output passed")
+
+
+    def test08(self):
+        ExpSet.Coupling(AsType='dataframe')
+        print("<Experiment> 'dataframe' output passed")
+
+
+    def test09(self):
+        ExpSet.Coupling(AsType='optimizer')
+        print("<Experiment> 'optimizer' output passed")
+
+
+class GLMTTestCase(unittest.TestCase):
+
+
+    def test00(self):
+        global Gbeam
+        Gbeam = GaussianBeam(Wavelength   = 1.3e-6,
+                             NA           = 0.6,
+                             Polarization = 0,
+                             Offset       = [0e-6,0e-6,0e-6])
+
+        print('GaussianBeam beam initialisation passed')
+
+
+    def test01(self):
+        Gbeam.GetBSC(MaxOrder=3, save=False, Sampling=100)
+        print('GaussianBeam beam BSC compute passed')
+
+
+    def test02(self):
+        global PWbeam
+        PWbeam = PlaneWave(Wavelength = 0.632e-6, Polarization = 0)
+        print('PlaneWave beam initialisation passed')
+
+
+    def test03(self):
+        PWbeam.GetBSC(MaxOrder=3, save=False)
+        print('GaussianBeam beam BSC compute passed')
+
+
+
+class PhysicsTestCase(unittest.TestCase):
+
+    def test00(self):
         Mesh = FibonacciMesh(MaxAngle    = pi,
                              Sampling    = 1000,
                              PhiOffset   = 0,
@@ -300,10 +282,10 @@ class PrintingTest(TestCase):
         val1 = Scat.Qsca * Scat.Area
         Rerror = np.abs(val0-val1)/val0
         assert Rerror < 1e-2
-        print('Test 22: Validation QSca - CrossSection passed')
+        print('Validation QSca - CrossSection passed')
 
 
-    def test23(self):
+    def test01(self):
         Detector1 = _Photodiode(Sampling = 500, NA = 2.0)
         val0      = Scat.EnergyFlow(Detector1.Mesh)
         val1      = Detector1.Coupling(Scat)
@@ -312,64 +294,51 @@ class PrintingTest(TestCase):
         print('Test 23: Validation EnergyFlow - coupling passed')
 
 
-    def test24(self):
-        self.sScat.Stokes(Num=10)
-        print("Test 24: Scatterer <Stokes> compute passed")
-
-
-    def test25(self):
-        self.ExpSet.Coupling(AsType='numpy')
-        print("Test 25: <Experiment> 'numpy' output passed")
-
-
-    def test26(self):
-        self.ExpSet.Coupling(AsType='pymiesim')
-        print("Test 26: <Experiment> 'ndarray' output passed")
-
-
-    def test27(self):
-        self.ExpSet.Coupling(AsType='dataframe')
-        print("Test 27: <Experiment> 'dataframe' output passed")
-
-
-    def test28(self):
-        self.ExpSet.Coupling(AsType='optimizer')
-        print("Test 28: <Experiment> 'optimizer' output passed")
-
-
-    def test29(self):
-        with patch('matplotlib.pyplot') as p:
-            a = self.sScat.S1S2(Num=10)
-            assert a.Plot() == None
-            print('Test 29: Scatterer <S1S2> plot passed')
-"""
-
 def suite():
-  suite = unittest.TestSuite()
-  suite.addTest(DetectorTestCase('test00'))
-  suite.addTest(DetectorTestCase('test01'))
-  suite.addTest(DetectorTestCase('test02'))
-  suite.addTest(DetectorTestCase('test03'))
-  suite.addTest(DetectorTestCase('test04'))
-  suite.addTest(DetectorTestCase('test05'))
+    suite = unittest.TestSuite()
+    suite.addTest(DetectorTestCase('test00'))
+    suite.addTest(DetectorTestCase('test01'))
+    suite.addTest(DetectorTestCase('test02'))
+    suite.addTest(DetectorTestCase('test03'))
+    suite.addTest(DetectorTestCase('test04'))
+    suite.addTest(DetectorTestCase('test05'))
 
-  suite.addTest(ScattererTestCase('test00'))
-  suite.addTest(ScattererTestCase('test01'))
-  suite.addTest(ScattererTestCase('test02'))
-  suite.addTest(ScattererTestCase('test03'))
-  suite.addTest(ScattererTestCase('test04'))
-  suite.addTest(ScattererTestCase('test05'))
-  suite.addTest(ScattererTestCase('test06'))
-  suite.addTest(ScattererTestCase('test07'))
-  suite.addTest(ScattererTestCase('test08'))
-  suite.addTest(ScattererTestCase('test09'))
-  suite.addTest(ScattererTestCase('test10'))
-  suite.addTest(ScattererTestCase('test11'))
-  suite.addTest(ScattererTestCase('test12'))
+    suite.addTest(ScattererTestCase('test00'))
+    suite.addTest(ScattererTestCase('test01'))
+    suite.addTest(ScattererTestCase('test02'))
+    suite.addTest(ScattererTestCase('test03'))
+    suite.addTest(ScattererTestCase('test04'))
+    suite.addTest(ScattererTestCase('test05'))
+    suite.addTest(ScattererTestCase('test06'))
+    suite.addTest(ScattererTestCase('test07'))
+    suite.addTest(ScattererTestCase('test08'))
+    suite.addTest(ScattererTestCase('test09'))
+    suite.addTest(ScattererTestCase('test10'))
+    suite.addTest(ScattererTestCase('test11'))
+    suite.addTest(ScattererTestCase('test12'))
+    suite.addTest(ScattererTestCase('test13'))
+    suite.addTest(ScattererTestCase('test14'))
 
-  suite.addTest(ExperiementTestCase('test00'))
+    suite.addTest(ExperiementTestCase('test00'))
+    suite.addTest(ExperiementTestCase('test01'))
+    suite.addTest(ExperiementTestCase('test02'))
+    suite.addTest(ExperiementTestCase('test03'))
+    suite.addTest(ExperiementTestCase('test04'))
+    suite.addTest(ExperiementTestCase('test05'))
+    suite.addTest(ExperiementTestCase('test06'))
+    suite.addTest(ExperiementTestCase('test07'))
+    suite.addTest(ExperiementTestCase('test08'))
+    suite.addTest(ExperiementTestCase('test09'))
 
-  return suite
+    suite.addTest(GLMTTestCase('test00'))
+    suite.addTest(GLMTTestCase('test01'))
+    suite.addTest(GLMTTestCase('test02'))
+    suite.addTest(GLMTTestCase('test03'))
+
+    suite.addTest(PhysicsTestCase('test00'))
+    suite.addTest(PhysicsTestCase('test01'))
+
+    return suite
 
 
 if __name__ == '__main__':

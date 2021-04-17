@@ -90,7 +90,6 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                                  BSC          = self.Source._BSC_)
 
         else:
-            print(self.Index)
             self.Bind = SPHERE(Index        = self.Index,
                                Diameter     = self.Diameter,
                                Wavelength   = self.Source.Wavelength,

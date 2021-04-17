@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from PyMieSim._Material.utils import CSV2Numpy, LoadCsvLocal, NearestIndex, LoadCsvOnline
+from PyMieSim.Material.utils import CSV2Numpy, LoadCsvLocal, NearestIndex, LoadCsvOnline
 from pathlib import Path
 
 

@@ -48,8 +48,8 @@ DefaultConfig = {'name'         : 'Coupling',
                                     'diameter'     : '.1e',
                                     'ri'           : '.2f',
                                     'material'     : '10s'},
-
        }
+
 
 DefaultConfigEff = {'name'         : 'Efficiencies',
                     'unit'         : '[1]',
@@ -58,13 +58,15 @@ DefaultConfigEff = {'name'         : 'Efficiencies',
                                         'wavelength'   : 1,
                                         'polarization' : 2,
                                         'diameter'     : 3,
-                                        'ri'           : 4},
+                                        'ri'           : 4,
+                                        'material'     : 4},
                     'label'        : {
                                         'variable'     : 'Efficiencies',
                                         'wavelength'   : 'Wavelength $\lambda$ [m]',
                                         'polarization' : 'Polarization [Degree]',
                                         'diameter'     : 'Diameter [m]',
-                                        'ri'           : 'Refracive index'},
+                                        'ri'           : 'Refracive index',
+                                        'material'     : 'material'},
                      'format'        : {
                                         'variable'     : '10s',
                                         'detector'     : '10s',
@@ -73,5 +75,4 @@ DefaultConfigEff = {'name'         : 'Efficiencies',
                                         'diameter'     : '.1f',
                                         'ri'           : '.2f',
                                         'material'     : '10s'},
-
        }
