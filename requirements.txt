@@ -2,6 +2,7 @@ numpy
 matplotlib
 cython
 pandas
+pyqt5
 scipy
 fibermodes @ git+https://github.com/cbrunet/fibermodes.git
 mayavi
