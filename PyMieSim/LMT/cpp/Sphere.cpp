@@ -9,8 +9,9 @@ class SPHERE: public BASE{
 private:
   bool       Polarized;
 
+  complex128 Index;
+
   double     Diameter,
-             Index,
              nMedium,
              SizeParam,
              Polarization,
@@ -22,7 +23,8 @@ private:
 
     void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
              LowFreqAnBn(complex128* an, complex128* bn),
-             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder);
+             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
+             HighFreqCnDn(complex128* an, complex128* bn, uint MaxOrder);
 
 
     public:
@@ -76,19 +78,19 @@ SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
 void
 SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
 {
+  complex128 mx   = Index * SizeParam,
+             temp = sqrt(0.5 * PI * SizeParam);
 
-  const double mx = Index * SizeParam, temp = sqrt(0.5 * PI * SizeParam);
-
-  uint nmx = std::max( MaxOrder, (uint) mx ) + 16;
+  uint nmx = std::max( MaxOrder, (uint) std::abs(mx) ) + 16;
 
   iVec gsx, gs1x, px, chx, p1x, ch1x, D, da, db;
 
-  Vec Dn = Vec(nmx);
+  iVec Dn = iVec(nmx);
 
   p1x.push_back( sin(SizeParam) );
   ch1x.push_back( cos(SizeParam) );
 
-  for (double i = nmx - 1; i > 1; i--){  Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );}
+  ComputeDn(nmx, mx, Dn);
 
   for (uint i = 0; i < MaxOrder; i++)
     {
@@ -106,29 +108,72 @@ SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
         an[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
         bn[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
     }
+}
 
+
+void
+SPHERE::HighFreqCnDn(complex128* cn, complex128* dn, uint MaxOrder)
+{
+
+  complex128 mx   = Index * SizeParam;
+
+  uint nmx = std::max( MaxOrder, (uint) std::abs(mx) ) + 16;
+
+  iVec Cnx = iVec(nmx);
+  iVec Cnn, jnx, jnmx, yx, hx, b1x, y1x, hn1x, ax, ahx, numerator;
+  iVec c_denominator, d_denominator;
+
+  b1x.push_back( +sin(SizeParam) / SizeParam );
+  y1x.push_back( -cos(SizeParam) / SizeParam );
+
+  for (double i = nmx; i > 1; i--)
+  {
+    Cnx[i-2] = i - mx*mx/(Cnx[i-1] + i);
+  }
+
+  for (uint i = 0; i < MaxOrder; i++)
+  {
+    Cnn.push_back( Cnx[i] );
+    jnx.push_back(  sqrt( PI / (2. * SizeParam ) ) * Jn( (double)(i+1)+0.5, SizeParam ) );
+
+    jnmx.push_back( sqrt( ( 2. * mx ) / PI ) / Jn( (double)(i+1)+0.5, mx ) );
+    yx.push_back( sqrt( PI / ( 2. * SizeParam ) ) * Yn( (double)( i + 1 ) + 0.5, SizeParam ) );
+    hx.push_back( jnx[i] + JJ * yx[i] );
+
+    b1x.push_back( jnx[i] );
+    y1x.push_back( yx[i] );
+    hn1x.push_back( b1x[i] + JJ * y1x[i] );
+
+    ax.push_back(  SizeParam * b1x[i] - (double)( i + 1 ) * jnx[i] );
+    ahx.push_back( SizeParam * hn1x[i] - (double)( i + 1 ) * hx[i] );
+
+
+    numerator.push_back( jnx[i] * ahx[i] - hx[i] * ax[i] );
+    c_denominator.push_back( ahx[i] - hx[i] * Cnn[i] );
+    d_denominator.push_back( Index * Index * ahx[i] - hx[i] * Cnn[i] );
+
+    cn[i] = jnmx[i] * numerator[i] / c_denominator[i] ;
+    dn[i] = jnmx[i] * Index * numerator[i] / d_denominator[i] ;
+  }
 }
 
 
 void
 SPHERE::LowFreqAnBn(complex128* an, complex128* bn)
 {
-
-  double LL, m2, x3, x4, x5, x6;
-
-  m2          = Index * Index;
-  LL          = (m2 - 1) / (m2 + 2);
-  x3          = SizeParam * SizeParam * SizeParam;
-  x4          = x3 * SizeParam;
-  x5          = x4 * SizeParam;
-  x6          = x5 * SizeParam;
+  complex128 m2          = Index * Index;
+  complex128 LL          = (m2 - 1.) / (m2 + 2.);
+  complex128 x3          = SizeParam * SizeParam * SizeParam;
+  complex128 x4          = x3 * SizeParam;
+  complex128 x5          = x4 * SizeParam;
+  complex128 x6          = x5 * SizeParam;
 
   an[0] = (-2.*JJ * x3 / 3.) * LL - (2.*JJ * x5 / 5.) * LL * (m2 - 2.) / (m2 + 2.) + (4. * x6 / 9.) * LL * LL;
   an[1] = (-1.*JJ * x5 / 15.) * (m2 - 1.) / (2. * m2 + 3.);
   bn[0] = (-1.*JJ * x5 / 45.) * (m2 - 1.);
   bn[1] = 0. + 0.*JJ;
-
 }
+
 
 std::tuple<Cndarray,Cndarray>
 SPHERE::S1S2(const ndarray Phi)
@@ -341,44 +386,28 @@ SPHERE::uS1S2(ndarray& Phi, ndarray& Theta)
 Cndarray
 SPHERE::Dn(uint MaxOrder)
 {
-  double mx          = Index * SizeParam,
-         M           = Index/nMedium;
+  Cndarray     cn         = Cndarray(MaxOrder),
+               dn         = Cndarray(MaxOrder);
 
-  Cndarray Dn        = Cndarray(MaxOrder);
+  complex128 * cnPtr      = (complex128 *) cn.request().ptr,
+             * dnPtr      = (complex128 *) dn.request().ptr;
 
-  complex128 *DnPtr  = (complex128*) Dn.request().ptr,
-              numerator,
-              denominator;
-
-  for (uint order = 1; order < MaxOrder+1; order++)
-  {
-    numerator        = Mu * M*M * ( Xi(order, SizeParam) * Psi_p(order, SizeParam) - Xi_p(order, SizeParam) * Psi(order, SizeParam) );
-    denominator      = Mu * M * Xi(order, SizeParam) * Psi_p(order, mx) - MuScat * Xi_p(order, SizeParam) * Psi(order, mx);
-    DnPtr[order-1]   = numerator / denominator;
-  }
-  return Dn;
+  this->HighFreqCnDn(cnPtr, dnPtr, MaxOrder);
+  return dn;
 }
 
 
 Cndarray
 SPHERE::Cn(uint MaxOrder)
 {
-  double mx          = Index * SizeParam,
-         M           = Index/nMedium;
+  Cndarray     cn         = Cndarray(MaxOrder),
+               dn         = Cndarray(MaxOrder);
 
-  Cndarray Cn        = Cndarray(MaxOrder);
+  complex128 * cnPtr      = (complex128 *) cn.request().ptr,
+             * dnPtr      = (complex128 *) dn.request().ptr;
 
-  complex128 *CnPtr  = (complex128*) Cn.request().ptr,
-              numerator,
-              denominator;
-
-  for (uint order = 1; order < MaxOrder+1; order++)
-  {
-    numerator        = M * MuScat * ( Xi(order, SizeParam) * Psi_p(order, SizeParam) - Xi_p(order, SizeParam) * Psi(order, SizeParam) );
-    denominator      = MuScat * Xi(order, SizeParam) * Psi_p(order, mx) - Mu * M * Xi_p(order, SizeParam) * Psi(order, mx);
-    CnPtr[order-1]   = numerator / denominator;
-  }
-  return Cn;
+  this->HighFreqCnDn(cnPtr, dnPtr, MaxOrder);
+  return cn;
 }
 
 

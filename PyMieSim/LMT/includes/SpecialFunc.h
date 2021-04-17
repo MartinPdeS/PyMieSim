@@ -65,6 +65,21 @@ inline double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(
 inline double Yn(double order, double x){ return boost::math::cyl_neumann(order, x); }
 inline double Jn(double order, double x){ return boost::math::cyl_bessel_j(order, x); }
 
+inline complex128
+Jn(double order, complex128 x)
+{
+  complex128 val = Jn( order, x.real() );
+  return val.real() + JJ * val.imag();
+}
+
+inline complex128
+Yn(double order, complex128 x)
+{
+  complex128 val = Yn( order, x.real() );
+  return val.real() + JJ * val.imag();
+}
+
+
 inline double Yn_p(double order, double x){ return boost::math::cyl_neumann_prime(order, x); }
 inline double Jn_p(double order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }
 
@@ -114,6 +129,10 @@ inline complex128 Psi_p(int n, double x){ return (complex128)  x * _Psi_p(1, n, 
 
 inline complex128 Xi(int n, double x){return x * _Psi(4,n,x); }
 inline complex128 Xi_p(int n, double x){return x * _Psi_p(4,n,x) + _Psi(4,n,x); }
+
+
+
+
 
 
 

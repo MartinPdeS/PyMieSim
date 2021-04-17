@@ -14,6 +14,27 @@ GetQsca(complex128* an, complex128* bn, uint MaxOrder, double &SizeParam)
 }
 
 
+
+void
+ComputeDn(double nmx, complex128 mx, iVec& Dn)
+{
+  for (double i = nmx - 1; i > 1; i--)
+   {
+     Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );
+   }
+}
+
+
+void
+ComputeDn(double nmx, double mx, Vec& Dn)
+{
+  for (double i = nmx - 1; i > 1; i--)
+   {
+     Dn[i-1] = (i / mx) - ( 1. / (Dn[i] + i/mx) );
+   }
+}
+
+
 double
 GetQext(complex128* an, complex128* bn, uint MaxOrder, double &SizeParam)
 {
@@ -73,9 +94,6 @@ IsPolarized(double &Polarization)
 }
 
 
-
-
-
 void
 PolarizationTerm(uint ThetaLength,
                  double * ThetaPtr,
@@ -102,8 +120,6 @@ PolarizationTerm(uint ThetaLength,
     }
   }
 }
-
-
 
 
 void

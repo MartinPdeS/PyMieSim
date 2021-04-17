@@ -27,6 +27,7 @@ double Pnm(int n, int m, double x){return boost::math::legendre_p(n, m, x); }
 double NPnm(int n, int m, double x){return sqrt((2.*(double)n + 1.)/2. * nmFactorial(n,m)) * Pnm(n,m,x); }
 double Pnm_p(int n, int m, double x){ return (sqrt(1-x*x) * Pnm(n,m+1,x) + m*x*Pnm(n,m,x))/(x*x-1); }
 
+//----------------------------------------double--------------------------------//
 double
 Pinm(int n, int m, double x)
 {
@@ -34,7 +35,6 @@ Pinm(int n, int m, double x)
   if (x <= -1+1e-6){x = -1+1e-6;}
   return -Pnm(n,m,x) / sqrt(1-x*x);
 }
-
 
 double
 Taunm(int n, int m, double x)
@@ -71,21 +71,9 @@ inline double Jn_p(double order, double x){ return boost::math::cyl_bessel_j_pri
 inline complex128 Hn(int order, double x){ return Jn(order,x) + JJ * Yn(order,x); }
 inline complex128 Hn_p(int order, double x){ return Jn_p(order,x) + JJ * Yn_p(order,x); }
 
-std::pair<std::vector<double> , std::vector<double>>
-Arrange(const double start, const double stop)
-{
-  std::vector<double> Vec0 ;
-  std::vector<double> Vec1 ;
-  for (double i = start; i < stop; i++)
-  {
-    Vec0.push_back(i);
-    Vec1.push_back( ( 2 * (i) + 1) / ( (i) * (i + 1) ) ) ;
-  }
-  return std::make_pair(Vec0, Vec1);
-}
 
-inline
-complex128 _Psi_p(int type, int n, double x)
+inline complex128
+_Psi_p(int type, int n, double x)
 {
   if (type == 0){return (complex128) (x * jn_p(n, x) + jn(n, x));}
   if (type == 1){return (complex128) jn_p(n, x);}
@@ -96,8 +84,9 @@ complex128 _Psi_p(int type, int n, double x)
   return 0.;
 }
 
-inline
-complex128 _Psi(int type, int n, double x)
+
+inline complex128
+_Psi(int type, int n, double x)
 {
   if (type == 0){return (complex128) x * jn(n, x) ;}
   if (type == 1){return (complex128) jn(n, x) ;}
@@ -116,6 +105,36 @@ inline complex128 Xi(int n, double x){return x * _Psi(4,n,x); }
 inline complex128 Xi_p(int n, double x){return x * _Psi_p(4,n,x) + _Psi(4,n,x); }
 
 
+
+
+
+
+std::pair<std::vector<double> , std::vector<double>>
+Arrange(const double start, const double stop)
+{
+  std::vector<double> Vec0 ;
+  std::vector<double> Vec1 ;
+  for (double i = start; i < stop; i++)
+  {
+    Vec0.push_back(i);
+    Vec1.push_back( ( 2 * (i) + 1) / ( (i) * (i + 1) ) ) ;
+  }
+  return std::make_pair(Vec0, Vec1);
+}
+
+
+std::pair<std::vector<double> , std::vector<double>>
+Arrange(const double start, const double stop)
+{
+  std::vector<double> Vec0 ;
+  std::vector<double> Vec1 ;
+  for (double i = start; i < stop; i++)
+  {
+    Vec0.push_back(i);
+    Vec1.push_back( ( 2 * (i) + 1) / ( (i) * (i + 1) ) ) ;
+  }
+  return std::make_pair(Vec0, Vec1);
+}
 
 
 template<typename T>
