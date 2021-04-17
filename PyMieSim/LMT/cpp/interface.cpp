@@ -15,7 +15,7 @@ PYBIND11_MODULE(Scatterer, module) {
 
 
       py::class_<SPHERE>(module, "SPHERE")
-      .def(py::init<double, double, double, double, double, double>(),
+      .def(py::init<complex128, double, double, double, double, double>(),
            py::arg("Index"),
            py::arg("Diameter"),
            py::arg("Wavelength"),
@@ -24,6 +24,7 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("E0")           = 1. )
 
        .def("S1S2",
+
             &SPHERE::S1S2,
             py::arg("Phi") )
 
@@ -32,7 +33,7 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
-
+ 
       .def("sFields",
            &SPHERE::sFields,
            py::arg("Phi"),
@@ -47,7 +48,7 @@ PYBIND11_MODULE(Scatterer, module) {
       .def("sS1S2",
            &SPHERE::sS1S2,
            py::arg("Phi"),
-           py::arg("Theta")) 
+           py::arg("Theta"))
 
       .def("an", &SPHERE::An, py::arg("MaxOrder")  = 5)
 

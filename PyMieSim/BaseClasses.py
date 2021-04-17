@@ -319,10 +319,12 @@ class EfficienciesProperties(object):
         Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
 
         """
+        from PyMieSim.Representations import Efficiences
+
         if self._Efficiencies:
             return self._Efficiencies
         else:
-            self._Efficiencies = self.GetEfficiencies()
+            self._Efficiencies = Efficiences(self)
             return self._Efficiencies
 
 
@@ -367,9 +369,13 @@ class BaseScatterer(object):
 
         """
 
-        self._Qsca, self._Qext, self._Qabs, self._Qback, self._Qratio, self._g, self._Qpr = self.Bind.Efficiencies
-
-        return self._Qsca, self._Qext, self._Qabs, self._Qback, self._Qratio, self._g, self._Qpr
+        (self._Qsca,
+         self._Qext,
+         self._Qabs,
+         self._Qback,
+         self._Qratio,
+         self._g,
+         self._Qpr )   = self.Bind.Efficiencies
 
 
     def S1S2(self, Num=200):

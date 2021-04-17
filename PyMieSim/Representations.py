@@ -266,4 +266,40 @@ class Footprint(dict):
 
 
 
+
+
+class Efficiences(dict):
+
+    def __init__(self, Parent):
+
+        self.Parent       = Parent
+
+        data = Parent.Bind.Efficiencies
+        print(data)
+
+        self['Qsca']   = data[0]
+        self['Qext']   = data[1]
+        self['Qabs']   = data[2]
+        self['Qback']  = data[3]
+        self['Qratio'] = data[4]
+        self['g']      = data[5]
+        self['Qpr']    = data[6]
+
+    def Plot(self):
+        print('There is not plotting method for the Efficiences representation. Try print')
+
+    def __repr__(self):
+        text= f"""
+        Object:          Dictionary
+        Keys:            S1, S2, S3,, S4, Theta, Phi
+        Structured data: Yes
+        Method:          <Plot>
+        Shape:           {[7,1]}
+        """
+        text += "=" * 40 + '\n' + "-" * 50 + '\n'
+
+        for key, val in self.items():
+            text+= f"| {key:10s}  | {val} \n" + "-" * 50 + '\n'
+        return text
+
 # -

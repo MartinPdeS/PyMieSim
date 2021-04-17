@@ -56,7 +56,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         if Index:
             assert Material is None,"You should either choose a material or the RI not both"
             self.Material = None
-            self.Index    = Index.real#.astype(complex)
+            self.Index    = Index
 
         self.type      = 'Sphere'
         self.Diameter  = Diameter
@@ -90,6 +90,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
                                  BSC          = self.Source._BSC_)
 
         else:
+            print(self.Index)
             self.Bind = SPHERE(Index        = self.Index,
                                Diameter     = self.Diameter,
                                Wavelength   = self.Source.Wavelength,

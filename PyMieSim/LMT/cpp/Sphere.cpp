@@ -43,12 +43,12 @@ private:
 
 
 
-  SPHERE(double Index,
-         double Diameter,
-         double Wavelength,
-         double nMedium,
-         double Polarization,
-         double E0)
+  SPHERE(complex128 Index,
+         double     Diameter,
+         double     Wavelength,
+         double     nMedium,
+         double     Polarization,
+         double     E0)
         {
           this->Diameter      = Diameter;
           this->Index         = Index;
@@ -151,6 +151,7 @@ SPHERE::HighFreqCnDn(complex128* cn, complex128* dn, uint MaxOrder)
     numerator.push_back( jnx[i] * ahx[i] - hx[i] * ax[i] );
     c_denominator.push_back( ahx[i] - hx[i] * Cnn[i] );
     d_denominator.push_back( Index * Index * ahx[i] - hx[i] * Cnn[i] );
+    std::cout<<Jn( (double)(i+1)+0.5, SizeParam )<<std::endl;
 
     cn[i] = jnmx[i] * numerator[i] / c_denominator[i] ;
     dn[i] = jnmx[i] * Index * numerator[i] / d_denominator[i] ;

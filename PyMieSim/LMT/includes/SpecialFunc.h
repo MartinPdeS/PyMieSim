@@ -66,14 +66,16 @@ inline double Yn(double order, double x){ return boost::math::cyl_neumann(order,
 inline double Jn(double order, double x){ return boost::math::cyl_bessel_j(order, x); }
 
 inline complex128
-Jn(double order, complex128 x)
+Jn(double order, complex128 x) // wrong resutl for complex arguemnt need amos F90 wrapper as in https://github.com/joeydumont/complex_bessel
 {
-  complex128 val = Jn( order, x.real() );
-  return val.real() + JJ * val.imag();
+  complex128 val0 = Jn( order, x.real() );
+  complex128 val1 = Jn( order, x.real() );
+
+  return val0.real() + JJ * val0.imag();
 }
 
 inline complex128
-Yn(double order, complex128 x)
+Yn(double order, complex128 x)// wrong resutl for complex arguemnt need amos F90 wrapper as in https://github.com/joeydumont/complex_bessel
 {
   complex128 val = Yn( order, x.real() );
   return val.real() + JJ * val.imag();
