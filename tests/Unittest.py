@@ -6,6 +6,7 @@ from mayavi import mlab
 from unittest import TestCase
 from numpy import linspace, pi
 import numpy as np
+import unittest
 
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
@@ -26,18 +27,163 @@ Detector1   = Photodiode(Sampling = 11, NA = 0.2)
 phi         = linspace(-pi/2, pi/2,4)
 theta       = linspace(-pi, pi,4)
 
+
+
+
+
+class DetectorTestCase(unittest.TestCase):
+
+    def test00(self):
+        from PyMieSim.Detector import Photodiode
+        global Photodiode
+        Photodiode = Photodiode(Sampling     = 11,
+                                     NA           = 0.2,
+                                     GammaOffset  = 0,
+                                     PhiOffset    = 0,
+                                     CouplingMode = 'Centered',
+                                     Testing      = True)
+
+        print('Photodiode initialisation passed')
+
+
+    def test01(self):
+        from PyMieSim.Detector import LPmode
+        global LPmode
+        LPmode = LPmode(Mode         = (0,1),
+                             Sampling     = 11,
+                             NA           = 0.2,
+                             GammaOffset  = 0,
+                             PhiOffset    = 0,
+                             CouplingMode = 'Centered',
+                             Testing      = True)
+
+        print('LPmode initialisation passed')
+
+
+    def test02(self):
+        from PyMieSim.Detector import IntegratingSphere
+        global IntegratingSphere
+        IntegratingSphere = IntegratingSphere(Testing = True)
+
+        print('IntegratingSphere initialisation passed')
+
+
+    def test03(self):
+        Photodiode.Plot()
+        print('Photodiode Plotting passed')
+
+
+    def test04(self):
+        LPmode.Plot()
+        print('LPmode Plotting passed')
+
+
+    def test05(self):
+        IntegratingSphere.Plot()
+        print('IntegratingSphere Plotting passed')
+
+
+class ScattererTestCase(unittest.TestCase):
+
+    def test00(self):
+        from PyMieSim.Scatterer import Sphere
+        global sScat
+        sScat = Sphere(Diameter = 300e-9,
+                            Index    = 1.4,
+                            Source   = LightSource,
+                            Testing  = True)
+
+        print('Sphere initialisation passed')
+
+
+    def test01(self):
+        from PyMieSim.Scatterer import Cylinder
+        global cScat
+        cScat = Cylinder(Diameter = 300e-9,
+                              Index    = 1.4,
+                              Source   = LightSource,
+                              Testing  = True)
+
+        print('Cylinder initialisation passed')
+
+
+    def test02(self):
+        sScat.S1S2(Num=10)
+        print('Spherical Scatterer <S1S2> compute passed')
+
+
+    def test03(self):
+        sScat.Stokes(Num=10)
+        print('Spherical Scatterer <Stokes> compute passed')
+
+
+    def test04(self):
+        sScat.FarField(Num=10)
+        print('Spherical Scatterer <FarFields> compute passed')
+
+
+    def test05(self):
+        sScat.SPF(Num=10)
+        print('Spherical Scatterer <SPF> compute passed')
+
+
+    def test06(self):
+        Photodiode.Coupling(Scatterer = sScat)
+        print('<Photodiode> coupling passed')
+
+    def test07(self):
+        LPmode.Coupling(Scatterer = sScat)
+        print('<LPmode> coupling passed')
+
+
+    def test08(self):
+        IntegratingSphere.Coupling(Scatterer = sScat)
+        print('<IntegratingSphere> coupling passed')
+
+
+    def test09(self):
+        sScat.S1S2(10).Plot()
+        print('<S1S2> coupling passed')
+
+
+    def test10(self):
+        sScat.Stokes(10).Plot()
+        print('<Stokes> coupling passed')
+
+
+    def test11(self):
+        sScat.FarField(10).Plot()
+        print('<FarField> coupling passed')
+
+
+    def test12(self):
+        sScat.SPF(10).Plot()
+        print('<SPF> coupling passed')
+
+
+
+
+class ExperiementTestCase(unittest.TestCase):
+
+    def test00(self):
+        global sScatSet
+        sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11),
+                           IndexList      = 1.5)
+        print('<ScattererSet> initialisation passed')
+
+
+
+
+
+
+
+
+
+"""
+
 class PrintingTest(TestCase):
 
     def Run(self):
-        self.test00()
-        self.test01()
-        self.test02()
-        self.test03()
-        self.test04()
-        self.test05()
-        self.test06()
-        self.test07()
-        self.test08()
         self.test09()
         self.test10()
         self.test11()
@@ -59,64 +205,6 @@ class PrintingTest(TestCase):
         self.test27()
         self.test28()
         self.test29()
-        self.test30()
-        self.test31()
-        self.test32()
-
-    def test00(self):
-        self.Photodiode = Photodiode(Sampling     = 11,
-                                     NA           = 0.2,
-                                     GammaOffset  = 0,
-                                     PhiOffset    = 0,
-                                     CouplingMode = 'Centered')
-
-        print('Test 00: Photodiode initialisation passed')
-
-
-    def test01(self):
-        self.LPMode = LPmode(Mode         = (1, 1),
-                             Sampling     = 11,
-                             NA           = 0.2,
-                             GammaOffset  = 0,
-                             PhiOffset    = 0,
-                             CouplingMode = 'Centered')
-
-        print('Test 01: LPmode initialisation passed')
-
-
-    def test02(self):
-        self.sScat = Sphere(Diameter = 300e-9, Index = 1.4, Source = LightSource, Testing=True)
-        print('Test 02: Spherical scatterer initialisation passed')
-
-
-    def test03(self):
-        self.cScat = Cylinder(Diameter = 300e-9, Index = 1.4, Source = LightSource, Testing=True)
-        print('Test 03: Cylindrical scatterer initialisation passed')
-
-
-    def test04(self):
-        self.sScat.S1S2(Num=10)
-        print('Test 04: Scatterer <S1S2> compute passed')
-
-
-    def test05(self):
-        self.sScat.FarField(Num=10)
-        print('Test 05: Scatterer <FarField> compute passed')
-
-
-    def test06(self):
-        self.sScat.SPF(Num=10)
-        print('Test 06: Scatterer <SPF> compute passed')
-
-
-    def test07(self):
-        self.Photodiode.Coupling(Scatterer = Scat)
-        print('Test 07: <Photodiode> coupling passed')
-
-
-    def test08(self):
-        self.LPMode.Coupling(Scatterer = Scat)
-        print('Test 08: <LPMode> coupling passed')
 
 
     def test09(self):
@@ -254,29 +342,39 @@ class PrintingTest(TestCase):
             a = self.sScat.S1S2(Num=10)
             assert a.Plot() == None
             print('Test 29: Scatterer <S1S2> plot passed')
+"""
 
+def suite():
+  suite = unittest.TestSuite()
+  suite.addTest(DetectorTestCase('test00'))
+  suite.addTest(DetectorTestCase('test01'))
+  suite.addTest(DetectorTestCase('test02'))
+  suite.addTest(DetectorTestCase('test03'))
+  suite.addTest(DetectorTestCase('test04'))
+  suite.addTest(DetectorTestCase('test05'))
 
-    def test30(self):
-        self.addCleanup(mlab.close(all=True))
-        a = self.sScat.FarField(Num=10)
-        a.Plot();
-        print('Test 30: Scatterer <FarField> plot passed')
+  suite.addTest(ScattererTestCase('test00'))
+  suite.addTest(ScattererTestCase('test01'))
+  suite.addTest(ScattererTestCase('test02'))
+  suite.addTest(ScattererTestCase('test03'))
+  suite.addTest(ScattererTestCase('test04'))
+  suite.addTest(ScattererTestCase('test05'))
+  suite.addTest(ScattererTestCase('test06'))
+  suite.addTest(ScattererTestCase('test07'))
+  suite.addTest(ScattererTestCase('test08'))
+  suite.addTest(ScattererTestCase('test09'))
+  suite.addTest(ScattererTestCase('test10'))
+  suite.addTest(ScattererTestCase('test11'))
+  suite.addTest(ScattererTestCase('test12'))
 
+  suite.addTest(ExperiementTestCase('test00'))
 
-    def test31(self):
-        a = self.sScat.SPF(Num=10)
-        a.Plot()
-        print('Test 31: Scatterer <SPF> plot passed')
-
-    def test32(self):
-        a = self.sScat.Stokes(Num=10)
-        a.Plot()
-        print('Test 32: Scatterer <Stokes> plot passed')
+  return suite
 
 
 if __name__ == '__main__':
-    test = PrintingTest()
-    test.Run()
+    runner = unittest.TextTestRunner(failfast=True)
+    runner.run(suite())
 
 
 

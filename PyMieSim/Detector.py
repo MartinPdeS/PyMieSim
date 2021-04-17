@@ -41,7 +41,10 @@ class Photodiode(BaseDetector, MeshProperty):
                  CouplingMode : str                      = 'Centered',
                  GammaOffset  : Union[int, float]        = 0,
                  PhiOffset    : Union[int, float]        = 0,
-                 Filter       : Union[int, float, bool]  = None):
+                 Filter       : Union[int, float, bool]  = None,
+                 Testing      : bool                     = False,):
+
+        self.Testing = Testing
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -119,7 +122,10 @@ class IntegratingSphere(Photodiode):
     def __init__(self,
                  Sampling     : int                      = 400,
                  CouplingMode : str                      = 'Centered',
-                 Filter       : Union[int, float, bool]  = None):
+                 Filter       : Union[int, float, bool]  = None,
+                 Testing      : bool                     = False,):
+
+        self.Testing = Testing
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -183,7 +189,10 @@ class LPmode(BaseDetector, MeshProperty):
                  GammaOffset  : Union[int, float]        = 0,
                  PhiOffset    : Union[int, float]        = 0,
                  Filter       : Union[int, float, bool]  =  None,
-                 CouplingMode : str                      = 'Centered'):
+                 CouplingMode : str                      = 'Centered',
+                 Testing      : bool                     = False):
+
+        self.Testing = Testing
 
         assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
 
