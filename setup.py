@@ -73,7 +73,6 @@ compile_args=["-std=c++14",
               '-lboost_filesystem',
               '-lboost_system',
               '-O3',
-              '-lgomp',
               '-march=native']
 
 link_args=["-std=c++14",
@@ -81,7 +80,6 @@ link_args=["-std=c++14",
            '-lboost_filesystem',
            '-lboost_system',
            '-O3',
-           '-lgomp',
            '-march=native']
 
 ext_modules = [

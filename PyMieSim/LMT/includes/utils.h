@@ -15,6 +15,7 @@ typedef py::buffer_info info;
 uint
 GetMaxOrder(double SizeParam) {return (int) (2 + SizeParam + 4 * pow(SizeParam,1./3.)); }
 
+
 double
 GetSizeParameter(const double Diameter,
                  const double Wavelength,
