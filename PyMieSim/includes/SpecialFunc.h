@@ -106,23 +106,6 @@ inline complex128 Xi_p(int n, double x){return x * _Psi_p(4,n,x) + _Psi(4,n,x); 
 
 
 
-
-
-
-std::pair<std::vector<double> , std::vector<double>>
-Arrange(const double start, const double stop)
-{
-  std::vector<double> Vec0 ;
-  std::vector<double> Vec1 ;
-  for (double i = start; i < stop; i++)
-  {
-    Vec0.push_back(i);
-    Vec1.push_back( ( 2 * (i) + 1) / ( (i) * (i + 1) ) ) ;
-  }
-  return std::make_pair(Vec0, Vec1);
-}
-
-
 std::pair<std::vector<double> , std::vector<double>>
 Arrange(const double start, const double stop)
 {
