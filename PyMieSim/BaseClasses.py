@@ -1,7 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
+import numpy  as np
+import pandas as pd
+import csv
+import json
+import os
+import urllib.request
+from pathlib import Path
+PATH = os.path.join( Path(__file__).parent, 'csv/_Material' )
 
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
@@ -691,6 +698,58 @@ class BaseScatterer(object):
         return Area(self.Qsca*self.Area)
 
 
+
+
+
+
+class BaseMaterial(object):
+
+    def LoadOnline(self):
+        ftpstream = urllib.request.urlopen(self.url)
+        Array = pd.read_csv(ftpstream, delimiter=',').T.to_numpy()
+        bound = np.where(Array == 'wl')
+        bound = (bound[0][0],bound[1][0])
+
+        if len(bound) == 1:
+            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
+                          'n'   : Array[1][:bound[1]].astype(float)}
+
+        if len(bound) == 2:
+            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
+                          'n'   : Array[1][:bound[1]].astype(float),
+                          'wl1' : Array[0][bound[1]+1:].astype(float),
+                          'k'   : Array[1][bound[1]+1:].astype(float) }
+
+        return self.data
+
+
+    def LoadLocal(self, url):
+        with open(url) as csv_file:
+            CSV = pd.read_csv(csv_file, delimiter=',')
+
+        Array = CSV.T.to_numpy()
+        bound = np.where(Array == "wl")
+        bound = (bound[0][0],bound[1][0])
+
+        if len(bound) == 1:
+            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
+                          'n'   : Array[1][:bound[1]].astype(float)}
+
+        if len(bound) == 2:
+            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
+                          'n'   : Array[1][:bound[1]].astype(float),
+                          'wl1' : Array[0][bound[1]+1:].astype(float),
+                          'k'   : Array[1][bound[1]+1:].astype(float) }
+
+        return self.data
+
+
+    def GetIndex(self, wavelength):
+        Nidx = NearestIndex( self.data['wl0'] , wavelength * 1e3 )
+
+        Kidx = NearestIndex( self.data['wl1'] , wavelength * 1e3 )
+
+        return self.data['n'][Nidx] + 1j * self.data['k'][Nidx]
 
 
 
