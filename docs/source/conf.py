@@ -30,11 +30,16 @@ autodoc_mock_imports = ['numpy',
                         'sphinx.ext.autodoc']
 
 
-sys.path.insert(0, os.path.abspath('../../tests/Examples/'))
-print( os.path.abspath('../../tests'))
-print('#####', os.path.exists(os.path.abspath('../../tests')))
-print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', os.path.abspath(os.curdir))
-sys.path.insert(0, os.path.abspath('../images/'))
+PATH = os.path.join(os.path.dirname(__file__), '../../tests/Examples/' )
+#PATH = os.path.abspath('../../tests/Examples/Index')
+sys.path.insert(0, PATH)
+
+from os import listdir
+print( [f for f in listdir(PATH)] )
+
+
+
+#sys.path.insert(0, os.path.abspath('../images/'))
 # -- Project information -----------------------------------------------------
 
 project = 'PyMieSim'

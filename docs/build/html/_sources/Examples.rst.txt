@@ -4,6 +4,10 @@ Examples
 -----
 
 
+.. automodule:: Products.BatchDataContainer
+   :members:
+
+
 Scatterer: Index
 -------------------
 
