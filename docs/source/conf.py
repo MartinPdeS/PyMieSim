@@ -30,7 +30,7 @@ autodoc_mock_imports = ['numpy',
                         'sphinx.ext.autodoc']
 
 
-PATH = os.path.join(os.path.dirname(__file__), '../../tests/Examples/' )
+PATH = os.path.join(os.path.dirname(__file__), '../..' )
 #PATH = os.path.abspath('../../tests/Examples/Index')
 sys.path.insert(0, PATH)
 
