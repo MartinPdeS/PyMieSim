@@ -4,14 +4,10 @@ Examples
 -----
 
 
-.. automodule:: Products.BatchDataContainer
-   :members:
-
-
 Scatterer: Index
 -------------------
 
-.. literalinclude:: Index.py
+.. literalinclude:: ../../tests/Examples/Index.py
     :language: python
     :linenos:
 
