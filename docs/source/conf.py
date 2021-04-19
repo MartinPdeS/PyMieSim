@@ -35,7 +35,7 @@ PATH = os.path.join(os.path.dirname(__file__), '../../tests/Examples/' )
 sys.path.insert(0, PATH)
 
 from os import listdir
-print( [f for f in listdir(PATH)] )
+#print( [f for f in listdir(PATH)] )
 
 
 
