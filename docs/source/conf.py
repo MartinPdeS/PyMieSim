@@ -93,6 +93,19 @@ master_doc = 'index'
 # Usually you set "language" from the command line for these cases.
 language = None
 
+import os
+
+def list_files(startpath):
+    for root, dirs, files in os.walk(startpath):
+        level = root.replace(startpath, '').count(os.sep)
+        indent = ' ' * 4 * (level)
+        print('{}{}/'.format(indent, os.path.basename(root)))
+        subindent = ' ' * 4 * (level + 1)
+        for f in files:
+            print('{}{}'.format(subindent, f))
+
+list_files('../..')
+
 html_extra_path = ['../../tests/Examples/Index.py']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
