@@ -7,7 +7,7 @@ Examples
 Scatterer: Index
 -------------------
 
-.. literalinclude:: ../../tests/Examples/Index.py
+.. literalinclude:: Index.py
     :language: python
     :linenos:
 
@@ -16,7 +16,7 @@ Scatterer: Index
 Scatterer: Material
 -------------------
 
-.. literalinclude:: ../../tests/Examples/Material.py
+.. literalinclude:: Material.py
     :language: python
     :linenos:
 
