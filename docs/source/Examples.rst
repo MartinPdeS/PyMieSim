@@ -8,7 +8,7 @@ Scatterer: Index
 -------------------
 
 
-.. literalinclude:: ../../tests/Unittest.py
+.. literalinclude:: test.py
     :language: python
     :linenos:
 
