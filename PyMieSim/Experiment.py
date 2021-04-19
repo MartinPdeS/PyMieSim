@@ -205,6 +205,8 @@ class Setup(object):
 
         """
 
+
+
         Eff = ToList(Eff)
 
         self.AssertionType(AsType=AsType, Eff=Eff)
@@ -213,18 +215,46 @@ class Setup(object):
 
         Array = np.empty(config['size'] * len(Eff))
 
-        i = 0
-        for source in self.SourceSet.Generator():
-            for scat in self.ScattererSet.Generator(Source=source):
-                for eff in Eff:
-                    Array[i]         = getattr(scat, eff)
-                    i               += 1
+        if self.ScattererSet.Material:
+            i = 0
+
+            for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
+                for source in self.SourceSet.Generator(RI):
+                    for eff in Eff:
+                        Scatterer = Sphere(Diameter  = diameter,
+                                           Source    = source,
+                                           Index     = RI.current,
+                                           nMedium   = 1.,
+                                           MuSphere  = 1.0,
+                                           MuMedium  = 1.0)
+
+
+                        Array[i] =  getattr(Scatterer, eff)
+                        i += 1;
+
+        else:
+
+            i = 0
+            for nd, detector in enumerate(self.DetectorSet):
+                for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
+                    for source in self.SourceSet.Generator():
+                        Scatterer = Sphere(Diameter  = diameter,
+                                           Source    = source,
+                                           Index     = RI,
+                                           nMedium   = 1.,
+                                           MuSphere  = 1.0,
+                                           MuMedium  = 1.0)
+
+                        Array[i] = detector.Coupling(Scatterer = Scatterer)
+                        i += 1;
 
         Array = Array.reshape(config['shape']+[len(Eff)])
 
         return self.ReturnType(Array     = np.rollaxis(Array, 4),
                                AsType    = AsType,
                                conf      = config)
+
+
 
 
 
