@@ -4,28 +4,29 @@ Examples
 -----
 
 
+Scatterer: Index
+-------------------
+
+.. literalinclude:: ../../tests/Examples/Index.py
+    :language: python
+    :linenos:
+
+
+
+Scatterer: Material
+-------------------
+
+.. literalinclude:: ../../tests/Examples/Material.py
+    :language: python
+    :linenos:
+
+
 Scatterer: S1-S2
 ----------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Source import PlaneWave
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-   Scat = Sphere(Diameter    = 300e-9,
-                 Source      = Source,
-                 Index       = 1.4)
-
-
-   S1S2 = Scat.S1S2(Num=100)
-
-   S1S2.Plot()
+.. literalinclude:: ../../tests/Examples/S1S2.py
+    :language: python
+    :linenos:
 
 
 
@@ -35,30 +36,13 @@ Scatterer: S1-S2
 -----
 
 
+
 Scatterer: Stokes
 -----------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Source import PlaneWave
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-   Scat = Sphere(Diameter    = 300e-9,
-                 Source      = Source,
-                 Index       = 1.4)
-
-
-   Stokes = Scat.Stokes(Num=100)
-
-   Stokes.Plot()
-
-
+.. literalinclude:: ../../tests/Examples/Stokes.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/Stokes.png
    :width: 600
@@ -66,58 +50,27 @@ Scatterer: Stokes
 -----
 
 
+
 Scatterer: full far-field
 -------------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Source import PlaneWave
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-   Scat = Sphere(Diameter    = 300e-9,
-                 Source      = Source,
-                 Index       = 1.4)
-
-
-   Fields = Scat.FarField(Num=100)
-
-   Fields.Plot()
-
-
+.. literalinclude:: ../../tests/Examples/FarField.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/Fields.png
    :width: 600
 
 -----
 
+
+
 Scatterer: phase function
 -------------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Source import PlaneWave
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-   Scat = Sphere(Diameter    = 800e-9,
-                Source      = Source,
-                Index       = 1.4)
-
-
-   SPF = Scat.SPF(Num=100)
-
-   SPF.Plot()
+.. literalinclude:: ../../tests/Examples/SPF.py
+    :language: python
+    :linenos:
 
 
 
@@ -129,56 +82,24 @@ Scatterer: phase function
 Detector: Photodiode
 --------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Source import PlaneWave
-   from PyMieSim.Detector import Photodiode
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-   Detector = Photodiode(NA                = 0.8,
-                         Sampling          = 1001,
-                         GammaOffset       = 0,
-                         PhiOffset         = 0)
-
-
-   Detector.Plot()
-
-
+.. literalinclude:: ../../tests/Examples/Photodiode.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/Photodiode.png
    :width: 600
 
 -----
 
+
+
+
 Detector: LPMode
 ----------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Source import PlaneWave
-   from PyMieSim.Detector import LPmode
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 0)
-
-   Detector = LPmode(Mode         = (1, 1),
-                     Rotation     = 0.,
-                     Sampling     = 201,
-                     NA           = 0.4,
-                     GammaOffset  = 0,
-                     PhiOffset    = 40,
-                     CouplingMode = 'Centered')
-
-
-   Detector.Plot()
+.. literalinclude:: ../../tests/Examples/LPMode.py
+    :language: python
+    :linenos:
 
 
 .. image:: ../images/LPmode.png
@@ -186,69 +107,30 @@ Detector: LPMode
 
 -----
 
+
+
+
 Coupling: Scatterer-Photodiode
 ------------------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Source import PlaneWave
-   from PyMieSim.Detector import Photodiode
-   from PyMieSim.Scatterer import Sphere
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-   Detector = Photodiode(Sampling     = 201,
-                         NA           = 0.2,
-                         GammaOffset  = 0,
-                         PhiOffset    = 0,
-                         CouplingMode = 'Centered')
-
-
-   Scat = Sphere(Diameter    = 300e-9,
-                 Source      = Source,
-                 Index       = 1.4)
-
-   Coupling = Detector.Coupling(Scatterer = Scat)
-
-   print(Coupling)
-
+.. literalinclude:: ../../tests/Examples/Scatterer-Photodiode.py
+    :language: python
+    :linenos:
 
 
 Output: (6.57e+01 nWatt)
 
 -----
 
+
+
+
 ScattererSet: Qscattering
 --------------------------
 
-.. code-block:: python
-   :linenos:
-
-   import numpy as np
-   from PyMieSim.Source import PlaneWave
-   from PyMieSim.Sets import ScattererSet
-
-
-   Source = PlaneWave(Wavelength   = 450e-9,
-                      Polarization = 0,
-                      E0           = 1)
-
-
-   ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 10000e-9, 400),
-                          IndexList        = np.linspace(1.5, 1.8, 3).round(1),
-                          Source        = Source)
-
-
-   Qsca = ScatSet.Qsca()
-
-   fig = Qsca.Plot()
-
-
-
-
+.. literalinclude:: ../../tests/Examples/Qscattering.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/Qsca.png
    :width: 600
@@ -257,85 +139,29 @@ ScattererSet: Qscattering
 -----
 
 
-Experiment: Qsca vs. diameter
+
+
+Experiment: Qsca-vs-diameter
 ------------------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Detector import Photodiode
-   from PyMieSim.Experiment import ScatSet, SourceSet, Setup
-   import numpy as np
-
-   DiameterList   = np.linspace(400e-9, 1000e-9, 200)
-
-   Detector0 = Photodiode(NA                = 0.1,
-                         Sampling          = 300,
-                         GammaOffset       = 20,
-                         PhiOffset         = 30,
-                         CouplingMode      = 'Centered')
-
-   scat = ScatSet(DiameterList  = DiameterList,
-                  IndexList         = [1.5],
-                  nMedium        = 1,
-                  ScattererType  = 'Sphere')
-
-   source = SourceSet(WavelengthList   = 400e-9,
-                     PolarizationList  = [0],
-                     SourceType        = 'PlaneWave')
-
-
-   Experiment = Setup(ScattererSet = scat,
-                      SourceSet    = source,
-                      DetectorSet  = [Detector0])
-
-   Qsca = Experiment.Qsca(AsType='dataframe')
-
-   Qsca.Plot(y='Qsca', x='Diameter')
-
+.. literalinclude:: ../../tests/Examples/Qsca-vs-diameter.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/QscaVSDiameter.png
   :width: 600
 
 -----
 
-Experiment: Mie resonances
+
+
+
+Experiment: Mie-resonances
 --------------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Detector import Photodiode
-   from PyMieSim.Experiment import ScatSet, SourceSet, Setup
-   import numpy as np
-
-   WavelengthList   = np.linspace(400e-9, 1000e-9, 200)
-
-   Detector0 = Photodiode(NA               = 0.1,
-                         Sampling          = 300,
-                         GammaOffset       = 20,
-                         PhiOffset         = 30,
-                         CouplingMode      = 'Centered')
-
-   scat = ScatSet(DiameterList   = 200e-9,
-                  IndexList         = [1.5],
-                  nMedium        = 1,
-                  ScattererType  = 'Sphere')
-
-   source = SourceSet(WavelengthList   = WavelengthList,
-                     PolarizationList  = [0],
-                     SourceType        = 'PlaneWave')
-
-
-   Experiment = Setup(ScattererSet = scat,
-                      SourceSet    = source,
-                      DetectorSet  = [Detector0])
-
-   Qsca = Experiment.Qsca(AsType='dataframe')
-
-   Qsca.Plot(y='Qsca', x='Wavelength')
+.. literalinclude:: ../../tests/Examples/Mie-resonances.py
+    :language: python
+    :linenos:
 
 
 .. image:: ../images/QscaVSWavelength.png
@@ -343,43 +169,15 @@ Experiment: Mie resonances
 
 -----
 
-Experiment: Coupling vs. diameter
+
+
+
+Experiment: Coupling-vs-diameter
 ---------------------------------
 
-.. code-block:: python
-   :linenos:
-
-   from PyMieSim.Scatterer import Sphere
-   from PyMieSim.Detector import Photodiode
-   from PyMieSim.Experiment import ScatSet, SourceSet, Setup
-   import numpy as np
-
-   DiameterList   = np.linspace(400e-9, 1000e-9, 200)
-
-   Detector0 = Photodiode(NA                = 0.1,
-                          Sampling          = 300,
-                          GammaOffset       = 20,
-                          PhiOffset         = 30,
-                          CouplingMode      = 'Centered')
-
-   scat = ScatSet(DiameterList  = DiameterList,
-                  IndexList         = [1.5],
-                  nMedium        = 1,
-                  ScattererType  = 'Sphere')
-
-   source = SourceSet(WavelengthList   = 400e-9,
-                      PolarizationList = [0],
-                      SourceType       = 'PlaneWave')
-
-
-   Experiment = Setup(ScattererSet = scat,
-                      SourceSet    = source,
-                      DetectorSet  = [Detector0])
-
-   DF = Experiment.Coupling(AsType='dataframe')
-
-   DF.Plot(y='Coupling', x='Diameter')
-
+.. literalinclude:: ../../tests/Examples/Coupling-vs-diameter.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/CouplingVSDiameter.png
   :width: 600
@@ -387,107 +185,24 @@ Experiment: Coupling vs. diameter
 
 -----
 
-Experiment: Coupling vs. wavelength
----------------------------------
+Experiment: Coupling-vs-wavelength
+-----------------------------------
 
-.. code-block:: python
-  :linenos:
-
-  from PyMieSim.Scatterer import Sphere
-  from PyMieSim.Detector import Photodiode
-  from PyMieSim.Experiment import ScatSet, SourceSet, Setup
-  import numpy as np
-
-  WavelengthList = np.linspace(400e-9, 1000e-9, 100)
-
-  Detector0 = Photodiode(NA                = 2.0,
-                         Sampling          = 300,
-                         GammaOffset       = 0,
-                         PhiOffset         = 0,
-                         CouplingMode      = 'Centered')
-
-  scat = ScatSet(DiameterList  = [200e-9],
-                 IndexList        = [4],
-                 nMedium       = 1,
-                 ScattererType = 'Sphere')
-
-  source = SourceSet(WavelengthList   = WavelengthList,
-                     PolarizationList = [0],
-                     SourceType       = 'PlaneWave')
-
-
-  Experiment = Setup(ScattererSet = scat,
-                     SourceSet    = source,
-                     DetectorSet  = [Detector0])
-
-  DF = Experiment.Coupling(AsType='dataframe')
-
-  DF.Plot(y='Coupling', x='Wavelength')
-
+.. literalinclude:: ../../tests/Examples/Coupling-vs-wavelength.py
+    :language: python
+    :linenos:
 
 .. image:: ../images/CouplingVSWavelength.png
    :width: 600
 
 -----
 
-Optimization: 1 parameter
--------------------------
+Optimization: Opt-1-parameter
+------------------------------
 
-.. code-block:: python
-  :linenos:
-
-
-
-  import numpy as np
-  from PyMieSim.Detector import Photodiode, LPmode
-  from PyMieSim.Source import PlaneWave
-  from PyMieSim.Optimization import Optimizer
-  from PyMieSim.Experiment import ScatSet, SourceSet, Setup
-
-  DiameterList   = np.linspace(100e-9, 1000e-9, 200)
-
-  Detector0 = Photodiode(NA                 = 0.1,
-                         Sampling          = 300,
-                         GammaOffset       = 20,
-                         PhiOffset         = 0,
-                         CouplingMode      = 'Centered')
-
-  scat = ScatSet(DiameterList   = DiameterList,
-                 IndexList      = [1.5],
-                 nMedium        = 1,
-                 ScattererType  = 'Sphere')
-
-  source = SourceSet(WavelengthList  = 400e-9,
-                     PolarizationList  = [0],
-                     SourceType        = 'PlaneWave')
-
-
-  Experiment = Setup(ScattererSet = scat,
-                     SourceSet    = source,
-                     DetectorSet  = [Detector0])
-
-
-  # Metric can be "max" - "min" - "mean"
-  #"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
-  #"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
-
-  Opt    = Optimizer(Setup           = Experiment,
-                     Metric          = 'mean',
-                     Parameter       = ['PhiOffset'],
-                     Optimum         = 'Maximum',
-                     MinVal          = [1e-5],
-                     MaxVal          = [180],
-                     WhichDetector   = 0,
-                     X0              = [0.6],
-                     MaxIter         = 350,
-                     Tol             = 1e-4,
-                     FirstStride     = 30)
-
-  print(Opt.Result)
-
-  df = Experiment.Coupling(AsType='dataframe')
-
-  df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
+.. literalinclude:: ../../tests/Examples/Opt-1-parameter.py
+    :language: python
+    :linenos:
 
 
 **Output:**
@@ -532,97 +247,9 @@ Optimization: 1 parameter
 
 -----
 
-Optimization: 2 parameters
---------------------------
+Optimization: Opt-2-parameter
+------------------------------
 
-.. code-block:: python
-  :linenos:
-
-
-
-  import numpy as np
-  from PyMieSim.Detector import Photodiode, LPmode
-  from PyMieSim.Source import PlaneWave
-  from PyMieSim.Optimizer import Optimize
-  from PyMieSim.Sets import ExperimentalSet, ScattererSet
-
-
-  Source = PlaneWave(Wavelength   = 450e-9,
-                     Polarization = 0,
-                     E0           = 1e5)
-
-  Detector0 = Photodiode(NA               = 0.1,
-                        Sampling          = 300,
-                        GammaOffset       = 20,
-                        PhiOffset         = 0,
-                        CouplingMode      = 'Centered')
-
-  Detector1 = Photodiode(NA                = 0.1,
-                         Sampling          = 300,
-                         GammaOffset       = 30,
-                         PhiOffset         = 0,
-                         CouplingMode      = 'Centered')
-
-
-  ScatSet = ScattererSet(DiameterList  = np.linspace(100e-9, 1500e-9, 300),
-                         IndexList        = np.linspace(1.5, 1.8, 1).round(1),
-                         Source        = Source)
-
-  Set = ExperimentalSet(ScattererSet = ScatSet, Detectors = (Detector0))
-
-
-  Opt    = Optimize(ExperimentalSet = Set,
-                    Metric          = 'Monotonic',
-                    Parameter       = ['NA','PhiOffset'],
-                    MinVal          = [1e-1, None],
-                    MaxVal          = [1, None],
-                    WhichDetector   = 0,
-                    X0              = [0.1,30],
-                    MaxIter         = 350,
-                    Tol             = 1e-4,
-                    FirstStride     = 30)
-
-  print(Opt.Result)
-
-  df = Set.DataFrame
-
-  df.Plot('Coupling') # can be "Couplimg"  or  "STD"
-
-
-
-
-LP-modes: Generate files
-------------------------
-
-I have prealably compilated 12 LP-modes which are:
-
-1. LP01
-2. LP11
-3. LP21
-4. LP02
-5. LP31
-6. LP12
-7. LP41
-8. LP22
-9. LP03
-10. LP51
-11. LP32
-12. LP13
-
-So you can already use them, no need to reproduce. However if you want to
-use another mode you first need to install the fibermodes package using the
-following command:
-
-.. code-block:: python
-  :linenos:
-
-  pip install https://github.com/cbrunet/fibermodes.git
-
-Then you can use the PyMieSIm FiberModes module as follow:
-
-.. code-block:: python
-  :linenos:
-
-  from PyMieSim.FiberModes import Genfiles
-
-  Genfiles([(5,2)], padWidth = 2000, Num = 251)
+.. literalinclude:: ../../tests/Examples/Opt-2-parameter.py
+    :language: python
+    :linenos:

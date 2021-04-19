@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>&lt;no title&gt; &#8212; PyMieSim 0.1.11 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="LPModes.html" />
+    <link rel="prev" title="Examples" href="Examples.html" /> 
+  </head><body>
+
+<div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><h1 style="font-size: 3em;">PyMieSim</h1></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="LPModes.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Examples.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="Intro.html">Introduction</a>|&nbsp;</li>
+        <li><a href="Theory.html">Theory</a>|&nbsp;</li>
+        <li><a href="Code.html">Code</a>|&nbsp;</li>
+        <li><a href="Examples.html">Examples</a>|&nbsp;</li>
+        <li><a href="#">Material</a>|&nbsp;</li>
+        <li><a href="LPModes.html">LPModes</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Logo.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Examples.html"
+                        title="previous chapter">Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="LPModes.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Material.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <p>PyMieSim has a toolbox to fetch and load new material data.
+Using the largest refracitve index bank: <a class="reference external" href="https://refractiveindex.info/">refractiveindex.info</a>  PyMieSim can directly
+download and save complex refractive index for a specific material.
+Doing so the toolbox will save locally the data in the <strong>PyMieSim/_Material/data</strong> folder and will update the
+<strong>PyMieSim/Meta.json</strong> file.
+Here is what the Meta file look like</p>
+<div class="highlight-JSON notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;remote&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;Aluminium&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/Al/Rakic.yml&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;BK7&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;FusedSilica&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/SiO2/Malitson.yml&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Silver&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;local&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;Aluminium&quot;</span><span class="p">:</span> <span class="s2">&quot;Aluminium.npz&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;BK7&quot;</span><span class="p">:</span> <span class="s2">&quot;BK7.npz&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;FusedSilica&quot;</span><span class="p">:</span> <span class="s2">&quot;FusedSilica.npz&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Silver&quot;</span><span class="p">:</span> <span class="s2">&quot;Silver.npz&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
+<hr class="docutils" />
+<blockquote>
+<div><p>In order to generate new Material to use with PyMieSim one can use the following snippet</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
+<span class="kn">from</span> <span class="nn">PyMieSim</span> <span class="kn">import</span> <span class="n">Material</span>
+
+<span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;BK7&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&#39;</span><span class="p">)</span>
+
+<span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">)</span>
+
+<span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+</div></blockquote>
+<a class="reference internal image-reference" href="_images/New-Material.png"><img alt="_images/New-Material.png" src="_images/New-Material.png" style="width: 600px;" /></a>
+<p>After executing this code a new entry to <strong>Meta.json</strong> will be added or updated.
+Afterward the user can use this new material for my computation.</p>
+<p>Here is another examples</p>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
+<span class="kn">from</span> <span class="nn">PyMieSim</span> <span class="kn">import</span> <span class="n">Material</span>
+
+<span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;Silver&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&#39;</span><span class="p">)</span>
+
+<span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)</span>
+
+<span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+</pre></div>
+</td></tr></table></div>
+<a class="reference internal image-reference" href="_images/New-Material-Silver.png"><img alt="_images/New-Material-Silver.png" src="_images/New-Material-Silver.png" style="width: 600px;" /></a>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="LPModes.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Examples.html" title="Examples"
+             >previous</a> |</li>
+        <li><a href="Intro.html">Introduction</a>|&nbsp;</li>
+        <li><a href="Theory.html">Theory</a>|&nbsp;</li>
+        <li><a href="Code.html">Code</a>|&nbsp;</li>
+        <li><a href="Examples.html">Examples</a>|&nbsp;</li>
+        <li><a href="#">Material</a>|&nbsp;</li>
+        <li><a href="LPModes.html">LPModes</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
+    </div>
+  </body>
+</html>

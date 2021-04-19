@@ -14,7 +14,8 @@ PyMieSim's documentation
    Theory
    Code
    Examples
-
+   Material
+   LPModes
 
 
 

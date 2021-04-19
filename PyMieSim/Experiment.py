@@ -29,7 +29,6 @@ from PyMieSim.Config    import ( MetricList,
 OUTPUTTYPE = ['optimizer','numpy', 'pymiesim', 'dataframe']
 EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
 exList  = Union[int, float, list, np.ndarray, tuple]
-UlistLike = (list, np.ndarray, tuple)
 exfloat = Union[bool, int, float]
 DetecArg = Union[LPmode, Photodiode, list, tuple]
 
