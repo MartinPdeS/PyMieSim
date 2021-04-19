@@ -7,7 +7,6 @@ from unittest import TestCase
 from numpy import linspace, pi
 import numpy as np
 import unittest
-from PyMieSim.Material import BK7Glass
 
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
