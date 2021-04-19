@@ -2,17 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import numpy  as np
-import pandas as pd
-import csv
-import json
+
 import os
-import urllib.request
 from pathlib import Path
-PATH = os.path.join( Path(__file__).parent, 'csv/_Material' )
+MaterialPATH = os.path.join( Path(__file__).parent, '_Material/data' )
 
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import InterpFull, NA2Angle, Cart2Sp
+from PyMieSim.utils import NA2Angle, Cart2Sp, NearestIndex
 from PyMieSim.units import Power, Area
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim._Coupling import Coupling
@@ -702,55 +699,70 @@ class BaseScatterer(object):
 
 
 
+
+def Gen(array):
+    for n in array:
+        yield n
+
+
+class Generator(object):
+    def __init__(self, array=None):
+        self.__gen = Gen(array)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        self.current = next(self.__gen)
+        return self.current
+
+    def __call__(self):
+        return self
+
+
+
 class BaseMaterial(object):
 
-    def LoadOnline(self):
-        ftpstream = urllib.request.urlopen(self.url)
-        Array = pd.read_csv(ftpstream, delimiter=',').T.to_numpy()
-        bound = np.where(Array == 'wl')
-        bound = (bound[0][0],bound[1][0])
+    def LoadLocal(self):
+        self._Data = np.load(os.path.join(MaterialPATH, self.LocalDir))
 
-        if len(bound) == 1:
-            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
-                          'n'   : Array[1][:bound[1]].astype(float)}
-
-        if len(bound) == 2:
-            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
-                          'n'   : Array[1][:bound[1]].astype(float),
-                          'wl1' : Array[0][bound[1]+1:].astype(float),
-                          'k'   : Array[1][bound[1]+1:].astype(float) }
-
-        return self.data
+        if 'wl1' in self.Data:
+            self.Boundary = ( max( self.Data['wl0'][0], self.Data['wl1'][0]),
+                               min( self.Data['wl0'][-1], self.Data['wl1'][-1]))
+        else:
+            self.Boundary = ( self.Data['wl0'][0], self.Data['wl0'][-1] )
 
 
-    def LoadLocal(self, url):
-        with open(url) as csv_file:
-            CSV = pd.read_csv(csv_file, delimiter=',')
-
-        Array = CSV.T.to_numpy()
-        bound = np.where(Array == "wl")
-        bound = (bound[0][0],bound[1][0])
-
-        if len(bound) == 1:
-            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
-                          'n'   : Array[1][:bound[1]].astype(float)}
-
-        if len(bound) == 2:
-            self.data = { 'wl0' : Array[0][:bound[1]].astype(float),
-                          'n'   : Array[1][:bound[1]].astype(float),
-                          'wl1' : Array[0][bound[1]+1:].astype(float),
-                          'k'   : Array[1][bound[1]+1:].astype(float) }
-
-        return self.data
+    @property
+    def Data(self,):
+        if self._Data:
+            return self._Data
+        else:
+            self.LoadLocal()
+            return self._Data
 
 
-    def GetIndex(self, wavelength):
-        Nidx = NearestIndex( self.data['wl0'] , wavelength * 1e3 )
+    def Generator(self, wavelength):
+        self.Evaluate(wavelength)
+        return Generator(array=self.nList)
 
-        Kidx = NearestIndex( self.data['wl1'] , wavelength * 1e3 )
 
-        return self.data['n'][Nidx] + 1j * self.data['k'][Nidx]
+    def Evaluate(self, wavelength):
+        self.Data
 
+        if any(wavelength < self.Boundary[0]) or any(wavelength > self.Boundary[1]):
+            raise ValueError(f'Wavelength {wavelength} evaluated outside of defined range {self.Boundary}')
+
+        nList = np.interp( wavelength, self.Data['wl0'], self.Data['n'] )
+
+        if 'wl1' not in self.Data :
+            self.nList = nList
+            return self.nList
+
+        else:
+            kList = np.interp( wavelength, self.Data['wl1'], self.Data['k'] )
+            self.nList = nList + 1j * kList
+            return self.nList
 
 
 

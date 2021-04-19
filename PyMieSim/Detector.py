@@ -11,7 +11,8 @@ from PyMieSim.utils       import ( interp_at,
                                    NA2Angle,
                                    Normalize,
                                    RescaleComplex,
-                                   RotateComplex )
+                                   RotateComplex,
+                                   IO )
 
 
 class Photodiode(BaseDetector, MeshProperty):
@@ -87,13 +88,13 @@ class Photodiode(BaseDetector, MeshProperty):
 
     def __repr__(self):
 
-        return f"""
+        return IO( f"""
         Photodiode detector
         Coupling Mode: Intensity
         Sampling:      {self.Mesh.Sampling}
         Gamma offset:  {self.Mesh.GammaOffset}
         Phi offset:    {self.Mesh.PhiOffset}
-        """
+        """ )
 
 
 
@@ -146,11 +147,11 @@ class IntegratingSphere(Photodiode):
 
     def __repr__(self):
 
-        return f"""
+        return IO( f"""
         Integrating sphere
         Coupling Mode: Intensity
         Sampling:      {self.Mesh.Sampling}
-        """
+        """ )
 
 
 
@@ -194,11 +195,11 @@ class LPmode(BaseDetector, MeshProperty):
 
         self.Testing = Testing
 
-        assert CouplingMode in ['Centered','Mean'], "Coupling mode can either be Centered or Mean"
+        assert CouplingMode in ['Centered','Mean'], IO( "Coupling mode can either be Centered or Mean" )
 
-        if NA > 1 or NA < 0: print("WARNING: High values of NA do not comply \
-                                   with paraxial approximation. Value \
-                                   under 0.4 are prefered")
+        if NA > 1 or NA < 0: print( IO( "WARNING: High values of NA do not comply \
+                                         with paraxial approximation. Value \
+                                         under 0.4 are prefered" ) )
 
         self.CouplingMode = ('Amplitude', CouplingMode)
 
@@ -241,10 +242,10 @@ class LPmode(BaseDetector, MeshProperty):
         filename = PyMieSim.__path__[0] + f'/LPmodes/FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
 
         if not os.path.exists(filename):
-            raise ValueError("The LP mode has not been previously compilated. "
-                              "Please consult the documentation to do so. "
-                              "Doc available at: "
-                              "https://pymiesim.readthedocs.io/en/latest/Intro.html")
+            raise ValueError( IO( "The LP mode has not been previously compilated. "
+                                  "Please consult the documentation to do so. "
+                                  "Doc available at: "
+                                  "https://pymiesim.readthedocs.io/en/latest/Intro.html" ) )
 
         mode = np.load(filename)
 
@@ -275,14 +276,14 @@ class LPmode(BaseDetector, MeshProperty):
 
 
     def __repr__(self):
-        return f"""
+        return IO( f"""
         LP mode detector
         Coupling Mode: Amplitude
         LP Mode:       {(self.ModeNumber[0]-1, self.ModeNumber[1], self.ModeNumber[2])}
         Sampling:      {self.Mesh.Sampling}
         Gamma offset:  {self.Mesh.GammaOffset}
         Phi offset:    {self.Mesh.PhiOffset}
-        """
+        """ )
 
 
 
@@ -342,13 +343,13 @@ class _Photodiode(BaseDetector, MeshProperty):
 
     def __repr__(self):
 
-        return f"""
+        return IO( f"""
         Photodiode detector
         Coupling Mode: Intensity
         Sampling:      {self.Mesh.Sampling}
         Gamma offset:  {self.Mesh.GammaOffset}
         Phi offset:    {self.Mesh.PhiOffset}
-        """
+        """ )
 
 
 

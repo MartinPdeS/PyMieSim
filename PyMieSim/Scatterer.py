@@ -52,7 +52,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
         if Material:
             assert Index is None,"You should either choose a material or the RI not both"
             self.Material = Material
-            self.Index    = Material(Source.Wavelength)
+            self.Index    = Material.Evaluate(Source.Wavelength)
         if Index:
             assert Material is None,"You should either choose a material or the RI not both"
             self.Material = None

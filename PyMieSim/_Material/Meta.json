@@ -1,16 +1,12 @@
 {
     "remote": {
+        "Aluminium": "https://refractiveindex.info/data_csv.php?datafile=data/main/Al/Rakic.yml",
         "BK7": "https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml",
-        "FusedSilica": "https://refractiveindex.info/data_csv.php?datafile=data/main/SiO2/Malitson.yml",
-        "SodaLimeGlass": "https://refractiveindex.info/data_csv.php?datafile=data/glass/misc/soda-lime/Rubin-clear.yml",
-        "Silver": "https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml",
-        "Aluminium": "https://refractiveindex.info/data_csv.php?datafile=data/main/Al/Rakic.yml"
+        "FusedSilica": "https://refractiveindex.info/data_csv.php?datafile=data/main/SiO2/Malitson.yml"
     },
     "local": {
-        "BK7": "BK7.csv",
-        "FusedSilica": "FusedSilica.csv",
-        "SodaLimeGlass": "SodaLimeGlass.csv",
-        "Silver": "Silver.csv",
-        "Aluminium": "Aluminium.csv"
+        "Aluminium": "Aluminium.npz",
+        "BK7": "BK7.npz",
+        "FusedSilica": "FusedSilica.npz"
     }
 }

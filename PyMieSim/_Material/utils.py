@@ -39,19 +39,26 @@ def LoadOnline(url):
     return data
 
 
-def LoadOnlineSave(url, filename):
+def LoadOnlineSave(url, filename, unit=1e-6):
     dict_data = LoadOnline(url)
-    directory = os.path.join( PATH, 'csv', filename + '.csv' )
+    directory = os.path.join( PATH, 'data', filename )
 
-    with open(directory, 'w') as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=['wl0', 'n', 'wl1', 'k'])
-        writer.writeheader()
-        writer.writerow(dict_data)
+    if 'wl1' not in dict_data:
+         np.savez(directory,
+                  wl0 = dict_data['wl0'] * unit,
+                  n = dict_data['n'])
+    else:
+        np.savez(directory,
+                 wl0 = dict_data['wl0'] * unit,
+                 n = dict_data['n'],
+                 wl1 = dict_data['wl1'] * unit,
+                 k = dict_data['k']
+                 )
 
     with open(os.path.join(PATH, 'Meta.json'), 'r+' ) as f:
         META                     = json.load(f)
         META['remote'][filename] = url
-        META['local'][filename]  = filename + '.csv'
+        META['local'][filename]  = filename + '.npz'
         f.seek(0)
         json.dump(META, f, indent=4)
 

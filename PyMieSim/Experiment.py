@@ -12,6 +12,7 @@ from PyMieSim.Source    import PlaneWave
 from PyMieSim.NdArray   import PMSArray, Opt5DArray
 from PyMieSim.Detector  import LPmode, Photodiode
 from PyMieSim.Scatterer import Sphere, WMSample
+from PyMieSim.utils     import IO, ToList
 
 from PyMieSim.DataFrame import ( ExperimentalDataFrame,
                                  S1S2DataFrame,
@@ -45,18 +46,14 @@ class ScatSet(object):
                  MaterialList  : list        = None):
 
         if MaterialList:
-            assert IndexList is None,"You should either choose a material or the RI, not both."
+            assert IndexList is None, IO( "You should either choose a material or the RI, not both." )
             self.Material = MaterialList
 
         if IndexList:
-            assert MaterialList is None,"You should either choose a material or the RI, not both."
+            assert MaterialList is None, IO( "You should either choose a material or the RI, not both." )
             self.Material = None
 
-        if not isinstance(IndexList, UlistLike)    : IndexList    = [IndexList]
-
-        if not isinstance(DiameterList, UlistLike) : DiameterList = [DiameterList]
-
-        if not isinstance(MaterialList, UlistLike) : MaterialList = [MaterialList]
+        IndexList, DiameterList, MaterialList = ToList(IndexList, DiameterList, MaterialList)
 
         self._Diameter, self._Index = None, None
 
@@ -85,16 +82,28 @@ class ScatSet(object):
         if not isinstance(val, (list, np.ndarray)): val = [val]
         self._Index = val
 
-    def Generator(self, Source):
+
+    def Generator(self, wavelength=None):
         if self.Material:
             for material in self.Material:
                 for diameter in self.Diameter:
-                    yield Sphere(Diameter  = diameter,
-                                 Source    = Source,
-                                 Index     = material(Source.Wavelength),
-                                 nMedium   = self.nMedium,
-                                 MuSphere  = 1.0,
-                                 MuMedium  = 1.0)
+                    yield material.Generator(wavelength), diameter
+
+        else:
+            for diameter in self.Diameter:
+                for index in self.Index:
+                    yield index, diameter
+
+
+    def _Generator(self, Source):
+        if self.Material:
+            for diameter in self.Diameter:
+                yield Sphere(Diameter  = diameter,
+                             Source    = Source,
+                             Index     = 1.5,
+                             nMedium   = self.nMedium,
+                             MuSphere  = 1.0,
+                             MuMedium  = 1.0)
 
         else:
             for diameter in self.Diameter:
@@ -115,46 +124,52 @@ class SourceSet(object):
                  PolarizationList :   exList = [0],
                  SourceType       :   str    = 'PlaneWave'):
 
-        if not isinstance(WavelengthList, UlistLike)   : WavelengthList   = [WavelengthList]
-
-        if not isinstance(PolarizationList, UlistLike) : PolarizationList = [PolarizationList]
+        PolarizationList, WavelengthList = ToList(PolarizationList, WavelengthList)
 
         self._Wavelength, self._Polarization = None, None
 
-        self.Wavelength = WavelengthList
+        self.Wavelength   = WavelengthList
 
         self.Polarization = PolarizationList
 
-        self.SourceType = SourceType
+        self.SourceType   = SourceType
 
-        self.shape = np.shape(self.Wavelength) + np.shape(self.Polarization)
+        self.shape        = np.shape(self.Wavelength) + np.shape(self.Polarization)
 
 
     @property
     def Wavelength(self):
         return self._Wavelength
 
+
     @Wavelength.setter
     def Wavelength(self, val):
         if not isinstance(val, (list, np.ndarray)): val = [val]
         self._Wavelength = val
 
+
     @property
     def Polarization(self):
         return self._Polarization
+
 
     @Polarization.setter
     def Polarization(self, val):
         if not isinstance(val, (list, np.ndarray)): val = [val]
         self._Polarization = val
 
-
-    def Generator(self):
+    def Generator(self, MatGen=None):
         for wavelength in self.Wavelength:
+            if MatGen: next(MatGen)
             for polarization in self.Polarization:
                 yield PlaneWave(Wavelength   = wavelength,
                                 Polarization = polarization,
                                 E0           = 1)
+
+    def _Generator(self):
+        for wavelength in self.Wavelength:
+            for polarization in self.Polarization:
+                yield wavelength, polarization
 
 
 class Setup(object):
@@ -165,7 +180,7 @@ class Setup(object):
                  SourceSet    : SourceSet          = None,
                  DetectorSet  : DetecArg           = []):
 
-        if not isinstance(DetectorSet, UlistLike): DetectorSet = [DetectorSet]
+        DetectorSet = ToList(DetectorSet)
 
         self.MetricList   = MetricList
 
@@ -190,7 +205,8 @@ class Setup(object):
             Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
 
         """
-        if not isinstance(Eff, UlistLike) : Eff = [Eff]
+
+        Eff = ToList(Eff)
 
         self.AssertionType(AsType=AsType, Eff=Eff)
 
@@ -215,10 +231,10 @@ class Setup(object):
 
     def AssertionType(self, AsType=None, Eff=None):
         if AsType:
-            assert AsType.lower() in OUTPUTTYPE, f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}'
+            assert AsType.lower() in OUTPUTTYPE, IO( f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}' )
 
         if Eff:
-            assert set(Eff).issubset(EFFTYPE), f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}'
+            assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
     def MakeConfig(self, Type, Eff = None):
@@ -274,13 +290,39 @@ class Setup(object):
 
         Array = np.empty(config['size'])
 
-        i = 0
-        for nd, detector in enumerate(self.DetectorSet):
-            for source in self.SourceSet.Generator():
-                for scat in self.ScattererSet.Generator(Source=source):
+        if self.ScattererSet.Material:
+            i = 0
+            for nd, detector in enumerate(self.DetectorSet):
+                for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
+                    for source in self.SourceSet.Generator(RI):
 
-                    Array[i] = detector.Coupling(Scatterer = scat)
-                    i += 1;
+                        Scatterer = Sphere(Diameter  = diameter,
+                                           Source    = source,
+                                           Index     = RI.current,
+                                           nMedium   = 1.,
+                                           MuSphere  = 1.0,
+                                           MuMedium  = 1.0)
+
+
+                        Array[i] = detector.Coupling(Scatterer = Scatterer)
+                        i += 1;
+
+        else:
+
+            i = 0
+            for nd, detector in enumerate(self.DetectorSet):
+                for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
+                    for source in self.SourceSet.Generator():
+                        Scatterer = Sphere(Diameter  = diameter,
+                                           Source    = source,
+                                           Index     = RI,
+                                           nMedium   = 1.,
+                                           MuSphere  = 1.0,
+                                           MuMedium  = 1.0)
+
+                        Array[i] = detector.Coupling(Scatterer = Scatterer)
+                        i += 1;
+
 
         return self.ReturnType(Array     = Array.reshape(config['shape']),
                                AsType    = AsType,
@@ -288,7 +330,6 @@ class Setup(object):
 
 
     def ReturnType(self, Array, AsType, conf):
-
         if AsType.lower() == 'optimizer':
             return Opt5DArray(Array)
 
@@ -350,8 +391,8 @@ class Optimizer:
                  MaxIter       : int               = 50,
                  Tol           : Union[float, int] = 1e-10):
 
-        assert Metric.lower() in MetricList, f"Metric {Metric} not in the MetricList \n{MetricList}"
-        assert all(len(x)==len(Parameter) for x in [X0, MinVal, MaxVal ]  ), f'Lenght of parameters, X0, MinVal, MaxVal not equal'
+        assert Metric.lower() in MetricList, IO( f"Metric {Metric} not in the MetricList \n{MetricList}" )
+        assert all(len(x)==len(Parameter) for x in [X0, MinVal, MaxVal ]  ), IO( f'Lenght of parameters, X0, MinVal, MaxVal not equal' )
 
         self.Setup           = Setup
         self.Metric          = Metric
@@ -392,7 +433,6 @@ class Optimizer:
 
             elif Parameters[n] in SourceParamList:
                 setattr(self.Setup.SourceSet.Source, Parameters[0], x[0])
-
 
 
     def Run(self):

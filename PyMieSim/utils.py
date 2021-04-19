@@ -259,6 +259,28 @@ def mx_apply(T, x, y, z):
     return (x_, y_, z_)
 
 
+def IO(text):
+    txt = '\n' + '-' * 100 + '\n'
+    txt += text
+    txt += '\n' + '-' * 100
+    return txt
 
 
+def NearestIndex(array, value):
+    array = np.asarray(array)
+    idx = (np.abs(array - value)).argmin()
+    return idx
+
+
+
+UlistLike = (list, np.ndarray, tuple)
+
+def ToList(*args):
+    out = []
+    for arg in args:
+        if not isinstance(arg, UlistLike): out.append( [arg] )
+        else: out.append(arg)
+
+    if len(out) == 1: return out[0]
+    return out
 # -
