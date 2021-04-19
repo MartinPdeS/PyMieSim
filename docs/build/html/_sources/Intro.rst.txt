@@ -1,2 +1,10 @@
 
 .. include:: ../../README.rst
+
+
+
+.. include:: Examples/Index.py
+
+
+
+lolololoil
