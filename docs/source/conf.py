@@ -33,7 +33,7 @@ autodoc_mock_imports = ['numpy',
 sys.path.insert(0, os.path.abspath('../../tests/Examples/'))
 print( os.path.abspath('../../tests'))
 print('#####', os.path.exists(os.path.abspath('../../tests')))
-
+print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%', os.path.abspath(os.curdir))
 sys.path.insert(0, os.path.abspath('../images/'))
 # -- Project information -----------------------------------------------------
 
