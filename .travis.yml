@@ -12,6 +12,13 @@ before_script:
   - "export DISPLAY=:99.0"
 
 install:
+  - export QT_DEBUG_PLUGINS=1
+  - sudo apt install libxcb-image0
+  - sudo apt install libxcb-keysyms1
+  - sudo apt install libxcb-render-util0
+  - sudo apt install libxcb-xkb1
+  - sudo apt install libxkbcommon-x11-0
+
   - sudo apt-get install libboost-all-dev
   - sudo apt-get install -qq libegl1-mesa
   - pip3 install vtk==8.1.2
