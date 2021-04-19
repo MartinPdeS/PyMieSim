@@ -8,9 +8,7 @@ Scatterer: Index
 -------------------
 
 
-
-
-.. literalinclude:: ../../tests/Examples/Index.py
+.. literalinclude:: ../build/html/_static/Index.py
     :language: python
     :linenos:
 

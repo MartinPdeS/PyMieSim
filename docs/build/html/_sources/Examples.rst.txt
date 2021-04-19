@@ -10,7 +10,9 @@ Scatterer: Index
 
 
 
-.. literalinclude:: Index.py
+
+
+.. literalinclude:: ../build/html/_static/Index.py
     :language: python
     :linenos:
 

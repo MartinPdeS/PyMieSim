@@ -232,5 +232,5 @@ def list_files(startpath):
         for f in files:
             print('{}{}'.format(subindent, f))
 
-list_files('..')
+list_files('../..')
 # -- Extension configuration -------------------------------------------------
