@@ -1,4 +1,4 @@
-Examplddes
+Examples
 ==========
 
 -----
@@ -7,18 +7,9 @@ Examplddes
 Scatterer: Index
 -------------------
 
-lol esti de colisse
-
-.. include:: test.py
-
-
-
-.. literalinclude:: ../build/html/_static/Index.py
+.. literalinclude:: ../../tests/Examples/Index.py
     :language: python
     :linenos:
-
-
-
 
 
 Scatterer: Material
