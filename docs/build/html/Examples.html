@@ -114,29 +114,6 @@
 <hr class="docutils" />
 <div class="section" id="scatterer-index">
 <h2>Scatterer: Index<a class="headerlink" href="#scatterer-index" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
-<span class="kn">from</span> <span class="nn">PyMieSim</span> <span class="kn">import</span> <span class="n">Material</span>
-
-<span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>    <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                  <span class="n">Polarization</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                  <span class="n">E0</span>             <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-<span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>     <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
-              <span class="n">Source</span>       <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-              <span class="n">Index</span>        <span class="o">=</span> <span class="mf">1.445</span><span class="p">)</span>
-</pre></div>
-</td></tr></table></div>
 </div>
 <div class="section" id="scatterer-material">
 <h2>Scatterer: Material<a class="headerlink" href="#scatterer-material" title="Permalink to this headline">¶</a></h2>
