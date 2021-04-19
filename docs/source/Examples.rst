@@ -7,10 +7,10 @@ Examples
 Scatterer: Index
 -------------------
 
+lol esti de colisse
 
-.. literalinclude:: test.py
-    :language: python
-    :linenos:
+.. include:: test.py
+
 
 
 .. literalinclude:: ../build/html/_static/Index.py
