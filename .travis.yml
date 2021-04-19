@@ -3,7 +3,7 @@ language: python
 python: 3.6      # current default Python on Travis CI
 os: linux
 env: RUNTIME=3.6 ETS_TOOLKIT=qt4 VTK=7
-dist: focal
+dist: xenial
 
 services:
   - xvfb
