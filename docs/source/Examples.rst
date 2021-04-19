@@ -16,7 +16,7 @@ Scatterer: Index
 Scatterer: Material
 -------------------
 
-.. literalinclude:: ../../tests/Material.py
+.. literalinclude:: ../../tests/Examples/Material.py
     :language: python
     :linenos:
 

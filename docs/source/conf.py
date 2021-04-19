@@ -104,9 +104,9 @@ def list_files(startpath):
         for f in files:
             print('{}{}'.format(subindent, f))
 
-list_files('../..')
+list_files('..')
 
-#html_extra_path = ['../../tests/Examples/Index.py']
+#html_extra_path = ['../../tests/Examples/']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
