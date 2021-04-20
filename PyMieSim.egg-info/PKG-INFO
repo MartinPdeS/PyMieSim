@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: PyMieSim
-Version: 0.1.19
+Version: 0.2.0
 Summary: A package for light scattering simulations.
 Home-page: https://github.com/MartinPdeS/PyMieSim
 Author: ('Martin Poinsinet de Sivry',)
@@ -8,7 +8,7 @@ Author-email: Martin.poinsinet.de.sivry@gmail.com
 License: MIT
 Description: 
         
-        .. image:: ./docs/images/Logo2Use.png
+        .. image:: ./docs/images/Logo.png
         
         
         
@@ -33,7 +33,7 @@ Description:
         3. **Source** Polarization
         4. **Scatterer** diameter
         5. **Scatterer** refractive index
-        6. Medium refractive index
+        6. **Medium** refractive index
         7. **Detector** type (photodiode or LPMode)
         8. **Detector** numerical aperture
         9. **Detector** angle offfset in polariation parallel axis (&phi;)
@@ -42,8 +42,8 @@ Description:
         
         
         
-        The package also let you use a **ScattererSet** which define a range of scatterer diameter and a range of refractive index
-        in order to study how light scattered by such Set will be coupling in different situations.
+        The package also let you to construct an **Experiment** using **ScattererSet**, **SourceSet** and **DetectorSet**.
+        Those class define the type of scatterers, light source and detector type you want to study.
         
         
         ----
@@ -63,9 +63,11 @@ Description:
         
         |colab|
         
-        ----
         
-        **Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04)
+        **Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04 (Xenial))
+        
+        
+        ----
         
         
         Dependencies
@@ -125,21 +127,22 @@ Description:
           from PyMieSim.Detector import LPmode
           from PyMieSim.Scatterer import Sphere
         
-          LightSource = PlaneWave(Wavelength   = 450e-9,
-                                 Polarization = 0,
-                                 E0           = 1)
+          Source = PlaneWave(Wavelength   = 450e-9,
+                             Polarization = 0,
+                             E0           = 1)
         
-          Detector = LPmode(Mode         = (0, 1,'h'),
-                           Sampling     = 201,
-                           NA           = 0.2,
-                           GammaOffset  = 0,
-                           PhiOffset    = 0,
-                           CouplingMode = 'Centered')
+          Detector = LPmode(Mode         = (0, 1),
+                            Rotation     = 0.,
+                            Sampling     = 201,
+                            NA           = 0.2,
+                            GammaOffset  = 0,
+                            PhiOffset    = 0,
+                            CouplingMode = 'Centered')
         
         
           Scat = Sphere(Diameter    = 300e-9,
-                       Source      = LightSource,
-                       Index       = 1.4)
+                        Source      = Source,
+                        Index       = 1.4)
         
           Coupling = Detector.Coupling(Scatterer = Scat)
         
@@ -149,19 +152,27 @@ Description:
         section of the documentations.
         
         
+        Examples
+        ********
+        
+        
+        A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the section of the `examples <https://pymiesim.readthedocs.io/en/latest/`_
+        
         ----
         
         To-Do List
         **********
-        - Adding T-matrix formalism
-        - Addind cylindrical scatterer
+        - Adding dumb-proof assertions
         - Adding docstring
-        - Adding Stokes parameter representations
+        - Adding Stokes parameter representations [DONE]
+        - Multiprocess Experiment class
         - Adding more unittests
-        - Adding monotonic metric to optimizer class
+        - Adding monotonic metric to optimizer class [DONE]
         - Comments on c++ codes
-        - verify if changes of NA for <LPmode> class can be simplified (it takes way too much time)
+        - Multiclass c++ codes
+        - verify if changes of NA for <LPmode> class can be simplified [DONE]
         - adding travis and codecov [DONE]
+        - adding material Sellmeier boundary
         
         
         
@@ -169,8 +180,11 @@ Description:
         
         Citing this work?
         ******************
+        I spend half a year to develop this tool for you to use so if it helped you in your research I would greatly appreciate
+        you to cite my work. Many thanks
         |zenodo|
         
+        (Is this the new "like, comment and share" ?)
         
         ----
         

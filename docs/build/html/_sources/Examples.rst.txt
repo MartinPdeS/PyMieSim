@@ -1,7 +1,6 @@
+
 Examples
 ========
-
------
 
 
 Scatterer: Index
@@ -20,8 +19,12 @@ Scatterer: Material
     :linenos:
 
 
+
 Scatterer: S1-S2
 ----------------
+
+
+
 
 .. literalinclude:: ../../tests/Examples/S1S2.py
     :language: python
@@ -29,8 +32,11 @@ Scatterer: S1-S2
 
 
 
+
+
 .. image:: ../images/S1S2.png
    :width: 600
+
 
 -----
 

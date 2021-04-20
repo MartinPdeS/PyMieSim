@@ -143,11 +143,11 @@ For more examples I invite you to check the `examples <https://pymiesim.readthed
 section of the documentations.
 
 
-Examples
-********
+Coding examples
+***************
 
 
-A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the section of the `examples <https://pymiesim.readthedocs.io/en/latest/`_
+A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the examples section of the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_
 
 ----
 
@@ -175,7 +175,7 @@ I spend half a year to develop this tool for you to use so if it helped you in y
 you to cite my work. Many thanks
 |zenodo|
 
-(Is it the new "like, comment and share" ?)
+(Is this the new "like, comment and share" ?)
 
 ----
 

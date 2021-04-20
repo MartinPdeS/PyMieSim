@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PyMieSim’s documentation &#8212; PyMieSim 0.1.11 documentation</title>
+    <title>PyMieSim &#8212; PyMieSim 0.1.11 documentation</title>
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/default.css" />
@@ -16,8 +16,7 @@
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="PyMieSim" href="Intro.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
   </head><body>
         <div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
         <a href="#"><h1 style="font-size: 3em;">PyMieSim</h1></a>
@@ -29,10 +28,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="Intro.html" title="PyMieSim"
-             accesskey="N">next</a> |</li>
-        <li><a href="Intro.html">Introduction</a>|&nbsp;</li>
         <li><a href="Theory.html">Theory</a>|&nbsp;</li>
         <li><a href="Code.html">Code</a>|&nbsp;</li>
         <li><a href="Examples.html">Examples</a>|&nbsp;</li>
@@ -41,7 +36,7 @@
         <li><a href="References.html">References</a>|&nbsp;</li>
         <li><a href="search.html">search</a>|&nbsp;</li>
 
-        <li class="nav-item nav-item-this"><a href="">PyMieSim’s documentation</a></li> 
+        <li class="nav-item nav-item-this"><a href="">PyMieSim</a></li> 
       </ul>
     </div>
   
@@ -51,29 +46,152 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="pymiesim-s-documentation">
-<h1>PyMieSim’s documentation<a class="headerlink" href="#pymiesim-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Table of contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Intro.html">PyMieSim</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Theory.html">Theoretical background</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Code.html">Source code structures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Material.html">Scatterer material</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LPModes.html">Fiber optic LP mode as detector</a></li>
-<li class="toctree-l1"><a class="reference internal" href="References.html">References</a></li>
-</ul>
+  <p><a class="reference external" href="https://codecov.io/gh/MartinPdeS/PyMieSim"><img alt="codecov" src="https://codecov.io/gh/MartinPdeS/PyMieSim/branch/master/graph/badge.svg" /></a>
+<a class="reference external" href="https://travis-ci.com/github/numpy/numpy"><img alt="travis" src="https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI" /></a>
+<a class="reference external" href="https://www.python.org/"><img alt="python" src="https://img.shields.io/badge/Made%20with-Python-1f425f.svg" /></a>
+<a class="reference external" href="https://doi.org/10.5281/zenodo.4556074"><img alt="zenodo" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg" /></a>
+<a class="reference external" href="https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing"><img alt="colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a>
+<a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/?badge=latest"><img alt="docs" src="https://readthedocs.org/projects/pymiesim/badge/?version=latest" /></a></p>
+<div class="section" id="pymiesim">
+<h1>PyMieSim<a class="headerlink" href="#pymiesim" title="Permalink to this headline">¶</a></h1>
+<p>PyMieSim is a very easy to install/use tool for extensive Mie scattering analysis. It allows to study the light scattering
+on different kind of object (scatterer), at the moment I only implemented spherical scatterers.
+Using this package, one can easily set a <strong>Source</strong> a <strong>Scatterer</strong> and a <strong>Detector</strong> within a very wide range of parameters such as:</p>
+<ol class="arabic simple">
+<li><p><strong>Source</strong> structure (e.g. plane wave or Gaussian focused)</p></li>
+<li><p><strong>Source</strong> wavelength</p></li>
+<li><p><strong>Source</strong> Polarization</p></li>
+<li><p><strong>Scatterer</strong> diameter</p></li>
+<li><p><strong>Scatterer</strong> refractive index</p></li>
+<li><p><strong>Medium</strong> refractive index</p></li>
+<li><p><strong>Detector</strong> type (photodiode or LPMode)</p></li>
+<li><p><strong>Detector</strong> numerical aperture</p></li>
+<li><p><strong>Detector</strong> angle offfset in polariation parallel axis (&amp;phi;)</p></li>
+<li><p><strong>Detector</strong> angle offfset in polariation perpendicular axis (&amp;theta;)</p></li>
+<li><p><strong>Detector</strong> coupling mode (Mean coupling or centered coupling)</p></li>
+</ol>
+<p>The package also let you to construct an <strong>Experiment</strong> using <strong>ScattererSet</strong>, <strong>SourceSet</strong> and <strong>DetectorSet</strong>.
+Those class define the type of scatterers, light source and detector type you want to study.</p>
+<hr class="docutils" />
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>All the latest available documentation is available <a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/">here</a> or you can click the following badge:</p>
+<p><a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/?badge=latest"><img alt="docs" src="https://readthedocs.org/projects/pymiesim/badge/?version=latest" /></a></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="google-colab">
+<h2>Google Colab<a class="headerlink" href="#google-colab" title="Permalink to this headline">¶</a></h2>
+<p>It’s 2021, you don’t need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
+You can open the PyMieSim.ipynb in the file (or click on the “Open in Colab” badge) to access it or click on the following badge:</p>
+<p><a class="reference external" href="https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing"><img alt="colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p><strong>Important</strong> At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04 (Xenial))</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>In order to install the package you first need to install some dependencies, which are the c++ <a class="reference external" href="https://boost.org">boost library</a> and some plotting library. To install one can use the command line such as:</p>
+<div class="section" id="linux-debian">
+<h3>Linux (Debian)<a class="headerlink" href="#linux-debian" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">libboost</span><span class="o">-</span><span class="nb">all</span><span class="o">-</span><span class="n">dev</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<blockquote>
-<div><ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<div class="section" id="macos">
+<h3>MacOs<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">install</span> <span class="n">boost</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html">Boost installation guide</a></p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>It’s pretty simple:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">PyMieSim</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="running-unittest">
+<h2>Running Unittest<a class="headerlink" href="#running-unittest" title="Permalink to this headline">¶</a></h2>
+<p>To run the Unit-tests one need the coverage library.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">unittest</span> <span class="n">tests</span><span class="o">/</span><span class="n">Unittest</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Here is an example on how to use the library.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">LPmode</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+
+<span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+                   <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                   <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">Detector</span> <span class="o">=</span> <span class="n">LPmode</span><span class="p">(</span><span class="n">Mode</span>         <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                  <span class="n">Rotation</span>     <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+                  <span class="n">Sampling</span>     <span class="o">=</span> <span class="mi">201</span><span class="p">,</span>
+                  <span class="n">NA</span>           <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+                  <span class="n">GammaOffset</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                  <span class="n">PhiOffset</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                  <span class="n">CouplingMode</span> <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+
+
+<span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
+              <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+              <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+
+<span class="n">Coupling</span> <span class="o">=</span> <span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scat</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Coupling</span><span class="p">)</span> <span class="c1"># output: 1.66e+02 nWatt</span>
+</pre></div>
+</div>
+<p>For more examples I invite you to check the <a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/Examples.html">examples</a>
+section of the documentations.</p>
+</div>
+<div class="section" id="coding-examples">
+<h2>Coding examples<a class="headerlink" href="#coding-examples" title="Permalink to this headline">¶</a></h2>
+<p>A large set of examples is avaialble in the <cite>test/Examples</cite> folder. You can also see them in the examples section of the <a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/">documentation</a></p>
+</div>
+<hr class="docutils" />
+<div class="section" id="to-do-list">
+<h2>To-Do List<a class="headerlink" href="#to-do-list" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Adding dumb-proof assertions</p></li>
+<li><p>Adding docstring</p></li>
+<li><p>Adding Stokes parameter representations [DONE]</p></li>
+<li><p>Multiprocess Experiment class</p></li>
+<li><p>Adding more unittests</p></li>
+<li><p>Adding monotonic metric to optimizer class [DONE]</p></li>
+<li><p>Comments on c++ codes</p></li>
+<li><p>Multiclass c++ codes</p></li>
+<li><p>verify if changes of NA for &lt;LPmode&gt; class can be simplified [DONE]</p></li>
+<li><p>adding travis and codecov [DONE]</p></li>
+<li><p>adding material Sellmeier boundary</p></li>
 </ul>
-</div></blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="citing-this-work">
+<h2>Citing this work?<a class="headerlink" href="#citing-this-work" title="Permalink to this headline">¶</a></h2>
+<p>I spend half a year to develop this tool for you to use so if it helped you in your research I would greatly appreciate
+you to cite my work. Many thanks
+<a class="reference external" href="https://doi.org/10.5281/zenodo.4556074"><img alt="zenodo" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg" /></a></p>
+<p>(Is this the new “like, comment and share” ?)</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="contact-information">
+<h2>Contact Information<a class="headerlink" href="#contact-information" title="Permalink to this headline">¶</a></h2>
+<p>As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.</p>
+<p>PyMieSim was written by <a class="reference external" href="https://github.com/MartinPdS">Martin Poinsinet de Sivry-Houle</a>  .</p>
+<p>Email:<a class="reference external" href="mailto:martin&#46;poinsinet-de-sivry&#37;&#52;&#48;polymtl&#46;ca?subject=PyMieSim">martin<span>&#46;</span>poinsinet-de-sivry<span>&#64;</span>polymtl<span>&#46;</span>ca</a> .</p>
+</div>
 </div>
 
 
@@ -88,13 +206,26 @@
             </a></p>
   <h3><a href="#">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">PyMieSim’s documentation</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#">PyMieSim</a><ul>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#google-colab">Google Colab</a></li>
+<li><a class="reference internal" href="#dependencies">Dependencies</a><ul>
+<li><a class="reference internal" href="#linux-debian">Linux (Debian)</a></li>
+<li><a class="reference internal" href="#macos">MacOs</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#running-unittest">Running Unittest</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#coding-examples">Coding examples</a></li>
+<li><a class="reference internal" href="#to-do-list">To-Do List</a></li>
+<li><a class="reference internal" href="#citing-this-work">Citing this work?</a></li>
+<li><a class="reference internal" href="#contact-information">Contact Information</a></li>
+</ul>
+</li>
 </ul>
 
-  <h4>Next topic</h4>
-  <p class="topless"><a href="Intro.html"
-                        title="next chapter">PyMieSim</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -122,10 +253,6 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
-        <li class="right" >
-          <a href="Intro.html" title="PyMieSim"
-             >next</a> |</li>
-        <li><a href="Intro.html">Introduction</a>|&nbsp;</li>
         <li><a href="Theory.html">Theory</a>|&nbsp;</li>
         <li><a href="Code.html">Code</a>|&nbsp;</li>
         <li><a href="Examples.html">Examples</a>|&nbsp;</li>
@@ -134,7 +261,7 @@
         <li><a href="References.html">References</a>|&nbsp;</li>
         <li><a href="search.html">search</a>|&nbsp;</li>
 
-        <li class="nav-item nav-item-this"><a href="">PyMieSim’s documentation</a></li> 
+        <li class="nav-item nav-item-this"><a href="">PyMieSim</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -23,6 +23,7 @@ To use the **Material** follow the snippet:
   Scat = Sphere(Diameter    = 800e-9,
                Source       = Source,
                Material     = Material('BK7'))
+               
 ----
 
 Generate new material
@@ -71,5 +72,3 @@ Here is another examples
 
 .. image:: ../images/New-Material-Silver.png
   :width: 600
-
-  
