@@ -33,8 +33,8 @@ Using this package, one can easily set a **Source** a **Scatterer** and a **Dete
 
 
 
-The package also let you use a **ScattererSet** which define a range of scatterer diameter and a range of refractive index
-in order to study how light scattered by such Set will be coupling in different situations.
+The package also let you to construct an **Experiment** using **ScattererSet**, **SourceSet** and **DetectorSet**.
+Those class define the type of scatterers, light source and detector type you want to study.
 
 
 ----
@@ -55,7 +55,7 @@ You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" bad
 |colab|
 
 
-**Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04)
+**Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04 (Xenial))
 
 
 ----
@@ -143,6 +143,12 @@ For more examples I invite you to check the `examples <https://pymiesim.readthed
 section of the documentations.
 
 
+Examples
+********
+
+
+A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the section of the `examples <https://pymiesim.readthedocs.io/en/latest/`_
+
 ----
 
 To-Do List
@@ -157,7 +163,7 @@ To-Do List
 - Multiclass c++ codes
 - verify if changes of NA for <LPmode> class can be simplified [DONE]
 - adding travis and codecov [DONE]
-- adding mateiral Sellmeier boundary
+- adding material Sellmeier boundary
 
 
 
@@ -165,8 +171,11 @@ To-Do List
 
 Citing this work?
 ******************
+I spend half a year to develop this tool for you to use so if it helped you in your research I would greatly appreciate
+you to cite my work. Many thanks
 |zenodo|
 
+(Is it the new "like, comment and share" ?)
 
 ----
 

@@ -8,7 +8,7 @@ PyMieSim's documentation
 
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 1
    :caption: Table of contents:
 
    Intro
@@ -20,30 +20,8 @@ PyMieSim's documentation
    References
 
 
-
-To-Do List
-----------
-
-- Adding docstring
-- Adding monotonic metric to optimizer class
-- Comments on c++ codes
-
-
-
 Indices and tables
 ==================
-..
+
   * :ref:`genindex`
-  * :ref:`modindex`
   * :ref:`search`
-
-
-
-
-
-
-Author Contact Information
---------------------------
-PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_.
-
-Email: `martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_

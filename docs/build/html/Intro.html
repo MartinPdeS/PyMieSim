@@ -79,8 +79,8 @@ Using this package, one can easily set a <strong>Source</strong> a <strong>Scatt
 <li><p><strong>Detector</strong> angle offfset in polariation perpendicular axis (&amp;theta;)</p></li>
 <li><p><strong>Detector</strong> coupling mode (Mean coupling or centered coupling)</p></li>
 </ol>
-<p>The package also let you use a <strong>ScattererSet</strong> which define a range of scatterer diameter and a range of refractive index
-in order to study how light scattered by such Set will be coupling in different situations.</p>
+<p>The package also let you to construct an <strong>Experiment</strong> using <strong>ScattererSet</strong>, <strong>SourceSet</strong> and <strong>DetectorSet</strong>.
+Those class define the type of scatterers, light source and detector type you want to study.</p>
 <hr class="docutils" />
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
@@ -93,7 +93,7 @@ in order to study how light scattered by such Set will be coupling in different 
 <p>It’s 2021, you don’t need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
 You can open the PyMieSim.ipynb in the file (or click on the “Open in Colab” badge) to access it or click on the following badge:</p>
 <p><a class="reference external" href="https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing"><img alt="colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<p><strong>Important</strong> At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04)</p>
+<p><strong>Important</strong> At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04 (Xenial))</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="dependencies">
@@ -165,6 +165,10 @@ You can open the PyMieSim.ipynb in the file (or click on the “Open in Colab”
 <p>For more examples I invite you to check the <a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/Examples.html">examples</a>
 section of the documentations.</p>
 </div>
+<div class="section" id="id1">
+<h2>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>A large set of examples is avaialble in the <cite>test/Examples</cite> folder. You can also see them in the section of the <a href="#id2"><span class="problematic" id="id3">`examples &lt;https://pymiesim.readthedocs.io/en/latest/`_</span></a></p>
+</div>
 <hr class="docutils" />
 <div class="section" id="to-do-list">
 <h2>To-Do List<a class="headerlink" href="#to-do-list" title="Permalink to this headline">¶</a></h2>
@@ -179,13 +183,16 @@ section of the documentations.</p>
 <li><p>Multiclass c++ codes</p></li>
 <li><p>verify if changes of NA for &lt;LPmode&gt; class can be simplified [DONE]</p></li>
 <li><p>adding travis and codecov [DONE]</p></li>
-<li><p>adding mateiral Sellmeier boundary</p></li>
+<li><p>adding material Sellmeier boundary</p></li>
 </ul>
 </div>
 <hr class="docutils" />
 <div class="section" id="citing-this-work">
 <h2>Citing this work?<a class="headerlink" href="#citing-this-work" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="https://doi.org/10.5281/zenodo.4556074"><img alt="zenodo" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg" /></a></p>
+<p>I spend half a year to develop this tool for you to use so if it helped you in your research I would greatly appreciate
+you to cite my work. Many thanks
+<a class="reference external" href="https://doi.org/10.5281/zenodo.4556074"><img alt="zenodo" src="https://zenodo.org/badge/DOI/10.5281/zenodo.4556074.svg" /></a></p>
+<p>(Is it the new “like, comment and share” ?)</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="contact-information">
@@ -220,6 +227,7 @@ section of the documentations.</p>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#running-unittest">Running Unittest</a></li>
 <li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#id1">Examples</a></li>
 <li><a class="reference internal" href="#to-do-list">To-Do List</a></li>
 <li><a class="reference internal" href="#citing-this-work">Citing this work?</a></li>
 <li><a class="reference internal" href="#contact-information">Contact Information</a></li>
