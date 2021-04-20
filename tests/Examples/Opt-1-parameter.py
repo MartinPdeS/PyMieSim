@@ -27,9 +27,19 @@ Experiment = Setup(ScattererSet = scat,
                  DetectorSet  = [Detector0])
 
 
-# Metric can be "max" - "min" - "mean"
-#"std+RI" - "std+Diameter" - "std+Polarization" - "std+Wavelength" - "std+Detector"
-#"monotonic+RI" - "monotonic+Diameter" - "monotonic+Polarization" - "monotonic+Wavelength" - "monotonic+Detector"
+# Metric can be "max"
+#               "min"
+#               "mean"
+#               "std+RI"
+#               "std+Diameter"
+#               "std+Polarization"
+#               "std+Wavelength"
+#               "std+Detector"
+#               "monotonic+RI"
+#               "monotonic+Diameter"
+#               "monotonic+Polarization"
+#               "monotonic+Wavelength"
+#               "monotonic+Detector"
 
 Opt    = Optimizer(Setup           = Experiment,
                  Metric          = 'mean',

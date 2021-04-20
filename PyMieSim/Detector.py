@@ -35,6 +35,7 @@ class Photodiode(BaseDetector, MeshProperty):
         Methode for computing mode coupling. Either Centered or Mean.
 
     """
+    
     @beartype
     def __init__(self,
                  NA           : Union[int, float],

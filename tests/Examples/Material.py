@@ -11,5 +11,8 @@ Scat = Sphere(Diameter    = 800e-9,
              Material     = Material('BK7'))
 
 
-# Material can be 'FusedSilica' - 'Aluminium' - 'Silver' - 'SodaLimeGlass'
+# Material can be 'FusedSilica'
+#                 'Aluminium'
+#                 'Silver'
+#                 'SodaLimeGlass'
 # More information in Material section of documentation

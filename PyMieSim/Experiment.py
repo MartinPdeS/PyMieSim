@@ -94,27 +94,6 @@ class ScatSet(object):
                     yield index, diameter
 
 
-    def _Generator(self, Source):
-        if self.Material:
-            for diameter in self.Diameter:
-                yield Sphere(Diameter  = diameter,
-                             Source    = Source,
-                             Index     = 1.5,
-                             nMedium   = self.nMedium,
-                             MuSphere  = 1.0,
-                             MuMedium  = 1.0)
-
-        else:
-            for diameter in self.Diameter:
-                for RI in self.Index:
-                    yield Sphere(Diameter  = diameter,
-                                 Source    = Source,
-                                 Index     = RI,
-                                 nMedium   = self.nMedium,
-                                 MuSphere  = 1.0,
-                                 MuMedium  = 1.0)
-
-
 class SourceSet(object):
 
     @beartype
@@ -218,8 +197,8 @@ class Setup(object):
         if self.ScattererSet.Material:
             i = 0
 
-            for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
-                for source in self.SourceSet.Generator(RI):
+            for MatGen, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
+                for source in self.SourceSet.Generator(MatGen):
                     for eff in Eff:
                         Scatterer = Sphere(Diameter  = diameter,
                                            Source    = source,
@@ -253,9 +232,6 @@ class Setup(object):
         return self.ReturnType(Array     = np.rollaxis(Array, 4),
                                AsType    = AsType,
                                conf      = config)
-
-
-
 
 
     def AssertionType(self, AsType=None, Eff=None):
