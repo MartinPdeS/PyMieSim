@@ -6,6 +6,7 @@
 PyMieSim's documentation
 =========================
 
+
 .. toctree::
    :maxdepth: 4
    :caption: Table of contents:
@@ -16,6 +17,7 @@ PyMieSim's documentation
    Examples
    Material
    LPModes
+   References
 
 
 
@@ -30,10 +32,10 @@ To-Do List
 
 Indices and tables
 ==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+..
+  * :ref:`genindex`
+  * :ref:`modindex`
+  * :ref:`search`
 
 
 

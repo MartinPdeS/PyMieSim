@@ -8,18 +8,24 @@
         <li><a href="{{ pathto('Examples') }}">Examples</a>|&nbsp;</li>
         <li><a href="{{ pathto('Material') }}">Material</a>|&nbsp;</li>
         <li><a href="{{ pathto('LPModes') }}">LPModes</a>|&nbsp;</li>
+        <li><a href="{{ pathto('References') }}">References</a>|&nbsp;</li>
         <li><a href="{{ pathto('search') }}">search</a>|&nbsp;</li>
 {% endblock %}
 
 
 {% block relbar1 %}
-
-<div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
-<a href="{{ pathto('index') }}"><h1 style="font-size: 3em;">PyMieSim</h1></a>
-</div>
-{{ super() }}
+        <div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
+        <a href="{{ pathto('index') }}"><h1 style="font-size: 3em;">PyMieSim</h1></a>
+        </div>
+        {{ super() }}
 {% endblock %}
 
-{# put the sidebar before the body #}
-{% block sidebar1 %}{{ sidebar() }}{% endblock %}
-{% block sidebar2 %}{% endblock %}
+
+
+
+
+
+
+<div role="main", style="background-color: black; text-align: left; padding: 50px 10px 15px 15px">
+  {% block document %}{{ super() }}{% endblock %}
+</div>

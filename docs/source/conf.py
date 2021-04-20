@@ -31,11 +31,10 @@ autodoc_mock_imports = ['numpy',
 
 
 PATH = os.path.join(os.path.dirname(__file__), '../..' )
-#PATH = os.path.abspath('../../tests/Examples/Index')
+
 sys.path.insert(0, PATH)
 
 from os import listdir
-#print( [f for f in listdir(PATH)] )
 
 
 
@@ -111,12 +110,19 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'sphinx_rtd_theme'
-#html_theme = 'groundwork'
-#import ovs_sphinx_theme
+
+
+
+
 html_theme = 'sphinxdoc'
-#html_theme = "ovs"
-#print('############', ovs_sphinx_theme.get_theme_dir())
+
+
+
+
+
+
+
+
 #html_theme_path = [ovs_sphinx_theme.get_theme_dir()]
 
 
@@ -154,6 +160,11 @@ html_theme_options = {
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'PyMieSimdoc'
 
+
+
+html_css_files = [
+    'default.css',
+]
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -232,5 +243,5 @@ def list_files(startpath):
         for f in files:
             print('{}{}'.format(subindent, f))
 
-list_files('../..')
+#list_files('../..')
 # -- Extension configuration -------------------------------------------------
