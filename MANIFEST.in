@@ -13,6 +13,10 @@ include PyMieSim/LMT/cpp/Cylinder.cpp
 include PyMieSim/LMT/cpp/Sphere.cpp
 include PyMieSim/LMT/cpp/interface.cpp
 
+
+include PyMieSim/LMT/includes/*
+
+
 include PyMieSim/includes/SpecialFunc.h
 include PyMieSim/includes/BaseClass.h
 include PyMieSim/includes/utils.h
