@@ -36,7 +36,9 @@ REQUIRED = ['scipy',
             'matplotlib',
             'pandas',
             'beartype',
-            'beartype',
+            'mayavi',
+            'coverage',
+            'pyqt5',
             'numpy']
 
 
