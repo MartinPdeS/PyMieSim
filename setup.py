@@ -2,10 +2,18 @@
 # -*- coding: utf-8 -*-
 
 # docker run -ti -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 /bin/bash
+# yum install wget
 # wget -c 'http://sourceforge.net/projects/boost/files/boost/1.75.0/boost_1_75_0.tar.bz2'
 # tar xf boost_1_75_0.tar.bz2
-# python3 setup.py build
+# cp -r boost_1_75_0/boost /usr/include
+# mkdir GitProject
+# cd GitProject
+# git clone https://github.com/MartinPdeS/PyMieSim.git
+# cd PyMieSim
 # sudo python3 -m build
+# mkdir /output
+# /opt/python/cp37-37m/pip wheel . -w output
+# auditwheel repair /output/mylibrary*whl -w /output
 # python3 -m twine upload --repository pypi dist/
 # python3 -m twine upload --repository pypi dist/*.tar.gz
 

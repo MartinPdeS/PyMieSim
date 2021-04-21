@@ -54,10 +54,6 @@ You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" bad
 
 |colab|
 
-
-**Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04 (Xenial))
-
-
 ----
 
 
