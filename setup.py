@@ -35,7 +35,8 @@ VERSION         = '0.2.0'
 REQUIRED = ['scipy',
             'matplotlib',
             'pandas',
-            'mayavi']
+            'beartype',
+            'numpy']
 
 
 class get_pybind11_include(object):

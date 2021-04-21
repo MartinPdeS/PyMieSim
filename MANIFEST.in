@@ -18,7 +18,6 @@ include PyMieSim/LMT/includes/BaseClass.h
 include PyMieSim/LMT/includes/utils.h
 include PyMieSim/LMT/includes/BaseFunc.h
 
-
 include PyMieSim/includes/SpecialFunc.h
 include PyMieSim/includes/BaseClass.h
 include PyMieSim/includes/utils.h
