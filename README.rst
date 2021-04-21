@@ -67,7 +67,7 @@ In order to install the package you first need to install some dependencies, whi
 
 
 Linux (Debian)
---------------
+------------------------------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -88,8 +88,8 @@ Windows
 
 ----
 
-Installation
-************
+Installation (wheel support extended to `manylinux2014<https://www.python.org/dev/peps/pep-0599/>`_)
+****************************************************************************************************
 It's pretty simple:
 
 .. code-block:: python
