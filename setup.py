@@ -3,7 +3,7 @@
 
 # docker run -ti -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 /bin/bash
 # wget -c 'http://sourceforge.net/projects/boost/files/boost/1.75.0/boost_1_75_0.tar.bz2'
-# tar xf download boost_1_75_0.tar.bz2
+# tar xf boost_1_75_0.tar.bz2
 # python3 setup.py build
 # sudo python3 -m build
 # python3 -m twine upload --repository pypi dist/
