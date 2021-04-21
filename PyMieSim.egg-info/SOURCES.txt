@@ -5,6 +5,10 @@ pyproject.toml
 requirements.txt
 setup.cfg
 setup.py
+PyMieSim/LMT/includes/BaseClass.h
+PyMieSim/LMT/includes/BaseFunc.h
+PyMieSim/LMT/includes/SpecialFunc.h
+PyMieSim/LMT/includes/utils.h
 PyMieSim/BaseClasses.py
 PyMieSim/Config.py
 PyMieSim/Constants.py
@@ -46,7 +50,3 @@ PyMieSim/includes/BaseClass.h
 PyMieSim/includes/BaseFunc.h
 PyMieSim/includes/SpecialFunc.h
 PyMieSim/includes/utils.h
-PyMieSim/LMT/includes/BaseClass.h
-PyMieSim/LMT/includes/BaseFunc.h
-PyMieSim/LMT/includes/SpecialFunc.h
-PyMieSim/LMT/includes/utils.h
