@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+# docker run -ti -v $(pwd):/io quay.io/pypa/manylinux2014_x86_64 /bin/bash
 # python3 setup.py build
 # sudo python3 -m build
 # python3 -m twine upload --repository pypi dist/
@@ -35,6 +35,7 @@ VERSION         = '0.2.0'
 REQUIRED = ['scipy',
             'matplotlib',
             'pandas',
+            'beartype',
             'beartype',
             'numpy']
 
@@ -71,16 +72,16 @@ here = os.path.abspath(os.path.dirname(__file__))
 macro = [('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
 compile_args=["-std=c++14",
               '-fopenmp',
-              '-lboost_filesystem',
-              '-lboost_system',
+              #'-lboost_filesystem',
+              #'-lboost_system',
               '-O3',
               '-I/usr/include/boost',
               '-march=native']
 
 link_args=["-std=c++14",
            '-fopenmp',
-           '-lboost_filesystem',
-           '-lboost_system',
+           #'-lboost_filesystem',
+           #'-lboost_system',
            '-O3',
            '-I/usr/include/boost',
            '-march=native']
