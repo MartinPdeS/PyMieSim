@@ -8,6 +8,12 @@ include PyMieSim/LMT/includes/BaseClass.h
 include PyMieSim/LMT/includes/utils.h
 include PyMieSim/LMT/includes/BaseFunc.h
 
+include PyMieSim/LMT/includes/SpecialFunc.cpp
+include PyMieSim/LMT/includes/BaseClass.cpp
+include PyMieSim/LMT/includes/utils.cpp
+include PyMieSim/LMT/includes/BaseFunc.cpp
+
+
 include PyMieSim/GLMT/cpp/GaussianBeam.cpp
 include PyMieSim/GLMT/cpp/Cylinder.cpp
 include PyMieSim/GLMT/cpp/Sphere.cpp
