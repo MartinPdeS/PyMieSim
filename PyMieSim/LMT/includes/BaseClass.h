@@ -7,8 +7,6 @@ class BASE{
 
         void  ComputePrefactor(double* prefactor, uint MaxOrder);
 
-        virtual void TestMethod(){};
-
         virtual void ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder){};
 
         virtual double& Getk(){return this->k;};
@@ -19,10 +17,12 @@ class BASE{
 
         virtual double& GetSizeParam(){};
 
+        std::tuple<double, double, double, double, double, double, double> GetEfficiencies();
+
         std::tuple<Cndarray,Cndarray> S1S2(const ndarray Phi),
+                                      sS1S2(  ndarray& Phi, ndarray& Theta),
+                                      uS1S2(  ndarray& Phi, ndarray& Theta),
                                       sFields(ndarray& Phi, ndarray& Theta, double R),
-                                      sS1S2(ndarray& Phi, ndarray& Theta),
-                                      uS1S2(ndarray& Phi, ndarray& Theta),
                                       uFields(ndarray& Phi, ndarray& Theta, double R);
 
         inline void MiePiTau(double mu, uint MaxOrder, complex128 *pin, complex128 *taun);
@@ -35,9 +35,9 @@ class BASE{
 
 inline void
 BASE::MiePiTau(double        mu,
-                 uint        MaxOrder,
-                 complex128 *pin,
-                 complex128 *taun)
+               uint          MaxOrder,
+               complex128   *pin,
+               complex128   *taun)
 
 {
   pin[0] = 1.;
@@ -272,6 +272,32 @@ BASE::uS1S2(ndarray& Phi, ndarray& Theta)
   free(SinTerm);
   return std::make_tuple(EPhi, ETheta)  ;
 
+}
+
+
+
+
+std::tuple<double, double, double, double, double, double, double>
+BASE::GetEfficiencies()
+{
+    uint MaxOrder   = GetMaxOrder(this->GetSizeParam());
+
+    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
+
+    this->ComputeAnBn(an, bn, MaxOrder);
+
+    double Qsca   = GetQsca(an, bn, MaxOrder, this->GetSizeParam());
+    double Qext   = GetQext(an, bn, MaxOrder, this->GetSizeParam());
+    double g      = Getg(an, bn, MaxOrder, this->GetSizeParam(), Qsca);
+    double Qabs   = Qext - Qsca;
+    double Qback  = GetQback(an, bn, MaxOrder, this->GetSizeParam());
+    double Qpr    = Qext - g * Qsca;
+    double Qratio = Qback / Qsca;
+
+    free(an);
+    free(bn);
+    return std::make_tuple(Qsca, Qext, Qabs, Qback, Qratio, g, Qpr);
 }
 
 // -

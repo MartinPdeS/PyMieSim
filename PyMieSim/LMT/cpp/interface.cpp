@@ -36,7 +36,7 @@ PYBIND11_MODULE(Scatterer, module) {
       .def("sFields",
            &BASE::sFields,
            py::arg("Phi"),
-           py::arg("Theta"),
+           py::arg("Theta"), 
            py::arg("R") )
 
       .def("uS1S2",
@@ -57,10 +57,10 @@ PYBIND11_MODULE(Scatterer, module) {
 
       .def("dn", &SPHERE::Dn, py::arg("MaxOrder")  = 5)
 
-      .def_property_readonly("Efficiencies", &SPHERE::GetEfficiencies);
+      .def_property_readonly("Efficiencies", &BASE::GetEfficiencies);
 
 
-      py::class_<CYLINDER>(module, "CYLINDER") 
+      py::class_<CYLINDER>(module, "CYLINDER")
       .def(py::init<double, double, double, double, double, double>(),
            py::arg("Index"),
            py::arg("Diameter"),
@@ -99,8 +99,7 @@ PYBIND11_MODULE(Scatterer, module) {
 
       .def("bn", &CYLINDER::Bn, py::arg("MaxOrder")  = 5)
 
-
-      .def_property_readonly("Efficiencies", &CYLINDER::GetEfficiencies);
+      .def_property_readonly("Efficiencies", &BASE::GetEfficiencies);
 }
 
 

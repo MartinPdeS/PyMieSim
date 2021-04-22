@@ -1,15 +1,9 @@
 #include <iostream>
-#pragma GCC visibility push(hidden)
-
-
-
-
 #include <iostream>
 #include <math.h>
 
 
-
-
+#pragma GCC visibility push(hidden)
 class CYLINDER: public BASE{
 
 private:
@@ -32,8 +26,6 @@ private:
 
 
     public:
-        std::tuple<double, double, double, double, double, double, double> GetEfficiencies();
-
         Cndarray                           An(uint MaxOrder),
                                            Bn(uint MaxOrder),
                                            Cn(uint MaxOrder),
@@ -144,30 +136,6 @@ CYLINDER::An(uint MaxOrder)
   return an;
 }
 
-
-
-std::tuple<double, double, double, double, double, double, double>
-CYLINDER::GetEfficiencies()
-{
-    uint MaxOrder   = GetMaxOrder(SizeParam);
-
-    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
-               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
-
-    this->ComputeAnBn(an, bn, MaxOrder);
-
-    double Qsca   = GetQsca(an, bn, MaxOrder, SizeParam);
-    double Qext   = GetQext(an, bn, MaxOrder, SizeParam);
-    double g      = Getg(an, bn, MaxOrder, SizeParam, Qsca);
-    double Qabs   = Qext - Qsca;
-    double Qback  = GetQback(an, bn, MaxOrder, SizeParam);
-    double Qpr    = Qext - g * Qsca;
-    double Qratio = Qback / Qsca;
-
-    free(an);
-    free(bn);
-    return std::make_tuple(Qsca, Qext, Qabs, Qback, Qratio, g, Qpr);
-}
 
 
 

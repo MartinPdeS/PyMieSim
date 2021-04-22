@@ -7,39 +7,36 @@
 class SPHERE: public BASE{
 
 private:
-  bool       Polarized;
+  bool          Polarized;
 
-  complex128 Index;
+  complex128    Index;
 
-  double     Diameter,
-             nMedium,
-             SizeParam,
-             Polarization,
-             Wavelength,
-             k,
-             E0,
-             Mu,
-             MuScat;
-             double& Getk(){return this->k;};
-             double& GetPolarization(){return this->Polarization;};
-             double& GetE0(){return this->E0;};
-             double& GetSizeParam(){return this->SizeParam;};
+  double        Diameter,
+                nMedium,
+                SizeParam,
+                Polarization,
+                Wavelength,
+                k,
+                E0,
+                Mu,
+                MuScat;
+                double& Getk(){return this->k;};
+                double& GetPolarization(){return this->Polarization;};
+                double& GetE0(){return this->E0;};
+                double& GetSizeParam(){return this->SizeParam;};
 
 
-    void     ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder),
-             LowFreqAnBn(complex128* an, complex128* bn),
-             HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
-             HighFreqCnDn(complex128* an, complex128* bn, uint MaxOrder),
-             TestMethod(){std::cout<<"Hello mofo" << Diameter <<std::endl;};
+    void        ComputeAnBn( complex128* an, complex128* bn, uint MaxOrder),
+                LowFreqAnBn( complex128* an, complex128* bn),
+                HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
+                HighFreqCnDn(complex128* an, complex128* bn, uint MaxOrder);
 
 
     public:
-      std::tuple<double, double, double, double, double, double, double> GetEfficiencies();
-
-      Cndarray                           An(uint MaxOrder),
-                                         Bn(uint MaxOrder),
-                                         Cn(uint MaxOrder),
-                                         Dn(uint MaxOrder);
+      Cndarray  An(uint MaxOrder),
+                Bn(uint MaxOrder),
+                Cn(uint MaxOrder),
+                Dn(uint MaxOrder);
 
 
   SPHERE(complex128 Index,
@@ -64,7 +61,6 @@ private:
         ~SPHERE(){  }
 
 };
-
 
 void
 SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
@@ -229,33 +225,6 @@ SPHERE::An(uint MaxOrder)
   this->HighFreqAnBn(anPtr, bnPtr, MaxOrder);
   return an;
 }
-
-
-std::tuple<double, double, double, double, double, double, double>
-SPHERE::GetEfficiencies()
-{
-    uint MaxOrder   = GetMaxOrder(SizeParam);
-
-    complex128 * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
-               * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128));
-
-    this->ComputeAnBn(an, bn, MaxOrder);
-
-    double Qsca   = GetQsca(an, bn, MaxOrder, SizeParam);
-    double Qext   = GetQext(an, bn, MaxOrder, SizeParam);
-    double g      = Getg(an, bn, MaxOrder, SizeParam, Qsca);
-    double Qabs   = Qext - Qsca;
-    double Qback  = GetQback(an, bn, MaxOrder, SizeParam);
-    double Qpr    = Qext - g * Qsca;
-    double Qratio = Qback / Qsca;
-
-    free(an);
-    free(bn);
-    return std::make_tuple(Qsca, Qext, Qabs, Qback, Qratio, g, Qpr);
-}
-
-
-
 
 
 
