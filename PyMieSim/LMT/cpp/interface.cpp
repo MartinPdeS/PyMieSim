@@ -1,3 +1,4 @@
+//#include "../F90/include/complex_bessel.h"
 #include "../includes/SpecialFunc.h"
 #include "../includes/utils.h"
 #include "../includes/BaseFunc.h"
@@ -23,7 +24,7 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Polarization") = 0.,
            py::arg("E0")           = 1. )
 
-       .def("S1S2",
+       .def("S1S2", 
             &BASE::S1S2,
             py::arg("Phi") )
 
@@ -36,7 +37,7 @@ PYBIND11_MODULE(Scatterer, module) {
       .def("sFields",
            &BASE::sFields,
            py::arg("Phi"),
-           py::arg("Theta"), 
+           py::arg("Theta"),
            py::arg("R") )
 
       .def("uS1S2",

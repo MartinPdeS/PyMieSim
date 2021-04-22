@@ -19,7 +19,7 @@ typedef std::vector<std::vector<double>> Matrix3;
 using namespace std;
 
 
-
+#pragma GCC visibility push(hidden)
 class FibonacciMesh{
 
   public:
@@ -38,7 +38,6 @@ class FibonacciMesh{
             *Theta_data,
             *PhiBase_data,
             *ThetaBase_data,
-            *Sin_data,
              dOmega,
              Omega;
 
@@ -97,12 +96,9 @@ void
 FibonacciMesh::Cart2Sph(){
 
   for (auto i = 0; i < this->Samples; i++){
-      double rho = sqrt( pow(this->z_data[i],2) + pow(this->x_data[i],2) ) ;
-
       this->R_data[i]       = sqrt( pow( this->x_data[i],2) + pow(this->y_data[i],2) + pow(this->z_data[i],2) ) ;
       this->Theta_data[i]   = atan2( this->y_data[i],  this->x_data[i] );
       this->Phi_data[i]     = asin( this->z_data[i] / this->R_data[i] );
-      this->Sin_data[i]     = abs( sin(Phi_data[i]) );
       }
 }
 
@@ -132,8 +128,6 @@ FibonacciMesh::GenMesh()
 
 void
 FibonacciMesh::GetBaseCoordinate(){
-  double temp;
-
   for (auto i = 0; i < this->Samples; i++){
       this->PhiBase_data[i]   = this->Phi_data[i];
       this->ThetaBase_data[i] = this->Theta_data[i];
@@ -229,7 +223,6 @@ FibonacciMesh::GenCoordinate()
   this->R_data         = this->R.mutable_data();
   this->Phi_data       = this->Phi.mutable_data();
   this->Theta_data     = this->Theta.mutable_data();
-  this->Sin_data       = this->Sin.mutable_data();
 
   this->PhiBase_data   = this->PhiBase.mutable_data();
   this->ThetaBase_data = this->ThetaBase.mutable_data();

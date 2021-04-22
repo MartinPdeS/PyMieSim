@@ -303,7 +303,7 @@ def suite():
     suite.addTest(DetectorTestCase('test05'))
 
     suite.addTest(ScattererTestCase('test00'))
-    suite.addTest(ScattererTestCase('test01')) 
+    suite.addTest(ScattererTestCase('test01'))
     suite.addTest(ScattererTestCase('test02'))
     suite.addTest(ScattererTestCase('test03'))
     suite.addTest(ScattererTestCase('test04'))

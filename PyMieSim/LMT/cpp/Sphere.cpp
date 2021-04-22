@@ -2,8 +2,6 @@
 #include <math.h>
 
 
-
-
 class SPHERE: public BASE{
 
 private:
@@ -20,17 +18,17 @@ private:
                 E0,
                 Mu,
                 MuScat;
-                double& Getk(){return this->k;};
-                double& GetPolarization(){return this->Polarization;};
-                double& GetE0(){return this->E0;};
-                double& GetSizeParam(){return this->SizeParam;};
+
+    double&     Getk(){return this->k;};
+    double&     GetPolarization(){return this->Polarization;};
+    double&     GetE0(){return this->E0;};
+    double&     GetSizeParam(){return this->SizeParam;};
 
 
     void        ComputeAnBn( complex128* an, complex128* bn, uint MaxOrder),
                 LowFreqAnBn( complex128* an, complex128* bn),
                 HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder),
                 HighFreqCnDn(complex128* an, complex128* bn, uint MaxOrder);
-
 
     public:
       Cndarray  An(uint MaxOrder),
@@ -109,7 +107,6 @@ SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
 void
 SPHERE::HighFreqCnDn(complex128* cn, complex128* dn, uint MaxOrder)
 {
-
   complex128 mx   = Index * SizeParam;
 
   uint nmx = std::max( MaxOrder, (uint) std::abs(mx) ) + 16;
@@ -141,7 +138,6 @@ SPHERE::HighFreqCnDn(complex128* cn, complex128* dn, uint MaxOrder)
 
     ax.push_back(  SizeParam * b1x[i] - (double)( i + 1 ) * jnx[i] );
     ahx.push_back( SizeParam * hn1x[i] - (double)( i + 1 ) * hx[i] );
-
 
     numerator.push_back( jnx[i] * ahx[i] - hx[i] * ax[i] );
     c_denominator.push_back( ahx[i] - hx[i] * Cnn[i] );

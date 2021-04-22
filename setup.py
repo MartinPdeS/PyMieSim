@@ -85,21 +85,16 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 
 macro = [('NPY_NO_DEPRECATED_API', 'NPY_1_7_API_VERSION')]
+
 compile_args=["-std=c++14",
               '-fopenmp',
-              #'-lboost_filesystem',
-              #'-lboost_system',
               '-O3',
               '-I/usr/include/boost',
               '-march=native']
 
-link_args=["-std=c++14",
-           '-fopenmp',
-           #'-lboost_filesystem',
-           #'-lboost_system',
-           '-O3',
-           '-I/usr/include/boost',
-           '-march=native']
+link_args=[
+          #'./PyMieSim/LMT/lib/libcomplex_bessel.so',
+           '-I/usr/include/boost',]
 
 ext_modules = [
                 Extension(name               = "PyMieSim._Coupling",
@@ -114,6 +109,7 @@ ext_modules = [
                           sources            = ["PyMieSim/LMT/cpp/interface.cpp"],
                           include_dirs       = [get_numpy_include(), get_pybind11_include(), "PyMieSim.includes/SpecialFunc.h"],
                           extra_compile_args = compile_args,
+                          extra_link_args    = link_args,
                           language           = "c++"),
 
                 Extension(name                = 'PyMieSim.GLMT.Scatterer',
