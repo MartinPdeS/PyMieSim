@@ -1,7 +1,7 @@
 #include "../includes/SpecialFunc.h"
 #include "../includes/utils.h"
-#include "../includes/BaseClass.h"
 #include "../includes/BaseFunc.h"
+#include "../includes/BaseClass.h"
 #include "Sphere.cpp"
 #include "Cylinder.cpp"
 #include <iostream>
@@ -24,29 +24,28 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("E0")           = 1. )
 
        .def("S1S2",
-
-            &SPHERE::S1S2,
+            &BASE::S1S2,
             py::arg("Phi") )
 
       .def("uFields",
-           &SPHERE::uFields,
+           &BASE::uFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
- 
+
       .def("sFields",
-           &SPHERE::sFields,
+           &BASE::sFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
 
       .def("uS1S2",
-           &SPHERE::uS1S2,
+           &BASE::uS1S2,
            py::arg("Phi"),
            py::arg("Theta"))
 
       .def("sS1S2",
-           &SPHERE::sS1S2,
+           &BASE::sS1S2,
            py::arg("Phi"),
            py::arg("Theta"))
 
@@ -61,7 +60,7 @@ PYBIND11_MODULE(Scatterer, module) {
       .def_property_readonly("Efficiencies", &SPHERE::GetEfficiencies);
 
 
-      py::class_<CYLINDER>(module, "CYLINDER")
+      py::class_<CYLINDER>(module, "CYLINDER") 
       .def(py::init<double, double, double, double, double, double>(),
            py::arg("Index"),
            py::arg("Diameter"),
@@ -71,28 +70,28 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("E0")           = 1. )
 
        .def("S1S2",
-            &CYLINDER::S1S2,
+            &BASE::S1S2,
             py::arg("Phi") )
 
       .def("uFields",
-           &CYLINDER::uFields,
+           &BASE::uFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
 
       .def("sFields",
-           &CYLINDER::sFields,
+           &BASE::sFields,
            py::arg("Phi"),
            py::arg("Theta"),
            py::arg("R") )
 
       .def("uS1S2",
-           &CYLINDER::uS1S2,
+           &BASE::uS1S2,
            py::arg("Phi"),
            py::arg("Theta"))
 
       .def("sS1S2",
-           &CYLINDER::sS1S2,
+           &BASE::sS1S2,
            py::arg("Phi"),
            py::arg("Theta"))
 

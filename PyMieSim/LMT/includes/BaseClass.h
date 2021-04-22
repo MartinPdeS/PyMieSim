@@ -1,10 +1,29 @@
 #include <iostream>
 
-
 class BASE{
 
     public:
+        double E0, k, Polarization;
+
         void  ComputePrefactor(double* prefactor, uint MaxOrder);
+
+        virtual void TestMethod(){};
+
+        virtual void ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder){};
+
+        virtual double& Getk(){return this->k;};
+
+        virtual double& GetE0(){return this->E0;};
+
+        virtual double& GetPolarization(){return this->Polarization;};
+
+        virtual double& GetSizeParam(){};
+
+        std::tuple<Cndarray,Cndarray> S1S2(const ndarray Phi),
+                                      sFields(ndarray& Phi, ndarray& Theta, double R),
+                                      sS1S2(ndarray& Phi, ndarray& Theta),
+                                      uS1S2(ndarray& Phi, ndarray& Theta),
+                                      uFields(ndarray& Phi, ndarray& Theta, double R);
 
         inline void MiePiTau(double mu, uint MaxOrder, complex128 *pin, complex128 *taun);
 
@@ -13,8 +32,6 @@ class BASE{
         virtual ~BASE(){ }
 
 };
-
-
 
 inline void
 BASE::MiePiTau(double        mu,
@@ -52,7 +69,209 @@ BASE::ComputePrefactor(double* prefactor, uint MaxOrder)
 
 
 
+std::tuple<Cndarray,Cndarray>
+BASE::S1S2(const ndarray Phi)
+{
+  uint MaxOrder           = GetMaxOrder(this->GetSizeParam());
+
+  uint PhiLength          = Phi.request().shape[0];
+
+  double     * PhiPtr     = (double*) Phi.request().ptr,
+             * prefactor  = (double*) calloc(MaxOrder, sizeof(double));
+
+  Cndarray     s1         = Cndarray(PhiLength),
+               s2         = Cndarray(PhiLength);
+
+  complex128 * s1Ptr      = (complex128 *) s1.request().ptr,
+             * s2Ptr      = (complex128 *) s2.request().ptr,
+             * an         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+             * bn         = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+             * pin        = (complex128*) calloc(MaxOrder, sizeof(complex128)),
+             * taun       = (complex128*) calloc(MaxOrder, sizeof(complex128));
+
+  this->ComputeAnBn(an, bn, MaxOrder);
+
+  this->ComputePrefactor(prefactor, MaxOrder);
+
+  for (uint i = 0; i < PhiLength; i++){
+
+      MiePiTau( cos( PhiPtr[i]-PI/2 ), MaxOrder, pin, taun );
+      s1Ptr[i] = 0.;
+      s2Ptr[i] = 0.;
+
+      for (uint m = 0; m < MaxOrder ; m++){
+          s1Ptr[i]    += prefactor[m] * ( an[m] * pin[m] +  bn[m] * taun[m] );
+          s2Ptr[i]    += prefactor[m] * ( an[m] * taun[m] + bn[m] * pin[m]  );
+        }
+  }
+
+  free(pin);
+  free(taun);
+  free(an);
+  free(bn);
+  free(prefactor);
+  s1Ptr = NULL;
+  s2Ptr = NULL;
+
+  return std::make_tuple(s1, s2)  ;
+}
 
 
+std::tuple<Cndarray,Cndarray>
+BASE::sFields(ndarray& Phi, ndarray& Theta, double R)
+{
+  uint         PhiLength    = Phi.request().shape[0],
+               ThetaLength  = Theta.request().shape[0];
+
+ Cndarray     ETheta     = Cndarray(PhiLength*ThetaLength),
+              EPhi       = Cndarray(PhiLength*ThetaLength);
+
+  double     * ThetaPtr     = (double*) Theta.request().ptr,
+             * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
+             * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
+
+  Cndarray     S1, S2;
+
+  complex128   propagator = this->GetE0() / (this->Getk() * R) * exp(-JJ*this->Getk()*R);
+
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, this->GetPolarization());
+
+
+  std::tie(S1, S2) = S1S2(Phi);
+
+  complex128 * EPhiPtr    = (complex128*) ETheta.request().ptr,
+             * EThetaPtr  = (complex128*) EPhi.request().ptr,
+             * S1Ptr      = (complex128*) S1.request().ptr,
+             * S2Ptr      = (complex128*) S2.request().ptr;
+
+   Structured(ThetaLength, PhiLength, S2Ptr, CosTerm, - propagator, EPhiPtr);
+
+   Structured(ThetaLength, PhiLength, S1Ptr, SinTerm, JJ * propagator, EThetaPtr);
+
+   EPhi.resize({PhiLength,ThetaLength});
+   ETheta.resize({PhiLength,ThetaLength});
+
+   EPhi   = EPhi.attr("transpose")();
+   ETheta = ETheta.attr("transpose")();
+
+   return std::make_tuple(EPhi, ETheta)  ;
+}
+
+
+
+std::tuple<Cndarray,Cndarray>
+BASE::uFields(ndarray& Phi, ndarray& Theta, double R)
+{
+  uint         PhiLength    = Phi.request().shape[0],
+               ThetaLength  = Theta.request().shape[0];
+
+  double     * ThetaPtr     = (double*) Theta.request().ptr,
+             * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
+             * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
+
+  Cndarray     ETheta     = Cndarray(PhiLength),
+               EPhi       = Cndarray(PhiLength),
+               S1,
+               S2;
+
+  complex128   propagator = this->GetE0() / (this->Getk() * R) * exp(-JJ*this->Getk()*R);
+
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, this->GetPolarization());
+
+  std::tie(S1, S2) = this->S1S2(Phi);
+
+  complex128 * EPhiPtr    = (complex128*) ETheta.request().ptr,
+             * EThetaPtr  = (complex128*) EPhi.request().ptr,
+             * S1Ptr      = (complex128*) S1.request().ptr,
+             * S2Ptr      = (complex128*) S2.request().ptr;
+
+  Unstructured(ThetaLength, PhiLength, S2Ptr, CosTerm, - propagator, EPhiPtr);
+
+  Unstructured(ThetaLength, PhiLength, S1Ptr, SinTerm, JJ * propagator, EThetaPtr);
+
+  free(CosTerm);
+  free(SinTerm);
+  return std::make_tuple(EPhi, ETheta)  ;
+}
+
+
+
+
+std::tuple<Cndarray,Cndarray>
+BASE::sS1S2(ndarray& Phi, ndarray& Theta)
+{
+
+  uint         PhiLength    = Phi.request().shape[0],
+               ThetaLength  = Theta.request().shape[0];
+
+  double     * ThetaPtr     = (double*) Theta.request().ptr,
+             * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
+             * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
+
+  Cndarray     ETheta     = Cndarray(PhiLength*ThetaLength),
+               EPhi       = Cndarray(PhiLength*ThetaLength),
+               S1,
+               S2;
+
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, this->GetPolarization());
+
+  std::tie(S1, S2) = this->S1S2(Phi);
+
+  complex128 * EPhiPtr    = (complex128*) ETheta.request().ptr,
+             * EThetaPtr  = (complex128*) EPhi.request().ptr,
+             * S1Ptr      = (complex128*) S1.request().ptr,
+             * S2Ptr      = (complex128*) S2.request().ptr;
+
+  Structured(ThetaLength, PhiLength, S2Ptr, CosTerm, this->GetE0(), EPhiPtr);
+
+  Structured(ThetaLength, PhiLength, S1Ptr, SinTerm, this->GetE0(), EThetaPtr);
+
+  EPhi.resize({PhiLength,ThetaLength});
+  ETheta.resize({PhiLength,ThetaLength});
+
+  EPhi   = EPhi.attr("transpose")();
+  ETheta = ETheta.attr("transpose")();
+
+  free(CosTerm);
+  free(SinTerm);
+  return std::make_tuple(EPhi, ETheta)  ;
+}
+
+
+
+std::tuple<Cndarray,Cndarray>
+BASE::uS1S2(ndarray& Phi, ndarray& Theta)
+{
+
+  uint         PhiLength    = Phi.request().shape[0],
+               ThetaLength  = Theta.request().shape[0];
+
+  double     * ThetaPtr     = (double*) Theta.request().ptr,
+             * CosTerm      = (double*) calloc(ThetaLength, sizeof(double)),
+             * SinTerm      = (double*) calloc(ThetaLength, sizeof(double));
+
+  Cndarray     ETheta     = Cndarray(PhiLength),
+               EPhi       = Cndarray(PhiLength),
+               S1,
+               S2;
+
+  PolarizationTerm(ThetaLength, ThetaPtr, CosTerm, SinTerm, this->GetPolarization());
+
+  std::tie(S1, S2) = this->S1S2(Phi);
+
+  complex128 * EPhiPtr    = (complex128*) ETheta.request().ptr,
+             * EThetaPtr  = (complex128*) EPhi.request().ptr,
+             * S1Ptr      = (complex128*) S1.request().ptr,
+             * S2Ptr      = (complex128*) S2.request().ptr;
+
+  Unstructured(ThetaLength, PhiLength, S2Ptr, CosTerm, this->GetE0(), EPhiPtr);
+
+  Unstructured(ThetaLength, PhiLength, S1Ptr, SinTerm, this->GetE0(), EThetaPtr);
+
+  free(CosTerm);
+  free(SinTerm);
+  return std::make_tuple(EPhi, ETheta)  ;
+
+}
 
 // -

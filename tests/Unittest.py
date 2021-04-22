@@ -290,7 +290,7 @@ class PhysicsTestCase(unittest.TestCase):
         val1      = Detector1.Coupling(Scat)
         error     = np.abs(val0-val1)/val0
         assert error < 1e-2
-        print('Test 23: Validation EnergyFlow - coupling passed')
+        print('Validation EnergyFlow - coupling passed')
 
 
 def suite():
@@ -303,7 +303,7 @@ def suite():
     suite.addTest(DetectorTestCase('test05'))
 
     suite.addTest(ScattererTestCase('test00'))
-    suite.addTest(ScattererTestCase('test01'))
+    suite.addTest(ScattererTestCase('test01')) 
     suite.addTest(ScattererTestCase('test02'))
     suite.addTest(ScattererTestCase('test03'))
     suite.addTest(ScattererTestCase('test04'))
