@@ -18,8 +18,6 @@
 # python3 -m twine upload --repository pypi dist/*.tar.gz
 
 
-
-import cmaketools
 import io
 import os
 import sys
