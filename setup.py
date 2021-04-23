@@ -19,14 +19,18 @@
 
 
 
-# command: sudo python setup.py upload_sphinx
+import cmaketools
 import io
 import os
 import sys
 import numpy
 from shutil import rmtree
+import pathlib
 from setuptools import setup, Extension
+import subprocess
 #from Cython.Distutils import build_ext
+from setuptools.command.build_ext import build_ext as build_ext_orig
+from setuptools.command.build_ext import build_ext
 
 from setuptools import find_packages, setup, Command
 from setuptools.command.build_ext import build_ext as _build_ext
@@ -71,15 +75,7 @@ class get_numpy_include(object):
 
 
 
-# What packages are optional?
-EXTRAS = {
-    # 'fancy feature': ['django'],
-}
-
-# The rest you shouldn't have to touch too much :)
-# ------------------------------------------------
-# Except, perhaps the License and Trove Classifiers!
-# If you do change the License, remember to change the Trove Classifier for that!
+EXTRAS = {}
 
 here = os.path.abspath(os.path.dirname(__file__))
 
@@ -92,9 +88,7 @@ compile_args=["-std=c++14",
               '-I/usr/include/boost',
               '-march=native']
 
-link_args=[
-          #'./PyMieSim/LMT/lib/libcomplex_bessel.so',
-           '-I/usr/include/boost',]
+link_args=['-I/usr/include/boost',]
 
 ext_modules = [
                 Extension(name               = "PyMieSim._Coupling",
@@ -105,42 +99,16 @@ ext_modules = [
                           extra_compile_args  = compile_args,
                           extra_link_args     = link_args),
 
-                Extension(name               = "PyMieSim.LMT.Scatterer",
-                          sources            = ["PyMieSim/LMT/cpp/interface.cpp"],
-                          include_dirs       = [get_numpy_include(), get_pybind11_include(), "PyMieSim.includes/SpecialFunc.h"],
-                          extra_compile_args = compile_args,
-                          extra_link_args    = link_args,
-                          language           = "c++"),
-
-                Extension(name                = 'PyMieSim.GLMT.Scatterer',
-                          sources             = ['PyMieSim/GLMT/cpp/Interface.cpp'],
-                          include_dirs        = [get_numpy_include(), get_pybind11_include()],
-                          extra_compile_args  = compile_args,
-                          language            = 'c++'),
-
-                Extension(name         = 'PyMieSim.Fibonacci',
-                          sources      = ['PyMieSim/FibonnaciMesh.cpp'],
-                          include_dirs = [get_numpy_include(), get_pybind11_include()],
-                          extra_compile_args  = compile_args,
-                          language     = 'c++'),
-
-                Extension(name         = 'PyMieSim.GLMT.GaussianBeam',
-                          sources      = ['PyMieSim/GLMT/cpp/GaussianBeam.cpp'],
-                          include_dirs = [get_numpy_include(), get_pybind11_include()],
-                          language     = 'c++',
-                          extra_compile_args  = compile_args)
                 ]
 
 
-# Import the README and use it as the long-description.
-# Note: this will only work if 'README.md' is present in your MANIFEST.in file!
 try:
     with io.open(os.path.join(here, 'README.rst'), encoding='utf-8') as f:
         long_description = '\n' + f.read()
 except FileNotFoundError:
     long_description = DESCRIPTION
 
-# Load the package's __version__.py module as a dictionary.
+
 about = {}
 if not VERSION:
     project_slug = NAME.lower().replace("-", "_").replace(" ", "_")
@@ -222,5 +190,5 @@ setup(
         'Intended Audience :: Science/Research',
     ],
     # $ setup.py publish support.
-    cmdclass={'upload': UploadCommand,}, #'build_ext': build_ext
+    cmdclass={'upload': UploadCommand}, #'build_ext': build_ext
 )
