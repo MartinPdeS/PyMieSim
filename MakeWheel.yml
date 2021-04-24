@@ -1,8 +1,0 @@
-uses: quay.io/pypa/manylinux2014_x86_64
-with:
-  python-versions: 'cp36-cp36m cp37-cp37m'
-  build-requirements: 'cython numpy'
-  system-packages: 'lrzip-devel zlib-devel'
-  pre-build-command: 'sh pre-build-script.sh'
-  package-path: 'my_project'
-  pip-wheel-args: '-w ./dist --no-deps'

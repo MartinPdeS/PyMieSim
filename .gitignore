@@ -9,3 +9,7 @@ Untitled.ipynb
 *.so
 /*temp*
 *.sh
+*CMakeCache
+*Makefile
+./CMakeFiles
+*.cmake
