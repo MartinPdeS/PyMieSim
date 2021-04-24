@@ -84,8 +84,10 @@ Windows
 
 ----
 
-Installation (wheel support extended to `manylinux2014<https://www.python.org/dev/peps/pep-0599/>`_)
-****************************************************************************************************
+Installation
+************
+Wheel support now extended to `manylinux2014 <https://www.python.org/dev/peps/pep-0599/>`_
+
 It's pretty simple:
 
 .. code-block:: python
