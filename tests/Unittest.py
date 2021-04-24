@@ -9,6 +9,9 @@ import numpy as np
 import unittest
 
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
+
+
+"""
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
@@ -353,7 +356,7 @@ if __name__ == '__main__':
 
 
 
-
+"""
 
 
 
