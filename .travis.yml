@@ -27,8 +27,8 @@ install:
   - pip3 install vtk==8.1.2
   - pip3 install -r requirements.txt
   - git clone https://github.com/joeydumont/complex_bessel.git
-  - mkdir GitProject/complex_bessel/build
-  - cd GitProject/complex_bessel/build && cmake -DBUILD_TESTING=OFF .. && make install
+  - mkdir complex_bessel/build
+  - cd complex_bessel/build && cmake -DBUILD_TESTING=OFF .. && make install
   - cd ../..
   - cmake . && make all
   - python3 setup.py build_ext --inplace
