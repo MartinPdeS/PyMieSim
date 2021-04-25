@@ -5,6 +5,7 @@
 #include <tuple>
 #include <boost/math/special_functions/legendre.hpp>
 #include <boost/math/special_functions/bessel_prime.hpp>
+#include <complex_bessel.h>
 
 typedef std::complex<double> complex128;
 typedef std::vector<complex128> iVec;
@@ -44,6 +45,20 @@ Taunm(int n, int m, double x)
   return sqrt(1-x*x) * Pnm_p(n, m, x);
 }
 
+
+//---------------------------------complex-arg-bessel--------------------------------------
+inline complex128 F90jn(int order, double x){ return sp_bessel::sph_besselJ(order, x); }
+inline complex128 F90yn(int order, double x){ return sp_bessel::sph_besselY(order, x); }
+
+inline complex128 F90jn_p(int order, double x){ return sp_bessel::besselJp(order, x, 1); }
+inline complex128 F90yn_p(int order, double x){ return sp_bessel::besselYp(order, x, 1); }
+
+inline complex128 F90h1(int order, double x){ return sp_bessel::sph_hankelH1(order, x); }
+inline complex128 F90h2(int order, double x){ return sp_bessel::sph_hankelH2(order, x); }
+
+
+
+//---------------------------------real-arg-bessel--------------------------------------
 inline double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
 inline double yn(int order, double x){ return boost::math::sph_neumann(order, x); }
 

@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -flto -shared  -o PyMieSim/GLMT/Scatterer.cpython-38-x86_64-linux-gnu.so CMakeFiles/_Scatterer.dir/PyMieSim/GLMT/cpp/Interface.cpp.o 

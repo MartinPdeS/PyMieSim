@@ -24,7 +24,7 @@ PYBIND11_MODULE(Scatterer, module) {
            py::arg("Polarization") = 0.,
            py::arg("E0")           = 1. )
 
-       .def("S1S2", 
+       .def("S1S2",
             &BASE::S1S2,
             py::arg("Phi") )
 

@@ -13,3 +13,5 @@ Untitled.ipynb
 *Makefile
 ./CMakeFiles
 *.cmake
+*.gz
+*.whl
