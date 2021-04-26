@@ -150,6 +150,43 @@ you to cite my work. Many thanks
 
 ----
 
+
+Developper mode
+****************
+In order to compile the project without using pip a few depedencies are to be installed.
+Those are the C++ boost library and a C++/Fortran wrapper for bessel function with complex argument (nowhere to be found as C++ lib)
+
+I have worked out a Dockerfile (see the `PyMieSim Git <https://github.com/MartinPdeS/PyMieSim>`_) to install all the necessaries library.
+
+I you prefer to directly install in your computer the files you can do the following
+
+**Boost library**
+
+Linux (Debian)
+--------------
+
+.. code-block:: python
+
+   sudo apt-get install libboost-all-dev
+
+MacOs
+-----
+
+.. code-block:: python
+
+   brew install boost
+
+
+Windows
+-------
+`Boost installation guide <https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html>`_
+
+
+**Fortran wrapper**
+
+You have to compile and install the code yourself. Follow the instruction as showed `here<https://github.com/joeydumont/complex_bessel>`_.
+
+
 Contact Information
 ************************
 As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
