@@ -57,33 +57,6 @@ You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" bad
 ----
 
 
-Dependencies
-************
-In order to install the package you first need to install some dependencies, which are the c++ `boost library <https://boost.org>`_ and some plotting library. To install one can use the command line such as:
-
-
-Linux (Debian)
-------------------------------------------------------------------------------------------------------
-
-.. code-block:: python
-
-   sudo apt-get install libboost-all-dev
-
-MacOs
------
-
-.. code-block:: python
-
-   brew install boost
-
-
-Windows
--------
-`Boost installation guide <https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html>`_
-
-
-----
-
 Installation
 ************
 Wheel support now extended to `manylinux2014 <https://www.python.org/dev/peps/pep-0599/>`_
