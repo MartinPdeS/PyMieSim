@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 from PyMieSim.Plots import StructuredAmplitude, StokesPlot, StructuredAbs
 from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
+from PyMieSim.units import Area
 
 
 class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
@@ -268,25 +269,36 @@ class Footprint(dict):
 
 
 
-class Efficiences(dict):
+class ScatProperties(dict):
 
     def __init__(self, Parent):
 
         self.Parent       = Parent
 
         data = Parent.Bind.Efficiencies
-        print(data)
 
-        self['Qsca']   = data[0]
-        self['Qext']   = data[1]
-        self['Qabs']   = data[2]
-        self['Qback']  = data[3]
-        self['Qratio'] = data[4]
-        self['g']      = data[5]
-        self['Qpr']    = data[6]
+        self['efficiencies'] = { 'Qsca'  : data[0],
+                                 'Qext'  : data[1],
+                                 'Qabs'  : data[2],
+                                 'Qback' : data[3],
+                                 'Qratio': data[4],
+                                 'Qpr'   : data[6]}
+
+        print(data[2])
+        print(Area( data[2] * Parent.Area),'###################')
+        self['cross-section'] = { 'Csca'  : Area( data[0] * Parent.Area),
+                                  'Cext'  : Area( data[1] * Parent.Area),
+                                  'Cabs'  : Area( data[2] * Parent.Area),
+                                  'Cback' : Area( data[3] * Parent.Area),
+                                  'Cratio': Area( data[4] * Parent.Area),
+                                  'Cpr'   : Area( data[6] * Parent.Area)}
+
+        self['others'] = {'area'  : Parent.Area,
+                          'index' : Parent.Index,
+                          'g'     : data[6] }
 
     def Plot(self):
-        print('There is not plotting method for the Efficiences representation. Try print')
+        print('There is not plotting method for the properties representation. Try print')
 
     def __repr__(self):
         text= f"""
@@ -298,8 +310,15 @@ class Efficiences(dict):
         """
         text += "=" * 40 + '\n' + "-" * 50 + '\n'
 
-        for key, val in self.items():
-            text+= f"| {key:10s}  | {val} \n" + "-" * 50 + '\n'
+        for key, val in self['efficiencies'].items():
+            text+= f"Efficiencies   | {key:10s}  | {val} \n" + "-" * 50 + '\n'
+
+        for key, val in self['cross-section'].items():
+            text+= f"cross-sections | {key:10s}  | {val} \n" + "-" * 50 + '\n'
+
+        for key, val in self['others'].items():
+            text+= f"others         | {key:10s}  | {val} \n" + "-" * 50 + '\n'
+
         return text
 
 # -

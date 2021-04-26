@@ -2,34 +2,38 @@ import numpy as np
 
 
 
-unitList = {-5: "f",
-            -4: "p",
-            -3: "n",
+unitList = {-6: "atto-",
+            -5: "femto-",
+            -4: "pico-",
+            -3: "nano-",
             -2: u"\u03bc",
-            -1: "m",
+            -1: "milli-",
             +0: " ",
-            +1: "k",
-            +2: "M",
-            +3: "G",
-            +4: "T",
-            +5: "P"}
+            +1: "kilo-",
+            +2: "mega-",
+            +3: "giga-",
+            +4: "tera-",
+            +5: "peta-"}
 
 
 class Area(float):
 
     def __repr__(self):
-
         factor = 2
 
-        exp = np.log10(self)//(3*factor)
+        if self == 0:
+            return f"0 m²"
 
-        if   exp > +5:    unit = "P"; exp = +5
-        elif exp < -5:    unit = "f"; exp = -5
-        else:             unit = unitList[exp];
+        else:
+            exp = np.log10(self)//(3*factor)
 
-        x = self * 10**(-3*exp*factor)
+            if   exp > +5:    unit = "P"; exp = +5
+            elif exp < -5:    unit = "f"; exp = -5
+            else:             unit = unitList[exp];
 
-        return f"{x:.2e} {unit}m²"
+            x = self * 10**(-3*exp*factor)
+
+            return f"{x:.2e} {unit}m²"
 
 
 
@@ -49,15 +53,20 @@ class Power(float):
 
         factor = 1
 
-        exp = np.log10(self)//(3*factor)
+        if self == 0:
+            return f"0 Watt"
 
-        if   exp > +5:    unit = "P"; exp = +5
-        elif exp < -5:    unit = "f"; exp = -5
-        else:             unit = unitList[exp];
+        else:
 
-        x = self * 10**(-3*exp*factor)
+            exp = np.log10(self)//(3*factor)
 
-        return f"{x:.2e} {unit}Watt"
+            if   exp > +5:    unit = "P"; exp = +5
+            elif exp < -5:    unit = "f"; exp = -5
+            else:             unit = unitList[exp];
+
+            x = self * 10**(-3*exp*factor)
+
+            return f"{x:.2e} {unit}Watt"
 
 
 

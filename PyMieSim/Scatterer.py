@@ -12,11 +12,11 @@ from PyMieSim.LMT.Scatterer   import SPHERE, CYLINDER
 from PyMieSim.units           import Area
 from PyMieSim.Source          import PlaneWave, GaussianBeam
 from PyMieSim.BaseClasses     import ( BaseScatterer,
-                                       EfficienciesProperties,
+                                       ScattererProperties,
                                        BaseSource )
 
 
-class Sphere(BaseScatterer, EfficienciesProperties):
+class Sphere(BaseScatterer, ScattererProperties):
     """
     Short summary.
 
@@ -169,7 +169,7 @@ class Sphere(BaseScatterer, EfficienciesProperties):
 
 
 
-class Cylinder(BaseScatterer, EfficienciesProperties):
+class Cylinder(BaseScatterer, ScattererProperties):
     """
     Short summary.
 

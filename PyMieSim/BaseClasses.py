@@ -201,7 +201,7 @@ class BaseDetector(object):
                           Testing = self.Testing)
 
 
-class EfficienciesProperties(object):
+class ScattererProperties(object):
 
 
     @property
@@ -320,16 +320,16 @@ class EfficienciesProperties(object):
 
     @property
     def Efficiencies(self):
-        """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},
+        """Methode compute all properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},
         Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
 
         """
-        from PyMieSim.Representations import Efficiences
+        from PyMieSim.Representations import ScatProperties
 
         if self._Efficiencies:
             return self._Efficiencies
         else:
-            self._Efficiencies = Efficiences(self)
+            self._Efficiencies = ScatProperties(self)
             return self._Efficiencies
 
 
