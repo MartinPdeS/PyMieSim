@@ -32,6 +32,7 @@ install:
   - pip3 install -r requirements.txt
   - git clone https://github.com/joeydumont/complex_bessel.git
   - mkdir complex_bessel/build
+  - cd complex_bessel/build
   - cmake -DBUILD_TESTING=OFF .. && make install
   - cd ../..
   - cmake . && make all
