@@ -34,7 +34,6 @@ install:
   - git clone https://github.com/joeydumont/complex_bessel.git
   - mkdir complex_bessel/build
   - sudo cmake -DBUILD_TESTING=OFF ./complex_bessel && sudo make install
-  - cd ../..
   - cmake . && make all
   - python3 setup.py build_ext --inplace
 
