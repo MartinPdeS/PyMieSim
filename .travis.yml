@@ -3,7 +3,7 @@ sudo: True
 language: python
 python: 3.6      # current default Python on Travis CI
 os: linux
-env: RUNTIME=3.6 ETS_TOOLKIT=qt4 VTK=7
+env: RUNTIME=3.7 ETS_TOOLKIT=qt4 VTK=7
 arch: amd64
 dist: focal
 
@@ -39,7 +39,7 @@ install:
   - sudo rm -rf cmake_install.cmake CMakeCache.txt CMakeFiles
   - sudo cmake . && sudo make all
   - ls ..
-  - ls .  
+  - ls .
   - python3 setup.py build_ext --inplace
 
   - pip3 install codecov

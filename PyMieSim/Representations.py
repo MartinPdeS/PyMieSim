@@ -10,12 +10,20 @@ from PyMieSim.units import Area
 class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
     """Dict subclass representing scattering Far-field in the Stokes
     representation.
-    The stokes parameters are:
-        I : Intensity of the fields
-        Q : linear polarization parallel to incident polarization
-        U : linear polarization 45 degree to incident polarization
-        V : Circular polarization
+    | The stokes parameters are:
+    |     I : Intensity of the fields
+    |     Q : linear polarization parallel to incident polarization
+    |     U : linear polarization 45 degree to incident polarization
+    |     V : Circular polarization
 
+    .. math:
+        I &= \\big| E_x \big|^2 + \\big| E_y \\big|^2
+
+        Q &= \\big| E_x \big|^2 - \\big| E_y \\big|^2
+
+        U &= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}
+
+        V &= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}
 
     Parameters
     ----------
@@ -32,7 +40,7 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
         Representation of Stokes parameters.
 
     """
-    
+
     def __init__(self, Parent, Num=100, Distance=1.):
 
 
@@ -213,7 +221,29 @@ class S1S2(dict):
 
 
 class ScalarFarField(dict):
+    """Dict subclass representing scattering Far-field in a spherical
+    coordinate representation.
+    The Far-fields are defined as:
 
+    .. math::
+        \\text{Fields} = E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2
+
+
+    Parameters
+    ----------
+    Parent : :class:`Scatterer`
+        The scatterer parent.
+    Num : :class:`int`
+        Number of point to evaluate the far-fields in spherical coord.
+    Distance : :class:`float`
+        Distance at which we evaluate the far-fields.
+
+    Returns
+    -------
+    :class:`dict`
+        Representation of far-fields.
+
+    """
     def __init__(self, Num = 200, Parent = None, Distance=1.):
 
         self.Parent = Parent
@@ -230,16 +260,6 @@ class ScalarFarField(dict):
 
 
     def Plot(self):
-        """Method plots the scattered Far-Field
-        :math:`E_{\\phi}(\\phi,\\theta)^2 , E_{\\theta}(\\phi,\\theta)^2`.
-
-        Parameters
-        ----------
-        Num : :class:`int`
-            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
-
-        """
-
         StructuredAmplitude(Scalar       = self['EPhi'],
                             Phi          = self['Phi'],
                             Theta        = self['Theta'],
@@ -270,7 +290,33 @@ class ScalarFarField(dict):
 
 
 class Footprint(dict):
+    """Dict subclass representing footprint of the scatterer.
+    The footprint usually depend on the scatterer and the detector.
+    For more information see references in the
+    `documentation <https://pymiesim.readthedocs.io/en/latest>`_
+    The footprint is defined as:
 
+    .. math::
+        \\text{Footprint} = \\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi }\
+        (\\xi, \\nu), \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\} \
+        (\\delta_x, \\delta_y) \\big|^2
+
+
+    Parameters
+    ----------
+    Scatterer : :class:`Scatterer`
+        The scatterer.
+    Detector : :class:`Detector`
+        The detector.
+    Num : :class:`int`
+        Number of point to evaluate the footprint in cartesian coord.
+
+    Returns
+    -------
+    :class:`dict`
+        Representation of footprint.
+
+    """
     def __init__(self, Scatterer, Detector, Num=100):
 
         x, y = np.mgrid[-50: 50: complex(Num), -50: 50: complex(Num)]
@@ -336,7 +382,38 @@ class Footprint(dict):
 
 
 class ScatProperties(dict):
+    """Dict subclass representing the basic properties of the scattere
+    | Those properties are:
+    |    Efficiencies:
+    |        Qsca
+    |        Qext
+    |        Qabs
+    |        Qback
+    |        Qratio
+    |        Qpr
+    |    Cross-sections:
+    |        Csca
+    |        Cext
+    |        Cabs
+    |        Cback
+    |        Cratio
+    |        Cpr
+    |    Others:
+    |        area
+    |        index
+    |        g
 
+    Parameters
+    ----------
+    Parent : :class:`Scatterer`
+        The scatterer parent.
+
+    Returns
+    -------
+    :class:`dict`
+        Scatterer properties.
+
+    """
     def __init__(self, Parent):
 
         self.Parent       = Parent
@@ -350,14 +427,12 @@ class ScatProperties(dict):
                                  'Qratio': data[4],
                                  'Qpr'   : data[6]}
 
-        print(data[2])
-        print(Area( data[2] * Parent.Area),'###################')
-        self['cross-section'] = { 'Csca'  : Area( data[0] * Parent.Area),
-                                  'Cext'  : Area( data[1] * Parent.Area),
-                                  'Cabs'  : Area( data[2] * Parent.Area),
-                                  'Cback' : Area( data[3] * Parent.Area),
-                                  'Cratio': Area( data[4] * Parent.Area),
-                                  'Cpr'   : Area( data[6] * Parent.Area)}
+        self['cross-sections'] = { 'Csca'  : Area( data[0] * Parent.Area),
+                                   'Cext'  : Area( data[1] * Parent.Area),
+                                   'Cabs'  : Area( data[2] * Parent.Area),
+                                   'Cback' : Area( data[3] * Parent.Area),
+                                   'Cratio': Area( data[4] * Parent.Area),
+                                   'Cpr'   : Area( data[6] * Parent.Area)}
 
         self['others'] = {'area'  : Parent.Area,
                           'index' : Parent.Index,
@@ -369,7 +444,7 @@ class ScatProperties(dict):
     def __repr__(self):
         text= f"""
         Object:          Dictionary
-        Keys:            S1, S2, S3,, S4, Theta, Phi
+        Keys:            Efficiencies, cross-sections, others
         Structured data: Yes
         Method:          <Plot>
         Shape:           {[7,1]}
@@ -379,7 +454,7 @@ class ScatProperties(dict):
         for key, val in self['efficiencies'].items():
             text+= f"Efficiencies   | {key:10s}  | {val} \n" + "-" * 50 + '\n'
 
-        for key, val in self['cross-section'].items():
+        for key, val in self['cross-sections'].items():
             text+= f"cross-sections | {key:10s}  | {val} \n" + "-" * 50 + '\n'
 
         for key, val in self['others'].items():
