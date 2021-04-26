@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC  -flto -shared  -o PyMieSim/Fibonacci.cpython-38-x86_64-linux-gnu.so CMakeFiles/Fibonacci.dir/PyMieSim/FibonnaciMesh.cpp.o 

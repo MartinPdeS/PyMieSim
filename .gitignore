@@ -15,3 +15,4 @@ Untitled.ipynb
 *.cmake
 *.gz
 *.whl
+CMakeFiles
