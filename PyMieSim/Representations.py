@@ -8,8 +8,6 @@ from PyMieSim.units import Area
 
 
 class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
-
-    def __init__(self, Parent, Num=100, Distance=1.):
     """Dict subclass representing scattering Far-field in the Stokes
     representation.
     The stokes parameters are:
@@ -34,6 +32,9 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
         Representation of Stokes parameters.
 
     """
+    
+    def __init__(self, Parent, Num=100, Distance=1.):
+
 
         self.Parent       = Parent
 
@@ -95,6 +96,7 @@ class SPF(dict):
         Representation of SPF.
 
     """
+
     def __init__(self, Parent, Num=100, Distance=1.):
 
         self.Parent = Parent
