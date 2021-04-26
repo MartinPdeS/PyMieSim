@@ -34,7 +34,11 @@ install:
   - git clone https://github.com/joeydumont/complex_bessel.git
   - mkdir complex_bessel/build
   - sudo cmake -DBUILD_TESTING=OFF ./complex_bessel && sudo make install
+  - ls ..
+  - ls .
   - sudo cmake . && sudo make all
+  - ls ..
+  - ls .  
   - python3 setup.py build_ext --inplace
 
   - pip3 install codecov
