@@ -11,4 +11,4 @@ pyyaml
 pybind11
 numpydoc
 beartype
-vtk==8.1.2
+vtk
