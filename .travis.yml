@@ -36,6 +36,7 @@ install:
   - sudo cmake -DBUILD_TESTING=OFF ./complex_bessel && sudo make install
   - ls ..
   - ls .
+  - sudo rm -rf cmake_install.cmake CMakeCache.txt CMakeFiles
   - sudo cmake . && sudo make all
   - ls ..
   - ls .  
