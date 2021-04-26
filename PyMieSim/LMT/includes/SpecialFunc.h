@@ -47,16 +47,35 @@ Taunm(int n, int m, double x)
 
 
 //---------------------------------complex-arg-bessel--------------------------------------
-inline complex128 F90jn(int order, double x){ return sp_bessel::sph_besselJ(order, x); }
-inline complex128 F90yn(int order, double x){ return sp_bessel::sph_besselY(order, x); }
+template<typename T>
+inline complex128 F90jn(int order, T x){ return sp_bessel::sph_besselJ(order, x); }
+template<typename T>
+inline complex128 F90yn(int order, T x){ return sp_bessel::sph_besselY(order, x); }
 
-inline complex128 F90jn_p(int order, double x){ return sp_bessel::besselJp(order, x, 1); }
-inline complex128 F90yn_p(int order, double x){ return sp_bessel::besselYp(order, x, 1); }
+template<typename T>
+inline complex128 F90Jn(int order, T x){ return sp_bessel::besselJ(order, x); }
+template<typename T>
+inline complex128 F90Yn(int order, T x){ return sp_bessel::besselY(order, x); }
 
-inline complex128 F90h1(int order, double x){ return sp_bessel::sph_hankelH1(order, x); }
-inline complex128 F90h2(int order, double x){ return sp_bessel::sph_hankelH2(order, x); }
+template<typename T>
+inline complex128 F90Jn_p(int order, T x){ return sp_bessel::besselJp(order, x, 1); }
+template<typename T>
+inline complex128 F90Yn_p(int order, T x){ return sp_bessel::besselYp(order, x, 1); }
 
+template<typename T>
+inline complex128 F90h1(int order, T x){ return sp_bessel::sph_hankelH1(order, x); }
+template<typename T>
+inline complex128 F90h2(int order, T x){ return sp_bessel::sph_hankelH2(order, x); }
 
+template<typename T>
+inline complex128 F90H1(int order, T x){ return sp_bessel::hankelH1(order, x); }
+template<typename T>
+inline complex128 F90H2(int order, T x){ return sp_bessel::hankelH2(order, x); }
+
+template<typename T>
+inline complex128 F90H1_p(int order, T x){ return sp_bessel::hankelH1p(order, x); }
+template<typename T>
+inline complex128 F90H2_p(int order, T x){ return sp_bessel::hankelH2p(order, x); }
 
 //---------------------------------real-arg-bessel--------------------------------------
 inline double jn(int order, double x){ return boost::math::sph_bessel(order, x); }
@@ -79,23 +98,6 @@ inline double Jn_p(int order, double x){ return boost::math::cyl_bessel_j_prime(
 
 inline double Yn(double order, double x){ return boost::math::cyl_neumann(order, x); }
 inline double Jn(double order, double x){ return boost::math::cyl_bessel_j(order, x); }
-
-inline complex128
-Jn(double order, complex128 x) // wrong resutl for complex arguemnt need amos F90 wrapper as in https://github.com/joeydumont/complex_bessel
-{
-  complex128 val0 = Jn( order, x.real() );
-  complex128 val1 = Jn( order, x.real() );
-
-  return val0.real() + JJ * val0.imag();
-}
-
-inline complex128
-Yn(double order, complex128 x)// wrong resutl for complex arguemnt need amos F90 wrapper as in https://github.com/joeydumont/complex_bessel
-{
-  complex128 val = Yn( order, x.real() );
-  return val.real() + JJ * val.imag();
-}
-
 
 inline double Yn_p(double order, double x){ return boost::math::cyl_neumann_prime(order, x); }
 inline double Jn_p(double order, double x){ return boost::math::cyl_bessel_j_prime(order, x); }

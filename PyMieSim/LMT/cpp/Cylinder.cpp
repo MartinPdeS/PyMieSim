@@ -79,12 +79,12 @@ CYLINDER::HighFreqAnBn(complex128* anPtr, complex128* bnPtr, uint MaxOrder)
 
   for (int order = 1; order < (int)MaxOrder+1; order++)
   {
-      numerator   = Index * Jn(order, Index*x) * Jn_p(order, nMedium*x) - nMedium * Jn_p(order, Index*x) * Jn(order, nMedium*x);
-      denominator = Index * Jn(order, Index*x) * Hn_p(order, nMedium*x) - nMedium * Jn_p(order, Index*x) * Hn(order, nMedium*x);
+      numerator   = Index * F90Jn(order, Index*x) * F90Jn_p(order, nMedium*x) - nMedium * F90Jn_p(order, Index*x) * F90Jn(order, nMedium*x);
+      denominator = Index * F90Jn(order, Index*x) * F90H1_p(order, nMedium*x) - nMedium * F90Jn_p(order, Index*x) * F90H1(order, nMedium*x);
       anPtr[order-1] = numerator/denominator;
 
-      numerator   = nMedium * Jn(order, Index*x) * Jn_p(order, nMedium*x) - Index*Jn_p(order, Index*x) * Jn(order, nMedium*x);
-      denominator = nMedium * Jn(order, Index*x) * Hn_p(order, nMedium*x) - Index*Jn_p(order, Index*x) * Hn(order, nMedium*x);
+      numerator   = nMedium * F90Jn(order, Index*x) * F90Jn_p(order, nMedium*x) - Index*F90Jn_p(order, Index*x) * F90Jn(order, nMedium*x);
+      denominator = nMedium * F90Jn(order, Index*x) * F90H1_p(order, nMedium*x) - Index*F90Jn_p(order, Index*x) * F90H1(order, nMedium*x);
       bnPtr[order-1] = numerator/denominator;
   }
 }

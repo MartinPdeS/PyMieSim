@@ -94,8 +94,8 @@ SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
 
   for (uint i = 0; i < MaxOrder; i++)
     {
-        px.push_back(  temp * Jn( (double)(i+1)+0.5, SizeParam ) );
-        chx.push_back(-temp * Yn( (double)(i+1)+0.5, SizeParam ) );
+        px.push_back(  SizeParam * F90jn( (double)(i+1), SizeParam ) );
+        chx.push_back(-SizeParam * F90yn( (double)(i+1), SizeParam ) );
 
         p1x.push_back(px[i]);
         ch1x.push_back(chx[i]);
@@ -133,10 +133,10 @@ SPHERE::HighFreqCnDn(complex128* cn, complex128* dn, uint MaxOrder)
   for (uint i = 0; i < MaxOrder; i++)
   {
     Cnn.push_back( Cnx[i] );
-    jnx.push_back(  sqrt( PI / (2. * SizeParam ) ) * Jn( (double)(i+1)+0.5, SizeParam ) );
+    jnx.push_back(  F90jn( (double)(i+1), SizeParam ) );
 
-    jnmx.push_back( sqrt( ( 2. * mx ) / PI ) / Jn( (double)(i+1)+0.5, mx ) );
-    yx.push_back( sqrt( PI / ( 2. * SizeParam ) ) * Yn( (double)( i + 1 ) + 0.5, SizeParam ) );
+    jnmx.push_back( 1. / ( F90jn( (double)(i+1), mx ) ) );
+    yx.push_back( F90yn( (double)( i + 1 ), SizeParam ) );
     hx.push_back( jnx[i] + JJ * yx[i] );
 
     b1x.push_back( jnx[i] );
@@ -149,8 +149,6 @@ SPHERE::HighFreqCnDn(complex128* cn, complex128* dn, uint MaxOrder)
     numerator.push_back( jnx[i] * ahx[i] - hx[i] * ax[i] );
     c_denominator.push_back( ahx[i] - hx[i] * Cnn[i] );
     d_denominator.push_back( Index * Index * ahx[i] - hx[i] * Cnn[i] );
-    std::cout<<Jn( (double)(i+1)+0.5, SizeParam )<<std::endl;
-
     cn[i] = jnmx[i] * numerator[i] / c_denominator[i] ;
     dn[i] = jnmx[i] * Index * numerator[i] / d_denominator[i] ;
   }
