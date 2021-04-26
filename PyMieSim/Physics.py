@@ -31,7 +31,6 @@ def FraunhoferDiffraction(nearField):
         Far-Field ouptut [2D].
 
     """
-
     temp = np.fft.fft2(nearField)
 
     temp /= GenShift(temp.shape[0])
@@ -55,7 +54,6 @@ def GenShift(npts):
         Complex array for FFT.
 
     """
-
     if npts % 2 == 1 :
         phase_shift = np.exp(-complex(0, 1) * np.pi * np.arange(npts)*(npts-1)/npts)
 

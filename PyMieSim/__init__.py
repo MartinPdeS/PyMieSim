@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 
-PATH = os.path.join( Path(__file__).parent, '_Material' )
+PATH = os.path.join( Path(__file__).parent, 'Data/_Material' )
 
 from PyMieSim.utils       import IO
 from PyMieSim.BaseClasses import BaseMaterial
@@ -20,7 +20,10 @@ class Material(BaseMaterial):
 
         with open(os.path.join(PATH, 'Meta.json'), 'r+' ) as f:
             META                     = json.load(f)
-            assert name in META['local'], IO( f"Material {name} not in the local bank {META['local']}\n Please refer to Documentation section 'How to add new Material'")
+            assert name in META['local'],\
+            IO( f"""\nMaterial {name} not in the local bank {META['local']}\n
+                Please refer to Documentation Material section
+                https://pymiesim.readthedocs.io/en/latest/Material.html""")
 
 
         self.LocalDir =  META['local'][name]

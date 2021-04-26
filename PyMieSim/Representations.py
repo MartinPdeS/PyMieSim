@@ -10,6 +10,30 @@ from PyMieSim.units import Area
 class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
 
     def __init__(self, Parent, Num=100, Distance=1.):
+    """Dict subclass representing scattering Far-field in the Stokes
+    representation.
+    The stokes parameters are:
+        I : Intensity of the fields
+        Q : linear polarization parallel to incident polarization
+        U : linear polarization 45 degree to incident polarization
+        V : Circular polarization
+
+
+    Parameters
+    ----------
+    Parent : :class:`Scatterer`
+        The scatterer parent.
+    Num : :class:`int`
+        Number of point to evaluate the Stokes parameters in spherical coord.
+    Distance : :class:`float`
+        Distance at which we evaluate the Stokes parameters.
+
+    Returns
+    -------
+    :class:`dict`
+        Representation of Stokes parameters.
+
+    """
 
         self.Parent       = Parent
 
@@ -51,7 +75,26 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
 
 
 class SPF(dict):
+    """Dict subclass representing scattering phase function of SPF in short.
+    The SPF is defined as:
+    .. math::
+        \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2
 
+    Parameters
+    ----------
+    Parent : :class:`Scatterer`
+        The scatterer parent.
+    Num : :class:`int`
+        Number of point to evaluate the SPF in spherical coord.
+    Distance : :class:`float`
+        Distance at which we evaluate the SPF.
+
+    Returns
+    -------
+    :class:`dict`
+        Representation of SPF.
+
+    """
     def __init__(self, Parent, Num=100, Distance=1.):
 
         self.Parent = Parent
@@ -88,7 +131,28 @@ class SPF(dict):
 
 
 class S1S2(dict):
+    """Dict subclass representing S1 and S2 function.
+    S1 and S2 are defined as:
 
+    .. math::
+        S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)
+
+        S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)
+
+
+    Parameters
+    ----------
+    Parent : :class:`Scatterer`
+        The scatterer parent.
+    Num : :class:`int`
+        Number of point to evaluate the S1 and S2 in spherical coord.
+
+    Returns
+    -------
+    :class:`dict`
+        Representation of S1 S2.
+
+    """
     def __init__(self, Parent, Num):
 
         self.Parent = Parent

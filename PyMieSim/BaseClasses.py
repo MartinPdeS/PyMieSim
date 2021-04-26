@@ -2,19 +2,17 @@
 # -*- coding: utf-8 -*-
 
 import numpy  as np
-
 import os
-from pathlib import Path
-MaterialPATH = os.path.join( Path(__file__).parent, '_Material/data' )
 
+from PyMieSim.Directories     import NPZPath
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
-from PyMieSim.Physics import _Polarization, Angle
-from PyMieSim.utils import NA2Angle, Cart2Sp, NearestIndex
-from PyMieSim.units import Power, Area
-from PyMieSim.Mesh import FibonacciMesh
-from PyMieSim._Coupling import Coupling
+from PyMieSim.Physics         import _Polarization, Angle
+from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex
+from PyMieSim.units           import Power, Area
+from PyMieSim.Mesh            import FibonacciMesh
+from PyMieSim._Coupling       import Coupling
+from PyMieSim.Constants       import *
 import PyMieSim.Plots as plot
-from PyMieSim.Constants import *
 
 EPS = 1e-6
 
@@ -724,7 +722,7 @@ class Generator(object):
 class BaseMaterial(object):
 
     def LoadLocal(self):
-        self._Data = np.load(os.path.join(MaterialPATH, self.LocalDir))
+        self._Data = np.load(os.path.join(NPZPath, self.LocalDir))
 
         if 'wl1' in self.Data:
             self.Boundary = ( max( self.Data['wl0'][0], self.Data['wl1'][0]),

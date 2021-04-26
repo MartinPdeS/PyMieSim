@@ -5,6 +5,7 @@ from beartype import beartype
 
 
 import PyMieSim
+from PyMieSim.Directories import RootPath, LPModePath
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.Physics     import _Polarization, Angle
 from PyMieSim.utils       import ( interp_at,
@@ -35,7 +36,7 @@ class Photodiode(BaseDetector, MeshProperty):
         Methode for computing mode coupling. Either Centered or Mean.
 
     """
-    
+
     @beartype
     def __init__(self,
                  NA           : Union[int, float],
@@ -240,15 +241,17 @@ class LPmode(BaseDetector, MeshProperty):
 
         """
 
-        filename = PyMieSim.__path__[0] + f'/LPmodes/FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
+        filename = f'FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
+        
+        fileDir = os.path.join(LPModePath, filename)
 
-        if not os.path.exists(filename):
+        if not os.path.exists(fileDir):
             raise ValueError( IO( "The LP mode has not been previously compilated. "
                                   "Please consult the documentation to do so. "
                                   "Doc available at: "
                                   "https://pymiesim.readthedocs.io/en/latest/Intro.html" ) )
 
-        mode = np.load(filename)
+        mode = np.load(fileDir)
 
         if Rotation !=0: mode = RotateComplex(mode, Rotation)
 

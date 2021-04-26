@@ -16,8 +16,11 @@ unitList = {-6: "atto-",
             +5: "peta-"}
 
 
-class Area(float):
 
+class UnitRep:
+    """
+    Base class for unit representation.
+    """
     def __repr__(self):
         factor = 2
 
@@ -31,42 +34,35 @@ class Area(float):
             elif exp < -5:    unit = "f"; exp = -5
             else:             unit = unitList[exp];
 
-            x = self * 10**(-3*exp*factor)
+            x = self * 10**(-3*exp*self.PowerFactor)
 
-            return f"{x:.2e} {unit}m²"
-
-
+            return f"{x:.2e} {unit}{self.unit}"
 
 
-class Power(float):
+class Area(float, UnitRep):
     """
-    P = :math:`\\int_{A} I dA`
-    I = :math:`\\frac{c n \\epsilon_0}{2} |E|^2`
-    With:
-         I : Energy density
-         n  : Refractive index of the medium
-         :math:`\\epsilon_0` : Vaccum permitivity
-         E  : Electric field
+    Class representing unit of Area [m²]
     """
+    def __new__(self, value):
+        return float.__new__(self, value)
 
-    def __repr__(self):
+    def __init__(self, x):
+        float.__init__(x)
+        self.PowerFactor = 2
+        self.unit = 'm²'
 
-        factor = 1
 
-        if self == 0:
-            return f"0 Watt"
+class Power(float, UnitRep):
+    """
+    Class representing unit of Power [Watt]
+    """
+    def __new__(self, value):
+        return float.__new__(self, value)
 
-        else:
-
-            exp = np.log10(self)//(3*factor)
-
-            if   exp > +5:    unit = "P"; exp = +5
-            elif exp < -5:    unit = "f"; exp = -5
-            else:             unit = unitList[exp];
-
-            x = self * 10**(-3*exp*factor)
-
-            return f"{x:.2e} {unit}Watt"
+    def __init__(self, x):
+        float.__init__(x)
+        self.PowerFactor = 1
+        self.unit = 'Watt'
 
 
 

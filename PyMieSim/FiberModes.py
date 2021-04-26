@@ -2,7 +2,7 @@ import numpy as np
 import fibermodes
 
 from PyMieSim.Physics import FraunhoferDiffraction
-from PyMieSim.utils import Normalize
+from PyMieSim.utils   import Normalize
 
 
 LPList = [(0,1),
@@ -65,7 +65,7 @@ def GenLPfiles(LPList, Num=251):
 
         print(f'Mode LP{mode[0]}{mode[1]} done!')
 
-    print('Files are saved in "PyMieSim/LPmodes/LP*.npy" ')    
+    print('Files are saved in "PyMieSim/LPmodes/LP*.npy" ')
 
 
 def Genfiles(LPList, padWidth = 2000, Num=251):

@@ -7,6 +7,7 @@ from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
 from PyMieSim.Physics           import _Polarization
 from PyMieSim.BaseClasses       import BaseSource
+from PyMieSim.utils             import IO
 from PyMieSim.Constants         import *
 from PyMieSim.GLMT.GaussianBeam import ( Anm,
                                          Anm_integrand,
@@ -174,11 +175,11 @@ class PlaneWave(BaseSource):
 
     def __repr__(self):
 
-        return f"""
+        return IO( f"""
                 PlaneWave source beam
                 Wavelenght:   {self.Wavelength}
                 Polarization: {self.Polarization.Degree}
-                """
+                """ )
 
 
 
@@ -594,10 +595,10 @@ class GaussianBeam(BaseSource):
 
     def __repr__(self):
 
-        return f"""
+        return IO ( f"""
                 Gaussian source beam
                 Wavelenght:   {self.Wavelength}
                 Polarization: {self.Polarization.Degree}
                 NA:           {self.NA}
                 Waist (w_0)   {self.w0}
-                """
+                """ )
