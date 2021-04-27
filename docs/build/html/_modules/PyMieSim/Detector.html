@@ -1,20 +1,21 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PyMieSim.Detector &#8212; PyMieSim 0.1.11 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -36,11 +37,29 @@
         <li><a href="../../References.html">References</a>|&nbsp;</li>
         <li><a href="../../search.html">search</a>|&nbsp;</li>
 
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyMieSim.Detector</a></li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
-  
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/Logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -55,6 +74,7 @@
 
 
 <span class="kn">import</span> <span class="nn">PyMieSim</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Directories</span> <span class="kn">import</span> <span class="n">RootPath</span><span class="p">,</span> <span class="n">LPModePath</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.BaseClasses</span> <span class="kn">import</span> <span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span>     <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.utils</span>       <span class="kn">import</span> <span class="p">(</span> <span class="n">interp_at</span><span class="p">,</span>
@@ -66,8 +86,10 @@
 
 
 <div class="viewcode-block" id="Photodiode"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.Photodiode">[docs]</a><span class="k">class</span> <span class="nc">Photodiode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Detector type class representing a photodiode, light coupling is</span>
-<span class="sd">    thus independant of the phase of the latter.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Detector type class representing a photodiode, light coupling is</span>
+<span class="sd">        thus independant of the phase of the latter.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -85,7 +107,7 @@
 <span class="sd">        Methode for computing mode coupling. Either Centered or Mean.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    
+
     <span class="nd">@beartype</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">NA</span>           <span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
@@ -117,7 +139,8 @@
 
 <div class="viewcode-block" id="Photodiode.FarField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.Photodiode.FarField">[docs]</a>    <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">251</span><span class="p">,</span> <span class="n">Structured</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the FarField in a structured or unstructured Mesh.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Compute the FarField in a structured or unstructured Mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -151,8 +174,10 @@
 
 
 <span class="k">class</span> <span class="nc">IntegratingSphere</span><span class="p">(</span><span class="n">Photodiode</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Detector type class representing a photodiode, light coupling is</span>
-<span class="sd">    thus independant of the phase of the latter.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Detector type class representing a photodiode, light coupling is</span>
+<span class="sd">        thus independant of the phase of the latter.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -208,8 +233,10 @@
 
 
 <div class="viewcode-block" id="LPmode"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.LPmode">[docs]</a><span class="k">class</span> <span class="nc">LPmode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Detector type class representing a fiber LP mode, light coupling is</span>
-<span class="sd">    thus dependant of the phase of the latter.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Detector type class representing a fiber LP mode, light coupling is</span>
+<span class="sd">        thus dependant of the phase of the latter.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -271,9 +298,10 @@
 
 <div class="viewcode-block" id="LPmode.FarField"><a class="viewcode-back" href="../../Code.html#PyMieSim.Detector.LPmode.FarField">[docs]</a>    <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">251</span><span class="p">,</span> <span class="n">Structured</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">Rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the FarField in a structured or unstructured Mesh.</span>
-<span class="sd">        The unstructured far field is computed using linear interpolation</span>
-<span class="sd">        on a structured mesh.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Compute the FarField in a structured or unstructured Mesh.</span>
+<span class="sd">            The unstructured far field is computed using linear interpolation</span>
+<span class="sd">            on a structured mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -290,15 +318,17 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">filename</span> <span class="o">=</span> <span class="n">PyMieSim</span><span class="o">.</span><span class="n">__path__</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;/LPmodes/FLP</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ModeNumber</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">ModeNumber</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.npy&#39;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;FLP</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ModeNumber</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">ModeNumber</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">.npy&#39;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="n">fileDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">LPModePath</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fileDir</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span> <span class="n">IO</span><span class="p">(</span> <span class="s2">&quot;The LP mode has not been previously compilated. &quot;</span>
                                   <span class="s2">&quot;Please consult the documentation to do so. &quot;</span>
                                   <span class="s2">&quot;Doc available at: &quot;</span>
                                   <span class="s2">&quot;https://pymiesim.readthedocs.io/en/latest/Intro.html&quot;</span> <span class="p">)</span> <span class="p">)</span>
 
-        <span class="n">mode</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fileDir</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">Rotation</span> <span class="o">!=</span><span class="mi">0</span><span class="p">:</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">RotateComplex</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">Rotation</span><span class="p">)</span>
 
@@ -342,7 +372,9 @@
 
 
 <span class="k">class</span> <span class="nc">_Photodiode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">,</span> <span class="n">MeshProperty</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Detector class for develop use only. Do not use!</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Detector class for develop use only. Do not use!</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -372,7 +404,8 @@
 
     <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">251</span><span class="p">,</span> <span class="n">Structured</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute the FarField in a structured or unstructured Mesh.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Compute the FarField in a structured or unstructured Mesh.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -407,25 +440,7 @@
 <span class="c1"># -</span>
 </pre></div>
 
-            <div class="clearer"></div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../../index.html">
-              <img class="logo" src="../../_static/Logo.png" alt="Logo"/>
-            </a></p>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -444,13 +459,12 @@
         <li><a href="../../References.html">References</a>|&nbsp;</li>
         <li><a href="../../search.html">search</a>|&nbsp;</li>
 
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyMieSim.Detector</a></li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
     </div>
   </body>
 </html>

@@ -23,7 +23,7 @@ To use the **Material** follow the snippet:
   Scat = Sphere(Diameter    = 800e-9,
                Source       = Source,
                Material     = Material('BK7'))
-               
+
 ----
 
 Generate new material
@@ -32,12 +32,12 @@ Generate new material
 PyMieSim has a toolbox to fetch and load new material data.
 Using the largest refracitve index bank: `refractiveindex.info <https://refractiveindex.info/>`_  PyMieSim can directly
 download and save complex refractive index for a specific material.
-Doing so the toolbox will save locally the data in the **PyMieSim/_Material/data** folder and will update the
+Doing so the toolbox will save locally the data in the **PyMieSim/Data/_Material/data** folder and will update the
 **PyMieSim/Meta.json** file.
 Here is what the Meta file look like
 
 
-.. literalinclude:: ../../PyMieSim/_Material/Meta.json
+.. literalinclude:: ../../PyMieSim/Data/_Material/Meta.json
     :language: JSON
     :linenos:
 
@@ -48,7 +48,7 @@ Here is what the Meta file look like
 
 
 
- .. literalinclude:: ../../tests/Examples/New-Material.py
+ .. literalinclude:: ../../Examples/New-Material.py
      :language: python
      :linenos:
 
@@ -65,7 +65,7 @@ Here is another examples
 
 
 
-.. literalinclude:: ../../tests/Examples/New-Material-Silver.py
+.. literalinclude:: ../../Examples/New-Material-Silver.py
     :language: python
     :linenos:
 

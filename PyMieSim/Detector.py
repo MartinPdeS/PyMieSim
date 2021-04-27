@@ -17,8 +17,10 @@ from PyMieSim.utils       import ( interp_at,
 
 
 class Photodiode(BaseDetector, MeshProperty):
-    """Detector type class representing a photodiode, light coupling is
-    thus independant of the phase of the latter.
+    """
+    .. note::
+        Detector type class representing a photodiode, light coupling is
+        thus independant of the phase of the latter.
 
     Parameters
     ----------
@@ -68,7 +70,8 @@ class Photodiode(BaseDetector, MeshProperty):
 
     def FarField(self, Num=251, Structured=False):
         """
-        Compute the FarField in a structured or unstructured Mesh.
+        .. note::
+            Compute the FarField in a structured or unstructured Mesh.
 
         Parameters
         ----------
@@ -102,8 +105,10 @@ class Photodiode(BaseDetector, MeshProperty):
 
 
 class IntegratingSphere(Photodiode):
-    """Detector type class representing a photodiode, light coupling is
-    thus independant of the phase of the latter.
+    """
+    .. note::
+        Detector type class representing a photodiode, light coupling is
+        thus independant of the phase of the latter.
 
     Parameters
     ----------
@@ -159,8 +164,10 @@ class IntegratingSphere(Photodiode):
 
 
 class LPmode(BaseDetector, MeshProperty):
-    """Detector type class representing a fiber LP mode, light coupling is
-    thus dependant of the phase of the latter.
+    """
+    .. note::
+        Detector type class representing a fiber LP mode, light coupling is
+        thus dependant of the phase of the latter.
 
     Parameters
     ----------
@@ -222,9 +229,10 @@ class LPmode(BaseDetector, MeshProperty):
 
     def FarField(self, Num=251, Structured=False, Rotation=0):
         """
-        Compute the FarField in a structured or unstructured Mesh.
-        The unstructured far field is computed using linear interpolation
-        on a structured mesh.
+        .. note::
+            Compute the FarField in a structured or unstructured Mesh.
+            The unstructured far field is computed using linear interpolation
+            on a structured mesh.
 
         Parameters
         ----------
@@ -242,7 +250,7 @@ class LPmode(BaseDetector, MeshProperty):
         """
 
         filename = f'FLP{self.ModeNumber[0]}{self.ModeNumber[1]}.npy'
-        
+
         fileDir = os.path.join(LPModePath, filename)
 
         if not os.path.exists(fileDir):
@@ -295,7 +303,9 @@ class LPmode(BaseDetector, MeshProperty):
 
 
 class _Photodiode(BaseDetector, MeshProperty):
-    """Detector class for develop use only. Do not use!
+    """
+    .. note::
+        Detector class for develop use only. Do not use!
 
     """
 
@@ -325,7 +335,8 @@ class _Photodiode(BaseDetector, MeshProperty):
 
     def FarField(self, Num=251, Structured=False):
         """
-        Compute the FarField in a structured or unstructured Mesh.
+        .. note::
+            Compute the FarField in a structured or unstructured Mesh.
 
         Parameters
         ----------

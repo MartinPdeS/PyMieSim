@@ -36,8 +36,9 @@ class BaseSource(object):
 
 class MeshProperty(object):
     """
-    Base class for :class:`Detector` class used to define the properties
-    of the angular mesh for Far-Field computations.
+    .. note::
+        Base class for :class:`Detector` class used to define the properties
+        of the angular mesh for Far-Field computations.
 
     """
 
@@ -81,21 +82,23 @@ class MeshProperty(object):
 
 class BaseDetector(object):
     """
-    Base class for :class:`Detector` class used to define the properties
-    of the angular mesh for Far-Field computations.
+    .. note::
+        Base class for :class:`Detector` class used to define the properties
+        of the angular mesh for Far-Field computations.
 
     """
 
     def _Coupling(self, Scatterer):
         """
-        Return the value of the scattererd light coupling as computed as:
+        .. note::
+            Return the value of the scattererd light coupling as computed as:
 
-        .. math::
-            |\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2
+            .. math::
+                |\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2
 
-        | Where:
-        |   :math:`\Phi_{det}` is the capturing field of the detector and
-        |   :math:`\Psi_{scat}` is the scattered field.
+            | Where:
+            |   :math:`\Phi_{det}` is the capturing field of the detector and
+            |   :math:`\Psi_{scat}` is the scattered field.
 
         Parameters
         ----------
@@ -114,7 +117,8 @@ class BaseDetector(object):
 
     def Coupling(self, Scatterer):
         """
-        Return coupling power which is detected.
+        .. note::
+            Return coupling power which is detected.
 
         Parameters
         ----------
@@ -134,16 +138,18 @@ class BaseDetector(object):
 
     def Footprint(self, Scatterer, Num = 200):
         """
-        Return the footprint of the scattererd light coupling with the
-        detector as computed as:
+        .. note::
+            Return the footprint of the scattererd light coupling with the
+            detector as computed as:
 
-        .. math::
-            \\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
-                   \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2
+            .. math::
+                \\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\
+                       \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}
+                       (\\delta_x, \\delta_y) \\big|^2
 
-        | Where:
-        |   :math:`\\Phi_{det}` is the capturing field of the detector and
-        |   :math:`\\Psi_{scat}` is the scattered field.
+            | Where:
+            |   :math:`\\Phi_{det}` is the capturing field of the detector and
+            |   :math:`\\Psi_{scat}` is the scattered field.
 
         Parameters
         ----------
@@ -166,9 +172,10 @@ class BaseDetector(object):
                       GammaOffset = 0,
                       Structured  = True):
         """
-        Method that return an angular mesh (:math:`\\theta`, :math:`\\phi`)
-        which is either structured or not. If not the pattern follow a
-        Fibonacci mesh.
+        .. note::
+            Method that return an angular mesh (:math:`\\theta`, :math:`\\phi`)
+            which is either structured or not. If not the pattern follow a
+            Fibonacci mesh.
 
         """
 
@@ -187,8 +194,10 @@ class BaseDetector(object):
 
 
     def Plot(self):
-        """Method that plot the real part of the scattered field
-        (:math:`E_{\\theta}` and :math:`E_{\\phi}`).
+        """
+        .. note::
+            Method that plot the real part of the scattered field
+            (:math:`E_{\\theta}` and :math:`E_{\\phi}`).
 
         """
 
@@ -205,10 +214,12 @@ class ScattererProperties(object):
     @property
     def Qext(self):
         """
-        Extinction efficiency.
+        .. note::
+            Extinction efficiency.
 
-        .. math::
-            Q_{ext}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}  (2n+1) / \\text{real} \{ a_n+b_n \}
+            .. math::
+                Q_{ext}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}
+                (2n+1) / \\text{real} \{ a_n+b_n \}
 
         """
         if self._Qext:
@@ -221,10 +232,12 @@ class ScattererProperties(object):
     @property
     def Qsca(self):
         """
-        Scattering efficiency.
+        .. note::
+            Scattering efficiency.
 
-        .. math::
-            Q_{sca}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}} (2n+1)(|a_n|^2+|b_n|^2)
+            .. math::
+                Q_{sca}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}
+                (2n+1)(|a_n|^2+|b_n|^2)
 
         """
         if self._Qsca:
@@ -237,10 +250,11 @@ class ScattererProperties(object):
     @property
     def Qabs(self):
         """
-        Absorption efficiency.
+        .. note::
+            Absorption efficiency.
 
-        .. math::
-            Q_{abs} = Q_{ext}-Q_{sca}
+            .. math::
+                Q_{abs} = Q_{ext}-Q_{sca}
 
         """
         if self._Qabs:
@@ -253,10 +267,12 @@ class ScattererProperties(object):
     @property
     def Qback(self):
         """
-        Backscattering efficiency.
+        .. note::
+            Backscattering efficiency.
 
-        .. math::
-            Q_{back} = \\frac{1}{x^2} \\Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \\Big|^2
+            .. math::
+                Q_{back} = \\frac{1}{x^2} \\Big| \sum\limits_{n=1}^{n_{max}}
+                (2n+1)(-1)^n (a_n - b_n) \\Big|^2
 
         """
         if self._Qback:
@@ -269,10 +285,11 @@ class ScattererProperties(object):
     @property
     def Qratio(self):
         """
-        Ratio of backscattering over total scattering.
+        .. note::
+            Ratio of backscattering over total scattering.
 
-        .. math::
-            Q_{ratio} = \\frac{Q_{back}}{Q_{sca}}
+            .. math::
+                Q_{ratio} = \\frac{Q_{back}}{Q_{sca}}
 
         """
         if self._Qratio:
@@ -284,13 +301,15 @@ class ScattererProperties(object):
     @property
     def g(self):
         """
-        Ratio of backscattering over total scattering.
+        .. note::
+            Ratio of backscattering over total scattering.
 
-        .. math::
-            g = \\frac{4}{Q_{sca} x^2}
-            \\left[ \\sum\\limits_{n=1}^{n_{max}} \\frac{n(n+2)}{n+1} \\text{Re} \\left
-            \{a_n a_{n+1}^* + b_n b_{n+1}^*\\right\} + \\sum\\limits_{n=1}^{n_{max}}
-            \\frac{2n+1}{n(n+1)} \\text{Re} \\left\{ a_n b_n^* \\right\} \\right]}
+            .. math::
+                g = \\frac{4}{Q_{sca} x^2}
+                \\Big[ \\sum\\limits_{n=1}^{n_{max}} \\frac{n(n+2)}{n+1} \\text{Re}
+                \\left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\\right\} +
+                \\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)} \\text{Re}
+                \\left\{ a_n b_n^* \\right\} \\Big]
 
         """
         if self._g:
@@ -303,10 +322,11 @@ class ScattererProperties(object):
     @property
     def Qpr(self):
         """
-        Ratio of backscattering over total scattering.
+        .. note::
+            Ratio of backscattering over total scattering.
 
-        .. math::
-            Q_{pr} = Q_{ext} - g * Q_{sca}
+            .. math::
+                Q_{pr} = Q_{ext} - g * Q_{sca}
 
         """
         if self._Qpr:
@@ -318,8 +338,10 @@ class ScattererProperties(object):
 
     @property
     def Efficiencies(self):
-        """Methode compute all properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},
-        Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
+        """
+        .. note::
+            Methode compute all properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},
+            Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
 
         """
         from PyMieSim.Representations import ScatProperties
@@ -332,9 +354,11 @@ class ScattererProperties(object):
 
 
 class BaseScatterer(object):
-    """Base class for :class:`Sphere`.
-    This class containes all the methodes that output something interesting for
-    the user.
+    """
+    .. note::
+        Base class for :class:`Sphere`.
+        This class containes all the methodes that output something interesting for
+        the user.
 
     Parameters
     ----------
@@ -367,8 +391,10 @@ class BaseScatterer(object):
 
 
     def GetEfficiencies(self):
-        """Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},
-        Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
+        """
+        .. note::
+            Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},
+            Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
 
         """
 
@@ -383,13 +409,14 @@ class BaseScatterer(object):
 
     def S1S2(self, Num=200):
         """
-        Method compute :math:`S_1(\\phi)` and :math:`S_2(\\phi)`.
-        For spherical Scatterer such as here S1 and S2 are computed as follow:
+        .. note::
+            Method compute :math:`S_1(\\phi)` and :math:`S_2(\\phi)`.
+            For spherical Scatterer such as here S1 and S2 are computed as follow:
 
-        .. math::
-            S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)
+            .. math::
+                S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)
 
-            S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)
+                S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)
 
         Parameters
         ----------
@@ -408,17 +435,18 @@ class BaseScatterer(object):
 
     def Stokes(self, Num=200):
         """
-        Method compute and return the Stokes parameters: I, Q, U, V.
-        Those parameters are defined as:
+        .. note::
+            Method compute and return the Stokes parameters: I, Q, U, V.
+            Those parameters are defined as:
 
-        .. math:
-            I &= \\big| E_x \big|^2 + \\big| E_y \\big|^2
+            .. math:
+                I &= \\big| E_x \big|^2 + \\big| E_y \\big|^2
 
-            Q &= \\big| E_x \big|^2 - \\big| E_y \\big|^2
+                Q &= \\big| E_x \big|^2 - \\big| E_y \\big|^2
 
-            U &= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}
+                U &= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}
 
-            V &= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}
+                V &= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}
 
         Parameters
         ----------
@@ -437,17 +465,19 @@ class BaseScatterer(object):
 
 
     def FarField(self, Num: int = 200):
-        """Method Compute scattering Far Field.
+        """
+        .. note::
+            Method Compute scattering Far Field.
 
-        .. math::
-            \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                             E_{\\perp}(\\phi,\\theta)^2
+            .. math::
+                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
+                                 E_{\\perp}(\\phi,\\theta)^2
 
 
-        The Fields are up to a constant phase value:
+            The Fields are up to a constant phase value:
 
-        .. math::
-            \\exp{\\big(-i k r \\big)}
+            .. math::
+                \\exp{\\big(-i k r \\big)}
 
         Parameters
         ----------
@@ -465,17 +495,19 @@ class BaseScatterer(object):
 
 
     def uFarField(self, Phi, Theta, R):
-        """Method Compute scattering Far Field for unstructured coordinate.
+        """
+        .. note::
+            Method Compute scattering Far Field for unstructured coordinate.
 
-        .. math::
-            \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                             E_{\\perp}(\\phi,\\theta)^2
+            .. math::
+                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
+                                 E_{\\perp}(\\phi,\\theta)^2
 
 
-        The Fields are up to a constant phase value.
+            The Fields are up to a constant phase value.
 
-        .. math::
-            \\exp{\\big(-i k r \\big)}
+            .. math::
+                \\exp{\\big(-i k r \\big)}
 
 
         Parameters
@@ -494,17 +526,19 @@ class BaseScatterer(object):
 
 
     def sFarField(self, Phi, Theta, R):
-        """Method Compute scattering Far Field for structured coordinate.
+        """
+        .. note::
+            Method Compute scattering Far Field for structured coordinate.
 
-        .. math::
-            \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                             E_{\\perp}(\\phi,\\theta)^2
+            .. math::
+                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
+                                 E_{\\perp}(\\phi,\\theta)^2
 
 
-        The Fields are up to a constant phase value.
+            The Fields are up to a constant phase value.
 
-        .. math::
-            \\exp{\\big(-i k r \\big)}
+            .. math::
+                \\exp{\\big(-i k r \\big)}
 
 
         Parameters
@@ -523,16 +557,19 @@ class BaseScatterer(object):
 
 
     def uS1S2(self, Phi, Theta):
-        """Method Compute scattering Far Field for unstructured coordinate.
+        """
+        .. note::
+            Method Compute scattering Far Field for unstructured coordinate.
 
-        .. math::
-            \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                             E_{\\perp}(\\phi,\\theta)^2
 
-        The Fields are up to a constant phase value.
+            .. math::
+                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
+                                 E_{\\perp}(\\phi,\\theta)^2
 
-        .. math::
-            \\exp{\\big(-i k r \\big)}
+            The Fields are up to a constant phase value.
+
+            .. math::
+                \\exp{\\big(-i k r \\big)}
 
 
         Parameters
@@ -552,15 +589,17 @@ class BaseScatterer(object):
 
 
     def sS1S2(self, Phi, Theta):
-        """Method Compute scattering Far Field for structured coordinate.
+        """
+        .. note::
+            Method Compute scattering Far Field for structured coordinate.
 
-        .. math::
-            \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                             E_{\\perp}(\\phi,\\theta)^2
+            .. math::
+                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
+                                 E_{\\perp}(\\phi,\\theta)^2
 
-        The Fields are up to a constant phase value.
+            The Fields are up to a constant phase value.
 
-        :math:`\\exp{\big(-i k r \big)}`
+            :math:`\\exp{\big(-i k r \big)}`
 
 
         Parameters
@@ -579,10 +618,12 @@ class BaseScatterer(object):
 
 
     def SPF(self, Num=100):
-        """Scattering phase function.
+        """
+        .. note::
+            Scattering phase function.
 
-        .. math::
-            \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2
+            .. math::
+                \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2
 
         Parameters
         ----------
@@ -601,10 +642,11 @@ class BaseScatterer(object):
 
     def PoyntingVector(self, Mesh):
         """
-        Method return the Poynting vector norm defined as:
+        .. note::
+            Method return the Poynting vector norm defined as:
 
-        .. math::
-            \\vec{S} = \\epsilon c^2 \\vec{E} \\times \\vec{B}
+            .. math::
+                \\vec{S} = \\epsilon c^2 \\vec{E} \\times \\vec{B}
 
         Parameters
         ----------
@@ -631,24 +673,25 @@ class BaseScatterer(object):
 
     def EnergyFlow(self, Mesh):
         """
-        Method return energy flow defined as:
+        .. note::
+            Method return energy flow defined as:
 
-        .. math::
+            .. math::
 
-            W_a &= \\sigma_{sca} * I_{inc}
+                W_a &= \\sigma_{sca} * I_{inc}
 
-            P &= \\int_{A} I dA
+                P &= \\int_{A} I dA
 
-            I &= \\frac{c n \\epsilon_0}{2} |E|^2
+                I &= \\frac{c n \\epsilon_0}{2} |E|^2
 
-        | With:
-        |     I : Energy density
-        |     n  : Refractive index of the medium
-        |     :math:`\\epsilon_0` : Vaccum permitivity
-        |     E  : Electric field
-        |    :math:`\\sigma_{sca}`: Scattering cross section.
+            | With:
+            |     I : Energy density
+            |     n  : Refractive index of the medium
+            |     :math:`\\epsilon_0` : Vaccum permitivity
+            |     E  : Electric field
+            |    :math:`\\sigma_{sca}`: Scattering cross section.
 
-        More info on wikipedia link (see ref[6]).
+            More info on wikipedia link (see ref[6]).
 
 
         Parameters
@@ -676,7 +719,8 @@ class BaseScatterer(object):
 
     def CrossSection(self, Mesh):
         """
-        Method return scattering cross section, see :func:`EnergyFlow`
+        .. note::
+            Method return scattering cross section, see :func:`EnergyFlow`
 
         Parameters
         ----------
@@ -749,7 +793,8 @@ class BaseMaterial(object):
         self.Data
 
         if any(wavelength < self.Boundary[0]) or any(wavelength > self.Boundary[1]):
-            raise ValueError(f'Wavelength {wavelength} evaluated outside of defined range {self.Boundary}')
+            raise ValueError(f'Wavelength {wavelength} evaluated \
+                               outside of defined range {self.Boundary}')
 
         nList = np.interp( wavelength, self.Data['wl0'], self.Data['n'] )
 

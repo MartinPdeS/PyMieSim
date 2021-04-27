@@ -6,7 +6,7 @@ Examples
 Scatterer: Index
 -------------------
 
-.. literalinclude:: ../../tests/Examples/Index.py
+.. literalinclude:: ../../Examples/Index.py
     :language: python
     :linenos:
 
@@ -14,7 +14,7 @@ Scatterer: Index
 Scatterer: Material
 -------------------
 
-.. literalinclude:: ../../tests/Examples/Material.py
+.. literalinclude:: ../../Examples/Material.py
     :language: python
     :linenos:
 
@@ -26,7 +26,7 @@ Scatterer: S1-S2
 
 
 
-.. literalinclude:: ../../tests/Examples/S1S2.py
+.. literalinclude:: ../../Examples/S1S2.py
     :language: python
     :linenos:
 
@@ -45,7 +45,7 @@ Scatterer: S1-S2
 Scatterer: Stokes
 -----------------
 
-.. literalinclude:: ../../tests/Examples/Stokes.py
+.. literalinclude:: ../../Examples/Stokes.py
     :language: python
     :linenos:
 
@@ -59,7 +59,7 @@ Scatterer: Stokes
 Scatterer: full far-field
 -------------------------
 
-.. literalinclude:: ../../tests/Examples/FarField.py
+.. literalinclude:: ../../Examples/FarField.py
     :language: python
     :linenos:
 
@@ -73,7 +73,7 @@ Scatterer: full far-field
 Scatterer: phase function
 -------------------------
 
-.. literalinclude:: ../../tests/Examples/SPF.py
+.. literalinclude:: ../../Examples/SPF.py
     :language: python
     :linenos:
 
@@ -87,7 +87,7 @@ Scatterer: phase function
 Detector: Photodiode
 --------------------
 
-.. literalinclude:: ../../tests/Examples/Photodiode.py
+.. literalinclude:: ../../Examples/Photodiode.py
     :language: python
     :linenos:
 
@@ -102,7 +102,7 @@ Detector: Photodiode
 Detector: LPMode
 ----------------
 
-.. literalinclude:: ../../tests/Examples/LPMode.py
+.. literalinclude:: ../../Examples/LPMode.py
     :language: python
     :linenos:
 
@@ -118,7 +118,7 @@ Detector: LPMode
 Coupling: Scatterer-Photodiode
 ------------------------------
 
-.. literalinclude:: ../../tests/Examples/Scatterer-Photodiode.py
+.. literalinclude:: ../../Examples/Scatterer-Photodiode.py
     :language: python
     :linenos:
 
@@ -133,7 +133,7 @@ Output: (6.57e+01 nWatt)
 ScattererSet: Qscattering
 --------------------------
 
-.. literalinclude:: ../../tests/Examples/Qscattering.py
+.. literalinclude:: ../../Examples/Qscattering.py
     :language: python
     :linenos:
 
@@ -149,7 +149,7 @@ ScattererSet: Qscattering
 Experiment: Qsca-vs-diameter
 ------------------------------
 
-.. literalinclude:: ../../tests/Examples/Qsca-vs-diameter.py
+.. literalinclude:: ../../Examples/Qsca-vs-diameter.py
     :language: python
     :linenos:
 
@@ -164,7 +164,7 @@ Experiment: Qsca-vs-diameter
 Experiment: Mie-resonances
 --------------------------
 
-.. literalinclude:: ../../tests/Examples/Mie-resonances.py
+.. literalinclude:: ../../Examples/Mie-resonances.py
     :language: python
     :linenos:
 
@@ -180,7 +180,7 @@ Experiment: Mie-resonances
 Experiment: Coupling-vs-diameter
 ---------------------------------
 
-.. literalinclude:: ../../tests/Examples/Coupling-vs-diameter.py
+.. literalinclude:: ../../Examples/Coupling-vs-diameter.py
     :language: python
     :linenos:
 
@@ -193,7 +193,7 @@ Experiment: Coupling-vs-diameter
 Experiment: Coupling-vs-wavelength
 -----------------------------------
 
-.. literalinclude:: ../../tests/Examples/Coupling-vs-wavelength.py
+.. literalinclude:: ../../Examples/Coupling-vs-wavelength.py
     :language: python
     :linenos:
 
@@ -205,7 +205,7 @@ Experiment: Coupling-vs-wavelength
 Optimization: Opt-1-parameter
 ------------------------------
 
-.. literalinclude:: ../../tests/Examples/Opt-1-parameter.py
+.. literalinclude:: ../../Examples/Opt-1-parameter.py
     :language: python
     :linenos:
 
@@ -255,6 +255,6 @@ Optimization: Opt-1-parameter
 Optimization: Opt-2-parameter
 ------------------------------
 
-.. literalinclude:: ../../tests/Examples/Opt-2-parameter.py
+.. literalinclude:: ../../Examples/Opt-2-parameter.py
     :language: python
     :linenos:

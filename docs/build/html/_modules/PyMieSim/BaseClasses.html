@@ -1,20 +1,21 @@
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>PyMieSim.BaseClasses &#8212; PyMieSim 0.1.11 documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css" />
-    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
@@ -36,11 +37,29 @@
         <li><a href="../../References.html">References</a>|&nbsp;</li>
         <li><a href="../../search.html">search</a>|&nbsp;</li>
 
-          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyMieSim.BaseClasses</a></li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
       </ul>
     </div>
-  
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/Logo.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
 
     <div class="document">
       <div class="documentwrapper">
@@ -52,19 +71,17 @@
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>  <span class="k">as</span> <span class="nn">np</span>
-
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="n">MaterialPATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="s1">&#39;_Material/data&#39;</span> <span class="p">)</span>
 
+<span class="kn">from</span> <span class="nn">PyMieSim.Directories</span>     <span class="kn">import</span> <span class="n">NPZPath</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">ScalarFarField</span><span class="p">,</span> <span class="n">Footprint</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Physics</span> <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span> <span class="kn">import</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">NearestIndex</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.units</span> <span class="kn">import</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Area</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span> <span class="kn">import</span> <span class="n">FibonacciMesh</span>
-<span class="kn">from</span> <span class="nn">PyMieSim._Coupling</span> <span class="kn">import</span> <span class="n">Coupling</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Physics</span>         <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span>           <span class="kn">import</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">NearestIndex</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.units</span>           <span class="kn">import</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Area</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span>            <span class="kn">import</span> <span class="n">FibonacciMesh</span>
+<span class="kn">from</span> <span class="nn">PyMieSim._Coupling</span>       <span class="kn">import</span> <span class="n">Coupling</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Constants</span>       <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">PyMieSim.Plots</span> <span class="k">as</span> <span class="nn">plot</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.Constants</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">EPS</span> <span class="o">=</span> <span class="mf">1e-6</span>
 
@@ -88,8 +105,9 @@
 
 <span class="k">class</span> <span class="nc">MeshProperty</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for :class:`Detector` class used to define the properties</span>
-<span class="sd">    of the angular mesh for Far-Field computations.</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Base class for :class:`Detector` class used to define the properties</span>
+<span class="sd">        of the angular mesh for Far-Field computations.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -133,21 +151,23 @@
 
 <span class="k">class</span> <span class="nc">BaseDetector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Base class for :class:`Detector` class used to define the properties</span>
-<span class="sd">    of the angular mesh for Far-Field computations.</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Base class for :class:`Detector` class used to define the properties</span>
+<span class="sd">        of the angular mesh for Far-Field computations.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_Coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the value of the scattererd light coupling as computed as:</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Return the value of the scattererd light coupling as computed as:</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            |\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                |\\iint_{\\Omega}  \Phi_{det} \,\, \\Psi_{scat}^* \,  d \\Omega|^2</span>
 
-<span class="sd">        | Where:</span>
-<span class="sd">        |   :math:`\Phi_{det}` is the capturing field of the detector and</span>
-<span class="sd">        |   :math:`\Psi_{scat}` is the scattered field.</span>
+<span class="sd">            | Where:</span>
+<span class="sd">            |   :math:`\Phi_{det}` is the capturing field of the detector and</span>
+<span class="sd">            |   :math:`\Psi_{scat}` is the scattered field.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -166,7 +186,8 @@
 
     <span class="k">def</span> <span class="nf">Coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return coupling power which is detected.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Return coupling power which is detected.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -186,16 +207,18 @@
 
     <span class="k">def</span> <span class="nf">Footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the footprint of the scattererd light coupling with the</span>
-<span class="sd">        detector as computed as:</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Return the footprint of the scattererd light coupling with the</span>
+<span class="sd">            detector as computed as:</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\</span>
-<span class="sd">                   \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}(\\delta_x, \\delta_y) \\big|^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi } (\\xi, \\nu),\</span>
+<span class="sd">                       \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\}</span>
+<span class="sd">                       (\\delta_x, \\delta_y) \\big|^2</span>
 
-<span class="sd">        | Where:</span>
-<span class="sd">        |   :math:`\\Phi_{det}` is the capturing field of the detector and</span>
-<span class="sd">        |   :math:`\\Psi_{scat}` is the scattered field.</span>
+<span class="sd">            | Where:</span>
+<span class="sd">            |   :math:`\\Phi_{det}` is the capturing field of the detector and</span>
+<span class="sd">            |   :math:`\\Psi_{scat}` is the scattered field.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -218,9 +241,10 @@
                       <span class="n">GammaOffset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                       <span class="n">Structured</span>  <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method that return an angular mesh (:math:`\\theta`, :math:`\\phi`)</span>
-<span class="sd">        which is either structured or not. If not the pattern follow a</span>
-<span class="sd">        Fibonacci mesh.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method that return an angular mesh (:math:`\\theta`, :math:`\\phi`)</span>
+<span class="sd">            which is either structured or not. If not the pattern follow a</span>
+<span class="sd">            Fibonacci mesh.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -239,8 +263,10 @@
 
 
     <span class="k">def</span> <span class="nf">Plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method that plot the real part of the scattered field</span>
-<span class="sd">        (:math:`E_{\\theta}` and :math:`E_{\\phi}`).</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method that plot the real part of the scattered field</span>
+<span class="sd">            (:math:`E_{\\theta}` and :math:`E_{\\phi}`).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -251,16 +277,18 @@
                           <span class="n">Testing</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Testing</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">EfficienciesProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ScattererProperties</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Qext</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Extinction efficiency.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Extinction efficiency.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            Q_{ext}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}  (2n+1) / \\text{real} \{ a_n+b_n \}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                Q_{ext}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}</span>
+<span class="sd">                (2n+1) / \\text{real} \{ a_n+b_n \}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">:</span>
@@ -273,10 +301,12 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Qsca</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Scattering efficiency.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Scattering efficiency.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            Q_{sca}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}} (2n+1)(|a_n|^2+|b_n|^2)</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                Q_{sca}=\\frac{2}{x^2} \sum\limits_{n=1}^{n_{max}}</span>
+<span class="sd">                (2n+1)(|a_n|^2+|b_n|^2)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">:</span>
@@ -289,10 +319,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Qabs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Absorption efficiency.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Absorption efficiency.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            Q_{abs} = Q_{ext}-Q_{sca}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                Q_{abs} = Q_{ext}-Q_{sca}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span><span class="p">:</span>
@@ -305,10 +336,12 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Qback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Backscattering efficiency.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Backscattering efficiency.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            Q_{back} = \\frac{1}{x^2} \\Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \\Big|^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                Q_{back} = \\frac{1}{x^2} \\Big| \sum\limits_{n=1}^{n_{max}}</span>
+<span class="sd">                (2n+1)(-1)^n (a_n - b_n) \\Big|^2</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span><span class="p">:</span>
@@ -321,10 +354,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Qratio</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Ratio of backscattering over total scattering.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Ratio of backscattering over total scattering.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            Q_{ratio} = \\frac{Q_{back}}{Q_{sca}}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                Q_{ratio} = \\frac{Q_{back}}{Q_{sca}}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span><span class="p">:</span>
@@ -336,13 +370,15 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Ratio of backscattering over total scattering.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Ratio of backscattering over total scattering.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            g = \\frac{4}{Q_{sca} x^2}</span>
-<span class="sd">            \\left[ \\sum\\limits_{n=1}^{n_{max}} \\frac{n(n+2)}{n+1} \\text{Re} \\left</span>
-<span class="sd">            \{a_n a_{n+1}^* + b_n b_{n+1}^*\\right\} + \\sum\\limits_{n=1}^{n_{max}}</span>
-<span class="sd">            \\frac{2n+1}{n(n+1)} \\text{Re} \\left\{ a_n b_n^* \\right\} \\right]}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                g = \\frac{4}{Q_{sca} x^2}</span>
+<span class="sd">                \\Big[ \\sum\\limits_{n=1}^{n_{max}} \\frac{n(n+2)}{n+1} \\text{Re}</span>
+<span class="sd">                \\left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\\right\} +</span>
+<span class="sd">                \\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)} \\text{Re}</span>
+<span class="sd">                \\left\{ a_n b_n^* \\right\} \\Big]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">:</span>
@@ -355,10 +391,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Qpr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Ratio of backscattering over total scattering.</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Ratio of backscattering over total scattering.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            Q_{pr} = Q_{ext} - g * Q_{sca}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                Q_{pr} = Q_{ext} - g * Q_{sca}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span><span class="p">:</span>
@@ -370,23 +407,27 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">Efficiencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
-<span class="sd">        Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Methode compute all properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
+<span class="sd">            Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">Efficiences</span>
+        <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">ScatProperties</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span> <span class="o">=</span> <span class="n">Efficiences</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span> <span class="o">=</span> <span class="n">ScatProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span>
 
 
 <span class="k">class</span> <span class="nc">BaseScatterer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for :class:`Sphere`.</span>
-<span class="sd">    This class containes all the methodes that output something interesting for</span>
-<span class="sd">    the user.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. note::</span>
+<span class="sd">        Base class for :class:`Sphere`.</span>
+<span class="sd">        This class containes all the methodes that output something interesting for</span>
+<span class="sd">        the user.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -419,8 +460,10 @@
 
 
     <span class="k">def</span> <span class="nf">GetEfficiencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
-<span class="sd">        Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
+<span class="sd">            Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -435,13 +478,14 @@
 
     <span class="k">def</span> <span class="nf">S1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method compute :math:`S_1(\\phi)` and :math:`S_2(\\phi)`.</span>
-<span class="sd">        For spherical Scatterer such as here S1 and S2 are computed as follow:</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method compute :math:`S_1(\\phi)` and :math:`S_2(\\phi)`.</span>
+<span class="sd">            For spherical Scatterer such as here S1 and S2 are computed as follow:</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)</span>
 
-<span class="sd">            S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)</span>
+<span class="sd">                S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -460,17 +504,18 @@
 
     <span class="k">def</span> <span class="nf">Stokes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method compute and return the Stokes parameters: I, Q, U, V.</span>
-<span class="sd">        Those parameters are defined as:</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method compute and return the Stokes parameters: I, Q, U, V.</span>
+<span class="sd">            Those parameters are defined as:</span>
 
-<span class="sd">        .. math:</span>
-<span class="sd">            I &amp;= \\big| E_x \big|^2 + \\big| E_y \\big|^2</span>
+<span class="sd">            .. math:</span>
+<span class="sd">                I &amp;= \\big| E_x \big|^2 + \\big| E_y \\big|^2</span>
 
-<span class="sd">            Q &amp;= \\big| E_x \big|^2 - \\big| E_y \\big|^2</span>
+<span class="sd">                Q &amp;= \\big| E_x \big|^2 - \\big| E_y \\big|^2</span>
 
-<span class="sd">            U &amp;= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}</span>
+<span class="sd">                U &amp;= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}</span>
 
-<span class="sd">            V &amp;= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}</span>
+<span class="sd">                V &amp;= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -489,17 +534,19 @@
 
 
     <span class="k">def</span> <span class="nf">FarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method Compute scattering Far Field.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                             E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
+<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
 
 
-<span class="sd">        The Fields are up to a constant phase value:</span>
+<span class="sd">            The Fields are up to a constant phase value:</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\exp{\\big(-i k r \\big)}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\exp{\\big(-i k r \\big)}</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -517,17 +564,19 @@
 
 
     <span class="k">def</span> <span class="nf">uFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for unstructured coordinate.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method Compute scattering Far Field for unstructured coordinate.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                             E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
+<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
 
 
-<span class="sd">        The Fields are up to a constant phase value.</span>
+<span class="sd">            The Fields are up to a constant phase value.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\exp{\\big(-i k r \\big)}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\exp{\\big(-i k r \\big)}</span>
 
 
 <span class="sd">        Parameters</span>
@@ -546,17 +595,19 @@
 
 
     <span class="k">def</span> <span class="nf">sFarField</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">,</span> <span class="n">R</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for structured coordinate.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method Compute scattering Far Field for structured coordinate.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                             E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
+<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
 
 
-<span class="sd">        The Fields are up to a constant phase value.</span>
+<span class="sd">            The Fields are up to a constant phase value.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\exp{\\big(-i k r \\big)}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\exp{\\big(-i k r \\big)}</span>
 
 
 <span class="sd">        Parameters</span>
@@ -575,16 +626,19 @@
 
 
     <span class="k">def</span> <span class="nf">uS1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for unstructured coordinate.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method Compute scattering Far Field for unstructured coordinate.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                             E_{\\perp}(\\phi,\\theta)^2</span>
 
-<span class="sd">        The Fields are up to a constant phase value.</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
+<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\exp{\\big(-i k r \\big)}</span>
+<span class="sd">            The Fields are up to a constant phase value.</span>
+
+<span class="sd">            .. math::</span>
+<span class="sd">                \\exp{\\big(-i k r \\big)}</span>
 
 
 <span class="sd">        Parameters</span>
@@ -604,15 +658,17 @@
 
 
     <span class="k">def</span> <span class="nf">sS1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method Compute scattering Far Field for structured coordinate.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method Compute scattering Far Field for structured coordinate.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                             E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
+<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
 
-<span class="sd">        The Fields are up to a constant phase value.</span>
+<span class="sd">            The Fields are up to a constant phase value.</span>
 
-<span class="sd">        :math:`\\exp{\big(-i k r \big)}`</span>
+<span class="sd">            :math:`\\exp{\big(-i k r \big)}`</span>
 
 
 <span class="sd">        Parameters</span>
@@ -631,10 +687,12 @@
 
 
     <span class="k">def</span> <span class="nf">SPF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Scattering phase function.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Scattering phase function.</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -653,10 +711,11 @@
 
     <span class="k">def</span> <span class="nf">PoyntingVector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method return the Poynting vector norm defined as:</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method return the Poynting vector norm defined as:</span>
 
-<span class="sd">        .. math::</span>
-<span class="sd">            \\vec{S} = \\epsilon c^2 \\vec{E} \\times \\vec{B}</span>
+<span class="sd">            .. math::</span>
+<span class="sd">                \\vec{S} = \\epsilon c^2 \\vec{E} \\times \\vec{B}</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -683,24 +742,25 @@
 
     <span class="k">def</span> <span class="nf">EnergyFlow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method return energy flow defined as:</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method return energy flow defined as:</span>
 
-<span class="sd">        .. math::</span>
+<span class="sd">            .. math::</span>
 
-<span class="sd">            W_a &amp;= \\sigma_{sca} * I_{inc}</span>
+<span class="sd">                W_a &amp;= \\sigma_{sca} * I_{inc}</span>
 
-<span class="sd">            P &amp;= \\int_{A} I dA</span>
+<span class="sd">                P &amp;= \\int_{A} I dA</span>
 
-<span class="sd">            I &amp;= \\frac{c n \\epsilon_0}{2} |E|^2</span>
+<span class="sd">                I &amp;= \\frac{c n \\epsilon_0}{2} |E|^2</span>
 
-<span class="sd">        | With:</span>
-<span class="sd">        |     I : Energy density</span>
-<span class="sd">        |     n  : Refractive index of the medium</span>
-<span class="sd">        |     :math:`\\epsilon_0` : Vaccum permitivity</span>
-<span class="sd">        |     E  : Electric field</span>
-<span class="sd">        |    :math:`\\sigma_{sca}`: Scattering cross section.</span>
+<span class="sd">            | With:</span>
+<span class="sd">            |     I : Energy density</span>
+<span class="sd">            |     n  : Refractive index of the medium</span>
+<span class="sd">            |     :math:`\\epsilon_0` : Vaccum permitivity</span>
+<span class="sd">            |     E  : Electric field</span>
+<span class="sd">            |    :math:`\\sigma_{sca}`: Scattering cross section.</span>
 
-<span class="sd">        More info on wikipedia link (see ref[6]).</span>
+<span class="sd">            More info on wikipedia link (see ref[6]).</span>
 
 
 <span class="sd">        Parameters</span>
@@ -728,7 +788,8 @@
 
     <span class="k">def</span> <span class="nf">CrossSection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mesh</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Method return scattering cross section, see :func:`EnergyFlow`</span>
+<span class="sd">        .. note::</span>
+<span class="sd">            Method return scattering cross section, see :func:`EnergyFlow`</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -774,7 +835,7 @@
 <span class="k">class</span> <span class="nc">BaseMaterial</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">LoadLocal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">MaterialPATH</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LocalDir</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">NPZPath</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">LocalDir</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="s1">&#39;wl1&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span> <span class="o">=</span> <span class="p">(</span> <span class="nb">max</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl1&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
@@ -801,7 +862,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span>
 
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">wavelength</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">wavelength</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Wavelength </span><span class="si">{</span><span class="n">wavelength</span><span class="si">}</span><span class="s1"> evaluated outside of defined range </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Wavelength </span><span class="si">{</span><span class="n">wavelength</span><span class="si">}</span><span class="s1"> evaluated </span><span class="se">\</span>
+<span class="s1">                               outside of defined range </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="n">nList</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span> <span class="n">wavelength</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="p">)</span>
 
@@ -829,25 +891,7 @@
 <span class="c1"># -</span>
 </pre></div>
 
-            <div class="clearer"></div>
           </div>
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../../index.html">
-              <img class="logo" src="../../_static/Logo.png" alt="Logo"/>
-            </a></p>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" />
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -866,13 +910,12 @@
         <li><a href="../../References.html">References</a>|&nbsp;</li>
         <li><a href="../../search.html">search</a>|&nbsp;</li>
 
-          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">PyMieSim.BaseClasses</a></li> 
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.1.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.5.
     </div>
   </body>
 </html>
