@@ -1,0 +1,5 @@
+ignore:
+  - "PyMieSim/Special.py"  # Those files are only here for the doc-strings
+  - "PyMieSim/Config.py"
+  - "LMT/Python.py"
+  - "GLMT/Python.py"
