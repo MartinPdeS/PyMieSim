@@ -27,7 +27,7 @@ from PyMieSim.Config    import ( MetricList,
                                  DefaultConfigEff )
 
 
-OUTPUTTYPE = ['optimizer','numpy', 'pymiesim', 'dataframe']
+OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
 EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
 exList  = Union[int, float, list, np.ndarray, tuple]
 exfloat = Union[bool, int, float]
@@ -68,15 +68,8 @@ class ScatSet(object):
 
 
 
-
     def UpdateConfiguration(self, config):
         i = config['MaxOrder']
-
-        config['order']['diameter']     = i
-        config['label']['diameter']     = 'Diameter [m]'
-        config['format']['diameter']    = '.1e'
-        config['dimension']['diameter'] = self.Diameter
-        i += 1
 
         if self.Material:
             config['material'] = True
@@ -93,6 +86,12 @@ class ScatSet(object):
             config['format']['ri']          = '.2f'
             config['dimension']['ri']       = self.Index
             i += 1
+
+        config['order']['diameter']     = i
+        config['label']['diameter']     = 'Diameter [m]'
+        config['format']['diameter']    = '.1e'
+        config['dimension']['diameter'] = self.Diameter
+        i += 1
 
         config['MaxOrder'] = i
 
@@ -118,16 +117,22 @@ class ScatSet(object):
         self._Index = val
 
 
-    def Generator(self, wavelength=None):
+    def Generator(self, source=None):
         if self.Material:
             for material in self.Material:
                 for diameter in self.Diameter:
-                    yield material.Generator(wavelength), diameter
+                    yield Sphere(Diameter  = diameter,
+                                  Source    = source,
+                                  Index     = material.Index,
+                                  nMedium   = 1.)
 
         else:
             for diameter in self.Diameter:
                 for index in self.Index:
-                    yield index, diameter
+                    yield  Sphere(Diameter  = diameter,
+                                  Source    = source,
+                                  Index     = index,
+                                  nMedium   = 1.)
 
 
 class SourceSet(object):
@@ -148,6 +153,8 @@ class SourceSet(object):
         self.SourceType   = SourceType
 
         self.shape        = np.shape(self.Wavelength) + np.shape(self.Polarization)
+
+        self.Material     = None
 
 
     @property
@@ -173,16 +180,15 @@ class SourceSet(object):
 
     def Generator(self, MatGen=None):
         for wavelength in self.Wavelength:
-            if MatGen: next(MatGen)
+
+            if self.Material:
+                for material in self.Material: material.counter += 1
+
             for polarization in self.Polarization:
+
                 yield PlaneWave(Wavelength   = wavelength,
                                 Polarization = polarization,
                                 E0           = 1)
-
-    def _Generator(self):
-        for wavelength in self.Wavelength:
-            for polarization in self.Polarization:
-                yield wavelength, polarization
 
 
     def UpdateConfiguration(self, config):
@@ -190,7 +196,7 @@ class SourceSet(object):
         MaxOrder = np.max(list(config['order'].values()))
 
         config['order']['wavelength']       = i
-        config['label']['wavelength']       = '$\lambda$ [m]'
+        config['label']['wavelength']       = '$Wavelength \lambda$ [m]'
         config['format']['wavelength']      = '.1e'
         config['dimension']['wavelength']   = self.Wavelength
         i += 1
@@ -217,11 +223,11 @@ class DetectorSet(object):
 
     def UpdateConfiguration(self, config):
         i = config['MaxOrder']
-        config['order']['detector']  = config['MaxOrder']
-        config['label']['detector']  = 'Detector'
-        config['format']['detector'] = '10s'
+        config['order']['detector']     = config['MaxOrder']
+        config['label']['detector']     = 'Detector'
+        config['format']['detector']    = '10s'
         config['dimension']['detector'] = [Det.Name for Det in self.Detector]
-        config['MaxOrder'] += 1
+        config['MaxOrder']             += 1
 
         return config
 
@@ -260,11 +266,11 @@ class Setup(object):
 
         self.ScattererSet = ScattererSet
 
-        config = self.ScattererSet.UpdateConfiguration(config)
+        config = self.DetectorSet.UpdateConfiguration(config)
 
         config = self.SourceSet.UpdateConfiguration(config)
 
-        config = self.DetectorSet.UpdateConfiguration(config)
+        config = self.ScattererSet.UpdateConfiguration(config)
 
         self.GetShape(config)
 
@@ -282,56 +288,35 @@ class Setup(object):
 
         """
         self.config['name']               = 'Efficiencies'
+        self.config['NameList']           = Eff
         self.config['format']['variable'] = '15s'
         self.config['label']['variable']  = 'Coupling'
         self.config['unit']               = ' [1]'
         self.config['nameList']           = Eff
         self.config['output']             = AsType
+        #self.config['order']['eff']       = self.config['MaxOrder']
+        self.config['shape']              = self.config['shape'] + [len(Eff)]
 
         Eff = ToList(Eff)
 
-        self.AssertionType(AsType=AsType, Eff=Eff)
+        self.AssertionType(AsType=AsType)
 
         Array = np.empty(self.config['size'] * len(Eff))
 
-        if self.ScattererSet.Material:
-            i = 0
+        if self.ScattererSet.Material: self.BindMaterial()
 
-            for MatGen, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
-                for source in self.SourceSet.Generator(MatGen):
-                    for eff in Eff:
-                        Scatterer = Sphere(Diameter  = diameter,
-                                           Source    = source,
-                                           Index     = RI.current,
-                                           nMedium   = 1.,
-                                           MuSphere  = 1.0,
-                                           MuMedium  = 1.0)
+        i = 0
+        for source in self.SourceSet.Generator():
+            for scatterer in self.ScattererSet.Generator(source):
+                for eff in Eff:
+                    Array[i]  =  getattr(scatterer, eff)
+                    i += 1;
 
+        Array = Array.reshape(self.config['shape'], order='C')
 
-                        Array[i] =  getattr(Scatterer, eff)
-                        i += 1;
-
-        else:
-
-            i = 0
-            for nd, detector in enumerate(self.DetectorSet):
-                for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
-                    for source in self.SourceSet.Generator():
-                        Scatterer = Sphere(Diameter  = diameter,
-                                           Source    = source,
-                                           Index     = RI,
-                                           nMedium   = 1.,
-                                           MuSphere  = 1.0,
-                                           MuMedium  = 1.0)
-
-                        Array[i] = detector.Coupling(Scatterer = Scatterer)
-                        i += 1;
-
-        Array = Array.reshape(config['shape']+[len(Eff)])
-
-        return self.ReturnType(Array     = np.rollaxis(Array, 4),
+        return self.ReturnType(Array     = Array,
                                AsType    = AsType,
-                               conf      = config)
+                               conf      = self.config)
 
 
     def AssertionType(self, AsType=None, Eff=None):
@@ -360,48 +345,32 @@ class Setup(object):
         self.config['unit']               = ' Watt'
         self.config['output']             = AsType
 
-        Print.pprint(self.config)
-
         self.AssertionType(AsType=AsType)
 
         Array = np.empty(self.config['size'])
 
         if self.ScattererSet.Material:
-            i = 0
-            for detector in self.DetectorSet.Generator():
-                for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
-                    for source in self.SourceSet.Generator(RI):
-
-                        Scatterer = Sphere(Diameter  = diameter,
-                                           Source    = source,
-                                           Index     = RI.current,
-                                           nMedium   = 1.,
-                                           MuSphere  = 1.0,
-                                           MuMedium  = 1.0)
+            self.BindMaterial()
 
 
-                        Array[i] = detector.Coupling(Scatterer = Scatterer)
-                        i += 1;
+        i = 0
+        for detector in self.DetectorSet.Generator():
+            for source in self.SourceSet.Generator():
+                for scatterer in self.ScattererSet.Generator(source):
 
-        else:
-            i = 0
-            for detector in self.DetectorSet.Generator():
-                for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
-                    for source in self.SourceSet.Generator():
-                        Scatterer = Sphere(Diameter  = diameter,
-                                           Source    = source,
-                                           Index     = RI,
-                                           nMedium   = 1.)
+                    Array[i] = detector.Coupling(Scatterer = scatterer)
+                    i += 1;
 
-                        Array[i] = detector.Coupling(Scatterer = Scatterer)
-                        i += 1;
-
-
-        return self.ReturnType(Array     = Array.reshape(self.config['shape']),
+        return self.ReturnType(Array     = Array.reshape(self.config['shape'], order='F'),
                                AsType    = AsType,
                                conf      = self.config)
 
-        
+
+    def BindMaterial(self):
+        self.SourceSet.Material = self.ScattererSet.Material
+
+        for mat in self.ScattererSet.Material:
+            mat.Evaluate(self.SourceSet.Wavelength)
 
 
     def ReturnType(self, Array, AsType, conf):
@@ -413,9 +382,6 @@ class Setup(object):
 
         elif AsType.lower() == 'pymiesim':
             return PMSArray(array = Array, conf = conf)
-
-        elif AsType.lower() == 'dataframe':
-            return self.MakeDF(conf, Array)
 
 
     def MakeDF(self, conf, Array):

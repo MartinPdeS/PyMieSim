@@ -348,7 +348,7 @@ class ScattererProperties(object):
         if self._Properties:
             return self._Properties
         else:
-            self._Properties = self.GetProperties()
+            self._Properties = ScatProperties(self)
             return self._Properties
 
 
@@ -767,7 +767,7 @@ class BaseMaterial(object):
 
         if 'wl1' in self.Data:
             self.Boundary = ( max( self.Data['wl0'][0], self.Data['wl1'][0]),
-                               min( self.Data['wl0'][-1], self.Data['wl1'][-1]))
+                              min( self.Data['wl0'][-1], self.Data['wl1'][-1]))
         else:
             self.Boundary = ( self.Data['wl0'][0], self.Data['wl0'][-1] )
 
@@ -785,8 +785,12 @@ class BaseMaterial(object):
         self.Evaluate(wavelength)
         return Generator(array=self.nList)
 
+    @property
+    def Index(self):
+        return self.nList[self.counter]
 
     def Evaluate(self, wavelength):
+        self.counter = -1
         self.Data
 
         if any(wavelength < self.Boundary[0]) or any(wavelength > self.Boundary[1]):

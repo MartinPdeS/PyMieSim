@@ -211,14 +211,12 @@ class PMSArray(object):
                 xlabel       = self.conf['label'][key]
                 xval         = self.conf['dimension'][key]
 
-
         DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
-        DimSlicer[0] = range(len(self.conf['NameList']))
 
-        for ni, idx in enumerate( product(*DimSlicer) ):
+        for ni, idx in enumerate( product( *DimSlicer ) ):
             plot(xval,
                  self.data[idx],
-                 label = self.conf['NameList'][idx[0]] + '| ' + self.GetLegend(x, idx),
+                 label = self.conf['NameList'][idx[-1]] + ' | ' + self.GetLegend(x, idx),
                  *args,
                  **kwargs)
 
