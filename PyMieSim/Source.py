@@ -138,7 +138,7 @@ class PlaneWave(BaseSource):
             Value of the electric field.
 
             .. math::
-                E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
+                E = E_0 \\exp{\\big( i k (z-z_0) \\big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
 
         """
         z0 = 0
@@ -154,7 +154,7 @@ class PlaneWave(BaseSource):
             Value of the electric field.
 
             .. math::
-                H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
+                H = H_0 \\exp{\\big( i k (z-z_0) \\big) (p_x \\vec{e_x}, p_y \\vec{e_y})}
 
         """
         z0 = 0
@@ -401,21 +401,35 @@ class GaussianBeam(BaseSource):
                 \\gamma_0 &= \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}
                 e^{-i Z_0}
 
+                .
+
                 \\gamma_1 &= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n
                 \\sin (\\theta )  \\big)^2 + i \\rho_n \\cos( \\theta ) \\Big]
                 \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \\sin(\\theta)
 
+                .
+
                 \\gamma_2 &= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big)
                  \\sin(\\theta)
 
+                 .
+
                 \\gamma_3 &= 4 Q s^2 X_0 \\cos(\\theta)
 
+                .
+
                 \\gamma_4 &= 4 Q s^2 Y_0 \\cos(\\theta)
+
+                .
 
                 I_m(\\beta) &= \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi)
                 - i m \\phi} d\\phi
 
+                .
+
                 \\tilde{I}_m(\\beta) &= e^{-\\beta - i m \\xi} I_m(\\beta)
+
+                .
 
                 Q_{spherical} &= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )
                 /k w_0^2 - i}
@@ -449,21 +463,35 @@ class GaussianBeam(BaseSource):
                 \\gamma_0 &= \\frac{(-i)^n \\rho_n^2}{(2n+1)
                 \\psi_n(\\rho_n)}e^{-i Z_0}
 
+                .
+
                 \\gamma_1 &= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n
                 \\sin (\\theta )  \\big)^2 + i \\rho_n \\cos( \\theta ) \\Big]
                 \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \\sin(\\theta)
 
+                .
+
                 \\gamma_2 &= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big)
                 \\sin(\\theta)
 
+                .
+
                 \\gamma_3 &= 4 Q s^2 X_0 \\cos(\\theta)
 
+                .
+
                 \\gamma_4 &= 4 Q s^2 Y_0 \\cos(\\theta)
+
+                .
 
                 I_m(\\beta) &= \\frac{1}{2\\pi} \int_0^{2\\pi}
                 e^{z \\cos(\\phi) - i m \\phi} d\\phi
 
+                .
+
                 \\tilde{I}_m(\\beta) &= e^{-\\beta - i m \\xi} I_m(\\beta)
+
+                .
 
                 Q_{spherical} &= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )
                 /k w_0^2 - i}
@@ -528,7 +556,7 @@ class GaussianBeam(BaseSource):
             Value of the electric Field (First Order), ref[2]:Eq:6
 
             .. math::
-                E = E_0 \\exp{\big( i k (z-z_0) \big)
+                E = E_0 \\exp{\\big( i k (z-z_0) \\big)
                 (p_x \\vec{e_x}, p_y \\vec{e_y})}
         """
 
@@ -553,7 +581,7 @@ class GaussianBeam(BaseSource):
             Value of the electric Field (First Order), ref[2]:Eq:6
 
             .. math::
-                H = H_0 \\exp{\big( i k (z-z_0) \big)
+                H = H_0 \\exp{\\big( i k (z-z_0) \\big)
                 (p_x \\vec{e_x}, p_y \\vec{e_y})}
         """
 

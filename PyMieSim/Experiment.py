@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy  as np
-import pandas as pd
+import pprint           as pp
+import numpy            as np
+import pandas           as pd
 from beartype           import beartype
 from typing             import Union
 from multiprocessing    import Process
@@ -32,7 +33,7 @@ exList  = Union[int, float, list, np.ndarray, tuple]
 exfloat = Union[bool, int, float]
 DetecArg = Union[LPmode, Photodiode, list, tuple]
 
-
+Print = pp.PrettyPrinter(indent=4,sort_dicts=False)
 
 class ScatSet(object):
 
@@ -42,15 +43,18 @@ class ScatSet(object):
                  IndexList     :  exList     = None,
                  nMedium       :  exfloat    = 1.0,
                  ScattererType :  str        = 'Sphere',
-                 MaterialList  : list        = None):
+                 MaterialList  : list        = None,
+                 Configuration : dict        = {}):
 
         if MaterialList:
             assert IndexList is None, IO( "You should either choose a material or the RI, not both." )
             self.Material = MaterialList
 
+
         if IndexList:
             assert MaterialList is None, IO( "You should either choose a material or the RI, not both." )
             self.Material = None
+
 
         IndexList, DiameterList, MaterialList = ToList(IndexList, DiameterList, MaterialList)
 
@@ -61,6 +65,38 @@ class ScatSet(object):
         self.nMedium = nMedium
 
         self.shape = np.shape(self.Diameter) + np.shape(self.Index)
+
+
+
+
+    def UpdateConfiguration(self, config):
+        i = config['MaxOrder']
+
+        config['order']['diameter']     = i
+        config['label']['diameter']     = 'Diameter [m]'
+        config['format']['diameter']    = '.1e'
+        config['dimension']['diameter'] = self.Diameter
+        i += 1
+
+        if self.Material:
+            config['material'] = True
+            config['order']['material']     = i
+            config['label']['material']     = 'material'
+            config['format']['material']    = '10s'
+            config['dimension']['material'] = [mat.__name__ for mat in self.Material]
+            i += 1
+
+        else:
+            config['material']              = False
+            config['order']['ri']           = i
+            config['label']['ri']           = 'Refracive index'
+            config['format']['ri']          = '.2f'
+            config['dimension']['ri']       = self.Index
+            i += 1
+
+        config['MaxOrder'] = i
+
+        return config
 
 
     @property
@@ -95,7 +131,6 @@ class ScatSet(object):
 
 
 class SourceSet(object):
-
     @beartype
     def __init__(self,
                  WavelengthList   :   exList,
@@ -150,27 +185,90 @@ class SourceSet(object):
                 yield wavelength, polarization
 
 
+    def UpdateConfiguration(self, config):
+        i = config['MaxOrder']
+        MaxOrder = np.max(list(config['order'].values()))
+
+        config['order']['wavelength']       = i
+        config['label']['wavelength']       = '$\lambda$ [m]'
+        config['format']['wavelength']      = '.1e'
+        config['dimension']['wavelength']   = self.Wavelength
+        i += 1
+
+        config['order']['polarization']     = i
+        config['label']['polarization']     = 'Polarization [Degree]'
+        config['format']['polarization']    = '.1f'
+        config['dimension']['polarization'] = self.Polarization
+        i += 1
+
+        config['MaxOrder'] = i
+
+        return config
+
+
+
+class DetectorSet(object):
+
+    @beartype
+    def __init__(self, DetectorList : exList):
+
+        self.Detector = ToList(DetectorList)
+
+
+    def UpdateConfiguration(self, config):
+        i = config['MaxOrder']
+        config['order']['detector']  = config['MaxOrder']
+        config['label']['detector']  = 'Detector'
+        config['format']['detector'] = '10s'
+        config['dimension']['detector'] = [Det.Name for Det in self.Detector]
+        config['MaxOrder'] += 1
+
+        return config
+
+
+    def Generator(self, MatGen=None):
+        for detector in self.Detector:
+                yield detector
+
+
 class Setup(object):
 
     @beartype
     def __init__(self,
                  ScattererSet : ScatSet            = None,
                  SourceSet    : SourceSet          = None,
-                 DetectorSet  : DetecArg           = []):
+                 DetectorSet  : DetectorSet        = None):
 
-        DetectorSet = ToList(DetectorSet)
+
+        config = { 'name'      : None,
+                   'unit'      : None,
+                   'material'  : None,
+                   'order'     : {},
+                   'label'     : {},
+                   'format'    : {},
+                   'dimension' : {},
+                   'MaxOrder'  : 0}
 
         self.MetricList   = MetricList
 
         self.DetectorSet  = DetectorSet
 
+        for nd, dectector in enumerate(self.DetectorSet.Detector):
+            dectector.Name = f"Detector {nd}"
+
         self.SourceSet    = SourceSet
 
         self.ScattererSet = ScattererSet
 
-        for nd, dectector in enumerate(self.DetectorSet):
-            dectector.Name = f"Detector {nd}"
+        config = self.ScattererSet.UpdateConfiguration(config)
 
+        config = self.SourceSet.UpdateConfiguration(config)
+
+        config = self.DetectorSet.UpdateConfiguration(config)
+
+        self.GetShape(config)
+
+        self.config = config
 
 
     def Efficiencies(self, Eff='Qsca', AsType='numpy'):
@@ -183,16 +281,18 @@ class Setup(object):
             Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
 
         """
-
-
+        self.config['name']               = 'Efficiencies'
+        self.config['format']['variable'] = '15s'
+        self.config['label']['variable']  = 'Coupling'
+        self.config['unit']               = ' [1]'
+        self.config['nameList']           = Eff
+        self.config['output']             = AsType
 
         Eff = ToList(Eff)
 
         self.AssertionType(AsType=AsType, Eff=Eff)
 
-        config = self.MakeConfig(Type = 'efficiency', Eff=Eff)
-
-        Array = np.empty(config['size'] * len(Eff))
+        Array = np.empty(self.config['size'] * len(Eff))
 
         if self.ScattererSet.Material:
             i = 0
@@ -242,41 +342,6 @@ class Setup(object):
             assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
-    def MakeConfig(self, Type, Eff = None):
-
-        if Type == 'efficiency' :
-            config = DefaultConfigEff
-            config['NameList'] = Eff
-            config['dimension'] = { 'wavelength'   : self.SourceSet.Wavelength,
-                                    'polarization' : self.SourceSet.Polarization,
-                                    'diameter'     : self.ScattererSet.Diameter}
-
-
-        elif Type == 'coupling':
-            config = DefaultConfig
-            config['dimension'] = { 'detector'     : [Det.Name for Det in self.DetectorSet],
-                                    'wavelength'   : self.SourceSet.Wavelength,
-                                    'polarization' : self.SourceSet.Polarization,
-                                    'diameter'     : self.ScattererSet.Diameter}
-
-        if self.ScattererSet.Material:
-            config['material'] = True
-            config['order'].pop('ri', None)
-            config['format'].pop('ri', None)
-            config['label'].pop('ri', None)
-            config['dimension']['material'] = [mat.__name__ for mat in self.ScattererSet.Material]
-
-        else:
-            config['order'].pop('material', None)
-            config['format'].pop('material', None)
-            config['label'].pop('material', None)
-            config['dimension']['ri'] = self.ScattererSet.Index
-
-        self.GetShape(config)
-
-        return config
-
-
     def Coupling(self, AsType='numpy'):
         """Property method which return a n by m by l OptArray array, n being the
         number of detectors, m is the point evaluated for the refractive index,
@@ -289,15 +354,21 @@ class Setup(object):
 
         """
 
+        self.config['name']               = 'Coupling'
+        self.config['format']['variable'] = '15s'
+        self.config['label']['variable']  = 'Coupling'
+        self.config['unit']               = ' Watt'
+        self.config['output']             = AsType
+
+        Print.pprint(self.config)
+
         self.AssertionType(AsType=AsType)
 
-        config = self.MakeConfig(Type = 'coupling')
-
-        Array = np.empty(config['size'])
+        Array = np.empty(self.config['size'])
 
         if self.ScattererSet.Material:
             i = 0
-            for nd, detector in enumerate(self.DetectorSet):
+            for detector in self.DetectorSet.Generator():
                 for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
                     for source in self.SourceSet.Generator(RI):
 
@@ -313,25 +384,24 @@ class Setup(object):
                         i += 1;
 
         else:
-
             i = 0
-            for nd, detector in enumerate(self.DetectorSet):
+            for detector in self.DetectorSet.Generator():
                 for RI, diameter in self.ScattererSet.Generator(self.SourceSet.Wavelength):
                     for source in self.SourceSet.Generator():
                         Scatterer = Sphere(Diameter  = diameter,
                                            Source    = source,
                                            Index     = RI,
-                                           nMedium   = 1.,
-                                           MuSphere  = 1.0,
-                                           MuMedium  = 1.0)
+                                           nMedium   = 1.)
 
                         Array[i] = detector.Coupling(Scatterer = Scatterer)
                         i += 1;
 
 
-        return self.ReturnType(Array     = Array.reshape(config['shape']),
+        return self.ReturnType(Array     = Array.reshape(self.config['shape']),
                                AsType    = AsType,
-                               conf      = config)
+                               conf      = self.config)
+
+        
 
 
     def ReturnType(self, Array, AsType, conf):

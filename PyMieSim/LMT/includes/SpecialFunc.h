@@ -47,15 +47,15 @@ Taunm(int n, int m, double x)
 
 
 //---------------------------------complex-arg-bessel--------------------------------------
-template<typename T>
-inline complex128 F90jn(int order, T x){ return sp_bessel::sph_besselJ(order, x); }
-template<typename T>
-inline complex128 F90yn(int order, T x){ return sp_bessel::sph_besselY(order, x); }
+template<typename T, typename U>
+inline complex128 F90jn(U order, T x){ return sp_bessel::sph_besselJ(order, x); }
+template<typename T, typename U>
+inline complex128 F90yn(U order, T x){ return sp_bessel::sph_besselY(order, x); }
 
-template<typename T>
-inline complex128 F90Jn(int order, T x){ return sp_bessel::besselJ(order, x); }
-template<typename T>
-inline complex128 F90Yn(int order, T x){ return sp_bessel::besselY(order, x); }
+template<typename T, typename U>
+inline complex128 F90Jn(U order, T x){ return sp_bessel::besselJ(order, x); }
+template<typename T, typename U>
+inline complex128 F90Yn(U order, T x){ return sp_bessel::besselY(order, x); }
 
 template<typename T>
 inline complex128 F90Jn_p(int order, T x){ return sp_bessel::besselJp(order, x, 1); }

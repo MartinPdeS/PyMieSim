@@ -225,7 +225,7 @@ class ScattererProperties(object):
         if self._Qext:
             return self._Qext
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._Qext
 
 
@@ -243,7 +243,7 @@ class ScattererProperties(object):
         if self._Qsca:
             return self._Qsca
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._Qsca
 
 
@@ -260,7 +260,7 @@ class ScattererProperties(object):
         if self._Qabs:
             return self._Qabs
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._Qabs
 
 
@@ -278,7 +278,7 @@ class ScattererProperties(object):
         if self._Qback:
             return self._Qback
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._Qback
 
 
@@ -295,7 +295,7 @@ class ScattererProperties(object):
         if self._Qratio:
             return self._Qratio
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._Qratio
 
     @property
@@ -315,7 +315,7 @@ class ScattererProperties(object):
         if self._g:
             return self._g
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._g
 
 
@@ -332,12 +332,12 @@ class ScattererProperties(object):
         if self._Qpr:
             return self._Qpr
         else:
-            self.GetEfficiencies()
+            self.GetProperties()
             return self._Qpr
 
 
     @property
-    def Efficiencies(self):
+    def Properties(self):
         """
         .. note::
             Methode compute all properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},
@@ -345,12 +345,11 @@ class ScattererProperties(object):
 
         """
         from PyMieSim.Representations import ScatProperties
-
-        if self._Efficiencies:
-            return self._Efficiencies
+        if self._Properties:
+            return self._Properties
         else:
-            self._Efficiencies = ScatProperties(self)
-            return self._Efficiencies
+            self._Properties = self.GetProperties()
+            return self._Properties
 
 
 class BaseScatterer(object):
@@ -387,24 +386,22 @@ class BaseScatterer(object):
         self._bn     = []
         self._cn     = []
         self._dn     = []
-        self._Efficiencies = None
+        self._Properties = None
 
 
-    def GetEfficiencies(self):
+    def GetProperties(self):
         """
         .. note::
-            Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},
+            Methode compute all Properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},
             Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.
 
         """
 
-        (self._Qsca,
-         self._Qext,
-         self._Qabs,
-         self._Qback,
-         self._Qratio,
-         self._g,
-         self._Qpr )   = self.Bind.Efficiencies
+        prop  = self.Bind.Efficiencies
+        (self._Qsca, self._Qext, self._Qabs, self._Qback,
+        self._Qratio, self._g,  self._Qpr ) = prop
+
+        return prop
 
 
     def S1S2(self, Num=200):
@@ -415,6 +412,8 @@ class BaseScatterer(object):
 
             .. math::
                 S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)
+
+                .
 
                 S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)
 
@@ -531,8 +530,7 @@ class BaseScatterer(object):
             Method Compute scattering Far Field for structured coordinate.
 
             .. math::
-                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                                 E_{\\perp}(\\phi,\\theta)^2
+                \\text{Fields} = E_{||}(\\phi,\\theta),  E_{\\perp}(\\phi,\\theta)
 
 
             The Fields are up to a constant phase value.
@@ -560,22 +558,18 @@ class BaseScatterer(object):
         """
         .. note::
             Method Compute scattering Far Field for unstructured coordinate.
-
-
-            .. math::
-                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                                 E_{\\perp}(\\phi,\\theta)^2
-
-            The Fields are up to a constant phase value.
+            S1 S2 are non-propagated fields componenet.
 
             .. math::
-                \\exp{\\big(-i k r \\big)}
+                \\text{S1S2} = S1(\\phi), S2(\\gamma)
+
 
 
         Parameters
         ----------
         Num : :class:`int`
-            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
+            Number of point to spatially (:math:`\\phi , \\gamma`)
+            S1 and S2 [Num].
 
         Returns
         -------
@@ -591,21 +585,18 @@ class BaseScatterer(object):
     def sS1S2(self, Phi, Theta):
         """
         .. note::
-            Method Compute scattering Far Field for structured coordinate.
+            Method Compute scattering function S1S2 for structured coordinate.
+            S1 S2 are non-propagated fields componenet.
 
             .. math::
-                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                                 E_{\\perp}(\\phi,\\theta)^2
-
-            The Fields are up to a constant phase value.
-
-            :math:`\\exp{\big(-i k r \big)}`
+                \\text{S1S2} = S1(\\phi), S2(\\gamma)
 
 
         Parameters
         ----------
         Num : :class:`int`
-            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].
+            Number of point to spatially (:math:`\\phi , \\gamma`)
+            S1 and S2 [Num, Num].
 
         Returns
         -------
@@ -623,12 +614,14 @@ class BaseScatterer(object):
             Scattering phase function.
 
             .. math::
-                \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2
+                \\text{SPF} = \\sqrt{ E_{\\parallel}(\\phi,\\theta)^2
+                + E_{\\perp}(\\phi,\\theta)^2 }
 
         Parameters
         ----------
         Num : :class:`int`
-            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].
+            Number of point to spatially (:math:`\\theta , \\phi`)
+            evaluate the SPF [Num, Num].
 
         Returns
         -------
@@ -680,7 +673,11 @@ class BaseScatterer(object):
 
                 W_a &= \\sigma_{sca} * I_{inc}
 
+                .
+
                 P &= \\int_{A} I dA
+
+                .
 
                 I &= \\frac{c n \\epsilon_0}{2} |E|^2
 

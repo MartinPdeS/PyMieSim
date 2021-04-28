@@ -171,6 +171,7 @@ class PMSArray(object):
         fig   = plt.figure(figsize=(8,4))
         x     = x.lower()
         shape = list(self.data.shape)
+        print(shape)
 
         for key, order in self.conf['order'].items():
             if x == key:
@@ -180,7 +181,6 @@ class PMSArray(object):
 
         DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
         for idx in product(*DimSlicer):
-
             plot(xval,
                  self.data[idx],
                  label = self.GetLegend(x, idx),

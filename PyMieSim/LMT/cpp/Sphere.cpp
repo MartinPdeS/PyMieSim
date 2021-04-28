@@ -2,13 +2,6 @@
 #include <math.h>
 #include <complex_bessel.h>
 
-
-int main()
-{
-  auto a = sp_bessel::besselYp(0.1,1);
-  return 1;
-}
-
 class SPHERE: public BASE{
 
 private:

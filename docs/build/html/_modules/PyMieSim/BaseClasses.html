@@ -294,7 +294,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span>
 
 
@@ -312,7 +312,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span>
 
 
@@ -329,7 +329,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span>
 
 
@@ -347,7 +347,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span>
 
 
@@ -364,7 +364,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span>
 
     <span class="nd">@property</span>
@@ -384,7 +384,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span>
 
 
@@ -401,7 +401,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">GetEfficiencies</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span>
 
 
@@ -459,7 +459,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">GetEfficiencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. note::</span>
 <span class="sd">            Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
@@ -484,6 +484,8 @@
 
 <span class="sd">            .. math::</span>
 <span class="sd">                S_1=\\sum\\limits_{n=1}^{n_{max}} \\frac{2n+1}{n(n+1)}(a_n \\pi_n+b_n \\tau_n)</span>
+
+<span class="sd">                .</span>
 
 <span class="sd">                S_2=\\sum\\limits_{n=1}^{n_{max}}\\frac{2n+1}{n(n+1)}(a_n \\tau_n+b_n \\pi_n)</span>
 
@@ -600,8 +602,7 @@
 <span class="sd">            Method Compute scattering Far Field for structured coordinate.</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta),  E_{\\perp}(\\phi,\\theta)</span>
 
 
 <span class="sd">            The Fields are up to a constant phase value.</span>
@@ -629,22 +630,18 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. note::</span>
 <span class="sd">            Method Compute scattering Far Field for unstructured coordinate.</span>
-
-
-<span class="sd">            .. math::</span>
-<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
-
-<span class="sd">            The Fields are up to a constant phase value.</span>
+<span class="sd">            S1 S2 are non-propagated fields componenet.</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\exp{\\big(-i k r \\big)}</span>
+<span class="sd">                \\text{S1S2} = S1(\\phi), S2(\\gamma)</span>
+
 
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        Num : :class:`int`</span>
-<span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
+<span class="sd">            Number of point to spatially (:math:`\\phi , \\gamma`)</span>
+<span class="sd">            S1 and S2 [Num].</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -660,21 +657,18 @@
     <span class="k">def</span> <span class="nf">sS1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Phi</span><span class="p">,</span> <span class="n">Theta</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. note::</span>
-<span class="sd">            Method Compute scattering Far Field for structured coordinate.</span>
+<span class="sd">            Method Compute scattering function S1S2 for structured coordinate.</span>
+<span class="sd">            S1 S2 are non-propagated fields componenet.</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\text{Fields} = E_{||}(\\phi,\\theta)^2,</span>
-<span class="sd">                                 E_{\\perp}(\\phi,\\theta)^2</span>
-
-<span class="sd">            The Fields are up to a constant phase value.</span>
-
-<span class="sd">            :math:`\\exp{\big(-i k r \big)}`</span>
+<span class="sd">                \\text{S1S2} = S1(\\phi), S2(\\gamma)</span>
 
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        Num : :class:`int`</span>
-<span class="sd">            Number of point to spatially (:math:`\\phi , \\theta`) evaluate the Fields [Num, Num].</span>
+<span class="sd">            Number of point to spatially (:math:`\\phi , \\gamma`)</span>
+<span class="sd">            S1 and S2 [Num, Num].</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -692,12 +686,14 @@
 <span class="sd">            Scattering phase function.</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2</span>
+<span class="sd">                \\text{SPF} = \\sqrt{ E_{\\parallel}(\\phi,\\theta)^2</span>
+<span class="sd">                + E_{\\perp}(\\phi,\\theta)^2 }</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        Num : :class:`int`</span>
-<span class="sd">            Number of point to spatially (:math:`\\theta , \\phi`) evaluate the SPF [Num, Num].</span>
+<span class="sd">            Number of point to spatially (:math:`\\theta , \\phi`)</span>
+<span class="sd">            evaluate the SPF [Num, Num].</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -749,7 +745,11 @@
 
 <span class="sd">                W_a &amp;= \\sigma_{sca} * I_{inc}</span>
 
+<span class="sd">                .</span>
+
 <span class="sd">                P &amp;= \\int_{A} I dA</span>
+
+<span class="sd">                .</span>
 
 <span class="sd">                I &amp;= \\frac{c n \\epsilon_0}{2} |E|^2</span>
 

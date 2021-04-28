@@ -159,7 +159,7 @@ light scattering.</p>
 <p class="first admonition-title">Note</p>
 <p>Value of the electric field.</p>
 <div class="last math notranslate nohighlight">
-\[E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
+\[E = E_0 \exp{\big( i k (z-z_0) \big) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </div>
 </dd></dl>
 
@@ -170,7 +170,7 @@ light scattering.</p>
 <p class="first admonition-title">Note</p>
 <p>Value of the electric field.</p>
 <div class="last math notranslate nohighlight">
-\[H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
+\[H = H_0 \exp{\big( i k (z-z_0) \big) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </div>
 </dd></dl>
 
@@ -221,10 +221,18 @@ light scattering.</p>
 <p>From ref[2]:Eq:18-19
 Method returns:</p>
 <div class="math notranslate nohighlight">
-\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}                (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}                (\beta) d \theta\]</div>
+\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}
+(\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}
+(\beta) d \theta\]</div>
 <p>Where:</p>
 <div class="last math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\gamma_0 &amp;= \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\\\gamma_1 &amp;= Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2                 + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )                 \sin(\theta)\\\gamma_2 &amp;= \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\\\gamma_3 &amp;= 4 Q s^2 X_0 \cos(\theta)\\\gamma_4 &amp;= 4 Q s^2 Y_0 \cos(\theta)\\I_m(\beta) &amp;= \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi) - i m \phi} d\phi\\\tilde{I}_m(\beta) &amp;= e^{-\beta - i m \xi} I_m(\beta)\\Q_{spherical} &amp;= \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}\gamma_0 &amp;= \frac{(-i)^n \rho_n^2}{(2n+1)
+\psi_n(\rho_n)}e^{-i Z_0}\\.\\\gamma_1 &amp;= Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n
+\sin (\theta )  \big)^2 + i \rho_n \cos( \theta ) \Big]
+\hat{P}_n^{|m|} (\cos ( \theta ) ) \sin(\theta)\\.\\\gamma_2 &amp;= \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big)
+\sin(\theta)\\.\\\gamma_3 &amp;= 4 Q s^2 X_0 \cos(\theta)\\.\\\gamma_4 &amp;= 4 Q s^2 Y_0 \cos(\theta)\\.\\I_m(\beta) &amp;= \frac{1}{2\pi} \int_0^{2\pi}
+e^{z \cos(\phi) - i m \phi} d\phi\\.\\\tilde{I}_m(\beta) &amp;= e^{-\beta - i m \xi} I_m(\beta)\\.\\Q_{spherical} &amp;= \frac{1}{2 ( r \cos (\theta) - z_0 )
+/k w_0^2 - i}\end{aligned}\end{align} \]</div>
 </div>
 </dd></dl>
 
@@ -235,7 +243,9 @@ Method returns:</p>
 <p class="first admonition-title">Note</p>
 <p>Method returns:</p>
 <div class="last math notranslate nohighlight">
-\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}                (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}                (\beta) d \theta\]</div>
+\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}
+(\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}
+(\beta) d \theta\]</div>
 </div>
 </dd></dl>
 
@@ -277,10 +287,18 @@ beam using the quadrature method (ref[2]:Eq:17).</p>
 <p>From ref[2]:Eq:18-19
 Method returns:</p>
 <div class="math notranslate nohighlight">
-\[B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}                (\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}                (\beta) d \theta\]</div>
+\[B_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}
+(\beta) - \hat{I}_{m-1} (\beta) \big] -\gamma_4 \hat{I}_{m}
+(\beta) d \theta\]</div>
 <p>Where:</p>
 <div class="last math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\gamma_0 &amp;= \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}e^{-i Z_0}\\\gamma_1 &amp;= Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n \sin (\theta )  \big)^2                 + i \rho_n \cos( \theta ) \Big] \hat{P}_n^{|m|} (\cos ( \theta ) )                 \sin(\theta)\\\gamma_2 &amp;= \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big) \sin(\theta)\\\gamma_3 &amp;= 4 Q s^2 X_0 \cos(\theta)\\\gamma_4 &amp;= 4 Q s^2 Y_0 \cos(\theta)\\I_m(\beta) &amp;= \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi) - i m \phi} d\phi\\\tilde{I}_m(\beta) &amp;= e^{-\beta - i m \xi} I_m(\beta)\\Q_{spherical} &amp;= \frac{1}{2 ( r \cos (\theta) - z_0 )/k w_0^2 - i}\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}\gamma_0 &amp;= \frac{(-i)^n \rho_n^2}{(2n+1) \psi_n(\rho_n)}
+e^{-i Z_0}\\.\\\gamma_1 &amp;= Q \exp \big[ i Q s^2 \Big( R_0 - \rho_n
+\sin (\theta )  \big)^2 + i \rho_n \cos( \theta ) \Big]
+\hat{P}_n^{|m|} (\cos ( \theta ) ) \sin(\theta)\\.\\\gamma_2 &amp;= \big( 2 Q s^2 \rho_n \cos(\theta) -1 \big)
+ \sin(\theta)\\ .\\\gamma_3 &amp;= 4 Q s^2 X_0 \cos(\theta)\\.\\\gamma_4 &amp;= 4 Q s^2 Y_0 \cos(\theta)\\.\\I_m(\beta) &amp;= \frac{1}{2\pi} \int_0^{2\pi} e^{z \cos(\phi)
+- i m \phi} d\phi\\.\\\tilde{I}_m(\beta) &amp;= e^{-\beta - i m \xi} I_m(\beta)\\.\\Q_{spherical} &amp;= \frac{1}{2 ( r \cos (\theta) - z_0 )
+/k w_0^2 - i}\end{aligned}\end{align} \]</div>
 </div>
 </dd></dl>
 
@@ -291,7 +309,9 @@ Method returns:</p>
 <p class="first admonition-title">Note</p>
 <p>Method returns:</p>
 <div class="last math notranslate nohighlight">
-\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}                (\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}                (\beta) d \theta\]</div>
+\[A_{mn} = \gamma_0 \int_0^{\pi} \gamma_1 \big[ \hat{I}_{m+1}
+(\beta) + \hat{I}_{m-1} (\beta) \big] -\gamma_3 \hat{I}_{m}
+(\beta) d \theta\]</div>
 </div>
 </dd></dl>
 
@@ -302,7 +322,8 @@ Method returns:</p>
 <p class="first admonition-title">Note</p>
 <p>Value of the electric Field (First Order), ref[2]:Eq:6</p>
 <div class="last math notranslate nohighlight">
-\[E = E_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
+\[E = E_0 \exp{\big( i k (z-z_0) \big)
+(p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </div>
 </dd></dl>
 
@@ -313,7 +334,10 @@ Method returns:</p>
 <p class="first admonition-title">Note</p>
 <p>Value of the electric Field (First Order), ref[2]:Eq:10</p>
 <div class="last math notranslate nohighlight">
-\[E_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -x_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\]</div>
+\[E_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi)
+- \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta)
+\cos (\phi) -x_0 \big)  \Big] \exp^{ik (r \cos
+(\theta) -z_0 )}\]</div>
 </div>
 </dd></dl>
 
@@ -347,7 +371,8 @@ numerical overflow.</p>
 <p class="first admonition-title">Note</p>
 <p>Value of the electric Field (First Order), ref[2]:Eq:6</p>
 <div class="last math notranslate nohighlight">
-\[H = H_0 \exp{ig( i k (z-z_0) ig) (p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
+\[H = H_0 \exp{\big( i k (z-z_0) \big)
+(p_x \vec{e_x}, p_y \vec{e_y})}\]</div>
 </div>
 </dd></dl>
 
@@ -358,7 +383,10 @@ numerical overflow.</p>
 <p class="first admonition-title">Note</p>
 <p>Value of the magnetic Field (First Order), ref[2]:Eq:10</p>
 <div class="last math notranslate nohighlight">
-\[H_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) - \frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta) \cos (\phi) -y_0 \big)  \Big] \exp^{ik (r \cos (\theta) -z_0 )}\]</div>
+\[H_r = E_0 \Phi_0 \Big[ \sin (\theta) \cos (\phi) -
+\frac{2Q}{kw_0^2} \cos (\theta) \big( r \sin (\theta)
+\cos (\phi) -y_0 \big)  \Big] \exp^{ik (r \cos
+(\theta) -z_0 )}\]</div>
 </div>
 </dd></dl>
 
@@ -369,7 +397,8 @@ numerical overflow.</p>
 <p class="first admonition-title">Note</p>
 <p>Method returns:</p>
 <div class="last math notranslate nohighlight">
-\[\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \Big]\]</div>
+\[\Phi_0 = -i Q \exp \Big[ i Q \frac{(x-x_0)^2 +
+(y-y_0)^2}{w_0^2} \Big]\]</div>
 </div>
 </dd></dl>
 
@@ -380,7 +409,9 @@ numerical overflow.</p>
 <p class="first admonition-title">Note</p>
 <p>Method returns:</p>
 <div class="last math notranslate nohighlight">
-\[\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r \sin (\theta) \cos (\phi) - x_0^2 ) + (r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\]</div>
+\[\Phi_0 = -i Q \exp \Big[ \frac{i Q}{w_0^2} \Big(  (r
+\sin (\theta) \cos (\phi) - x_0^2 ) +
+(r \sin (\theta) \sin (\phi) - y_0^2 ) \Big) \Big]\]</div>
 </div>
 </dd></dl>
 
@@ -415,7 +446,10 @@ numerical overflow.</p>
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.Area">
 <code class="descname">Area</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Area" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mathematical 2D area of the scatterer [<span class="math notranslate nohighlight">\(\pi r^2\)</span>].</p>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Mathematical 2D area of the scatterer [<span class="math notranslate nohighlight">\(\pi r^2\)</span>].</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -429,7 +463,10 @@ numerical overflow.</p>
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.SizeParam">
 <code class="descname">SizeParam</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.SizeParam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</p>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -478,7 +515,7 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 <p class="first admonition-title">Note</p>
 <p>Method return energy flow defined as:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}W_a &amp;= \sigma_{sca} * I_{inc}\\P &amp;= \int_{A} I dA\\I &amp;= \frac{c n \epsilon_0}{2} |E|^2\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}W_a &amp;= \sigma_{sca} * I_{inc}\\.\\P &amp;= \int_{A} I dA\\.\\I &amp;= \frac{c n \epsilon_0}{2} |E|^2\end{aligned}\end{align} \]</div>
 <div class="line-block">
 <div class="line">With:</div>
 <div class="line-block">
@@ -544,16 +581,6 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="PyMieSim.Scatterer.Sphere.GetEfficiencies">
-<code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
-Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.PoyntingVector">
 <code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.PoyntingVector" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
@@ -574,6 +601,16 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.Properties">
+<code class="descname">Properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Properties" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
+Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
@@ -653,7 +690,7 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 <p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> and <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
 For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <div class="last math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\\S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\\.\\S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\end{aligned}\end{align} \]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -676,13 +713,15 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <p class="first admonition-title">Note</p>
 <p>Scattering phase function.</p>
 <div class="last math notranslate nohighlight">
-\[\text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\]</div>
+\[\text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2
++ E_{\perp}(\phi,\theta)^2 }\]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>)
+evaluate the SPF [Num, Num].</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnay subclass with all pertinent information as keys.</td>
 </tr>
@@ -800,8 +839,7 @@ Those parameters are defined as:</p>
 <p class="first admonition-title">Note</p>
 <p>Method Compute scattering Far Field for structured coordinate.</p>
 <div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi,\theta)^2,
-                 E_{\perp}(\phi,\theta)^2\]</div>
+\[\text{Fields} = E_{||}(\phi,\theta),  E_{\perp}(\phi,\theta)\]</div>
 <p>The Fields are up to a constant phase value.</p>
 <div class="last math notranslate nohighlight">
 \[\exp{\big(-i k r \big)}\]</div>
@@ -825,18 +863,17 @@ Those parameters are defined as:</p>
 <code class="descname">sS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.sS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Method Compute scattering Far Field for structured coordinate.</p>
-<div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi,\theta)^2,
-                 E_{\perp}(\phi,\theta)^2\]</div>
-<p>The Fields are up to a constant phase value.</p>
-<p class="last"><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<p>Method Compute scattering function S1S2 for structured coordinate.
+S1 S2 are non-propagated fields componenet.</p>
+<div class="last math notranslate nohighlight">
+\[\text{S1S2} = S1(\phi), S2(\gamma)\]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \gamma\)</span>)
+S1 and S2 [Num, Num].</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The structured non-propagated far-field</td>
 </tr>
@@ -878,19 +915,17 @@ Those parameters are defined as:</p>
 <code class="descname">uS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.uS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Method Compute scattering Far Field for unstructured coordinate.</p>
-<div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi,\theta)^2,
-                 E_{\perp}(\phi,\theta)^2\]</div>
-<p>The Fields are up to a constant phase value.</p>
+<p>Method Compute scattering Far Field for unstructured coordinate.
+S1 S2 are non-propagated fields componenet.</p>
 <div class="last math notranslate nohighlight">
-\[\exp{\big(-i k r \big)}\]</div>
+\[\text{S1S2} = S1(\phi), S2(\gamma)\]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \gamma\)</span>)
+S1 and S2 [Num].</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The unstructured non-propagated far-field</td>
 </tr>
@@ -928,7 +963,10 @@ Those parameters are defined as:</p>
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Cylinder.Area">
 <code class="descname">Area</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Area" title="Permalink to this definition">¶</a></dt>
-<dd><p>Mathematical 2D area of the scatterer [<span class="math notranslate nohighlight">\(\pi r^2\)</span>].</p>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Mathematical 2D area of the scatterer [<span class="math notranslate nohighlight">\(\pi r^2\)</span>].</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -942,7 +980,10 @@ Those parameters are defined as:</p>
 <dl class="attribute">
 <dt id="PyMieSim.Scatterer.Cylinder.SizeParam">
 <code class="descname">SizeParam</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.SizeParam" title="Permalink to this definition">¶</a></dt>
-<dd><p>Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</p>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Size parameter of the scatterer [<span class="math notranslate nohighlight">\(k r\)</span>].</p>
+</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -991,7 +1032,7 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 <p class="first admonition-title">Note</p>
 <p>Method return energy flow defined as:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}W_a &amp;= \sigma_{sca} * I_{inc}\\P &amp;= \int_{A} I dA\\I &amp;= \frac{c n \epsilon_0}{2} |E|^2\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}W_a &amp;= \sigma_{sca} * I_{inc}\\.\\P &amp;= \int_{A} I dA\\.\\I &amp;= \frac{c n \epsilon_0}{2} |E|^2\end{aligned}\end{align} \]</div>
 <div class="line-block">
 <div class="line">With:</div>
 <div class="line-block">
@@ -1057,16 +1098,6 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="PyMieSim.Scatterer.Cylinder.GetEfficiencies">
-<code class="descname">GetEfficiencies</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.GetEfficiencies" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
-Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
 <dt id="PyMieSim.Scatterer.Cylinder.PoyntingVector">
 <code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.PoyntingVector" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
@@ -1087,6 +1118,16 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.Properties">
+<code class="descname">Properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Properties" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
+Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
+</div>
 </dd></dl>
 
 <dl class="attribute">
@@ -1166,7 +1207,7 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 <p>Method compute <span class="math notranslate nohighlight">\(S_1(\phi)\)</span> and <span class="math notranslate nohighlight">\(S_2(\phi)\)</span>.
 For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <div class="last math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\\S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n)\\.\\S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)\end{aligned}\end{align} \]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1189,13 +1230,15 @@ For spherical Scatterer such as here S1 and S2 are computed as follow:</p>
 <p class="first admonition-title">Note</p>
 <p>Scattering phase function.</p>
 <div class="last math notranslate nohighlight">
-\[\text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2\]</div>
+\[\text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2
++ E_{\perp}(\phi,\theta)^2 }\]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>) evaluate the SPF [Num, Num].</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\theta , \phi\)</span>)
+evaluate the SPF [Num, Num].</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Dictionnay subclass with all pertinent information as keys.</td>
 </tr>
@@ -1285,8 +1328,7 @@ Those parameters are defined as:</p>
 <p class="first admonition-title">Note</p>
 <p>Method Compute scattering Far Field for structured coordinate.</p>
 <div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi,\theta)^2,
-                 E_{\perp}(\phi,\theta)^2\]</div>
+\[\text{Fields} = E_{||}(\phi,\theta),  E_{\perp}(\phi,\theta)\]</div>
 <p>The Fields are up to a constant phase value.</p>
 <div class="last math notranslate nohighlight">
 \[\exp{\big(-i k r \big)}\]</div>
@@ -1310,18 +1352,17 @@ Those parameters are defined as:</p>
 <code class="descname">sS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.sS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Method Compute scattering Far Field for structured coordinate.</p>
-<div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi,\theta)^2,
-                 E_{\perp}(\phi,\theta)^2\]</div>
-<p>The Fields are up to a constant phase value.</p>
-<p class="last"><span class="math notranslate nohighlight">\(\exp{ig(-i k r ig)}\)</span></p>
+<p>Method Compute scattering function S1S2 for structured coordinate.
+S1 S2 are non-propagated fields componenet.</p>
+<div class="last math notranslate nohighlight">
+\[\text{S1S2} = S1(\phi), S2(\gamma)\]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \gamma\)</span>)
+S1 and S2 [Num, Num].</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The structured non-propagated far-field</td>
 </tr>
@@ -1363,19 +1404,17 @@ Those parameters are defined as:</p>
 <code class="descname">uS1S2</code><span class="sig-paren">(</span><em>Phi</em>, <em>Theta</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.uS1S2" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Method Compute scattering Far Field for unstructured coordinate.</p>
-<div class="math notranslate nohighlight">
-\[\text{Fields} = E_{||}(\phi,\theta)^2,
-                 E_{\perp}(\phi,\theta)^2\]</div>
-<p>The Fields are up to a constant phase value.</p>
+<p>Method Compute scattering Far Field for unstructured coordinate.
+S1 S2 are non-propagated fields componenet.</p>
 <div class="last math notranslate nohighlight">
-\[\exp{\big(-i k r \big)}\]</div>
+\[\text{S1S2} = S1(\phi), S2(\gamma)\]</div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \theta\)</span>) evaluate the Fields [Num, Num].</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>Num</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>) – Number of point to spatially (<span class="math notranslate nohighlight">\(\phi , \gamma\)</span>)
+S1 and S2 [Num].</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The unstructured non-propagated far-field</td>
 </tr>

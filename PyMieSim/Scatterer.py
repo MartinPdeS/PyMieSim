@@ -6,15 +6,24 @@ from beartype      import beartype
 from scipy.special import gamma
 from typing        import Union
 
-from PyMieSim.Representations import S1S2, SPF, Stokes
-from PyMieSim.GLMT.Scatterer  import SPHERE as G_SPHERE, CYLINDER as G_CYLINDER
-from PyMieSim.LMT.Scatterer   import SPHERE, CYLINDER
 from PyMieSim.units           import Area
 from PyMieSim.Source          import PlaneWave, GaussianBeam
+from PyMieSim.Representations import S1S2, SPF, Stokes
+
+from PyMieSim.GLMT.Scatterer  import ( SPHERE as G_SPHERE,
+                                       CYLINDER as G_CYLINDER )
+
+from PyMieSim.LMT.Scatterer   import ( SPHERE,
+                                       CYLINDER,
+                                       SHELLSPHERE1 )
+
 from PyMieSim.BaseClasses     import ( BaseScatterer,
                                        ScattererProperties,
                                        BaseSource )
 
+
+ScalarType = Union[int, float, complex]
+SourceType = Union[PlaneWave, GaussianBeam]
 
 class Sphere(BaseScatterer, ScattererProperties):
     """
@@ -33,21 +42,19 @@ class Sphere(BaseScatterer, ScattererProperties):
     Attributes
     ----------
     Area : :class:`float`
-        Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
+        .. note:: Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
     SizeParam : :class:`float`
-        Size parameter of the scatterer [:math:`k r`].
+        .. note:: Size parameter of the scatterer [:math:`k r`].
 
     """
     @beartype
     def __init__(self,
                  Diameter : float,
-                 Source   : Union[PlaneWave, GaussianBeam],
-                 Index    : Union[int, float, complex]     = None,
-                 nMedium  : Union[int, float, complex]     = 1.0,
-                 MuSphere : Union[int, float]              = 1.0,
-                 MuMedium : Union[int, float]              = 1.0,
-                 Testing  : bool                           = False,
-                 Material                                  = None):
+                 Source   : SourceType,
+                 Index    : ScalarType   = None,
+                 nMedium  : ScalarType   = 1.0,
+                 Testing  : bool         = False,
+                 Material                = None):
 
         super().__init__()
         if Material:
@@ -65,8 +72,6 @@ class Sphere(BaseScatterer, ScattererProperties):
         self.nMedium   = nMedium.real#.astype(complex)
         self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
-        self.MuSp      = MuSphere
-        self.Mu        = MuMedium
         self.Testing   = Testing
 
         self.GetBinding()
@@ -173,6 +178,104 @@ class Sphere(BaseScatterer, ScattererProperties):
 
 
 
+class ShellSphere(BaseScatterer, ScattererProperties):
+    """
+    .. note::
+        Short summary.
+
+    Parameters
+    ----------
+    Diameter : :class:`float`
+        Diameter of the single scatterer in unit of meter.
+    Source : :class:`BaseSource`
+        Light source object containing info on polarization and wavelength.
+    Index : :class:`float`
+        Refractive index of scatterer
+
+    Attributes
+    ----------
+    Area : :class:`float`
+        .. note:: Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
+    SizeParam : :class:`float`
+        .. note:: Size parameter of the scatterer [:math:`k r`].
+
+    """
+    @beartype
+    def __init__(self,
+                 CoreDiameter  : float,
+                 ShellDiameter : float,
+                 Source        : SourceType,
+                 CoreIndex     : ScalarType   = None,
+                 ShellIndex    : ScalarType   = None,
+                 nMedium       : ScalarType   = 1.0,
+                 Testing       : bool         = False,
+                 CoreMaterial                 = None,
+                 ShellMaterial                = None,
+                 ):
+
+        super().__init__()
+        if all([CoreMaterial, ShellMaterial]):
+            assert all([CoreIndex is None, ShellIndex is None]),"You should either choose a material or the RI not both"
+            self.Material = Material
+            self.CoreIndex     = CoreMaterial.Evaluate(Source.Wavelength)
+            self.ShellIndex    = ShellMaterial.Evaluate(Source.Wavelength)
+
+        if all([CoreIndex, ShellIndex]):
+            assert all([CoreMaterial is None, ShellMaterial is None]),"You should either choose a material or the RI not both"
+            self.Material = None
+            self.CoreIndex     = CoreIndex
+            self.ShellIndex    = ShellIndex
+
+        self.type          = '2-Layer Sphere'
+        self.CoreDiameter  = CoreDiameter
+        self.ShellDiameter = ShellDiameter
+        self.Source        = Source
+        self.nMedium       = nMedium
+        self.Area          = Area(np.pi * (ShellDiameter/2)**2)
+        self.Testing       = Testing
+
+        self.GetBinding()
+
+
+    def GetBinding(self):
+        """
+        .. note::
+            Method call and bind c++ scatterer class
+        """
+        if self.Source.GLMT is True:
+            raise Exception("""This scatterer is not available in the\
+                               GLMT framework for now.""")
+
+        else:
+            self.Bind = SHELLSPHERE1(ShellIndex     = self.ShellIndex,
+                                     CoreIndex      = self.CoreIndex,
+                                     ShellDiameter  = self.ShellDiameter,
+                                     CoreDiameter   = self.CoreDiameter,
+                                     Wavelength     = self.Source.Wavelength,
+                                     nMedium        = self.nMedium,
+                                     Polarization   = self.Source.Polarization.Radian,
+                                     E0             = self.Source.E0)
+
+
+    def an(self, MaxOrder=5):
+        """
+        .. note::
+            Compute :math:`a_n` coefficient
+
+        """
+        return self.Bind.an(MaxOrder)
+
+
+    def bn(self, MaxOrder=5):
+        """
+        .. note::
+            Compute :math:`b_n` coefficient.
+
+        """
+        return self.Bind.bn(MaxOrder)
+
+
+
 
 
 class Cylinder(BaseScatterer, ScattererProperties):
@@ -192,20 +295,18 @@ class Cylinder(BaseScatterer, ScattererProperties):
     Attributes
     ----------
     Area : :class:`float`
-        Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
+        .. note:: Mathematical 2D area of the scatterer [:math:`\\pi r^2`].
     SizeParam : :class:`float`
-        Size parameter of the scatterer [:math:`k r`].
+        .. note:: Size parameter of the scatterer [:math:`k r`].
 
     """
 
     def __init__(self,
                  Diameter    : float,
-                 Source      : BaseSource,
-                 Index       : float,
-                 IndexMedium : float  = 1.0,
-                 MuSphere    : float  = 1.0,
-                 MuMedium    : float  = 1.0,
-                 Testing     : bool   = False):
+                 Source      : SourceType,
+                 Index       : ScalarType,
+                 IndexMedium : ScalarType  = 1.0,
+                 Testing     : bool        = False):
 
         super().__init__()
         self.type      = 'Cylinder'
@@ -215,8 +316,6 @@ class Cylinder(BaseScatterer, ScattererProperties):
         self.nMedium   = IndexMedium
         self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
-        self.MuSp      = MuSphere
-        self.Mu        = MuMedium
         self.Testing   = Testing
 
         self.GetBinding()

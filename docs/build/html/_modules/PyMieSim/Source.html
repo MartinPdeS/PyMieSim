@@ -207,7 +207,7 @@
 <span class="sd">            Value of the electric field.</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
+<span class="sd">                E = E_0 \\exp{\\big( i k (z-z_0) \\big) (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">z0</span> <span class="o">=</span> <span class="mi">0</span>
@@ -223,7 +223,7 @@
 <span class="sd">            Value of the electric field.</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
+<span class="sd">                H = H_0 \\exp{\\big( i k (z-z_0) \\big) (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">z0</span> <span class="o">=</span> <span class="mi">0</span>
@@ -422,7 +422,8 @@
 <span class="sd">            Method returns:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\Phi_0 = -i Q \\exp \\Big[ i Q \\frac{(x-x_0)^2 + (y-y_0)^2}{w_0^2} \\Big]</span>
+<span class="sd">                \\Phi_0 = -i Q \\exp \\Big[ i Q \\frac{(x-x_0)^2 +</span>
+<span class="sd">                (y-y_0)^2}{w_0^2} \\Big]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
@@ -439,7 +440,9 @@
 <span class="sd">            Method returns:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\Phi_0 = -i Q \\exp \\Big[ \\frac{i Q}{w_0^2} \\Big(  (r \\sin (\\theta) \\cos (\\phi) - x_0^2 ) + (r \\sin (\\theta) \\sin (\\phi) - y_0^2 ) \\Big) \\Big]</span>
+<span class="sd">                \\Phi_0 = -i Q \\exp \\Big[ \\frac{i Q}{w_0^2} \\Big(  (r</span>
+<span class="sd">                \\sin (\\theta) \\cos (\\phi) - x_0^2 ) +</span>
+<span class="sd">                (r \\sin (\\theta) \\sin (\\phi) - y_0^2 ) \\Big) \\Big]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_Spherical</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
         <span class="n">term0</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">Q</span>
@@ -457,30 +460,48 @@
 <span class="sd">            Method returns:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
-<span class="sd">                (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}\</span>
+<span class="sd">                B_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}</span>
+<span class="sd">                (\\beta) - \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_4 \\hat{I}_{m}</span>
 <span class="sd">                (\\beta) d \\theta</span>
 
 <span class="sd">            Where:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\gamma_0 &amp;= \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}</span>
+<span class="sd">                \\gamma_0 &amp;= \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}</span>
+<span class="sd">                e^{-i Z_0}</span>
 
-<span class="sd">                \\gamma_1 &amp;= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \</span>
-<span class="sd">                + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \</span>
-<span class="sd">                \\sin(\\theta)</span>
+<span class="sd">                .</span>
 
-<span class="sd">                \\gamma_2 &amp;= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)</span>
+<span class="sd">                \\gamma_1 &amp;= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n</span>
+<span class="sd">                \\sin (\\theta )  \\big)^2 + i \\rho_n \\cos( \\theta ) \\Big]</span>
+<span class="sd">                \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \\sin(\\theta)</span>
+
+<span class="sd">                .</span>
+
+<span class="sd">                \\gamma_2 &amp;= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big)</span>
+<span class="sd">                 \\sin(\\theta)</span>
+
+<span class="sd">                 .</span>
 
 <span class="sd">                \\gamma_3 &amp;= 4 Q s^2 X_0 \\cos(\\theta)</span>
 
+<span class="sd">                .</span>
+
 <span class="sd">                \\gamma_4 &amp;= 4 Q s^2 Y_0 \\cos(\\theta)</span>
 
-<span class="sd">                I_m(\\beta) &amp;= \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi</span>
+<span class="sd">                .</span>
+
+<span class="sd">                I_m(\\beta) &amp;= \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi)</span>
+<span class="sd">                - i m \\phi} d\\phi</span>
+
+<span class="sd">                .</span>
 
 <span class="sd">                \\tilde{I}_m(\\beta) &amp;= e^{-\\beta - i m \\xi} I_m(\\beta)</span>
 
-<span class="sd">                Q_{spherical} &amp;= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}</span>
+<span class="sd">                .</span>
+
+<span class="sd">                Q_{spherical} &amp;= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )</span>
+<span class="sd">                /k w_0^2 - i}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -501,30 +522,48 @@
 <span class="sd">            Method returns:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
-<span class="sd">                (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\</span>
+<span class="sd">                A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}</span>
+<span class="sd">                (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}</span>
 <span class="sd">                (\\beta) d \\theta</span>
 
 <span class="sd">            Where:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                \\gamma_0 &amp;= \\frac{(-i)^n \\rho_n^2}{(2n+1) \\psi_n(\\rho_n)}e^{-i Z_0}</span>
+<span class="sd">                \\gamma_0 &amp;= \\frac{(-i)^n \\rho_n^2}{(2n+1)</span>
+<span class="sd">                \\psi_n(\\rho_n)}e^{-i Z_0}</span>
 
-<span class="sd">                \\gamma_1 &amp;= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n \\sin (\\theta )  \\big)^2 \</span>
-<span class="sd">                + i \\rho_n \\cos( \\theta ) \\Big] \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \</span>
+<span class="sd">                .</span>
+
+<span class="sd">                \\gamma_1 &amp;= Q \\exp \\big[ i Q s^2 \\Big( R_0 - \\rho_n</span>
+<span class="sd">                \\sin (\\theta )  \\big)^2 + i \\rho_n \\cos( \\theta ) \\Big]</span>
+<span class="sd">                \\hat{P}_n^{|m|} (\\cos ( \\theta ) ) \\sin(\\theta)</span>
+
+<span class="sd">                .</span>
+
+<span class="sd">                \\gamma_2 &amp;= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big)</span>
 <span class="sd">                \\sin(\\theta)</span>
 
-<span class="sd">                \\gamma_2 &amp;= \\big( 2 Q s^2 \\rho_n \\cos(\\theta) -1 \\big) \\sin(\\theta)</span>
+<span class="sd">                .</span>
 
 <span class="sd">                \\gamma_3 &amp;= 4 Q s^2 X_0 \\cos(\\theta)</span>
 
+<span class="sd">                .</span>
+
 <span class="sd">                \\gamma_4 &amp;= 4 Q s^2 Y_0 \\cos(\\theta)</span>
 
-<span class="sd">                I_m(\\beta) &amp;= \\frac{1}{2\\pi} \int_0^{2\\pi} e^{z \\cos(\\phi) - i m \\phi} d\\phi</span>
+<span class="sd">                .</span>
+
+<span class="sd">                I_m(\\beta) &amp;= \\frac{1}{2\\pi} \int_0^{2\\pi}</span>
+<span class="sd">                e^{z \\cos(\\phi) - i m \\phi} d\\phi</span>
+
+<span class="sd">                .</span>
 
 <span class="sd">                \\tilde{I}_m(\\beta) &amp;= e^{-\\beta - i m \\xi} I_m(\\beta)</span>
 
-<span class="sd">                Q_{spherical} &amp;= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )/k w_0^2 - i}</span>
+<span class="sd">                .</span>
+
+<span class="sd">                Q_{spherical} &amp;= \\frac{1}{2 ( r \\cos (\\theta) - z_0 )</span>
+<span class="sd">                /k w_0^2 - i}</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -544,8 +583,8 @@
 <span class="sd">            Method returns:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
-<span class="sd">                (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\</span>
+<span class="sd">                A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}</span>
+<span class="sd">                (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}</span>
 <span class="sd">                (\\beta) d \\theta</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -564,8 +603,8 @@
 <span class="sd">            Method returns:</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}\</span>
-<span class="sd">                (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}\</span>
+<span class="sd">                A_{mn} = \\gamma_0 \\int_0^{\\pi} \\gamma_1 \\big[ \\hat{I}_{m+1}</span>
+<span class="sd">                (\\beta) + \\hat{I}_{m-1} (\\beta) \\big] -\\gamma_3 \\hat{I}_{m}</span>
 <span class="sd">                (\\beta) d \\theta</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -586,7 +625,8 @@
 <span class="sd">            Value of the electric Field (First Order), ref[2]:Eq:6</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                E = E_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
+<span class="sd">                E = E_0 \\exp{\\big( i k (z-z_0) \\big)</span>
+<span class="sd">                (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">w0</span> <span class="o">=</span> <span class="mf">1e-5</span>
@@ -610,7 +650,8 @@
 <span class="sd">            Value of the electric Field (First Order), ref[2]:Eq:6</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                H = H_0 \\exp{\big( i k (z-z_0) \big) (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
+<span class="sd">                H = H_0 \\exp{\\big( i k (z-z_0) \\big)</span>
+<span class="sd">                (p_x \\vec{e_x}, p_y \\vec{e_y})}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
 
@@ -630,7 +671,10 @@
 <span class="sd">            Value of the electric Field (First Order), ref[2]:Eq:10</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                E_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -x_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}</span>
+<span class="sd">                E_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi)</span>
+<span class="sd">                - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta)</span>
+<span class="sd">                \\cos (\\phi) -x_0 \\big)  \\Big] \\exp^{ik (r \\cos</span>
+<span class="sd">                (\\theta) -z_0 )}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">_Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_Spherical</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
@@ -659,7 +703,10 @@
 <span class="sd">            Value of the magnetic Field (First Order), ref[2]:Eq:10</span>
 
 <span class="sd">            .. math::</span>
-<span class="sd">                H_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) - \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta) \\cos (\\phi) -y_0 \\big)  \\Big] \\exp^{ik (r \\cos (\\theta) -z_0 )}</span>
+<span class="sd">                H_r = E_0 \\Phi_0 \\Big[ \\sin (\\theta) \\cos (\\phi) -</span>
+<span class="sd">                \\frac{2Q}{kw_0^2} \\cos (\\theta) \\big( r \\sin (\\theta)</span>
+<span class="sd">                \\cos (\\phi) -y_0 \\big)  \\Big] \\exp^{ik (r \\cos</span>
+<span class="sd">                (\\theta) -z_0 )}</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">_Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_Spherical</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">theta</span><span class="p">)</span>
