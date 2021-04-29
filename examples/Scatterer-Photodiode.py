@@ -18,4 +18,4 @@ Scat = Sphere(Diameter    = 300e-9,
 
 Coupling = Detector.Coupling(Scatterer = Scat)
 
-print(Coupling)
+print(Coupling) # 6.566085549292496e-18

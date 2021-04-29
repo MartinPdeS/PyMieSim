@@ -7,7 +7,7 @@ import os
 from PyMieSim.Directories     import NPZPath
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics         import _Polarization, Angle
-from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex
+from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList
 from PyMieSim.units           import Power, Area
 from PyMieSim.Mesh            import FibonacciMesh
 from PyMieSim._Coupling       import Coupling
@@ -792,7 +792,8 @@ class BaseMaterial(object):
     def Evaluate(self, wavelength):
         self.counter = -1
         self.Data
-
+        wavelength = ToList(wavelength)
+        print(wavelength, self.Boundary[0])
         if any(wavelength < self.Boundary[0]) or any(wavelength > self.Boundary[1]):
             raise ValueError(f'Wavelength {wavelength} evaluated \
                                outside of defined range {self.Boundary}')

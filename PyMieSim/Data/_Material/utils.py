@@ -7,12 +7,9 @@ import csv
 import urllib.request
 import pandas as pd
 import numpy as np
-from pathlib import Path
-
-PATH = os.path.join( Path(__file__).parent )
 
 from PyMieSim.BaseClasses import BaseMaterial
-
+from PyMieSim.Directories import NPZPath, MaterialPath
 
 
 def LoadOnline(url):
@@ -41,7 +38,7 @@ def LoadOnline(url):
 
 def LoadOnlineSave(url, filename, unit=1e-6):
     dict_data = LoadOnline(url)
-    directory = os.path.join( PATH, 'data', filename )
+    directory = os.path.join( NPZPath, filename )
 
     if 'wl1' not in dict_data:
          np.savez(directory,
@@ -55,7 +52,7 @@ def LoadOnlineSave(url, filename, unit=1e-6):
                  k = dict_data['k']
                  )
 
-    with open(os.path.join(PATH, 'Meta.json'), 'r+' ) as f:
+    with open(os.path.join(MaterialPath, 'Meta.json'), 'r+' ) as f:
         META                     = json.load(f)
         META['remote'][filename] = url
         META['local'][filename]  = filename + '.npz'

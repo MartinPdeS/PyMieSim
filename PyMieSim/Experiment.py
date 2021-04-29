@@ -318,7 +318,6 @@ class Setup(object):
         shape = []
         size  = 1
         for item in conf['dimension'].values():
-            print(item)
             shape += [len(item)]
             size  *= len(item)
 
