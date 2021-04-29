@@ -6,7 +6,7 @@ Examples
 Scatterer: Index
 -------------------
 
-.. literalinclude:: ../../Examples/Index.py
+.. literalinclude:: ../../examples/Index.py
     :language: python
     :linenos:
 
@@ -14,7 +14,7 @@ Scatterer: Index
 Scatterer: Material
 -------------------
 
-.. literalinclude:: ../../Examples/Material.py
+.. literalinclude:: ../../examples/Material.py
     :language: python
     :linenos:
 
@@ -26,7 +26,7 @@ Scatterer: S1-S2
 
 
 
-.. literalinclude:: ../../Examples/S1S2.py
+.. literalinclude:: ../../examples/S1S2.py
     :language: python
     :linenos:
 
@@ -45,7 +45,7 @@ Scatterer: S1-S2
 Scatterer: Stokes
 -----------------
 
-.. literalinclude:: ../../Examples/Stokes.py
+.. literalinclude:: ../../examples/Stokes.py
     :language: python
     :linenos:
 
@@ -59,11 +59,11 @@ Scatterer: Stokes
 Scatterer: full far-field
 -------------------------
 
-.. literalinclude:: ../../Examples/FarField.py
+.. literalinclude:: ../../examples/FarField.py
     :language: python
     :linenos:
 
-.. image:: ../images/Fields.png
+.. image:: ../images/FarField.png
    :width: 600
 
 -----
@@ -73,7 +73,7 @@ Scatterer: full far-field
 Scatterer: phase function
 -------------------------
 
-.. literalinclude:: ../../Examples/SPF.py
+.. literalinclude:: ../../examples/SPF.py
     :language: python
     :linenos:
 
@@ -87,7 +87,7 @@ Scatterer: phase function
 Detector: Photodiode
 --------------------
 
-.. literalinclude:: ../../Examples/Photodiode.py
+.. literalinclude:: ../../examples/Photodiode.py
     :language: python
     :linenos:
 
@@ -102,12 +102,12 @@ Detector: Photodiode
 Detector: LPMode
 ----------------
 
-.. literalinclude:: ../../Examples/LPMode.py
+.. literalinclude:: ../../examples/LPMode.py
     :language: python
     :linenos:
 
 
-.. image:: ../images/LPmode.png
+.. image:: ../images/LPMode.png
    :width: 600
 
 -----
@@ -118,7 +118,7 @@ Detector: LPMode
 Coupling: Scatterer-Photodiode
 ------------------------------
 
-.. literalinclude:: ../../Examples/Scatterer-Photodiode.py
+.. literalinclude:: ../../examples/Scatterer-Photodiode.py
     :language: python
     :linenos:
 
@@ -133,11 +133,11 @@ Output: (6.57e+01 nWatt)
 ScattererSet: Qscattering
 --------------------------
 
-.. literalinclude:: ../../Examples/Qscattering.py
+.. literalinclude:: ../../examples/Qscattering.py
     :language: python
     :linenos:
 
-.. image:: ../images/Qsca.png
+.. image:: ../images/Qscattering.png
    :width: 600
 
 
@@ -149,11 +149,11 @@ ScattererSet: Qscattering
 Experiment: Qsca-vs-diameter
 ------------------------------
 
-.. literalinclude:: ../../Examples/Qsca-vs-diameter.py
+.. literalinclude:: ../../examples/Qsca-vs-diameter.py
     :language: python
     :linenos:
 
-.. image:: ../images/QscaVSDiameter.png
+.. image:: ../images/Qsca-vs-diameter.png
   :width: 600
 
 -----
@@ -164,12 +164,12 @@ Experiment: Qsca-vs-diameter
 Experiment: Mie-resonances
 --------------------------
 
-.. literalinclude:: ../../Examples/Mie-resonances.py
+.. literalinclude:: ../../examples/Mie-resonances.py
     :language: python
     :linenos:
 
 
-.. image:: ../images/QscaVSWavelength.png
+.. image:: ../images/Mie-resonances.png
   :width: 600
 
 -----
@@ -180,11 +180,11 @@ Experiment: Mie-resonances
 Experiment: Coupling-vs-diameter
 ---------------------------------
 
-.. literalinclude:: ../../Examples/Coupling-vs-diameter.py
+.. literalinclude:: ../../examples/Coupling-vs-diameter.py
     :language: python
     :linenos:
 
-.. image:: ../images/CouplingVSDiameter.png
+.. image:: ../images/Coupling-vs-diameter.png
   :width: 600
 
 
@@ -193,11 +193,11 @@ Experiment: Coupling-vs-diameter
 Experiment: Coupling-vs-wavelength
 -----------------------------------
 
-.. literalinclude:: ../../Examples/Coupling-vs-wavelength.py
+.. literalinclude:: ../../examples/Coupling-vs-wavelength.py
     :language: python
     :linenos:
 
-.. image:: ../images/CouplingVSWavelength.png
+.. image:: ../images/Coupling-vs-wavelength.png
    :width: 600
 
 -----
@@ -205,7 +205,7 @@ Experiment: Coupling-vs-wavelength
 Optimization: Opt-1-parameter
 ------------------------------
 
-.. literalinclude:: ../../Examples/Opt-1-parameter.py
+.. literalinclude:: ../../examples/Opt-1-parameter.py
     :language: python
     :linenos:
 
@@ -246,8 +246,10 @@ Optimization: Opt-1-parameter
 | success: True
 | x: array([-0.00782705])
 
-.. image:: ../images/Opt1Param.png
-   :width: 600
+
+..
+  .. image:: ../images/Opt1Param.png
+     :width: 600
 
 
 -----
@@ -255,6 +257,6 @@ Optimization: Opt-1-parameter
 Optimization: Opt-2-parameter
 ------------------------------
 
-.. literalinclude:: ../../Examples/Opt-2-parameter.py
+.. literalinclude:: ../../examples/Opt-2-parameter.py
     :language: python
     :linenos:

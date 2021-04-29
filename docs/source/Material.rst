@@ -48,7 +48,7 @@ Here is what the Meta file look like
 
 
 
- .. literalinclude:: ../../Examples/New-Material.py
+ .. literalinclude:: ../../examples/New-Material.py
      :language: python
      :linenos:
 
@@ -65,7 +65,7 @@ Here is another examples
 
 
 
-.. literalinclude:: ../../Examples/New-Material-Silver.py
+.. literalinclude:: ../../examples/New-Material-Silver.py
     :language: python
     :linenos:
 

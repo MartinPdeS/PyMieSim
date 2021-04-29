@@ -45,6 +45,8 @@ runScriptMatplotlib('Qscattering')
 
 runScriptMatplotlib('Coupling-vs-wavelength')
 
+runScriptMatplotlib('Qsca-vs-diameter')
+
 runScriptMatplotlib('Coupling-vs-diameter')
 
 runScriptMatplotlib('New-Material')

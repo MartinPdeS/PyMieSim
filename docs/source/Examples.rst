@@ -153,7 +153,7 @@ Experiment: Qsca-vs-diameter
     :language: python
     :linenos:
 
-.. image:: ../images/QscaVSDiameter.png
+.. image:: ../images/Qsca-vs-diameter.png
   :width: 600
 
 -----
@@ -169,7 +169,7 @@ Experiment: Mie-resonances
     :linenos:
 
 
-.. image:: ../images/QscaVSWavelength.png
+.. image:: ../images/Mie-resonances.png
   :width: 600
 
 -----
@@ -184,7 +184,7 @@ Experiment: Coupling-vs-diameter
     :language: python
     :linenos:
 
-.. image:: ../images/CouplingVSDiameter.png
+.. image:: ../images/Coupling-vs-diameter.png
   :width: 600
 
 
@@ -197,7 +197,7 @@ Experiment: Coupling-vs-wavelength
     :language: python
     :linenos:
 
-.. image:: ../images/CouplingVSWavelength.png
+.. image:: ../images/Coupling-vs-wavelength.png
    :width: 600
 
 -----
@@ -246,8 +246,10 @@ Optimization: Opt-1-parameter
 | success: True
 | x: array([-0.00782705])
 
-.. image:: ../images/Opt1Param.png
-   :width: 600
+
+..
+  .. image:: ../images/Opt1Param.png
+     :width: 600
 
 
 -----

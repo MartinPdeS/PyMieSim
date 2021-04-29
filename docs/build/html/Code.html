@@ -425,7 +425,7 @@ numerical overflow.</p>
 <h3>Sphere<a class="headerlink" href="#sphere" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="PyMieSim.Scatterer.Sphere">
-<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>Diameter: float, Source: Union[PyMieSim.Source.PlaneWave, PyMieSim.Source.GaussianBeam], Index: Union[int, float, complex] = None, nMedium: Union[int, float, complex] = 1.0, MuSphere: Union[int, float] = 1.0, MuMedium: Union[int, float] = 1.0, Testing: bool = False, Material=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Sphere</code><span class="sig-paren">(</span><em>Diameter: float, Source: Union[PyMieSim.Source.PlaneWave, PyMieSim.Source.GaussianBeam], Index: Union[int, float, complex] = None, nMedium: Union[int, float, complex] = 1.0, Testing: bool = False, Material=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Sphere" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Short summary.</p>
@@ -496,16 +496,6 @@ numerical overflow.</p>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="PyMieSim.Scatterer.Sphere.Efficiencies">
-<code class="descname">Efficiencies</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Efficiencies" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Methode compute all properties (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
-Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -581,6 +571,16 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Sphere.GetProperties">
+<code class="descname">GetProperties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.GetProperties" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Methode compute all Properties (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
+Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Sphere.PoyntingVector">
 <code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.PoyntingVector" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
@@ -603,12 +603,12 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="PyMieSim.Scatterer.Sphere.Properties">
-<code class="descname">Properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Properties" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Properties</code><a class="headerlink" href="#PyMieSim.Scatterer.Sphere.Properties" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
+<p class="last">Methode compute all properties (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
 Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </div>
 </dd></dl>
@@ -942,7 +942,7 @@ S1 and S2 [Num].</td>
 <h3>Cylinder<a class="headerlink" href="#cylinder" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="PyMieSim.Scatterer.Cylinder">
-<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Cylinder</code><span class="sig-paren">(</span><em>Diameter: float</em>, <em>Source: PyMieSim.BaseClasses.BaseSource</em>, <em>Index: float</em>, <em>IndexMedium: float = 1.0</em>, <em>MuSphere: float = 1.0</em>, <em>MuMedium: float = 1.0</em>, <em>Testing: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">PyMieSim.Scatterer.</code><code class="descname">Cylinder</code><span class="sig-paren">(</span><em>Diameter: float, Source: Union[PyMieSim.Source.PlaneWave, PyMieSim.Source.GaussianBeam], Index: Union[int, float, complex], IndexMedium: Union[int, float, complex] = 1.0, Testing: bool = False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PyMieSim/Scatterer.html#Cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Short summary.</p>
@@ -1013,16 +1013,6 @@ S1 and S2 [Num].</td>
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="PyMieSim.Scatterer.Cylinder.Efficiencies">
-<code class="descname">Efficiencies</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Efficiencies" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Methode compute all properties (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
-Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
-</div>
 </dd></dl>
 
 <dl class="method">
@@ -1098,6 +1088,16 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="PyMieSim.Scatterer.Cylinder.GetProperties">
+<code class="descname">GetProperties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.GetProperties" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Methode compute all Properties (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
+Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="PyMieSim.Scatterer.Cylinder.PoyntingVector">
 <code class="descname">PoyntingVector</code><span class="sig-paren">(</span><em>Mesh</em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.PoyntingVector" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
@@ -1120,12 +1120,12 @@ Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="PyMieSim.Scatterer.Cylinder.Properties">
-<code class="descname">Properties</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Properties" title="Permalink to this definition">¶</a></dt>
+<code class="descname">Properties</code><a class="headerlink" href="#PyMieSim.Scatterer.Cylinder.Properties" title="Permalink to this definition">¶</a></dt>
 <dd><div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Methode compute all Efficiences (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
+<p class="last">Methode compute all properties (<span class="math notranslate nohighlight">\(Q_{sca}, Q_{ext}, Q_{abs},
 Q_{back}, Q_{ratio}, g, Q_{pr}\)</span>) for the scatterer.</p>
 </div>
 </dd></dl>

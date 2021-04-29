@@ -76,7 +76,7 @@
 <span class="kn">from</span> <span class="nn">PyMieSim.Directories</span>     <span class="kn">import</span> <span class="n">NPZPath</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">ScalarFarField</span><span class="p">,</span> <span class="n">Footprint</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span>         <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span>           <span class="kn">import</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">NearestIndex</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span>           <span class="kn">import</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">NearestIndex</span><span class="p">,</span> <span class="n">ToList</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.units</span>           <span class="kn">import</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Area</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span>            <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieSim._Coupling</span>       <span class="kn">import</span> <span class="n">Coupling</span>
@@ -294,7 +294,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span>
 
 
@@ -312,7 +312,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span>
 
 
@@ -329,7 +329,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span>
 
 
@@ -347,7 +347,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span>
 
 
@@ -364,7 +364,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span>
 
     <span class="nd">@property</span>
@@ -384,7 +384,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span>
 
 
@@ -401,12 +401,12 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Properties</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span>
 
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">Efficiencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. note::</span>
 <span class="sd">            Methode compute all properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
@@ -414,12 +414,11 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">ScatProperties</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Properties</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Properties</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span> <span class="o">=</span> <span class="n">ScatProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_Properties</span> <span class="o">=</span> <span class="n">ScatProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Properties</span>
 
 
 <span class="k">class</span> <span class="nc">BaseScatterer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -456,24 +455,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_bn</span>     <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cn</span>     <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span>     <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Efficiencies</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Properties</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">Properties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">GetProperties</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. note::</span>
-<span class="sd">            Methode compute all Efficiences (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
+<span class="sd">            Methode compute all Properties (:math:`Q_{sca}, Q_{ext}, Q_{abs},</span>
 <span class="sd">            Q_{back}, Q_{ratio}, g, Q_{pr}`) for the scatterer.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span>
-         <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">,</span>
-         <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span><span class="p">,</span>
-         <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span><span class="p">,</span>
-         <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span><span class="p">,</span>
-         <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">,</span>
-         <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span> <span class="p">)</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">Efficiencies</span>
+        <span class="n">prop</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bind</span><span class="o">.</span><span class="n">Efficiencies</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Qsca</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qext</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qabs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Qback</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Qratio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">,</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_Qpr</span> <span class="p">)</span> <span class="o">=</span> <span class="n">prop</span>
+
+        <span class="k">return</span> <span class="n">prop</span>
 
 
     <span class="k">def</span> <span class="nf">S1S2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Num</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
@@ -839,7 +836,7 @@
 
         <span class="k">if</span> <span class="s1">&#39;wl1&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span> <span class="o">=</span> <span class="p">(</span> <span class="nb">max</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl1&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]),</span>
-                               <span class="nb">min</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl1&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                              <span class="nb">min</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl1&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span> <span class="o">=</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">Data</span><span class="p">[</span><span class="s1">&#39;wl0&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
 
@@ -857,10 +854,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Generator</span><span class="p">(</span><span class="n">array</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nList</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">Index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nList</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">Evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">counter</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Data</span>
-
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="n">ToList</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">wavelength</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">wavelength</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Wavelength </span><span class="si">{</span><span class="n">wavelength</span><span class="si">}</span><span class="s1"> evaluated </span><span class="se">\</span>
 <span class="s1">                               outside of defined range </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Boundary</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
