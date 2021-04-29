@@ -4,7 +4,6 @@ from PyMieSim.Source import PlaneWave
 from PyMieSim.Optimizer import Optimize
 from PyMieSim.Sets import ExperimentalSet, ScattererSet
 
-
 Source = PlaneWave(Wavelength   = 450e-9,
                  Polarization = 0,
                  E0           = 1e5)

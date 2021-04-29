@@ -12,7 +12,6 @@ Detector = Photodiode(Sampling     = 201,
                      PhiOffset    = 0,
                      CouplingMode = 'Centered')
 
-
 Scat = Sphere(Diameter    = 300e-9,
              Source      = Source,
              Index       = 1.4)

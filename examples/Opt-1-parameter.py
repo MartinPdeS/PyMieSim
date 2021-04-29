@@ -1,8 +1,9 @@
 import numpy as np
-from PyMieSim.Detector import Photodiode, LPmode
-from PyMieSim.Source import PlaneWave
-from PyMieSim.Optimization import Optimizer
-from PyMieSim.Experiment import ScatSet, SourceSet, Setup
+from PyMieSim            import Material
+from PyMieSim.Scatterer  import Sphere
+from PyMieSim.Detector   import Photodiode, LPmode
+from PyMieSim.Source     import PlaneWave
+from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
 DiameterList   = np.linspace(100e-9, 1000e-9, 200)
 
@@ -12,20 +13,28 @@ Detector0 = Photodiode(NA                 = 0.1,
                      PhiOffset         = 0,
                      CouplingMode      = 'Centered')
 
-scat = ScatSet(DiameterList   = DiameterList,
-             IndexList      = [1.5],
-             nMedium        = 1,
-             ScattererType  = 'Sphere')
+scatKwargs   = { 'Diameter'    : np.linspace(400e-9, 2000e-9, 200),
+                 'Material'    : Material('BK7'),
+                 'nMedium'     : [1] }
 
-source = SourceSet(WavelengthList  = 400e-9,
-                 PolarizationList  = [0],
-                 SourceType        = 'PlaneWave')
+sourceKwargs = { 'Wavelength'   : 1e-6,
+                 'Polarization' : [0]}
 
+Detector0 = Photodiode(NA                = 2.0,
+                       Sampling          = 300,
+                       GammaOffset       = 0,
+                       PhiOffset         = 0,
+                       CouplingMode      = 'Centered')
 
-Experiment = Setup(ScattererSet = scat,
-                 SourceSet    = source,
-                 DetectorSet  = [Detector0])
+detecSet   = DetectorSet([Detector0])
 
+scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
+
+sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
+
+Experiment = Setup(ScattererSet = scatSet,
+                   SourceSet    = sourceSet,
+                   DetectorSet  = detecSet)
 
 # Metric can be "max"
 #               "min"
@@ -41,7 +50,7 @@ Experiment = Setup(ScattererSet = scat,
 #               "monotonic+Wavelength"
 #               "monotonic+Detector"
 
-Opt    = Optimizer(Setup           = Experiment,
+Opt = Experiment.Optimize(Setup           = Experiment,
                  Metric          = 'mean',
                  Parameter       = ['PhiOffset'],
                  Optimum         = 'Maximum',

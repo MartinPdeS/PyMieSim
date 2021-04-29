@@ -10,8 +10,6 @@ import unittest
 
 from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 
-
-
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
@@ -31,7 +29,12 @@ phi         = linspace(-pi/2, pi/2,4)
 theta       = linspace(-pi, pi,4)
 
 
+scatKwargs   = { 'Diameter' : 200e-9,
+                 'Index'    : [4],
+                 'nMedium'  : [1] }
 
+sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 10),
+                 'Polarization' : [0]}
 
 
 class DetectorTestCase(unittest.TestCase):
@@ -179,17 +182,14 @@ class ScattererTestCase(unittest.TestCase):
 class ExperiementTestCase(unittest.TestCase):
     def test00(self):
         global sScatSet
-        sScatSet = ScatSet(DiameterList = linspace(100e-9, 4500e-9, 11),
-                           IndexList    = 1.5)
+        sScatSet = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 
         print('<ScattererSet> initialisation passed')
 
 
     def test01(self):
         global sourceSet
-        sourceSet = SourceSet(WavelengthList   = 400e-9,
-                              PolarizationList = 0,
-                              SourceType       = 'PlaneWave')
+        sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
 
         print('<SourceSet> initialisation passed')
 

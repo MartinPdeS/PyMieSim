@@ -46,7 +46,8 @@ class ScatSet(object):
             assert 'Material' not in kwargs.keys(), IO( "You should either choose a material or the RI, not both." )
 
 
-        kwargs['nMedium'] = ToList(kwargs['nMedium'])
+        kwargs['nMedium']  = ToList(kwargs['nMedium'])
+        kwargs['Diameter'] = ToList(kwargs['Diameter'])
 
         self.kwargs = kwargs
 
@@ -58,26 +59,27 @@ class ScatSet(object):
         Dict0['order']     = i
         Dict0['dimension'] = self.kwargs['Diameter']
 
-        i = config['MaxOrder']
+        i += 1
 
-        Dict0              = nMediumDict
-        Dict0['order']     = i
-        Dict0['dimension'] = self.kwargs['nMedium']
+        Dict1              = nMediumDict
+        Dict1['order']     = i
+        Dict1['dimension'] = self.kwargs['nMedium']
 
         i += 1
 
         if 'Material' in self.kwargs.keys():
-            Dict1              = MaterialDict
-            Dict1['order']     = i
-            Dict1['dimension'] = [mat.__name__ for mat in self.kwargs['Material']]
+            Dict2              = MaterialDict
+            Dict2['order']     = i
+            Dict2['dimension'] = [mat.__name__ for mat in self.kwargs['Material']]
 
         else:
-            Dict1              = IndexDict
-            Dict1['order']     = i
-            Dict1['dimension'] = self.kwargs['Index']
+            Dict2              = IndexDict
+            Dict2['order']     = i
+            Dict2['dimension'] = self.kwargs['Index']
 
         MergeDict(config,Dict0)
         MergeDict(config,Dict1)
+        MergeDict(config,Dict2)
 
         config['MaxOrder'] = i+1
 
@@ -179,9 +181,9 @@ class Setup(object):
 
     @beartype
     def __init__(self,
-                 ScattererSet : ScatSet            = None,
-                 SourceSet    : SourceSet          = None,
-                 DetectorSet  : DetectorSet        = None):
+                 ScattererSet : ScatSet                  = None,
+                 SourceSet    : SourceSet                = None,
+                 DetectorSet  : Union[DetectorSet, None] = None):
 
 
         config = { 'name'      : None,
@@ -201,7 +203,7 @@ class Setup(object):
 
         self.ScattererSet = ScattererSet
 
-        config = self.DetectorSet.UpdateConfiguration(config)
+        if DetectorSet: config = self.DetectorSet.UpdateConfiguration(config)
 
         config = self.SourceSet.UpdateConfiguration(config)
 
@@ -235,11 +237,10 @@ class Setup(object):
 
         self.config['variable'] = EfficienciesDict
 
-        self.config['variable'][namelist] = Eff
-        self.config['output']             = AsType
-        self.config['shape']              = self.config['shape'] + [len(Eff)]
-        self.config['size']               = self.config['size']  * len(Eff)
-
+        self.config['variable']['namelist'] = Eff
+        self.config['output']               = AsType
+        self.config['shape']                = self.config['shape'] + [len(Eff)]
+        self.config['size']                 = self.config['size']  * len(Eff)
         self.AssertionType(AsType=AsType)
 
         Array = np.empty(self.config['size'])
@@ -302,7 +303,7 @@ class Setup(object):
 
 
     def ReturnType(self, Array, AsType, conf):
-        
+
         if AsType.lower() == 'optimizer':
             return Opt5DArray(Array)
 
@@ -317,6 +318,7 @@ class Setup(object):
         shape = []
         size  = 1
         for item in conf['dimension'].values():
+            print(item)
             shape += [len(item)]
             size  *= len(item)
 
