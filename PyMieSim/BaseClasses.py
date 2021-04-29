@@ -7,10 +7,11 @@ import os
 from PyMieSim.Directories     import NPZPath
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics         import _Polarization, Angle
-from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList
+from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
 from PyMieSim.units           import Power, Area
 from PyMieSim.Mesh            import FibonacciMesh
 from PyMieSim._Coupling       import Coupling
+from PyMieSim.Config          import *
 from PyMieSim.Constants       import *
 import PyMieSim.Plots as plot
 
@@ -810,10 +811,20 @@ class BaseMaterial(object):
             return self.nList
 
 
+class Set(object):
+    def UpdateConfiguration(self, config):
+        iter = config['MaxOrder']
+        for key, val in self.kwargs.items():
+            Dict              = Arg2Dict[key]
+            Dict['order']     = iter
+            Dict['dimension'] = self.kwargs[key]
+            iter                += 1
 
+            MergeDict(config,Dict)
 
+        config['MaxOrder'] = iter
 
-
+        return config
 
 
 

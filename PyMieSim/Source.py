@@ -32,6 +32,8 @@ class PlaneWave(BaseSource):
         Maximal value of the electric field at focus point.
 
     """
+    kwargformat = ['Wavelength', 'Polarization']
+
     def __init__(self,
                  Wavelength   : float,
                  Polarization : float = 0,

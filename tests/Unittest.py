@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import matplotlib.pyplot as plt
-from mayavi import mlab
-from unittest import TestCase
-from numpy import linspace, pi
-import numpy as np
 import unittest
+from mayavi   import mlab
+from unittest import TestCase
+from numpy    import linspace, pi
+import matplotlib.pyplot as plt
+import numpy             as np
 
-from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
-
-from PyMieSim.Source import PlaneWave, GaussianBeam
+from PyMieSim.Scatterer          import Sphere, Cylinder, WMSample
+from PyMieSim.Source             import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
-from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
-from PyMieSim.Experiment import ScatSet, Setup, SourceSet, SampleSet, DetectorSet
-from PyMieSim.Mesh import FibonacciMesh
-from PyMieSim.Plots import *
-from unittest.mock import patch
-from PyMieSim.Representations import S1S2
+from PyMieSim.Detector           import LPmode, Photodiode, _Photodiode
+from PyMieSim.Experiment         import ScatSet, Setup, SourceSet, SampleSet, DetectorSet
+from PyMieSim.Mesh               import FibonacciMesh
+from PyMieSim.Plots              import *
+from unittest.mock               import patch
+from PyMieSim.Representations    import S1S2
 
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)

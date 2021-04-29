@@ -230,7 +230,7 @@ class PMSArray(object):
 
         plt.xlabel(xlabel)
 
-        plt.legend(fontsize=8)
+        plt.legend(fontsize=6)
 
         if Testing == False:
             plt.show()
@@ -260,10 +260,10 @@ class PMSArray(object):
 
             if axis.lower() != key.lower():
 
-                if key == 'material':
+                if key == 'Material':
                     index  = idx[self.conf['order'][key]]
                     val    = self.conf['dimension'][key][index]
-                    format = self.conf['format']['material']
+                    format = self.conf['format']['Material']
                     label += f"{key}: { val } | "
 
                 else:

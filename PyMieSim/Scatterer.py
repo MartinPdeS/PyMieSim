@@ -47,11 +47,13 @@ class Sphere(BaseScatterer, ScattererProperties):
         .. note:: Size parameter of the scatterer [:math:`k r`].
 
     """
-    kwargformat = [ 'Diameter',
-                    'Source',
-                    'Index',
-                    'nMedium',
-                    'Material']
+    kwargformatIndex = [ 'Diameter',
+                         'Index',
+                         'nMedium']
+
+    kwargformatMaterial = [ 'Diameter',
+                            'Material',
+                            'nMedium']
 
     @beartype
     def __init__(self,

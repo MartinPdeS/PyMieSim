@@ -1,3 +1,5 @@
+from typing  import Union
+import numpy as np
 
 MetricList = ["max",
               "min",
@@ -62,7 +64,7 @@ WavelengthDict = { 'name'      : 'Wavelength',
 DetectorDict = { 'name'     : 'Detector',
                  'order'    :  None,
                  'label'     : 'Detector',
-                 'format'    : '15s',
+                 'format'    : '11s',
                  'dimension' : None, }
 
 
@@ -77,3 +79,16 @@ CouplingDict = { 'name'   : 'Coupling',
                  'label'  : 'Coupling',
                  'format' : '15s',
                  'unit'   :  ' Watt' }
+
+Arg2Dict = { 'Diameter'     : DiameterDict,
+             'Index'        : IndexDict,
+             'Material'     : MaterialDict,
+             'nMedium'      : nMediumDict,
+             'Polarization' : PolarizationDict,
+             'Wavelength'   : WavelengthDict}
+
+OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
+
+EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
+
+exList  = Union[int, float, list, np.ndarray, tuple]

@@ -2,37 +2,23 @@
 # -*- coding: utf-8 -*-
 
 import itertools
-import pprint           as pp
-import numpy            as np
-import pandas           as pd
-from beartype           import beartype
-from typing             import Union
-from multiprocessing    import Process
-from scipy.optimize     import minimize
+import pprint             as pp
+import numpy              as np
+import pandas             as pd
+from beartype             import beartype
+from multiprocessing      import Process
+from scipy.optimize       import minimize
 
-from PyMieSim.Source    import PlaneWave
-from PyMieSim.NdArray   import PMSArray, Opt5DArray
-from PyMieSim.Detector  import LPmode, Photodiode
-from PyMieSim.Scatterer import Sphere, WMSample
-from PyMieSim.utils     import IO, ToList, GeneratorFromDict, MergeDict
-from PyMieSim.Config    import *
-
-from PyMieSim.DataFrame import ( ExperimentalDataFrame,
-                                 S1S2DataFrame,
-                                 EfficiencesDF,
-                                 ExperimentDF)
-
-OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
-EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
-exList  = Union[int, float, list, np.ndarray, tuple]
-exfloat = Union[bool, int, float]
-DetecArg = Union[LPmode, Photodiode, list, tuple]
-
-Print = pp.PrettyPrinter(indent=4,sort_dicts=False)
+from PyMieSim.Source      import PlaneWave
+from PyMieSim.NdArray     import PMSArray, Opt5DArray
+from PyMieSim.Detector    import LPmode, Photodiode
+from PyMieSim.Scatterer   import Sphere, WMSample
+from PyMieSim.BaseClasses import Set
+from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict
+from PyMieSim.Config      import *
 
 
-
-class ScatSet(object):
+class ScatSet(Set):
 
     @beartype
     def __init__(self, Scatterer = None, kwargs : dict = {}):
@@ -49,41 +35,11 @@ class ScatSet(object):
         kwargs['nMedium']  = ToList(kwargs['nMedium'])
         kwargs['Diameter'] = ToList(kwargs['Diameter'])
 
-        self.kwargs = kwargs
-
-
-    def UpdateConfiguration(self, config):
-        i = config['MaxOrder']
-
-        Dict0              = DiameterDict
-        Dict0['order']     = i
-        Dict0['dimension'] = self.kwargs['Diameter']
-
-        i += 1
-
-        Dict1              = nMediumDict
-        Dict1['order']     = i
-        Dict1['dimension'] = self.kwargs['nMedium']
-
-        i += 1
-
-        if 'Material' in self.kwargs.keys():
-            Dict2              = MaterialDict
-            Dict2['order']     = i
-            Dict2['dimension'] = [mat.__name__ for mat in self.kwargs['Material']]
-
+        if 'Material' in kwargs:
+            self.kwargs = {k: kwargs[k] for k in Scatterer.kwargformatMaterial if k in kwargs}
         else:
-            Dict2              = IndexDict
-            Dict2['order']     = i
-            Dict2['dimension'] = self.kwargs['Index']
+            self.kwargs = {k: kwargs[k] for k in Scatterer.kwargformatIndex if k in kwargs}
 
-        MergeDict(config,Dict0)
-        MergeDict(config,Dict1)
-        MergeDict(config,Dict2)
-
-        config['MaxOrder'] = i+1
-
-        return config
 
 
     def Generator(self, source=None):
@@ -103,15 +59,15 @@ class ScatSet(object):
                              nMedium   = nmedium)
 
 
+class SourceSet(Set):
 
-class SourceSet(object):
     @beartype
     def __init__(self, Source = None, kwargs : dict = {}):
 
         kwargs['Wavelength']   = ToList(kwargs['Wavelength'])
         kwargs['Polarization'] = ToList(kwargs['Polarization'])
 
-        self.kwargs = kwargs
+        self.kwargs = {k: kwargs[k] for k in Source.kwargformat}
 
 
     def Generator(self, MatGen=None):
@@ -123,29 +79,7 @@ class SourceSet(object):
                             E0           = 1)
 
 
-    def UpdateConfiguration(self, config):
-        i = config['MaxOrder']
-
-        Dict0              = WavelengthDict
-        Dict0['order']     = i
-        Dict0['dimension'] = self.kwargs['Wavelength']
-
-        i += 1
-
-        Dict1              = PolarizationDict
-        Dict1['order']     = i
-        Dict1['dimension'] = self.kwargs['Polarization']
-
-        MergeDict(config,Dict0)
-        MergeDict(config,Dict1)
-
-        config['MaxOrder'] = i+1
-
-        return config
-
-
-
-class DetectorSet(object):
+class DetectorSet(Set):
 
     @beartype
     def __init__(self, DetectorList : exList):
@@ -235,12 +169,12 @@ class Setup(object):
 
         Eff = ToList(Eff)
 
-        self.config['variable'] = EfficienciesDict
-
+        self.config['variable']             = EfficienciesDict
         self.config['variable']['namelist'] = Eff
         self.config['output']               = AsType
         self.config['shape']                = self.config['shape'] + [len(Eff)]
         self.config['size']                 = self.config['size']  * len(Eff)
+
         self.AssertionType(AsType=AsType)
 
         Array = np.empty(self.config['size'])
@@ -273,8 +207,7 @@ class Setup(object):
         """
 
         self.config['variable'] = CouplingDict
-
-        self.config['output']  = AsType
+        self.config['output']   = AsType
 
         self.AssertionType(AsType=AsType)
 
