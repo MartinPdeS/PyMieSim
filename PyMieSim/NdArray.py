@@ -155,31 +155,24 @@ class PMSArray(object):
 
 
     def Plot(self, Scale = 'linear', *args, **kwargs):
-
         if Scale.lower() in ['lin', 'linear']      : plot = plt.plot
         if Scale.lower() in ['log', 'logarithmic'] : plot = plt.loglog;
 
-        if self.conf['name'] == 'Efficiencies':
+        if self.conf['variable']['name'] == 'Efficiencies':
             return self.PlotEfficiencies(*args, **kwargs, plot=plot)
 
-        if self.conf['name'] == 'Coupling':
+        if self.conf['variable']['name'] == 'Coupling':
             return self.PlotCoupling(*args, **kwargs, plot=plot)
 
 
 
     def PlotCoupling(self, x, plot, Testing=False, *args, **kwargs):
-        fig   = plt.figure(figsize=(8,4))
+
+        fig   = self.PrepareFigure()
         x     = x.lower()
-        shape = list(self.data.shape)
-        print(shape)
 
-        for key, order in self.conf['order'].items():
-            if x == key:
-                shape[order] = None
-                xlabel       = self.conf['label'][key]
-                xval         = self.conf['dimension'][key]
+        DimSlicer, xlabel, xval = self.GetSlicer(x)
 
-        DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
         for idx in product(*DimSlicer):
             plot(xval,
                  self.data[idx],
@@ -188,8 +181,6 @@ class PMSArray(object):
                  **kwargs)
 
         plt.xlabel(xlabel)
-        plt.ylabel(self.conf['name'] + ' ' + self.conf['unit'])
-        plt.grid()
         plt.legend(fontsize=8)
 
         if Testing == False:
@@ -198,20 +189,37 @@ class PMSArray(object):
             plt.close('all')
 
 
-    def PlotEfficiencies(self, x, plot, Testing=False,  *args, **kwargs):
-
-
-        fig   = plt.figure(figsize=(8,4))
-        x     = x.lower()
+    def GetSlicer(self, x):
         shape = list(self.data.shape)
 
         for key, order in self.conf['order'].items():
-            if x == key:
+            if key == x:
                 shape[order] = None
                 xlabel       = self.conf['label'][key]
                 xval         = self.conf['dimension'][key]
 
         DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
+
+        return DimSlicer, xlabel, xval
+
+
+    def PrepareFigure(self):
+        fig   = plt.figure(figsize=(8,4))
+
+        plt.grid()
+
+        plt.ylabel(self.conf['variable']['name'] + ' ' + self.conf['variable']['unit'])
+
+        return fig
+
+
+    def PlotEfficiencies(self, x, plot, Testing=False,  *args, **kwargs):
+
+        fig   = self.PrepareFigure()
+
+        x     = x.lower()
+
+        DimSlicer, xlabel, xval = self.GetSlicer(x)
 
         for ni, idx in enumerate( product( *DimSlicer ) ):
             plot(xval,
@@ -220,10 +228,8 @@ class PMSArray(object):
                  *args,
                  **kwargs)
 
-
         plt.xlabel(xlabel)
-        plt.ylabel(self.conf['name'] + ' ' + self.conf['unit'])
-        plt.grid()
+
         plt.legend(fontsize=8)
 
         if Testing == False:

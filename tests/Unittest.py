@@ -15,7 +15,7 @@ from PyMieSim.Scatterer import Sphere, Cylinder, WMSample
 from PyMieSim.Source import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector import LPmode, Photodiode, _Photodiode
-from PyMieSim.Experiment import ScatSet, Setup, SourceSet, SampleSet
+from PyMieSim.Experiment import ScatSet, Setup, SourceSet, SampleSet, DetectorSet
 from PyMieSim.Mesh import FibonacciMesh
 from PyMieSim.Plots import *
 from unittest.mock import patch
@@ -196,9 +196,10 @@ class ExperiementTestCase(unittest.TestCase):
 
     def test02(self):
         global ExpSet
+        DetecSet = DetectorSet([Photodiode])
         ExpSet = Setup(ScattererSet = sScatSet,
                        SourceSet    = sourceSet,
-                       DetectorSet  = Photodiode)
+                       DetectorSet  = DetecSet)
 
         print('<Setup> initialisation passed')
 

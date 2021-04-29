@@ -287,17 +287,22 @@ class Setup(object):
             Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
 
         """
+
+        Eff = ToList(Eff)
+
+        self.config['variable'] = { 'name'   : 'Efficiencies',
+                                    'label'  : 'Efficiencies',
+                                    'format' : '15s',
+                                    'unit'   : ' [1]' }
+
         self.config['name']               = 'Efficiencies'
         self.config['NameList']           = Eff
         self.config['format']['variable'] = '15s'
-        self.config['label']['variable']  = 'Coupling'
+        self.config['label']['variable']  = 'Efficiencies'
         self.config['unit']               = ' [1]'
         self.config['nameList']           = Eff
         self.config['output']             = AsType
-        #self.config['order']['eff']       = self.config['MaxOrder']
         self.config['shape']              = self.config['shape'] + [len(Eff)]
-
-        Eff = ToList(Eff)
 
         self.AssertionType(AsType=AsType)
 
@@ -339,11 +344,12 @@ class Setup(object):
 
         """
 
-        self.config['name']               = 'Coupling'
-        self.config['format']['variable'] = '15s'
-        self.config['label']['variable']  = 'Coupling'
-        self.config['unit']               = ' Watt'
-        self.config['output']             = AsType
+        self.config['variable'] = { 'name'   : 'Coupling',
+                                    'label'  : 'Coupling',
+                                    'format' : '15s',
+                                    'unit'   :  ' Watt' }
+
+        self.config['output']  = AsType
 
         self.AssertionType(AsType=AsType)
 
@@ -351,7 +357,6 @@ class Setup(object):
 
         if self.ScattererSet.Material:
             self.BindMaterial()
-
 
         i = 0
         for detector in self.DetectorSet.Generator():
@@ -361,7 +366,7 @@ class Setup(object):
                     Array[i] = detector.Coupling(Scatterer = scatterer)
                     i += 1;
 
-        return self.ReturnType(Array     = Array.reshape(self.config['shape'], order='F'),
+        return self.ReturnType(Array     = Array.reshape(self.config['shape'], order='C'),
                                AsType    = AsType,
                                conf      = self.config)
 
