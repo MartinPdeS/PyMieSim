@@ -27,8 +27,8 @@ Using this package, one can easily set a **Source** a **Scatterer** and a **Dete
 6. **Medium** refractive index
 7. **Detector** type (photodiode or LPMode)
 8. **Detector** numerical aperture
-9. **Detector** angle offfset in polariation parallel axis (&phi;)
-10. **Detector** angle offfset in polariation perpendicular axis (&theta;)
+9. **Detector** angle offfset in polariation parallel axis (:math:`\phi`)
+10. **Detector** angle offfset in polariation perpendicular axis (:math:`\theta`)
 11. **Detector** coupling mode (Mean coupling or centered coupling)
 
 
