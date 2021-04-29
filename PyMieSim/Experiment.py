@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import itertools
 import pprint           as pp
 import numpy            as np
 import pandas           as pd
@@ -13,19 +14,13 @@ from PyMieSim.Source    import PlaneWave
 from PyMieSim.NdArray   import PMSArray, Opt5DArray
 from PyMieSim.Detector  import LPmode, Photodiode
 from PyMieSim.Scatterer import Sphere, WMSample
-from PyMieSim.utils     import IO, ToList
+from PyMieSim.utils     import IO, ToList, GeneratorFromDict, MergeDict
+from PyMieSim.Config    import *
 
 from PyMieSim.DataFrame import ( ExperimentalDataFrame,
                                  S1S2DataFrame,
                                  EfficiencesDF,
                                  ExperimentDF)
-
-from PyMieSim.Config    import ( MetricList,
-                                 DetectorParamList,
-                                 SourceParamList,
-                                 DefaultConfig,
-                                 DefaultConfigEff )
-
 
 OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
 EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
@@ -35,179 +30,114 @@ DetecArg = Union[LPmode, Photodiode, list, tuple]
 
 Print = pp.PrettyPrinter(indent=4,sort_dicts=False)
 
+
+
 class ScatSet(object):
 
     @beartype
-    def __init__(self,
-                 DiameterList  :  exList     = None,
-                 IndexList     :  exList     = None,
-                 nMedium       :  exfloat    = 1.0,
-                 ScattererType :  str        = 'Sphere',
-                 MaterialList  : list        = None,
-                 Configuration : dict        = {}):
+    def __init__(self, Scatterer = None, kwargs : dict = {}):
 
-        if MaterialList:
-            assert IndexList is None, IO( "You should either choose a material or the RI, not both." )
-            self.Material = MaterialList
+        if 'Material' in kwargs.keys():
+            kwargs['Material'] = ToList(kwargs['Material'])
+            assert 'index' not in kwargs.keys(), IO( "You should either choose a material or the RI, not both." )
+
+        else:
+            kwargs['Index'] = ToList(kwargs['Index'])
+            assert 'Material' not in kwargs.keys(), IO( "You should either choose a material or the RI, not both." )
 
 
-        if IndexList:
-            assert MaterialList is None, IO( "You should either choose a material or the RI, not both." )
-            self.Material = None
+        kwargs['nMedium'] = ToList(kwargs['nMedium'])
 
-
-        IndexList, DiameterList, MaterialList = ToList(IndexList, DiameterList, MaterialList)
-
-        self._Diameter, self._Index = None, None
-
-        self.Diameter, self.Index = DiameterList, IndexList
-
-        self.nMedium = nMedium
-
-        self.shape = np.shape(self.Diameter) + np.shape(self.Index)
-
+        self.kwargs = kwargs
 
 
     def UpdateConfiguration(self, config):
         i = config['MaxOrder']
 
-        if self.Material:
-            config['material'] = True
-            config['order']['material']     = i
-            config['label']['material']     = 'material'
-            config['format']['material']    = '10s'
-            config['dimension']['material'] = [mat.__name__ for mat in self.Material]
-            i += 1
+        Dict0              = DiameterDict
+        Dict0['order']     = i
+        Dict0['dimension'] = self.kwargs['Diameter']
 
-        else:
-            config['material']              = False
-            config['order']['ri']           = i
-            config['label']['ri']           = 'Refracive index'
-            config['format']['ri']          = '.2f'
-            config['dimension']['ri']       = self.Index
-            i += 1
+        i = config['MaxOrder']
 
-        config['order']['diameter']     = i
-        config['label']['diameter']     = 'Diameter [m]'
-        config['format']['diameter']    = '.1e'
-        config['dimension']['diameter'] = self.Diameter
+        Dict0              = nMediumDict
+        Dict0['order']     = i
+        Dict0['dimension'] = self.kwargs['nMedium']
+
         i += 1
 
-        config['MaxOrder'] = i
+        if 'Material' in self.kwargs.keys():
+            Dict1              = MaterialDict
+            Dict1['order']     = i
+            Dict1['dimension'] = [mat.__name__ for mat in self.kwargs['Material']]
+
+        else:
+            Dict1              = IndexDict
+            Dict1['order']     = i
+            Dict1['dimension'] = self.kwargs['Index']
+
+        MergeDict(config,Dict0)
+        MergeDict(config,Dict1)
+
+        config['MaxOrder'] = i+1
 
         return config
 
 
-    @property
-    def Diameter(self):
-        return self._Diameter
-
-    @Diameter.setter
-    def Diameter(self, val):
-        if not isinstance(val, (list, np.ndarray)): val = [val]
-        self._Diameter = val
-
-    @property
-    def Index(self):
-        return self._Index
-
-    @Index.setter
-    def Index(self, val):
-        if not isinstance(val, (list, np.ndarray)): val = [val]
-        self._Index = val
-
-
     def Generator(self, source=None):
-        if self.Material:
-            for material in self.Material:
-                for diameter in self.Diameter:
-                    yield Sphere(Diameter  = diameter,
-                                  Source    = source,
-                                  Index     = material.Index,
-                                  nMedium   = 1.)
+        Generator, order = GeneratorFromDict(self.kwargs)
+        if 'Material' not in self.kwargs.keys():
+            for diameter, index, nmedium in Generator:
+                yield Sphere(Diameter  = diameter,
+                             Source    = source,
+                             Index     = index,
+                             nMedium   = nmedium)
 
         else:
-            for diameter in self.Diameter:
-                for index in self.Index:
-                    yield  Sphere(Diameter  = diameter,
-                                  Source    = source,
-                                  Index     = index,
-                                  nMedium   = 1.)
+            for diameter, material, nmedium in Generator:
+                yield Sphere(Diameter  = diameter,
+                             Source    = source,
+                             Index     = material.Index,
+                             nMedium   = nmedium)
+
 
 
 class SourceSet(object):
     @beartype
-    def __init__(self,
-                 WavelengthList   :   exList,
-                 PolarizationList :   exList = [0],
-                 SourceType       :   str    = 'PlaneWave'):
+    def __init__(self, Source = None, kwargs : dict = {}):
 
-        PolarizationList, WavelengthList = ToList(PolarizationList, WavelengthList)
+        kwargs['Wavelength']   = ToList(kwargs['Wavelength'])
+        kwargs['Polarization'] = ToList(kwargs['Polarization'])
 
-        self._Wavelength, self._Polarization = None, None
+        self.kwargs = kwargs
 
-        self.Wavelength   = WavelengthList
-
-        self.Polarization = PolarizationList
-
-        self.SourceType   = SourceType
-
-        self.shape        = np.shape(self.Wavelength) + np.shape(self.Polarization)
-
-        self.Material     = None
-
-
-    @property
-    def Wavelength(self):
-        return self._Wavelength
-
-
-    @Wavelength.setter
-    def Wavelength(self, val):
-        if not isinstance(val, (list, np.ndarray)): val = [val]
-        self._Wavelength = val
-
-
-    @property
-    def Polarization(self):
-        return self._Polarization
-
-
-    @Polarization.setter
-    def Polarization(self, val):
-        if not isinstance(val, (list, np.ndarray)): val = [val]
-        self._Polarization = val
 
     def Generator(self, MatGen=None):
-        for wavelength in self.Wavelength:
+        Generator, order = GeneratorFromDict(self.kwargs)
 
-            if self.Material:
-                for material in self.Material: material.counter += 1
-
-            for polarization in self.Polarization:
-
-                yield PlaneWave(Wavelength   = wavelength,
-                                Polarization = polarization,
-                                E0           = 1)
+        for wavelength, polarization in Generator:
+            yield PlaneWave(Wavelength   = wavelength,
+                            Polarization = polarization,
+                            E0           = 1)
 
 
     def UpdateConfiguration(self, config):
         i = config['MaxOrder']
-        MaxOrder = np.max(list(config['order'].values()))
 
-        config['order']['wavelength']       = i
-        config['label']['wavelength']       = '$Wavelength \lambda$ [m]'
-        config['format']['wavelength']      = '.1e'
-        config['dimension']['wavelength']   = self.Wavelength
+        Dict0              = WavelengthDict
+        Dict0['order']     = i
+        Dict0['dimension'] = self.kwargs['Wavelength']
+
         i += 1
 
-        config['order']['polarization']     = i
-        config['label']['polarization']     = 'Polarization [Degree]'
-        config['format']['polarization']    = '.1f'
-        config['dimension']['polarization'] = self.Polarization
-        i += 1
+        Dict1              = PolarizationDict
+        Dict1['order']     = i
+        Dict1['dimension'] = self.kwargs['Polarization']
 
-        config['MaxOrder'] = i
+        MergeDict(config,Dict0)
+        MergeDict(config,Dict1)
+
+        config['MaxOrder'] = i+1
 
         return config
 
@@ -220,14 +150,21 @@ class DetectorSet(object):
 
         self.Detector = ToList(DetectorList)
 
+        for nd, dectector in enumerate(self.Detector):
+            dectector.Name = f"Detector {nd}"
+
 
     def UpdateConfiguration(self, config):
+
         i = config['MaxOrder']
-        config['order']['detector']     = config['MaxOrder']
-        config['label']['detector']     = 'Detector'
-        config['format']['detector']    = '10s'
-        config['dimension']['detector'] = [Det.Name for Det in self.Detector]
-        config['MaxOrder']             += 1
+
+        Dict0              = DetectorDict
+        Dict0['order']     = i
+        Dict0['dimension'] = [Det.Name for Det in self.Detector]
+
+        MergeDict(config,Dict0)
+
+        config['MaxOrder'] = i+1
 
         return config
 
@@ -235,6 +172,7 @@ class DetectorSet(object):
     def Generator(self, MatGen=None):
         for detector in self.Detector:
                 yield detector
+
 
 
 class Setup(object):
@@ -259,9 +197,6 @@ class Setup(object):
 
         self.DetectorSet  = DetectorSet
 
-        for nd, dectector in enumerate(self.DetectorSet.Detector):
-            dectector.Name = f"Detector {nd}"
-
         self.SourceSet    = SourceSet
 
         self.ScattererSet = ScattererSet
@@ -277,6 +212,14 @@ class Setup(object):
         self.config = config
 
 
+    def AssertionType(self, AsType=None, Eff=None):
+        if AsType:
+            assert AsType.lower() in OUTPUTTYPE, IO( f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}' )
+
+        if Eff:
+            assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
+
+
     def Efficiencies(self, Eff='Qsca', AsType='numpy'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qsca) vs. scatterer diameter vs. scatterer refractive index.
@@ -290,46 +233,30 @@ class Setup(object):
 
         Eff = ToList(Eff)
 
-        self.config['variable'] = { 'name'   : 'Efficiencies',
-                                    'label'  : 'Efficiencies',
-                                    'format' : '15s',
-                                    'unit'   : ' [1]' }
+        self.config['variable'] = EfficienciesDict
 
-        self.config['name']               = 'Efficiencies'
-        self.config['NameList']           = Eff
-        self.config['format']['variable'] = '15s'
-        self.config['label']['variable']  = 'Efficiencies'
-        self.config['unit']               = ' [1]'
-        self.config['nameList']           = Eff
+        self.config['variable'][namelist] = Eff
         self.config['output']             = AsType
         self.config['shape']              = self.config['shape'] + [len(Eff)]
+        self.config['size']               = self.config['size']  * len(Eff)
 
         self.AssertionType(AsType=AsType)
 
-        Array = np.empty(self.config['size'] * len(Eff))
+        Array = np.empty(self.config['size'])
 
-        if self.ScattererSet.Material: self.BindMaterial()
+        if 'Material' in self.ScattererSet.kwargs: self.BindMaterial()
 
         i = 0
         for source in self.SourceSet.Generator():
             for scatterer in self.ScattererSet.Generator(source):
                 for eff in Eff:
+
                     Array[i]  =  getattr(scatterer, eff)
-                    i += 1;
+                    i += 1
 
-        Array = Array.reshape(self.config['shape'], order='C')
-
-        return self.ReturnType(Array     = Array,
+        return self.ReturnType(Array     = Array.reshape( self.config['shape'] ),
                                AsType    = AsType,
                                conf      = self.config)
-
-
-    def AssertionType(self, AsType=None, Eff=None):
-        if AsType:
-            assert AsType.lower() in OUTPUTTYPE, IO( f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}' )
-
-        if Eff:
-            assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
     def Coupling(self, AsType='numpy'):
@@ -344,19 +271,15 @@ class Setup(object):
 
         """
 
-        self.config['variable'] = { 'name'   : 'Coupling',
-                                    'label'  : 'Coupling',
-                                    'format' : '15s',
-                                    'unit'   :  ' Watt' }
+        self.config['variable'] = CouplingDict
 
         self.config['output']  = AsType
 
         self.AssertionType(AsType=AsType)
 
-        Array = np.empty(self.config['size'])
+        Array = np.empty( self.config['size'] )
 
-        if self.ScattererSet.Material:
-            self.BindMaterial()
+        if 'Material' in self.ScattererSet.kwargs: self.BindMaterial()
 
         i = 0
         for detector in self.DetectorSet.Generator():
@@ -366,19 +289,20 @@ class Setup(object):
                     Array[i] = detector.Coupling(Scatterer = scatterer)
                     i += 1;
 
-        return self.ReturnType(Array     = Array.reshape(self.config['shape'], order='C'),
+        return self.ReturnType(Array     = Array.reshape( self.config['shape'] ),
                                AsType    = AsType,
                                conf      = self.config)
 
 
     def BindMaterial(self):
-        self.SourceSet.Material = self.ScattererSet.Material
+        self.SourceSet.Material = self.ScattererSet.kwargs['Material']
 
-        for mat in self.ScattererSet.Material:
-            mat.Evaluate(self.SourceSet.Wavelength)
+        for mat in self.ScattererSet.kwargs['Material']:
+            mat.Evaluate(self.SourceSet.kwargs['Wavelength'])
 
 
     def ReturnType(self, Array, AsType, conf):
+        
         if AsType.lower() == 'optimizer':
             return Opt5DArray(Array)
 
@@ -387,23 +311,6 @@ class Setup(object):
 
         elif AsType.lower() == 'pymiesim':
             return PMSArray(array = Array, conf = conf)
-
-
-    def MakeDF(self, conf, Array):
-
-        MI = pd.MultiIndex.from_product(list(conf['dimension'].values()),
-                                        names = list(conf['dimension'].keys()))
-
-        if conf['name'].lower() == 'efficiencies':
-            return EfficiencesDF(Array.reshape([conf['size'], len(config['NameList'])]),
-                                 index   = MI,
-                                 columns = config['NameList'])
-
-
-        elif  conf['name'].lower() == 'coupling':
-            return ExperimentDF(Array.flatten(),
-                                index   = MI,
-                                columns = ['Coupling'])
 
 
     def GetShape(self, conf):

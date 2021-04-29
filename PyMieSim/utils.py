@@ -1,6 +1,7 @@
-import numpy as np
+import itertools
+import numpy           as np
 from scipy.interpolate import griddata
-from scipy import ndimage
+from scipy             import ndimage
 
 import PyMieSim
 from PyMieSim.Physics import Angle
@@ -283,4 +284,17 @@ def ToList(*args):
 
     if len(out) == 1: return out[0]
     return out
+
+
+def GeneratorFromDict(dictionnary):
+    order = {n: a for n, a in enumerate(dictionnary.keys())}
+    return itertools.product( *( a for a in dictionnary.values() ) ), order
+
+
+def MergeDict(dict0, dict1):
+    for key in dict1.keys():
+        if key in dict0.keys() and key != 'name':
+            dict0[key][dict1['name']] = dict1[key]
+
+
 # -

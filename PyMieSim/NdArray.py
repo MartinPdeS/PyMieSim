@@ -193,7 +193,7 @@ class PMSArray(object):
         shape = list(self.data.shape)
 
         for key, order in self.conf['order'].items():
-            if key == x:
+            if key.lower() == x.lower():
                 shape[order] = None
                 xlabel       = self.conf['label'][key]
                 xval         = self.conf['dimension'][key]
@@ -224,7 +224,7 @@ class PMSArray(object):
         for ni, idx in enumerate( product( *DimSlicer ) ):
             plot(xval,
                  self.data[idx],
-                 label = self.conf['NameList'][idx[-1]] + ' | ' + self.GetLegend(x, idx),
+                 label = self.conf['variable']['namelist'][idx[-1]] + ' | ' + self.GetLegend(x, idx),
                  *args,
                  **kwargs)
 
@@ -258,7 +258,7 @@ class PMSArray(object):
 
         for key in self.conf['order']:
 
-            if axis != key:
+            if axis.lower() != key.lower():
 
                 if key == 'material':
                     index  = idx[self.conf['order'][key]]

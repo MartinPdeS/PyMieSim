@@ -22,57 +22,58 @@ SourceParamList = ['E0',
                    'Polarization',
                    'Wavelength']
 
-DefaultConfig = {'name'         : 'Coupling',
-                 'unit'         : 'Watt',
-                 'material'     : None,
-                 'order'        : {
-                                    'detector'     : 0,
-                                    'wavelength'   : 1,
-                                    'polarization' : 2,
-                                    'diameter'     : 3,
-                                    'ri'           : 4,
-                                    'material'     : 4},
-                 'label'        : {
-                                    'variable'     : 'Coupling',
-                                    'detector'     : 'Detector',
-                                    'wavelength'   : '$\lambda$ [m]',
-                                    'polarization' : 'Polarization [Degree]',
-                                    'diameter'     : 'Diameter [m]',
-                                    'ri'           : 'Refracive index',
-                                    'material'     : 'material'},
-                 'format'        : {
-                                    'variable'     : '15s',
-                                    'detector'     : '10s',
-                                    'wavelength'   : '.1e',
-                                    'polarization' : '.1f',
-                                    'diameter'     : '.1e',
-                                    'ri'           : '.2f',
-                                    'material'     : '10s'},
-       }
+
+IndexDict = { 'name'     : 'Index',
+              'order'    :  None,
+             'label'     : 'Refractive index',
+             'format'    : '.2f',
+             'dimension' : None, }
+
+DiameterDict = {'name'      : 'Diameter',
+                'order'     : None,
+                'label'     : 'Diameter',
+                'format'    : '.1e',
+                'dimension' : None,}
+
+nMediumDict = { 'name'      : 'nMedium',
+                'order'     :  None,
+                'label'     : 'Medium Refractive index',
+                'format'    : '.2f',
+                'dimension' : None,}
+
+MaterialDict = { 'name'      : 'Material',
+                 'order'     :  None,
+                 'label'     : 'Medium Refractive index',
+                 'format'    : '10s',
+                 'dimension' : None, }
+
+PolarizationDict = { 'name'      : 'Polarization',
+                     'order'     :  None,
+                     'label'     : 'Polarization',
+                     'format'    : '.1f',
+                     'dimension' : None,}
+
+WavelengthDict = { 'name'      : 'Wavelength',
+                   'order'     :  None,
+                   'label'     : r'Wavelength $\lambda$',
+                   'format'    : '.1e',
+                   'dimension' : None,}
+
+DetectorDict = { 'name'     : 'Detector',
+                 'order'    :  None,
+                 'label'     : 'Detector',
+                 'format'    : '15s',
+                 'dimension' : None, }
 
 
-DefaultConfigEff = {'name'         : 'Efficiencies',
-                    'unit'         : '[1]',
-                    'material'     : None,
-                    'order'        : {
-                                        'wavelength'   : 1,
-                                        'polarization' : 2,
-                                        'diameter'     : 3,
-                                        'ri'           : 4,
-                                        'material'     : 4},
-                    'label'        : {
-                                        'variable'     : 'Efficiencies',
-                                        'wavelength'   : 'Wavelength $\lambda$ [m]',
-                                        'polarization' : 'Polarization [Degree]',
-                                        'diameter'     : 'Diameter [m]',
-                                        'ri'           : 'Refracive index',
-                                        'material'     : 'material'},
-                     'format'        : {
-                                        'variable'     : '10s',
-                                        'detector'     : '10s',
-                                        'wavelength'   : '.1e',
-                                        'polarization' : '.1f',
-                                        'diameter'     : '.1f',
-                                        'ri'           : '.2f',
-                                        'material'     : '10s'},
-       }
+EfficienciesDict = { 'name'     : 'Efficiencies',
+                     'namelist' : None,
+                     'label'    : 'Efficiencies',
+                     'format'   : '15s',
+                     'unit'     : ' [1]' }
+
+
+CouplingDict = { 'name'   : 'Coupling',
+                 'label'  : 'Coupling',
+                 'format' : '15s',
+                 'unit'   :  ' Watt' }

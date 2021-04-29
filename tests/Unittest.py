@@ -234,7 +234,7 @@ class ExperiementTestCase(unittest.TestCase):
 
 
     def test08(self):
-        ExpSet.Coupling(AsType='dataframe')
+        ExpSet.Coupling(AsType='pymiesim')
         print("<Experiment> 'dataframe' output passed")
 
 
