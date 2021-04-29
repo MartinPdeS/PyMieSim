@@ -1,5 +1,5 @@
 from PyMieSim.Scatterer import Sphere
-from PyMieSim.Source import PlaneWave
+from PyMieSim.Source    import PlaneWave
 
 Source = PlaneWave(Wavelength   = 450e-9,
                   Polarization = 0,

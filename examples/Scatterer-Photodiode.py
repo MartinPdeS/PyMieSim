@@ -1,5 +1,5 @@
-from PyMieSim.Source import PlaneWave
-from PyMieSim.Detector import Photodiode
+from PyMieSim.Source    import PlaneWave
+from PyMieSim.Detector  import Photodiode
 from PyMieSim.Scatterer import Sphere
 
 Source = PlaneWave(Wavelength   = 450e-9,

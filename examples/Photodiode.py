@@ -1,4 +1,4 @@
-from PyMieSim.Source import PlaneWave
+from PyMieSim.Source   import PlaneWave
 from PyMieSim.Detector import Photodiode
 
 

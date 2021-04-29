@@ -1,8 +1,8 @@
 import numpy as np
-from PyMieSim.Detector import Photodiode, LPmode
-from PyMieSim.Source import PlaneWave
+from PyMieSim.Detector  import Photodiode, LPmode
+from PyMieSim.Source    import PlaneWave
 from PyMieSim.Optimizer import Optimize
-from PyMieSim.Sets import ExperimentalSet, ScattererSet
+from PyMieSim.Sets      import ExperimentalSet, ScattererSet
 
 Source = PlaneWave(Wavelength   = 450e-9,
                  Polarization = 0,
