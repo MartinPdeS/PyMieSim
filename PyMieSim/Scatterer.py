@@ -47,12 +47,11 @@ class Sphere(BaseScatterer, ScattererProperties):
         .. note:: Size parameter of the scatterer [:math:`k r`].
 
     """
-    def __new__(cls, *args, **kwargs):
-        cls.kwargformat = [ 'Diameter',
-                            'Source',
-                            'Index',
-                            'nMedium', 
-                            'Material']
+    kwargformat = [ 'Diameter',
+                    'Source',
+                    'Index',
+                    'nMedium',
+                    'Material']
 
     @beartype
     def __init__(self,
@@ -208,16 +207,13 @@ class ShellSphere(BaseScatterer, ScattererProperties):
 
     """
 
-    def __new__(cls, *args, **kwargs):
-
-        cls.kwargformat = [ 'CoreDiameter',
-                            'ShellDiameter',
-                            'Source',
-                            'CoreIndex',
-                            'ShellIndex',
-                            'nMedium',
-                            'Material']
-
+    kwargformat = [ 'CoreDiameter',
+                    'ShellDiameter',
+                    'Source',
+                    'CoreIndex',
+                    'ShellIndex',
+                    'nMedium',
+                    'Material']
     @beartype
     def __init__(self,
                  CoreDiameter  : float,
@@ -319,12 +315,11 @@ class Cylinder(BaseScatterer, ScattererProperties):
 
     """
 
-    def __new__(cls, *args, **kwargs):
-        cls.kwargformat = [ 'Diameter',
-                            'Source',
-                            'Index',
-                            'nMedium',
-                            'Material']
+    kwargformat = [ 'Diameter',
+                    'Source',
+                    'Index',
+                    'nMedium',
+                    'Material']
 
     def __init__(self,
                  Diameter    : float,
