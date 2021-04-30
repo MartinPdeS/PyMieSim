@@ -41,7 +41,7 @@ URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION         = '0.2.1'
+VERSION         = '0.2.2'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',

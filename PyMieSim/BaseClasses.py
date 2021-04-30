@@ -89,7 +89,7 @@ class BaseDetector(object):
 
     """
 
-    def _Coupling(self, Scatterer):
+    def Coupling(self, Scatterer):
         """
         .. note::
             Return the value of the scattererd light coupling as computed as:
@@ -112,29 +112,10 @@ class BaseDetector(object):
             Value of the coupling.
 
         """
+        C = Coupling(Scatterer = Scatterer, Detector = self)
 
-        return Coupling(Scatterer = Scatterer, Detector = self)# * Scatterer.nMedium * c * eps0 / 2
+        return Power( C * eps0 * c * 0.5)# * Scatterer.nMedium * c * eps0 / 2
 
-
-    def Coupling(self, Scatterer):
-        """
-        .. note::
-            Return coupling power which is detected.
-
-        Parameters
-        ----------
-        Scatterer : :class:`Scatterer`
-            Scatterer instance (sphere, cylinder, ...).
-
-        Returns
-        -------
-        :class:`float`
-            Value of the coupling power [:math:`W`].
-
-        """
-        C = self._Coupling(Scatterer) * eps0 * c * 0.5
-
-        return Power(C)
 
 
     def Footprint(self, Scatterer, Num = 200):

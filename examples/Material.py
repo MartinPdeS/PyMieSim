@@ -1,18 +1,26 @@
-from PyMieSim.Scatterer import Sphere
-from PyMieSim.Source    import PlaneWave
-from PyMieSim           import Material
+matplotlib=False
+mlab=False
 
-Source = PlaneWave(Wavelength   = 450e-9,
-                   Polarization = 0,
-                   E0           = 1)
+def run():
+    from PyMieSim.Scatterer import Sphere
+    from PyMieSim.Source    import PlaneWave
+    from PyMieSim           import Material
 
-Scat = Sphere(Diameter    = 300e-9,
-              Source       = Source,
-              Material     = Material('BK7'))
+    Source = PlaneWave(Wavelength   = 450e-9,
+                       Polarization = 0,
+                       E0           = 1)
+
+    Scat = Sphere(Diameter    = 300e-9,
+                  Source       = Source,
+                  Material     = Material('BK7'))
 
 
-# Material can be 'FusedSilica'
-#                 'Aluminium'
-#                 'Silver'
-#                 'SodaLimeGlass'
-# More information in Material section of documentation
+    # Material can be 'FusedSilica'
+    #                 'Aluminium'
+    #                 'Silver'
+    #                 'SodaLimeGlass'
+    # More information in Material section of documentation
+
+
+if __name__ == '__main__':
+    run()

@@ -1,8 +1,16 @@
-from PyMieSim.Data._Material.utils import LoadOnlineSave
-from PyMieSim                      import Material
+matplotlib=True
+mlab=False
 
-LoadOnlineSave(filename='BK7', url='https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml')
+def run():
+    from PyMieSim.Data._Material.utils import LoadOnlineSave
+    from PyMieSim                      import Material
 
-Mat = Material('BK7')
+    LoadOnlineSave(filename='BK7', url='https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml')
 
-Mat.Plot()
+    Mat = Material('BK7')
+
+    Mat.Plot()
+
+
+if __name__ == '__main__':
+    run()

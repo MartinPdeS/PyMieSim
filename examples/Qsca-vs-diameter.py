@@ -1,32 +1,40 @@
-import numpy as np
-from PyMieSim.Scatterer  import Sphere
-from PyMieSim.Source     import PlaneWave
-from PyMieSim.Detector   import Photodiode
-from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
+matplotlib=True
+mlab=False
 
-Detector0 = Photodiode(NA                = 0.1,
-                       Sampling          = 300,
-                       GammaOffset       = 20,
-                       PhiOffset         = 30,
-                       CouplingMode      = 'Centered')
+def run():
+    import numpy as np
+    from PyMieSim.Scatterer  import Sphere
+    from PyMieSim.Source     import PlaneWave
+    from PyMieSim.Detector   import Photodiode
+    from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
-scatKwargs   = { 'Diameter' : np.linspace(400e-9, 1000e-9, 200),
-                 'Index'    : [1.5],
-                 'nMedium'  : [1,1.3] }
+    Detector0 = Photodiode(NA                = 0.1,
+                           Sampling          = 300,
+                           GammaOffset       = 20,
+                           PhiOffset         = 30,
+                           CouplingMode      = 'Centered')
 
-sourceKwargs = { 'Wavelength'   : [400e-9],
-                 'Polarization' : [0]}
+    scatKwargs   = { 'Diameter' : np.linspace(400e-9, 1000e-9, 200),
+                     'Index'    : [1.5],
+                     'nMedium'  : [1,1.3] }
 
-scatSet   = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
+    sourceKwargs = { 'Wavelength'   : [400e-9],
+                     'Polarization' : [0]}
 
-sourceSet = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
+    scatSet   = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 
-DetecSet  = DetectorSet([Detector0])
+    sourceSet = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
 
-Experiment = Setup(ScattererSet = scatSet,
-                   SourceSet    = sourceSet,
-                   DetectorSet  = DetecSet)
+    DetecSet  = DetectorSet([Detector0])
 
-Qsca = Experiment.Coupling(AsType='pymiesim')
+    Experiment = Setup(ScattererSet = scatSet,
+                       SourceSet    = sourceSet,
+                       DetectorSet  = DetecSet)
 
-Qsca.Plot(x='Diameter')
+    Qsca = Experiment.Coupling(AsType='pymiesim')
+
+    Qsca.Plot(x='Diameter')
+
+
+if __name__ == '__main__':
+    run()

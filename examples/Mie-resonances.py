@@ -1,24 +1,32 @@
-import numpy as np
-from PyMieSim.Scatterer  import Sphere
-from PyMieSim.Source     import PlaneWave
-from PyMieSim.Detector   import Photodiode
-from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
+matplotlib=True
+mlab=False
 
-scatKwargs   = { 'Diameter' : 200e-9,
-                 'Index'    : [4],
-                 'nMedium'  : [1] }
+def run():
+    import numpy as np
+    from PyMieSim.Scatterer  import Sphere
+    from PyMieSim.Source     import PlaneWave
+    from PyMieSim.Detector   import Photodiode
+    from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
-sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 500),
-                 'Polarization' : [0]}
+    scatKwargs   = { 'Diameter' : 200e-9,
+                     'Index'    : [4],
+                     'nMedium'  : [1] }
 
-scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
+    sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 500),
+                     'Polarization' : [0]}
 
-sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
+    scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 
-Experiment = Setup(ScattererSet = scatSet,
-                   SourceSet    = sourceSet,
-                   DetectorSet  = None)
+    sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
 
-Eff = Experiment.Efficiencies(['Qsca'], AsType='pymiesim')
+    Experiment = Setup(ScattererSet = scatSet,
+                       SourceSet    = sourceSet,
+                       DetectorSet  = None)
 
-Eff.Plot(x='Wavelength')
+    Eff = Experiment.Efficiencies(['Qsca'], AsType='pymiesim')
+
+    Eff.Plot(x='Wavelength')
+
+
+if __name__ == '__main__':
+    run()

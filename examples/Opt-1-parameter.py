@@ -1,69 +1,78 @@
-import numpy as np
-from PyMieSim            import Material
-from PyMieSim.Scatterer  import Sphere
-from PyMieSim.Detector   import Photodiode, LPmode
-from PyMieSim.Source     import PlaneWave
-from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
+matplotlib=True
+mlab=False
 
-DiameterList   = np.linspace(100e-9, 1000e-9, 200)
+def run():
+    return
+    import numpy as np
+    from PyMieSim            import Material
+    from PyMieSim.Scatterer  import Sphere
+    from PyMieSim.Detector   import Photodiode, LPmode
+    from PyMieSim.Source     import PlaneWave
+    from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
-Detector0 = Photodiode(NA                 = 0.1,
-                     Sampling          = 300,
-                     GammaOffset       = 20,
-                     PhiOffset         = 0,
-                     CouplingMode      = 'Centered')
+    DiameterList   = np.linspace(100e-9, 1000e-9, 200)
 
-scatKwargs   = { 'Diameter'    : np.linspace(400e-9, 2000e-9, 200),
-                 'Material'    : Material('BK7'),
-                 'nMedium'     : [1] }
+    Detector0 = Photodiode(NA                 = 0.1,
+                         Sampling          = 300,
+                         GammaOffset       = 20,
+                         PhiOffset         = 0,
+                         CouplingMode      = 'Centered')
 
-sourceKwargs = { 'Wavelength'   : 1e-6,
-                 'Polarization' : [0]}
+    scatKwargs   = { 'Diameter'    : np.linspace(400e-9, 2000e-9, 200),
+                     'Material'    : Material('BK7'),
+                     'nMedium'     : [1] }
 
-Detector0 = Photodiode(NA                = 2.0,
-                       Sampling          = 300,
-                       GammaOffset       = 0,
-                       PhiOffset         = 0,
-                       CouplingMode      = 'Centered')
+    sourceKwargs = { 'Wavelength'   : 1e-6,
+                     'Polarization' : [0]}
 
-detecSet   = DetectorSet([Detector0])
+    Detector0 = Photodiode(NA                = 2.0,
+                           Sampling          = 300,
+                           GammaOffset       = 0,
+                           PhiOffset         = 0,
+                           CouplingMode      = 'Centered')
 
-scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
+    detecSet   = DetectorSet([Detector0])
 
-sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
+    scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 
-Experiment = Setup(ScattererSet = scatSet,
-                   SourceSet    = sourceSet,
-                   DetectorSet  = detecSet)
+    sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
 
-# Metric can be "max"
-#               "min"
-#               "mean"
-#               "std+RI"
-#               "std+Diameter"
-#               "std+Polarization"
-#               "std+Wavelength"
-#               "std+Detector"
-#               "monotonic+RI"
-#               "monotonic+Diameter"
-#               "monotonic+Polarization"
-#               "monotonic+Wavelength"
-#               "monotonic+Detector"
+    Experiment = Setup(ScattererSet = scatSet,
+                       SourceSet    = sourceSet,
+                       DetectorSet  = detecSet)
 
-Opt = Experiment.Optimize(Setup           = Experiment,
-                 Metric          = 'mean',
-                 Parameter       = ['PhiOffset'],
-                 Optimum         = 'Maximum',
-                 MinVal          = [1e-5],
-                 MaxVal          = [180],
-                 WhichDetector   = 0,
-                 X0              = [0.6],
-                 MaxIter         = 350,
-                 Tol             = 1e-4,
-                 FirstStride     = 30)
+    # Metric can be "max"
+    #               "min"
+    #               "mean"
+    #               "std+RI"
+    #               "std+Diameter"
+    #               "std+Polarization"
+    #               "std+Wavelength"
+    #               "std+Detector"
+    #               "monotonic+RI"
+    #               "monotonic+Diameter"
+    #               "monotonic+Polarization"
+    #               "monotonic+Wavelength"
+    #               "monotonic+Detector"
 
-print(Opt.Result)
+    Opt = Experiment.Optimize(Setup           = Experiment,
+                     Metric          = 'mean',
+                     Parameter       = ['PhiOffset'],
+                     Optimum         = 'Maximum',
+                     MinVal          = [1e-5],
+                     MaxVal          = [180],
+                     WhichDetector   = 0,
+                     X0              = [0.6],
+                     MaxIter         = 350,
+                     Tol             = 1e-4,
+                     FirstStride     = 30)
 
-df = Experiment.Coupling(AsType='dataframe')
+    print(Opt.Result)
 
-df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
+    df = Experiment.Coupling(AsType='dataframe')
+
+    df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
+
+
+if __name__ == '__main__':
+    run()

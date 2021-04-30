@@ -14,41 +14,44 @@ def saveMlab():
     mlab.savefig(f'docs/images/{name}.png')
     mlab.close()
 
-def runScriptMlab(script):
+def runScript(script):
     global name
     name = script
-    GUI.invoke_after(2000, saveMlab)
     module = importlib.import_module(script)
 
-def runScriptMatplotlib(script):
-    global name
-    name = script
-    GUI.invoke_after(2000, saveMatplotlib)
-    module = importlib.import_module(script)
+    if module.matplotlib:
+        print('Matplotlib example plotting and saving...')
+        GUI.invoke_after(2000, saveMatplotlib)
+        module.run()
+
+    if module.mlab:
+        print('Mlab example plotting and saving...')
+        GUI.invoke_after(2000, saveMlab)
+        module.run()
 
 
-runScriptMlab('LPMode')
+runScript('LPMode')
 
-runScriptMlab('Photodiode')
+runScript('Photodiode')
 
-runScriptMatplotlib('S1S2')
+runScript('S1S2')
 
-runScriptMlab('Stokes')
+runScript('Stokes')
 
-runScriptMlab('SPF')
+runScript('SPF')
 
-runScriptMlab('FarField')
+runScript('FarField')
 
-runScriptMatplotlib('Mie-resonances')
+runScript('Mie-resonances')
 
-runScriptMatplotlib('Qscattering')
+runScript('Qscattering')
 
-runScriptMatplotlib('Coupling-vs-wavelength')
+runScript('Coupling-vs-wavelength')
 
-runScriptMatplotlib('Qsca-vs-diameter')
+runScript('Qsca-vs-diameter')
 
-runScriptMatplotlib('Coupling-vs-diameter')
+runScript('Coupling-vs-diameter')
 
-runScriptMatplotlib('New-Material')
+runScript('New-Material')
 
-runScriptMatplotlib('New-Material-Silver')
+runScript('New-Material-Silver')

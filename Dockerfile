@@ -61,4 +61,4 @@ RUN python3 -m pip wheel GitProject/PyMieSim -w GitProject/PyMieSim/output
 
 RUN auditwheel repair GitProject/PyMieSim/output/PyMieSim*whl -w GitProject/PyMieSim/output
 
-RUN python3 -m twine upload --password $password --username $username --repository pypi GitProject/PyMieSim/output/PyMieSim*
+RUN python3 -m twine upload --password $password --username $username --repository pypi GitProject/PyMieSim/output/PyMieSim*manylinux2014*

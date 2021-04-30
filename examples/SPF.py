@@ -1,14 +1,22 @@
-from PyMieSim.Scatterer import Sphere
-from PyMieSim.Source    import PlaneWave
+matplotlib=False
+mlab=True
 
-Source = PlaneWave(Wavelength   = 450e-9,
-                  Polarization = 0,
-                  E0           = 1)
+def run():
+    from PyMieSim.Scatterer import Sphere
+    from PyMieSim.Source    import PlaneWave
 
-Scat = Sphere(Diameter    = 800e-9,
-            Source      = Source,
-            Index       = 1.4)
+    Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
-SPF = Scat.SPF(Num=100)
+    Scat = Sphere(Diameter    = 800e-9,
+                Source      = Source,
+                Index       = 1.4)
 
-SPF.Plot()
+    SPF = Scat.SPF(Num=100)
+
+    SPF.Plot()
+
+
+if __name__ == '__main__':
+    run()

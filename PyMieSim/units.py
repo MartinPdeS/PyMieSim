@@ -21,14 +21,13 @@ class UnitRep:
     """
     Base class for unit representation.
     """
-    def __repr__(self):
-        factor = 2
+    def __str__(self):
 
         if self == 0:
             return f"0 m²"
 
         else:
-            exp = np.log10(self)//(3*factor)
+            exp = np.log10(self)//(3*self.PowerFactor)
 
             if   exp > +5:    unit = "P"; exp = +5
             elif exp < -5:    unit = "f"; exp = -5

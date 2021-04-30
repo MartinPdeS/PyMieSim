@@ -1,21 +1,29 @@
-from PyMieSim.Source    import PlaneWave
-from PyMieSim.Detector  import Photodiode
-from PyMieSim.Scatterer import Sphere
+matplotlib=False
+mlab=False
 
-Source = PlaneWave(Wavelength   = 450e-9,
-                  Polarization = 0,
-                  E0           = 1)
+def run():
+    from PyMieSim.Source    import PlaneWave
+    from PyMieSim.Detector  import Photodiode
+    from PyMieSim.Scatterer import Sphere
 
-Detector = Photodiode(Sampling     = 201,
-                     NA           = 0.2,
-                     GammaOffset  = 0,
-                     PhiOffset    = 0,
-                     CouplingMode = 'Centered')
+    Source = PlaneWave(Wavelength   = 450e-9,
+                      Polarization = 0,
+                      E0           = 1)
 
-Scat = Sphere(Diameter    = 300e-9,
-             Source      = Source,
-             Index       = 1.4)
+    Detector = Photodiode(Sampling     = 201,
+                         NA           = 0.2,
+                         GammaOffset  = 0,
+                         PhiOffset    = 0,
+                         CouplingMode = 'Centered')
 
-Coupling = Detector.Coupling(Scatterer = Scat)
+    Scat = Sphere(Diameter    = 300e-9,
+                 Source      = Source,
+                 Index       = 1.4)
 
-print(Coupling) # 6.566085549292496e-18
+    Coupling = Detector.Coupling(Scatterer = Scat)
+
+    print(Coupling) # 6.566085549292496e-18
+
+
+if __name__ == '__main__':
+    run()

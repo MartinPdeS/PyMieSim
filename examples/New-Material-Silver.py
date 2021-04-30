@@ -1,8 +1,16 @@
-from PyMieSim.Data._Material.utils import LoadOnlineSave
-from PyMieSim                      import Material
+matplotlib=True
+mlab=False
 
-LoadOnlineSave(filename='Silver', url='https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml')
+def run():
+    from PyMieSim.Data._Material.utils import LoadOnlineSave
+    from PyMieSim                      import Material
 
-Mat = Material('Silver')
+    LoadOnlineSave(filename='Silver', url='https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml')
 
-Mat.Plot()
+    Mat = Material('Silver')
+
+    Mat.Plot()
+
+
+if __name__ == '__main__':
+    run()
