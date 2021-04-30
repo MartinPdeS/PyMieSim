@@ -25,46 +25,53 @@ SourceParamList = ['E0',
                    'Wavelength']
 
 
-IndexDict = { 'name'     : 'Index',
-              'order'    :  None,
-             'label'     : 'Refractive index',
-             'format'    : '.2f',
-             'dimension' : None, }
+IndexDict = { 'name'      : 'Index',
+              'order'     :  None,
+              'label'     : 'Refractive index',
+              'format'    : '.2f',
+              'unit'      : ' [1]',
+              'dimension' : None, }
 
 DiameterDict = {'name'      : 'Diameter',
                 'order'     : None,
                 'label'     : 'Diameter',
                 'format'    : '.1e',
+                'unit'      : ' m',
                 'dimension' : None,}
 
 nMediumDict = { 'name'      : 'nMedium',
                 'order'     :  None,
                 'label'     : 'Medium Refractive index',
                 'format'    : '.2f',
+                'unit'      : ' [1]',
                 'dimension' : None,}
 
 MaterialDict = { 'name'      : 'Material',
                  'order'     :  None,
                  'label'     : 'Medium Refractive index',
                  'format'    : '10s',
+                 'unit'      : '',
                  'dimension' : None, }
 
 PolarizationDict = { 'name'      : 'Polarization',
                      'order'     :  None,
                      'label'     : 'Polarization',
                      'format'    : '.1f',
+                     'unit'      : ' Degree',
                      'dimension' : None,}
 
 WavelengthDict = { 'name'      : 'Wavelength',
                    'order'     :  None,
                    'label'     : r'Wavelength $\lambda$',
                    'format'    : '.1e',
+                   'unit'      : ' m',
                    'dimension' : None,}
 
 DetectorDict = { 'name'     : 'Detector',
                  'order'    :  None,
                  'label'     : 'Detector',
                  'format'    : '11s',
+                 'unit'      : ' ',
                  'dimension' : None, }
 
 

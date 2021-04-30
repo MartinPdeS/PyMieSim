@@ -76,10 +76,11 @@
 <span class="kn">from</span> <span class="nn">PyMieSim.Directories</span>     <span class="kn">import</span> <span class="n">NPZPath</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Representations</span> <span class="kn">import</span> <span class="n">S1S2</span><span class="p">,</span> <span class="n">SPF</span><span class="p">,</span> <span class="n">Stokes</span><span class="p">,</span> <span class="n">ScalarFarField</span><span class="p">,</span> <span class="n">Footprint</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Physics</span>         <span class="kn">import</span> <span class="n">_Polarization</span><span class="p">,</span> <span class="n">Angle</span>
-<span class="kn">from</span> <span class="nn">PyMieSim.utils</span>           <span class="kn">import</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">NearestIndex</span><span class="p">,</span> <span class="n">ToList</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.utils</span>           <span class="kn">import</span> <span class="n">NA2Angle</span><span class="p">,</span> <span class="n">Cart2Sp</span><span class="p">,</span> <span class="n">NearestIndex</span><span class="p">,</span> <span class="n">ToList</span><span class="p">,</span> <span class="n">MergeDict</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.units</span>           <span class="kn">import</span> <span class="n">Power</span><span class="p">,</span> <span class="n">Area</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Mesh</span>            <span class="kn">import</span> <span class="n">FibonacciMesh</span>
 <span class="kn">from</span> <span class="nn">PyMieSim._Coupling</span>       <span class="kn">import</span> <span class="n">Coupling</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.Config</span>          <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.Constants</span>       <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">PyMieSim.Plots</span> <span class="k">as</span> <span class="nn">plot</span>
 
@@ -157,7 +158,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_Coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">Coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        .. note::</span>
 <span class="sd">            Return the value of the scattererd light coupling as computed as:</span>
@@ -180,29 +181,10 @@
 <span class="sd">            Value of the coupling.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scatterer</span><span class="p">,</span> <span class="n">Detector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scatterer</span><span class="p">,</span> <span class="n">Detector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">)</span><span class="c1"># * Scatterer.nMedium * c * eps0 / 2</span>
+        <span class="k">return</span> <span class="n">Power</span><span class="p">(</span> <span class="n">C</span> <span class="o">*</span> <span class="n">eps0</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">)</span><span class="c1"># * Scatterer.nMedium * c * eps0 / 2</span>
 
-
-    <span class="k">def</span> <span class="nf">Coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        .. note::</span>
-<span class="sd">            Return coupling power which is detected.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        Scatterer : :class:`Scatterer`</span>
-<span class="sd">            Scatterer instance (sphere, cylinder, ...).</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        :class:`float`</span>
-<span class="sd">            Value of the coupling power [:math:`W`].</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">C</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Coupling</span><span class="p">(</span><span class="n">Scatterer</span><span class="p">)</span> <span class="o">*</span> <span class="n">eps0</span> <span class="o">*</span> <span class="n">c</span> <span class="o">*</span> <span class="mf">0.5</span>
-
-        <span class="k">return</span> <span class="n">Power</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">Footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Scatterer</span><span class="p">,</span> <span class="n">Num</span> <span class="o">=</span> <span class="mi">200</span><span class="p">):</span>
@@ -879,10 +861,20 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nList</span>
 
 
+<span class="k">class</span> <span class="nc">Set</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">UpdateConfiguration</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="nb">iter</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;MaxOrder&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">Dict</span>              <span class="o">=</span> <span class="n">Arg2Dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">Dict</span><span class="p">[</span><span class="s1">&#39;order&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="nb">iter</span>
+            <span class="n">Dict</span><span class="p">[</span><span class="s1">&#39;dimension&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="nb">iter</span>                <span class="o">+=</span> <span class="mi">1</span>
 
+            <span class="n">MergeDict</span><span class="p">(</span><span class="n">config</span><span class="p">,</span><span class="n">Dict</span><span class="p">)</span>
 
+        <span class="n">config</span><span class="p">[</span><span class="s1">&#39;MaxOrder&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">iter</span>
 
-
+        <span class="k">return</span> <span class="n">config</span>
 
 
 

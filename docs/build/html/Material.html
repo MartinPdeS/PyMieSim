@@ -169,21 +169,37 @@ Here is what the Meta file look like</p>
 <hr class="docutils" />
 <blockquote>
 <div><p>In order to generate new Material to use with PyMieSim one can use the following snippet</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
-<span class="kn">from</span> <span class="nn">PyMieSim</span> <span class="kn">import</span> <span class="n">Material</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">matplotlib</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">mlab</span><span class="o">=</span><span class="kc">False</span>
 
-<span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;BK7&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
+    <span class="kn">from</span> <span class="nn">PyMieSim</span>                      <span class="kn">import</span> <span class="n">Material</span>
 
-<span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">)</span>
+    <span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;BK7&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&#39;</span><span class="p">)</span>
 
-<span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+    <span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">)</span>
+
+    <span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
 </div></blockquote>
@@ -191,21 +207,37 @@ Here is what the Meta file look like</p>
 <p>After executing this code a new entry to <strong>Meta.json</strong> will be added or updated.
 Afterward the user can use this new material for my computation.</p>
 <p>Here is another examples</p>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
-<span class="kn">from</span> <span class="nn">PyMieSim</span> <span class="kn">import</span> <span class="n">Material</span>
+<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">matplotlib</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">mlab</span><span class="o">=</span><span class="kc">False</span>
 
-<span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;Silver&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
+    <span class="kn">from</span> <span class="nn">PyMieSim</span>                      <span class="kn">import</span> <span class="n">Material</span>
 
-<span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)</span>
+    <span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;Silver&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&#39;</span><span class="p">)</span>
 
-<span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+    <span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)</span>
+
+    <span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </td></tr></table></div>
 <a class="reference internal image-reference" href="_images/New-Material-Silver.png"><img alt="_images/New-Material-Silver.png" src="_images/New-Material-Silver.png" style="width: 600px;" /></a>

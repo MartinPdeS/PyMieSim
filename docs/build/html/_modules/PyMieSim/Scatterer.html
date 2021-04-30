@@ -116,6 +116,14 @@
 <span class="sd">        .. note:: Size parameter of the scatterer [:math:`k r`].</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargformatIndex</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;Index&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
+
+    <span class="n">kwargformatMaterial</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;Material&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
+
     <span class="nd">@beartype</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">Diameter</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -269,6 +277,14 @@
 <span class="sd">        .. note:: Size parameter of the scatterer [:math:`k r`].</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">kwargformat</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;CoreDiameter&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;ShellDiameter&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Source&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;CoreIndex&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;ShellIndex&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;nMedium&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Material&#39;</span><span class="p">]</span>
     <span class="nd">@beartype</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">CoreDiameter</span>  <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
@@ -369,6 +385,12 @@
 <span class="sd">        .. note:: Size parameter of the scatterer [:math:`k r`].</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">kwargformat</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Source&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Index&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;nMedium&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Material&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">Diameter</span>    <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>

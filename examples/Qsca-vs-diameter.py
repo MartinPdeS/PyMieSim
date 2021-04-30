@@ -14,7 +14,7 @@ def run():
                            PhiOffset         = 30,
                            CouplingMode      = 'Centered')
 
-    scatKwargs   = { 'Diameter' : np.linspace(400e-9, 1000e-9, 200),
+    scatKwargs   = { 'Diameter' : np.linspace(400e-9, 1000e-9, 100),
                      'Index'    : [1.5],
                      'nMedium'  : [1,1.3] }
 

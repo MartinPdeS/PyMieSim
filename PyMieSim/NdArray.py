@@ -183,10 +183,8 @@ class PMSArray(object):
         plt.xlabel(xlabel)
         plt.legend(fontsize=8)
 
-        if Testing == False:
-            plt.show()
-        else:
-            plt.close('all')
+        plt.show()
+
 
 
     def GetSlicer(self, x):
@@ -208,7 +206,7 @@ class PMSArray(object):
 
         plt.grid()
 
-        plt.ylabel(self.conf['variable']['name'] + ' ' + self.conf['variable']['unit'])
+        plt.ylabel(self.conf['variable']['name'] +  self.conf['variable']['unit'])
 
         return fig
 
@@ -222,9 +220,10 @@ class PMSArray(object):
         DimSlicer, xlabel, xval = self.GetSlicer(x)
 
         for ni, idx in enumerate( product( *DimSlicer ) ):
+            Efficiency = self.conf['variable']['namelist'][idx[-1]] + ' | '
             plot(xval,
                  self.data[idx],
-                 label = self.conf['variable']['namelist'][idx[-1]] + ' | ' + self.GetLegend(x, idx),
+                 label = Efficiency + self.GetLegend(x, idx),
                  *args,
                  **kwargs)
 
@@ -232,10 +231,7 @@ class PMSArray(object):
 
         plt.legend(fontsize=6)
 
-        if Testing == False:
-            plt.show()
-        else:
-            plt.close('all')
+        plt.show()
 
 
     def GetLegend(self, axis, idx):

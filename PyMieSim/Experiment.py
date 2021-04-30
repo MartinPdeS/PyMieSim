@@ -121,7 +121,7 @@ class Setup(object):
 
 
         config = { 'name'      : None,
-                   'unit'      : None,
+                   'unit'      : {},
                    'material'  : None,
                    'order'     : {},
                    'label'     : {},

@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import unittest
-from mayavi   import mlab
-from unittest import TestCase
-from numpy    import linspace, pi
+from mayavi     import mlab
+from unittest   import TestCase
+from numpy      import linspace, pi
+from pyface.api import GUI
 import matplotlib.pyplot as plt
 import numpy             as np
 
@@ -35,6 +36,10 @@ scatKwargs   = { 'Diameter' : 200e-9,
 sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 10),
                  'Polarization' : [0]}
 
+
+def CloseMatplotlib():
+    """Close the scene."""
+    plt.close()
 
 class DetectorTestCase(unittest.TestCase):
 
@@ -216,14 +221,14 @@ class ExperiementTestCase(unittest.TestCase):
 
 
     def test05(self):
-        with patch('matplotlib.pyplot') as p:
-            pymieArrayEff.Plot(x='diameter', Testing=True)
+        GUI.invoke_after(200, CloseMatplotlib)
+        pymieArrayEff.Plot(x='diameter', Testing=True)
         print('PyMieSim Array Efficiencies plotting passed')
 
 
     def test06(self):
-        with patch('matplotlib.pyplot') as p:
-            pymieArrayCoupling.Plot(x='diameter', Testing=True)
+        GUI.invoke_after(200, CloseMatplotlib)
+        pymieArrayCoupling.Plot(x='diameter', Testing=True)
         print('PyMieSim Array Coupling plotting passed')
 
 
