@@ -36,8 +36,7 @@ def Structured(**kwargs):
 def UnstructuredAbs(Mesh,
                     Scalar  = None,
                     Name    = '',
-                    Figure  = None,
-                    Testing = False):
+                    Figure  = None):
 
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
@@ -66,15 +65,12 @@ def UnstructuredAbs(Mesh,
                   title            = 'Real part',
                   orientation      = 'horizontal' )
 
-    if Testing: GUI.invoke_after(100, close)
-
 
 @mlab.show
 def UnstructuredAmplitude(Mesh,
                           Scalar  = None,
                           Name    = '',
-                          Figure  = None,
-                          Testing = False):
+                          Figure  = None):
 
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
@@ -121,8 +117,6 @@ def UnstructuredAmplitude(Mesh,
 
         WavenumberArrow(Figure, Origin=(val,0,-3), Scale=1)
 
-    if Testing: GUI.invoke_after(100, close)
-
 
 @mlab.show
 def StructuredAbs(Scalar,
@@ -130,8 +124,7 @@ def StructuredAbs(Scalar,
                   Theta,
                   Name         = '',
                   Polarization = None,
-                  Figure       = None,
-                  Testing      = False):
+                  Figure       = None):
 
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
@@ -154,16 +147,6 @@ def StructuredAbs(Scalar,
     if Polarization is not None:
         AddSource(Figure, O1, Polarization, Scale=1)
 
-    if Testing: GUI.invoke_after(100, close)
-
-
-def close():
-    """Close the scene."""
-    f = mlab.gcf()
-    e = mlab.get_engine()
-    v = e.get_viewer(f)
-    v.close()
-
 
 
 @mlab.show
@@ -173,8 +156,7 @@ def StructuredAmplitude(Scalar,
                         Name         = '',
                         Polarization = None,
                         Figure       = None,
-                        Source       = None,
-                        Testing      = False):
+                        Source       = None):
 
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
@@ -207,9 +189,6 @@ def StructuredAmplitude(Scalar,
                       nb_labels        = 5,
                       title            = f'{keys} part',
                       orientation      = ax )
-
-    if Testing: GUI.invoke_after(100, close)
-
 
 
 
@@ -273,8 +252,7 @@ def StokesPlot(I,
                Theta,
                Name         = '',
                Polarization = None,
-               Figure       = None,
-               Testing      = False):
+               Figure       = None):
 
     Figure = mlab.figure(figure=Name, size=(600,300))
     visual.set_viewer(Figure)
@@ -309,23 +287,6 @@ def StokesPlot(I,
 
         if Polarization is not None:
             AddSource(Figure, Origin, Polarization, Scale=1)
-
-
-    if Testing: GUI.invoke_after(100, close)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

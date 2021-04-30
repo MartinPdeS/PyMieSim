@@ -71,8 +71,7 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
                    Phi          = self['Phi'],
                    Theta        = self['Theta'],
                    Name         = 'Stokes Parameter',
-                   Polarization = self.Parent.Source.Polarization.Radian,
-                   Testing      = self.Parent.Testing)
+                   Polarization = self.Parent.Source.Polarization.Radian)
 
     def __repr__(self):
         return f"""
@@ -125,8 +124,7 @@ class SPF(dict):
                       Phi          = self['Phi'],
                       Theta        = self['Theta'],
                       Name         = 'Scattering phase function',
-                      Polarization = self.Parent.Source.Polarization.Radian,
-                      Testing      = self.Parent.Testing)
+                      Polarization = self.Parent.Source.Polarization.Radian)
 
 
 
@@ -203,10 +201,8 @@ class S1S2(dict):
                              color = 'C1',
                              alpha = 0.4)
 
-        if self.Parent.Testing:
-            plt.close()
-        else:
-            plt.show()
+        plt.close()
+
 
 
     def __repr__(self):
@@ -264,15 +260,13 @@ class ScalarFarField(dict):
                             Phi          = self['Phi'],
                             Theta        = self['Theta'],
                             Name         = u'E_φ',
-                            Polarization = self.Parent.Source.Polarization.Radian,
-                            Testing      = self.Parent.Testing)
+                            Polarization = self.Parent.Source.Polarization.Radian)
 
         StructuredAmplitude(Scalar       = self['ETheta'],
                             Phi          = self['Phi'],
                             Theta        = self['Theta'],
                             Name         = u'E_θ',
-                            Polarization = self.Parent.Source.Polarization.Radian,
-                            Testing      = self.Parent.Testing)
+                            Polarization = self.Parent.Source.Polarization.Radian)
 
 
 

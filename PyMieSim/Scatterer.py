@@ -61,7 +61,6 @@ class Sphere(BaseScatterer, ScattererProperties):
                  Source   : SourceType,
                  Index    : ScalarType   = None,
                  nMedium  : ScalarType   = 1.0,
-                 Testing  : bool         = False,
                  Material                = None):
 
         super().__init__()
@@ -80,7 +79,6 @@ class Sphere(BaseScatterer, ScattererProperties):
         self.nMedium   = nMedium.real#.astype(complex)
         self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
-        self.Testing   = Testing
 
         self.GetBinding()
 
@@ -224,7 +222,6 @@ class ShellSphere(BaseScatterer, ScattererProperties):
                  CoreIndex     : ScalarType   = None,
                  ShellIndex    : ScalarType   = None,
                  nMedium       : ScalarType   = 1.0,
-                 Testing       : bool         = False,
                  CoreMaterial                 = None,
                  ShellMaterial                = None,
                  ):
@@ -248,7 +245,6 @@ class ShellSphere(BaseScatterer, ScattererProperties):
         self.Source        = Source
         self.nMedium       = nMedium
         self.Area          = Area(np.pi * (ShellDiameter/2)**2)
-        self.Testing       = Testing
 
         self.GetBinding()
 
@@ -327,8 +323,7 @@ class Cylinder(BaseScatterer, ScattererProperties):
                  Diameter    : float,
                  Source      : SourceType,
                  Index       : ScalarType,
-                 IndexMedium : ScalarType  = 1.0,
-                 Testing     : bool        = False):
+                 IndexMedium : ScalarType  = 1.0):
 
         super().__init__()
         self.type      = 'Cylinder'
@@ -338,7 +333,6 @@ class Cylinder(BaseScatterer, ScattererProperties):
         self.nMedium   = IndexMedium
         self.Area      = Area(np.pi * (Diameter/2)**2)
         self.SizeParam = Source.k * ( self.Diameter / 2 )
-        self.Testing   = Testing
 
         self.GetBinding()
 

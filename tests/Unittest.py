@@ -41,6 +41,12 @@ def CloseMatplotlib():
     """Close the scene."""
     plt.close()
 
+def CloseMlab():
+    """Close the scene."""
+    mlab.close()
+
+PLOTTIME = 600
+
 class DetectorTestCase(unittest.TestCase):
 
     def test00(self):
@@ -50,8 +56,7 @@ class DetectorTestCase(unittest.TestCase):
                                      NA           = 0.2,
                                      GammaOffset  = 0,
                                      PhiOffset    = 0,
-                                     CouplingMode = 'Centered',
-                                     Testing      = True)
+                                     CouplingMode = 'Centered')
 
         print('Photodiode initialisation passed')
 
@@ -64,8 +69,7 @@ class DetectorTestCase(unittest.TestCase):
                              NA           = 0.2,
                              GammaOffset  = 0,
                              PhiOffset    = 0,
-                             CouplingMode = 'Centered',
-                             Testing      = True)
+                             CouplingMode = 'Centered')
 
         print('LPmode initialisation passed')
 
@@ -73,22 +77,25 @@ class DetectorTestCase(unittest.TestCase):
     def test02(self):
         from PyMieSim.Detector import IntegratingSphere
         global IntegratingSphere
-        IntegratingSphere = IntegratingSphere(Testing = True)
+        IntegratingSphere = IntegratingSphere()
 
         print('IntegratingSphere initialisation passed')
 
 
     def test03(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
         Photodiode.Plot()
         print('Photodiode Plotting passed')
 
 
     def test04(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
         LPmode.Plot()
         print('LPmode Plotting passed')
 
 
     def test05(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
         IntegratingSphere.Plot()
         print('IntegratingSphere Plotting passed')
 
@@ -100,8 +107,7 @@ class ScattererTestCase(unittest.TestCase):
         global sScat
         sScat = Sphere(Diameter = 300e-9,
                             Index    = 1.4,
-                            Source   = LightSource,
-                            Testing  = True)
+                            Source   = LightSource)
 
         print('Sphere initialisation passed')
 
@@ -111,8 +117,7 @@ class ScattererTestCase(unittest.TestCase):
         global cScat
         cScat = Cylinder(Diameter = 300e-9,
                               Index    = 1.4,
-                              Source   = LightSource,
-                              Testing  = True)
+                              Source   = LightSource)
 
         print('Cylinder initialisation passed')
 
@@ -152,21 +157,26 @@ class ScattererTestCase(unittest.TestCase):
 
 
     def test09(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
         sScat.S1S2(10).Plot()
         print('<S1S2> coupling passed')
 
 
     def test10(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
         sScat.Stokes(10).Plot()
         print('<Stokes> coupling passed')
 
 
     def test11(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(2*PLOTTIME, CloseMlab)
         sScat.FarField(10).Plot()
         print('<FarField> coupling passed')
 
 
     def test12(self):
+        GUI.invoke_after(PLOTTIME, CloseMlab)
         sScat.SPF(10).Plot()
         print('<SPF> coupling passed')
 
@@ -221,14 +231,14 @@ class ExperiementTestCase(unittest.TestCase):
 
 
     def test05(self):
-        GUI.invoke_after(200, CloseMatplotlib)
-        pymieArrayEff.Plot(x='diameter', Testing=True)
+        GUI.invoke_after(PLOTTIME, CloseMatplotlib)
+        pymieArrayEff.Plot(x='diameter')
         print('PyMieSim Array Efficiencies plotting passed')
 
 
     def test06(self):
-        GUI.invoke_after(200, CloseMatplotlib)
-        pymieArrayCoupling.Plot(x='diameter', Testing=True)
+        GUI.invoke_after(PLOTTIME, CloseMatplotlib)
+        pymieArrayCoupling.Plot(x='diameter')
         print('PyMieSim Array Coupling plotting passed')
 
 
