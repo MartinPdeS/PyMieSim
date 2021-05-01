@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from itertools import product
 
 from PyMieSim.Config import MetricList
-
+from PyMieSim.utils  import LowerStr
 
 
 class PMSArray(object):
@@ -14,7 +14,22 @@ class PMSArray(object):
         self.conf = conf
 
 
+    @LowerStr
     def Cost(self, arg = 'max'):
+        """Method return cost function evaluated as defined in the ___ section
+        of the documentation.
+
+        Parameters
+        ----------
+        arg : :class:`str`
+            String representing the cost function.
+
+        Returns
+        -------
+        :class:`float`
+            The evaluated cost.
+
+        """
 
         arg = arg.lower().split('+', 2)
 
@@ -36,7 +51,7 @@ class PMSArray(object):
         raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
 
 
-
+    @LowerStr
     def Monotonic(self, axis):
         """Method compute and the monotonic value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -64,6 +79,7 @@ class PMSArray(object):
         return PMSArray(array=arr, conf=conf)
 
 
+    @LowerStr
     def Mean(self, axis):
         """Method compute and the mean value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -89,6 +105,7 @@ class PMSArray(object):
         return PMSArray(array=arr, conf=conf)
 
 
+    @LowerStr
     def Std(self, axis):
         """Method compute and the std value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -114,6 +131,7 @@ class PMSArray(object):
         return PMSArray(array=arr, conf=conf)
 
 
+    @LowerStr
     def Rsd(self, axis):
         """Method compute and the rsd value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -142,8 +160,24 @@ class PMSArray(object):
 
 
     def UpdateConf(self, axis):
+        """Method update the configuration variable (config) in order to
+        ouput a new :class:`PMSArray` instance.
+        A new instance is created each time a reduction operation is applied,
+        such as :func:`Mean`, :func:`Std`, :func:`Rsd`, :func:`Monotonic` .
 
-        newConf = self.conf.copy()#copy.copy(self.conf)
+        Parameters
+        ----------
+        axis : str
+            Key vale of the self dict for which we apply a reduction opration.
+
+        Returns
+        -------
+        type
+            New instance of :class:`PMSArray` .
+
+        """
+
+        newConf = self.conf.copy()#copy.copy(self.conf)  <----- I don't like it!
 
         newConf['order'].pop(axis)
         newConf['dimension'].pop(axis)
@@ -154,22 +188,26 @@ class PMSArray(object):
         return newConf
 
 
-    def Plot(self, Scale = 'linear', *args, **kwargs):
-        if Scale.lower() in ['lin', 'linear']      : plot = plt.plot
-        if Scale.lower() in ['log', 'logarithmic'] : plot = plt.loglog;
+    @LowerStr
+    def Plot(self, x,  Scale = 'linear', *args, **kwargs):
+        """Method plot the multi-dimensional array with the x key as abscissa.
+        args and kwargs can be passed as standard input to matplotlib.pyplot.
 
-        if self.conf['variable']['name'] == 'Efficiencies':
-            return self.PlotEfficiencies(*args, **kwargs, plot=plot)
+        Parameters
+        ----------
+        x : str
+            Key of the self dict which represent the abscissa.
+        Scale : str
+            Options allow to switch between log and linear scale ['log', 'linear'].
 
-        if self.conf['variable']['name'] == 'Coupling':
-            return self.PlotCoupling(*args, **kwargs, plot=plot)
+        """
 
-
-
-    def PlotCoupling(self, x, plot, Testing=False, *args, **kwargs):
+        if Scale in ['lin', 'linear']        : plot = plt.plot
+        if Scale in ['log', 'logarithmic']   : plot = plt.loglog;
+        if Scale in ['xlog', 'xlogarithmic'] : plot = plt.semilogx;
+        if Scale in ['ylog', 'ylogarithmic'] : plot = plt.semilogy;
 
         fig   = self.PrepareFigure()
-        x     = x.lower()
 
         DimSlicer, xlabel, xval = self.GetSlicer(x)
 
@@ -181,10 +219,47 @@ class PMSArray(object):
                  **kwargs)
 
         plt.xlabel(xlabel)
-        plt.legend(fontsize=8)
+        plt.legend(fontsize=6)
 
         plt.show()
 
+
+    def GetLegend(self, axis, idx):
+        """Method generate and return the legend text for the specific plot.
+
+        Parameters
+        ----------
+        axis : :class:`str`
+            Axis which is used for x-axis of the specific plot
+        idx : :class:`tuple`
+            Dimension indices of the specific plot
+
+        Returns
+        -------
+        :class:`str`
+            Text for the legend
+
+        """
+
+        label = ''
+
+        for key in self.conf['order']:
+
+            if axis.lower() != key.lower():
+
+                index  = idx[self.conf['order'][key]]
+                val    = self.conf['dimension'][key][index]
+
+                if key.lower() == 'material' :
+                    val = val.__str__()
+
+                format = self.conf['format'][key]
+                label += f"{key}= {val:{format}} | "
+
+        if self.conf['variable']['name'] == 'Efficiencies':
+            label = self.conf['variable']['namelist'][idx[-1]] + ' | ' + label
+
+        return label
 
 
     def GetSlicer(self, x):
@@ -211,72 +286,9 @@ class PMSArray(object):
         return fig
 
 
-    def PlotEfficiencies(self, x, plot, Testing=False,  *args, **kwargs):
-
-        fig   = self.PrepareFigure()
-
-        x     = x.lower()
-
-        DimSlicer, xlabel, xval = self.GetSlicer(x)
-
-        for ni, idx in enumerate( product( *DimSlicer ) ):
-            Efficiency = self.conf['variable']['namelist'][idx[-1]] + ' | '
-            plot(xval,
-                 self.data[idx],
-                 label = Efficiency + self.GetLegend(x, idx),
-                 *args,
-                 **kwargs)
-
-        plt.xlabel(xlabel)
-
-        plt.legend(fontsize=6)
-
-        plt.show()
-
-
-    def GetLegend(self, axis, idx):
-        """Method generate and return the legend text for the specific plot.
-
-        Parameters
-        ----------
-        axis : :class:`str`
-            Axis which is used for x-axis of the specific plot
-        idx : :class:`tuple`
-            Dimension indices of the specific plot
-
-        Returns
-        -------
-        :class:`str`
-            Text for the legend
-
-        """
-        label = ''
-
-        for key in self.conf['order']:
-
-            if axis.lower() != key.lower():
-
-                if key == 'Material':
-                    index  = idx[self.conf['order'][key]]
-                    val    = self.conf['dimension'][key][index]
-                    format = self.conf['format']['Material']
-                    label += f"{key}: { val } | "
-
-                else:
-                    index  = idx[self.conf['order'][key]]
-                    val    = self.conf['dimension'][key][index]
-                    format = self.conf['format'][key]
-                    label += f"{key}= {val:{format}} | "
-
-        return label
-
-
     def __getitem__(self, key):
-        return self.data[key]
-
-
-    def __setitem__(self, key, value):
-        self.data[key] = value
+        index = self.conf['variable']['namelist'].index(key)
+        return self.data[..., index].squeeze()
 
 
     def __str__(self):
@@ -291,6 +303,7 @@ class PMSArray(object):
 
         text += '='*90 + '\n'
         return text
+
 
 
 class Opt5DArray(np.ndarray):
@@ -314,6 +327,7 @@ class Opt5DArray(np.ndarray):
                      'diameter'     : True,
                      'index'        : True}
 
+    @LowerStr
     def DefineCostFunc(self, arg):
         arg = arg.lower().split('+', 2)
 

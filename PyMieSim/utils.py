@@ -297,4 +297,13 @@ def MergeDict(dict0, dict1):
             dict0[key][dict1['name']] = dict1[key]
 
 
+def LowerStr(function):
+    def wrapped(*args, **kwargs):
+        args = (arg.lower() if isinstance(arg, str) else arg for arg in args)
+
+        kwargs = {k: v.lower() if isinstance(v, str) else v for k, v in kwargs.items()}
+
+        return function(*args, **kwargs)
+    return wrapped
+
 # -

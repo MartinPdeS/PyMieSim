@@ -3,6 +3,7 @@ mlab=False
 
 def run():
     import numpy as np
+    from PyMieSim            import Material
     from PyMieSim.Scatterer  import Sphere
     from PyMieSim.Source     import PlaneWave
     from PyMieSim.Detector   import Photodiode
@@ -14,9 +15,9 @@ def run():
                            PhiOffset         = 30,
                            CouplingMode      = 'Centered')
 
-    scatKwargs   = { 'Diameter' : np.linspace(400e-9, 1000e-9, 100),
-                     'Index'    : [1.5],
-                     'nMedium'  : [1,1.3] }
+    scatKwargs   = { 'Diameter' : np.geomspace(6.36e-09, 100000e-9, 1500),
+                     'Index'    : [1.4,1.8],
+                     'nMedium'  : [1] }
 
     sourceKwargs = { 'Wavelength'   : [400e-9],
                      'Polarization' : [0]}
@@ -31,9 +32,10 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = DetecSet)
 
-    Qsca = Experiment.Coupling(AsType='pymiesim')
+    Qsca = Experiment.Efficiencies(Eff='Qsca', AsType='pymiesim')
 
-    Qsca.Plot(x='Diameter')
+    Qsca.Plot(x='Diameter', Scale='log')
+
 
 
 if __name__ == '__main__':

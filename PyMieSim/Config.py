@@ -49,7 +49,7 @@ nMediumDict = { 'name'      : 'nMedium',
 MaterialDict = { 'name'      : 'Material',
                  'order'     :  None,
                  'label'     : 'Medium Refractive index',
-                 'format'    : '10s',
+                 'format'    : 's',
                  'unit'      : '',
                  'dimension' : None, }
 
@@ -87,6 +87,17 @@ CouplingDict = { 'name'   : 'Coupling',
                  'format' : '15s',
                  'unit'   :  ' Watt' }
 
+
+BaseConfig = { 'name'      : None,
+               'unit'      : {},
+               'material'  : None,
+               'order'     : {},
+               'label'     : {},
+               'format'    : {},
+               'dimension' : {},
+               'MaxOrder'  : 0}
+
+
 Arg2Dict = { 'Diameter'     : DiameterDict,
              'Index'        : IndexDict,
              'Material'     : MaterialDict,
@@ -96,6 +107,6 @@ Arg2Dict = { 'Diameter'     : DiameterDict,
 
 OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
 
-EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'g', 'Qpr']
+EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'Qpr']
 
 exList  = Union[int, float, list, np.ndarray, tuple]

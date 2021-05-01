@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import itertools
-import pprint             as pp
+import copy
 import numpy              as np
 import pandas             as pd
 from beartype             import beartype
@@ -14,7 +14,7 @@ from PyMieSim.NdArray     import PMSArray, Opt5DArray
 from PyMieSim.Detector    import LPmode, Photodiode
 from PyMieSim.Scatterer   import Sphere, WMSample
 from PyMieSim.BaseClasses import Set
-from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict
+from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict, LowerStr
 from PyMieSim.Config      import *
 
 
@@ -120,14 +120,7 @@ class Setup(object):
                  DetectorSet  : Union[DetectorSet, None] = None):
 
 
-        config = { 'name'      : None,
-                   'unit'      : {},
-                   'material'  : None,
-                   'order'     : {},
-                   'label'     : {},
-                   'format'    : {},
-                   'dimension' : {},
-                   'MaxOrder'  : 0}
+        config = copy.copy(BaseConfig)
 
         self.MetricList   = MetricList
 
@@ -166,7 +159,7 @@ class Setup(object):
             Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
 
         """
-
+        if Eff == 'all': Eff = EFFTYPE
         Eff = ToList(Eff)
 
         self.config['variable']             = EfficienciesDict
@@ -233,6 +226,7 @@ class Setup(object):
 
         for mat in self.ScattererSet.kwargs['Material']:
             mat.Evaluate(self.SourceSet.kwargs['Wavelength'])
+
 
 
     def ReturnType(self, Array, AsType, conf):
