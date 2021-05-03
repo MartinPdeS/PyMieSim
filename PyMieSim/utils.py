@@ -287,7 +287,7 @@ def ToList(*args):
 
 
 def GeneratorFromDict(dictionnary):
-    order = {n: a for n, a in enumerate(dictionnary.keys())}
+    order = {a: n for n, a in enumerate(dictionnary.keys())}
     return itertools.product( *( a for a in dictionnary.values() ) ), order
 
 

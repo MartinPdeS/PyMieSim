@@ -4,7 +4,6 @@
 import itertools
 import copy
 import numpy              as np
-import pandas             as pd
 from beartype             import beartype
 from multiprocessing      import Process
 from scipy.optimize       import minimize
@@ -23,40 +22,23 @@ class ScatSet(Set):
     @beartype
     def __init__(self, Scatterer = None, kwargs : dict = {}):
 
-        if 'Material' in kwargs.keys():
-            kwargs['Material'] = ToList(kwargs['Material'])
-            assert 'index' not in kwargs.keys(), IO( "You should either choose a material or the RI, not both." )
+        if all([ 'Material' in kwargs.keys(), 'index' in kwargs.keys() ] ):
+            raise KeyError("You should either choose a material or the RI, not both.")
 
-        else:
-            kwargs['Index'] = ToList(kwargs['Index'])
-            assert 'Material' not in kwargs.keys(), IO( "You should either choose a material or the RI, not both." )
+        self.kwargs = {k: ToList(v) for k, v in kwargs.items()}
 
-
-        kwargs['nMedium']  = ToList(kwargs['nMedium'])
-        kwargs['Diameter'] = ToList(kwargs['Diameter'])
-
-        if 'Material' in kwargs:
-            self.kwargs = {k: kwargs[k] for k in Scatterer.kwargformatMaterial if k in kwargs}
-        else:
-            self.kwargs = {k: kwargs[k] for k in Scatterer.kwargformatIndex if k in kwargs}
-
+        self.Scatterer = Scatterer
 
 
     def Generator(self, source=None):
         Generator, order = GeneratorFromDict(self.kwargs)
-        if 'Material' not in self.kwargs.keys():
-            for diameter, index, nmedium in Generator:
-                yield Sphere(Diameter  = diameter,
-                             Source    = source,
-                             Index     = index,
-                             nMedium   = nmedium)
 
-        else:
-            for diameter, material, nmedium in Generator:
-                yield Sphere(Diameter  = diameter,
-                             Source    = source,
-                             Index     = material.Index,
-                             nMedium   = nmedium)
+        for arguments in Generator:
+            for n, key in enumerate( self.kwargs.keys() ):
+                order[key] = arguments[n]
+
+            yield self.Scatterer(**order, Source = source)
+
 
 
 class SourceSet(Set):
@@ -64,19 +46,18 @@ class SourceSet(Set):
     @beartype
     def __init__(self, Source = None, kwargs : dict = {}):
 
-        kwargs['Wavelength']   = ToList(kwargs['Wavelength'])
-        kwargs['Polarization'] = ToList(kwargs['Polarization'])
-
-        self.kwargs = {k: kwargs[k] for k in Source.kwargformat}
+        self.kwargs = {k: ToList(v) for k, v in kwargs.items()}
 
 
     def Generator(self, MatGen=None):
         Generator, order = GeneratorFromDict(self.kwargs)
 
-        for wavelength, polarization in Generator:
-            yield PlaneWave(Wavelength   = wavelength,
-                            Polarization = polarization,
-                            E0           = 1)
+        for arguments in Generator:
+            for n, key in enumerate( self.kwargs.keys() ):
+                order[key] = arguments[n]
+
+            yield PlaneWave(**order)
+
 
 
 class DetectorSet(Set):
@@ -149,14 +130,14 @@ class Setup(object):
             assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
-    def Efficiencies(self, Eff='Qsca', AsType='numpy'):
+    def Efficiencies(self, Eff='Qsca', AsType='pymiesim'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qsca) vs. scatterer diameter vs. scatterer refractive index.
 
         Returns
         -------
-        :class:`pandas.DataFrame`
-            Dataframe containing Qsca vs. Wavelength, Diameter vs. Index.
+        :class:`PyMieSimArray`
+            Dataframe containing Efficiencies vs. Wavelength, Diameter vs. Index...
 
         """
         if Eff == 'all': Eff = EFFTYPE
@@ -187,7 +168,7 @@ class Setup(object):
                                conf      = self.config)
 
 
-    def Coupling(self, AsType='numpy'):
+    def Coupling(self, AsType='pymiesim'):
         """Property method which return a n by m by l OptArray array, n being the
         number of detectors, m is the point evaluated for the refractive index,
         l is the nomber of point evaluted for the scatterers diameters.
@@ -241,15 +222,16 @@ class Setup(object):
             return PMSArray(array = Array, conf = conf)
 
 
-    def GetShape(self, conf):
+    def GetShape(self, config):
+
         shape = []
         size  = 1
-        for item in conf['dimension'].values():
+        for item in config['dimension'].values():
             shape += [len(item)]
             size  *= len(item)
 
-        conf['shape'] = shape
-        conf['size']  = size
+        config['shape'] = shape
+        config['size']  = size
 
 
     def Optimize(self, *args, **kwargs):

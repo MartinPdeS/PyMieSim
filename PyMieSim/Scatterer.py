@@ -28,7 +28,7 @@ SourceType = Union[PlaneWave, GaussianBeam]
 class Sphere(BaseScatterer, ScattererProperties):
     """
     .. note::
-        Short summary.
+        Class representing a homogeneous spherical scatterer.
 
     Parameters
     ----------
@@ -47,13 +47,11 @@ class Sphere(BaseScatterer, ScattererProperties):
         .. note:: Size parameter of the scatterer [:math:`k r`].
 
     """
-    kwargformatIndex = [ 'Diameter',
-                         'Index',
-                         'nMedium']
+    kwargformat = [ 'Diameter',
+                    'Index',
+                    'Material',
+                    'nMedium']
 
-    kwargformatMaterial = [ 'Diameter',
-                            'Material',
-                            'nMedium']
 
     @beartype
     def __init__(self,
@@ -64,14 +62,17 @@ class Sphere(BaseScatterer, ScattererProperties):
                  Material                = None):
 
         super().__init__()
+
         if Material:
             assert Index is None,"You should either choose a material or the RI not both"
-            self.Material = Material
-            self.Index    = Material.Evaluate(Source.Wavelength)
+            self.Material    = Material
+            self.Index       = Material.Evaluate(Source.Wavelength)
+
         if Index:
             assert Material is None,"You should either choose a material or the RI not both"
-            self.Material = None
-            self.Index    = Index
+            self.Material    = None
+            self.Index       = Index
+
 
         self.type      = 'Sphere'
         self.Diameter  = Diameter
@@ -187,7 +188,7 @@ class Sphere(BaseScatterer, ScattererProperties):
 class ShellSphere(BaseScatterer, ScattererProperties):
     """
     .. note::
-        Short summary.
+        Class representing a core+shell spherical scatterer.
 
     Parameters
     ----------
@@ -209,7 +210,6 @@ class ShellSphere(BaseScatterer, ScattererProperties):
 
     kwargformat = [ 'CoreDiameter',
                     'ShellDiameter',
-                    'Source',
                     'CoreIndex',
                     'ShellIndex',
                     'nMedium',
@@ -293,7 +293,7 @@ class ShellSphere(BaseScatterer, ScattererProperties):
 class Cylinder(BaseScatterer, ScattererProperties):
     """
     .. note::
-        Short summary.
+        Class representing a right angle cylindrical scatterer.
 
     Parameters
     ----------
@@ -314,10 +314,10 @@ class Cylinder(BaseScatterer, ScattererProperties):
     """
 
     kwargformat = [ 'Diameter',
-                    'Source',
                     'Index',
-                    'nMedium',
-                    'Material']
+                    'Material',
+                    'nMedium']
+
 
     def __init__(self,
                  Diameter    : float,
@@ -400,8 +400,8 @@ class Cylinder(BaseScatterer, ScattererProperties):
 class WMSample(object):
     """
     .. note::
-        Sample represented by the Whittle-Matern RI correlation function and
-        using the first Born approximation .
+        Class representing sample described by the Whittle-Matern RI
+        correlation function and using the first Born approximation .
 
     Parameters
     ----------

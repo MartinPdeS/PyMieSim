@@ -197,7 +197,6 @@ SHELLSPHERE1::GetEfficiencies()
 
     double Qsca   = GetQsca(an, bn, MaxOrder, _xShell);
     double Qext   = GetQext(an, bn, MaxOrder, _xShell);
-    std::cout<<Qext<<std::endl;
     double g      = Getg(an, bn, MaxOrder, _xShell, Qsca);
     double Qabs   = Qext - Qsca;
     double Qback  = GetQback(an, bn, MaxOrder, _xShell);

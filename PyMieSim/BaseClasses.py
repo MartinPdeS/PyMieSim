@@ -775,7 +775,7 @@ class BaseMaterial(object):
         self.counter = -1
         self.Data
         wavelength = ToList(wavelength)
-        print(wavelength, self.Boundary[0])
+
         if any(wavelength < self.Boundary[0]) or any(wavelength > self.Boundary[1]):
             raise ValueError(f'Wavelength {wavelength} evaluated \
                                outside of defined range {self.Boundary}')
@@ -795,12 +795,12 @@ class BaseMaterial(object):
 class Set(object):
     def UpdateConfiguration(self, config):
         iter = config['MaxOrder']
+
         for key, val in self.kwargs.items():
             Dict              = Arg2Dict[key]
             Dict['order']     = iter
             Dict['dimension'] = self.kwargs[key]
             iter                += 1
-
             MergeDict(config,Dict)
 
         config['MaxOrder'] = iter

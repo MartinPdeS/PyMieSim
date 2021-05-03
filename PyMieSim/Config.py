@@ -1,5 +1,6 @@
 from typing  import Union
 import numpy as np
+import copy  as cp
 
 MetricList = ["max",
               "min",
@@ -24,27 +25,30 @@ SourceParamList = ['E0',
                    'Polarization',
                    'Wavelength']
 
-
-IndexDict = { 'name'      : 'Index',
+BaseIndex = { 'name'      : None,
               'order'     :  None,
               'label'     : 'Refractive index',
               'format'    : '.2f',
               'unit'      : ' [1]',
               'dimension' : None, }
 
-DiameterDict = {'name'      : 'Diameter',
-                'order'     : None,
-                'label'     : 'Diameter',
-                'format'    : '.1e',
-                'unit'      : ' m',
-                'dimension' : None,}
+BaseDiameter = { 'name'      : 'Diameter',
+                 'order'     : None,
+                 'label'     : 'Diameter',
+                 'format'    : '.1e',
+                 'unit'      : ' m',
+                 'dimension' : None,}
 
-nMediumDict = { 'name'      : 'nMedium',
-                'order'     :  None,
-                'label'     : 'Medium Refractive index',
-                'format'    : '.2f',
-                'unit'      : ' [1]',
-                'dimension' : None,}
+nMediumDict    = cp.copy(BaseIndex); nMediumDict['name']    = 'nMedium'
+IndexDict      = cp.copy(BaseIndex); IndexDict['name']      = 'Index'
+CoreIndexDict  = cp.copy(BaseIndex); CoreIndexDict['name']  = 'Core Index'
+ShellIndexDict = cp.copy(BaseIndex); ShellIndexDict['name'] = 'Shell Index'
+
+
+DiameterDict      = cp.copy(BaseDiameter); DiameterDict['name']      = 'Diameter'
+CoreDiameterDict  = cp.copy(BaseDiameter); CoreDiameterDict['name']  = 'Core Diameter'
+ShellDiameterDict = cp.copy(BaseDiameter); ShellDiameterDict['name'] = 'Shell Diameter'
+
 
 MaterialDict = { 'name'      : 'Material',
                  'order'     :  None,
@@ -98,12 +102,16 @@ BaseConfig = { 'name'      : None,
                'MaxOrder'  : 0}
 
 
-Arg2Dict = { 'Diameter'     : DiameterDict,
-             'Index'        : IndexDict,
-             'Material'     : MaterialDict,
-             'nMedium'      : nMediumDict,
-             'Polarization' : PolarizationDict,
-             'Wavelength'   : WavelengthDict}
+Arg2Dict = { 'Diameter'      : DiameterDict,
+             'Index'         : IndexDict,
+             'Material'      : MaterialDict,
+             'nMedium'       : nMediumDict,
+             'Polarization'  : PolarizationDict,
+             'Wavelength'    : WavelengthDict,
+             'CoreDiameter'  : CoreDiameterDict,
+             'ShellDiameter' : ShellDiameterDict,
+             'CoreIndex'     : CoreIndexDict,
+             'ShellIndex'    : ShellIndexDict}
 
 OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
 
