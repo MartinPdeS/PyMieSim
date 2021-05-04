@@ -181,7 +181,7 @@ class ScattererTestCase(unittest.TestCase):
 
     def test10(self):
         GUI.invoke_after(PLOTTIME, Close)
-        #sScat.Stokes(10).Plot()
+        sScat.Stokes(10).Plot()
         print('<Stokes> Plot passed')
 
 

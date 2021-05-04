@@ -2,9 +2,11 @@ Theoretical background
 ======================
 
 
+.. role:: raw-math(raw)
+    :format: latex html
+
 Lorenz-Mie Theory (LMT)
 -----------------------
-
 
 
 .. note::
@@ -13,21 +15,38 @@ Lorenz-Mie Theory (LMT)
   ========================
 
   **Sphere**
+
   .. math::
-      a_n &= \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-      { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
 
-      .
+      a_n = \frac{
+      \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+      {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
 
-      b_n &= \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-      { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+  .. math::
+
+      b_n = \frac{
+       \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+      {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}
+
 
   **Cylinder**
 
+  .. math::
 
-    **Core/Shell sphere**
+      a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+      { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
 
-Here some usefull relations:
+  .. math::
+
+      b_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+      { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+
+
+  **Core/Shell sphere**
+
+
+
+Here some useful relations:
 
 Calculates S\ :sub:`1` and S\ :sub:`2` at μ=cos(θ), where θ is the scattering angle.
 

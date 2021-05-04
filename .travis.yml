@@ -12,6 +12,7 @@ services:
 
 before_script:
   - "export DISPLAY=:99.0"
+  - "export QT_QPA_PLATFORM=minimal"
 
 install:
   - sudo apt-get install cmake
