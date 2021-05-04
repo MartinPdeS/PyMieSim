@@ -186,8 +186,7 @@ class BaseDetector(object):
         plot.Unstructured(Scalar  = self.Scalar,
                           Mesh    = self.Mesh,
                           Name    = 'Mode field',
-                          Mode    = 'Amplitude',
-                          Testing = self.Testing)
+                          Mode    = 'Amplitude')
 
 
 class ScattererProperties(object):

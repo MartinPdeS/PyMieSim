@@ -15,8 +15,8 @@ def run():
                            PhiOffset         = 30,
                            CouplingMode      = 'Centered')
 
-    scatKwargs   = { 'CoreDiameter'     : np.geomspace(10e-09, 10000e-9, 1500),
-                     'ShellDiameter'    : [100e-9, 300e-9],
+    scatKwargs   = { 'CoreDiameter'     : np.geomspace(10e-09, 1000e-9, 1500),
+                     'ShellDiameter'    : [2000e-9, 3000e-9],
                      'CoreIndex'        : [1],
                      'ShellIndex'       : [1.3],
                      'nMedium'          : 1 }

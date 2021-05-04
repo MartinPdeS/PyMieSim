@@ -219,22 +219,25 @@ class ShellSphere(BaseScatterer, ScattererProperties):
                  CoreDiameter  : float,
                  ShellDiameter : float,
                  Source        : SourceType,
-                 CoreIndex     : ScalarType   = None,
-                 ShellIndex    : ScalarType   = None,
+                 CoreIndex     : ScalarType,
+                 ShellIndex    : ScalarType,
                  nMedium       : ScalarType   = 1.0,
                  CoreMaterial                 = None,
-                 ShellMaterial                = None,
-                 ):
+                 ShellMaterial                = None):
 
         super().__init__()
+        if ShellDiameter <= CoreDiameter:
+            raise AssertionError( "The shell diameter has to be larger or equal to core diameter." )
+
+        if all([ CoreIndex, CoreMaterial ] ) or all([ ShellIndex, ShellMaterial ] ) :
+            raise AssertionError( "You should either choose a material or the RI, not both." )
+
         if all([CoreMaterial, ShellMaterial]):
-            assert all([CoreIndex is None, ShellIndex is None]),"You should either choose a material or the RI not both"
             self.Material = Material
             self.CoreIndex     = CoreMaterial.Evaluate(Source.Wavelength)
             self.ShellIndex    = ShellMaterial.Evaluate(Source.Wavelength)
 
         if all([CoreIndex, ShellIndex]):
-            assert all([CoreMaterial is None, ShellMaterial is None]),"You should either choose a material or the RI not both"
             self.Material = None
             self.CoreIndex     = CoreIndex
             self.ShellIndex    = ShellIndex
