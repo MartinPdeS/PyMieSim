@@ -5,6 +5,28 @@ Theoretical background
 Lorenz-Mie Theory (LMT)
 -----------------------
 
+
+
+.. note::
+
+  An and Bn coefficients:
+  ========================
+
+  **Sphere**
+  .. math::
+      a_n &= \\frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+      { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+
+      .
+
+      b_n &= \\frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+      { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+
+  **Cylinder**
+
+
+    **Core/Shell sphere**
+
 Here some usefull relations:
 
 Calculates S\ :sub:`1` and S\ :sub:`2` at μ=cos(θ), where θ is the scattering angle.
