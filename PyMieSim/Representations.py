@@ -426,7 +426,7 @@ class ScatProperties(dict):
                                    'Cabs'  : Area( data[2] * Parent.Area),
                                    'Cback' : Area( data[3] * Parent.Area),
                                    'Cratio': Area( data[4] * Parent.Area),
-                                   'Cpr'   : Area( data[6] * Parent.Area)}
+                                   'Cpr'   : Area( data[6] * Parent.Area) }
 
         self['others'] = {'area'  : Parent.Area,
                           'index' : Parent.Index,

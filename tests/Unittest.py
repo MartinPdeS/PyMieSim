@@ -3,6 +3,7 @@
 
 import unittest
 import mayavi
+import matplotlib._pylab_helpers
 from mayavi     import mlab
 from unittest   import TestCase
 from numpy      import linspace, pi
@@ -39,15 +40,27 @@ sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 10),
 
 
 def CloseMatplotlib():
-    """Close the scene."""
-    plt.close()
+    """Close matplotlib scene."""
+    figures=[manager.canvas.figure
+         for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()]
+    if len(figures) >= 1:
+        plt.close('all')
+
 
 def CloseMlab():
-    """Close the scene."""
+    """Close mayavi scene."""
     engine = mlab.get_engine()
     scene = engine.current_scene
     if scene is not None:
         mlab.close()
+
+def Close():
+    """Close all scene."""
+    CloseMatplotlib()
+
+    CloseMlab()
+
+
 
 PLOTTIME = 600
 
@@ -57,10 +70,10 @@ class DetectorTestCase(unittest.TestCase):
         from PyMieSim.Detector import Photodiode
         global Photodiode
         Photodiode = Photodiode(Sampling     = 11,
-                                     NA           = 0.2,
-                                     GammaOffset  = 0,
-                                     PhiOffset    = 0,
-                                     CouplingMode = 'Centered')
+                                NA           = 0.2,
+                                GammaOffset  = 0,
+                                PhiOffset    = 0,
+                                CouplingMode = 'Centered')
 
         print('Photodiode initialisation passed')
 
@@ -69,11 +82,11 @@ class DetectorTestCase(unittest.TestCase):
         from PyMieSim.Detector import LPmode
         global LPmode
         LPmode = LPmode(Mode         = (0,1),
-                             Sampling     = 11,
-                             NA           = 0.2,
-                             GammaOffset  = 0,
-                             PhiOffset    = 0,
-                             CouplingMode = 'Centered')
+                        Sampling     = 11,
+                        NA           = 0.2,
+                        GammaOffset  = 0,
+                        PhiOffset    = 0,
+                        CouplingMode = 'Centered')
 
         print('LPmode initialisation passed')
 
@@ -87,19 +100,19 @@ class DetectorTestCase(unittest.TestCase):
 
 
     def test03(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
         Photodiode.Plot()
         print('Photodiode Plotting passed')
 
 
     def test04(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
         LPmode.Plot()
         print('LPmode Plotting passed')
 
 
     def test05(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
         IntegratingSphere.Plot()
         print('IntegratingSphere Plotting passed')
 
@@ -110,8 +123,8 @@ class ScattererTestCase(unittest.TestCase):
         from PyMieSim.Scatterer import Sphere
         global sScat
         sScat = Sphere(Diameter = 300e-9,
-                            Index    = 1.4,
-                            Source   = LightSource)
+                       Index    = 1.4,
+                       Source   = LightSource)
 
         print('Sphere initialisation passed')
 
@@ -120,8 +133,8 @@ class ScattererTestCase(unittest.TestCase):
         from PyMieSim.Scatterer import Cylinder
         global cScat
         cScat = Cylinder(Diameter = 300e-9,
-                              Index    = 1.4,
-                              Source   = LightSource)
+                         Index    = 1.4,
+                         Source   = LightSource)
 
         print('Cylinder initialisation passed')
 
@@ -161,26 +174,26 @@ class ScattererTestCase(unittest.TestCase):
 
 
     def test09(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
         sScat.S1S2(10).Plot()
         print('<S1S2> Plot passed')
 
 
     def test10(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
         sScat.Stokes(10).Plot()
         print('<Stokes> Plot passed')
 
 
     def test11(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
-        GUI.invoke_after(2*PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
+        GUI.invoke_after(2*PLOTTIME, Close)
         sScat.FarField(10).Plot()
         print('<FarField> Plot passed')
 
 
     def test12(self):
-        GUI.invoke_after(PLOTTIME, CloseMlab)
+        GUI.invoke_after(PLOTTIME, Close)
         sScat.SPF(10).Plot()
         print('<SPF> Plot passed')
 
@@ -235,13 +248,13 @@ class ExperiementTestCase(unittest.TestCase):
 
 
     def test05(self):
-        GUI.invoke_after(PLOTTIME, CloseMatplotlib)
+        GUI.invoke_after(PLOTTIME, Close)
         pymieArrayEff.Plot(x='diameter')
         print('PyMieSim Array Efficiencies plotting passed')
 
 
     def test06(self):
-        GUI.invoke_after(PLOTTIME, CloseMatplotlib)
+        GUI.invoke_after(PLOTTIME, Close)
         pymieArrayCoupling.Plot(x='diameter')
         print('PyMieSim Array Coupling plotting passed')
 

@@ -19,11 +19,7 @@ EPS = 1e-6
 
 class BaseSource(object):
 
-    def __init__(self,
-                 Wavelength,
-                 Polarization,
-                 NA = 0.2):
-
+    def __init__(self, *args, **kwargs):
         pass
 
     @property
@@ -770,11 +766,6 @@ class BaseScatterer(object):
         #return self.EnergyFlow(Mesh) / self.Source.I
 
         return Area(self.Qsca*self.Area)
-
-
-
-
-
 
 
 def Gen(array):
