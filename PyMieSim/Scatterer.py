@@ -209,7 +209,7 @@ class ShellSphere(BaseScatterer, ScattererProperties):
     """
 
     kwargformat = [ 'CoreDiameter',
-                    'ShellDiameter',
+                    'ShellWidth',
                     'CoreIndex',
                     'ShellIndex',
                     'nMedium',
@@ -217,7 +217,7 @@ class ShellSphere(BaseScatterer, ScattererProperties):
     @beartype
     def __init__(self,
                  CoreDiameter  : float,
-                 ShellDiameter : float,
+                 ShellWidth    : float,
                  Source        : SourceType,
                  CoreIndex     : ScalarType,
                  ShellIndex    : ScalarType,
@@ -226,8 +226,8 @@ class ShellSphere(BaseScatterer, ScattererProperties):
                  ShellMaterial                = None):
 
         super().__init__()
-        if ShellDiameter <= CoreDiameter:
-            raise AssertionError( "The shell diameter has to be larger or equal to core diameter." )
+
+        ShellDiameter     = CoreDiameter + ShellWidth
 
         if all([ CoreIndex, CoreMaterial ] ) or all([ ShellIndex, ShellMaterial ] ) :
             raise AssertionError( "You should either choose a material or the RI, not both." )

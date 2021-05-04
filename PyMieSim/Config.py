@@ -46,8 +46,8 @@ ShellIndexDict = cp.copy(BaseIndex); ShellIndexDict['name'] = 'Shell Index'
 
 
 DiameterDict      = cp.copy(BaseDiameter); DiameterDict['name']      = 'Diameter'
-CoreDiameterDict  = cp.copy(BaseDiameter); CoreDiameterDict['name']  = 'Core Diameter'
-ShellDiameterDict = cp.copy(BaseDiameter); ShellDiameterDict['name'] = 'Shell Diameter'
+CoreDiameterDict  = cp.copy(BaseDiameter); CoreDiameterDict['name']  = 'Core diameter'
+ShellWidthDict    = cp.copy(BaseDiameter); ShellWidthDict['name']    = 'Shell width'
 
 
 MaterialDict = { 'name'      : 'Material',
@@ -109,7 +109,7 @@ Arg2Dict = { 'Diameter'      : DiameterDict,
              'Polarization'  : PolarizationDict,
              'Wavelength'    : WavelengthDict,
              'CoreDiameter'  : CoreDiameterDict,
-             'ShellDiameter' : ShellDiameterDict,
+             'ShellWidth'    : ShellWidthDict,
              'CoreIndex'     : CoreIndexDict,
              'ShellIndex'    : ShellIndexDict}
 

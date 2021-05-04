@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import mayavi
 from mayavi     import mlab
 from unittest   import TestCase
 from numpy      import linspace, pi
@@ -43,7 +44,12 @@ def CloseMatplotlib():
 
 def CloseMlab():
     """Close the scene."""
-    mlab.close()
+    engine = mlab.get_engine()
+    scene = engine.current_scene
+    print('$$$',scene)
+    if scene is not None:
+        print('###',scene)
+        mlab.close()
 
 PLOTTIME = 600
 
@@ -159,26 +165,26 @@ class ScattererTestCase(unittest.TestCase):
     def test09(self):
         GUI.invoke_after(PLOTTIME, CloseMlab)
         sScat.S1S2(10).Plot()
-        print('<S1S2> coupling passed')
+        print('<S1S2> Plot passed')
 
 
     def test10(self):
         GUI.invoke_after(PLOTTIME, CloseMlab)
         sScat.Stokes(10).Plot()
-        print('<Stokes> coupling passed')
+        print('<Stokes> Plot passed')
 
 
     def test11(self):
         GUI.invoke_after(PLOTTIME, CloseMlab)
         GUI.invoke_after(2*PLOTTIME, CloseMlab)
         sScat.FarField(10).Plot()
-        print('<FarField> coupling passed')
+        print('<FarField> Plot passed')
 
 
     def test12(self):
         GUI.invoke_after(PLOTTIME, CloseMlab)
         sScat.SPF(10).Plot()
-        print('<SPF> coupling passed')
+        print('<SPF> Plot passed')
 
 
     def test13(self):
@@ -286,8 +292,7 @@ class GLMTTestCase(unittest.TestCase):
         print('GaussianBeam beam BSC compute passed')
 
 
-
-class PhysicsTestCase(unittest.TestCase):
+class QuantitativeTestCase(unittest.TestCase):
 
     def test00(self):
         Mesh = FibonacciMesh(MaxAngle    = pi,
@@ -352,8 +357,8 @@ def suite():
     suite.addTest(GLMTTestCase('test02'))
     suite.addTest(GLMTTestCase('test03'))
 
-    suite.addTest(PhysicsTestCase('test00'))
-    suite.addTest(PhysicsTestCase('test01'))
+    suite.addTest(QuantitativeTestCase('test00'))
+    suite.addTest(QuantitativeTestCase('test01'))
 
     return suite
 
