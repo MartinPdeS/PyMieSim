@@ -180,21 +180,21 @@ class ScattererTestCase(unittest.TestCase):
 
 
     def test10(self):
-        #GUI.invoke_after(PLOTTIME, Close)
-        #sScat.Stokes(10).Plot()
+        GUI.invoke_after(PLOTTIME, Close)
+        sScat.Stokes(10).Plot()
         print('<Stokes> Plot passed')
 
 
     def test11(self):
-        #GUI.invoke_after(PLOTTIME, Close)
-        #GUI.invoke_after(2*PLOTTIME, Close)
-        #sScat.FarField(10).Plot()
+        GUI.invoke_after(PLOTTIME, Close)
+        GUI.invoke_after(2*PLOTTIME, Close)
+        sScat.FarField(10).Plot()
         print('<FarField> Plot passed')
 
 
     def test12(self):
-        #GUI.invoke_after(PLOTTIME, Close)
-        #sScat.SPF(10).Plot()
+        GUI.invoke_after(PLOTTIME, Close)
+        sScat.SPF(10).Plot()
         print('<SPF> Plot passed')
 
 

@@ -201,7 +201,6 @@ class S1S2(dict):
                              color = 'C1',
                              alpha = 0.4)
 
-        plt.close()
 
 
 
