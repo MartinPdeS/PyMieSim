@@ -333,6 +333,57 @@ class ScattererProperties(object):
             return self._Properties
 
 
+
+    @property
+    def Csca(self):
+        if self._Csca:
+            return Area( self._Qsca * self.Area )
+        else:
+            self.GetProperties()
+            return Area( self._Qsca * self.Area )
+
+    @property
+    def Cext(self):
+        if self._Csca:
+            return Area( self._Qext * self.Area )
+        else:
+            self.GetProperties()
+            return Area( self._Qext * self.Area )
+
+    @property
+    def Cabs(self):
+        if self._Csca:
+            return Area( self._Qabs * self.Area )
+        else:
+            self.GetProperties()
+            return Area( self._Qabs * self.Area )
+
+    @property
+    def Cpr(self):
+        if self._Csca:
+            return Area( self._Qpr * self.Area )
+        else:
+            self.GetProperties()
+            return Area( self._Qpr * self.Area )
+
+    @property
+    def Cback(self):
+        if self._Csca:
+            return Area( self._Qback * self.Area )
+        else:
+            self.GetProperties()
+            return Area( self._Qback * self.Area )
+
+    @property
+    def Cratio(self):
+        if self._Csca:
+            return Area( self._Qratio * self.Area )
+        else:
+            self.GetProperties()
+            return Area( self._Qratio * self.Area )
+
+
+
 class BaseScatterer(object):
     """
     .. note::
@@ -361,8 +412,14 @@ class BaseScatterer(object):
         self._Qabs   = None
         self._Qback  = None
         self._Qratio = None
-        self._g      = None
         self._Qpr    = None
+        self._Csca   = None
+        self._Cext   = None
+        self._Cabs   = None
+        self._Cback  = None
+        self._Cratio = None
+        self._Cpr    = None
+        self._g      = None
         self._an     = []
         self._bn     = []
         self._cn     = []

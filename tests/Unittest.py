@@ -46,9 +46,7 @@ def CloseMlab():
     """Close the scene."""
     engine = mlab.get_engine()
     scene = engine.current_scene
-    print('$$$',scene)
     if scene is not None:
-        print('###',scene)
         mlab.close()
 
 PLOTTIME = 600
@@ -316,6 +314,28 @@ class QuantitativeTestCase(unittest.TestCase):
         print('Validation EnergyFlow - coupling passed')
 
 
+    def test02(self):
+        Source = PlaneWave(Wavelength = 1e-6)
+        Csca = Sphere(Diameter = 1e-6, Index = 1.5, Source = Source).Csca
+        assert np.isclose( Csca, 2.7349e-12, 0.001 )
+        print('Validation scattering cross-section -> Scott Prahl')
+
+
+    def test03(self):
+        Source = PlaneWave(Wavelength = 1e-6)
+        g = Sphere(Diameter = 1e-6, Index = 1.5, Source = Source).g
+        assert np.isclose( g, 0.72924, 0.001 )
+        print('Validation g = <cos> -> Scott Prahl')
+
+
+    def test04(self):
+        Source = PlaneWave(Wavelength = 1e-6)
+        Cext = Sphere(Diameter = 1e-6, Index = 1.5 + 1j, Source = Source).Cext
+        assert np.isclose( Cext, 2.1422e-12, 0.001 )
+        print('Validation extinction sross-section -> Scott Prahl')
+
+
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(DetectorTestCase('test00'))
@@ -359,6 +379,9 @@ def suite():
 
     suite.addTest(QuantitativeTestCase('test00'))
     suite.addTest(QuantitativeTestCase('test01'))
+    suite.addTest(QuantitativeTestCase('test02'))
+    suite.addTest(QuantitativeTestCase('test03'))
+    suite.addTest(QuantitativeTestCase('test04'))
 
     return suite
 
