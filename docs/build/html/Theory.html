@@ -49,6 +49,8 @@
   <ul>
 <li><a class="reference internal" href="#">Theoretical background</a><ul>
 <li><a class="reference internal" href="#lorenz-mie-theory-lmt">Lorenz-Mie Theory (LMT)</a></li>
+<li><a class="reference internal" href="#scattering-properties">Scattering properties</a></li>
+<li><a class="reference internal" href="#an-and-bn-coefficients">An and Bn coefficients:</a></li>
 <li><a class="reference internal" href="#generalized-lorenz-mie-theory-glmt">Generalized Lorenz-Mie Theory (GLMT)</a></li>
 <li><a class="reference internal" href="#coupling-mechanism">Coupling mechanism</a></li>
 </ul>
@@ -86,36 +88,75 @@
 <h1>Theoretical background<a class="headerlink" href="#theoretical-background" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="lorenz-mie-theory-lmt">
 <h2>Lorenz-Mie Theory (LMT)<a class="headerlink" href="#lorenz-mie-theory-lmt" title="Permalink to this headline">¶</a></h2>
-<p>Here some usefull relations:</p>
-<p>Calculates S<sub>1</sub> and S<sub>2</sub> at μ=cos(θ), where θ is the scattering angle.</p>
-<blockquote>
-<div><p>S<sub>1</sub> and S<sub>2</sub> are calculated by:</p>
-<blockquote>
-<div><p><span class="math notranslate nohighlight">\({\displaystyle S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)}\)</span></p>
-<p><span class="math notranslate nohighlight">\({\displaystyle S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)}\)</span></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The Lorenz-Mie Theory or LMT for short is a framework that can be used to find
+exact solution of the scattered field considering a plane wave incident to a
+scatterer with a certain geometry.
+The solution is usally written in the form of an infinit summation which, of
+course, has to be truncated. PyMieSim is a library which does solve the
+equations in order to retrieve plenty of important informations.
+Here are, few of the most important relation governing the PyMieSim library.
+It is to be noted that in all the library, the angles <span class="math notranslate nohighlight">\(\theta\)</span> and
+<span class="math notranslate nohighlight">\(\phi\)</span> are defined as in a spherical coordinate system.</p>
+<blockquote class="last">
+<div><div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}&amp;S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)\\&amp;.\\&amp;S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)\\.&amp;\\&amp;\text{Fields} = E_{\theta}(\phi,\theta) \vec{\theta} +   E_{\phi}(\phi,\theta) \vec{\phi}\end{aligned}\end{align} \]</div>
 </div></blockquote>
-<p>Computes Mie efficencies <em>Q</em> and asymmetry parameter <em>g</em> of a single, homogeneous particle:</p>
-</div></blockquote>
+</div>
+</div>
+<div class="section" id="scattering-properties">
+<h2>Scattering properties<a class="headerlink" href="#scattering-properties" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>There are many properties of the scatterer that might be useful to know such as:
+- scattering efficiency
+- extinction efficiency
+- absorption efficiency
+- back-scattering efficiency
+- ratio of front and back scattering
+- Optical pressure efficiency
+- anisotropy factor g</p>
+<p>Those parameter can be computed using PyMieSim according to those equations.</p>
+<div class="last math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}&amp;Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\&amp;Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}\\&amp;Q_{abs} = Q_{ext}-Q_{sca}\\&amp;Q_{back} = \frac{1}{x^2} \Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \Big|^2\\&amp;Q_{ratio} = \frac{Q_{back}}{Q_{sca}}\\&amp;Q_{pr} = Q_{ext} - g * Q_{sca}\\&amp;g = \frac{4}{Q_{sca} x^2}
+        \Big[ \sum\limits_{n=1}^{n_{max}} \frac{n(n+2)}{n+1} \text{Re} \left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\right\} +
+        \sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)} \text{Re}\left\{ a_n b_n^* \right\} \Big]\end{aligned}\end{align} \]</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="an-and-bn-coefficients">
+<h2>An and Bn coefficients:<a class="headerlink" href="#an-and-bn-coefficients" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>From the An and Bn coefficient we can retrieve many useful properties of
+the scatterer and scattered far-fields. Those are complementary to the
+Cn and Dn coefficient (for near-field properties) which we do no compute
+with PyMieSim at the moment.
+Depending on the scatterer geometry all those coefficient may vary, here we
+have three example which are available with the PyMieSim library.</p>
+<p><strong>Sphere</strong></p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}Q_{sca} &amp;= \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\Q_{ext} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}\\Q_{abs} &amp;= Q_{ext}-Q_{sca}\end{aligned}\end{align} \]</div>
-<p><strong>For spherical scatterer</strong></p>
+\[a_n = \frac{
+\mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}a_n &amp;= \frac{\mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\\b_n &amp;= \frac{\mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -\mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}\\c_n &amp;= \frac{\mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-{\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\\d_n &amp;= \frac{ \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -\xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}\end{aligned}\end{align} \]</div>
+\[b_n = \frac{
+ \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+{\mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <div class="line-block">
 <div class="line">With:</div>
 <div class="line-block">
 <div class="line"><span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span></div>
 </div>
 </div>
-<p><strong>For cylindrical scatterer</strong></p>
+<p><strong>Cylinder</strong></p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}a_n &amp; = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-{ m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\\b_n &amp; = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-{ m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\end{aligned}\end{align} \]</div>
+\[a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+{ m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\]</div>
+<div class="math notranslate nohighlight">
+\[b_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+{ m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\]</div>
 <div class="line-block">
 <div class="line">With:</div>
 <div class="line-block">
@@ -123,22 +164,32 @@
 <div class="line"><span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the index.</div>
 </div>
 </div>
+<p><strong>Core/Shell sphere</strong></p>
+<div class="math notranslate nohighlight">
+\[a_n = \text{implemented but yet to be written}\]</div>
+<div class="last math notranslate nohighlight">
+\[b_n = \text{implemented but yet to be written}\]</div>
 </div>
-<hr class="docutils" />
+</div>
 <div class="section" id="generalized-lorenz-mie-theory-glmt">
 <h2>Generalized Lorenz-Mie Theory (GLMT)<a class="headerlink" href="#generalized-lorenz-mie-theory-glmt" title="Permalink to this headline">¶</a></h2>
-<p><strong>Coming soon</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>Coming soon</strong></p>
+</div>
 </div>
 <hr class="docutils" />
 <div class="section" id="coupling-mechanism">
 <h2>Coupling mechanism<a class="headerlink" href="#coupling-mechanism" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
 <p>There is two main coupling mechanism, <strong>coherent coupling</strong> and non-coherent coupling.
 For instance photodiode collect light via an <strong>non-coherent mechanism</strong>, on the other part
 fiber optic LP mode collect light in a coherent way and as such they usually
 collect a lot less light but they add additional information on the sample studied.</p>
 <p>Mathematically they are defined as follows:</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}C_{coh.} &amp;= \Big| \iint_{\\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2\end{split}\\\begin{split}C_{Noncoh.} &amp;=  \iint_{\\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega\end{split}\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}C_{coh.} &amp;= \Big| \iint_{\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2\\C_{Noncoh.} &amp;=  \iint_{\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega\end{aligned}\end{align} \]</div>
 <p>It is to be noted that the <strong>coherent coupling</strong> definition is derived from the coupled mode theory
 which remains true as long as the parallax approximation is also true.
 Also this coupling are what we would call <strong>centered coupling</strong>. It means that the
@@ -149,8 +200,9 @@ the footprint of the scatterer.</p>
 <div class="math notranslate nohighlight">
 \[\eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2\]</div>
 <p>Thus we can compute the <strong>mean coupling</strong> as the mean value of <span class="math notranslate nohighlight">\(\eta_{l,m}\)</span></p>
-<div class="math notranslate nohighlight">
+<div class="last math notranslate nohighlight">
 \[\widetilde{\eta}_{l,m} = \big&lt; \eta_{l,m}(\delta_x, \delta_y) \big&gt;\]</div>
+</div>
 </div>
 </div>
 

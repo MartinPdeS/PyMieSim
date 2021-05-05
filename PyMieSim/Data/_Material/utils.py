@@ -6,6 +6,7 @@ import os
 import csv
 import urllib.request
 import pandas as pd
+from socket import timeout
 import numpy as np
 
 from PyMieSim.BaseClasses import BaseMaterial
@@ -13,7 +14,14 @@ from PyMieSim.Directories import NPZPath, MaterialPath
 
 
 def LoadOnline(url):
-    ftpstream = urllib.request.urlopen(url)
+    try:
+        ftpstream = urllib.request.urlopen(url)
+    except ConnectionResetError:
+        print("==> ConnectionResetError")
+        pass
+    except timeout:
+        print("==> Timeout")
+        pass
     Array = pd.read_csv(ftpstream, delimiter=',').T.to_numpy()
     bound = np.where(Array == 'wl')
 
@@ -59,6 +67,5 @@ def LoadOnlineSave(url, filename, unit=1e-6):
         f.seek(0)
         json.dump(META, f, indent=4)
 
-    print(META)
 
 #-

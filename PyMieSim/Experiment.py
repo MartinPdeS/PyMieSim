@@ -13,7 +13,7 @@ from PyMieSim.NdArray     import PMSArray, Opt5DArray
 from PyMieSim.Detector    import LPmode, Photodiode
 from PyMieSim.Scatterer   import Sphere, WMSample
 from PyMieSim.BaseClasses import Set
-from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict, LowerStr
+from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict
 from PyMieSim.Config      import *
 
 
@@ -75,7 +75,7 @@ class DetectorSet(Set):
 
         i = config['MaxOrder']
 
-        Dict0              = DetectorDict
+        Dict0              = copy.deepcopy( DetectorDict )
         Dict0['order']     = i
         Dict0['dimension'] = [Det.Name for Det in self.Detector]
 
@@ -100,8 +100,8 @@ class Setup(object):
                  SourceSet    : SourceSet                = None,
                  DetectorSet  : Union[DetectorSet, None] = None):
 
-
-        config = copy.copy(BaseConfig)
+        #print(BaseConfig)
+        config = copy.deepcopy(BaseConfig)
 
         self.MetricList   = MetricList
 
@@ -117,8 +117,6 @@ class Setup(object):
 
         config = self.ScattererSet.UpdateConfiguration(config)
 
-        self.GetShape(config)
-
         self.config = config
 
 
@@ -130,7 +128,7 @@ class Setup(object):
             assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
-    def Efficiencies(self, Eff='Qsca', AsType='pymiesim'):
+    def Get(self, Properties='Qsca', AsType='pymiesim'):
         """Methode generate a Pandas Dataframe of scattering efficiencies
         (Qsca) vs. scatterer diameter vs. scatterer refractive index.
 
@@ -140,14 +138,19 @@ class Setup(object):
             Dataframe containing Efficiencies vs. Wavelength, Diameter vs. Index...
 
         """
-        if Eff == 'all': Eff = EFFTYPE
-        Eff = ToList(Eff)
+        if Properties == 'all': Properties = EFFTYPE
 
-        self.config['variable']             = EfficienciesDict
-        self.config['variable']['namelist'] = Eff
-        self.config['output']               = AsType
-        self.config['shape']                = self.config['shape'] + [len(Eff)]
-        self.config['size']                 = self.config['size']  * len(Eff)
+        Properties = ToList(Properties)
+
+        self.config['y']             = copy.deepcopy( EfficienciesDict )
+        self.config['y']['list']     = Properties
+
+        self.config['y']['unit']   = {key : Variable2Unit[key]  for key in Properties}
+        self.config['y']['label']  = {key : Variable2Label[key] for key in Properties}
+
+        self.GetShape(self.config)
+
+        self.config['output'] = AsType
 
         self.AssertionType(AsType=AsType)
 
@@ -156,46 +159,18 @@ class Setup(object):
         if 'Material' in self.ScattererSet.kwargs: self.BindMaterial()
 
         i = 0
+
         for source in self.SourceSet.Generator():
             for scatterer in self.ScattererSet.Generator(source):
-                for eff in Eff:
+                for eff in Properties:
+                    if eff == 'Coupling':
+                        for detector in self.DetectorSet.Generator():
+                            Array[i] = detector.Coupling(Scatterer = scatterer)
+                            i += 1;
 
-                    Array[i]  =  getattr(scatterer, eff)
-                    i += 1
-
-        return self.ReturnType(Array     = Array.reshape( self.config['shape'] ),
-                               AsType    = AsType,
-                               conf      = self.config)
-
-
-    def Coupling(self, AsType='pymiesim'):
-        """Property method which return a n by m by l OptArray array, n being the
-        number of detectors, m is the point evaluated for the refractive index,
-        l is the nomber of point evaluted for the scatterers diameters.
-
-        Returns
-        -------
-        OptArray
-            Raw array of detectors coupling.
-
-        """
-
-        self.config['variable'] = CouplingDict
-        self.config['output']   = AsType
-
-        self.AssertionType(AsType=AsType)
-
-        Array = np.empty( self.config['size'] )
-
-        if 'Material' in self.ScattererSet.kwargs: self.BindMaterial()
-
-        i = 0
-        for detector in self.DetectorSet.Generator():
-            for source in self.SourceSet.Generator():
-                for scatterer in self.ScattererSet.Generator(source):
-
-                    Array[i] = detector.Coupling(Scatterer = scatterer)
-                    i += 1;
+                    else:
+                        Array[i]  =  getattr(scatterer, eff)
+                        i += 1
 
         return self.ReturnType(Array     = Array.reshape( self.config['shape'] ),
                                AsType    = AsType,
@@ -209,14 +184,10 @@ class Setup(object):
             mat.Evaluate(self.SourceSet.kwargs['Wavelength'])
 
 
-
     def ReturnType(self, Array, AsType, conf):
 
         if AsType.lower() == 'optimizer':
             return Opt5DArray(Array)
-
-        elif AsType.lower() == 'numpy':
-            return Array
 
         elif AsType.lower() == 'pymiesim':
             return PMSArray(array = Array, conf = conf)
@@ -230,8 +201,8 @@ class Setup(object):
             shape += [len(item)]
             size  *= len(item)
 
-        config['shape'] = shape
-        config['size']  = size
+        config['shape'] = shape + [len(config['y']['list'])]
+        config['size']  = size  *  len(config['y']['list'])
 
 
     def Optimize(self, *args, **kwargs):

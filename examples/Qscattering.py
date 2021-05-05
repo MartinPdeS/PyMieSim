@@ -9,7 +9,7 @@ def run():
     from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
     scatKwargs   = { 'Diameter' : np.linspace(100e-9, 10000e-9, 400),
-                     'Index'    : np.linspace(1.5, 1.8, 3).round(1),
+                     'Index'    : [1.4, 1.6],
                      'nMedium'  : [1] }
 
     sourceKwargs = { 'Wavelength'   : [400e-9],
@@ -23,7 +23,7 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = None)
 
-    Eff = Experiment.Efficiencies(['Qsca'], AsType='pymiesim')
+    Eff = Experiment.Get('Qsca')
 
     Eff.Plot(x='Diameter')
 

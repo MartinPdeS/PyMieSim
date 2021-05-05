@@ -15,8 +15,8 @@ def run():
                            PhiOffset         = 30,
                            CouplingMode      = 'Centered')
 
-    scatKwargs   = { 'Diameter' : np.geomspace(6.36e-09, 100000e-9, 150),
-                     'Material'    : [Material('BK7')],
+    scatKwargs   = { 'Diameter' : np.geomspace(6.36e-09, 10000e-9, 1500),
+                     'Material' : [Material('Silver')],
                      'nMedium'  : [1] }
 
     sourceKwargs = { 'Wavelength'   : [400e-9],
@@ -32,9 +32,9 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = DetecSet)
 
-    Qsca = Experiment.Efficiencies(Eff='Qsca')
+    Qsca = Experiment.Get(Properties=['Qsca', 'Qabs'])
 
-    Qsca.Plot(x='Diameter', Scale='log')
+    Qsca.Plot(x='diameter', Scale='log')
 
 
 

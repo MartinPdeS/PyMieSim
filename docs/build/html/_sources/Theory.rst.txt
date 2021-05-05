@@ -1,72 +1,140 @@
 Theoretical background
 ======================
 
-
 Lorenz-Mie Theory (LMT)
 -----------------------
 
-Here some usefull relations:
+.. note::
 
-Calculates S\ :sub:`1` and S\ :sub:`2` at μ=cos(θ), where θ is the scattering angle.
+  The Lorenz-Mie Theory or LMT for short is a framework that can be used to find
+  exact solution of the scattered field considering a plane wave incident to a
+  scatterer with a certain geometry.
+  The solution is usally written in the form of an infinit summation which, of
+  course, has to be truncated. PyMieSim is a library which does solve the
+  equations in order to retrieve plenty of important informations.
+  Here are, few of the most important relation governing the PyMieSim library.
+  It is to be noted that in all the library, the angles :math:`\theta` and
+  :math:`\phi` are defined as in a spherical coordinate system.
 
- S\ :sub:`1` and S\ :sub:`2` are calculated by:
+   .. math::
+     &S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)
 
-             :math:`{\displaystyle S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)}`
+     &.
 
-             :math:`{\displaystyle S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)}`
+     &S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)
 
+     .&
 
- Computes Mie efficencies *Q* and asymmetry parameter *g* of a single, homogeneous particle:
-
-.. math::
-  Q_{sca} &= \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)
-
-  Q_{ext} &= \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}
-
-  Q_{abs} &= Q_{ext}-Q_{sca}
-
-
-**For spherical scatterer**
-
-.. math::
-
-  a_n &= \frac{\mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-  {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-  b_n &= \frac{\mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -\mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-  {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-  c_n &= \frac{\mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-  {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-  d_n &= \frac{ \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -\xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-  {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-\mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-| With:
-|   :math:`M = \frac{k_{sp}}{k}`
+     &\text{Fields} = E_{\theta}(\phi,\theta) \vec{\theta} +   E_{\phi}(\phi,\theta) \vec{\phi}
 
 
-**For cylindrical scatterer**
 
-.. math::
 
-    a_n & = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-    { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
 
-    b_n & = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-    { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+Scattering properties
+---------------------
 
-| With:
-|   :math:`m` being the refractive index of the medium and
-|   :math:`m_t` being the refractive index of the index.
+.. note::
+  There are many properties of the scatterer that might be useful to know such as:
+  - scattering efficiency
+  - extinction efficiency
+  - absorption efficiency
+  - back-scattering efficiency
+  - ratio of front and back scattering
+  - Optical pressure efficiency
+  - anisotropy factor g
+
+  Those parameter can be computed using PyMieSim according to those equations.
+
+  .. math::
+    &Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)
+
+    &Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}
+
+    &Q_{abs} = Q_{ext}-Q_{sca}
+
+    &Q_{back} = \frac{1}{x^2} \Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \Big|^2
+
+    &Q_{ratio} = \frac{Q_{back}}{Q_{sca}}
+
+    &Q_{pr} = Q_{ext} - g * Q_{sca}
+
+    &g = \frac{4}{Q_{sca} x^2}
+            \Big[ \sum\limits_{n=1}^{n_{max}} \frac{n(n+2)}{n+1} \text{Re} \left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\right\} +
+            \sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)} \text{Re}\left\{ a_n b_n^* \right\} \Big]
 
 -----
+
+An and Bn coefficients:
+-----------------------
+
+.. note::
+
+  From the An and Bn coefficient we can retrieve many useful properties of
+  the scatterer and scattered far-fields. Those are complementary to the
+  Cn and Dn coefficient (for near-field properties) which we do no compute
+  with PyMieSim at the moment.
+  Depending on the scatterer geometry all those coefficient may vary, here we
+  have three example which are available with the PyMieSim library.
+
+
+  **Sphere**
+
+  .. math::
+
+      a_n = \frac{
+      \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+      {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
+
+  .. math::
+
+      b_n = \frac{
+       \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
+      {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}
+
+
+  |   With:
+  |     :math:`M = \frac{k_{sp}}{k}`
+
+
+
+  **Cylinder**
+
+  .. math::
+
+      a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+      { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+
+  .. math::
+
+      b_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+      { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+
+
+  |   With:
+  |     :math:`m` being the refractive index of the medium and
+  |     :math:`m_t` being the refractive index of the index.
+
+  ----
+
+  **Core/Shell sphere**
+
+
+  .. math::
+
+      a_n = \text{implemented but yet to be written}
+
+  .. math::
+
+      b_n = \text{implemented but yet to be written}
+
+
 
 Generalized Lorenz-Mie Theory (GLMT)
 ------------------------------------
 
-
-**Coming soon**
+.. note::
+  **Coming soon**
 
 
 
@@ -76,36 +144,37 @@ Generalized Lorenz-Mie Theory (GLMT)
 Coupling mechanism
 -------------------
 
+.. note::
 
-There is two main coupling mechanism, **coherent coupling** and non-coherent coupling.
-For instance photodiode collect light via an **non-coherent mechanism**, on the other part
-fiber optic LP mode collect light in a coherent way and as such they usually
-collect a lot less light but they add additional information on the sample studied.
-
-
-Mathematically they are defined as follows:
-
-.. math::
-    C_{coh.} &= \Big| \iint_{\\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2
-
-    C_{Noncoh.} &=  \iint_{\\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega
+  There is two main coupling mechanism, **coherent coupling** and non-coherent coupling.
+  For instance photodiode collect light via an **non-coherent mechanism**, on the other part
+  fiber optic LP mode collect light in a coherent way and as such they usually
+  collect a lot less light but they add additional information on the sample studied.
 
 
+  Mathematically they are defined as follows:
 
-It is to be noted that the **coherent coupling** definition is derived from the coupled mode theory
-which remains true as long as the parallax approximation is also true.
-Also this coupling are what we would call **centered coupling**. It means that the
-scatterer is perfectly centered with the detector. As much as it doesn't affect
-so much the **non-coherent coupling** coupling, it can largely affect **coherent coupling**.
+  .. math::
+      C_{coh.} &= \Big| \iint_{\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2
 
-In order to take account of the effect of transversal offset of the scatterer we define
-the footprint of the scatterer.
+      C_{Noncoh.} &=  \iint_{\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega
 
 
-.. math::
-  \eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2
 
-Thus we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
+  It is to be noted that the **coherent coupling** definition is derived from the coupled mode theory
+  which remains true as long as the parallax approximation is also true.
+  Also this coupling are what we would call **centered coupling**. It means that the
+  scatterer is perfectly centered with the detector. As much as it doesn't affect
+  so much the **non-coherent coupling** coupling, it can largely affect **coherent coupling**.
 
-.. math::
-  \widetilde{\eta}_{l,m} = \big< \eta_{l,m}(\delta_x, \delta_y) \big>
+  In order to take account of the effect of transversal offset of the scatterer we define
+  the footprint of the scatterer.
+
+
+  .. math::
+    \eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2
+
+  Thus we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
+
+  .. math::
+    \widetilde{\eta}_{l,m} = \big< \eta_{l,m}(\delta_x, \delta_y) \big>

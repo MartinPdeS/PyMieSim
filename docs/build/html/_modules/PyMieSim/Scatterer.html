@@ -97,7 +97,7 @@
 <div class="viewcode-block" id="Sphere"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Sphere">[docs]</a><span class="k">class</span> <span class="nc">Sphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">ScattererProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. note::</span>
-<span class="sd">        Short summary.</span>
+<span class="sd">        Class representing a homogeneous spherical scatterer.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -116,13 +116,11 @@
 <span class="sd">        .. note:: Size parameter of the scatterer [:math:`k r`].</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">kwargformatIndex</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
-                         <span class="s1">&#39;Index&#39;</span><span class="p">,</span>
-                         <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
+    <span class="n">kwargformat</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Index&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;Material&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
 
-    <span class="n">kwargformatMaterial</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
-                            <span class="s1">&#39;Material&#39;</span><span class="p">,</span>
-                            <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
 
     <span class="nd">@beartype</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -130,18 +128,20 @@
                  <span class="n">Source</span>   <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
                  <span class="n">Index</span>    <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">nMedium</span>  <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-                 <span class="n">Testing</span>  <span class="p">:</span> <span class="nb">bool</span>         <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">Material</span>                <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">Material</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">Index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span><span class="s2">&quot;You should either choose a material or the RI not both&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Material</span> <span class="o">=</span> <span class="n">Material</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>    <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Material</span>    <span class="o">=</span> <span class="n">Material</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>       <span class="o">=</span> <span class="n">Material</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">Index</span><span class="p">:</span>
             <span class="k">assert</span> <span class="n">Material</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span><span class="s2">&quot;You should either choose a material or the RI not both&quot;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Material</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>    <span class="o">=</span> <span class="n">Index</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Material</span>    <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>       <span class="o">=</span> <span class="n">Index</span>
+
 
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span>      <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>  <span class="o">=</span> <span class="n">Diameter</span>
@@ -149,7 +149,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>   <span class="o">=</span> <span class="n">nMedium</span><span class="o">.</span><span class="n">real</span><span class="c1">#.astype(complex)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>      <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Testing</span>   <span class="o">=</span> <span class="n">Testing</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 
@@ -258,7 +257,7 @@
 <span class="k">class</span> <span class="nc">ShellSphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">ScattererProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. note::</span>
-<span class="sd">        Short summary.</span>
+<span class="sd">        Class representing a core+shell spherical scatterer.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -279,8 +278,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">kwargformat</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;CoreDiameter&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;ShellDiameter&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;Source&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;ShellWidth&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;CoreIndex&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;ShellIndex&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;nMedium&#39;</span><span class="p">,</span>
@@ -288,25 +286,27 @@
     <span class="nd">@beartype</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">CoreDiameter</span>  <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">ShellDiameter</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">ShellWidth</span>    <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                  <span class="n">Source</span>        <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
-                 <span class="n">CoreIndex</span>     <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ShellIndex</span>    <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">CoreIndex</span>     <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
+                 <span class="n">ShellIndex</span>    <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
                  <span class="n">nMedium</span>       <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-                 <span class="n">Testing</span>       <span class="p">:</span> <span class="nb">bool</span>         <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">CoreMaterial</span>                 <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ShellMaterial</span>                <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="p">):</span>
+                 <span class="n">ShellMaterial</span>                <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="n">ShellDiameter</span>     <span class="o">=</span> <span class="n">CoreDiameter</span> <span class="o">+</span> <span class="n">ShellWidth</span>
+
+        <span class="k">if</span> <span class="nb">all</span><span class="p">([</span> <span class="n">CoreIndex</span><span class="p">,</span> <span class="n">CoreMaterial</span> <span class="p">]</span> <span class="p">)</span> <span class="ow">or</span> <span class="nb">all</span><span class="p">([</span> <span class="n">ShellIndex</span><span class="p">,</span> <span class="n">ShellMaterial</span> <span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span> <span class="s2">&quot;You should either choose a material or the RI, not both.&quot;</span> <span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">CoreMaterial</span><span class="p">,</span> <span class="n">ShellMaterial</span><span class="p">]):</span>
-            <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">CoreIndex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ShellIndex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]),</span><span class="s2">&quot;You should either choose a material or the RI not both&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Material</span> <span class="o">=</span> <span class="n">Material</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">CoreIndex</span>     <span class="o">=</span> <span class="n">CoreMaterial</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ShellIndex</span>    <span class="o">=</span> <span class="n">ShellMaterial</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span><span class="n">Source</span><span class="o">.</span><span class="n">Wavelength</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">CoreIndex</span><span class="p">,</span> <span class="n">ShellIndex</span><span class="p">]):</span>
-            <span class="k">assert</span> <span class="nb">all</span><span class="p">([</span><span class="n">CoreMaterial</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">,</span> <span class="n">ShellMaterial</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">]),</span><span class="s2">&quot;You should either choose a material or the RI not both&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">Material</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">CoreIndex</span>     <span class="o">=</span> <span class="n">CoreIndex</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ShellIndex</span>    <span class="o">=</span> <span class="n">ShellIndex</span>
@@ -317,7 +317,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>        <span class="o">=</span> <span class="n">Source</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>       <span class="o">=</span> <span class="n">nMedium</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>          <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">ShellDiameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Testing</span>       <span class="o">=</span> <span class="n">Testing</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 
@@ -366,7 +365,7 @@
 <div class="viewcode-block" id="Cylinder"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.Cylinder">[docs]</a><span class="k">class</span> <span class="nc">Cylinder</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">ScattererProperties</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. note::</span>
-<span class="sd">        Short summary.</span>
+<span class="sd">        Class representing a right angle cylindrical scatterer.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -387,17 +386,16 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">kwargformat</span> <span class="o">=</span> <span class="p">[</span> <span class="s1">&#39;Diameter&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;Source&#39;</span><span class="p">,</span>
                     <span class="s1">&#39;Index&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;nMedium&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;Material&#39;</span><span class="p">]</span>
+                    <span class="s1">&#39;Material&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
+
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">Diameter</span>    <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
                  <span class="n">Source</span>      <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
                  <span class="n">Index</span>       <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
-                 <span class="n">IndexMedium</span> <span class="p">:</span> <span class="n">ScalarType</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-                 <span class="n">Testing</span>     <span class="p">:</span> <span class="nb">bool</span>        <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+                 <span class="n">IndexMedium</span> <span class="p">:</span> <span class="n">ScalarType</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span>      <span class="o">=</span> <span class="s1">&#39;Cylinder&#39;</span>
@@ -407,7 +405,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>   <span class="o">=</span> <span class="n">IndexMedium</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>      <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Testing</span>   <span class="o">=</span> <span class="n">Testing</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 
@@ -475,8 +472,8 @@
 <div class="viewcode-block" id="WMSample"><a class="viewcode-back" href="../../Code.html#PyMieSim.Scatterer.WMSample">[docs]</a><span class="k">class</span> <span class="nc">WMSample</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    .. note::</span>
-<span class="sd">        Sample represented by the Whittle-Matern RI correlation function and</span>
-<span class="sd">        using the first Born approximation .</span>
+<span class="sd">        Class representing sample described by the Whittle-Matern RI</span>
+<span class="sd">        correlation function and using the first Born approximation .</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

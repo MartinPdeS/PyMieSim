@@ -7,7 +7,9 @@ import matplotlib.pyplot as plt
 from itertools import product
 
 from PyMieSim.Config import MetricList
-from PyMieSim.utils  import LowerStr
+from PyMieSim.utils  import FormatStr, FormatString
+from PyMieSim.Config import EFFTYPE
+
 
 
 class PMSArray(object):
@@ -17,7 +19,7 @@ class PMSArray(object):
         self.conf = conf
 
 
-    @LowerStr
+    @FormatStr
     def Cost(self, arg = 'max'):
         """Method return cost function evaluated as defined in the ___ section
         of the documentation.
@@ -54,7 +56,7 @@ class PMSArray(object):
         raise ValueError(f"Invalid metric input. \nList of metrics: {MetricList}")
 
 
-    @LowerStr
+    @FormatStr
     def Monotonic(self, axis):
         """Method compute and the monotonic value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -82,7 +84,7 @@ class PMSArray(object):
         return PMSArray(array=arr, conf=conf)
 
 
-    @LowerStr
+    @FormatStr
     def Mean(self, axis):
         """Method compute and the mean value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -108,7 +110,7 @@ class PMSArray(object):
         return PMSArray(array=arr, conf=conf)
 
 
-    @LowerStr
+    @FormatStr
     def Std(self, axis):
         """Method compute and the std value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -134,7 +136,7 @@ class PMSArray(object):
         return PMSArray(array=arr, conf=conf)
 
 
-    @LowerStr
+    @FormatStr
     def Rsd(self, axis):
         """Method compute and the rsd value of specified axis.
         The method then return a new PMSArray daughter object compressed in
@@ -191,7 +193,7 @@ class PMSArray(object):
         return newConf
 
 
-    @LowerStr
+    @FormatStr
     def Plot(self, x,  Scale = 'linear', *args, **kwargs):
         """Method plot the multi-dimensional array with the x key as abscissa.
         args and kwargs can be passed as standard input to matplotlib.pyplot.
@@ -205,29 +207,52 @@ class PMSArray(object):
 
         """
 
-        if Scale in ['lin', 'linear']        : plot = plt.plot
-        if Scale in ['log', 'logarithmic']   : plot = plt.loglog;
-        if Scale in ['xlog', 'xlogarithmic'] : plot = plt.semilogx;
-        if Scale in ['ylog', 'ylogarithmic'] : plot = plt.semilogy;
+        yLog = False; xLog = False
 
-        fig   = self.PrepareFigure()
+        if Scale in ['lin', 'linear']        : yLog = False; xLog = False;
+        if Scale in ['log', 'logarithmic']   : yLog = True;  xLog = True;
+        if Scale in ['xlog', 'xlogarithmic'] : yLog = False; xLog = True;
+        if Scale in ['ylog', 'ylogarithmic'] : yLog = True;  xLog = False;
 
-        DimSlicer, xlabel, xval = self.GetSlicer(x)
+        figDict = {unit : plt.subplots(figsize=(8,4))
+                   for unit in set(self.conf['y']['unit'].values())}
+
+        DimSlicer, xval = self.GetSlicer(x)
 
         for idx in product(*DimSlicer):
-            plot(xval,
-                 self.data[idx],
-                 label = self.GetLegend(x, idx),
-                 *args,
-                 **kwargs)
 
-        plt.xlabel(xlabel)
-        plt.legend(fontsize=6)
+            label  = self.GetLabels(x, idx)
+
+            xlabel, ylabel, unit = self.GetAxesLabel(x, idx)
+
+            figure, ax = figDict[unit]
+
+            ax.plot(xval, self.data[idx], label  = label, *args, **kwargs)
+
+            ax.set_xlabel(xlabel)
+            ax.set_ylabel(ylabel)
+            ax.legend(fontsize=6)
+
+            if yLog: ax.set_yscale('log')
+            if xLog: ax.set_xscale('log')
+
+        for key, (fig,ax) in figDict.items():
+            ax.grid()
 
         plt.show()
 
 
-    def GetLegend(self, axis, idx):
+    def GetAxesLabel(self, axis, idx):
+        VarIndex    = idx[-1]
+        yname       = self.conf['y']['list'][VarIndex]
+        unit        = self.conf['y']['unit'][yname]
+        ylabel      = self.conf['y']['label'][yname] + ' ' + unit
+        xlabel      = self.conf['label'][axis] + ' ' + self.conf['unit'][axis]
+
+        return xlabel, ylabel, unit
+
+
+    def GetLabels(self, axis, idx):
         """Method generate and return the legend text for the specific plot.
 
         Parameters
@@ -244,23 +269,32 @@ class PMSArray(object):
 
         """
 
-        label = ''
+        Efficiency  = False
+        label       = ''
+        VarIndex    = idx[-1]
+        yname       = self.conf['y']['list'][VarIndex]
+
+        if yname in EFFTYPE:
+            label       = f"{yname} | " + label
+            Efficiency  = True
 
         for key in self.conf['order']:
 
-            if axis.lower() != key.lower():
+            if axis != key.lower():
 
                 index  = idx[self.conf['order'][key]]
-                val    = self.conf['dimension'][key][index]
+
+                val = self.conf['dimension'][key][index]
 
                 if key.lower() == 'material' :
                     val = val.__str__()
 
                 format = self.conf['format'][key]
-                label += f"{key}= {val:{format}} | "
 
-        if self.conf['variable']['name'] == 'Efficiencies':
-            label = self.conf['variable']['namelist'][idx[-1]] + ' | ' + label
+                if Efficiency and key == 'Detector':
+                        continue
+
+                label += f"{key}= {val:{format}} | "
 
         return label
 
@@ -269,33 +303,23 @@ class PMSArray(object):
         shape = list(self.data.shape)
 
         for key, order in self.conf['order'].items():
+
             if key.lower() == x.lower():
                 shape[order] = None
-                xlabel       = self.conf['label'][key]
                 xval         = self.conf['dimension'][key]
 
         DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
 
-        return DimSlicer, xlabel, xval
-
-
-    def PrepareFigure(self):
-        fig   = plt.figure(figsize=(8,4))
-
-        plt.grid()
-
-        plt.ylabel(self.conf['variable']['name'] +  self.conf['variable']['unit'])
-
-        return fig
+        return DimSlicer, xval
 
 
     def __getitem__(self, key):
-        index = self.conf['variable']['namelist'].index(key)
+        index = self.conf['y']['list'].index(key)
         return self.data[..., index].squeeze()
 
 
     def __str__(self):
-        name = self.conf['name']
+        name = self.conf['y']['name']
         text =  f'PyMieArray \nVariable: {name}\n' + '='*90 + '\n'
         text += f"{'Parameter':13s}\n" + '-'*90 + '\n'
         for key, val in self.conf['order'].items():
@@ -330,7 +354,7 @@ class Opt5DArray(np.ndarray):
                      'diameter'     : True,
                      'index'        : True}
 
-    @LowerStr
+    @FormatStr
     def DefineCostFunc(self, arg):
         arg = arg.lower().split('+', 2)
 

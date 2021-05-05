@@ -533,8 +533,8 @@ class BaseScatterer(object):
             Method Compute scattering Far Field for unstructured coordinate.
 
             .. math::
-                \\text{Fields} = E_{||}(\\phi,\\theta)^2,
-                                 E_{\\perp}(\\phi,\\theta)^2
+                \\text{Fields} = E_{||}(\\phi,\\theta),
+                                 E_{\\perp}(\\phi,\\theta)
 
 
             The Fields are up to a constant phase value.

@@ -14,11 +14,11 @@ def run():
                      'nMedium'     : [1] }
 
     sourceKwargs = { 'Wavelength'   : 1e-6,
-                     'Polarization' : [0]}
+                     'Polarization' : [0,30,60,90]}
 
-    Detector0 = Photodiode(NA                = 2.0,
+    Detector0 = Photodiode(NA                = 0.2,
                            Sampling          = 300,
-                           GammaOffset       = 0,
+                           GammaOffset       = 70,
                            PhiOffset         = 0,
                            CouplingMode      = 'Centered')
 
@@ -32,7 +32,7 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = detecSet)
 
-    Coupling = Experiment.Coupling(AsType='pymiesim')
+    Coupling = Experiment.Get('Coupling')
 
     Coupling.Plot(x='Diameter')
 

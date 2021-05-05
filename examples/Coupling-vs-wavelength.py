@@ -11,9 +11,9 @@ def run():
 
     scatKwargs   = { 'Diameter'    : 200e-9,
                      'Material'    : Material('BK7'),
-                     'nMedium'     : [1,1.2] }
+                     'nMedium'     : [1] }
 
-    sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 1500),
+    sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 500),
                      'Polarization' : [0]}
 
     Detector0 = Photodiode(NA                = 2.0,
@@ -32,9 +32,10 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = detecSet)
 
-    Coupling = Experiment.Coupling(AsType='pymiesim')
+    Coupling = Experiment.Get('Coupling')
+    #print(Experiment.config)
 
-    Coupling.Plot(x='Wavelength')
+    Coupling.Plot(x='wavelength')
 
 
 if __name__ == '__main__':

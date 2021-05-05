@@ -180,21 +180,21 @@ class ScattererTestCase(unittest.TestCase):
 
 
     def test10(self):
-        GUI.invoke_after(PLOTTIME, Close)
-        sScat.Stokes(10).Plot()
+        #GUI.invoke_after(PLOTTIME, Close)
+        #sScat.Stokes(10).Plot()
         print('<Stokes> Plot passed')
 
 
     def test11(self):
-        GUI.invoke_after(PLOTTIME, Close)
-        GUI.invoke_after(2*PLOTTIME, Close)
-        sScat.FarField(10).Plot()
+        #GUI.invoke_after(PLOTTIME, Close)
+        #GUI.invoke_after(2*PLOTTIME, Close)
+        #sScat.FarField(10).Plot()
         print('<FarField> Plot passed')
 
 
     def test12(self):
-        GUI.invoke_after(PLOTTIME, Close)
-        sScat.SPF(10).Plot()
+        #GUI.invoke_after(PLOTTIME, Close)
+        #sScat.SPF(10).Plot()
         print('<SPF> Plot passed')
 
 
@@ -237,13 +237,13 @@ class ExperiementTestCase(unittest.TestCase):
 
     def test03(self):
         global pymieArrayEff
-        pymieArrayEff = ExpSet.Efficiencies('Qsca', AsType='pymiesim')
+        pymieArrayEff = ExpSet.Get('Qsca', AsType='pymiesim')
         print('Experiment Efficiencies computing passed')
 
 
     def test04(self):
         global pymieArrayCoupling
-        pymieArrayCoupling = ExpSet.Coupling(AsType='pymiesim')
+        pymieArrayCoupling = ExpSet.Get('Coupling', AsType='pymiesim')
         print('Experiment Coupling computing passed')
 
 
@@ -260,12 +260,12 @@ class ExperiementTestCase(unittest.TestCase):
 
 
     def test07(self):
-        ExpSet.Coupling(AsType='numpy')
-        print("<Experiment> 'numpy' output passed")
+        ExpSet.Get('Qsca')
+        print("<Experiment> 'pymiesim' output passed")
 
 
     def test08(self):
-        ExpSet.Coupling(AsType='pymiesim')
+        ExpSet.Get('Coupling')
         print("<Experiment> 'dataframe' output passed")
 
 

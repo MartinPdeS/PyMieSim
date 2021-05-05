@@ -33,7 +33,6 @@ Examples
 
 
 
-
 ----------------
 
 .. literalinclude:: ../../examples/S1S2.py
@@ -173,6 +172,7 @@ Output: (6.57e+01 nWatt)
 
 .. image:: ../images/Coupling-vs-diameter.png
   :width: 600
+
 
 -----------------------------------
 

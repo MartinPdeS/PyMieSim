@@ -23,9 +23,12 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = None)
 
-    Eff = Experiment.Efficiencies(['Qsca'], AsType='pymiesim')
+    
+    Eff = Experiment.Get('Qsca')
 
     Eff.Plot(x='Wavelength')
+
+
 
 
 if __name__ == '__main__':
