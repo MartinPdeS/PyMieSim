@@ -270,7 +270,7 @@ class ExperiementTestCase(unittest.TestCase):
 
 
     def test09(self):
-        ExpSet.Coupling(AsType='optimizer')
+        ExpSet.Get('Coupling')
         print("<Experiment> 'optimizer' output passed")
 
 

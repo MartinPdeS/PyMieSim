@@ -1,6 +1,3 @@
-matplotlib=True
-mlab=False
-
 def run():
     from PyMieSim.Data._Material.utils import LoadOnlineSave
     from PyMieSim                      import Material

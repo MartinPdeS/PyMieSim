@@ -1,6 +1,3 @@
-matplotlib=False
-mlab=True
-
 def run():
     from PyMieSim.Source   import PlaneWave
     from PyMieSim.Detector import LPmode

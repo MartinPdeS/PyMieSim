@@ -1,6 +1,3 @@
-matplotlib=True
-mlab=False
-
 def run():
     import numpy as np
     from PyMieSim.Scatterer  import Sphere
@@ -23,7 +20,7 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = None)
 
-    
+
     Eff = Experiment.Get('Qsca')
 
     Eff.Plot(x='Wavelength')

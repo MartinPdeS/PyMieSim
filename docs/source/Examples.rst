@@ -8,7 +8,7 @@ Examples
 .. literalinclude:: ../../examples/Index.py
     :language: python
     :caption: **Scatterer: Index**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -18,7 +18,7 @@ Examples
 .. literalinclude:: ../../examples/Material.py
     :language: python
     :caption: **Scatterer: Material**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -28,7 +28,7 @@ Examples
 .. literalinclude:: ../../examples/ScatProperties.py
     :language: python
     :caption: **Scatterer: ScatProperties**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -39,7 +39,7 @@ Examples
     :language: python
     :linenos:
     :caption: **Scatterer: S1-S2**
-    :lines: 4-
+    :lines: 0-
 
 
 .. image:: ../images/S1S2.png
@@ -52,7 +52,7 @@ Examples
 .. literalinclude:: ../../examples/Stokes.py
     :language: python
     :caption: **Scatterer: Stokes**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/Stokes.png
@@ -65,7 +65,7 @@ Examples
 .. literalinclude:: ../../examples/FarField.py
     :language: python
     :caption: **Scatterer: full far-field**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/FarField.png
@@ -78,7 +78,7 @@ Examples
 .. literalinclude:: ../../examples/SPF.py
     :language: python
     :caption: **Scatterer: phase function**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -92,7 +92,7 @@ Examples
 .. literalinclude:: ../../examples/Photodiode.py
     :language: python
     :caption: **Detector: Photodiode**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/Photodiode.png
@@ -105,7 +105,7 @@ Examples
 .. literalinclude:: ../../examples/LPMode.py
     :language: python
     :caption: **Detector: LPMode**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -118,7 +118,7 @@ Examples
 .. literalinclude:: ../../examples/Scatterer-Photodiode.py
     :language: python
     :caption: **Coupling: Scatterer-Photodiode**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -130,7 +130,7 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Qscattering.py
     :language: python
     :caption: **ScattererSet: Qscattering**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/Qscattering.png
@@ -142,7 +142,7 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Qsca-vs-diameter.py
     :language: python
     :caption: **Experiment: Qsca-vs-diameter**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/Qsca-vs-diameter.png
@@ -154,7 +154,7 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Mie-resonances.py
     :language: python
     :caption: **Experiment: Mie-resonances**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -167,7 +167,7 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Coupling-vs-diameter.py
     :language: python
     :caption: **Experiment: Coupling-vs-diameter**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/Coupling-vs-diameter.png
@@ -179,7 +179,7 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Coupling-vs-wavelength.py
     :language: python
     :caption: **Experiment: Coupling-vs-wavelength**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 .. image:: ../images/Coupling-vs-wavelength.png
@@ -191,7 +191,7 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Opt-1-parameter.py
     :language: python
     :caption: **Optimization: Opt-1-parameter**
-    :lines: 4-
+    :lines: 0-
     :linenos:
 
 
@@ -205,5 +205,5 @@ Output: (6.57e+01 nWatt)
 .. literalinclude:: ../../examples/Opt-2-parameter.py
     :language: python
     :caption: **Optimization: Opt-2-parameter**
-    :lines: 4-
+    :lines: 0-
     :linenos:

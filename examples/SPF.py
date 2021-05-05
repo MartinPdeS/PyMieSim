@@ -1,6 +1,3 @@
-matplotlib=False
-mlab=True
-
 def run():
     from PyMieSim.Scatterer import Sphere
     from PyMieSim.Source    import PlaneWave

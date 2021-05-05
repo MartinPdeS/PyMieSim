@@ -1,6 +1,3 @@
-matplotlib=True
-mlab=False
-
 def run():
     import numpy as np
     from PyMieSim.Scatterer  import Sphere

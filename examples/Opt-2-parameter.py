@@ -1,6 +1,3 @@
-matplotlib=True
-mlab=False
-
 def run():
     return
     import numpy as np
