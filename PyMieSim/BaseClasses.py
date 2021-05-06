@@ -847,8 +847,9 @@ class Set(object):
             Dict              = Arg2Dict[key]
             Dict['order']     = iter
             Dict['dimension'] = self.kwargs[key]
+            Dict['size']      = len(self.kwargs[key])
+            config['X'][iter] = Dict
             iter                += 1
-            MergeDict(config,Dict)
 
         config['MaxOrder'] = iter
 

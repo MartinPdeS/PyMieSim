@@ -25,113 +25,172 @@ SourceParamList = ['E0',
                    'Polarization',
                    'Wavelength']
 
-BaseIndex = { 'name'      : None,
-              'order'     :  None,
-              'label'     : 'Refractive index',
+BaseIndex = {
+              'name'      : None,
+              'order'     : None,
+              'label'     : None,
               'format'    : '.2f',
               'unit'      : ' [1]',
-              'dimension' : None, }
+              'dimension' : None,
+              }
 
-BaseDiameter = { 'name'      : 'Diameter',
+BaseDiameter = {
+                 'name'      : None,
                  'order'     : None,
-                 'label'     : 'Diameter',
+                 'label'     : None,
                  'format'    : '.1e',
-                 'unit'      : ' [m]',
-                 'dimension' : None,}
+                 'unit'      : '[m]',
+                 'dimension' : None,
+                 }
 
-nMediumDict    = cp.copy(BaseIndex); nMediumDict['name']    = 'nmedium'   ; nMediumDict['label']    = 'Medium refractive index'
-IndexDict      = cp.copy(BaseIndex); IndexDict['name']      = 'index'     ; IndexDict['name']       = 'Refractive index'
-CoreIndexDict  = cp.copy(BaseIndex); CoreIndexDict['name']  = 'coreindex' ; CoreIndexDict['label']  = 'Core index'
-ShellIndexDict = cp.copy(BaseIndex); ShellIndexDict['name'] = 'shellindex'; ShellIndexDict['label'] = 'Shell index'
+nMediumDict =   {
+                 'name'      : 'nmedium',
+                 'label'     : 'Medium refractive index [1]',
+                 'format'    : '.2f',
+                 'unit'      : '[1]',
+                 'order'     : None,
+                 'dimension' : None,
+                 }
 
 
-DiameterDict      = cp.copy(BaseDiameter); DiameterDict['name']      = 'diameter';     DiameterDict['label']      = 'Diameter'
-CoreDiameterDict  = cp.copy(BaseDiameter); CoreDiameterDict['name']  = 'corediameter'; CoreDiameterDict['label']  = 'Core diameter'
-ShellWidthDict    = cp.copy(BaseDiameter); ShellWidthDict['name']    = 'shellwidth';   ShellWidthDict['label']    = 'Shell width'
+IndexDict =     {
+                 'name'      : 'index',
+                 'label'     : 'Refractive index [1]',
+                 'format'    : '.2f',
+                 'unit'      : '[1]',
+                 'dimension' :  None,
+                 'order'     :  None
+                 }
 
 
-MaterialDict = { 'name'      : 'material',
-                 'order'     :  None,
-                 'label'     : 'Medium Refractive index',
-                 'format'    : '10s',
-                 'unit'      : '',
-                 'dimension' : None, }
+CoreIndexDict = {
+                 'name'      : 'coreindex',
+                 'label'     : 'Core index [1]',
+                 'format'    : '.2f',
+                 'unit'      : '[1]',
+                 'dimension' :  None,
+                 'order'     :  None
+                 }
 
-PolarizationDict = { 'name'      : 'polarization',
-                     'order'     :  None,
-                     'label'     : 'Polarization',
+
+ShellIndexDict = {
+                  'name'      : 'shellindex',
+                  'label'     : 'Shell index [1]',
+                  'format'    : '.2f',
+                  'unit'      : '[1]',
+                  'dimension' :  None,
+                  'order'     :  None
+                  }
+
+DiameterDict = {
+                 'name'      : 'diameter',
+                 'label'     : 'Diameter [m]',
+                 'format'    : '.1e',
+                 'unit'      : '[m]',
+                 'order'     : None,
+                 'dimension' : None,
+                 }
+
+CoreDiameterDict = {
+                    'name'      : 'corediameter',
+                    'label'     : 'Core diameter [m]',
+                    'format'    : '.1e',
+                    'unit'      : '[m]',
+                    'order'     : None,
+                    'dimension' : None,
+                   }
+
+ShellWidthDict = {
+                    'name'      : 'shellwidth',
+                    'label'     : 'Shell width [m]',
+                    'format'    : '.1e',
+                    'unit'      : '[m]',
+                    'order'     : None,
+                    'dimension' : None,
+                   }
+
+MaterialDict = {
+                 'name'          : 'material',
+                 'label'         : 'Medium Refractive index',
+                 'format'        : '10s',
+                 'unit'          : '',
+                 'order'         : None,
+                 'dimension'     : None,
+                 }
+
+PolarizationDict = {
+                     'name'      : 'polarization',
+                     'label'     : 'Polarization [Degree]',
                      'format'    : '04.1f',
                      'unit'      : ' Degree',
-                     'dimension' : None,}
+                     'dimension' : None,
+                     'order'     : None,
+                     }
 
-WavelengthDict = { 'name'      : 'wavelength',
-                   'order'     :  None,
-                   'label'     : r'Wavelength $\lambda$',
-                   'format'    : '.1e',
-                   'unit'      : ' m',
-                   'dimension' : None,}
+WavelengthDict = {
+                   'name'        : 'wavelength',
+                   'label'       : r'Wavelength $\lambda$ [m]',
+                   'format'      : '.1e',
+                   'unit'        : 'm',
+                   'order'       : None,
+                   'dimension'   : None
+                   }
 
-DetectorDict = { 'name'      : 'detector',
-                 'order'     :  None,
-                 'label'     : 'Detector',
-                 'format'    : '11s',
-                 'unit'      : ' ',
-                 'dimension' : None, }
+DetectorDict = {
+                 'name'          : 'detector',
+                 'label'         : 'Detector',
+                 'format'        : '11s',
+                 'unit'          : '',
+                 'dimension'     : None,
+                 'order'         : None,
+                  }
 
+EfficienciesDict = { 'type'      : 'efficiency',
+                     'name'      : 'efficiencies',
+                     'label'     : 'Efficiencies [1]',
+                     'format'    : '15s',
+                     'unit'      : '[1]' }
 
-EfficienciesDict = { 'name'     : 'efficiencies',
-                     'namelist' : None,
-                     'label'    : 'Efficiencies',
-                     'format'   : '15s',
-                     'unit'     : ' [1]' }
+CrossSectionsDict = { 'type'     : 'crossection',
+                      'name'     : 'crossections',
+                      'label'    : 'Cross-section [m²]',
+                      'format'   : '15s',
+                      'unit'     : '[m²]' }
 
+CouplingDict = { 'name'          : 'coupling',
+                 'label'         : 'Coupling [Watt]',
+                 'format'        : '15s',
+                 'unit'          :  '[Watt]',
+                 'type'          : 'coupling' }
 
-CouplingDict = { 'name'   : 'coupling',
-                 'label'  : 'Coupling',
-                 'format' : '15s',
-                 'unit'   :  ' Watt' }
+BaseConfig = { 'name'            : None,
+               'unit'            : {},
+               'material'        : None,
+               'order'           : {},
+               'label'           : {},
+               'format'          : {},
+               'dimension'       : {},
+               'MaxOrder'        : 0,
+               'X'               : {},
+               'Y'               : {}}
 
+Arg2Dict = { 'Diameter'          : DiameterDict,
+             'Index'             : IndexDict,
+             'Material'          : MaterialDict,
+             'nMedium'           : nMediumDict,
+             'Polarization'      : PolarizationDict,
+             'Wavelength'        : WavelengthDict,
+             'CoreDiameter'      : CoreDiameterDict,
+             'ShellWidth'        : ShellWidthDict,
+             'CoreIndex'         : CoreIndexDict,
+             'ShellIndex'        : ShellIndexDict}
 
-BaseConfig = { 'name'      : None,
-               'unit'      : {},
-               'material'  : None,
-               'order'     : {},
-               'label'     : {},
-               'format'    : {},
-               'dimension' : {},
-               'MaxOrder'  : 0}
-
-
-Arg2Dict = { 'Diameter'      : DiameterDict,
-             'Index'         : IndexDict,
-             'Material'      : MaterialDict,
-             'nMedium'       : nMediumDict,
-             'Polarization'  : PolarizationDict,
-             'Wavelength'    : WavelengthDict,
-             'CoreDiameter'  : CoreDiameterDict,
-             'ShellWidth'    : ShellWidthDict,
-             'CoreIndex'     : CoreIndexDict,
-             'ShellIndex'    : ShellIndexDict}
-
-
-Variable2Unit = { 'Coupling'  : '[Watt]',
-                  'Qsca'      : '[1]',
-                  'Qext'      : '[1]',
-                  'Qabs'      : '[1]',
-                  'Qback'     : '[1]',
-                  'Qratio'    : '[1]' }
-
-Variable2Label = { 'Coupling'  : 'Coupling',
-                   'Qsca'      : 'Qsca',
-                   'Qext'      : 'Qext',
-                   'Qabs'      : 'Qabs',
-                   'Qback'     : 'Qback',
-                   'Qratio'    : 'Qratio' }
-
-
-
-OUTPUTTYPE = ['optimizer','numpy', 'pymiesim']
+OUTPUTTYPE = ['optimizer', 'pymiesim']
 
 EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'Qpr']
+
+CROSSTYPE  = ['Csca', 'Cext', 'Cabs', 'Cback', 'Cratio', 'Cpr']
+
+OTHERTYPE  = ['g']
 
 exList  = Union[int, float, list, np.ndarray, tuple]

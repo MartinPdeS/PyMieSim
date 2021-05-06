@@ -26,7 +26,6 @@ from shutil import rmtree
 import pathlib
 from setuptools import setup, Extension
 import subprocess
-#from Cython.Distutils import build_ext
 from setuptools.command.build_ext import build_ext as build_ext_orig
 from setuptools.command.build_ext import build_ext
 
@@ -41,7 +40,7 @@ URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION         = '0.2.2'
+VERSION         = '0.2.3'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',

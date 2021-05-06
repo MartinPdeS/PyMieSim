@@ -12,13 +12,13 @@ def run():
                            PhiOffset         = 30,
                            CouplingMode      = 'Centered')
 
-    scatKwargs   = { 'CoreDiameter'     : np.geomspace(10e-09, 600e-9, 1500),
-                     'ShellWidth'       : [400e-9, 800e-9, 1200e-9],
+    scatKwargs   = { 'CoreDiameter'     : np.geomspace(10e-09, 600e-9, 500),
+                     'ShellWidth'       : [200e-9, 400e-9],
                      'CoreIndex'        : [1],
                      'ShellIndex'       : [1.3],
                      'nMedium'          : 1 }
 
-    sourceKwargs = { 'Wavelength'   : [100e-9],
+    sourceKwargs = { 'Wavelength'   : [200e-9],
                      'Polarization' : [0]}
 
     scatSet   = ScatSet(Scatterer = ShellSphere,  kwargs = scatKwargs )
@@ -31,9 +31,11 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = DetecSet)
 
-    Qsca = Experiment.Get(Properties=['Qsca'])
+    Qsca = Experiment.Get(Properties=['Qsca', 'Qback'])
 
-    Qsca.Plot(x='Core diameter', Scale='lin')
+    print(Qsca)
+
+    Qsca.Plot(x='Core diameter', Scale='lin', Groupby='name')
 
 
 

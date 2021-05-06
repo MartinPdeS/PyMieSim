@@ -75,13 +75,16 @@ class DetectorSet(Set):
 
         i = config['MaxOrder']
 
-        Dict0              = copy.deepcopy( DetectorDict )
-        Dict0['order']     = i
-        Dict0['dimension'] = [Det.Name for Det in self.Detector]
+        Dict              = copy.deepcopy( DetectorDict )
+        Dict['order']     = i
+        Dict['dimension'] = [Det.Name for Det in self.Detector]
+        Dict['size']      = len(Dict['dimension'])
 
-        MergeDict(config,Dict0)
+        MergeDict(config,Dict)
+        config['X'][i] = Dict
 
         config['MaxOrder'] = i+1
+
 
         return config
 
@@ -100,7 +103,6 @@ class Setup(object):
                  SourceSet    : SourceSet                = None,
                  DetectorSet  : Union[DetectorSet, None] = None):
 
-        #print(BaseConfig)
         config = copy.deepcopy(BaseConfig)
 
         self.MetricList   = MetricList
@@ -117,6 +119,8 @@ class Setup(object):
 
         config = self.ScattererSet.UpdateConfiguration(config)
 
+        config['order'] = {dict['name']: dict['order'] for dict in config['X'].values()}
+        
         self.config = config
 
 
@@ -128,9 +132,28 @@ class Setup(object):
             assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
+    def UpdateConfig(self, Properties, AsType):
+
+        for i, prop in enumerate(Properties):
+
+            if prop in EFFTYPE:
+                self.config['Y'][prop] = copy.deepcopy( EfficienciesDict )
+                self.config['Y'][prop]['name'] = prop
+                self.config['Y'][prop]['order'] = i
+
+            else:
+                self.config['Y'][prop] = copy.deepcopy( CouplingDict )
+                self.config['Y'][prop]['name'] = prop
+                self.config['Y'][prop]['order'] = i
+
+        self.GetShape(self.config)
+
+        self.config['output'] = AsType
+
+
     def Get(self, Properties='Qsca', AsType='pymiesim'):
-        """Methode generate a Pandas Dataframe of scattering efficiencies
-        (Qsca) vs. scatterer diameter vs. scatterer refractive index.
+        """Methode generate array of the givens parameters as a function of
+        all independent variables.
 
         Returns
         -------
@@ -140,37 +163,28 @@ class Setup(object):
         """
         if Properties == 'all': Properties = EFFTYPE
 
+        self.AssertionType(AsType=AsType)
+
         Properties = ToList(Properties)
 
-        self.config['y']             = copy.deepcopy( EfficienciesDict )
-        self.config['y']['list']     = Properties
-
-        self.config['y']['unit']   = {key : Variable2Unit[key]  for key in Properties}
-        self.config['y']['label']  = {key : Variable2Label[key] for key in Properties}
-
-        self.GetShape(self.config)
-
-        self.config['output'] = AsType
-
-        self.AssertionType(AsType=AsType)
+        self.UpdateConfig(Properties, AsType)
 
         Array = np.empty(self.config['size'])
 
         if 'Material' in self.ScattererSet.kwargs: self.BindMaterial()
 
         i = 0
-
         for source in self.SourceSet.Generator():
             for scatterer in self.ScattererSet.Generator(source):
                 for eff in Properties:
                     if eff == 'Coupling':
                         for detector in self.DetectorSet.Generator():
                             Array[i] = detector.Coupling(Scatterer = scatterer)
-                            i += 1;
+                            i       += 1;
 
                     else:
-                        Array[i]  =  getattr(scatterer, eff)
-                        i += 1
+                        Array[i] = getattr(scatterer, eff)
+                        i       += 1
 
         return self.ReturnType(Array     = Array.reshape( self.config['shape'] ),
                                AsType    = AsType,
@@ -197,12 +211,14 @@ class Setup(object):
 
         shape = []
         size  = 1
-        for item in config['dimension'].values():
-            shape += [len(item)]
-            size  *= len(item)
+        for key, val in config['X'].items():
+            shape += [val['size']]
+            size  *= val['size']
 
-        config['shape'] = shape + [len(config['y']['list'])]
-        config['size']  = size  *  len(config['y']['list'])
+        length = len( [val['name'] for val in config['Y'].values()] )
+
+        config['shape'] = shape + [length]
+        config['size']  = size  *  length
 
 
     def Optimize(self, *args, **kwargs):

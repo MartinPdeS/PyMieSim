@@ -184,8 +184,11 @@ class PMSArray(object):
 
         newConf = self.conf.copy()#copy.copy(self.conf)  <----- I don't like it!
 
+        dim = newConf['order'][axis]
+
         newConf['order'].pop(axis)
-        newConf['dimension'].pop(axis)
+
+        newconf['X'].pop(dim)
 
         for n, key in enumerate(newConf['order'].keys()):
             newConf['order'][key] = n
@@ -193,8 +196,19 @@ class PMSArray(object):
         return newConf
 
 
+    def GetScale(self, Scale):
+        yLog = False; xLog = False
+
+        if Scale in ['lin', 'linear']        : yLog = False; xLog = False;
+        if Scale in ['log', 'logarithmic']   : yLog = True;  xLog = True;
+        if Scale in ['xlog', 'xlogarithmic'] : yLog = False; xLog = True;
+        if Scale in ['ylog', 'ylogarithmic'] : yLog = True;  xLog = False;
+
+        return xLog, yLog
+
+
     @FormatStr
-    def Plot(self, x,  Scale = 'linear', *args, **kwargs):
+    def Plot(self, x,  Scale = 'linear', Groupby='name', *args, **kwargs):
         """Method plot the multi-dimensional array with the x key as abscissa.
         args and kwargs can be passed as standard input to matplotlib.pyplot.
 
@@ -204,55 +218,65 @@ class PMSArray(object):
             Key of the self dict which represent the abscissa.
         Scale : str
             Options allow to switch between log and linear scale ['log', 'linear'].
+        Groupby : str
+            Key to regroupe plots in same figure, options are ['name', 'type', 'unit']
 
         """
 
-        yLog = False; xLog = False
-
-        if Scale in ['lin', 'linear']        : yLog = False; xLog = False;
-        if Scale in ['log', 'logarithmic']   : yLog = True;  xLog = True;
-        if Scale in ['xlog', 'xlogarithmic'] : yLog = False; xLog = True;
-        if Scale in ['ylog', 'ylogarithmic'] : yLog = True;  xLog = False;
-
-        figDict = {unit : plt.subplots(figsize=(8,4))
-                   for unit in set(self.conf['y']['unit'].values())}
+        xLog, yLog = self.GetScale(Scale)
 
         DimSlicer, xval = self.GetSlicer(x)
 
-        for idx in product(*DimSlicer):
+        PlotDict = {}
+        for key, val in self.conf['Y'].items():
+            if not val[Groupby] in PlotDict:
+                PlotDict[val[Groupby]] = plt.subplots(figsize=(8,4))
 
-            label  = self.GetLabels(x, idx)
+        for iddx in DimSlicer:
+            for key, val in self.conf['Y'].items():
 
-            xlabel, ylabel, unit = self.GetAxesLabel(x, idx)
+                idx = (*iddx, val['order'])
 
-            figure, ax = figDict[unit]
+                data = self.data[idx]
 
-            ax.plot(xval, self.data[idx], label  = label, *args, **kwargs)
+                label  = self.GetLabels(x, idx, val)
 
-            ax.set_xlabel(xlabel)
-            ax.set_ylabel(ylabel)
+                figure, ax = PlotDict[val[Groupby]]
+
+                ax.plot(xval, data, label=label, *args, **kwargs)
+
+                xIndex = self.conf['order'][x]
+
+                ax.set_xlabel(self.conf['X'][xIndex]['name'])
+
+                ax.set_ylabel(val['label'])
+
+
+        for key, (fig,ax) in PlotDict.items():
+            ax.grid()
             ax.legend(fontsize=6)
-
             if yLog: ax.set_yscale('log')
             if xLog: ax.set_xscale('log')
-
-        for key, (fig,ax) in figDict.items():
-            ax.grid()
 
         plt.show()
 
 
-    def GetAxesLabel(self, axis, idx):
-        VarIndex    = idx[-1]
-        yname       = self.conf['y']['list'][VarIndex]
-        unit        = self.conf['y']['unit'][yname]
-        ylabel      = self.conf['y']['label'][yname] + ' ' + unit
-        xlabel      = self.conf['label'][axis] + ' ' + self.conf['unit'][axis]
+    def GetSlicer(self, x):
+        
+        shape = list(self.data.shape)
 
-        return xlabel, ylabel, unit
+        for order, dict in self.conf['X'].items():
+            key   = dict['name']
+            if key.lower() == x.lower():
+                shape[order] = None
+                xval         = self.conf['X'][order]['dimension']
+
+        DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape[:-1]]
+
+        return product(*DimSlicer), xval
 
 
-    def GetLabels(self, axis, idx):
+    def GetLabels(self, axis, idx, ydict):
         """Method generate and return the legend text for the specific plot.
 
         Parameters
@@ -269,63 +293,44 @@ class PMSArray(object):
 
         """
 
-        Efficiency  = False
         label       = ''
-        VarIndex    = idx[-1]
-        yname       = self.conf['y']['list'][VarIndex]
 
-        if yname in EFFTYPE:
-            label       = f"{yname} | " + label
-            Efficiency  = True
+        if ydict['type'] == 'efficiency':
+            label       = f"{ydict['name']: >7} | " + label
 
-        for key in self.conf['order']:
+        for order, xdict in self.conf['X'].items():
 
-            if axis != key.lower():
+            if axis != xdict['name']:
 
-                index  = idx[self.conf['order'][key]]
+                val = xdict['dimension'][idx[order]]
 
-                val = self.conf['dimension'][key][index]
-
-                if key.lower() == 'material' :
+                if xdict['name'] == 'material' :
                     val = val.__str__()
 
-                format = self.conf['format'][key]
-
-                if Efficiency and key == 'Detector':
+                if ydict['type'] == 'efficiency' and xdict['name'] == 'detector':
                         continue
 
-                label += f"{key}= {val:{format}} | "
+                label += f"{xdict['name']}= {val:{xdict['format']}} | "
 
         return label
 
 
-    def GetSlicer(self, x):
-        shape = list(self.data.shape)
-
-        for key, order in self.conf['order'].items():
-
-            if key.lower() == x.lower():
-                shape[order] = None
-                xval         = self.conf['dimension'][key]
-
-        DimSlicer = [range(s) if s is not None else [slice(None)] for s in shape]
-
-        return DimSlicer, xval
-
-
     def __getitem__(self, key):
-        index = self.conf['y']['list'].index(key)
+        index = self.conf['Y'][key]['order']
         return self.data[..., index].squeeze()
 
 
     def __str__(self):
-        name = self.conf['y']['name']
+        name = [val['name'] for val in self.conf['Y'].values()]
+
         text =  f'PyMieArray \nVariable: {name}\n' + '='*90 + '\n'
+
         text += f"{'Parameter':13s}\n" + '-'*90 + '\n'
-        for key, val in self.conf['order'].items():
+
+        for key, order in self.conf['order'].items():
             text += f"""{key:13s}\
-                        | dimension = {val:2d}\
-                        | size = {len(self.conf['dimension'][key]):2d}\
+                        | dimension = {order:2d}\
+                        | size = {self.conf['shape'][order]:2d}\
                          \n"""
 
         text += '='*90 + '\n'
