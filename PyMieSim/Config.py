@@ -151,6 +151,12 @@ EfficienciesDict = { 'type'      : 'efficiency',
                      'format'    : '15s',
                      'unit'      : '[1]' }
 
+OtherDict = { 'type'             : 'other',
+              'name'             : 'other',
+              'label'            : ' [1]',
+              'format'           : '15s',
+              'unit'             : '[1]' }
+
 CrossSectionsDict = { 'type'     : 'crossection',
                       'name'     : 'crossections',
                       'label'    : 'Cross-section [m²]',

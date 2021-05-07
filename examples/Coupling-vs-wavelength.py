@@ -22,22 +22,21 @@ def run():
 
     detectKwargs = { 'Detector 0'   : Detector0}
 
-
     detecSet   = DetectorSet(kwargs = detectKwargs)
 
     scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 
     sourceSet  = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
 
-
     Experiment = Setup(ScattererSet = scatSet,
                        SourceSet    = sourceSet,
                        DetectorSet  = detecSet)
 
-    Coupling = Experiment.Get('Coupling')
-    #print(Experiment.config)
+    Data = Experiment.Get('Coupling')
 
-    Coupling.Plot(x='wavelength')
+    print(Data)
+
+    Data.Plot(x='wavelength')
 
 
 if __name__ == '__main__':

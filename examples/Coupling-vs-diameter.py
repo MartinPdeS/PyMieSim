@@ -31,9 +31,9 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = detecSet)
 
-    Coupling = Experiment.Get('Coupling')
+    Data = Experiment.Get('Coupling')
 
-    Coupling.Plot(x='Diameter')
+    Data.Plot(x='Diameter')
 
 
 if __name__ == '__main__':

@@ -95,13 +95,12 @@ class Photodiode(BaseDetector, MeshProperty):
         return IO( f"""
         Photodiode detector
         Coupling Mode: Intensity
-        Sampling:      {self.Mesh.Sampling}
-        Gamma offset:  {self.Mesh.GammaOffset}
-        Phi offset:    {self.Mesh.PhiOffset}
+        Numerical aperture:  {self.NA:.4f}
+        Sampling:            {self.Mesh.Sampling}
+        Gamma offset:        {self.Mesh.GammaOffset}
+        Phi offset:          {self.Mesh.PhiOffset}
         """ )
 
-    def __str__(self):
-        return "Detector"
 
 
 
@@ -291,10 +290,11 @@ class LPmode(BaseDetector, MeshProperty):
         return IO( f"""
         LP mode detector
         Coupling Mode: Amplitude
-        LP Mode:       {(self.ModeNumber[0]-1, self.ModeNumber[1], self.ModeNumber[2])}
-        Sampling:      {self.Mesh.Sampling}
-        Gamma offset:  {self.Mesh.GammaOffset}
-        Phi offset:    {self.Mesh.PhiOffset}
+        LP Mode:             {(self.ModeNumber[0]-1, self.ModeNumber[1], self.ModeNumber[2])}
+        Numerical aperture:  {self.NA:.4f}
+        Sampling:            {self.Mesh.Sampling}
+        Gamma offset:        {self.Mesh.GammaOffset}
+        Phi offset:          {self.Mesh.PhiOffset}
         """ )
 
 

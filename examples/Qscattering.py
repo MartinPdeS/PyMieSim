@@ -20,9 +20,9 @@ def run():
                        SourceSet    = sourceSet,
                        DetectorSet  = None)
 
-    Eff = Experiment.Get('Qsca')
+    Data = Experiment.Get('Qsca')
 
-    Eff.Plot(x='Diameter')
+    Data.Plot(x='Diameter')
 
 
 if __name__ == '__main__':

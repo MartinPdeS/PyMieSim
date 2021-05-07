@@ -20,9 +20,9 @@ def run():
     Experiment = Setup(ScattererSet = scatSet,
                        SourceSet    = sourceSet)
 
-    Qsca = Experiment.Get(Input=['Qsca', 'Qabs'])
+    Data = Experiment.Get(Input=['Qsca', 'Qabs'])
 
-    Qsca.Plot(x='diameter', Scale='log', Groupby='type')
+    Data.Plot(x='diameter', Scale='log', Groupby='type')
 
 
 

@@ -21,9 +21,9 @@ def run():
                        DetectorSet  = None)
 
 
-    Eff = Experiment.Get(Input='Qsca')
+    Data = Experiment.Get(Input='Qsca')
 
-    Eff.Plot(x='Wavelength')
+    Data.Plot(x='Wavelength')
 
 
 

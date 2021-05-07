@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import itertools
-import copy
 import numpy              as np
+from copy                 import deepcopy
 from beartype             import beartype
 from multiprocessing      import Process
 from scipy.optimize       import minimize
@@ -65,7 +65,6 @@ class DetectorSet(Set):
     @beartype
     def __init__(self, kwargs : dict = {}):
 
-
         self.kwargs = kwargs
 
         for nd, detector in enumerate(self.kwargs.values()):
@@ -76,7 +75,7 @@ class DetectorSet(Set):
 
         i = config['MaxOrder']
 
-        Dict              = copy.deepcopy( DetectorDict )
+        Dict              = deepcopy( DetectorDict )
         Dict['order']     = i
         Dict['dimension'] = [Det.Name for Det in self.kwargs.values()]
         Dict['size']      = len(Dict['dimension'])
@@ -105,7 +104,7 @@ class Setup(object):
                  SourceSet    : SourceSet                = None,
                  DetectorSet  : Union[DetectorSet, None] = None):
 
-        config = copy.deepcopy(BaseConfig)
+        config = deepcopy(BaseConfig)
 
         self.MetricList   = MetricList
 
@@ -137,13 +136,24 @@ class Setup(object):
         for i, prop in enumerate(Input):
 
             if prop in EFFTYPE:
-                self.config['Y'][prop] = copy.deepcopy( EfficienciesDict )
-                self.config['Y'][prop]['name'] = prop
+                self.config['Y'][prop]          = deepcopy( EfficienciesDict )
+                self.config['Y'][prop]['name']  = prop
+                self.config['Y'][prop]['order'] = i
+
+            if prop in CROSSTYPE:
+                self.config['Y'][prop]          = deepcopy( CrossSectionsDict )
+                self.config['Y'][prop]['name']  = prop
+                self.config['Y'][prop]['order'] = i
+
+            elif prop in OTHERTYPE:
+                self.config['Y'][prop]          = deepcopy( OtherDict )
+                self.config['Y'][prop]['name']  = prop
+                self.config['Y'][prop]['label'] = prop + self.config['Y'][prop]['label']
                 self.config['Y'][prop]['order'] = i
 
             elif hasattr(prop, 'isDetector'):
-                self.config['Y'][prop] = copy.deepcopy( CouplingDict )
-                self.config['Y'][prop]['name'] = prop
+                self.config['Y'][prop]          = deepcopy( CouplingDict )
+                self.config['Y'][prop]['name']  = prop
                 self.config['Y'][prop]['order'] = i
 
         self.GetShape(self.config)

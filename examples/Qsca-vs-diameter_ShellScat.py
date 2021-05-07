@@ -22,11 +22,11 @@ def run():
     Experiment = Setup(ScattererSet = scatSet,
                        SourceSet    = sourceSet)
 
-    Qsca = Experiment.Get(Input=['Qsca', 'Qback'])
+    Data = Experiment.Get(Input=['Qsca', 'Qback'])
 
-    print(Qsca)
+    print(Data)
 
-    Qsca.Plot(x='Core diameter', Scale='lin', Groupby='name')
+    Data.Plot(x='Core diameter', Scale='lin', Groupby='name')
 
 
 
