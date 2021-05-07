@@ -247,7 +247,7 @@ class PMSArray(object):
 
                 xIndex = self.conf['order'][x]
 
-                ax.set_xlabel(self.conf['X'][xIndex]['name'])
+                ax.set_xlabel(self.conf['X'][xIndex]['label'])
 
                 ax.set_ylabel(val['label'])
 
@@ -262,7 +262,7 @@ class PMSArray(object):
 
 
     def GetSlicer(self, x):
-        
+
         shape = list(self.data.shape)
 
         for order, dict in self.conf['X'].items():
@@ -321,9 +321,10 @@ class PMSArray(object):
 
 
     def __str__(self):
-        name = [val['name'] for val in self.conf['Y'].values()]
 
-        text =  f'PyMieArray \nVariable: {name}\n' + '='*90 + '\n'
+        name = [str(val['name']) for val in self.conf['Y'].values()]
+
+        text =  f'PyMieArray \nVariable: {name.__str__()}\n' + '='*90 + '\n'
 
         text += f"{'Parameter':13s}\n" + '-'*90 + '\n'
 

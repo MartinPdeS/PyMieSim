@@ -63,12 +63,13 @@ class SourceSet(Set):
 class DetectorSet(Set):
 
     @beartype
-    def __init__(self, DetectorList : exList):
+    def __init__(self, kwargs : dict = {}):
 
-        self.Detector = ToList(DetectorList)
 
-        for nd, dectector in enumerate(self.Detector):
-            dectector.Name = f"Detector {nd}"
+        self.kwargs = kwargs
+
+        for nd, detector in enumerate(self.kwargs.values()):
+            detector.Name = f"Detector {nd}"
 
 
     def UpdateConfiguration(self, config):
@@ -77,7 +78,7 @@ class DetectorSet(Set):
 
         Dict              = copy.deepcopy( DetectorDict )
         Dict['order']     = i
-        Dict['dimension'] = [Det.Name for Det in self.Detector]
+        Dict['dimension'] = [Det.Name for Det in self.kwargs.values()]
         Dict['size']      = len(Dict['dimension'])
 
         MergeDict(config,Dict)
@@ -85,12 +86,13 @@ class DetectorSet(Set):
 
         config['MaxOrder'] = i+1
 
-
         return config
 
 
     def Generator(self, MatGen=None):
-        for detector in self.Detector:
+        Generator = [detec for detec in self.kwargs.values()]
+
+        for detector in Generator:
                 yield detector
 
 
@@ -113,14 +115,12 @@ class Setup(object):
 
         self.ScattererSet = ScattererSet
 
-        if DetectorSet: config = self.DetectorSet.UpdateConfiguration(config)
-
         config = self.SourceSet.UpdateConfiguration(config)
 
         config = self.ScattererSet.UpdateConfiguration(config)
 
         config['order'] = {dict['name']: dict['order'] for dict in config['X'].values()}
-        
+
         self.config = config
 
 
@@ -132,16 +132,16 @@ class Setup(object):
             assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
 
 
-    def UpdateConfig(self, Properties, AsType):
+    def UpdateConfig(self, Input, AsType):
 
-        for i, prop in enumerate(Properties):
+        for i, prop in enumerate(Input):
 
             if prop in EFFTYPE:
                 self.config['Y'][prop] = copy.deepcopy( EfficienciesDict )
                 self.config['Y'][prop]['name'] = prop
                 self.config['Y'][prop]['order'] = i
 
-            else:
+            elif hasattr(prop, 'isDetector'):
                 self.config['Y'][prop] = copy.deepcopy( CouplingDict )
                 self.config['Y'][prop]['name'] = prop
                 self.config['Y'][prop]['order'] = i
@@ -151,7 +151,21 @@ class Setup(object):
         self.config['output'] = AsType
 
 
-    def Get(self, Properties='Qsca', AsType='pymiesim'):
+    def PrepareInput(self, Input):
+
+        Input = ToList(Input)
+
+        if 'Coupling' in Input:
+            Input.remove('Coupling')
+            Input += [detec for detec in self.DetectorSet.kwargs.values()]
+
+        if 'all efficiencies' in Input:
+            Input += EFFTYPE
+
+        return Input
+
+
+    def Get(self, Input='Qsca', AsType='pymiesim'):
         """Methode generate array of the givens parameters as a function of
         all independent variables.
 
@@ -161,13 +175,12 @@ class Setup(object):
             Dataframe containing Efficiencies vs. Wavelength, Diameter vs. Index...
 
         """
-        if Properties == 'all': Properties = EFFTYPE
+
+        Input = self.PrepareInput(Input)
 
         self.AssertionType(AsType=AsType)
 
-        Properties = ToList(Properties)
-
-        self.UpdateConfig(Properties, AsType)
+        self.UpdateConfig(Input, AsType)
 
         Array = np.empty(self.config['size'])
 
@@ -176,17 +189,16 @@ class Setup(object):
         i = 0
         for source in self.SourceSet.Generator():
             for scatterer in self.ScattererSet.Generator(source):
-                for eff in Properties:
-                    if eff == 'Coupling':
-                        for detector in self.DetectorSet.Generator():
-                            Array[i] = detector.Coupling(Scatterer = scatterer)
-                            i       += 1;
+                for prop in Input:
+                    if hasattr(prop, 'isDetector'):
+                        Array[i] = prop.Coupling(Scatterer = scatterer)
+                        i       += 1;
 
                     else:
-                        Array[i] = getattr(scatterer, eff)
+                        Array[i] = getattr(scatterer, prop)
                         i       += 1
 
-        return self.ReturnType(Array     = Array.reshape( self.config['shape'] ),
+        return self.ReturnType(Array     = Array.reshape( self.config['shape']),
                                AsType    = AsType,
                                conf      = self.config)
 

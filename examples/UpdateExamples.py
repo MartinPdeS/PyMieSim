@@ -20,6 +20,7 @@ def SaveCloseMatplotlib():
     """Close matplotlib scene."""
     figures=[manager.canvas.figure
          for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()]
+
     if len(figures) >= 1:
         figures[0].savefig(f'../docs/images/{name}.png')
         plt.close('all')
@@ -44,15 +45,15 @@ def runScript(script):
     name = script
     module = importlib.import_module(script)
 
-    if module.matplotlib:
-        print(f'{name} : Matplotlib example plotting and saving...')
-        GUI.invoke_after(2000, SaveClose)
-        module.run()
+    #if module.matplotlib:
+    print(f'{name} : Matplotlib example plotting and saving...')
+    GUI.invoke_after(200, SaveClose)
+    module.run()
 
-    if module.mlab:
-        print(f'{name} : Mlab example plotting and saving...')
-        GUI.invoke_after(2000, SaveClose)
-        module.run()
+    #if module.mlab:
+    print(f'{name} : Mlab example plotting and saving...')
+    GUI.invoke_after(200, SaveClose)
+    module.run()
 
 
 runScript('LPMode')

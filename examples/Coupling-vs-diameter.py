@@ -19,7 +19,9 @@ def run():
                            PhiOffset         = 0,
                            CouplingMode      = 'Centered')
 
-    detecSet   = DetectorSet([Detector0])
+    detectKwargs = { 'Detector 0'   : Detector0}
+
+    detecSet   = DetectorSet(kwargs = detectKwargs)
 
     scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 

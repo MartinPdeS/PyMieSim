@@ -46,10 +46,9 @@ class Photodiode(BaseDetector, MeshProperty):
                  CouplingMode : str                      = 'Centered',
                  GammaOffset  : Union[int, float]        = 0,
                  PhiOffset    : Union[int, float]        = 0,
-                 Filter       : Union[int, float, bool]  = None,
-                 Testing      : bool                     = False,):
+                 Filter       : Union[int, float, bool]  = None):
 
-        self.Testing = Testing
+        self.isDetector = True
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -101,6 +100,9 @@ class Photodiode(BaseDetector, MeshProperty):
         Phi offset:    {self.Mesh.PhiOffset}
         """ )
 
+    def __str__(self):
+        return "Detector"
+
 
 
 
@@ -130,10 +132,9 @@ class IntegratingSphere(Photodiode):
     def __init__(self,
                  Sampling     : int                      = 400,
                  CouplingMode : str                      = 'Centered',
-                 Filter       : Union[int, float, bool]  = None,
-                 Testing      : bool                     = False,):
+                 Filter       : Union[int, float, bool]  = None):
 
-        self.Testing = Testing
+        self.isDetector = True
 
         self.CouplingMode = ('Intensity', CouplingMode)
 
@@ -199,10 +200,9 @@ class LPmode(BaseDetector, MeshProperty):
                  GammaOffset  : Union[int, float]        = 0,
                  PhiOffset    : Union[int, float]        = 0,
                  Filter       : Union[int, float, bool]  =  None,
-                 CouplingMode : str                      = 'Centered',
-                 Testing      : bool                     = False):
+                 CouplingMode : str                      = 'Centered'):
 
-        self.Testing = Testing
+        self.isDetector = True
 
         assert CouplingMode in ['Centered','Mean'], IO( "Coupling mode can either be Centered or Mean" )
 
@@ -317,6 +317,9 @@ class _Photodiode(BaseDetector, MeshProperty):
                  GammaOffset  : Union[int, float]        = 0,
                  PhiOffset    : Union[int, float]        = 0,
                  Filter       : Union[int, float, bool]  = None):
+
+
+        self.isDetector = True
 
         self.CouplingMode = ('Intensity', CouplingMode)
 

@@ -6,12 +6,6 @@ def run():
     from PyMieSim.Detector   import Photodiode
     from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
-    Detector0 = Photodiode(NA                = 0.1,
-                           Sampling          = 300,
-                           GammaOffset       = 20,
-                           PhiOffset         = 30,
-                           CouplingMode      = 'Centered')
-
     scatKwargs   = { 'CoreDiameter'     : np.geomspace(10e-09, 600e-9, 500),
                      'ShellWidth'       : [200e-9, 400e-9],
                      'CoreIndex'        : [1],
@@ -25,13 +19,10 @@ def run():
 
     sourceSet = SourceSet(Source = PlaneWave, kwargs = sourceKwargs )
 
-    DetecSet  = DetectorSet([Detector0])
-
     Experiment = Setup(ScattererSet = scatSet,
-                       SourceSet    = sourceSet,
-                       DetectorSet  = DetecSet)
+                       SourceSet    = sourceSet)
 
-    Qsca = Experiment.Get(Properties=['Qsca', 'Qback'])
+    Qsca = Experiment.Get(Input=['Qsca', 'Qback'])
 
     print(Qsca)
 

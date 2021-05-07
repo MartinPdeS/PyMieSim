@@ -227,7 +227,8 @@ class ExperiementTestCase(unittest.TestCase):
 
     def test02(self):
         global ExpSet
-        DetecSet = DetectorSet([Photodiode])
+
+        DetecSet =  DetectorSet(kwargs = { 'Detector 0'   : Photodiode})
         ExpSet = Setup(ScattererSet = sScatSet,
                        SourceSet    = sourceSet,
                        DetectorSet  = DetecSet)
