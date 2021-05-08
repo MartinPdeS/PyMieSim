@@ -51,19 +51,22 @@
 <h2>Lorenz-Mie Theory (LMT)<a class="headerlink" href="#lorenz-mie-theory-lmt" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The Lorenz-Mie Theory or LMT for short is a framework that can be used to find
+<p>The Lorenz-Mie Theory or (LMT for short) is a framework that can be used to find
 exact solution of the scattered field considering a plane wave incident to a
 scatterer with a certain geometry.
 The solution is usally written in the form of an infinit summation which, of
 course, has to be truncated. PyMieSim is a library which does solve the
 equations in order to retrieve plenty of important informations.
-Here are, few of the most important relation governing the PyMieSim library.
 It is to be noted that in all the library, the angles <span class="math notranslate nohighlight">\(\theta\)</span> and
-<span class="math notranslate nohighlight">\(\phi\)</span> are defined as in a spherical coordinate system.</p>
-<blockquote>
-<div><div class="math notranslate nohighlight">
+<span class="math notranslate nohighlight">\(\phi\)</span> are defined as in a spherical coordinate system as shown in the
+following figure.</p>
+<a class="reference internal image-reference" href="_images/opticalSetup.png"><img alt="_images/opticalSetup.png" src="_images/opticalSetup.png" style="width: 600px;" /></a>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here are, few of the most important relation governing the PyMieSim library.</p>
+<div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}&amp;S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)\\&amp;.\\&amp;S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)\\.&amp;\\&amp;\text{Fields} = E_{\theta}(\phi,\theta) \vec{\theta} +   E_{\phi}(\phi,\theta) \vec{\phi}\\.&amp;\\&amp;\text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2 }\end{aligned}\end{align} \]</div>
-</div></blockquote>
 <p><strong>Stokes parameters:</strong></p>
 <blockquote>
 <div><div class="math notranslate nohighlight">
@@ -93,14 +96,14 @@ It is to be noted that in all the library, the angles <span class="math notransl
 <hr class="docutils" />
 <div class="section" id="an-and-bn-coefficients">
 <h2>An and Bn coefficients:<a class="headerlink" href="#an-and-bn-coefficients" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
 <p>From the An and Bn coefficient we can retrieve many useful properties of
 the scatterer and scattered far-fields. Those are complementary to the
 Cn and Dn coefficient (for near-field properties) which we do no compute
 with PyMieSim at the moment.
 Depending on the scatterer geometry all those coefficient may vary, here we
 have three example which are available with the PyMieSim library.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p><strong>Sphere</strong></p>
 <div class="math notranslate nohighlight">
 \[a_n = \frac{
@@ -111,6 +114,7 @@ have three example which are available with the PyMieSim library.</p>
  \mu M \Psi_n(x) \Psi_n^\prime(M x) - \mu_{sp} \Psi_n^\prime(x) \Psi_n(M x)}
 {\mu M \xi_n(x) \Psi_n^\prime(M x) - \mu_{sp} \xi_n^\prime (x) \Psi_n(M x)}\]</div>
 <div class="line-block">
+<div class="line-block">
 <div class="line">With:</div>
 <div class="line-block">
 <div class="line"><span class="math notranslate nohighlight">\(\psi_n = x \psi^{(1)}_n (x) = \sqrt{x \pi/2} J_{n+1/2} (x)\)</span>.</div>
@@ -118,8 +122,17 @@ have three example which are available with the PyMieSim library.</p>
 <div class="line"><span class="math notranslate nohighlight">\(x = \pi d / \lambda\)</span>.</div>
 <div class="line"><span class="math notranslate nohighlight">\(\lambda\)</span> is the wavelength in the surrounding medium.</div>
 <div class="line"><a class="reference internal" href="References.html#references"><span class="std std-ref">References</span></a> [1] Eq(III.88-91).</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
 </div>
 </div>
+<div class="line"><strong>important</strong>: It is to be noted that PyMieSim assume <span class="math notranslate nohighlight">\(\mu_{sp} = \mu\)</span> at the moment.
+It might change in a future update.</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p><strong>Cylinder</strong></p>
 <div class="math notranslate nohighlight">
 \[a_n = \frac{ M J_n(M x) J_n^\prime (m x) - m J_n^\prime (M x) J_n(m x) }
@@ -133,14 +146,48 @@ have three example which are available with the PyMieSim library.</p>
 <div class="line"><span class="math notranslate nohighlight">\(M\)</span> is the refractive index of the scatterer.</div>
 <div class="line"><span class="math notranslate nohighlight">\(m\)</span> is the refractive index of the medium.</div>
 <div class="line"><span class="math notranslate nohighlight">\(H_n\)</span> is the Hankel function of first king of order n.</div>
-<div class="line"><a class="reference internal" href="References.html#references"><span class="std std-ref">References</span></a> [5].</div>
+<div class="line"><a class="reference internal" href="References.html#references"><span class="std std-ref">References</span></a> [5] Eq(8.30-32).</div>
 </div>
 </div>
+</div>
+<hr class="docutils" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p><strong>Core/Shell sphere</strong></p>
 <div class="math notranslate nohighlight">
-\[a_n = \text{implemented but yet to be written}\]</div>
+\[a_n = \frac{
+\psi_n \left[ \psi_n' (m_2 y) - A_n \chi_n' (m_s) \right] -
+m_2 \psi_n'(y) \left[ \psi_n (m_2 y) - A_n \chi_n (m_2 y) \right]}
+{\xi_n (y) \left[ \psi_n' (m_2 y) -A_n \chi_n' (m_2 y) \right] -
+m_2 \xi_n' (y) \left[ \psi_n(m_2 y) - A_n \chi_n (m_2 y) \right]}\]</div>
 <div class="math notranslate nohighlight">
-\[b_n = \text{implemented but yet to be written}\]</div>
+\[ \begin{align}\begin{aligned}b_n = \frac{
+  m_2 \psi_n(y) \left[ \psi_n' (m_2 y) - B_n \chi_n' (m_2 y) \right] -
+  \psi_n' (y) \left[ \psi_n (m_2 y) - B_n \chi_n (m_2 y) \right]}
+  {m_2 \xi_n(y) \left[ \psi_n' (m_2 y) - B_n \xi_n' (m_2 y) \right] -
+  \xi_n' \left[ \psi_n (m_2 y) -A_n \chi_n (m_2 y)  \right]\\  }\end{aligned}\end{align} \]</div>
+<div class="line-block">
+<div class="line">With:</div>
+</div>
+<div class="math notranslate nohighlight">
+\[A_n = \frac{ m_2 \psi_n (m_2 x) \psi_n' (m_1 x) - m1 \psi_n'(m_2 x) \psi_n(m_1x)}
+  {m_2 \xi_n (m_2x) \psi_n' (m_1 x) - m_1 \xi_n' (m_2 x) \psi_n (m_1 x)}\]</div>
+<div class="math notranslate nohighlight">
+\[B_n = \frac{m_2 \psi_n (m_1 x) \psi_n' (m_2 x) - m_1 \psi_n (m_2 x) \psi_n' (m_1 x)}
+  {m_2 \chi_n' (m_2 x) \psi_n (m_1 x) - m_1 \psi_n' (m_1 x) \chi_n (m_2 x)}\]</div>
+<div class="line-block">
+<div class="line">and:</div>
+</div>
+<div class="math notranslate nohighlight">
+\[x = \frac{2 \pi R_{core}}{\lambda}, \:
+y = \frac{2 \pi R_{shell}}{\lambda}, \:
+m_1 = \frac{n_{core}}{n_{medium}}, \:
+m_2 = \frac{n_{shell}}{n_{medium}}.\]</div>
+<div class="math notranslate nohighlight">
+\[\chi_n (x) = -x\sqrt{\frac{\pi}{2x}} N_{n+1/2} (x) \leftarrow \text{Neumann}\]</div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="References.html#references"><span class="std std-ref">References</span></a> [8] Eq(4-5).</div>
+</div>
 </div>
 </div>
 <div class="section" id="generalized-lorenz-mie-theory-glmt">

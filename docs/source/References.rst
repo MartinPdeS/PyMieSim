@@ -16,3 +16,5 @@ Here is a list of useful references:
 6. ref[6]: `Wikipedia <https://en.wikipedia.org/wiki/Cross_section_(physics)#Cross_section_and_Mie_theory>`_
 
 7. ref[7]: `Bohren & Huffman <https://www.wiley.com/en-ca/Absorption+and+Scattering+of+Light+by+Small+Particles-p-9780471293408>`_
+
+8. ref[8]: `Chen & Wang <https://aip.scitation.org/doi/full/10.1063/1.4930957>`_
