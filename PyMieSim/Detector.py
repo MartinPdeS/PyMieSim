@@ -39,7 +39,7 @@ class Photodiode(BaseDetector, MeshProperty):
 
     """
 
-    @beartype
+    #@beartype
     def __init__(self,
                  NA           : Union[int, float],
                  Sampling     : int                      = 400,
@@ -127,7 +127,7 @@ class IntegratingSphere(Photodiode):
         Methode for computing mode coupling. Either Centered or Mean.
 
     """
-    @beartype
+    #@beartype
     def __init__(self,
                  Sampling     : int                      = 400,
                  CouplingMode : str                      = 'Centered',
@@ -190,7 +190,7 @@ class LPmode(BaseDetector, MeshProperty):
 
     """
 
-    @beartype
+    #@beartype
     def __init__(self,
                  Mode         : Union[tuple, list],
                  NA           : float,
@@ -309,7 +309,7 @@ class _Photodiode(BaseDetector, MeshProperty):
 
     """
 
-    @beartype
+    #@beartype
     def __init__(self,
                  NA           : Union[int, float],
                  Sampling     : int                      = 400,

@@ -14,3 +14,5 @@ Here is a list of useful references:
 5. ref[5]: `Wenbo Sun <https://doi.org/10.1364/AO.44.002338>`_
 
 6. ref[6]: `Wikipedia <https://en.wikipedia.org/wiki/Cross_section_(physics)#Cross_section_and_Mie_theory>`_
+
+7. ref[7]: `Bohren & Huffman <https://www.wiley.com/en-ca/Absorption+and+Scattering+of+Light+by+Small+Particles-p-9780471293408>`_

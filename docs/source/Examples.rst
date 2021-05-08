@@ -3,7 +3,8 @@ Examples
 ========
 
 
-
+Creating Scatterers
+-------------------
 
 .. literalinclude:: ../../examples/Index.py
     :language: python
@@ -35,6 +36,10 @@ Examples
 
 ----------------
 
+
+Computing fields
+----------------
+
 .. literalinclude:: ../../examples/S1S2.py
     :language: python
     :linenos:
@@ -48,6 +53,7 @@ Examples
 
 
 -----------------
+
 
 .. literalinclude:: ../../examples/Stokes.py
     :language: python
@@ -89,6 +95,11 @@ Examples
 
 --------------------
 
+
+Creating Detectors
+------------------
+
+
 .. literalinclude:: ../../examples/Photodiode.py
     :language: python
     :caption: **Detector: Photodiode**
@@ -115,6 +126,11 @@ Examples
 
 ------------------------------
 
+
+Computing coupling
+------------------
+
+
 .. literalinclude:: ../../examples/Scatterer-Photodiode.py
     :language: python
     :caption: **Coupling: Scatterer-Photodiode**
@@ -126,6 +142,10 @@ Output: (6.57e+01 nWatt)
 
 
 --------------------------
+
+Experiment: properties
+----------------------
+
 
 .. literalinclude:: ../../examples/Qscattering.py
     :language: python
@@ -164,6 +184,10 @@ Output: (6.57e+01 nWatt)
 
 ---------------------------------
 
+
+Experiment: coupling
+--------------------
+
 .. literalinclude:: ../../examples/Coupling-vs-diameter.py
     :language: python
     :caption: **Experiment: Coupling-vs-diameter**
@@ -187,6 +211,10 @@ Output: (6.57e+01 nWatt)
 
 
 ------------------------------
+
+
+Experiment: optimization
+------------------------
 
 .. literalinclude:: ../../examples/Opt-1-parameter.py
     :language: python

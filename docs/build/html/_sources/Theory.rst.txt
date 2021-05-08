@@ -27,7 +27,29 @@ Lorenz-Mie Theory (LMT)
 
      &\text{Fields} = E_{\theta}(\phi,\theta) \vec{\theta} +   E_{\phi}(\phi,\theta) \vec{\phi}
 
+     .&
 
+     &\text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2 }
+
+  **Stokes parameters:**
+
+   .. math::
+
+     &I = \big| E_x \big|^2 + \big| E_y \big|^2
+
+     .&
+
+     &Q = \big| E_x \big|^2 - \big| E_y \big|^2
+
+     .&
+
+     &U = 2 \mathcal{Re} \big\{ E_x E_y^* \big\}
+
+     .&
+
+     &V = 2 \mathcal{Im} \big\{ E_x E_y^* \big\}
+
+     .&
 
 
 
@@ -65,6 +87,7 @@ Scattering properties
 
 -----
 
+
 An and Bn coefficients:
 -----------------------
 
@@ -83,18 +106,23 @@ An and Bn coefficients:
   .. math::
 
       a_n = \frac{
-      \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-      {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)- \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
+      \mu_{sp} \Psi_n(x) \Psi_n^\prime(M x) - \mu M \Psi_n^\prime(x) \Psi_n(M x)}
+      {\mu_{sp} \xi_n(x) \Psi_n^\prime(M x)- \mu M \xi_n^\prime (x) \Psi_n(M x)}
 
   .. math::
 
       b_n = \frac{
-       \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-      {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}
+       \mu M \Psi_n(x) \Psi_n^\prime(M x) - \mu_{sp} \Psi_n^\prime(x) \Psi_n(M x)}
+      {\mu M \xi_n(x) \Psi_n^\prime(M x) - \mu_{sp} \xi_n^\prime (x) \Psi_n(M x)}
 
 
   |   With:
-  |     :math:`M = \frac{k_{sp}}{k}`
+  |     :math:`\psi_n = x \psi^{(1)}_n (x) = \sqrt{x \pi/2} J_{n+1/2} (x)`.
+  |     :math:`M = k_{sp}/k` is the relative complex refractive index.
+  |     :math:`x = \pi d / \lambda`.
+  |     :math:`\lambda` is the wavelength in the surrounding medium.
+  |     :ref:`References` [1] Eq(III.88-91).
+
 
 
 
@@ -102,8 +130,8 @@ An and Bn coefficients:
 
   .. math::
 
-      a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-      { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+      a_n = \frac{ M J_n(M x) J_n^\prime (m x) - m J_n^\prime (M x) J_n(m x) }
+      { m_t J_n(M x) H_n^\prime (m x) - m J_n^\prime (M x) H_n(m x) }
 
   .. math::
 
@@ -112,8 +140,10 @@ An and Bn coefficients:
 
 
   |   With:
-  |     :math:`m` being the refractive index of the medium and
-  |     :math:`m_t` being the refractive index of the index.
+  |     :math:`M` is the refractive index of the scatterer.
+  |     :math:`m` is the refractive index of the medium.
+  |     :math:`H_n` is the Hankel function of first king of order n.
+  |     :ref:`References` [5].
 
   ----
 

@@ -53,7 +53,7 @@ class Sphere(BaseScatterer, ScattererProperties):
                     'nMedium']
 
 
-    @beartype
+    #@beartype
     def __init__(self,
                  Diameter : float,
                  Source   : SourceType,
@@ -214,7 +214,7 @@ class ShellSphere(BaseScatterer, ScattererProperties):
                     'ShellIndex',
                     'nMedium',
                     'Material']
-    @beartype
+    #@beartype
     def __init__(self,
                  CoreDiameter  : float,
                  ShellWidth    : float,

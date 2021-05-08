@@ -16,6 +16,7 @@ import os
 import sys
 autodoc_mock_imports = ['numpy',
                         'pandas',
+                        'typing',
                         'matplotlib',
                         'mayavi',
                         'scipy',
@@ -27,6 +28,7 @@ autodoc_mock_imports = ['numpy',
                         'PyMieSim._utils',
                         'beartype',
                         'PyMieSim.Fibonacci',
+                        'sphinxcontrib.bibtex',
                         'sphinx.ext.autodoc']
 
 
@@ -34,36 +36,20 @@ PATH = os.path.join(os.path.dirname(__file__), '../..' )
 
 sys.path.insert(0, PATH)
 
-from os import listdir
 
-
-
-#sys.path.insert(0, os.path.abspath('../images/'))
-# -- Project information -----------------------------------------------------
-
-project = 'PyMieSim'
+project   = 'PyMieSim'
 copyright = '2021, Martin Poinsinet de Sivry-Houle'
-author = 'Martin Poinsinet de Sivry-Houle'
-
-# The short X.Y version
-version = ''
-# The full version, including alpha/beta/rc tags
-release = '0.1.11'
+author    = 'Martin Poinsinet de Sivry-Houle'
 
 
-# -- General configuration ---------------------------------------------------
+version    = ''
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
-
-# Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
-# ones.
+release    = '0.1.11'
 
 extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.autodoc',
+    #'sphinxcontrib.bibtex',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.coverage',
@@ -73,6 +59,10 @@ extensions = [
 
 numpydoc_show_class_members = False
 # Add any paths that contain templates here, relative to this directory.
+
+#bibtex_bibfiles = ['refs.bib']
+#bibtex_encoding = 'latin'
+#bibtex_default_style = 'unsrt'
 
 templates_path = ['_templates']
 
@@ -136,14 +126,13 @@ html_theme = 'sphinxdoc'
 # so a file named "default.css" will overwrite the builtin "default.css".
 
 html_static_path = ['_static']
+
+#html_css_files = ['default.css']
+
+
 html_logo = 'Logo.png'
 
-"""
-html_theme_options = {
-    'logo_only': True,
-    'display_version': True,
-}
-"""
+
 # Custom sidebar templates, must be a dictionary that maps document names
 # to template names.
 #
@@ -162,9 +151,7 @@ htmlhelp_basename = 'PyMieSimdoc'
 
 
 
-html_css_files = [
-    'default.css',
-]
+html_css_files = [ 'default.css' ]
 
 # -- Options for LaTeX output ------------------------------------------------
 
