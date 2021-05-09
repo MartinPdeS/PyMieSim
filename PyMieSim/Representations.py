@@ -414,12 +414,12 @@ class ScatProperties(dict):
 
         data = Parent.Bind.Efficiencies
 
-        self['efficiencies'] = { 'Qsca'  : data[0],
-                                 'Qext'  : data[1],
-                                 'Qabs'  : data[2],
-                                 'Qback' : data[3],
-                                 'Qratio': data[4],
-                                 'Qpr'   : data[6]}
+        self['efficiencies'] = { 'Qsca'    : data[0],
+                                 'Qext'    : data[1],
+                                 'Qabs'    : data[2],
+                                 'Qback'   : data[3],
+                                 'Qratio'  : data[4],
+                                 'Qpr'     : data[6]}
 
         self['cross-sections'] = { 'Csca'  : Area( data[0] * Parent.Area),
                                    'Cext'  : Area( data[1] * Parent.Area),
@@ -428,9 +428,13 @@ class ScatProperties(dict):
                                    'Cratio': Area( data[4] * Parent.Area),
                                    'Cpr'   : Area( data[6] * Parent.Area) }
 
-        self['others'] = {'area'  : Parent.Area,
-                          'index' : Parent.Index,
-                          'g'     : data[6] }
+        self['others'] = {'area'           : Parent.Area,
+                          'index'          : Parent.Index,
+                          'concentration'  : Parent.Concentration,
+                          u'\u03bc sca'    : Parent.MuSca,
+                          u'\u03bc ext'    : Parent.MuExt,
+                          u'\u03bc abs'    : Parent.MuAbs,
+                          'g'              : data[6] }
 
     def Plot(self):
         print('There is not plotting method for the properties representation. Try print')
@@ -443,16 +447,27 @@ class ScatProperties(dict):
         Method:          <Plot>
         Shape:           {[7,1]}
         """
-        text += "=" * 40 + '\n' + "-" * 50 + '\n'
+        text += "=" * 40 + '\n' + "-" * 70 + '\n'
 
-        for key, val in self['efficiencies'].items():
-            text+= f"Efficiencies   | {key:10s}  | {val} \n" + "-" * 50 + '\n'
+        for n, (key, val) in enumerate( self['efficiencies'].items() ):
+            if n == 0:
+                text+= f"Efficiencies   | {key:15s}  | {val} \n" + "-" * 70 + '\n'
+            else:
+                text+= f"               | {key:15s}  | {val} \n" + "-" * 70 + '\n'
 
-        for key, val in self['cross-sections'].items():
-            text+= f"cross-sections | {key:10s}  | {val} \n" + "-" * 50 + '\n'
 
-        for key, val in self['others'].items():
-            text+= f"others         | {key:10s}  | {val} \n" + "-" * 50 + '\n'
+        for n, (key, val) in enumerate( self['cross-sections'].items() ):
+            if n == 0:
+                text+= f"cross-sections | {key:15s}  | {val} \n" + "-" * 70 + '\n'
+            else:
+                text+= f"               | {key:15s}  | {val} \n" + "-" * 70 + '\n'
+
+
+        for n, (key, val) in enumerate( self['others'].items() ):
+            if n == 0:
+                text+= f"others         | {key:15s}  | {val} \n" + "-" * 70 + '\n'
+            else:
+                text+= f"               | {key:15s}  | {val} \n" + "-" * 70 + '\n'
 
         return text
 

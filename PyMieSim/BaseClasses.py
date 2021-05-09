@@ -8,7 +8,7 @@ from PyMieSim.Directories     import NPZPath
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics         import _Polarization, Angle
 from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
-from PyMieSim.units           import Power, Area
+from PyMieSim.units           import Power, Area, m_1
 from PyMieSim.Mesh            import FibonacciMesh
 from PyMieSim._Coupling       import Coupling
 from PyMieSim.Config          import *
@@ -187,6 +187,28 @@ class BaseDetector(object):
 
 class ScattererProperties(object):
 
+    def __init__(self):
+        self._Qsca       = None
+        self._Qext       = None
+        self._Qabs       = None
+        self._Qback      = None
+        self._Qratio     = None
+        self._Qpr        = None
+        self._Csca       = None
+        self._Cext       = None
+        self._Cabs       = None
+        self._Cback      = None
+        self._Cratio     = None
+        self._Cpr        = None
+        self._g          = None
+        self._an         = []
+        self._bn         = []
+        self._cn         = []
+        self._dn         = []
+        self._Properties = None
+        self._MuSca      = None
+        self._MuExt      = None
+        self._MuAbs      = None
 
     @property
     def Qext(self):
@@ -332,51 +354,43 @@ class ScattererProperties(object):
 
     @property
     def Csca(self):
-        if self._Csca:
-            return Area( self._Qsca * self.Area )
-        else:
-            self.GetProperties()
-            return Area( self._Qsca * self.Area )
+        return Area( self.Qsca * self.Area )
 
     @property
     def Cext(self):
-        if self._Csca:
-            return Area( self._Qext * self.Area )
-        else:
-            self.GetProperties()
-            return Area( self._Qext * self.Area )
+        return Area( self.Qext * self.Area )
 
     @property
     def Cabs(self):
-        if self._Csca:
-            return Area( self._Qabs * self.Area )
-        else:
-            self.GetProperties()
-            return Area( self._Qabs * self.Area )
+        return Area( self.Qabs * self.Area )
 
     @property
     def Cpr(self):
-        if self._Csca:
-            return Area( self._Qpr * self.Area )
-        else:
-            self.GetProperties()
-            return Area( self._Qpr * self.Area )
+        return Area( self.Qpr * self.Area )
 
     @property
     def Cback(self):
-        if self._Csca:
-            return Area( self._Qback * self.Area )
-        else:
-            self.GetProperties()
-            return Area( self._Qback * self.Area )
+        return Area( self.Qback * self.Area )
 
     @property
     def Cratio(self):
-        if self._Csca:
-            return Area( self._Qratio * self.Area )
-        else:
-            self.GetProperties()
-            return Area( self._Qratio * self.Area )
+        return Area( self._Qratio * self.Area )
+
+    @property
+    def MuSca(self):
+        return m_1( self.Csca * self.Concentration )
+
+    @property
+    def MuExt(self):
+        return m_1( self.Cext * self.Concentration )
+
+    @property
+    def MuAbs(self):
+        return m_1( self.Cabs * self.Concentration )
+
+
+
+
 
 
 
@@ -402,25 +416,7 @@ class BaseScatterer(object):
 
     """
 
-    def __init__(self):
-        self._Qsca   = None
-        self._Qext   = None
-        self._Qabs   = None
-        self._Qback  = None
-        self._Qratio = None
-        self._Qpr    = None
-        self._Csca   = None
-        self._Cext   = None
-        self._Cabs   = None
-        self._Cback  = None
-        self._Cratio = None
-        self._Cpr    = None
-        self._g      = None
-        self._an     = []
-        self._bn     = []
-        self._cn     = []
-        self._dn     = []
-        self._Properties = None
+
 
 
     def GetProperties(self):

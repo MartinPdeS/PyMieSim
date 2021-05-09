@@ -23,7 +23,7 @@ Lorenz-Mie Theory (LMT)
 .. note::
 
   Here are, few of the most important relation governing the PyMieSim library.
-  
+
   .. math::
      &S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)
 
@@ -57,9 +57,6 @@ Lorenz-Mie Theory (LMT)
 
      &V = 2 \mathcal{Im} \big\{ E_x E_y^* \big\}
 
-     .&
-
-
 
 Scattering properties
 ---------------------
@@ -71,7 +68,7 @@ Scattering properties
   - absorption efficiency
   - back-scattering efficiency
   - ratio of front and back scattering
-  - Optical pressure efficiency
+  - optical pressure efficiency
   - anisotropy factor g
 
   Those parameter can be computed using PyMieSim according to those equations.
@@ -92,6 +89,19 @@ Scattering properties
     &g = \frac{4}{Q_{sca} x^2}
             \Big[ \sum\limits_{n=1}^{n_{max}} \frac{n(n+2)}{n+1} \text{Re} \left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\right\} +
             \sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)} \text{Re}\left\{ a_n b_n^* \right\} \Big]
+
+    &A_s = \pi r^2
+
+    &\sigma_{i} = Q_{i} A
+
+    &\mu_{sca} = \sigma_{sca} C
+
+    &\mu_{ext} = \sigma_{ext} C
+
+    &\mu_{abs} = \sigma_{abs} C
+
+  | With:
+  |   C: the scatterer concentration in the sample.
 
 -----
 

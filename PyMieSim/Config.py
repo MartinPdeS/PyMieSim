@@ -145,7 +145,7 @@ DetectorDict = {
                  'order'         : None,
                   }
 
-EfficienciesDict = { 'type'      : 'efficiency',
+EfficienciesDict = { 'type'      : 'Efficiency',
                      'name'      : 'efficiencies',
                      'label'     : 'Efficiencies [1]',
                      'format'    : '15s',
@@ -162,6 +162,13 @@ CrossSectionsDict = { 'type'     : 'crossection',
                       'label'    : 'Cross-section [m²]',
                       'format'   : '15s',
                       'unit'     : '[m²]' }
+
+MuDict = { 'type'                : u"\u03bc coefficient",
+           'name'                : 'mu',
+           'label'               : u"\u03bc [m⁻¹]",
+           'legend'              : None,
+           'format'              : '15s',
+           'unit'                : '[m⁻¹]' }
 
 CouplingDict = { 'name'          : 'coupling',
                  'label'         : 'Coupling [Watt]',
@@ -198,5 +205,7 @@ EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'Qpr']
 CROSSTYPE  = ['Csca', 'Cext', 'Cabs', 'Cback', 'Cratio', 'Cpr']
 
 OTHERTYPE  = ['g']
+
+MUTYPE     = ['MuSca', 'MuExt', 'MuAbs']
 
 exList  = Union[int, float, list, np.ndarray, tuple]

@@ -90,6 +90,10 @@ class Photodiode(BaseDetector, MeshProperty):
         else:          return np.ones(Num)
 
 
+    def __str__(self):
+        return self.Name
+
+
     def __repr__(self):
 
         return IO( f"""
@@ -160,6 +164,8 @@ class IntegratingSphere(Photodiode):
         Sampling:      {self.Mesh.Sampling}
         """ )
 
+    def __str__(self):
+        return self.Name
 
 
 
@@ -283,6 +289,8 @@ class LPmode(BaseDetector, MeshProperty):
         return Normalize(Interp)
 
 
+    def __str__(self):
+        return self.Name
 
 
 
@@ -370,5 +378,7 @@ class _Photodiode(BaseDetector, MeshProperty):
         """ )
 
 
+    def __str__(self):
+        return self.Name
 
 # -

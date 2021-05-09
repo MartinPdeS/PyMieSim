@@ -2,18 +2,18 @@ import numpy as np
 
 
 
-unitList = {-6: "atto-",
-            -5: "femto-",
-            -4: "pico-",
-            -3: "nano-",
+unitList = {-6: "a",
+            -5: "f",
+            -4: "p",
+            -3: "n",
             -2: u"\u03bc",
-            -1: "milli-",
+            -1: "m",
             +0: " ",
-            +1: "kilo-",
-            +2: "mega-",
-            +3: "giga-",
-            +4: "tera-",
-            +5: "peta-"}
+            +1: "K",
+            +2: "M",
+            +3: "G",
+            +4: "T",
+            +5: "P"}
 
 
 
@@ -35,7 +35,7 @@ class UnitRep:
 
             x = self * 10**(-3*exp*self.PowerFactor)
 
-            return f"{x:.2e} {unit}{self.unit}"
+            return f"{float(self)} {self.unit}  ({x:.2e} {unit}{self.unit})"
 
 
 class Area(float, UnitRep):
@@ -64,7 +64,30 @@ class Power(float, UnitRep):
         self.unit = 'Watt'
 
 
+class m_3(float, UnitRep):
+    """
+    Class representing unit of Power [Watt]
+    """
+    def __new__(self, value):
+        return float.__new__(self, value)
 
+    def __init__(self, x):
+        float.__init__(x)
+        self.PowerFactor = -3
+        self.unit = 'm⁻³'
+
+
+class m_1(float, UnitRep):
+    """
+    Class representing unit of Power [Watt]
+    """
+    def __new__(self, value):
+        return float.__new__(self, value)
+
+    def __init__(self, x):
+        float.__init__(x)
+        self.PowerFactor = -1
+        self.unit = 'm⁻¹'
 
 
 

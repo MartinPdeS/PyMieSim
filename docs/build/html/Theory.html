@@ -70,7 +70,7 @@ following figure.</p>
 <p><strong>Stokes parameters:</strong></p>
 <blockquote>
 <div><div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}&amp;I = \big| E_x \big|^2 + \big| E_y \big|^2\\.&amp;\\&amp;Q = \big| E_x \big|^2 - \big| E_y \big|^2\\.&amp;\\&amp;U = 2 \mathcal{Re} \big\{ E_x E_y^* \big\}\\.&amp;\\&amp;V = 2 \mathcal{Im} \big\{ E_x E_y^* \big\}\\.&amp;\end{aligned}\end{align} \]</div>
+\[ \begin{align}\begin{aligned}&amp;I = \big| E_x \big|^2 + \big| E_y \big|^2\\.&amp;\\&amp;Q = \big| E_x \big|^2 - \big| E_y \big|^2\\.&amp;\\&amp;U = 2 \mathcal{Re} \big\{ E_x E_y^* \big\}\\.&amp;\\&amp;V = 2 \mathcal{Im} \big\{ E_x E_y^* \big\}\end{aligned}\end{align} \]</div>
 </div></blockquote>
 </div>
 </div>
@@ -84,13 +84,19 @@ following figure.</p>
 - absorption efficiency
 - back-scattering efficiency
 - ratio of front and back scattering
-- Optical pressure efficiency
+- optical pressure efficiency
 - anisotropy factor g</p>
 <p>Those parameter can be computed using PyMieSim according to those equations.</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}&amp;Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\&amp;Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}\\&amp;Q_{abs} = Q_{ext}-Q_{sca}\\&amp;Q_{back} = \frac{1}{x^2} \Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \Big|^2\\&amp;Q_{ratio} = \frac{Q_{back}}{Q_{sca}}\\&amp;Q_{pr} = Q_{ext} - g * Q_{sca}\\&amp;g = \frac{4}{Q_{sca} x^2}
         \Big[ \sum\limits_{n=1}^{n_{max}} \frac{n(n+2)}{n+1} \text{Re} \left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\right\} +
-        \sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)} \text{Re}\left\{ a_n b_n^* \right\} \Big]\end{aligned}\end{align} \]</div>
+        \sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)} \text{Re}\left\{ a_n b_n^* \right\} \Big]\\&amp;A_s = \pi r^2\\&amp;\sigma_{i} = Q_{i} A\\&amp;\mu_{sca} = \sigma_{sca} C\\&amp;\mu_{ext} = \sigma_{ext} C\\&amp;\mu_{abs} = \sigma_{abs} C\end{aligned}\end{align} \]</div>
+<div class="line-block">
+<div class="line">With:</div>
+<div class="line-block">
+<div class="line">C: the scatterer concentration in the sample.</div>
+</div>
+</div>
 </div>
 </div>
 <hr class="docutils" />

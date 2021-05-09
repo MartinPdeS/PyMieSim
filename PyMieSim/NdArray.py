@@ -239,7 +239,7 @@ class PMSArray(object):
 
                 data = self.data[idx]
 
-                label  = self.GetLabels(x, idx, val)
+                label  = self.GetLegend(x, idx, val, Groupby)
 
                 figure, ax = PlotDict[val[Groupby]]
 
@@ -249,7 +249,7 @@ class PMSArray(object):
 
                 ax.set_xlabel(self.conf['X'][xIndex]['label'])
 
-                ax.set_ylabel(val['label'])
+                ax.set_ylabel(val['type'])
 
 
         for key, (fig,ax) in PlotDict.items():
@@ -276,7 +276,7 @@ class PMSArray(object):
         return product(*DimSlicer), xval
 
 
-    def GetLabels(self, axis, idx, ydict):
+    def GetLegend(self, axis, idx, ydict, Groupby):
         """Method generate and return the legend text for the specific plot.
 
         Parameters
@@ -293,10 +293,11 @@ class PMSArray(object):
 
         """
 
-        label       = ''
+        if ydict['type'] == "coupling":
+            label = f"{str(ydict['name']): >7} | "
 
-        if ydict['type'] == 'efficiency':
-            label       = f"{ydict['name']: >7} | " + label
+        else:
+            label = f"{ydict['legend']: >7} | "
 
         for order, xdict in self.conf['X'].items():
 
@@ -306,9 +307,6 @@ class PMSArray(object):
 
                 if xdict['name'] == 'material' :
                     val = val.__str__()
-
-                if ydict['type'] == 'efficiency' and xdict['name'] == 'detector':
-                        continue
 
                 label += f"{xdict['name']}= {val:{xdict['format']}} | "
 
