@@ -32,3 +32,22 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+
+
+
+#___________________________OUTPUT___________________________________
+#
+# PyMieArray
+# Variable: ['qsca', 'qback']
+# ==========================================================================================
+# Parameter
+# ------------------------------------------------------------------------------------------
+# wavelength                           | dimension =  0                        | size =  1
+# polarization                         | dimension =  1                        | size =  1
+# corediameter                         | dimension =  2                        | size = 500
+# shellwidth                           | dimension =  3                        | size =  2
+# coreindex                            | dimension =  4                        | size =  1
+# shellindex                           | dimension =  5                        | size =  1
+# nmedium                              | dimension =  6                        | size =  1
+# ==========================================================================================

@@ -190,10 +190,12 @@ class PMSArray(object):
 
         newConf['X'].pop(dim)
 
-        for n, key in enumerate(newConf['order'].keys()):
-            newConf['order'][key] = n
+        newConf['order'] = {key: n for n, key in enumerate( newConf['order'].keys() ) }
+
+        newConf['X'] = {n: dic for n, dic in enumerate( newConf['X'].values() ) }
 
         return newConf
+
 
 
     def GetScale(self, Scale):
@@ -322,17 +324,17 @@ class PMSArray(object):
 
         name = [str(val['name']) for val in self.conf['Y'].values()]
 
-        text =  f'PyMieArray \nVariable: {name.__str__()}\n' + '='*90 + '\n'
+        text =  f'PyMieArray \nVariable: {name.__str__()}\n' + '='*120 + '\n'
 
-        text += f"{'Parameter':13s}\n" + '-'*90 + '\n'
+        text += f"{'Parameter':13s}\n" + '-'*120 + '\n'
 
-        for key, order in self.conf['order'].items():
-            text += f"""{key:13s}\
-                        | dimension = {order:2d}\
-                        | size = {self.conf['shape'][order]:2d}\
-                         \n"""
+        for order, key in self.conf['X'].items():
+            text += f"""{key['label']:30s}\
+                        | dimension = {order}\
+                        | size      = {key['size']}\
+                        \n"""
 
-        text += '='*90 + '\n'
+        text += '='*120 + '\n'
         return text
 
 

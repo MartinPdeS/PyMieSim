@@ -59,7 +59,7 @@ class Sphere(BaseScatterer, ScattererProperties):
                  Source        : SourceType,
                  Index         : ScalarType = None,
                  nMedium       : ScalarType = 1.0,
-                 Concentration : ScalarType = 1.0,
+                 Concentration : ScalarType = None,
                  Material                   = None):
 
         super().__init__()
@@ -75,13 +75,13 @@ class Sphere(BaseScatterer, ScattererProperties):
             self.Index       = Index
 
 
-        self.type          = 'Sphere'
-        self.Diameter      = Diameter
-        self.Source        = Source
-        self.Concentration = Concentration
-        self.nMedium       = nMedium.real#.astype(complex)
-        self.Area          = Area(np.pi * (Diameter/2)**2)
-        self.SizeParam     = Source.k * ( self.Diameter / 2 )
+        self.type           = 'Sphere'
+        self.Diameter       = Diameter
+        self.Source         = Source
+        self._Concentration = Concentration
+        self.nMedium        = nMedium.real#.astype(complex)
+        self.Area           = Area(np.pi * (Diameter/2)**2)
+        self.SizeParam      = Source.k * ( self.Diameter / 2 )
 
         self.GetBinding()
 
@@ -224,15 +224,15 @@ class ShellSphere(BaseScatterer, ScattererProperties):
                  CoreIndex     : ScalarType,
                  ShellIndex    : ScalarType,
                  nMedium       : ScalarType   = 1.0,
-                 Concentration : ScalarType   = 1.0,
+                 Concentration : ScalarType   = None,
                  CoreMaterial                 = None,
                  ShellMaterial                = None,
                  ):
 
         super().__init__()
 
-        ShellDiameter      = CoreDiameter + ShellWidth
-        self.Concentration = Concentration
+        ShellDiameter       = CoreDiameter + ShellWidth
+        self._Concentration = Concentration
 
         if all([ CoreIndex, CoreMaterial ] ) or all([ ShellIndex, ShellMaterial ] ) :
             raise AssertionError( "You should either choose a material or the RI, not both." )
@@ -332,18 +332,18 @@ class Cylinder(BaseScatterer, ScattererProperties):
                  Source        : SourceType,
                  Index         : ScalarType,
                  IndexMedium   : ScalarType  = 1.0,
-                 Concentration : ScalarType  = 1.0,
+                 Concentration : ScalarType  = None,
                  ):
 
         super().__init__()
-        self.type          = 'Cylinder'
-        self.Diameter      = Diameter
-        self.Source        = Source
-        self.Index         = Index
-        self.nMedium       = IndexMedium
-        self.Area          = Area(np.pi * (Diameter/2)**2)
-        self.SizeParam     = Source.k * ( self.Diameter / 2 )
-        self.Concentration = Concentration
+        self.type           = 'Cylinder'
+        self.Diameter       = Diameter
+        self.Source         = Source
+        self.Index          = Index
+        self.nMedium        = IndexMedium
+        self.Area           = Area(np.pi * (Diameter/2)**2)
+        self.SizeParam      = Source.k * ( self.Diameter / 2 )
+        self._Concentration = Concentration
 
         self.GetBinding()
 

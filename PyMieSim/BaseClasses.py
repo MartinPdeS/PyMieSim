@@ -4,7 +4,7 @@
 import numpy  as np
 import os
 
-from PyMieSim.Directories     import NPZPath
+from PyMieSim.Directories     import NPZPath, RTDExample
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics         import _Polarization, Angle
 from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
@@ -351,6 +351,15 @@ class ScattererProperties(object):
             return self._Properties
 
 
+    @property
+    def Concentration(self):
+        if not self._Concentration:
+            raise Exception(f'Concentration was not provided durint instatiation \
+                              of the scatterer. Please refer to Example seciotn \
+                              of documentation {RTDExample}')
+
+        else:
+            return self._Concentration
 
     @property
     def Csca(self):

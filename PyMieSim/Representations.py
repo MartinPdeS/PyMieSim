@@ -428,13 +428,18 @@ class ScatProperties(dict):
                                    'Cratio': Area( data[4] * Parent.Area),
                                    'Cpr'   : Area( data[6] * Parent.Area) }
 
+
         self['others'] = {'area'           : Parent.Area,
-                          'index'          : Parent.Index,
-                          'concentration'  : Parent.Concentration,
-                          u'\u03bc sca'    : Parent.MuSca,
-                          u'\u03bc ext'    : Parent.MuExt,
-                          u'\u03bc abs'    : Parent.MuAbs,
-                          'g'              : data[6] }
+                          'index'          : Parent.Index }
+
+        if Parent._Concentration is not None:
+
+            self['others'].update( {
+                                      'Concentration'  : Parent.Concentration,
+                                      u'\u03bc sca'    : Parent.MuSca,
+                                      u'\u03bc ext'    : Parent.MuExt,
+                                      u'\u03bc abs'    : Parent.MuAbs,
+                                      'g'              : data[6] } )
 
     def Plot(self):
         print('There is not plotting method for the properties representation. Try print')

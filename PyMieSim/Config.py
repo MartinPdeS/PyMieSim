@@ -25,155 +25,101 @@ SourceParamList = ['E0',
                    'Polarization',
                    'Wavelength']
 
-BaseIndex = {
-              'name'      : None,
-              'order'     : None,
-              'label'     : None,
-              'format'    : '.2f',
-              'unit'      : ' [1]',
-              'dimension' : None,
-              }
 
-BaseDiameter = {
-                 'name'      : None,
-                 'order'     : None,
-                 'label'     : None,
-                 'format'    : '.1e',
-                 'unit'      : '[m]',
-                 'dimension' : None,
-                 }
+#-------------------------------------------------------------------------------
+nMediumDict =   { 'name'            : 'nmedium',
+                  'label'           : 'Medium refractive index [1]',
+                  'format'          : '.2f',
+                  'unit'            : '[1]',
+                  'order'           : None,
+                  'dimension'       : None }
 
-nMediumDict =   {
-                 'name'      : 'nmedium',
-                 'label'     : 'Medium refractive index [1]',
-                 'format'    : '.2f',
-                 'unit'      : '[1]',
-                 'order'     : None,
-                 'dimension' : None,
-                 }
+IndexDict =     { 'name'            : 'index',
+                  'label'           : 'Refractive index [1]',
+                  'format'          : '.2f',
+                  'unit'            : '[1]',
+                  'dimension'       :  None,
+                  'order'           :  None }
+
+CoreIndexDict = { 'name'            : 'coreindex',
+                  'label'           : 'Core index [1]',
+                  'format'          : '.2f',
+                  'unit'            : '[1]',
+                  'dimension'       :  None,
+                  'order'           :  None }
 
 
-IndexDict =     {
-                 'name'      : 'index',
-                 'label'     : 'Refractive index [1]',
-                 'format'    : '.2f',
-                 'unit'      : '[1]',
-                 'dimension' :  None,
-                 'order'     :  None
-                 }
+ShellIndexDict = { 'name'           : 'shellindex',
+                   'label'          : 'Shell index [1]',
+                   'format'         : '.2f',
+                   'unit'           : '[1]',
+                   'dimension'      :  None,
+                   'order'          :  None }
 
+DiameterDict = { 'name'             : 'diameter',
+                 'label'            : 'Diameter [m]',
+                 'format'           : '.1e',
+                 'unit'             : '[m]',
+                 'order'            : None,
+                 'dimension'        : None }
 
-CoreIndexDict = {
-                 'name'      : 'coreindex',
-                 'label'     : 'Core index [1]',
-                 'format'    : '.2f',
-                 'unit'      : '[1]',
-                 'dimension' :  None,
-                 'order'     :  None
-                 }
+CoreDiameterDict = { 'name'         : 'corediameter',
+                     'label'        : 'Core diameter [m]',
+                     'format'       : '.1e',
+                     'unit'         : '[m]',
+                     'order'        : None,
+                     'dimension'    : None }
 
+ShellWidthDict = { 'name'           : 'shellwidth',
+                   'label'          : 'Shell width [m]',
+                   'format'         : '.1e',
+                   'unit'           : '[m]',
+                   'order'          : None,
+                   'dimension'      : None }
 
-ShellIndexDict = {
-                  'name'      : 'shellindex',
-                  'label'     : 'Shell index [1]',
-                  'format'    : '.2f',
-                  'unit'      : '[1]',
-                  'dimension' :  None,
-                  'order'     :  None
-                  }
+MaterialDict = { 'name'             : 'material',
+                 'label'            : 'Material refractive index [1]',
+                 'format'           : '10s',
+                 'unit'             : '',
+                 'order'            : None,
+                 'dimension'        : None }
 
-DiameterDict = {
-                 'name'      : 'diameter',
-                 'label'     : 'Diameter [m]',
-                 'format'    : '.1e',
-                 'unit'      : '[m]',
-                 'order'     : None,
-                 'dimension' : None,
-                 }
+PolarizationDict = { 'name'         : 'polarization',
+                     'label'        : 'Polarization [Degree]',
+                     'format'       : '04.1f',
+                     'unit'         : ' Degree',
+                     'dimension'    : None,
+                     'order'        : None }
 
-CoreDiameterDict = {
-                    'name'      : 'corediameter',
-                    'label'     : 'Core diameter [m]',
-                    'format'    : '.1e',
-                    'unit'      : '[m]',
-                    'order'     : None,
-                    'dimension' : None,
-                   }
-
-ShellWidthDict = {
-                    'name'      : 'shellwidth',
-                    'label'     : 'Shell width [m]',
-                    'format'    : '.1e',
-                    'unit'      : '[m]',
-                    'order'     : None,
-                    'dimension' : None,
-                   }
-
-MaterialDict = {
-                 'name'          : 'material',
-                 'label'         : 'Medium Refractive index',
-                 'format'        : '10s',
-                 'unit'          : '',
-                 'order'         : None,
-                 'dimension'     : None,
-                 }
-
-PolarizationDict = {
-                     'name'      : 'polarization',
-                     'label'     : 'Polarization [Degree]',
-                     'format'    : '04.1f',
-                     'unit'      : ' Degree',
-                     'dimension' : None,
-                     'order'     : None,
-                     }
-
-WavelengthDict = {
-                   'name'        : 'wavelength',
-                   'label'       : r'Wavelength $\lambda$ [m]',
-                   'format'      : '.1e',
-                   'unit'        : 'm',
-                   'order'       : None,
-                   'dimension'   : None
-                   }
-
-DetectorDict = {
-                 'name'          : 'detector',
-                 'label'         : 'Detector',
-                 'format'        : '11s',
-                 'unit'          : '',
-                 'dimension'     : None,
-                 'order'         : None,
-                  }
-
-
-OtherDict = { 'type'             : 'other',
-              'name'             : 'other',
-              'label'            : ' [1]',
-              'format'           : '15s',
-              'unit'             : '[1]' }
+WavelengthDict = { 'name'           : 'wavelength',
+                   'label'          : r'Wavelength $\lambda$ [m]',
+                   'format'         : '.1e',
+                   'unit'           : 'm',
+                   'order'          : None,
+                   'dimension'      : None }
 
 
 #-------------------------------------------------------------------------------
-MuScaDict = { 'type'                : u"\u03bc coefficient",
-              'name'                : 'musca',
-              'legend'              : u"\u03bc sca",
-              'label'               : "Scattering coefficient [m⁻¹]",
-              'format'              : '15s',
-              'unit'                : '[m⁻¹]' }
+MuScaDict = {      'type'           : u"\u03bc coefficient",
+                   'name'           : 'musca',
+                   'legend'         : u"\u03bc sca",
+                   'label'          : "Scattering coefficient [m⁻¹]",
+                   'format'         : '15s',
+                   'unit'           : '[m⁻¹]' }
 
-MuExtDict = { 'type'                : u"\u03bc coefficient",
-              'name'                : 'muext',
-              'legend'              : u"\u03bc ext",
-              'label'               : "Extinction coefficient [m⁻¹]",
-              'format'              : '15s',
-              'unit'                : '[m⁻¹]' }
+MuExtDict = {      'type'           : u"\u03bc coefficient",
+                   'name'           : 'muext',
+                   'legend'         : u"\u03bc ext",
+                   'label'          : "Extinction coefficient [m⁻¹]",
+                   'format'         : '15s',
+                   'unit'           : '[m⁻¹]' }
 
-MuAbsDict = { 'type'                : u"\u03bc coefficient",
-              'name'                : 'muabs',
-              'legend'              : u"\u03bc abs",
-              'label'               : "Absorption coefficient [m⁻¹]",
-              'format'              : '15s',
-              'unit'                : '[m⁻¹]' }
+MuAbsDict = {      'type'           : u"\u03bc coefficient",
+                   'name'           : 'muabs',
+                   'legend'         : u"\u03bc abs",
+                   'label'          : "Absorption coefficient [m⁻¹]",
+                   'format'         : '15s',
+                   'unit'           : '[m⁻¹]' }
 
 
 #-------------------------------------------------------------------------------
@@ -194,7 +140,7 @@ QextDict = { 'type'                 : 'Efficiency',
 QabsDict = { 'type'                 : 'Efficiency',
              'name'                 : 'qabs',
              'label'                : 'Absorption efficiency [1]',
-             'legend'               : "Qsca",
+             'legend'               : "Qabs",
              'format'               : '15s',
               'unit'                : '[1]' }
 
@@ -278,49 +224,48 @@ CouplingDict = { 'name'             : 'coupling',
                  'format'           : '15s',
                  'unit'             :  '[Watt]',
                  'type'             : 'coupling' }
+
+
 #-------------------------------------------------------------------------------
+BaseConfig = { 'name'               : None,
+               'unit'               : {},
+               'material'           : None,
+               'order'              : {},
+               'label'              : {},
+               'format'             : {},
+               'dimension'          : {},
+               'MaxOrder'           : 0,
+               'X'                  : {},
+               'Y'                  : {}}
 
+Arg2Dict = { 'Diameter'             : DiameterDict,
+             'Index'                : IndexDict,
+             'Material'             : MaterialDict,
+             'nMedium'              : nMediumDict,
+             'Polarization'         : PolarizationDict,
+             'Wavelength'           : WavelengthDict,
+             'CoreDiameter'         : CoreDiameterDict,
+             'ShellWidth'           : ShellWidthDict,
+             'CoreIndex'            : CoreIndexDict,
+             'ShellIndex'           : ShellIndexDict}
 
-BaseConfig = { 'name'            : None,
-               'unit'            : {},
-               'material'        : None,
-               'order'           : {},
-               'label'           : {},
-               'format'          : {},
-               'dimension'       : {},
-               'MaxOrder'        : 0,
-               'X'               : {},
-               'Y'               : {}}
-
-Arg2Dict = { 'Diameter'          : DiameterDict,
-             'Index'             : IndexDict,
-             'Material'          : MaterialDict,
-             'nMedium'           : nMediumDict,
-             'Polarization'      : PolarizationDict,
-             'Wavelength'        : WavelengthDict,
-             'CoreDiameter'      : CoreDiameterDict,
-             'ShellWidth'        : ShellWidthDict,
-             'CoreIndex'         : CoreIndexDict,
-             'ShellIndex'        : ShellIndexDict}
-
-
-Prop2Dict = { 'musca'            : MuScaDict,
-              'muext'            : MuExtDict,
-              'muabs'            : MuAbsDict,
-              'qsca'             : QscaDict,
-              'qext'             : QextDict,
-              'qabs'             : QabsDict,
-              'qback'            : QbackDict,
-              'qratio'           : QratioDict,
-              'qpr'              : QprDict,
-              'csca'             : CscaDict,
-              'cext'             : CextDict,
-              'cabs'             : CabsDict,
-              'cback'            : CbackDict,
-              'cratio'           : CratioDict,
-              'cpr'              : CprDict,
-              'g'                : gDict,
-              'coupling'         : CouplingDict  }
+Prop2Dict = { 'musca'               : MuScaDict,
+              'muext'               : MuExtDict,
+              'muabs'               : MuAbsDict,
+              'qsca'                : QscaDict,
+              'qext'                : QextDict,
+              'qabs'                : QabsDict,
+              'qback'               : QbackDict,
+              'qratio'              : QratioDict,
+              'qpr'                 : QprDict,
+              'csca'                : CscaDict,
+              'cext'                : CextDict,
+              'cabs'                : CabsDict,
+              'cback'               : CbackDict,
+              'cratio'              : CratioDict,
+              'cpr'                 : CprDict,
+              'g'                   : gDict,
+              'coupling'            : CouplingDict  }
 
 OUTPUTTYPE = ['optimizer', 'pymiesim']
 
