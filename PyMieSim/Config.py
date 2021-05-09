@@ -145,11 +145,6 @@ DetectorDict = {
                  'order'         : None,
                   }
 
-EfficienciesDict = { 'type'      : 'Efficiency',
-                     'name'      : 'efficiencies',
-                     'label'     : 'Efficiencies [1]',
-                     'format'    : '15s',
-                     'unit'      : '[1]' }
 
 OtherDict = { 'type'             : 'other',
               'name'             : 'other',
@@ -157,24 +152,134 @@ OtherDict = { 'type'             : 'other',
               'format'           : '15s',
               'unit'             : '[1]' }
 
-CrossSectionsDict = { 'type'     : 'crossection',
-                      'name'     : 'crossections',
-                      'label'    : 'Cross-section [m²]',
-                      'format'   : '15s',
-                      'unit'     : '[m²]' }
 
-MuDict = { 'type'                : u"\u03bc coefficient",
-           'name'                : 'mu',
-           'label'               : u"\u03bc [m⁻¹]",
-           'legend'              : None,
-           'format'              : '15s',
-           'unit'                : '[m⁻¹]' }
+#-------------------------------------------------------------------------------
+MuScaDict = { 'type'                : u"\u03bc coefficient",
+              'name'                : 'musca',
+              'legend'              : u"\u03bc sca",
+              'label'               : "Scattering coefficient [m⁻¹]",
+              'format'              : '15s',
+              'unit'                : '[m⁻¹]' }
 
-CouplingDict = { 'name'          : 'coupling',
-                 'label'         : 'Coupling [Watt]',
-                 'format'        : '15s',
-                 'unit'          :  '[Watt]',
-                 'type'          : 'coupling' }
+MuExtDict = { 'type'                : u"\u03bc coefficient",
+              'name'                : 'muext',
+              'legend'              : u"\u03bc ext",
+              'label'               : "Extinction coefficient [m⁻¹]",
+              'format'              : '15s',
+              'unit'                : '[m⁻¹]' }
+
+MuAbsDict = { 'type'                : u"\u03bc coefficient",
+              'name'                : 'muabs',
+              'legend'              : u"\u03bc abs",
+              'label'               : "Absorption coefficient [m⁻¹]",
+              'format'              : '15s',
+              'unit'                : '[m⁻¹]' }
+
+
+#-------------------------------------------------------------------------------
+QscaDict = { 'type'                 : 'Efficiency',
+             'name'                 : 'qsca',
+             'label'                : 'Scattering efficiency [1]',
+             'legend'               : "Qsca",
+             'format'               : '15s',
+              'unit'                : '[1]' }
+
+QextDict = { 'type'                 : 'Efficiency',
+             'name'                 : 'qext',
+             'label'                : 'Extinction efficiency [1]',
+             'legend'               : "Qext",
+             'format'               : '15s',
+              'unit'                : '[1]' }
+
+QabsDict = { 'type'                 : 'Efficiency',
+             'name'                 : 'qabs',
+             'label'                : 'Absorption efficiency [1]',
+             'legend'               : "Qsca",
+             'format'               : '15s',
+              'unit'                : '[1]' }
+
+QratioDict = { 'type'               : 'Efficiency',
+               'name'               : 'qratio',
+               'label'              : 'Ratio front-back scattering efficiency [1]',
+               'legend'             : "Qratio",
+               'format'             : '15s',
+               'unit'               : '[1]' }
+
+QbackDict = { 'type'                : 'Efficiency',
+              'name'                : 'qback',
+              'label'               : 'Back-scattering efficiency [1]',
+              'legend'              : "Qback",
+              'format'              : '15s',
+              'unit'                : '[1]' }
+
+QprDict = { 'type'                  : 'Efficiency',
+            'name'                  : 'qpr',
+            'label'                 : 'Radiation pressure efficiency [1]',
+            'legend'                : "Qpr",
+            'format'                : '15s',
+            'unit'                  : '[1]' }
+
+
+#-------------------------------------------------------------------------------
+CscaDict = { 'type'                 : 'Cross-section',
+             'name'                 : 'csca',
+             'label'                : 'Scattering cross-section [m²]',
+             'legend'               : "Qsca",
+             'format'               : '15s',
+              'unit'                : '[m²]' }
+
+CextDict = { 'type'                 : 'Cross-section',
+             'name'                 : 'cext',
+             'label'                : 'Extinction cross-section [m²]',
+             'legend'               : "Qext",
+             'format'               : '15s',
+              'unit'                : '[m²]' }
+
+CabsDict = { 'type'                 : 'Cross-section',
+             'name'                 : 'cabs',
+             'label'                : 'Absorption cross-section [m²]',
+             'legend'               : "Qsca",
+             'format'               : '15s',
+              'unit'                : '[m²]' }
+
+CratioDict = { 'type'               : 'Cross-section',
+               'name'               : 'cratio',
+               'label'              : 'Ratio front-back scattering cross-section [m²]',
+               'legend'             : "Qratio",
+               'format'             : '15s',
+               'unit'               : '[m²]' }
+
+CbackDict = { 'type'                : 'Cross-section',
+              'name'                : 'cback',
+              'label'               : 'Back-scattering cross-section [m²]',
+              'legend'              : "Qback",
+              'format'              : '15s',
+              'unit'                : '[m²]' }
+
+CprDict = { 'type'                  : 'Cross-section',
+            'name'                  : 'cpr',
+            'label'                 : 'Radiation pressure cross-section [m²]',
+            'legend'                : "Qpr",
+            'format'                : '15s',
+            'unit'                  : '[m²]' }
+
+
+#-------------------------------------------------------------------------------
+gDict = { 'type'                    : 'Anisotropy factor',
+          'name'                    : 'g',
+          'label'                   : 'Anisotropy factor g = <cos(theta)>',
+          'legend'                  : 'g',
+          'format'                  : '5s',
+          'unit'                    : '' }
+
+CouplingDict = { 'name'             : 'coupling',
+                 'label'            : 'Coupling [Watt]',
+                 'legend'           : 'Coupling [Watt]',
+                 'format'           : '15s',
+                 'unit'             :  '[Watt]',
+                 'type'             : 'coupling' }
+#-------------------------------------------------------------------------------
+
 
 BaseConfig = { 'name'            : None,
                'unit'            : {},
@@ -197,6 +302,25 @@ Arg2Dict = { 'Diameter'          : DiameterDict,
              'ShellWidth'        : ShellWidthDict,
              'CoreIndex'         : CoreIndexDict,
              'ShellIndex'        : ShellIndexDict}
+
+
+Prop2Dict = { 'musca'            : MuScaDict,
+              'muext'            : MuExtDict,
+              'muabs'            : MuAbsDict,
+              'qsca'             : QscaDict,
+              'qext'             : QextDict,
+              'qabs'             : QabsDict,
+              'qback'            : QbackDict,
+              'qratio'           : QratioDict,
+              'qpr'              : QprDict,
+              'csca'             : CscaDict,
+              'cext'             : CextDict,
+              'cabs'             : CabsDict,
+              'cback'            : CbackDict,
+              'cratio'           : CratioDict,
+              'cpr'              : CprDict,
+              'g'                : gDict,
+              'coupling'         : CouplingDict  }
 
 OUTPUTTYPE = ['optimizer', 'pymiesim']
 

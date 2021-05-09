@@ -188,7 +188,7 @@ class PMSArray(object):
 
         newConf['order'].pop(axis)
 
-        newconf['X'].pop(dim)
+        newConf['X'].pop(dim)
 
         for n, key in enumerate(newConf['order'].keys()):
             newConf['order'][key] = n

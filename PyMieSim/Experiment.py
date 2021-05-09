@@ -134,35 +134,16 @@ class Setup(object):
     def UpdateConfig(self, Input, AsType):
 
         for i, prop in enumerate(Input):
+
             dic = self.config['Y']
-            if prop in EFFTYPE:
-                dic[prop]           = deepcopy( EfficienciesDict )
-                dic[prop]['name']   = prop
-                dic[prop]['legend'] = prop
-                dic[prop]['label']  = prop + ' ' + dic[prop]['unit'] 
-                dic[prop]['order']  = i
-
-            if prop in CROSSTYPE:
-                dic[prop]          = deepcopy( CrossSectionsDict )
-                dic[prop]['name']  = prop
-                dic[prop]['order'] = i
-
-            if prop in MUTYPE:
-                dic[prop]           = deepcopy( MuDict )
-                dic[prop]['name']   = prop
-                dic[prop]['legend'] = u"\u03bc" + f"{dic[prop]['name'][-3:].lower()}"
-                dic[prop]['order']  = i
-
-            elif prop in OTHERTYPE:
-                dic[prop]          = deepcopy( OtherDict )
-                dic[prop]['name']  = prop
-                dic[prop]['label'] = prop + dic['label']
-                dic[prop]['order'] = i
-
-            elif hasattr(prop, 'isDetector'):
+            if hasattr(prop, 'isDetector'):
                 dic[prop]          = deepcopy( CouplingDict )
                 dic[prop]['name']  = prop
                 dic[prop]['order'] = i
+
+            else:
+                dic[prop]           = deepcopy( Prop2Dict[prop.lower()] )
+                dic[prop]['order']  = i
 
         self.GetShape(self.config)
 

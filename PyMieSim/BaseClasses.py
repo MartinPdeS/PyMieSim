@@ -374,7 +374,7 @@ class ScattererProperties(object):
 
     @property
     def Cratio(self):
-        return Area( self._Qratio * self.Area )
+        return Area( self.Qratio * self.Area )
 
     @property
     def MuSca(self):
