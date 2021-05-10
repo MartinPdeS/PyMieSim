@@ -22,7 +22,7 @@ Lorenz-Mie Theory (LMT)
 
 .. note::
 
-  Here are, few of the most important relation governing the PyMieSim library.
+  Here are, few of the most important relations governing the PyMieSim library.
 
   .. math::
      &S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)
