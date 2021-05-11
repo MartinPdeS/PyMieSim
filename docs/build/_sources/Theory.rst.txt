@@ -165,7 +165,7 @@ have three example which are available with the PyMieSim library.
   |   With:
   |     :math:`M` is the refractive index of the scatterer.
   |     :math:`m` is the refractive index of the medium.
-  |     :math:`H_n` is the Hankel function of first king of order n.
+  |     :math:`H_n` is the Hankel function of first kind of order n.
   |     :ref:`References` [5] Eq(8.30-32).
 
 ----

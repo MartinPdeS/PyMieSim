@@ -101,13 +101,14 @@
                     <span class="s1">&#39;nMedium&#39;</span><span class="p">]</span>
 
 
-    <span class="nd">@beartype</span>
+    <span class="c1">#@beartype</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">Diameter</span> <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">Source</span>   <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
-                 <span class="n">Index</span>    <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">nMedium</span>  <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-                 <span class="n">Material</span>                <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">Diameter</span>      <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">Source</span>        <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
+                 <span class="n">Index</span>         <span class="p">:</span> <span class="n">ScalarType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">nMedium</span>       <span class="p">:</span> <span class="n">ScalarType</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">Concentration</span> <span class="p">:</span> <span class="n">ScalarType</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">Material</span>                   <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
@@ -122,12 +123,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>       <span class="o">=</span> <span class="n">Index</span>
 
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>      <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>  <span class="o">=</span> <span class="n">Diameter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>    <span class="o">=</span> <span class="n">Source</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>   <span class="o">=</span> <span class="n">nMedium</span><span class="o">.</span><span class="n">real</span><span class="c1">#.astype(complex)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>      <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>           <span class="o">=</span> <span class="s1">&#39;Sphere&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>       <span class="o">=</span> <span class="n">Diameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>         <span class="o">=</span> <span class="n">Source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Concentration</span> <span class="o">=</span> <span class="n">Concentration</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>        <span class="o">=</span> <span class="n">nMedium</span><span class="o">.</span><span class="n">real</span><span class="c1">#.astype(complex)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>           <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span>      <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 
@@ -270,12 +272,15 @@
                  <span class="n">CoreIndex</span>     <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
                  <span class="n">ShellIndex</span>    <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
                  <span class="n">nMedium</span>       <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">Concentration</span> <span class="p">:</span> <span class="n">ScalarType</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">CoreMaterial</span>                 <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                 <span class="n">ShellMaterial</span>                <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+                 <span class="n">ShellMaterial</span>                <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="n">ShellDiameter</span>     <span class="o">=</span> <span class="n">CoreDiameter</span> <span class="o">+</span> <span class="n">ShellWidth</span>
+        <span class="n">ShellDiameter</span>       <span class="o">=</span> <span class="n">CoreDiameter</span> <span class="o">+</span> <span class="n">ShellWidth</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Concentration</span> <span class="o">=</span> <span class="n">Concentration</span>
 
         <span class="k">if</span> <span class="nb">all</span><span class="p">([</span> <span class="n">CoreIndex</span><span class="p">,</span> <span class="n">CoreMaterial</span> <span class="p">]</span> <span class="p">)</span> <span class="ow">or</span> <span class="nb">all</span><span class="p">([</span> <span class="n">ShellIndex</span><span class="p">,</span> <span class="n">ShellMaterial</span> <span class="p">]</span> <span class="p">)</span> <span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span> <span class="s2">&quot;You should either choose a material or the RI, not both.&quot;</span> <span class="p">)</span>
@@ -371,19 +376,22 @@
 
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">Diameter</span>    <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-                 <span class="n">Source</span>      <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
-                 <span class="n">Index</span>       <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
-                 <span class="n">IndexMedium</span> <span class="p">:</span> <span class="n">ScalarType</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+                 <span class="n">Diameter</span>      <span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">Source</span>        <span class="p">:</span> <span class="n">SourceType</span><span class="p">,</span>
+                 <span class="n">Index</span>         <span class="p">:</span> <span class="n">ScalarType</span><span class="p">,</span>
+                 <span class="n">IndexMedium</span>   <span class="p">:</span> <span class="n">ScalarType</span>  <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                 <span class="n">Concentration</span> <span class="p">:</span> <span class="n">ScalarType</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>      <span class="o">=</span> <span class="s1">&#39;Cylinder&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>  <span class="o">=</span> <span class="n">Diameter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>    <span class="o">=</span> <span class="n">Source</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>     <span class="o">=</span> <span class="n">Index</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>   <span class="o">=</span> <span class="n">IndexMedium</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>      <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span> <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span>           <span class="o">=</span> <span class="s1">&#39;Cylinder&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span>       <span class="o">=</span> <span class="n">Diameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Source</span>         <span class="o">=</span> <span class="n">Source</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Index</span>          <span class="o">=</span> <span class="n">Index</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nMedium</span>        <span class="o">=</span> <span class="n">IndexMedium</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Area</span>           <span class="o">=</span> <span class="n">Area</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">Diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SizeParam</span>      <span class="o">=</span> <span class="n">Source</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">Diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Concentration</span> <span class="o">=</span> <span class="n">Concentration</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">GetBinding</span><span class="p">()</span>
 

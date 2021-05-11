@@ -137,7 +137,7 @@
 </div>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: ScatProperties</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Scatterer Properties</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -193,8 +193,7 @@
 53
 54
 55
-56
-57</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+56</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
     <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
     <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
 
@@ -213,47 +212,47 @@
     <span class="n">run</span><span class="p">()</span>
 
 
-<span class="c1"># _____________________OUTPUT_____________________</span>
-<span class="c1">#       Object:          Dictionary</span>
-<span class="c1">#        Keys:            Efficiencies, cross-sections, others</span>
-<span class="c1">#        Structured data: Yes</span>
-<span class="c1">#        Method:          &lt;Plot&gt;</span>
-<span class="c1">#        Shape:           [7, 1]</span>
+<span class="c1">#___________________________OUTPUT___________________________________</span>
+<span class="c1">#</span>
+<span class="c1">#         Object:          Dictionary</span>
+<span class="c1">#         Keys:            Efficiencies, cross-sections, others</span>
+<span class="c1">#         Structured data: Yes</span>
+<span class="c1">#         Method:          &lt;Plot&gt;</span>
+<span class="c1">#         Shape:           [7, 1]</span>
 <span class="c1">#         ========================================</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qsca        | 4.029799032677242</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qext        | 4.029799032677242</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qabs        | 0.0</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qback       | 4.973830378796597</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qratio      | 1.2342626365395144</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qpr         | 0.7925897259835781</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Csca        | 2.03e+00 μm²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cext        | 2.03e+00 μm²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cabs        | 0 m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cback       | 2.50e+00 μm²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cratio      | 6.20e+05 nano-m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cpr         | 3.98e+05 nano-m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># others         | area        | 5.03e+05 nano-m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># others         | index       | 1.4</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># others         | g           | 0.7925897259835781</span>
-<span class="c1"># --------------------------------------------------</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># Efficiencies   | Qsca             | 4.029799032677242</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Qext             | 4.029799032677242</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Qabs             | 0.0</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Qback            | 4.973830378796597</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Qratio           | 1.2342626365395144</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Qpr              | 0.7925897259835781</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># cross-sections | Csca             | 2.025597925840332e-12 m²  (2.03e+00 μm²)</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Cext             | 2.025597925840332e-12 m²  (2.03e+00 μm²)</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Cabs             | 0 m²</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Cback            | 2.5001198365166603e-12 m²  (2.50e+00 μm²)</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Cratio           | 6.204080690484652e-13 m²  (6.20e+05 nm²)</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | Cpr              | 3.98399049673721e-13 m²  (3.98e+05 nm²)</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1"># others         | area             | 5.026548245743668e-13 m²  (5.03e+05 nm²)</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#                | index            | 1.4</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
 </pre></div>
 </td></tr></table></div>
 </div>
+<hr class="docutils" />
 </div>
 <hr class="docutils" />
 <div class="section" id="computing-fields">

@@ -28,11 +28,18 @@ Creating Scatterers
 
 .. literalinclude:: ../../examples/ScatProperties.py
     :language: python
-    :caption: **Scatterer: ScatProperties**
+    :caption: **Scatterer: Scatterer Properties**
     :lines: 1-
     :linenos:
 
 
+-------------------------
+
+.. literalinclude:: ../../examples/SamplesProperties.py
+    :language: python
+    :caption: **Scatterer: Samples properties**
+    :lines: 1-
+    :linenos:
 
 ----------------
 
