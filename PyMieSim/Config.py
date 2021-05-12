@@ -98,6 +98,40 @@ WavelengthDict = { 'name'           : 'wavelength',
                    'order'          : None,
                    'dimension'      : None }
 
+NADict =   { 'name'                 : 'na',
+             'label'                : 'Numerical aperture (NA) [1]',
+             'format'               : '.3f',
+             'unit'                 : '[1]',
+             'order'                : None,
+             'dimension'            : None }
+
+SamplingDict =   { 'name'           : 'sampling',
+                   'label'          : 'Mesh sampling [1]',
+                   'format'         : 'd',
+                   'unit'           : '[1]',
+                   'order'          : None,
+                   'dimension'      : None }
+
+GammaOffDict =   { 'name'           : 'gammaoffset',
+                   'label'          : 'Gamma offset [degree]',
+                   'format'         : '.3f',
+                   'unit'           : '[degree]',
+                   'order'          : None,
+                   'dimension'      : None }
+
+CouplingModeDict = { 'name'         : 'couplingmode',
+                     'label'        : 'Coupling Mode',
+                     'format'       : '10s',
+                     'unit'         : '',
+                     'order'        : None,
+                     'dimension'    : None }
+
+PhiOffDict =   { 'name'             : 'phioffset',
+                 'label'            : 'Phi offset [degree]',
+                 'format'           : '04.1f',
+                 'unit'             : '[degree]',
+                 'order'            : None,
+                 'dimension'        : None }
 
 #-------------------------------------------------------------------------------
 MuScaDict = {      'type'           : u"\u03bc coefficient",
@@ -220,10 +254,10 @@ gDict = { 'type'                    : 'Anisotropy factor',
 
 CouplingDict = { 'name'             : 'coupling',
                  'label'            : 'Coupling [Watt]',
-                 'legend'           : 'Coupling [Watt]',
+                 'legend'           : 'Coupling',
                  'format'           : '15s',
                  'unit'             :  '[Watt]',
-                 'type'             : 'coupling' }
+                 'type'             : 'Coupling [watt]' }
 
 
 #-------------------------------------------------------------------------------
@@ -247,7 +281,12 @@ Arg2Dict = { 'Diameter'             : DiameterDict,
              'CoreDiameter'         : CoreDiameterDict,
              'ShellWidth'           : ShellWidthDict,
              'CoreIndex'            : CoreIndexDict,
-             'ShellIndex'           : ShellIndexDict}
+             'ShellIndex'           : ShellIndexDict,
+             'NA'                   : NADict,
+             'PhiOffset'            : PhiOffDict,
+             'GammaOffset'          : GammaOffDict,
+             'Sampling'             : SamplingDict,
+             'CouplingMode'         : CouplingModeDict}
 
 Prop2Dict = { 'musca'               : MuScaDict,
               'muext'               : MuExtDict,
@@ -267,14 +306,18 @@ Prop2Dict = { 'musca'               : MuScaDict,
               'g'                   : gDict,
               'coupling'            : CouplingDict  }
 
-OUTPUTTYPE = ['optimizer', 'pymiesim']
+OUTPUTTYPE = set( ['optimizer', 'pymiesim'] )
 
-EFFTYPE    = ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'Qpr']
+EFFTYPE    = set( ['Qsca', 'Qext', 'Qabs', 'Qback', 'Qratio', 'Qpr'] )
 
-CROSSTYPE  = ['Csca', 'Cext', 'Cabs', 'Cback', 'Cratio', 'Cpr']
+CROSSTYPE  = set( ['Csca', 'Cext', 'Cabs', 'Cback', 'Cratio', 'Cpr'] )
 
-OTHERTYPE  = ['g']
+OTHERTYPE  = set( ['g'] )
 
-MUTYPE     = ['MuSca', 'MuExt', 'MuAbs']
+MUTYPE     = set( ['MuSca', 'MuExt', 'MuAbs'] )
+
+PROPTYPE   = set().union(EFFTYPE, CROSSTYPE, OTHERTYPE, MUTYPE )
+
+INPUTTYPE  = PROPTYPE.union( set( ['Coupling'] ) )
 
 exList  = Union[int, float, list, np.ndarray, tuple]

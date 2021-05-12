@@ -6,23 +6,20 @@ def run():
     from PyMieSim.Detector   import Photodiode
     from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
+    scatKwargs   = { 'Diameter'     : 500e-9,
+                     'Material'     : Material('BK7'),
+                     'nMedium'      : [1] }
 
-    Detector0 = Photodiode(NA                = 2.0,
-                           Sampling          = 300,
-                           GammaOffset       = 0,
-                           PhiOffset         = 0,
-                           CouplingMode      = 'Centered')
-
-    scatKwargs   = { 'Diameter'    : 200e-9,
-                     'Material'    : Material('BK7'),
-                     'nMedium'     : [1] }
-
-    sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 500),
+    sourceKwargs = { 'Wavelength'   : np.linspace(400e-9, 1000e-9, 50),
                      'Polarization' : [0]}
 
-    detectKwargs = { 'Detector 0'   : Detector0}
+    detecKwargs  = { 'NA'           : 0.2,
+                     'Sampling'     : 300,
+                     'GammaOffset'  : 0,
+                     'PhiOffset'    : [0, 30, 60],
+                     'CouplingMode' : 'Centered'}
 
-    detecSet   = DetectorSet(kwargs = detectKwargs)
+    detecSet   = DetectorSet(Detector = Photodiode, kwargs = detecKwargs)
 
     scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 

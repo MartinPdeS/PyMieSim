@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import itertools
+import logging
 import numpy              as np
 from copy                 import deepcopy
 from beartype             import beartype
@@ -63,37 +64,33 @@ class SourceSet(Set):
 class DetectorSet(Set):
 
     @beartype
-    def __init__(self, kwargs : dict = {}):
+    def __init__(self, Detector, kwargs : dict = {}):
 
-        self.kwargs = kwargs
+        self.isEmpty = False
 
-        for nd, detector in enumerate(self.kwargs.values()):
-            detector.Name = f"Detector {nd}"
+        self.kwargs = {k: ToList(v) for k, v in kwargs.items()}
 
+        self.Detector = Detector
+
+    def Generator(self):
+        Generator, order = GeneratorFromDict(self.kwargs)
+
+        for arguments in Generator:
+            for n, key in enumerate( self.kwargs.keys() ):
+                order[key] = arguments[n]
+
+            yield self.Detector(**order)
+
+
+class EmptyDetectorSet(set):
+    def __init__(self):
+        self.isEmpty = True
 
     def UpdateConfiguration(self, config):
-
-        i = config['MaxOrder']
-
-        Dict              = deepcopy( DetectorDict )
-        Dict['order']     = i
-        Dict['dimension'] = [Det.Name for Det in self.kwargs.values()]
-        Dict['size']      = len(Dict['dimension'])
-
-        MergeDict(config,Dict)
-        config['X'][i] = Dict
-
-        config['MaxOrder'] = i+1
-
         return config
 
-
-    def Generator(self, MatGen=None):
-        Generator = [detec for detec in self.kwargs.values()]
-
-        for detector in Generator:
-                yield detector
-
+    def Generator(self):
+        yield 1
 
 
 class Setup(object):
@@ -108,60 +105,54 @@ class Setup(object):
 
         self.MetricList   = MetricList
 
-        self.DetectorSet  = DetectorSet
+        if not DetectorSet:
+            self.DetectorSet = EmptyDetectorSet()
+        else:
+            self.DetectorSet  = DetectorSet
 
         self.SourceSet    = SourceSet
 
         self.ScattererSet = ScattererSet
 
-        config = self.SourceSet.UpdateConfiguration(config)
+        self.SourceSet.UpdateConfiguration(config)
 
-        config = self.ScattererSet.UpdateConfiguration(config)
+        self.ScattererSet.UpdateConfiguration(config)
+
+        self.DetectorSet.UpdateConfiguration(config)
 
         config['order'] = {dict['name']: dict['order'] for dict in config['X'].values()}
 
         self.config = config
 
 
-    def AssertionType(self, AsType=None, Eff=None):
-        if AsType:
-            assert AsType.lower() in OUTPUTTYPE, IO( f'Invalid type {AsType}, valid choices are {OUTPUTTYPE}' )
+    def AssertionType(self, AsType=None, Input=None):
+        if 'Coupling' in Input and self.DetectorSet.isEmpty:
+            raise ValueError("No coupling can be \
+            computed as no detector were employed.")
 
-        if Eff:
-            assert set(Eff).issubset(EFFTYPE), IO( f'Invalid efficiency {Eff}, valid choices are {EFFTYPE}' )
+        if set(PROPTYPE).intersection(Input) and not self.DetectorSet.isEmpty:
+            logging.warning('The computed scatterer properties do not depends \
+            on detectors although detector have been added to the experiment.')
+
+        if AsType:
+            assert AsType in OUTPUTTYPE, f'Invalid type \
+            {AsType}\, valid choices are {OUTPUTTYPE}'
+
+        if Input:
+            assert set(Input).issubset(INPUTTYPE), f'Invalid \
+            efficiency {Input}, valid choices are {EFFTYPE}'
 
 
     def UpdateConfig(self, Input, AsType):
 
         for i, prop in enumerate(Input):
-
-            dic = self.config['Y']
-            if hasattr(prop, 'isDetector'):
-                dic[prop]          = deepcopy( CouplingDict )
-                dic[prop]['name']  = prop
-                dic[prop]['order'] = i
-
-            else:
-                dic[prop]           = deepcopy( Prop2Dict[prop.lower()] )
-                dic[prop]['order']  = i
+            dic                 = self.config['Y']
+            dic[prop]           = deepcopy( Prop2Dict[prop.lower()] )
+            dic[prop]['order']  = i
 
         self.GetShape(self.config)
 
         self.config['output'] = AsType
-
-
-    def PrepareInput(self, Input):
-
-        Input = ToList(Input)
-
-        if 'Coupling' in Input:
-            Input.remove('Coupling')
-            Input += [detec for detec in self.DetectorSet.kwargs.values()]
-
-        if 'all efficiencies' in Input:
-            Input += EFFTYPE
-
-        return Input
 
 
     def Get(self, Input='Qsca', AsType='pymiesim'):
@@ -174,10 +165,9 @@ class Setup(object):
             Dataframe containing Efficiencies vs. Wavelength, Diameter vs. Index...
 
         """
+        Input = set( ToList(Input) )
 
-        Input = self.PrepareInput(Input)
-
-        self.AssertionType(AsType=AsType)
+        self.AssertionType(Input=Input, AsType=AsType)
 
         self.UpdateConfig(Input, AsType)
 
@@ -188,18 +178,19 @@ class Setup(object):
         i = 0
         for source in self.SourceSet.Generator():
             for scatterer in self.ScattererSet.Generator(source):
-                for prop in Input:
-                    if hasattr(prop, 'isDetector'):
-                        Array[i] = prop.Coupling(Scatterer = scatterer)
-                        i       += 1;
+                for detector in self.DetectorSet.Generator():
+                    for prop in Input:
+                        if prop == 'Coupling':
+                            Array[i] = detector.Coupling(Scatterer = scatterer)
+                            i       += 1
 
-                    else:
-                        Array[i] = getattr(scatterer, prop)
-                        i       += 1
+                        else:
+                            Array[i] = getattr(scatterer, prop)
+                            i       += 1
 
-        return self.ReturnType(Array     = Array.reshape( self.config['shape']),
-                               AsType    = AsType,
-                               conf      = self.config)
+        Array = Array.reshape( self.config['shape'] )
+
+        return self.ReturnType(Array = Array, AsType = AsType)
 
 
     def BindMaterial(self):
@@ -209,19 +200,18 @@ class Setup(object):
             mat.Evaluate(self.SourceSet.kwargs['Wavelength'])
 
 
-    def ReturnType(self, Array, AsType, conf):
+    def ReturnType(self, Array, AsType):
 
         if AsType.lower() == 'optimizer':
             return Opt5DArray(Array)
 
         elif AsType.lower() == 'pymiesim':
-            return PMSArray(array = Array, conf = conf)
+            return PMSArray(array = Array, conf = self.config)
 
 
     def GetShape(self, config):
 
-        shape = []
-        size  = 1
+        shape = []; size  = 1
         for key, val in config['X'].items():
             shape += [val['size']]
             size  *= val['size']

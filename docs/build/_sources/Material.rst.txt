@@ -48,12 +48,12 @@ Here is what the Meta file look like
 
 
 
- .. literalinclude:: ../../examples/New-Material.py
+ .. literalinclude:: ../../examples/Extra:New-Material-BK7.py
      :language: python
      :linenos:
 
 
-.. image:: ../images/New-Material.png
+.. image:: ../images/Extra:New-Material-BK7.png
    :width: 600
 
 
@@ -65,10 +65,10 @@ Here is another examples
 
 
 
-.. literalinclude:: ../../examples/New-Material-Silver.py
+.. literalinclude:: ../../examples/Extra:New-Material-Silver.py
     :language: python
     :linenos:
 
 
-.. image:: ../images/New-Material-Silver.png
+.. image:: ../images/Extra:New-Material-Silver.png
   :width: 600

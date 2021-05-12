@@ -336,3 +336,6 @@ readDoc:
 
 cleanDoc:
 	rm -rf docs/build/*
+
+UpdateExamples:
+	python3 examples/UpdateExamples.py	
