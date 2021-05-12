@@ -63,14 +63,16 @@ private:
 void
 SPHERE::ComputeAnBn(complex128* an, complex128* bn, uint MaxOrder)
 {
-  if (SizeParam < 0.5){LowFreqAnBn(an, bn) ; }
-  else                {HighFreqAnBn(an, bn, MaxOrder) ; }
+  HighFreqAnBn(an, bn, MaxOrder) ;
+  //if (SizeParam < 0.5){LowFreqAnBn(an, bn) ; }
+  //else                {HighFreqAnBn(an, bn, MaxOrder) ; }
 }
 
 
 void
 SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
 {
+
   complex128 mx   = Index * SizeParam,
              temp = sqrt(0.5 * PI * SizeParam);
 
@@ -100,7 +102,9 @@ SPHERE::HighFreqAnBn(complex128* an, complex128* bn, uint MaxOrder)
         db.push_back( Index * Dn[i+1] + (double)(i+1) / SizeParam );
         an[i] = (da[i] * px[i] - p1x[i]) / (da[i] * gsx[i] - gs1x[i]) ;
         bn[i] = (db[i] * px[i] - p1x[i]) / (db[i] * gsx[i] - gs1x[i]) ;
+
     }
+
 }
 
 
