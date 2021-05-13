@@ -233,8 +233,8 @@ Coupling mechanism
 .. note::
 
   There are two main coupling mechanisms, **coherent coupling** and non-coherent coupling.
-  For instance, photodiode collect light via an **non-coherent mechanism**, on the other part
-  fiber optic LP mode collect light in a coherent way and as such they usually
+  For instance, photodiode collect light via a **non-coherent mechanism**. On the other part,
+  fiber optic LP mode collects light in a coherent way and as such they usually
   collect a lot less light but they add additional information on the sample studied.
 
 
@@ -249,18 +249,18 @@ Coupling mechanism
 
   It is to be noted that the **coherent coupling** definition is derived from the coupled mode theory
   which remains true as long as the parallax approximation is also true.
-  Also, this coupling are what we would call **centered coupling**. It means that the
-  scatterer is perfectly centered with the detector. As much as it doesn't affect
+  Furthermore, this coupling is what we would call **centered coupling**. It means that the
+  scatterer is perfectly centered with the detector. Even though it doesn't affect
   so much the **non-coherent coupling** coupling, it can largely affect **coherent coupling**.
 
-  In order to take account of the effect of transversal offset of the scatterer we define
+  To take into account the effect of transversal offset of the scatterer, we define
   the footprint of the scatterer.
 
 
   .. math::
     \eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2
 
-  Thus we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
+  Thus, we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
 
   .. math::
     \widetilde{\eta}_{l,m} = \big< \eta_{l,m}(\delta_x, \delta_y) \big>
