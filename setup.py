@@ -39,8 +39,8 @@ DESCRIPTION     = 'A package for light scattering simulations.'
 URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
-REQUIRES_PYTHON = '>3.6.0'
-VERSION         = '0.2.8'
+REQUIRES_PYTHON = '>3.8.0'
+VERSION         = '0.2.15'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',
@@ -178,8 +178,6 @@ setup(
         'Programming Language :: C++',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: CPython',
