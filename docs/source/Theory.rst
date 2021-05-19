@@ -76,7 +76,7 @@ Scattering properties
   .. math::
     &Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)
 
-    &Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}
+    &Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} (2n+1) \mathcal Re \{ a_n+b_n \}
 
     &Q_{abs} = Q_{ext}-Q_{sca}
 
