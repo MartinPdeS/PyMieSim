@@ -24,8 +24,6 @@ RUN mkdir GitProject && mkdir GitProject/PyMieSim
 
 COPY . ./GitProject/PyMieSim/
 
-RUN rm -rf dist/* build/*
-
 RUN pip3 install -U pip
 
 RUN python3.7 -m pip install --upgrade pip
@@ -50,8 +48,6 @@ RUN cd /GitProject/complex_bessel/build && cmake -DBUILD_TESTING=OFF .. && make 
 
 RUN rm -rf /GitProject/PyMieSim/CMakeFiles /GitProject/PyMieSim/CMakeCache.txt
 
-RUN cd /GitProject/PyMieSim && cmake . && make clean && make all
-
 RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 
 RUN python3.8 get-pip.py
@@ -75,8 +71,18 @@ RUN echo Pip username inputed: $username
 
 RUN echo Compiling wheel for Python3.8
 
-RUN python3.8 -m pip wheel /GitProject/PyMieSim -w /GitProject/PyMieSim/output
+RUN rm /GitProject/PyMieSim/**/*.so -f
 
-RUN auditwheel repair /GitProject/PyMieSim/output/PyMieSim*cp38* -w /GitProject/PyMieSim/output
+RUN rm /GitProject/PyMieSim/**/**/*.so -f
 
-RUN python3 -m twine upload --password $password --username $username --repository pypi /GitProject/PyMieSim/output/PyMieSim*manylinux2014*
+RUN rm -rf dist/* build/*
+
+RUN cd /GitProject/PyMieSim && cmake . && make clean && make all
+
+RUN cd /GitProject/PyMieSim/ && python3.8 setup.py install
+
+RUN cd /GitProject/PyMieSim/ && python3.8 setup.py bdist_wheel
+
+RUN auditwheel repair /GitProject/PyMieSim/dist/*.whl -w /GitProject/PyMieSim/output
+
+RUN python3.8 -m twine upload --password $password --username $username --repository pypi /GitProject/PyMieSim/output/PyMieSim*manylinux2014*

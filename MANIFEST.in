@@ -28,4 +28,5 @@ include PyMieSim/includes/*.h
 
 include PyMieSim/*.so
 include PyMieSim/LMT/*.so
+include PyMieSim/GLMT/*.so
 include PyMieSim/LMT/Scatterer.cpython-38-x86_64-linux-gnu.so
