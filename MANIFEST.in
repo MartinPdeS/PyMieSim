@@ -4,29 +4,19 @@ include PyMieSim/*.cpp
 include PyMieSim/*.h
 include PyMieSim/CMakeLists.txt
 
-include PyMieSim/LMT/includes/SpecialFunc.h
-include PyMieSim/LMT/includes/BaseClass.h
-include PyMieSim/LMT/includes/utils.h
-include PyMieSim/LMT/includes/BaseFunc.h
+include PyMieSim/LMT/includes/*.h
 
-include PyMieSim/LMT/includes/SpecialFunc.cpp
-include PyMieSim/LMT/includes/BaseClass.cpp
-include PyMieSim/LMT/includes/utils.cpp
-include PyMieSim/LMT/includes/BaseFunc.cpp
+include PyMieSim/LMT/includes/*.cpp
 
-
-include PyMieSim/GLMT/cpp/GaussianBeam.cpp
-include PyMieSim/GLMT/cpp/Cylinder.cpp
-include PyMieSim/GLMT/cpp/Sphere.cpp
-include PyMieSim/GLMT/cpp/Interface.cpp
-
+include PyMieSim/GLMT/cpp/*.cpp
 
 include PyMieSim/LMT/cpp/*.cpp
 
 include PyMieSim/includes/*.h
 
-
 include PyMieSim/*.so
 include PyMieSim/LMT/*.so
 include PyMieSim/GLMT/*.so
-include PyMieSim/LMT/Scatterer.cpython-38-x86_64-linux-gnu.so
+include PyMieSim/Data/LPmodes/*.npy
+include PyMieSim/Data/_Material/Meta.json
+include PyMieSim/Data/_Material/npz/*.npz

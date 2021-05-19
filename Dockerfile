@@ -24,13 +24,15 @@ RUN mkdir GitProject && mkdir GitProject/PyMieSim
 
 COPY . ./GitProject/PyMieSim/
 
-RUN pip3 install -U pip
-
+#RUN pip3 install -U pip
+RUN python3   -m pip install --upgrade pip
 RUN python3.7 -m pip install --upgrade pip
 RUN python3.8 -m pip install --upgrade pip
 
-RUN python3.7 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk
-RUN python3.8 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk
+RUN python3 -m pip install cryptography==3.3.2
+RUN python3 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
+RUN python3.7 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
+RUN python3.8 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
 
 RUN wget -c 'http://sourceforge.net/projects/boost/files/boost/1.75.0/boost_1_75_0.tar.bz2'
 
@@ -41,8 +43,6 @@ RUN cp -r boost_1_75_0/boost /usr/include
 RUN cd GitProject && git clone https://github.com/joeydumont/complex_bessel.git
 
 RUN mkdir GitProject/complex_bessel/build
-
-RUN rm /GitProject/PyMieSim/**/**/*.so -f
 
 RUN cd /GitProject/complex_bessel/build && cmake -DBUILD_TESTING=OFF .. && make install
 
@@ -60,8 +60,6 @@ RUN mkdir /GitProject/PyMieSim/output
 
 RUN python3.8 get-pip.py
 
-RUN python3.8 -m pip install setuptools_rust wheel twine vtk
-
 RUN echo Pip password inputed: $password
 
 RUN echo Pip username inputed: $username
@@ -71,17 +69,24 @@ RUN echo Pip username inputed: $username
 
 RUN echo Compiling wheel for Python3.8
 
+RUN rm -rf /GitProject/PyMieSim/dist/* /GitProject/PyMieSim/build/* /GitProject/PyMieSim/output/*
+
 RUN rm /GitProject/PyMieSim/**/*.so -f
 
 RUN rm /GitProject/PyMieSim/**/**/*.so -f
 
-RUN rm -rf dist/* build/*
+RUN rm -rf /GitProject/PyMieSim/dist/* /GitProject/PyMieSim/build/*
 
 RUN cd /GitProject/PyMieSim && cmake . && make clean && make all
 
 RUN cd /GitProject/PyMieSim/ && python3.8 setup.py install
-
 RUN cd /GitProject/PyMieSim/ && python3.8 setup.py bdist_wheel
+
+RUN cd /GitProject/PyMieSim/ && python3.7 setup.py install
+RUN cd /GitProject/PyMieSim/ && python3.7 setup.py bdist_wheel
+
+RUN cd /GitProject/PyMieSim/ && python3 setup.py install
+RUN cd /GitProject/PyMieSim/ && python3 setup.py bdist_wheel
 
 RUN auditwheel repair /GitProject/PyMieSim/dist/*.whl -w /GitProject/PyMieSim/output
 
