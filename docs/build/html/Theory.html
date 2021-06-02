@@ -4,16 +4,17 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Theoretical background &#8212; PyMieSim 0.1.11 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <link rel="stylesheet" type="text/css" href="_static/default.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
   </head><body>
@@ -45,16 +46,16 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="theoretical-background">
+  <section id="theoretical-background">
 <h1>Theoretical background<a class="headerlink" href="#theoretical-background" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="lorenz-mie-theory-lmt">
+<section id="lorenz-mie-theory-lmt">
 <h2>Lorenz-Mie Theory (LMT)<a class="headerlink" href="#lorenz-mie-theory-lmt" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Lorenz-Mie Theory or (LMT for short) is a framework that can be used to find
 exact solution of the scattered field considering a plane wave incident to a
 scatterer with a certain geometry.
-The solution is usally written in the form of an infinit summation which, of
+The solution is usually written in the form of an infinite summation which, of
 course, has to be truncated. PyMieSim is a library which does solve the
 equations in order to retrieve plenty of important informations.
 It is to be noted that in all the library, the angles <span class="math notranslate nohighlight">\(\theta\)</span> and
@@ -64,7 +65,7 @@ following figure.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Here are, few of the most important relation governing the PyMieSim library.</p>
+<p>Here are few of the most important relations governing the PyMieSim library.</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}&amp;S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)\\&amp;.\\&amp;S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\tau_n+b_n\pi_n)\\.&amp;\\&amp;\text{Fields} = E_{\theta}(\phi,\theta) \vec{\theta} +   E_{\phi}(\phi,\theta) \vec{\phi}\\.&amp;\\&amp;\text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2 }\end{aligned}\end{align} \]</div>
 <p><strong>Stokes parameters:</strong></p>
@@ -73,8 +74,8 @@ following figure.</p>
 \[ \begin{align}\begin{aligned}&amp;I = \big| E_x \big|^2 + \big| E_y \big|^2\\.&amp;\\&amp;Q = \big| E_x \big|^2 - \big| E_y \big|^2\\.&amp;\\&amp;U = 2 \mathcal{Re} \big\{ E_x E_y^* \big\}\\.&amp;\\&amp;V = 2 \mathcal{Im} \big\{ E_x E_y^* \big\}\end{aligned}\end{align} \]</div>
 </div></blockquote>
 </div>
-</div>
-<div class="section" id="scattering-properties">
+</section>
+<section id="scattering-properties">
 <h2>Scattering properties<a class="headerlink" href="#scattering-properties" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -86,7 +87,7 @@ following figure.</p>
 - ratio of front and back scattering
 - optical pressure efficiency
 - anisotropy factor g</p>
-<p>Those parameter can be computed using PyMieSim according to those equations.</p>
+<p>Those parameters can be computed using PyMieSim according to those equations.</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}&amp;Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\&amp;Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}\\&amp;Q_{abs} = Q_{ext}-Q_{sca}\\&amp;Q_{back} = \frac{1}{x^2} \Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \Big|^2\\&amp;Q_{ratio} = \frac{Q_{back}}{Q_{sca}}\\&amp;Q_{pr} = Q_{ext} - g * Q_{sca}\\&amp;g = \frac{4}{Q_{sca} x^2}
         \Big[ \sum\limits_{n=1}^{n_{max}} \frac{n(n+2)}{n+1} \text{Re} \left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\right\} +
@@ -98,15 +99,15 @@ following figure.</p>
 </div>
 </div>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="an-and-bn-coefficients">
+<section id="an-and-bn-coefficients">
 <h2>An and Bn coefficients:<a class="headerlink" href="#an-and-bn-coefficients" title="Permalink to this headline">¶</a></h2>
-<p>From the An and Bn coefficient we can retrieve many useful properties of
+<p>From the An and Bn coefficients, we can retrieve many useful properties of
 the scatterer and scattered far-fields. Those are complementary to the
 Cn and Dn coefficient (for near-field properties) which we do no compute
 with PyMieSim at the moment.
-Depending on the scatterer geometry all those coefficient may vary, here we
+Depending on the scatterer geometry, all those coefficient may vary. Here we
 have three example which are available with the PyMieSim library.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -151,7 +152,7 @@ It might change in a future update.</div>
 <div class="line-block">
 <div class="line"><span class="math notranslate nohighlight">\(M\)</span> is the refractive index of the scatterer.</div>
 <div class="line"><span class="math notranslate nohighlight">\(m\)</span> is the refractive index of the medium.</div>
-<div class="line"><span class="math notranslate nohighlight">\(H_n\)</span> is the Hankel function of first king of order n.</div>
+<div class="line"><span class="math notranslate nohighlight">\(H_n\)</span> is the Hankel function of first kind of order n.</div>
 <div class="line"><a class="reference internal" href="References.html#references"><span class="std std-ref">References</span></a> [5] Eq(8.30-32).</div>
 </div>
 </div>
@@ -195,41 +196,41 @@ m_2 = \frac{n_{shell}}{n_{medium}}.\]</div>
 <div class="line"><a class="reference internal" href="References.html#references"><span class="std std-ref">References</span></a> [8] Eq(4-5).</div>
 </div>
 </div>
-</div>
-<div class="section" id="generalized-lorenz-mie-theory-glmt">
+</section>
+<section id="generalized-lorenz-mie-theory-glmt">
 <h2>Generalized Lorenz-Mie Theory (GLMT)<a class="headerlink" href="#generalized-lorenz-mie-theory-glmt" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>Coming soon</strong></p>
 </div>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="coupling-mechanism">
+<section id="coupling-mechanism">
 <h2>Coupling mechanism<a class="headerlink" href="#coupling-mechanism" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>There is two main coupling mechanism, <strong>coherent coupling</strong> and non-coherent coupling.
-For instance photodiode collect light via an <strong>non-coherent mechanism</strong>, on the other part
-fiber optic LP mode collect light in a coherent way and as such they usually
+<p>There are two main coupling mechanisms, <strong>coherent coupling</strong> and non-coherent coupling.
+For instance, photodiode collect light via a <strong>non-coherent mechanism</strong>. On the other part,
+fiber optic LP mode collects light in a coherent way and as such they usually
 collect a lot less light but they add additional information on the sample studied.</p>
 <p>Mathematically they are defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}C_{coh.} &amp;= \Big| \iint_{\Omega}  \Phi_{det} \, . \, \Psi_{scat}^* \,  d \Omega \Big|^2\\C_{Noncoh.} &amp;=  \iint_{\Omega}  \Big| \Phi_{det} \Big|^2 \,.\, \Big| \Psi_{scat} \Big|^2 \,  d \Omega\end{aligned}\end{align} \]</div>
 <p>It is to be noted that the <strong>coherent coupling</strong> definition is derived from the coupled mode theory
 which remains true as long as the parallax approximation is also true.
-Also this coupling are what we would call <strong>centered coupling</strong>. It means that the
-scatterer is perfectly centered with the detector. As much as it doesn’t affect
+Furthermore, this coupling is what we would call <strong>centered coupling</strong>. It means that the
+scatterer is perfectly centered with the detector. Even though it doesn’t affect
 so much the <strong>non-coherent coupling</strong> coupling, it can largely affect <strong>coherent coupling</strong>.</p>
-<p>In order to take account of the effect of transversal offset of the scatterer we define
+<p>To take into account the effect of transversal offset of the scatterer, we define
 the footprint of the scatterer.</p>
 <div class="math notranslate nohighlight">
 \[\eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2\]</div>
-<p>Thus we can compute the <strong>mean coupling</strong> as the mean value of <span class="math notranslate nohighlight">\(\eta_{l,m}\)</span></p>
+<p>Thus, we can compute the <strong>mean coupling</strong> as the mean value of <span class="math notranslate nohighlight">\(\eta_{l,m}\)</span></p>
 <div class="math notranslate nohighlight">
 \[\widetilde{\eta}_{l,m} = \big&lt; \eta_{l,m}(\delta_x, \delta_y) \big&gt;\]</div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -293,7 +294,7 @@ the footprint of the scatterer.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>

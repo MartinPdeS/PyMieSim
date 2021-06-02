@@ -4,12 +4,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>Examples &#8212; PyMieSim 0.1.11 documentation</title>
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <link rel="stylesheet" type="text/css" href="_static/default.css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
@@ -44,1218 +45,878 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="examples">
+  <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="creating-scatterers">
+<section id="creating-scatterers">
 <h2>Creating Scatterers<a class="headerlink" href="#creating-scatterers" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Index</strong></span><a class="headerlink" href="#id1" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim</span>           <span class="kn">import</span> <span class="n">Material</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>    <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>             <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>     <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
-                  <span class="n">Source</span>       <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                  <span class="n">Index</span>        <span class="o">=</span> <span class="mf">1.445</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>           <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>    <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">Polarization</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                      <span class="n">E0</span>             <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>     <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
+<span class="linenos">11</span>                  <span class="n">Source</span>       <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">12</span>                  <span class="n">Index</span>        <span class="o">=</span> <span class="mf">1.445</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">16</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Material</strong></span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim</span>           <span class="kn">import</span> <span class="n">Material</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
-                  <span class="n">Source</span>       <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                  <span class="n">Material</span>     <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">))</span>
-
-
-    <span class="c1"># Material can be &#39;FusedSilica&#39;</span>
-    <span class="c1">#                 &#39;Aluminium&#39;</span>
-    <span class="c1">#                 &#39;Silver&#39;</span>
-    <span class="c1">#                 &#39;SodaLimeGlass&#39;</span>
-    <span class="c1"># More information in Material section of documentation</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>           <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
+<span class="linenos">11</span>                  <span class="n">Source</span>       <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">12</span>                  <span class="n">Material</span>     <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">))</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="c1"># Material can be &#39;FusedSilica&#39;</span>
+<span class="linenos">16</span>    <span class="c1">#                 &#39;Aluminium&#39;</span>
+<span class="linenos">17</span>    <span class="c1">#                 &#39;Silver&#39;</span>
+<span class="linenos">18</span>    <span class="c1">#                 &#39;SodaLimeGlass&#39;</span>
+<span class="linenos">19</span>    <span class="c1"># More information in Material section of documentation</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">23</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: ScatProperties</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
-                  <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                  <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">Scat</span><span class="o">.</span><span class="n">Properties</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
-
-
-<span class="c1"># _____________________OUTPUT_____________________</span>
-<span class="c1">#       Object:          Dictionary</span>
-<span class="c1">#        Keys:            Efficiencies, cross-sections, others</span>
-<span class="c1">#        Structured data: Yes</span>
-<span class="c1">#        Method:          &lt;Plot&gt;</span>
-<span class="c1">#        Shape:           [7, 1]</span>
-<span class="c1">#         ========================================</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qsca        | 4.029799032677242</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qext        | 4.029799032677242</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qabs        | 0.0</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qback       | 4.973830378796597</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qratio      | 1.2342626365395144</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># Efficiencies   | Qpr         | 0.7925897259835781</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Csca        | 2.03e+00 μm²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cext        | 2.03e+00 μm²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cabs        | 0 m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cback       | 2.50e+00 μm²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cratio      | 6.20e+05 nano-m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># cross-sections | Cpr         | 3.98e+05 nano-m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># others         | area        | 5.03e+05 nano-m²</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># others         | index       | 1.4</span>
-<span class="c1"># --------------------------------------------------</span>
-<span class="c1"># others         | g           | 0.7925897259835781</span>
-<span class="c1"># --------------------------------------------------</span>
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Scatterer Properties</strong></span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 6</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                  <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">11</span>                  <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Scat</span><span class="o">.</span><span class="n">Properties</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">17</span>    <span class="n">run</span><span class="p">()</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">#___________________________OUTPUT___________________________________</span>
+<span class="linenos">21</span><span class="c1">#</span>
+<span class="linenos">22</span><span class="c1">#         Object:          Dictionary</span>
+<span class="linenos">23</span><span class="c1">#         Keys:            Efficiencies, cross-sections, others</span>
+<span class="linenos">24</span><span class="c1">#         Structured data: Yes</span>
+<span class="linenos">25</span><span class="c1">#         Method:          &lt;Plot&gt;</span>
+<span class="linenos">26</span><span class="c1">#         Shape:           [7, 1]</span>
+<span class="linenos">27</span><span class="c1">#         ========================================</span>
+<span class="linenos">28</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">29</span><span class="c1"># Efficiencies   | Qsca             | 4.029799032677242</span>
+<span class="linenos">30</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">31</span><span class="c1">#                | Qext             | 4.029799032677242</span>
+<span class="linenos">32</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">33</span><span class="c1">#                | Qabs             | 0.0</span>
+<span class="linenos">34</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">35</span><span class="c1">#                | Qback            | 4.973830378796597</span>
+<span class="linenos">36</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">37</span><span class="c1">#                | Qratio           | 1.2342626365395144</span>
+<span class="linenos">38</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">39</span><span class="c1">#                | Qpr              | 0.7925897259835781</span>
+<span class="linenos">40</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">41</span><span class="c1"># cross-sections | Csca             | 2.025597925840332e-12 m²  (2.03e+00 μm²)</span>
+<span class="linenos">42</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">43</span><span class="c1">#                | Cext             | 2.025597925840332e-12 m²  (2.03e+00 μm²)</span>
+<span class="linenos">44</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">45</span><span class="c1">#                | Cabs             | 0 m²</span>
+<span class="linenos">46</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">47</span><span class="c1">#                | Cback            | 2.5001198365166603e-12 m²  (2.50e+00 μm²)</span>
+<span class="linenos">48</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">49</span><span class="c1">#                | Cratio           | 6.204080690484652e-13 m²  (6.20e+05 nm²)</span>
+<span class="linenos">50</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">51</span><span class="c1">#                | Cpr              | 3.98399049673721e-13 m²  (3.98e+05 nm²)</span>
+<span class="linenos">52</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">53</span><span class="c1"># others         | area             | 5.026548245743668e-13 m²  (5.03e+05 nm²)</span>
+<span class="linenos">54</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">55</span><span class="c1">#                | index            | 1.4</span>
+<span class="linenos">56</span><span class="c1"># ----------------------------------------------------------------------</span>
 </pre></div>
-</td></tr></table></div>
 </div>
 </div>
 <hr class="docutils" />
-<div class="section" id="computing-fields">
+</section>
+<hr class="docutils" />
+<section id="computing-fields">
 <h2>Computing fields<a class="headerlink" href="#computing-fields" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text"><strong>Scatterer: S1-S2</strong></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
-                  <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                  <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
-
-
-    <span class="n">S1S2</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">S1S2</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-
-    <span class="n">S1S2</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
+<span class="linenos">11</span>                  <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">12</span>                  <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">S1S2</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">S1S2</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">S1S2</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">21</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/S1S2.png"><img alt="_images/S1S2.png" src="_images/S1S2.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Stokes</strong></span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
-                 <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                 <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
-
-    <span class="n">Stokes</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">Stokes</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-
-    <span class="n">Stokes</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 6</span>                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                 <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">11</span>                 <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">Stokes</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">Stokes</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">Stokes</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">19</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Stokes.png"><img alt="_images/Stokes.png" src="_images/Stokes.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text"><strong>Scatterer: full far-field</strong></span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
-
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
-                 <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                 <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
-
-
-    <span class="n">Fields</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">FarField</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-
-    <span class="n">Fields</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
+<span class="linenos">11</span>                 <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">12</span>                 <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">Fields</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">FarField</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">Fields</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">21</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/FarField.png"><img alt="_images/FarField.png" src="_images/FarField.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id7">
 <div class="code-block-caption"><span class="caption-text"><strong>Scatterer: phase function</strong></span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
-                <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
-
-    <span class="n">SPF</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">SPF</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-
-    <span class="n">SPF</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 6</span>                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">11</span>                <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">SPF</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">SPF</span><span class="p">(</span><span class="n">Num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">SPF</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">19</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/SPF.png"><img alt="_images/SPF.png" src="_images/SPF.png" style="width: 600px;" /></a>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="creating-detectors">
+<section id="creating-detectors">
 <h2>Creating Detectors<a class="headerlink" href="#creating-detectors" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id8">
 <div class="code-block-caption"><span class="caption-text"><strong>Detector: Photodiode</strong></span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">Photodiode</span>
-
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
-                         <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">1001</span><span class="p">,</span>
-                         <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                         <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-
-
-    <span class="n">Detector</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+<span class="linenos">11</span>                         <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">1001</span><span class="p">,</span>
+<span class="linenos">12</span>                         <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">13</span>                         <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">Detector</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">20</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Photodiode.png"><img alt="_images/Photodiode.png" src="_images/Photodiode.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id9">
 <div class="code-block-caption"><span class="caption-text"><strong>Detector: LPMode</strong></span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">LPmode</span>
-
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-
-    <span class="n">Detector</span> <span class="o">=</span> <span class="n">LPmode</span><span class="p">(</span><span class="n">Mode</span>         <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
-                     <span class="n">Rotation</span>     <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
-                     <span class="n">Sampling</span>     <span class="o">=</span> <span class="mi">201</span><span class="p">,</span>
-                     <span class="n">NA</span>           <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
-                     <span class="n">GammaOffset</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                     <span class="n">PhiOffset</span>    <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
-                     <span class="n">CouplingMode</span> <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-
-    <span class="n">Detector</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">LPmode</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Detector</span> <span class="o">=</span> <span class="n">LPmode</span><span class="p">(</span><span class="n">Mode</span>         <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+<span class="linenos">11</span>                     <span class="n">Rotation</span>     <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+<span class="linenos">12</span>                     <span class="n">Sampling</span>     <span class="o">=</span> <span class="mi">201</span><span class="p">,</span>
+<span class="linenos">13</span>                     <span class="n">NA</span>           <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span>
+<span class="linenos">14</span>                     <span class="n">GammaOffset</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">15</span>                     <span class="n">PhiOffset</span>    <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+<span class="linenos">16</span>                     <span class="n">CouplingMode</span> <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="n">Detector</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">23</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/LPMode.png"><img alt="_images/LPMode.png" src="_images/LPMode.png" style="width: 600px;" /></a>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="computing-coupling">
+<section id="computing-coupling">
 <h2>Computing coupling<a class="headerlink" href="#computing-coupling" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id10">
 <div class="code-block-caption"><span class="caption-text"><strong>Coupling: Scatterer-Photodiode</strong></span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>  <span class="kn">import</span> <span class="n">Photodiode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">Detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">Sampling</span>     <span class="o">=</span> <span class="mi">201</span><span class="p">,</span>
-                         <span class="n">NA</span>           <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                         <span class="n">GammaOffset</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                         <span class="n">PhiOffset</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                         <span class="n">CouplingMode</span> <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
-                 <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-                 <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
-
-    <span class="n">Coupling</span> <span class="o">=</span> <span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scat</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">Coupling</span><span class="p">)</span> <span class="c1"># 6.566085549292496e-18</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>  <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 7</span>                      <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 8</span>                      <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">Sampling</span>     <span class="o">=</span> <span class="mi">201</span><span class="p">,</span>
+<span class="linenos">11</span>                         <span class="n">NA</span>           <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="linenos">12</span>                         <span class="n">GammaOffset</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">13</span>                         <span class="n">PhiOffset</span>    <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">14</span>                         <span class="n">CouplingMode</span> <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">300e-9</span><span class="p">,</span>
+<span class="linenos">17</span>                 <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">18</span>                 <span class="n">Index</span>       <span class="o">=</span> <span class="mf">1.4</span><span class="p">)</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">Coupling</span> <span class="o">=</span> <span class="n">Detector</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Scat</span><span class="p">)</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Coupling</span><span class="p">)</span> <span class="c1"># 6.566085549292496e-18</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">26</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <p>Output: (6.57e+01 nWatt)</p>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="experiment-properties">
+<section id="experiment-properties">
 <h2>Experiment: properties<a class="headerlink" href="#experiment-properties" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id11">
 <div class="code-block-caption"><span class="caption-text"><strong>ScattererSet: Qscattering</strong></span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
-
-    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">100e-9</span><span class="p">,</span> <span class="mf">10000e-9</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
-                     <span class="s1">&#39;Index&#39;</span>    <span class="p">:</span> <span class="p">[</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">],</span>
-                     <span class="s1">&#39;nMedium&#39;</span>  <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-
-    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="p">[</span><span class="mf">400e-9</span><span class="p">],</span>
-                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-
-    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-
-    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
-                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
-
-    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Qsca&#39;</span><span class="p">)</span>
-
-    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Diameter&#39;</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">100e-9</span><span class="p">,</span> <span class="mf">10000e-9</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+<span class="linenos"> 9</span>                     <span class="s1">&#39;Index&#39;</span>    <span class="p">:</span> <span class="p">[</span><span class="mf">1.4</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">],</span>
+<span class="linenos">10</span>                     <span class="s1">&#39;nMedium&#39;</span>  <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="p">[</span><span class="mf">400e-9</span><span class="p">],</span>
+<span class="linenos">13</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">20</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">21</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Qsca&#39;</span><span class="p">)</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Diameter&#39;</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">29</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Qscattering.png"><img alt="_images/Qscattering.png" src="_images/Qscattering.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id12">
 <div class="code-block-caption"><span class="caption-text"><strong>Experiment: Qsca-vs-diameter</strong></span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
-
-    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">6.36e-09</span><span class="p">,</span> <span class="mf">10000e-9</span><span class="p">,</span> <span class="mi">1500</span><span class="p">),</span>
-                     <span class="s1">&#39;Material&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)],</span>
-                     <span class="s1">&#39;nMedium&#39;</span>  <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-
-    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="p">[</span><span class="mf">400e-9</span><span class="p">],</span>
-                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-    <span class="n">scatSet</span>   <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-
-    <span class="n">sourceSet</span> <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-
-    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">)</span>
-
-    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">Input</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Qsca&#39;</span><span class="p">,</span> <span class="s1">&#39;Qabs&#39;</span><span class="p">])</span>
-
-    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;diameter&#39;</span><span class="p">,</span> <span class="n">Scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">Groupby</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
-
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">6.36e-09</span><span class="p">,</span> <span class="mf">10000e-9</span><span class="p">,</span> <span class="mi">1500</span><span class="p">),</span>
+<span class="linenos">10</span>                     <span class="s1">&#39;Material&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)],</span>
+<span class="linenos">11</span>                     <span class="s1">&#39;nMedium&#39;</span>  <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="p">[</span><span class="mf">400e-9</span><span class="p">],</span>
+<span class="linenos">14</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">scatSet</span>   <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="n">sourceSet</span> <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">21</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">Input</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Qsca&#39;</span><span class="p">,</span> <span class="s1">&#39;Qabs&#39;</span><span class="p">])</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;diameter&#39;</span><span class="p">,</span> <span class="n">Scale</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">,</span> <span class="n">Groupby</span><span class="o">=</span><span class="s1">&#39;type&#39;</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">30</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Qsca-vs-diameter.png"><img alt="_images/Qsca-vs-diameter.png" src="_images/Qsca-vs-diameter.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id13">
 <div class="code-block-caption"><span class="caption-text"><strong>Experiment: Mie-resonances</strong></span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
-
-    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span> <span class="p">:</span> <span class="mf">200e-9</span><span class="p">,</span>
-                     <span class="s1">&#39;Index&#39;</span>    <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-                     <span class="s1">&#39;nMedium&#39;</span>  <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-
-    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
-                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-
-    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-
-    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
-                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
-
-
-    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">Input</span><span class="o">=</span><span class="s1">&#39;Qsca&#39;</span><span class="p">)</span>
-
-    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">)</span>
-
-
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span> <span class="p">:</span> <span class="mf">200e-9</span><span class="p">,</span>
+<span class="linenos"> 9</span>                     <span class="s1">&#39;Index&#39;</span>    <span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">],</span>
+<span class="linenos">10</span>                     <span class="s1">&#39;nMedium&#39;</span>  <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
+<span class="linenos">13</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">20</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">21</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="n">Input</span><span class="o">=</span><span class="s1">&#39;Qsca&#39;</span><span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Wavelength&#39;</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">32</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Mie-resonances.png"><img alt="_images/Mie-resonances.png" src="_images/Mie-resonances.png" style="width: 600px;" /></a>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="experiment-coupling">
+<section id="experiment-coupling">
 <h2>Experiment: coupling<a class="headerlink" href="#experiment-coupling" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id14">
 <div class="code-block-caption"><span class="caption-text"><strong>Experiment: Coupling-vs-diameter</strong></span><a class="headerlink" href="#id14" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
-
-    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">2000e-9</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
-                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
-                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-
-    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
-                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">90</span><span class="p">]}</span>
-
-    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
-                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">70</span><span class="p">,</span>
-                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-    <span class="n">detectKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Detector 0&#39;</span>   <span class="p">:</span> <span class="n">Detector0</span><span class="p">}</span>
-
-    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">detectKwargs</span><span class="p">)</span>
-
-    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-
-    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-
-    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
-                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
-
-    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span>
-
-    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Diameter&#39;</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">2000e-9</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
+<span class="linenos">10</span>                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
+<span class="linenos">11</span>                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
+<span class="linenos">14</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">60</span><span class="p">,</span><span class="mi">90</span><span class="p">]}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="linenos">17</span>                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">18</span>                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">70</span><span class="p">,</span>
+<span class="linenos">19</span>                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">20</span>                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">detectKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Detector 0&#39;</span>   <span class="p">:</span> <span class="n">Detector0</span><span class="p">}</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">detectKwargs</span><span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">31</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">32</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Diameter&#39;</span><span class="p">)</span>
+<span class="linenos">37</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">40</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Coupling-vs-diameter.png"><img alt="_images/Coupling-vs-diameter.png" src="_images/Coupling-vs-diameter.png" style="width: 600px;" /></a>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id15">
 <div class="code-block-caption"><span class="caption-text"><strong>Experiment: Coupling-vs-wavelength</strong></span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
-
-
-    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
-                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="mf">200e-9</span><span class="p">,</span>
-                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
-                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-
-    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
-                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-    <span class="n">detectKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Detector 0&#39;</span>   <span class="p">:</span> <span class="n">Detector0</span><span class="p">}</span>
-
-    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">detectKwargs</span><span class="p">)</span>
-
-    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-
-    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-
-    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
-                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
-
-    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
-
-    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">)</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">11</span>                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">12</span>                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">13</span>                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">14</span>                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="mf">200e-9</span><span class="p">,</span>
+<span class="linenos">17</span>                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
+<span class="linenos">18</span>                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
+<span class="linenos">21</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="n">detectKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Detector 0&#39;</span>   <span class="p">:</span> <span class="n">Detector0</span><span class="p">}</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">detectKwargs</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">32</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">33</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">)</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>
+<span class="linenos">42</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">43</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <a class="reference internal image-reference" href="_images/Coupling-vs-wavelength.png"><img alt="_images/Coupling-vs-wavelength.png" src="_images/Coupling-vs-wavelength.png" style="width: 600px;" /></a>
-</div>
+</section>
 <hr class="docutils" />
-<div class="section" id="experiment-optimization">
+<section id="experiment-optimization">
 <h2>Experiment: optimization<a class="headerlink" href="#experiment-optimization" title="Permalink to this headline">¶</a></h2>
 <div class="literal-block-wrapper docutils container" id="id16">
 <div class="code-block-caption"><span class="caption-text"><strong>Optimization: Opt-1-parameter</strong></span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="k">return</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">LPmode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
-
-    <span class="n">DiameterList</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">100e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-
-    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                 <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                         <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-                         <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-                         <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                         <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">2000e-9</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
-                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
-                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-
-    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
-                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-
-    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
-                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">([</span><span class="n">Detector0</span><span class="p">])</span>
-
-    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-
-    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-
-    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
-                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
-
-    <span class="c1"># Metric can be &quot;max&quot;</span>
-    <span class="c1">#               &quot;min&quot;</span>
-    <span class="c1">#               &quot;mean&quot;</span>
-    <span class="c1">#               &quot;std+RI&quot;</span>
-    <span class="c1">#               &quot;std+Diameter&quot;</span>
-    <span class="c1">#               &quot;std+Polarization&quot;</span>
-    <span class="c1">#               &quot;std+Wavelength&quot;</span>
-    <span class="c1">#               &quot;std+Detector&quot;</span>
-    <span class="c1">#               &quot;monotonic+RI&quot;</span>
-    <span class="c1">#               &quot;monotonic+Diameter&quot;</span>
-    <span class="c1">#               &quot;monotonic+Polarization&quot;</span>
-    <span class="c1">#               &quot;monotonic+Wavelength&quot;</span>
-    <span class="c1">#               &quot;monotonic+Detector&quot;</span>
-
-    <span class="n">Opt</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Optimize</span><span class="p">(</span><span class="n">Setup</span>           <span class="o">=</span> <span class="n">Experiment</span><span class="p">,</span>
-                     <span class="n">Metric</span>          <span class="o">=</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span>
-                     <span class="n">Parameter</span>       <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PhiOffset&#39;</span><span class="p">],</span>
-                     <span class="n">Optimum</span>         <span class="o">=</span> <span class="s1">&#39;Maximum&#39;</span><span class="p">,</span>
-                     <span class="n">MinVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mf">1e-5</span><span class="p">],</span>
-                     <span class="n">MaxVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mi">180</span><span class="p">],</span>
-                     <span class="n">WhichDetector</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                     <span class="n">X0</span>              <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">],</span>
-                     <span class="n">MaxIter</span>         <span class="o">=</span> <span class="mi">350</span><span class="p">,</span>
-                     <span class="n">Tol</span>             <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-                     <span class="n">FirstStride</span>     <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">Result</span><span class="p">)</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">AsType</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
-
-    <span class="n">df</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;Coupling&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Diameter&#39;</span><span class="p">)</span> <span class="c1"># can be &quot;Couplimg&quot;  or  &quot;STD&quot;</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="k">return</span>
+<span class="linenos"> 3</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">LPmode</span>
+<span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 8</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>    <span class="n">DiameterList</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">100e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                 <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">13</span>                         <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">14</span>                         <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+<span class="linenos">15</span>                         <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">16</span>                         <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">2000e-9</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
+<span class="linenos">19</span>                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
+<span class="linenos">20</span>                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>
+<span class="linenos">23</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+<span class="linenos">26</span>                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">27</span>                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">28</span>                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">29</span>                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">30</span>
+<span class="linenos">31</span>    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">([</span><span class="n">Detector0</span><span class="p">])</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">38</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">39</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span>    <span class="c1"># Metric can be &quot;max&quot;</span>
+<span class="linenos">42</span>    <span class="c1">#               &quot;min&quot;</span>
+<span class="linenos">43</span>    <span class="c1">#               &quot;mean&quot;</span>
+<span class="linenos">44</span>    <span class="c1">#               &quot;std+RI&quot;</span>
+<span class="linenos">45</span>    <span class="c1">#               &quot;std+Diameter&quot;</span>
+<span class="linenos">46</span>    <span class="c1">#               &quot;std+Polarization&quot;</span>
+<span class="linenos">47</span>    <span class="c1">#               &quot;std+Wavelength&quot;</span>
+<span class="linenos">48</span>    <span class="c1">#               &quot;std+Detector&quot;</span>
+<span class="linenos">49</span>    <span class="c1">#               &quot;monotonic+RI&quot;</span>
+<span class="linenos">50</span>    <span class="c1">#               &quot;monotonic+Diameter&quot;</span>
+<span class="linenos">51</span>    <span class="c1">#               &quot;monotonic+Polarization&quot;</span>
+<span class="linenos">52</span>    <span class="c1">#               &quot;monotonic+Wavelength&quot;</span>
+<span class="linenos">53</span>    <span class="c1">#               &quot;monotonic+Detector&quot;</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span>    <span class="n">Opt</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Optimize</span><span class="p">(</span><span class="n">Setup</span>           <span class="o">=</span> <span class="n">Experiment</span><span class="p">,</span>
+<span class="linenos">56</span>                     <span class="n">Metric</span>          <span class="o">=</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span>
+<span class="linenos">57</span>                     <span class="n">Parameter</span>       <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PhiOffset&#39;</span><span class="p">],</span>
+<span class="linenos">58</span>                     <span class="n">Optimum</span>         <span class="o">=</span> <span class="s1">&#39;Maximum&#39;</span><span class="p">,</span>
+<span class="linenos">59</span>                     <span class="n">MinVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mf">1e-5</span><span class="p">],</span>
+<span class="linenos">60</span>                     <span class="n">MaxVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mi">180</span><span class="p">],</span>
+<span class="linenos">61</span>                     <span class="n">WhichDetector</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">62</span>                     <span class="n">X0</span>              <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">],</span>
+<span class="linenos">63</span>                     <span class="n">MaxIter</span>         <span class="o">=</span> <span class="mi">350</span><span class="p">,</span>
+<span class="linenos">64</span>                     <span class="n">Tol</span>             <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+<span class="linenos">65</span>                     <span class="n">FirstStride</span>     <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">Result</span><span class="p">)</span>
+<span class="linenos">68</span>
+<span class="linenos">69</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Coupling</span><span class="p">(</span><span class="n">AsType</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="linenos">70</span>
+<span class="linenos">71</span>    <span class="n">df</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;Coupling&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Diameter&#39;</span><span class="p">)</span> <span class="c1"># can be &quot;Couplimg&quot;  or  &quot;STD&quot;</span>
+<span class="linenos">72</span>
+<span class="linenos">73</span>
+<span class="linenos">74</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">75</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
+</div>
 </div>
 <hr class="docutils" />
 <div class="literal-block-wrapper docutils container" id="id17">
 <div class="code-block-caption"><span class="caption-text"><strong>Optimization: Opt-2-parameter</strong></span><a class="headerlink" href="#id17" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-    <span class="k">return</span>
-    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>  <span class="kn">import</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">LPmode</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Optimizer</span> <span class="kn">import</span> <span class="n">Optimize</span>
-    <span class="kn">from</span> <span class="nn">PyMieSim.Sets</span>      <span class="kn">import</span> <span class="n">ExperimentalSet</span><span class="p">,</span> <span class="n">ScattererSet</span>
-
-    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-                     <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                     <span class="n">E0</span>           <span class="o">=</span> <span class="mf">1e5</span><span class="p">)</span>
-
-    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>               <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                        <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-                        <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-                        <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                        <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-    <span class="n">Detector1</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
-                         <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-                         <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
-                         <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                         <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
-
-
-    <span class="n">ScatSet</span> <span class="o">=</span> <span class="n">ScattererSet</span><span class="p">(</span><span class="n">DiameterList</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">100e-9</span><span class="p">,</span> <span class="mf">1500e-9</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
-                         <span class="n">IndexList</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
-                         <span class="n">Source</span>        <span class="o">=</span> <span class="n">Source</span><span class="p">)</span>
-
-    <span class="n">Set</span> <span class="o">=</span> <span class="n">ExperimentalSet</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">Detectors</span> <span class="o">=</span> <span class="p">(</span><span class="n">Detector0</span><span class="p">))</span>
-
-
-    <span class="n">Opt</span>    <span class="o">=</span> <span class="n">Optimize</span><span class="p">(</span><span class="n">ExperimentalSet</span> <span class="o">=</span> <span class="n">Set</span><span class="p">,</span>
-                    <span class="n">Metric</span>          <span class="o">=</span> <span class="s1">&#39;Monotonic&#39;</span><span class="p">,</span>
-                    <span class="n">Parameter</span>       <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;PhiOffset&#39;</span><span class="p">],</span>
-                    <span class="n">MinVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mf">1e-1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                    <span class="n">MaxVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
-                    <span class="n">WhichDetector</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-                    <span class="n">X0</span>              <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">30</span><span class="p">],</span>
-                    <span class="n">MaxIter</span>         <span class="o">=</span> <span class="mi">350</span><span class="p">,</span>
-                    <span class="n">Tol</span>             <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
-                    <span class="n">FirstStride</span>     <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">Result</span><span class="p">)</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">Set</span><span class="o">.</span><span class="n">DataFrame</span>
-
-    <span class="n">df</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span> <span class="c1"># can be &quot;Couplimg&quot;  or  &quot;STD&quot;</span>
-
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">run</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="k">return</span>
+<span class="linenos"> 3</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>  <span class="kn">import</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">LPmode</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Optimizer</span> <span class="kn">import</span> <span class="n">Optimize</span>
+<span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Sets</span>      <span class="kn">import</span> <span class="n">ExperimentalSet</span><span class="p">,</span> <span class="n">ScattererSet</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                     <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">11</span>                     <span class="n">E0</span>           <span class="o">=</span> <span class="mf">1e5</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>               <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">14</span>                        <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">15</span>                        <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+<span class="linenos">16</span>                        <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">17</span>                        <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">18</span>
+<span class="linenos">19</span>    <span class="n">Detector1</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+<span class="linenos">20</span>                         <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">21</span>                         <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+<span class="linenos">22</span>                         <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">23</span>                         <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="n">ScatSet</span> <span class="o">=</span> <span class="n">ScattererSet</span><span class="p">(</span><span class="n">DiameterList</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">100e-9</span><span class="p">,</span> <span class="mf">1500e-9</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span>
+<span class="linenos">27</span>                         <span class="n">IndexList</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="linenos">28</span>                         <span class="n">Source</span>        <span class="o">=</span> <span class="n">Source</span><span class="p">)</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>    <span class="n">Set</span> <span class="o">=</span> <span class="n">ExperimentalSet</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">Detectors</span> <span class="o">=</span> <span class="p">(</span><span class="n">Detector0</span><span class="p">))</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>
+<span class="linenos">33</span>    <span class="n">Opt</span>    <span class="o">=</span> <span class="n">Optimize</span><span class="p">(</span><span class="n">ExperimentalSet</span> <span class="o">=</span> <span class="n">Set</span><span class="p">,</span>
+<span class="linenos">34</span>                    <span class="n">Metric</span>          <span class="o">=</span> <span class="s1">&#39;Monotonic&#39;</span><span class="p">,</span>
+<span class="linenos">35</span>                    <span class="n">Parameter</span>       <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span><span class="s1">&#39;PhiOffset&#39;</span><span class="p">],</span>
+<span class="linenos">36</span>                    <span class="n">MinVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mf">1e-1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+<span class="linenos">37</span>                    <span class="n">MaxVal</span>          <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span>
+<span class="linenos">38</span>                    <span class="n">WhichDetector</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">39</span>                    <span class="n">X0</span>              <span class="o">=</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span><span class="mi">30</span><span class="p">],</span>
+<span class="linenos">40</span>                    <span class="n">MaxIter</span>         <span class="o">=</span> <span class="mi">350</span><span class="p">,</span>
+<span class="linenos">41</span>                    <span class="n">Tol</span>             <span class="o">=</span> <span class="mf">1e-4</span><span class="p">,</span>
+<span class="linenos">42</span>                    <span class="n">FirstStride</span>     <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+<span class="linenos">43</span>
+<span class="linenos">44</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Opt</span><span class="o">.</span><span class="n">Result</span><span class="p">)</span>
+<span class="linenos">45</span>
+<span class="linenos">46</span>    <span class="n">df</span> <span class="o">=</span> <span class="n">Set</span><span class="o">.</span><span class="n">DataFrame</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>    <span class="n">df</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span> <span class="c1"># can be &quot;Couplimg&quot;  or  &quot;STD&quot;</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">52</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
-</td></tr></table></div>
 </div>
 </div>
+<hr class="docutils" />
+<section id="plot-the-scattering-efficiency-of-a-sphere-using-pymiesim">
+<h3>Plot the scattering efficiency of a sphere using PyMieSim<a class="headerlink" href="#plot-the-scattering-efficiency-of-a-sphere-using-pymiesim" title="Permalink to this headline">¶</a></h3>
+<p>PyMieSim makes it easy to create a source and a scatterer. With these objects
+defined, it is possible to use PyMieSim to find the scattering efficiency of the
+scatterer. This feature can be used to plot a graph of the scattering efficiency
+of a sphere as a function of the permittivity and the size parameter. The graph is
+the following:</p>
+<img alt="_images/ScatteringEfficiency.png" src="_images/ScatteringEfficiency.png" />
+<p>Making this graph using PyMieSim is very simple. Since the graph is made with
+matplotlib and numpy, the first step is to make sure these packages are installed
+and then to import them:</p>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text"><strong>Import librairies</strong></span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="c1"># import PyMieSim</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="c1"># import other librairies</span>
+<span class="linenos"> 6</span>    <span class="kn">import</span> <span class="nn">math</span>
+<span class="linenos"> 7</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 8</span>    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos"> 9</span>    <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="linenos">10</span>    <span class="kn">import</span> <span class="nn">matplotlib</span>
+</pre></div>
 </div>
+</div>
+<p>The following step is to create a light source and an empty list that will
+contain the heatmap values:</p>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text"><strong>Add light source</strong></span><a class="headerlink" href="#id19" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="c1"># set the source using PyMieSim</span>
+<span class="linenos">2</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos">3</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">4</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">5</span>    <span class="c1"># create an empty list</span>
+<span class="linenos">6</span>    <span class="n">heatmap</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+</div>
+</div>
+<p>The next step is the most important since in generates the list of lists that
+will be used to make the heatmap. It consists of two for loops that loop through
+different values of Diameter and Index which are two parameters of a Sphere in
+PyMieSim. Note that some scale adjustments were made to adjust the graph’s aspect
+ratio:</p>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text"><strong>Create list of lists</strong></span><a class="headerlink" href="#id20" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="c1"># loop through all the values to generate the heatmap</span>
+<span class="linenos"> 2</span>    <span class="c1"># first, loop through the diameter values</span>
+<span class="linenos"> 3</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">517</span><span class="p">):</span>
+<span class="linenos"> 4</span>        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos"> 5</span>        <span class="c1"># second, loop through the index values</span>
+<span class="linenos"> 6</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">501</span><span class="p">):</span>
+<span class="linenos"> 7</span>            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos"> 8</span>                <span class="k">continue</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>            <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
+<span class="linenos">11</span>                          <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">12</span>                          <span class="n">Index</span>       <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># square root since permittivity</span>
+<span class="linenos">13</span>                                                     <span class="c1"># is the index squared</span>
+<span class="linenos">14</span>            <span class="c1"># Get the scattering efficiency using GetProperties()</span>
+<span class="linenos">15</span>            <span class="n">prop</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
+<span class="linenos">16</span>            <span class="n">Qsca</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">17</span>            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
+<span class="linenos">18</span>        <span class="c1"># append list (row) to the heatmap (list of lists)</span>
+<span class="linenos">19</span>        <span class="n">heatmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Following this step, we have a list of lists named heatmap that will generate the
+graph. To do so, it is first converted in a numpy array and then some operations
+are made using matplotlib to plot the graph accurately:</p>
+<div class="literal-block-wrapper docutils container" id="id21">
+<div class="code-block-caption"><span class="caption-text"><strong>Plot the graph</strong></span><a class="headerlink" href="#id21" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="c1"># convert the heatmap to a numpy array</span>
+<span class="linenos"> 2</span>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">heatmap</span><span class="p">)</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>    <span class="c1"># create the plot</span>
+<span class="linenos"> 5</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="linenos"> 6</span>    <span class="c1"># show the data and adjust the color scale</span>
+<span class="linenos"> 7</span>    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="c1"># graph title</span>
+<span class="linenos">10</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Scattering efficiency of a sphere&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>    <span class="c1"># x axis settings</span>
+<span class="linenos">13</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Permittivity&quot;</span><span class="p">)</span>
+<span class="linenos">14</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">7</span><span class="p">))</span>
+<span class="linenos">15</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span>    <span class="c1"># y axis settings</span>
+<span class="linenos">18</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Size parameter&quot;</span><span class="p">)</span>
+<span class="linenos">19</span>    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="linenos">20</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">),</span> <span class="mi">7</span><span class="p">))</span>
+<span class="linenos">21</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<span class="linenos">22</span>
+<span class="linenos">23</span>    <span class="c1"># colorbar settings</span>
+<span class="linenos">24</span>    <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="linenos">25</span>    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="linenos">26</span>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="c1"># display the plot in a tight layout</span>
+<span class="linenos">29</span>    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="linenos">30</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>The entire code to generate the graph of the scattering efficiency of a sphere
+can be found below in a single block. The result should be the plot shown under
+the code block.</p>
+<div class="literal-block-wrapper docutils container" id="id22">
+<div class="code-block-caption"><span class="caption-text"><strong>Scattering efficiency graph</strong></span><a class="headerlink" href="#id22" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="c1"># import PyMieSim</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span>    <span class="c1"># import other librairies</span>
+<span class="linenos"> 7</span>    <span class="kn">import</span> <span class="nn">math</span>
+<span class="linenos"> 8</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 9</span>    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos">10</span>    <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="linenos">11</span>    <span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="c1"># set the source using PyMieSim</span>
+<span class="linenos">14</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos">15</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">16</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">17</span>    <span class="c1"># create an empty list</span>
+<span class="linenos">18</span>    <span class="n">heatmap</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>    <span class="c1"># loop through all the values to generate the heatmap</span>
+<span class="linenos">21</span>    <span class="c1"># first, loop through the diameter values</span>
+<span class="linenos">22</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">517</span><span class="p">):</span>
+<span class="linenos">23</span>        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">24</span>        <span class="c1"># second, loop through the index values</span>
+<span class="linenos">25</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">501</span><span class="p">):</span>
+<span class="linenos">26</span>            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">27</span>                <span class="k">continue</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>            <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
+<span class="linenos">30</span>                          <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">31</span>                          <span class="n">Index</span>       <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># square root since permittivity</span>
+<span class="linenos">32</span>                                                     <span class="c1"># is the index squared</span>
+<span class="linenos">33</span>            <span class="c1"># Get the scattering efficiency using GetProperties()</span>
+<span class="linenos">34</span>            <span class="n">prop</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
+<span class="linenos">35</span>            <span class="n">Qsca</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">36</span>            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
+<span class="linenos">37</span>        <span class="c1"># append list (row) to the heatmap (list of lists)</span>
+<span class="linenos">38</span>        <span class="n">heatmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="linenos">39</span>
+<span class="linenos">40</span>    <span class="c1"># convert the heatmap to a numpy array</span>
+<span class="linenos">41</span>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">heatmap</span><span class="p">)</span>
+<span class="linenos">42</span>
+<span class="linenos">43</span>    <span class="c1"># create the plot</span>
+<span class="linenos">44</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="linenos">45</span>    <span class="c1"># show the data and adjust the color scale</span>
+<span class="linenos">46</span>    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="linenos">47</span>
+<span class="linenos">48</span>    <span class="c1"># graph title</span>
+<span class="linenos">49</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Scattering efficiency of a sphere&quot;</span><span class="p">)</span>
+<span class="linenos">50</span>
+<span class="linenos">51</span>    <span class="c1"># x axis settings</span>
+<span class="linenos">52</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Permittivity&quot;</span><span class="p">)</span>
+<span class="linenos">53</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">7</span><span class="p">))</span>
+<span class="linenos">54</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="linenos">55</span>
+<span class="linenos">56</span>    <span class="c1"># y axis settings</span>
+<span class="linenos">57</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Size parameter&quot;</span><span class="p">)</span>
+<span class="linenos">58</span>    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="linenos">59</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">),</span> <span class="mi">7</span><span class="p">))</span>
+<span class="linenos">60</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<span class="linenos">61</span>
+<span class="linenos">62</span>    <span class="c1"># colorbar settings</span>
+<span class="linenos">63</span>    <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="linenos">64</span>    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="linenos">65</span>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="linenos">66</span>
+<span class="linenos">67</span>    <span class="c1"># display the plot in a tight layout</span>
+<span class="linenos">68</span>    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="linenos">69</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos">70</span>
+<span class="linenos">71</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">72</span>    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<img alt="_images/ScatteringEfficiency.png" src="_images/ScatteringEfficiency.png" />
+</section>
+</section>
+</section>
 
 
             <div class="clearer"></div>
@@ -1276,7 +937,10 @@
 <li><a class="reference internal" href="#computing-coupling">Computing coupling</a></li>
 <li><a class="reference internal" href="#experiment-properties">Experiment: properties</a></li>
 <li><a class="reference internal" href="#experiment-coupling">Experiment: coupling</a></li>
-<li><a class="reference internal" href="#experiment-optimization">Experiment: optimization</a></li>
+<li><a class="reference internal" href="#experiment-optimization">Experiment: optimization</a><ul>
+<li><a class="reference internal" href="#plot-the-scattering-efficiency-of-a-sphere-using-pymiesim">Plot the scattering efficiency of a sphere using PyMieSim</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1321,7 +985,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
     </div>
   </body>
 </html>
