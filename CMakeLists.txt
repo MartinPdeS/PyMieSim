@@ -10,9 +10,7 @@ find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 add_subdirectory(pybind11)
 
-FIND_PACKAGE(PythonInterp 3)
-
-FIND_PACKAGE(PythonLibs   3)
+FIND_PACKAGE(PythonInterp 3.8 REQUIRED)
 
 find_package(complex_bessel)
 

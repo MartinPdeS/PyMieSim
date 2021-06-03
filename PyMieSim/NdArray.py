@@ -232,7 +232,7 @@ class PMSArray(object):
         PlotDict = {}
         for key, val in self.conf['Y'].items():
             if not val[Groupby] in PlotDict:
-                PlotDict[val[Groupby]] = plt.subplots(figsize=(8,4))
+                PlotDict[val[Groupby]] = plt.subplots(figsize=(10,5))
 
         for iddx in DimSlicer:
             for key, val in self.conf['Y'].items():
@@ -253,10 +253,9 @@ class PMSArray(object):
 
                 ax.set_ylabel(val['type'])
 
-
         for key, (fig,ax) in PlotDict.items():
             ax.grid()
-            ax.legend(fontsize=6)
+            lgd = ax.legend(fontsize=6, loc='upper left')
             if yLog: ax.set_yscale('log')
             if xLog: ax.set_xscale('log')
 
@@ -269,6 +268,7 @@ class PMSArray(object):
 
         for order, dict in self.conf['X'].items():
             key   = dict['name']
+
             if key.lower() == x.lower():
                 shape[order] = None
                 xval         = self.conf['X'][order]['dimension']
@@ -310,7 +310,7 @@ class PMSArray(object):
                 if xdict['name'] == 'material' :
                     val = val.__str__()
 
-                label += f"{xdict['name']}= {val:{xdict['format']}} | "
+                label += f"{xdict['name']}: {val:{xdict['format']}} | "
 
         return label
 

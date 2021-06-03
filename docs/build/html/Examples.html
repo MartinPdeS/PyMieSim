@@ -162,12 +162,83 @@
 </div>
 </div>
 <hr class="docutils" />
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Samples properties</strong></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 6</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>      <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                  <span class="n">Source</span>        <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">11</span>                  <span class="n">Index</span>         <span class="o">=</span> <span class="mf">1.4</span><span class="p">,</span>
+<span class="linenos">12</span>                  <span class="n">Concentration</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="p">)</span> <span class="c1"># #.m⁻³</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Scat</span><span class="o">.</span><span class="n">Properties</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">18</span>    <span class="n">run</span><span class="p">()</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="c1">#___________________________OUTPUT___________________________________</span>
+<span class="linenos">21</span><span class="c1">#</span>
+<span class="linenos">22</span><span class="c1">#         Object:          Dictionary</span>
+<span class="linenos">23</span><span class="c1">#         Keys:            Efficiencies, cross-sections, others</span>
+<span class="linenos">24</span><span class="c1">#         Structured data: Yes</span>
+<span class="linenos">25</span><span class="c1">#         Method:          &lt;Plot&gt;</span>
+<span class="linenos">26</span><span class="c1">#         Shape:           [7, 1]</span>
+<span class="linenos">27</span><span class="c1">#         ========================================</span>
+<span class="linenos">28</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">29</span><span class="c1"># Efficiencies   | Qsca             | 4.029799032677242</span>
+<span class="linenos">30</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">31</span><span class="c1">#                | Qext             | 4.029799032677242</span>
+<span class="linenos">32</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">33</span><span class="c1">#                | Qabs             | 0.0</span>
+<span class="linenos">34</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">35</span><span class="c1">#                | Qback            | 4.973830378796597</span>
+<span class="linenos">36</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">37</span><span class="c1">#                | Qratio           | 1.2342626365395144</span>
+<span class="linenos">38</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">39</span><span class="c1">#                | Qpr              | 0.7925897259835781</span>
+<span class="linenos">40</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">41</span><span class="c1"># cross-sections | Csca             | 2.025597925840332e-12 m²  (2.03e+00 μm²)</span>
+<span class="linenos">42</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">43</span><span class="c1">#                | Cext             | 2.025597925840332e-12 m²  (2.03e+00 μm²)</span>
+<span class="linenos">44</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">45</span><span class="c1">#                | Cabs             | 0 m²</span>
+<span class="linenos">46</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">47</span><span class="c1">#                | Cback            | 2.5001198365166603e-12 m²  (2.50e+00 μm²)</span>
+<span class="linenos">48</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">49</span><span class="c1">#                | Cratio           | 6.204080690484652e-13 m²  (6.20e+05 nm²)</span>
+<span class="linenos">50</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">51</span><span class="c1">#                | Cpr              | 3.98399049673721e-13 m²  (3.98e+05 nm²)</span>
+<span class="linenos">52</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">53</span><span class="c1"># others         | area             | 5.026548245743668e-13 m²  (5.03e+05 nm²)</span>
+<span class="linenos">54</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">55</span><span class="c1">#                | index            | 1.4</span>
+<span class="linenos">56</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">57</span><span class="c1">#                | concentration    | 0.1</span>
+<span class="linenos">58</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">59</span><span class="c1">#                | μ sca            | 2.0255979258403322e-13 m⁻¹  (2.03e-01 Tm⁻¹)</span>
+<span class="linenos">60</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">61</span><span class="c1">#                | μ ext            | 2.0255979258403322e-13 m⁻¹  (2.03e-01 Tm⁻¹)</span>
+<span class="linenos">62</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">63</span><span class="c1">#                | μ abs            | 0 m²</span>
+<span class="linenos">64</span><span class="c1"># ----------------------------------------------------------------------</span>
+<span class="linenos">65</span><span class="c1">#                | g                | 0.7925897259835781</span>
+<span class="linenos">66</span><span class="c1"># ----------------------------------------------------------------------</span>
+</pre></div>
+</div>
+</div>
 </section>
 <hr class="docutils" />
 <section id="computing-fields">
 <h2>Computing fields<a class="headerlink" href="#computing-fields" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: S1-S2</strong></span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: S1-S2</strong></span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
@@ -192,10 +263,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/S1S2.png"><img alt="_images/S1S2.png" src="_images/S1S2.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Fields:S1S2.png"><img alt="_images/Fields:S1S2.png" src="_images/Fields:S1S2.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Stokes</strong></span><a class="headerlink" href="#id5" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: Stokes</strong></span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
@@ -218,10 +289,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Stokes.png"><img alt="_images/Stokes.png" src="_images/Stokes.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Fields:Stokes.png"><img alt="_images/Fields:Stokes.png" src="_images/Fields:Stokes.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: full far-field</strong></span><a class="headerlink" href="#id6" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: full far-field</strong></span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
@@ -246,10 +317,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/FarField.png"><img alt="_images/FarField.png" src="_images/FarField.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Fields:FarField.png"><img alt="_images/Fields:FarField.png" src="_images/Fields:FarField.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: phase function</strong></span><a class="headerlink" href="#id7" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text"><strong>Scatterer: phase function</strong></span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
@@ -272,13 +343,13 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/SPF.png"><img alt="_images/SPF.png" src="_images/SPF.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Fields:SPF.png"><img alt="_images/Fields:SPF.png" src="_images/Fields:SPF.png" style="width: 600px;" /></a>
 </section>
 <hr class="docutils" />
 <section id="creating-detectors">
 <h2>Creating Detectors<a class="headerlink" href="#creating-detectors" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text"><strong>Detector: Photodiode</strong></span><a class="headerlink" href="#id8" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text"><strong>Detector: Photodiode</strong></span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">Photodiode</span>
@@ -302,10 +373,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Photodiode.png"><img alt="_images/Photodiode.png" src="_images/Photodiode.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Coupling:Photodiode.png"><img alt="_images/Coupling:Photodiode.png" src="_images/Coupling:Photodiode.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text"><strong>Detector: LPMode</strong></span><a class="headerlink" href="#id9" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text"><strong>Detector: LPMode</strong></span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>   <span class="kn">import</span> <span class="n">PlaneWave</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span> <span class="kn">import</span> <span class="n">LPmode</span>
@@ -332,13 +403,13 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/LPMode.png"><img alt="_images/LPMode.png" src="_images/LPMode.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Coupling:LPMode.png"><img alt="_images/Coupling:LPMode.png" src="_images/Coupling:LPMode.png" style="width: 600px;" /></a>
 </section>
 <hr class="docutils" />
 <section id="computing-coupling">
 <h2>Computing coupling<a class="headerlink" href="#computing-coupling" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text"><strong>Coupling: Scatterer-Photodiode</strong></span><a class="headerlink" href="#id10" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text"><strong>Coupling: Scatterer-Photodiode</strong></span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>    <span class="kn">import</span> <span class="n">PlaneWave</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>  <span class="kn">import</span> <span class="n">Photodiode</span>
@@ -373,8 +444,8 @@
 <hr class="docutils" />
 <section id="experiment-properties">
 <h2>Experiment: properties<a class="headerlink" href="#experiment-properties" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text"><strong>ScattererSet: Qscattering</strong></span><a class="headerlink" href="#id11" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text"><strong>ScattererSet: Qscattering</strong></span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
@@ -407,10 +478,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Qscattering.png"><img alt="_images/Qscattering.png" src="_images/Qscattering.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Experiment:Qscattering.png"><img alt="_images/Experiment:Qscattering.png" src="_images/Experiment:Qscattering.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id12">
-<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Qsca-vs-diameter</strong></span><a class="headerlink" href="#id12" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id13">
+<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Qsca-vs-diameter</strong></span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
@@ -444,10 +515,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Qsca-vs-diameter.png"><img alt="_images/Qsca-vs-diameter.png" src="_images/Qsca-vs-diameter.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Experiment:Qsca-vs-diameter.png"><img alt="_images/Experiment:Qsca-vs-diameter.png" src="_images/Experiment:Qsca-vs-diameter.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id13">
-<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Mie-resonances</strong></span><a class="headerlink" href="#id13" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id14">
+<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Mie-resonances</strong></span><a class="headerlink" href="#id14" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
@@ -483,13 +554,13 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Mie-resonances.png"><img alt="_images/Mie-resonances.png" src="_images/Mie-resonances.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Experiment:Mie-resonances.png"><img alt="_images/Experiment:Mie-resonances.png" src="_images/Experiment:Mie-resonances.png" style="width: 600px;" /></a>
 </section>
 <hr class="docutils" />
 <section id="experiment-coupling">
 <h2>Experiment: coupling<a class="headerlink" href="#experiment-coupling" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id14">
-<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Coupling-vs-diameter</strong></span><a class="headerlink" href="#id14" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id15">
+<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Coupling-vs-diameter</strong></span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
@@ -533,10 +604,10 @@
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Coupling-vs-diameter.png"><img alt="_images/Coupling-vs-diameter.png" src="_images/Coupling-vs-diameter.png" style="width: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/Experiment:Coupling-vs-diameter.png"><img alt="_images/Experiment:Coupling-vs-diameter.png" src="_images/Experiment:Coupling-vs-diameter.png" style="width: 600px;" /></a>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id15">
-<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Coupling-vs-wavelength</strong></span><a class="headerlink" href="#id15" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Coupling-vs-wavelength</strong></span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
@@ -545,51 +616,92 @@
 <span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
 <span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
 <span class="linenos"> 8</span>
-<span class="linenos"> 9</span>
-<span class="linenos">10</span>    <span class="n">Detector0</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span><span class="n">NA</span>                <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
-<span class="linenos">11</span>                           <span class="n">Sampling</span>          <span class="o">=</span> <span class="mi">300</span><span class="p">,</span>
-<span class="linenos">12</span>                           <span class="n">GammaOffset</span>       <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="linenos">13</span>                           <span class="n">PhiOffset</span>         <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="linenos">14</span>                           <span class="n">CouplingMode</span>      <span class="o">=</span> <span class="s1">&#39;Centered&#39;</span><span class="p">)</span>
+<span class="linenos"> 9</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>     <span class="p">:</span> <span class="mf">500e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                     <span class="s1">&#39;Material&#39;</span>     <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
+<span class="linenos">11</span>                     <span class="s1">&#39;nMedium&#39;</span>      <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
+<span class="linenos">14</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
 <span class="linenos">15</span>
-<span class="linenos">16</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>    <span class="p">:</span> <span class="mf">200e-9</span><span class="p">,</span>
-<span class="linenos">17</span>                     <span class="s1">&#39;Material&#39;</span>    <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
-<span class="linenos">18</span>                     <span class="s1">&#39;nMedium&#39;</span>     <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
-<span class="linenos">19</span>
-<span class="linenos">20</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">400e-9</span><span class="p">,</span> <span class="mf">1000e-9</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span>
-<span class="linenos">21</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span>    <span class="n">detectKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Detector 0&#39;</span>   <span class="p">:</span> <span class="n">Detector0</span><span class="p">}</span>
-<span class="linenos">24</span>
-<span class="linenos">25</span>    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">detectKwargs</span><span class="p">)</span>
-<span class="linenos">26</span>
-<span class="linenos">27</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
-<span class="linenos">28</span>
-<span class="linenos">29</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
-<span class="linenos">30</span>
-<span class="linenos">31</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
-<span class="linenos">32</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
-<span class="linenos">33</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
-<span class="linenos">34</span>
-<span class="linenos">35</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span>
-<span class="linenos">36</span>
-<span class="linenos">37</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+<span class="linenos">16</span>    <span class="n">detecKwargs</span>  <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;NA&#39;</span>           <span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+<span class="linenos">17</span>                     <span class="s1">&#39;Sampling&#39;</span>     <span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">18</span>                     <span class="s1">&#39;GammaOffset&#39;</span>  <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">19</span>                     <span class="s1">&#39;PhiOffset&#39;</span>    <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">60</span><span class="p">],</span>
+<span class="linenos">20</span>                     <span class="s1">&#39;CouplingMode&#39;</span> <span class="p">:</span> <span class="s1">&#39;Centered&#39;</span><span class="p">}</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">Detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">detecKwargs</span><span class="p">)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">29</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">30</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s1">&#39;Coupling&#39;</span><span class="p">)</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>    <span class="nb">print</span><span class="p">(</span><span class="n">Data</span><span class="p">)</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">)</span>
+<span class="linenos">37</span>
 <span class="linenos">38</span>
-<span class="linenos">39</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;wavelength&#39;</span><span class="p">)</span>
-<span class="linenos">40</span>
-<span class="linenos">41</span>
-<span class="linenos">42</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<span class="linenos">43</span>    <span class="n">run</span><span class="p">()</span>
+<span class="linenos">39</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">40</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<a class="reference internal image-reference" href="_images/Coupling-vs-wavelength.png"><img alt="_images/Coupling-vs-wavelength.png" src="_images/Coupling-vs-wavelength.png" style="width: 600px;" /></a>
-</section>
+<a class="reference internal image-reference" href="_images/Experiment:Coupling-vs-wavelength.png"><img alt="_images/Experiment:Coupling-vs-wavelength.png" src="_images/Experiment:Coupling-vs-wavelength.png" style="width: 600px;" /></a>
 <hr class="docutils" />
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text"><strong>Experiment: Goniometer</strong></span><a class="headerlink" href="#id17" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>            <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span>  <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 5</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span>     <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 6</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Detector</span>   <span class="kn">import</span> <span class="n">Photodiode</span>
+<span class="linenos"> 7</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Experiment</span> <span class="kn">import</span> <span class="n">ScatSet</span><span class="p">,</span> <span class="n">SourceSet</span><span class="p">,</span> <span class="n">Setup</span><span class="p">,</span> <span class="n">DetectorSet</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">scatKwargs</span>   <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Diameter&#39;</span>     <span class="p">:</span> <span class="mf">1200e-9</span><span class="p">,</span>
+<span class="linenos">10</span>                     <span class="s1">&#39;Material&#39;</span>     <span class="p">:</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">),</span>
+<span class="linenos">11</span>                     <span class="s1">&#39;nMedium&#39;</span>      <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>    <span class="n">sourceKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;Wavelength&#39;</span>   <span class="p">:</span> <span class="mf">400e-9</span><span class="p">,</span>
+<span class="linenos">14</span>                     <span class="s1">&#39;Polarization&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">]}</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>    <span class="n">detecKwargs</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;NA&#39;</span>            <span class="p">:</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">],</span>
+<span class="linenos">17</span>                   <span class="s1">&#39;Sampling&#39;</span>       <span class="p">:</span> <span class="mi">300</span><span class="p">,</span>
+<span class="linenos">18</span>                   <span class="s1">&#39;GammaOffset&#39;</span>    <span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">19</span>                   <span class="s1">&#39;PhiOffset&#39;</span>      <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span>
+<span class="linenos">20</span>                   <span class="s1">&#39;CouplingMode&#39;</span>   <span class="p">:</span> <span class="s1">&#39;Centered&#39;</span><span class="p">}</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span>    <span class="n">detecSet</span>   <span class="o">=</span> <span class="n">DetectorSet</span><span class="p">(</span><span class="n">Detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">detecKwargs</span><span class="p">)</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span>    <span class="n">scatSet</span>    <span class="o">=</span> <span class="n">ScatSet</span><span class="p">(</span><span class="n">Scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">,</span>  <span class="n">kwargs</span> <span class="o">=</span> <span class="n">scatKwargs</span> <span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="n">sourceSet</span>  <span class="o">=</span> <span class="n">SourceSet</span><span class="p">(</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">sourceKwargs</span> <span class="p">)</span>
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="n">Experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">ScattererSet</span> <span class="o">=</span> <span class="n">scatSet</span><span class="p">,</span>
+<span class="linenos">29</span>                       <span class="n">SourceSet</span>    <span class="o">=</span> <span class="n">sourceSet</span><span class="p">,</span>
+<span class="linenos">30</span>                       <span class="n">DetectorSet</span>  <span class="o">=</span> <span class="n">detecSet</span><span class="p">)</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>    <span class="n">Data</span> <span class="o">=</span> <span class="n">Experiment</span><span class="o">.</span><span class="n">Get</span><span class="p">([</span><span class="s1">&#39;Coupling&#39;</span><span class="p">])</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>    <span class="n">Data</span><span class="o">.</span><span class="n">Plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;PhiOffset&#39;</span><span class="p">)</span>
+<span class="linenos">35</span>
+<span class="linenos">36</span>
+<span class="linenos">37</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">38</span>    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<a class="reference internal image-reference" href="_images/Experiment:Goniometer.png"><img alt="_images/Experiment:Goniometer.png" src="_images/Experiment:Goniometer.png" style="width: 600px;" /></a>
+</section>
 <section id="experiment-optimization">
 <h2>Experiment: optimization<a class="headerlink" href="#experiment-optimization" title="Permalink to this headline">¶</a></h2>
-<div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text"><strong>Optimization: Opt-1-parameter</strong></span><a class="headerlink" href="#id16" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text"><strong>Optimization: Opt-1-parameter</strong></span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="k">return</span>
 <span class="linenos"> 3</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -669,8 +781,8 @@
 </div>
 </div>
 <hr class="docutils" />
-<div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text"><strong>Optimization: Opt-2-parameter</strong></span><a class="headerlink" href="#id17" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text"><strong>Optimization: Opt-2-parameter</strong></span><a class="headerlink" href="#id19" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
 <span class="linenos"> 2</span>    <span class="k">return</span>
 <span class="linenos"> 3</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -729,8 +841,8 @@
 <hr class="docutils" />
 <section id="plot-the-scattering-efficiency-of-a-sphere-using-pymiesim">
 <h3>Plot the scattering efficiency of a sphere using PyMieSim<a class="headerlink" href="#plot-the-scattering-efficiency-of-a-sphere-using-pymiesim" title="Permalink to this headline">¶</a></h3>
-<div class="literal-block-wrapper docutils container" id="id18">
-<div class="code-block-caption"><span class="caption-text"><strong>Scattering efficiency graph</strong></span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text"><strong>Scattering efficiency graph</strong></span><a class="headerlink" href="#id20" title="Permalink to this code">¶</a></div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># PyMieSim makes it easy to create a source and a scatterer. With these objects</span>
 <span class="linenos"> 2</span><span class="c1"># defined, it is possible to use PyMieSim to find the scattering efficiency of the</span>
 <span class="linenos"> 3</span><span class="c1"># scatterer. This feature can be used to plot a graph of the scattering efficiency</span>

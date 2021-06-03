@@ -1,13 +1,15 @@
-import numpy as np
 import os.path
-from typing   import Union
-from beartype import beartype
+import logging
+import numpy    as np
+from   typing   import Union
+from   beartype import beartype
 
 
 import PyMieSim
 from PyMieSim.Directories import RootPath, LPModePath
 from PyMieSim.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.Physics     import _Polarization, Angle
+from PyMieSim.ErrorMsg    import *
 from PyMieSim.utils       import ( interp_at,
                                    NA2Angle,
                                    Normalize,
@@ -209,11 +211,9 @@ class LPmode(BaseDetector, MeshProperty):
 
         self.isDetector = True
 
-        assert CouplingMode in ['Centered','Mean'], IO( "Coupling mode can either be Centered or Mean" )
+        assert CouplingMode in ['Centered','Mean'], Error_MeanCentered
 
-        if NA > 1 or NA < 0: print( IO( "WARNING: High values of NA do not comply \
-                                         with paraxial approximation. Value \
-                                         under 0.4 are prefered" ) )
+        if NA > 1 or NA < 0: logging.warning(warning_NAHigh)
 
         self.CouplingMode = ('Amplitude', CouplingMode)
 
@@ -259,10 +259,7 @@ class LPmode(BaseDetector, MeshProperty):
         fileDir = os.path.join(LPModePath, filename)
 
         if not os.path.exists(fileDir):
-            raise ValueError( IO( "The LP mode has not been previously compilated. "
-                                  "Please consult the documentation to do so. "
-                                  "Doc available at: "
-                                  "https://pymiesim.readthedocs.io/en/latest/Intro.html" ) )
+            raise ValueError( Error_LPMissing )
 
         mode = np.load(fileDir)
 

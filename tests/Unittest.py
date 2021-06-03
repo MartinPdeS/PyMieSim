@@ -67,13 +67,12 @@ PLOTTIME = 600
 class DetectorTestCase(unittest.TestCase):
 
     def test00(self):
-        from PyMieSim.Detector import Photodiode
-        global Photodiode
-        Photodiode = Photodiode(Sampling     = 11,
-                                NA           = 0.2,
-                                GammaOffset  = 0,
-                                PhiOffset    = 0,
-                                CouplingMode = 'Centered')
+        global Detector0
+        Detector0 = Photodiode(Sampling     = 11,
+                               NA           = 0.2,
+                               GammaOffset  = 0,
+                               PhiOffset    = 0,
+                               CouplingMode = 'Centered')
 
         print('Photodiode initialisation passed')
 
@@ -101,7 +100,7 @@ class DetectorTestCase(unittest.TestCase):
 
     def test03(self):
         GUI.invoke_after(PLOTTIME, Close)
-        Photodiode.Plot()
+        Detector0.Plot()
         print('Photodiode Plotting passed')
 
 
@@ -160,7 +159,7 @@ class ScattererTestCase(unittest.TestCase):
 
 
     def test06(self):
-        Photodiode.Coupling(Scatterer = sScat)
+        Detector0.Coupling(Scatterer = sScat)
         print('<Photodiode> coupling passed')
 
     def test07(self):
@@ -199,7 +198,7 @@ class ScattererTestCase(unittest.TestCase):
 
 
     def test13(self):
-        Photodiode.Footprint(Scatterer=sScat, Num=10)
+        Detector0.Footprint(Scatterer=sScat, Num=10)
         print('Photodiode footprint compute passed')
 
 
@@ -228,7 +227,14 @@ class ExperiementTestCase(unittest.TestCase):
     def test02(self):
         global ExpSet
 
-        DetecSet =  DetectorSet(kwargs = { 'Detector 0'   : Photodiode})
+        detecKwargs = { 'NA'            : [0.03],
+                       'Sampling'       : 300,
+                       'GammaOffset'    : 0,
+                       'PhiOffset'      : 0,
+                       'CouplingMode'   : 'Centered'}
+
+        DetecSet   = DetectorSet(Detector = Photodiode, kwargs = detecKwargs)
+
         ExpSet = Setup(ScattererSet = sScatSet,
                        SourceSet    = sourceSet,
                        DetectorSet  = DetecSet)

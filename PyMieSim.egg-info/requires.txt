@@ -1,4 +1,11 @@
-scipy
+beartype
+coverage
+cython
 matplotlib
-pandas
 mayavi
+numpy
+pandas
+pybind11
+scipy
+vtk
+vtk

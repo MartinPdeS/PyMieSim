@@ -34,15 +34,17 @@ class Material(BaseMaterial):
         ax = fig.add_subplot(111)
         ax.set_xlabel(r'Wavelength $\lambda$ [m]')
 
-        ax.plot(self.Data['wl0'], self.Data['n'], 'C0')
+        ax.plot(self.Data['wl0'], self.Data['n'], 'C0', label='n')
         ax.set_ylabel(r'Refractive index n')
 
         if 'wl1' in self.Data:
             ax1 = ax.twinx()
-            ax1.plot(self.Data['wl1'], self.Data['k'], 'C1')
+            ax1.plot(self.Data['wl1'], self.Data['k'], 'C1', label='k')
             ax1.set_ylabel(r'Extinction factor $\kappa$')
 
         ax.grid()
+        ax.legend()
+        ax1.legend()
         plt.tight_layout()
         plt.show()
 

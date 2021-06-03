@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
+import numpy       as np
 from beartype      import beartype
 from scipy.special import gamma
 from typing        import Union
@@ -9,7 +9,7 @@ from typing        import Union
 from PyMieSim.units           import Area
 from PyMieSim.Source          import PlaneWave, GaussianBeam
 from PyMieSim.Representations import S1S2, SPF, Stokes
-
+from PyMieSim.ErrorMsg        import *
 from PyMieSim.GLMT.Scatterer  import ( SPHERE as G_SPHERE,
                                        CYLINDER as G_CYLINDER )
 
@@ -65,12 +65,12 @@ class Sphere(BaseScatterer, ScattererProperties):
         super().__init__()
 
         if Material:
-            assert Index is None,"You should either choose a material or the RI not both"
+            assert Index is None, Error_IndexMaterial
             self.Material    = Material
             self.Index       = Material.Evaluate(Source.Wavelength)
 
         if Index:
-            assert Material is None,"You should either choose a material or the RI not both"
+            assert Material is None, Error_IndexMaterial
             self.Material    = None
             self.Index       = Index
 
@@ -93,9 +93,7 @@ class Sphere(BaseScatterer, ScattererProperties):
         """
         if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
-                raise Exception("For GLMT use the LightSource BSC must be \
-                                previously computed. Use \
-                                LightSource.GetBSC(MaxOrder=1, save=False)")
+                raise Exception( ErrorGLMTNoBSC )
 
             self.Bind = G_SPHERE(Index        = self.Index,
                                  Diameter     = self.Diameter,
@@ -235,7 +233,7 @@ class ShellSphere(BaseScatterer, ScattererProperties):
         self._Concentration = Concentration
 
         if all([ CoreIndex, CoreMaterial ] ) or all([ ShellIndex, ShellMaterial ] ) :
-            raise AssertionError( "You should either choose a material or the RI, not both." )
+            raise AssertionError( Error_IndexMaterial )
 
         if all([CoreMaterial, ShellMaterial]):
             self.Material = Material
@@ -355,7 +353,7 @@ class Cylinder(BaseScatterer, ScattererProperties):
         """
         if self.Source.GLMT is True:
             if self.Source._BSC_ is None:
-                raise Exception("For GLMT use the LightSource BSC must be previously computed. Use LightSource.GetBSC(MaxOrder=1, save=False)")
+                raise Exception( ErrorGLMTNoBSC )
 
             self.Bind = G_CYLINDER(Index        = self.Index,
                                    Diameter     = self.Diameter,

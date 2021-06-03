@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: PyMieSim
-Version: 0.2.0
+Version: 0.2.8
 Summary: A package for light scattering simulations.
 Home-page: https://github.com/MartinPdeS/PyMieSim
 Author: ('Martin Poinsinet de Sivry',)
@@ -36,8 +36,8 @@ Description:
         6. **Medium** refractive index
         7. **Detector** type (photodiode or LPMode)
         8. **Detector** numerical aperture
-        9. **Detector** angle offfset in polariation parallel axis (&phi;)
-        10. **Detector** angle offfset in polariation perpendicular axis (&theta;)
+        9. **Detector** angle offfset in polariation parallel axis (:math:`\phi`)
+        10. **Detector** angle offfset in polariation perpendicular axis (:math:`\theta`)
         11. **Detector** coupling mode (Mean coupling or centered coupling)
         
         
@@ -63,42 +63,13 @@ Description:
         
         |colab|
         
-        
-        **Important** At the moment there is a problem with the colab compilation (it seems to be specific to boost compilation into ubuntu 18.04 (Xenial))
-        
-        
         ----
         
-        
-        Dependencies
-        ************
-        In order to install the package you first need to install some dependencies, which are the c++ `boost library <https://boost.org>`_ and some plotting library. To install one can use the command line such as:
-        
-        
-        Linux (Debian)
-        --------------
-        
-        .. code-block:: python
-        
-           sudo apt-get install libboost-all-dev
-        
-        MacOs
-        -----
-        
-        .. code-block:: python
-        
-           brew install boost
-        
-        
-        Windows
-        -------
-        `Boost installation guide <https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html>`_
-        
-        
-        ----
         
         Installation
         ************
+        Wheel support now extended to `manylinux2014 <https://www.python.org/dev/peps/pep-0599/>`_
+        
         It's pretty simple:
         
         .. code-block:: python
@@ -152,11 +123,11 @@ Description:
         section of the documentations.
         
         
-        Examples
-        ********
+        Coding examples
+        ***************
         
         
-        A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the section of the `examples <https://pymiesim.readthedocs.io/en/latest/`_
+        A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the examples section of the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_
         
         ----
         
@@ -187,6 +158,43 @@ Description:
         (Is this the new "like, comment and share" ?)
         
         ----
+        
+        
+        Developper mode
+        ****************
+        In order to compile the project without using pip a few depedencies are to be installed.
+        Those are the C++ boost library and a C++/Fortran wrapper for bessel function with complex argument (nowhere to be found as C++ lib)
+        
+        I have worked out a Dockerfile (see the `PyMieSim Git <https://github.com/MartinPdeS/PyMieSim>`_) to install all the necessaries library.
+        
+        I you prefer to directly install in your computer the files you can do the following
+        
+        **Boost library**
+        
+        Linux (Debian)
+        --------------
+        
+        .. code-block:: python
+        
+           sudo apt-get install libboost-all-dev
+        
+        MacOs
+        -----
+        
+        .. code-block:: python
+        
+           brew install boost
+        
+        
+        Windows
+        -------
+        `Boost installation guide <https://www.boost.org/doc/libs/1_62_0/more/getting_started/windows.html>`_
+        
+        
+        **Fortran wrapper**
+        
+        You have to compile and install the code yourself. Follow the instruction as showed `here <https://github.com/joeydumont/complex_bessel>`_ .
+        
         
         Contact Information
         ************************
@@ -223,10 +231,13 @@ Classifier: Programming Language :: C++
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: Implementation :: CPython
 Classifier: Programming Language :: Python :: Implementation :: PyPy
 Classifier: Development Status :: 3 - Alpha
 Classifier: Topic :: Scientific/Engineering :: Physics
 Classifier: Intended Audience :: Science/Research
-Requires-Python: >=3.6.0
+Requires-Python: >=3.6
 Description-Content-Type: text/markdown

@@ -858,9 +858,6 @@ class Set(object):
 
         config['MaxOrder'] = iter
 
-        return config
-
-
 
 
 

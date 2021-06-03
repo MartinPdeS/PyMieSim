@@ -6,7 +6,7 @@ Examples
 Creating Scatterers
 -------------------
 
-.. literalinclude:: ../../examples/Index.py
+.. literalinclude:: ../../examples/Scatterer:Index.py
     :language: python
     :caption: **Scatterer: Index**
     :lines: 1-
@@ -16,7 +16,7 @@ Creating Scatterers
 
 -------------------
 
-.. literalinclude:: ../../examples/Material.py
+.. literalinclude:: ../../examples/Scatterer:Material.py
     :language: python
     :caption: **Scatterer: Material**
     :lines: 1-
@@ -26,7 +26,7 @@ Creating Scatterers
 
 -------------------------
 
-.. literalinclude:: ../../examples/ScatProperties.py
+.. literalinclude:: ../../examples/Scatterer:ScatProperties.py
     :language: python
     :caption: **Scatterer: Scatterer Properties**
     :lines: 1-
@@ -35,7 +35,7 @@ Creating Scatterers
 
 -------------------------
 
-.. literalinclude:: ../../examples/SamplesProperties.py
+.. literalinclude:: ../../examples/Scatterer:SamplesProperties.py
     :language: python
     :caption: **Scatterer: Samples properties**
     :lines: 1-
@@ -47,14 +47,14 @@ Creating Scatterers
 Computing fields
 ----------------
 
-.. literalinclude:: ../../examples/S1S2.py
+.. literalinclude:: ../../examples/Fields:S1S2.py
     :language: python
     :linenos:
     :caption: **Scatterer: S1-S2**
     :lines: 1-
 
 
-.. image:: ../images/S1S2.png
+.. image:: ../images/Fields:S1S2.png
    :width: 600
 
 
@@ -62,33 +62,33 @@ Computing fields
 -----------------
 
 
-.. literalinclude:: ../../examples/Stokes.py
+.. literalinclude:: ../../examples/Fields:Stokes.py
     :language: python
     :caption: **Scatterer: Stokes**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/Stokes.png
+.. image:: ../images/Fields:Stokes.png
    :width: 600
 
 
 
 -------------------------
 
-.. literalinclude:: ../../examples/FarField.py
+.. literalinclude:: ../../examples/Fields:FarField.py
     :language: python
     :caption: **Scatterer: full far-field**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/FarField.png
+.. image:: ../images/Fields:FarField.png
    :width: 600
 
 
 
 -------------------------
 
-.. literalinclude:: ../../examples/SPF.py
+.. literalinclude:: ../../examples/Fields:SPF.py
     :language: python
     :caption: **Scatterer: phase function**
     :lines: 1-
@@ -96,7 +96,7 @@ Computing fields
 
 
 
-.. image:: ../images/SPF.png
+.. image:: ../images/Fields:SPF.png
    :width: 600
 
 
@@ -107,27 +107,27 @@ Creating Detectors
 ------------------
 
 
-.. literalinclude:: ../../examples/Photodiode.py
+.. literalinclude:: ../../examples/Coupling:Photodiode.py
     :language: python
     :caption: **Detector: Photodiode**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/Photodiode.png
+.. image:: ../images/Coupling:Photodiode.png
    :width: 600
 
 
 
 ----------------
 
-.. literalinclude:: ../../examples/LPMode.py
+.. literalinclude:: ../../examples/Coupling:LPMode.py
     :language: python
     :caption: **Detector: LPMode**
     :lines: 1-
     :linenos:
 
 
-.. image:: ../images/LPMode.png
+.. image:: ../images/Coupling:LPMode.png
    :width: 600
 
 
@@ -138,7 +138,7 @@ Computing coupling
 ------------------
 
 
-.. literalinclude:: ../../examples/Scatterer-Photodiode.py
+.. literalinclude:: ../../examples/Coupling:Scatterer-Photodiode.py
     :language: python
     :caption: **Coupling: Scatterer-Photodiode**
     :lines: 1-
@@ -154,38 +154,38 @@ Experiment: properties
 ----------------------
 
 
-.. literalinclude:: ../../examples/Qscattering.py
+.. literalinclude:: ../../examples/Experiment:Qscattering.py
     :language: python
     :caption: **ScattererSet: Qscattering**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/Qscattering.png
+.. image:: ../images/Experiment:Qscattering.png
    :width: 600
 
 
 ------------------------------
 
-.. literalinclude:: ../../examples/Qsca-vs-diameter.py
+.. literalinclude:: ../../examples/Experiment:Qsca-vs-diameter.py
     :language: python
     :caption: **Experiment: Qsca-vs-diameter**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/Qsca-vs-diameter.png
+.. image:: ../images/Experiment:Qsca-vs-diameter.png
   :width: 600
 
 
 --------------------------
 
-.. literalinclude:: ../../examples/Mie-resonances.py
+.. literalinclude:: ../../examples/Experiment:Mie-resonances.py
     :language: python
     :caption: **Experiment: Mie-resonances**
     :lines: 1-
     :linenos:
 
 
-.. image:: ../images/Mie-resonances.png
+.. image:: ../images/Experiment:Mie-resonances.png
   :width: 600
 
 
@@ -195,35 +195,46 @@ Experiment: properties
 Experiment: coupling
 --------------------
 
-.. literalinclude:: ../../examples/Coupling-vs-diameter.py
+.. literalinclude:: ../../examples/Experiment:Coupling-vs-diameter.py
     :language: python
     :caption: **Experiment: Coupling-vs-diameter**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/Coupling-vs-diameter.png
+.. image:: ../images/Experiment:Coupling-vs-diameter.png
   :width: 600
 
 
 -----------------------------------
 
-.. literalinclude:: ../../examples/Coupling-vs-wavelength.py
+.. literalinclude:: ../../examples/Experiment:Coupling-vs-wavelength.py
     :language: python
     :caption: **Experiment: Coupling-vs-wavelength**
     :lines: 1-
     :linenos:
 
-.. image:: ../images/Coupling-vs-wavelength.png
+.. image:: ../images/Experiment:Coupling-vs-wavelength.png
    :width: 600
 
 
 ------------------------------
 
 
+.. literalinclude:: ../../examples/Experiment:Goniometer.py
+    :language: python
+    :caption: **Experiment: Goniometer**
+    :lines: 1-
+    :linenos:
+
+.. image:: ../images/Experiment:Goniometer.png
+  :width: 600
+
+
+
 Experiment: optimization
 ------------------------
 
-.. literalinclude:: ../../examples/Opt-1-parameter.py
+.. literalinclude:: ../../examples/Optimization:Opt-1-parameter.py
     :language: python
     :caption: **Optimization: Opt-1-parameter**
     :lines: 1-
@@ -237,7 +248,7 @@ Experiment: optimization
 
 ------------------------------
 
-.. literalinclude:: ../../examples/Opt-2-parameter.py
+.. literalinclude:: ../../examples/Optimization:Opt-2-parameter.py
     :language: python
     :caption: **Optimization: Opt-2-parameter**
     :lines: 1-

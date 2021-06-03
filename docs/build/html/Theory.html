@@ -89,7 +89,7 @@ following figure.</p>
 - anisotropy factor g</p>
 <p>Those parameters can be computed using PyMieSim according to those equations.</p>
 <div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}&amp;Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\&amp;Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} \frac{(2n+1)}{\mathcal Re \{ a_n+b_n \}}\\&amp;Q_{abs} = Q_{ext}-Q_{sca}\\&amp;Q_{back} = \frac{1}{x^2} \Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \Big|^2\\&amp;Q_{ratio} = \frac{Q_{back}}{Q_{sca}}\\&amp;Q_{pr} = Q_{ext} - g * Q_{sca}\\&amp;g = \frac{4}{Q_{sca} x^2}
+\[ \begin{align}\begin{aligned}&amp;Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)\\&amp;Q_{ext} = \frac{2}{x^2} \sum_{n=1}^{n_{max}} (2n+1) \mathcal Re \{ a_n+b_n \}\\&amp;Q_{abs} = Q_{ext}-Q_{sca}\\&amp;Q_{back} = \frac{1}{x^2} \Big| \sum\limits_{n=1}^{n_{max}} (2n+1)(-1)^n (a_n - b_n) \Big|^2\\&amp;Q_{ratio} = \frac{Q_{back}}{Q_{sca}}\\&amp;Q_{pr} = Q_{ext} - g * Q_{sca}\\&amp;g = \frac{4}{Q_{sca} x^2}
         \Big[ \sum\limits_{n=1}^{n_{max}} \frac{n(n+2)}{n+1} \text{Re} \left\{ a_n a_{n+1}^* + b_n b_{n+1}^*\right\} +
         \sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)} \text{Re}\left\{ a_n b_n^* \right\} \Big]\\&amp;A_s = \pi r^2\\&amp;\sigma_{i} = Q_{i} A\\&amp;\mu_{sca} = \sigma_{sca} C\\&amp;\mu_{ext} = \sigma_{ext} C\\&amp;\mu_{abs} = \sigma_{abs} C\end{aligned}\end{align} \]</div>
 <div class="line-block">
