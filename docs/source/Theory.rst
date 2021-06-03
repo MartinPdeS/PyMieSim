@@ -9,7 +9,7 @@ Lorenz-Mie Theory (LMT)
   The Lorenz-Mie Theory or (LMT for short) is a framework that can be used to find
   exact solution of the scattered field considering a plane wave incident to a
   scatterer with a certain geometry.
-  The solution is usally written in the form of an infinit summation which, of
+  The solution is usually written in the form of an infinite summation which, of
   course, has to be truncated. PyMieSim is a library which does solve the
   equations in order to retrieve plenty of important informations.
   It is to be noted that in all the library, the angles :math:`\theta` and
@@ -22,7 +22,7 @@ Lorenz-Mie Theory (LMT)
 
 .. note::
 
-  Here are, few of the most important relations governing the PyMieSim library.
+  Here are few of the most important relations governing the PyMieSim library.
 
   .. math::
      &S_1=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n\pi_n+b_n\tau_n)
@@ -71,7 +71,7 @@ Scattering properties
   - optical pressure efficiency
   - anisotropy factor g
 
-  Those parameter can be computed using PyMieSim according to those equations.
+  Those parameters can be computed using PyMieSim according to those equations.
 
   .. math::
     &Q_{sca} = \frac{2}{x^2}\sum_{n=1}^{n_{max}}(2n+1)(|a_n|^2+|b_n|^2)
@@ -111,11 +111,11 @@ An and Bn coefficients:
 
 
 
-From the An and Bn coefficient we can retrieve many useful properties of
+From the An and Bn coefficients, we can retrieve many useful properties of
 the scatterer and scattered far-fields. Those are complementary to the
 Cn and Dn coefficient (for near-field properties) which we do no compute
 with PyMieSim at the moment.
-Depending on the scatterer geometry all those coefficient may vary, here we
+Depending on the scatterer geometry, all those coefficient may vary. Here we
 have three example which are available with the PyMieSim library.
 
 .. note::
@@ -232,9 +232,9 @@ Coupling mechanism
 
 .. note::
 
-  There is two main coupling mechanism, **coherent coupling** and non-coherent coupling.
-  For instance photodiode collect light via an **non-coherent mechanism**, on the other part
-  fiber optic LP mode collect light in a coherent way and as such they usually
+  There are two main coupling mechanisms, **coherent coupling** and non-coherent coupling.
+  For instance, photodiode collect light via a **non-coherent mechanism**. On the other part,
+  fiber optic LP mode collects light in a coherent way and as such they usually
   collect a lot less light but they add additional information on the sample studied.
 
 
@@ -249,18 +249,18 @@ Coupling mechanism
 
   It is to be noted that the **coherent coupling** definition is derived from the coupled mode theory
   which remains true as long as the parallax approximation is also true.
-  Also this coupling are what we would call **centered coupling**. It means that the
-  scatterer is perfectly centered with the detector. As much as it doesn't affect
+  Furthermore, this coupling is what we would call **centered coupling**. It means that the
+  scatterer is perfectly centered with the detector. Even though it doesn't affect
   so much the **non-coherent coupling** coupling, it can largely affect **coherent coupling**.
 
-  In order to take account of the effect of transversal offset of the scatterer we define
+  To take into account the effect of transversal offset of the scatterer, we define
   the footprint of the scatterer.
 
 
   .. math::
     \eta_{l,m}(\delta_x, \delta_y) = \Big| \mathcal{F}^{-1} \big\{ \Phi_{det} \, . \, \Psi_{scat} \big\}  \Big|^2
 
-  Thus we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
+  Thus, we can compute the **mean coupling** as the mean value of :math:`\eta_{l,m}`
 
   .. math::
     \widetilde{\eta}_{l,m} = \big< \eta_{l,m}(\delta_x, \delta_y) \big>

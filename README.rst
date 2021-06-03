@@ -16,25 +16,25 @@ PyMieSim
 
 
 PyMieSim is a very easy to install/use tool for extensive Mie scattering analysis. It allows to study the light scattering
-on different kind of object (scatterer), at the moment I only implemented spherical scatterers.
+on different kind of objects (scatterer) though at the moment, only spherical scatterers are implemented.
 Using this package, one can easily set a **Source** a **Scatterer** and a **Detector** within a very wide range of parameters such as:
 
 1. **Source** structure (e.g. plane wave or Gaussian focused)
 2. **Source** wavelength
-3. **Source** Polarization
+3. **Source** polarization
 4. **Scatterer** diameter
 5. **Scatterer** refractive index
 6. **Medium** refractive index
 7. **Detector** type (photodiode or LPMode)
 8. **Detector** numerical aperture
-9. **Detector** angle offfset in polariation parallel axis (:math:`\phi`)
-10. **Detector** angle offfset in polariation perpendicular axis (:math:`\theta`)
+9. **Detector** angle offset in polarization parallel axis (:math:`\phi`)
+10. **Detector** angle offset in polarization perpendicular axis (:math:`\theta`)
 11. **Detector** coupling mode (Mean coupling or centered coupling)
 
 
 
-The package also let you to construct an **Experiment** using **ScattererSet**, **SourceSet** and **DetectorSet**.
-Those class define the type of scatterers, light source and detector type you want to study.
+The package also lets you construct an **Experiment** using **ScattererSet**, **SourceSet** and **DetectorSet**.
+Those class define the type of scatterers, light sources and detectors you want to study.
 
 
 ----
@@ -49,8 +49,8 @@ All the latest available documentation is available `here <https://pymiesim.read
 
 Google Colab
 **************
-It's 2021, you don't need to run all codes on you computer anymore. Google Colab is a platform which allows to write/use python script remotely.
-You can open the PyMieSim.ipynb in the file (or click on the "Open in Colab" badge) to access it or click on the following badge:
+It's 2021, you don't need to run all your code on you computer anymore. Google Colab is a platform which allows to write/use python scripts remotely.
+You can open the PyMieSim.ipynb in the file to access it or click on the following "Open in Colab" badge:
 
 |colab|
 
@@ -71,7 +71,7 @@ It's pretty simple:
 
 Running Unittest
 *****************
-To run the Unit-tests one need the coverage library.
+To run the Unit-tests, one need the coverage library.
 
 .. code-block:: python
 
@@ -110,15 +110,15 @@ Here is an example on how to use the library.
 
   print(Coupling) # output: 1.66e+02 nWatt
 
-For more examples I invite you to check the `examples <https://pymiesim.readthedocs.io/en/latest/Examples.html>`_
-section of the documentations.
+For more examples, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/latest/Examples.html>`_
+section of the documentation.
 
 
 Coding examples
 ***************
 
 
-A large set of examples is avaialble in the `test/Examples` folder. You can also see them in the examples section of the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_
+A large set of examples are avaialble in the `test/Examples` folder. You can also see them in the examples section of the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_
 
 ----
 
@@ -142,8 +142,8 @@ To-Do List
 
 Citing this work?
 ******************
-I spend half a year to develop this tool for you to use so if it helped you in your research I would greatly appreciate
-you to cite my work. Many thanks
+I spent half a year to develop this tool for you to use so if it helped you in your research, I would greatly appreciate
+that you cite my work. Many thanks!
 |zenodo|
 
 (Is this the new "like, comment and share" ?)
@@ -153,8 +153,8 @@ you to cite my work. Many thanks
 
 Developper mode
 ****************
-In order to compile the project without using pip a few depedencies are to be installed.
-Those are the C++ boost library and a C++/Fortran wrapper for bessel function with complex argument (nowhere to be found as C++ lib)
+In order to compile the project without using pip, a few depedencies are to be installed.
+Those are the C++ boost library and a C++/Fortran wrapper for bessel function with complex argument (nowhere to be found as C++ lib).
 
 I have worked out a Dockerfile (see the `PyMieSim Git <https://github.com/MartinPdeS/PyMieSim>`_) to install all the necessaries library.
 
@@ -189,7 +189,7 @@ You have to compile and install the code yourself. Follow the instruction as sho
 
 Contact Information
 ************************
-As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
+As of 2021, the project is still under development. If you want to collaborate, it would be a pleasure! I encourage you to contact me.
 
 PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
 
