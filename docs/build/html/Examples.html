@@ -729,187 +729,85 @@
 <hr class="docutils" />
 <section id="plot-the-scattering-efficiency-of-a-sphere-using-pymiesim">
 <h3>Plot the scattering efficiency of a sphere using PyMieSim<a class="headerlink" href="#plot-the-scattering-efficiency-of-a-sphere-using-pymiesim" title="Permalink to this headline">¶</a></h3>
-<p>PyMieSim makes it easy to create a source and a scatterer. With these objects
-defined, it is possible to use PyMieSim to find the scattering efficiency of the
-scatterer. This feature can be used to plot a graph of the scattering efficiency
-of a sphere as a function of the permittivity and the size parameter. The graph is
-the following:</p>
-<img alt="_images/ScatteringEfficiency.png" src="_images/ScatteringEfficiency.png" />
-<p>Making this graph using PyMieSim is very simple. Since the graph is made with
-matplotlib and numpy, the first step is to make sure these packages are installed
-and then to import them:</p>
 <div class="literal-block-wrapper docutils container" id="id18">
-<div class="code-block-caption"><span class="caption-text"><strong>Import librairies</strong></span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="c1"># import PyMieSim</span>
-<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
-<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span>    <span class="c1"># import other librairies</span>
-<span class="linenos"> 6</span>    <span class="kn">import</span> <span class="nn">math</span>
-<span class="linenos"> 7</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="linenos"> 8</span>    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="linenos"> 9</span>    <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
-<span class="linenos">10</span>    <span class="kn">import</span> <span class="nn">matplotlib</span>
-</pre></div>
-</div>
-</div>
-<p>The following step is to create a light source and an empty list that will
-contain the heatmap values:</p>
-<div class="literal-block-wrapper docutils container" id="id19">
-<div class="code-block-caption"><span class="caption-text"><strong>Add light source</strong></span><a class="headerlink" href="#id19" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>    <span class="c1"># set the source using PyMieSim</span>
-<span class="linenos">2</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-<span class="linenos">3</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="linenos">4</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">5</span>    <span class="c1"># create an empty list</span>
-<span class="linenos">6</span>    <span class="n">heatmap</span> <span class="o">=</span> <span class="p">[]</span>
-</pre></div>
-</div>
-</div>
-<p>The next step is the most important since in generates the list of lists that
-will be used to make the heatmap. It consists of two for loops that loop through
-different values of Diameter and Index which are two parameters of a Sphere in
-PyMieSim. Note that some scale adjustments were made to adjust the graph’s aspect
-ratio:</p>
-<div class="literal-block-wrapper docutils container" id="id20">
-<div class="code-block-caption"><span class="caption-text"><strong>Create list of lists</strong></span><a class="headerlink" href="#id20" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="c1"># loop through all the values to generate the heatmap</span>
-<span class="linenos"> 2</span>    <span class="c1"># first, loop through the diameter values</span>
-<span class="linenos"> 3</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">517</span><span class="p">):</span>
-<span class="linenos"> 4</span>        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos"> 5</span>        <span class="c1"># second, loop through the index values</span>
-<span class="linenos"> 6</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">501</span><span class="p">):</span>
-<span class="linenos"> 7</span>            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="linenos"> 8</span>                <span class="k">continue</span>
-<span class="linenos"> 9</span>
-<span class="linenos">10</span>            <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
-<span class="linenos">11</span>                          <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-<span class="linenos">12</span>                          <span class="n">Index</span>       <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># square root since permittivity</span>
-<span class="linenos">13</span>                                                     <span class="c1"># is the index squared</span>
-<span class="linenos">14</span>            <span class="c1"># Get the scattering efficiency using GetProperties()</span>
-<span class="linenos">15</span>            <span class="n">prop</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
-<span class="linenos">16</span>            <span class="n">Qsca</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="linenos">17</span>            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
-<span class="linenos">18</span>        <span class="c1"># append list (row) to the heatmap (list of lists)</span>
-<span class="linenos">19</span>        <span class="n">heatmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<p>Following this step, we have a list of lists named heatmap that will generate the
-graph. To do so, it is first converted in a numpy array and then some operations
-are made using matplotlib to plot the graph accurately:</p>
-<div class="literal-block-wrapper docutils container" id="id21">
-<div class="code-block-caption"><span class="caption-text"><strong>Plot the graph</strong></span><a class="headerlink" href="#id21" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>    <span class="c1"># convert the heatmap to a numpy array</span>
-<span class="linenos"> 2</span>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">heatmap</span><span class="p">)</span>
-<span class="linenos"> 3</span>
-<span class="linenos"> 4</span>    <span class="c1"># create the plot</span>
-<span class="linenos"> 5</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="linenos"> 6</span>    <span class="c1"># show the data and adjust the color scale</span>
-<span class="linenos"> 7</span>    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span>    <span class="c1"># graph title</span>
-<span class="linenos">10</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Scattering efficiency of a sphere&quot;</span><span class="p">)</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span>    <span class="c1"># x axis settings</span>
-<span class="linenos">13</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Permittivity&quot;</span><span class="p">)</span>
-<span class="linenos">14</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">7</span><span class="p">))</span>
-<span class="linenos">15</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
-<span class="linenos">16</span>
-<span class="linenos">17</span>    <span class="c1"># y axis settings</span>
-<span class="linenos">18</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Size parameter&quot;</span><span class="p">)</span>
-<span class="linenos">19</span>    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
-<span class="linenos">20</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">),</span> <span class="mi">7</span><span class="p">))</span>
-<span class="linenos">21</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
-<span class="linenos">22</span>
-<span class="linenos">23</span>    <span class="c1"># colorbar settings</span>
-<span class="linenos">24</span>    <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="linenos">25</span>    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="linenos">26</span>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
-<span class="linenos">27</span>
-<span class="linenos">28</span>    <span class="c1"># display the plot in a tight layout</span>
-<span class="linenos">29</span>    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="linenos">30</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<p>The entire code to generate the graph of the scattering efficiency of a sphere
-can be found below in a single block. The result should be the plot shown under
-the code block.</p>
-<div class="literal-block-wrapper docutils container" id="id22">
-<div class="code-block-caption"><span class="caption-text"><strong>Scattering efficiency graph</strong></span><a class="headerlink" href="#id22" title="Permalink to this code">¶</a></div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-<span class="linenos"> 2</span>    <span class="c1"># import PyMieSim</span>
-<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
-<span class="linenos"> 4</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<div class="code-block-caption"><span class="caption-text"><strong>Scattering efficiency graph</strong></span><a class="headerlink" href="#id18" title="Permalink to this code">¶</a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="c1"># PyMieSim makes it easy to create a source and a scatterer. With these objects</span>
+<span class="linenos"> 2</span><span class="c1"># defined, it is possible to use PyMieSim to find the scattering efficiency of the</span>
+<span class="linenos"> 3</span><span class="c1"># scatterer. This feature can be used to plot a graph of the scattering efficiency</span>
+<span class="linenos"> 4</span><span class="c1"># of a sphere as a function of the permittivity and the size parameter.</span>
 <span class="linenos"> 5</span>
-<span class="linenos"> 6</span>    <span class="c1"># import other librairies</span>
-<span class="linenos"> 7</span>    <span class="kn">import</span> <span class="nn">math</span>
-<span class="linenos"> 8</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="linenos"> 9</span>    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="linenos">10</span>    <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
-<span class="linenos">11</span>    <span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="linenos">12</span>
-<span class="linenos">13</span>    <span class="c1"># set the source using PyMieSim</span>
-<span class="linenos">14</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
-<span class="linenos">15</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-<span class="linenos">16</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-<span class="linenos">17</span>    <span class="c1"># create an empty list</span>
-<span class="linenos">18</span>    <span class="n">heatmap</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos">19</span>
-<span class="linenos">20</span>    <span class="c1"># loop through all the values to generate the heatmap</span>
-<span class="linenos">21</span>    <span class="c1"># first, loop through the diameter values</span>
-<span class="linenos">22</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">517</span><span class="p">):</span>
-<span class="linenos">23</span>        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="linenos">24</span>        <span class="c1"># second, loop through the index values</span>
-<span class="linenos">25</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">501</span><span class="p">):</span>
-<span class="linenos">26</span>            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-<span class="linenos">27</span>                <span class="k">continue</span>
-<span class="linenos">28</span>
-<span class="linenos">29</span>            <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
-<span class="linenos">30</span>                          <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
-<span class="linenos">31</span>                          <span class="n">Index</span>       <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># square root since permittivity</span>
-<span class="linenos">32</span>                                                     <span class="c1"># is the index squared</span>
-<span class="linenos">33</span>            <span class="c1"># Get the scattering efficiency using GetProperties()</span>
-<span class="linenos">34</span>            <span class="n">prop</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
-<span class="linenos">35</span>            <span class="n">Qsca</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="linenos">36</span>            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
-<span class="linenos">37</span>        <span class="c1"># append list (row) to the heatmap (list of lists)</span>
-<span class="linenos">38</span>        <span class="n">heatmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="linenos">39</span>
-<span class="linenos">40</span>    <span class="c1"># convert the heatmap to a numpy array</span>
-<span class="linenos">41</span>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">heatmap</span><span class="p">)</span>
-<span class="linenos">42</span>
-<span class="linenos">43</span>    <span class="c1"># create the plot</span>
-<span class="linenos">44</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="linenos">45</span>    <span class="c1"># show the data and adjust the color scale</span>
-<span class="linenos">46</span>    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 7</span>    <span class="c1"># import PyMieSim</span>
+<span class="linenos"> 8</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 9</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>    <span class="c1"># import other librairies</span>
+<span class="linenos">12</span>    <span class="kn">import</span> <span class="nn">math</span>
+<span class="linenos">13</span>    <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos">14</span>    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="linenos">15</span>    <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="linenos">16</span>    <span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="linenos">17</span>
+<span class="linenos">18</span>    <span class="c1"># set the source using PyMieSim</span>
+<span class="linenos">19</span>    <span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos">20</span>                       <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos">21</span>                       <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">22</span>    <span class="c1"># create an empty list that will contain the heatmap values</span>
+<span class="linenos">23</span>    <span class="n">heatmap</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="c1"># loop through all the values to generate the heatmap</span>
+<span class="linenos">26</span>    <span class="c1"># first, loop through the diameter values</span>
+<span class="linenos">27</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">517</span><span class="p">):</span>
+<span class="linenos">28</span>        <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">29</span>        <span class="c1"># second, loop through the index values</span>
+<span class="linenos">30</span>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span><span class="mi">501</span><span class="p">):</span>
+<span class="linenos">31</span>            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="linenos">32</span>                <span class="k">continue</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span>            <span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="n">i</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
+<span class="linenos">35</span>                          <span class="n">Source</span>      <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">36</span>                          <span class="n">Index</span>       <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="o">/</span><span class="mi">10</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span> <span class="c1"># square root since permittivity</span>
+<span class="linenos">37</span>                                                     <span class="c1"># is the index squared</span>
+<span class="linenos">38</span>            <span class="c1"># Get the scattering efficiency using GetProperties()</span>
+<span class="linenos">39</span>            <span class="n">prop</span> <span class="o">=</span> <span class="n">Scat</span><span class="o">.</span><span class="n">GetProperties</span><span class="p">()</span>
+<span class="linenos">40</span>            <span class="n">Qsca</span> <span class="o">=</span> <span class="n">prop</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="linenos">41</span>            <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Qsca</span><span class="p">)</span>
+<span class="linenos">42</span>        <span class="c1"># append list (row) to the heatmap (list of lists)</span>
+<span class="linenos">43</span>        <span class="n">heatmap</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="linenos">44</span>
+<span class="linenos">45</span>    <span class="c1"># convert the heatmap to a numpy array</span>
+<span class="linenos">46</span>    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">heatmap</span><span class="p">)</span>
 <span class="linenos">47</span>
-<span class="linenos">48</span>    <span class="c1"># graph title</span>
-<span class="linenos">49</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Scattering efficiency of a sphere&quot;</span><span class="p">)</span>
-<span class="linenos">50</span>
-<span class="linenos">51</span>    <span class="c1"># x axis settings</span>
-<span class="linenos">52</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Permittivity&quot;</span><span class="p">)</span>
-<span class="linenos">53</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">7</span><span class="p">))</span>
-<span class="linenos">54</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="linenos">48</span>    <span class="c1"># create the plot</span>
+<span class="linenos">49</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="linenos">50</span>    <span class="c1"># show the data and adjust the color scale</span>
+<span class="linenos">51</span>    <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+<span class="linenos">52</span>
+<span class="linenos">53</span>    <span class="c1"># graph title</span>
+<span class="linenos">54</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Scattering efficiency of a sphere&quot;</span><span class="p">)</span>
 <span class="linenos">55</span>
-<span class="linenos">56</span>    <span class="c1"># y axis settings</span>
-<span class="linenos">57</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Size parameter&quot;</span><span class="p">)</span>
-<span class="linenos">58</span>    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
-<span class="linenos">59</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">),</span> <span class="mi">7</span><span class="p">))</span>
-<span class="linenos">60</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
-<span class="linenos">61</span>
-<span class="linenos">62</span>    <span class="c1"># colorbar settings</span>
-<span class="linenos">63</span>    <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="linenos">64</span>    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
-<span class="linenos">65</span>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="linenos">56</span>    <span class="c1"># x axis settings</span>
+<span class="linenos">57</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Permittivity&quot;</span><span class="p">)</span>
+<span class="linenos">58</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">7</span><span class="p">))</span>
+<span class="linenos">59</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="linenos">60</span>
+<span class="linenos">61</span>    <span class="c1"># y axis settings</span>
+<span class="linenos">62</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Size parameter&quot;</span><span class="p">)</span>
+<span class="linenos">63</span>    <span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+<span class="linenos">64</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">heatmap</span><span class="p">),</span> <span class="mi">7</span><span class="p">))</span>
+<span class="linenos">65</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
 <span class="linenos">66</span>
-<span class="linenos">67</span>    <span class="c1"># display the plot in a tight layout</span>
-<span class="linenos">68</span>    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="linenos">69</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="linenos">70</span>
-<span class="linenos">71</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<span class="linenos">72</span>    <span class="n">run</span><span class="p">()</span>
+<span class="linenos">67</span>    <span class="c1"># colorbar settings</span>
+<span class="linenos">68</span>    <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+<span class="linenos">69</span>    <span class="n">cax</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;5%&quot;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+<span class="linenos">70</span>    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="linenos">71</span>
+<span class="linenos">72</span>    <span class="c1"># display the plot in a tight layout</span>
+<span class="linenos">73</span>    <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="linenos">74</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos">75</span>
+<span class="linenos">76</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">77</span>    <span class="n">run</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
