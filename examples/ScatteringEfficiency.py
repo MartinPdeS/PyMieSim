@@ -1,3 +1,8 @@
+# PyMieSim makes it easy to create a source and a scatterer. With these objects
+# defined, it is possible to use PyMieSim to find the scattering efficiency of the
+# scatterer. This feature can be used to plot a graph of the scattering efficiency
+# of a sphere as a function of the permittivity and the size parameter.
+
 def run():
     # import PyMieSim
     from PyMieSim.Source import PlaneWave
@@ -14,7 +19,7 @@ def run():
     Source = PlaneWave(Wavelength   = 450e-9,
                        Polarization = 0,
                        E0           = 1)
-    # create an empty list
+    # create an empty list that will contain the heatmap values
     heatmap = []
 
     # loop through all the values to generate the heatmap

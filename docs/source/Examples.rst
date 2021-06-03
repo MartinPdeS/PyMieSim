@@ -249,59 +249,6 @@ Experiment: optimization
 Plot the scattering efficiency of a sphere using PyMieSim
 =========================================================
 
-PyMieSim makes it easy to create a source and a scatterer. With these objects
-defined, it is possible to use PyMieSim to find the scattering efficiency of the
-scatterer. This feature can be used to plot a graph of the scattering efficiency
-of a sphere as a function of the permittivity and the size parameter. The graph is
-the following:
-
-.. image:: ../images/ScatteringEfficiency.png
-
-Making this graph using PyMieSim is very simple. Since the graph is made with
-matplotlib and numpy, the first step is to make sure these packages are installed
-and then to import them:
-
-.. literalinclude:: ../../examples/ScatteringEfficiency.py
-    :language: python
-    :caption: **Import librairies**
-    :lines: 2-11
-    :linenos:
-
-The following step is to create a light source and an empty list that will
-contain the heatmap values:
-
-.. literalinclude:: ../../examples/ScatteringEfficiency.py
-    :language: python
-    :caption: **Add light source**
-    :lines: 13-18
-    :linenos:
-
-The next step is the most important since in generates the list of lists that
-will be used to make the heatmap. It consists of two for loops that loop through
-different values of Diameter and Index which are two parameters of a Sphere in
-PyMieSim. Note that some scale adjustments were made to adjust the graph's aspect
-ratio:
-
-.. literalinclude:: ../../examples/ScatteringEfficiency.py
-    :language: python
-    :caption: **Create list of lists**
-    :lines: 20-38
-    :linenos:
-
-Following this step, we have a list of lists named heatmap that will generate the
-graph. To do so, it is first converted in a numpy array and then some operations
-are made using matplotlib to plot the graph accurately:
-
-.. literalinclude:: ../../examples/ScatteringEfficiency.py
-    :language: python
-    :caption: **Plot the graph**
-    :lines: 40-69
-    :linenos:
-
-The entire code to generate the graph of the scattering efficiency of a sphere
-can be found below in a single block. The result should be the plot shown under
-the code block.
-
 .. literalinclude:: ../../examples/ScatteringEfficiency.py
     :language: python
     :caption: **Scattering efficiency graph**
