@@ -1,0 +1,3 @@
+[submodule "fibermodes"]
+	path = fibermodes
+	url = https://github.com/cbrunet/fibermodes
