@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
-add_subdirectory(pybind11)
+add_subdirectory(extern/pybind11)
 
 FIND_PACKAGE(PythonInterp 3.8 REQUIRED)
 
