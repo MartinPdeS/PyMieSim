@@ -73,7 +73,6 @@ class PMSArray(object):
             New PMSArray instance containing the monotonic metric value of axis.
 
         """
-        axis = axis.lower()
 
         arr  = np.gradient(self.data,
                            axis = self.conf['order'][axis])\
@@ -101,7 +100,6 @@ class PMSArray(object):
             New PMSArray instance containing the mean value of axis.
 
         """
-        axis = axis.lower()
 
         arr  = np.mean(self.data, axis=self.conf['order'][axis] )
 
@@ -127,7 +125,6 @@ class PMSArray(object):
             New PMSArray instance containing the std value of axis.
 
         """
-        axis = axis.lower()
 
         arr  = np.std(self.data, axis=self.conf['order'][axis] )
 
@@ -154,7 +151,6 @@ class PMSArray(object):
             New PMSArray instance containing the rsd value of axis.
 
         """
-        axis = axis.lower()
 
         arr  = np.std(self.data, axis=self.conf['order'][axis] ) \
               /np.mean(self.data, axis=self.conf['order'][axis] )
@@ -182,17 +178,13 @@ class PMSArray(object):
 
         """
 
-        newConf = self.conf.copy()#copy.copy(self.conf)  <----- I don't like it!
+        newConf = self.conf.copy()
 
-        dim = newConf['order'][axis]
+        newConf['order'] = {key: n for n, key in \
+        enumerate( newConf['order'].keys() ) if key is not axis }
 
-        newConf['order'].pop(axis)
-
-        newConf['X'].pop(dim)
-
-        newConf['order'] = {key: n for n, key in enumerate( newConf['order'].keys() ) }
-
-        newConf['X'] = {n: dic for n, dic in enumerate( newConf['X'].values() ) }
+        newConf['X'] = {key: val for key, val in \
+        enumerate( newConf['X'].values() ) if val['name'] is not axis }
 
         return newConf
 
@@ -309,7 +301,7 @@ class PMSArray(object):
 
                 if xdict['name'] == 'material' :
                     val = val.__str__()
-
+                    
                 label += f"{xdict['name']}: {val:{xdict['format']}} | "
 
         return label

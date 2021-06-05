@@ -221,6 +221,8 @@ class LPmode(BaseDetector, MeshProperty):
 
         self.ModeNumber   = Mode
 
+        self._NA = NA2Angle(NA).Radian
+
         self.Mesh = self.SphericalMesh(Sampling    = Sampling,
                                        MaxAngle    = NA2Angle(NA).Radian,
                                        PhiOffset   = PhiOffset,
@@ -295,7 +297,7 @@ class LPmode(BaseDetector, MeshProperty):
         return IO( f"""
         LP mode detector
         Coupling Mode: Amplitude
-        LP Mode:             {(self.ModeNumber[0]-1, self.ModeNumber[1], self.ModeNumber[2])}
+        LP Mode:             {(self.ModeNumber[0]-1, self.ModeNumber[1])}
         Numerical aperture:  {self.NA:.4f}
         Sampling:            {self.Mesh.Sampling}
         Gamma offset:        {self.Mesh.GammaOffset}

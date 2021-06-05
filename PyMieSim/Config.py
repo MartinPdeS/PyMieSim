@@ -92,13 +92,13 @@ PolarizationDict = { 'name'         : 'polarization',
                      'order'        : None }
 
 WavelengthDict = { 'name'           : 'wavelength',
-                   'label'          : r'Wavelength $\lambda$ [m]',
+                   'label'          : r'Wavelength [m]',
                    'format'         : '.1e',
                    'unit'           : 'm',
                    'order'          : None,
                    'dimension'      : None }
 
-NADict =   { 'name'                 : 'na',
+NADict =   { 'name'                 : 'NA',
              'label'                : 'Numerical aperture (NA) [1]',
              'format'               : '.3f',
              'unit'                 : '[1]',
@@ -259,7 +259,12 @@ CouplingDict = { 'name'             : 'coupling',
                  'unit'             :  '[Watt]',
                  'type'             : 'Coupling [watt]' }
 
-
+modeDict = { 'name'             : 'mode',
+             'label'            : 'Mode',
+             'legend'           : 'mode',
+             'format'           : '',
+             'unit'             : ' ',
+             'type'             : ' ' }
 #-------------------------------------------------------------------------------
 BaseConfig = { 'name'               : None,
                'unit'               : {},
@@ -283,6 +288,7 @@ Arg2Dict = { 'Diameter'             : DiameterDict,
              'CoreIndex'            : CoreIndexDict,
              'ShellIndex'           : ShellIndexDict,
              'NA'                   : NADict,
+             'Mode'                 : modeDict,
              'PhiOffset'            : PhiOffDict,
              'GammaOffset'          : GammaOffDict,
              'Sampling'             : SamplingDict,

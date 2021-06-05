@@ -18,6 +18,10 @@ from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict
 from PyMieSim.Config      import *
 
 
+class Namespace:
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
 class ScatSet(Set):
 
     @beartype
@@ -26,19 +30,26 @@ class ScatSet(Set):
         if all([ 'Material' in kwargs.keys(), 'index' in kwargs.keys() ] ):
             raise KeyError("You should either choose a material or the RI, not both.")
 
-        self.kwargs = {k: ToList(v) for k, v in kwargs.items()}
+        self.kwargs      = {k: ToList(v) for k, v in kwargs.items()}
 
-        self.Scatterer = Scatterer
+        self._Scatterer_ = Scatterer
+
+        self._Scatterer  = Namespace(kwargs=None)
+
+        self._Source     = None
 
 
-    def Generator(self, source=None):
-        Generator, order = GeneratorFromDict(self.kwargs)
+    def Generator(self):
+        Generator = GeneratorFromDict(self.kwargs)
 
-        for arguments in Generator:
-            for n, key in enumerate( self.kwargs.keys() ):
-                order[key] = arguments[n]
+        for kwargs in Generator:
+            if self._Scatterer.kwargs == kwargs:
+                yield self._Scatterer
 
-            yield self.Scatterer(**order, Source = source)
+            else:
+                self._Scatterer = self._Scatterer_(**kwargs, Source = self._Source)
+                self._Scatterer.kwargs = deepcopy(kwargs)
+                yield self._Scatterer
 
 
 
@@ -47,17 +58,25 @@ class SourceSet(Set):
     @beartype
     def __init__(self, Source = None, kwargs : dict = {}):
 
-        self.kwargs = {k: ToList(v) for k, v in kwargs.items()}
+        self.kwargs   = {k: ToList(v) for k, v in kwargs.items()}
+
+        self._Source_ = PlaneWave
+
+        self._Source  = Namespace(kwargs=None)
 
 
     def Generator(self, MatGen=None):
-        Generator, order = GeneratorFromDict(self.kwargs)
+        Generator = GeneratorFromDict(self.kwargs)
 
-        for arguments in Generator:
-            for n, key in enumerate( self.kwargs.keys() ):
-                order[key] = arguments[n]
+        for kwargs in Generator:
+            if self._Source.kwargs == kwargs:
+                yield self._Source
 
-            yield PlaneWave(**order)
+            else:
+
+                self._Source  = self._Source_(**kwargs)
+                self._Source.kwargs = deepcopy(kwargs)
+                yield self._Source
 
 
 
@@ -66,20 +85,27 @@ class DetectorSet(Set):
     @beartype
     def __init__(self, Detector, kwargs : dict = {}):
 
-        self.isEmpty = False
+        self.isEmpty    = False
 
-        self.kwargs = {k: ToList(v) for k, v in kwargs.items()}
+        self.kwargs     = {k: ToList(v) for k, v in kwargs.items()}
 
-        self.Detector = Detector
+        self._Detector_ = Detector
+
+        self._Detector  = Namespace(kwargs=None)
+
 
     def Generator(self):
-        Generator, order = GeneratorFromDict(self.kwargs)
+        Generator = GeneratorFromDict(self.kwargs)
 
-        for arguments in Generator:
-            for n, key in enumerate( self.kwargs.keys() ):
-                order[key] = arguments[n]
+        for kwargs in Generator:
 
-            yield self.Detector(**order)
+            if self._Detector.kwargs == kwargs:
+                yield self._Detector
+
+            else:
+                self._Detector  = self._Detector_(**kwargs)
+                self._Detector.kwargs = deepcopy(kwargs)
+                yield self._Detector
 
 
 class EmptyDetectorSet(set):
@@ -99,18 +125,13 @@ class Setup(object):
     def __init__(self,
                  ScattererSet : ScatSet                  = None,
                  SourceSet    : SourceSet                = None,
-                 DetectorSet  : Union[DetectorSet, None] = None):
+                 DetectorSet  : Union[DetectorSet, None] = EmptyDetectorSet()):
 
         config = deepcopy(BaseConfig)
 
-        self.MetricList   = MetricList
-
-        if not DetectorSet:
-            self.DetectorSet = EmptyDetectorSet()
-        else:
-            self.DetectorSet  = DetectorSet
-
         self.SourceSet    = SourceSet
+
+        self.DetectorSet  = DetectorSet
 
         self.ScattererSet = ScattererSet
 
@@ -177,11 +198,12 @@ class Setup(object):
 
         i = 0
         for source in self.SourceSet.Generator():
-            for scatterer in self.ScattererSet.Generator(source):
+            self.ScattererSet._Source = source
+            for scatterer in self.ScattererSet.Generator():
                 for detector in self.DetectorSet.Generator():
                     for prop in Input:
                         if prop == 'Coupling':
-                            Array[i] = detector.Coupling(Scatterer = scatterer)
+                            Array[i] = detector.Coupling(scatterer)
                             i       += 1
 
                         else:
@@ -227,7 +249,6 @@ class Setup(object):
 
 
 class Optimizer:
-
     @beartype
     def __init__(self,
                  Setup         : Setup,
@@ -277,7 +298,6 @@ class Optimizer:
 
 
     def UpdateConfiguration(self, Parameters, x, WhichDetector):
-
         for n in range(len(Parameters)):
             if Parameters[n] in DetectorParamList:
                 setattr(self.Setup.DetectorSet[WhichDetector], Parameters[0], x[0])
@@ -287,7 +307,6 @@ class Optimizer:
 
 
     def Run(self):
-
         def EvalFunc(x):
             Penalty = self.ComputePenalty(self.Parameters, x, self.MaxVal, self.MinVal, factor=100)
 
