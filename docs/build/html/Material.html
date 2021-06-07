@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Scatterer material &#8212; PyMieSim 0.1.11 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+        <div style="background-color: gray; text-align: left; padding: 10px 10px 15px 15px">
+        <a href="index.html"><h1 style="font-size: 3em;">PyMieSim</h1></a>
+        </div>
+        
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="Theory.html">Theory</a>|&nbsp;</li>
+        <li><a href="Code.html">Code</a>|&nbsp;</li>
+        <li><a href="Examples.html">Examples</a>|&nbsp;</li>
+        <li><a href="#">Material</a>|&nbsp;</li>
+        <li><a href="LPModes.html">LPModes</a>|&nbsp;</li>
+        <li><a href="References.html">References</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Scatterer material</a></li> 
+      </ul>
+    </div>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="scatterer-material">
+<h1>Scatterer material<a class="headerlink" href="#scatterer-material" title="Permalink to this headline">¶</a></h1>
+<section id="built-in-material">
+<h2>Built-in material<a class="headerlink" href="#built-in-material" title="Permalink to this headline">¶</a></h2>
+<p>PyMieSim allows you to use the bank of <strong>Material</strong> to emulate scatterer refracive index which vary
+as a function of the source wavelength.</p>
+<p>To use the <strong>Material</strong> follow the snippet:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span> <span class="nn">PyMieSim.Scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">PyMieSim.Source</span> <span class="kn">import</span> <span class="n">PlaneWave</span>
+<span class="linenos"> 3</span><span class="kn">from</span> <span class="nn">PyMieSim</span> <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">Source</span> <span class="o">=</span> <span class="n">PlaneWave</span><span class="p">(</span><span class="n">Wavelength</span>   <span class="o">=</span> <span class="mf">450e-9</span><span class="p">,</span>
+<span class="linenos"> 6</span>                  <span class="n">Polarization</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="linenos"> 7</span>                  <span class="n">E0</span>           <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">Scat</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span><span class="n">Diameter</span>    <span class="o">=</span> <span class="mf">800e-9</span><span class="p">,</span>
+<span class="linenos">10</span>             <span class="n">Source</span>       <span class="o">=</span> <span class="n">Source</span><span class="p">,</span>
+<span class="linenos">11</span>             <span class="n">Material</span>     <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="generate-new-material">
+<h2>Generate new material<a class="headerlink" href="#generate-new-material" title="Permalink to this headline">¶</a></h2>
+<p>PyMieSim has a toolbox to fetch and load new material data.
+Using the largest refracitve index bank: <a class="reference external" href="https://refractiveindex.info/">refractiveindex.info</a>  PyMieSim can directly
+download and save complex refractive index for a specific material.
+Doing so the toolbox will save locally the data in the <strong>PyMieSim/Data/_Material/data</strong> folder and will update the
+<strong>PyMieSim/Meta.json</strong> file.
+Here is what the Meta file look like</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="p">{</span>
+<span class="linenos"> 2</span>    <span class="nt">&quot;remote&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos"> 3</span>        <span class="nt">&quot;Aluminium&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/Al/Rakic.yml&quot;</span><span class="p">,</span>
+<span class="linenos"> 4</span>        <span class="nt">&quot;BK7&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&quot;</span><span class="p">,</span>
+<span class="linenos"> 5</span>        <span class="nt">&quot;FusedSilica&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/SiO2/Malitson.yml&quot;</span><span class="p">,</span>
+<span class="linenos"> 6</span>        <span class="nt">&quot;Silver&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&quot;</span><span class="p">,</span>
+<span class="linenos"> 7</span>        <span class="nt">&quot;SodaLimeGlass&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/glass/misc/soda-lime/Rubin-clear.yml&quot;</span><span class="p">,</span>
+<span class="linenos"> 8</span>        <span class="nt">&quot;BorosilicateCrown&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/glass/hoya/BSC7.yml&quot;</span><span class="p">,</span>
+<span class="linenos"> 9</span>        <span class="nt">&quot;Gold&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/main/Au/Johnson.yml&quot;</span><span class="p">,</span>
+<span class="linenos">10</span>        <span class="nt">&quot;Air&quot;</span><span class="p">:</span> <span class="s2">&quot;https://refractiveindex.info/data_csv.php?datafile=data/other/mixed%20gases/air/Ciddor.yml&quot;</span>
+<span class="linenos">11</span>    <span class="p">},</span>
+<span class="linenos">12</span>    <span class="nt">&quot;local&quot;</span><span class="p">:</span> <span class="p">{</span>
+<span class="linenos">13</span>        <span class="nt">&quot;Aluminium&quot;</span><span class="p">:</span> <span class="s2">&quot;Aluminium.npz&quot;</span><span class="p">,</span>
+<span class="linenos">14</span>        <span class="nt">&quot;BK7&quot;</span><span class="p">:</span> <span class="s2">&quot;BK7.npz&quot;</span><span class="p">,</span>
+<span class="linenos">15</span>        <span class="nt">&quot;FusedSilica&quot;</span><span class="p">:</span> <span class="s2">&quot;FusedSilica.npz&quot;</span><span class="p">,</span>
+<span class="linenos">16</span>        <span class="nt">&quot;Silver&quot;</span><span class="p">:</span> <span class="s2">&quot;Silver.npz&quot;</span><span class="p">,</span>
+<span class="linenos">17</span>        <span class="nt">&quot;SodaLimeGlass&quot;</span><span class="p">:</span> <span class="s2">&quot;SodaLimeGlass.npz&quot;</span><span class="p">,</span>
+<span class="linenos">18</span>        <span class="nt">&quot;BorosilicateCrown&quot;</span><span class="p">:</span> <span class="s2">&quot;BorosilicateCrown.npz&quot;</span><span class="p">,</span>
+<span class="linenos">19</span>        <span class="nt">&quot;Gold&quot;</span><span class="p">:</span> <span class="s2">&quot;Gold.npz&quot;</span><span class="p">,</span>
+<span class="linenos">20</span>        <span class="nt">&quot;Air&quot;</span><span class="p">:</span> <span class="s2">&quot;Air.npz&quot;</span>
+<span class="linenos">21</span>    <span class="p">}</span>
+<span class="linenos">22</span><span class="p">}</span>
+</pre></div>
+</div>
+<hr class="docutils" />
+<blockquote>
+<div><p>In order to generate new Material to use with PyMieSim one can use the following snippet</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>                      <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;BK7&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">13</span>    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+<a class="reference internal image-reference" href="_images/Extra:New-Material-BK7.png"><img alt="_images/Extra:New-Material-BK7.png" src="_images/Extra:New-Material-BK7.png" style="width: 600px;" /></a>
+<p>After executing this code a new entry to <strong>Meta.json</strong> will be added or updated.
+Afterward the user can use this new material for my computation.</p>
+<p>Here is another examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
+<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
+<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>                      <span class="kn">import</span> <span class="n">Material</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span>    <span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;Silver&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span>    <span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span>    <span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="linenos">13</span>    <span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/Extra:New-Material-Silver.png"><img alt="_images/Extra:New-Material-Silver.png" src="_images/Extra:New-Material-Silver.png" style="width: 600px;" /></a>
+</section>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/Logo.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Scatterer material</a><ul>
+<li><a class="reference internal" href="#built-in-material">Built-in material</a></li>
+<li><a class="reference internal" href="#generate-new-material">Generate new material</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Material.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="Theory.html">Theory</a>|&nbsp;</li>
+        <li><a href="Code.html">Code</a>|&nbsp;</li>
+        <li><a href="Examples.html">Examples</a>|&nbsp;</li>
+        <li><a href="#">Material</a>|&nbsp;</li>
+        <li><a href="LPModes.html">LPModes</a>|&nbsp;</li>
+        <li><a href="References.html">References</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Scatterer material</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Martin Poinsinet de Sivry-Houle.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.0.2.
+    </div>
+  </body>
+</html>
