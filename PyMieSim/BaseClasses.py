@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy  as np
+import matplotlib.pyplot as plt
+from mayavi import mlab
 import os
 
-from PyMieSim.Directories     import NPZPath, RTDExample
+from PyMieSim.Directories     import *
 from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
 from PyMieSim.Physics         import _Polarization, Angle
 from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
@@ -13,7 +15,7 @@ from PyMieSim.Mesh            import FibonacciMesh
 from PyMieSim._Coupling       import Coupling
 from PyMieSim.Config          import *
 from PyMieSim.Constants       import *
-import PyMieSim.Plots as plot
+import PyMieSim.Plots         as plot
 
 EPS = 1e-6
 
@@ -179,10 +181,28 @@ class BaseDetector(object):
 
         """
 
-        plot.Unstructured(Scalar  = self.Scalar,
-                          Mesh    = self.Mesh,
-                          Name    = 'Mode field',
-                          Mode    = 'Amplitude')
+        Figure = plot.Unstructured(Scalar  = self.Scalar,
+                                   Mesh    = self.Mesh,
+                                   Name    = 'Mode field',
+                                   Mode    = 'Amplitude')
+
+        mlab.show()
+
+
+    def SaveFig(self, Directory):
+        dir = os.path.join(ZeroPath, Directory) + '.png'
+
+        print(f'Saving figure in {dir}...')
+
+        Figure = plot.Unstructured(Scalar  = self.Scalar,
+                                   Mesh    = self.Mesh,
+                                   Name    = 'Mode field',
+                                   Mode    = 'Amplitude')
+
+        mlab.savefig(dir, figure=Figure)
+
+        #mlab.close(Figure)
+
 
 
 class ScattererProperties(object):
@@ -424,9 +444,6 @@ class BaseScatterer(object):
 
 
     """
-
-
-
 
     def GetProperties(self):
         """

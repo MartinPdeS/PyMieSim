@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     import numpy as np
     from PyMieSim            import Material
     from PyMieSim.Scatterer  import Sphere
@@ -13,7 +13,7 @@ def run():
     sourceKwargs = { 'Wavelength'   : 400e-9,
                      'Polarization' : [0]}
 
-    detecKwargs = { 'NA'            : [0.01],
+    detecKwargs = { 'NA'            : [0.05],
                    'Sampling'       : 300,
                    'GammaOffset'    : 0,
                    'PhiOffset'      : np.linspace(0,180,100),
@@ -31,8 +31,15 @@ def run():
 
     Data = Experiment.Get(['Coupling'])
 
-    Data.Plot(x='PhiOffset')
 
+
+    if Plot:
+        Data.Plot(y='Coupling', x='PhiOffset')
+
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Data.SaveFig(Directory=dir, y='Coupling', x='PhiOffset')
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

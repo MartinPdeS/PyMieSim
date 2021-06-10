@@ -14,7 +14,7 @@ from PyMieSim.NdArray     import PMSArray, Opt5DArray
 from PyMieSim.Detector    import LPmode, Photodiode
 from PyMieSim.Scatterer   import Sphere, WMSample
 from PyMieSim.BaseClasses import Set
-from PyMieSim.utils       import IO, ToList, GeneratorFromDict, MergeDict
+from PyMieSim.utils       import ToList, GeneratorFromDict, MergeDict, FormatString
 from PyMieSim.Config      import *
 
 
@@ -190,7 +190,7 @@ class Setup(object):
         """
         Input = set( ToList(Input) )
 
-        self.config['Got'] = Input
+        self.config['Got'] = [FormatString(element) for element in Input]
 
         self.AssertionType(Input=Input, AsType=AsType)
 

@@ -3,7 +3,7 @@
 # scatterer. This feature can be used to plot a graph of the scattering efficiency
 # of a sphere as a function of the permittivity and the size parameter.
 
-def run():
+def run(Plot, Save):
     # import PyMieSim
     from PyMieSim.Source import PlaneWave
     from PyMieSim.Scatterer import Sphere
@@ -74,4 +74,4 @@ def run():
     plt.show()
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

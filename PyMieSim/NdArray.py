@@ -8,10 +8,11 @@ from itertools import product
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
 
-from PyMieSim.Config     import *
-from PyMieSim.ErrorMsg   import *
-from PyMieSim.utils      import FormatStr, FormatString, ToList, Table
-from PyMieSim.Plots      import ExperimentPlot
+from PyMieSim.Config      import *
+from PyMieSim.Directories import *
+from PyMieSim.ErrorMsg    import *
+from PyMieSim.utils       import FormatStr, FormatString, ToList, Table
+from PyMieSim.Plots       import ExperimentPlot
 
 
 
@@ -288,7 +289,7 @@ class PMSArray(object):
 
 
     @ExperimentPlot
-    def Plot(self, y, x, figure=None, ax=None, *args, **kwargs):
+    def _Plot(self, y, x, figure=None, ax=None, *args, **kwargs):
         """Method plot the multi-dimensional array with the x key as abscissa.
         args and kwargs can be passed as standard input to matplotlib.pyplot.
 
@@ -300,7 +301,6 @@ class PMSArray(object):
             Options allow to switch between log and linear scale ['log', 'linear'].
 
         """
-        y = ToList(y)
 
         assert set(y).issubset(set(self.conf['Got'])), ErrorExperimentPlot
 
@@ -315,10 +315,22 @@ class PMSArray(object):
 
                 ax.plot(xval, self.data[idx], label=label)
 
-        plt.gcf().text(0.12, 0.9, common, fontsize = 8,
+        plt.gcf().text(0.12, 0.95, common, fontsize = 8,
                        bbox      = dict(facecolor='none',
                        edgecolor = 'black',
                        boxstyle  = 'round'))
+
+
+    def Plot(self, *args, **kwargs):
+        self._Plot(*args, **kwargs)
+        plt.show()
+
+
+    def SaveFig(self, Directory='newFig', dpi=200, *args, **kwargs):
+        dir = os.path.join(ZeroPath, Directory) + '.png'
+        self._Plot(*args, **kwargs)
+        print(f'Saving figure in {dir}...')
+        plt.savefig(dir, dpi=dpi)
 
 
     def GetSlicer(self, x):
@@ -354,26 +366,21 @@ class PMSArray(object):
 
         """
 
-        if ydict['type'] == "coupling":
-            label = f"{str(ydict['name']): >7} | "
+        diff = f"{ydict['legend']:<9}| "
 
-        else:
-            label = f"{ydict['legend']: >7} | "
-
-        common, diff = '', ' '
+        common = ''
 
         for order, (name,
                     label,
                     format,
                     size, dim) in enumerate( self.Table.Iterate() ):
 
-
             if axis != name:
                 val = self.Table.dimension(order)[idx[order]]
 
                 if name == 'material' : val = val.__str__()
 
-                string = f"{name}: {val} | "
+                string = f"{name}: {val:{format}} | "
 
                 if size != 1:
                     diff += string

@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     import numpy as np
     from PyMieSim            import Material
     from PyMieSim.Scatterer  import Sphere
@@ -6,7 +6,7 @@ def run():
     from PyMieSim.Detector   import Photodiode
     from PyMieSim.Experiment import ScatSet, SourceSet, Setup, DetectorSet
 
-    scatKwargs   = { 'Diameter' : np.geomspace(6.36e-09, 10000e-9, 1500),
+    scatKwargs   = { 'Diameter' : np.geomspace(6.36e-09, 10000e-9, 100),
                      'Material' : [Material('Silver')],
                      'nMedium'  : [1] }
 
@@ -22,9 +22,16 @@ def run():
 
     Data = Experiment.Get(Input=['Qsca', 'Qabs'])
 
-    Data.Plot(x='diameter', Scale='log', Groupby='type')
+    print(Data)
 
+    if Plot:
+        Data.Plot(y=['Qsca', 'Qabs'], x='diameter', Scale='log')
+
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Data.SaveFig(Directory=dir, y=['Qsca', 'Qabs'], x='diameter', Scale='log')
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

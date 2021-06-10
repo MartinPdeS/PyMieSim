@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     import numpy as np
     from PyMieSim            import Material
     from PyMieSim.Scatterer  import Sphere
@@ -13,15 +13,14 @@ def run():
     sourceKwargs = { 'Wavelength'   : 1e-6,
                      'Polarization' : [0,30,60,90]}
 
-    Detector0 = Photodiode(NA                = 0.2,
-                           Sampling          = 300,
-                           GammaOffset       = 70,
-                           PhiOffset         = 0,
-                           CouplingMode      = 'Centered')
+    detecKwargs  = { 'NA'           : 0.2,
+                     'Sampling'     : 300,
+                     'GammaOffset'  : 70,
+                     'PhiOffset'    : [0],
+                     'CouplingMode' : 'Centered'}
 
-    detectKwargs = { 'Detector 0'   : Detector0}
 
-    detecSet   = DetectorSet(kwargs = detectKwargs)
+    detecSet   = DetectorSet(Detector = Photodiode, kwargs = detecKwargs)
 
     scatSet    = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
 
@@ -33,8 +32,14 @@ def run():
 
     Data = Experiment.Get('Coupling')
 
-    Data.Plot(x='Diameter')
+    if Plot:
+        Data.Plot(y='Coupling', x='Diameter')
+
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Data.SaveFig(Directory=dir, y='Coupling', x='Diameter')
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

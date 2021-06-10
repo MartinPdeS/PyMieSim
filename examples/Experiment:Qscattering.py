@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     import numpy as np
     from PyMieSim.Scatterer  import Sphere
     from PyMieSim.Source     import PlaneWave
@@ -22,8 +22,13 @@ def run():
 
     Data = Experiment.Get('Qsca')
 
-    Data.Plot(x='Diameter')
+    if Plot:
+        Data.Plot(y='Qsca', x='Diameter')
 
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Data.SaveFig(Directory=dir, y='Qsca', x='Diameter')
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

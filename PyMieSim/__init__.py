@@ -12,6 +12,7 @@ PATH = os.path.join( Path(__file__).parent, 'Data/_Material' )
 
 from PyMieSim.utils       import IO
 from PyMieSim.BaseClasses import BaseMaterial
+from PyMieSim.Directories          import ZeroPath
 
 class Material(BaseMaterial):
     def __init__(self, name):
@@ -29,7 +30,7 @@ class Material(BaseMaterial):
         self.LocalDir =  META['local'][name]
 
 
-    def Plot(self):
+    def _Plot(self):
         fig = plt.figure(figsize=(6,3.5))
         ax = fig.add_subplot(111)
         ax.set_xlabel(r'Wavelength $\lambda$ [m]')
@@ -46,7 +47,19 @@ class Material(BaseMaterial):
         ax.legend()
         ax1.legend()
         plt.tight_layout()
+
+
+
+    def Plot(self):
+        self._Plot()
         plt.show()
+
+    def SaveFig(self, dir):
+        dir = os.path.join(ZeroPath, 'docs/images', dir) + '.png'
+        self._Plot()
+        plt.savefig(dir)
+        plt.close('all')
+
 
     def __repr__(self):
         return self.__name__

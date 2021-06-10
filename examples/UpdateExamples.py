@@ -4,6 +4,7 @@ import examples
 import logging
 import matplotlib._pylab_helpers
 import matplotlib.pyplot as plt
+from pathlib              import Path
 from mayavi               import mlab
 from pyface.api           import GUI
 
@@ -29,7 +30,8 @@ def SaveCloseMatplotlib():
     figures=[manager.canvas.figure
          for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()]
 
-    if len(figures) >= 1:
+    if len(figures) > 0:
+        print(f'{name} : Matplotlib example plotting and saving...')
         figures[0].savefig(path)
         plt.close('all')
 
@@ -40,9 +42,12 @@ def SaveCloseMlab():
 
     engine = mlab.get_engine()
     scene = engine.current_scene
+
     if scene is not None:
+        print(f'{name} : Mlab example plotting and saving...')
         mlab.savefig(path)
         mlab.close()
+
 
 def SaveClose():
     """Close all scene."""
@@ -53,46 +58,41 @@ def SaveClose():
 def runScript(script):
     global name
     name = script
+
     try:
         module = importlib.import_module(script)
+        module.run(Plot=False, Save=True)
 
-        #if module.matplotlib:
-        print(f'{name} : Matplotlib example plotting and saving...')
-        GUI.invoke_after(200, SaveClose)
-        module.run()
-
-        #if module.mlab:
-        print(f'{name} : Mlab example plotting and saving...')
-        GUI.invoke_after(200, SaveClose)
-        module.run()
     except:
         logging.warning(f'Script {name} did not conclude, continuing...')
 
+"""
+runScript('Coupling:LPMode')
 
-runScript('LPMode')
+runScript('Coupling:LPMode')
 
-runScript('Photodiode')
+runScript('Coupling:Photodiode')
 
-runScript('S1S2')
+runScript('Fields:S1S2')
 
-runScript('Stokes')
+runScript('Fields:Stokes')
 
-runScript('SPF')
+runScript('Fields:SPF')
 
-runScript('FarField')
+runScript('Fields:FarField')
 
-runScript('Mie-resonances')
+runScript('Experiment:Mie-resonances')
 
-runScript('Qscattering')
+runScript('Experiment:Qscattering')
 
-runScript('Coupling-vs-wavelength')
+runScript('Experiment:Coupling-vs-wavelength')
 
-runScript('Qsca-vs-diameter')
+runScript('Experiment:Qsca-vs-diameter')
 
-runScript('Coupling-vs-diameter')
+runScript('Experiment:Coupling-vs-diameter')
 
 runScript('Experiment:Goniometer')
+"""
+runScript('Extra:New-Material-BK7')
 
-runScript('New-Material')
-
-runScript('New-Material-Silver')
+runScript('Extra:New-Material-Silver')

@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     return
     import numpy as np
     from PyMieSim            import Material
@@ -68,8 +68,9 @@ def run():
 
     df = Experiment.Coupling(AsType='dataframe')
 
-    df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
+    if Plot:
+        df.Plot(y='Coupling', x='Diameter') # can be "Couplimg"  or  "STD"
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

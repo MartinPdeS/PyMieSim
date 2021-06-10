@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     from PyMieSim.Scatterer import Sphere
     from PyMieSim.Source    import PlaneWave
 
@@ -15,7 +15,7 @@ def run():
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=False, Save=False)
 
 #___________________________OUTPUT___________________________________
 #

@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     from PyMieSim.Scatterer import Sphere
     from PyMieSim.Source    import PlaneWave
 
@@ -12,8 +12,13 @@ def run():
 
     SPF = Scat.SPF(Num=100)
 
-    SPF.Plot()
+    if Plot:
+        SPF.Plot()
 
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        SPF.SaveFig(Directory=dir)
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

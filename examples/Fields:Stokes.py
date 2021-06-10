@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     from PyMieSim.Scatterer import Sphere
     from PyMieSim.Source    import PlaneWave
 
@@ -12,8 +12,14 @@ def run():
 
     Stokes = Scat.Stokes(Num=100)
 
-    Stokes.Plot()
+    if Plot:
+        print('DDDDDDDDDd')
+        Stokes.Plot()
 
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Stokes.SaveFig(Directory=dir)
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

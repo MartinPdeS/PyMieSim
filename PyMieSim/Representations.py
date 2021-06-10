@@ -1,10 +1,11 @@
-import numpy as np
-from mayavi import mlab
+import numpy             as np
 import matplotlib.pyplot as plt
+from mayavi              import mlab
 
-from PyMieSim.Plots import StructuredAmplitude, StokesPlot, StructuredAbs
-from PyMieSim.utils import Direct2spherical, AngleUnit2DirectUnit
-from PyMieSim.units import Area
+from PyMieSim.Plots       import StructuredAmplitude, StokesPlot, StructuredAbs
+from PyMieSim.utils       import Direct2spherical, AngleUnit2DirectUnit
+from PyMieSim.units       import Area
+from PyMieSim.Directories import *
 
 
 class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
@@ -61,7 +62,7 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
         self['V'] = -2 * np.imag(EPhi*ETheta.conjugate())
 
 
-    def Plot(self):
+    def _Plot(self):
         Name = 'Scattering phase function'
 
         StokesPlot(I            = self['I'],
@@ -72,6 +73,25 @@ class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters
                    Theta        = self['Theta'],
                    Name         = 'Stokes Parameter',
                    Polarization = self.Parent.Source.Polarization.Radian)
+
+
+    def Plot(self):
+        self._Plot()
+
+        mlab.show()
+
+
+    def SaveFig(self, Directory):
+        dir = os.path.join(ZeroPath, Directory) + '.png'
+
+        print(f'Saving figure in {dir}...')
+
+        self._Plot()
+
+        mlab.savefig(dir)
+
+        mlab.close(all=True)
+
 
     def __repr__(self):
         return f"""
@@ -117,8 +137,7 @@ class SPF(dict):
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
-    def Plot(self):
-        Name = 'Scattering phase function'
+    def _Plot(self):
 
         StructuredAbs(Scalar       = self['SPF'],
                       Phi          = self['Phi'],
@@ -126,6 +145,24 @@ class SPF(dict):
                       Name         = 'Scattering phase function',
                       Polarization = self.Parent.Source.Polarization.Radian)
 
+
+
+    def Plot(self):
+        self._Plot()
+
+        mlab.show()
+
+
+    def SaveFig(self, Directory):
+        dir = os.path.join(ZeroPath, Directory) + '.png'
+
+        print(f'Saving figure in {dir}...')
+
+        self._Plot()
+
+        mlab.savefig(dir)
+
+        mlab.close(all=True)
 
 
     def __repr__(self):
@@ -172,7 +209,7 @@ class S1S2(dict):
         self['S1'], self['S2'] = Parent.Bind.S1S2(Phi = Phi)
 
 
-    def Plot(self):
+    def _Plot(self):
 
         S1 = np.abs(self['S1'])
         S2 = np.abs(self['S2'])
@@ -201,8 +238,23 @@ class S1S2(dict):
                              color = 'C1',
                              alpha = 0.4)
 
+
+    def Plot(self):
+        self._Plot()
+
         plt.show()
 
+
+    def SaveFig(self, Directory):
+        dir = os.path.join(ZeroPath, Directory) + '.png'
+
+        print(f'Saving figure in {dir}...')
+
+        self._Plot()
+
+        plt.savefig(dir)
+
+        plt.close()
 
 
     def __repr__(self):
@@ -255,7 +307,7 @@ class ScalarFarField(dict):
         self['SPF'] = np.sqrt( self['EPhi'].__abs__()**2 + self['ETheta'].__abs__()**2 )
 
 
-    def Plot(self):
+    def _Plot(self):
         StructuredAmplitude(Scalar       = self['EPhi'],
                             Phi          = self['Phi'],
                             Theta        = self['Theta'],
@@ -268,6 +320,23 @@ class ScalarFarField(dict):
                             Name         = u'E_θ',
                             Polarization = self.Parent.Source.Polarization.Radian)
 
+
+    def Plot(self):
+        self._Plot()
+
+        mlab.show()
+
+
+    def SaveFig(self, Directory):
+        dir = os.path.join(ZeroPath, Directory) + '.png'
+
+        print(f'Saving figure in {dir}...')
+
+        self._Plot()
+
+        mlab.savefig(dir)
+
+        mlab.close(all=True)
 
 
     def __repr__(self):
@@ -360,6 +429,8 @@ class Footprint(dict):
         ax.set_ylabel(r'Offset distance in Y-axis [$\mu$m]')
 
         ax.set_title('Scatterer Footprint')
+
+        plt.show()
 
 
 

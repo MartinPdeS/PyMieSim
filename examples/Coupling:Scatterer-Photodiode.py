@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     from PyMieSim.Source    import PlaneWave
     from PyMieSim.Detector  import Photodiode
     from PyMieSim.Scatterer import Sphere
@@ -19,8 +19,8 @@ def run():
 
     Coupling = Detector.Coupling(Scatterer = Scat)
 
-    print(Coupling) # 6.566085549292496e-18
+    print(Coupling) # 6.566085549292496e-18 Watt  (6.57e-03 fWatt)
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=False, Save=False)

@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     return
     import numpy as np
     from PyMieSim.Detector  import Photodiode, LPmode
@@ -44,9 +44,9 @@ def run():
     print(Opt.Result)
 
     df = Set.DataFrame
-
-    df.Plot('Coupling') # can be "Couplimg"  or  "STD"
+    if Plot:
+        df.Plot('Coupling') # can be "Couplimg"  or  "STD"
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

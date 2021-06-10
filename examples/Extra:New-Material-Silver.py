@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     from PyMieSim.Data._Material.utils import LoadOnlineSave
     from PyMieSim                      import Material
 
@@ -6,8 +6,13 @@ def run():
 
     Mat = Material('Silver')
 
-    Mat.Plot()
+    if Plot:
+        Mat.Plot()
+
+    if Save:
+        from pathlib import Path
+        Mat.SaveFig(Path(__file__).stem)
 
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

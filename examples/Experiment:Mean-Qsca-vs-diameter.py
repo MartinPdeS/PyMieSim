@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     import numpy as np
     from PyMieSim            import Material
     from PyMieSim.Scatterer  import Sphere
@@ -27,13 +27,16 @@ def run():
 
     print(MeanData)
 
-    Data.Plot(y='Qabs', x='diameter', Scale='log')
+    if Plot:
+        Data.Plot(y='Qabs', x='diameter', Scale='log')
 
-
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Data.SaveFig(Directory=dir, y='Qabs', x='diameter', Scale='log')
 
 if __name__ == '__main__':
-    run()
-
+    run(Plot=True, Save=False)
 
 
 #___________________________OUTPUT___________________________________

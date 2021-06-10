@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     from PyMieSim.Source   import PlaneWave
     from PyMieSim.Detector import LPmode
 
@@ -15,9 +15,13 @@ def run():
                      PhiOffset    = 40,
                      CouplingMode = 'Centered')
 
+    if Plot:
+        Detector.Plot()
 
-    Detector.Plot()
-
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Detector.SaveFig(dir)
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)

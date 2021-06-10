@@ -1,4 +1,4 @@
-def run():
+def run(Plot, Save):
     import numpy as np
     from PyMieSim            import Material
     from PyMieSim.Scatterer  import ShellSphere
@@ -26,12 +26,16 @@ def run():
 
     print(Data)
 
-    Data.Plot(x='Core diameter', Scale='lin', Groupby='name')
+    if Plot:
+        Data.Plot(y=['Qsca'], x='Core diameter', Scale='lin')
 
-
+    if Save:
+        from pathlib import Path
+        dir = f'docs/images/{Path(__file__).stem}'
+        Data.SaveFig(Directory=dir, y=['Qsca'], x='Core diameter', Scale='lin')
 
 if __name__ == '__main__':
-    run()
+    run(Plot=True, Save=False)
 
 
 
