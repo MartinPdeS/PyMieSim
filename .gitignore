@@ -1,6 +1,6 @@
 
 
-
+*.pyc
 /build
 temp.py
 *Untitled*
