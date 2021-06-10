@@ -66,7 +66,7 @@ def runScript(script):
     except:
         logging.warning(f'Script {name} did not conclude, continuing...')
 
-"""
+
 runScript('Coupling:LPMode')
 
 runScript('Coupling:LPMode')
@@ -92,7 +92,7 @@ runScript('Experiment:Qsca-vs-diameter')
 runScript('Experiment:Coupling-vs-diameter')
 
 runScript('Experiment:Goniometer')
-"""
+
 runScript('Extra:New-Material-BK7')
 
 runScript('Extra:New-Material-Silver')

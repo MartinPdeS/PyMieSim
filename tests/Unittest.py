@@ -244,25 +244,25 @@ class ExperiementTestCase(unittest.TestCase):
 
     def test03(self):
         global pymieArrayEff
-        pymieArrayEff = ExpSet.Get('Qsca', AsType='pymiesim')
+        pymieArrayEff = ExpSet.Get('Qsca')
         print('Experiment Efficiencies computing passed')
 
 
     def test04(self):
         global pymieArrayCoupling
-        pymieArrayCoupling = ExpSet.Get('Coupling', AsType='pymiesim')
+        pymieArrayCoupling = ExpSet.Get('Coupling')
         print('Experiment Coupling computing passed')
 
 
     def test05(self):
         GUI.invoke_after(PLOTTIME, Close)
-        pymieArrayEff.Plot(x='diameter')
+        pymieArrayEff.Plot(y='Qsca', x='diameter')
         print('PyMieSim Array Efficiencies plotting passed')
 
 
     def test06(self):
         GUI.invoke_after(PLOTTIME, Close)
-        pymieArrayCoupling.Plot(x='diameter')
+        pymieArrayCoupling.Plot(y='Coupling', x='diameter')
         print('PyMieSim Array Coupling plotting passed')
 
 

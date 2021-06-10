@@ -212,7 +212,6 @@ class Setup(object):
 
                         else:
                             Array[i] = getattr(scatterer, prop)
-                            #print('######',Array[i],source.Wavelength, scatterer.SizeParam)
                             i       += 1
 
         Array = Array.reshape( self.config['shape'] )
@@ -233,7 +232,7 @@ class Setup(object):
             return Opt5DArray(Array)
 
         elif AsType.lower() == 'pymiesim':
-            return PMSArray(array = Array, conf = self.config)
+            return PMSArray(array = Array, conf = deepcopy(self.config) )
 
 
     def GetShape(self, config):

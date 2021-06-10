@@ -67,7 +67,7 @@ def UnstructuredAbs(Mesh, Scalar = None, Name = '', Figure  = None):
 
 def UnstructuredAmplitude(Mesh, Scalar = None, Name = ''):
     Figure = mlab.figure(figure=None, size=(600,300))
-    
+
     visual.set_viewer(Figure)
 
     if Scalar is None: Scalar = Mesh.Phi.Radian.flatten()*0+1
@@ -292,7 +292,7 @@ def ExperimentPlot(func):
     ax = figure.add_subplot(111)
     ax.grid()
 
-    @FormatStr
+
     def wrapper(*args, **kwargs):
 
         kwargs['y'] = ToList(kwargs['y'])
