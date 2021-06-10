@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/martth/Desktop/git_project/gitlab/PyMieSim
+CMAKE_SOURCE_DIR = /home/martth/Desktop/git_project/PyMieSim
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/martth/Desktop/git_project/gitlab/PyMieSim
+CMAKE_BINARY_DIR = /home/martth/Desktop/git_project/PyMieSim
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/martth/Desktop/git_project/gitlab/PyMieSim/CMakeFiles /home/martth/Desktop/git_project/gitlab/PyMieSim/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/martth/Desktop/git_project/PyMieSim/CMakeFiles /home/martth/Desktop/git_project/PyMieSim/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/martth/Desktop/git_project/gitlab/PyMieSim/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/martth/Desktop/git_project/PyMieSim/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -308,34 +308,3 @@ cmake_check_build_system:
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
-
-
-# Minimal makefile for Sphinx documentation
-#
-
-# You can set these variables from the command line.
-SPHINXOPTS    =
-SPHINXBUILD   = sphinx-build
-SOURCEDIR     = source
-BUILDDIR      = build
-
-# Put it first so that "make" without argument is like "make help".
-help:
-	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-
-.PHONY: help Makefile
-
-# Catch-all target: route all unknown targets to Sphinx using the new
-# "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-
-html:
-	$(SPHINXBUILD) -b html "docs/$(SOURCEDIR)" "docs/$(BUILDDIR)" $(SPHINXOPTS)
-
-readDoc:
-	google-chrome docs/build/index.html
-
-cleanDoc:
-	rm -rf docs/build/*
-
-UpdateExamples:
-	python3 examples/UpdateExamples.py	

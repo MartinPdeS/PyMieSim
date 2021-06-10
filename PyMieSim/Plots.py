@@ -6,7 +6,7 @@ from tvtk.tools import visual
 from tvtk.api   import tvtk
 from pyface.api import GUI
 
-from PyMieSim.utils import Sp2Cart
+from PyMieSim.utils import Sp2Cart, ToList
 from PyMieSim.Config import *
 from PyMieSim.PlotsUtils import *
 
@@ -300,26 +300,35 @@ def ExperimentPlot(func):
     figure = plt.figure(figsize=(10,5))
     ax = figure.add_subplot(111)
     ax.grid()
-    def wrapper(*args, **kwargs):
-        yLog = False; xLog = False
 
-        func(figure=figure, ax=ax, *args, **kwargs)
+    def wrapper(*args, **kwargs):
+
+        kwargs['y'] = ToList(kwargs['y'])
+
+        if 'Scale' not in kwargs.keys():
+            Scale = 'linear'
+        else:
+            Scale = kwargs['Scale']
+
+        yLog  = False; xLog = False
+
+        func(*args, **kwargs,  figure=figure, ax=ax)
 
         ax.set_ylabel('/'.join(kwargs['y']))
 
-        ax.set_xlabel( Arg2Dict[kwargs['x']]['label'] )
+        ax.set_xlabel( Arg2Dict[kwargs['x'].lower()]['label'] )
 
-        if kwargs['Scale'] in ['lin', 'linear']:
+        if Scale in ['lin', 'linear']:
             pass
 
-        elif kwargs['Scale'] in ['log', 'logarithmic']:
+        elif Scale in ['log', 'logarithmic']:
             ax.set_yscale('log')
             ax.set_xscale('log')
 
-        elif kwargs['Scale'] in ['xlog', 'xlogarithmic']:
+        elif Scale in ['xlog', 'xlogarithmic']:
             ax.set_xscale('log')
 
-        if kwargs['Scale'] in ['ylog', 'ylogarithmic']:
+        if Scale in ['ylog', 'ylogarithmic']:
             ax.set_yscale('log')
 
         ax.legend(fontsize=6, loc='upper left')

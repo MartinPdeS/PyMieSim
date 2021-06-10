@@ -43,7 +43,9 @@ class ScatSet(Set):
         Generator = GeneratorFromDict(self.kwargs)
 
         for kwargs in Generator:
-            if self._Scatterer.kwargs == kwargs:
+
+            if self._Scatterer.kwargs == kwargs and \
+            self._Scatterer.Source.Wavelength == self._Source:
                 yield self._Scatterer
 
             else:
@@ -123,9 +125,11 @@ class Setup(object):
 
     @beartype
     def __init__(self,
-                 ScattererSet : ScatSet                  = None,
-                 SourceSet    : SourceSet                = None,
-                 DetectorSet  : Union[DetectorSet, None] = EmptyDetectorSet()):
+                 ScattererSet : ScatSet     = None,
+                 SourceSet    : SourceSet   = None,
+                 DetectorSet                = None):
+
+        if DetectorSet is None: DetectorSet = EmptyDetectorSet()
 
         config = deepcopy(BaseConfig)
 
@@ -135,11 +139,11 @@ class Setup(object):
 
         self.ScattererSet = ScattererSet
 
-        self.SourceSet.UpdateConfiguration(config)
+        config = self.SourceSet.UpdateConfiguration(config)
 
-        self.ScattererSet.UpdateConfiguration(config)
+        config = self.ScattererSet.UpdateConfiguration(config)
 
-        self.DetectorSet.UpdateConfiguration(config)
+        config = self.DetectorSet.UpdateConfiguration(config)
 
         self.config = config
 
@@ -208,6 +212,7 @@ class Setup(object):
 
                         else:
                             Array[i] = getattr(scatterer, prop)
+                            #print('######',Array[i],source.Wavelength, scatterer.SizeParam)
                             i       += 1
 
         Array = Array.reshape( self.config['shape'] )

@@ -23,7 +23,7 @@ def run():
 
     Data = Experiment.Get(Input='Qsca')
 
-    Data.Plot(x='Wavelength')
+    Data.Plot(y='Qsca', x='Wavelength')
 
 
 

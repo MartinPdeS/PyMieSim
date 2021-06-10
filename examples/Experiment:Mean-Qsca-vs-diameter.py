@@ -27,7 +27,7 @@ def run():
 
     print(MeanData)
 
-    Data.Plot(y=['Qsca', 'Qabs'], x='diameter', Scale='log')
+    Data.Plot(y='Qabs', x='diameter', Scale='log')
 
 
 

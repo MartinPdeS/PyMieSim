@@ -16,16 +16,20 @@ from PyMieSim.Plots      import ExperimentPlot
 
 
 class Table:
-    def __init__(self, lst0, lst1):
+    def __init__(self, lst0, lst1, config=None):
         assert len(set(lst0)) == len(lst0), 'Invalid input'
         assert len(set(lst1)) == len(lst1),  'Invalid input'
         self.lst0 = lst0
         self.lst1 = [element.lower() for element in lst1]
+        self.Full = self.lst0 + self.lst1
+
+        self.config = config
 
 
     @FormatStr
     def __getitem__(self, Val):
-        assert Val in self.lst0 + self.lst1,  'Invalid input'
+        assert Val in self.Full,  'Invalid input'
+
         if isinstance(Val, str):
             idx = self.lst1.index(Val)
             return self.lst0[idx]
@@ -34,7 +38,8 @@ class Table:
 
     @FormatStr
     def label(self, Val):
-        assert Val in self.lst0 + self.lst1,  'Invalid input'
+        assert Val in self.Full,  'Invalid input'
+
         if isinstance(Val, str):
             dic = Arg2Dict[Val]
 
@@ -46,8 +51,35 @@ class Table:
 
 
     @FormatStr
+    def dimension(self, Val):
+        assert Val in self.Full,  'Invalid input'
+
+        if isinstance(Val, str):
+            idx = self.lst1.index(Val)
+
+        else:
+            idx = Val
+
+        return self.config['X'][idx]['dimension']
+
+
+    @FormatStr
+    def size(self, Val):
+        assert Val in self.Full,  'Invalid input'
+
+        if isinstance(Val, str):
+            idx = self.lst1.index(Val)
+
+        else:
+            idx = Val
+
+        return self.config['X'][idx]['size']
+
+
+    @FormatStr
     def format(self, Val):
-        assert Val in self.lst0 + self.lst1,  'Invalid input'
+        assert Val in self.Full,  'Invalid input'
+
         if isinstance(Val, str):
             dic = Arg2Dict[Val]
 
@@ -56,6 +88,16 @@ class Table:
             dic = Arg2Dict[Val]
 
         return dic['format']
+
+
+    def Iterate(self):
+        for order, key in self.config['X'].items():
+            name   = self[order]
+            label  = self.label(order)
+            format = self.format(order)
+            size   = self.size(order)
+            dim    = order
+            yield name, label, format, size, dim
 
 
 class PMSArray(object):
@@ -70,7 +112,7 @@ class PMSArray(object):
             Torder.append(order)
             Korder.append(key['name'])
 
-        self.Table = Table(Torder, Korder )
+        self.Table = Table(Torder, Korder, conf)
 
 
     @FormatStr
@@ -246,8 +288,7 @@ class PMSArray(object):
 
 
     @ExperimentPlot
-    @FormatStr
-    def Plot(self, y, x,  Scale='linear', figure=None, ax=None, *args, **kwargs):
+    def Plot(self, y, x, figure=None, ax=None, *args, **kwargs):
         """Method plot the multi-dimensional array with the x key as abscissa.
         args and kwargs can be passed as standard input to matplotlib.pyplot.
 
@@ -272,7 +313,7 @@ class PMSArray(object):
 
                 label, common  = self.GetLegend(x, idx, val)
 
-                ax.plot(xval, self.data[idx], label=label, *args, **kwargs)
+                ax.plot(xval, self.data[idx], label=label)
 
         plt.gcf().text(0.12, 0.9, common, fontsize = 8,
                        bbox      = dict(facecolor='none',
@@ -288,13 +329,14 @@ class PMSArray(object):
 
         shape[Xidx] = None
 
-        xval        = self.conf['X'][Xidx]['dimension']
+        xval        = self.Table.dimension(x)
 
         DimSlicer   = [range(s) if s is not None else [slice(None)] for s in shape[:-1]]
 
         return product(*DimSlicer), xval
 
 
+    @FormatStr
     def GetLegend(self, axis, idx, ydict):
         """Method generate and return the legend text for the specific plot.
 
@@ -318,25 +360,27 @@ class PMSArray(object):
         else:
             label = f"{ydict['legend']: >7} | "
 
-        common = ''
+        common, diff = '', ' '
 
-        for order, xdict in self.conf['X'].items():
+        for order, (name,
+                    label,
+                    format,
+                    size, dim) in enumerate( self.Table.Iterate() ):
 
-            format = self.Table.format(order)
-            name   = self.Table[order]
 
             if axis != name:
-                val = xdict['dimension'][idx[order]]
+                val = self.Table.dimension(order)[idx[order]]
 
                 if name == 'material' : val = val.__str__()
 
-                string = f"{name}: {val:{format}} | "
+                string = f"{name}: {val} | "
 
-                if xdict['size'] != 1: label += string
+                if size != 1:
+                    diff += string
+                else:
+                    common += string
 
-                else: common += string
-
-        return label, common
+        return diff, common
 
 
     def __getitem__(self, key):
@@ -352,12 +396,8 @@ class PMSArray(object):
 
         text += f"{'Parameter':13s}\n" + '-'*120 + '\n'
 
-        for order, key in self.conf['X'].items():
-            label  = self.Table.label(order)
-            format = self.Table.format(order)
-            dim    = order
-            size   = key['size']
 
+        for _, label, format, size, dim in self.Table.Iterate():
             text += f"""{label:30s}\
             | dimension = {name}\
             | size      = {size}\
