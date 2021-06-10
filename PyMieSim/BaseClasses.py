@@ -849,7 +849,7 @@ class Set(object):
         iter = config['MaxOrder']
 
         for key, val in self.kwargs.items():
-            Dict              = Arg2Dict[key]
+            Dict              = Arg2Dict[key.lower()]
             Dict['order']     = iter
             Dict['dimension'] = self.kwargs[key]
             Dict['size']      = len(self.kwargs[key])

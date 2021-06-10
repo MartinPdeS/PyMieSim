@@ -323,4 +323,23 @@ def FormatStr(function):
 
 def FormatString(string):
     return re.sub(r"\s+", "", string.lower() )
+
+
+
+class Table:
+    def __init__(self, lst0, lst1):
+        assert len(set(lst0)) == len(lst0), 'Invalid input'
+        assert len(set(lst1)) == len(lst1),  'Invalid input'
+        self.lst0 = lst0
+        self.lst1 = [element.lower() for element in lst1]
+
+
+    @FormatStr
+    def __getitem__(self, Val):
+        assert Val in self.lst0 + self.lst1,  'Invalid input'
+        if isinstance(Val, str):
+            idx = self.lst1.index(Val)
+            return self.lst0[idx]
+        else:
+            return self.lst1[Val]
 # -

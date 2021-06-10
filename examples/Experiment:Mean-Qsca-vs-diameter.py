@@ -8,9 +8,10 @@ def run():
 
     scatKwargs   = { 'Diameter' : np.geomspace(6.36e-09, 10000e-9, 500),
                      'Material' : [Material('Silver')],
+                     #'Index': 1.5,
                      'nMedium'  : [1] }
 
-    sourceKwargs = { 'Wavelength'   : [400e-9, 900e-9, 1200e-9],
+    sourceKwargs = { 'Wavelength'   : [400e-9, 900e-9, 1200e-9, 1600e-9],
                      'Polarization' : [0]}
 
     scatSet   = ScatSet(Scatterer = Sphere,  kwargs = scatKwargs )
@@ -26,7 +27,7 @@ def run():
 
     print(MeanData)
 
-    MeanData.Plot(x='diameter', Scale='log', Groupby='type')
+    Data.Plot(y=['Qsca', 'Qabs'], x='diameter', Scale='log')
 
 
 

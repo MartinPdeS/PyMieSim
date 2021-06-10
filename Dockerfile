@@ -11,38 +11,29 @@ ARG username
 RUN yum install -y wget cmake nano python3-devel openssl-devel libffi-devel
 
 RUN cd /usr/src && wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz && tar xzf Python-3.7.9.tgz
-
 RUN cd /usr/src && wget https://www.python.org/ftp/python/3.8.0/Python-3.8.0.tgz && tar xzf Python-3.8.0.tgz
 
 RUN cd /usr/src/Python-3.7.9 && ./configure --enable-optimizations && make altinstall
-
 RUN cd /usr/src/Python-3.8.0 && ./configure --enable-optimizations && make altinstall
 
-RUN ls -ls /usr/bin/python*
+RUN python3   -m pip install --upgrade pip
+RUN python3.7 -m pip install --upgrade pip
+RUN python3.8 -m pip install --upgrade pip
+
+RUN python3   -m pip install cryptography==3.3.2
+RUN python3   -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
+RUN python3.7 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
+RUN python3.8 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
 
 RUN mkdir GitProject && mkdir GitProject/PyMieSim
 
 COPY . ./GitProject/PyMieSim/
 
-#RUN pip3 install -U pip
-RUN python3   -m pip install --upgrade pip
-RUN python3.7 -m pip install --upgrade pip
-RUN python3.8 -m pip install --upgrade pip
+RUN cp -r /GitProject/PyMieSim/extern/math/include/boost /usr/include
 
-RUN python3 -m pip install cryptography==3.3.2
-RUN python3 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
-RUN python3.7 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
-RUN python3.8 -m pip install numpy scipy matplotlib cython pandas pyqt5 wheel vtk twine setuptools_rust
+RUN cd /GitProject && git clone https://github.com/joeydumont/complex_bessel.git
 
-RUN wget -c 'http://sourceforge.net/projects/boost/files/boost/1.75.0/boost_1_75_0.tar.bz2'
-
-RUN tar xf boost_1_75_0.tar.bz2
-
-RUN cp -r boost_1_75_0/boost /usr/include
-
-RUN cd GitProject && git clone https://github.com/joeydumont/complex_bessel.git
-
-RUN mkdir GitProject/complex_bessel/build
+RUN mkdir /GitProject/complex_bessel/build
 
 RUN cd /GitProject/complex_bessel/build && cmake -DBUILD_TESTING=OFF .. && make install
 
@@ -61,12 +52,7 @@ RUN mkdir /GitProject/PyMieSim/output
 RUN python3.8 get-pip.py
 
 RUN echo Pip password inputed: $password
-
 RUN echo Pip username inputed: $username
-
-
-
-
 RUN echo Compiling wheel for Python3.8
 
 RUN rm -rf /GitProject/PyMieSim/dist/* /GitProject/PyMieSim/build/* /GitProject/PyMieSim/output/*

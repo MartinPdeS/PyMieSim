@@ -13,3 +13,5 @@ Error_IndexMaterial = "You should either choose a material or the RI not both."
 ErrorGLMTNoBSC      = "For GLMT use the LightSource BSC must be \
                        previously computed. Use \
                        LightSource.GetBSC(MaxOrder=1, save=False)."
+
+ErrorExperimentPlot = 'Trying to plot uncomputed data. Please use the Get method'

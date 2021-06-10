@@ -48,7 +48,7 @@ class ScatSet(Set):
 
             else:
                 self._Scatterer = self._Scatterer_(**kwargs, Source = self._Source)
-                self._Scatterer.kwargs = deepcopy(kwargs)
+                self._Scatterer.kwargs = {key:val for key, val in kwargs.items()}
                 yield self._Scatterer
 
 
@@ -75,7 +75,7 @@ class SourceSet(Set):
             else:
 
                 self._Source  = self._Source_(**kwargs)
-                self._Source.kwargs = deepcopy(kwargs)
+                self._Source.kwargs = {key:val for key, val in kwargs.items()}
                 yield self._Source
 
 
@@ -104,7 +104,7 @@ class DetectorSet(Set):
 
             else:
                 self._Detector  = self._Detector_(**kwargs)
-                self._Detector.kwargs = deepcopy(kwargs)
+                self._Detector.kwargs = {key:val for key, val in kwargs.items()}
                 yield self._Detector
 
 
@@ -140,8 +140,6 @@ class Setup(object):
         self.ScattererSet.UpdateConfiguration(config)
 
         self.DetectorSet.UpdateConfiguration(config)
-
-        config['order'] = {dict['name']: dict['order'] for dict in config['X'].values()}
 
         self.config = config
 
@@ -187,6 +185,8 @@ class Setup(object):
 
         """
         Input = set( ToList(Input) )
+
+        self.config['Got'] = Input
 
         self.AssertionType(Input=Input, AsType=AsType)
 

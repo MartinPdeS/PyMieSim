@@ -1,12 +1,15 @@
-import numpy as np
-from numpy import pi, cos, sin, abs
-from mayavi import mlab
+import matplotlib.pyplot as plt
+import numpy    as np
+from numpy      import pi, cos, sin, abs
+from mayavi     import mlab
 from tvtk.tools import visual
-from tvtk.api import tvtk
+from tvtk.api   import tvtk
+from pyface.api import GUI
 
 from PyMieSim.utils import Sp2Cart
+from PyMieSim.Config import *
 from PyMieSim.PlotsUtils import *
-from pyface.api import GUI
+
 
 def Unstructured(**kwargs):
     fig = mlab.figure(figure=kwargs['Name'],size=(600,300))
@@ -293,7 +296,37 @@ def StokesPlot(I,
 
 
 
+def ExperimentPlot(func):
+    figure = plt.figure(figsize=(10,5))
+    ax = figure.add_subplot(111)
+    ax.grid()
+    def wrapper(*args, **kwargs):
+        yLog = False; xLog = False
 
+        func(figure=figure, ax=ax, *args, **kwargs)
+
+        ax.set_ylabel('/'.join(kwargs['y']))
+
+        ax.set_xlabel( Arg2Dict[kwargs['x']]['label'] )
+
+        if kwargs['Scale'] in ['lin', 'linear']:
+            pass
+
+        elif kwargs['Scale'] in ['log', 'logarithmic']:
+            ax.set_yscale('log')
+            ax.set_xscale('log')
+
+        elif kwargs['Scale'] in ['xlog', 'xlogarithmic']:
+            ax.set_xscale('log')
+
+        if kwargs['Scale'] in ['ylog', 'ylogarithmic']:
+            ax.set_yscale('log')
+
+        ax.legend(fontsize=6, loc='upper left')
+
+        plt.show()
+
+    return wrapper
 
 
 
