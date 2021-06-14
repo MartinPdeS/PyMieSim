@@ -13,3 +13,6 @@
 [submodule "extern/math"]
 	path = extern/math
 	url = https://github.com/boostorg/math.git
+[submodule "extern/complex_bessel"]
+	path = extern/complex_bessel
+	url = https://github.com/joeydumont/complex_bessel.git

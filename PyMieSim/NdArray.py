@@ -334,7 +334,6 @@ class PMSArray(object):
 
 
     def GetSlicer(self, x):
-
         shape       = list(self.data.shape)
 
         Xidx        = self.Table[x]
@@ -375,17 +374,18 @@ class PMSArray(object):
                     format,
                     size, dim) in enumerate( self.Table.Iterate() ):
 
-            if axis != name:
-                val = self.Table.dimension(order)[idx[order]]
+            if axis == name: continue
+            
+            val = self.Table.dimension(order)[idx[order]]
 
-                if name == 'material' : val = val.__str__()
+            if name == 'material' : val = val.__str__()
 
-                string = f"{name}: {val:{format}} | "
+            string = f"{name}: {val:{format}} | "
 
-                if size != 1:
-                    diff += string
-                else:
-                    common += string
+            if size != 1:
+                diff += string
+            else:
+                common += string
 
         return diff, common
 
@@ -399,10 +399,11 @@ class PMSArray(object):
 
         name = [str(val['name']) for val in self.conf['Y'].values()]
 
-        text =  f'PyMieArray \nVariable: {name.__str__()}\n' + '='*120 + '\n'
+        newLine = '\n' + '=' * 120 + '\n'
 
-        text += f"{'Parameter':13s}\n" + '-'*120 + '\n'
+        text =  f'PyMieArray \nVariable: {name.__str__()}' + newLine
 
+        text += "Parameter" + newLine
 
         for _, label, format, size, dim in self.Table.Iterate():
             text += f"""{label:30s}\
@@ -410,7 +411,7 @@ class PMSArray(object):
             | size      = {size}\
             \n"""
 
-        text += '='*120 + '\n'
+        text += newLine
 
         return text
 

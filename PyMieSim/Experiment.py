@@ -4,7 +4,7 @@
 import itertools
 import logging
 import numpy              as np
-from copy                 import deepcopy
+from copy                 import deepcopy, copy
 from beartype             import beartype
 from multiprocessing      import Process
 from scipy.optimize       import minimize
@@ -232,7 +232,7 @@ class Setup(object):
             return Opt5DArray(Array)
 
         elif AsType.lower() == 'pymiesim':
-            return PMSArray(array = Array, conf = deepcopy(self.config) )
+            return PMSArray(array = Array, conf = copy(self.config) )
 
 
     def GetShape(self, config):
