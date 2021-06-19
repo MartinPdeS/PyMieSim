@@ -328,9 +328,11 @@ class PMSArray(object):
 
     def SaveFig(self, Directory='newFig', dpi=200, *args, **kwargs):
         dir = os.path.join(ZeroPath, Directory) + '.png'
-        self._Plot(*args, **kwargs)
+        fig = self._Plot(*args, **kwargs)
         print(f'Saving figure in {dir}...')
-        plt.savefig(dir, dpi=dpi)
+        fig.savefig(dir, dpi=dpi)
+
+
 
 
     def GetSlicer(self, x):

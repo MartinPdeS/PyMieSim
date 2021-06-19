@@ -1,4 +1,4 @@
-def run(Plot, Save):
+def run(Plot, Save, Directory=None):
     import numpy as np
     from PyMieSim.Scatterer  import Sphere
     from PyMieSim.Source     import PlaneWave

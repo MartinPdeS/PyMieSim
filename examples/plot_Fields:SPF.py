@@ -3,7 +3,7 @@ Fields SPF
 ==========
 """
 
-def run(Plot, Save):
+def run(Plot, Save, Directory=None):
     from PyMieSim.Scatterer import Sphere
     from PyMieSim.Source    import PlaneWave
 

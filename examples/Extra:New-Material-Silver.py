@@ -1,4 +1,4 @@
-def run(Plot, Save):
+def run(Plot, Save, Directory=None):
     from PyMieSim.Data._Material.utils import LoadOnlineSave
     from PyMieSim                      import Material
 

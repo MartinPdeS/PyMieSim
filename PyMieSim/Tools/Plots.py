@@ -288,13 +288,12 @@ def StokesPlot(I,
 
 
 def ExperimentPlot(func):
-    figure = plt.figure(figsize=(10,5))
-    ax = figure.add_subplot(111)
-    ax.grid()
-
 
     def wrapper(*args, **kwargs):
-
+        figure = plt.figure(figsize=(10,5))
+        ax = figure.add_subplot(111)
+        ax.grid()
+        
         kwargs['y'] = ToList(kwargs['y'])
         kwargs['y'] = [FormatString(element) for element in kwargs['y']]
 
@@ -325,6 +324,8 @@ def ExperimentPlot(func):
             ax.set_yscale('log')
 
         ax.legend(loc='upper left', prop={'family': 'monospace', 'size':7})
+
+        return figure
 
     return wrapper
 

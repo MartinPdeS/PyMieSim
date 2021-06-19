@@ -1,70 +1,36 @@
+
+import matplotlib
+# Force matplotlib to not use any Xwindows backend.
+matplotlib.use('Agg')
+
 import importlib
 import os
 import examples
 import logging
 import matplotlib._pylab_helpers
+import time
 import matplotlib.pyplot as plt
 from pathlib              import Path
 from mayavi               import mlab
 from pyface.api           import GUI
 
-from PyMieSim.Directories import StaticPath
-
-def saveMatplotlib():
-    """Close the scene."""
-    path = os.path.join(StaticPath, f"{name}.png")
-    plt.savefig(path)
-    plt.close()
-
-def saveMlab():
-    """Close the scene."""
-    path = os.path.join(StaticPath, f"{name}.png")
-    mlab.savefig(path)
-    mlab.close()
 
 
-def SaveCloseMatplotlib():
-    """Close matplotlib scene."""
-    path = os.path.join(StaticPath, f"{name}.png")
-
-    figures=[manager.canvas.figure
-         for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()]
-
-    if len(figures) > 0:
-        print(f'{name} : Matplotlib example plotting and saving...')
-        figures[0].savefig(path)
-        plt.close('all')
-
-
-def SaveCloseMlab():
-    """Close mayavi scene."""
-    path = os.path.join(StaticPath, f"{name}.png")
-
-    engine = mlab.get_engine()
-    scene = engine.current_scene
-
-    if scene is not None:
-        print(f'{name} : Mlab example plotting and saving...')
-        mlab.savefig(path)
-        mlab.close()
-
-
-def SaveClose():
-    """Close all scene."""
-    SaveCloseMatplotlib()
-    SaveCloseMlab()
+from PyMieSim.Tools.Directories import StaticPath
 
 
 def runScript(script):
-    global name
-    name = script
+
+    dir = f'docs/images/{Path(__file__).stem}'
+
+    dir = os.path.join(StaticPath, dir)
 
     try:
         module = importlib.import_module(script)
-        module.run(Plot=False, Save=True)
+        module.run(Plot=False, Save=True, Directory=dir)
 
     except:
-        logging.warning(f'Script {name} did not conclude, continuing...')
+        logging.warning(f'Script {script} did not conclude, continuing...')
 
 
 runScript('Coupling:LPMode')

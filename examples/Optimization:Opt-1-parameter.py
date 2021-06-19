@@ -1,4 +1,4 @@
-def run(Plot, Save):
+def run(Plot, Save, Directory=None):
     return
     import numpy as np
     from PyMieSim            import Material

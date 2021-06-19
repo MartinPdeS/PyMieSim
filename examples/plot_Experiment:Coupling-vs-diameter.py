@@ -3,7 +3,7 @@ Experiment Coupling vs Diameter
 ===============================
 """
 
-def run(Plot, Save):
+def run(Plot, Save, Directory=None):
     import numpy as np
     from PyMieSim            import Material
     from PyMieSim.Scatterer  import Sphere

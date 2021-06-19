@@ -3,7 +3,7 @@ Coupling LP Mode
 ================
 """
 
-def run(Plot, Save):
+def run(Plot, Save, Directory=None):
     from PyMieSim.Source   import PlaneWave
     from PyMieSim.Detector import LPmode
 
