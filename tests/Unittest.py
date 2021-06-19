@@ -16,7 +16,7 @@ from PyMieSim.Source             import PlaneWave, GaussianBeam
 from PyMieSim.GLMT.python.Sphere import SPF
 from PyMieSim.Detector           import LPmode, Photodiode, _Photodiode
 from PyMieSim.Experiment         import ScatSet, Setup, SourceSet, SampleSet, DetectorSet
-from PyMieSim.Mesh               import FibonacciMesh
+from PyMieSim.Tools.Mesh         import FibonacciMesh
 from PyMieSim.Plots              import *
 from unittest.mock               import patch
 from PyMieSim.Representations    import S1S2
