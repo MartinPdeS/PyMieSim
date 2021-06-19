@@ -6,16 +6,16 @@ import matplotlib.pyplot as plt
 from mayavi import mlab
 import os
 
-from PyMieSim.Directories     import *
-from PyMieSim.Representations import S1S2, SPF, Stokes, ScalarFarField, Footprint
-from PyMieSim.Physics         import _Polarization, Angle
-from PyMieSim.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
-from PyMieSim.units           import Power, Area, m_1
-from PyMieSim.Mesh            import FibonacciMesh
-from PyMieSim._Coupling       import Coupling
-from PyMieSim.Config          import *
-from PyMieSim.Constants       import *
-import PyMieSim.Plots         as plot
+from PyMieSim.Representations   import S1S2, SPF, Stokes, ScalarFarField, Footprint
+from PyMieSim.Tools.Directories import *
+from PyMieSim.Physics           import _Polarization, Angle
+from PyMieSim.Tools.utils       import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
+from PyMieSim.Tools.units       import Power, Area, m_1
+from PyMieSim.Tools.Mesh        import FibonacciMesh
+from PyMieSim.Tools.Constants   import *
+from PyMieSim.Tools.Config      import *
+from PyMieSim.Tools             import Coupling
+import PyMieSim.Plots           as plot
 
 EPS = 1e-6
 
@@ -36,7 +36,7 @@ class BaseSource(object):
 class MeshProperty(object):
     """
     .. note::
-        Base class for :class:`Detector` class used to define the properties
+        Base class foScalarFieldr :class:`Detector` class used to define the properties
         of the angular mesh for Far-Field computations.
 
     """
@@ -110,6 +110,8 @@ class BaseDetector(object):
             Value of the coupling.
 
         """
+
+
         C = Coupling(Scatterer = Scatterer, Detector = self)
 
         return Power( C * eps0 * c * 0.5)# * Scatterer.nMedium * c * eps0 / 2

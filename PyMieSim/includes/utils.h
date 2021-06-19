@@ -38,6 +38,19 @@ T Sum(const std::vector<T>* vector)
 }
 
 
+template <class T>
+T Sum(const T* array, const int size)
+{
+
+   T sum = 0.;
+   for (long unsigned int i = 0; i < size; i++)
+   {
+     sum += array[i];
+   }
+   return sum;
+}
+
+
 std::vector<double>
 linespace(const double start,
           const double end,

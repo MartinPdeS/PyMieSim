@@ -7,8 +7,8 @@ from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
 from PyMieSim.Physics           import _Polarization
 from PyMieSim.BaseClasses       import BaseSource
-from PyMieSim.utils             import IO
-from PyMieSim.Constants         import *
+from PyMieSim.Tools.utils             import IO
+from PyMieSim.Tools.Constants         import *
 from PyMieSim.GLMT.GaussianBeam import ( Anm,
                                          Anm_integrand,
                                          Bnm,

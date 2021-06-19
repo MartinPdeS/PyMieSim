@@ -3,19 +3,19 @@
 
 import itertools
 import logging
-import numpy              as np
-from copy                 import deepcopy, copy
-from beartype             import beartype
-from multiprocessing      import Process
-from scipy.optimize       import minimize
+import numpy                    as np
+from copy                       import deepcopy, copy
+from beartype                   import beartype
+from multiprocessing            import Process
+from scipy.optimize             import minimize
 
-from PyMieSim.Source      import PlaneWave
-from PyMieSim.NdArray     import PMSArray, Opt5DArray
-from PyMieSim.Detector    import LPmode, Photodiode
-from PyMieSim.Scatterer   import Sphere, WMSample
-from PyMieSim.BaseClasses import Set
-from PyMieSim.utils       import ToList, GeneratorFromDict, MergeDict, FormatString
-from PyMieSim.Config      import *
+from PyMieSim.Source            import PlaneWave
+from PyMieSim.Detector          import LPmode, Photodiode
+from PyMieSim.Scatterer         import Sphere, WMSample
+from PyMieSim.BaseClasses       import Set
+from PyMieSim.Tools.utils       import ToList, GeneratorFromDict, MergeDict, FormatString
+from PyMieSim.Tools.NdArray     import PMSArray, Opt5DArray
+from PyMieSim.Tools.Config      import *
 
 
 class Namespace:

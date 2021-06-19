@@ -13,7 +13,6 @@ def run(Plot, Save):
     Stokes = Scat.Stokes(Num=100)
 
     if Plot:
-        print('DDDDDDDDDd')
         Stokes.Plot()
 
     if Save:

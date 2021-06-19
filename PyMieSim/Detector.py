@@ -6,16 +6,16 @@ from   beartype import beartype
 
 
 import PyMieSim
-from PyMieSim.Directories import RootPath, LPModePath
-from PyMieSim.BaseClasses import BaseDetector, MeshProperty
-from PyMieSim.Physics     import _Polarization, Angle
-from PyMieSim.ErrorMsg    import *
-from PyMieSim.utils       import ( interp_at,
-                                   NA2Angle,
-                                   Normalize,
-                                   RescaleComplex,
-                                   RotateComplex,
-                                   IO )
+from PyMieSim.BaseClasses       import BaseDetector, MeshProperty
+from PyMieSim.Physics           import _Polarization, Angle
+from PyMieSim.Tools.Directories import RootPath, LPModePath
+from PyMieSim.Tools.ErrorMsg    import *
+from PyMieSim.Tools.utils       import ( interp_at,
+                                         NA2Angle,
+                                         Normalize,
+                                         RescaleComplex,
+                                         RotateComplex,
+                                         IO )
 
 
 class Photodiode(BaseDetector, MeshProperty):

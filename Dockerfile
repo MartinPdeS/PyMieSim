@@ -49,37 +49,40 @@ RUN cd /GitProject/PyMieSim/extern/complex_bessel/build && cmake -DBUILD_TESTING
 
 
 
-RUN cd /GitProject/PyMieSim && cmake . && make clean && make all
-
-
-RUN echo Compiling wheel for Python3.8
-RUN python3.8 get-pip.py
+RUN echo Compiling and uploading wheel for Python3.8
+RUN cd /GitProject/PyMieSim && cmake . -DVERSION=3.8 && make clean && make all
 RUN cd /GitProject/PyMieSim && python3.8 -m pip install -r requirements.txt
 RUN cd /GitProject/PyMieSim/ && python3.8 setup.py install
 RUN cd /GitProject/PyMieSim/ && python3.8 setup.py bdist_wheel
+RUN auditwheel repair /GitProject/PyMieSim/dist/*38*.whl -w /GitProject/PyMieSim/output
+RUN python3.8 -m twine upload --password $password --username $username --repository pypi /GitProject/PyMieSim/output/*38*manylinux2014*.whl
+RUN rm -rf /GitProject/PyMieSim/output/*
+RUN rm /GitProject/PyMieSim/CMakeCache.txt
+RUN rm /GitProject/PyMieSim/**/*.so -f
+RUN rm /GitProject/PyMieSim/**/**/*.so -f
 
 
-
-#RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
-
-RUN echo Compiling wheel for Python3.7
-RUN python3.7 get-pip.py
+RUN echo Compiling and uploading wheel for Python3.7
+RUN cd /GitProject/PyMieSim && cmake . -DVERSION=3.7 && make clean && make all
 RUN cd /GitProject/PyMieSim && python3.7 -m pip install -r requirements.txt
 RUN cd /GitProject/PyMieSim/ && python3.7 setup.py install
 RUN cd /GitProject/PyMieSim/ && python3.7 setup.py bdist_wheel
+RUN auditwheel repair /GitProject/PyMieSim/dist/*37*.whl -w /GitProject/PyMieSim/output
+RUN python3.8 -m twine upload --password $password --username $username --repository pypi /GitProject/PyMieSim/output/*37*manylinux2014*.whl
+RUN rm -rf /GitProject/PyMieSim/output/*
+RUN rm /GitProject/PyMieSim/CMakeCache.txt
+RUN rm /GitProject/PyMieSim/**/*.so -f
+RUN rm /GitProject/PyMieSim/**/**/*.so -f
 
 
-
-RUN echo Compiling wheel for Python3.6
-RUN python3.6 get-pip.py
+RUN echo Compiling and uploading wheel for Python3.6
+RUN cd /GitProject/PyMieSim && cmake . -DVERSION=3.6 && make clean && make all
 RUN cd /GitProject/PyMieSim && python3.6 -m pip install -r requirements.txt
 RUN cd /GitProject/PyMieSim/ && python3.6 setup.py install
 RUN cd /GitProject/PyMieSim/ && python3.6 setup.py bdist_wheel
-
-
-RUN echo Uploading files to Pypi
 RUN auditwheel repair /GitProject/PyMieSim/dist/*36*.whl -w /GitProject/PyMieSim/output
-RUN auditwheel repair /GitProject/PyMieSim/dist/*37*.whl -w /GitProject/PyMieSim/output
-RUN auditwheel repair /GitProject/PyMieSim/dist/*38*.whl -w /GitProject/PyMieSim/output
-
-RUN python3.8 -m twine upload --password $password --username $username --repository pypi /GitProject/PyMieSim/output/PyMieSim*manylinux2014*
+RUN python3.8 -m twine upload --password $password --username $username --repository pypi /GitProject/PyMieSim/output/*36*manylinux2014*.whl
+RUN rm -rf /GitProject/PyMieSim/output/*
+RUN rm /GitProject/PyMieSim/CMakeCache.txt 
+RUN rm /GitProject/PyMieSim/**/*.so -f
+RUN rm /GitProject/PyMieSim/**/**/*.so -f

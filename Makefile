@@ -137,6 +137,19 @@ Fibonacci/fast:
 .PHONY : Fibonacci/fast
 
 #=============================================================================
+# Target rules for targets named Scatterer
+
+# Build rule for target.
+Scatterer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Scatterer
+.PHONY : Scatterer
+
+# fast build rule for target.
+Scatterer/fast:
+	$(MAKE) -f CMakeFiles/Scatterer.dir/build.make CMakeFiles/Scatterer.dir/build
+.PHONY : Scatterer/fast
+
+#=============================================================================
 # Target rules for targets named _Scatterer
 
 # Build rule for target.
@@ -150,44 +163,17 @@ _Scatterer/fast:
 .PHONY : _Scatterer/fast
 
 #=============================================================================
-# Target rules for targets named Scatterer
+# Target rules for targets named _Coupling
 
 # Build rule for target.
-Scatterer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 Scatterer
-.PHONY : Scatterer
+_Coupling: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _Coupling
+.PHONY : _Coupling
 
 # fast build rule for target.
-Scatterer/fast:
-	$(MAKE) -f CMakeFiles/Scatterer.dir/build.make CMakeFiles/Scatterer.dir/build
-.PHONY : Scatterer/fast
-
-PyMieSim/FibonnaciMesh.o: PyMieSim/FibonnaciMesh.cpp.o
-
-.PHONY : PyMieSim/FibonnaciMesh.o
-
-# target to build an object file
-PyMieSim/FibonnaciMesh.cpp.o:
-	$(MAKE) -f CMakeFiles/Fibonacci.dir/build.make CMakeFiles/Fibonacci.dir/PyMieSim/FibonnaciMesh.cpp.o
-.PHONY : PyMieSim/FibonnaciMesh.cpp.o
-
-PyMieSim/FibonnaciMesh.i: PyMieSim/FibonnaciMesh.cpp.i
-
-.PHONY : PyMieSim/FibonnaciMesh.i
-
-# target to preprocess a source file
-PyMieSim/FibonnaciMesh.cpp.i:
-	$(MAKE) -f CMakeFiles/Fibonacci.dir/build.make CMakeFiles/Fibonacci.dir/PyMieSim/FibonnaciMesh.cpp.i
-.PHONY : PyMieSim/FibonnaciMesh.cpp.i
-
-PyMieSim/FibonnaciMesh.s: PyMieSim/FibonnaciMesh.cpp.s
-
-.PHONY : PyMieSim/FibonnaciMesh.s
-
-# target to generate assembly for a file
-PyMieSim/FibonnaciMesh.cpp.s:
-	$(MAKE) -f CMakeFiles/Fibonacci.dir/build.make CMakeFiles/Fibonacci.dir/PyMieSim/FibonnaciMesh.cpp.s
-.PHONY : PyMieSim/FibonnaciMesh.cpp.s
+_Coupling/fast:
+	$(MAKE) -f CMakeFiles/_Coupling.dir/build.make CMakeFiles/_Coupling.dir/build
+.PHONY : _Coupling/fast
 
 PyMieSim/GLMT/cpp/GaussianBeam.o: PyMieSim/GLMT/cpp/GaussianBeam.cpp.o
 
@@ -270,6 +256,60 @@ PyMieSim/LMT/cpp/interface.cpp.s:
 	$(MAKE) -f CMakeFiles/Scatterer.dir/build.make CMakeFiles/Scatterer.dir/PyMieSim/LMT/cpp/interface.cpp.s
 .PHONY : PyMieSim/LMT/cpp/interface.cpp.s
 
+PyMieSim/Tools/Coupling.o: PyMieSim/Tools/Coupling.cpp.o
+
+.PHONY : PyMieSim/Tools/Coupling.o
+
+# target to build an object file
+PyMieSim/Tools/Coupling.cpp.o:
+	$(MAKE) -f CMakeFiles/_Coupling.dir/build.make CMakeFiles/_Coupling.dir/PyMieSim/Tools/Coupling.cpp.o
+.PHONY : PyMieSim/Tools/Coupling.cpp.o
+
+PyMieSim/Tools/Coupling.i: PyMieSim/Tools/Coupling.cpp.i
+
+.PHONY : PyMieSim/Tools/Coupling.i
+
+# target to preprocess a source file
+PyMieSim/Tools/Coupling.cpp.i:
+	$(MAKE) -f CMakeFiles/_Coupling.dir/build.make CMakeFiles/_Coupling.dir/PyMieSim/Tools/Coupling.cpp.i
+.PHONY : PyMieSim/Tools/Coupling.cpp.i
+
+PyMieSim/Tools/Coupling.s: PyMieSim/Tools/Coupling.cpp.s
+
+.PHONY : PyMieSim/Tools/Coupling.s
+
+# target to generate assembly for a file
+PyMieSim/Tools/Coupling.cpp.s:
+	$(MAKE) -f CMakeFiles/_Coupling.dir/build.make CMakeFiles/_Coupling.dir/PyMieSim/Tools/Coupling.cpp.s
+.PHONY : PyMieSim/Tools/Coupling.cpp.s
+
+PyMieSim/Tools/FibonnaciMesh.o: PyMieSim/Tools/FibonnaciMesh.cpp.o
+
+.PHONY : PyMieSim/Tools/FibonnaciMesh.o
+
+# target to build an object file
+PyMieSim/Tools/FibonnaciMesh.cpp.o:
+	$(MAKE) -f CMakeFiles/Fibonacci.dir/build.make CMakeFiles/Fibonacci.dir/PyMieSim/Tools/FibonnaciMesh.cpp.o
+.PHONY : PyMieSim/Tools/FibonnaciMesh.cpp.o
+
+PyMieSim/Tools/FibonnaciMesh.i: PyMieSim/Tools/FibonnaciMesh.cpp.i
+
+.PHONY : PyMieSim/Tools/FibonnaciMesh.i
+
+# target to preprocess a source file
+PyMieSim/Tools/FibonnaciMesh.cpp.i:
+	$(MAKE) -f CMakeFiles/Fibonacci.dir/build.make CMakeFiles/Fibonacci.dir/PyMieSim/Tools/FibonnaciMesh.cpp.i
+.PHONY : PyMieSim/Tools/FibonnaciMesh.cpp.i
+
+PyMieSim/Tools/FibonnaciMesh.s: PyMieSim/Tools/FibonnaciMesh.cpp.s
+
+.PHONY : PyMieSim/Tools/FibonnaciMesh.s
+
+# target to generate assembly for a file
+PyMieSim/Tools/FibonnaciMesh.cpp.s:
+	$(MAKE) -f CMakeFiles/Fibonacci.dir/build.make CMakeFiles/Fibonacci.dir/PyMieSim/Tools/FibonnaciMesh.cpp.s
+.PHONY : PyMieSim/Tools/FibonnaciMesh.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -280,11 +320,9 @@ help:
 	@echo "... GaussianBeam"
 	@echo "... edit_cache"
 	@echo "... Fibonacci"
-	@echo "... _Scatterer"
 	@echo "... Scatterer"
-	@echo "... PyMieSim/FibonnaciMesh.o"
-	@echo "... PyMieSim/FibonnaciMesh.i"
-	@echo "... PyMieSim/FibonnaciMesh.s"
+	@echo "... _Scatterer"
+	@echo "... _Coupling"
 	@echo "... PyMieSim/GLMT/cpp/GaussianBeam.o"
 	@echo "... PyMieSim/GLMT/cpp/GaussianBeam.i"
 	@echo "... PyMieSim/GLMT/cpp/GaussianBeam.s"
@@ -294,6 +332,12 @@ help:
 	@echo "... PyMieSim/LMT/cpp/interface.o"
 	@echo "... PyMieSim/LMT/cpp/interface.i"
 	@echo "... PyMieSim/LMT/cpp/interface.s"
+	@echo "... PyMieSim/Tools/Coupling.o"
+	@echo "... PyMieSim/Tools/Coupling.i"
+	@echo "... PyMieSim/Tools/Coupling.s"
+	@echo "... PyMieSim/Tools/FibonnaciMesh.o"
+	@echo "... PyMieSim/Tools/FibonnaciMesh.i"
+	@echo "... PyMieSim/Tools/FibonnaciMesh.s"
 .PHONY : help
 
 

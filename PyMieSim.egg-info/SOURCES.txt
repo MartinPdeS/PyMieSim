@@ -8,7 +8,6 @@ setup.py
 PyMieSim/BaseClasses.py
 PyMieSim/Config.py
 PyMieSim/Constants.py
-PyMieSim/Coupling.cpp
 PyMieSim/Coupling.pyx
 PyMieSim/Detector.py
 PyMieSim/Directories.py
@@ -22,6 +21,7 @@ PyMieSim/NdArray.py
 PyMieSim/Physics.py
 PyMieSim/Plots.py
 PyMieSim/PlotsUtils.py
+PyMieSim/PyBind11Coupling.cpython-38-x86_64-linux-gnu.so
 PyMieSim/Representations.py
 PyMieSim/Scatterer.py
 PyMieSim/Source.py
@@ -62,7 +62,6 @@ PyMieSim/GLMT/cpp/Interface.cpp
 PyMieSim/GLMT/cpp/Sphere.cpp
 PyMieSim/LMT/Scatterer.cpython-38-x86_64-linux-gnu.so
 PyMieSim/LMT/cpp/Cylinder.cpp
-PyMieSim/LMT/cpp/MultiArray.cpp
 PyMieSim/LMT/cpp/ShellSphere1.cpp
 PyMieSim/LMT/cpp/Sphere.cpp
 PyMieSim/LMT/cpp/interface.cpp
@@ -73,6 +72,7 @@ PyMieSim/LMT/includes/utils.h
 PyMieSim/includes/BaseClass.h
 PyMieSim/includes/BaseFunc.h
 PyMieSim/includes/SpecialFunc.h
+PyMieSim/includes/__init__.py
 PyMieSim/includes/utils.h
 examples/Coupling:LPMode.py
 examples/Coupling:Photodiode.py

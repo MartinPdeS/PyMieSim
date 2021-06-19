@@ -6,9 +6,9 @@ from tvtk.tools import visual
 from tvtk.api   import tvtk
 from pyface.api import GUI
 
-from PyMieSim.utils import Sp2Cart, ToList, FormatStr, FormatString
-from PyMieSim.Config import *
-from PyMieSim.PlotsUtils import *
+from PyMieSim.Tools.utils       import Sp2Cart, ToList, FormatStr, FormatString
+from PyMieSim.Tools.Config      import *
+from PyMieSim.Tools.PlotsUtils  import *
 
 
 def Unstructured(**kwargs):

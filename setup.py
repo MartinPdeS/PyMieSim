@@ -40,7 +40,7 @@ URL             = 'https://github.com/MartinPdeS/PyMieSim'
 EMAIL           = 'Martin.poinsinet.de.sivry@gmail.com'
 AUTHOR          = 'Martin Poinsinet de Sivry',
 REQUIRES_PYTHON = '>3.8.0'
-VERSION         = '0.2.26'
+VERSION         = '0.2.30'
 
 # What packages are required for this module to be executed?
 REQUIRED = ['scipy',
@@ -86,16 +86,7 @@ compile_args=["-std=c++14",
 
 link_args=['-I/usr/include/boost',]
 
-ext_modules = [
-                Extension(name               = "PyMieSim._Coupling",
-                          sources            = ["PyMieSim/Coupling.pyx"],
-                          include_dirs        = [numpy.get_include()],
-                          language            = "c++",
-                          define_macros       = macro,
-                          extra_compile_args  = compile_args,
-                          extra_link_args     = link_args),
-
-                ]
+ext_modules = []
 
 
 try:
@@ -166,7 +157,7 @@ setup(
     packages                      = find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     install_requires              = REQUIRED,
     extras_require                = EXTRAS,
-    dependency_links              = ["fibermodes @ git+https://github.com/cbrunet/fibermodes.git#egg=fibermodes-0.2.0"],
+    dependency_links              = [],
     include_package_data          = True,
     ext_modules                   = ext_modules,
     license                       = 'MIT',

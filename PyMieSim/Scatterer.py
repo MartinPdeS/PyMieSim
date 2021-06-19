@@ -6,10 +6,10 @@ from beartype      import beartype
 from scipy.special import gamma
 from typing        import Union
 
-from PyMieSim.units           import Area
+from PyMieSim.Tools.units     import Area
 from PyMieSim.Source          import PlaneWave, GaussianBeam
 from PyMieSim.Representations import S1S2, SPF, Stokes
-from PyMieSim.ErrorMsg        import *
+from PyMieSim.Tools.ErrorMsg  import *
 from PyMieSim.GLMT.Scatterer  import ( SPHERE as G_SPHERE,
                                        CYLINDER as G_CYLINDER )
 

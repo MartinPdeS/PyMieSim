@@ -10,7 +10,7 @@ from socket import timeout
 import numpy as np
 
 from PyMieSim.BaseClasses import BaseMaterial
-from PyMieSim.Directories import NPZPath, MaterialPath
+from PyMieSim.Tools.Directories import NPZPath, MaterialPath
 
 
 def LoadOnline(url):

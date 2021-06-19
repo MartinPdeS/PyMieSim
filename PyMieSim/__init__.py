@@ -10,9 +10,10 @@ from pathlib import Path
 
 PATH = os.path.join( Path(__file__).parent, 'Data/_Material' )
 
-from PyMieSim.utils       import IO
-from PyMieSim.BaseClasses import BaseMaterial
-from PyMieSim.Directories          import ZeroPath
+from PyMieSim.Tools.utils       import IO
+from PyMieSim.Tools.Directories import ZeroPath
+from PyMieSim.BaseClasses       import BaseMaterial
+
 
 class Material(BaseMaterial):
     def __init__(self, name):
@@ -66,3 +67,23 @@ class Material(BaseMaterial):
 
     def __str__(self):
         return self.__name__
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --

@@ -4,7 +4,6 @@ cython
 pandas
 pyqt5
 scipy
-fibermodes @ git+https://github.com/cbrunet/fibermodes.git
 mayavi
 coverage
 pyyaml
@@ -12,3 +11,4 @@ pybind11
 numpydoc
 beartype
 vtk
+pybind11

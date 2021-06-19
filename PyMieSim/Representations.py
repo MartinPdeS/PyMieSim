@@ -2,10 +2,10 @@ import numpy             as np
 import matplotlib.pyplot as plt
 from mayavi              import mlab
 
-from PyMieSim.Plots       import StructuredAmplitude, StokesPlot, StructuredAbs
-from PyMieSim.utils       import Direct2spherical, AngleUnit2DirectUnit
-from PyMieSim.units       import Area
-from PyMieSim.Directories import *
+from PyMieSim.Plots             import StructuredAmplitude, StokesPlot, StructuredAbs
+from PyMieSim.Tools.utils       import Direct2spherical, AngleUnit2DirectUnit
+from PyMieSim.Tools.units       import Area
+from PyMieSim.Tools.Directories import *
 
 
 class Stokes(dict): # https://en.wikipedia.org/wiki/Stokes_parameters

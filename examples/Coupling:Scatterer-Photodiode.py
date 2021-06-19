@@ -11,7 +11,7 @@ def run(Plot, Save):
                          NA           = 0.2,
                          GammaOffset  = 0,
                          PhiOffset    = 0,
-                         CouplingMode = 'Centered')
+                         CouplingMode = 'Mean')
 
     Scat = Sphere(Diameter    = 300e-9,
                  Source      = Source,
