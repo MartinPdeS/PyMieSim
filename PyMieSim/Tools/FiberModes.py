@@ -1,8 +1,8 @@
 import numpy as np
 import fibermodes
 
-from PyMieSim.Physics import FraunhoferDiffraction
-from PyMieSim.utils   import Normalize
+from PyMieSim.Physics       import FraunhoferDiffraction
+from PyMieSim.Tools.utils   import Normalize
 
 
 LPList = [(0,1),

@@ -6,8 +6,8 @@ from   beartype import beartype
 
 
 import PyMieSim
-from PyMieSim.BaseClasses       import BaseDetector, MeshProperty
 from PyMieSim.Physics           import _Polarization, Angle
+from PyMieSim.Tools.BaseClasses import BaseDetector, MeshProperty
 from PyMieSim.Tools.Directories import RootPath, LPModePath
 from PyMieSim.Tools.ErrorMsg    import *
 from PyMieSim.Tools.utils       import ( interp_at,

@@ -4,7 +4,7 @@
 from numpy import zeros, cos, outer, exp, pi, ndarray
 
 from PyMieSim.Tools.Special import Taunm, Pinm
-from PyMieSim.BaseClasses import BaseScatterer, BaseSource
+from PyMieSim.Tools.BaseClasses import BaseScatterer, BaseSource
 
 def GetMaxOrder(Scat):
     """Function compute max Order (n) for :math:`S_1 \, \\& \, S_2` computing

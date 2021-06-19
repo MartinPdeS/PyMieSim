@@ -12,7 +12,7 @@ from PyMieSim.Tools.Config      import *
 from PyMieSim.Tools.Directories import *
 from PyMieSim.Tools.ErrorMsg    import *
 from PyMieSim.Tools.utils       import FormatStr, FormatString, ToList, Table
-from PyMieSim.Plots             import ExperimentPlot
+from PyMieSim.Tools.Plots       import ExperimentPlot
 
 
 

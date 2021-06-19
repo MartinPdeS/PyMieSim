@@ -6,16 +6,16 @@ import matplotlib.pyplot as plt
 from mayavi import mlab
 import os
 
-from PyMieSim.Representations   import S1S2, SPF, Stokes, ScalarFarField, Footprint
-from PyMieSim.Tools.Directories import *
-from PyMieSim.Physics           import _Polarization, Angle
-from PyMieSim.Tools.utils       import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
-from PyMieSim.Tools.units       import Power, Area, m_1
-from PyMieSim.Tools.Mesh        import FibonacciMesh
-from PyMieSim.Tools.Constants   import *
-from PyMieSim.Tools.Config      import *
-from PyMieSim.Tools             import Coupling
-import PyMieSim.Plots           as plot
+from PyMieSim.Tools.Representations import *
+from PyMieSim.Tools.Directories     import *
+from PyMieSim.Physics               import _Polarization, Angle
+from PyMieSim.Tools.utils           import NA2Angle, Cart2Sp, NearestIndex, ToList, MergeDict
+from PyMieSim.Tools.units           import Power, Area, m_1
+from PyMieSim.Tools.Mesh            import FibonacciMesh
+from PyMieSim.Tools.Constants       import *
+from PyMieSim.Tools.Config          import *
+from PyMieSim.Tools                 import Coupling
+import PyMieSim.Tools.Plots         as plot
 
 EPS = 1e-6
 

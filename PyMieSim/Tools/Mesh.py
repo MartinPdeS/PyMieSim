@@ -1,8 +1,8 @@
 import numpy as np
 from mayavi import mlab
 
-from PyMieSim.Plots import Unstructured
-from PyMieSim.Physics import Angle
+from PyMieSim.Physics         import Angle
+from PyMieSim.Tools.Plots     import Unstructured
 from PyMieSim.Tools.Fibonacci import Mesh as FMesh
 pi = np.pi
 

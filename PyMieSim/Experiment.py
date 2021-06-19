@@ -12,7 +12,7 @@ from scipy.optimize             import minimize
 from PyMieSim.Source            import PlaneWave
 from PyMieSim.Detector          import LPmode, Photodiode
 from PyMieSim.Scatterer         import Sphere, WMSample
-from PyMieSim.BaseClasses       import Set
+from PyMieSim.Tools.BaseClasses import Set
 from PyMieSim.Tools.utils       import ToList, GeneratorFromDict, MergeDict, FormatString
 from PyMieSim.Tools.NdArray     import PMSArray, Opt5DArray
 from PyMieSim.Tools.Config      import *

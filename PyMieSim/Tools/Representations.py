@@ -2,7 +2,7 @@ import numpy             as np
 import matplotlib.pyplot as plt
 from mayavi              import mlab
 
-from PyMieSim.Plots             import StructuredAmplitude, StokesPlot, StructuredAbs
+from PyMieSim.Tools.Plots       import StructuredAmplitude, StokesPlot, StructuredAbs
 from PyMieSim.Tools.utils       import Direct2spherical, AngleUnit2DirectUnit
 from PyMieSim.Tools.units       import Area
 from PyMieSim.Tools.Directories import *

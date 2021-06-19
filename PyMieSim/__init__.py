@@ -12,7 +12,7 @@ PATH = os.path.join( Path(__file__).parent, 'Data/_Material' )
 
 from PyMieSim.Tools.utils       import IO
 from PyMieSim.Tools.Directories import ZeroPath
-from PyMieSim.BaseClasses       import BaseMaterial
+from PyMieSim.Tools.BaseClasses import BaseMaterial
 
 
 class Material(BaseMaterial):

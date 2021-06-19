@@ -4,22 +4,22 @@
 import unittest
 import mayavi
 import matplotlib._pylab_helpers
-from mayavi     import mlab
-from unittest   import TestCase
-from numpy      import linspace, pi
-from pyface.api import GUI
+from mayavi              import mlab
+from unittest            import TestCase
+from numpy               import linspace, pi
+from pyface.api          import GUI
 import matplotlib.pyplot as plt
 import numpy             as np
 
-from PyMieSim.Scatterer          import Sphere, Cylinder, WMSample
-from PyMieSim.Source             import PlaneWave, GaussianBeam
-from PyMieSim.GLMT.python.Sphere import SPF
-from PyMieSim.Detector           import LPmode, Photodiode, _Photodiode
-from PyMieSim.Experiment         import ScatSet, Setup, SourceSet, SampleSet, DetectorSet
-from PyMieSim.Tools.Mesh         import FibonacciMesh
-from PyMieSim.Plots              import *
-from unittest.mock               import patch
-from PyMieSim.Representations    import S1S2
+from PyMieSim.Scatterer             import Sphere, Cylinder, WMSample
+from PyMieSim.Source                import PlaneWave, GaussianBeam
+from PyMieSim.GLMT.python.Sphere    import SPF
+from PyMieSim.Detector              import LPmode, Photodiode, _Photodiode
+from PyMieSim.Experiment            import ScatSet, Setup, SourceSet, SampleSet, DetectorSet
+from PyMieSim.Tools.Mesh            import FibonacciMesh
+from PyMieSim.Tools.Plots           import *
+from PyMieSim.Tools.Representations import S1S2
+from unittest.mock                  import patch
 
 
 LightSource = PlaneWave(Wavelength = 450e-9, Polarization = 0)

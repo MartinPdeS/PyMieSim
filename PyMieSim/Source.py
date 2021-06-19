@@ -5,14 +5,14 @@
 import pandas as pd
 from numpy import cos, sin, exp, sqrt, pi, linspace, abs, arccos, array, all
 
-from PyMieSim.Physics           import _Polarization
-from PyMieSim.BaseClasses       import BaseSource
+from PyMieSim.Physics                 import _Polarization
+from PyMieSim.Tools.BaseClasses       import BaseSource
 from PyMieSim.Tools.utils             import IO
 from PyMieSim.Tools.Constants         import *
-from PyMieSim.GLMT.GaussianBeam import ( Anm,
-                                         Anm_integrand,
-                                         Bnm,
-                                         Bnm_integrand )
+from PyMieSim.GLMT.GaussianBeam       import ( Anm,
+                                               Anm_integrand,
+                                               Bnm,
+                                               Bnm_integrand )
 
 
 EPS = 1e-20
