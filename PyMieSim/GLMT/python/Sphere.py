@@ -3,7 +3,7 @@
 
 from numpy import zeros, cos, outer, exp, pi, ndarray
 
-from PyMieSim.Special import Taunm, Pinm
+from PyMieSim.Tools.Special import Taunm, Pinm
 from PyMieSim.BaseClasses import BaseScatterer, BaseSource
 
 def GetMaxOrder(Scat):
