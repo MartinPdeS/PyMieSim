@@ -11,4 +11,3 @@ numpydoc
 beartype
 vtk
 pybind11
-sphinx_gallery
