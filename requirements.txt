@@ -1,6 +1,5 @@
 numpy
 matplotlib
-cython
 pandas
 pyqt5
 scipy
@@ -12,3 +11,4 @@ numpydoc
 beartype
 vtk
 pybind11
+sphinx_gallery
