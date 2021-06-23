@@ -9,6 +9,10 @@
     <title>Scatterer material &#8212; PyMieSim 0.1.11 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-rendered-html.css" />
     <link rel="stylesheet" type="text/css" href="_static/default.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -102,41 +106,11 @@ Here is what the Meta file look like</p>
 <hr class="docutils" />
 <blockquote>
 <div><p>In order to generate new Material to use with PyMieSim one can use the following snippet</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
-<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>                      <span class="kn">import</span> <span class="n">Material</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span>    <span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;BK7&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/glass/schott/N-BK7.yml&#39;</span><span class="p">)</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>    <span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;BK7&#39;</span><span class="p">)</span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span>    <span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<span class="linenos">13</span>    <span class="n">run</span><span class="p">()</span>
-</pre></div>
-</div>
 </div></blockquote>
 <a class="reference internal image-reference" href="_images/Extra:New-Material-BK7.png"><img alt="_images/Extra:New-Material-BK7.png" src="_images/Extra:New-Material-BK7.png" style="width: 600px;" /></a>
 <p>After executing this code a new entry to <strong>Meta.json</strong> will be added or updated.
 Afterward the user can use this new material for my computation.</p>
 <p>Here is another examples</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span> <span class="nf">run</span><span class="p">():</span>
-<span class="linenos"> 2</span>    <span class="kn">from</span> <span class="nn">PyMieSim.Data._Material.utils</span> <span class="kn">import</span> <span class="n">LoadOnlineSave</span>
-<span class="linenos"> 3</span>    <span class="kn">from</span> <span class="nn">PyMieSim</span>                      <span class="kn">import</span> <span class="n">Material</span>
-<span class="linenos"> 4</span>
-<span class="linenos"> 5</span>    <span class="n">LoadOnlineSave</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;Silver&#39;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s1">&#39;https://refractiveindex.info/data_csv.php?datafile=data/main/Ag/Johnson.yml&#39;</span><span class="p">)</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span>    <span class="n">Mat</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="s1">&#39;Silver&#39;</span><span class="p">)</span>
-<span class="linenos"> 8</span>
-<span class="linenos"> 9</span>    <span class="n">Mat</span><span class="o">.</span><span class="n">Plot</span><span class="p">()</span>
-<span class="linenos">10</span>
-<span class="linenos">11</span>
-<span class="linenos">12</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-<span class="linenos">13</span>    <span class="n">run</span><span class="p">()</span>
-</pre></div>
-</div>
 <a class="reference internal image-reference" href="_images/Extra:New-Material-Silver.png"><img alt="_images/Extra:New-Material-Silver.png" src="_images/Extra:New-Material-Silver.png" style="width: 600px;" /></a>
 </section>
 </section>

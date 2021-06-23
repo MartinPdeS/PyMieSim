@@ -14,6 +14,8 @@
 #
 import os
 import sys
+from sphinx_gallery.sorting import ExplicitOrder
+
 autodoc_mock_imports = ['numpy',
                         'pandas',
                         'typing',
@@ -54,8 +56,27 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.coverage',
     'sphinx.ext.autosectionlabel',
-    'numpydoc'
+    'numpydoc',
+    'sphinx_gallery.gen_gallery'
 ]
+
+sphinx_gallery_conf = {
+     'examples_dirs': '../../examples',   # path to example scripts
+     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+     'image_scrapers': ('matplotlib', 'mayavi'),
+     'ignore_pattern': '/__',
+     'download_all_examples': False,
+     'default_thumb_file': 'images/Logo.png',
+     'subsection_order': ExplicitOrder(['../../examples/CreatingScatterers',
+                                       '../../examples/CreatingDetectors',
+                                       '../../examples/ComputingFields',
+                                       '../../examples/ComputingCoupling',
+                                       '../../examples/ExperimentCoupling',
+                                       '../../examples/ExperimentProperties',
+                                       '../../examples/ExperimentOptimization',
+                                       '../../examples/ScatteringEfficiency',
+                                       '../../examples/Extra']),
+}
 
 numpydoc_show_class_members = False
 # Add any paths that contain templates here, relative to this directory.
