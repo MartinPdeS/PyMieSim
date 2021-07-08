@@ -1,6 +1,5 @@
 numpy
 matplotlib
-cython
 pandas
 pyqt5
 scipy
