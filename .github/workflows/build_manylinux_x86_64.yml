@@ -1,0 +1,65 @@
+name: ManyLinux-Workflow
+
+# https://github.com/YannickJadoul/Parselmouth/blob/master/.github/workflows/wheels.yml
+permissions:
+  contents: write
+
+on:
+  workflow_call:
+    inputs:
+      python_version_list:
+        type: string
+        required: false
+        default: "['3.10']"
+
+
+jobs:
+  job_create_wheel:
+    name: "Python ${{ matrix.python_version }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version:  ${{ fromJson(inputs.python_version_list) }}
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: "translate python version to cp"
+        uses: ./.github/actions/interpret_python_version
+        with:
+          python_version: ${{ matrix.python_version }}
+
+      - name: "Build: Wheels"
+        uses: pypa/cibuildwheel@v2.11.2
+        with:
+          output-dir: dist
+        env:
+          CC: /usr/bin/gcc
+          CXX: /usr/bin/g++
+          CIBW_BUILD: "${{ env.cp_python_version }}-manylinux_x86_64"
+          CIBW_TEST_REQUIRES: ".[dev]"
+          CIBW_BUILD_VERBOSITY: 1
+          CIBW_ARCHS: "x86_64"
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
+          CIBW_TEST_COMMAND: 'pytest -s {project}/tests'
+          CIBW_BEFORE_BUILD: |
+            mkdir build && cd build
+            cmake -G"Unix Makefiles" -DPYBIND11_PYTHON_VERSION=${{ matrix.python_version }}  ./..
+            make install
+            cd ..
+            ##### WTF: looks like if y put the requirement-dev before cmake install auditwheel will find too-recent symbols!!! (took me 8h to debug!)
+
+      - name: "Upload: Wheel"
+        uses: actions/upload-artifact@v3
+        with:
+          name: "manylinux_wheel_python${{ env.cp_python_version }}"
+          path: ./dist/*
+
+
+
+
+
+# -
