@@ -51,7 +51,7 @@ def run():
     figure = data.plot(
         y=measure.Qabs,
         x=scatterer_set.diameter,
-        y_scale="log"
+        y_scale="linear"
     )
 
     _ = figure.show()
