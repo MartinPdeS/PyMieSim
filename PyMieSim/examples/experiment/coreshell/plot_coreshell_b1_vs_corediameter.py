@@ -60,7 +60,7 @@ def run():
     figure = data.plot(
         y=measure.a1,
         x=scatterer_set.core_diameter,
-        y_scale='log'
+        y_scale='linear'
     )
 
     _ = figure.show()
