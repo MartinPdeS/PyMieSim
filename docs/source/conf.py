@@ -53,7 +53,7 @@ except ImportError:
     print('Could not load pyvista library for 3D renderin')
 
 sphinx_gallery_conf = {
-    "examples_dirs": '../examples',
+    "examples_dirs": '../examples/extras',
     "gallery_dirs": "gallery",
     "subsection_order": ExplicitOrder(
         [
@@ -71,8 +71,8 @@ sphinx_gallery_conf = {
     'download_all_examples': False,
     'line_numbers': False,
     'remove_config_comments': True,
-    'default_thumb_file': '../images/logo.png',
-    'notebook_images': '../images/logo.png',
+    'default_thumb_file': 'images/logo.png',
+    'notebook_images': 'images/logo.png',
     'capture_repr': ('_repr_html_', '__repr__'),
     'nested_sections': True,
 }
