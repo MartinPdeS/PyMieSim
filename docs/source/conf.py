@@ -54,6 +54,9 @@ try:
 except ImportError:
     print('Could not load pyvista library for 3D renderin')
 
+
+print(logo_path)
+print('============================================')
 sphinx_gallery_conf = {
     "examples_dirs": '../examples',
     "gallery_dirs": "gallery",
@@ -116,8 +119,6 @@ if v.is_devrelease:
 else:
     major, minor = v.release[:2]
     binder_branch = f"v{major}.{minor}.x"
-
-
 
 html_theme_options = {
     # Navigation bar
