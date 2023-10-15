@@ -120,8 +120,20 @@ html_theme_options = {
     "logo": {
         "alt_text": "PyMieSim's logo",
         "text": "PyMieSim",
-        "link": "https://github/PyMieSim.com",
+        "link": "https://github.com/MartinPdeS/PyMieSim",
     },
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/MartinPdeS/PyMieSim",
+            "icon": "fa-brands fa-github",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/pymiesim/",
+            "icon": "fa-solid fa-box",
+        },
+    ],
     "navbar_align": "left",
     "navbar_end": ["version-switcher", "navbar-icon-links"],
     "show_prev_next": False,
