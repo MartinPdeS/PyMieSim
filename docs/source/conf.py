@@ -71,8 +71,8 @@ sphinx_gallery_conf = {
     'download_all_examples': False,
     'line_numbers': False,
     'remove_config_comments': True,
-    'default_thumb_file': '../images/logo.png',
-    'notebook_images': '../images/logo.png',
+    'default_thumb_file': '../images/Logo.png',
+    'notebook_images': '../images/Logo.png',
     'capture_repr': ('_repr_html_', '__repr__'),
     'nested_sections': True,
 }
