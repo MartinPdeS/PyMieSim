@@ -5,7 +5,7 @@ PyMieSim's documentation
 
 
 .. include:: ../../README.rst
-    :start-line: 3
+    :start-line: 0
 
 .. toctree::
     :hidden:
