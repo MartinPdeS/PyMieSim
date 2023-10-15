@@ -1,6 +1,6 @@
 """
-Qsca vs diameter
-================
+Cylinder: Qsca vs diameter
+==========================
 
 """
 
@@ -12,7 +12,6 @@ from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 scatterer_set = CylinderSet(
     diameter=np.geomspace(6.36e-09, 10000e-9, 1000),
     index=[1.4],
@@ -21,7 +20,6 @@ scatterer_set = CylinderSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=[500e-9, 1000e-9, 1500e-9],
     polarization=30,
@@ -30,7 +28,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set
@@ -38,17 +35,13 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.Qsca)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.Qsca,
     x=scatterer_set.diameter
 )
 
 _ = figure.show()
-
-# -

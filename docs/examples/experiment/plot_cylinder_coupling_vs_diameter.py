@@ -1,6 +1,6 @@
 """
-coupling vs diameter
-====================
+Cylinder: coupling vs diameter
+==============================
 
 """
 
@@ -13,7 +13,6 @@ from PyMieSim.materials import BK7
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 scatterer_set = CylinderSet(
     diameter=numpy.linspace(100e-9, 3000e-9, 200),
     material=BK7,
@@ -22,7 +21,6 @@ scatterer_set = CylinderSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=1200e-9,
     polarization=90,
@@ -31,7 +29,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the detector to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 detector_set = PhotodiodeSet(
     NA=[0.1, 0.05],
     phi_offset=-180.0,
@@ -42,7 +39,6 @@ detector_set = PhotodiodeSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set,
@@ -51,12 +47,10 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.coupling)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.coupling,
     x=scatterer_set.diameter,
@@ -65,5 +59,3 @@ figure = data.plot(
 )
 
 _ = figure.show()
-
-# -

@@ -1,6 +1,6 @@
 """
-Coupling vs diameter
-====================
+CoreShell: Coupling vs diameter
+===============================
 
 """
 
@@ -13,7 +13,6 @@ from PyMieSim.materials import BK7, Silver
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we look at core/shell scatterers and use constant shell diameter
 # with variable core diameter
 scatterer_set = CoreShellSet(
@@ -26,7 +25,6 @@ scatterer_set = CoreShellSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The source is always a plane wave in the LMT framework.
 # The amplitude is set to one per default.
 source_set = SourceSet(
@@ -37,7 +35,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the detector to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The detector is here set as a photodiode with different available numerical aperture [NA]
 detector_set = PhotodiodeSet(
     NA=[0.1, 0.05],
@@ -49,7 +46,6 @@ detector_set = PhotodiodeSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # With the source and scatterers defined we set them together
 # in an experiment.
 experiment = Setup(
@@ -60,13 +56,11 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We are interesting here in the coupling parameter.
 data = experiment.Get(measures=measure.coupling)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.coupling,
     x=scatterer_set.core_diameter,
@@ -76,5 +70,3 @@ figure = data.plot(
 )
 
 _ = figure.show()
-
-# -

@@ -1,6 +1,6 @@
 """
-Coupling vs wavelength
-======================
+Cylinder: Coupling vs wavelength
+================================
 
 """
 
@@ -13,7 +13,6 @@ from PyMieSim.materials import BK7
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we look at cylinder scatterers a set diameter, refractive index and medium.
 scatterer_set = CylinderSet(
     diameter=np.linspace(100e-9, 8000e-9, 5),
@@ -23,7 +22,6 @@ scatterer_set = CylinderSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=np.linspace(950e-9, 1050e-9, 300),
     polarization=0,
@@ -32,7 +30,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the detector to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 detector_set = LPModeSet(
     mode_number="LP11",
     NA=[0.05, 0.01],
@@ -44,7 +41,6 @@ detector_set = LPModeSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set,
@@ -53,12 +49,10 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.coupling)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.coupling,
     x=source_set.wavelength,
@@ -66,5 +60,3 @@ figure = data.plot(
 )
 
 _ = figure.show()
-
-# -

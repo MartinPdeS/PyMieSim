@@ -1,6 +1,6 @@
 """
-Qsca vs index
-=============
+Sphere: Qsca vs index
+=====================
 
 """
 
@@ -12,7 +12,6 @@ from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 scatterer_set = SphereSet(
     diameter=800e-9,
     index=np.linspace(1.3, 1.9, 1500),
@@ -21,7 +20,6 @@ scatterer_set = SphereSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=[500e-9, 1000e-9, 1500e-9],
     polarization=30,
@@ -30,7 +28,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set
@@ -38,17 +35,13 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.Qsca)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.Qsca,
     x=scatterer_set.index
 )
 
 _ = figure.show()
-
-# -

@@ -1,6 +1,6 @@
 """
-Qsca vs wavelength STD
-=======================
+Sphere: Qsca vs wavelength STD
+==============================
 
 """
 
@@ -13,7 +13,6 @@ from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 scatterer_set = SphereSet(
     diameter=np.linspace(400e-9, 1400e-9, 10),
     material=Silver,
@@ -22,7 +21,6 @@ scatterer_set = SphereSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=np.linspace(200e-9, 1800e-9, 300),
     polarization=[0],
@@ -31,7 +29,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set
@@ -39,12 +36,10 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.Qsca)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.Qsca,
     x=source_set.wavelength,
@@ -53,6 +48,3 @@ figure = data.plot(
 )
 
 _ = figure.show()
-
-
-# -

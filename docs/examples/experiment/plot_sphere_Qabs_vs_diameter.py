@@ -1,6 +1,6 @@
 """
-Qsca vs diameter
-================
+Sphere: Qsca vs diameter
+========================
 
 """
 
@@ -13,7 +13,6 @@ from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 scatterer_set = SphereSet(
     diameter=np.linspace(1e-09, 800e-9, 300),
     material=[Silver, Gold, Aluminium],
@@ -22,7 +21,6 @@ scatterer_set = SphereSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=400e-9,
     polarization=0,
@@ -31,7 +29,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set
@@ -39,12 +36,10 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.Qabs)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.Qabs,
     x=scatterer_set.diameter,
@@ -52,5 +47,3 @@ figure = data.plot(
 )
 
 _ = figure.show()
-
-# -

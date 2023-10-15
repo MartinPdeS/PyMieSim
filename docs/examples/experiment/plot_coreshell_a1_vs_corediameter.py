@@ -1,6 +1,6 @@
 """
-B1 vs core diameter
-===================
+CoreShell: B1 vs core diameter
+==============================
 
 """
 
@@ -13,7 +13,6 @@ from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Here we look at core/shell scatterers and use constant shell diameter
 # with variable core diameter
 scatterer_set = CoreShellSet(
@@ -26,7 +25,6 @@ scatterer_set = CoreShellSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # The source is always a plane wave in the LMT framework.
 # The amplitude is set to one per default.
 source_set = SourceSet(
@@ -37,7 +35,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # With the source and scatterers defined we set them together
 # in an experiment.
 experiment = Setup(
@@ -47,13 +44,11 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # We are interesting here in the b_1 (first magnetic coefficient) parameter.
 data = experiment.Get(measures=measure.a1)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.a1,
     x=scatterer_set.core_diameter,
@@ -62,4 +57,3 @@ figure = data.plot(
 
 _ = figure.show()
 
-# -

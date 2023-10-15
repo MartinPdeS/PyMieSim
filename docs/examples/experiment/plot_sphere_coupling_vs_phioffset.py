@@ -1,6 +1,6 @@
 """
-Goniometer
-==========
+Sphere: Goniometer
+==================
 
 """
 
@@ -14,7 +14,6 @@ from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 scatterer_set = SphereSet(
     diameter=2000e-9,
     material=BK7,
@@ -23,7 +22,6 @@ scatterer_set = SphereSet(
 
 # %%
 # Defining the source to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 source_set = SourceSet(
     wavelength=1200e-9,
     polarization=90,
@@ -32,7 +30,6 @@ source_set = SourceSet(
 
 # %%
 # Defining the detector to be employed.
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 detector_set = PhotodiodeSet(
     NA=[0.5, 0.3, 0.1, 0.05],
     phi_offset=numpy.linspace(-180, 180, 400),
@@ -43,7 +40,6 @@ detector_set = PhotodiodeSet(
 
 # %%
 # Defining the experiment setup
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set,
@@ -52,12 +48,10 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-# ~~~~~~~~~~~~~~~~~~~~~~~~
 data = experiment.Get(measures=measure.coupling)
 
 # %%
 # Plotting the results
-# ~~~~~~~~~~~~~~~~~~~~
 figure = data.plot(
     y=measure.coupling,
     x=detector_set.phi_offset,
@@ -66,6 +60,3 @@ figure = data.plot(
 )
 
 _ = figure.show()
-
-
-# -
