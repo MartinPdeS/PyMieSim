@@ -1,0 +1,37 @@
+name: "Install package: Ubuntu-latest"
+description: "Installs prebuild ubuntu-latest wheel to current job"
+
+inputs:
+  python_version:
+    description: 'Python version to be translated'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: MartinPdeS/PyMieSim/.github/actions/interpret_python_version@master
+      with:
+        python_version: ${{ inputs.python_version }}
+
+    - name: "Set-up: Python ${{ env.cp_python_version }}"
+      uses: actions/setup-python@v4
+      id: cp310
+      with:
+        python-version: "${{ env.dotted_python_version }}"
+
+    - name: "Install: Dependencies for headless server"
+      shell: bash 
+      run: |
+        sudo apt-get update
+        sudo apt-get install libgl1-mesa-glx xvfb
+
+    - name: "Download: wheel"
+      uses: actions/download-artifact@v3
+      with:
+        path: ./dist
+
+    - name: "Install package"
+      shell: bash
+      run: |
+        python -m pip install -r requirements-validation.txt
+        python -m pip install --no-index --find-links './dist/manylinux_wheel_python${{ env.cp_python_version }}/' PyMieSim

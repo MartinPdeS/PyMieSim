@@ -1,0 +1,67 @@
+name: documentation_deploy
+
+# https://github.com/YannickJadoul/Parselmouth/blob/master/.github/workflows/wheels.yml
+permissions:
+  contents: write
+
+on:
+  workflow_call:
+    inputs:
+      python_version:
+        type: string
+        required: true
+        default: '3.10'
+
+jobs:
+  deploy_badge:
+    name: "Publish documentation to RTD"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: "translate python version to cp"
+        run: |
+          TEMP=${{ inputs.python_version }}
+          PYTHON_CP_VERSION="cp${TEMP//./}"
+          echo "PYTHON_CP_VERSION=$PYTHON_CP_VERSION" >> $GITHUB_ENV
+
+
+      - name: "Set-up: Python ${{ inputs.python_version }}"
+        uses: actions/setup-python@v4
+        id: cp310
+        with:
+          python-version: "${{ inputs.python_version }}"
+
+      - name: "Install: Dependencies for headless server"
+        run: |
+          sudo apt-get update
+          sudo apt-get install libgl1-mesa-glx xvfb
+
+      - name: "Download: wheel"
+        uses: actions/download-artifact@v3
+        with:
+          path: ./dist
+
+      - name: "Install pacakge"
+        run: |
+          python -m pip install -r requirements-dev.txt
+          python -m pip install --no-index --find-links './dist/manylinux_wheel_pythoncp310/' PyMieSim
+
+      - name: "Install dev requirements"
+        run: |
+          python -m pip install -r requirements-dev.txt
+
+      - name: "Build: documentation"
+        run: |
+          make -C docs html
+
+      - name: "Upload: GitHub Pages"
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: docs/build/html
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
