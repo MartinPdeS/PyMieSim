@@ -6,11 +6,9 @@ from sphinx_gallery.sorting import ExplicitOrder
 from packaging.version import parse
 
 from PyMieSim.tools.directories import (
-    logo_path,
     project_path,
     doc_css_path,
     version_path,
-    examples_path
 )
 
 sys.path.insert(0, project_path)
@@ -54,9 +52,6 @@ try:
 except ImportError:
     print('Could not load pyvista library for 3D renderin')
 
-
-print(logo_path)
-print('============================================')
 sphinx_gallery_conf = {
     "examples_dirs": '../examples',
     "gallery_dirs": "gallery",
@@ -76,8 +71,8 @@ sphinx_gallery_conf = {
     'download_all_examples': False,
     'line_numbers': True,
     'remove_config_comments': True,
-    'default_thumb_file': logo_path,
-    'notebook_images': logo_path,
+    'default_thumb_file': 'images/logo.png',
+    'notebook_images': 'images/logo.png',
     'capture_repr': ('_repr_html_', '__repr__'),
     'nested_sections': True,
 }
