@@ -69,7 +69,7 @@ sphinx_gallery_conf = {
     'plot_gallery': True,
     'thumbnail_size': [600, 600],
     'download_all_examples': False,
-    'line_numbers': True,
+    'line_numbers': False,
     'remove_config_comments': True,
     'default_thumb_file': '../images/logo.png',
     'notebook_images': '../images/logo.png',
