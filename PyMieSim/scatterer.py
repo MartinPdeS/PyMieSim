@@ -93,10 +93,11 @@ class GenericScatterer():
         """ Ratio of backscattering cross-section over total scattering. """
         return (self.Bind.Cratio)
 
-    def _FarField(self, phi: numpy.ndarray,
-                       theta: numpy.ndarray,
-                       r: numpy.ndarray,
-                       structured: bool = False) -> numpy.array:
+    def _FarField(self,
+            phi: numpy.ndarray,
+            theta: numpy.ndarray,
+            r: numpy.ndarray,
+             structured: bool = False) -> numpy.array:
         r"""
         .. note::
 
@@ -294,12 +295,14 @@ class Sphere(GenericScatterer):
         """
         from PyMieSim.binary.SphereInterface import SPHERE
 
-        self.Bind = SPHERE(wavelength=self.source.wavelength,
-                           amplitude=self.source.amplitude,
-                           diameter=self.diameter,
-                           index=self.index,
-                           n_medium=self.n_medium,
-                           jones_vector=self.source.polarization.jones_vector.squeeze())
+        self.Bind = SPHERE(
+            wavelength=self.source.wavelength,
+            amplitude=self.source.amplitude,
+            diameter=self.diameter,
+            index=self.index,
+            n_medium=self.n_medium,
+            jones_vector=self.source.polarization.jones_vector.squeeze()
+        )
 
     def an(self, max_order: int = None) -> numpy.array:
         r"""
@@ -399,8 +402,8 @@ class CoreShell(GenericScatterer):
     """ Refractive index of scatterer medium. """
 
     def __post_init__(self):
-
         self.core_index, self.core_material = self._assign_index_or_material(self.core_index, self.core_material)
+
         self.shell_index, self.shell_material = self._assign_index_or_material(self.shell_index, self.shell_material)
 
         self.shell_diameter = self.core_diameter + self.shell_width
@@ -414,14 +417,16 @@ class CoreShell(GenericScatterer):
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
-        self.Bind = CORESHELL(shell_index=self.shell_index,
-                              core_index=self.core_index,
-                              shell_width=self.shell_width,
-                              core_diameter=self.core_diameter,
-                              wavelength=self.source.wavelength,
-                              n_medium=self.n_medium,
-                              jones_vector=self.source.polarization.jones_vector.squeeze(),
-                              amplitude=self.source.amplitude)
+        self.Bind = CORESHELL(
+            shell_index=self.shell_index,
+            core_index=self.core_index,
+            shell_width=self.shell_width,
+            core_diameter=self.core_diameter,
+            wavelength=self.source.wavelength,
+            n_medium=self.n_medium,
+            jones_vector=self.source.polarization.jones_vector.squeeze(),
+            amplitude=self.source.amplitude
+        )
 
     def an(self, max_order: int = None) -> numpy.array:
         r"""
@@ -478,12 +483,14 @@ class Cylinder(GenericScatterer):
         """
         from PyMieSim.binary.CylinderInterface import CYLINDER
 
-        self.Bind = CYLINDER(index=self.index,
-                             diameter=self.diameter,
-                             wavelength=self.source.wavelength,
-                             n_medium=self.n_medium,
-                             amplitude=self.source.amplitude,
-                             jones_vector=self.source.polarization.jones_vector.squeeze())
+        self.Bind = CYLINDER(
+            index=self.index,
+            diameter=self.diameter,
+            wavelength=self.source.wavelength,
+            n_medium=self.n_medium,
+            amplitude=self.source.amplitude,
+            jones_vector=self.source.polarization.jones_vector.squeeze()
+        )
 
     def a1n(self, max_order: int = None) -> numpy.array:
         r"""

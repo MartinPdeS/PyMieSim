@@ -55,6 +55,7 @@ except ImportError:
 sphinx_gallery_conf = {
     "examples_dirs": '../examples/extras',
     "gallery_dirs": "gallery",
+    "backreferences_dir": "api",
     "subsection_order": ExplicitOrder(
         [
             "../examples/scatterer",
