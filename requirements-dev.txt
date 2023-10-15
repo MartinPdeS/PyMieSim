@@ -19,3 +19,4 @@ PyMieScatt
 PyOptik
 numpydoc
 pymiescatt
+pydata-sphinx-theme
