@@ -14,7 +14,7 @@ source = PlaneWave(
 )
 
 detector = LPmode(
-    mode_number="1-1",
+    mode_number="LP11",
     sampling=600,
     NA=0.2,
     gamma_offset=180,
