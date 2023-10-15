@@ -1,35 +1,71 @@
 """
-Photodiode Coupling
-===================
+Coupling heatmap of a sphere
+=================================
+
+PyMieSim makes it easy to create a source and a scatterer. With these objects
+defined, it is possible to use PyMieSim to find the scattering efficiency of the
+scatterer. This feature can be used to plot a graph of the scattering efficiency
+of a sphere as a function of the permittivity and the size parameter.
 """
 
-from PyMieSim.source import PlaneWave
-from PyMieSim.detector import LPmode
-from PyMieSim.scatterer import Sphere
+import numpy
+from PyMieSim.experiment import SphereSet, SourceSet, Setup, PhotodiodeSet
+from PyMieSim import measure
 
-source = PlaneWave(
-    wavelength=450e-9,
-    polarization=0,
+from MPSPlots.render2D import SceneList
+
+
+index = numpy.linspace(1.3, 2.1, 200)
+
+diameter = numpy.linspace(1e-9, 2000e-9, 200)
+
+source_set = SourceSet(
+    wavelength=400e-9,
+    polarization=90,
     amplitude=1
 )
 
-detector = LPmode(
-    mode_number="LP11",
-    sampling=500,
-    NA=0.2,
-    gamma_offset=180,
+
+scatterer_set = SphereSet(
+    diameter=diameter,
+    index=index,
+    n_medium=1
+)
+
+
+detector_set = PhotodiodeSet(
+    polarization_filter=None,
+    NA=0.3,
     phi_offset=0,
-    coupling_mode='Point'
+    gamma_offset=0
 )
 
-scatterer = Sphere(
-    diameter=300e-9,
-    source=source,
-    index=1.4
+experiment = Setup(
+    scatterer_set=scatterer_set,
+    source_set=source_set,
+    detector_set=detector_set
 )
 
-coupling = detector.coupling(scatterer=scatterer)
+data = experiment.Get(measures=measure.coupling)
 
-print(coupling)  # 6.566085549292496e-18 Watt  (6.57e-03 fWatt)
+data = abs(data.array.squeeze())
 
-# -
+figure = SceneList(unit_size=(6, 6))
+
+ax = figure.append_ax(
+    x_label="Permittivity",
+    y_label=r'Diameter [$\mu$ m]',
+    title="Coupling power [Watt]"
+)
+
+_ = ax.add_mesh(
+    x=index,
+    y=diameter,
+    scalar=data,
+    colormap='viridis',
+    y_scale_factor=1e6,
+    show_colorbar=True
+)
+
+
+_ = figure.show()
