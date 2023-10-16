@@ -53,7 +53,7 @@ except ImportError:
     print('Could not load pyvista library for 3D renderin')
 
 sphinx_gallery_conf = {
-    "examples_dirs": '../examples/extras',
+    "examples_dirs": '../examples',
     "gallery_dirs": "gallery",
     "backreferences_dir": "api",
     "subsection_order": ExplicitOrder(
