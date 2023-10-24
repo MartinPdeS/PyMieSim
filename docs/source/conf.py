@@ -3,6 +3,7 @@
 
 import sys
 from sphinx_gallery.sorting import ExplicitOrder
+from MPSPlots.styles import use_mpsplots_style
 from packaging.version import parse
 
 from PyMieSim.tools.directories import (
@@ -45,6 +46,11 @@ extensions = [
     'sphinx_gallery.gen_gallery',
 ]
 
+
+def reset_mpl(gallery_conf, fname):
+    use_mpsplots_style()
+
+
 try:
     import pyvista
     if sys.platform in ["linux", "linux2"]:
@@ -68,6 +74,7 @@ sphinx_gallery_conf = {
     'image_scrapers': ('matplotlib', 'pyvista'),
     'ignore_pattern': '/__',
     'plot_gallery': True,
+    'reset_modules': reset_mpl,
     'thumbnail_size': [600, 600],
     'download_all_examples': False,
     'line_numbers': False,

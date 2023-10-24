@@ -2,29 +2,23 @@
 Samples Properties
 ==================
 """
-# sphinx_gallery_thumbnail_path = '../images/Logo.png'
 
+from PyMieSimscatterer import Sphere
+from PyMieSim.source import PlaneWave
 
-def run():
-    from PyMieSimscatterer import Sphere
-    from PyMieSim.source import PlaneWave
+Source = PlaneWave(
+    wavelength=450e-9,
+    polarization=0,
+    amplitude=1
+)
 
-    Source = PlaneWave(
-        wavelength=450e-9,
-        polarization=0,
-        amplitude=1
-    )
+Scat = Sphere(
+    diameter=800e-9,
+    source=Source,
+    index=1.4)
 
-    Scat = Sphere(
-        diameter=800e-9,
-        source=Source,
-        index=1.4)
+print(Scat.Properties)
 
-    print(Scat.Properties)
-
-
-if __name__ == '__main__':
-    run()
 
 # ___________________________OUTPUT___________________________________
 #
