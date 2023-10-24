@@ -32,7 +32,8 @@ jobs:
               python_version: ${{ matrix.python_version }}
 
           - name: Setup GNU Fortran
-            uses: modflowpy/install-gfortran-action@v1
+            uses: fortran-lang/setup-fortran@v1
+            id: setup-fortran
 
           - name: "Build: Wheels"
             uses: pypa/cibuildwheel@v2.11.2
