@@ -14,19 +14,19 @@ jobs:
         uses: MartinPdeS/PyMieSim/.github/workflows/build_manylinux_x86_64.yml@master
         secrets: inherit
         with:
-            python_version_list: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']"
+            python_version_list: "['3.8', '3.9', '3.10', '3.11', '3.12']"
 
     macos_x86_64:
         uses: MartinPdeS/PyMieSim/.github/workflows/build_macos_x86_64.yml@master
         secrets: inherit
         with:
-            python_version_list: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']"
+            python_version_list: "['3.8', '3.9', '3.10', '3.11', '3.12']"
 
     Windows_x86_64:
         uses: MartinPdeS/PyMieSim/.github/workflows/build_windows_x86_64.yml@master
         secrets: inherit
         with:
-            python_version_list: "['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']"
+            python_version_list: "['3.8', '3.9', '3.10', '3.11', '3.12']"
 
     job_post_coverage:
         if: "contains(github.event.head_commit.message, '[publish]')"
