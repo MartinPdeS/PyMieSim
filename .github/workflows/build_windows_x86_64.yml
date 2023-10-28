@@ -47,7 +47,7 @@ jobs:
           output-dir: dist
         env:
           CIBW_BUILD: "${{ env.cp_python_version }}-win_amd64"
-          CIBW_TEST_REQUIRES: ".[developments]"
+          CIBW_TEST_REQUIRES: ".[development]"
           CIBW_BUILD_VERBOSITY: 1
           CIBW_ARCHS: "auto"
           CIBW_TEST_COMMAND: 'pytest -s {project}/tests'
