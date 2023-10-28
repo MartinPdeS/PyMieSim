@@ -27,6 +27,10 @@ jobs:
         with:
           submodules: true
 
+      - uses: MartinPdeS/MPSActions/interpret_python_version@master
+        with:
+          python_version: ${{ matrix.python_version }}
+
       - name: "Set up Python${{ matrix.python-version[0] }}"
         run: |
            brew install python@${{ matrix.python-version[0] }}

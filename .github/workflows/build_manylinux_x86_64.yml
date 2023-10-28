@@ -27,8 +27,7 @@ jobs:
         with:
           submodules: 'true'
 
-      - name: "translate python version to cp"
-        uses: ./.github/actions/interpret_python_version
+      - uses: MartinPdeS/MPSActions/interpret_python_version@master
         with:
           python_version: ${{ matrix.python_version }}
 

@@ -22,11 +22,9 @@ jobs:
         with:
           python-version: "${{ inputs.python_version }}"
 
-      - name: "translate python version to cp"
-        run: |
-          TEMP=${{ matrix.python_version }}
-          PYTHON_CP_VERSION="cp${TEMP//./}"
-          echo "PYTHON_CP_VERSION=$PYTHON_CP_VERSION" >> $GITHUB_ENV
+      - uses: MartinPdeS/MPSActions/interpret_python_version@master
+        with:
+          python_version: ${{ matrix.python_version }}
 
       - name: "Install: Dependencies for headless server"
         run: |
