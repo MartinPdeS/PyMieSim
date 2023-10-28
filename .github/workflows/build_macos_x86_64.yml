@@ -43,7 +43,7 @@ jobs:
                 CIBW_BUILD: "${{ env.cp_python_version }}-macosx_x86_64"
                 CIBW_ARCHS: "x86_64"
                 CIBW_PLATFORM: "macos"
-                CIBW_TEST_REQUIRES: ".[dev]"
+                CIBW_TEST_REQUIRES: ".[development]"
                 CIBW_BUILD_VERBOSITY: 1
                 MACOSX_DEPLOYMENT_TARGET: "10.13"
                 _PYTHON_HOST_PLATFORM: "macosx-10.13-x86_64"

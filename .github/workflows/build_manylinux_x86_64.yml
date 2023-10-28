@@ -39,7 +39,7 @@ jobs:
           CC: /usr/bin/gcc
           CXX: /usr/bin/g++
           CIBW_BUILD: "${{ env.cp_python_version }}-manylinux_x86_64"
-          CIBW_TEST_REQUIRES: ".[dev]"
+          CIBW_TEST_REQUIRES: ".[development]"
           CIBW_BUILD_VERBOSITY: 1
           CIBW_ARCHS: "x86_64"
           CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2014"
