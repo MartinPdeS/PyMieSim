@@ -42,12 +42,12 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: "Build: Wheels"
-        uses: pypa/cibuildwheel@v2.11.2
+        uses: pypa/cibuildwheel@v2.16.2
         with:
           output-dir: dist
         env:
           CIBW_BUILD: "${{ env.cp_python_version }}-win_amd64"
-          CIBW_TEST_REQUIRES: ".[dev]"
+          CIBW_TEST_REQUIRES: ".[developments]"
           CIBW_BUILD_VERBOSITY: 1
           CIBW_ARCHS: "auto"
           CIBW_TEST_COMMAND: 'pytest -s {project}/tests'
