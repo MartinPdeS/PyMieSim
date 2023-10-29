@@ -16,18 +16,23 @@ jobs:
             fail-fast: false
             matrix:
                 python-version: ['3.8', '3.9', '3.10', '3.11']
-
         steps:
           - uses: MartinPdeS/MPSActions/build_package_for_manylinux@master
             with:
                 python-version: ${{ matrix.python-version }}
 
 
+
     macos_x86_64:
-        uses: MartinPdeS/PyMieSim/.github/workflows/build_macos_x86_64.yml@master
-        secrets: inherit
-        with:
-            python_version_list: "['3.8', '3.9', '3.10', '3.11']"
+        runs-on: macos-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ['3.8', '3.9', '3.10', '3.11']
+        steps:
+          - uses: MartinPdeS/MPSActions/build_package_for_MacOS@master
+            with:
+                python-version: ${{ matrix.python-version }}
 
 
     Windows_x86_64:
