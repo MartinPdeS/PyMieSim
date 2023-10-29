@@ -30,7 +30,7 @@ jobs:
 
     publish_coverage:
         if: "contains(github.event.head_commit.message, '[publish]')"
-        needs: [build_pure_python]
+        needs: [ManyLinux_x86_64]
         runs-on: ubuntu-latest
         steps:
           - uses: MartinPdeS/MPSActions/publish_coverage@master
@@ -42,7 +42,7 @@ jobs:
 
     publish_documentation:
         if: "contains(github.event.head_commit.message, '[publish]')"
-        needs: [build_pure_python]
+        needs: [ManyLinux_x86_64]
         runs-on: ubuntu-latest
         steps:
           - uses: MartinPdeS/MPSActions/publish_documentation@master
