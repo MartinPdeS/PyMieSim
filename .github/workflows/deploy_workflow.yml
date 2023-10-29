@@ -36,10 +36,15 @@ jobs:
 
 
     Windows_x86_64:
-        uses: MartinPdeS/PyMieSim/.github/workflows/build_windows_x86_64.yml@master
-        secrets: inherit
-        with:
-            python_version_list: "['3.8', '3.9', '3.10', '3.11']"
+        runs-on: macos-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                python-version: ['3.8', '3.9', '3.10', '3.11']
+        steps:
+          - uses: MartinPdeS/MPSActions/build_package_for_Windows@master
+            with:
+                python-version: ${{ matrix.python-version }}
 
 
     publish_coverage:
@@ -54,6 +59,7 @@ jobs:
                 auth: ${{ secrets.MPdS_gist_token }}
                 gistID: 2cac8ebb51cd9ce07dc7a955648301d5
 
+
     publish_documentation:
         if: "contains(github.event.head_commit.message, '[publish]')"
         needs: [ManyLinux_x86_64]
@@ -64,6 +70,7 @@ jobs:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 package-name: PyMieSim
                 python-version: "3.10" #no documentation for python 3.7 (pickle5 not present˘)
+
 
     publish_wheel:
         if: "contains(github.event.head_commit.message, '[publish]')"
