@@ -16,7 +16,7 @@ jobs:
         steps:
           - uses: MartinPdeS/MPSActions/build_package_for_manylinux@master
             with:
-                python-version-list: "['3.8', '3.9', '3.10', '3.11']"
+                python-version-list: "['3.8', '3.9', '3.10', '3.11']" 
 
     macos_x86_64:
         uses: MartinPdeS/PyMieSim/.github/workflows/build_macos_x86_64.yml@master
