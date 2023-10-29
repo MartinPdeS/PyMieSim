@@ -11,10 +11,12 @@ permissions:
 
 jobs:
     ManyLinux_x86_64:
-        uses: MartinPdeS/PyMieSim/.github/workflows/build_manylinux_x86_64.yml@master
-        secrets: inherit
-        with:
-            python_version_list: "['3.8', '3.9', '3.10', '3.11']"
+        if: "contains(github.event.head_commit.message, '[publish]')"
+        runs-on: ubuntu-latest
+        steps:
+          - uses: MartinPdeS/MPSActions/build_package_for_manylinux@master
+            with:
+                python-version-list: "['3.8', '3.9', '3.10', '3.11']"
 
     macos_x86_64:
         uses: MartinPdeS/PyMieSim/.github/workflows/build_macos_x86_64.yml@master
