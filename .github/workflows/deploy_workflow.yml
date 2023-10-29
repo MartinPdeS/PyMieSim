@@ -30,19 +30,26 @@ jobs:
 
     publish_coverage:
         if: "contains(github.event.head_commit.message, '[publish]')"
-        needs: [ManyLinux_x86_64]
-        uses: MartinPdeS/PyMieSim/.github/workflows/sub_deploy_coverage_badge.yml@master
-        secrets: inherit
-        with:
-            python_version: '3.10'
+        needs: [build_pure_python]
+        runs-on: ubuntu-latest
+        steps:
+          - uses: MartinPdeS/MPSActions/publish_coverage@master
+            with:
+                package-name: FiberFusing
+                python-version: "3.10"
+                auth: ${{ secrets.MPdS_gist_token }}
+                gistID: 2cac8ebb51cd9ce07dc7a955648301d5
 
     publish_documentation:
         if: "contains(github.event.head_commit.message, '[publish]')"
-        needs: [ManyLinux_x86_64]
-        uses: MartinPdeS/PyMieSim/.github/workflows/sub_deploy_documentation.yml@master
-        secrets: inherit
-        with:
-            python_version: '3.10' #no documentation for python 3.7 (pickle5 not present˘)
+        needs: [build_pure_python]
+        runs-on: ubuntu-latest
+        steps:
+          - uses: MartinPdeS/MPSActions/publish_documentation@master
+            with:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                package-name: FiberFusing
+                python-version: "3.10" #no documentation for python 3.7 (pickle5 not present˘)
 
     publish_wheel:
         if: "contains(github.event.head_commit.message, '[publish]')"
