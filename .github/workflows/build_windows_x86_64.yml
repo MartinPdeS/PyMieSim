@@ -28,7 +28,7 @@ jobs:
 
       - uses: MartinPdeS/MPSActions/interpret_python_version@master
         with:
-          python_version: ${{ matrix.python_version }}
+          python-version: ${{ matrix.python_version }}
 
       - uses: msys2/setup-msys2@v2
         with:

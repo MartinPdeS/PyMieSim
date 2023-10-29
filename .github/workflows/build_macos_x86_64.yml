@@ -28,7 +28,7 @@ jobs:
 
           - uses: MartinPdeS/MPSActions/interpret_python_version@master
             with:
-              python_version: ${{ matrix.python_version }}
+              python-version: ${{ matrix.python_version }}
 
           - name: Setup GNU Fortran
             uses: fortran-lang/setup-fortran@v1
