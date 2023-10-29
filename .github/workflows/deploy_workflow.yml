@@ -35,7 +35,7 @@ jobs:
         steps:
           - uses: MartinPdeS/MPSActions/publish_coverage@master
             with:
-                package-name: FiberFusing
+                package-name: PyMieSim
                 python-version: "3.10"
                 auth: ${{ secrets.MPdS_gist_token }}
                 gistID: 2cac8ebb51cd9ce07dc7a955648301d5
@@ -48,7 +48,7 @@ jobs:
           - uses: MartinPdeS/MPSActions/publish_documentation@master
             with:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                package-name: FiberFusing
+                package-name: PyMieSim
                 python-version: "3.10" #no documentation for python 3.7 (pickle5 not present˘)
 
     publish_wheel:
