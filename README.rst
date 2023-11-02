@@ -13,7 +13,7 @@ PyMieSim
 
 PyMieSim is a software designed for comprehensive Mie scattering analysis, featuring a user-friendly installation and operation process. The characterization of the scattering event within PyMieSim is determined by a set of specific properties, as illustrated in the subsequent figure.
 
-Currently, PyMieSim integrates three distinct solvers tailored to three different types of scatterers: spherical particles, infinite cylindrical particles, and core-shell spherical particles. Additional parameters governing the scattering event are contingent upon the attributes of the light source and the detector (when applicable). The attributes pertinent to each of these components are delineated in the ensuing figure."
+Currently, PyMieSim integrates three distinct solvers tailored to three different types of scatterers: spherical particles, infinite cylindrical particles, and core-shell spherical particles. Additional parameters governing the scattering event are contingent upon the attributes of the light source and the detector (when applicable). The attributes pertinent to each of these components are delineated in the ensuing figure.
 
 
 .. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
@@ -37,7 +37,7 @@ All the latest available documentation is available `here <https://pymiesim.read
 Google Colab
 **************
 It's 2023, you don't need to run all your code on you computer anymore. Google Colab is a platform which allows to write/use python scripts remotely.
-You can open the PyMieSim.ipynb in the file to access it or click on the following "Open in Colab" badge: 
+You can open the PyMieSim.ipynb in the file to access it or click on the following "Open in Colab" badge:
 
 |colab|
 

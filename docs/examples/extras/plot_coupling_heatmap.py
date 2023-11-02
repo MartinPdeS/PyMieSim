@@ -15,9 +15,9 @@ from PyMieSim import measure
 from MPSPlots.render2D import SceneList
 
 
-index = numpy.linspace(1.3, 2.1, 200)
+index = numpy.linspace(1.3, 2.1, 300)
 
-diameter = numpy.linspace(1e-9, 2000e-9, 200)
+diameter = numpy.linspace(1e-9, 2000e-9, 300)
 
 source_set = SourceSet(
     wavelength=400e-9,
@@ -64,8 +64,9 @@ _ = ax.add_mesh(
     scalar=data,
     colormap='viridis',
     y_scale_factor=1e6,
-    show_colorbar=True
 )
+
+_ = ax.add_colorbar(symmetric=False, numeric_format='%.3e')
 
 
 _ = figure.show()
