@@ -57,8 +57,8 @@ _ = ax.add_mesh(
     scalar=numpy.log(data),
     colormap='viridis',
     y_scale_factor=1e6,
-    show_colorbar=True
 )
 
+_ = ax.add_colorbar()
 
 _ = figure.show()
