@@ -11,10 +11,9 @@
 PyMieSim
 ========
 
-PyMieSim is a very easy to install/use tool for extensive Mie scattering analysis. The scattering event is defined by a few properties as shown in the following picture:
+PyMieSim is a software designed for comprehensive Mie scattering analysis, featuring a user-friendly installation and operation process. The characterization of the scattering event within PyMieSim is determined by a set of specific properties, as illustrated in the subsequent figure.
 
-PyMieSim combines (for now) three different solver for three different scatterer type: sphere, infinite cylinders and core/shell sphere.
-The other parameter of the scattering event are defined per the light source and the detector (if needed). The attribute of each those "objects" is shown in the following figure.
+Currently, PyMieSim integrates three distinct solvers tailored to three different types of scatterers: spherical particles, infinite cylindrical particles, and core-shell spherical particles. Additional parameters governing the scattering event are contingent upon the attributes of the light source and the detector (when applicable). The attributes pertinent to each of these components are delineated in the ensuing figure."
 
 
 .. image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
@@ -37,7 +36,7 @@ All the latest available documentation is available `here <https://pymiesim.read
 
 Google Colab
 **************
-It's 2021, you don't need to run all your code on you computer anymore. Google Colab is a platform which allows to write/use python scripts remotely.
+It's 2023, you don't need to run all your code on you computer anymore. Google Colab is a platform which allows to write/use python scripts remotely.
 You can open the PyMieSim.ipynb in the file to access it or click on the following "Open in Colab" badge:
 
 |colab|
@@ -57,7 +56,7 @@ For common version of Windows, Linux and MacOS, (on x86_64 architecture), the pa
 The ready to install wheel is not available for arm chip of the newer mac M1, M2 product. You can however install manually the package.
 
 
-If, however, this fail you can build the package from scratch following the steps on the **Building the package** section.
+If, however, this fail you can build the package from scratch following the steps on the **Manual building** section.
 
 **Note:** Wheel support now extended to `manylinux2014 <https://www.python.org/dev/peps/pep-0599/>`_.
 
@@ -144,7 +143,7 @@ I spent a full year to develop this tool for you to use so if it helped you in y
 
 Contact Information
 ************************
-As of 2021, the project is still under development. If you want to collaborate, it would be a pleasure! I encourage you to contact me.
+As of 2023, the project is still under development. If you want to collaborate, it would be a pleasure! I encourage you to contact me.
 
 PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
 
