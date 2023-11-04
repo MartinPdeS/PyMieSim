@@ -57,7 +57,7 @@ jobs:
                 package-name: PyMieSim
                 python-version: "3.10"
                 auth: ${{ secrets.GIST_TOKEN }}
-                gistID: 16caa7bb2a83d5af36740e4a6a0f861d
+                gistID: f0955be398d59efac69042c1b0fbece2
 
 
     publish_documentation:
