@@ -12,6 +12,7 @@ from PyMieSim import load_lp_mode
 
 from PyMieSim.polarization import LinearPolarization
 from PyMieSim.binary.Experiment import CppExperiment
+import PyMieSim.datavisual_x_parameters as Kwargs
 
 from PyMieSim.binary.Sets import (
     CppCoreShellSet,
@@ -22,59 +23,8 @@ from PyMieSim.binary.Sets import (
 )
 
 
-class DetectorSet():
-    def __init__(self):
-        self.NA = Xparameter(
-            values=self.NA,
-            name='numerical_aperture',
-            long_label='NA',
-            format=".3f",
-            unit="rad",
-            short_label='NA'
-        )
-
-        self.phi_offset = Xparameter(
-            values=self.phi_offset,
-            name='phi_offset',
-            long_label=r'$\phi_{offset}$',
-            format="03.1f",
-            unit="deg",
-            short_label=r'$\phi_{offset}$'
-        )
-
-        self.gamma_offset = Xparameter(
-            values=self.gamma_offset,
-            name='gamma_offset',
-            long_label=r'$\gamma_{offset}$',
-            format="03.1f",
-            unit="deg",
-            short_label=r'$\gamma_{offset}$'
-        )
-
-        self.polarization_filter = Xparameter(
-            values=self.polarization_filter,
-            name='polarization_filter',
-            long_label=r'filter$_{pol}$',
-            format="03.1f",
-            unit="deg",
-            short_label=r'filter$_{pol}$',
-        )
-
-
-class ScattererSet():
-    def __init__(self):
-        self.n_medium = Xparameter(
-            values=self.n_medium,
-            name='n_medium',
-            long_label=r'n$_{medium}$',
-            format=".2f",
-            unit="1",
-            short_label=r'n$_{medium}$'
-        )
-
-
 @dataclass
-class CoreShellSet(ScattererSet):
+class CoreShellSet():
     core_diameter: list
     """ diameter of the core of the single scatterer [m]. """
     shell_width: list
@@ -95,64 +45,34 @@ class CoreShellSet(ScattererSet):
     def __post_init__(self):
         self.format_inputs()
 
-        self.bounded_core = True if len(self.core_material) != 0 else False
-        self.bounded_shell = True if len(self.shell_material) != 0 else False
-
-        self.core_diameter = Xparameter(
-            values=self.core_diameter,
-            name='diameter',
-            format=".2e",
-            unit="m",
-            long_label=r'core$_{diameter}$',
-            short_label=r'core$_{diameter}$'
-        )
-
-        self.shell_width = Xparameter(
-            values=self.shell_width,
-            name='Shell diameter',
-            format=".2e",
-            unit="m",
-            long_label=r'shell$_{diameter}$',
-            short_label=r'shell$_{diameter}$'
-        )
-
-        self.core_material = Xparameter(
-            values=self.core_material,
-            name='core_material',
-            format="",
-            unit="",
-            long_label=r'core$_{material}$',
-            short_label=r'core$_{material}$'
-        )
-
-        self.shell_material = Xparameter(
-            values=self.shell_material,
-            name='shell_material',
-            format="",
-            unit="",
-            long_label=r'shell$_{material}$',
-            short_label=r'shell$_{material}$',
-        )
-
-        self.core_index = Xparameter(
-            values=self.core_index,
-            name='core_index',
-            format="",
-            unit="1",
-            long_label=r'core$_{index}$',
-            short_label=r'core$_{index}$'
-        )
-
-        self.shell_index = Xparameter(
-            values=self.shell_index,
-            name='shell_index',
-            format="",
-            unit="1",
-            long_label=r'shell$_{index}$',
-            short_label=r'shell$_{index}$'
-        )
+        self.build_x_parameters()
 
         super().__init__()
+
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No Return
+        :rtype:     None
+        """
+        self.n_medium = Xparameter(values=self.n_medium, **Kwargs.n_medium)
+
+        self.bounded_core = True if len(self.core_material) != 0 else False
+
+        self.bounded_shell = True if len(self.shell_material) != 0 else False
+
+        self.core_diameter = Xparameter(values=self.core_diameter, **Kwargs.core_diameter)
+
+        self.shell_width = Xparameter(values=self.shell_width, **Kwargs.shell_width)
+
+        self.core_material = Xparameter(values=self.core_material, **Kwargs.core_material)
+
+        self.shell_material = Xparameter(values=self.shell_material, **Kwargs.shell_material)
+
+        self.core_index = Xparameter(values=self.core_index, **Kwargs.core_index)
+
+        self.shell_index = Xparameter(values=self.shell_index, **Kwargs.shell_index)
 
     def bind_to_experiment(self, experiment):
         """
@@ -166,12 +86,25 @@ class CoreShellSet(ScattererSet):
         """
         experiment.binding.set_coreshell(self.binding)
 
-    def get_core_shell_diameter_from_shell_width(self, core_diameter: numpy.ndarray, shell_width: numpy.ndarray) -> tuple:
+    def get_core_shell_diameter_from_shell_width(self,
+            core_diameter: numpy.ndarray,
+            shell_width: numpy.ndarray) -> tuple:
+        """
+        Gets the core shell diameter from shell width.
+
+        :param      core_diameter:  The core diameter
+        :type       core_diameter:  numpy.ndarray
+        :param      shell_width:    The shell width
+        :type       shell_width:    numpy.ndarray
+
+        :returns:   The core shell diameter from shell width.
+        :rtype:     tuple
+        """
         _core_diameter = numpy.tile(core_diameter, reps=len(shell_width))
         shell_diameter = numpy.add.outer(core_diameter, shell_width)
         return _core_diameter.flatten(), shell_diameter.T.flatten()
 
-    def bind_core_material_shell_material(self, source):
+    def bind_core_material_shell_material(self, source) -> None:
         core_material = [
             material.GetRI(source.values) for material in self.core_material
         ]
@@ -191,7 +124,7 @@ class CoreShellSet(ScattererSet):
             n_medium=self.n_medium.values,
         )
 
-    def bind_core_material_shell_index(self, source):
+    def bind_core_material_shell_index(self, source) -> None:
         core_material = [
             material.GetRI(source.values) for material in self.core_material
         ]
@@ -206,7 +139,7 @@ class CoreShellSet(ScattererSet):
             n_medium=self.n_medium.values,
         )
 
-    def bind_index_material_shell_material(self, source):
+    def bind_index_material_shell_material(self, source) -> None:
         shell_material = [
             material.GetRI(source.values) for material in self.shell_material
         ]
@@ -221,7 +154,7 @@ class CoreShellSet(ScattererSet):
             n_medium=self.n_medium.values,
         )
 
-    def bind_index_material_shell_index(self, source):
+    def bind_index_material_shell_index(self, source) -> None:
         self.binding = CppCoreShellSet(
             core_diameter=self.core_diameter.values,
             shell_width=self.shell_width.values,
@@ -230,7 +163,7 @@ class CoreShellSet(ScattererSet):
             n_medium=self.n_medium.values,
         )
 
-    def evaluate_index_material(self, source):
+    def evaluate_index_material(self, source) -> None:
         if self.bounded_core and self.bounded_shell:
             self.bind_core_material_shell_material(source)
 
@@ -243,7 +176,7 @@ class CoreShellSet(ScattererSet):
         if not self.bounded_core and not self.bounded_shell:
             self.bind_index_material_shell_index(source)
 
-    def format_inputs(self):
+    def format_inputs(self) -> None:
         """
         Format the inputs given by the user into numpy array. Those inputs are subsequently
         sent to the cpp binding.
@@ -262,7 +195,7 @@ class CoreShellSet(ScattererSet):
         self.core_material = numpy.atleast_1d(self.core_material)
         self.shell_material = numpy.atleast_1d(self.shell_material)
 
-    def append_to_table(self, table):
+    def append_to_table(self, table) -> list:
         """
         Append elements to the xTable from the DataVisual library for the plottings.
 
@@ -288,7 +221,7 @@ class CoreShellSet(ScattererSet):
 
 
 @dataclass
-class SphereSet(ScattererSet):
+class SphereSet():
     diameter: list
     """ diameter of the single scatterer in unit of meter. """
     index: list = tuple()
@@ -303,38 +236,28 @@ class SphereSet(ScattererSet):
     def __post_init__(self):
         self.format_inputs()
 
-        self.bounded_index = True if len(self.material) != 0 else False
-
-        self.diameter = Xparameter(
-            values=self.diameter,
-            name='diameter',
-            format=".2e",
-            unit="m",
-            long_label='diameter',
-            short_label='diameter'
-        )
-
-        self.material = Xparameter(
-            values=self.material,
-            name='material',
-            format="",
-            unit="",
-            long_label='material',
-            short_label='material'
-        )
-
-        self.index = Xparameter(
-            values=self.index,
-            name='index',
-            format="",
-            unit="1",
-            long_label='index',
-            short_label='index'
-        )
+        self.build_x_parameters()
 
         super().__init__()
 
-    def bind_to_experiment(self, experiment):
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No Return
+        :rtype:     None
+        """
+        self.n_medium = Xparameter(values=self.n_medium, **Kwargs.n_medium)
+
+        self.bounded_index = True if len(self.material) != 0 else False
+
+        self.diameter = Xparameter(values=self.diameter, **Kwargs.diameter)
+
+        self.material = Xparameter(values=self.material, **Kwargs.material)
+
+        self.index = Xparameter(values=self.index, **Kwargs.index)
+
+    def bind_to_experiment(self, experiment) -> None:
         """
         Bind this specific set to a Setup experiment.
 
@@ -346,7 +269,7 @@ class SphereSet(ScattererSet):
         """
         experiment.binding.set_sphere(self.binding)
 
-    def evaluate_index_material(self, Source):
+    def evaluate_index_material(self, Source) -> None:
         if self.bounded_index:
             material = [
                 material.GetRI(Source.values) for material in self.material
@@ -367,7 +290,7 @@ class SphereSet(ScattererSet):
                 n_medium=self.n_medium.values
             )
 
-    def append_to_table(self, table):
+    def append_to_table(self, table) -> list:
         """
         Append elements to the xTable from the DataVisual library for the plottings.
 
@@ -385,7 +308,7 @@ class SphereSet(ScattererSet):
 
         return [*table, self.diameter, *index_material_table, self.n_medium]
 
-    def format_inputs(self):
+    def format_inputs(self) -> None:
         """
         Format the inputs given by the user into numpy array. Those inputs are subsequently
         sent to the cpp binding.
@@ -403,7 +326,7 @@ class SphereSet(ScattererSet):
 
 
 @dataclass
-class CylinderSet(ScattererSet):
+class CylinderSet():
     diameter: list
     """ diameter of the single scatterer in unit of meter. """
     index: tuple = tuple()
@@ -418,36 +341,26 @@ class CylinderSet(ScattererSet):
     def __post_init__(self):
         self.format_inputs()
 
-        self.bounded_index = True if len(self.material) != 0 else False
-
-        self.diameter = Xparameter(
-            values=self.diameter,
-            name='diameter',
-            format=".2e",
-            unit="m",
-            long_label='diameter',
-            short_label='diameter'
-        )
-
-        self.material = Xparameter(
-            values=self.material,
-            name='material',
-            format="",
-            unit="",
-            long_label='material',
-            short_label='material'
-        )
-
-        self.index = Xparameter(
-            values=self.index,
-            name='index',
-            format="",
-            unit="1",
-            long_label='index',
-            short_label='index'
-        )
+        self.build_x_parameters()
 
         super().__init__()
+
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No Return
+        :rtype:     None
+        """
+        self.n_medium = Xparameter(values=self.n_medium, **Kwargs.n_medium)
+
+        self.bounded_index = True if len(self.material) != 0 else False
+
+        self.diameter = Xparameter(values=self.diameter, **Kwargs.diameter)
+
+        self.material = Xparameter(values=self.material, **Kwargs.material)
+
+        self.index = Xparameter(values=self.index, **Kwargs.index)
 
     def bind_to_experiment(self, experiment):
         """
@@ -517,7 +430,7 @@ class CylinderSet(ScattererSet):
 class SourceSet(object):
     wavelength: float = 1.0
     """ Wavelenght of the light field. """
-    polarization: float = None
+    linear_polarization: float = None
     """ polarization of the light field in degree. """
     amplitude: float = None
     """ Maximal value of the electric field at focus point. """
@@ -527,34 +440,34 @@ class SourceSet(object):
     def __post_init__(self):
         self.format_inputs()
 
-        self.wavelength = Xparameter(
-            values=self.wavelength,
-            name='wavelength',
-            long_label=r'$\lambda$',
-            format=".1e",
-            unit="m",
-            short_label=r'$\lambda$'
-        )
+        self.build_x_parameters()
 
-        self.polarization = Xparameter(
+        self.generate_binding()
+
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No Return
+        :rtype:     None
+        """
+        self.wavelength = Xparameter(values=self.wavelength, **Kwargs.wavelength)
+
+        self.amplitude = Xparameter(values=self.amplitude, **Kwargs.amplitude)
+
+        self.linear_polarization = Xparameter(
             values=self.jones_vector,
-            representation=self.polarization.angle_list,
-            name='polarization',
-            long_label=r'$\hat{P}$',
-            format=".1f",
-            unit="Deg",
-            short_label=r'$\hat{P}$'
+            representation=self.linear_polarization.angle_list,
+            **Kwargs.linear_polarization
         )
 
-        self.amplitude = Xparameter(
-            values=self.amplitude,
-            name='amplitude',
-            long_label=r'E$_{0}$',
-            format=".1e",
-            unit="w.m⁻¹",
-            short_label=r'E$_{0}$'
-        )
+    def generate_binding(self) -> None:
+        """
+        Generate the C++ binding
 
+        :returns:   No return
+        :rtype:     None
+        """
         self.binding = CppSourceSet(
             wavelength=self.wavelength.values,
             jones_vector=self.jones_vector,
@@ -569,16 +482,16 @@ class SourceSet(object):
         :returns:   No return
         :rtype:     None
         """
-        if numpy.iterable(self.polarization):
-            self.polarization = LinearPolarization(*self.polarization)
+        if numpy.iterable(self.linear_polarization):
+            self.linear_polarization = LinearPolarization(*self.linear_polarization)
         else:
-            self.polarization = LinearPolarization(self.polarization)
+            self.linear_polarization = LinearPolarization(self.linear_polarization)
 
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
 
         self.amplitude = numpy.atleast_1d(self.amplitude).astype(float)
 
-        self.jones_vector = numpy.atleast_1d(self.polarization.jones_vector).astype(numpy.complex128).T
+        self.jones_vector = numpy.atleast_1d(self.linear_polarization.jones_vector).astype(numpy.complex128)
 
     def bind_to_experiment(self, experiment):
         """
@@ -602,11 +515,11 @@ class SourceSet(object):
         :returns:   The updated list
         :rtype:     list
         """
-        return [*table, self.wavelength, self.polarization, self.amplitude]
+        return [*table, self.wavelength, self.linear_polarization, self.amplitude]
 
 
 @dataclass
-class PhotodiodeSet(DetectorSet):
+class PhotodiodeSet():
     NA: list
     """ Numerical aperture of imaging system. """
     gamma_offset: list
@@ -626,21 +539,33 @@ class PhotodiodeSet(DetectorSet):
 
     def __post_init__(self):
         self.format_inputs()
+
+        self.build_x_parameters()
+
+        self.initialize_binding()
+
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No Return
+        :rtype:     None
+        """
         self.scalarfield = numpy.ones([1, self.sampling])
+
+        self.NA = Xparameter(values=self.NA, **Kwargs.NA)
+
+        self.phi_offset = Xparameter(values=self.phi_offset, **Kwargs.phi_offset)
+
+        self.gamma_offset = Xparameter(values=self.gamma_offset, **Kwargs.gamma_offset)
+
+        self.polarization_filter = Xparameter(values=self.polarization_filter, **Kwargs.polarization_filter)
 
         self.scalarfield = Xparameter(
             values=self.scalarfield,
             representation=numpy.asarray(['Photodiode']),
-            name='Field',
-            long_label='C. F.',
-            format="",
-            unit="",
-            short_label='C. F.'
+            **Kwargs.scalarfield
         )
-
-        super().__init__()
-
-        self.initialize_binding()
 
     def initialize_binding(self):
         point_coupling = True if self.coupling_mode == 'point' else False
@@ -699,7 +624,7 @@ class PhotodiodeSet(DetectorSet):
 
 
 @dataclass
-class LPModeSet(DetectorSet):
+class LPModeSet():
     mode_number: list
     """ List of mode to be used. """
     NA: list
@@ -720,24 +645,34 @@ class LPModeSet(DetectorSet):
     """ name of the set """
 
     def __post_init__(self):
-
         self.format_inputs()
 
+        self.build_x_parameters()
+
+        self.initialize_binding()
+
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No Return
+        :rtype:     None
+        """
         representation = [f"LP$_{{{mode.replace('-','')}}}$" for mode in self.mode_number]
+
+        self.NA = Xparameter(values=self.NA, **Kwargs.NA)
+
+        self.phi_offset = Xparameter(values=self.phi_offset, **Kwargs.phi_offset)
+
+        self.gamma_offset = Xparameter(values=self.gamma_offset, **Kwargs.gamma_offset)
+
+        self.polarization_filter = Xparameter(values=self.polarization_filter, **Kwargs.polarization_filter)
 
         self.scalarfield = Xparameter(
             values=self.get_fields_array(),
             representation=representation,
-            name='Field',
-            long_label='Coupling field',
-            format="",
-            unit="",
-            short_label='C.F'
+            **Kwargs.scalarfield
         )
-
-        super().__init__()
-
-        self.initialize_binding()
 
     def get_fields_array(self) -> numpy.ndarray:
         """
@@ -823,11 +758,11 @@ class LPModeSet(DetectorSet):
 
 @dataclass
 class Setup(object):
-    scatterer_set: ScattererSet
+    scatterer_set: SphereSet | CylinderSet | CoreShellSet
     """ Scatterer set instance which defined the ranging paremters to be measured """
     source_set: SourceSet
     """ Source set instance which defined the ranging paremters to be measured, source is PlaneWave """
-    detector_set: DetectorSet = None
+    detector_set: PhotodiodeSet | LPModeSet = None
     """ Detector set instance which defined the ranging paremters to be measured, default is None as all parameter do not need a detector """
 
     def __post_init__(self):

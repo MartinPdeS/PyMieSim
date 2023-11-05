@@ -56,7 +56,7 @@ def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
 def get_comparison(wavelength, index, diameters, measure_string: str):
     source_set = SourceSet(
         wavelength=wavelength,
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 

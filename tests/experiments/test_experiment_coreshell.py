@@ -46,7 +46,7 @@ def test_coreshell_experiment(measure, core_type, shell_type):
 
     source_set = SourceSet(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 

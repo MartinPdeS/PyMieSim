@@ -60,7 +60,7 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
 def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_width, measure_string: str):
     source_set = SourceSet(
         wavelength=wavelength,
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 
