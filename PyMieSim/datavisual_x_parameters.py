@@ -5,13 +5,14 @@
 # Source
 wavelength = dict(
     name='wavelength',
-    long_label=r'$\lambda$',
+    long_label='Wavelength',
     format=".1e",
     unit="m",
     short_label=r'$\lambda$'
 )
 
 amplitude = dict(
+    name='ampltiude',
     long_label='Ampltiude',
     format=".1e",
     unit="w.m⁻¹",
@@ -21,7 +22,7 @@ amplitude = dict(
 linear_polarization = dict(
     name='polarization',
     long_label='Linear polarization',
-    format=".1f",
+    format="",
     unit="Deg",
     short_label=r'$\hat{P}$'
 )
@@ -44,7 +45,7 @@ NA = dict(
 )
 
 phi_offset = dict(
-    name='phi_offset',
+    name='phi offset',
     long_label='Phi angle',
     format="03.1f",
     unit="deg",
@@ -52,7 +53,7 @@ phi_offset = dict(
 )
 
 gamma_offset = dict(
-    name='gamma_offset',
+    name='gamma offset',
     long_label='Gamma angle',
     format="03.1f",
     unit="deg",
@@ -60,7 +61,7 @@ gamma_offset = dict(
 )
 
 polarization_filter = dict(
-    name='polarization_filter',
+    name='polarization filter',
     long_label=r'Polarization filter',
     format="03.1f",
     unit="deg",
@@ -95,7 +96,7 @@ index = dict(
 )
 
 core_diameter = dict(
-    name='diameter',
+    name='core diameter',
     format=".2e",
     unit="m",
     long_label=r'Core diameter',
@@ -103,15 +104,15 @@ core_diameter = dict(
 )
 
 shell_width = dict(
-    name='Shell diameter',
+    name='shell width',
     format=".2e",
     unit="m",
-    long_label=r'Shell diameter',
+    long_label=r'Shell width',
     short_label=r'shell$_{diameter}$'
 )
 
 core_material = dict(
-    name='core_material',
+    name='core material',
     format="",
     unit="",
     long_label=r'Core material',
@@ -119,7 +120,7 @@ core_material = dict(
 )
 
 shell_material = dict(
-    name='shell_material',
+    name='shell material',
     format="",
     unit="",
     long_label=r'Shell material',
@@ -127,7 +128,7 @@ shell_material = dict(
 )
 
 core_index = dict(
-    name='core_index',
+    name='core index',
     format="",
     unit="1",
     long_label=r'Core index',
@@ -135,7 +136,7 @@ core_index = dict(
 )
 
 shell_index = dict(
-    name='shell_index',
+    name='shell index',
     format="",
     unit="1",
     long_label=r'Shell index',

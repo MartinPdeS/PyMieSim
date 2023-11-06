@@ -14,7 +14,7 @@ from PyMieSim.source import PlaneWave
 # ~~~~~~~~~~~~~~~~~~~
 source = PlaneWave(
     wavelength=500e-9,
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 

@@ -26,7 +26,7 @@ scatterer_set = SphereSet(
 
 source_set = SourceSet(
     wavelength=source_wavelength,
-    polarization=[0, 90],
+    linear_polarization=[0, 90],
     amplitude=1
 )
 
@@ -44,11 +44,11 @@ experiment = Setup(
     detector_set=detector_set
 )
 
-data = experiment.Get(measures=measure.coupling)
+data = experiment.Get(measure.coupling)
 
 source = PlaneWave(
     wavelength=source_wavelength,
-    polarization=90,
+    linear_polarization=90,
     amplitude=1
 )
 

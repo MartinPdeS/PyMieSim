@@ -23,7 +23,7 @@ diameter = numpy.linspace(1e-9, 200e-9, 200)
 
 source_set = SourceSet(
     wavelength=400e-9,
-    polarization=90,
+    linear_polarization=90,
     amplitude=1
 )
 
@@ -39,7 +39,7 @@ experiment = Setup(
     source_set=source_set
 )
 
-data = experiment.Get(measures=measure.Qsca)
+data = experiment.Get(measure.Qsca)
 
 data = abs(data.array.squeeze())
 

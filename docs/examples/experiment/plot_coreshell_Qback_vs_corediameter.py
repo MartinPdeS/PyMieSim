@@ -28,7 +28,7 @@ scatterer_set = CoreShellSet(
 # The amplitude is set to one per default.
 source_set = SourceSet(
     wavelength=[800e-9, 900e-9, 1000e-9],
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 
@@ -44,12 +44,11 @@ experiment = Setup(
 # %%
 # Measuring the properties
 # We are interesting here in the back scattering efficientcy.
-data = experiment.Get(measures=[measure.Qback])
+data = experiment.Get(measure.Qback)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.Qback,
     x=scatterer_set.core_diameter,
     y_scale='log'
 )

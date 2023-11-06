@@ -15,18 +15,24 @@ class PlaneWave():
     """
     wavelength: float
     """ Wavelenght of the light field. """
-    polarization: float = 0
+    linear_polarization: float = 0
     """ Polarization of the light field in degree. """
     amplitude: float = 1
     """ Maximal value of the electric field at focus point. """
 
     def __post_init__(self):
         self.k = 2 * numpy.pi / self.wavelength
-        self.amplitude = numpy.atleast_1d(self.amplitude).astype(float)
-        self.polarization = numpy.atleast_1d(self.polarization).astype(float)
-        self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
 
-        if isinstance(self.polarization, JonesVector):
-            self.polarization = self.polarization
+        self.format_inputs()
+
+        if isinstance(self.linear_polarization, JonesVector):
+            self.linear_polarization = self.linear_polarization
         else:
-            self.polarization = LinearPolarization(*self.polarization)
+            self.linear_polarization = LinearPolarization(*self.linear_polarization)
+
+    def format_inputs(self):
+        self.amplitude = numpy.atleast_1d(self.amplitude).astype(float)
+
+        self.linear_polarization = numpy.atleast_1d(self.linear_polarization).astype(float)
+
+        self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)

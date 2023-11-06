@@ -23,7 +23,7 @@ scatterer_set = CylinderSet(
 # Defining the source to be employed.
 source_set = SourceSet(
     wavelength=1200e-9,
-    polarization=90,
+    linear_polarization=90,
     amplitude=1
 )
 
@@ -47,12 +47,11 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measures=measure.coupling)
+data = experiment.Get(measure.coupling)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.coupling,
     x=scatterer_set.diameter,
     y_scale='linear',
     normalize=True

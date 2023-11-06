@@ -29,7 +29,7 @@ scatterer_set = CoreShellSet(
 # The amplitude is set to one per default.
 source_set = SourceSet(
     wavelength=1200e-9,
-    polarization=90,
+    linear_polarization=90,
     amplitude=1
 )
 
@@ -57,12 +57,11 @@ experiment = Setup(
 # %%
 # Measuring the properties
 # We are interesting here in the coupling parameter.
-data = experiment.Get(measures=measure.coupling)
+data = experiment.Get(measure.coupling)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.coupling,
     x=scatterer_set.core_diameter,
     y_scale='linear',
     normalize=True,

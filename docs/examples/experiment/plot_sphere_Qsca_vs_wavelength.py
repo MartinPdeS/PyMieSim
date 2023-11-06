@@ -22,7 +22,7 @@ scatterer_set = SphereSet(
 # Defining the source to be employed.
 source_set = SourceSet(
     wavelength=np.linspace(400e-9, 1000e-9, 500),
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 
@@ -35,14 +35,13 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measures=measure.Qsca)
+data = experiment.Get(measure.Qsca)
 
 data = data.mean(scatterer_set.index)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.Qsca,
     x=source_set.wavelength
 )
 

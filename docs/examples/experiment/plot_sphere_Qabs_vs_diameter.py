@@ -23,7 +23,7 @@ scatterer_set = SphereSet(
 # Defining the source to be employed.
 source_set = SourceSet(
     wavelength=400e-9,
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 
@@ -36,12 +36,11 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measures=measure.Qabs)
+data = experiment.Get(measure.Qabs)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.Qabs,
     x=scatterer_set.diameter,
     y_scale="log"
 )

@@ -301,7 +301,7 @@ class Sphere(GenericScatterer):
             diameter=self.diameter,
             index=self.index,
             n_medium=self.n_medium,
-            jones_vector=self.source.polarization.jones_vector.squeeze()
+            jones_vector=self.source.linear_polarization.jones_vector.squeeze()
         )
 
     def an(self, max_order: int = None) -> numpy.array:
@@ -424,7 +424,7 @@ class CoreShell(GenericScatterer):
             core_diameter=self.core_diameter,
             wavelength=self.source.wavelength,
             n_medium=self.n_medium,
-            jones_vector=self.source.polarization.jones_vector.squeeze(),
+            jones_vector=self.source.linear_polarization.jones_vector.squeeze(),
             amplitude=self.source.amplitude
         )
 
@@ -489,7 +489,7 @@ class Cylinder(GenericScatterer):
             wavelength=self.source.wavelength,
             n_medium=self.n_medium,
             amplitude=self.source.amplitude,
-            jones_vector=self.source.polarization.jones_vector.squeeze()
+            jones_vector=self.source.linear_polarization.jones_vector.squeeze()
         )
 
     def a1n(self, max_order: int = None) -> numpy.array:

@@ -19,7 +19,7 @@ scott_prahl_values = {
 def test_validation_scott_prahl(measure_str):
     source = PlaneWave(
         wavelength=1e-6,
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 

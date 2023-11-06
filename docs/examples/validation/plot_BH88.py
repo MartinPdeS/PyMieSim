@@ -26,7 +26,7 @@ scatterer_set = CylinderSet(
 
 source_set = SourceSet(
     wavelength=632.8e-9,
-    polarization=[0, 90],
+    linear_polarization=[0, 90],
     amplitude=1
 )
 
@@ -36,7 +36,7 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.Get(measures=measure.Csca)
+data = experiment.Get(measure.Csca)
 data = data.array.squeeze() / volume * 1e-4 / 100
 
 plt.figure(figsize=(8, 4))

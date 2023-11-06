@@ -14,7 +14,7 @@ samplings = [100, 200, 300, 400]
 def test_photodiode(sampling: int):
     source = PlaneWave(
         wavelength=1e-6,
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 

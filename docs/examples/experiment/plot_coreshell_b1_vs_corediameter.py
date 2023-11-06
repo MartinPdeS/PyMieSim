@@ -29,7 +29,7 @@ scatterer_set = CoreShellSet(
 # The amplitude is set to one per default.
 source_set = SourceSet(
     wavelength=800e-9,
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 
@@ -45,12 +45,11 @@ experiment = Setup(
 # %%
 # Measuring the properties
 # We are interesting here in the b_1 (first magnetic coefficient) parameter.
-data = experiment.Get(measures=measure.b1)
+data = experiment.Get(measure.b1)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.a1,
     x=scatterer_set.core_diameter,
     y_scale='linear'
 )

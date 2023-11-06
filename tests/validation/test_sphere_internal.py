@@ -6,7 +6,7 @@ from PyMieSim.detector import Photodiode
 
 
 def test_Qsca_cross_section():
-    source = PlaneWave(wavelength=1e-6, polarization=0, amplitude=1)
+    source = PlaneWave(wavelength=1e-6, linear_polarization=0, amplitude=1)
     sphere = Sphere(diameter=300e-9, index=1.4, source=source)
     val0 = sphere.get_cross_section()
     val1 = sphere.Qsca * sphere.area
@@ -16,7 +16,7 @@ def test_Qsca_cross_section():
 
 
 def test_energy_flow_coupling():
-    source = PlaneWave(wavelength=1e-6, polarization=0, amplitude=1)
+    source = PlaneWave(wavelength=1e-6, linear_polarization=0, amplitude=1)
     sphere = Sphere(diameter=300e-9, index=1.4, source=source)
     detector = Photodiode(sampling=500, NA=2.0, gamma_offset=0, phi_offset=0)
     val0 = sphere.get_energy_flow(detector.Mesh)
@@ -27,7 +27,7 @@ def test_energy_flow_coupling():
 
 
 def test_compare_sphere_coreshell_0():
-    source = PlaneWave(wavelength=1e-6, polarization=0, amplitude=1)
+    source = PlaneWave(wavelength=1e-6, linear_polarization=0, amplitude=1)
     sphere = Sphere(diameter=1e-6, index=1.5, source=source)
     coreshell = CoreShell(core_diameter=1e-6, shell_width=0, core_index=1.5, shell_index=1.8, source=source)
 

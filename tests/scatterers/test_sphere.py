@@ -26,7 +26,7 @@ attributes = [
 def test_coreshell_experiment(attribute, core_type):
     source = PlaneWave(
         wavelength=1e-6,
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 

@@ -491,7 +491,7 @@ class SourceSet(object):
 
         self.amplitude = numpy.atleast_1d(self.amplitude).astype(float)
 
-        self.jones_vector = numpy.atleast_1d(self.linear_polarization.jones_vector).astype(numpy.complex128)
+        self.jones_vector = numpy.atleast_1d(self.linear_polarization.jones_vector).astype(numpy.complex128).T
 
     def bind_to_experiment(self, experiment):
         """
@@ -785,7 +785,7 @@ class Setup(object):
         if self.detector_set:
             self.detector_set.bind_to_experiment(self)
 
-    def Get(self, measures: list) -> DataV:
+    def Get(self, measure) -> DataV:
         """
         Compute the measure provided and return a DataV structured array.
 
@@ -795,29 +795,18 @@ class Setup(object):
         :returns:   The data structure.
         :rtype:     DataV
         """
-        measures = numpy.atleast_1d(measures)
+        self.y_table = [measure]
 
-        self.y_table = measures
+        measure_string = f'get_{self.scatterer_set.name}_{measure.name}'
 
-        array = []
-        for measure in measures:
-            measure.values = numpy.array([])
+        array = getattr(self.binding, measure_string)()
 
-            measure = 'get' + "_" + self.scatterer_set.name + "_" + measure.name
-
-            sub_array = getattr(self.binding, measure)()
-
-            array.append(sub_array)
-
-        array = numpy.asarray(array)
-
-        for n, e in enumerate(self.x_table):
-            e.position = n + 1
+        x_table = Table.Xtable(self.x_table)
 
         return DataV(
             array=array,
-            x_table=Table.Xtable(self.x_table),
-            y_table=Table.Ytable(self.y_table)
+            x_table=x_table,
+            y_parameter=measure
         )
 
 

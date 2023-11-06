@@ -34,7 +34,7 @@ def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell
         detector_set=None
     )
 
-    data = experiment.Get(measures=getattr(measure, measure_string))
+    data = experiment.Get(getattr(measure, measure_string))
 
     return data.array.squeeze()
 

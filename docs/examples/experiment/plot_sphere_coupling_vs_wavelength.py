@@ -22,8 +22,8 @@ scatterer_set = SphereSet(
 # %%
 # Defining the source to be employed.
 source_set = SourceSet(
-    wavelength=np.linspace(950e-9, 1050e-9, 300),
-    polarization=0,
+    wavelength=np.linspace(950e-9, 1050e-9, 200),
+    linear_polarization=0,
     amplitude=1
 )
 
@@ -53,7 +53,6 @@ data = experiment.Get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.coupling,
     x=source_set.wavelength,
     std=scatterer_set.diameter
 )

@@ -16,7 +16,7 @@ from PyOptik import ExpData
 # ~~~~~~~~~~~~~~~~~~~
 source = PlaneWave(
     wavelength=450e-9,
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 

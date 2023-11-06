@@ -20,7 +20,7 @@ shell_index = 1.4
 
 source_set = SourceSet(
     wavelength=600e-9,
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 
@@ -52,7 +52,7 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.Get(measures=measure.Qsca)
+data = experiment.Get(measure.Qsca)
 
 PyMieSim_data = data.array.squeeze()
 

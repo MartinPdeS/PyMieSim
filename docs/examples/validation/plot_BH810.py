@@ -20,7 +20,7 @@ y = theoretical[:, 1]
 
 source = PlaneWave(
     wavelength=470e-9,
-    polarization=90,
+    linear_polarization=90,
     amplitude=1
 )
 

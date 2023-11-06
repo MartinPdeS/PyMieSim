@@ -18,7 +18,7 @@ mode_numbers = [
 def test_lp_modes(mode_number: str):
     source = PlaneWave(
         wavelength=1e-6,
-        polarization=0,
+        linear_polarization=0,
         amplitude=1
     )
 

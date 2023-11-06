@@ -22,7 +22,7 @@ scatterer_set = CylinderSet(
 # Defining the source to be employed.
 source_set = SourceSet(
     wavelength=[500e-9, 1000e-9, 1500e-9],
-    polarization=30,
+    linear_polarization=30,
     amplitude=1
 )
 
@@ -35,12 +35,11 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measures=measure.Qsca)
+data = experiment.Get(measure.Qsca)
 
 # %%
 # Plotting the results
 figure = data.plot(
-    y=measure.Qsca,
     x=scatterer_set.diameter
 )
 
