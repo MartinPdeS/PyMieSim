@@ -256,10 +256,14 @@ class GenericScatterer():
     def get_cross_section(self):
         return (self.Qsca * self.area)  # similar to self.EnergyFlow(Mesh) / self.source.I
 
-    def _assign_index_or_material(self, index, material):
+    def _assign_index_or_material(self, index, material) -> tuple:
         assert bool(index) ^ bool(material), logging.error("Exactly one of the parameter [index or Material] have to be assigned.")
         index = index if index is not None else material.GetRI(self.source.wavelength)
         material = material if material is not None else None
+
+        if not numpy.isscalar(index) and len(index) == 1:
+            return index[0], material
+
         return index, material
 
 
@@ -301,7 +305,7 @@ class Sphere(GenericScatterer):
             diameter=self.diameter,
             index=self.index,
             n_medium=self.n_medium,
-            jones_vector=self.source.linear_polarization.jones_vector.squeeze()
+            jones_vector=self.source.linear_polarization.jones_vector.squeeze(),
         )
 
     def an(self, max_order: int = None) -> numpy.array:

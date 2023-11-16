@@ -42,7 +42,7 @@ def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
     for diameter in diameters:
         efficiencies = ps.MieQ(
             m=index,
-            wavelength=source_set.wavelength.values,
+            wavelength=source_set.wavelength.values[0],
             diameter=diameter,
         )
 

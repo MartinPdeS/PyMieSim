@@ -3,15 +3,13 @@
 
 import numpy
 
-
-from MPSPlots.render3D import Scene3D
+from MPSPlots.render3D import SceneList as SceneList3D
 from MPSPlots.render2D import SceneList
 import PyMieSim
 from PyMieSim.tools.special_functions import spherical_to_cartesian, rotate_on_x
 
 
 class Stokes():
-    # https://en.wikipedia.org/wiki/Stokes_parameters
     r"""
     Class representing scattering Far-field in the Stokes
     representation.
@@ -22,13 +20,15 @@ class Stokes():
     |     V : Circular polarization
 
     .. math:
-        I &= \\big| E_x \big|^2 + \\big| E_y \\big|^2
+        I &= \big| E_x \big|^2 + \big| E_y \big|^2
 
-        Q &= \\big| E_x \big|^2 - \\big| E_y \\big|^2
+        Q &= \big| E_x \big|^2 - \big| E_y \big|^2
 
-        U &= 2 \\mathcal{Re} \\big\{ E_x E_y^* \\big\}
+        U &= 2 \mathcal{Re} \big\{ E_x E_y^* \big\}
 
-        V &= 2 \\mathcal{Im} \\big\{ E_x E_y^* \\big\}
+        V &= 2 \mathcal{Im} \big\{ E_x E_y^* \big\}
+
+    https://en.wikipedia.org/wiki/Stokes_parameters
 
     Parameters
     ----------
@@ -62,27 +62,23 @@ class Stokes():
             theta=theta_mesh
         )
 
-        figure = Scene3D(shape=(1, 4), window_size=[2500, 800])
+        figure = SceneList3D()
 
-        enumeration = zip(
-            [(0, 0), (0, 1), (0, 2), (0, 3)],
-            [self.I, self.Q, self.U, self.V],
-            ['I', 'Q', 'U', 'V']
-        )
+        for field_name in ['I', 'Q', 'U', 'V']:
+            field = getattr(self, field_name)
 
-        for plot_number, field, name in enumeration:
-            figure.add_mesh(
-                plot_number=plot_number,
+            ax = figure.append_ax()
+            ax.add_mesh(
                 x=x,
                 y=y,
                 z=z,
-                scalars=field.T,
-                color_map='seismic',
-                scalar_bar_args={'title': f'{name} Amplitude'}
+                scalar_coloring=field,
+                colormap='seismic',
+                show_edges=False
             )
 
-            figure.add_unit_axes_to_ax(plot_number=plot_number)
-            figure.add_text_to_axes(plot_number=plot_number, text=f'{name} field')
+            ax.add_unit_axis(show_label=False)
+            ax.add_colorbar(title=f'{field_name} field')
 
         return figure
 
@@ -92,7 +88,7 @@ class SPF():
     Class representing scattering phase function of SPF in short.
     The SPF is defined as:
     .. math::
-        \\text{SPF} = E_{\\parallel}(\\phi,\\theta)^2 + E_{\\perp}(\\phi,\\theta)^2
+        \text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2
 
     Parameters
     ----------
@@ -113,8 +109,7 @@ class SPF():
 
         self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
 
-    def plot(self, show_source=True, show_axes=True):
-
+    def plot(self) -> SceneList3D:
         scalar_mesh = self.SPF / self.SPF.max() * 2
 
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
@@ -125,21 +120,19 @@ class SPF():
             theta=theta_mesh
         )
 
-        figure = Scene3D(shape=(1, 1), window_size=[1800, 1000])
+        figure = SceneList3D()
 
-        plot_number = (0, 0)
-
-        figure.add_mesh(
-            plot_number=plot_number,
+        ax = figure.append_ax()
+        ax.add_mesh(
             x=x,
             y=y,
             z=z,
-            scalars=scalar_mesh.T,
-            scalar_bar_args={'title': 'intensity'}
+            scalar_coloring=scalar_mesh,
+            show_edges=False
         )
 
-        figure.add_unit_axes_to_ax(plot_number=plot_number)
-        figure.add_text_to_axes(plot_number=plot_number, text='Scattering phase function')
+        ax.add_unit_axis(show_label=False)
+        ax.add_colorbar(title='Scattering phase function')
 
         return figure
 
@@ -201,7 +194,7 @@ class FarField():
     The Far-fields are defined as:
 
     .. math::
-        \\text{Fields} = E_{||}(\\phi,\\theta)^2, E_{\\perp}(\\phi,\\theta)^2
+        \text{Fields} = E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2
 
     Parameters
     ----------
@@ -218,37 +211,51 @@ class FarField():
 
         self.E_phi, self.E_theta, self.theta, self.phi = parent_scatterer.Bind.get_full_fields(sampling=sampling, r=1)
 
-    def plot(self, show_ource=True, show_axes=True):
+    def plot(self) -> SceneList3D:
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
 
         x, y, z = spherical_to_cartesian(r=phi_mesh * 0 + 0.5, phi=phi_mesh, theta=theta_mesh)
 
-        figure = Scene3D(shape=(1, 4), window_size=[2500, 800])
+        figure = SceneList3D()
 
-        enumeration = zip(
-            [(0, 0), (0, 1), (0, 2), (0, 3)],
-            [self.E_phi.real, self.E_phi.imag, self.E_theta.real, self.E_theta.imag],
-            ['Phi real', 'Phi imaginary', 'Theta real', 'Theta imaginary']
-        )
-
-        for plot_number, field, name in enumeration:
-            figure.add_mesh(
-                plot_number=plot_number,
+        for field_name in ['phi', 'theta']:
+            field_array = getattr(self, f"E_{field_name}")
+            ax = figure.append_ax()
+            ax.add_mesh(
                 x=x,
                 y=y,
                 z=z,
-                scalars=field.T,
-                color_map='seismic',
-                scalar_bar_args={'title': f'{name} Amplitude'}
+                scalar_coloring=field_array.real,
+                colormap='seismic',
+                show_edges=False,
             )
 
-            if 'Phi' in name:
-                figure.add_phi_vector_field(plot_number)
-            elif 'Theta' in name:
-                figure.add_theta_vector_field(plot_number)
+            ax.add_unit_axis(show_label=False)
+            ax.add_colorbar(title=f'{field_name} field [real]')
 
-            figure.add_unit_axes_to_ax(plot_number=plot_number)
-            figure.add_text_to_axes(plot_number=plot_number, text=f'{name} field')
+            if 'phi' in field_name:
+                ax.add_unit_phi_vector(radius=1 / 2)
+            elif 'theta' in field_name:
+                ax.add_unit_theta_vector(radius=1 / 2)
+
+            field_array = getattr(self, f"E_{field_name}")
+            ax = figure.append_ax()
+            ax.add_mesh(
+                x=x,
+                y=y,
+                z=z,
+                scalar_coloring=field_array.imag,
+                colormap='seismic',
+                show_edges=False,
+            )
+
+            ax.add_unit_axis(show_label=False)
+            ax.add_colorbar(title=f'{field_name} field [imag]')
+
+            if 'phi' in field_name:
+                ax.add_unit_phi_vector(radius=1 / 2)
+            elif 'theta' in field_name:
+                ax.add_unit_theta_vector(radius=1 / 2)
 
         return figure
 
@@ -262,9 +269,9 @@ class Footprint():
     The footprint is defined as:
 
     .. math::
-        \\text{Footprint} = \\big| \\mathscr{F}^{-1} \\big\\{ \\tilde{ \\psi }\
-        (\\xi, \\nu), \\tilde{ \\phi}_{l,m}(\\xi, \\nu)  \\big\\} \
-        (\\delta_x, \\delta_y) \\big|^2
+        \text{Footprint} = \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi }\
+        (\xi, \nu), \tilde{ \phi}_{l,m}(\xi, \nu)  \big\} \
+        (\delta_x, \delta_y) \big|^2
 
 
     Parameters

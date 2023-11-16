@@ -5,7 +5,7 @@ import numpy
 from dataclasses import dataclass
 
 from PyMieSim.binary.Fibonacci import FIBONACCI
-from MPSPlots.render3D import Scene3D
+from MPSPlots.render3D import SceneList as SceneList3D
 
 
 @dataclass
@@ -195,7 +195,7 @@ class FibonacciMesh():
         return base_projection
 
     def plot(self) -> None:
-        figure = Scene3D(shape=(1, 1))
+        figure = SceneList3D(shape=(1, 1))
         self._add_mesh_to_ax_(figure=figure, plot_number=(0, 0))
 
         return figure

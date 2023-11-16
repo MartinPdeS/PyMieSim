@@ -31,8 +31,6 @@ class PlaneWave():
             self.linear_polarization = LinearPolarization(*self.linear_polarization)
 
     def format_inputs(self):
-        self.amplitude = numpy.atleast_1d(self.amplitude).astype(float)
-
         self.linear_polarization = numpy.atleast_1d(self.linear_polarization).astype(float)
 
-        self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
+# -

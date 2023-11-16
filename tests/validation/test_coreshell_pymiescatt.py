@@ -45,7 +45,7 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
         efficiencies = ps.MieQCoreShell(
             mCore=core_index,
             mShell=shell_index,
-            wavelength=source_set.wavelength.values,
+            wavelength=source_set.wavelength.values[0],
             dCore=core_diameter,
             dShell=core_diameter + shell_width
         )

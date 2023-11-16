@@ -39,5 +39,4 @@ def test_coreshell_experiment(attribute, core_type):
 
     _ = getattr(scatterer, attribute)()
 
-
 # -

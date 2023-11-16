@@ -11,7 +11,7 @@ from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim import load_lp_mode
 from PyMieSim.tools.special_functions import NA_to_angle
 
-from MPSPlots.render3D import Scene3D
+from MPSPlots.render3D import SceneList as SceneList3D
 
 
 @dataclass
@@ -93,7 +93,7 @@ class GenericDetector():
 
         return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.Bind)
 
-    def get_footprint(self, scatterer):
+    def get_footprint(self, scatterer) -> Footprint:
         r"""
         .. note::
             Return the footprint of the scattererd light coupling with the
@@ -121,37 +121,43 @@ class GenericDetector():
         """
         return Footprint(scatterer=scatterer, detector=self)
 
-    def plot(self):
+    def plot(self) -> SceneList3D:
         r"""
         .. note::
             Method that plot the real part of the scattered field
             (:math:`E_{\theta}` and :math:`E_{\phi}`).
 
         """
-        coordinate = numpy.c_[self.Mesh.X, self.Mesh.Y, self.Mesh.Z]
+        coordinate = numpy.c_[self.Mesh.X, self.Mesh.Y, self.Mesh.Z].T
 
-        figure = Scene3D(shape=(1, 2), window_size=[1800, 1000])
+        figure = SceneList3D()
 
-        for plot_number, scalar, name in zip([(0, 0), (0, 1)],
-                                      [self.scalar_field.real, self.scalar_field.imag],
-                                      ['Real', 'Imaginary']):
+        for scalar_type in ['real', 'imag']:
+            scalar = getattr(self.scalar_field, scalar_type)
 
-            figure.add_unstructured_mesh(
-                plot_number=plot_number,
+            ax = figure.append_ax()
+            artist = ax.add_unstructured_mesh(
                 coordinates=coordinate,
-                scalar=scalar,
+                scalar_coloring=scalar,
                 symmetric_map=True,
-                scalar_bar_args={'title': f'{name} field'}
+                symmetric_colormap=True
             )
 
-            figure.add_unit_sphere_to_ax(plot_number=plot_number)
-            figure.add_unit_axes_to_ax(plot_number=plot_number)
+            ax.add_unit_sphere()
+            ax.add_unit_axis(show_label=False)
+            ax.add_colorbar(artist=artist, title=f'field [{scalar_type}]')
 
         return figure
 
 
 class Photodiode(GenericDetector):
-    def __init__(self, NA: float, sampling: int, gamma_offset: float, phi_offset: float, polarization_filter: float = None):
+    def __init__(self,
+            NA: float,
+            sampling: int,
+            gamma_offset: float,
+            phi_offset: float,
+            polarization_filter: float = None):
+
         scalar_field = numpy.ones(sampling)
 
         super().__init__(
@@ -182,14 +188,14 @@ class IntegratingSphere(GenericDetector):
 
 class LPmode(GenericDetector):
     def __init__(self,
-                 mode_number: str,
-                 NA: float,
-                 gamma_offset: float,
-                 phi_offset: float,
-                 sampling: int = 200,
-                 rotation: float = 0,
-                 polarization_filter: float = None,
-                 coupling_mode: str = 'Point'):
+            mode_number: str,
+            NA: float,
+            gamma_offset: float,
+            phi_offset: float,
+            sampling: int = 200,
+            rotation: float = 0,
+            polarization_filter: float = None,
+            coupling_mode: str = 'Point'):
 
         if NA > 0.3 or NA < 0:
             logging.warning("High values of NA do not comply with paraxial approximation. Value under 0.3 are prefered.")
