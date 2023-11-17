@@ -28,20 +28,20 @@ methods = [
 attributes = [
     "size_parameter",
     "area",
-    "Qback",
+    "Qsca",
+    "Qext",
     "Qratio",
     "Qpr",
     "Csca",
     "Cext",
-    "Cabs",
+    "Cratio",
     "Cpr",
-    "Cback",
 ]
 
 
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('method', methods)
-def test_coreshell_methods(method, core_type):
+def test_cylinder_methods(method, core_type):
     source = PlaneWave(
         wavelength=1e-6,
         linear_polarization=0,
@@ -60,7 +60,7 @@ def test_coreshell_methods(method, core_type):
 
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('attribute', attributes)
-def test_coreshell_attributes(attribute, core_type):
+def test_cylinder_attributes(attribute, core_type):
     source = PlaneWave(
         wavelength=1e-6,
         linear_polarization=0,

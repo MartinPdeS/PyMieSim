@@ -32,14 +32,16 @@ methods = [
 attributes = [
     "size_parameter",
     "area",
-    # "Qback",
+    "Qsca",
+    "Qext",
+    "Qback",
     "Qratio",
     "Qpr",
     "Csca",
     "Cext",
-    "Cabs",
+    "Cback",
+    "Cratio",
     "Cpr",
-    # "Cback",
 ]
 
 

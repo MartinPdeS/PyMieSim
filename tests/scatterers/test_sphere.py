@@ -21,14 +21,16 @@ methods = [
 attributes = [
     "size_parameter",
     "area",
+    "Qsca",
+    "Qext",
     "Qback",
     "Qratio",
     "Qpr",
     "Csca",
     "Cext",
-    "Cabs",
-    "Cpr",
     "Cback",
+    "Cratio",
+    "Cpr",
 ]
 
 plottings = [
