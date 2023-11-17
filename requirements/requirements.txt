@@ -6,3 +6,4 @@ pyvista
 matplotlib
 DataVisual
 PyOptik
+tabulate

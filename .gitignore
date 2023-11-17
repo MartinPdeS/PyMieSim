@@ -5,7 +5,8 @@
 *.a
 
 .tox
-.coverage.*
+.coverage*
+.coveragerc
 coverage.json
 htmlcov
 *.pytest_cache
