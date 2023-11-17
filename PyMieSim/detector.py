@@ -95,29 +95,23 @@ class GenericDetector():
 
     def get_footprint(self, scatterer) -> Footprint:
         r"""
-        .. note::
-            Return the footprint of the scattererd light coupling with the
-            detector as computed as:
+        Return the footprint of the scattererd light coupling with the
+        detector as computed as:
 
-            .. math::
-                \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\
-                       \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}
-                       (\delta_x, \delta_y) \big|^2
+        .. math::
+            \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\
+                   \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}
+                   (\delta_x, \delta_y) \big|^2
 
-            | Where:
-            |   :math:`\Phi_{det}` is the capturing field of the detector and
-            |   :math:`\Psi_{scat}` is the scattered field.
+        | Where:
+        |   :math:`\Phi_{det}` is the capturing field of the detector and
+        |   :math:`\Psi_{scat}` is the scattered field.
 
-        Parameters
-        ----------
-        Scatterer : :class:`Scatterer`.
-            Scatterer instance (sphere, cylinder, ...).
+        :param      detector:  The detector
+        :type       detector:  GenericDetector
 
-        Returns
-        -------
-        :class:`Footprint`.
-            Dictionnary subclass with all pertienent information.
-
+        :returns:   The scatterer footprint.
+        :rtype:     Footprint
         """
         return Footprint(scatterer=scatterer, detector=self)
 

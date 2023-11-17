@@ -91,13 +91,15 @@ Linux / MacOs
 
 ----
 
-Running Unittest
-*****************
-To run the Unittests, one need the coverage library.
+Testing
+*******
 
-.. code-block:: python
+To test localy (with cloning the GitHub repository) you'll need to install the dependencies and run the coverage command as
 
-   >>> python3 -m pytest tests
+.. code:: console
+
+   pip install -r requirements/requirements.txt
+   coverage run --source=<package> --module pytest --verbose <test-files-dirs> coverage report --show-missing
 
 ----
 

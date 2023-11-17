@@ -153,15 +153,15 @@ class FibonacciMesh():
     def projection_HV_vector(self) -> tuple:
         parallel_projection = [
             self.projection_on_base_vector(
-                Vector=self.vertical_to_parallel_plan,
-                BaseVector=X
+                vector=self.vertical_to_parallel_plan,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
         perpendicular_projection = [
             self.projection_on_base_vector(
-                Vector=self.vertical_to_perpendicular_plan,
-                BaseVector=X
+                vector=self.vertical_to_perpendicular_plan,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
@@ -170,15 +170,15 @@ class FibonacciMesh():
     def projection_HV_scalar(self) -> tuple:
         parallel_projection = [
             self.projection_on_base_scalar(
-                Vector=self.vertical_to_perpendicular_in_z_plan,
-                BaseVector=X
+                vector=self.vertical_to_perpendicular_in_z_plan,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
         perpendicular_projection = [
             self.projection_on_base_scalar(
-                Vector=self.vertical_to_perpendicular_in_z_plan,
-                BaseVector=X
+                vector=self.vertical_to_perpendicular_in_z_plan,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
@@ -195,23 +195,21 @@ class FibonacciMesh():
         return base_projection
 
     def plot(self) -> None:
-        figure = SceneList3D(shape=(1, 1))
-        self._add_mesh_to_ax_(figure=figure, plot_number=(0, 0))
+        figure = SceneList3D()
+        ax = figure.append_ax()
+        self._add_mesh_to_ax_(ax)
 
         return figure
 
-    def _add_mesh_to_ax_(self, figure, plot_number: tuple) -> None:
+    def _add_mesh_to_ax_(self, ax) -> None:
         coordinates = numpy.c_[self.X, self.Y, self.Z]
 
-        figure.add_unstructured_mesh(
-            plot_number=plot_number,
-            coordinates=coordinates,
-        )
+        ax.add_unstructured_mesh(coordinates=coordinates,)
 
-        figure.add_unit_sphere_to_ax(plot_number=plot_number)
-        figure.add_unit_axes_to_ax(plot_number=plot_number)
-        figure.add_theta_vector_field(plot_number=plot_number, radius=1.1)
-        figure.add_phi_vector_field(plot_number=plot_number, radius=1.1)
+        ax.add_unit_sphere()
+        ax.add_unit_axis()
+        ax.add_unit_theta_vector(radius=1.1)
+        ax.add_unit_phi_vector(radius=1.1)
 
     def generate_ledvedev_mesh(self) -> None:
         self.cpp_binding = FIBONACCI(

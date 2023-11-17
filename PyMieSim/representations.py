@@ -68,7 +68,7 @@ class Stokes():
             field = getattr(self, field_name)
 
             ax = figure.append_ax()
-            ax.add_mesh(
+            artist = ax.add_mesh(
                 x=x,
                 y=y,
                 z=z,
@@ -78,7 +78,7 @@ class Stokes():
             )
 
             ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(title=f'{field_name} field')
+            ax.add_colorbar(artist=artist, title=f'{field_name} field')
 
         return figure
 
@@ -123,7 +123,7 @@ class SPF():
         figure = SceneList3D()
 
         ax = figure.append_ax()
-        ax.add_mesh(
+        artist = ax.add_mesh(
             x=x,
             y=y,
             z=z,
@@ -132,7 +132,7 @@ class SPF():
         )
 
         ax.add_unit_axis(show_label=False)
-        ax.add_colorbar(title='Scattering phase function')
+        ax.add_colorbar(artist=artist, title='Scattering phase function')
 
         return figure
 
@@ -221,7 +221,7 @@ class FarField():
         for field_name in ['phi', 'theta']:
             field_array = getattr(self, f"E_{field_name}")
             ax = figure.append_ax()
-            ax.add_mesh(
+            artist = ax.add_mesh(
                 x=x,
                 y=y,
                 z=z,
@@ -231,7 +231,7 @@ class FarField():
             )
 
             ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(title=f'{field_name} field [real]')
+            ax.add_colorbar(artist=artist, title=f'{field_name} field [real]')
 
             if 'phi' in field_name:
                 ax.add_unit_phi_vector(radius=1 / 2)
@@ -240,7 +240,7 @@ class FarField():
 
             field_array = getattr(self, f"E_{field_name}")
             ax = figure.append_ax()
-            ax.add_mesh(
+            artist = ax.add_mesh(
                 x=x,
                 y=y,
                 z=z,
@@ -250,7 +250,7 @@ class FarField():
             )
 
             ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(title=f'{field_name} field [imag]')
+            ax.add_colorbar(artist=artist, title=f'{field_name} field [imag]')
 
             if 'phi' in field_name:
                 ax.add_unit_phi_vector(radius=1 / 2)
@@ -345,12 +345,13 @@ class Footprint():
             y_label=r'Offset distance in Y-axis [$\mu$m]',
         )
 
-        ax.add_mesh(
+        artist = ax.add_mesh(
             x=self.direct_y * 1e6,
             y=self.direct_x * 1e6,
             scalar=self.mapping,
-            colormap='gray'
         )
+
+        ax.add_colorbar(artist=artist, colormap='gray')
 
         return figure
 

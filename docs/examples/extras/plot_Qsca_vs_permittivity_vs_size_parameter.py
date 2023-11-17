@@ -8,6 +8,8 @@ scatterer. This feature can be used to plot a graph of the scattering efficiency
 of a sphere as a function of the permittivity and the size parameter.
 """
 
+# %%
+# Importing the package: PyMieSim
 import numpy
 from PyMieSim.experiment import SphereSet, SourceSet, Setup
 from PyMieSim import measure
@@ -15,11 +17,11 @@ from PyMieSim import measure
 from MPSPlots.render2D import SceneList
 
 
-permitivity = numpy.linspace(-10, 50, 200)
+permitivity = numpy.linspace(-10, 50, 400)
 
 index = numpy.sqrt(permitivity.astype(complex))
 
-diameter = numpy.linspace(1e-9, 200e-9, 200)
+diameter = numpy.linspace(1e-9, 200e-9, 400)
 
 source_set = SourceSet(
     wavelength=400e-9,
@@ -51,14 +53,13 @@ ax = figure.append_ax(
     title="Scattering efficiency of a sphere"
 )
 
-_ = ax.add_mesh(
+artist = ax.add_mesh(
     x=permitivity,
     y=diameter,
     scalar=numpy.log(data),
-    colormap='viridis',
     y_scale_factor=1e6,
 )
 
-_ = ax.add_colorbar()
+_ = ax.add_colorbar(artist=artist, colormap='viridis')
 
 _ = figure.show()

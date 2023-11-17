@@ -58,15 +58,19 @@ ax = figure.append_ax(
     title="Coupling power [Watt]"
 )
 
-_ = ax.add_mesh(
+artist = ax.add_mesh(
     x=index,
     y=diameter,
     scalar=data,
-    colormap='viridis',
     y_scale_factor=1e6,
 )
 
-_ = ax.add_colorbar(symmetric=False, numeric_format='%.3e')
+_ = ax.add_colorbar(
+    colormap='viridis',
+    artist=artist,
+    symmetric=False,
+    numeric_format='%.3e'
+)
 
 
 _ = figure.show()

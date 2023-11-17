@@ -13,11 +13,17 @@
       complex128 index;
       double n_medium;
       State(){}
-      State(double &diameter, complex128 &index, double &n_medium)
-                  : diameter(diameter), index(index), n_medium(n_medium){}
+      State(
+        double &diameter,
+        complex128 &index,
+        double &n_medium)
+        : diameter(diameter), index(index), n_medium(n_medium){}
 
-      State(double &diameter, complex128 &&index, double &n_medium)
-                  : diameter(diameter), index(index), n_medium(n_medium){}
+      State(
+        double &diameter,
+        complex128 &&index,
+        double &n_medium)
+        : diameter(diameter), index(index), n_medium(n_medium){}
 
       void apply_medium()
       {
@@ -46,23 +52,27 @@
             CVector get_dn() { return dn; };
 
             Scatterer(){}
-            Scatterer(double &wavelength,
-                      double &amplitude,
-                      double &diameter,
-                      complex128 &index,
-                      double &n_medium,
-                      CVector &jones_vector,
-                      size_t max_order = 0 )
-                      : state(diameter, index, n_medium), ScatteringProperties(wavelength, jones_vector, amplitude)
-                      {
-                        initialize(max_order);
-                      }
+            Scatterer(
+              double &wavelength,
+              double &amplitude,
+              double &diameter,
+              complex128 &index,
+              double &n_medium,
+              CVector &jones_vector,
+              size_t max_order = 0)
+              : state(diameter, index, n_medium), ScatteringProperties(wavelength, jones_vector, amplitude)
+              {
+              initialize(max_order);
+              }
 
-            Scatterer(State &state, SOURCE::State &source, size_t max_order = 0)
-                      : state(state), ScatteringProperties(source)
-                      {
-                        initialize(max_order);
-                      }
+            Scatterer(
+              State &state,
+              SOURCE::State &source,
+              size_t max_order = 0)
+              : state(state), ScatteringProperties(source)
+              {
+                initialize(max_order);
+              }
 
             void initialize(size_t &max_order)
             {
@@ -97,10 +107,11 @@
           an = CVector(max_order);
           bn = CVector(max_order);
 
-          complex128 x = size_parameter,
-                     m = state.index,
-                     mx = m * x,
-                     _da, _db, _gsx, _gs1x, _px, _chx, _p1x, _ch1x, _p2x, _ch2x;
+          complex128
+            x = size_parameter,
+            m = state.index,
+            mx = m * x,
+            _da, _db, _gsx, _gs1x, _px, _chx, _p1x, _ch1x, _p2x, _ch2x;
 
           size_t nmx = std::max( max_order, (size_t) std::abs(mx) ) + 16;
           CVector Dn  = VSH::SPHERICAL::compute_dn(nmx, mx);
@@ -138,15 +149,17 @@
         cn = CVector(max_order);
         dn = CVector(max_order);
 
-        complex128 x = size_parameter,
-                   m = state.index,
-                   z = m * x;
+        complex128
+          x = size_parameter,
+          m = state.index,
+          z = m * x;
 
         size_t nmx = std::max( max_order, (size_t) std::abs(z) ) + 16;
 
-        CVector Cnx = CVector(nmx),
-                Cnn, jnx, jnmx, yx, hx, b1x, y1x, hn1x, ax, ahx, numerator,
-                c_denominator, d_denominator;
+        CVector
+          Cnx = CVector(nmx),
+          Cnn, jnx, jnmx, yx, hx, b1x, y1x, hn1x, ax, ahx, numerator,
+          c_denominator, d_denominator;
 
         b1x.push_back( +sin(x) / x );
         y1x.push_back( -cos(x) / x );
@@ -200,16 +213,20 @@
 
     std::tuple<CVector, CVector> compute_s1s2(const DVector &phi)
     {
-      CVector an = get_an(), bn = get_bn();
+      CVector
+        an = get_an(),
+        bn = get_bn(),
+        S1(phi.size(), 0.0),
+        S2(phi.size(), 0.0)
 
-      CVector S1(phi.size(), 0.0), S2(phi.size(), 0.0);
+      DVector
+        prefactor = get_prefactor(),
+        Mu;
 
-      DVector prefactor = get_prefactor();
-
-      DVector Mu; Mu.reserve(phi.size());
+      Mu.reserve(phi.size());
 
       for (double phi : phi)
-          Mu.push_back( cos( phi-PI / 2.0 ) );
+          Mu.push_back( cos( phi - PI / 2.0 ) );
 
 
       for (uint i = 0; i < phi.size(); i++)
@@ -227,7 +244,9 @@
 
     double get_Qsca()
     {
-        CVector an = get_an(), bn = get_bn();
+        CVector
+          an = get_an(),
+          bn = get_bn();
 
         double value = 0;
         for(size_t it = 0; it < max_order; ++it)
@@ -241,7 +260,9 @@
 
     double get_Qext()
     {
-      CVector an = get_an(), bn = get_bn();
+      CVector
+        an = get_an(),
+        bn = get_bn();
 
       double value = 0;
       for(size_t it = 0; it < max_order; ++it)
@@ -255,7 +276,9 @@
 
     double get_Qback()
     {
-        CVector an = get_an(), bn = get_bn();
+        CVector
+          an = get_an(),
+          bn = get_bn();
 
         complex128 value = 0;
         for(size_t it = 0; it < max_order-1; ++it)

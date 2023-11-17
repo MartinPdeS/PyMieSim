@@ -3,31 +3,25 @@ Samples Properties
 ==================
 """
 
-from PyMieSimscatterer import Sphere
+from PyMieSim.scatterer import Sphere
 from PyMieSim.source import PlaneWave
 
-Source = PlaneWave(
+source = PlaneWave(
     wavelength=450e-9,
-    polarization=0,
+    linear_polarization=0,
     amplitude=1
 )
 
-Scat = Sphere(
+scatterer = Sphere(
     diameter=800e-9,
-    source=Source,
+    source=source,
     index=1.4)
 
-print(Scat.Properties)
+scatterer.print_properties()
 
 
 # ___________________________OUTPUT___________________________________
-#
-#         Object:          Dictionary
-#         Keys:            Efficiencies, cross-sections, others
-#         Structured data: Yes
-#         Method:          <Plot>
-#         Shape:           [7, 1]
-#         ========================================
+
 # ----------------------------------------------------------------------
 # Efficiencies   | Qsca             | 4.029799032677242
 # ----------------------------------------------------------------------
