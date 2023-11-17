@@ -175,5 +175,5 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
    :target: https://pypi.org/project/PyMieSim/
 
-.. |unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/b9e9d7f275011abe01054263702fc6f4a83273f3/PyMieSimcoverage_badge.json
+.. |unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/a3b36ca9f6bebaab5180686bef481ed0d2ebfb71/PyMieSimcoverage_badge.json
 
