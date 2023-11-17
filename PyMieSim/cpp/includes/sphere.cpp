@@ -217,7 +217,7 @@
         an = get_an(),
         bn = get_bn(),
         S1(phi.size(), 0.0),
-        S2(phi.size(), 0.0)
+        S2(phi.size(), 0.0);
 
       DVector
         prefactor = get_prefactor(),
