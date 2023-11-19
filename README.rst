@@ -99,15 +99,15 @@ To test localy (with cloning the GitHub repository) you'll need to install the d
 
 .. code:: console
 
-   pip install -r requirements/requirements.txt
-   coverage run --source=<package> --module pytest --verbose <test-files-dirs> coverage report --show-missing
+   >>> pip install -r requirements/requirements.txt
+   >>> coverage run --source=<package> --module pytest --verbose <test-files-dirs> coverage report --show-missing
 
 ----
 
 
 Coding examples
 ***************
-Plenty of examples are available online, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/latest/examples.html>`_
+Plenty of examples are available online, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_
 section of the documentation.
 
 
