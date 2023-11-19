@@ -9,9 +9,7 @@ from PyMieSim.polarization import LinearPolarization, JonesVector
 @dataclass
 class PlaneWave():
     """
-    .. note::
-        Class representing plane wave beam as a light source for
-        light scattering.
+    Class representing plane wave beam as a light source for light scattering.
     """
     wavelength: float
     """ Wavelenght of the light field. """
@@ -30,7 +28,7 @@ class PlaneWave():
         else:
             self.linear_polarization = LinearPolarization(*self.linear_polarization)
 
-    def format_inputs(self):
+    def format_inputs(self) -> None:
         self.linear_polarization = numpy.atleast_1d(self.linear_polarization).astype(float)
 
 # -

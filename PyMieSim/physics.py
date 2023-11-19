@@ -5,51 +5,43 @@ import numpy
 
 
 def FraunhoferDiffraction(near_field: numpy.ndarray) -> numpy.ndarray:
-    r"""Function compute the Far-Field of a given Near-Field using Fraunhofer
+    """
+    Function compute the Far-Field of a given Near-Field using Fraunhofer
     relation under approximation of small angle.
 
-    Parameters
-    ----------
-    near_field : :class:`numpy.ndarray`
-        Near-Field input [2D].
+    :param      near_field:  The near field
+    :type       near_field:  numpy.ndarray
 
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        Far-Field ouptut [2D].
-
+    :returns:   the far field
+    :rtype:     numpy.ndarray
     """
     temp = numpy.fft.fft2(near_field)
 
-    temp /= GenShift(temp.shape[0])
+    temp /= generate_fft_shift(temp.shape[0])
 
     return numpy.fft.fftshift(temp)
 
 
-def GenShift(npts: int) -> numpy.ndarray:
-    r"""Function generate a complex shift array that has to be multiplied to FFT in order to obtain
+def generate_fft_shift(n_points: int) -> numpy.ndarray:
+    """
+    Function generate a complex shift array that has to be multiplied to FFT in order to obtain
     a phase accurate Fourier transform.
 
-    Parameters
-    ----------
-    npts : :class:`int`
-        Number of point (per dimension) of the FFT array.
+    :param      npts:  The npts
+    :type       npts:  int
 
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        Complex array for FFT.
-
+    :returns:   Complex array for FFT.
+    :rtype:     numpy.ndarray
     """
-    if npts % 2 == 1:
-        phase_shift = numpy.exp(-complex(0, 1) * numpy.pi * numpy.arange(npts) * (npts - 1) / npts)
+    if n_points % 2 == 1:
+        phase_shift = numpy.exp(-complex(0, 1) * numpy.pi * numpy.arange(n_points) * (n_points - 1) / n_points)
 
         shift_grid, _ = numpy.meshgrid(phase_shift, phase_shift)
 
         return shift_grid * shift_grid.T
 
     else:
-        phase_shift = numpy.exp(-complex(0, 1) * numpy.pi * numpy.arange(npts) * (npts) / npts)
+        phase_shift = numpy.exp(-complex(0, 1) * numpy.pi * numpy.arange(n_points) * (n_points) / n_points)
 
         shift_grid, _ = numpy.meshgrid(phase_shift, phase_shift)
 

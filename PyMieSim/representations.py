@@ -87,6 +87,7 @@ class SPF():
     r"""
     Class representing scattering phase function of SPF in short.
     The SPF is defined as:
+
     .. math::
         \text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2
 
@@ -138,7 +139,8 @@ class SPF():
 
 
 class S1S2():
-    r"""Dict subclass representing S1 and S2 function.
+    r"""
+    Class representing S1 and S2 function.
     S1 and S2 are defined as:
 
     Parameters

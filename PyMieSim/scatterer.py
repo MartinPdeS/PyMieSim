@@ -461,8 +461,7 @@ class CoreShell(GenericScatterer):
 
     def _get_binding_(self) -> None:
         r"""
-        .. note::
-            Method call and bind c++ scatterer class
+        Method call and bind c++ scatterer class
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
@@ -488,9 +487,7 @@ class CoreShell(GenericScatterer):
 
     def bn(self, max_order: int = None) -> numpy.array:
         r"""
-        .. note::
-            Compute :math:`b_n` coefficient.
-
+        Compute :math:`b_n` coefficient.
         """
         if max_order is None:
             return self.Bind.bn()
@@ -525,9 +522,7 @@ class Cylinder(GenericScatterer):
 
     def _get_binding_(self) -> None:
         r"""
-        .. note::
-
-            Method call and bind c++ scatterer class
+        Method call and bind c++ scatterer class
 
         """
         from PyMieSim.binary.CylinderInterface import CYLINDER
@@ -617,5 +612,29 @@ class Cylinder(GenericScatterer):
         :rtype:     numpy.array
         """
         return self.Bind.b2n()
+
+    @property
+    def Cback(self) -> None:
+        raise NotImplementedError
+
+    @property
+    def Qback(self) -> None:
+        raise NotImplementedError
+
+    @property
+    def Cratio(self) -> None:
+        raise NotImplementedError
+
+    @property
+    def Qratio(self) -> None:
+        raise NotImplementedError
+
+    @property
+    def Cpr(self) -> None:
+        raise NotImplementedError
+
+    @property
+    def Qpr(self) -> None:
+        raise NotImplementedError
 
 # -

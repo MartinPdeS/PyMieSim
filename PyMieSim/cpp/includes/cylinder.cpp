@@ -12,12 +12,18 @@ namespace CYLINDER
     complex128 index;
     double n_medium;
     State(){}
-    State(double &diameter, complex128 &index, double &n_medium)
-                : diameter(diameter), index(index), n_medium(n_medium){}
+    State(
+      double &diameter,
+      complex128 &index,
+      double &n_medium
+    )
+      : diameter(diameter),
+        index(index),
+        n_medium(n_medium){}
 
     void apply_medium()
     {
-      this->index    /= this->n_medium;
+      this->index /= this->n_medium;
       this->diameter *= this->n_medium;
     }
   };
@@ -47,23 +53,26 @@ namespace CYLINDER
           double get_k(){return source.k;}
           std::vector<complex128> get_jones_vector(){return source.jones_vector;}
 
-          Scatterer(double &wavelength,
-                    double &amplitude,
-                    double &diameter,
-                    complex128 &index,
-                    double &n_medium,
-                    std::vector<complex128> &jones_vector,
-                    size_t max_order = 0 )
-                     : state(diameter, index, n_medium), ScatteringProperties(wavelength, jones_vector, amplitude)
-                    {
-                      initialize(max_order);
-                    }
+          Scatterer(
+            double &wavelength,
+            double &amplitude,
+            double &diameter,
+            complex128 &index,
+            double &n_medium,
+            std::vector<complex128> &jones_vector,
+            size_t max_order = 0
+          )
+            : state(diameter, index, n_medium),
+              ScatteringProperties(wavelength, jones_vector, amplitude)
+            {initialize(max_order);}
 
-          Scatterer(State &state, SOURCE::State &source, size_t max_order = 0)
-                    : state(state), ScatteringProperties(source)
-                    {
-                      initialize(max_order);
-                    }
+          Scatterer(
+            State &state,
+            SOURCE::State &source,
+            size_t max_order = 0)
+            : state(state),
+              ScatteringProperties(source)
+            {initialize(max_order);}
 
       void initialize(size_t &max_order)
       {
@@ -100,10 +109,11 @@ namespace CYLINDER
 
       double get_Qsca()
       {
-          std::vector<complex128> a1n = get_a1n(),
-                  b1n = get_b1n(),
-                  a2n = get_a2n(),
-                  b2n = get_b2n();
+          std::vector<complex128>
+            a1n = get_a1n(),
+            b1n = get_b1n(),
+            a2n = get_a2n(),
+            b2n = get_b2n();
 
           complex128 Qsca1=0, Qsca2=0;
 
@@ -121,10 +131,11 @@ namespace CYLINDER
 
       double get_Qext()
       {
-        std::vector<complex128> a1n = get_a1n(),
-                                b1n = get_b1n(),
-                                a2n = get_a2n(),
-                                b2n = get_b2n();
+        std::vector<complex128>
+          a1n = get_a1n(),
+          b1n = get_b1n(),
+          a2n = get_a2n(),
+          b2n = get_b2n();
 
         complex128 Qext1=0, Qext2=0;
 
@@ -158,17 +169,19 @@ namespace CYLINDER
 
         double x = size_parameter;
 
-        complex128 m = state.index / state.n_medium,
-                   z = m * x,
-                   numerator,
-                   denominator;
+        complex128
+          m = state.index / state.n_medium,
+          z = m * x,
+          numerator,
+          denominator;
 
-        std::vector<complex128> J_z(max_order+1),
-                                J_z_p(max_order+1),
-                                J_x(max_order+1),
-                                J_x_p(max_order+1),
-                                H_x(max_order+1),
-                                H_x_p(max_order+1);
+        std::vector<complex128>
+          J_z(max_order+1),
+          J_z_p(max_order+1),
+          J_x(max_order+1),
+          J_x_p(max_order+1),
+          H_x(max_order+1),
+          H_x_p(max_order+1);
 
         for (size_t n = 0; n < max_order+1; ++n)
         {
@@ -197,7 +210,9 @@ namespace CYLINDER
 
       std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi)
       {
-        std::vector<complex128> T1(Phi.size()), T2(Phi.size());
+        std::vector<complex128>
+          T1(Phi.size()),
+          T2(Phi.size());
 
         for (uint i = 0; i < Phi.size(); i++){
             T1[i] = b1n[0];
