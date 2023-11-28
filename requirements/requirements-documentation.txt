@@ -1,4 +1,4 @@
-numpydoc==1.5.0
+numpydoc==1.6.0
 sphinx>=5.1.1
 sphinx-gallery>=0.11.1
 sphinx-rtd-theme>=1.0.0
