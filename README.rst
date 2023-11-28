@@ -98,11 +98,14 @@ Testing
 To test localy (with cloning the GitHub repository) you'll need to install the dependencies and run the coverage command as
 
 .. code:: console
-
+   >>> git clone https://github.com/MartinPdeS/PyMieSim.git
+   >>> cd PyMieSim
    >>> pip install -r requirements/requirements.txt
-   >>> coverage run --source=<package> --module pytest --verbose <test-files-dirs> coverage report --show-missing
+   >>> coverage run --source=PyMieSim --module pytest --verbose tests
+   >>> coverage report --show-missing
 
 ----
+
 
 
 Coding examples
@@ -152,10 +155,6 @@ PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/Mar
 
 Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_ .
 
-
-.. |travis| image:: https://img.shields.io/travis/com/MartinPdeS/PyMieSim/master?label=Travis%20CI
-   :target: https://travis-ci.com/github/MartinPdeS/PyMieSim
-
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
    :target: https://www.python.org/
 
@@ -174,7 +173,7 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 .. |Logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
 
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
-   :target: https://pypi.org/project/PyMieSim/
+   :target: https://pypistats.org/packages/pymiesim
 
 .. |unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/a3b36ca9f6bebaab5180686bef481ed0d2ebfb71/PyMieSimcoverage_badge.json
 

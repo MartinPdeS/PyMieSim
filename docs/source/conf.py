@@ -56,7 +56,7 @@ try:
     if sys.platform in ["linux", "linux2"]:
         pyvista.start_xvfb()  # Works only on linux system!
 except ImportError:
-    print('Could not load pyvista library for 3D renderin')
+    print('Could not load pyvista library for 3D rendering')
 
 sphinx_gallery_conf = {
     "examples_dirs": '../examples',
@@ -110,7 +110,6 @@ default_role = "autolink"
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
-
 v = parse(release)
 if v.release is None:
     raise ValueError(f"Ill-formed version: {version!r}. Version should follow PEP440")
@@ -126,7 +125,7 @@ html_theme_options = {
     "logo": {
         "alt_text": "PyMieSim's logo",
         "text": "PyMieSim",
-        "link": "https://github.com/MartinPdeS/PyMieSim",
+        "link": "https://pymiesim.readthedocs.io/en/latest/",
     },
     "icon_links": [
         {
