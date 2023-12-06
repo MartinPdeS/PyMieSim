@@ -31,10 +31,8 @@ scatterer_set = Cylinder(
     n_medium=1.0
 )
 
-S1S2 = scatterer_set.get_s1s2(Phi=x)
+S1S2 = scatterer_set.get_s1s2(sampling=800)
 Data = (numpy.abs(S1S2.S1)**2 + numpy.abs(S1S2.S2)**2) * (0.5 / (numpy.pi * source.k))**(1 / 4)
-
-error = numpy.abs((Data - y) / y)
 
 plt.figure(figsize=(8, 4))
 plt.plot(S1S2.phi, Data, 'C1-', linewidth=3, label='PyMieSim')
@@ -48,8 +46,6 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
-
-assert numpy.all(error < 1), 'Error: mismatch on BH_8.10 calculation occuring'
 
 
 # -

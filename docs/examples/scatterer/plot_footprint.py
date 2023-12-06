@@ -50,6 +50,7 @@ data = detector.get_footprint(scatterer)
 # Plotting the data
 # ~~~~~~~~~~~~~~~~~
 figure = data.plot()
+
 _ = figure.show()
 
 # -

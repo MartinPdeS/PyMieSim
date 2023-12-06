@@ -9,8 +9,10 @@ from tabulate import tabulate
 from PyOptik import ExpData
 from PyMieSim.mesh import FibonacciMesh
 from PyMieSim.source import PlaneWave
-from PyMieSim.tools.constants import c, epsilon0
 from PyMieSim.representations import S1S2, FarField, Stokes, SPF, Footprint
+
+c = 299792458.0  #: Speed of light in vacuum (m/s).
+epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
 
 
 class GenericScatterer():
@@ -119,7 +121,8 @@ class GenericScatterer():
         """ Ratio of backscattering cross-section over total scattering. """
         return self.Bind.Cback / self.Bind.Csca
 
-    def _FarField(self,
+    def get_farfields_array(
+            self,
             phi: numpy.ndarray,
             theta: numpy.ndarray,
             r: numpy.ndarray,
@@ -169,12 +172,11 @@ class GenericScatterer():
         :returns:   The S1 and S2 parameters
         :rtype:     S1S2
         """
-        return S1S2(parent_scatterer=self, **kwargs)
+        return S1S2(scatterer=self, **kwargs)
 
     def get_stokes(self, **kwargs) -> Stokes:
         r"""
-        Returns the four Stokes components.
-        The method compute the Stokes parameters: I, Q, U, V.
+        Returns the four Stokes components. The method compute the Stokes parameters: I, Q, U, V.
         Those parameters are defined as:
 
         .. math:
@@ -192,7 +194,7 @@ class GenericScatterer():
         :returns:   The stokes.
         :rtype:     Stokes
         """
-        return Stokes(parent_scatterer=self, **kwargs)
+        return Stokes(scatterer=self, **kwargs)
 
     def get_far_field(self, **kwargs) -> FarField:
         r"""
@@ -213,7 +215,7 @@ class GenericScatterer():
         :returns:   The far field.
         :rtype:     FarField
         """
-        return FarField(parent_scatterer=self, **kwargs)
+        return FarField(scatterer=self, **kwargs)
 
     def get_spf(self, **kwargs) -> SPF:
         r"""
@@ -229,7 +231,7 @@ class GenericScatterer():
         :returns:   The scattering phase function.
         :rtype:     SPF
         """
-        return SPF(parent_scatterer=self, **kwargs)
+        return SPF(scatterer=self, **kwargs)
 
     def get_footprint(self, detector) -> Footprint:
         r"""
@@ -255,18 +257,17 @@ class GenericScatterer():
 
     def get_poynting_vector(self, Mesh: FibonacciMesh) -> float:
         r"""
-        .. note::
 
-            Method return the Poynting vector norm defined as:
+        Method return the Poynting vector norm defined as:
 
-            .. math::
-                \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
+        .. math::
+            \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
 
         Parameters :
             Mesh : Number of voxel in the 4 pi space to compute energy flow.
 
         """
-        Ephi, Etheta = self._FarField(
+        Ephi, Etheta = self.get_farfields_array(
             phi=Mesh.get_phi(unit='radian'),
             theta=Mesh.get_theta(unit='radian'),
             r=1.,
@@ -331,9 +332,7 @@ class GenericScatterer():
 
 @dataclass()
 class Sphere(GenericScatterer):
-    r"""
-    Class representing a homogeneous spherical scatterer.
-    """
+    """ Class representing a homogeneous spherical scatterer """
     diameter: float
     """ diameter of the single scatterer in unit of meter. """
     source: PlaneWave
@@ -348,9 +347,9 @@ class Sphere(GenericScatterer):
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(self.index, self.material)
 
-        self._get_binding_()
+        self.set_cpp_binding()
 
-    def _get_binding_(self) -> None:
+    def set_cpp_binding(self) -> None:
         """
         Method call and bind c++ scatterer class
 
@@ -457,10 +456,10 @@ class CoreShell(GenericScatterer):
 
         self.shell_diameter = self.core_diameter + self.shell_width
 
-        self._get_binding_()
+        self.set_cpp_binding()
 
-    def _get_binding_(self) -> None:
-        r"""
+    def set_cpp_binding(self) -> None:
+        """
         Method call and bind c++ scatterer class
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
@@ -497,7 +496,7 @@ class CoreShell(GenericScatterer):
 
 @dataclass()
 class Cylinder(GenericScatterer):
-    r"""
+    """
     Class representing a right angle cylindrical scatterer.
     """
 
@@ -518,9 +517,9 @@ class Cylinder(GenericScatterer):
             material=self.material
         )
 
-        self._get_binding_()
+        self.set_cpp_binding()
 
-    def _get_binding_(self) -> None:
+    def set_cpp_binding(self) -> None:
         r"""
         Method call and bind c++ scatterer class
 

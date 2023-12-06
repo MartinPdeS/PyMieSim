@@ -1,18 +1,45 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from PyMieSim.scatterer import Sphere, CoreShell, Cylinder
+    from PyMieSim.detector import Photodiode, LPmode, IntegratingSphere
 
+
+import numpy
 from MPSPlots.render3D import SceneList as SceneList3D
 from MPSPlots.render2D import SceneList
-import PyMieSim
+from dataclasses import dataclass
 from PyMieSim.tools.special_functions import spherical_to_cartesian, rotate_on_x
 
 
-class Stokes():
+@dataclass
+class BaseRepresentation():
+    scatterer: Sphere | CoreShell | Cylinder
+    """ The scatterer instance """
+    sampling: int = 100
+    """ Number of point to evaluate the Stokes parameters in spherical coord """
+    distance: float = 1.0
+    """ Distance at which evaluate the fields """
+
+    def __post_init__(self):
+        fields = self.scatterer.Bind.get_full_fields(
+            sampling=self.sampling,
+            r=self.distance
+        )
+
+        self.E_phi, self.E_theta, self.theta, self.phi = fields
+
+        self.compute_components()
+
+
+class Stokes(BaseRepresentation):
     r"""
-    Class representing scattering Far-field in the Stokes
-    representation.
+    Class representing scattering Far-field in the Stokes representation.
+    The parameters are defined as in this wikipedia article: https://en.wikipedia.org/wiki/Stokes_parameters
+
     | The stokes parameters are:
     |     I : intensity of the fields
     |     Q : linear polarization parallel to incident polarization
@@ -20,32 +47,23 @@ class Stokes():
     |     V : Circular polarization
 
     .. math:
-        I &= \big| E_x \big|^2 + \big| E_y \big|^2
+        I &= \big| E_x \big|^2 + \big| E_y \big|^2 \\[10pt]
 
-        Q &= \big| E_x \big|^2 - \big| E_y \big|^2
+        Q &= \big| E_x \big|^2 - \big| E_y \big|^2 \\[10pt]
 
-        U &= 2 \mathcal{Re} \big\{ E_x E_y^* \big\}
+        U &= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \\[10pt]
 
-        V &= 2 \mathcal{Im} \big\{ E_x E_y^* \big\}
-
-    https://en.wikipedia.org/wiki/Stokes_parameters
-
-    Parameters
-    ----------
-    parent_scatterer : :class:`Scatterer`
-        The scatterer parent.
-    sampling : :class:`int`
-        samplingber of point to evaluate the Stokes parameters in spherical coord.
-    distance : :class:`float`
-        distance at which we evaluate the Stokes parameters.
+        V &= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \\[10pt]
 
     """
 
-    def __init__(self, parent_scatterer, sampling: int = 100, distance: float = 1.):
-        self.parent_scatterer = parent_scatterer
+    def compute_components(self) -> None:
+        """
+        Calculates the Stokes components.
 
-        self.E_phi, self.E_theta, self.theta, self.phi = parent_scatterer.Bind.get_full_fields(sampling=sampling, r=1)
-
+        :returns:   No returns.
+        :rtype:     None
+        """
         intensity = numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2
 
         self.I = intensity / numpy.max(intensity)
@@ -68,6 +86,7 @@ class Stokes():
             field = getattr(self, field_name)
 
             ax = figure.append_ax()
+
             artist = ax.add_mesh(
                 x=x,
                 y=y,
@@ -83,135 +102,24 @@ class Stokes():
         return figure
 
 
-class SPF():
+class FarField(BaseRepresentation):
     r"""
-    Class representing scattering phase function of SPF in short.
-    The SPF is defined as:
-
-    .. math::
-        \text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2
-
-    Parameters
-    ----------
-    parent_scatterer : :class:`Scatterer`
-        The scatterer parent.
-    sampling : :class:`int`
-        samplingber of point to evaluate the SPF in spherical coord.
-    distance : :class:`float`
-        distance at which we evaluate the SPF.
-
-    """
-
-    def __init__(self, parent_scatterer, sampling: int = 100, distance: float = 1.):
-
-        self.parent_scatterer = parent_scatterer
-
-        self.E_phi, self.E_theta, self.theta, self.phi = parent_scatterer.Bind.get_full_fields(sampling=sampling, r=1)
-
-        self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
-
-    def plot(self) -> SceneList3D:
-        scalar_mesh = self.SPF / self.SPF.max() * 2
-
-        phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
-
-        x, y, z = spherical_to_cartesian(
-            r=scalar_mesh,
-            phi=phi_mesh,
-            theta=theta_mesh
-        )
-
-        figure = SceneList3D()
-
-        ax = figure.append_ax()
-        artist = ax.add_mesh(
-            x=x,
-            y=y,
-            z=z,
-            scalar_coloring=scalar_mesh,
-            show_edges=False
-        )
-
-        ax.add_unit_axis(show_label=False)
-        ax.add_colorbar(artist=artist, title='Scattering phase function')
-
-        return figure
-
-
-class S1S2():
-    r"""
-    Class representing S1 and S2 function.
-    S1 and S2 are defined as:
-
-    Parameters
-    ----------
-    parent_scatterer : :class:`Scatterer`
-        The scatterer parent.
-    sampling : :class:`int`
-        samplingber of point to evaluate the S1 and S2 in spherical coord.
-
-    """
-    def __init__(self, parent_scatterer, Phi: numpy.ndarray = None, sampling: int = None):
-        self.parent_scatterer = parent_scatterer
-
-        if sampling is None:
-            sampling = 200
-
-        if Phi is None:
-            Phi = numpy.linspace(-180, 180, sampling)
-
-        self.S1, self.S2 = parent_scatterer.Bind.get_s1s2(phi=numpy.deg2rad(Phi) + numpy.pi / 2)
-        self.phi = Phi
-
-    def plot(self) -> SceneList:
-        figure = SceneList(unit_size=(3, 3))
-
-        zero = 0 * numpy.abs(self.S1)
-
-        enumeration = zip(
-            [0, 1],
-            [self.S1, self.S2],
-            ['S1', 'S2'],
-            ['C0', 'C1']
-        )
-
-        for col, s_param, name, color in enumeration:
-            ax = figure.append_ax(projection='polar', title=f'{name} parameter')
-
-            ax.add_fill_line(
-                x=numpy.deg2rad(self.phi),
-                y0=zero,
-                y1=numpy.abs(s_param),
-                color=color,
-                line_style='-'
-            )
-
-        return figure
-
-
-class FarField():
-    r"""
-    Class representing scattering Far-field in a spherical
-    coordinate representation.
+    Class representing scattering Far-field in a spherical coordinate representation.
     The Far-fields are defined as:
 
     .. math::
         \text{Fields} = E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2
 
-    Parameters
-    ----------
-    parent_scatterer : :class:`Scatterer`
-        The scatterer parent.
-    sampling : :class:`int`
-        samplingber of point to evaluate the far-fields in spherical coord.
-    distance : :class:`float`
-        distance at which we evaluate the far-fields.
     """
 
-    def __init__(self, sampling: int = 200, parent_scatterer=None, distance: float = 1.):
-        self.parent_scatterer = parent_scatterer
+    def compute_components(self) -> None:
+        """
+        Calculates the fields components. They are already computed.
 
-        self.E_phi, self.E_theta, self.theta, self.phi = parent_scatterer.Bind.get_full_fields(sampling=sampling, r=1)
+        :returns:   No returns.
+        :rtype:     None
+        """
+        return
 
     def plot(self) -> SceneList3D:
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
@@ -262,7 +170,107 @@ class FarField():
         return figure
 
 
+class SPF(BaseRepresentation):
+    r"""
+    Class representing scattering phase function of SPF in short.
+    The SPF is defined as:
+
+    .. math::
+        \text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2
+
+    """
+
+    def compute_components(self) -> None:
+        """
+        Calculates the Stokes components.
+
+        :returns:   No returns.
+        :rtype:     None
+        """
+        self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
+
+    def plot(self) -> SceneList3D:
+        scalar_mesh = self.SPF / self.SPF.max() * 2
+
+        phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
+
+        x, y, z = spherical_to_cartesian(
+            r=scalar_mesh,
+            phi=phi_mesh,
+            theta=theta_mesh
+        )
+
+        figure = SceneList3D()
+
+        ax = figure.append_ax()
+        artist = ax.add_mesh(
+            x=x,
+            y=y,
+            z=z,
+            scalar_coloring=scalar_mesh,
+            show_edges=False
+        )
+
+        ax.add_unit_axis(show_label=False)
+        ax.add_colorbar(artist=artist, title='Scattering phase function')
+
+        return figure
+
+
+@dataclass
+class S1S2():
+    """ Class representing S1 and S2 function. S1 and S2 are defined as: """
+    scatterer: Sphere | CoreShell | Cylinder
+    """ The scatterer instance """
+    sampling: int = 300
+    """ Number of point to evaluate the Stokes parameters in spherical coord """
+    distance: float = 1.0
+    """ Distance at which evaluate the fields """
+
+    def __post_init__(self):
+        self.phi = numpy.linspace(-180, 180, self.sampling)
+
+        self.compute_components()
+
+    def compute_components(self) -> None:
+        self.S1, self.S2 = self.scatterer.Bind.get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
+
+    def plot(self) -> SceneList:
+        figure = SceneList(unit_size=(3, 3))
+
+        ax_s1 = figure.append_ax(projection='polar', title=r'S_1 parameter')
+        ax_s2 = figure.append_ax(projection='polar', title=r'S_2 parameter')
+
+        ax_s1.add_fill_line(
+            x=numpy.deg2rad(self.phi),
+            y0=numpy.zeros(self.phi.shape),
+            y1=numpy.abs(self.S1),
+            color='C0',
+            line_style='-'
+        )
+
+        ax_s2.add_fill_line(
+            x=numpy.deg2rad(self.phi),
+            y0=numpy.zeros(self.phi.shape),
+            y1=numpy.abs(self.S2),
+            color='C1',
+            line_style='-'
+        )
+
+        return figure
+
+
+@dataclass
 class Footprint():
+    detector: Photodiode | LPmode | IntegratingSphere
+    """ The detector instance """
+    scatterer: Sphere | CoreShell | Cylinder
+    """ The scatterer instance """
+    sampling: int = 500
+    """ Number of point to evaluate the Stokes parameters in spherical coord. At the moment only 500 is available"""
+    padding_factor: int = 10
+    """ Padding factor for the fourier transform """
+
     r"""
     Class representing footprint of the scatterer.
     The footprint usually depend on the scatterer and the detector.
@@ -275,54 +283,44 @@ class Footprint():
         (\xi, \nu), \tilde{ \phi}_{l,m}(\xi, \nu)  \big\} \
         (\delta_x, \delta_y) \big|^2
 
-
-    Parameters
-    ----------
-    scatterer : :class:`Scatterer`
-        The scatterer.
-    detector : :class:`Detector`
-        The detector.
-    sampling : :class:`int`
-        samplingber of point to evaluate the footprint in cartesian coord.
-
     """
 
-    def __init__(self, scatterer, detector):
-        self.detector = detector
-        self.scatterer = scatterer
-        self.padding_factor = 10
+    def __post_init__(self):
+        assert self.sampling == 500, "Only a sampling of 500 is available for the moment."
 
-        self.sampling = 500 if isinstance(detector, PyMieSim.detector.LPmode) else detector.sampling
+        self.compute_footprint()
 
-        self._compute_footprint_()
+    def compute_footprint(self):
+        max_angle = self.detector.max_angle
+        n_point = complex(self.sampling)
 
-    def _compute_footprint_(self):
-        phi, theta = numpy.mgrid[-self.detector.max_angle:self.detector.max_angle:complex(self.sampling),
-                                 0:numpy.pi:complex(self.sampling)]
+        phi, theta = numpy.mgrid[
+            -max_angle: max_angle: n_point, 0: numpy.pi: n_point
+        ]
 
-        max_direct = 1 / (numpy.sin(self.detector.max_angle) * self.scatterer.source.k / (2 * numpy.pi))
+        max_distance_direct_space = 1 / (numpy.sin(self.detector.max_angle) * self.scatterer.source.k / (2 * numpy.pi))
 
-        x = y = numpy.linspace(-1, 1, self.sampling) * self.sampling / 2 * max_direct / self.padding_factor
+        x = y = numpy.linspace(-1, 1, self.sampling) * self.sampling / 2 * max_distance_direct_space / self.padding_factor
 
         _, phi, theta = rotate_on_x(phi + numpy.pi / 2, theta, numpy.pi / 2)
 
-        far_field_para, far_field_perp = self.scatterer._FarField(
+        far_field_para, far_field_perp = self.scatterer.get_farfields_array(
             phi=phi.flatten() + numpy.pi / 2,
             theta=theta.flatten(),
             r=1.0,
             structured=False
         )
 
-        scalarfield = self.detector.get_structured_scalarfield()[0]
+        detector_structured_farfield = self.detector.get_structured_scalarfield(sampling=self.sampling)
 
-        perp = scalarfield * far_field_perp.reshape(theta.shape)
+        perpendicular_projection = detector_structured_farfield * far_field_perp.reshape(theta.shape)
 
-        para = scalarfield * far_field_para.reshape(theta.shape)
+        parallel_projection = detector_structured_farfield * far_field_para.reshape(theta.shape)
 
-        fourier_para = self.get_fourier_component(para)
-        fourier_perp = self.get_fourier_component(perp)
+        fourier_parallel = self.get_fourier_component(parallel_projection)
+        fourier_perpendicular = self.get_fourier_component(perpendicular_projection)
 
-        self.mapping = (fourier_para + fourier_perp)
+        self.mapping = (fourier_parallel + fourier_perpendicular)
         self.direct_x = x
         self.direct_y = y
 

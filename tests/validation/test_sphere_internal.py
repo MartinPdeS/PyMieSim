@@ -19,7 +19,7 @@ def test_energy_flow_coupling():
     source = PlaneWave(wavelength=1e-6, linear_polarization=0, amplitude=1)
     sphere = Sphere(diameter=300e-9, index=1.4, source=source)
     detector = Photodiode(sampling=500, NA=2.0, gamma_offset=0, phi_offset=0)
-    val0 = sphere.get_energy_flow(detector.Mesh)
+    val0 = sphere.get_energy_flow(detector.fibonacci_mesh)
     val1 = detector.coupling(sphere)
 
     if not numpy.isclose(val0, val1, atol=0, rtol=1e-5):

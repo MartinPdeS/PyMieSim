@@ -40,11 +40,7 @@ logo_path = doc_path.joinpath('images/logo.png')
 
 doc_css_path = doc_path.joinpath('source/_static/default.css')
 
-rtd_example = 'https://pymiesim.readthedocs.io/en/latest/Examples.html'
-
-rtd_material = 'https://pymiesim.readthedocs.io/en/latest/Material.html'
-
-rtd_lp_mode = 'https://pymiesim.readthedocs.io/en/latest/LPModes.html'
+rtd_example = 'https://pymiesim.readthedocs.io/en/latest/gallery/index.html'
 
 if __name__ == '__main__':
     for path_name in __all__:
@@ -53,4 +49,3 @@ if __name__ == '__main__':
         assert path.exists(), f"Path {path_name} do not exists"
 
 # -
-

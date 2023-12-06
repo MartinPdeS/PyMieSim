@@ -36,7 +36,7 @@ def direct_space_to_angle(direct_space: numpy.ndarray, k: float) -> numpy.ndarra
     return angle_space * 180 / numpy.pi
 
 
-def cartesian_to_spherical(x, y, z):
+def cartesian_to_spherical(x: numpy.ndarray, y: numpy.ndarray, z: numpy.ndarray) -> tuple:
     x = numpy.asarray(x)
     y = numpy.asarray(y)
     z = numpy.asarray(z)
@@ -47,7 +47,7 @@ def cartesian_to_spherical(x, y, z):
     return r, phi, theta
 
 
-def spherical_to_cartesian(phi, theta, r=None):
+def spherical_to_cartesian(phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray = None) -> tuple:
     phi = numpy.asarray(phi)
     theta = numpy.asarray(theta)
     r = r if r is not None else numpy.ones(phi.shape)
@@ -58,7 +58,7 @@ def spherical_to_cartesian(phi, theta, r=None):
     return x, y, z
 
 
-def rotate_on_y(phi: numpy.ndarray, theta: numpy.ndarray, angle: float):
+def rotate_on_y(phi: numpy.ndarray, theta: numpy.ndarray, angle: float) -> tuple:
     x, y, z = spherical_to_cartesian(phi=phi, theta=theta)
 
     xp = x * numpy.cos(angle) + z * numpy.sin(angle)
@@ -67,7 +67,7 @@ def rotate_on_y(phi: numpy.ndarray, theta: numpy.ndarray, angle: float):
     return cartesian_to_spherical(x=xp, y=yp, z=zp)
 
 
-def rotate_on_z(phi: numpy.ndarray, theta: numpy.ndarray, angle: float):
+def rotate_on_z(phi: numpy.ndarray, theta: numpy.ndarray, angle: float) -> tuple:
     x, y, z = spherical_to_cartesian(phi=phi, theta=theta)
 
     xp = x * numpy.cos(angle) - y * numpy.sin(angle)
@@ -76,9 +76,8 @@ def rotate_on_z(phi: numpy.ndarray, theta: numpy.ndarray, angle: float):
     return cartesian_to_spherical(x=xp, y=yp, z=zp)
 
 
-def rotate_on_x(phi: numpy.ndarray, theta: numpy.ndarray, angle: float):
+def rotate_on_x(phi: numpy.ndarray, theta: numpy.ndarray, angle: float) -> tuple:
     x, y, z = spherical_to_cartesian(phi=phi, theta=theta)
-
     xp = x
     yp = y * numpy.cos(angle) - z * numpy.sin(angle)
     zp = y * numpy.sin(angle) + z * numpy.cos(angle)

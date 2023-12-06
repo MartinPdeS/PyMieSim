@@ -15,11 +15,12 @@ def load_lp_mode(mode_number: str, structure_type: str = 'unstructured', samplin
 
     lp_sampling_file_directory = lp_file_directory.joinpath(f"{structure_type}_{sampling}.npy")
 
-    print(lp_sampling_file_directory)
     if not lp_sampling_file_directory.exists():
         available_sampling = [path.name for path in lp_file_directory.iterdir() if path.name.startswith(structure_type)]
         raise ValueError(f"This sampling: {sampling} is not avaible.\nAvailable are {available_sampling}")
 
-    return numpy.load(lp_sampling_file_directory).astype(complex)
+    field = numpy.load(lp_sampling_file_directory).astype(complex)
+
+    return field.squeeze().astype(complex)
 
 # -
