@@ -1,5 +1,7 @@
 #pragma once
 
+#include "definitions.cpp"
+
 namespace SOURCE
 {
 

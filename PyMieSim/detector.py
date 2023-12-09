@@ -199,7 +199,7 @@ class LPmode(GenericDetector):
     coupling_mode: str = 'Point'
     """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
     coherent: bool = field(default=True, init=False)
-    """ Indicate if the coupling mechanism is coherent or not """
+    """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
         if self.NA > 0.3 or self.NA < 0:

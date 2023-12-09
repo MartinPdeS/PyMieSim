@@ -84,8 +84,8 @@ Linux / MacOs
    >>> git submodule init && git submodule update
    >>> mkdir build
    >>> cd build
-   >>> cmake ../ -G"Unix MakeFiles" (macOS, Linux)
-   >>> cmake ../ -G"MinGW MakeFiles" (Windows)
+   >>> cmake ../ -G"Unix Makefiles" (macOS, Linux)
+   >>> cmake ../ -G"MinGW Makefiles" (Windows)
    >>> sudo make install
    >>> cd ..
    >>> python -m pip install .

@@ -123,9 +123,18 @@ namespace CORESHELL
     class Set
     {
         public:
-            DVector core_diameter, shell_width;
-            std::vector<complex128> core_index, shell_index;
-            std::vector<CVector> core_material, shell_material;
+            DVector
+                core_diameter,
+                shell_width;
+
+            std::vector<complex128>
+                core_index,
+                shell_index;
+
+            std::vector<CVector>
+                core_material,
+                shell_material;
+
             DVector n_medium;
             bool bounded_core, bounded_shell;
             std::vector<State> States;
@@ -141,7 +150,7 @@ namespace CORESHELL
             {bounded_core=false; bounded_shell=true;}
 
             Set(DVector &core_diameter, DVector &shell_width, std::vector<CVector> &core_material, CVector &shell_index, DVector &n_medium)
-            : core_diameter(core_diameter), shell_width(shell_width), core_material(core_material), shell_index(shell_index), n_medium(n_medium)
+            : core_diameter(core_diameter), shell_width(shell_width), shell_index(shell_index), core_material(core_material), n_medium(n_medium)
             {bounded_core=true; bounded_shell=false;}
 
             Set(DVector &core_diameter, DVector &shell_width, std::vector<CVector> &core_material, std::vector<CVector> &shell_material, DVector &n_medium)

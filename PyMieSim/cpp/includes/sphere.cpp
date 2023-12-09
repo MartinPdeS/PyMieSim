@@ -60,7 +60,7 @@
               double &n_medium,
               CVector &jones_vector,
               size_t max_order = 0)
-              : state(diameter, index, n_medium), ScatteringProperties(wavelength, jones_vector, amplitude)
+              : ScatteringProperties(wavelength, jones_vector, amplitude), state(diameter, index, n_medium)
               {
               initialize(max_order);
               }
@@ -69,7 +69,7 @@
               State &state,
               SOURCE::State &source,
               size_t max_order = 0)
-              : state(state), ScatteringProperties(source)
+              : ScatteringProperties(source), state(state)
               {
                 initialize(max_order);
               }

@@ -62,17 +62,21 @@ namespace CYLINDER
             std::vector<complex128> &jones_vector,
             size_t max_order = 0
           )
-            : state(diameter, index, n_medium),
-              ScatteringProperties(wavelength, jones_vector, amplitude)
-            {initialize(max_order);}
+            : ScatteringProperties(wavelength, jones_vector, amplitude),
+              state(diameter, index, n_medium)
+            {
+              initialize(max_order);
+            }
 
           Scatterer(
             State &state,
             SOURCE::State &source,
             size_t max_order = 0)
-            : state(state),
-              ScatteringProperties(source)
-            {initialize(max_order);}
+            : ScatteringProperties(source),
+              state(state)
+            {
+              initialize(max_order);
+            }
 
       void initialize(size_t &max_order)
       {

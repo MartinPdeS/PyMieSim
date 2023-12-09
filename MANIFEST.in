@@ -1,20 +1,9 @@
 graft PyMieSim
-graft tests
 
-include PyMieSim/binary/*
-include MANIFEST.in
-include LICENSE
-include PyMieSim/VERSION
-include README.rst
-include setup.py
-include setup.cfg
-include pyproject.toml
-
-global-exclude __pycache__
-global-exclude .DS_Store
-
-exclude *.ipynb
-exclude *.txt
-exclude *.yaml
-exclude *.yml
-exclude .git*
+prune requirements
+prune extern
+prune docs
+prune libraries
+prune Makefile
+prune tests
+prune PyMieSim/cpp

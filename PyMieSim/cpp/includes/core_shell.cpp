@@ -65,7 +65,7 @@
                   initialize(max_order);
                 }
 
-      Scatterer(State &state, SOURCE::State &source, size_t max_order=0) : state(state), ScatteringProperties(source)
+      Scatterer(State &state, SOURCE::State &source, size_t max_order=0) : ScatteringProperties(source), state(state)
       {
         initialize(max_order);
       }
