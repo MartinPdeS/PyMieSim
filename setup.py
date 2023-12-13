@@ -3,7 +3,6 @@
 import os
 import sys
 import pathlib
-import platform
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as build_ext_orig
@@ -30,7 +29,7 @@ class build_ext(build_ext_orig):
     def run(self):
         for ext in self.extensions:
             self.build_cmake(ext)
-        super().run() 
+        super().run()
 
     def build_cmake(self, ext):
         root_directory = pathlib.Path().absolute()
@@ -45,12 +44,7 @@ class build_ext(build_ext_orig):
 
         os.chdir(str(build_temp))
 
-        if platform.system().lower() == 'windows':
-            # command = ['ninja', str(root_directory)] + cmake_args
-            command = ['cmake', str(root_directory)] + cmake_args
-
-        else:
-            command = ['cmake', str(root_directory)] + cmake_args
+        command = ['cmake', str(root_directory)] + cmake_args
 
         self.spawn(command)
 
