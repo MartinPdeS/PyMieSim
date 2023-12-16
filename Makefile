@@ -19,4 +19,4 @@ doc-noplot:
 	$(MAKE) -C docs html-noplot
 
 clean:
-	rm -rf build PyMieSim.egg-info dist .pytest_cache PyMieSim/binary/*.a PyMieSim/binary/*.so *.whl wheel_house .eggs
+	rm -rf build *.egg-info dist .pytest_cache *.whl wheel_house .eggs

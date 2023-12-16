@@ -16,8 +16,8 @@ dist
 build
 *.egg*
 *.whl
-Perso/
-Reports/*
+perso/
+
 docs/source/Gallery
 
 CMakeCache.txt

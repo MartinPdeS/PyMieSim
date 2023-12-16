@@ -16,7 +16,6 @@ jobs:
           - uses: MartinPdeS/MPSActions/build_package_for_manylinux@master
 
 
-
     macos_x86_64:
         runs-on: macos-11
         steps:

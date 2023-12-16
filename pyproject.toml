@@ -1,21 +1,21 @@
 [tool.cibuildwheel]
 build-frontend = "pip"
-build-verbosity = 3
+build-verbosity = 1
 before-test = ""
 test-command = "python -m pytest {project}/tests"
 test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
-build = ["cp310-manylinux*", "cp311-manylinux*"]
+build = ["cp310-manylinux*", "cp311-manylinux*", "cp312-manylinux*"]
 manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.macos]
 archs = ["arm64", "universal2", "x86_64"]
-build = ["cp310-*", "cp311-*"]
+build = ["cp310-*", "cp311-*", "cp312-*"]
 repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
-build = ["cp310-*", "cp311-*"]
+build = ["cp310-*", "cp311-*", "cp312-*"]
