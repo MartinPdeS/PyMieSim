@@ -19,8 +19,10 @@ scott_prahl_values = {
 def test_validation_scott_prahl(measure_str):
     source = PlaneWave(
         wavelength=1e-6,
-        linear_polarization=0,
-        amplitude=1
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
     )
 
     scatterer = Sphere(

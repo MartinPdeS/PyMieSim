@@ -45,9 +45,11 @@ plottings = [
 @pytest.mark.parametrize('method', methods)
 def test_sphere_method(method: str, core_type: object):
     source = PlaneWave(
-        wavelength=1e-6,
-        linear_polarization=0,
-        amplitude=1
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
     )
 
     scatterer = Sphere(
@@ -64,9 +66,11 @@ def test_sphere_method(method: str, core_type: object):
 @pytest.mark.parametrize('attribute', attributes)
 def test_sphere_attribute(attribute: str, core_type: object):
     source = PlaneWave(
-        wavelength=1e-6,
-        linear_polarization=0,
-        amplitude=1
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
     )
 
     scatterer = Sphere(
@@ -83,9 +87,11 @@ def test_sphere_attribute(attribute: str, core_type: object):
 @pytest.mark.parametrize('plotting', plottings)
 def test_sphere_plottings(plotting: str, core_type: object):
     source = PlaneWave(
-        wavelength=1e-6,
-        linear_polarization=0,
-        amplitude=1
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
     )
 
     scatterer = Sphere(

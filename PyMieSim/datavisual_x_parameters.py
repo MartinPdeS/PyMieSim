@@ -12,8 +12,8 @@ wavelength = dict(
 )
 
 amplitude = dict(
-    name='ampltiude',
-    long_label='Ampltiude',
+    name='amplitude',
+    long_label='Amplitude',
     format=".1e",
     unit="w.m⁻¹",
     short_label=r'E$_{0}$'

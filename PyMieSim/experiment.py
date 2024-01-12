@@ -86,7 +86,8 @@ class CoreShellSet():
         """
         experiment.binding.set_coreshell(self.binding)
 
-    def get_core_shell_diameter_from_shell_width(self,
+    def get_core_shell_diameter_from_shell_width(
+            self,
             core_diameter: numpy.ndarray,
             shell_width: numpy.ndarray) -> tuple:
         """
@@ -658,7 +659,9 @@ class LPModeSet():
         :returns:   No Return
         :rtype:     None
         """
-        representation = [f"LP$_{{{mode.replace('-','')}}}$" for mode in self.mode_number]
+        representation = [
+            f"{mode}" for mode in self.mode_number
+        ]
 
         self.NA = Xparameter(values=self.NA, **Kwargs.NA)
 

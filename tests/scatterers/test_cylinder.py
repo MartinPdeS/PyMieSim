@@ -42,11 +42,12 @@ attributes = [
 @pytest.mark.parametrize('method', methods)
 def test_cylinder_methods(method, core_type):
     source = PlaneWave(
-        wavelength=1e-6,
-        linear_polarization=0,
-        amplitude=1
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
     )
-
     scatterer = Cylinder(
         diameter=100e-9,
         source=source,
@@ -61,9 +62,11 @@ def test_cylinder_methods(method, core_type):
 @pytest.mark.parametrize('attribute', attributes)
 def test_cylinder_attributes(attribute, core_type):
     source = PlaneWave(
-        wavelength=1e-6,
-        linear_polarization=0,
-        amplitude=1
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
     )
 
     scatterer = Cylinder(

@@ -13,10 +13,13 @@ from PyMieSim.source import PlaneWave
 # Defining the source
 # ~~~~~~~~~~~~~~~~~~~
 source = PlaneWave(
-    wavelength=450e-9,
-    linear_polarization=0,
-    amplitude=1
+    wavelength=750e-9,
+    polarization_value='right',
+    polarization_type='circular',
+    optical_power=1,
+    NA=0.3
 )
+
 
 # %%
 # Defining the scatterer

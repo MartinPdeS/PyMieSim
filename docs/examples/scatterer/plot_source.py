@@ -1,6 +1,6 @@
 """
-Far-Fields computation
-======================
+Source plottings
+================
 
 """
 
@@ -21,23 +21,9 @@ source = PlaneWave(
 )
 
 # %%
-# Defining the scatterer
-# ~~~~~~~~~~~~~~~~~~~~~~
-scatterer = Sphere(
-    diameter=1500e-9,
-    source=source,
-    index=1.4
-)
-
-# %%
-# Computing the data
-# ~~~~~~~~~~~~~~~~~~
-data = scatterer.get_far_field(sampling=100)
-
-# %%
-# Plotting the data
-# ~~~~~~~~~~~~~~~~~
-figure = data.plot()
+# Plotting the source
+# ~~~~~~~~~~~~~~~~~~~
+figure = source.plot()
 
 _ = figure.show()
 

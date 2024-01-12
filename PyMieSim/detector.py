@@ -93,6 +93,8 @@ class GenericDetector():
         r"""
         Method that plot the real part of the scattered fields (:math:`E_{\theta}` and :math:`E_{\phi}`).
 
+        :returns:   3D plotting scene
+        :rtype:     SceneList3D
         """
         coordinate = numpy.c_[self.fibonacci_mesh.X, self.fibonacci_mesh.Y, self.fibonacci_mesh.Z].T
 
@@ -109,7 +111,7 @@ class GenericDetector():
                 symmetric_colormap=True
             )
 
-            ax.add_unit_sphere()
+            ax.add_unit_sphere(opacity=0.3)
             ax.add_unit_axis(show_label=False)
             ax.add_colorbar(artist=artist, title=f'field [{scalar_type}]')
 

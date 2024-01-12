@@ -46,3 +46,30 @@ def generate_fft_shift(n_points: int) -> numpy.ndarray:
         shift_grid, _ = numpy.meshgrid(phase_shift, phase_shift)
 
         return shift_grid * shift_grid.T
+
+
+def power_to_amplitude(optical_power: float, NA: float, wavelength: float) -> float:
+    """
+    Returns the amplitude of field for a given power, numerical aperture and wavelength
+
+    :param      power:       The power
+    :type       power:       float
+    :param      NA:          { parameter_description }
+    :type       NA:          float
+    :param      wavelength:  The wavelength
+    :type       wavelength:  float
+
+    :returns:   { description_of_the_return_value }
+    :rtype:     float
+    """
+    from scipy.constants import epsilon_0, c
+    omega = 0.61 * wavelength / NA
+    area = numpy.pi * (omega / 2)**2
+    intensity = optical_power / area
+    amplitude = numpy.sqrt(
+        2 / (c * epsilon_0) * intensity
+    )
+
+    return amplitude
+
+# -

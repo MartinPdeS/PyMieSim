@@ -1,28 +1,30 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections.abc import Iterable
+
 import numpy
 
 
 class JonesVector():
-    def __init__(self, jones_vector):
+    def __init__(self, jones_vector: Iterable) -> None:
         self.jones_vector = numpy.array(jones_vector).astype(complex)
 
     def __repr__(self):
         return self.jones_vector.__repr__()
 
-    def __add__(self, Other):
-        if self.jones_vector.ndim == 1 and Other.jones_vector.ndim == 1:
-            return JonesVector([self.jones_vector, Other.jones_vector])
+    def __add__(self, other):
+        if self.jones_vector.ndim == 1 and other.jones_vector.ndim == 1:
+            return JonesVector([self.jones_vector, other.jones_vector])
 
-        if self.jones_vector.ndim == 2 and Other.jones_vector.ndim == 1:
-            return JonesVector([*self.jones_vector, Other.jones_vector])
+        if self.jones_vector.ndim == 2 and other.jones_vector.ndim == 1:
+            return JonesVector([*self.jones_vector, other.jones_vector])
 
-        if self.jones_vector.ndim == 1 and Other.jones_vector.ndim == 2:
-            return JonesVector([self.jones_vector, *Other.jones_vector])
+        if self.jones_vector.ndim == 1 and other.jones_vector.ndim == 2:
+            return JonesVector([self.jones_vector, *other.jones_vector])
 
-        if self.jones_vector.ndim == 2 and Other.jones_vector.ndim == 2:
-            return JonesVector([*self.jones_vector, *Other.jones_vector])
+        if self.jones_vector.ndim == 2 and other.jones_vector.ndim == 2:
+            return JonesVector([*self.jones_vector, *other.jones_vector])
 
 
 class RightCircularPolarization(JonesVector):
