@@ -237,7 +237,6 @@ namespace SOURCE
                 return {
                     this->wavelength.size(),
                     this->jones_vector.size(),
-                    // this->amplitude.size(),
                     };
             }
 

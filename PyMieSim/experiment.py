@@ -435,10 +435,8 @@ class SourceSet(object):
     """ Optical power in unit of Watt """
     NA: float
     """ Numerical aperture of the source """
-    linear_polarization: float = None
+    linear_polarization: float
     """ polarization of the light field in degree. """
-    amplitude: float = None
-    """ Maximal value of the electric field at focus point. """
     name: str = 'PlaneWave'
     """ name of the set """
 
