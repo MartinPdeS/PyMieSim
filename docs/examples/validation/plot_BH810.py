@@ -20,8 +20,10 @@ y = theoretical[:, 1]
 
 source = PlaneWave(
     wavelength=470e-9,
-    linear_polarization=90,
-    amplitude=1
+    polarization_value=90,
+    polarization_type='linear',
+    optical_power=1e-3,
+    NA=0.1,
 )
 
 scatterer_set = Cylinder(
