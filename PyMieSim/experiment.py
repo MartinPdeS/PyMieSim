@@ -496,8 +496,6 @@ class SourceSet(object):
 
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
 
-        self.amplitude = numpy.atleast_1d(self.amplitude).astype(float)
-
         self.jones_vector = numpy.atleast_1d(self.linear_polarization.jones_vector).astype(numpy.complex128).T
 
     def bind_to_experiment(self, experiment):
