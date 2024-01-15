@@ -57,7 +57,8 @@ def get_comparison(wavelength, index, diameters, measure_string: str):
     source_set = SourceSet(
         wavelength=wavelength,
         linear_polarization=0,
-        amplitude=1
+        optical_power=1e-3,
+        NA=0.2
     )
 
     PyMieScatt_data = get_PyMieScatt_data(

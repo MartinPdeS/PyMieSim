@@ -20,7 +20,8 @@ index = 1.4
 source_set = SourceSet(
     wavelength=632.8e-9,
     linear_polarization=0,
-    amplitude=1
+    optical_power=1,
+    NA=0.2
 )
 
 scatterer_set = SphereSet(

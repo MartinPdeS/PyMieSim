@@ -23,7 +23,8 @@ scatterer_set = SphereSet(
 source_set = SourceSet(
     wavelength=[500e-9, 1000e-9, 1500e-9],
     linear_polarization=30,
-    amplitude=1
+    optical_power=1e-3,
+    NA=0.2
 )
 
 # %%
@@ -35,7 +36,7 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measure.Qsca)
+data = experiment.Get(measure.Csca)
 
 # %%
 # Plotting the results

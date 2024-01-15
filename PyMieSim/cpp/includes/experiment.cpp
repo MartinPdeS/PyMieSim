@@ -4,6 +4,7 @@
 #include "definitions.cpp"
 #include "numpy_interface.cpp"
 #include "sets.cpp"
+#include <iostream>
 
 
 class Experiment
@@ -99,17 +100,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                       sourceSet.wavelength[w],
                                       sourceSet.jones_vector[j],
-                                      sourceSet.amplitude[a]
+                                      sourceSet.amplitude[w]
                                     );
 
                                     SPHERE::State scatterer_state = SPHERE::State(
@@ -118,9 +118,9 @@ class Experiment
                                       sphereSet.n_medium[n]
                                     );
 
-                                    SPHERE::Scatterer Scat = SPHERE::Scatterer(scatterer_state, source_state, max_order+1);
+                                    SPHERE::Scatterer scatterer = SPHERE::Scatterer(scatterer_state, source_state, max_order+1);
 
-                                    output_array[idx] = 0. * (Scat.*function)()[max_order];
+                                    output_array[idx] = 0. * (scatterer.*function)()[max_order];
                                 }
 
           return vector_to_ndarray(output_array, array_shape);
@@ -144,17 +144,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     SPHERE::State scatterer_state = SPHERE::State(
@@ -164,13 +163,13 @@ class Experiment
                                     );
 
 
-                                    SPHERE::Scatterer Scat = SPHERE::Scatterer(
+                                    SPHERE::Scatterer scatterer = SPHERE::Scatterer(
                                         scatterer_state,
                                         source_state,
                                         max_order+1
                                     );
 
-                                    output_array[idx] = (Scat.*function)()[max_order];
+                                    output_array[idx] = (scatterer.*function)()[max_order];
                                 }
 
           return vector_to_ndarray(output_array, array_shape);
@@ -198,17 +197,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     SPHERE::State scatterer_state = SPHERE::State(
@@ -218,12 +216,12 @@ class Experiment
                                     );
 
 
-                                    SPHERE::Scatterer Scat = SPHERE::Scatterer(
+                                    SPHERE::Scatterer scatterer = SPHERE::Scatterer(
                                         scatterer_state,
                                         source_state
                                     );
 
-                                    output_array[idx] = (Scat.*function)();
+                                    output_array[idx] = (scatterer.*function)();
                                 }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -247,17 +245,16 @@ class Experiment
             #pragma omp parallel for collapse(6) shared(output_array)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     SPHERE::State scatterer_state = SPHERE::State(
@@ -301,22 +298,21 @@ class Experiment
             #pragma omp parallel for collapse(11)
                 for (size_t w=0; w<array_shape[0]; ++w)
                     for (size_t j=0; j<array_shape[1]; ++j)
-                        for (size_t a=0; a<array_shape[2]; ++a)
-                            for (size_t d=0; d<array_shape[3]; ++d)
-                                for (size_t i=0; i<array_shape[4]; ++i)
-                                    for (size_t n=0; n<array_shape[5]; ++n)
-                                        for (size_t s=0; s<array_shape[6]; ++s)
-                                            for (size_t na=0; na<array_shape[7]; ++na)
-                                                for (size_t p=0; p<array_shape[8]; ++p)
-                                                    for (size_t g=0; g<array_shape[9]; ++g)
-                                                        for (size_t f=0; f<array_shape[10]; ++f)
+                            for (size_t d=0; d<array_shape[2]; ++d)
+                                for (size_t i=0; i<array_shape[3]; ++i)
+                                    for (size_t n=0; n<array_shape[4]; ++n)
+                                        for (size_t s=0; s<array_shape[5]; ++s)
+                                            for (size_t na=0; na<array_shape[6]; ++na)
+                                                for (size_t p=0; p<array_shape[7]; ++p)
+                                                    for (size_t g=0; g<array_shape[8]; ++g)
+                                                        for (size_t f=0; f<array_shape[9]; ++f)
                                                         {
-                                                            size_t idx = flatten_multi_index({w, j, a, d, i, n, s, na, p, g, f}, array_shape);
+                                                            size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
                                                             SOURCE::State source_state = SOURCE::State(
                                                                 sourceSet.wavelength[w],
                                                                 sourceSet.jones_vector[j],
-                                                                sourceSet.amplitude[a]
+                                                                sourceSet.amplitude[w]
                                                             );
 
                                                             SPHERE::State scatterer_state = SPHERE::State(
@@ -336,14 +332,14 @@ class Experiment
                                                                 detectorSet.point_coupling
                                                             );
 
-                                                            SPHERE::Scatterer Scat = SPHERE::Scatterer(
+                                                            SPHERE::Scatterer scatterer = SPHERE::Scatterer(
                                                                 scatterer_state,
                                                                 source_state
                                                             );
 
-                                                            DETECTOR::Detector det = DETECTOR::Detector(detector_state);
+                                                            DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                            output_array[idx] = abs( det.Coupling(Scat) );
+                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
                                                         }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -368,23 +364,22 @@ class Experiment
             #pragma omp parallel for collapse(11)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
-                                    for (size_t s=0; s<array_shape[6]; ++s)
-                                        for (size_t na=0; na<array_shape[7]; ++na)
-                                            for (size_t p=0; p<array_shape[8]; ++p)
-                                                for (size_t g=0; g<array_shape[9]; ++g)
-                                                    for (size_t f=0; f<array_shape[10]; ++f)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
+                                    for (size_t s=0; s<array_shape[5]; ++s)
+                                        for (size_t na=0; na<array_shape[6]; ++na)
+                                            for (size_t p=0; p<array_shape[7]; ++p)
+                                                for (size_t g=0; g<array_shape[8]; ++g)
+                                                    for (size_t f=0; f<array_shape[9]; ++f)
                                                     {
-                                                        size_t idx = flatten_multi_index({w, j, a, d, i, n, s, na, p, g, f}, array_shape);
+                                                        size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
 
                                                         SOURCE::State source_state = SOURCE::State(
                                                             sourceSet.wavelength[w],
                                                             sourceSet.jones_vector[j],
-                                                            sourceSet.amplitude[a]
+                                                            sourceSet.amplitude[w]
                                                         );
 
                                                         SPHERE::State scatterer_state = SPHERE::State(
@@ -404,14 +399,16 @@ class Experiment
                                                             detectorSet.point_coupling
                                                         );
 
-                                                        SPHERE::Scatterer Scat = SPHERE::Scatterer(
+                                                        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
                                                             scatterer_state,
                                                             source_state
                                                         );
 
-                                                        DETECTOR::Detector det = DETECTOR::Detector(detector_state);
+                                                        DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                        output_array[idx] = abs( det.Coupling(Scat) );
+                                                        double coupling = detector.Coupling(scatterer);
+
+                                                        output_array[idx] = abs(coupling);
                                                     }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -461,17 +458,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     CYLINDER::State scatterer_state = CYLINDER::State(
@@ -483,7 +479,7 @@ class Experiment
                                     CYLINDER::Scatterer Scat = CYLINDER::Scatterer(
                                         scatterer_state,
                                         source_state,
-                                        max_order+1
+                                        max_order + 1
                                     );
 
                                     output_array[idx] = (Scat.*function)()[max_order];
@@ -513,17 +509,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     CYLINDER::State scatterer_state = CYLINDER::State(
@@ -535,7 +530,7 @@ class Experiment
                                     CYLINDER::Scatterer Scat = CYLINDER::Scatterer(
                                         scatterer_state,
                                         source_state,
-                                        max_order+1
+                                        max_order + 1
                                     );
 
                                     output_array[idx] = (Scat.*function)()[max_order];
@@ -562,17 +557,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     CYLINDER::State scatterer_state = CYLINDER::State(
@@ -611,17 +605,16 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
                                 {
-                                    size_t idx = flatten_multi_index({w, j, a, d, i, n}, array_shape);
+                                    size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
                                     SOURCE::State source_state = SOURCE::State(
                                         sourceSet.wavelength[w],
                                         sourceSet.jones_vector[j],
-                                        sourceSet.amplitude[a]
+                                        sourceSet.amplitude[w]
                                     );
 
                                     CYLINDER::State scatterer_state = CYLINDER::State(
@@ -660,23 +653,22 @@ class Experiment
             #pragma omp parallel for collapse(11)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
-                                    for (size_t s=0; s<array_shape[6]; ++s)
-                                        for (size_t na=0; na<array_shape[7]; ++na)
-                                            for (size_t p=0; p<array_shape[8]; ++p)
-                                                for (size_t g=0; g<array_shape[9]; ++g)
-                                                    for (size_t f=0; f<array_shape[10]; ++f)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
+                                    for (size_t s=0; s<array_shape[5]; ++s)
+                                        for (size_t na=0; na<array_shape[6]; ++na)
+                                            for (size_t p=0; p<array_shape[7]; ++p)
+                                                for (size_t g=0; g<array_shape[8]; ++g)
+                                                    for (size_t f=0; f<array_shape[9]; ++f)
                                                     {
-                                                        size_t idx = flatten_multi_index({w, j, a, d, i, n, s, na, p, g, f}, array_shape);
+                                                        size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
 
                                                         SOURCE::State source_state = SOURCE::State(
                                                             sourceSet.wavelength[w],
                                                             sourceSet.jones_vector[j],
-                                                            sourceSet.amplitude[a]
+                                                            sourceSet.amplitude[w]
                                                         );
 
                                                         CYLINDER::State scatterer_state = CYLINDER::State(
@@ -730,22 +722,21 @@ class Experiment
             #pragma omp parallel for collapse(11)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t d=0; d<array_shape[3]; ++d)
-                            for (size_t i=0; i<array_shape[4]; ++i)
-                                for (size_t n=0; n<array_shape[5]; ++n)
-                                    for (size_t s=0; s<array_shape[6]; ++s)
-                                        for (size_t na=0; na<array_shape[7]; ++na)
-                                            for (size_t p=0; p<array_shape[8]; ++p)
-                                                for (size_t g=0; g<array_shape[9]; ++g)
-                                                    for (size_t f=0; f<array_shape[10]; ++f)
+                        for (size_t d=0; d<array_shape[2]; ++d)
+                            for (size_t i=0; i<array_shape[3]; ++i)
+                                for (size_t n=0; n<array_shape[4]; ++n)
+                                    for (size_t s=0; s<array_shape[5]; ++s)
+                                        for (size_t na=0; na<array_shape[6]; ++na)
+                                            for (size_t p=0; p<array_shape[7]; ++p)
+                                                for (size_t g=0; g<array_shape[8]; ++g)
+                                                    for (size_t f=0; f<array_shape[9]; ++f)
                                                     {
-                                                        size_t idx = flatten_multi_index({w, j, a, d, i, n, s, na, p, g, f}, array_shape);
+                                                        size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
                                                         SOURCE::State source_state = SOURCE::State(
                                                             sourceSet.wavelength[w],
                                                             sourceSet.jones_vector[j],
-                                                            sourceSet.amplitude[a]
+                                                            sourceSet.amplitude[w]
                                                         );
 
                                                         CYLINDER::State scatterer_state = CYLINDER::State(
@@ -844,19 +835,18 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
+                        for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                            for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                                for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                    for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                        for (size_t n=0; n<array_shape[6]; ++n)
                                         {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n}, array_shape);
+                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
 
                                             SOURCE::State source_state = SOURCE::State(
                                                 sourceSet.wavelength[w],
                                                 sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
+                                                sourceSet.amplitude[w]
                                             );
 
                                             CORESHELL::State scatterer_state = CORESHELL::State(
@@ -870,7 +860,7 @@ class Experiment
                                             CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
                                                 scatterer_state,
                                                 source_state,
-                                                max_order+1
+                                                max_order + 1
                                             );
 
                                             output_array[idx] = (scatterer.*function)()[max_order];
@@ -897,19 +887,18 @@ class Experiment
             #pragma omp parallel for collapse(8)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
+                        for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                            for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                                for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                    for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                        for (size_t n=0; n<array_shape[6]; ++n)
                                         {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n}, array_shape);
+                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
 
                                             SOURCE::State source_state = SOURCE::State(
                                                 sourceSet.wavelength[w],
                                                 sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
+                                                sourceSet.amplitude[w]
                                             );
 
                                             CORESHELL::State scatterer_state = CORESHELL::State(
@@ -923,7 +912,7 @@ class Experiment
                                             CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
                                                 scatterer_state,
                                                 source_state,
-                                                max_order+1
+                                                max_order + 1
                                             );
 
                                             output_array[idx] = (scatterer.*function)()[max_order];
@@ -950,19 +939,18 @@ class Experiment
         #pragma omp parallel for collapse(8)
         for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
-                for (size_t a=0; a<array_shape[2]; ++a)
-                    for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                        for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                            for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                    for (size_t n=0; n<array_shape[7]; ++n)
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
                                     {
-                                        size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n}, array_shape);
+                                        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
 
                                         SOURCE::State source_state = SOURCE::State(
                                             sourceSet.wavelength[w],
                                             sourceSet.jones_vector[j],
-                                            sourceSet.amplitude[a]
+                                            sourceSet.amplitude[w]
                                         );
 
                                         CORESHELL::State scatterer_state = CORESHELL::State(
@@ -976,7 +964,7 @@ class Experiment
                                         CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
                                             scatterer_state,
                                             source_state,
-                                            max_order+1
+                                            max_order + 1
                                         );
 
                                         output_array[idx] = (scatterer.*function)()[max_order];
@@ -1002,19 +990,18 @@ class Experiment
             #pragma omp parallel for collapse(8)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
+                        for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                            for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                                for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                    for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                        for (size_t n=0; n<array_shape[6]; ++n)
                                         {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n}, array_shape);
+                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
 
                                             SOURCE::State source_state = SOURCE::State(
                                                 sourceSet.wavelength[w],
                                                 sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
+                                                sourceSet.amplitude[w]
                                             );
 
                                             CORESHELL::State scatterer_state = CORESHELL::State(
@@ -1028,7 +1015,7 @@ class Experiment
                                             CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
                                                 scatterer_state,
                                                 source_state,
-                                                max_order+1
+                                                max_order + 1
                                             );
 
                                             output_array[idx] = (scatterer.*function)()[max_order];
@@ -1054,19 +1041,18 @@ class Experiment
             #pragma omp parallel for collapse(6)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Cm=0; Cm<array_shape[5]; ++Cm)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
+                        for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                            for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                                for (size_t Cm=0; Cm<array_shape[4]; ++Cm)
+                                    for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                        for (size_t n=0; n<array_shape[6]; ++n)
                                         {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Cm, Si, n}, array_shape);
+                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Cm, Si, n}, array_shape);
 
                                             SOURCE::State source_state = SOURCE::State(
                                                 sourceSet.wavelength[w],
                                                 sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
+                                                sourceSet.amplitude[w]
                                             );
 
                                             CORESHELL::State scatterer_state = CORESHELL::State(
@@ -1107,37 +1093,36 @@ class Experiment
             #pragma omp parallel for collapse(8)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Sm=0; Sm<array_shape[6]; ++Sm)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
-                                        {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Sm, n}, array_shape);
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Sm=0; Sm<array_shape[5]; ++Sm)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
+                                    {
+                                        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Sm, n}, array_shape);
 
-                                            SOURCE::State source_state = SOURCE::State(
-                                                sourceSet.wavelength[w],
-                                                sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
-                                            );
+                                        SOURCE::State source_state = SOURCE::State(
+                                            sourceSet.wavelength[w],
+                                            sourceSet.jones_vector[j],
+                                            sourceSet.amplitude[w]
+                                        );
 
-                                            CORESHELL::State scatterer_state = CORESHELL::State(
-                                                coreshellSet.core_diameter[Cd],
-                                                coreshellSet.shell_width[Sd],
-                                                coreshellSet.core_index[Ci],
-                                                coreshellSet.shell_material[Sm][w],
-                                                coreshellSet.n_medium[n]
-                                            );
+                                        CORESHELL::State scatterer_state = CORESHELL::State(
+                                            coreshellSet.core_diameter[Cd],
+                                            coreshellSet.shell_width[Sd],
+                                            coreshellSet.core_index[Ci],
+                                            coreshellSet.shell_material[Sm][w],
+                                            coreshellSet.n_medium[n]
+                                        );
 
-                                            CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-                                                scatterer_state,
-                                                source_state,
-                                                max_order
-                                            );
+                                        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
+                                            scatterer_state,
+                                            source_state,
+                                            max_order
+                                        );
 
-                                            output_array[idx] = (scatterer.*function)();
-                                        }
+                                        output_array[idx] = (scatterer.*function)();
+                                    }
 
             return vector_to_ndarray(output_array, array_shape);
         }
@@ -1159,19 +1144,18 @@ class Experiment
             #pragma omp parallel for collapse(8)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Cm=0; Cm<array_shape[5]; ++Cm)
-                                    for (size_t Sm=0; Sm<array_shape[6]; ++Sm)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
+                        for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                            for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                                for (size_t Cm=0; Cm<array_shape[4]; ++Cm)
+                                    for (size_t Sm=0; Sm<array_shape[5]; ++Sm)
+                                        for (size_t n=0; n<array_shape[6]; ++n)
                                         {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Cm, Sm, n}, array_shape);
+                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Cm, Sm, n}, array_shape);
 
                                             SOURCE::State source_state = SOURCE::State(
                                                 sourceSet.wavelength[w],
                                                 sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
+                                                sourceSet.amplitude[w]
                                             );
 
                                             CORESHELL::State scatterer_state = CORESHELL::State(
@@ -1211,37 +1195,36 @@ class Experiment
             #pragma omp parallel for collapse(8)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
-                                        {
-                                            size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n}, array_shape);
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
+                                    {
+                                        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
 
-                                            SOURCE::State source_state = SOURCE::State(
-                                                sourceSet.wavelength[w],
-                                                sourceSet.jones_vector[j],
-                                                sourceSet.amplitude[a]
-                                            );
+                                        SOURCE::State source_state = SOURCE::State(
+                                            sourceSet.wavelength[w],
+                                            sourceSet.jones_vector[j],
+                                            sourceSet.amplitude[w]
+                                        );
 
-                                            CORESHELL::State scatterer_state = CORESHELL::State(
-                                                coreshellSet.core_diameter[Cd],
-                                                coreshellSet.shell_width[Sd],
-                                                coreshellSet.core_index[Ci],
-                                                coreshellSet.shell_index[Si],
-                                                coreshellSet.n_medium[n]
-                                            );
+                                        CORESHELL::State scatterer_state = CORESHELL::State(
+                                            coreshellSet.core_diameter[Cd],
+                                            coreshellSet.shell_width[Sd],
+                                            coreshellSet.core_index[Ci],
+                                            coreshellSet.shell_index[Si],
+                                            coreshellSet.n_medium[n]
+                                        );
 
-                                            CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-                                                scatterer_state,
-                                                source_state,
-                                                max_order
-                                            );
+                                        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
+                                            scatterer_state,
+                                            source_state,
+                                            max_order
+                                        );
 
-                                            output_array[idx] = (scatterer.*function)();
-                                        }
+                                        output_array[idx] = (scatterer.*function)();
+                                    }
 
             return vector_to_ndarray(output_array, array_shape);
         }
@@ -1265,53 +1248,52 @@ class Experiment
             #pragma omp parallel for collapse(13)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
-                                            for (size_t s=0; s<array_shape[8]; ++s)
-                                                for (size_t na=0; na<array_shape[9]; ++na)
-                                                    for (size_t p=0; p<array_shape[10]; ++p)
-                                                        for (size_t g=0; g<array_shape[11]; ++g)
-                                                            for (size_t f=0; f<array_shape[12]; ++f)
-                                                            {
-                                                                size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
+                                        for (size_t s=0; s<array_shape[7]; ++s)
+                                            for (size_t na=0; na<array_shape[8]; ++na)
+                                                for (size_t p=0; p<array_shape[9]; ++p)
+                                                    for (size_t g=0; g<array_shape[10]; ++g)
+                                                        for (size_t f=0; f<array_shape[11]; ++f)
+                                                        {
+                                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
 
-                                                                SOURCE::State source_state = SOURCE::State(
-                                                                    sourceSet.wavelength[w],
-                                                                    sourceSet.jones_vector[j],
-                                                                    sourceSet.amplitude[a]
-                                                                );
+                                                            SOURCE::State source_state = SOURCE::State(
+                                                                sourceSet.wavelength[w],
+                                                                sourceSet.jones_vector[j],
+                                                                sourceSet.amplitude[w]
+                                                            );
 
-                                                                CORESHELL::State scatterer_state = CORESHELL::State(
-                                                                    coreshellSet.core_diameter[Cd],
-                                                                    coreshellSet.shell_width[Sd],
-                                                                    coreshellSet.core_index[Ci],
-                                                                    coreshellSet.shell_index[Si],
-                                                                    coreshellSet.n_medium[n]
-                                                                );
+                                                            CORESHELL::State scatterer_state = CORESHELL::State(
+                                                                coreshellSet.core_diameter[Cd],
+                                                                coreshellSet.shell_width[Sd],
+                                                                coreshellSet.core_index[Ci],
+                                                                coreshellSet.shell_index[Si],
+                                                                coreshellSet.n_medium[n]
+                                                            );
 
-                                                                DETECTOR::State detector_state = DETECTOR::State(
-                                                                    detectorSet.scalar_field[s],
-                                                                    detectorSet.NA[na],
-                                                                    detectorSet.phi_offset[p],
-                                                                    detectorSet.gamma_offset[g],
-                                                                    detectorSet.polarization_filter[f],
-                                                                    detectorSet.coherent,
-                                                                    detectorSet.point_coupling
-                                                                );
+                                                            DETECTOR::State detector_state = DETECTOR::State(
+                                                                detectorSet.scalar_field[s],
+                                                                detectorSet.NA[na],
+                                                                detectorSet.phi_offset[p],
+                                                                detectorSet.gamma_offset[g],
+                                                                detectorSet.polarization_filter[f],
+                                                                detectorSet.coherent,
+                                                                detectorSet.point_coupling
+                                                            );
 
-                                                                CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-                                                                    scatterer_state,
-                                                                    source_state
-                                                                );
+                                                            CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
+                                                                scatterer_state,
+                                                                source_state
+                                                            );
 
-                                                                DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+                                                            DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                                output_array[idx] = abs( detector.Coupling(scatterer) );
-                                                            }
+                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                        }
 
             return vector_to_ndarray(output_array, array_shape);
         }
@@ -1336,53 +1318,52 @@ class Experiment
             #pragma omp parallel for collapse(13)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
-                                            for (size_t s=0; s<array_shape[8]; ++s)
-                                                for (size_t na=0; na<array_shape[9]; ++na)
-                                                    for (size_t p=0; p<array_shape[10]; ++p)
-                                                        for (size_t g=0; g<array_shape[11]; ++g)
-                                                            for (size_t f=0; f<array_shape[12]; ++f)
-                                                            {
-                                                                size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
+                                        for (size_t s=0; s<array_shape[7]; ++s)
+                                            for (size_t na=0; na<array_shape[8]; ++na)
+                                                for (size_t p=0; p<array_shape[9]; ++p)
+                                                    for (size_t g=0; g<array_shape[10]; ++g)
+                                                        for (size_t f=0; f<array_shape[11]; ++f)
+                                                        {
+                                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
 
-                                                                SOURCE::State source_state = SOURCE::State(
-                                                                    sourceSet.wavelength[w],
-                                                                    sourceSet.jones_vector[j],
-                                                                    sourceSet.amplitude[a]
-                                                                );
+                                                            SOURCE::State source_state = SOURCE::State(
+                                                                sourceSet.wavelength[w],
+                                                                sourceSet.jones_vector[j],
+                                                                sourceSet.amplitude[w]
+                                                            );
 
-                                                                CORESHELL::State scatterer_state = CORESHELL::State(
-                                                                    coreshellSet.core_diameter[Cd],
-                                                                    coreshellSet.shell_width[Sd],
-                                                                    coreshellSet.core_material[Ci][w],
-                                                                    coreshellSet.shell_index[Si],
-                                                                    coreshellSet.n_medium[n]
-                                                                );
+                                                            CORESHELL::State scatterer_state = CORESHELL::State(
+                                                                coreshellSet.core_diameter[Cd],
+                                                                coreshellSet.shell_width[Sd],
+                                                                coreshellSet.core_material[Ci][w],
+                                                                coreshellSet.shell_index[Si],
+                                                                coreshellSet.n_medium[n]
+                                                            );
 
-                                                                DETECTOR::State detector_state = DETECTOR::State(
-                                                                    detectorSet.scalar_field[s],
-                                                                    detectorSet.NA[na],
-                                                                    detectorSet.phi_offset[p],
-                                                                    detectorSet.gamma_offset[g],
-                                                                    detectorSet.polarization_filter[f],
-                                                                    detectorSet.coherent,
-                                                                    detectorSet.point_coupling
-                                                                );
+                                                            DETECTOR::State detector_state = DETECTOR::State(
+                                                                detectorSet.scalar_field[s],
+                                                                detectorSet.NA[na],
+                                                                detectorSet.phi_offset[p],
+                                                                detectorSet.gamma_offset[g],
+                                                                detectorSet.polarization_filter[f],
+                                                                detectorSet.coherent,
+                                                                detectorSet.point_coupling
+                                                            );
 
-                                                                CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-                                                                    scatterer_state,
-                                                                    source_state
-                                                                );
+                                                            CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
+                                                                scatterer_state,
+                                                                source_state
+                                                            );
 
-                                                                DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+                                                            DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                                output_array[idx] = abs( detector.Coupling(scatterer) );
-                                                            }
+                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                        }
 
             return vector_to_ndarray(output_array, array_shape);
         }
@@ -1407,53 +1388,52 @@ class Experiment
             #pragma omp parallel for collapse(13)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
-                                            for (size_t s=0; s<array_shape[8]; ++s)
-                                                for (size_t na=0; na<array_shape[9]; ++na)
-                                                    for (size_t p=0; p<array_shape[10]; ++p)
-                                                        for (size_t g=0; g<array_shape[11]; ++g)
-                                                            for (size_t f=0; f<array_shape[12]; ++f)
-                                                            {
-                                                                size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
+                                        for (size_t s=0; s<array_shape[7]; ++s)
+                                            for (size_t na=0; na<array_shape[8]; ++na)
+                                                for (size_t p=0; p<array_shape[9]; ++p)
+                                                    for (size_t g=0; g<array_shape[10]; ++g)
+                                                        for (size_t f=0; f<array_shape[11]; ++f)
+                                                        {
+                                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
 
-                                                                SOURCE::State source_state = SOURCE::State(
-                                                                    sourceSet.wavelength[w],
-                                                                    sourceSet.jones_vector[j],
-                                                                    sourceSet.amplitude[a]
-                                                                );
+                                                            SOURCE::State source_state = SOURCE::State(
+                                                                sourceSet.wavelength[w],
+                                                                sourceSet.jones_vector[j],
+                                                                sourceSet.amplitude[w]
+                                                            );
 
-                                                                CORESHELL::State scatterer_state = CORESHELL::State(
-                                                                    coreshellSet.core_diameter[Cd],
-                                                                    coreshellSet.shell_width[Sd],
-                                                                    coreshellSet.core_index[Ci],
-                                                                    coreshellSet.shell_material[Si][w],
-                                                                    coreshellSet.n_medium[n]
-                                                                );
+                                                            CORESHELL::State scatterer_state = CORESHELL::State(
+                                                                coreshellSet.core_diameter[Cd],
+                                                                coreshellSet.shell_width[Sd],
+                                                                coreshellSet.core_index[Ci],
+                                                                coreshellSet.shell_material[Si][w],
+                                                                coreshellSet.n_medium[n]
+                                                            );
 
-                                                                DETECTOR::State detector_state = DETECTOR::State(
-                                                                    detectorSet.scalar_field[s],
-                                                                    detectorSet.NA[na],
-                                                                    detectorSet.phi_offset[p],
-                                                                    detectorSet.gamma_offset[g],
-                                                                    detectorSet.polarization_filter[f],
-                                                                    detectorSet.coherent,
-                                                                    detectorSet.point_coupling
-                                                                );
+                                                            DETECTOR::State detector_state = DETECTOR::State(
+                                                                detectorSet.scalar_field[s],
+                                                                detectorSet.NA[na],
+                                                                detectorSet.phi_offset[p],
+                                                                detectorSet.gamma_offset[g],
+                                                                detectorSet.polarization_filter[f],
+                                                                detectorSet.coherent,
+                                                                detectorSet.point_coupling
+                                                            );
 
-                                                                CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-                                                                    scatterer_state,
-                                                                    source_state
-                                                                );
+                                                            CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
+                                                                scatterer_state,
+                                                                source_state
+                                                            );
 
-                                                                DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+                                                            DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                                output_array[idx] = abs( detector.Coupling(scatterer) );
-                                                            }
+                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                        }
 
             return vector_to_ndarray(output_array, array_shape);
         }
@@ -1476,53 +1456,52 @@ class Experiment
             #pragma omp parallel for collapse(13)
             for (size_t w=0; w<array_shape[0]; ++w)
                 for (size_t j=0; j<array_shape[1]; ++j)
-                    for (size_t a=0; a<array_shape[2]; ++a)
-                        for (size_t Cd=0; Cd<array_shape[3]; ++Cd)
-                            for (size_t Sd=0; Sd<array_shape[4]; ++Sd)
-                                for (size_t Ci=0; Ci<array_shape[5]; ++Ci)
-                                    for (size_t Si=0; Si<array_shape[6]; ++Si)
-                                        for (size_t n=0; n<array_shape[7]; ++n)
-                                            for (size_t s=0; s<array_shape[8]; ++s)
-                                                for (size_t na=0; na<array_shape[9]; ++na)
-                                                    for (size_t p=0; p<array_shape[10]; ++p)
-                                                        for (size_t g=0; g<array_shape[11]; ++g)
-                                                            for (size_t f=0; f<array_shape[12]; ++f)
-                                                            {
-                                                                size_t idx = flatten_multi_index({w, j, a, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+                    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
+                        for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
+                            for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
+                                for (size_t Si=0; Si<array_shape[5]; ++Si)
+                                    for (size_t n=0; n<array_shape[6]; ++n)
+                                        for (size_t s=0; s<array_shape[7]; ++s)
+                                            for (size_t na=0; na<array_shape[8]; ++na)
+                                                for (size_t p=0; p<array_shape[9]; ++p)
+                                                    for (size_t g=0; g<array_shape[10]; ++g)
+                                                        for (size_t f=0; f<array_shape[11]; ++f)
+                                                        {
+                                                            size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
 
-                                                                SOURCE::State source_state = SOURCE::State(
-                                                                    sourceSet.wavelength[w],
-                                                                    sourceSet.jones_vector[j],
-                                                                    sourceSet.amplitude[a]
-                                                                );
+                                                            SOURCE::State source_state = SOURCE::State(
+                                                                sourceSet.wavelength[w],
+                                                                sourceSet.jones_vector[j],
+                                                                sourceSet.amplitude[w]
+                                                            );
 
-                                                                CORESHELL::State scatterer_state = CORESHELL::State(
-                                                                    coreshellSet.core_diameter[Cd],
-                                                                    coreshellSet.shell_width[Sd],
-                                                                    coreshellSet.core_material[Ci][w],
-                                                                    coreshellSet.shell_material[Si][w],
-                                                                    coreshellSet.n_medium[n]
-                                                                );
+                                                            CORESHELL::State scatterer_state = CORESHELL::State(
+                                                                coreshellSet.core_diameter[Cd],
+                                                                coreshellSet.shell_width[Sd],
+                                                                coreshellSet.core_material[Ci][w],
+                                                                coreshellSet.shell_material[Si][w],
+                                                                coreshellSet.n_medium[n]
+                                                            );
 
-                                                                DETECTOR::State  detector_state = DETECTOR::State(
-                                                                    detectorSet.scalar_field[s],
-                                                                    detectorSet.NA[na],
-                                                                    detectorSet.phi_offset[p],
-                                                                    detectorSet.gamma_offset[g],
-                                                                    detectorSet.polarization_filter[f],
-                                                                    detectorSet.coherent,
-                                                                    detectorSet.point_coupling
-                                                                );
+                                                            DETECTOR::State  detector_state = DETECTOR::State(
+                                                                detectorSet.scalar_field[s],
+                                                                detectorSet.NA[na],
+                                                                detectorSet.phi_offset[p],
+                                                                detectorSet.gamma_offset[g],
+                                                                detectorSet.polarization_filter[f],
+                                                                detectorSet.coherent,
+                                                                detectorSet.point_coupling
+                                                            );
 
-                                                                CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-                                                                    scatterer_state,
-                                                                    source_state
-                                                                );
+                                                            CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
+                                                                scatterer_state,
+                                                                source_state
+                                                            );
 
-                                                                DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+                                                            DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                                output_array[idx] = abs( detector.Coupling(scatterer) );
-                                                            }
+                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                        }
 
             return vector_to_ndarray(output_array, array_shape);
         }

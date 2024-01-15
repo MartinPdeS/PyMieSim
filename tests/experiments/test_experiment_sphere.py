@@ -38,7 +38,8 @@ def test_sphere_experiment(measure, core_type):
     source_set = SourceSet(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
         linear_polarization=0,
-        amplitude=1
+        optical_power=1e-3,
+        NA=0.2
     )
 
     detector_set = PhotodiodeSet(

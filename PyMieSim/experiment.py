@@ -9,7 +9,7 @@ from DataVisual import DataV
 import DataVisual.tables as Table
 
 from PyMieSim import load_lp_mode
-
+from PyMieSim.physics import power_to_amplitude
 from PyMieSim.polarization import LinearPolarization
 from PyMieSim.binary.Experiment import CppExperiment
 import PyMieSim.datavisual_x_parameters as Kwargs
@@ -429,8 +429,12 @@ class CylinderSet():
 
 @dataclass
 class SourceSet(object):
-    wavelength: float = 1.0
+    wavelength: float
     """ Wavelenght of the light field. """
+    optical_power: float
+    """ Optical power in unit of Watt """
+    NA: float
+    """ Numerical aperture of the source """
     linear_polarization: float = None
     """ polarization of the light field in degree. """
     amplitude: float = None
@@ -440,6 +444,12 @@ class SourceSet(object):
 
     def __post_init__(self):
         self.format_inputs()
+
+        self.amplitude = power_to_amplitude(
+            wavelength=self.wavelength,
+            optical_power=self.optical_power,
+            NA=self.NA,
+        )
 
         self.build_x_parameters()
 
@@ -453,8 +463,6 @@ class SourceSet(object):
         :rtype:     None
         """
         self.wavelength = Xparameter(values=self.wavelength, **Kwargs.wavelength)
-
-        self.amplitude = Xparameter(values=self.amplitude, **Kwargs.amplitude)
 
         self.linear_polarization = Xparameter(
             values=self.jones_vector,
@@ -472,7 +480,7 @@ class SourceSet(object):
         self.binding = CppSourceSet(
             wavelength=self.wavelength.values,
             jones_vector=self.jones_vector,
-            amplitude=self.amplitude.values
+            amplitude=self.amplitude
         )
 
     def format_inputs(self):
@@ -516,7 +524,7 @@ class SourceSet(object):
         :returns:   The updated list
         :rtype:     list
         """
-        return [*table, self.wavelength, self.linear_polarization, self.amplitude]
+        return [*table, self.wavelength, self.linear_polarization]
 
 
 @dataclass

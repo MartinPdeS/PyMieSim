@@ -23,7 +23,8 @@ scatterer_set = SphereSet(
 source_set = SourceSet(
     wavelength=np.linspace(400e-9, 1000e-9, 500),
     linear_polarization=0,
-    amplitude=1
+    optical_power=1e-3,
+    NA=0.2
 )
 
 # %%

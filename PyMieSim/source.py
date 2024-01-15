@@ -22,7 +22,7 @@ class PlaneWave():
     optical_power: float
     """ Optical power in unit of Watt """
     NA: float
-    """ Optical power in unit of Watt """
+    """ Numerical aperture of the source """
     polarization_value: float
     """ Polarization of the light field in degree. """
     polarization_type: str = 'linear'

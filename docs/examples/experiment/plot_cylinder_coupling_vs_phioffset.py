@@ -24,7 +24,8 @@ scatterer_set = CylinderSet(
 source_set = SourceSet(
     wavelength=1200e-9,
     linear_polarization=90,
-    amplitude=1e3
+    optical_power=1e-3,
+    NA=0.2
 )
 
 # %%

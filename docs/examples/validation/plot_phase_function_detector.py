@@ -27,7 +27,8 @@ scatterer_set = SphereSet(
 source_set = SourceSet(
     wavelength=source_wavelength,
     linear_polarization=[0, 90],
-    amplitude=1
+    optical_power=1,
+    NA=0.2
 )
 
 detector_set = PhotodiodeSet(
@@ -48,8 +49,10 @@ data = experiment.Get(measure.coupling)
 
 source = PlaneWave(
     wavelength=source_wavelength,
-    linear_polarization=90,
-    amplitude=1
+    polarization_value=90,
+    polarization_type='linear',
+    optical_power=1,
+    NA=0.2
 )
 
 scatterer = Sphere(

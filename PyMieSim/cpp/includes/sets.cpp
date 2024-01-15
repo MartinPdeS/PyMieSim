@@ -22,16 +22,16 @@ namespace SPHERE
 
             Set(){}
             Set(DVector &diameter, std::vector<std::vector<complex128>> &material, DVector &n_medium)
-            : diameter(diameter), material(material), n_medium(n_medium)
-            {
-            bounded_index=true;
-            }
+                : diameter(diameter), material(material), n_medium(n_medium)
+                {
+                bounded_index=true;
+                }
 
             Set(DVector &diameter, std::vector<complex128> &index, DVector &n_medium)
-            : diameter(diameter), index(index), n_medium(n_medium)
-            {
-            bounded_index=false;
-            }
+                : diameter(diameter), index(index), n_medium(n_medium)
+                {
+                bounded_index=false;
+                }
 
             State operator[](size_t idx){return this->States[idx];}
 
@@ -227,8 +227,8 @@ namespace SOURCE
 
             Set(){}
             Set(DVector &wavelength, std::vector<CVector> &jones_vector, DVector &amplitude)
-            : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
-            {}
+                : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
+                {}
 
             State operator[](size_t idx){return this->States[idx];}
 
@@ -237,7 +237,7 @@ namespace SOURCE
                 return {
                     this->wavelength.size(),
                     this->jones_vector.size(),
-                    this->amplitude.size(),
+                    // this->amplitude.size(),
                     };
             }
 

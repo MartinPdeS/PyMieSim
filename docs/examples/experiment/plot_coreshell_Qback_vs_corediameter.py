@@ -29,7 +29,8 @@ scatterer_set = CoreShellSet(
 source_set = SourceSet(
     wavelength=[800e-9, 900e-9, 1000e-9],
     linear_polarization=0,
-    amplitude=1
+    optical_power=1e-3,
+    NA=0.2
 )
 
 # %%
