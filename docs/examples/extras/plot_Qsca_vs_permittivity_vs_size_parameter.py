@@ -26,7 +26,8 @@ diameter = numpy.linspace(1e-9, 200e-9, 400)
 source_set = SourceSet(
     wavelength=400e-9,
     linear_polarization=90,
-    amplitude=1
+    optical_power=1e-3,
+    NA=0.2
 )
 
 

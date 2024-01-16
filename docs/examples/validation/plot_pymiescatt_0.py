@@ -27,7 +27,8 @@ scatterer_set = SphereSet(
 source_set = SourceSet(
     wavelength=632.8e-9,
     linear_polarization=0,
-    amplitude=1
+    optical_power=1e-3,
+    NA=0.2
 )
 
 experiment = Setup(
