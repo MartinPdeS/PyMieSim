@@ -6,7 +6,11 @@ CoreShell: Qsca, Qback vs core diameter
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from PyMieSim.experiment import SourceSet, Setup, CoreShellSet
+
+from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim.materials import BK7, Silver
 from PyMieSim import measure
 
@@ -14,7 +18,7 @@ from PyMieSim import measure
 # Defining the ranging parameters for the scatterer distribution
 # Here we look at core/shell scatterers and use constant shell diameter
 # with variable core diameter
-scatterer_set = CoreShellSet(
+scatterer_set = CoreShell(
     core_diameter=numpy.geomspace(100e-09, 600e-9, 400),
     shell_width=800e-9,
     core_material=Silver,
@@ -26,7 +30,7 @@ scatterer_set = CoreShellSet(
 # Defining the source to be employed.
 # The source is always a plane wave in the LMT framework.
 # The amplitude is set to one per default.
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=[800e-9, 900e-9, 1000e-9],
     linear_polarization=0,
     optical_power=1e-3,

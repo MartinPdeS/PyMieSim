@@ -7,13 +7,17 @@ Cylinder: Qsca vs diameter
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from PyMieSim.experiment import CylinderSet, SourceSet, Setup
+
+from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim.materials import Gold, Silver, Aluminium
 from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = CylinderSet(
+scatterer_set = Cylinder(
     diameter=np.linspace(1e-09, 800e-9, 300),
     material=[Silver, Gold, Aluminium],
     n_medium=1
@@ -21,7 +25,7 @@ scatterer_set = CylinderSet(
 
 # %%
 # Defining the source to be employed.
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=400e-9,
     linear_polarization=0,
     optical_power=1e-3,

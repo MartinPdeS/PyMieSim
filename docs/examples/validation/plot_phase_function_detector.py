@@ -9,29 +9,33 @@ Goniometrique coupling vs S1 S2
 import numpy
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment import SphereSet, SourceSet, Setup, PhotodiodeSet
+from PyMieSim.experiment.detector import Photodiode
+from PyMieSim.experiment.scatterer import Sphere as SetSphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
-from PyMieSim.scatterer import Sphere
+from PyMieSim.scatterer import Sphere as SingleSphere
 from PyMieSim.source import PlaneWave
 
 scatterer_diameter = 0.3e-6
 scatterer_index = 1.4
 source_wavelength = 1.2e-6
 
-scatterer_set = SphereSet(
+scatterer_set = SetSphere(
     diameter=scatterer_diameter,
     index=scatterer_index,
     n_medium=1.0
 )
 
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=source_wavelength,
     linear_polarization=[0, 90],
     optical_power=1,
     NA=0.2
 )
 
-detector_set = PhotodiodeSet(
+detector_set = Photodiode(
     NA=[0.1],
     phi_offset=numpy.linspace(-180, 180, 100),
     gamma_offset=0.0,
@@ -55,7 +59,7 @@ source = PlaneWave(
     NA=0.2
 )
 
-scatterer = Sphere(
+scatterer = SingleSphere(
     diameter=scatterer_diameter,
     source=source,
     index=scatterer_index,

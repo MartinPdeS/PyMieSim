@@ -7,12 +7,16 @@ Sphere: Qsca vs index
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from PyMieSim.experiment import SphereSet, SourceSet, Setup
+
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = SphereSet(
+scatterer_set = Sphere(
     diameter=800e-9,
     index=np.linspace(1.3, 1.9, 1500),
     n_medium=1
@@ -20,7 +24,7 @@ scatterer_set = SphereSet(
 
 # %%
 # Defining the source to be employed.
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=[500e-9, 1000e-9, 1500e-9],
     linear_polarization=30,
     optical_power=1e-3,

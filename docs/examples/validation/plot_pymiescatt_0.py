@@ -10,7 +10,11 @@ import numpy
 import matplotlib.pyplot as plt
 
 from PyMieSim.tools.directories import validation_data_path
-from PyMieSim.experiment import SourceSet, SphereSet, Setup
+
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 data_directory = validation_data_path.joinpath('PyMieScattQscaMedium.csv')
@@ -18,13 +22,13 @@ theoretical = numpy.genfromtxt(data_directory, delimiter=',')
 
 diameter = numpy.geomspace(10e-9, 6e-6, 800)
 
-scatterer_set = SphereSet(
+scatterer_set = Sphere(
     diameter=diameter,
     index=1.4,
     n_medium=1.21
 )
 
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=632.8e-9,
     linear_polarization=0,
     optical_power=1e-3,

@@ -7,13 +7,18 @@ Cylinder: coupling vs diameter
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-from PyMieSim.experiment import CylinderSet, SourceSet, Setup, PhotodiodeSet
+
+from PyMieSim.experiment.detector import Photodiode
+from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 from PyMieSim.materials import BK7
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = CylinderSet(
+scatterer_set = Cylinder(
     diameter=numpy.linspace(100e-9, 3000e-9, 200),
     material=BK7,
     n_medium=1.0
@@ -21,7 +26,7 @@ scatterer_set = CylinderSet(
 
 # %%
 # Defining the source to be employed.
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=1200e-9,
     linear_polarization=90,
     optical_power=1e-3,
@@ -30,7 +35,7 @@ source_set = SourceSet(
 
 # %%
 # Defining the detector to be employed.
-detector_set = PhotodiodeSet(
+detector_set = Photodiode(
     NA=[0.1, 0.05],
     phi_offset=-180.0,
     gamma_offset=0.0,

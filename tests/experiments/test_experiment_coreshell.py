@@ -4,7 +4,12 @@
 import pytest
 import numpy
 import PyMieSim
-from PyMieSim.experiment import CoreShellSet, SourceSet, PhotodiodeSet, Setup
+
+from PyMieSim.experiment.detector import Photodiode
+from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim.materials import Silver, BK7, Aluminium
 
 core_type = [
@@ -36,7 +41,7 @@ measures = [
 @pytest.mark.parametrize('core_type', [p['kwarg'] for p in shell_type], ids=[p['name'] for p in shell_type])
 @pytest.mark.parametrize('measure', measures, ids=[p.name for p in measures])
 def test_coreshell_experiment(measure, core_type, shell_type):
-    scatterer_set = CoreShellSet(
+    scatterer_set = CoreShell(
         n_medium=1,
         core_diameter=numpy.linspace(400e-9, 1400e-9, 10),
         shell_width=300e-9,
@@ -44,14 +49,14 @@ def test_coreshell_experiment(measure, core_type, shell_type):
         **shell_type,
     )
 
-    source_set = SourceSet(
+    source_set = Gaussian(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
         linear_polarization=0,
         optical_power=1e-3,
         NA=0.2
     )
 
-    detector_set = PhotodiodeSet(
+    detector_set = Photodiode(
         NA=0.2,
         polarization_filter=None,
         gamma_offset=0,

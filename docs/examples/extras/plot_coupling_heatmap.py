@@ -9,7 +9,12 @@ of a sphere as a function of the permittivity and the size parameter.
 """
 
 import numpy
-from PyMieSim.experiment import SphereSet, SourceSet, Setup, PhotodiodeSet
+
+from PyMieSim.experiment.detector import Photodiode
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 from MPSPlots.render2D import SceneList
@@ -19,7 +24,7 @@ index = numpy.linspace(1.3, 2.1, 300)
 
 diameter = numpy.linspace(1e-9, 2000e-9, 300)
 
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=400e-9,
     linear_polarization=90,
     optical_power=1e-3,
@@ -27,14 +32,14 @@ source_set = SourceSet(
 )
 
 
-scatterer_set = SphereSet(
+scatterer_set = Sphere(
     diameter=diameter,
     index=index,
     n_medium=1
 )
 
 
-detector_set = PhotodiodeSet(
+detector_set = Photodiode(
     polarization_filter=None,
     NA=0.3,
     phi_offset=0,

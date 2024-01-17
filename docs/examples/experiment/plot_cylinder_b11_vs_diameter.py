@@ -7,12 +7,16 @@ Cylinder: B1 scattering coefficient
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from PyMieSim.experiment import CylinderSet, SourceSet, Setup
+
+from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = CylinderSet(
+scatterer_set = Cylinder(
     diameter=np.linspace(100e-9, 10000e-9, 800),
     index=1.4,
     n_medium=1
@@ -20,7 +24,7 @@ scatterer_set = CylinderSet(
 
 # %%
 # Defining the source to be employed.
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=400e-9,
     linear_polarization=0,
     optical_power=1e-3,

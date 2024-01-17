@@ -11,7 +11,11 @@ of a sphere as a function of the permittivity and the size parameter.
 # %%
 # Importing the package: PyMieSim
 import numpy
-from PyMieSim.experiment import SphereSet, SourceSet, Setup
+
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 from MPSPlots.render2D import SceneList
@@ -23,7 +27,7 @@ index = numpy.sqrt(permitivity.astype(complex))
 
 diameter = numpy.linspace(1e-9, 200e-9, 400)
 
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=400e-9,
     linear_polarization=90,
     optical_power=1e-3,
@@ -31,7 +35,7 @@ source_set = SourceSet(
 )
 
 
-scatterer_set = SphereSet(
+scatterer_set = Sphere(
     diameter=diameter,
     index=index,
     n_medium=1

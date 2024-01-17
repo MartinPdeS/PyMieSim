@@ -7,13 +7,18 @@ Sphere: Coupling vs wavelength
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from PyMieSim.experiment import SphereSet, SourceSet, Setup, LPModeSet
+
+from PyMieSim.experiment.detector import LPMode
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 from PyMieSim.materials import BK7
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = SphereSet(
+scatterer_set = Sphere(
     diameter=np.linspace(100e-9, 8000e-9, 5),
     material=BK7,
     n_medium=1
@@ -21,7 +26,7 @@ scatterer_set = SphereSet(
 
 # %%
 # Defining the source to be employed.
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=np.linspace(950e-9, 1050e-9, 200),
     linear_polarization=0,
     optical_power=1e-3,
@@ -30,7 +35,7 @@ source_set = SourceSet(
 
 # %%
 # Defining the detector to be employed.
-detector_set = LPModeSet(
+detector_set = LPMode(
     mode_number="LP11",
     NA=[0.05, 0.01],
     phi_offset=-180,

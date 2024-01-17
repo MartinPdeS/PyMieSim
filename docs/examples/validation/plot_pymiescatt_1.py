@@ -9,7 +9,10 @@ PyMieSim vs PyMieScatt: 1
 import numpy
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment import SourceSet, SphereSet, Setup
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 import PyMieScatt as ps
@@ -17,14 +20,14 @@ import PyMieScatt as ps
 diameters = numpy.geomspace(10e-9, 6e-6, 800)
 index = 1.4
 
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=632.8e-9,
     linear_polarization=0,
     optical_power=1,
     NA=0.2
 )
 
-scatterer_set = SphereSet(
+scatterer_set = Sphere(
     diameter=diameters,
     index=index,
     n_medium=1.

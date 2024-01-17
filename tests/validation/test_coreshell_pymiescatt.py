@@ -4,7 +4,10 @@
 import pytest
 import numpy
 
-from PyMieSim.experiment import SourceSet, CoreShellSet, Setup
+from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 import PyMieScatt as ps
@@ -20,7 +23,7 @@ PyMieScatt_measures = {
 
 
 def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
-    scatterer_set = CoreShellSet(
+    scatterer_set = CoreShell(
         core_diameter=core_diameters,
         shell_width=shell_width,
         core_index=core_index,
@@ -58,7 +61,7 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
 
 
 def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_width, measure_string: str):
-    source_set = SourceSet(
+    source_set = Gaussian(
         wavelength=wavelength,
         linear_polarization=0,
         optical_power=1e-3,

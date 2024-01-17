@@ -4,7 +4,10 @@
 import pytest
 import numpy
 
-from PyMieSim.experiment import SourceSet, SphereSet, Setup
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 import PyMieScatt as ps
@@ -20,7 +23,7 @@ PyMieScatt_measures = {
 
 
 def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
-    scatterer_set = SphereSet(
+    scatterer_set = Sphere(
         diameter=diameters,
         index=index,
         n_medium=1.
@@ -54,7 +57,7 @@ def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
 
 
 def get_comparison(wavelength, index, diameters, measure_string: str):
-    source_set = SourceSet(
+    source_set = Gaussian(
         wavelength=wavelength,
         linear_polarization=0,
         optical_power=1e-3,

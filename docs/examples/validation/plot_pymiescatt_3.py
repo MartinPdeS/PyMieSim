@@ -9,7 +9,10 @@ PyMieSim vs PyMieScatt: 3
 import numpy
 import matplotlib.pyplot as plt
 
-from PyMieSim.experiment import SourceSet, CoreShellSet, Setup
+from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
 from PyMieSim import measure
 
 import PyMieScatt as ps
@@ -19,14 +22,14 @@ shell_width = 600e-9
 core_index = 1.5
 shell_index = 1.4
 
-source_set = SourceSet(
+source_set = Gaussian(
     wavelength=600e-9,
     linear_polarization=0,
     optical_power=1,
     NA=0.2
 )
 
-scatterer_set = CoreShellSet(
+scatterer_set = CoreShell(
     core_diameter=core_diameters,
     shell_width=shell_width,
     core_index=core_index,
