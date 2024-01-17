@@ -6,13 +6,12 @@ Source plottings
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.scatterer import Sphere
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.source import Gaussian
 
 # %%
 # Defining the source
 # ~~~~~~~~~~~~~~~~~~~
-source = PlaneWave(
+source = Gaussian(
     wavelength=1000e-9,
     polarization_value=0,
     polarization_type='linear',

@@ -4,8 +4,8 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from PyMieSim.scatterer import Sphere, CoreShell, Cylinder
-    from PyMieSim.detector import Photodiode, LPmode, IntegratingSphere
+    from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
+    from PyMieSim.single.detector import Photodiode, LPmode, IntegratingSphere
 
 
 import numpy

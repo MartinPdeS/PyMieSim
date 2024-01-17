@@ -4,7 +4,7 @@ Source code structures
 ======================
 
 
-.. autoclass:: PyMieSim.source.PlaneWave
+.. autoclass:: PyMieSim.single.source.PlaneWave
     :inherited-members:
 
 
@@ -12,7 +12,7 @@ Source code structures
 
 
 
-.. autoclass:: PyMieSim.scatterer.Sphere
+.. autoclass:: PyMieSim.single.scatterer.Sphere
     :inherited-members:
 
 
@@ -20,7 +20,7 @@ Source code structures
 
 
 
-.. autoclass:: PyMieSim.scatterer.Cylinder
+.. autoclass:: PyMieSim.single.scatterer.Cylinder
     :inherited-members:
 
 
@@ -28,21 +28,21 @@ Source code structures
 
 
 
-.. autoclass:: PyMieSim.scatterer.CoreShell
+.. autoclass:: PyMieSim.single.scatterer.CoreShell
     :inherited-members:
 
 
 ----
 
 
-.. autoclass:: PyMieSim.detector.Photodiode
+.. autoclass:: PyMieSim.single.detector.Photodiode
     :inherited-members:
 
 
 ----
 
 
-.. autoclass:: PyMieSim.detector.LPmode
+.. autoclass:: PyMieSim.single.detector.LPmode
     :inherited-members:
 
 
@@ -57,7 +57,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.experiment.SphereSet
+.. autoclass:: PyMieSim.experiment.scatterer.Sphere
     :inherited-members:
     :no-undoc-members:
 
@@ -65,7 +65,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.experiment.CylinderSet
+.. autoclass:: PyMieSim.experiment.scatterer.Cylinder
     :inherited-members:
     :no-undoc-members:
 
@@ -73,7 +73,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.experiment.CoreShellSet
+.. autoclass:: PyMieSim.experiment.scatterer.CoreShell
     :inherited-members:
     :no-undoc-members:
 
@@ -81,7 +81,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.experiment.SourceSet
+.. autoclass:: PyMieSim.experiment.source.Gaussian
     :inherited-members:
     :no-undoc-members:
 
@@ -89,7 +89,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.experiment.PhotodiodeSet
+.. autoclass:: PyMieSim.experiment.source.PlaneWave
     :inherited-members:
     :no-undoc-members:
 
@@ -97,7 +97,15 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.experiment.LPModeSet
+.. autoclass:: PyMieSim.experiment.detector.Photodiode
+    :inherited-members:
+    :no-undoc-members:
+
+
+----
+
+
+.. autoclass:: PyMieSim.experiment.detector.LPMode
     :inherited-members:
     :no-undoc-members:
 

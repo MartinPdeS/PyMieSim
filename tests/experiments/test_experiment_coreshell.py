@@ -51,7 +51,8 @@ def test_coreshell_experiment(measure, core_type, shell_type):
 
     source_set = Gaussian(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
-        linear_polarization=0,
+        polarization_value=0,
+        polarization_type='linear',
         optical_power=1e-3,
         NA=0.2
     )

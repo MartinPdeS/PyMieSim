@@ -3,8 +3,8 @@
 
 import pytest
 
-from PyMieSim.scatterer import Sphere
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
 from PyMieSim.materials import Silver, BK7
 
 cores_type = [
@@ -44,7 +44,7 @@ plottings = [
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('method', methods)
 def test_sphere_method(method: str, core_type: object):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',
@@ -65,7 +65,7 @@ def test_sphere_method(method: str, core_type: object):
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('attribute', attributes)
 def test_sphere_attribute(attribute: str, core_type: object):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',
@@ -86,7 +86,7 @@ def test_sphere_attribute(attribute: str, core_type: object):
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('plotting', plottings)
 def test_sphere_plottings(plotting: str, core_type: object):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',

@@ -10,15 +10,15 @@ import numpy
 import matplotlib.pyplot as plt
 
 from PyMieSim.tools.directories import validation_data_path
-from PyMieSim.source import PlaneWave
-from PyMieSim.scatterer import Cylinder
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.scatterer import Cylinder
 
 theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure810BH.csv", delimiter=',')
 
 x = theoretical[:, 0]
 y = theoretical[:, 1]
 
-source = PlaneWave(
+source = Gaussian(
     wavelength=470e-9,
     polarization_value=90,
     polarization_type='linear',

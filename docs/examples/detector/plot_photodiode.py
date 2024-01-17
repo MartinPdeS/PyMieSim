@@ -6,7 +6,7 @@ Photodiode detector
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.detector import Photodiode
+from PyMieSim.single.detector import Photodiode
 
 detector = Photodiode(
     NA=0.3,

@@ -27,7 +27,8 @@ scatterer_set = Cylinder(
 # Defining the source to be employed.
 source_set = Gaussian(
     wavelength=[500e-9, 1000e-9, 1500e-9],
-    linear_polarization=30,
+    polarization_value=30,
+    polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
 )

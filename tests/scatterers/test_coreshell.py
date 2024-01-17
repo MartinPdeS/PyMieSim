@@ -3,8 +3,8 @@
 
 import pytest
 
-from PyMieSim.scatterer import CoreShell
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.scatterer import CoreShell
+from PyMieSim.single.source import Gaussian
 from PyMieSim.materials import Silver, BK7, Aluminium
 
 cores_type = [
@@ -49,7 +49,7 @@ attributes = [
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('method', methods)
 def test_coreshell_method(method, core_type, shell_type):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',
@@ -72,7 +72,7 @@ def test_coreshell_method(method, core_type, shell_type):
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('attribute', attributes)
 def test_coreshell_attribute(attribute, core_type, shell_type):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',

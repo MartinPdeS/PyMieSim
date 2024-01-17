@@ -29,7 +29,8 @@ scatterer_set = Cylinder(
 # The amplitude is set to one per default.
 source_set = Gaussian(
     wavelength=np.linspace(400e-9, 1000e-9, 500),
-    linear_polarization=0,
+    polarization_value=0,
+    polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
 )

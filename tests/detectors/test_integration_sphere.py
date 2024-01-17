@@ -3,16 +3,16 @@
 
 import pytest
 
-from PyMieSim.scatterer import Sphere
-from PyMieSim.source import PlaneWave
-from PyMieSim.detector import IntegratingSphere
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.detector import IntegratingSphere
 
 samplings = [100]
 
 
 @pytest.mark.parametrize('sampling', samplings)
 def test_photodiode(sampling: int):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',

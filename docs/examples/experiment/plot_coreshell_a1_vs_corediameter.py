@@ -31,7 +31,8 @@ scatterer_set = CoreShell(
 # The amplitude is set to one per default.
 source_set = Gaussian(
     wavelength=800e-9,
-    linear_polarization=0,
+    polarization_value=0,
+    polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
 )

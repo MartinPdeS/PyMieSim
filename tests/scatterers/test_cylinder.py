@@ -3,8 +3,8 @@
 
 import pytest
 
-from PyMieSim.scatterer import Cylinder
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.scatterer import Cylinder
+from PyMieSim.single.source import Gaussian
 from PyMieSim.materials import Silver, BK7
 
 cores_type = [
@@ -41,7 +41,7 @@ attributes = [
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('method', methods)
 def test_cylinder_methods(method, core_type):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',
@@ -61,7 +61,7 @@ def test_cylinder_methods(method, core_type):
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
 @pytest.mark.parametrize('attribute', attributes)
 def test_cylinder_attributes(attribute, core_type):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',

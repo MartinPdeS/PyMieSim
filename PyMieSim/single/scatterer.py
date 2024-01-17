@@ -8,8 +8,8 @@ from tabulate import tabulate
 
 from PyOptik import ExpData
 from PyMieSim.mesh import FibonacciMesh
-from PyMieSim.source import PlaneWave
-from PyMieSim.representations import S1S2, FarField, Stokes, SPF, Footprint
+from PyMieSim.single.source import PlaneWave
+from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
 
 c = 299792458.0  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).

@@ -1,12 +1,12 @@
 import numpy
 
-from PyMieSim.scatterer import Sphere, CoreShell
-from PyMieSim.source import PlaneWave
-from PyMieSim.detector import Photodiode
+from PyMieSim.single.scatterer import Sphere, CoreShell
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.detector import Photodiode
 
 
 def test_Qsca_cross_section():
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=1e-6,
         polarization_value=0,
         polarization_type='linear',
@@ -22,7 +22,7 @@ def test_Qsca_cross_section():
 
 
 def test_energy_flow_coupling():
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=1e-6,
         polarization_value=0,
         polarization_type='linear',
@@ -50,7 +50,7 @@ def test_energy_flow_coupling():
 
 
 def test_compare_sphere_coreshell_0():
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=1e-6,
         polarization_value=0,
         polarization_type='linear',

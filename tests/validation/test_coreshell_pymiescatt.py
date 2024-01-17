@@ -63,7 +63,8 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
 def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_width, measure_string: str):
     source_set = Gaussian(
         wavelength=wavelength,
-        linear_polarization=0,
+        polarization_value=0,
+        polarization_type='linear',
         optical_power=1e-3,
         NA=0.2
     )

@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere as SetSphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian as SetGaussian
 from PyMieSim.experiment import Setup
 
 from PyMieSim import measure
-from PyMieSim.scatterer import Sphere as SingleSphere
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.scatterer import Sphere as SingleSphere
+from PyMieSim.single.source import Gaussian as SingleGaussian
 
 scatterer_diameter = 0.3e-6
 scatterer_index = 1.4
@@ -28,9 +28,10 @@ scatterer_set = SetSphere(
     n_medium=1.0
 )
 
-source_set = Gaussian(
+source_set = SetGaussian(
     wavelength=source_wavelength,
-    linear_polarization=[0, 90],
+    polarization_value=[0, 90],
+    polarization_type='linear',
     optical_power=1,
     NA=0.2
 )
@@ -51,7 +52,7 @@ experiment = Setup(
 
 data = experiment.Get(measure.coupling)
 
-source = PlaneWave(
+source = SingleGaussian(
     wavelength=source_wavelength,
     polarization_value=90,
     polarization_type='linear',

@@ -6,13 +6,13 @@ Stokes parameters computation
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.scatterer import Sphere
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
 
 # %%
 # Defining the source
 # ~~~~~~~~~~~~~~~~~~~
-source = PlaneWave(
+source = Gaussian(
     wavelength=750e-9,
     polarization_value='right',
     polarization_type='circular',

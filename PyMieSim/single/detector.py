@@ -4,17 +4,17 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
-    from PyMieSim.scatterer import Sphere, CoreShell, Cylinder
+    from PyMieSim import single
 
 
 import numpy
 import logging
 from dataclasses import dataclass, field
+from PyMieSim import load_lp_mode
 
-from PyMieSim.representations import Footprint
+from PyMieSim.single.representations import Footprint
 from PyMieSim.mesh import FibonacciMesh
 from PyMieSim.binary.DetectorInterface import BindedDetector
-from PyMieSim import load_lp_mode
 from PyMieSim.tools.special_functions import NA_to_angle
 
 from MPSPlots.render3D import SceneList as SceneList3D
@@ -48,7 +48,7 @@ class GenericDetector():
             point_coupling=point_coupling
         )
 
-    def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
+    def coupling(self, scatterer: single.scatterer.Sphere | single.scatterer.CoreShell | single.scatterer.Cylinder) -> float:
         r"""
         Return the value of the scattererd light coupling as computed as:
 
@@ -60,14 +60,14 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         :param      scatterer:  The scatterer
-        :type       scatterer:  Sphere | CoreShell | Cylinder
+        :type       scatterer:  single.scatterer.Sphere | single.scatterer.CoreShell | single.scatterer.Cylinder
 
         :returns:   The coupling in watt
         :rtype:     float
         """
         return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.Bind)
 
-    def get_footprint(self, scatterer: Sphere | CoreShell | Cylinder) -> Footprint:
+    def get_footprint(self, scatterer) -> Footprint:
         r"""
         Return the footprint of the scattererd light coupling with the
         detector as computed as:
@@ -82,7 +82,7 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         :param      detector:  The detector
-        :type       detector:  Sphere | CoreShell | Cylinder
+        :type       detector:  single.scatterer.Sphere | single.scatterer.CoreShell | single.scatterer.Cylinder
 
         :returns:   The scatterer footprint.
         :rtype:     Footprint
@@ -204,6 +204,8 @@ class LPmode(GenericDetector):
     """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
+        
+
         if self.NA > 0.3 or self.NA < 0:
             logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
 

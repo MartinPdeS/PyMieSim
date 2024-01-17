@@ -23,7 +23,8 @@ shell_index = 1.4
 
 source_set = Gaussian(
     wavelength=600e-9,
-    linear_polarization=0,
+    polarization_value=0,
+    polarization_type='linear',
     optical_power=1,
     NA=0.2
 )

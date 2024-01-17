@@ -3,9 +3,9 @@
 
 import pytest
 
-from PyMieSim.scatterer import Sphere
-from PyMieSim.source import PlaneWave
-from PyMieSim.detector import LPmode
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
+from PyMieSim.single.detector import LPmode
 
 mode_numbers = [
     "LP01",
@@ -16,7 +16,7 @@ mode_numbers = [
 
 @pytest.mark.parametrize('mode_number', mode_numbers)
 def test_lp_modes(mode_number: str):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
         polarization_type='linear',

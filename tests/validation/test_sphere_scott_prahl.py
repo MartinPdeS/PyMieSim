@@ -4,8 +4,8 @@
 import pytest
 import numpy
 
-from PyMieSim.scatterer import Sphere
-from PyMieSim.source import PlaneWave
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import Gaussian
 
 
 scott_prahl_values = {
@@ -17,7 +17,7 @@ scott_prahl_values = {
 
 @pytest.mark.parametrize('measure_str', scott_prahl_values.keys(), ids=scott_prahl_values.keys())
 def test_validation_scott_prahl(measure_str):
-    source = PlaneWave(
+    source = Gaussian(
         wavelength=1e-6,
         polarization_value=0,
         polarization_type='linear',
@@ -36,6 +36,5 @@ def test_validation_scott_prahl(measure_str):
 
     if not numpy.isclose(pymiesim_value, scott_prahl_value, atol=0, rtol=1e-3):
         raise ValueError('Mismatch with testing values')
-
 
 # -

@@ -6,7 +6,7 @@ Photodiode detector
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.detector import IntegratingSphere
+from PyMieSim.single.detector import IntegratingSphere
 
 detector = IntegratingSphere(
     sampling=500,

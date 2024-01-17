@@ -6,7 +6,7 @@ LP02 Mode detector
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.detector import LPmode
+from PyMieSim.single.detector import LPmode
 
 detector = LPmode(
     mode_number="LP02",
