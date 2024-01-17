@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 from PyMieSim import load_lp_mode
 
 from PyMieSim.single.representations import Footprint
-from PyMieSim.mesh import FibonacciMesh
+from PyMieSim.binary.Fibonacci import FIBONACCI  # has to be imported as extension
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.tools.special_functions import NA_to_angle
 
@@ -21,19 +21,23 @@ from MPSPlots.render3D import SceneList as SceneList3D
 
 
 class GenericDetector():
-
     def initialize(self):
         self.max_angle = NA_to_angle(NA=self.NA)
         self.polarization_filter = numpy.float64(self.polarization_filter)
 
-        self.fibonacci_mesh = FibonacciMesh(
-            max_angle=self.max_angle,
-            sampling=self.sampling,
-            phi_offset=self.phi_offset,
-            gamma_offset=self.gamma_offset
-        )
-
         self.set_cpp_binding()
+
+    def rotate_around_axis(self, rotation_angle: float) -> None:
+        """
+        Rotate the mesh around its principal axis.
+
+        :param      rotation_angle:  The rotation angle [degree]
+        :type       rotation_angle:  float
+
+        :returns:   No returns
+        :rtype:     None
+        """
+        return self.cpp_binding.mesh.rotate_around_axis(rotation_angle)
 
     def set_cpp_binding(self) -> None:
         point_coupling = True if self.coupling_mode.lower() == 'point' else False
@@ -45,6 +49,7 @@ class GenericDetector():
             gamma_offset=numpy.deg2rad(self.gamma_offset),
             polarization_filter=numpy.deg2rad(self.polarization_filter),
             coherent=self.coherent,
+            rotation_angle=0,
             point_coupling=point_coupling
         )
 
@@ -96,7 +101,7 @@ class GenericDetector():
         :returns:   3D plotting scene
         :rtype:     SceneList3D
         """
-        coordinate = numpy.c_[self.fibonacci_mesh.X, self.fibonacci_mesh.Y, self.fibonacci_mesh.Z].T
+        coordinate = numpy.c_[self.cpp_binding.mesh.x, self.cpp_binding.mesh.y, self.cpp_binding.mesh.z].T
 
         figure = SceneList3D()
 
@@ -194,8 +199,6 @@ class LPmode(GenericDetector):
     """ Angle [Degree] offset of detector in the direction parallel to polarization. """
     sampling: int = 200
     """ Sampling of the farfield distribution """
-    rotation: float = 0
-    """ Rotation along the NA axis of the farfield distribution [degree]"""
     polarization_filter: float = None
     """ Angle [Degree] of polarization filter in front of detector. """
     coupling_mode: str = 'Point'
@@ -204,10 +207,10 @@ class LPmode(GenericDetector):
     """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
-        
-
         if self.NA > 0.3 or self.NA < 0:
             logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
+
+        self.interpret_mode_name()
 
         self.unstructured_farfield = load_lp_mode(
             mode_number=self.mode_number,
@@ -216,6 +219,26 @@ class LPmode(GenericDetector):
         )
 
         super().initialize()
+
+        if self.rotation_angle != 0:
+            self.rotate_around_axis(self.rotation_angle)
+
+    def interpret_mode_name(self) -> None:
+        """
+        Intepret the mode_number parameter to check if there is a rotation associated
+
+        :returns:   { description_of_the_return_value }
+        :rtype:     None
+        """
+        assert isinstance(self.mode_number, str), "Mode number must be a string. Example 'LP01' or 'LP11:90 (rotation of 90 degree)'"
+        if ':' not in self.mode_number:
+            self.mode_number += ':0'
+
+        split = self.mode_number.split(':')
+
+        self.mode_number, rotation_angle = split
+
+        self.rotation_angle = float(rotation_angle)
 
     def get_structured_scalarfield(self, sampling: int = 500) -> numpy.ndarray:
         far_field = load_lp_mode(

@@ -258,13 +258,13 @@ namespace DETECTOR
     {
         public:
             std::vector<CVector> scalar_field;
-            DVector NA, phi_offset, gamma_offset, polarization_filter;
+            DVector NA, phi_offset, gamma_offset, polarization_filter, rotation_angle;
             bool coherent, point_coupling;
             std::vector<State> States;
 
             Set(){}
-            Set(std::vector<CVector> &scalar_field, DVector &NA, DVector &phi_offset, DVector &gamma_offset, DVector &polarization_filter, bool    &coherent, bool    &point_coupling)
-            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter), coherent(coherent), point_coupling(point_coupling)
+            Set(std::vector<CVector> &scalar_field, DVector &NA, DVector &phi_offset, DVector &gamma_offset, DVector &polarization_filter, DVector &rotation_angle,  bool &coherent, bool &point_coupling)
+            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
             {}
 
             State operator[](size_t idx){return this->States[idx];}

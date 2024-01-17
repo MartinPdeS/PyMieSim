@@ -69,12 +69,13 @@ PYBIND11_MODULE(Sets, module)
 
 
      pybind11::class_<DETECTOR::Set>(module, "CppDetectorSet")
-     .def(pybind11::init<std::vector<CVector>&, DVector&, DVector&, DVector&, DVector&, bool&, bool&>(),
+     .def(pybind11::init<std::vector<CVector>&, DVector&, DVector&, DVector&, DVector&, DVector&, bool&, bool&>(),
           pybind11::arg("scalarfield"),
           pybind11::arg("NA"),
           pybind11::arg("phi_offset"),
           pybind11::arg("gamma_offset"),
           pybind11::arg("polarization_filter"),
+          pybind11::arg("rotation_angle"),
           pybind11::arg("coherent"),
           pybind11::arg("point_coupling")
           );

@@ -108,21 +108,6 @@
         return output;
     }
 
-
-    CVector
-    Structured_( CVector &STerm, CVector &CosSinTerm, complex128 &scalar)
-    {
-        CVector output;
-        output.reserve(STerm.size() * CosSinTerm.size());
-
-        for (auto S : STerm)
-            for (auto Trig : CosSinTerm )
-                output.push_back( scalar * S * Trig );
-
-        return output;
-    }
-
-
     void
     Structured(uint ThetaLength, uint PhiLength, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
     {
@@ -133,3 +118,68 @@
                 output++;
             }
     }
+
+    template <class T>
+    std::vector <std::vector<T>> matrix_multiply(std::vector<std::vector<T>> &a, std::vector <std::vector<T>> &b)
+    {
+        const int n = a.size();     // a rows
+        const int m = a[0].size();  // a cols
+        const int p = b[0].size();  // b cols
+
+        std::vector <std::vector<T>> c(n, std::vector<T>(p, 0));
+        for (auto j = 0; j < p; ++j)
+        {
+            for (auto k = 0; k < m; ++k)
+            {
+                for (auto i = 0; i < n; ++i)
+                {
+                    c[i][j] += a[i][k] * b[k][j];
+                }
+            }
+        }
+        return c;
+    }
+
+
+    std::vector<double> dot_produt(const std::vector<std::vector<double>> &matrix, const std::vector<double> &vector)
+    {
+
+        std::vector<double> output;
+        double result;
+        for (auto& matrix_row : matrix) //range based loop
+        {
+            result = std::inner_product(matrix_row.begin(), matrix_row.end(), vector.begin(), 0.0);
+            output.push_back(result);
+        }
+
+        return output;
+    }
+
+    std::vector<std::vector<double>>
+    get_rotation_matrix(std::vector<double> rotation_axis, double rotation_angle)
+    {
+
+        rotation_angle = rotation_angle * PI / 180;
+
+        double norm_rotation_axis = sqrt(pow(rotation_axis[0], 2) + pow(rotation_axis[1], 2) + pow(rotation_axis[2], 2));
+
+        for (double &x: rotation_axis)
+            x /= norm_rotation_axis;
+
+        double
+            a = cos(rotation_angle / 2.0),
+            b = -1 * sin(rotation_angle / 2.0) * rotation_axis[0],
+            c = -1 * sin(rotation_angle / 2.0) * rotation_axis[1],
+            d = -1 * sin(rotation_angle / 2.0) * rotation_axis[2];
+
+        std::vector<std::vector<double>> matrix = {
+            {a * a + b * b - c * c - d * d, 2 * (b * c + a * d), 2 * (b * d - a * c)},
+            {2 * (b * c - a * d), a * a + c * c - b * b - d * d, 2 * (c * d + a * b)},
+            {2 * (b * d + a * c), 2 * (c * d - a * b), a * a + d * d - b * b - c * c}
+        };
+
+        return matrix;
+
+
+    }
+// -

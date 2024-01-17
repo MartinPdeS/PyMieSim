@@ -73,7 +73,8 @@ class Photodiode():
             gamma_offset=gamma_offset_rad,
             polarization_filter=self.polarization_filter.values,
             point_coupling=point_coupling,
-            coherent=self.coherent
+            coherent=self.coherent,
+            rotation_angle=numpy.asarray([0, 10]) #--------------------------------------------
         )
 
     def bind_to_experiment(self, experiment):
@@ -141,9 +142,24 @@ class LPMode():
     def __post_init__(self):
         self.format_inputs()
 
+        self.get_rotation_angle_from_mode_number()
+
         self.build_x_parameters()
 
         self.initialize_binding()
+
+    def get_rotation_angle_from_mode_number(self) -> None:
+        rotation_angle_list = []
+
+        for mode_number in self.mode_number:
+            if ':' not in mode_number:
+                mode_number += ':0'
+
+            _, rotation_angle = mode_number.split(':')
+
+            rotation_angle_list.append(rotation_angle)
+
+            self.rotation_angle = numpy.asarray(rotation_angle_list).astype(float)
 
     def build_x_parameters(self) -> None:
         """
@@ -206,7 +222,8 @@ class LPMode():
             gamma_offset=gamma_offset_rad,
             polarization_filter=self.polarization_filter.values,
             point_coupling=point_coupling,
-            coherent=self.coherent
+            coherent=self.coherent,
+            rotation_angle=self.rotation_angle
         )
 
     def bind_to_experiment(self, experiment) -> None:

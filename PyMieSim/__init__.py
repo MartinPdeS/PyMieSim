@@ -8,6 +8,9 @@ from PyMieSim.tools.directories import lp_mode_path
 def load_lp_mode(mode_number: str, structure_type: str = 'unstructured', sampling: int = 500):
     structure_type = structure_type.lower()
 
+    if ':' in mode_number:
+        mode_number = mode_number.split(':')[0]
+
     lp_file_directory = lp_mode_path.joinpath(mode_number)
 
     if not lp_file_directory.exists():

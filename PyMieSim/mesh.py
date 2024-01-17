@@ -20,9 +20,11 @@ class FibonacciMesh():
     sampling: int = 1000
     """Number of point distrubuted inside the Solid angle defined by the numerical aperture. """
     phi_offset: float = 0.
-    """ Angle offset in the parallel direction of the polarization of incindent light. """
+    """ Angle offset in the parallel direction of the polarization of incindent light in degree. """
     gamma_offset: float = 0.
-    """ Angle offset in the perpendicular direction of the polarization of incindent light. """
+    """ Angle offset in the perpendicular direction of the polarization of incindent light in degree. """
+    rotation_angle: float = 0
+    """ Rotation of the mesh around it's principal axis. """
 
     def __post_init__(self):
         self.structured = False
@@ -201,24 +203,59 @@ class FibonacciMesh():
 
         return figure
 
+    def get_cartesian_coordinates(self) -> numpy.ndarray:
+        return numpy.c_[self.X, self.Y, self.Z].T
+
+    def get_axis_vector(self) -> numpy.ndarray:
+        """
+        Returns the axis vector that correspond ot the phi and gamma offset
+
+        :returns:   The axis vector.
+        :rtype:     numpy.ndarray
+        """
+        x, y, z = self.get_cartesian_coordinates()
+        axis_vector = numpy.array([x[0], y[0], z[0]])
+
+        norm = numpy.sqrt(numpy.square(axis_vector).sum())
+
+        return axis_vector / norm
+
     def _add_mesh_to_ax_(self, ax) -> None:
-        coordinates = numpy.c_[self.X, self.Y, self.Z]
+        axis_vector = self.get_axis_vector()
 
-        ax.add_unstructured_mesh(coordinates=coordinates,)
+        coordinates = self.get_cartesian_coordinates()
 
-        ax.add_unit_sphere()
+        ax.add_unstructured_mesh(coordinates=coordinates)
+
+        ax.add_unstructured_mesh(coordinates=axis_vector * 1.4)
+
+        # ax.add_unit_sphere()
         ax.add_unit_axis()
         ax.add_unit_theta_vector(radius=1.1)
         ax.add_unit_phi_vector(radius=1.1)
 
+    def rotate_around_axis(self, rotation_angle: float) -> None:
+        """
+        Rotate the mesh around its principal axis.
+
+        :param      rotation_angle:  The rotation angle [degree]
+        :type       rotation_angle:  float
+
+        :returns:   No returns
+        :rtype:     None
+        """
+        self.cpp_binding.rotate_around_axis(rotation_angle)
+
     def generate_ledvedev_mesh(self) -> None:
         self.cpp_binding = FIBONACCI(
-            self.sampling,
-            self.max_angle,
-            numpy.deg2rad(self.phi_offset),
-            numpy.deg2rad(self.gamma_offset)
+            sampling=self.sampling,
+            max_angle=self.max_angle,
+            phi_offset=numpy.deg2rad(self.phi_offset),
+            gamma_offset=numpy.deg2rad(self.gamma_offset),
+            rotation_angle=self.rotation_angle
         )
 
         self.initialize_properties()
+
 
 # -

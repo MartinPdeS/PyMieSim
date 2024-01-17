@@ -255,7 +255,7 @@ class GenericScatterer():
         """
         return Footprint(scatterer=self, detector=detector)
 
-    def get_poynting_vector(self, Mesh: FibonacciMesh) -> float:
+    def get_poynting_vector(self, mesh: FibonacciMesh) -> float:
         r"""
 
         Method return the Poynting vector norm defined as:
@@ -268,8 +268,8 @@ class GenericScatterer():
 
         """
         Ephi, Etheta = self.get_farfields_array(
-            phi=Mesh.get_phi(unit='radian'),
-            theta=Mesh.get_theta(unit='radian'),
+            phi=mesh.phi,
+            theta=mesh.theta,
             r=1.,
             structured=False
         )
@@ -282,7 +282,7 @@ class GenericScatterer():
 
         return poynting
 
-    def get_energy_flow(self, Mesh: FibonacciMesh) -> float:
+    def get_energy_flow(self, mesh: FibonacciMesh) -> float:
         r"""
         Returns energy flow defined as:
 
@@ -306,13 +306,9 @@ class GenericScatterer():
         :returns:   The energy flow.
         :rtype:     float
         """
-        Poynting = self.get_poynting_vector(Mesh)
+        Poynting = self.get_poynting_vector(mesh)
 
-        if Mesh.structured:
-            total_power = 0.5 * numpy.sum(Poynting * Mesh.SinMesh) * Mesh.d_omega_radian
-
-        else:
-            total_power = 0.5 * numpy.sum(Poynting) * Mesh.d_omega_radian
+        total_power = 0.5 * numpy.sum(Poynting) * mesh.d_omega
 
         return total_power
 

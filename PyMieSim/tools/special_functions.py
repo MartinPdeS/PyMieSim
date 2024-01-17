@@ -4,6 +4,42 @@
 import numpy
 
 
+def get_rotation_matrix(axis: numpy.ndarray, theta: numpy.ndarray) -> numpy.ndarray:
+    """
+    Return the rotation matrix associated with counterclockwise rotation about
+    the given axis by theta radians.
+
+    :param      axis:   The axis around which the points is rotated
+    :type       axis:   numpy.ndarray
+    :param      theta:  The theta angle of rotation in degree
+    :type       theta:  numpy.ndarray
+
+    :returns:   The rotation matrix
+    :rtype:     numpy.ndarray
+    """
+    theta = numpy.deg2rad(theta)
+
+    axis = numpy.asarray(axis)
+    axis_norm = numpy.sqrt(numpy.dot(axis, axis))
+
+    axis = axis / axis_norm
+
+    a = numpy.cos(theta / 2.0)
+    b, c, d = -axis * numpy.sin(theta / 2.0)
+    aa, bb, cc, dd = a * a, b * b, c * c, d * d
+    bc, ad, ac, ab, bd, cd = b * c, a * d, a * c, a * b, b * d, c * d
+
+    print('Dsadsad', axis)
+
+    matrix = [
+        [aa + bb - cc - dd, 2 * (bc + ad), 2 * (bd - ac)],
+        [2 * (bc - ad), aa + cc - bb - dd, 2 * (cd + ab)],
+        [2 * (bd + ac), 2 * (cd - ab), aa + dd - bb - cc]
+    ]
+
+    return numpy.array(matrix)
+
+
 def NA_to_angle(NA: float) -> numpy.ndarray:
     if NA <= 1.0:
         return numpy.arcsin(NA)

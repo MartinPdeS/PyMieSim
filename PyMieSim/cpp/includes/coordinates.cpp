@@ -11,25 +11,25 @@
 
   struct VectorField
   {
-    size_t Sampling, Size;
+    size_t sampling, Size;
     IVector Shape;
     DVector Data;
 
     VectorField(){}
-    VectorField(const DVector& Vector) : Sampling( 1 ), Size( 3 ), Shape( { 1, 3 } ), Data( Vector ) {}
+    VectorField(const DVector& Vector) : sampling(1), Size(3), Shape({1, 3}), Data(Vector) {}
 
-    VectorField(const size_t &Sampling) : Sampling( Sampling ), Size( 3*Sampling ), Shape( { Sampling, 3 } ), Data( DVector( 3*Sampling ) ) {}
-    ndarray GetNumpy(){ return vector_to_ndarray_copy((*this).Data, (*this).Shape); }
+    VectorField(const size_t &sampling) : sampling(sampling), Size(3*sampling), Shape( {sampling, 3} ), Data( DVector(3 * sampling) ) {}
+    ndarray get_numpy(){ return vector_to_ndarray_copy((*this).Data, (*this).Shape); }
 
-    double      &operator[](size_t i) { return Data[i]; }
-    double      &operator()(size_t& i, size_t j) { return Data[i*3 + j]; }
-    double      &operator()(size_t&& i, size_t&& j) { return Data[i*3 + j]; }
+    double &operator[](size_t i) { return Data[i]; }
+    double &operator()(size_t& i, size_t j) { return Data[i*3 + j]; }
+    double &operator()(size_t&& i, size_t&& j) { return Data[i*3 + j]; }
 
     VectorField operator+(VectorField& Other)
     {
-      VectorField Output(Sampling);
+      VectorField Output(sampling);
 
-      for (size_t i=0; i<3*Sampling; i++)
+      for (size_t i=0; i<3*sampling; i++)
           Output[i] = (*this)[i] + Other[i];
 
       return Output;
@@ -37,18 +37,20 @@
 
     DVector ScalarProduct(DVector& Base)
     {
-      DVector Output(Sampling);
+      DVector Output(sampling);
 
-      double x0  = Base[0],
-             y0  = Base[1],
-             z0  = Base[2];
+      double
+        x0  = Base[0],
+        y0  = Base[1],
+        z0  = Base[2];
 
 
-      for (size_t i=0; i<Sampling; i++)
+      for (size_t i=0; i<sampling; i++)
       {
-        double x  = (*this)(i,0),
-               y  = (*this)(i,1),
-               z  = (*this)(i,2);
+        double
+          x  = (*this)(i,0),
+          y  = (*this)(i,1),
+          z  = (*this)(i,2);
 
         double Proj = x * x0 + y * y0 + z * z0;
 
@@ -61,14 +63,14 @@
 
     DVector ScalarProduct(VectorField& Base)
     {
-      DVector Output(Sampling);
+      DVector Output(sampling);
 
       double x0  = Base(0,0),
              y0  = Base(0,1),
              z0  = Base(0,2);
 
 
-      for (size_t i=0; i<Sampling; i++)
+      for (size_t i=0; i<sampling; i++)
       {
         double x  = (*this)(i,0),
                y  = (*this)(i,1),
@@ -85,14 +87,14 @@
 
     VectorField Projection(DVector& Base)
     {
-      VectorField Output(Sampling);
+      VectorField Output(sampling);
 
       double x0 = Base[0],
              y0 = Base[1],
              z0 = Base[2];
 
 
-      for (size_t i=0; i<Sampling; i++)
+      for (size_t i=0; i<sampling; i++)
       {
         double x  = (*this)(i,0),
                y  = (*this)(i,1),
@@ -110,14 +112,14 @@
 
     VectorField Projection(VectorField& Base)
     {
-      VectorField Output(Sampling);
+      VectorField Output(sampling);
 
       double x0 = Base(0,0),
              y0 = Base(0,1),
              z0 = Base(0,2);
       double Norm = x0 * x0 + y0 * y0 + z0 * z0;
 
-      for (size_t i=0; i<Sampling; i++)
+      for (size_t i=0; i<sampling; i++)
       {
         double x  = (*this)(i,0),
                y  = (*this)(i,1),
@@ -135,7 +137,7 @@
 
     VectorField Projection(VectorField& Base0, VectorField& Base1)
     {
-      VectorField Output(Sampling);
+      VectorField Output(sampling);
 
       double x0 = Base0(0,0),
              y0 = Base0(0,1),
@@ -147,7 +149,7 @@
       double Norm0 = x0 * x0 + y0 * y0 + z0 * z0;
       double Norm1 = x1 * x1 + y1 * y1 + z1 * z1;
 
-      for (size_t i=0; i<Sampling; i++)
+      for (size_t i=0; i<sampling; i++)
       {
         double xp  = (*this)(i,0),
                yp  = (*this)(i,1),
@@ -166,7 +168,7 @@
 
     void Normalize()
     {
-      for (size_t i=0; i<Sampling; i++)
+      for (size_t i=0; i<sampling; i++)
       {
         double x = (*this)(i,0), y = (*this)(i,1), z = (*this)(i,2);
         double norm = sqrt( pow(x, 2) + pow(y, 2) + pow(z, 2) );
@@ -215,7 +217,7 @@
     void mx_apply(Matrix3 M)
     {
       double tempx, tempy, tempz;
-      for (size_t i = 0; i < Sampling; i++){
+      for (size_t i = 0; i < sampling; i++){
 
           tempx = M[0][0] * (*this)(i,0) + M[0][1] * (*this)(i,1) + M[0][2] * (*this)(i,2);
           tempy = M[1][0] * (*this)(i,0) + M[1][1] * (*this)(i,1) + M[1][2] * (*this)(i,2);
@@ -234,16 +236,17 @@
 
   struct Spherical
   {
-    DVector Phi, Theta, R;
-    size_t Sampling;
+    DVector
+      Phi,
+      Theta,
+      R;
+
+    size_t sampling;
 
     Spherical(){}
-    Spherical(const size_t &Sampling)
-                     : Phi(DVector(Sampling)),
-                       Theta(DVector(Sampling)),
-                       R(DVector(Sampling)),
-                       Sampling(Sampling)
-                       {}
+    Spherical(const size_t &sampling)
+    : Phi(DVector(sampling)), Theta(DVector(sampling)), R(DVector(sampling)), sampling(sampling)
+      {}
     ndarray get_r_py()    {return vector_to_ndarray_copy(R);}
     ndarray get_phi_py()  {return vector_to_ndarray_copy(Phi);}
     ndarray get_theta_py(){return vector_to_ndarray_copy(Theta);}
@@ -252,26 +255,31 @@
 
   struct Cartesian
   {
-    DVector X, Y, Z;
-    size_t Sampling;
+    DVector
+      X,
+      Y,
+      Z;
+
+    size_t sampling;
 
     Cartesian(){}
-    Cartesian(const size_t &Sampling)
-                     : X(DVector(Sampling)),
-                       Y(DVector(Sampling)),
-                       Z(DVector(Sampling)),
-                       Sampling(Sampling)
-                       {}
+    Cartesian(const size_t &sampling)
+    : X(DVector(sampling)), Y(DVector(sampling)), Z(DVector(sampling)), sampling(sampling)
+      {}
+
+    void set_x_py(const DVector &value){X = value;}
+    void set_y_py(const DVector &value){Y = value;}
+    void set_z_py(const DVector &value){Z = value;}
 
     ndarray get_x_py(){return vector_to_ndarray_copy(X);}
     ndarray get_y_py(){return vector_to_ndarray_copy(Y);}
     ndarray get_z_py(){return vector_to_ndarray_copy(Z);}
 
-    Spherical Cart2Sph()
+    Spherical cartesian_to_spherical()
     {
-      Spherical Output(Sampling);
+      Spherical Output(sampling);
 
-      for (size_t i = 0; i < Sampling; i++){
+      for (size_t i = 0; i < sampling; i++){
          Output.R[i] = sqrt( pow( X[i],2) + pow(Y[i],2) + pow(Z[i],2) ) ;
          Output.Theta[i] = atan2( Y[i],  X[i] );
          Output.Phi[i] = asin( Z[i] / Output.R[i] );
@@ -315,7 +323,7 @@
     void mx_apply(Matrix3 M)
     {
       double tempx, tempy, tempz;
-      for (size_t i = 0; i < Sampling; i++){
+      for (size_t i = 0; i < sampling; i++){
 
           tempx = M[0][0] * X[i] + M[0][1] * Y[i] + M[0][2] * Z[i];
           tempy = M[1][0] * X[i] + M[1][1] * Y[i] + M[1][2] * Z[i];

@@ -6,32 +6,48 @@
 namespace DETECTOR
 {
 
-  struct State
-  {
-    std::vector<complex128> scalar_field;
-    double NA, phi_offset, gamma_offset, polarization_filter;
-    bool coherent, point_coupling;
+    struct State
+    {
+        std::vector<complex128> scalar_field;
 
-    State(){}
+        double
+            NA,
+            phi_offset,
+            gamma_offset,
+            polarization_filter,
+            rotation_angle;
 
-    State(std::vector<complex128> &scalar_field,
-          double &NA,
-          double &phi_offset,
-          double &gamma_offset,
-          double &polarization_filter,
-          bool   &coherent,
-          bool   &point_coupling)
-          : scalar_field(scalar_field),
-          NA(NA),
-          phi_offset(phi_offset),
-          gamma_offset(gamma_offset),
-          polarization_filter(polarization_filter),
-          coherent(coherent),
-          point_coupling(point_coupling){}
-  };
+        bool
+            coherent,
+            point_coupling;
 
-  class Detector
-  {
+        State(){}
+
+        State(
+            std::vector<complex128> &scalar_field,
+            double &NA,
+            double &phi_offset,
+            double &gamma_offset,
+            double &polarization_filter,
+            double &rotation_angle,
+            bool   &coherent,
+            bool   &point_coupling)
+            : scalar_field(scalar_field),
+                NA(NA),
+                phi_offset(phi_offset),
+                gamma_offset(gamma_offset),
+                polarization_filter(polarization_filter),
+                rotation_angle(rotation_angle),
+                coherent(coherent),
+                point_coupling(point_coupling)
+            {
+
+            }
+    };
+
+
+    class Detector
+    {
     public:
         FibonacciMesh Mesh;
         State state;
@@ -40,23 +56,25 @@ namespace DETECTOR
         Detector(){}
 
 
-    Detector(
-        std::vector<complex128> &scalar_field,
-        double &NA,
-        double& phi_offset,
-        double &gamma_offset,
-        double &polarization_filter,
-        bool &coherent,
-        bool &point_coupling)
-        : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, coherent, point_coupling)
-    {
-        this->Mesh = FibonacciMesh(
-            state.scalar_field.size(),
-            NA2Angle(state.NA),
-            state.phi_offset,
-            state.gamma_offset
-        );
-    }
+        Detector(
+            std::vector<complex128> &scalar_field,
+            double &NA,
+            double& phi_offset,
+            double &gamma_offset,
+            double &polarization_filter,
+            double &rotation_angle,
+            bool &coherent,
+            bool &point_coupling)
+            : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling)
+        {
+            this->Mesh = FibonacciMesh(
+                state.scalar_field.size(),
+                NA2Angle(state.NA),
+                state.phi_offset,
+                state.gamma_offset,
+                state.rotation_angle
+            );
+        }
 
     Detector(State &state) : state(state)
     {
@@ -64,8 +82,15 @@ namespace DETECTOR
             state.scalar_field.size(),
             NA2Angle(state.NA),
             state.phi_offset,
-            state.gamma_offset
+            state.gamma_offset,
+            state.rotation_angle
         );
+    }
+
+
+    void rotate_around_axis(double &rotation_angle)
+    {
+        this->Mesh.rotate_around_axis(rotation_angle);
     }
 
     template <class T>
