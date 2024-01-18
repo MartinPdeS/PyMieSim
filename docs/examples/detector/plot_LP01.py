@@ -10,7 +10,6 @@ from PyMieSim.single.detector import LPmode
 
 detector = LPmode(
     mode_number="LP01",
-    rotation=0.,
     sampling=300,
     NA=0.3,
     gamma_offset=0,
