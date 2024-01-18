@@ -8,7 +8,7 @@ from tabulate import tabulate
 
 from PyOptik import ExpData
 from PyMieSim.mesh import FibonacciMesh
-from PyMieSim.single.source import PlaneWave
+from PyMieSim.single.source import PlaneWave, Gaussian
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
 
 c = 299792458.0  #: Speed of light in vacuum (m/s).
@@ -331,7 +331,7 @@ class Sphere(GenericScatterer):
     """ Class representing a homogeneous spherical scatterer """
     diameter: float
     """ diameter of the single scatterer in unit of meter. """
-    source: PlaneWave
+    source: PlaneWave | Gaussian
     """ Light source object containing info on polarization and wavelength. """
     index: complex = None
     """ Refractive index of scatterer. """
@@ -424,15 +424,15 @@ class Sphere(GenericScatterer):
 
 @dataclass()
 class CoreShell(GenericScatterer):
-    r"""
-    Class representing a core+shell spherical scatterer.
+    """
+    Class representing a core/shell spherical scatterer.
     """
 
     core_diameter: float
     """ diameter of the core of the single scatterer [m]. """
     shell_width: float
     """ diameter of the shell of the single scatterer [m]. """
-    source: PlaneWave
+    source: PlaneWave | Gaussian
     """ Light source object containing info on polarization and wavelength. """
     core_index: complex = None
     """ Refractive index of the core of the scatterer. """
@@ -498,7 +498,7 @@ class Cylinder(GenericScatterer):
 
     diameter: float
     """ diameter of the single scatterer in unit of meter. """
-    source: PlaneWave
+    source: PlaneWave | Gaussian
     """ Light source object containing info on polarization and wavelength. """
     index: complex = None
     """ Refractive index of scatterer. """
@@ -516,7 +516,7 @@ class Cylinder(GenericScatterer):
         self.set_cpp_binding()
 
     def set_cpp_binding(self) -> None:
-        r"""
+        """
         Method call and bind c++ scatterer class
 
         """

@@ -131,6 +131,7 @@ class FarField(BaseRepresentation):
         for field_name in ['phi', 'theta']:
             field_array = getattr(self, f"E_{field_name}")
             ax = figure.append_ax()
+
             artist = ax.add_mesh(
                 x=x,
                 y=y,
