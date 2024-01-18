@@ -9,8 +9,7 @@ LP02 Mode detector
 from PyMieSim.single.detector import LPmode
 
 detector = LPmode(
-    mode_number="LP02",
-    rotation=0.,
+    mode_number="LP02:00",
     sampling=500,
     NA=0.3,
     gamma_offset=0,
