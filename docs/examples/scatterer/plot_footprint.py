@@ -7,7 +7,7 @@ Scatterer footprint
 # %%
 # Importing the package: PyOptik, PyMieSim
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.detector import LPmode
+from PyMieSim.single.detector import LPMode
 from PyMieSim.single.source import Gaussian
 from PyOptik import ExpData
 
@@ -34,7 +34,7 @@ scatterer = Sphere(
 # %%
 # Defining the detector
 # ~~~~~~~~~~~~~~~~~~~~~
-detector = LPmode(
+detector = LPMode(
     mode_number="LP21",
     NA=0.3,
     sampling=200,
