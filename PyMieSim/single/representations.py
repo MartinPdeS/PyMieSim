@@ -269,7 +269,7 @@ class Footprint():
     """ The scatterer instance """
     sampling: int = 500
     """ Number of point to evaluate the Stokes parameters in spherical coord. At the moment only 500 is available"""
-    padding_factor: int = 10
+    padding_factor: int = 20
     """ Padding factor for the fourier transform """
 
     r"""

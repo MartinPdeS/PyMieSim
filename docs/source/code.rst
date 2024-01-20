@@ -42,7 +42,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.single.detector.LPmode
+.. autoclass:: PyMieSim.single.detector.LPMode
     :inherited-members:
 
 

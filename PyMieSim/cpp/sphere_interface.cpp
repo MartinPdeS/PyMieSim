@@ -11,31 +11,38 @@ PYBIND11_MODULE(SphereInterface, module)
 
 
       pybind11::class_<SPHERE::Scatterer>(module, "SPHERE")
-      .def(pybind11::init<double&, double&, double&, complex128&, double&, CVector&>(),
-           pybind11::arg("wavelength"),
-           pybind11::arg("amplitude"),
-           pybind11::arg("diameter"),
-           pybind11::arg("index"),
-           pybind11::arg("n_medium"),
-           pybind11::arg("jones_vector")
-          )
+      .def(
+            pybind11::init<double&, double&, double&, complex128&, double&, CVector&>(),
+            pybind11::arg("wavelength"),
+            pybind11::arg("amplitude"),
+            pybind11::arg("diameter"),
+            pybind11::arg("index"),
+            pybind11::arg("n_medium"),
+            pybind11::arg("jones_vector")
+        )
 
       .def(pybind11::init<>())
 
-      .def("get_s1s2",
-      &SPHERE::Scatterer::get_s1s2_py,
-      pybind11::arg("phi") )
+      .def(
+        "get_s1s2",
+        &SPHERE::Scatterer::get_s1s2_py,
+        pybind11::arg("phi")
+        )
 
-      .def("get_fields",
-      &SPHERE::Scatterer::get_unstructured_fields_py,
-      pybind11::arg("phi"),
-      pybind11::arg("theta"),
-      pybind11::arg("r") )
+      .def(
+            "get_fields",
+            &SPHERE::Scatterer::get_unstructured_fields_py,
+            pybind11::arg("phi"),
+            pybind11::arg("theta"),
+            pybind11::arg("r")
+        )
 
-      .def("get_full_fields",
-      &SPHERE::Scatterer::get_full_structured_fields_py,
-      pybind11::arg("sampling"),
-      pybind11::arg("r") )
+      .def(
+            "get_full_fields",
+            &SPHERE::Scatterer::get_full_structured_fields_py,
+            pybind11::arg("sampling"),
+            pybind11::arg("r") 
+        )
 
 
       .def("an", pybind11::overload_cast<>(&SPHERE::Scatterer::get_an_py))

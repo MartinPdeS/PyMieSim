@@ -5,31 +5,33 @@
   #include "numpy_interface.cpp"
   #include "VSH.cpp"
 
-  namespace SPHERE
-  {
+namespace SPHERE
+{
     struct State
     {
-      double diameter;
-      complex128 index;
-      double n_medium;
-      State(){}
-      State(
-        double &diameter,
-        complex128 &index,
-        double &n_medium)
-        : diameter(diameter), index(index), n_medium(n_medium){}
+        double
+            diameter,
+            n_medium;
 
-      State(
-        double &diameter,
-        complex128 &&index,
-        double &n_medium)
-        : diameter(diameter), index(index), n_medium(n_medium){}
+        complex128
+            index;
 
-      void apply_medium()
-      {
-        this->index    /= this->n_medium;
-        this->diameter *= this->n_medium;
-      }
+        State(){}
+        State(
+            const double &diameter,
+            const complex128 &index,
+            const double &n_medium)
+        :
+            diameter(diameter),
+            index(index),
+            n_medium(n_medium)
+        {}
+
+        void apply_medium()
+        {
+            this->index /= this->n_medium;
+            this->diameter *= this->n_medium;
+        }
     };
 
 
@@ -37,64 +39,73 @@
     {
 
         public:
-            CVector an, bn, cn, dn;
+            std::vector<complex128>
+                an,
+                bn,
+                cn,
+                dn;
 
-            State state;
+            State
+                state;
 
             Cndarray get_an_py() { return vector_to_ndarray(an, {max_order}); }
             Cndarray get_bn_py() { return vector_to_ndarray(bn, {max_order}); }
             Cndarray get_cn_py() { return vector_to_ndarray(cn, {max_order}); }
             Cndarray get_dn_py() { return vector_to_ndarray(dn, {max_order}); }
 
-            CVector get_an() { return an; };
-            CVector get_bn() { return bn; };
-            CVector get_cn() { return cn; };
-            CVector get_dn() { return dn; };
+            std::vector<complex128> get_an() { return an; };
+            std::vector<complex128> get_bn() { return bn; };
+            std::vector<complex128> get_cn() { return cn; };
+            std::vector<complex128> get_dn() { return dn; };
 
             Scatterer(){}
             Scatterer(
-              double &wavelength,
-              double &amplitude,
-              double &diameter,
-              complex128 &index,
-              double &n_medium,
-              CVector &jones_vector,
-              size_t max_order = 0)
-              : ScatteringProperties(wavelength, jones_vector, amplitude), state(diameter, index, n_medium)
-              {
-              initialize(max_order);
-              }
+                double &wavelength,
+                double &amplitude,
+                double &diameter,
+                complex128 &index,
+                double &n_medium,
+                std::vector<complex128> &jones_vector,
+                size_t max_order = 0)
+            :
+                ScatteringProperties(wavelength, jones_vector, amplitude),
+                state(diameter, index, n_medium)
+            {
+                initialize(max_order);
+            }
 
             Scatterer(
-              State &state,
-              SOURCE::State &source,
-              size_t max_order = 0)
-              : ScatteringProperties(source), state(state)
-              {
-                initialize(max_order);
-              }
+                State &state,
+                SOURCE::State &source,
+                size_t max_order = 0)
+            :
+                ScatteringProperties(source),
+                state(state)
+            {
+                this->initialize(max_order);
+            }
 
             void initialize(size_t &max_order)
             {
-              state.apply_medium();
-              compute_size_parameter();
-              compute_max_order(max_order);
-              compute_area();
-              compute_an_bn();
+                state.apply_medium();
+                this->compute_size_parameter();
+                this->compute_max_order(max_order);
+                this->compute_area();
+                this->compute_an_bn();
             }
 
 
         void compute_max_order(size_t &max_order)
         {
-          if (max_order == 0)
+        if (max_order == 0)
             this->max_order = (size_t) (2 + this->size_parameter + 4 * pow(this->size_parameter, 1./3.)) + 16;
-          else
+        else
             this->max_order = max_order;
         }
 
         void compute_size_parameter()
         {
-          this->size_parameter = PI * state.diameter / source.wavelength;
+            this->size_parameter = PI * state.diameter / source.wavelength;
         }
 
         void compute_area()
@@ -104,24 +115,27 @@
 
         void compute_an_bn()
         {
-          an = CVector(max_order);
-          bn = CVector(max_order);
+            an = std::vector<complex128>(max_order);
+            bn = std::vector<complex128>(max_order);
 
-          complex128
-            x = size_parameter,
-            m = state.index,
-            mx = m * x,
-            _da, _db, _gsx, _gs1x, _px, _chx, _p1x, _ch1x, _p2x, _ch2x;
+            complex128
+                x = size_parameter,
+                m = state.index,
+                mx = m * x,
+                _da, _db, _gsx, _gs1x, _px, _chx, _p1x, _ch1x, _p2x, _ch2x;
 
-          size_t nmx = std::max( max_order, (size_t) std::abs(mx) ) + 16;
-          CVector Dn  = VSH::SPHERICAL::compute_dn(nmx, mx);
+            size_t
+                nmx = std::max( max_order, (size_t) std::abs(mx) ) + 16;
 
-          double n;
+            std::vector<complex128>
+                Dn = VSH::SPHERICAL::compute_dn(nmx, mx);
 
-          _p1x  = sin(x);
-          _ch1x = cos(x);
+            double n;
 
-          for (size_t i = 1; i < max_order+1; ++i)
+            _p1x  = sin(x);
+            _ch1x = cos(x);
+
+            for (size_t i = 1; i < max_order+1; ++i)
             {
                 n = (double) i;
                 _px =  x * compute_jn(n, x);
@@ -171,7 +185,9 @@
 
         for (size_t i = 0; i < max_order; i++)
         {
-          double n = (double) i;
+          double
+            n = (double) i;
+
           Cnn.push_back(Cnx[i]);
           jnx.push_back(compute_jn( n+1, x ));
 
@@ -197,13 +213,18 @@
 
       double get_g()
       {
-          double value = 0;
+          double
+            value = 0;
 
-          CVector an = get_an(), bn = get_bn();
+          CVector
+            an = get_an(),
+            bn = get_bn();
 
           for(size_t it = 0; it < max_order-1; ++it)
           {
-              double n = (double) it + 1;
+              double
+                n = (double) it + 1;
+
               value += ( n * (n + 2.) / (n + 1.) ) * std::real(an[it] * std::conj(an[it+1]) + bn[it] * std::conj(bn[it+1]) );
               value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( an[it] * std::conj(bn[it]) );
           }
@@ -211,15 +232,15 @@
           return value * 4. / ( get_Qsca() * pow(size_parameter, 2) );
       }
 
-    std::tuple<CVector, CVector> compute_s1s2(const DVector &phi)
+    std::tuple<CVector, CVector> compute_s1s2(const std::vector<double> &phi)
     {
-      CVector
+      std::vector<complex128>
         an = get_an(),
         bn = get_bn(),
         S1(phi.size(), 0.0),
         S2(phi.size(), 0.0);
 
-      DVector
+      std::vector<double>
         prefactor = get_prefactor(),
         Mu;
 
@@ -244,11 +265,13 @@
 
     double get_Qsca()
     {
-        CVector
+        std::vector<complex128>
           an = get_an(),
           bn = get_bn();
 
-        double value = 0;
+        double
+          value = 0;
+
         for(size_t it = 0; it < max_order; ++it)
         {
              double n = (double) it + 1;
@@ -260,7 +283,7 @@
 
     double get_Qext()
     {
-      CVector
+      std::vector<complex128>
         an = get_an(),
         bn = get_bn();
 
@@ -276,14 +299,18 @@
 
     double get_Qback()
     {
-        CVector
+        std::vector<complex128>
           an = get_an(),
           bn = get_bn();
 
-        complex128 value = 0;
+        complex128
+          value = 0;
+
         for(size_t it = 0; it < max_order-1; ++it)
         {
-          double n = (double) it + 1;
+          double
+            n = (double) it + 1;
+
           value += (2. * n + 1) * pow(-1., n) * ( an[it] - bn[it] ) ;
         }
 

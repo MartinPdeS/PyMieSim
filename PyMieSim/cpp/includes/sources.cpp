@@ -4,46 +4,69 @@
 
 namespace SOURCE
 {
-
-  struct State
-  {
-    double wavelength;
-    CVector jones_vector;
-    double amplitude;
-    size_t amplitude_idx;
-    double k;
-    bool is_polarized = true;
-
-
-    State(){}
-    State(double  &wavelength, CVector &jones_vector, double &amplitude)
-    : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
+    struct State
     {
-      if (std::isnan( real( jones_vector[0] ))) is_polarized = false;
+        double
+            wavelength,
+            amplitude,
+            k;
 
-      this->k = 2.0 * PI / this->wavelength;
-    }
-  };
+        std::vector<complex128>
+            jones_vector;
 
-  class Source
-  {
-  public:
-    double wavelength, polarization, amplitude, k;
+        size_t
+            amplitude_idx;
 
-    Source(double &wavelength, double &polarization, double amplitude)
-    : wavelength(wavelength), polarization(polarization), amplitude(amplitude)
+        bool
+            is_polarized = true;
+
+
+        State(){}
+        State(
+            const double  &wavelength,
+            const std::vector<complex128> &jones_vector,
+            const double &amplitude)
+        :
+            wavelength(wavelength),
+            jones_vector(jones_vector),
+            amplitude(amplitude)
+        {
+            if (std::isnan(real(jones_vector[0])))
+                is_polarized = false;
+
+            this->k = 2.0 * PI / this->wavelength;
+        }
+    };
+
+    class Source
     {
-      k = 2 * PI / wavelength;
-    }
+        public:
+        double
+            wavelength,
+            polarization,
+            amplitude,
+            k;
+
+        Source(
+            const double &wavelength,
+            const double &polarization,
+            const double amplitude)
+        :
+            wavelength(wavelength),
+            polarization(polarization),
+            amplitude(amplitude)
+        {
+            k = 2 * PI / wavelength;
+        }
 
 
-    Source(){}
-    ~Source(){}
+        Source(){}
+        ~Source(){}
 
-    void set_wavelength(double value) { wavelength = value; k = 2.0 * PI / value; }
+        void set_wavelength(double value) { wavelength = value; k = 2.0 * PI / value; }
 
-    void set_polarization(double value) { polarization = value; }
+        void set_polarization(double value) { polarization = value; }
 
-    void set_amplitude(double value) { amplitude = value; }
-  };
+        void set_amplitude(double value) { amplitude = value; }
+    };
 }

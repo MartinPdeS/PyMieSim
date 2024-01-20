@@ -8,14 +8,20 @@ namespace CYLINDER
 
   struct State
   {
-    double diameter;
-    complex128 index;
-    double n_medium;
+    double
+      diameter;
+
+    complex128
+      index;
+
+    double
+      n_medium;
+
     State(){}
     State(
-      double &diameter,
-      complex128 &index,
-      double &n_medium
+      const double &diameter,
+      const complex128 &index,
+      const double &n_medium
     )
       : diameter(diameter),
         index(index),
@@ -33,7 +39,11 @@ namespace CYLINDER
   {
       public:
 
-          std::vector<complex128> a1n, b1n, a2n, b2n;
+          std::vector<complex128>
+            a1n,
+            b1n,
+            a2n,
+            b2n;
 
           State state;
 
@@ -81,10 +91,10 @@ namespace CYLINDER
       void initialize(size_t &max_order)
       {
         // state.apply_medium();
-        compute_size_parameter();
-        compute_max_order(max_order);
-        compute_area();
-        compute_an_bn();
+        this->compute_size_parameter();
+        this->compute_max_order(max_order);
+        this->compute_area();
+        this->compute_an_bn();
 
       }
 
@@ -141,7 +151,9 @@ namespace CYLINDER
           a2n = get_a2n(),
           b2n = get_b2n();
 
-        complex128 Qext1=0, Qext2=0;
+        complex128
+          Qext1 = 0,
+          Qext2 = 0;
 
         for(size_t it = 1; it < max_order; ++it)
         {
@@ -171,7 +183,8 @@ namespace CYLINDER
         a2n = std::vector<complex128>(max_order);
         b2n = std::vector<complex128>(max_order);
 
-        double x = size_parameter;
+        double
+          x = size_parameter;
 
         complex128
           m = state.index / state.n_medium,
@@ -189,7 +202,9 @@ namespace CYLINDER
 
         for (size_t n = 0; n < max_order+1; ++n)
         {
-          double nd = (double) n ;
+          double
+            nd = (double) n ;
+
           J_z[n] = compute_Jn(nd, z);
           J_z_p[n] = compute_Jn_p(nd, z);
           J_x[n] = compute_Jn(nd, x);
@@ -212,18 +227,19 @@ namespace CYLINDER
         }
       }
 
-      std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi)
+      std::tuple<std::vector<complex128>, std::vector<complex128>>
+      compute_s1s2(const std::vector<double> &phi)
       {
         std::vector<complex128>
-          T1(Phi.size()),
-          T2(Phi.size());
+          T1(phi.size()),
+          T2(phi.size());
 
-        for (uint i = 0; i < Phi.size(); i++){
+        for (uint i = 0; i < phi.size(); i++){
             T1[i] = b1n[0];
             T2[i] = a2n[0];
             for (size_t order = 1; order < max_order ; order++){
-                T1[i] += 2.0 * b1n[order] * cos(order * (PI - (Phi[i] + PI/2.0) ) );
-                T2[i] += 2.0 * a2n[order] * cos(order * (PI - (Phi[i] + PI/2.0) ) );
+                T1[i] += 2.0 * b1n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
+                T2[i] += 2.0 * a2n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
               }
         }
 

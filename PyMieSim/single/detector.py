@@ -184,7 +184,7 @@ class IntegratingSphere(GenericDetector):
 
 
 @dataclass
-class LPmode(GenericDetector):
+class LPMode(GenericDetector):
     """
     Detector type class representing a fiber LP mode, light coupling mechanism is coherent
     and thus, dependent of the phase of the impinging scattered light field.

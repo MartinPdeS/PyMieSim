@@ -340,7 +340,7 @@ class Experiment
 
                                                             DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                            output_array[idx] = abs( detector.get_coupling(scatterer) );
                                                         }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -408,7 +408,7 @@ class Experiment
 
                                                         DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                        double coupling = detector.Coupling(scatterer);
+                                                        double coupling = detector.get_coupling(scatterer);
 
                                                         output_array[idx] = abs(coupling);
                                                     }
@@ -697,7 +697,7 @@ class Experiment
 
                 DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                output_array[idx] = abs( detector.Coupling(scatterer) );
+                output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -766,7 +766,7 @@ class Experiment
 
                                                         DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                        output_array[idx] = abs(detector.Coupling(scatterer));
+                                                        output_array[idx] = abs(detector.get_coupling(scatterer));
                                                     }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -1297,7 +1297,7 @@ class Experiment
 
                                                             DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                            output_array[idx] = abs( detector.get_coupling(scatterer) );
                                                         }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -1368,7 +1368,7 @@ class Experiment
 
                                                             DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                            output_array[idx] = abs( detector.get_coupling(scatterer) );
                                                         }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -1439,7 +1439,7 @@ class Experiment
 
                                                             DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                            output_array[idx] = abs( detector.get_coupling(scatterer) );
                                                         }
 
             return vector_to_ndarray(output_array, array_shape);
@@ -1508,7 +1508,7 @@ class Experiment
 
                                                             DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                                                            output_array[idx] = abs( detector.Coupling(scatterer) );
+                                                            output_array[idx] = abs( detector.get_coupling(scatterer) );
                                                         }
 
             return vector_to_ndarray(output_array, array_shape);

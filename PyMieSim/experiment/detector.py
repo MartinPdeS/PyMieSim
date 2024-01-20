@@ -74,7 +74,7 @@ class Photodiode():
             polarization_filter=self.polarization_filter.values,
             point_coupling=point_coupling,
             coherent=self.coherent,
-            rotation_angle=numpy.asarray([0, 10]) #--------------------------------------------
+            rotation_angle=numpy.zeros(self.scalarfield.values.size)
         )
 
     def bind_to_experiment(self, experiment):

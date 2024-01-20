@@ -27,15 +27,15 @@
 
         .def("rotate_around_axis", &FibonacciMesh::rotate_around_axis)
         .def("compute_vector_field", &FibonacciMesh::compute_vector_field)
-        .def("compute_HV_projection", &FibonacciMesh::compute_HV_projection)
+        .def("compute_projections", &FibonacciMesh::compute_projections)
 
-        .def_property_readonly("para_vector", &FibonacciMesh::GetPara)
-        .def_property_readonly("perp_vector", &FibonacciMesh::GetPerp)
+        .def_property_readonly("parallel_vector", &FibonacciMesh::get_parallel_vector)
+        .def_property_readonly("perpendicular_vector", &FibonacciMesh::get_perpendicular_vector)
 
-        .def_property_readonly("H_para", &FibonacciMesh::get_H_Para)
-        .def_property_readonly("H_perp", &FibonacciMesh::get_H_Perp)
-        .def_property_readonly("V_para", &FibonacciMesh::get_V_Para)
-        .def_property_readonly("V_perp", &FibonacciMesh::get_V_Perp)
+        .def_property_readonly("H_para", &FibonacciMesh::get_horizontal_parallel_projection)
+        .def_property_readonly("H_perp", &FibonacciMesh::get_horizontal_perpendicular_projection)
+        .def_property_readonly("V_para", &FibonacciMesh::get_vertical_parallel_projection)
+        .def_property_readonly("V_perp", &FibonacciMesh::get_vertical_perpendicular_projection)
         ;
   }
 

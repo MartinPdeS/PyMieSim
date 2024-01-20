@@ -5,7 +5,7 @@ import pytest
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
-from PyMieSim.single.detector import LPmode
+from PyMieSim.single.detector import LPMode
 
 mode_numbers = [
     "LP01",
@@ -31,7 +31,7 @@ def test_lp_modes(mode_number: str):
         n_medium=1.0
     )
 
-    detector = LPmode(
+    detector = LPMode(
         mode_number=mode_number,
         NA=0.2,
         sampling=100,

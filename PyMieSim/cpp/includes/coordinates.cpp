@@ -12,14 +12,14 @@
   struct VectorField
   {
     size_t sampling, Size;
-    IVector Shape;
+    IVector shape;
     DVector Data;
 
     VectorField(){}
-    VectorField(const DVector& Vector) : sampling(1), Size(3), Shape({1, 3}), Data(Vector) {}
+    VectorField(const DVector& Vector) : sampling(1), Size(3), shape({1, 3}), Data(Vector) {}
 
-    VectorField(const size_t &sampling) : sampling(sampling), Size(3*sampling), Shape( {sampling, 3} ), Data( DVector(3 * sampling) ) {}
-    ndarray get_numpy(){ return vector_to_ndarray_copy((*this).Data, (*this).Shape); }
+    VectorField(const size_t &sampling) : sampling(sampling), Size(3*sampling), shape( {sampling, 3} ), Data( DVector(3 * sampling) ) {}
+    ndarray get_numpy(){ return vector_to_ndarray_copy((*this).Data, (*this).shape); }
 
     double &operator[](size_t i) { return Data[i]; }
     double &operator()(size_t& i, size_t j) { return Data[i*3 + j]; }
@@ -27,17 +27,17 @@
 
     VectorField operator+(VectorField& Other)
     {
-      VectorField Output(sampling);
+      VectorField output(sampling);
 
       for (size_t i=0; i<3*sampling; i++)
-          Output[i] = (*this)[i] + Other[i];
+          output[i] = (*this)[i] + Other[i];
 
-      return Output;
+      return output;
     }
 
-    DVector ScalarProduct(DVector& Base)
+    DVector get_scalar_product(DVector& Base)
     {
-      DVector Output(sampling);
+      DVector output(sampling);
 
       double
         x0  = Base[0],
@@ -50,123 +50,128 @@
         double
           x  = (*this)(i,0),
           y  = (*this)(i,1),
-          z  = (*this)(i,2);
+          z  = (*this)(i,2),
+          projection = x * x0 + y * y0 + z * z0;
 
-        double Proj = x * x0 + y * y0 + z * z0;
-
-        Output[i] = Proj;
+        output[i] = projection;
       }
 
-      return Output;
+      return output;
     }
 
 
-    DVector ScalarProduct(VectorField& Base)
+    std::vector<double> get_scalar_product(VectorField& base_vector)
     {
-      DVector Output(sampling);
+      std::vector<double>
+        scalar_product(sampling);
 
-      double x0  = Base(0,0),
-             y0  = Base(0,1),
-             z0  = Base(0,2);
+      double
+        x0 = base_vector(0,0),
+        y0 = base_vector(0,1),
+        z0 = base_vector(0,2);
 
 
       for (size_t i=0; i<sampling; i++)
       {
-        double x  = (*this)(i,0),
-               y  = (*this)(i,1),
-               z  = (*this)(i,2);
+        double
+          x = (*this)(i,0),
+          y = (*this)(i,1),
+          z = (*this)(i,2),
+          projection = x * x0 + y * y0 + z * z0;
 
-        double Proj = x * x0 + y * y0 + z * z0;
-
-        Output[i] = Proj;
+        scalar_product[i] = projection;
       }
 
-      return Output;
+      return scalar_product;
     }
 
 
-    VectorField Projection(DVector& Base)
+    VectorField get_projection(const std::vector<double>& base_vector)
     {
-      VectorField Output(sampling);
+      VectorField output(sampling);
 
-      double x0 = Base[0],
-             y0 = Base[1],
-             z0 = Base[2];
+      double
+        x0 = base_vector[0],
+        y0 = base_vector[1],
+        z0 = base_vector[2];
 
 
       for (size_t i=0; i<sampling; i++)
       {
-        double x  = (*this)(i,0),
-               y  = (*this)(i,1),
-               z  = (*this)(i,2);
+        double
+          x = (*this)(i,0),
+          y = (*this)(i,1),
+          z = (*this)(i,2),
+          projection = x * x0 + y * y0 + z * z0,
+          norm = x0 * x0 + y0 * y0 + z0 * z0;
 
-        double Proj = x * x0 + y * y0 + z * z0;
-        double Norm = x0 * x0 + y0 * y0 + z0 * z0;
-
-        Output(i,0) = Proj/Norm * x0;
-        Output(i,1) = Proj/Norm * y0;
-        Output(i,2) = Proj/Norm * z0;
+        output(i,0) = projection / norm * x0;
+        output(i,1) = projection / norm * y0;
+        output(i,2) = projection / norm * z0;
       }
-      return Output;
+      return output;
     }
 
-    VectorField Projection(VectorField& Base)
+    VectorField get_projection(VectorField& base_vector)
     {
-      VectorField Output(sampling);
+      VectorField output(sampling);
 
-      double x0 = Base(0,0),
-             y0 = Base(0,1),
-             z0 = Base(0,2);
-      double Norm = x0 * x0 + y0 * y0 + z0 * z0;
+      double
+        x0 = base_vector(0,0),
+        y0 = base_vector(0,1),
+        z0 = base_vector(0,2),
+        norm = x0 * x0 + y0 * y0 + z0 * z0;
 
       for (size_t i=0; i<sampling; i++)
       {
-        double x  = (*this)(i,0),
-               y  = (*this)(i,1),
-               z  = (*this)(i,2);
+        double
+          x  = (*this)(i,0),
+          y  = (*this)(i,1),
+          z  = (*this)(i,2),
+          projection = x * x0 + y * y0 + z * z0;
 
-        double Proj = x * x0 + y * y0 + z * z0;
-
-        Output(i,0) = Proj/Norm * x0;
-        Output(i,1) = Proj/Norm * y0;
-        Output(i,2) = Proj/Norm * z0;
+        output(i,0) = projection / norm * x0;
+        output(i,1) = projection / norm * y0;
+        output(i,2) = projection / norm * z0;
       }
-      return Output;
+      return output;
     }
 
 
-    VectorField Projection(VectorField& Base0, VectorField& Base1)
+    VectorField get_projection(VectorField& base_vector_0, VectorField& base_vector_1)
     {
-      VectorField Output(sampling);
+      VectorField output(sampling);
 
-      double x0 = Base0(0,0),
-             y0 = Base0(0,1),
-             z0 = Base0(0,2),
-             x1 = Base1(0,0),
-             y1 = Base1(0,1),
-             z1 = Base1(0,2);
-
-      double Norm0 = x0 * x0 + y0 * y0 + z0 * z0;
-      double Norm1 = x1 * x1 + y1 * y1 + z1 * z1;
+      double
+        x0 = base_vector_0(0,0),
+        y0 = base_vector_0(0,1),
+        z0 = base_vector_0(0,2),
+        x1 = base_vector_1(0,0),
+        y1 = base_vector_1(0,1),
+        z1 = base_vector_1(0,2),
+        norm_0 = x0 * x0 + y0 * y0 + z0 * z0,
+        norm_1 = x1 * x1 + y1 * y1 + z1 * z1;
 
       for (size_t i=0; i<sampling; i++)
       {
-        double xp  = (*this)(i,0),
-               yp  = (*this)(i,1),
-               zp  = (*this)(i,2);
+        double
+          xp  = (*this)(i,0),
+          yp  = (*this)(i,1),
+          zp  = (*this)(i,2),
+          projection_0 = xp * x0 + yp * y0 + zp * z0,
+          projection_1 = xp * x1 + yp * y1 + zp * z1,
+          factor_0 = projection_0 / norm_0,
+          factor_1 = projection_1 / norm_1;
 
-        double Proj0 = xp * x0 + yp * y0 + zp * z0,
-               Proj1 = xp * x1 + yp * y1 + zp * z1;
-
-        Output(i,0) = Proj0/Norm0 * x0 + Proj1/Norm1 * x1;
-        Output(i,1) = Proj0/Norm0 * y0 + Proj1/Norm1 * y1;
-        Output(i,2) = Proj0/Norm0 * z0 + Proj1/Norm1 * z1;
+        output(i,0) = factor_0 * x0 + factor_1 * x1;
+        output(i,1) = factor_0 * y0 + factor_1 * y1;
+        output(i,2) = factor_0 * z0 + factor_1 * z1;
       }
-      return Output;
+      return output;
     }
 
 
-    void Normalize()
+    void normalize()
     {
       for (size_t i=0; i<sampling; i++)
       {
@@ -216,7 +221,11 @@
 
     void mx_apply(Matrix3 M)
     {
-      double tempx, tempy, tempz;
+      double
+        tempx,
+        tempy,
+        tempz;
+
       for (size_t i = 0; i < sampling; i++){
 
           tempx = M[0][0] * (*this)(i,0) + M[0][1] * (*this)(i,1) + M[0][2] * (*this)(i,2);
@@ -236,7 +245,7 @@
 
   struct Spherical
   {
-    DVector
+    std::vector<double>
       Phi,
       Theta,
       R;
@@ -245,17 +254,21 @@
 
     Spherical(){}
     Spherical(const size_t &sampling)
-    : Phi(DVector(sampling)), Theta(DVector(sampling)), R(DVector(sampling)), sampling(sampling)
+    : Phi(std::vector<double>(sampling)),
+      Theta(std::vector<double>(sampling)),
+      R(std::vector<double>(sampling)),
+      sampling(sampling)
       {}
-    ndarray get_r_py()    {return vector_to_ndarray_copy(R);}
-    ndarray get_phi_py()  {return vector_to_ndarray_copy(Phi);}
+
+    ndarray get_r_py() {return vector_to_ndarray_copy(R);}
+    ndarray get_phi_py(){return vector_to_ndarray_copy(Phi);}
     ndarray get_theta_py(){return vector_to_ndarray_copy(Theta);}
   };
 
 
   struct Cartesian
   {
-    DVector
+    std::vector<double>
       X,
       Y,
       Z;
@@ -264,12 +277,15 @@
 
     Cartesian(){}
     Cartesian(const size_t &sampling)
-    : X(DVector(sampling)), Y(DVector(sampling)), Z(DVector(sampling)), sampling(sampling)
+    : X(std::vector<double>(sampling)),
+      Y(std::vector<double>(sampling)),
+      Z(std::vector<double>(sampling)),
+      sampling(sampling)
       {}
 
-    void set_x_py(const DVector &value){X = value;}
-    void set_y_py(const DVector &value){Y = value;}
-    void set_z_py(const DVector &value){Z = value;}
+    void set_x_py(const std::vector<double> &value){X = value;}
+    void set_y_py(const std::vector<double> &value){Y = value;}
+    void set_z_py(const std::vector<double> &value){Z = value;}
 
     ndarray get_x_py(){return vector_to_ndarray_copy(X);}
     ndarray get_y_py(){return vector_to_ndarray_copy(Y);}
@@ -277,14 +293,14 @@
 
     Spherical cartesian_to_spherical()
     {
-      Spherical Output(sampling);
+      Spherical output(sampling);
 
       for (size_t i = 0; i < sampling; i++){
-         Output.R[i] = sqrt( pow( X[i],2) + pow(Y[i],2) + pow(Z[i],2) ) ;
-         Output.Theta[i] = atan2( Y[i],  X[i] );
-         Output.Phi[i] = asin( Z[i] / Output.R[i] );
+         output.R[i] = sqrt( pow( X[i],2) + pow(Y[i],2) + pow(Z[i],2) ) ;
+         output.Theta[i] = atan2( Y[i],  X[i] );
+         output.Phi[i] = asin( Z[i] / output.R[i] );
          }
-        return Output;
+        return output;
     }
 
     void mx_rot_y(double theta)
@@ -336,13 +352,6 @@
     }
 
   };
-
-
-
-
-
-
-
 
 
 #endif
