@@ -41,7 +41,6 @@ def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell
 
     return data.array.squeeze()
 
-
 def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
     PyMieScatt_data = []
     for core_diameter in core_diameters:

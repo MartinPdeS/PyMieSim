@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections.abc import Iterable
+
 import numpy
 from dataclasses import dataclass
 
@@ -14,13 +16,13 @@ from PyMieSim.binary.Sets import CppDetectorSet
 
 @dataclass
 class Photodiode():
-    NA: list
+    NA: Iterable
     """ Numerical aperture of imaging system. """
-    gamma_offset: list
+    gamma_offset: Iterable
     """ Angle [degree] offset of detector in the direction perpendicular to polarization. """
-    phi_offset: list
+    phi_offset: Iterable
     """ Angle [degree] offset of detector in the direction parallel to polarization. """
-    polarization_filter: list
+    polarization_filter: Iterable
     """ Angle [degree] of polarization filter in front of detector. """
     coupling_mode: str = 'point'
     """ Method for computing mode coupling. Either point or Mean. """

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections.abc import Iterable
+
 import numpy
 from dataclasses import dataclass
 
@@ -15,14 +17,14 @@ from PyMieSim.binary.Sets import CppSourceSet
 
 @dataclass
 class Gaussian(object):
-    wavelength: float
+    wavelength: Iterable
     """ Wavelenght of the light field. """
+    NA: Iterable
+    """ Numerical aperture of the source """
+    polarization_value: Iterable
+    """ Polarization of the light field in degree. """
     optical_power: float
     """ Optical power in unit of Watt """
-    NA: float
-    """ Numerical aperture of the source """
-    polarization_value: float
-    """ Polarization of the light field in degree. """
     polarization_type: str = 'linear'
     """ How to interpret the polarization value """
     name: str = 'PlaneWave'
@@ -119,13 +121,13 @@ class Gaussian(object):
 
 @dataclass
 class PlaneWave(object):
-    wavelength: float
+    wavelength: Iterable
     """ Wavelenght of the light field. """
     optical_power: float
     """ Optical power in unit of Watt """
-    NA: float
+    NA: Iterable
     """ Numerical aperture of the source """
-    linear_polarization: float
+    linear_polarization: Iterable
     """ polarization of the light field in degree. """
     name: str = 'PlaneWave'
     """ name of the set """

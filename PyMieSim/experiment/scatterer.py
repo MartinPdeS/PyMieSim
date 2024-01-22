@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections.abc import Iterable
+
 import numpy
 from dataclasses import dataclass
 
@@ -11,56 +13,28 @@ import PyMieSim.datavisual_x_parameters as Kwargs
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
 
 
-@dataclass
-class CoreShell():
-    core_diameter: list
-    """ diameter of the core of the single scatterer [m]. """
-    shell_width: list
-    """ Width of the shell of the single scatterer [m]. """
-    core_index: tuple = tuple()
-    """ Refractive index of the core of the scatterer. """
-    shell_index: tuple = tuple()
-    """ Refractive index of the shell of the scatterer. """
-    core_material: tuple = tuple()
-    """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
-    shell_material: tuple = tuple()
-    """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
-    n_medium: list = 1.0
-    """ Refractive index of scatterer medium. """
-    name: str = 'coreshell'
-    """name of the set """
-
+class BaseScatterer():
     def __post_init__(self):
+        self.asserts_inputs()
+
         self.format_inputs()
 
         self.build_x_parameters()
 
-        super().__init__()
-
-    def build_x_parameters(self) -> None:
+    def format_inputs(self):
         """
-        Builds the parameters that will be passed in XTable for DataVisual.
+        Format the inputs given by the user into numpy array. Those inputs are subsequently
+        sent to the cpp binding.
 
-        :returns:   No Return
+        :returns:   No return
         :rtype:     None
         """
-        self.n_medium = Xparameter(values=self.n_medium, **Kwargs.n_medium)
+        for parameter_str in self.parameter_str_list:
+            parameter = getattr(self, parameter_str)
 
-        self.bounded_core = True if len(self.core_material) != 0 else False
+            parameter = numpy.atleast_1d(parameter)
 
-        self.bounded_shell = True if len(self.shell_material) != 0 else False
-
-        self.core_diameter = Xparameter(values=self.core_diameter, **Kwargs.core_diameter)
-
-        self.shell_width = Xparameter(values=self.shell_width, **Kwargs.shell_width)
-
-        self.core_material = Xparameter(values=self.core_material, **Kwargs.core_material)
-
-        self.shell_material = Xparameter(values=self.shell_material, **Kwargs.shell_material)
-
-        self.core_index = Xparameter(values=self.core_index, **Kwargs.core_index)
-
-        self.shell_index = Xparameter(values=self.shell_index, **Kwargs.shell_index)
+            setattr(self, parameter_str, parameter)
 
     def bind_to_experiment(self, experiment):
         """
@@ -72,7 +46,70 @@ class CoreShell():
         :returns:   No return
         :rtype:     None
         """
-        experiment.binding.set_coreshell(self.binding)
+        method_str = 'set_' + self.name
+
+        getattr(experiment.binding, method_str)(self.binding)
+
+    def build_x_parameters(self) -> None:
+        """
+        Builds the parameters that will be passed in XTable for DataVisual.
+
+        :returns:   No returns
+        :rtype:     None
+        """
+        for parameter_str in self.parameter_str_list:
+            parameter = getattr(self, parameter_str)
+
+            kwargs_parameter = getattr(Kwargs, parameter_str)
+
+            x_parameter = Xparameter(values=parameter, **kwargs_parameter)
+
+            setattr(self, parameter_str, x_parameter)
+
+
+@dataclass
+class CoreShell(BaseScatterer):
+    core_diameter: Iterable
+    """ diameter of the core of the single scatterer [m]. """
+    shell_width: Iterable
+    """ Width of the shell of the single scatterer [m]. """
+    core_index: Iterable = None
+    """ Refractive index of the core of the scatterer. """
+    shell_index: Iterable = None
+    """ Refractive index of the shell of the scatterer. """
+    core_material: Iterable = None
+    """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
+    shell_material: Iterable = None
+    """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
+    n_medium: list = 1.0
+    """ Refractive index of scatterer medium. """
+    name: str = 'coreshell'
+    """name of the set """
+
+    parameter_str_list = [
+        'n_medium',
+        'core_diameter',
+        'shell_width',
+        'core_material',
+        'shell_material',
+        'core_index',
+        'shell_index'
+    ]
+
+    def asserts_inputs(self) -> None:
+        """
+        Asserts that core and shell are either defined by index or material
+
+        :returns:   No returns
+        :rtype:     None
+        """
+        assert (self.core_material is None) ^ (self.core_index is None), "core_material xor core_index has to be defined"
+
+        assert (self.shell_material is None) ^ (self.shell_index is None), "shell_material xor shell_index has to be defined"
+
+        self.bounded_core = True if self.core_material is not None else False
+
+        self.bounded_shell = True if self.shell_material is not None else False
 
     def get_core_shell_diameter_from_shell_width(
             self,
@@ -102,15 +139,15 @@ class CoreShell():
             material.GetRI(source.values) for material in self.shell_material
         ]
 
-        core_material = numpy.asarray(core_material).astype(complex)
-        shell_material = numpy.asarray(shell_material).astype(complex)
+        core_material = numpy.asarray(core_material)
+        shell_material = numpy.asarray(shell_material)
 
         self.binding = CppCoreShellSet(
-            core_diameter=self.core_diameter.values,
-            shell_width=self.shell_width.values,
-            core_material=core_material,
-            shell_material=shell_material,
-            n_medium=self.n_medium.values,
+            core_diameter=self.core_diameter.values.astype(float),
+            shell_width=self.shell_width.values.astype(float),
+            core_material=core_material.astype(numpy.complex128),
+            shell_material=shell_material.astype(numpy.complex128),
+            n_medium=self.n_medium.values.astype(float),
         )
 
     def bind_core_material_shell_index(self, source) -> None:
@@ -118,14 +155,14 @@ class CoreShell():
             material.GetRI(source.values) for material in self.core_material
         ]
 
-        core_material = numpy.asarray(core_material).astype(complex)
+        core_material = numpy.asarray(core_material)
 
         self.binding = CppCoreShellSet(
-            core_diameter=self.core_diameter.values,
-            shell_width=self.shell_width.values,
-            core_material=core_material,
-            shell_index=self.shell_index.values,
-            n_medium=self.n_medium.values,
+            core_diameter=self.core_diameter.values.astype(float),
+            shell_width=self.shell_width.values.astype(float),
+            core_material=core_material.astype(numpy.complex128),
+            shell_index=self.shell_index.values.astype(numpy.complex128),
+            n_medium=self.n_medium.values.astype(float),
         )
 
     def bind_index_material_shell_material(self, source) -> None:
@@ -133,23 +170,23 @@ class CoreShell():
             material.GetRI(source.values) for material in self.shell_material
         ]
 
-        shell_material = numpy.asarray(shell_material).astype(complex)
+        shell_material = numpy.asarray(shell_material)
 
         self.binding = CppCoreShellSet(
-            core_diameter=self.core_diameter.values,
-            shell_width=self.shell_width.values,
-            core_index=self.core_index.values,
-            shell_material=shell_material,
-            n_medium=self.n_medium.values,
+            core_diameter=self.core_diameter.values.astype(float),
+            shell_width=self.shell_width.values.astype(float),
+            core_index=self.core_index.values.astype(numpy.complex128),
+            shell_material=shell_material.astype(numpy.complex128),
+            n_medium=self.n_medium.values.astype(float),
         )
 
     def bind_index_material_shell_index(self, source) -> None:
         self.binding = CppCoreShellSet(
-            core_diameter=self.core_diameter.values,
-            shell_width=self.shell_width.values,
-            core_index=self.core_index.values,
-            shell_index=self.shell_index.values,
-            n_medium=self.n_medium.values,
+            core_diameter=self.core_diameter.values.astype(float),
+            shell_width=self.shell_width.values.astype(float),
+            core_index=self.core_index.values.astype(numpy.complex128),
+            shell_index=self.shell_index.values.astype(numpy.complex128),
+            n_medium=self.n_medium.values.astype(float),
         )
 
     def evaluate_index_material(self, source) -> None:
@@ -164,25 +201,6 @@ class CoreShell():
 
         if not self.bounded_core and not self.bounded_shell:
             self.bind_index_material_shell_index(source)
-
-    def format_inputs(self) -> None:
-        """
-        Format the inputs given by the user into numpy array. Those inputs are subsequently
-        sent to the cpp binding.
-
-        :returns:   No return
-        :rtype:     None
-        """
-        self.core_diameter = numpy.atleast_1d(self.core_diameter).astype(float)
-        self.shell_width = numpy.atleast_1d(self.shell_width).astype(float)
-
-        self.core_index = numpy.atleast_1d(self.core_index).astype(numpy.complex128)
-        self.shell_index = numpy.atleast_1d(self.shell_index).astype(numpy.complex128)
-
-        self.n_medium = numpy.atleast_1d(self.n_medium).astype(float)
-
-        self.core_material = numpy.atleast_1d(self.core_material)
-        self.shell_material = numpy.atleast_1d(self.shell_material)
 
     def append_to_table(self, table) -> list:
         """
@@ -210,73 +228,55 @@ class CoreShell():
 
 
 @dataclass
-class Sphere():
-    diameter: list
+class Sphere(BaseScatterer):
+    diameter: Iterable
     """ diameter of the single scatterer in unit of meter. """
-    index: list = tuple()
+    index: Iterable = None
     """ Refractive index of scatterer. """
-    material: list = tuple()
+    material: Iterable = None
     """ material of which the scatterer is made of. Only if index is not specified. """
-    n_medium: list = 1.0
+    n_medium: Iterable = 1.0
     """ Refractive index of scatterer medium. """
     name: str = 'sphere'
     """name of the set """
 
-    def __post_init__(self):
-        self.format_inputs()
+    parameter_str_list = [
+        'n_medium',
+        'diameter',
+        'material',
+        'index'
+    ]
 
-        self.build_x_parameters()
-
-        super().__init__()
-
-    def build_x_parameters(self) -> None:
+    def asserts_inputs(self) -> None:
         """
-        Builds the parameters that will be passed in XTable for DataVisual.
+        Asserts that core and shell are either defined by index or material
 
-        :returns:   No Return
+        :returns:   No returns
         :rtype:     None
         """
-        self.n_medium = Xparameter(values=self.n_medium, **Kwargs.n_medium)
+        assert (self.material is None) ^ (self.index is None), "material xor index has to be defined"
 
-        self.bounded_index = True if len(self.material) != 0 else False
+        self.bounded_index = True if self.material is not None else False
 
-        self.diameter = Xparameter(values=self.diameter, **Kwargs.diameter)
-
-        self.material = Xparameter(values=self.material, **Kwargs.material)
-
-        self.index = Xparameter(values=self.index, **Kwargs.index)
-
-    def bind_to_experiment(self, experiment) -> None:
-        """
-        Bind this specific set to a Setup experiment.
-
-        :param      experiment:  The experiment
-        :type       experiment:  Setup
-
-        :returns:   No return
-        :rtype:     None
-        """
-        experiment.binding.set_sphere(self.binding)
-
-    def evaluate_index_material(self, Source) -> None:
+    def evaluate_index_material(self, source) -> None:
         if self.bounded_index:
             material = [
-                material.GetRI(Source.values) for material in self.material
+                material.GetRI(source.values) for material in self.material
             ]
 
             material_index = numpy.asarray(material).astype(complex)
 
             self.binding = CppSphereSet(
                 diameter=self.diameter.values.astype(float),
-                material=material_index,
+                material=material_index.astype(numpy.complex128),
                 n_medium=self.n_medium.values.astype(float)
             )
 
         else:
             self.binding = CppSphereSet(
-                diameter=self.diameter.values,
-                index=self.index.values,
-                n_medium=self.n_medium.values
+                diameter=self.diameter.values.astype(float),
+                index=self.index.values.astype(numpy.complex128),
+                n_medium=self.n_medium.values.astype(float)
             )
 
     def append_to_table(self, table) -> list:
@@ -297,90 +297,60 @@ class Sphere():
 
         return [*table, self.diameter, *index_material_table, self.n_medium]
 
-    def format_inputs(self) -> None:
-        """
-        Format the inputs given by the user into numpy array. Those inputs are subsequently
-        sent to the cpp binding.
-
-        :returns:   No return
-        :rtype:     None
-        """
-        self.diameter = numpy.atleast_1d(self.diameter).astype(float)
-
-        self.index = numpy.atleast_1d(self.index).astype(numpy.complex128)
-
-        self.n_medium = numpy.atleast_1d(self.n_medium).astype(float)
-
-        self.material = numpy.atleast_1d(self.material)
-
 
 @dataclass
-class Cylinder():
-    diameter: list
+class Cylinder(BaseScatterer):
+    diameter: Iterable
     """ diameter of the single scatterer in unit of meter. """
-    index: tuple = tuple()
+    index: Iterable = None
     """ Refractive index of scatterer. """
-    material: tuple = tuple()
+    material: Iterable = None
     """ Refractive index of scatterer medium. """
     n_medium: list = 1.0
     """ material of which the scatterer is made of. Only if index is not specified. """
     name: str = 'cylinder'
     """name of the set """
 
-    def __post_init__(self):
-        self.format_inputs()
+    parameter_str_list = [
+        'n_medium',
+        'diameter',
+        'material',
+        'index'
+    ]
 
-        self.build_x_parameters()
-
-        super().__init__()
-
-    def build_x_parameters(self) -> None:
+    def asserts_inputs(self) -> None:
         """
-        Builds the parameters that will be passed in XTable for DataVisual.
+        Asserts that core and shell are either defined by index or material
 
-        :returns:   No Return
+        :returns:   No returns
         :rtype:     None
         """
-        self.n_medium = Xparameter(values=self.n_medium, **Kwargs.n_medium)
+        assert (self.material is None) ^ (self.index is None), "material xor index has to be defined"
 
-        self.bounded_index = True if len(self.material) != 0 else False
-
-        self.diameter = Xparameter(values=self.diameter, **Kwargs.diameter)
-
-        self.material = Xparameter(values=self.material, **Kwargs.material)
-
-        self.index = Xparameter(values=self.index, **Kwargs.index)
-
-    def bind_to_experiment(self, experiment):
-        """
-        Bind this specific set to a Setup experiment.
-
-        :param      experiment:  The experiment
-        :type       experiment:  Setup
-
-        :returns:   No return
-        :rtype:     None
-        """
-        experiment.binding.set_cylinder(self.binding)
+        self.bounded_index = True if self.material is not None else False
 
     def evaluate_index_material(self, source):
         if self.bounded_index:
-            material = numpy.asarray([material.GetRI(source.values) for material in self.material])
+            material = numpy.asarray(
+                [
+                    material.GetRI(source.values) for material in self.material
+                ]
+            )
 
             self.binding = CppCylinderSet(
-                diameter=self.diameter.values,
-                material=material,
-                n_medium=self.n_medium.values
+                diameter=self.diameter.values.astype(float),
+                material=material.astype(numpy.complex128),
+                n_medium=self.n_medium.values.astype(float)
             )
 
         else:
             self.binding = CppCylinderSet(
-                diameter=self.diameter.values,
-                index=self.index.values,
-                n_medium=self.n_medium.values
+                diameter=self.diameter.values.astype(float),
+                index=self.index.values.astype(numpy.complex128),
+                n_medium=self.n_medium.values.astype(float)
             )
 
-    def append_to_table(self, table):
+    def append_to_table(self, table: list) -> list:
         """
         Append elements to the xTable from the DataVisual library for the plottings.
 
@@ -397,21 +367,5 @@ class Cylinder():
             index_material_table = [self.index]
 
         return [*table, self.diameter, *index_material_table, self.n_medium]
-
-    def format_inputs(self):
-        """
-        Format the inputs given by the user into numpy array. Those inputs are subsequently
-        sent to the cpp binding.
-
-        :returns:   No return
-        :rtype:     None
-        """
-        self.diameter = numpy.atleast_1d(self.diameter).astype(float)
-
-        self.index = numpy.atleast_1d(self.index).astype(numpy.complex128)
-
-        self.n_medium = numpy.atleast_1d(self.n_medium).astype(float)
-
-        self.material = numpy.atleast_1d(self.material)
 
 # -
