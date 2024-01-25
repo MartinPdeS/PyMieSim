@@ -30,6 +30,17 @@ class BaseSource(object):
     name: str = field(default='PlaneWave', init=False)
     """ name of the set """
 
+    def __post_init__(self):
+        self.format_inputs()
+
+        self.generate_polarization_attribute()
+
+        self.generate_amplitude()
+
+        self.build_x_parameters()
+
+        self.generate_binding()
+
     def generate_binding(self) -> None:
         """
         Generate the C++ binding
@@ -113,20 +124,12 @@ class Gaussian(BaseSource):
     polarization_type: str = 'linear'
     """ How to interpret the polarization value """
 
-    def __post_init__(self):
-        self.format_inputs()
-
-        self.generate_polarization_attribute()
-
+    def generate_amplitude(self) -> None:
         self.amplitude = power_to_amplitude(
             wavelength=self.wavelength,
             optical_power=self.optical_power,
             NA=self.NA,
         )
-
-        self.build_x_parameters()
-
-        self.generate_binding()
 
 
 @dataclass
@@ -136,13 +139,5 @@ class PlaneWave(BaseSource):
     polarization_type: str = 'linear'
     """ How to interpret the polarization value """
 
-    def __post_init__(self):
-        self.format_inputs()
-
-        self.generate_polarization_attribute()
-
+    def generate_amplitude(self) -> None:
         self.amplitude = numpy.atleast_1d(self.amplitude)
-
-        self.build_x_parameters()
-
-        self.generate_binding()

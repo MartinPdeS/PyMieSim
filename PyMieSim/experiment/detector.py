@@ -82,12 +82,10 @@ class BaseDetector():
         :returns:   No return
         :rtype:     None
         """
-        for parameter_str in self.parameter_str_list:
-            parameter = getattr(self, parameter_str)
-
-            parameter = numpy.atleast_1d(parameter)
-
-            setattr(self, parameter_str, parameter)
+        self.NA = numpy.atleast_1d(self.NA).astype(float)
+        self.phi_offset = numpy.atleast_1d(self.phi_offset).astype(float)
+        self.gamma_offset = numpy.atleast_1d(self.gamma_offset).astype(float)
+        self.polarization_filter = numpy.atleast_1d(self.polarization_filter).astype(float)
 
     def bind_to_experiment(self, experiment: Setup) -> None:
         """
@@ -110,6 +108,8 @@ class BaseDetector():
         """
         for parameter_str in self.parameter_str_list:
             parameter = getattr(self, parameter_str)
+
+            parameter = numpy.array(parameter)
 
             kwargs_parameter = getattr(Kwargs, parameter_str)
 
@@ -144,10 +144,10 @@ class BaseDetector():
 
         self.binding = CppDetectorSet(
             scalarfield=self.scalarfield.values.astype(complex),
-            NA=self.NA.values.astype(float),
-            phi_offset=phi_offset_rad.astype(float),
-            gamma_offset=gamma_offset_rad.astype(float),
-            polarization_filter=self.polarization_filter.values.astype(float),
+            NA=self.NA.values,
+            phi_offset=phi_offset_rad,
+            gamma_offset=gamma_offset_rad,
+            polarization_filter=self.polarization_filter.values,
             point_coupling=point_coupling,
             coherent=self.coherent,
             rotation_angle=self.rotation_angle.astype(float)
