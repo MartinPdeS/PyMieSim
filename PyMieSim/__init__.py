@@ -39,6 +39,6 @@ def load_lp_mode(mode_number: list, structure_type: str = 'unstructured', sampli
 
     fields_array = numpy.asarray(fields_array)
 
-    return fields_array.squeeze()
+    return fields_array
 
 # -

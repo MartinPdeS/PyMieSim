@@ -10,14 +10,18 @@ if TYPE_CHECKING:
 from collections.abc import Iterable
 
 import numpy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from DataVisual import Xparameter
 import PyMieSim.datavisual_x_parameters as Kwargs
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
 
 
+@dataclass
 class BaseScatterer():
+    n_medium: Iterable
+    """ material of which the scatterer is made of. Only if index is not specified. """
+
     def __post_init__(self):
         self.asserts_inputs()
 
@@ -85,10 +89,8 @@ class CoreShell(BaseScatterer):
     """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
     shell_material: Iterable = None
     """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
-    n_medium: list = 1.0
-    """ Refractive index of scatterer medium. """
-    name: str = 'coreshell'
-    """name of the set """
+    name: str = field(default="coreshell", init=False)
+    """ name of the set """
 
     parameter_str_list = [
         'n_medium',
@@ -114,25 +116,6 @@ class CoreShell(BaseScatterer):
         self.bounded_core = True if self.core_material is not None else False
 
         self.bounded_shell = True if self.shell_material is not None else False
-
-    def get_core_shell_diameter_from_shell_width(
-            self,
-            core_diameter: numpy.ndarray,
-            shell_width: numpy.ndarray) -> tuple:
-        """
-        Gets the core shell diameter from shell width.
-
-        :param      core_diameter:  The core diameter
-        :type       core_diameter:  numpy.ndarray
-        :param      shell_width:    The shell width
-        :type       shell_width:    numpy.ndarray
-
-        :returns:   The core shell diameter from shell width.
-        :rtype:     tuple
-        """
-        _core_diameter = numpy.tile(core_diameter, reps=len(shell_width))
-        shell_diameter = numpy.add.outer(core_diameter, shell_width)
-        return _core_diameter.flatten(), shell_diameter.T.flatten()
 
     def bind_core_material_shell_material(self, source: Gaussian | PlaneWave) -> None:
         core_material = [
@@ -239,10 +222,8 @@ class Sphere(BaseScatterer):
     """ Refractive index of scatterer. """
     material: Iterable = None
     """ material of which the scatterer is made of. Only if index is not specified. """
-    n_medium: Iterable = 1.0
-    """ Refractive index of scatterer medium. """
-    name: str = 'sphere'
-    """name of the set """
+    name: str = field(default="sphere", init=False)
+    """ name of the set """
 
     parameter_str_list = [
         'n_medium',
@@ -310,10 +291,8 @@ class Cylinder(BaseScatterer):
     """ Refractive index of scatterer. """
     material: Iterable = None
     """ Refractive index of scatterer medium. """
-    n_medium: list = 1.0
-    """ material of which the scatterer is made of. Only if index is not specified. """
-    name: str = 'cylinder'
-    """name of the set """
+    name: str = field(default="cylinder", init=False)
+    """ name of the set """
 
     parameter_str_list = [
         'n_medium',
