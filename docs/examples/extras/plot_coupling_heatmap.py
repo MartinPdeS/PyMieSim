@@ -44,7 +44,8 @@ detector_set = Photodiode(
     polarization_filter=None,
     NA=0.3,
     phi_offset=0,
-    gamma_offset=0
+    gamma_offset=0,
+    sampling=400
 )
 
 experiment = Setup(

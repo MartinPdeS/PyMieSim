@@ -7,16 +7,13 @@ if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
     from PyMieSim.experiment.source import Gaussian, PlaneWave
 
-
 from collections.abc import Iterable
 
 import numpy
 from dataclasses import dataclass
 
 from DataVisual import Xparameter
-
 import PyMieSim.datavisual_x_parameters as Kwargs
-
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
 
 
