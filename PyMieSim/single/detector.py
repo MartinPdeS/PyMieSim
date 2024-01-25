@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 import numpy
 import logging
 from dataclasses import dataclass, field
-from PyMieSim import load_lp_mode
+from PyMieSim import load_single_lp_mode
 
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FIBONACCI  # has to be imported as extension
@@ -212,7 +212,7 @@ class LPMode(GenericDetector):
 
         self.interpret_mode_name()
 
-        self.unstructured_farfield = load_lp_mode(
+        self.unstructured_farfield = load_single_lp_mode(
             mode_number=self.mode_number,
             structure_type='unstructured',
             sampling=self.sampling
@@ -241,7 +241,7 @@ class LPMode(GenericDetector):
         self.rotation_angle = float(rotation_angle)
 
     def get_structured_scalarfield(self, sampling: int = 500) -> numpy.ndarray:
-        far_field = load_lp_mode(
+        far_field = load_single_lp_mode(
             mode_number=self.mode_number,
             structure_type='structured',
             sampling=sampling,

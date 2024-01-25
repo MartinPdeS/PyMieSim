@@ -61,7 +61,8 @@ def test_coreshell_experiment(measure, core_type, shell_type):
         NA=0.2,
         polarization_filter=None,
         gamma_offset=0,
-        phi_offset=0
+        phi_offset=0,
+        sampling=100
     )
 
     experiment = Setup(

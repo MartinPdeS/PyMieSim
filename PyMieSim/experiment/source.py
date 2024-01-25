@@ -1,10 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from PyMieSim.experiment.setup import Setup
+
+
 from collections.abc import Iterable
 
 import numpy
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from DataVisual import Xparameter
 
@@ -16,34 +22,50 @@ from PyMieSim.binary.Sets import CppSourceSet
 
 
 @dataclass
-class Gaussian(object):
+class BaseSource(object):
     wavelength: Iterable
     """ Wavelenght of the light field. """
-    NA: Iterable
-    """ Numerical aperture of the source """
     polarization_value: Iterable
     """ Polarization of the light field in degree. """
-    optical_power: float
-    """ Optical power in unit of Watt """
-    polarization_type: str = 'linear'
-    """ How to interpret the polarization value """
-    name: str = 'PlaneWave'
+    name: str = field(default='PlaneWave', init=False)
     """ name of the set """
 
-    def __post_init__(self):
-        self.format_inputs()
+    def generate_binding(self) -> None:
+        """
+        Generate the C++ binding
 
-        self.generate_polarization_attribute()
-
-        self.amplitude = power_to_amplitude(
-            wavelength=self.wavelength,
-            optical_power=self.optical_power,
-            NA=self.NA,
+        :returns:   No return
+        :rtype:     None
+        """
+        self.binding = CppSourceSet(
+            wavelength=self.wavelength.values,
+            jones_vector=self.jones_vector,
+            amplitude=self.amplitude
         )
 
-        self.build_x_parameters()
+    def bind_to_experiment(self, experiment: Setup) -> None:
+        """
+        Bind this specific set to a Setup experiment.
 
-        self.generate_binding()
+        :param      experiment:  The experiment
+        :type       experiment:  Setup
+
+        :returns:   No return
+        :rtype:     None
+        """
+        experiment.binding.set_source(self.binding)
+
+    def append_to_table(self, table: list) -> list:
+        """
+        Append elements to the xTable from the DataVisual library for the plottings.
+
+        :param      table:  The table
+        :type       table:  list
+
+        :returns:   The updated list
+        :rtype:     list
+        """
+        return [*table, self.wavelength, self.linear_polarization]
 
     def build_x_parameters(self) -> None:
         """
@@ -60,29 +82,7 @@ class Gaussian(object):
             **Kwargs.linear_polarization
         )
 
-    def generate_binding(self) -> None:
-        """
-        Generate the C++ binding
-
-        :returns:   No return
-        :rtype:     None
-        """
-        self.binding = CppSourceSet(
-            wavelength=self.wavelength.values,
-            jones_vector=self.jones_vector,
-            amplitude=self.amplitude
-        )
-
-    def generate_polarization_attribute(self) -> None:
-        match self.polarization_type.lower():
-            case 'linear':
-                self.polarization = LinearPolarization(*self.polarization_value)
-            case _:
-                raise f'Invalid polarization type: {self.polarization_type}. Valid options ["linear", "jones vector"]'
-
-        self.jones_vector = numpy.atleast_1d(self.polarization.jones_vector).astype(numpy.complex128).T
-
-    def format_inputs(self):
+    def format_inputs(self) -> None:
         """
         Format the inputs given by the user into numpy array. Those inputs are subsequently
         sent to the cpp binding.
@@ -94,119 +94,55 @@ class Gaussian(object):
 
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
 
-    def bind_to_experiment(self, experiment):
-        """
-        Bind this specific set to a Setup experiment.
+    def generate_polarization_attribute(self) -> None:
+        match self.polarization_type.lower():
+            case 'linear':
+                self.polarization = LinearPolarization(*self.polarization_value)
+            case _:
+                raise f'Invalid polarization type: {self.polarization_type}. Valid options ["linear", "jones vector"]'
 
-        :param      experiment:  The experiment
-        :type       experiment:  Setup
-
-        :returns:   No return
-        :rtype:     None
-        """
-        experiment.binding.set_source(self.binding)
-
-    def append_to_table(self, table):
-        """
-        Append elements to the xTable from the DataVisual library for the plottings.
-
-        :param      table:  The table
-        :type       table:  list
-
-        :returns:   The updated list
-        :rtype:     list
-        """
-        return [*table, self.wavelength, self.linear_polarization]
+        self.jones_vector = numpy.atleast_1d(self.polarization.jones_vector).astype(numpy.complex128).T
 
 
 @dataclass
-class PlaneWave(object):
-    wavelength: Iterable
-    """ Wavelenght of the light field. """
-    optical_power: float
-    """ Optical power in unit of Watt """
+class Gaussian(BaseSource):
     NA: Iterable
     """ Numerical aperture of the source """
-    linear_polarization: Iterable
-    """ polarization of the light field in degree. """
-    name: str = 'PlaneWave'
-    """ name of the set """
+    optical_power: float
+    """ Optical power in unit of Watt """
+    polarization_type: str = 'linear'
+    """ How to interpret the polarization value """
 
     def __post_init__(self):
         self.format_inputs()
 
-        self.amplitude = numpy.ones(self.wavelength.size)
+        self.generate_polarization_attribute()
+
+        self.amplitude = power_to_amplitude(
+            wavelength=self.wavelength,
+            optical_power=self.optical_power,
+            NA=self.NA,
+        )
 
         self.build_x_parameters()
 
         self.generate_binding()
 
-    def build_x_parameters(self) -> None:
-        """
-        Builds the parameters that will be passed in XTable for DataVisual.
 
-        :returns:   No Return
-        :rtype:     None
-        """
-        self.wavelength = Xparameter(values=self.wavelength, **Kwargs.wavelength)
+@dataclass
+class PlaneWave(BaseSource):
+    amplitude: float
+    """ Optical power in unit of Watt """
+    polarization_type: str = 'linear'
+    """ How to interpret the polarization value """
 
-        self.linear_polarization = Xparameter(
-            values=self.jones_vector,
-            representation=self.linear_polarization.angle_list,
-            **Kwargs.linear_polarization
-        )
+    def __post_init__(self):
+        self.format_inputs()
 
-    def generate_binding(self) -> None:
-        """
-        Generate the C++ binding
+        self.generate_polarization_attribute()
 
-        :returns:   No return
-        :rtype:     None
-        """
-        self.binding = CppSourceSet(
-            wavelength=self.wavelength.values,
-            jones_vector=self.jones_vector,
-            amplitude=self.amplitude
-        )
+        self.amplitude = numpy.atleast_1d(self.amplitude)
 
-    def format_inputs(self):
-        """
-        Format the inputs given by the user into numpy array. Those inputs are subsequently
-        sent to the cpp binding.
+        self.build_x_parameters()
 
-        :returns:   No return
-        :rtype:     None
-        """
-        if numpy.iterable(self.linear_polarization):
-            self.linear_polarization = LinearPolarization(*self.linear_polarization)
-        else:
-            self.linear_polarization = LinearPolarization(self.linear_polarization)
-
-        self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
-
-        self.jones_vector = numpy.atleast_1d(self.linear_polarization.jones_vector).astype(numpy.complex128).T
-
-    def bind_to_experiment(self, experiment):
-        """
-        Bind this specific set to a Setup experiment.
-
-        :param      experiment:  The experiment
-        :type       experiment:  Setup
-
-        :returns:   No return
-        :rtype:     None
-        """
-        experiment.binding.set_source(self.binding)
-
-    def append_to_table(self, table):
-        """
-        Append elements to the xTable from the DataVisual library for the plottings.
-
-        :param      table:  The table
-        :type       table:  list
-
-        :returns:   The updated list
-        :rtype:     list
-        """
-        return [*table, self.wavelength, self.linear_polarization]
-
+        self.generate_binding()

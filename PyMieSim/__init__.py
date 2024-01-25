@@ -5,7 +5,7 @@ import numpy
 from PyMieSim.tools.directories import lp_mode_path
 
 
-def load_lp_mode(mode_number: str, structure_type: str = 'unstructured', sampling: int = 500):
+def load_single_lp_mode(mode_number: str, structure_type: str = 'unstructured', sampling: int = 500) -> numpy.ndarray:
     structure_type = structure_type.lower()
 
     if ':' in mode_number:
@@ -26,5 +26,19 @@ def load_lp_mode(mode_number: str, structure_type: str = 'unstructured', samplin
     field = numpy.load(lp_sampling_file_directory).astype(complex)
 
     return field.squeeze().astype(complex)
+
+
+def load_lp_mode(mode_number: list, structure_type: str = 'unstructured', sampling: int = 500) -> numpy.ndarray:
+    fields_array = [
+        load_single_lp_mode(
+            mode_number=mode,
+            sampling=sampling,
+            structure_type='unstructured'
+        ) for mode in mode_number
+    ]
+
+    fields_array = numpy.asarray(fields_array)
+
+    return fields_array.squeeze()
 
 # -

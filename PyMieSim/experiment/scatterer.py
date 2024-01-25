@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from PyMieSim.experiment.setup import Setup
+    from PyMieSim.experiment.source import Gaussian, PlaneWave
+
+
 from collections.abc import Iterable
 
 import numpy
@@ -21,7 +28,7 @@ class BaseScatterer():
 
         self.build_x_parameters()
 
-    def format_inputs(self):
+    def format_inputs(self) -> None:
         """
         Format the inputs given by the user into numpy array. Those inputs are subsequently
         sent to the cpp binding.
@@ -36,7 +43,7 @@ class BaseScatterer():
 
             setattr(self, parameter_str, parameter)
 
-    def bind_to_experiment(self, experiment):
+    def bind_to_experiment(self, experiment: Setup) -> None:
         """
         Bind this specific set to a Setup experiment.
 
@@ -130,7 +137,7 @@ class CoreShell(BaseScatterer):
         shell_diameter = numpy.add.outer(core_diameter, shell_width)
         return _core_diameter.flatten(), shell_diameter.T.flatten()
 
-    def bind_core_material_shell_material(self, source) -> None:
+    def bind_core_material_shell_material(self, source: Gaussian | PlaneWave) -> None:
         core_material = [
             material.GetRI(source.values) for material in self.core_material
         ]
@@ -165,7 +172,7 @@ class CoreShell(BaseScatterer):
             n_medium=self.n_medium.values.astype(float),
         )
 
-    def bind_index_material_shell_material(self, source) -> None:
+    def bind_index_material_shell_material(self, source: Gaussian | PlaneWave) -> None:
         shell_material = [
             material.GetRI(source.values) for material in self.shell_material
         ]
@@ -180,7 +187,7 @@ class CoreShell(BaseScatterer):
             n_medium=self.n_medium.values.astype(float),
         )
 
-    def bind_index_material_shell_index(self, source) -> None:
+    def bind_index_material_shell_index(self, source: Gaussian | PlaneWave) -> None:
         self.binding = CppCoreShellSet(
             core_diameter=self.core_diameter.values.astype(float),
             shell_width=self.shell_width.values.astype(float),
@@ -189,7 +196,7 @@ class CoreShell(BaseScatterer):
             n_medium=self.n_medium.values.astype(float),
         )
 
-    def evaluate_index_material(self, source) -> None:
+    def evaluate_index_material(self, source: Gaussian | PlaneWave) -> None:
         if self.bounded_core and self.bounded_shell:
             self.bind_core_material_shell_material(source)
 
@@ -202,7 +209,7 @@ class CoreShell(BaseScatterer):
         if not self.bounded_core and not self.bounded_shell:
             self.bind_index_material_shell_index(source)
 
-    def append_to_table(self, table) -> list:
+    def append_to_table(self, table: list) -> list:
         """
         Append elements to the xTable from the DataVisual library for the plottings.
 
@@ -258,7 +265,7 @@ class Sphere(BaseScatterer):
 
         self.bounded_index = True if self.material is not None else False
 
-    def evaluate_index_material(self, source) -> None:
+    def evaluate_index_material(self, source: Gaussian | PlaneWave) -> None:
         if self.bounded_index:
             material = [
                 material.GetRI(source.values) for material in self.material
@@ -279,7 +286,7 @@ class Sphere(BaseScatterer):
                 n_medium=self.n_medium.values.astype(float)
             )
 
-    def append_to_table(self, table) -> list:
+    def append_to_table(self, table: list) -> list:
         """
         Append elements to the xTable from the DataVisual library for the plottings.
 
@@ -329,7 +336,7 @@ class Cylinder(BaseScatterer):
 
         self.bounded_index = True if self.material is not None else False
 
-    def evaluate_index_material(self, source):
+    def evaluate_index_material(self, source: Gaussian | PlaneWave):
         if self.bounded_index:
             material = numpy.asarray(
                 [
