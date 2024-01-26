@@ -18,15 +18,6 @@ from PyMieSim import measure
 from PyMieSim.materials import BK7
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-# Here we look at cylinder scatterers a set diameter, refractive index and medium.
-scatterer_set = Cylinder(
-    diameter=np.linspace(100e-9, 8000e-9, 5),
-    material=BK7,
-    n_medium=1
-)
-
-# %%
 # Defining the source to be employed.
 source_set = Gaussian(
     wavelength=np.linspace(950e-9, 1050e-9, 300),
@@ -34,6 +25,16 @@ source_set = Gaussian(
     polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
+)
+
+# %%
+# Defining the ranging parameters for the scatterer distribution
+# Here we look at cylinder scatterers a set diameter, refractive index and medium.
+scatterer_set = Cylinder(
+    diameter=np.linspace(100e-9, 8000e-9, 5),
+    material=BK7,
+    n_medium=1,
+    source_set=source_set
 )
 
 # %%

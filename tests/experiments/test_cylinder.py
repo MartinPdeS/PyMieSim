@@ -29,18 +29,19 @@ measures = [
 @pytest.mark.parametrize('core_type', [p['kwarg'] for p in core_type], ids=[p['name'] for p in core_type])
 @pytest.mark.parametrize('measure', measures, ids=[p.name for p in measures])
 def test_cylinder_experiment(measure, core_type):
-    scatterer_set = Cylinder(
-        n_medium=1,
-        diameter=numpy.linspace(400e-9, 1400e-9, 10),
-        **core_type,
-    )
-
     source_set = Gaussian(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
         polarization_type='linear',
         optical_power=1e-3,
         NA=0.2
+    )
+
+    scatterer_set = Cylinder(
+        n_medium=1,
+        diameter=numpy.linspace(400e-9, 1400e-9, 10),
+        **core_type,
+        source_set=source_set
     )
 
     detector_set = Photodiode(

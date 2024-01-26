@@ -13,7 +13,7 @@ PYBIND11_MODULE(Sets, module)
 
       .def(pybind11::init<DVector&, std::vector<std::vector<complex128>>&, DVector&>(),
            pybind11::arg("diameter"),
-           pybind11::arg("material"),
+           pybind11::arg("material_index"),
            pybind11::arg("n_medium") )
            ;
 
@@ -26,7 +26,7 @@ PYBIND11_MODULE(Sets, module)
 
       .def(pybind11::init<DVector&, std::vector<std::vector<complex128>>&, DVector&>(),
            pybind11::arg("diameter"),
-           pybind11::arg("material"),
+           pybind11::arg("material_index"),
            pybind11::arg("n_medium")
            );
 
@@ -43,21 +43,21 @@ PYBIND11_MODULE(Sets, module)
          pybind11::arg("core_diameter"),
          pybind11::arg("shell_width"),
          pybind11::arg("core_index"),
-         pybind11::arg("shell_material"),
+         pybind11::arg("shell_material_index"),
          pybind11::arg("n_medium"))
 
     .def(pybind11::init<DVector&, DVector&, std::vector<CVector>&, CVector&, DVector&>(),
          pybind11::arg("core_diameter"),
          pybind11::arg("shell_width"),
-         pybind11::arg("core_material"),
+         pybind11::arg("core_material_index"),
          pybind11::arg("shell_index"),
          pybind11::arg("n_medium") )
 
     .def(pybind11::init<DVector&, DVector&, std::vector<CVector>&, std::vector<CVector>&, DVector&>(),
          pybind11::arg("core_diameter"),
          pybind11::arg("shell_width"),
-         pybind11::arg("core_material"),
-         pybind11::arg("shell_material"),
+         pybind11::arg("core_material_index"),
+         pybind11::arg("shell_material_index"),
          pybind11::arg("n_medium") )
          ;
 

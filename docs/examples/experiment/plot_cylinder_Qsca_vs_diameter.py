@@ -16,14 +16,6 @@ from PyMieSim.experiment import Setup
 from PyMieSim import measure
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-scatterer_set = Cylinder(
-    diameter=np.geomspace(6.36e-09, 10000e-9, 1000),
-    index=[1.4],
-    n_medium=1
-)
-
-# %%
 # Defining the source to be employed.
 source_set = Gaussian(
     wavelength=[500e-9, 1000e-9, 1500e-9],
@@ -32,6 +24,15 @@ source_set = Gaussian(
     optical_power=1e-3,
     NA=0.2
 )
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer_set = Cylinder(
+    diameter=np.geomspace(6.36e-09, 10000e-9, 1000),
+    index=[1.4],
+    n_medium=1,
+    source_set=source_set
+)
+
 
 # %%
 # Defining the experiment setup

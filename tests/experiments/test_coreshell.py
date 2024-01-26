@@ -41,20 +41,21 @@ measures = [
 @pytest.mark.parametrize('core_type', [p['kwarg'] for p in shell_type], ids=[p['name'] for p in shell_type])
 @pytest.mark.parametrize('measure', measures, ids=[p.name for p in measures])
 def test_coreshell_experiment(measure, core_type, shell_type):
-    scatterer_set = CoreShell(
-        n_medium=1,
-        core_diameter=numpy.linspace(400e-9, 1400e-9, 10),
-        shell_width=300e-9,
-        **core_type,
-        **shell_type,
-    )
-
     source_set = Gaussian(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
         polarization_type='linear',
         optical_power=1e-3,
         NA=0.2
+    )
+
+    scatterer_set = CoreShell(
+        n_medium=1,
+        core_diameter=numpy.linspace(400e-9, 1400e-9, 10),
+        shell_width=300e-9,
+        **core_type,
+        **shell_type,
+        source_set=source_set
     )
 
     detector_set = Photodiode(

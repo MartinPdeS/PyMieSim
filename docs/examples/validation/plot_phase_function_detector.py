@@ -22,12 +22,6 @@ scatterer_diameter = 0.3e-6
 scatterer_index = 1.4
 source_wavelength = 1.2e-6
 
-scatterer_set = SetSphere(
-    diameter=scatterer_diameter,
-    index=scatterer_index,
-    n_medium=1.0
-)
-
 source_set = SetGaussian(
     wavelength=source_wavelength,
     polarization_value=[0, 90],
@@ -35,6 +29,13 @@ source_set = SetGaussian(
     optical_power=1,
     NA=0.2
 )
+scatterer_set = SetSphere(
+    diameter=scatterer_diameter,
+    index=scatterer_index,
+    n_medium=1.0,
+    source_set=source_set
+)
+
 
 detector_set = Photodiode(
     NA=[0.1],

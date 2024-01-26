@@ -15,14 +15,6 @@ from PyMieSim.experiment import Setup
 from PyMieSim import measure
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-scatterer_set = Cylinder(
-    diameter=[200e-9, 150e-9, 100e-9],
-    index=[2, 3, 4],
-    n_medium=1
-)
-
-# %%
 # Defining the source to be employed.
 # The source is always a plane wave in the LMT framework.
 # Here we want to study differents wavelength.
@@ -34,6 +26,15 @@ source_set = Gaussian(
     optical_power=1e-3,
     NA=0.2
 )
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer_set = Cylinder(
+    diameter=[200e-9, 150e-9, 100e-9],
+    index=[2, 3, 4],
+    n_medium=1,
+    source_set=source_set
+)
+
 
 # %%
 # Defining the experiment setup

@@ -16,14 +16,6 @@ from PyMieSim.materials import Gold, Silver, Aluminium
 from PyMieSim import measure
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-scatterer_set = Sphere(
-    diameter=np.linspace(1e-09, 800e-9, 300),
-    material=[Silver, Gold, Aluminium],
-    n_medium=1
-)
-
-# %%
 # Defining the source to be employed.
 source_set = Gaussian(
     wavelength=400e-9,
@@ -31,6 +23,14 @@ source_set = Gaussian(
     polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
+)
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer_set = Sphere(
+    diameter=np.linspace(1e-09, 800e-9, 300),
+    material=[Silver, Gold, Aluminium],
+    n_medium=1,
+    source_set=source_set
 )
 
 # %%

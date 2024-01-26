@@ -26,7 +26,8 @@ def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
     scatterer_set = Sphere(
         diameter=diameters,
         index=index,
-        n_medium=1.
+        n_medium=1.,
+        source_set=source_set
     )
 
     experiment = Setup(

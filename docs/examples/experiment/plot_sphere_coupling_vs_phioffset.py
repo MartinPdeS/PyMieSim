@@ -18,14 +18,6 @@ from PyMieSim.materials import BK7
 from PyMieSim import measure
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-scatterer_set = Sphere(
-    diameter=2000e-9,
-    material=BK7,
-    n_medium=1
-)
-
-# %%
 # Defining the source to be employed.
 source_set = Gaussian(
     wavelength=1200e-9,
@@ -33,6 +25,14 @@ source_set = Gaussian(
     polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
+)
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer_set = Sphere(
+    diameter=2000e-9,
+    material=BK7,
+    n_medium=1,
+    source_set=source_set
 )
 
 # %%

@@ -17,14 +17,6 @@ from PyMieSim import measure
 from PyMieSim.materials import BK7
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-scatterer_set = Cylinder(
-    diameter=numpy.linspace(100e-9, 3000e-9, 200),
-    material=BK7,
-    n_medium=1.0
-)
-
-# %%
 # Defining the source to be employed.
 source_set = Gaussian(
     wavelength=1200e-9,
@@ -33,6 +25,16 @@ source_set = Gaussian(
     optical_power=1e-3,
     NA=0.2
 )
+
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer_set = Cylinder(
+    diameter=numpy.linspace(100e-9, 3000e-9, 200),
+    material=BK7,
+    n_medium=1.0,
+    source_set=source_set
+)
+
 
 # %%
 # Defining the detector to be employed.

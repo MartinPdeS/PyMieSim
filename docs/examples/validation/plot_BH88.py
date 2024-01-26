@@ -22,12 +22,6 @@ theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimit
 diameter = numpy.geomspace(10e-9, 6e-6, 800)
 volume = numpy.pi * (diameter / 2)**2
 
-scatterer_set = Cylinder(
-    diameter=diameter,
-    index=1.55,
-    n_medium=1.335
-)
-
 source_set = Gaussian(
     wavelength=632.8e-9,
     polarization_value=[0, 90],
@@ -35,6 +29,13 @@ source_set = Gaussian(
     optical_power=1e-3,
     NA=0.2
 )
+scatterer_set = Cylinder(
+    diameter=diameter,
+    index=1.55,
+    n_medium=1.335,
+    source_set=source_set
+)
+
 
 experiment = Setup(
     scatterer_set=scatterer_set,

@@ -15,18 +15,6 @@ from PyMieSim.materials import BK7, Silver
 from PyMieSim import measure
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-# Here we look at core/shell scatterers and use constant shell diameter
-# with variable core diameter
-scatterer_set = CoreShell(
-    core_diameter=numpy.geomspace(100e-09, 600e-9, 400),
-    shell_width=800e-9,
-    core_material=Silver,
-    shell_material=BK7,
-    n_medium=1
-)
-
-# %%
 # Defining the source to be employed.
 # The source is always a plane wave in the LMT framework.
 # The amplitude is set to one per default.
@@ -36,6 +24,19 @@ source_set = Gaussian(
     polarization_type='linear',
     optical_power=1e-3,
     NA=0.2
+)
+
+# %%
+# Defining the ranging parameters for the scatterer distribution
+# Here we look at core/shell scatterers and use constant shell diameter
+# with variable core diameter
+scatterer_set = CoreShell(
+    core_diameter=numpy.geomspace(100e-09, 600e-9, 400),
+    shell_width=800e-9,
+    core_material=Silver,
+    shell_material=BK7,
+    n_medium=1,
+    source_set=source_set
 )
 
 # %%

@@ -9,26 +9,29 @@ import DataVisual.tables as Table
 from PyMieSim.binary.Experiment import CppExperiment
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, LPMode
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PlaneWave
 
 
 @dataclass
 class Setup(object):
     scatterer_set: Sphere | Cylinder | CoreShell
     """ Scatterer set instance which defined the ranging paremters to be measured """
-    source_set: Gaussian
+    source_set: Gaussian | PlaneWave
     """ Source set instance which defined the ranging paremters to be measured, source is PlaneWave """
     detector_set: Photodiode | LPMode = None
     """ Detector set instance which defined the ranging paremters to be measured, default is None as all parameter do not need a detector """
 
     def __post_init__(self):
-        self.scatterer_set.evaluate_index_material(self.source_set.wavelength)
+        self.scatterer_set.source_set = self.source_set
+
+        self.scatterer_set.initialize_binding()
 
         self.binding = CppExperiment()
 
         self.bind_sets_to_experiment()
 
         self.x_table = self.source_set.append_to_table(table=[])
+
         self.x_table = self.scatterer_set.append_to_table(table=self.x_table)
 
         if self.detector_set is not None:

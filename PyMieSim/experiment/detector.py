@@ -103,7 +103,7 @@ class BaseDetector():
         """
         Builds the parameters that will be passed in XTable for DataVisual.
 
-        :returns:   No returns
+        :returns:   No return
         :rtype:     None
         """
         for parameter_str in self.parameter_str_list:

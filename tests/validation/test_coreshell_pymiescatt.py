@@ -28,7 +28,8 @@ def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell
         shell_width=shell_width,
         core_index=core_index,
         shell_index=shell_index,
-        n_medium=1.
+        n_medium=1.,
+        source_set=source_set
     )
 
     experiment = Setup(
@@ -40,6 +41,7 @@ def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell
     data = experiment.Get(getattr(measure, measure_string))
 
     return data.array.squeeze()
+
 
 def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
     PyMieScatt_data = []
