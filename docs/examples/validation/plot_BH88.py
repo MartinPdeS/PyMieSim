@@ -43,7 +43,7 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.Get(measure.Csca)
+data = experiment.get(measure.Csca)
 data = data.array.squeeze() / volume * 1e-4 / 100
 
 plt.figure(figsize=(8, 4))

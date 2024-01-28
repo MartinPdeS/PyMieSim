@@ -41,7 +41,7 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measure.Csca)
+data = experiment.get(measure.Csca)
 
 # %%
 # Plotting the results

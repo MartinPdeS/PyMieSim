@@ -58,6 +58,6 @@ def test_cylinder_experiment(measure, core_type):
         detector_set=detector_set
     )
 
-    experiment.Get(measure)
+    experiment.get(measure)
 
 # -

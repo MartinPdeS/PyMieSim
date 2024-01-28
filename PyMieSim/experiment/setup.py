@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
+    from PyMieSim.experiment.detector import Photodiode, LPMode
+    from PyMieSim.experiment.source import Gaussian, PlaneWave
+
 from dataclasses import dataclass
 
-from DataVisual import DataV
+from DataVisual import DataVisual
 import DataVisual.tables as Table
-
 from PyMieSim.binary.Experiment import CppExperiment
-from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
-from PyMieSim.experiment.detector import Photodiode, LPMode
-from PyMieSim.experiment.source import Gaussian, PlaneWave
 
 
 @dataclass
@@ -37,22 +40,24 @@ class Setup(object):
         if self.detector_set is not None:
             self.x_table = self.detector_set.append_to_table(table=self.x_table)
 
-    def bind_sets_to_experiment(self):
-        self.source_set.bind_to_experiment(self)
-        self.scatterer_set.bind_to_experiment(self)
+    def bind_sets_to_experiment(self) -> None:
+        self.source_set.bind_to_experiment(experiment=self)
+        self.scatterer_set.bind_to_experiment(experiment=self)
 
         if self.detector_set:
-            self.detector_set.bind_to_experiment(self)
+            self.detector_set.bind_to_experiment(experiment=self)
 
-    def Get(self, measure) -> DataV:
+    def get(self, measure: object, export_as_numpy: bool = False) -> DataVisual:
         """
-        Compute the measure provided and return a DataV structured array.
+        Compute the measure provided and return a DataVisual structured array.
 
-        :param      measures:  The measures
-        :type       measures:  list
+        :param      measure:          The measure
+        :type       measure:          object
+        :param      export_as_numpy:  If true method returns numpy array
+        :type       export_as_numpy:  bool
 
         :returns:   The data structure.
-        :rtype:     DataV
+        :rtype:     DataVisual
         """
         self.y_table = [measure]
 
@@ -60,12 +65,16 @@ class Setup(object):
 
         array = getattr(self.binding, measure_string)()
 
+        if export_as_numpy:
+            return array
+
         x_table = Table.Xtable(self.x_table)
 
-        return DataV(
-            array=array,
+        measure.values = array
+
+        return DataVisual(
             x_table=x_table,
-            y_parameter=measure
+            y=measure
         )
 
 

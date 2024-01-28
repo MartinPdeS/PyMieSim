@@ -49,6 +49,7 @@ def test_energy_flow_coupling():
     if not numpy.isclose(val0, val1, atol=0, rtol=1e-5):
         raise ValueError('Mismatch with testing values')
 
+
 def test_compare_sphere_coreshell_0():
     source = Gaussian(
         wavelength=1e-6,

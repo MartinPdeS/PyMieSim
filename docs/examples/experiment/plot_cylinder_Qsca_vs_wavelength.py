@@ -45,7 +45,7 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measure.Qsca)
+data = experiment.get(measure.Qsca)
 
 data = data.mean(scatterer_set.index)
 

@@ -52,7 +52,7 @@ experiment = Setup(
 # %%
 # Measuring the properties
 # We are interesting here in the b_1 (first magnetic coefficient) parameter.
-data = experiment.Get(measure.b1)
+data = experiment.get(measure.b1)
 
 # %%
 # Plotting the results

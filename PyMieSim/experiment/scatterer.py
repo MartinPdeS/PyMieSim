@@ -6,8 +6,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
     from PyMieSim.experiment.source import Gaussian, PlaneWave
-
-from collections.abc import Iterable
+    from collections.abc import Iterable
 
 import numpy
 from dataclasses import dataclass, field
@@ -114,6 +113,26 @@ class BaseScatterer():
         """
         self.binding = self.binding_class(**self.binding_kwargs)
 
+    def evaluate_index_material(self) -> None:
+        """
+        Evaluates all sets parameters that finishes with "material"
+        to create the material_index paramter
+
+        :returns:   No return
+        :rtype:     None
+        """
+        for parameter_str, value in self.parameter_dictionnary.items():
+            if parameter_str.endswith('material'):
+                materials = getattr(self, parameter_str)
+
+                material_index = [
+                    material.GetRI(self.source_set.wavelength.values) for material in materials
+                ]
+
+                material_index = numpy.asarray(material_index).astype(complex)
+
+                setattr(self, parameter_str + '_index', material_index)
+
 
 @dataclass
 class Sphere(BaseScatterer):
@@ -154,26 +173,12 @@ class Sphere(BaseScatterer):
         """
         assert (self.material is None) ^ (self.index is None), "material xor index has to be defined"
 
-        self.bounded_index = True if self.material is not None else False
-
         if self.material is not None:
-            self.bounded_index = True
             del self.parameter_dictionnary['index']
             self.cpp_binding_str.remove('index')
         else:
-            self.bounded_index = False
             del self.parameter_dictionnary['material']
             self.cpp_binding_str.remove('material_index')
-
-    def evaluate_index_material(self) -> None:
-        if not self.bounded_index:
-            return
-
-        material = [
-            material.GetRI(self.source_set.wavelength.values) for material in self.material
-        ]
-
-        self.material_index = numpy.asarray(material).astype(complex)
 
 
 @dataclass
@@ -230,37 +235,18 @@ class CoreShell(BaseScatterer):
         assert (self.shell_material is None) ^ (self.shell_index is None), "shell_material xor shell_index has to be defined"
 
         if self.core_material is not None:
-            self.bounded_core = True
             del self.parameter_dictionnary['core_index']
             self.cpp_binding_str.remove('core_index')
         else:
-            self.bounded_core = False
             del self.parameter_dictionnary['core_material']
             self.cpp_binding_str.remove('core_material_index')
 
         if self.shell_material is not None:
-            self.bounded_shell = True
             del self.parameter_dictionnary['shell_index']
             self.cpp_binding_str.remove('shell_index')
         else:
-            self.bounded_shell = False
             del self.parameter_dictionnary['shell_material']
             self.cpp_binding_str.remove('shell_material_index')
-
-    def evaluate_index_material(self) -> None:
-        if self.bounded_core:
-            core_material = [
-                material.GetRI(self.source_set.wavelength.values) for material in self.core_material
-            ]
-
-            self.core_material_index = numpy.asarray(core_material).astype(complex)
-
-        if self.bounded_shell:
-            shell_material = [
-                material.GetRI(self.source_set.wavelength.values) for material in self.shell_material
-            ]
-
-            self.shell_material_index = numpy.asarray(shell_material).astype(complex)
 
 
 @dataclass
@@ -303,22 +289,10 @@ class Cylinder(BaseScatterer):
         assert (self.material is None) ^ (self.index is None), "material xor index has to be defined"
 
         if self.material is not None:
-            self.bounded_index = True
             del self.parameter_dictionnary['index']
             self.cpp_binding_str.remove('index')
         else:
-            self.bounded_index = False
             del self.parameter_dictionnary['material']
             self.cpp_binding_str.remove('material_index')
-
-    def evaluate_index_material(self) -> None:
-        if not self.bounded_index:
-            return
-
-        material = [
-            material.GetRI(self.source_set.wavelength.values) for material in self.material
-        ]
-
-        self.material_index = numpy.asarray(material).astype(complex)
 
 # -

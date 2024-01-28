@@ -63,6 +63,6 @@ def test_sphere_experiment(measure, core_type):
         detector_set=detector_set
     )
 
-    experiment.Get(measure)
+    experiment.get(measure)
 
 # -

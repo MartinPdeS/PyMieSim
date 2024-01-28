@@ -42,7 +42,7 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measure.a1)
+data = experiment.get(measure.a1)
 
 # %%
 # Plotting the results

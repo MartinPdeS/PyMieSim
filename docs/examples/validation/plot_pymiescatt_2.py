@@ -58,7 +58,7 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.Get(measure.Qsca)
+data = experiment.get(measure.Qsca)
 
 PyMieSim_data = data.array.squeeze()
 

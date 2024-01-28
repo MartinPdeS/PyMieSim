@@ -51,7 +51,7 @@ experiment = Setup(
     detector_set=detector_set
 )
 
-data = experiment.Get(measure.coupling)
+data = experiment.get(measure.coupling)
 
 source = SingleGaussian(
     wavelength=source_wavelength,

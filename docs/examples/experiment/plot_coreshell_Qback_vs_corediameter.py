@@ -51,7 +51,7 @@ experiment = Setup(
 # %%
 # Measuring the properties
 # We are interesting here in the back scattering efficientcy.
-data = experiment.Get(measure.Qback)
+data = experiment.get(measure.Qback)
 
 # %%
 # Plotting the results

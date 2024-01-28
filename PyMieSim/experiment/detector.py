@@ -5,14 +5,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
-
-from collections.abc import Iterable
+    from collections.abc import Iterable
 
 import numpy
 from dataclasses import dataclass, field
 
 from DataVisual import Xparameter
-
 from PyMieSim import load_lp_mode
 import PyMieSim.datavisual_x_parameters as Kwargs
 from PyMieSim.binary.Sets import CppDetectorSet

@@ -48,7 +48,7 @@ experiment = Setup(
     source_set=source_set
 )
 
-data = experiment.Get(measure.Qsca)
+data = experiment.get(measure.Qsca)
 
 data = abs(data.array.squeeze())
 

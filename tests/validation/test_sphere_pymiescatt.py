@@ -36,9 +36,9 @@ def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
         detector_set=None
     )
 
-    data = experiment.Get(getattr(measure, measure_string))
+    data = experiment.get(getattr(measure, measure_string))
 
-    return data.array.squeeze()
+    return data.y.values.squeeze()
 
 
 def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):

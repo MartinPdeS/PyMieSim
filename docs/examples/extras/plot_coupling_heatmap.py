@@ -55,7 +55,7 @@ experiment = Setup(
     detector_set=detector_set
 )
 
-data = experiment.Get(measure.coupling)
+data = experiment.get(measure.coupling)
 
 data = abs(data.array.squeeze())
 

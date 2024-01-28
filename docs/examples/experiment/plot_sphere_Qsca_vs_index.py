@@ -41,7 +41,7 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.Get(measure.Qsca)
+data = experiment.get(measure.Qsca)
 
 # %%
 # Plotting the results

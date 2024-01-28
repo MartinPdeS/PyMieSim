@@ -65,7 +65,7 @@ experiment = Setup(
 # %%
 # Measuring the properties
 # We are interesting here in the coupling parameter.
-data = experiment.Get(measure.coupling)
+data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
