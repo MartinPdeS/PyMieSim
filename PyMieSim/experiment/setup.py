@@ -8,6 +8,7 @@ if TYPE_CHECKING:
     from PyMieSim.experiment.detector import Photodiode, LPMode
     from PyMieSim.experiment.source import Gaussian, PlaneWave
 
+import numpy
 from dataclasses import dataclass
 
 from DataVisual import DataVisual
@@ -33,6 +34,9 @@ class Setup(object):
 
         self.bind_sets_to_experiment()
 
+        self.generate_x_table()
+
+    def generate_x_table(self) -> None:
         self.x_table = self.source_set.append_to_table(table=[])
 
         self.x_table = self.scatterer_set.append_to_table(table=self.x_table)
@@ -47,12 +51,12 @@ class Setup(object):
         if self.detector_set:
             self.detector_set.bind_to_experiment(experiment=self)
 
-    def get(self, measure: object, export_as_numpy: bool = False) -> DataVisual:
+    def get(self, measure: Table.XParameter, export_as_numpy: bool = False) -> numpy.ndarray | DataVisual:
         """
         Compute the measure provided and return a DataVisual structured array.
 
         :param      measure:          The measure
-        :type       measure:          object
+        :type       measure:          Table.XParameter
         :param      export_as_numpy:  If true method returns numpy array
         :type       export_as_numpy:  bool
 

@@ -50,7 +50,7 @@ experiment = Setup(
 
 data = experiment.get(measure.Qsca)
 
-data = abs(data.array.squeeze())
+data = abs(data.y.values.squeeze())
 
 figure = SceneList(unit_size=(6, 6))
 
