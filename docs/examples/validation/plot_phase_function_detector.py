@@ -78,7 +78,7 @@ data0_S1 /= data0_S1.max()
 data0_S2 = numpy.abs(s2)**2
 data0_S2 /= data0_S2.max()
 
-data1 = data.array.squeeze()
+data1 = data.y.values.squeeze()
 data1 /= data1.max()
 
 ax0.plot(numpy.deg2rad(phi), data0_S1, linewidth=3, zorder=1, label='Computed s1')

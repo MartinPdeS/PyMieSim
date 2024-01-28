@@ -45,6 +45,12 @@ class Setup(object):
             self.x_table = self.detector_set.append_to_table(table=self.x_table)
 
     def bind_sets_to_experiment(self) -> None:
+        """
+        As the name suggest, methods binds all sets cpp_binding to respective class.
+
+        :returns:   No return
+        :rtype:     None
+        """
         self.source_set.bind_to_experiment(experiment=self)
         self.scatterer_set.bind_to_experiment(experiment=self)
 

@@ -26,7 +26,7 @@ class BaseSource(object):
     polarization_value: Iterable
     """ Polarization of the light field in degree. """
     name: str = field(default='PlaneWave', init=False)
-    """ name of the set """
+    """ Name of the set """
 
     def __post_init__(self):
         self.format_inputs()

@@ -63,7 +63,7 @@ figure = SceneList(unit_size=(6, 6))
 
 ax = figure.append_ax(
     x_label="Permittivity",
-    y_label=r'Diameter [$\mu$ m]',
+    y_label=r'Diameter [$\mu$m]',
     title="Coupling power [Watt]"
 )
 

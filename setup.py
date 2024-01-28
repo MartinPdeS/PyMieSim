@@ -19,7 +19,6 @@ class build_py(build_py_orig):
 
 
 class CMakeExtension(Extension):
-
     def __init__(self, name):
         # don't invoke the original build_ext for this special extension
         super().__init__(name, sources=[])

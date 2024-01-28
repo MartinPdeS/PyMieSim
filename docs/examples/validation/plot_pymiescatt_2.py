@@ -60,7 +60,7 @@ experiment = Setup(
 
 data = experiment.get(measure.Qsca)
 
-PyMieSim_data = data.array.squeeze()
+PyMieSim_data = data.y.values.squeeze()
 
 plt.figure(figsize=(8, 4))
 plt.plot(core_diameters, PyMieSim_data, 'C1-', linewidth=3, label='PyMieSim')

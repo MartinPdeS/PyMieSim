@@ -44,7 +44,7 @@ experiment = Setup(
 )
 
 data = experiment.get(measure.Qsca)
-data = data.array.squeeze()
+data = data.y.values.squeeze()
 
 plt.figure(figsize=(8, 4))
 plt.plot(
