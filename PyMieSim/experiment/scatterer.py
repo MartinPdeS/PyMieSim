@@ -126,7 +126,7 @@ class BaseScatterer():
                 materials = getattr(self, parameter_str)
 
                 material_index = [
-                    material.GetRI(self.source_set.wavelength.values) for material in materials
+                    material.get_refractive_index(self.source_set.wavelength.values) for material in materials
                 ]
 
                 material_index = numpy.asarray(material_index).astype(complex)

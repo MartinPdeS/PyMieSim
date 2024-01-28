@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from PyOptik import DataMeasurement, Sellmeier
+
 import numpy
 import logging
 from dataclasses import dataclass
 from tabulate import tabulate
 
-from PyOptik import ExpData
+
 from PyMieSim.mesh import FibonacciMesh
 from PyMieSim.single.source import PlaneWave, Gaussian
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
@@ -317,7 +322,7 @@ class GenericScatterer():
 
     def _assign_index_or_material(self, index, material) -> tuple:
         assert bool(index) ^ bool(material), logging.error("Exactly one of the parameter [index or Material] have to be assigned.")
-        index = index if index is not None else material.GetRI(self.source.wavelength)
+        index = index if index is not None else material.get_refractive_index(self.source.wavelength)
         material = material if material is not None else None
 
         if not numpy.isscalar(index) and len(index) == 1:
@@ -337,7 +342,7 @@ class Sphere(GenericScatterer):
     """ Refractive index of scatterer. """
     n_medium: float = 1.0
     """ Refractive index of scatterer medium. """
-    material: ExpData = None
+    material: DataMeasurement | Sellmeier = None
     """ Material of which the scatterer is made of. Only if index is not specified. """
 
     def __post_init__(self):

@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyOptik import ExpData
+from PyOptik import DataMeasurement, Sellmeier
 
-BK7 = ExpData('BK7')
-FusedSilica = ExpData('FusedSilica')
-SodaLimeGlass = ExpData('SodaLimeGlass')
-Silver = ExpData('Silver')
-Gold = ExpData('Gold')
-Aluminium = ExpData('Aluminium')
-SI = ExpData('SI')
+BK7 = Sellmeier('BK7')
+FusedSilica = Sellmeier('silica')
+SodaLimeGlass = DataMeasurement('sodalimeglass')
+Silver = DataMeasurement('silver')
+Gold = DataMeasurement('gold')
+Aluminium = DataMeasurement('aluminium')
+SI = Sellmeier('silica')
+SIO2 = DataMeasurement('sio2')
+TIO2 = DataMeasurement('tio2')
