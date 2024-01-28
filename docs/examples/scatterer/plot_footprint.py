@@ -9,7 +9,7 @@ Scatterer footprint
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.detector import LPMode
 from PyMieSim.single.source import Gaussian
-from PyOptik import ExpData
+from PyMieSim.materials import BK7
 
 # %%
 # Defining the source
@@ -28,7 +28,7 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=2000e-9,
     source=source,
-    material=ExpData('BK7')
+    material=BK7
 )
 
 # %%

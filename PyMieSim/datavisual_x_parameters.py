@@ -23,7 +23,7 @@ linear_polarization = dict(
     name='polarization',
     long_label='Linear polarization',
     format="",
-    unit="Deg",
+    unit="deg",
     short_label=r'$\hat{P}$'
 )
 
