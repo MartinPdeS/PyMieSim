@@ -1,39 +1,45 @@
 #include <pybind11/pybind11.h>
-
 #include "cylinder.cpp"
 
 PYBIND11_MODULE(CylinderInterface, module)
 {
-    module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
+     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
 
      pybind11::class_<CYLINDER::State>(module, "CppCylinderState");
 
 
-      pybind11::class_<CYLINDER::Scatterer>(module, "CYLINDER")
-      .def(pybind11::init<double&, double&, double&, complex128&, double&, CVector&>(),
-           pybind11::arg("wavelength"),
-           pybind11::arg("amplitude"),
-           pybind11::arg("diameter"),
-           pybind11::arg("index"),
-           pybind11::arg("n_medium"),
-           pybind11::arg("jones_vector")
+     pybind11::class_<CYLINDER::Scatterer>(module, "CYLINDER")
+          .def(
+               pybind11::init<double&, double&, double&, complex128&, double&, CVector&>(),
+               pybind11::arg("wavelength"),
+               pybind11::arg("amplitude"),
+               pybind11::arg("diameter"),
+               pybind11::arg("index"),
+               pybind11::arg("n_medium"),
+               pybind11::arg("jones_vector")
           )
 
-       .def("get_s1s2",
-            &CYLINDER::Scatterer::get_s1s2_py,
-            pybind11::arg("phi") )
+          .def(
+               "get_s1s2",
+               &CYLINDER::Scatterer::get_s1s2_py,
+               pybind11::arg("phi")
+          )
 
-      .def("get_fields",
-           &CYLINDER::Scatterer::get_unstructured_fields_py,
-           pybind11::arg("phi"),
-           pybind11::arg("theta"),
-           pybind11::arg("r") )
+          .def(
+               "get_fields",
+               &CYLINDER::Scatterer::get_unstructured_fields_py,
+               pybind11::arg("phi"),
+               pybind11::arg("theta"),
+               pybind11::arg("r")
+          )
 
-      .def("get_full_fields",
-           &CYLINDER::Scatterer::get_full_structured_fields_py,
-           pybind11::arg("sampling"),
-           pybind11::arg("r") )
+          .def(
+               "get_full_fields",
+               &CYLINDER::Scatterer::get_full_structured_fields_py,
+               pybind11::arg("sampling"),
+               pybind11::arg("r")
+          )
 
       .def("a1n", pybind11::overload_cast<>(&CYLINDER::Scatterer::get_a1n_py))
       .def("b1n", pybind11::overload_cast<>(&CYLINDER::Scatterer::get_b1n_py))

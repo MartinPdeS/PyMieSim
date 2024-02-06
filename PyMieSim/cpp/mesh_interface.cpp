@@ -1,18 +1,18 @@
 #include <pybind11/pybind11.h>
-
 #include "fibonnaci_mesh.cpp"
 
-  PYBIND11_MODULE(Fibonacci, module) {
-      module.doc() = "LGeneralized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
+PYBIND11_MODULE(Fibonacci, module) {
+    module.doc() = "LGeneralized Lorenz-Mie Theory (GLMT) c++ binding module for light scattering from a spherical scatterer";
 
-        pybind11::class_<FibonacciMesh>(module, "FIBONACCI")
-        .def(pybind11::init<int, double, double, double, double>(),
-             pybind11::arg("sampling"),
-             pybind11::arg("max_angle"),
-             pybind11::arg("phi_offset"),
-             pybind11::arg("rotation_angle"),
-             pybind11::arg("gamma_offset")
-            )
+    pybind11::class_<FibonacciMesh>(module, "FIBONACCI")
+        .def(
+            pybind11::init<int, double, double, double, double>(),
+            pybind11::arg("sampling"),
+            pybind11::arg("max_angle"),
+            pybind11::arg("phi_offset"),
+            pybind11::arg("rotation_angle"),
+            pybind11::arg("gamma_offset")
+        )
 
         .def_property("x", &FibonacciMesh::get_x_py, &FibonacciMesh::set_x_py)
         .def_property("y", &FibonacciMesh::get_y_py, &FibonacciMesh::set_y_py)

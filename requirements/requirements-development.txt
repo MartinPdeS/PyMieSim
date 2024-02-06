@@ -4,8 +4,8 @@ numpy
 scipy
 pyvista
 matplotlib
-DataVisual
-PyOptik
+DataVisual==1.1.10
+PyOptik==0.7.1
 tabulate
 
 numpydoc==1.6.0

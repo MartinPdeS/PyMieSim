@@ -26,7 +26,8 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=1500e-9,
     source=source,
-    index=1.4
+    index=1.4,
+    n_medium=1.0
 )
 
 # %%
