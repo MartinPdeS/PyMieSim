@@ -4,6 +4,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
+    from typing import NoReturn
     from PyMieSim.experiment.setup import Setup
     from PyMieSim.experiment.source import Gaussian, PlaneWave
     from collections.abc import Iterable
@@ -18,13 +19,27 @@ from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
 
 @dataclass
 class BaseScatterer():
-    n_medium: Iterable
-    """ material of which the scatterer is made of. Only if index is not specified. """
-    source_set: Gaussian | PlaneWave
-    """ Source set for the scatterer properties to be evaluated. """
+    """
+    Base class for scatterer objects. This class handles the initialization and setup of
+    scatterer parameters for use in PyMieSim simulations.
 
-    def __post_init__(self):
-        self.asserts_inputs()
+    Attributes:
+        n_medium (Iterable): Refractive index of the medium in which the scatterers are placed.
+        source_set (Union[Gaussian, PlaneWave]): Light source configuration for the simulation.
+    """
+    n_medium: Iterable
+    source_set: Gaussian | PlaneWave
+
+    def __post_init__(self) -> NoReturn:
+        """
+        Initializes the scatterer instance by asserting inputs, formatting them, building binding
+        arguments, and Xparameters for visualization. This method is automatically called after the
+        class has been initialized.
+
+        Returns:
+            NoReturn
+        """
+        self.validate_material_or_index()
 
         self.format_inputs()
 
@@ -32,13 +47,36 @@ class BaseScatterer():
 
         self.build_x_parameters()
 
-    def format_inputs(self) -> None:
+    def _validate_and_cleanup(self, part: str = '') -> NoReturn:
         """
-        Format the inputs given by the user into numpy array. Those inputs are subsequently
-        sent to the cpp binding.
+        Validates and cleans up parameters for either the core or the shell.
 
-        :returns:   No return
-        :rtype:     None
+        Args:
+            part (str): Specifies the part to validate, either 'core' or 'shell'.
+        """
+        material = getattr(self, f"{part}material")
+        index = getattr(self, f"{part}index")
+
+        if material is not None and index is not None:
+            raise ValueError(f"Either {part} material or index must be provided, not both.")
+        if material is None and index is None:
+            raise ValueError(f"One of {part} material or index must be provided.")
+
+        # Cleanup parameters
+        if material is not None:
+            del self.parameter_dictionnary[f'{part}index']
+            self.cpp_binding_str.remove(f'{part}index')
+        else:
+            del self.parameter_dictionnary[f'{part}material']
+            self.cpp_binding_str.remove(f'{part}material_index')
+
+    def format_inputs(self) -> NoReturn:
+        """
+        Formats the input attributes into numpy arrays for further processing and ensures compatibility
+        with C++ binding. This method standardizes the input parameters for simulation.
+
+        Returns:
+            None
         """
         for parameter_str in self.parameter_dictionnary.keys():
             parameter = getattr(self, parameter_str)
@@ -47,21 +85,29 @@ class BaseScatterer():
 
             setattr(self, parameter_str, parameter)
 
-    def bind_to_experiment(self, experiment: Setup) -> None:
+    def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
-        Bind this specific set to a Setup experiment.
+        Binds the scatterer to a specific experiment setup, enabling its properties to be evaluated within
+        the given experimental context.
 
-        :param      experiment:  The experiment
-        :type       experiment:  Setup
+        Parameters:
+            experiment (Setup): The experiment setup to which the scatterer will be bound.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            None
         """
         method_str = 'set_' + self.name
 
         getattr(experiment.binding, method_str)(self.binding)
 
-    def build_binding_kwargs(self) -> None:
+    def build_binding_kwargs(self) -> NoReturn:
+        """
+        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
+        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+
+        Returns:
+            None
+        """
         self.evaluate_index_material()
 
         self.binding_kwargs = dict()
@@ -71,12 +117,13 @@ class BaseScatterer():
 
             self.binding_kwargs[parameter_str] = values
 
-    def build_x_parameters(self) -> None:
+    def build_x_parameters(self) -> NoReturn:
         """
-        Builds the parameters that will be passed in XTable for DataVisual.
+        Constructs Xparameters for inclusion in the XTable for DataVisual, facilitating the visualization
+        of the scatterer's properties.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            None
         """
         self.x_table = []
         for parameter_str, dic in self.parameter_dictionnary.items():
@@ -94,32 +141,34 @@ class BaseScatterer():
 
     def append_to_table(self, table: list) -> list:
         """
-        Append elements to the xTable from the DataVisual library for the plottings.
+        Appends the scatterer's properties to a given table for visualization purposes. This enables the
+        representation of scatterer properties in graphical formats.
 
-        :param      table:  The table
-        :type       table:  list
+        Parameters:
+            table (list): The table to which the scatterer's properties will be appended.
 
-        :returns:   The updated list
-        :rtype:     list
+        Returns:
+            list: The updated table with the scatterer's properties included.
         """
         return [*table, *self.x_table]
 
-    def initialize_binding(self) -> None:
+    def initialize_binding(self) -> NoReturn:
         """
-        Initializes the cpp binding of the scatterer.
+        Initializes the C++ binding for the scatterer, setting up the interface for simulation within the
+        C++ computational framework.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            None
         """
         self.binding = self.binding_class(**self.binding_kwargs)
 
-    def evaluate_index_material(self) -> None:
+    def evaluate_index_material(self) -> NoReturn:
         """
-        Evaluates all sets parameters that finishes with "material"
-        to create the material_index paramter
+        Evaluates the indices of materials for all scatterer sets that are specified by their material
+        properties. This is crucial for accurately simulating the scatterer's interaction with light.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            None
         """
         for parameter_str, value in self.parameter_dictionnary.items():
             if parameter_str.endswith('material'):
@@ -136,14 +185,19 @@ class BaseScatterer():
 
 @dataclass
 class Sphere(BaseScatterer):
+    """
+    Represents a spherical scatterer configuration for PyMieSim simulations.
+
+    Attributes:
+        diameter (Iterable): Diameter(s) of the scatterers in meters.
+        index (Iterable, optional): Refractive index of the scatterers.
+        material (Iterable, optional): Material(s) of the scatterers, used if `index` is not provided.
+    """
     diameter: Iterable
-    """ diameter of the single scatterer in unit of meter. """
-    index: Iterable = None
-    """ Refractive index of scatterer. """
-    material: Iterable = None
-    """ material of which the scatterer is made of. Only if index is not specified. """
+    index: Iterable | None = None
+    material: Iterable | None = None
+
     name: str = field(default="sphere", init=False)
-    """ Name of the set """
 
     def __post_init__(self):
         self.cpp_binding_str: list = [
@@ -164,39 +218,39 @@ class Sphere(BaseScatterer):
 
         super().__post_init__()
 
-    def asserts_inputs(self) -> None:
+    def validate_material_or_index(self) -> NoReturn:
         """
-        Asserts that core and shell are either defined by index or material
+        Validates the inputs for the CoreShell scatterer, ensuring that both core and shell are defined
+        either by their material or by their refractive index, but not both simultaneously. This ensures
+        accurate modeling of core-shell scatterers.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
-        assert (self.material is None) ^ (self.index is None), "material xor index has to be defined"
-
-        if self.material is not None:
-            del self.parameter_dictionnary['index']
-            self.cpp_binding_str.remove('index')
-        else:
-            del self.parameter_dictionnary['material']
-            self.cpp_binding_str.remove('material_index')
+        self._validate_and_cleanup()
 
 
 @dataclass
 class CoreShell(BaseScatterer):
+    """
+    Represents a core-shell scatterer configuration for PyMieSim simulations.
+
+    Attributes:
+        core_diameter (Iterable): Diameter(s) of the core in meters.
+        shell_thickness (Iterable): Thickness(es) of the shell in meters.
+        core_index (Iterable, optional): Refractive index of the core.
+        shell_index (Iterable, optional): Refractive index of the shell.
+        core_material (Iterable, optional): Material(s) of the core, used if `core_index` is not provided.
+        shell_material (Iterable, optional): Material(s) of the shell, used if `shell_index` is not provided.
+    """
     core_diameter: Iterable
-    """ diameter of the core of the single scatterer [m]. """
     shell_width: Iterable
-    """ Width of the shell of the single scatterer [m]. """
-    core_index: Iterable = None
-    """ Refractive index of the core of the scatterer. """
-    shell_index: Iterable = None
-    """ Refractive index of the shell of the scatterer. """
-    core_material: Iterable = None
-    """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
-    shell_material: Iterable = None
-    """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
+    core_index: Iterable | None = None
+    shell_index: Iterable | None = None
+    core_material: Iterable | None = None
+    shell_material: Iterable | None = None
+
     name: str = field(default="coreshell", init=False)
-    """ Name of the set """
 
     def __post_init__(self):
         self.cpp_binding_str: list = [
@@ -223,40 +277,34 @@ class CoreShell(BaseScatterer):
 
         super().__post_init__()
 
-    def asserts_inputs(self) -> None:
+    def validate_material_or_index(self) -> NoReturn:
         """
-        Asserts that core and shell are either defined by index or material
+        Validates the inputs for the CoreShell scatterer, ensuring that both core and shell are defined
+        either by their material or by their refractive index, but not both simultaneously. This ensures
+        accurate modeling of core-shell scatterers.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
-        assert (self.core_material is None) ^ (self.core_index is None), "core_material xor core_index has to be defined"
-
-        assert (self.shell_material is None) ^ (self.shell_index is None), "shell_material xor shell_index has to be defined"
-
-        if self.core_material is not None:
-            del self.parameter_dictionnary['core_index']
-            self.cpp_binding_str.remove('core_index')
-        else:
-            del self.parameter_dictionnary['core_material']
-            self.cpp_binding_str.remove('core_material_index')
-
-        if self.shell_material is not None:
-            del self.parameter_dictionnary['shell_index']
-            self.cpp_binding_str.remove('shell_index')
-        else:
-            del self.parameter_dictionnary['shell_material']
-            self.cpp_binding_str.remove('shell_material_index')
+        self._validate_and_cleanup('core_')
+        self._validate_and_cleanup('shell_')
 
 
 @dataclass
 class Cylinder(BaseScatterer):
+    """
+    Represents a cylindrical scatterer configuration for PyMieSim simulations.
+
+    Attributes:
+        diameter (Iterable): Diameter(s) of the cylinder in meters.
+        height (Iterable): Height(s) of the cylinder in meters.
+        index (Iterable, optional): Refractive index of the cylinder.
+        material (Iterable, optional): Material(s) of the cylinder, used if `index` is not provided.
+    """
     diameter: Iterable
-    """ diameter of the single scatterer in unit of meter. """
-    index: Iterable = None
-    """ Refractive index of scatterer. """
-    material: Iterable = None
-    """ Refractive index of scatterer medium. """
+    index: Iterable | None = None
+    material: Iterable | None = None
+
     name: str = field(default="cylinder", init=False)
     """ Name of the set """
 
@@ -279,20 +327,15 @@ class Cylinder(BaseScatterer):
 
         super().__post_init__()
 
-    def asserts_inputs(self) -> None:
+    def validate_material_or_index(self) -> NoReturn:
         """
-        Asserts that core and shell are either defined by index or material
+        Validates the inputs for the CoreShell scatterer, ensuring that both core and shell are defined
+        either by their material or by their refractive index, but not both simultaneously. This ensures
+        accurate modeling of core-shell scatterers.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
-        assert (self.material is None) ^ (self.index is None), "material xor index has to be defined"
-
-        if self.material is not None:
-            del self.parameter_dictionnary['index']
-            self.cpp_binding_str.remove('index')
-        else:
-            del self.parameter_dictionnary['material']
-            self.cpp_binding_str.remove('material_index')
+        self._validate_and_cleanup()
 
 # -

@@ -1,6 +1,5 @@
 graft PyMieSim
 
-prune requirements
 prune extern
 prune docs
 prune libraries

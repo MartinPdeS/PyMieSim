@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
     from collections.abc import Iterable
+    from typing import NoReturn
 
 import numpy
 from dataclasses import dataclass, field
@@ -18,16 +19,33 @@ from PyMieSim.binary.Sets import CppDetectorSet
 
 @dataclass
 class BaseDetector():
+    """
+    A base class for detectors in Mie scattering simulations, handling the common functionalities
+    for different types of detectors. It is designed to format input parameters, compute necessary
+    detector properties, and bind the detector to a simulation experiment setup.
+
+    Attributes:
+        NA (Iterable[float]): Numerical aperture of the imaging system. It defines the range of angles
+                              over which the system can accept or emit light.
+        gamma_offset (Iterable[float]): Angle offset of the detector in the direction perpendicular
+                                        to polarization, in degrees.
+        phi_offset (Iterable[float]): Angle offset of the detector in the direction parallel to
+                                      polarization, in degrees.
+        polarization_filter (Iterable[float]): Angle of the polarization filter in front of the
+                                              detector, in degrees. This specifies the orientation
+                                              of the polarization filter.
+        sampling (int): Number of sampling points for field evaluation. It dictates the resolution
+                        at which the field is sampled by the detector.
+
+    Note:
+        This class is not intended to be instantiated directly but serves as a base for specific
+        detector types.
+    """
     NA: Iterable
-    """ Numerical aperture of imaging system. """
     gamma_offset: Iterable
-    """ Angle [degree] offset of detector in the direction perpendicular to polarization. """
     phi_offset: Iterable
-    """ Angle [degree] offset of detector in the direction parallel to polarization. """
     polarization_filter: Iterable
-    """ Angle [degree] of polarization filter in front of detector. """
     sampling: int
-    """ Sampling number for the field evaluation. """
 
     parameter_str_list = [
         'NA',
@@ -36,7 +54,15 @@ class BaseDetector():
         'polarization_filter',
     ]
 
-    def __post_init__(self):
+    def __post_init__(self) -> NoReturn:
+        """
+        Initializes and prepares the detector instance by formatting inputs, computing field arrays,
+        determining rotation angles, building parameters for visualization, and initializing C++ bindings.
+        This method is automatically called after the class has been initialized.
+
+        Returns:
+            NoReturn
+        """
         self.format_inputs()
 
         self.get_fields_array()
@@ -47,13 +73,14 @@ class BaseDetector():
 
         self.initialize_binding()
 
-    def get_rotation_angle_from_mode_number(self) -> None:
+    def get_rotation_angle_from_mode_number(self) -> NoReturn:
         """
-        Compute the rotation angle from mode number if detector is LPMode else
-        rotation angle is zero.
+        Computes the rotation angle from the mode number for LPMode detectors; for others, sets it to zero.
+        This method establishes the orientation of the detector based on its mode number, which is crucial
+        for accurate simulation of light detection.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
         if self.name.lower() == 'photodiode':
             self.rotation_angle = numpy.zeros(self.scalarfield.values.size)
@@ -72,37 +99,40 @@ class BaseDetector():
 
         self.rotation_angle = numpy.asarray(rotation_angle_list).astype(float)
 
-    def format_inputs(self) -> None:
+    def format_inputs(self) -> NoReturn:
         """
-        Format the inputs given by the user into numpy array. Those inputs are subsequently
-        sent to the cpp binding.
+        Formats the input attributes (NA, phi_offset, gamma_offset, polarization_filter) into numpy arrays
+        for further processing. This ensures that all input parameters are correctly structured for the
+        simulation and C++ binding processes.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
         self.NA = numpy.atleast_1d(self.NA).astype(float)
         self.phi_offset = numpy.atleast_1d(self.phi_offset).astype(float)
         self.gamma_offset = numpy.atleast_1d(self.gamma_offset).astype(float)
         self.polarization_filter = numpy.atleast_1d(self.polarization_filter).astype(float)
 
-    def bind_to_experiment(self, experiment: Setup) -> None:
+    def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
-        Bind this specific set to a Setup experiment.
+        Binds this detector to a specified experimental setup, integrating it into the simulation workflow.
 
-        :param      experiment:  The experiment
-        :type       experiment:  Setup
+        Parameters:
+            experiment (Setup): The experimental setup to which the detector will be bound.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
         experiment.binding.set_detector(self.binding)
 
-    def build_x_parameters(self) -> None:
+    def build_x_parameters(self) -> NoReturn:
         """
-        Builds the parameters that will be passed in XTable for DataVisual.
+        Constructs the Xparameters for visualization, translating the detector's attributes into a format
+        suitable for inclusion in data visualization tools. This facilitates the graphical representation
+        of simulation results.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
         for parameter_str in self.parameter_str_list:
             parameter = getattr(self, parameter_str)
@@ -117,22 +147,24 @@ class BaseDetector():
 
     def append_to_table(self, table: list) -> list:
         """
-        Append elements to the xTable from the DataVisual library for the plottings.
+        Appends the detector's attributes to a given visualization table.
 
-        :param      table:  The table
-        :type       table:  list
+        Parameters:
+            table (list): The table to which the detector's attributes will be appended.
 
-        :returns:   The updated list
-        :rtype:     list
+        Returns:
+            list: The updated table with the detector's attributes included.
         """
         return [*table, self.scalarfield, self.NA, self.phi_offset, self.gamma_offset, self.polarization_filter]
 
-    def initialize_binding(self) -> None:
+    def initialize_binding(self) -> NoReturn:
         """
-        Initializes the cpp binding of the LPmode detector set.
+        Initializes the C++ binding for the detector, configuring it with the necessary parameters for
+        simulation. This step is essential for integrating the Python-defined detector with the underlying
+        C++ simulation engine.
 
-        :returns:   No return
-        :rtype:     None
+        Returns:
+            NoReturn
         """
         point_coupling = True if self.coupling_mode == 'point' else False
 
@@ -154,20 +186,37 @@ class BaseDetector():
 
 @dataclass
 class Photodiode(BaseDetector):
+    """
+    Represents a photodiode detector in Mie scattering simulations, extending the BaseDetector
+    with specific attributes and methods for photodiode-type detection.
+
+    Attributes:
+        coupling_mode (str): Defines the method for computing mode coupling, either 'point' or 'Mean'.
+                             Default is 'point'.
+        coherent (bool): Indicates whether the detection scheme is coherent (True) or incoherent (False).
+                         This is initialized to False and not meant to be modified.
+        name (str): The name of the detector, initialized to "Photodiode" and not intended for modification.
+
+    Methods:
+        get_fields_array(): Overrides the BaseDetector method to provide the field arrays specific
+                            to a photodiode detector. It generates a scalar field array representing
+                            the detection scheme.
+
+    Note:
+        This class specifically models a photodiode detector and its interaction within a Mie scattering
+        simulation experiment.
+    """
     coupling_mode: str = 'point'
-    """ Method for computing mode coupling. Either point or Mean. """
     coherent: bool = field(default=False, init=False)
-    """ Describe the detection scheme coherent or uncoherent. """
     name: str = field(default="Photodiode", init=False)
-    """ name of the set """
 
     def get_fields_array(self) -> numpy.ndarray:
         """
-        Gets the field arrays for the detection schemes the first dimension is the different fields.
-        Second dimension are the individual mode fields.
+        Generates a scalar field array representing the photodiode detection scheme. This method overrides
+        the BaseDetector's get_fields_array method to provide functionality specific to photodiode detectors.
 
-        :returns:   The fields array.
-        :rtype:     numpy.ndarray
+        Returns:
+            numpy.ndarray: An array of scalar fields corresponding to the photodiode detection scheme.
         """
         scalarfield = numpy.ones([1, self.sampling])
 
@@ -191,11 +240,11 @@ class LPMode(BaseDetector):
 
     def get_fields_array(self) -> numpy.ndarray:
         """
-        Gets the field arrays for the detection schemes the first dimension is the different fields.
-        Second dimension are the individual mode fields.
+        Loads and generates complex scalar field arrays representing the specified LP modes. This method
+        overrides the BaseDetector's get_fields_array to cater specifically to LPMode detectors.
 
-        :returns:   The fields array.
-        :rtype:     numpy.ndarray
+        Returns:
+            numpy.ndarray: An array of complex scalar fields representing the LP modes involved in the detection.
         """
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
 
