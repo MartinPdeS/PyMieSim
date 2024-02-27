@@ -7,7 +7,7 @@ from PyMieSim import experiment, measure
 
 
 def test_detector_single_polarization_filter():
-    source = single.Gaussian(
+    source = single.source.Gaussian(
         wavelength=1e-6,
         polarization_value=0,
         polarization_type='linear',
@@ -15,20 +15,20 @@ def test_detector_single_polarization_filter():
         NA=0.3
     )
 
-    scatterer = single.Sphere(
+    scatterer = single.scatterer.Sphere(
         diameter=1e-6,
         index=1.5 + 0.5j,
         source=source
     )
 
-    detector_0 = single.Photodiode(
+    detector_0 = single.detector.Photodiode(
         NA=0.1,
         gamma_offset=0,
         phi_offset=90,
         polarization_filter=0
     )
 
-    detector_180 = single.Photodiode(
+    detector_180 = single.detector.Photodiode(
         NA=0.1,
         gamma_offset=0,
         phi_offset=90,
@@ -40,7 +40,7 @@ def test_detector_single_polarization_filter():
 
 
 def test_detector_experiment_polarization_filter():
-    source_set = experiment.Gaussian(
+    source_set = experiment.source.Gaussian(
         wavelength=1e-6,
         polarization_value=0,
         polarization_type='linear',
@@ -48,14 +48,14 @@ def test_detector_experiment_polarization_filter():
         NA=0.3
     )
 
-    scatterer = experiment.Sphere(
+    scatterer = experiment.scatterer.Sphere(
         n_medium=1.0,
         diameter=1e-6,
         index=1.5 + 0.5j,
         source_set=source_set
     )
 
-    detector = experiment.Photodiode(
+    detector = experiment.detector.Photodiode(
         NA=0.1,
         gamma_offset=0,
         phi_offset=90,
