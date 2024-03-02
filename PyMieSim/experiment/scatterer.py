@@ -52,7 +52,7 @@ class BaseScatterer():
         Validates and cleans up parameters for either the core or the shell.
 
         Args:
-            part (str): Specifies the part to validate, either 'core' or 'shell'.
+            part (str): Specifies the part to validate, either 'core' or 'shell' or ''.
         """
         material = getattr(self, f"{part}material")
         index = getattr(self, f"{part}index")
