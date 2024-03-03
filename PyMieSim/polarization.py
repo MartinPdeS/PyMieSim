@@ -1,53 +1,73 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from collections.abc import Iterable
-
+from typing import Iterable
 import numpy
 
 
-class JonesVector():
+class JonesVector:
+    """
+    Represents a Jones vector for describing the polarization state of light.
+    """
+
     def __init__(self, jones_vector: Iterable) -> None:
-        self.jones_vector = numpy.array(jones_vector).astype(complex)
+        """
+        Initialize the Jones vector.
 
-    def __repr__(self):
-        return self.jones_vector.__repr__()
+        Parameters:
+            - jones_vector: Iterable, a collection that represents the Jones vector components.
+        """
+        self.jones_vector = numpy.atleast_2d(jones_vector).astype(complex)
 
-    def __add__(self, other):
-        if self.jones_vector.ndim == 1 and other.jones_vector.ndim == 1:
-            return JonesVector([self.jones_vector, other.jones_vector])
+    def __repr__(self) -> str:
+        return f"JonesVector({self.jones_vector})"
 
-        if self.jones_vector.ndim == 2 and other.jones_vector.ndim == 1:
-            return JonesVector([*self.jones_vector, other.jones_vector])
+    def __add__(self, other) -> 'JonesVector':
+        """
+        Add another Jones vector to this Jones vector, combining their polarization states.
 
-        if self.jones_vector.ndim == 1 and other.jones_vector.ndim == 2:
-            return JonesVector([self.jones_vector, *other.jones_vector])
+        Parameters:
+            - other: JonesVector, another Jones vector to add.
 
-        if self.jones_vector.ndim == 2 and other.jones_vector.ndim == 2:
-            return JonesVector([*self.jones_vector, *other.jones_vector])
+        Returns:
+            - JonesVector, the combined Jones vector.
+        """
+        return JonesVector(numpy.vstack((self.jones_vector, other.jones_vector)))
 
 
 class RightCircularPolarization(JonesVector):
-    def __init__(self):
+    """
+    Represents right circular polarization.
+    """
+
+    def __init__(self) -> None:
         super().__init__([1, 1j])
 
 
 class LeftCircularPolarization(JonesVector):
-    def __init__(self):
+    """
+    Represents left circular polarization.
+    """
+
+    def __init__(self) -> None:
         super().__init__([1, -1j])
 
 
 class LinearPolarization(JonesVector):
-    def __init__(self, *angle_list: list):
+    """
+    Represents linear polarization for a given angle or angles.
+    """
 
-        angle_list = numpy.asarray(angle_list).astype(float)
+    def __init__(self, *angles: float) -> None:
+        """
+        Initialize linear polarization with one or more angles.
 
-        if numpy.nan in angle_list:
-            raise ValueError("Unpolarized light source is not implemented yet...")
+        Parameters:
+            - angles: float, the angle(s) of polarization in degrees.
+        """
+        self.angles = numpy.array(angles, dtype=float)
+        if numpy.isnan(self.angles).any():
+            raise ValueError("Unpolarized light source is not implemented yet.")
 
-        self.angle_list = numpy.atleast_1d(angle_list)
-
-        jones_vector = numpy.cos(self.angle_list * numpy.pi / 180), numpy.sin(self.angle_list * numpy.pi / 180)
-
+        jones_vector = numpy.array([numpy.cos(self.angles * numpy.pi / 180), numpy.sin(self.angles * numpy.pi / 180)])
         super().__init__(jones_vector=jones_vector)
-# -

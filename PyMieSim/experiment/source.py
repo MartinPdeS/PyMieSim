@@ -87,7 +87,7 @@ class BaseSource(object):
 
         self.linear_polarization = Xparameter(
             values=self.jones_vector,
-            representation=self.polarization.angle_list,
+            representation=self.polarization.angles,
             **Kwargs.linear_polarization
         )
 

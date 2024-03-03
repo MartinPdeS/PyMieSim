@@ -342,7 +342,7 @@ class Sphere(GenericScatterer):
     """ Refractive index of scatterer. """
     n_medium: float = 1.0
     """ Refractive index of scatterer medium. """
-    material: DataMeasurement | Sellmeier = None
+    material: DataMeasurement | Sellmeier | None = None
     """ Material of which the scatterer is made of. Only if index is not specified. """
 
     def __post_init__(self):
@@ -443,9 +443,9 @@ class CoreShell(GenericScatterer):
     """ Refractive index of the core of the scatterer. """
     shell_index: complex = None
     """ Refractive index of the shell of the scatterer. """
-    core_material: ExpData = None
+    core_material: DataMeasurement | Sellmeier | None = None
     """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
-    shell_material: ExpData = None
+    shell_material: DataMeasurement | Sellmeier | None = None
     """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
     n_medium: float = 1.0
     """ Refractive index of scatterer medium. """
@@ -509,7 +509,7 @@ class Cylinder(GenericScatterer):
     """ Refractive index of scatterer. """
     n_medium: float = 1.0
     """ Material of which the scatterer is made of. Only if index is not specified. """
-    material: ExpData = None
+    material: DataMeasurement | Sellmeier | None = None
     """ Refractive index of scatterer medium. """
 
     def __post_init__(self):
@@ -522,8 +522,7 @@ class Cylinder(GenericScatterer):
 
     def set_cpp_binding(self) -> None:
         """
-        Method call and bind c++ scatterer class
-
+        Binds the Python representation of the cylinder to its C++ counterpart using provided properties.
         """
         from PyMieSim.binary.CylinderInterface import CYLINDER
 
