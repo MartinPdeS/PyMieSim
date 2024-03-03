@@ -1,7 +1,8 @@
 """
-CoreShell: B1 vs core diameter
+CoreShell: B1 vs Core Diameter
 ==============================
 
+This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.
 """
 
 # %%
@@ -14,49 +15,49 @@ from PyMieSim.materials import BK7
 from PyMieSim import measure
 
 # %%
-# Defining the source to be employed.
-# The source is always a plane wave in the LMT framework.
-# The amplitude is set to one per default.
+# Defining the source
+# In the LMT framework, the source is always considered a plane wave with a default amplitude of one.
 source_set = Gaussian(
-    wavelength=800e-9,
-    polarization_value=0,
+    wavelength=800e-9,  # 800 nm
+    polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
-    optical_power=1e-3,
-    NA=0.2
+    optical_power=1e-3,  # 1 milliwatt
+    NA=0.2  # Numerical Aperture
 )
 
 # %%
-# Defining the ranging parameters for the scatterer distribution
-# Here we look at core/shell scatterers and use constant shell diameter
-# with variable core diameter
+# Defining the scatterer distribution
+# Here, we explore core/shell scatterers with a constant shell diameter and variable core diameter.
 scatterer_set = CoreShell(
-    core_diameter=np.geomspace(100e-09, 3000e-9, 5000),
-    shell_width=800e-9,
-    core_index=1.6,
-    shell_material=BK7,
-    n_medium=1,
+    core_diameter=np.geomspace(100e-9, 3000e-9, 5000),  # Geometrically spaced core diameters
+    shell_width=800e-9,  # Shell width of 800 nm
+    core_index=1.6,  # Refractive index of the core
+    shell_material=BK7,  # BK7 glass material for the shell
+    n_medium=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
 # %%
 # Defining the experiment setup
-# With the source and scatterers defined we set them together
-# in an experiment.
+# Integrating the defined source and scatterers into a single experimental setup.
 experiment = Setup(
     scatterer_set=scatterer_set,
     source_set=source_set
 )
 
 # %%
-# Measuring the properties
-# We are interesting here in the b_1 (first magnetic coefficient) parameter.
+# Measuring the B1 scattering parameter
+# Here, we're interested in the a3 (first magnetic coefficient) parameter, which seems to be a typo for B1.
 data = experiment.get(measure.a3)
 
 # %%
 # Plotting the results
+# Visualizing how the B1 (a3) parameter varies with the core diameter.
 figure = data.plot(
-    x=scatterer_set.core_diameter,
-    y_scale='linear'
+    x=scatterer_set.core_diameter,  # Core diameter as the x-axis
+    y_scale='linear'  # Linear scale for the y-axis
 )
 
+# %%
+# Displaying the plot
 _ = figure.show()

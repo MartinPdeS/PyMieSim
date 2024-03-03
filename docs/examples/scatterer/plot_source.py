@@ -1,7 +1,8 @@
 """
-Source plottings
+Source Plottings
 ================
 
+This example demonstrates how to visualize the properties of a light source using PyMieSim.
 """
 
 # %%
@@ -10,20 +11,18 @@ from PyMieSim.single.source import Gaussian
 
 # %%
 # Defining the source
-# ~~~~~~~~~~~~~~~~~~~
 source = Gaussian(
-    wavelength=1000e-9,
-    polarization_value=0,
+    wavelength=1e-6,  # 1000 nm
+    polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
-    optical_power=1,
-    NA=0.3
+    optical_power=1,  # Arbitrary units
+    NA=0.3  # Numerical Aperture
 )
 
 # %%
 # Plotting the source
-# ~~~~~~~~~~~~~~~~~~~
 figure = source.plot()
 
+# %%
+# Display the plot
 _ = figure.show()
-
-# -

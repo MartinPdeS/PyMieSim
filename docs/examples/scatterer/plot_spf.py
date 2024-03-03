@@ -1,7 +1,8 @@
 """
-SPF computation
+SPF Computation
 ===============
 
+This example demonstrates the computation and visualization of the Scattering Phase Function (SPF) using PyMieSim.
 """
 
 # %%
@@ -11,37 +12,31 @@ from PyMieSim.single.source import Gaussian
 
 # %%
 # Defining the source
-# ~~~~~~~~~~~~~~~~~~~
 source = Gaussian(
-    wavelength=500e-9,
-    polarization_value=0,
+    wavelength=500e-9,  # 500 nm
+    polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
-    optical_power=1,
-    NA=0.3
+    optical_power=1,  # Arbitrary units
+    NA=0.3  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer
-# ~~~~~~~~~~~~~~~~~~~~~~
 scatterer = Sphere(
-    diameter=1200e-9,
+    diameter=1.2e-6,  # 1200 nm
     source=source,
-    index=1.0,
-    n_medium=1.2,
-    # index=1.2,
-    # n_medium=1.0
+    index=1.4,  # Refractive index of the scatterer
+    n_medium=1.0,  # Refractive index of the surrounding medium
 )
 
 # %%
 # Computing the data
-# ~~~~~~~~~~~~~~~~~~
-data = scatterer.get_spf(sampling=300)
+data = scatterer.get_spf(sampling=300)  # Specify the number of sampling points
 
 # %%
 # Plotting the data
-# ~~~~~~~~~~~~~~~~~
 figure = data.plot()
 
+# %%
+# Display the plot
 _ = figure.show()
-
-# -
