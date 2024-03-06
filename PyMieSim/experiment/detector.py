@@ -278,6 +278,5 @@ class LPMode(BaseDetector):
             long_label='Field',
             short_label='field',
             values=scalarfield,
-            use_value_repr=True,
             value_representation=self.mode_number
         )

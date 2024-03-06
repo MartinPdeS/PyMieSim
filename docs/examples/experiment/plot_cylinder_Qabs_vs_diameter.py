@@ -1,5 +1,5 @@
 """
-Cylinder: Qsca vs Diameter
+Cylinder: Qabs vs Diameter
 ==========================
 
 This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.

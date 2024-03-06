@@ -217,7 +217,8 @@ class Sphere(BaseScatterer):
             self.material = units.Custom(
                 long_label='Scatterer material',
                 short_label='material',
-                values=self.material
+                values=self.material,
+                use_prefix=False
             )
             self.x_table.append(self.material)
 
@@ -323,7 +324,8 @@ class CoreShell(BaseScatterer):
             self.core_material = units.Custom(
                 long_label='Core material',
                 short_label='core_material',
-                values=self.core_material
+                values=self.core_material,
+                use_prefix=False
             )
             self.x_table.append(self.core_material)
 
@@ -339,7 +341,8 @@ class CoreShell(BaseScatterer):
             self.shell_material = units.Custom(
                 long_label='Shell material',
                 short_label='shell_material',
-                values=self.shell_material
+                values=self.shell_material,
+                use_prefix=False
             )
             self.x_table.append(self.shell_material)
 
@@ -430,7 +433,8 @@ class Cylinder(BaseScatterer):
             self.material = units.Custom(
                 long_label='Scatterer material',
                 short_label='material',
-                values=self.material
+                values=self.material,
+                value_representation=self.material
             )
             self.x_table.append(self.material)
 
