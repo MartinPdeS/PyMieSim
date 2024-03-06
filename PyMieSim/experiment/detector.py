@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 import numpy
 from dataclasses import dataclass, field
 
-from DataVisual import Xparameter
+
 from PyMieSim import load_lp_mode
-import PyMieSim.datavisual_x_parameters as Kwargs
+from DataVisual import units
 from PyMieSim.binary.Sets import CppDetectorSet
 
 
@@ -127,23 +127,39 @@ class BaseDetector():
 
     def build_x_parameters(self) -> NoReturn:
         """
-        Constructs the Xparameters for visualization, translating the detector's attributes into a format
+        Constructs the BaseUnit for visualization, translating the detector's attributes into a format
         suitable for inclusion in data visualization tools. This facilitates the graphical representation
         of simulation results.
 
         Returns:
             NoReturn
         """
-        for parameter_str in self.parameter_str_list:
-            parameter = getattr(self, parameter_str)
+        self.NA = units.Index(
+            long_label='Numerical aperture',
+            short_label='NA',
+            values=numpy.array(self.NA),
+        )
 
-            parameter = numpy.array(parameter)
+        self.gamma_offset = units.Degree(
+            long_label='Phi angle',
+            short_label=r'$\phi_{offset}$',
+            values=numpy.array(self.gamma_offset),
+            use_prefix=False
+        )
 
-            kwargs_parameter = getattr(Kwargs, parameter_str)
+        self.phi_offset = units.Degree(
+            long_label='Phi angle',
+            short_label=r'$\phi_{offset}$',
+            values=numpy.array(self.phi_offset),
+            use_prefix=False
+        )
 
-            x_parameter = Xparameter(values=parameter, **kwargs_parameter)
-
-            setattr(self, parameter_str, x_parameter)
+        self.polarization_filter = units.Degree(
+            long_label=r'Polarization filter',
+            short_label=r'f$_{pol}$',
+            values=numpy.array(self.polarization_filter),
+            use_prefix=False
+        )
 
     def append_to_table(self, table: list) -> list:
         """
@@ -222,10 +238,12 @@ class Photodiode(BaseDetector):
         """
         scalarfield = numpy.ones([1, self.sampling])
 
-        self.scalarfield = Xparameter(
+        self.scalarfield = units.Degree(
+            long_label='Photodiode',
+            short_label=r'Photo.',
             values=scalarfield,
-            representation=['Photodiode'],
-            **Kwargs.scalarfield
+            use_long_label_for_repr=True,
+            string_format=''
         )
 
 
@@ -256,8 +274,10 @@ class LPMode(BaseDetector):
             structure_type='unstructured'
         ).astype(complex)
 
-        self.scalarfield = Xparameter(
+        self.scalarfield = units.Custom(
+            long_label='Field',
+            short_label='field',
             values=scalarfield,
-            representation=self.mode_number,
-            **Kwargs.scalarfield
+            use_value_repr=True,
+            value_representation=self.mode_number
         )

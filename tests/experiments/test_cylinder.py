@@ -3,13 +3,12 @@
 
 import pytest
 import numpy
-import PyMieSim
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
+from PyMieSim import measure
 from PyMieSim.materials import Silver, BK7, Aluminium
 
 core_type = [
@@ -20,14 +19,14 @@ core_type = [
 ]
 
 measures = [
-    PyMieSim.measure.Qsca,
-    PyMieSim.measure.Qabs,
-    PyMieSim.measure.coupling
+    measure.Qsca,
+    measure.Qabs,
+    measure.coupling
 ]
 
 
 @pytest.mark.parametrize('core_type', [p['kwarg'] for p in core_type], ids=[p['name'] for p in core_type])
-@pytest.mark.parametrize('measure', measures, ids=[p.name for p in measures])
+@pytest.mark.parametrize('measure', measures, ids=[p.short_label for p in measures])
 def test_cylinder_experiment(measure, core_type):
     source_set = Gaussian(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),

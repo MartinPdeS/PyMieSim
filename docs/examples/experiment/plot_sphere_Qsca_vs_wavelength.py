@@ -27,11 +27,10 @@ source_set = Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer_set = Sphere(
     diameter=[200e-9, 150e-9, 100e-9],
-    index=[2, 3, 4],
+    index=[2, 4],
     n_medium=1,
     source_set=source_set
 )
-
 
 # %%
 # Defining the experiment setup
@@ -42,9 +41,11 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.get(measure.Qsca)
-
+data = experiment.get(measure.Csca)
+print(data.shape)
 data = data.mean(scatterer_set.index)
+print(data.shape)
+# dsa
 
 # %%
 # Plotting the results

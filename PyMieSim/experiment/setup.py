@@ -12,8 +12,8 @@ if TYPE_CHECKING:
 import numpy
 from dataclasses import dataclass
 
-from DataVisual import DataVisual
-import DataVisual.tables as Table
+from DataVisual import Array
+from DataVisual import Table
 from PyMieSim.binary.Experiment import CppExperiment
 
 
@@ -72,27 +72,27 @@ class Setup(object):
         table = self.scatterer_set.append_to_table(table=table)
         self.x_table = table if not self.detector_set else self.detector_set.append_to_table(table=table)
 
-    def get(self, measure: Table.XParameter, export_as_numpy: bool = False) -> numpy.ndarray | DataVisual:
+    def get(self, measure: Table, export_as_numpy: bool = False) -> numpy.ndarray | Array:
         """
         Executes the simulation to compute and retrieve the specified measure.
 
         Parameters:
-            measure (Table.XParameter): The measure to be computed by the simulation, defined by the user.
+            measure (Table): The measure to be computed by the simulation, defined by the user.
             export_as_numpy (bool): Determines the format of the returned data. If True, returns a numpy array,
-                                    otherwise returns a DataVisual object for enhanced visualization capabilities.
+                                    otherwise returns a Array object for enhanced visualization capabilities.
 
         Returns:
-            Union[numpy.ndarray, DataVisual]: The computed data in the specified format, either as raw numerical
-                                              values in a numpy array or structured for visualization with DataVisual.
+            Union[numpy.ndarray, Array]: The computed data in the specified format, either as raw numerical
+                                              values in a numpy array or structured for visualization with Array.
         """
-        measure_string = f'get_{self.scatterer_set.name}_{measure.name}'
+        measure_string = f'get_{self.scatterer_set.name}_{measure.short_label}'
         array = getattr(self.binding, measure_string)()
 
         if export_as_numpy:
             return array
 
-        measure.values = array
-        return DataVisual(x_table=Table.Xtable(self.x_table), y=measure)
+        measure.base_values = array
+        return Array(x_table=Table(self.x_table), y=measure)
 
 
 # -

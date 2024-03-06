@@ -35,7 +35,7 @@ class JonesVector:
         return JonesVector(numpy.vstack((self.jones_vector, other.jones_vector)))
 
 
-class RightCircularPolarization(JonesVector):
+class RightCircular(JonesVector):
     """
     Represents right circular polarization.
     """
@@ -44,7 +44,7 @@ class RightCircularPolarization(JonesVector):
         super().__init__([1, 1j])
 
 
-class LeftCircularPolarization(JonesVector):
+class LeftCircular(JonesVector):
     """
     Represents left circular polarization.
     """
@@ -53,7 +53,7 @@ class LeftCircularPolarization(JonesVector):
         super().__init__([1, -1j])
 
 
-class LinearPolarization(JonesVector):
+class Linear(JonesVector):
     """
     Represents linear polarization for a given angle or angles.
     """

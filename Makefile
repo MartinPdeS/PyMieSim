@@ -21,5 +21,8 @@ doc-noplot:
 clean_pycache:
 	find . -name __pycache__ -prune -exec rm -rf {} \;
 
-clean: clean_pycache
+clean_shared_object:
+	find . -name "*.so" -prune -exec rm -rf {} \;
+
+clean: clean_pycache clean_shared_object
 	rm -rf build *.egg-info dist .pytest_cache *.whl wheel_house .eggs .coverage
