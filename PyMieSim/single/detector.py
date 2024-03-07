@@ -120,7 +120,7 @@ class GenericDetector():
         Returns:
             SceneList3D: The 3D plotting scene containing the field plots.
         """
-        coordinate = numpy.column_stack((
+        coordinate = numpy.row_stack((
             self.cpp_binding.mesh.x,
             self.cpp_binding.mesh.y,
             self.cpp_binding.mesh.z
