@@ -273,7 +273,7 @@ class LPMode(BaseDetector):
         scalarfield = load_lp_mode(
             mode_numbers=self.mode_number,
             sampling=self.sampling,
-            structure_types='unstructured'
+            structure_type='unstructured'
         ).astype(complex)
 
         self.scalarfield = units.Custom(
