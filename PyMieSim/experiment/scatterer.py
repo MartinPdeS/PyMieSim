@@ -325,7 +325,7 @@ class CoreShell(BaseScatterer):
                 long_label='Core material',
                 short_label='core_material',
                 values=self.core_material,
-                use_prefix=False
+                use_prefix=False,
             )
             self.x_table.append(self.core_material)
 

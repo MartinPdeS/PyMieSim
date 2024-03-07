@@ -138,6 +138,8 @@ class BaseDetector():
             long_label='Numerical aperture',
             short_label='NA',
             values=numpy.array(self.NA),
+            use_prefix=False,
+            string_format=""
         )
 
         self.gamma_offset = units.Degree(
@@ -238,12 +240,12 @@ class Photodiode(BaseDetector):
         """
         scalarfield = numpy.ones([1, self.sampling])
 
-        self.scalarfield = units.Degree(
-            long_label='Photodiode',
-            short_label=r'Photo.',
+        self.scalarfield = units.Custom(
+            long_label='Field',
+            short_label=r'field',
             values=scalarfield,
             use_long_label_for_repr=True,
-            string_format=''
+            value_representation=['Photodiode']
         )
 
 
