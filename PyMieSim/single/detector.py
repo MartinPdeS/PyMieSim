@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim import single
+    from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
 
 
 import numpy
@@ -21,26 +22,36 @@ from MPSPlots.render3D import SceneList as SceneList3D
 
 
 class GenericDetector():
-    def initialize(self):
-        self.max_angle = NA_to_angle(NA=self.NA)
-        self.polarization_filter = numpy.float64(self.polarization_filter)
+    """
+    Base class for different types of detectors with methods for setup, rotation,
+    calculating light coupling, and generating footprint and 3D plots.
+    """
 
+    def __init__(self, **kwargs):
+        self.initialize_attributes(**kwargs)
+        self.initialize()
+
+    def initialize_attributes(self, **kwargs):
+        """
+        Initialize detector attributes from keyword arguments.
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+    def initialize(self):
+        """
+        Perform initial setup by setting max angle based on NA, converting
+        polarization_filter to float, and binding C++ backend.
+        """
+        self.max_angle = NA_to_angle(NA=self.NA)
+        self.polarization_filter = float(self.polarization_filter)
         self.set_cpp_binding()
 
-    def rotate_around_axis(self, rotation_angle: float) -> None:
+    def set_cpp_binding(self):
         """
-        Rotate the mesh around its principal axis.
-
-        :param      rotation_angle:  The rotation angle [degree]
-        :type       rotation_angle:  float
-
-        :returns:   No returns
-        :rtype:     None
+        Establish binding with the C++ backend for the detector.
         """
-        return self.cpp_binding.mesh.rotate_around_axis(rotation_angle)
-
-    def set_cpp_binding(self) -> None:
-        point_coupling = True if self.coupling_mode.lower() == 'point' else False
+        point_coupling = (self.coupling_mode.lower() == 'point')
 
         self.cpp_binding = BindedDetector(
             scalar_field=self.unstructured_farfield,
@@ -53,9 +64,18 @@ class GenericDetector():
             point_coupling=point_coupling
         )
 
-    def coupling(self, scatterer: single.scatterer.Sphere | single.scatterer.CoreShell | single.scatterer.Cylinder) -> float:
+    def rotate_around_axis(self, rotation_angle: float):
+        """
+        Rotate the detector mesh around its principal axis by a given angle.
+
+        Args:
+            rotation_angle (float): Rotation angle in degrees.
+        """
+        self.cpp_binding.mesh.rotate_around_axis(rotation_angle)
+
+    def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
         r"""
-        Return the value of the scattererd light coupling as computed as:
+        Calculate the light coupling between the detector and a scatterer.
 
         .. math::
             |\iint_{\Omega}  \Phi_{det} \,\, \Psi_{scat}^* \,  d \Omega|^2
@@ -64,18 +84,17 @@ class GenericDetector():
         |   :math:`\Phi_{det}` is the capturing field of the detector and
         |   :math:`\Psi_{scat}` is the scattered field.
 
-        :param      scatterer:  The scatterer
-        :type       scatterer:  single.scatterer.Sphere | single.scatterer.CoreShell | single.scatterer.Cylinder
+        Args:
+            scatterer (Sphere|CoreShell|Cylinder): The scatterer object.
 
-        :returns:   The coupling in watt
-        :rtype:     float
+        Returns:
+            float: The coupling in watts.
         """
         return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.Bind)
 
-    def get_footprint(self, scatterer) -> Footprint:
+    def get_footprint(self, scatterer: Sphere | CoreShell | Cylinder) -> Footprint:
         r"""
-        Return the footprint of the scattererd light coupling with the
-        detector as computed as:
+        Generate the footprint of the scattered light coupling with the detector.
 
         .. math::
             \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\
@@ -86,22 +105,26 @@ class GenericDetector():
         |   :math:`\Phi_{det}` is the capturing field of the detector and
         |   :math:`\Psi_{scat}` is the scattered field.
 
-        :param      detector:  The detector
-        :type       detector:  single.scatterer.Sphere | single.scatterer.CoreShell | single.scatterer.Cylinder
+        Args:
+            scatterer (Sphere|CoreShell|Cylinder): The scatterer object.
 
-        :returns:   The scatterer footprint.
-        :rtype:     Footprint
+        Returns:
+            Footprint: The scatterer footprint with this detector.
         """
         return Footprint(scatterer=scatterer, detector=self)
 
     def plot(self) -> SceneList3D:
-        r"""
-        Method that plot the real part of the scattered fields (:math:`E_{\theta}` and :math:`E_{\phi}`).
-
-        :returns:   3D plotting scene
-        :rtype:     SceneList3D
         """
-        coordinate = numpy.c_[self.cpp_binding.mesh.x, self.cpp_binding.mesh.y, self.cpp_binding.mesh.z].T
+        Plot the real and imaginary parts of the scattered fields.
+
+        Returns:
+            SceneList3D: The 3D plotting scene containing the field plots.
+        """
+        coordinate = numpy.column_stack((
+            self.cpp_binding.mesh.x,
+            self.cpp_binding.mesh.y,
+            self.cpp_binding.mesh.z
+        ))
 
         figure = SceneList3D()
 
