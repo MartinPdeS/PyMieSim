@@ -44,7 +44,7 @@ class GenericDetector():
         polarization_filter to float, and binding C++ backend.
         """
         self.max_angle = NA_to_angle(NA=self.NA)
-        self.polarization_filter = float(self.polarization_filter)
+        self.polarization_filter = numpy.float64(self.polarization_filter)
         self.set_cpp_binding()
 
     def set_cpp_binding(self):
