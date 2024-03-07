@@ -271,9 +271,9 @@ class LPMode(BaseDetector):
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
 
         scalarfield = load_lp_mode(
-            mode_number=self.mode_number,
+            mode_numbers=self.mode_number,
             sampling=self.sampling,
-            structure_type='unstructured'
+            structure_types='unstructured'
         ).astype(complex)
 
         self.scalarfield = units.Custom(
