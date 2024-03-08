@@ -38,9 +38,9 @@ def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell
         detector_set=None
     )
 
-    data = experiment.get(getattr(measure, measure_string))
+    data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
 
-    return data.y.values.squeeze()
+    return data.squeeze()
 
 
 def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
@@ -49,7 +49,7 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
         efficiencies = ps.MieQCoreShell(
             mCore=core_index,
             mShell=shell_index,
-            wavelength=source_set.wavelength.values[0],
+            wavelength=source_set.wavelength.base_values[0],
             dCore=core_diameter,
             dShell=core_diameter + shell_width
         )

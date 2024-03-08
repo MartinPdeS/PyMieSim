@@ -113,6 +113,7 @@ class BaseScatterer():
 
         for parameter_str in self.cpp_binding_str:
             values = getattr(self, parameter_str)
+            print(parameter_str, values)
 
             self.binding_kwargs[parameter_str] = values
 
@@ -208,8 +209,8 @@ class Sphere(BaseScatterer):
         self.diameter = units.Length(
             long_label='Scatterer diameter',
             short_label='diameter',
-            values=self.diameter,
-            string_format='.0f'
+            base_values=self.diameter,
+            string_format='.1f'
         )
         self.x_table.append(self.diameter)
 
@@ -217,7 +218,7 @@ class Sphere(BaseScatterer):
             self.material = units.Custom(
                 long_label='Scatterer material',
                 short_label='material',
-                values=self.material,
+                value_representation=self.material,
                 use_prefix=False
             )
             self.x_table.append(self.material)
@@ -226,14 +227,16 @@ class Sphere(BaseScatterer):
             self.index = units.Index(
                 long_label='Refractive index',
                 short_label='index',
-                values=self.index
+                base_values=self.index,
+                string_format='.1f'
             )
             self.x_table.append(self.index)
 
         self.n_medium = units.Index(
             long_label=r'Refractive index of medium',
             short_label=r'n$_{medium}$',
-            values=self.n_medium
+            base_values=self.n_medium,
+            string_format='.1f'
         )
         self.x_table.append(self.n_medium)
 
@@ -309,14 +312,16 @@ class CoreShell(BaseScatterer):
         self.core_diameter = units.Length(
             long_label='Core diameter',
             short_label='core_diameter',
-            values=self.core_diameter,
+            base_values=self.core_diameter,
+            string_format='.2f'
         )
         self.x_table.append(self.core_diameter)
 
         self.shell_width = units.Length(
             long_label='Shell width',
             short_label='shell_width',
-            values=self.shell_width,
+            base_values=self.shell_width,
+            string_format='.2f'
         )
         self.x_table.append(self.shell_width)
 
@@ -324,7 +329,7 @@ class CoreShell(BaseScatterer):
             self.core_material = units.Custom(
                 long_label='Core material',
                 short_label='core_material',
-                values=self.core_material,
+                value_representation=self.core_material,
                 use_prefix=False,
             )
             self.x_table.append(self.core_material)
@@ -333,7 +338,8 @@ class CoreShell(BaseScatterer):
             self.core_index = units.Index(
                 long_label='Core index',
                 short_label='core_index',
-                values=self.core_index
+                base_values=self.core_index,
+                string_format='.2f'
             )
             self.x_table.append(self.core_index)
 
@@ -341,7 +347,7 @@ class CoreShell(BaseScatterer):
             self.shell_material = units.Custom(
                 long_label='Shell material',
                 short_label='shell_material',
-                values=self.shell_material,
+                base_values=self.shell_material,
                 use_prefix=False
             )
             self.x_table.append(self.shell_material)
@@ -350,14 +356,16 @@ class CoreShell(BaseScatterer):
             self.shell_index = units.Index(
                 long_label='Shell index',
                 short_label='shell_index',
-                values=self.shell_index
+                base_values=self.shell_index,
+                string_format='.2f'
             )
             self.x_table.append(self.shell_index)
 
         self.n_medium = units.Index(
             long_label=r'Refractive index of medium',
             short_label=r'n$_{medium}$',
-            values=self.n_medium
+            base_values=self.n_medium,
+            string_format='.2f'
         )
         self.x_table.append(self.n_medium)
 
@@ -424,8 +432,8 @@ class Cylinder(BaseScatterer):
         self.diameter = units.Length(
             long_label='Scatterer diameter',
             short_label='diameter',
-            values=self.diameter,
-            string_format='.0f'
+            base_values=self.diameter,
+            string_format='.2f'
         )
         self.x_table.append(self.diameter)
 
@@ -433,7 +441,7 @@ class Cylinder(BaseScatterer):
             self.material = units.Custom(
                 long_label='Scatterer material',
                 short_label='material',
-                values=self.material,
+                base_values=self.material,
                 value_representation=self.material
             )
             self.x_table.append(self.material)
@@ -442,14 +450,16 @@ class Cylinder(BaseScatterer):
             self.index = units.Index(
                 long_label='Refractive index',
                 short_label='index',
-                values=self.index
+                base_values=self.index,
+                string_format='.2f'
             )
             self.x_table.append(self.index)
 
         self.n_medium = units.Index(
             long_label=r'Refractive index of medium',
             short_label=r'n$_{medium}$',
-            values=self.n_medium
+            base_values=self.n_medium,
+            string_format='.2f'
         )
         self.x_table.append(self.n_medium)
 

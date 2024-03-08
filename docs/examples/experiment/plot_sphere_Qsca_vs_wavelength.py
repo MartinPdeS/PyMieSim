@@ -42,10 +42,6 @@ experiment = Setup(
 # %%
 # Measuring the properties
 data = experiment.get(measure.Csca)
-print(data.shape)
-data = data.mean(scatterer_set.index)
-print(data.shape)
-# dsa
 
 # %%
 # Plotting the results

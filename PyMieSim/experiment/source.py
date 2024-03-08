@@ -33,8 +33,8 @@ class BaseSource:
         self.format_inputs()
         self.generate_polarization_attribute()
         self.generate_amplitude()
-        self.build_x_parameters()
         self.generate_binding()
+        self.build_x_parameters()
 
     def format_inputs(self):
         """Formats input wavelengths and polarization values into numpy arrays."""
@@ -58,19 +58,21 @@ class BaseSource:
         self.wavelength = units.Length(
             long_label='Wavelength',
             short_label=r'$\lambda$',
-            values=self.wavelength
+            base_values=self.wavelength,
+            string_format='.2f'
         )
 
-        self.linear_polarization = units.Radian(
+        self.linear_polarization = units.Degree(
             long_label='Polarization',
             short_label=r'Pol.',
-            values=self.polarization_value
+            base_values=self.polarization_value,
+            string_format='.2f'
         )
 
     def generate_binding(self):
         """Generates the C++ binding for the source set."""
         self.binding = CppSourceSet(
-            wavelength=self.wavelength.values,
+            wavelength=self.wavelength,
             jones_vector=self.jones_vector,
             amplitude=self.amplitude
         )

@@ -36,9 +36,9 @@ def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
         detector_set=None
     )
 
-    data = experiment.get(getattr(measure, measure_string))
+    data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
 
-    return data.y.values.squeeze()
+    return data.squeeze()
 
 
 def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
@@ -46,7 +46,7 @@ def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
     for diameter in diameters:
         efficiencies = ps.MieQ(
             m=index,
-            wavelength=source_set.wavelength.values[0],
+            wavelength=source_set.wavelength.base_values[0],
             diameter=diameter,
         )
 

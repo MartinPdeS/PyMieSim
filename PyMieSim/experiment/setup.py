@@ -91,7 +91,7 @@ class Setup(object):
         if export_as_numpy:
             return array
 
-        measure.base_values = array
+        measure.set_base_values(array)
         return Array(x_table=Table(self.x_table), y=measure)
 
 

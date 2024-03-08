@@ -69,9 +69,9 @@ class BaseDetector():
 
         self.get_rotation_angle_from_mode_number()
 
-        self.build_x_parameters()
-
         self.initialize_binding()
+
+        self.build_x_parameters()
 
     def get_rotation_angle_from_mode_number(self) -> NoReturn:
         """
@@ -83,7 +83,7 @@ class BaseDetector():
             NoReturn
         """
         if self.name.lower() == 'photodiode':
-            self.rotation_angle = numpy.zeros(self.scalarfield.values.size)
+            self.rotation_angle = numpy.zeros(self.scalarfield.base_values.size)
             return
 
         rotation_angle_list = []
@@ -137,7 +137,7 @@ class BaseDetector():
         self.NA = units.Index(
             long_label='Numerical aperture',
             short_label='NA',
-            values=numpy.array(self.NA),
+            base_values=numpy.array(self.NA),
             use_prefix=False,
             string_format=""
         )
@@ -145,22 +145,25 @@ class BaseDetector():
         self.gamma_offset = units.Degree(
             long_label='Phi angle',
             short_label=r'$\phi_{offset}$',
-            values=numpy.array(self.gamma_offset),
-            use_prefix=False
+            base_values=numpy.array(self.gamma_offset),
+            use_prefix=False,
+            string_format='.1f'
         )
 
         self.phi_offset = units.Degree(
             long_label='Phi angle',
             short_label=r'$\phi_{offset}$',
-            values=numpy.array(self.phi_offset),
-            use_prefix=False
+            base_values=numpy.array(self.phi_offset),
+            use_prefix=False,
+            string_format='.1f'
         )
 
         self.polarization_filter = units.Degree(
             long_label=r'Polarization filter',
             short_label=r'f$_{pol}$',
-            values=numpy.array(self.polarization_filter),
-            use_prefix=False
+            base_values=numpy.array(self.polarization_filter),
+            use_prefix=False,
+            string_format='.1f'
         )
 
     def append_to_table(self, table: list) -> list:
@@ -186,15 +189,15 @@ class BaseDetector():
         """
         point_coupling = True if self.coupling_mode == 'point' else False
 
-        phi_offset_rad = numpy.deg2rad(self.phi_offset.values)
+        phi_offset_rad = numpy.deg2rad(self.phi_offset)
 
-        gamma_offset_rad = numpy.deg2rad(self.gamma_offset.values)
+        gamma_offset_rad = numpy.deg2rad(self.gamma_offset)
 
-        polarization_filter_rad = numpy.deg2rad(self.polarization_filter.values)
+        polarization_filter_rad = numpy.deg2rad(self.polarization_filter)
 
         self.binding = CppDetectorSet(
-            scalarfield=self.scalarfield.values.astype(complex),
-            NA=self.NA.values,
+            scalarfield=self.scalarfield.base_values.astype(complex),
+            NA=self.NA,
             phi_offset=phi_offset_rad,
             gamma_offset=gamma_offset_rad,
             polarization_filter=polarization_filter_rad,
@@ -243,7 +246,7 @@ class Photodiode(BaseDetector):
         self.scalarfield = units.Custom(
             long_label='Field',
             short_label=r'field',
-            values=scalarfield,
+            base_values=scalarfield,
             use_long_label_for_repr=True,
             value_representation=['Photodiode']
         )
@@ -279,6 +282,6 @@ class LPMode(BaseDetector):
         self.scalarfield = units.Custom(
             long_label='Field',
             short_label='field',
-            values=scalarfield,
+            base_values=scalarfield,
             value_representation=self.mode_number
         )
