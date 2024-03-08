@@ -43,7 +43,7 @@ for core_diameter in core_diameters:
     efficiencies = ps.MieQCoreShell(
         mCore=core_index,
         mShell=shell_index,
-        wavelength=source_set.wavelength.values,
+        wavelength=source_set.wavelength.base_values,
         dCore=core_diameter,
         dShell=core_diameter + shell_width
     )
@@ -58,9 +58,9 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.get(measure.Qsca)
+data = experiment.get(measure.Qsca, export_as_numpy=True)
 
-PyMieSim_data = data.y.values.squeeze()
+PyMieSim_data = data.squeeze()
 
 plt.figure(figsize=(8, 4))
 plt.plot(core_diameters, PyMieSim_data, 'C1-', linewidth=3, label='PyMieSim')

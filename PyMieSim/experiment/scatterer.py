@@ -113,7 +113,6 @@ class BaseScatterer():
 
         for parameter_str in self.cpp_binding_str:
             values = getattr(self, parameter_str)
-            print(parameter_str, values)
 
             self.binding_kwargs[parameter_str] = values
 

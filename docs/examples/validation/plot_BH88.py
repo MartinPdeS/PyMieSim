@@ -43,8 +43,8 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.get(measure.Csca)
-data = data.y.values.squeeze() / volume * 1e-4 / 100
+data = experiment.get(measure.Csca, export_as_numpy=True)
+data = data.squeeze() / volume * 1e-4 / 100
 
 plt.figure(figsize=(8, 4))
 plt.plot(diameter, data[0], 'C0-', linewidth=3, label='PyMieSim')

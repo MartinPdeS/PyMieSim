@@ -43,8 +43,8 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.get(measure.Qsca)
-data = data.y.values.squeeze()
+data = experiment.get(measure.Qsca, export_as_numpy=True)
+data = data.squeeze()
 
 plt.figure(figsize=(8, 4))
 plt.plot(

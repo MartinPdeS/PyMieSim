@@ -44,7 +44,7 @@ for core_diameter in core_diameters:
     efficiencies = ps.MieQCoreShell(
         mCore=core_index,
         mShell=shell_index,
-        wavelength=source_set.wavelength.values,
+        wavelength=source_set.wavelength.base_values,
         dCore=core_diameter,
         dShell=core_diameter + shell_width
     )

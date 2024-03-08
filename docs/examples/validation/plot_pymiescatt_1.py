@@ -39,7 +39,7 @@ PyMieScatt_data = []
 for diameter in diameters:
     efficiencies = ps.MieQ(
         m=index,
-        wavelength=source_set.wavelength.values,
+        wavelength=source_set.wavelength.base_values,
         diameter=diameter,
     )
 
@@ -53,8 +53,8 @@ experiment = Setup(
     detector_set=None
 )
 
-data = experiment.get(measure.Qsca)
-PyMieSim_data = data.y.values.squeeze()
+data = experiment.get(measure.Qsca, export_as_numpy=True)
+PyMieSim_data = data.squeeze()
 
 plt.figure(figsize=(8, 4))
 plt.plot(

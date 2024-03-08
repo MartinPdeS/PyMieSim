@@ -51,7 +51,7 @@ experiment = Setup(
     detector_set=detector_set
 )
 
-data = experiment.get(measure.coupling)
+data = experiment.get(measure.coupling, export_as_numpy=True)
 
 source = SingleGaussian(
     wavelength=source_wavelength,
@@ -78,7 +78,7 @@ data0_S1 /= data0_S1.max()
 data0_S2 = numpy.abs(s2)**2
 data0_S2 /= data0_S2.max()
 
-data1 = data.y.values.squeeze()
+data1 = data.squeeze()
 data1 /= data1.max()
 
 ax0.plot(numpy.deg2rad(phi), data0_S1, linewidth=3, zorder=1, label='Computed s1')
