@@ -27,6 +27,27 @@ Those class define the type of scatterers, light sources and detectors you want 
 
 ----
 
+Getting started
+****************
+
+To use PyMieSim as fast as possible, you first need to install it:
+
+.. code-block:: python
+
+   >>> pip install PyMieSim
+
+Once this is done you can use the graphic interface as follows:
+
+.. code-block:: python
+
+   >>> python -m PyMieSim
+
+Clicking the "Calculate" button should render the following:
+
+|example_gui|
+
+----
+
 Documentation
 **************
 All the latest available documentation is available `here <https://pymiesim.readthedocs.io/en/latest/>`_ or you can click the following badge:
@@ -178,3 +199,10 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 
 .. |unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/a3b36ca9f6bebaab5180686bef481ed0d2ebfb71/PyMieSimcoverage_badge.json
 
+.. |code_structure| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
+  :width: 800
+  :alt: Structure of the library
+
+.. |example_gui| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png
+  :width: 800
+  :alt: Structure of the library
