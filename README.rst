@@ -58,7 +58,7 @@ All the latest available documentation is available `here <https://pymiesim.read
 
 Google Colab
 **************
-It's 2023, you don't need to run all your code on you computer anymore. Google Colab is a platform which allows to write/use python scripts remotely.
+It's 2024, you don't need to run all your code on you computer anymore. Google Colab is a platform which allows to write/use python scripts remotely.
 You can open the PyMieSim.ipynb in the file to access it or click on the following "Open in Colab" badge:
 
 |colab|
@@ -171,7 +171,7 @@ I spent a full year to develop this tool for you to use so if it helped you in y
 
 Contact Information
 ************************
-As of 2023, the project is still under development. If you want to collaborate, it would be a pleasure! I encourage you to contact me.
+As of 2024, the project is still under development. If you want to collaborate, it would be a pleasure! I encourage you to contact me.
 
 PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
 
