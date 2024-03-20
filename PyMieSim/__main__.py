@@ -5,7 +5,7 @@ from tkinter import ttk, filedialog, messagebox
 import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 # Assuming PyMieSim and its dependencies are installed
-from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.scatterer import Cylinder, Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment import Setup
@@ -20,6 +20,18 @@ class PyMieSimGUI:
     Attributes:
         master (tk.Tk): The main tkinter window.
     """
+
+    measure_map = {
+        'Qsca': measure.Qsca,
+        'Qext': measure.Qext,
+        'Qabs': measure.Qabs,
+        'Qratio': measure.Qratio,
+        'Qforw': measure.Qforw,
+        'Qback': measure.Qback,
+        'Qpr': measure.Qpr,
+        'g': measure.g,
+        'coupling': measure.coupling
+    }
 
     def __init__(self, master: tk.Tk):
         """
@@ -57,7 +69,7 @@ class PyMieSimGUI:
 
         # Style for larger buttons
         style.configure(
-            "Large.TButton", 
+            "Large.TButton",
             font=('Helvetica', 18),    # Font size for buttons
             padding=[20, 15]           # Increased padding for top and bottom to make the button taller
         )
@@ -67,7 +79,7 @@ class PyMieSimGUI:
         Sets up the Tkinter variables for source, scatterer, and detector configurations.
         """
         self.source_vars = {
-            'Wavelength (nm)': tk.StringVar(value='400'),
+            'Wavelength (nm)': tk.StringVar(value='400:950:200'),
             'Polarization Value (radians)': tk.StringVar(value='0'),
             'Optical Power (mW)': tk.StringVar(value='1'),
             'Numerical Aperture (NA)': tk.StringVar(value='0.2'),
@@ -87,11 +99,12 @@ class PyMieSimGUI:
             'Coherent': tk.BooleanVar(value=True),  # True or False
         }
 
-        self.axis_options = ["Wavelength", "Diameter", "Index", "N_medium", "Gamma", "Phi"]
+        self.x_axis_options = ["Wavelength", "Diameter", "Index", "N_medium", "Gamma", "Phi"]
+        self.y_axis_options = list(self.measure_map.keys())
 
         self.axis_config_vars = {
-            'x axis': tk.StringVar(value=self.axis_options[0]),
-            'y axis': tk.StringVar(value=self.axis_options[1]),
+            'x axis': tk.StringVar(value=self.x_axis_options[0]),
+            'y axis': tk.StringVar(value=self.y_axis_options[0]),
         }
 
     def setup_notebook(self) -> NoReturn:
@@ -146,7 +159,7 @@ class PyMieSimGUI:
         ttk.Combobox(
             self.axis_config_tab,
             textvariable=self.axis_config_vars['x axis'],
-            values=self.axis_options,
+            values=self.x_axis_options,
             state="readonly"
         ).grid(column=1, row=0, padx=5, pady=5)
 
@@ -158,7 +171,7 @@ class PyMieSimGUI:
         ttk.Combobox(
             self.axis_config_tab,
             textvariable=self.axis_config_vars['y axis'],
-            values=self.axis_options,
+            values=self.y_axis_options,
             state="readonly"
         ).grid(column=1, row=1, padx=5, pady=5)
 
@@ -261,7 +274,7 @@ class PyMieSimGUI:
         index = self.parse_input(input_str=index_input, factor=1)
         n_medium = self.parse_input(input_str=n_medium_input, factor=1)
 
-        self.scatterer_set = Cylinder(
+        self.scatterer_set = Sphere(
             diameter=diameters,
             index=index,
             n_medium=n_medium,
@@ -312,6 +325,12 @@ class PyMieSimGUI:
             detector_set=self.detector_set
         )
 
+        y_axis = self.axis_config_vars['y axis'].get()
+        y_axis = self.measure_map[y_axis]
+
+        # Assuming measure.Qsca can be plotted directly
+        self.data = self.experiment.get(y_axis)
+
     def save_data_as_csv(self) -> NoReturn:
         """
         Triggered by the "Save as CSV" button. Opens a file dialog to save the computed data as a CSV file.
@@ -329,9 +348,6 @@ class PyMieSimGUI:
         try:
             # Parse inputs from the GUI
             self.get_data_from_PyMieSim()
-
-            # Assuming measure.Qsca can be plotted directly
-            self.data = self.experiment.get(measure.coupling)
 
             x_axis = self.axis_config_vars['x axis'].get()
             x_axis = self.axis_mapping[x_axis]
