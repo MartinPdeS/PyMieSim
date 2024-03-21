@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
+from PyMieSim import measure
 
 
 @dataclass
@@ -176,6 +177,8 @@ class Sphere(BaseScatterer):
 
     name: str = field(default="sphere", init=False)
 
+    available_measure_list = measure.__sphere__
+
     def __post_init__(self):
         self.cpp_binding_str: list = [
             'diameter',
@@ -272,6 +275,8 @@ class CoreShell(BaseScatterer):
     shell_material: Iterable | None = None
 
     name: str = field(default="coreshell", init=False)
+
+    available_measure_list = measure.__coreshell__
 
     def __post_init__(self):
         self.cpp_binding_str: list = [
@@ -397,7 +402,8 @@ class Cylinder(BaseScatterer):
     material: Iterable | None = None
 
     name: str = field(default="cylinder", init=False)
-    """ Name of the set """
+
+    available_measure_list = measure.__cylinder__
 
     def __post_init__(self):
         self.cpp_binding_str: list = [

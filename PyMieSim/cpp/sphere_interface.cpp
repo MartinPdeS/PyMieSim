@@ -41,7 +41,7 @@ PYBIND11_MODULE(SphereInterface, module)
             "get_full_fields",
             &SPHERE::Scatterer::get_full_structured_fields_py,
             pybind11::arg("sampling"),
-            pybind11::arg("r") 
+            pybind11::arg("r")
         )
 
 
@@ -54,6 +54,7 @@ PYBIND11_MODULE(SphereInterface, module)
       .def_property_readonly("Qext",  &SPHERE::Scatterer::get_Qext)
       .def_property_readonly("Qabs",  &SPHERE::Scatterer::get_Qabs)
       .def_property_readonly("Qback", &SPHERE::Scatterer::get_Qback)
+      // .def_property_readonly("Qforward", &SPHERE::Scatterer::get_Qback)
       .def_property_readonly("Qpr",   &SPHERE::Scatterer::get_Qpr)
 
 

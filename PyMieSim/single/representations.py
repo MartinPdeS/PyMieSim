@@ -248,7 +248,7 @@ class SPF(BaseRepresentation):
         """
         self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
 
-    def plot(self) -> SceneList3D:
+    def plot(self, log_scale: bool = False) -> SceneList3D:
         """
         Visualizes the Scattering Phase Function (SPF) on a 3D plot.
 
@@ -259,6 +259,9 @@ class SPF(BaseRepresentation):
         - SceneList3D: An object containing the 3D visualization of the SPF.
         """
         scalar_mesh = self.SPF / self.SPF.max() * 2
+
+        if log_scale:
+            scalar_mesh = numpy.log(scalar_mesh)
 
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
 

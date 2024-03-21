@@ -49,4 +49,52 @@ b23 = units.Custom(short_label='b23', long_label='Magnetic octopole coeffcient')
 g = units.Custom(short_label='g', long_label='Anisotropy coefficient')
 coupling = units.Power(short_label='coupling', long_label='Coupling')
 
+
+__sphere__ = __coreshell__ = {
+    'Qsca': Qsca,
+    'Qext': Qext,
+    'Qabs': Qabs,
+    'Qratio': Qratio,
+    'Qforw': Qforw,
+    'Qback': Qback,
+    'Qpr': Qpr,
+    'Csca': Csca,
+    'Cext': Cext,
+    'Cabs': Cabs,
+    'Cratio': Cratio,
+    'Cforw': Cforw,
+    'Cback': Cback,
+    'Cpr': Cpr,
+    'a1': a1,
+    'a2': a2,
+    'a3': a3,
+    'b1': b1,
+    'b2': b2,
+    'b3': b3,
+    'g': g,
+    'coupling': coupling,
+}
+
+__cylinder__ = {
+    'Qsca': Qsca,
+    'Qext': Qext,
+    'Qabs': Qabs,
+    'Csca': Csca,
+    'Cext': Cext,
+    'Cabs': Cabs,
+    'a11': a11,
+    'a21': a21,
+    'a12': a12,
+    'a22': a22,
+    'a13': a13,
+    'a23': a23,
+    'b11': b11,
+    'b21': b21,
+    'b12': b12,
+    'b22': b22,
+    'b13': b13,
+    'b23': b23,
+    'coupling': coupling,
+}
+
 # -

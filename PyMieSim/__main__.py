@@ -3,13 +3,19 @@ from typing import NoReturn
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import numpy as np
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
 # Assuming PyMieSim and its dependencies are installed
-from PyMieSim.experiment.scatterer import Cylinder, Sphere
+from PyMieSim.experiment.scatterer import Cylinder, Sphere, CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment import Setup
 from PyMieSim import measure
+
+
+class Tab:
+    def __init__(self):
+        pass
 
 
 class PyMieSimGUI:
@@ -21,17 +27,7 @@ class PyMieSimGUI:
         master (tk.Tk): The main tkinter window.
     """
 
-    measure_map = {
-        'Qsca': measure.Qsca,
-        'Qext': measure.Qext,
-        'Qabs': measure.Qabs,
-        'Qratio': measure.Qratio,
-        'Qforw': measure.Qforw,
-        'Qback': measure.Qback,
-        'Qpr': measure.Qpr,
-        'g': measure.g,
-        'coupling': measure.coupling
-    }
+    measure_map = Sphere.available_measure_list
 
     def __init__(self, master: tk.Tk):
         """
@@ -41,12 +37,19 @@ class PyMieSimGUI:
             master (tk.Tk): The root window of the application.
         """
         self.master = master
+        self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.title("PyMieSim Graphic Interface")
+
         self.customize_notebook_style()
         self.setup_variables()
         self.setup_plot_frame()
         self.setup_notebook()
         self.setup_controls()  # Setup controls outside of the tabs
+
+    def on_close(self):
+        """Handles the GUI close event."""
+        plt.close('all')  # Close all matplotlib figures
+        self.master.destroy()  # Close the Tkinter window
 
     def customize_notebook_style(self) -> NoReturn:
         """
@@ -61,9 +64,10 @@ class PyMieSimGUI:
             padding=[10, 20, 10, 20],  # Increase padding for larger tabs
             font=('Helvetica', 12)     # Larger font for tabs
         )
+
         style.map(
             "TNotebook.Tab",
-            background=[("selected", "#e0e0e0")],
+            background=[("selected", "#a0a0a0")],
             expand=[("selected", [1, 1, 1, 0])]
         )
 
@@ -86,6 +90,7 @@ class PyMieSimGUI:
         }
 
         self.scatterer_vars = {
+            'Type': tk.StringVar(value='Sphere'),
             'Diameter (nm)': tk.StringVar(value='100'),  # Accepts both single value and range
             'Index': tk.StringVar(value='1.4'),
             'Medium Refractive Index': tk.StringVar(value='1'),
@@ -129,6 +134,36 @@ class PyMieSimGUI:
         self.setup_detector_tab()
         self.setup_axis_config_tab()
 
+    def export_plot(self) -> NoReturn:
+        """
+        Opens a file dialog for the user to choose where to save the current plot,
+        then saves the plot to the specified location.
+        """
+        # Ensure there's a plot to save
+        if hasattr(self, 'figure'):
+            # Open file dialog to choose file name and type
+            filetypes = [
+                ('PNG files', '*.png'),
+                ('JPEG files', '*.jpg;*.jpeg'),
+                ('PDF files', '*.pdf'),
+                ('SVG files', '*.svg'),
+                ('All files', '*.*')
+            ]
+
+            filepath = filedialog.asksaveasfilename(
+                defaultextension=".png",
+                filetypes=filetypes,
+                title="Save plot as..."
+            )
+
+            # If a file was selected (i.e., dialog not cancelled)
+            if filepath:
+                # Save the figure using matplotlib's savefig
+                self.figure.savefig(filepath)
+                messagebox.showinfo("Export Successful", f"Plot successfully saved to {filepath}")
+        else:
+            messagebox.showwarning("Export Failed", "No plot available to export.")
+
     def setup_controls(self) -> NoReturn:
         """
         Sets up control buttons for calculating results and saving data.
@@ -148,6 +183,14 @@ class PyMieSimGUI:
             text="Save as CSV",
             style="Large.TButton",  # Apply the custom style for larger buttons
             command=self.save_data_as_csv
+        ).pack(side=tk.LEFT, padx=5, pady=5)
+
+        # Add Export Plot button
+        ttk.Button(
+            self.controls_frame,
+            text="Export Plot",
+            style="Large.TButton",
+            command=self.export_plot  # Method to be implemented
         ).pack(side=tk.LEFT, padx=5, pady=5)
 
     def setup_axis_config_tab(self):
@@ -190,7 +233,23 @@ class PyMieSimGUI:
         Sets up widgets for the Scatterer configuration tab.
         """
         row = 0
+        # Scatterer Type Dropdown
+        ttk.Label(self.scatterer_tab, text="Type").grid(column=0, row=row, sticky=tk.W)
+
+        scatterer_type_combobox = ttk.Combobox(
+            self.scatterer_tab,
+            textvariable=self.scatterer_vars['Type'],
+            values=['Sphere'],
+            state="readonly"
+        )
+
+        scatterer_type_combobox.grid(column=1, row=row, padx=5, pady=5)
+        row += 1
+
         for label, var in self.scatterer_vars.items():
+            if label == 'Type':  # Skip the already added Scatterer Type
+                continue
+
             ttk.Label(self.scatterer_tab, text=label).grid(column=0, row=row, sticky=tk.W)
             ttk.Entry(self.scatterer_tab, textvariable=var).grid(column=1, row=row)
             row += 1
@@ -355,15 +414,20 @@ class PyMieSimGUI:
             figure = self.data.plot(x=x_axis)
             figure.unit_size = (7, 4)
             figure._render_()
-            figure = figure._mpl_figure
+            self.figure = figure._mpl_figure
 
             # Embed the plot
             for widget in self.plot_frame.winfo_children():
                 widget.destroy()
 
-            canvas = FigureCanvasTkAgg(figure, master=self.plot_frame)
+            canvas = FigureCanvasTkAgg(self.figure, master=self.plot_frame)
             canvas.draw()
             canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+            # Add the navigation toolbar
+            self.toolbar = NavigationToolbar2Tk(canvas, self.plot_frame)
+            self.toolbar.update()
+            canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
 
         except ValueError as e:
             messagebox.showerror("Input Error", str(e))
@@ -371,6 +435,7 @@ class PyMieSimGUI:
 
 def main():
     root = tk.Tk()
+    root.geometry("800x800")
     PyMieSimGUI(root)
     root.mainloop()
 

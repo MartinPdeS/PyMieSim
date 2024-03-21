@@ -85,6 +85,9 @@ class Setup(object):
             Union[numpy.ndarray, Array]: The computed data in the specified format, either as raw numerical
                                               values in a numpy array or structured for visualization with Array.
         """
+        if measure.short_label not in self.scatterer_set.available_measure_list:
+            raise ValueError(f"Cannot compute {measure.short_label} for {self.scatterer_set.name}")
+
         measure_string = f'get_{self.scatterer_set.name}_{measure.short_label}'
         array = getattr(self.binding, measure_string)()
 
