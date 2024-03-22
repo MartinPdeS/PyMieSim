@@ -178,6 +178,7 @@ class Sphere(BaseScatterer):
     name: str = field(default="sphere", init=False)
 
     available_measure_list = measure.__sphere__
+    
 
     def __post_init__(self):
         self.cpp_binding_str: list = [

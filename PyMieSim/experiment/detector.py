@@ -143,7 +143,7 @@ class BaseDetector():
         )
 
         self.gamma_offset = units.Degree(
-            long_label='Phi angle',
+            long_label='Gamma angle',
             short_label=r'$\phi_{offset}$',
             base_values=numpy.array(self.gamma_offset),
             use_prefix=False,
