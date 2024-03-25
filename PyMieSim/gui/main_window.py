@@ -38,7 +38,7 @@ class PyMieSimGUI:
         self.setup_notebook()
         self.setup_controls()
 
-    def on_close(self):
+    def on_close(self) -> NoReturn:
         """Handles the GUI close event."""
         plt.close('all')  # Close all matplotlib figures
         self.master.destroy()  # Close the Tkinter window
@@ -177,6 +177,7 @@ class PyMieSimGUI:
             print("No data to save. Please calculate first.")
 
     def generate_figure(self, x_axis: object) -> NoReturn:
+        """Generates and displays the simulation results as a plot in the GUI."""
         figure = self.data.plot(x=x_axis)
         figure.unit_size = (9, 4)
         figure._render_()

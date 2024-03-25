@@ -24,7 +24,7 @@ class AxisTab(BaseTab):
         for element in self.non_permanent_widget:
             element.destroy()
 
-    def setup_tab(self) -> NoReturn:
+    def setup(self) -> NoReturn:
         """
         Sets up the GUI elements for the Axis Configuration tab, including labels and comboboxes
         for selecting the x and y axis variables. This method provides a user interface for
@@ -39,7 +39,7 @@ class AxisTab(BaseTab):
         }
 
         self.widget_collection = WidgetCollection(
-            Widget(default_value='wavelength', label='x-axis', component_label='x_axis', to_float=False),
+            Widget(default_value='phi', label='x-axis', component_label='x_axis', to_float=False),
             Widget(default_value='coupling', label='y-axis', component_label='y_axis', to_float=False),
         )
         self.non_permanent_widget = []
@@ -55,7 +55,7 @@ class AxisTab(BaseTab):
 
         combox = tkinter.ttk.Combobox(
             self.frame,
-            textvariable=self.widget_collection['x_axis'].tk_widget.get(),
+            textvariable=self.widget_collection['x_axis'].tk_widget,
             values=self.x_axis_options,
             state="readonly"
         )
@@ -74,7 +74,7 @@ class AxisTab(BaseTab):
 
         combox = tkinter.ttk.Combobox(
             self.frame,
-            textvariable=self.widget_collection['y_axis'].tk_widget.get(),
+            textvariable=self.widget_collection['y_axis'].tk_widget,
             values=self.y_axis_options,
             state="readonly"
         )

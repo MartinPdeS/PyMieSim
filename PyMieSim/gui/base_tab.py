@@ -33,7 +33,7 @@ class BaseTab:
         self.frame = ttk.Frame(notebook)
         notebook.add(self.frame, text=self.label)
         self.main_window = main_window
-        self.setup_tab()
+        self.setup()
 
     def setup_tab(self) -> NoReturn:
         """

@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-from PyMieSim.experiment.detector import Photodiode
+import tkinter
+from PyMieSim.experiment.detector import Photodiode, LPMode
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.utils import Widget, WidgetCollection
 
@@ -27,28 +28,100 @@ class DetectorTab(BaseTab):
             *args: Variable length argument list for BaseTab.
             **kwargs: Arbitrary keyword arguments for BaseTab.
         """
-        self._init_widgets()
+        self.type_button = tkinter.StringVar(value='Photodiode')
 
         super().__init__(*args, **kwargs)
 
-    def _init_widgets(self):
-        """Initializes widgets for detector configuration with default values and labels."""
-        self.widget_collection = WidgetCollection(
-            Widget(default_value='0.2, 0.4', label='Numerical aperture (NA)', component_label='NA'),
-            Widget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
-            Widget(default_value='0', label='Phi [degree]', component_label='phi_offset'),
-            Widget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter')
+        self._setup_combobox()
+
+    def _setup_combobox(self):
+        """
+        Sets up the combobox for selecting the scatterer type.
+        """
+        combobox = tkinter.ttk.Combobox(
+            self.frame,
+            textvariable=self.type_button,
+            values=['Photodiode', 'LPMode'],
+            state="readonly"
         )
 
-    def setup_tab(self) -> NoReturn:
+        combobox.pack(side=tkinter.TOP)
+        combobox.bind("<<ComboboxSelected>>", self.on_type_change)
+
+    def on_type_change(self, event=None) -> NoReturn:
+        """
+        Handles the scatterer type change event, updates the UI widgets and scatterer configuration accordingly.
+        """
+        self.widget_collection.clear_widgets()
+
+        self.setup()
+
+    def get_selected_type(self) -> str:
+        """
+        Retrieves the currently selected scatterer type.
+
+        Returns:
+            The selected scatterer type as a string.
+        """
+        return self.type_button.get()
+
+    def setup(self) -> NoReturn:
         """
         Configures the GUI elements for the Detector tab.
 
         Sets up labels, entry fields, and other UI components based on the detector
         configuration options, enabling user interaction for configuring the detector.
         """
+        match self.get_selected_type().lower():
+            case 'photodiode':
+                self._setup_photodiode_widgets()
+                self._setup_photodiode_component()
+            case 'lpmode':
+                self._setup_lpmode_widgets()
+                self._setup_lpmode_component()
+            case _:
+                raise ValueError('Detector type not valid')
+
+    def _setup_photodiode_widgets(self):
+        self.widget_collection = WidgetCollection(
+            Widget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
+            Widget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
+            Widget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset'),
+            Widget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter')
+        )
+
         self.widget_collection.setup_widgets(frame=self.frame)
-        self.setup_component()
+
+    def _setup_lpmode_widgets(self):
+        self.widget_collection = WidgetCollection(
+            Widget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter'),
+            Widget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
+            Widget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset'),
+            Widget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
+            Widget(default_value='LP01', label='Mode field', component_label='mode_number', to_float=False),
+        )
+
+        self.widget_collection.setup_widgets(frame=self.frame)
+
+    def _setup_photodiode_component(self):
+        self.component = Photodiode(**self.widget_collection.to_component_dict(), sampling=500)
+
+        self.mapping = {
+            'NA': self.component.NA,
+            'gamma': self.component.gamma_offset,
+            'phi': self.component.phi_offset,
+            'polarization_filter': self.component.polarization_filter
+        }
+
+    def _setup_lpmode_component(self):
+        self.component = LPMode(**self.widget_collection.to_component_dict(), sampling=500)
+
+        self.mapping = {
+            'NA': self.component.NA,
+            'gamma': self.component.gamma_offset,
+            'phi': self.component.phi_offset,
+            'polarization_filter': self.component.polarization_filter
+        }
 
     def setup_component(self) -> NoReturn:
         """
@@ -59,21 +132,13 @@ class DetectorTab(BaseTab):
         parameter explicitly.
         """
         self.update_user_input()
-        self.component = Photodiode(**self.widget_collection.to_component_dict(), sampling=300)
-        self._update_mapping()
 
-    def _update_mapping(self):
-        """
-        Updates the mapping attribute with current component values.
+        selected_type = self.get_selected_type()
 
-        This private method extracts relevant parameters from the configured Photodiode
-        detector component and updates the mapping attribute to reflect these values.
-        """
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
+        match selected_type.lower():
+            case 'photodiode':
+                self._setup_photodiode_component()
+            case 'lpmode':
+                self._setup_lpmode_component()
 
 # -

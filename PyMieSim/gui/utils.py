@@ -2,38 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-import numpy as np
+import numpy
 import tkinter
-
-
-def parse_input(input_str: str, factor: float = None) -> float | np.ndarray:
-    """
-    Parses input strings for numerical values, supporting both single values and ranges.
-
-    Parameters:
-        input_str (str): The input string to parse.
-        factor (float, optional): A factor to multiply with the parsed numbers, useful for unit conversion.
-
-    Returns:
-        float | np.ndarray: The parsed number(s) as a single float or an array of floats.
-    """
-    if ":" in input_str:
-        parts = input_str.split(':')
-        start, end, points = map(float, parts)
-        values = np.linspace(start, end, int(points))
-
-    elif "," in input_str:
-        parts = input_str.split(',')
-        values = [float(value) for value in parts]
-        values = np.asarray(values)
-
-    else:
-        values = np.asarray(float(input_str))
-
-    if factor is not None:
-        values *= factor
-
-    return values
 
 
 class Widget():
@@ -63,13 +33,35 @@ class Widget():
 
     def update(self):
         self.user_input = _user_input = self.tk_widget.get()
-        if self.to_float:
-            _user_input = parse_input(input_str=_user_input, factor=self.multiplicative_factor)
+        _user_input = self.process_input()
 
         self.value = _user_input
 
     def get_input(self):
         return self.tk_widget.get()
+
+    def process_input(self):
+        user_input = self.get_input()
+
+        if "," in user_input:
+            parts = user_input.split(',')
+            values = [value.strip() for value in parts]
+            values = numpy.asarray(values)
+
+        elif ":" in user_input:
+            start, end, points = user_input.split(':')
+            values = numpy.linspace(float(start), float(end), int(points))
+
+        else:
+            values = numpy.asarray(user_input)
+
+        if self.to_float:
+            values = values.astype(float)
+
+        if self.multiplicative_factor:
+            values *= self.multiplicative_factor
+
+        return values
 
 
 class WidgetCollection():
