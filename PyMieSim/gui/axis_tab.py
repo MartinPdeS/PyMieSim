@@ -5,6 +5,7 @@ from typing import NoReturn
 import tkinter
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
+from PyMieSim.gui.utils import Widget, WidgetCollection
 
 
 class AxisTab(BaseTab):
@@ -32,11 +33,15 @@ class AxisTab(BaseTab):
         self.x_axis_options = list(self.axis_mapping.keys())
         self.y_axis_options = list(self.measure_map.keys())
 
-        self.variables = {
+        self.widget_collection = {
             'x axis': dict(user_input=tkinter.StringVar(value="wavelength"), factor=None),
             'y axis': dict(user_input=tkinter.StringVar(value='coupling'), factor=None),
         }
 
+        self.widget_collection = WidgetCollection(
+            Widget(default_value='wavelength', label='x-axis', component_label='x_axis', to_float=False),
+            Widget(default_value='coupling', label='y-axis', component_label='y_axis', to_float=False),
+        )
         self.non_permanent_widget = []
 
         label = tkinter.Label(
@@ -50,7 +55,7 @@ class AxisTab(BaseTab):
 
         combox = tkinter.ttk.Combobox(
             self.frame,
-            textvariable=self.variables['x axis']['user_input'],
+            textvariable=self.widget_collection['x_axis'].tk_widget.get(),
             values=self.x_axis_options,
             state="readonly"
         )
@@ -69,7 +74,7 @@ class AxisTab(BaseTab):
 
         combox = tkinter.ttk.Combobox(
             self.frame,
-            textvariable=self.variables['y axis']['user_input'],
+            textvariable=self.widget_collection['y_axis'].tk_widget.get(),
             values=self.y_axis_options,
             state="readonly"
         )
@@ -79,7 +84,7 @@ class AxisTab(BaseTab):
 
     @property
     def x_axis(self) -> str:
-        x_axis = self.variables['x axis']['user_input'].get()
+        x_axis = self.widget_collection['x_axis'].tk_widget.get()
 
         return self.axis_mapping[x_axis]
 

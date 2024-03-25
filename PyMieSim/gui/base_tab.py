@@ -3,144 +3,75 @@
 
 from typing import NoReturn
 from tkinter import ttk
-import numpy as np
-import tkinter
-
-
-def parse_input(input_str: str, factor: float = None) -> float | np.ndarray:
-    """
-    Parses input strings for numerical values, supporting both single values and ranges.
-
-    Parameters:
-        input_str (str): The input string to parse.
-        factor (float, optional): A factor to multiply with the parsed numbers, useful for unit conversion.
-
-    Returns:
-        float | np.ndarray: The parsed number(s) as a single float or an array of floats.
-    """
-    if ":" in input_str:
-        parts = input_str.split(':')
-        start, end, points = map(float, parts)
-        values = np.linspace(start, end, int(points))
-
-    elif "," in input_str:
-        parts = input_str.split(',')
-        values = [float(value) for value in parts]
-        values = np.asarray(values)
-
-    else:
-        values = np.asarray(float(input_str))
-
-    if factor is not None:
-        values *= factor
-
-    return values
-
-
-class Widget():
-    def __init__(
-            self,
-            default_value,
-            label: str,
-            component_label: str,
-            multiplicative_factor=None,
-            to_float: bool = True,
-            is_permanent: bool = False,
-            is_mappable: bool = True):
-
-        self.default_value = default_value
-        self.tk_widget = tkinter.StringVar(value=str(default_value))
-        self.label = label
-        self.component_label = component_label
-        self.to_float = to_float
-        self.value = None
-        self.multiplicative_factor = multiplicative_factor
-        self.is_permanent = is_permanent
-        self.is_mappable = is_mappable
-        self.update()
-
-    def __repr__(self):
-        return self.label
-
-    def update(self):
-        self.user_input = _user_input = self.tk_widget.get()
-        if self.to_float:
-            _user_input = parse_input(input_str=_user_input, factor=self.multiplicative_factor)
-
-        self.value = _user_input
-
-    def get_input(self):
-        return self.tk_widget.get()
-
-
-class WidgetCollection():
-    def __init__(self, *widgets):
-        self.widgets = widgets
-
-    def to_component_dict(self) -> dict:
-        return {widget.component_label: widget.value for widget in self.widgets}
-
-    def clear_widgets(self) -> NoReturn:
-        for widget in self.widgets:
-            if not widget.is_permanent:
-                widget._label.destroy()
-                widget._button.destroy()
-
-    def update(self) -> NoReturn:
-        for widget in self.widgets:
-            widget.update()
-
-    def setup_widgets(self, frame) -> NoReturn:
-        for widget in self.widgets:
-            widget._label = tkinter.Label(frame, text=widget.label)
-            widget._label.pack(side=tkinter.BOTTOM)
-
-            widget._button = tkinter.Entry(frame, textvariable=widget.tk_widget)
-            widget._button.pack(side=tkinter.BOTTOM)
-
-    def __repr__(self) -> str:
-        return " ".join(str(widget) for widget in self.widgets)
 
 
 class BaseTab:
     """
-    A base class for tabs in the application's notebook widget, providing a structured way
-    to create and populate tabs with GUI elements.
+    Base class for creating tabs within a notebook in a GUI application. This class provides the foundational
+    structure and common functionalities needed for different tabs, including initializing the tab's frame
+    and setting up basic attributes.
+
+    Each tab is intended to be a distinct section of the GUI, capable of hosting its own set of widgets and controls.
+    Subclasses of BaseTab should implement the setup_tab method to define specific layouts and behaviors.
 
     Attributes:
-        label (str): The label of the tab to be displayed.
-        frame (ttk.Frame): The frame that holds the tab's content.
+        label (str): The label of the tab, displayed in the notebook.
+        frame (ttk.Frame): The frame serving as the container for the tab's contents.
+        main_window: Reference to the main window of the application, if applicable.
     """
 
-    def __init__(self, notebook, label: str, main_window=None):
+    def __init__(self, notebook: ttk.Notebook, label: str, main_window=None):
         """
-        Initializes the tab and binds it to a notebook widget.
+        Initializes a new tab within the provided notebook widget.
 
         Parameters:
-            notebook (ttk.Notebook): The notebook widget to which this tab will be added.
-            label (str): The label for the tab.
+            notebook (ttk.Notebook): The parent notebook widget to which this tab will be added.
+            label (str): The text label for the tab.
+            main_window: An optional reference to the main application window, allowing access to shared resources or controls.
         """
         self.label = label
         self.frame = ttk.Frame(notebook)
+        notebook.add(self.frame, text=self.label)
         self.main_window = main_window
-        notebook.add(self.frame, text=label)
         self.setup_tab()
 
     def setup_tab(self) -> NoReturn:
         """
-        Sets up the tab's layout and widgets. To be implemented by subclasses.
+        Sets up the layout and widgets specific to this tab. This method is intended to be overridden by subclasses
+        to create a customized interface for each tab.
+
+        Raises:
+            NotImplementedError: If the subclass does not implement this method.
         """
-        raise NotImplementedError
+        raise NotImplementedError("Subclasses must implement this method to set up the tab's layout and widgets.")
 
     def get_inputs(self) -> list:
-        user_inputs = []
-        for key, val in self.variables.items():
-            user_input = val['user_input']
-            user_inputs.append(user_input.get())
+        """
+        Retrieves user inputs from all widgets in the tab.
 
-        return user_inputs
+        This method assumes that the tab contains a collection of widgets from which user inputs can be extracted.
+        Subclasses should provide a mechanism to store and manage these widgets, allowing for easy retrieval of their values.
 
-    def update_user_input(self) -> list:
-        self.variables.update()
+        Returns:
+            list: A list of values representing the user inputs from the tab's widgets.
+        """
+        if hasattr(self, 'widget_collection'):
+            return [widget.tk_widget.get() for widget in self.widget_collection.widgets]
+        else:
+            raise AttributeError("The tab does not have a widget_collection attribute.")
+
+    def update_user_input(self) -> NoReturn:
+        """
+        Updates or refreshes the user inputs from the tab's widgets. This method is intended to synchronize
+        the current widget states with their corresponding attributes or variables.
+
+        This implementation is a placeholder and should be overridden by subclasses to provide specific
+        functionality for updating user inputs.
+        """
+        if hasattr(self, 'widget_collection'):
+            for widget in self.widget_collection.widgets:
+                widget.update()
+        else:
+            raise AttributeError("The tab does not have a widget_collection attribute.")
 
 # -
