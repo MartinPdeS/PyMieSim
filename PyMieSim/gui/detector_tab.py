@@ -1,8 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from typing import NoReturn
-import tkinter
 from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.gui.base_tab import BaseTab
+from PyMieSim.gui.base_tab import BaseTab, Widget, WidgetCollection
 
 
 class DetectorTab(BaseTab):
@@ -13,13 +14,37 @@ class DetectorTab(BaseTab):
     """
 
     def __init__(self, *args, **kwargs):
-        self.variables = {
-            'NA': dict(user_input=tkinter.StringVar(value='0.2, 0.4'), factor=None),  # Can be ranged
-            'Gamma': dict(user_input=tkinter.StringVar(value='0'), factor=None),  # Can be ranged
-            'Phi': dict(user_input=tkinter.StringVar(value='0'), factor=None),  # Can be ranged
-            'Filter': dict(user_input=tkinter.StringVar(value='0'), factor=None),  # Can be ranged
-            'Coherent': dict(user_input=tkinter.BooleanVar(value=True), factor=None, to_float=False),  # True or False
-        }
+
+        na_widget = Widget(
+            default_value='0.2, 0.4',
+            label='Numerical aperture (NA)',
+            component_label='NA',
+        )
+
+        gamma_widget = Widget(
+            default_value='0',
+            label='Gamma [degree]',
+            component_label='gamma_offset',
+        )
+
+        phi_widget = Widget(
+            default_value='0',
+            label='Phi [degree]',
+            component_label='phi_offset',
+        )
+
+        filter_widget = Widget(
+            default_value='0.',
+            label='Polarization filter [degree]',
+            component_label='polarization_filter',
+        )
+
+        self.variables = WidgetCollection(
+            na_widget,
+            gamma_widget,
+            phi_widget,
+            filter_widget,
+        )
 
         super().__init__(*args, **kwargs)
 
@@ -29,29 +54,14 @@ class DetectorTab(BaseTab):
         and checkboxes for each detector parameter. This method enables the configuration
         of detector characteristics such as numerical aperture and coherence.
         """
-        for label, var in self.variables.items():
-            label = tkinter.Label(self.frame, text=label)
-            label.pack(side=tkinter.BOTTOM)
-
-            if isinstance(var['user_input'], tkinter.BooleanVar):  # Special case for Boolean input
-                check_button = tkinter.Checkbutton(self.frame, variable=var)
-                check_button.pack(side=tkinter.BOTTOM)
-            else:
-                entry = tkinter.Entry(self.frame, textvariable=var['user_input'])
-                entry.pack(side=tkinter.BOTTOM)
+        self.variables.setup_widgets(frame=self.frame)
 
         self.setup_component()
 
     def setup_component(self) -> NoReturn:
         self.update_user_input()
 
-        self.component = Photodiode(
-            NA=self.variables['NA']['values'],
-            gamma_offset=self.variables['Gamma']['values'],
-            phi_offset=self.variables['Phi']['values'],
-            polarization_filter=self.variables['Filter']['values'],
-            sampling=300
-        )
+        self.component = Photodiode(**self.variables.to_component_dict(), sampling=300)
 
         self.mapping = dict(
             NA=self.component.NA,

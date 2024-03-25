@@ -1,9 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from typing import NoReturn
-import tkinter as tk
-from tkinter import ttk
 from PyMieSim.experiment.source import Gaussian
-from PyMieSim.gui.base_tab import BaseTab
+from PyMieSim.gui.base_tab import BaseTab, Widget, WidgetCollection
 
 
 class SourceTab(BaseTab):
@@ -18,12 +18,34 @@ class SourceTab(BaseTab):
         """
         Initializes the Source tab with predefined variables for the simulation's source configuration.
         """
-        self.variables = {
-            'Wavelength [nm]': dict(user_input=tk.StringVar(value='400:950:200'), factor=1e-9),
-            'Polarization Value (radians)': dict(user_input=tk.StringVar(value='0'), factor=None),
-            'Optical Power (mW)': dict(user_input=tk.StringVar(value='1'), factor=1e-3),
-            'Numerical Aperture (NA)': dict(user_input=tk.StringVar(value='0.2'), factor=None),
-        }
+
+        wavelength_widget = Widget(
+            default_value='400:950:200',
+            label='Wavelength [nm]',
+            component_label='wavelength',
+            multiplicative_factor=1e-9
+        )
+
+        polarization_widget = Widget(
+            default_value='0',
+            label='Polarization angle [degree]',
+            component_label='polarization_value',
+        )
+
+        power_widget = Widget(
+            default_value='1.0',
+            label='Optical Power [mW]',
+            component_label='optical_power',
+            multiplicative_factor=1e-3
+        )
+
+        na_widget = Widget(
+            default_value='0.2',
+            label='Numerical Aperture (NA)',
+            component_label='NA',
+        )
+
+        self.variables = WidgetCollection(wavelength_widget, polarization_widget, power_widget, na_widget)
 
         super().__init__(*args, **kwargs)
 
@@ -33,25 +55,14 @@ class SourceTab(BaseTab):
         """
         self.update_user_input()
 
-        for label, var in self.variables.items():
-            label = ttk.Label(self.frame, text=label)
-            label.pack(side=tk.BOTTOM)
-
-            entry = ttk.Entry(self.frame, textvariable=var['user_input'])
-            entry.pack(side=tk.BOTTOM)
+        self.variables.setup_widgets(frame=self.frame)
 
         self.setup_component()
 
     def setup_component(self) -> NoReturn:
         self.update_user_input()
 
-        self.component = Gaussian(
-            wavelength=self.variables['Wavelength [nm]']['values'],
-            polarization_value=self.variables['Polarization Value (radians)']['values'],
-            polarization_type='linear',
-            optical_power=self.variables['Optical Power (mW)']['values'],
-            NA=self.variables['Numerical Aperture (NA)']['values'],
-        )
+        self.component = Gaussian(**self.variables.to_component_dict())
 
         self.mapping = dict(
             wavelength=self.component.wavelength,
