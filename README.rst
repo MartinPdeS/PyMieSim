@@ -30,13 +30,13 @@ Those class define the type of scatterers, light sources and detectors you want 
 Getting started
 ****************
 
-To use PyMieSim as fast as possible, you first need to install it:
+PyMieSim was developed to be a used in Python script as shown in the documentation section. Although, since version 1.7.0 it is possible to use the new graphical user interface. To use is, you first need to install it:
 
 .. code-block:: python
 
    >>> pip install PyMieSim
 
-Once this is done you can use the graphic interface as follows:
+Once this is done you can run the graphic interface as follows:
 
 .. code-block:: python
 

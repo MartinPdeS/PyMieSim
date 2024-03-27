@@ -42,7 +42,7 @@ detector_set = LPMode(
     NA=[0.05, 0.01],
     phi_offset=-180,
     gamma_offset=0,
-    polarization_filter=None,
+    polarization_filter=[0, None],
     sampling=300
 )
 

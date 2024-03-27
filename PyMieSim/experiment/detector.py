@@ -47,13 +47,6 @@ class BaseDetector():
     polarization_filter: Iterable
     sampling: int
 
-    parameter_str_list = [
-        'NA',
-        'phi_offset',
-        'gamma_offset',
-        'polarization_filter',
-    ]
-
     def __post_init__(self) -> NoReturn:
         """
         Initializes and prepares the detector instance by formatting inputs, computing field arrays,

@@ -87,7 +87,7 @@ class DetectorTab(BaseTab):
             Widget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
             Widget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
             Widget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset'),
-            Widget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter')
+            Widget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter')
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)
