@@ -60,7 +60,7 @@ class SourceTab(BaseTab):
 
         self.mapping = {
             'wavelength': self.component.wavelength,
-            'polarization': self.component.polarization_value
+            'polarization': self.component.linear_polarization
         }
 
 # -
