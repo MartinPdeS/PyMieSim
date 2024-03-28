@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Examples &#8212; PyMieSim 1.7.3
+ documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.10.14/x64/lib/python3.10/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/default.css?v=265c6c44" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="../_static/documentation_options.js?v=8b102c50"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/index';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Scatterers" href="scatterer/index.html" />
+    <link rel="prev" title="Source code structures" href="../code.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+   
+
+<a class="navbar-brand logo" href="https://pymiesim.readthedocs.io/en/latest/">
+  
+  
+  
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../theory.html">
+                        Theoretical background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../code.html">
+                        Source code structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../references.html">
+                        References
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="versionswitcherbutton" type="button" role="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="versionswitcherlist" aria-label="Version switcher list">
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="versionswitcherlist" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="versionswitcherbutton">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/pymiesim/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../theory.html">
+                        Theoretical background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../code.html">
+                        Source code structures
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../references.html">
+                        References
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="versionswitcherbutton" type="button" role="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="versionswitcherlist" aria-label="Version switcher list">
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="versionswitcherlist" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="versionswitcherbutton">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/pymiesim/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item"><nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="scatterer/index.html">Scatterers</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="scatterer/plot_source.html">Source Plottings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scatterer/plot_s1s2.html">S1 S2 Function Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scatterer/plot_stokes.html">Stokes Parameters Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scatterer/plot_spf.html">SPF Computation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scatterer/plot_farfield.html">Far-Fields Computation and Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scatterer/plot_footprint.html">Scatterer Footprint Calculation and Visualization</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="detector/index.html">Detectors</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="detector/plot_integrating_sphere.html">Photodiode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detector/plot_photodiode.html">Photodiode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detector/plot_LP11.html">LP11 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detector/plot_LP02.html">LP02 Mode Detector</a></li>
+<li class="toctree-l2"><a class="reference internal" href="detector/plot_LP01.html">LP01 Mode Detector</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="experiment/index.html">Experiments</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_b1_vs_diameter.html">Sphere: B1 scattering coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_a1_vs_diameter.html">Sphere: A1 scattering coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_index.html">Sphere: Qsca vs index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_wavelength.html">Sphere: Qsca vs wavelength mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_diameter.html">Sphere: Qsca vs diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_Qabs_vs_diameter.html">Sphere: Qsca vs diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_wavelength_std.html">Sphere: Qsca vs wavelength STD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_wavelength_std.html">Cylinder: Qsca vs wavelength std</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_a11_vs_diameter.html">Cylinder: A1 Scattering Coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_b11_vs_diameter.html">Cylinder: B1 Scattering Coefficient</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_coupling_vs_phioffset.html">Sphere: Goniometer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_coupling_vs_diameter.html">Sphere: Coupling vs diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_index.html">Cylinder: Qsca vs Index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_sphere_coupling_vs_wavelength.html">Sphere: Coupling vs wavelength</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_diameter.html">Cylinder: Qsca vs Diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_wavelength.html">Cylinder: Qsca vs Wavelength</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_Qabs_vs_diameter.html">Cylinder: Qabs vs Diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_coreshell_b1_vs_corediameter.html">CoreShell: B1 vs Core Diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_coreshell_a1_vs_corediameter.html">CoreShell: B1 vs Core Diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_coreshell_Qback_vs_corediameter.html">CoreShell: Qback vs Core Diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_coupling_vs_diameter.html">Cylinder: Coupling vs Diameter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_coupling_vs_phioffset.html">Cylinder: Goniometer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_cylinder_coupling_vs_wavelength.html">Cylinder: Coupling vs Wavelength</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experiment/plot_coreshell_coupling_vs_corediameter.html">CoreShell: Coupling vs Diameter</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="validation/index.html">Validation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_BH810.html">Bohren-Huffman (figure~8.10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_pymiescatt_0.html">PyMieSim vs PyMieScatt: 0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_pymiescatt_1.html">PyMieSim vs PyMieScatt: 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_BH87.html">Bohren-Huffman (figure~8.7)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_BH88.html">Bohren-Huffman (figure~8.8)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_pymiescatt_3.html">PyMieSim vs PyMieScatt: 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_pymiescatt_2.html">PyMieSim vs PyMieScatt: 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/plot_phase_function_detector.html">Goniometrique coupling vs S1 S2</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="extras/index.html">Extras examples</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="extras/SphereProperties.html">Samples Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extras/plot_Qsca_vs_permittivity_vs_size_parameter.html">Scattering efficiency of a sphere</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extras/plot_coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Examples</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="examples">
+<span id="examples-gallery"></span><h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
+<p>A gallery of examples and that showcase how PyMieSim can be used. Some examples demonstrate the use of the API in general and some demonstrate specific applications in tutorial form.</p>
+<div class="sphx-glr-thumbnails"></div><section id="scatterers">
+<h2>Scatterers<a class="headerlink" href="#scatterers" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to visualize the properties of a light source using PyMieSim."><img alt="" src="../_images/sphx_glr_plot_source_thumb.png" />
+<p><a class="reference internal" href="scatterer/plot_source.html#sphx-glr-gallery-scatterer-plot-source-py"><span class="std std-ref">Source Plottings</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Source Plottings</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the S1 and S2 scattering functions using..."><img alt="" src="../_images/sphx_glr_plot_s1s2_thumb.png" />
+<p><a class="reference internal" href="scatterer/plot_s1s2.html#sphx-glr-gallery-scatterer-plot-s1s2-py"><span class="std std-ref">S1 S2 Function Computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">S1 S2 Function Computation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Stokes parameters using PyMi..."><img alt="" src="../_images/sphx_glr_plot_stokes_thumb.png" />
+<p><a class="reference internal" href="scatterer/plot_stokes.html#sphx-glr-gallery-scatterer-plot-stokes-py"><span class="std std-ref">Stokes Parameters Computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Stokes Parameters Computation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Scattering Phase Function (S..."><img alt="" src="../_images/sphx_glr_plot_spf_thumb.png" />
+<p><a class="reference internal" href="scatterer/plot_spf.html#sphx-glr-gallery-scatterer-plot-spf-py"><span class="std std-ref">SPF Computation</span></a></p>
+  <div class="sphx-glr-thumbnail-title">SPF Computation</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scattere..."><img alt="" src="../_images/sphx_glr_plot_farfield_thumb.png" />
+<p><a class="reference internal" href="scatterer/plot_farfield.html#sphx-glr-gallery-scatterer-plot-farfield-py"><span class="std std-ref">Far-Fields Computation and Visualization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the footprint of a scatterer using PyMie..."><img alt="" src="../_images/sphx_glr_plot_footprint_thumb.png" />
+<p><a class="reference internal" href="scatterer/plot_footprint.html#sphx-glr-gallery-scatterer-plot-footprint-py"><span class="std std-ref">Scatterer Footprint Calculation and Visualization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Scatterer Footprint Calculation and Visualization</div>
+</div></div></section>
+<section id="detectors">
+<h2>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detecto..."><img alt="" src="../_images/sphx_glr_plot_integrating_sphere_thumb.png" />
+<p><a class="reference internal" href="detector/plot_integrating_sphere.html#sphx-glr-gallery-detector-plot-integrating-sphere-py"><span class="std std-ref">Photodiode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of a Photodiode detector using P..."><img alt="" src="../_images/sphx_glr_plot_photodiode_thumb.png" />
+<p><a class="reference internal" href="detector/plot_photodiode.html#sphx-glr-gallery-detector-plot-photodiode-py"><span class="std std-ref">Photodiode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP11 Mode detector using P..."><img alt="" src="../_images/sphx_glr_plot_LP11_thumb.png" />
+<p><a class="reference internal" href="detector/plot_LP11.html#sphx-glr-gallery-detector-plot-lp11-py"><span class="std std-ref">LP11 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">LP11 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP02 Mode detector using P..."><img alt="" src="../_images/sphx_glr_plot_LP02_thumb.png" />
+<p><a class="reference internal" href="detector/plot_LP02.html#sphx-glr-gallery-detector-plot-lp02-py"><span class="std std-ref">LP02 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">LP02 Mode Detector</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP01 Mode detector using P..."><img alt="" src="../_images/sphx_glr_plot_LP01_thumb.png" />
+<p><a class="reference internal" href="detector/plot_LP01.html#sphx-glr-gallery-detector-plot-lp01-py"><span class="std std-ref">LP01 Mode Detector</span></a></p>
+  <div class="sphx-glr-thumbnail-title">LP01 Mode Detector</div>
+</div></div></section>
+<section id="experiments">
+<h2>Experiments<a class="headerlink" href="#experiments" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Sphere: B1 scattering coefficient"><img alt="" src="../_images/sphx_glr_plot_sphere_b1_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_b1_vs_diameter.html#sphx-glr-gallery-experiment-plot-sphere-b1-vs-diameter-py"><span class="std std-ref">Sphere: B1 scattering coefficient</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: B1 scattering coefficient</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: A1 scattering coefficient"><img alt="" src="../_images/sphx_glr_plot_sphere_a1_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_a1_vs_diameter.html#sphx-glr-gallery-experiment-plot-sphere-a1-vs-diameter-py"><span class="std std-ref">Sphere: A1 scattering coefficient</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: A1 scattering coefficient</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs index"><img alt="" src="../_images/sphx_glr_plot_sphere_Qsca_vs_index_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_index.html#sphx-glr-gallery-experiment-plot-sphere-qsca-vs-index-py"><span class="std std-ref">Sphere: Qsca vs index</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs index</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength mean"><img alt="" src="../_images/sphx_glr_plot_sphere_Qsca_vs_wavelength_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_wavelength.html#sphx-glr-gallery-experiment-plot-sphere-qsca-vs-wavelength-py"><span class="std std-ref">Sphere: Qsca vs wavelength mean</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength mean</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs diameter"><img alt="" src="../_images/sphx_glr_plot_sphere_Qsca_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_diameter.html#sphx-glr-gallery-experiment-plot-sphere-qsca-vs-diameter-py"><span class="std std-ref">Sphere: Qsca vs diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs diameter"><img alt="" src="../_images/sphx_glr_plot_sphere_Qabs_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_Qabs_vs_diameter.html#sphx-glr-gallery-experiment-plot-sphere-qabs-vs-diameter-py"><span class="std std-ref">Sphere: Qsca vs diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength STD"><img alt="" src="../_images/sphx_glr_plot_sphere_Qsca_vs_wavelength_std_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_Qsca_vs_wavelength_std.html#sphx-glr-gallery-experiment-plot-sphere-qsca-vs-wavelength-std-py"><span class="std std-ref">Sphere: Qsca vs wavelength STD</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength STD</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Cylinder: Qsca vs wavelength std"><img alt="" src="../_images/sphx_glr_plot_cylinder_Qsca_vs_wavelength_std_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_wavelength_std.html#sphx-glr-gallery-experiment-plot-cylinder-qsca-vs-wavelength-std-py"><span class="std std-ref">Cylinder: Qsca vs wavelength std</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs wavelength std</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a funct..."><img alt="" src="../_images/sphx_glr_plot_cylinder_a11_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_a11_vs_diameter.html#sphx-glr-gallery-experiment-plot-cylinder-a11-vs-diameter-py"><span class="std std-ref">Cylinder: A1 Scattering Coefficient</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a funct..."><img alt="" src="../_images/sphx_glr_plot_cylinder_b11_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_b11_vs_diameter.html#sphx-glr-gallery-experiment-plot-cylinder-b11-vs-diameter-py"><span class="std std-ref">Cylinder: B1 Scattering Coefficient</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: B1 Scattering Coefficient</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Goniometer"><img alt="" src="../_images/sphx_glr_plot_sphere_coupling_vs_phioffset_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_coupling_vs_phioffset.html#sphx-glr-gallery-experiment-plot-sphere-coupling-vs-phioffset-py"><span class="std std-ref">Sphere: Goniometer</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Goniometer</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs diameter"><img alt="" src="../_images/sphx_glr_plot_sphere_coupling_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_coupling_vs_diameter.html#sphx-glr-gallery-experiment-plot-sphere-coupling-vs-diameter-py"><span class="std std-ref">Sphere: Coupling vs diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a fu..."><img alt="" src="../_images/sphx_glr_plot_cylinder_Qsca_vs_index_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_index.html#sphx-glr-gallery-experiment-plot-cylinder-qsca-vs-index-py"><span class="std std-ref">Cylinder: Qsca vs Index</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Index</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs wavelength"><img alt="" src="../_images/sphx_glr_plot_sphere_coupling_vs_wavelength_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_sphere_coupling_vs_wavelength.html#sphx-glr-gallery-experiment-plot-sphere-coupling-vs-wavelength-py"><span class="std std-ref">Sphere: Coupling vs wavelength</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs wavelength</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a fu..."><img alt="" src="../_images/sphx_glr_plot_cylinder_Qsca_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_diameter.html#sphx-glr-gallery-experiment-plot-cylinder-qsca-vs-diameter-py"><span class="std std-ref">Cylinder: Qsca vs Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a fu..."><img alt="" src="../_images/sphx_glr_plot_cylinder_Qsca_vs_wavelength_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_Qsca_vs_wavelength.html#sphx-glr-gallery-experiment-plot-cylinder-qsca-vs-wavelength-py"><span class="std std-ref">Cylinder: Qsca vs Wavelength</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Wavelength</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a fu..."><img alt="" src="../_images/sphx_glr_plot_cylinder_Qabs_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_Qabs_vs_diameter.html#sphx-glr-gallery-experiment-plot-cylinder-qabs-vs-diameter-py"><span class="std std-ref">Cylinder: Qabs vs Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Qabs vs Diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a functio..."><img alt="" src="../_images/sphx_glr_plot_coreshell_b1_vs_corediameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_coreshell_b1_vs_corediameter.html#sphx-glr-gallery-experiment-plot-coreshell-b1-vs-corediameter-py"><span class="std std-ref">CoreShell: B1 vs Core Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a functio..."><img alt="" src="../_images/sphx_glr_plot_coreshell_a1_vs_corediameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_coreshell_a1_vs_corediameter.html#sphx-glr-gallery-experiment-plot-coreshell-a1-vs-corediameter-py"><span class="std std-ref">CoreShell: B1 vs Core Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the backscattering efficiency (Qback) as..."><img alt="" src="../_images/sphx_glr_plot_coreshell_Qback_vs_corediameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_coreshell_Qback_vs_corediameter.html#sphx-glr-gallery-experiment-plot-coreshell-qback-vs-corediameter-py"><span class="std std-ref">CoreShell: Qback vs Core Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">CoreShell: Qback vs Core Diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of..."><img alt="" src="../_images/sphx_glr_plot_cylinder_coupling_vs_diameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_coupling_vs_diameter.html#sphx-glr-gallery-experiment-plot-cylinder-coupling-vs-diameter-py"><span class="std std-ref">Cylinder: Coupling vs Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Coupling vs Diameter</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to use a goniometer setup to measure and visualize the coupling e..."><img alt="" src="../_images/sphx_glr_plot_cylinder_coupling_vs_phioffset_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_coupling_vs_phioffset.html#sphx-glr-gallery-experiment-plot-cylinder-coupling-vs-phioffset-py"><span class="std std-ref">Cylinder: Goniometer</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Goniometer</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of..."><img alt="" src="../_images/sphx_glr_plot_cylinder_coupling_vs_wavelength_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_cylinder_coupling_vs_wavelength.html#sphx-glr-gallery-experiment-plot-cylinder-coupling-vs-wavelength-py"><span class="std std-ref">Cylinder: Coupling vs Wavelength</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Cylinder: Coupling vs Wavelength</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the coupling efficiency as a function of..."><img alt="" src="../_images/sphx_glr_plot_coreshell_coupling_vs_corediameter_thumb.png" />
+<p><a class="reference internal" href="experiment/plot_coreshell_coupling_vs_corediameter.html#sphx-glr-gallery-experiment-plot-coreshell-coupling-vs-corediameter-py"><span class="std std-ref">CoreShell: Coupling vs Diameter</span></a></p>
+  <div class="sphx-glr-thumbnail-title">CoreShell: Coupling vs Diameter</div>
+</div></div></section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.10)"><img alt="" src="../_images/sphx_glr_plot_BH810_thumb.png" />
+<p><a class="reference internal" href="validation/plot_BH810.html#sphx-glr-gallery-validation-plot-bh810-py"><span class="std std-ref">Bohren-Huffman (figure~8.10)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.10)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt: 0"><img alt="" src="../_images/sphx_glr_plot_pymiescatt_0_thumb.png" />
+<p><a class="reference internal" href="validation/plot_pymiescatt_0.html#sphx-glr-gallery-validation-plot-pymiescatt-0-py"><span class="std std-ref">PyMieSim vs PyMieScatt: 0</span></a></p>
+  <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt: 0</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt: 1"><img alt="" src="../_images/sphx_glr_plot_pymiescatt_1_thumb.png" />
+<p><a class="reference internal" href="validation/plot_pymiescatt_1.html#sphx-glr-gallery-validation-plot-pymiescatt-1-py"><span class="std std-ref">PyMieSim vs PyMieScatt: 1</span></a></p>
+  <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt: 1</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.7)"><img alt="" src="../_images/sphx_glr_plot_BH87_thumb.png" />
+<p><a class="reference internal" href="validation/plot_BH87.html#sphx-glr-gallery-validation-plot-bh87-py"><span class="std std-ref">Bohren-Huffman (figure~8.7)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.7)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.8)"><img alt="" src="../_images/sphx_glr_plot_BH88_thumb.png" />
+<p><a class="reference internal" href="validation/plot_BH88.html#sphx-glr-gallery-validation-plot-bh88-py"><span class="std std-ref">Bohren-Huffman (figure~8.8)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.8)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt: 3"><img alt="" src="../_images/sphx_glr_plot_pymiescatt_3_thumb.png" />
+<p><a class="reference internal" href="validation/plot_pymiescatt_3.html#sphx-glr-gallery-validation-plot-pymiescatt-3-py"><span class="std std-ref">PyMieSim vs PyMieScatt: 3</span></a></p>
+  <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt: 3</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt: 2"><img alt="" src="../_images/sphx_glr_plot_pymiescatt_2_thumb.png" />
+<p><a class="reference internal" href="validation/plot_pymiescatt_2.html#sphx-glr-gallery-validation-plot-pymiescatt-2-py"><span class="std std-ref">PyMieSim vs PyMieScatt: 2</span></a></p>
+  <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt: 2</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Goniometrique coupling vs S1 S2"><img alt="" src="../_images/sphx_glr_plot_phase_function_detector_thumb.png" />
+<p><a class="reference internal" href="validation/plot_phase_function_detector.html#sphx-glr-gallery-validation-plot-phase-function-detector-py"><span class="std std-ref">Goniometrique coupling vs S1 S2</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Goniometrique coupling vs S1 S2</div>
+</div></div></section>
+<section id="extras-examples">
+<h2>Extras examples<a class="headerlink" href="#extras-examples" title="Link to this heading">#</a></h2>
+<p>PyMieSim can be used in many ways. Below is a gallery of examples showing
+different ways to use the library.</p>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Samples Properties"><img alt="" src="../_images/sphx_glr_SphereProperties_thumb.png" />
+<p><a class="reference internal" href="extras/SphereProperties.html#sphx-glr-gallery-extras-sphereproperties-py"><span class="std std-ref">Samples Properties</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Samples Properties</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim makes it easy to create a source and a scatterer. With these objects defined, it is po..."><img alt="" src="../_images/sphx_glr_plot_Qsca_vs_permittivity_vs_size_parameter_thumb.png" />
+<p><a class="reference internal" href="extras/plot_Qsca_vs_permittivity_vs_size_parameter.html#sphx-glr-gallery-extras-plot-qsca-vs-permittivity-vs-size-parameter-py"><span class="std std-ref">Scattering efficiency of a sphere</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Scattering efficiency of a sphere</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="PyMieSim makes it easy to create a source and a scatterer. With these objects defined, it is po..."><img alt="" src="../_images/sphx_glr_plot_coupling_heatmap_thumb.png" />
+<p><a class="reference internal" href="extras/plot_coupling_heatmap.html#sphx-glr-gallery-extras-plot-coupling-heatmap-py"><span class="std std-ref">Coupling heatmap of a sphere</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Coupling heatmap of a sphere</div>
+</div></div><div class="toctree-wrapper compound">
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterers">Scatterers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detectors">Detectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiments">Experiments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extras-examples">Extras examples</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="../_sources/gallery/index.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2021, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
