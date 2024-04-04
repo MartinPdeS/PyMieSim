@@ -19,7 +19,6 @@ PYBIND11_MODULE(DetectorInterface, module) {
              "Constructs a Detector with specified optical properties and detection parameters. "
              "`PointCoupling` indicates whether to use point (true) or mean (false) coupling.")
 
-        // Assuming templated Coupling methods are correct; ensure Detector class supports this
         .def("CouplingSphere", &Detector::Coupling<SPHERE::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a sphere scatterer.")
         .def("CouplingCylinder", &Detector::Coupling<CYLINDER::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a cylinder scatterer.")
         .def("CouplingCoreShell", &Detector::Coupling<CORESHELL::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a core-shell scatterer.");

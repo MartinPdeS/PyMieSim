@@ -10,9 +10,9 @@ PYBIND11_MODULE(CoreShellInterface, module) {
 
     // Binding for CoreShell::State class
     py::class_<State>(module, "CppCoreShellState")
-        .def(py::init<>()); // Assuming default constructor exists or is needed
+        .def(py::init<>()); 
 
-    // Binding for CoreShell::Scatterer class with improved documentation and organization
+    // Binding for CoreShell::Scatterer class
     py::class_<Scatterer>(module, "CORESHELL")
         .def(py::init<double, double, double, double, std::complex<double>, std::complex<double>, double, CVector>(),
              py::arg("wavelength"),
@@ -24,6 +24,7 @@ PYBIND11_MODULE(CoreShellInterface, module) {
              py::arg("n_medium"),
              py::arg("jones_vector"),
              "Constructor for CORESHELL, initializing it with physical and optical properties.")
+
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters.")
         .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), "Returns the unstructured electromagnetic fields.")
         .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields.")

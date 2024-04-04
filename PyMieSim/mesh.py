@@ -4,7 +4,7 @@
 import numpy
 from dataclasses import dataclass
 
-from PyMieSim.binary.Fibonacci import FIBONACCI
+from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh
 from MPSPlots.render3D import SceneList as SceneList3D
 
 
@@ -43,7 +43,7 @@ class FibonacciMesh:
         self.vertical_vector = numpy.array([1, 0, 0])
         self.horizontal_vector = numpy.array([0, 1, 0])
 
-        self.cpp_binding = FIBONACCI(
+        self.cpp_binding = CPPFibonacciMesh(
             sampling=self.sampling,
             max_angle=self.max_angle,
             phi_offset=numpy.deg2rad(self.phi_offset),

@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from PyMieSim import load_single_lp_mode
 
 from PyMieSim.single.representations import Footprint
-from PyMieSim.binary.Fibonacci import FIBONACCI  # has to be imported as extension
+from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.tools.special_functions import NA_to_angle
 

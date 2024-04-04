@@ -1,120 +1,19 @@
 #pragma once
 
-#include "fibonnaci_mesh.cpp"
+#include "fibonacci_mesh.cpp"
 #include "utils.cpp"
+#include "detectors.h"
 
-namespace DETECTOR
-{
-    struct State
-    {
-        std::vector<complex128>
-            scalar_field;
+#include <vector>
+#include <complex>
+#include <cmath> // For std::isnan and std::pow
 
-        double
-            NA,
-            phi_offset,
-            gamma_offset,
-            polarization_filter,
-            rotation_angle;
+namespace DETECTOR {
 
-        bool
-            coherent,
-            point_coupling;
-
-        State(){}
-
-        State(
-            const std::vector<complex128> &scalar_field,
-            const double &NA,
-            const double &phi_offset,
-            const double &gamma_offset,
-            const double &polarization_filter,
-            const double &rotation_angle,
-            const bool &coherent,
-            const bool &point_coupling)
-            : scalar_field(scalar_field),
-                NA(NA),
-                phi_offset(phi_offset),
-                gamma_offset(gamma_offset),
-                polarization_filter(polarization_filter),
-                rotation_angle(rotation_angle),
-                coherent(coherent),
-                point_coupling(point_coupling)
-            {
-
-            }
-    };
-
-
-    class Detector
-    {
-    public:
-        FibonacciMesh
-            fibonacci_mesh;
-
-        State
-            state;
-
-        bool
-            coherent;
-
-        Detector(){}
-
-
-        Detector(
-            const std::vector<complex128> &scalar_field,
-            const double &NA,
-            const double& phi_offset,
-            const double &gamma_offset,
-            const double &polarization_filter,
-            const double &rotation_angle,
-            const bool &coherent,
-            const bool &point_coupling)
-            : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling)
-        {
-            this->fibonacci_mesh = FibonacciMesh(
-                state.scalar_field.size(),
-                NA2Angle(state.NA),
-                state.phi_offset,
-                state.gamma_offset,
-                state.rotation_angle
-            );
-        }
-
-    Detector(State &state) : state(state)
-    {
-        this->fibonacci_mesh = FibonacciMesh(
-            state.scalar_field.size(),
-            NA2Angle(state.NA),
-            state.phi_offset,
-            state.gamma_offset,
-            state.rotation_angle
-        );
-    }
-
-
-    void rotate_around_axis(double &rotation_angle)
-    {
-        this->fibonacci_mesh.rotate_around_axis(rotation_angle);
-    }
+    using complex128 = std::complex<double>;
 
     template <class T>
-    double get_coupling(T &scatterer)
-    {
-        if (state.point_coupling && state.coherent)
-            return this->get_coupling_point_coherent(scatterer);
-
-        if (!state.point_coupling && state.coherent)
-            return this->get_coupling_mean_coherent(scatterer);
-
-        if (state.point_coupling && !state.coherent)
-            return this->get_coupling_point_no_coherent(scatterer);
-
-        if (!state.point_coupling && !state.coherent)
-            return this->get_coupling_mean_no_coherent(scatterer);
-    }
-
-    template <class T> double get_coupling_point_no_coherent(T &scatterer)
+    double Detector::get_coupling_point_no_coherent(T &scatterer)
     {
         auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
 
@@ -132,13 +31,15 @@ namespace DETECTOR
     }
 
 
-    template <class T> double get_coupling_mean_no_coherent(T &scatterer)
+
+    template <class T>
+    double Detector::get_coupling_mean_no_coherent(T &scatterer)
     {
         return get_coupling_point_no_coherent(scatterer);
     }
 
-
-    template <class T> double get_coupling_point_coherent(T &scatterer)
+    template <class T>
+    double Detector::get_coupling_point_coherent(T &scatterer)
     {
         auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
 
@@ -160,7 +61,8 @@ namespace DETECTOR
     }
 
 
-    template <class T> double get_coupling_mean_coherent(T &scatterer)
+    template <class T> double
+    Detector::get_coupling_mean_coherent(T &scatterer)
     {
         auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
 
@@ -181,9 +83,8 @@ namespace DETECTOR
         return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
     }
 
-
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    get_projected_fields(std::vector<complex128> &theta_field, std::vector<complex128> &phi_field) const
+    Detector::get_projected_fields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
     {
 
         std::vector<complex128>
@@ -205,7 +106,8 @@ namespace DETECTOR
 
     }
 
-    void apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
+
+    void Detector::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
     {
         for (size_t i=0; i<field0.size(); i++)
         {
@@ -214,9 +116,8 @@ namespace DETECTOR
         }
     }
 
-
-    template <class T> inline double
-    get_norm1_squared(const std::vector<T> &array) const
+    template <class T> inline
+    double Detector::get_norm1_squared(const std::vector<T> &array) const
     {
         T sum  = 0.0;
 
@@ -226,8 +127,8 @@ namespace DETECTOR
         return pow(abs(sum), 2);
     }
 
-    template <class T> inline double
-    get_norm2_squared(const std::vector<T> &array) const
+    template <class T> inline
+    double Detector::get_norm2_squared(const std::vector<T> &array) const
     {
       T sum  = 0.0;
 
@@ -238,17 +139,15 @@ namespace DETECTOR
     }
 
 
-    template <class T> inline void square_array(std::vector<T> &array)
+    template <class T> inline
+    void Detector::square_array(std::vector<T> &array)
     {
       for (T &v : array)
          v = pow( abs(v), 2);
     }
 
-    template <class T> inline void
-    apply_polarization_filter(
-        T &coupling_theta,
-        T &coupling_phi,
-        const double &polarization_filter) const
+    template <typename T> inline
+    void Detector::apply_polarization_filter(T &coupling_theta, T &coupling_phi, double polarization_filter) const
     {
 
         if (isnan(state.polarization_filter))
@@ -262,6 +161,6 @@ namespace DETECTOR
         coupling_phi *= phi_polarization_filtering;
     }
 
+} // namespace DETECTOR
 
-  };
-}
+

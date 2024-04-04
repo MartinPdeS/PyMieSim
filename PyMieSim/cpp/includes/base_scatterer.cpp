@@ -4,7 +4,7 @@
   #include "definitions.cpp"
   #include "utils.cpp"
   #include "sources.cpp"
-  #include "fibonnaci_mesh.cpp"
+  #include "fibonacci_mesh.cpp"
 
 
 class ScatteringProperties

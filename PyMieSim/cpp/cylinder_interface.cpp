@@ -10,9 +10,8 @@ PYBIND11_MODULE(CylinderInterface, module) {
 
     // Binding for Cylinder::State class
     py::class_<State>(module, "CppCylinderState")
-        .def(py::init<>()); // Assuming default constructor exists or is needed
+        .def(py::init<>());
 
-    // Binding for Cylinder::Scatterer class with improved organization and documentation
     py::class_<Scatterer>(module, "CYLINDER")
         .def(py::init<double, double, double, std::complex<double>, double, CVector>(),
              py::arg("wavelength"),
@@ -22,6 +21,7 @@ PYBIND11_MODULE(CylinderInterface, module) {
              py::arg("n_medium"),
              py::arg("jones_vector"),
              "Constructor for CYLINDER, initializing it with physical and optical properties.")
+
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a cylinder.")
         .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), "Returns the unstructured electromagnetic fields around the cylinder.")
         .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the cylinder.")

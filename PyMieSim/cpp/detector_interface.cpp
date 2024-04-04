@@ -22,6 +22,7 @@ PYBIND11_MODULE(DetectorInterface, module) {
              py::arg("coherent"),
              py::arg("point_coupling"),
              "Constructs a Detector with given parameters. The `point_coupling` parameter determines the coupling type (true for point, false for mean).")
+
         .def("rotate_around_axis", &Detector::rotate_around_axis, "Rotates the detector around a specified axis.")
         .def("CouplingSphere", &Detector::get_coupling<SPHERE::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a sphere scatterer.")
         .def("CouplingCylinder", &Detector::get_coupling<CYLINDER::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a cylinder scatterer.")

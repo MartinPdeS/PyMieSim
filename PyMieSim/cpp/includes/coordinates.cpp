@@ -6,38 +6,40 @@
 #include "numpy_interface.cpp"
 
 
-  struct SCoordinate { double R, Phi, Theta; };
+struct SphericalCoordinate {
+    double r = 0.0, phi = 0.0, theta = 0.0;
+};
 
 
   struct VectorField
   {
-    size_t sampling, Size;
+    size_t sampling;
     IVector shape;
-    DVector Data;
+    std::vector<double> data_buffer;
 
-    VectorField(){}
-    VectorField(const DVector& Vector) : sampling(1), Size(3), shape({1, 3}), Data(Vector) {}
+    VectorField() = default;
+    VectorField(const std::vector<double>& vector) : sampling(1), shape({1, 3}), data_buffer(vector) {}
 
-    VectorField(const size_t &sampling) : sampling(sampling), Size(3*sampling), shape( {sampling, 3} ), Data( DVector(3 * sampling) ) {}
-    ndarray get_numpy(){ return vector_to_ndarray_copy((*this).Data, (*this).shape); }
+    explicit VectorField(size_t sampling) : sampling(sampling), data_buffer(3 * sampling, 0.0) {}
+    ndarray get_numpy() const { return vector_to_ndarray_copy((*this).data_buffer, (*this).shape); }
 
-    double &operator[](size_t i) { return Data[i]; }
-    double &operator()(size_t& i, size_t j) { return Data[i*3 + j]; }
-    double &operator()(size_t&& i, size_t&& j) { return Data[i*3 + j]; }
+    double &operator[](size_t i) { return data_buffer[i]; }
+    double &operator()(size_t& i, size_t j) { return data_buffer[i * 3 + j]; }
+    double &operator()(size_t&& i, size_t&& j) { return data_buffer[i * 3 + j]; }
 
-    VectorField operator+(VectorField& Other)
+    VectorField operator+(VectorField& other)
     {
       VectorField output(sampling);
 
       for (size_t i=0; i<3*sampling; i++)
-          output[i] = (*this)[i] + Other[i];
+          output[i] = (*this)[i] + other[i];
 
       return output;
     }
 
-    DVector get_scalar_product(DVector& Base)
+    std::vector<double> get_scalar_product(std::vector<double>& Base)
     {
-      DVector output(sampling);
+      std::vector<double> output(sampling);
 
       double
         x0  = Base[0],
@@ -260,9 +262,9 @@
       sampling(sampling)
       {}
 
-    ndarray get_r_py() {return vector_to_ndarray_copy(R);}
-    ndarray get_phi_py(){return vector_to_ndarray_copy(Phi);}
-    ndarray get_theta_py(){return vector_to_ndarray_copy(Theta);}
+    ndarray get_r_py() const {return vector_to_ndarray_copy(R);}
+    ndarray get_phi_py() const {return vector_to_ndarray_copy(Phi);}
+    ndarray get_theta_py() const {return vector_to_ndarray_copy(Theta);}
   };
 
 
@@ -287,9 +289,9 @@
     void set_y_py(const std::vector<double> &value){Y = value;}
     void set_z_py(const std::vector<double> &value){Z = value;}
 
-    ndarray get_x_py(){return vector_to_ndarray_copy(X);}
-    ndarray get_y_py(){return vector_to_ndarray_copy(Y);}
-    ndarray get_z_py(){return vector_to_ndarray_copy(Z);}
+    ndarray get_x_py() const {return vector_to_ndarray_copy(X);}
+    ndarray get_y_py() const {return vector_to_ndarray_copy(Y);}
+    ndarray get_z_py() const {return vector_to_ndarray_copy(Z);}
 
     Spherical cartesian_to_spherical()
     {

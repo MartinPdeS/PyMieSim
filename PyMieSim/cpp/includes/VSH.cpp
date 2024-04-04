@@ -2,7 +2,7 @@
   #define VSH_H
 
 #include "definitions.cpp"
-#include "fibonnaci_mesh.cpp"
+#include "fibonacci_mesh.cpp"
 
 
 namespace VSH{
@@ -93,30 +93,30 @@ namespace VSH{
 
 
 
-        SCoordinate RDir(double &theta, double &phi)
+        SphericalCoordinate RDir(double &theta, double &phi)
         {
-            SCoordinate Output;
-            Output.R     = sin(theta)*cos(phi);
-            Output.Phi   = sin(theta)*sin(phi),
-            Output.Theta = cos(theta);
+            SphericalCoordinate Output;
+            Output.r     = sin(theta)*cos(phi);
+            Output.phi   = sin(theta)*sin(phi),
+            Output.theta = cos(theta);
             return Output;
         }
 
-        SCoordinate ThetaDir(double &theta, double &phi)
+        SphericalCoordinate ThetaDir(double &theta, double &phi)
         {
-            SCoordinate Output;
-            Output.R     = cos(theta)*cos(phi);
-            Output.Phi   = cos(theta)*sin(phi),
-            Output.Theta = -sin(theta);
+            SphericalCoordinate Output;
+            Output.r     = cos(theta)*cos(phi);
+            Output.phi   = cos(theta)*sin(phi),
+            Output.theta = -sin(theta);
             return Output;
         }
 
-        SCoordinate PhiDir(double &theta, double &phi)
+        SphericalCoordinate PhiDir(double &theta, double &phi)
         {
-            SCoordinate Output;
-            Output.R     = -sin(phi);
-            Output.Phi   = cos(phi),
-            Output.Theta = 0;
+            SphericalCoordinate Output;
+            Output.r     = -sin(phi);
+            Output.phi   = cos(phi),
+            Output.theta = 0;
             return Output;
         }
 
