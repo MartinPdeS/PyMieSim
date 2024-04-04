@@ -1,82 +1,48 @@
 #include <pybind11/pybind11.h>
-
+#include <pybind11/complex.h> // For complex number support
 #include "sphere.cpp"
 
-PYBIND11_MODULE(SphereInterface, module)
-{
+namespace py = pybind11;
+using namespace SPHERE;
+
+PYBIND11_MODULE(SphereInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
+    // Binding for SPHERE::State class
+    py::class_<State>(module, "CppSphereState")
+        .def(py::init<>(), "Default constructor for the sphere state.");
 
-      pybind11::class_<SPHERE::State>(module, "CppSphereState");
-
-
-      pybind11::class_<SPHERE::Scatterer>(module, "SPHERE")
-      .def(
-            pybind11::init<double&, double&, double&, complex128&, double&, CVector&>(),
-            pybind11::arg("wavelength"),
-            pybind11::arg("amplitude"),
-            pybind11::arg("diameter"),
-            pybind11::arg("index"),
-            pybind11::arg("n_medium"),
-            pybind11::arg("jones_vector")
-        )
-
-      .def(pybind11::init<>())
-
-      .def(
-        "get_s1s2",
-        &SPHERE::Scatterer::get_s1s2_py,
-        pybind11::arg("phi")
-        )
-
-      .def(
-            "get_fields",
-            &SPHERE::Scatterer::get_unstructured_fields_py,
-            pybind11::arg("phi"),
-            pybind11::arg("theta"),
-            pybind11::arg("r")
-        )
-
-      .def(
-            "get_full_fields",
-            &SPHERE::Scatterer::get_full_structured_fields_py,
-            pybind11::arg("sampling"),
-            pybind11::arg("r")
-        )
-
-
-      .def("an", pybind11::overload_cast<>(&SPHERE::Scatterer::get_an_py))
-      .def("bn", pybind11::overload_cast<>(&SPHERE::Scatterer::get_bn_py))
-      .def("cn", pybind11::overload_cast<>(&SPHERE::Scatterer::get_cn_py))
-      .def("dn", pybind11::overload_cast<>(&SPHERE::Scatterer::get_dn_py))
-
-      .def_property_readonly("Qsca",  &SPHERE::Scatterer::get_Qsca)
-      .def_property_readonly("Qext",  &SPHERE::Scatterer::get_Qext)
-      .def_property_readonly("Qabs",  &SPHERE::Scatterer::get_Qabs)
-      .def_property_readonly("Qback", &SPHERE::Scatterer::get_Qback)
-      // .def_property_readonly("Qforward", &SPHERE::Scatterer::get_Qback)
-      .def_property_readonly("Qpr",   &SPHERE::Scatterer::get_Qpr)
-
-
-      .def_property_readonly("Csca",  &SPHERE::Scatterer::get_Csca)
-      .def_property_readonly("Cext",  &SPHERE::Scatterer::get_Cext)
-      .def_property_readonly("Cabs",  &SPHERE::Scatterer::get_Cabs)
-      .def_property_readonly("Cback", &SPHERE::Scatterer::get_Cback)
-      .def_property_readonly("Cpr",   &SPHERE::Scatterer::get_Cpr)
-
-      .def_property_readonly("g", &SPHERE::Scatterer::get_g)
-
-
-      .def_readwrite("state", &SPHERE::Scatterer::state)
-      .def_readwrite("area", &SPHERE::Scatterer::area)
-      .def_readwrite("size_parameter", &SPHERE::Scatterer::size_parameter)
-      ;
+    // Binding for SPHERE::Scatterer class
+    py::class_<Scatterer>(module, "SPHERE")
+        .def(py::init<double, double, double, std::complex<double>, double, CVector>(),
+             py::arg("wavelength"),
+             py::arg("amplitude"),
+             py::arg("diameter"),
+             py::arg("index"),
+             py::arg("n_medium"),
+             py::arg("jones_vector"),
+             "Constructor for SPHERE, initializing it with physical and optical properties.")
+        .def(py::init<>(), "Default constructor for SPHERE scatterer.")
+        .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a sphere.")
+        .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), "Returns the unstructured electromagnetic fields around the sphere.")
+        .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the sphere.")
+        .def("an", py::overload_cast<>(&Scatterer::get_an_py), "Returns the an coefficient.")
+        .def("bn", py::overload_cast<>(&Scatterer::get_bn_py), "Returns the bn coefficient.")
+        .def("cn", py::overload_cast<>(&Scatterer::get_cn_py), "Returns the cn coefficient, if applicable.")
+        .def("dn", py::overload_cast<>(&Scatterer::get_dn_py), "Returns the dn coefficient, if applicable.")
+        .def_property_readonly("Qsca", &Scatterer::get_Qsca, "Scattering efficiency of the sphere.")
+        .def_property_readonly("Qext", &Scatterer::get_Qext, "Extinction efficiency of the sphere.")
+        .def_property_readonly("Qabs", &Scatterer::get_Qabs, "Absorption efficiency of the sphere.")
+        .def_property_readonly("Qback", &Scatterer::get_Qback, "Backscattering efficiency of the sphere.")
+        // Note: Qforward is commented out; assuming it's either not implemented or was an oversight.
+        .def_property_readonly("Qpr", &Scatterer::get_Qpr, "Radiation pressure efficiency of the sphere.")
+        .def_property_readonly("Csca", &Scatterer::get_Csca, "Scattering cross-section of the sphere.")
+        .def_property_readonly("Cext", &Scatterer::get_Cext, "Extinction cross-section of the sphere.")
+        .def_property_readonly("Cabs", &Scatterer::get_Cabs, "Absorption cross-section of the sphere.")
+        .def_property_readonly("Cback", &Scatterer::get_Cback, "Backscattering cross-section of the sphere.")
+        .def_property_readonly("Cpr", &Scatterer::get_Cpr, "Radiation pressure cross-section of the sphere.")
+        .def_property_readonly("g", &Scatterer::get_g, "Asymmetry parameter of the sphere.")
+        .def_readwrite("state", &Scatterer::state, "State of the sphere scatterer.")
+        .def_readwrite("area", &Scatterer::area, "Physical cross-sectional area of the sphere.")
+        .def_readwrite("size_parameter", &Scatterer::size_parameter, "Size parameter of the sphere scatterer.");
 }
-
-
-
-
-
-
-
-// -

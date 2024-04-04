@@ -60,12 +60,12 @@ namespace SPHERE
 
             Scatterer(){}
             Scatterer(
-                double &wavelength,
-                double &amplitude,
-                double &diameter,
-                complex128 &index,
-                double &n_medium,
-                std::vector<complex128> &jones_vector,
+                double wavelength,
+                double amplitude,
+                double diameter,
+                complex128 index,
+                double n_medium,
+                std::vector<complex128> jones_vector,
                 size_t max_order = 0)
             :
                 ScatteringProperties(wavelength, jones_vector, amplitude),

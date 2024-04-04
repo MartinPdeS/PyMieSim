@@ -1,43 +1,26 @@
 #include <pybind11/pybind11.h>
-#include "sources.cpp"
+#include "sources.cpp"  // Assuming this includes the necessary DETECTOR definitions
 
-PYBIND11_MODULE(DetectorInterface, module)
-{
-     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
+namespace py = pybind11;
+using DETECTOR::Detector;
 
+PYBIND11_MODULE(DetectorInterface, module) {
+    module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-      pybind11::class_<DETECTOR::Detector>(module, "BindedDetector")
-      .def(pybind11::init<CVector&, double &, double &, double &, double &, bool &, bool &>(),
-           pybind11::arg("ScalarField"),
-           pybind11::arg("NA"),
-           pybind11::arg("PhiOffset"),
-           pybind11::arg("GammaOffset"),
-           pybind11::arg("Filter"),
-           pybind11::arg("Coherent"),
-           pybind11::arg("PointCoupling")  //true = point ; false=mean
-          )
+    py::class_<Detector>(module, "BindedDetector")
+        .def(py::init<CVector, double, double, double, double, bool, bool>(),
+             py::arg("ScalarField"),
+             py::arg("NA"),
+             py::arg("PhiOffset"),
+             py::arg("GammaOffset"),
+             py::arg("Filter"),
+             py::arg("Coherent"),
+             py::arg("PointCoupling"),
+             "Constructs a Detector with specified optical properties and detection parameters. "
+             "`PointCoupling` indicates whether to use point (true) or mean (false) coupling.")
 
-      .def(pybind11::init<CVector &, double &, double &, double &, double &, bool &, bool &>(),
-           pybind11::arg("ScalarField"),
-           pybind11::arg("NA"),
-           pybind11::arg("PhiOffset"),
-           pybind11::arg("GammaOffset"),
-           pybind11::arg("Filter"),
-           pybind11::arg("Coherent"),
-           pybind11::arg("PointCoupling")  //true = point ; false=mean
-          )
-
-       .def("CouplingSphere", &DETECTOR::Detector::Coupling<SPHERE::Scatterer>, pybind11::arg("Scatterer") )
-       .def("CouplingCylinder", &DETECTOR::Detector::Coupling<CYLINDER::Scatterer>, pybind11::arg("Scatterer") )
-       .def("CouplingCoreShell", &DETECTOR::Detector::Coupling<CORESHELL::Scatterer>, pybind11::arg("Scatterer") )
-       ;
-
+        // Assuming templated Coupling methods are correct; ensure Detector class supports this
+        .def("CouplingSphere", &Detector::Coupling<SPHERE::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a sphere scatterer.")
+        .def("CouplingCylinder", &Detector::Coupling<CYLINDER::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a cylinder scatterer.")
+        .def("CouplingCoreShell", &Detector::Coupling<CORESHELL::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a core-shell scatterer.");
 }
-
-
-
-
-
-
-
-// -

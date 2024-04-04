@@ -4,49 +4,27 @@
 #include "sphere.cpp"
 #include "core_shell.cpp"
 
-PYBIND11_MODULE(DetectorInterface, module)
-{
-     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
+namespace py = pybind11;
+using namespace DETECTOR;
 
-     pybind11::class_<DETECTOR::Detector>(module, "BindedDetector")
+PYBIND11_MODULE(DetectorInterface, module) {
+    module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-     .def(
-          pybind11::init<CVector&, double &, double &, double &, double &, double &, bool &, bool &>(),
-          pybind11::arg("scalar_field"),
-          pybind11::arg("NA"),
-          pybind11::arg("phi_offset"),
-          pybind11::arg("gamma_offset"),
-          pybind11::arg("polarization_filter"),
-          pybind11::arg("rotation_angle"),
-          pybind11::arg("coherent"),
-          pybind11::arg("point_coupling")  //true = point ; false=mean
-     )
-
-     .def(
-          pybind11::init<CVector &, double &, double &, double &, double &, double &, bool &, bool &>(),
-          pybind11::arg("scalar_field"),
-          pybind11::arg("NA"),
-          pybind11::arg("phi_offset"),
-          pybind11::arg("gamma_offset"),
-          pybind11::arg("polarization_filter"),
-          pybind11::arg("rotation_angle"),
-          pybind11::arg("coherent"),
-          pybind11::arg("point_coupling")  //true = point ; false=mean
-     )
-
-     .def("rotate_around_axis", &DETECTOR::Detector::rotate_around_axis)
-     .def("CouplingSphere", &DETECTOR::Detector::get_coupling<SPHERE::Scatterer>, pybind11::arg("scatterer") )
-     .def("CouplingCylinder", &DETECTOR::Detector::get_coupling<CYLINDER::Scatterer>, pybind11::arg("scatterer") )
-     .def("CouplingCoreShell", &DETECTOR::Detector::get_coupling<CORESHELL::Scatterer>, pybind11::arg("scatterer") )
-     .def_readwrite("mesh", &DETECTOR::Detector::fibonacci_mesh)
-     ;
-
+    // Binding for DETECTOR::Detector class
+    py::class_<Detector>(module, "BindedDetector")
+        .def(py::init<CVector, double, double, double, double, double, bool, bool>(),
+             py::arg("scalar_field"),
+             py::arg("NA"),
+             py::arg("phi_offset"),
+             py::arg("gamma_offset"),
+             py::arg("polarization_filter"),
+             py::arg("rotation_angle"),
+             py::arg("coherent"),
+             py::arg("point_coupling"),
+             "Constructs a Detector with given parameters. The `point_coupling` parameter determines the coupling type (true for point, false for mean).")
+        .def("rotate_around_axis", &Detector::rotate_around_axis, "Rotates the detector around a specified axis.")
+        .def("CouplingSphere", &Detector::get_coupling<SPHERE::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a sphere scatterer.")
+        .def("CouplingCylinder", &Detector::get_coupling<CYLINDER::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a cylinder scatterer.")
+        .def("CouplingCoreShell", &Detector::get_coupling<CORESHELL::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a core-shell scatterer.")
+        .def_readwrite("mesh", &Detector::fibonacci_mesh, "The Fibonacci mesh used by the detector.");
 }
-
-
-
-
-
-
-
-// -

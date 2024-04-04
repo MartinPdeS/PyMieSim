@@ -51,14 +51,14 @@
       std::vector<complex128> get_an(){ return an; };
       std::vector<complex128> get_bn(){ return bn; };
 
-      Scatterer(double &Wavelength,
-                double &Amplitude,
-                double &core_diameter,
-                double &shell_width,
-                complex128 &core_index,
-                complex128 &shell_index,
-                double &n_medium,
-                std::vector<complex128> &Jones,
+      Scatterer(double Wavelength,
+                double Amplitude,
+                double core_diameter,
+                double shell_width,
+                complex128 core_index,
+                complex128 shell_index,
+                double n_medium,
+                std::vector<complex128> Jones,
                 size_t max_order=0 )
                 : ScatteringProperties(Wavelength, Jones, Amplitude), state(core_diameter, shell_width, core_index, shell_index, n_medium)
                 {
