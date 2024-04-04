@@ -33,20 +33,21 @@ class AxisTab(BaseTab):
         self.x_axis_options = list(self.axis_mapping.keys())
         self.y_axis_options = list(self.measure_map.keys())
 
-        self.widget_collection = {
-            'x axis': dict(user_input=tkinter.StringVar(value="wavelength"), factor=None),
-            'y axis': dict(user_input=tkinter.StringVar(value='coupling'), factor=None),
-        }
-
         self.widget_collection = WidgetCollection(
             Widget(default_value='phi', label='x-axis', component_label='x_axis', to_float=False),
             Widget(default_value='coupling', label='y-axis', component_label='y_axis', to_float=False),
+            Widget(default_value='none', label='STD-axis', component_label='std_axis', to_float=False),
         )
         self.non_permanent_widget = []
 
+        self.setup_combox(sub_text='STD axis', component_label='std_axis')
+        self.setup_combox(sub_text='x axis', component_label='x_axis')
+        self.setup_combox(sub_text='y axis', component_label='y_axis')
+
+    def setup_combox(self, sub_text: str, component_label: str) -> NoReturn:
         label = tkinter.Label(
             self.frame,
-            text="x axis"
+            text=sub_text
         )
 
         label.pack(side=tkinter.BOTTOM)
@@ -55,31 +56,13 @@ class AxisTab(BaseTab):
 
         combox = tkinter.ttk.Combobox(
             self.frame,
-            textvariable=self.widget_collection['x_axis'].tk_widget,
+            textvariable=self.widget_collection[component_label].tk_widget,
             values=self.x_axis_options,
             state="readonly"
         )
 
         combox.pack(side=tkinter.BOTTOM)
 
-        self.non_permanent_widget.append(combox)
-
-        label = tkinter.Label(
-            self.frame,
-            text="y axis"
-        )
-
-        label.pack(side=tkinter.BOTTOM)
-        self.non_permanent_widget.append(label)
-
-        combox = tkinter.ttk.Combobox(
-            self.frame,
-            textvariable=self.widget_collection['y_axis'].tk_widget,
-            values=self.y_axis_options,
-            state="readonly"
-        )
-
-        combox.pack(side=tkinter.BOTTOM)
         self.non_permanent_widget.append(combox)
 
     @property
@@ -89,7 +72,13 @@ class AxisTab(BaseTab):
         return self.axis_mapping[x_axis]
 
     @property
-    def axis_mapping(self):
+    def std_axis(self) -> str:
+        std_axis = self.widget_collection['std_axis'].tk_widget.get()
+
+        return self.axis_mapping[std_axis]
+
+    @property
+    def axis_mapping(self) -> dict:
         _axis_mapping = {}
         for tab in self.other_tabs:
             _axis_mapping.update(tab.mapping)

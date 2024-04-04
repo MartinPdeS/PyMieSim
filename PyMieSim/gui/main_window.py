@@ -176,9 +176,13 @@ class PyMieSimGUI:
         else:
             print("No data to save. Please calculate first.")
 
-    def generate_figure(self, x_axis: object) -> NoReturn:
+    def generate_figure(self) -> NoReturn:
         """Generates and displays the simulation results as a plot in the GUI."""
-        figure = self.data.plot(x=x_axis)
+
+        x_axis = self.axis_tab.x_axis
+        std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
+
+        figure = self.data.plot(x=x_axis, std=std_axis)
         figure.unit_size = (9, 4)
         figure._render_()
         self.figure = figure._mpl_figure
@@ -198,7 +202,7 @@ class PyMieSimGUI:
 
     def update_plot(self) -> NoReturn:
         plt.close('all')
-        x_axis, y_axis = self.axis_tab.get_inputs()
+        x_axis, y_axis, std_axis = self.axis_tab.get_inputs()
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
 
@@ -209,7 +213,7 @@ class PyMieSimGUI:
         self.x_axis = self.axis_tab.axis_mapping['wavelength']
 
         try:
-            self.generate_figure(self.axis_tab.x_axis)
+            self.generate_figure()
 
         except ValueError as e:
             messagebox.showerror("Input Error", str(e))
