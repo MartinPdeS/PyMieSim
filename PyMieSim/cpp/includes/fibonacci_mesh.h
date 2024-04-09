@@ -33,7 +33,21 @@ public:
 
     FibonacciMesh() = default;
 
-    FibonacciMesh(int sampling, double max_angle, double phi_offset, double gamma_offset, double rotation_angle);
+    FibonacciMesh(int sampling, double max_angle, double phi_offset,
+        double gamma_offset, double rotation_angle):
+        sampling(sampling), max_angle(max_angle),
+        phi_offset(phi_offset), gamma_offset(gamma_offset) {
+
+        cartesian_coordinates = Cartesian(sampling);
+        compute_mesh();
+        base_cartesian_coordinates = cartesian_coordinates;
+
+        rotate_around_center();
+        rotate_around_axis(rotation_angle);
+
+        compute_vector_field();
+        compute_projections();
+    }
 
     void rotate_around_center();
     void compute_vector_field();
@@ -56,6 +70,9 @@ public:
     ndarray get_x_py() const;
     ndarray get_y_py() const;
     ndarray get_z_py() const;
+    ndarray get_base_x_py() const;
+    ndarray get_base_y_py() const;
+    ndarray get_base_z_py() const;
 
     void set_x_py(const std::vector<double>& value);
     void set_y_py(const std::vector<double>& value);

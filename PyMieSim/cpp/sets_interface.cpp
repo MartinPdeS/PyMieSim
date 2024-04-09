@@ -76,7 +76,7 @@ PYBIND11_MODULE(Sets, module) {
 
     // Binding for DETECTOR::Set
     py::class_<DETECTOR::Set>(module, "CppDetectorSet")
-        .def(py::init<std::vector<CVector>, DVector, DVector, DVector, DVector, DVector, bool, bool>(),
+        .def(py::init<py::array_t<complex128>, DVector, DVector, DVector, DVector, DVector, bool, bool>(),
              py::arg("scalarfield"),
              py::arg("NA"),
              py::arg("phi_offset"),

@@ -4,7 +4,7 @@
 from typing import NoReturn
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import Widget, WidgetCollection
+from PyMieSim.gui.utils import InputWidget, WidgetCollection
 
 
 class SourceTab(BaseTab):
@@ -37,10 +37,10 @@ class SourceTab(BaseTab):
         user interaction for the configuration of the light source.
         """
         self.widget_collection = WidgetCollection(
-            Widget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9),
-            Widget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value'),
-            Widget(default_value='1.0', label='Optical Power [mW]', component_label='optical_power', multiplicative_factor=1e-3),
-            Widget(default_value='0.2', label='Numerical Aperture (NA)', component_label='NA')
+            InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9),
+            InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value'),
+            InputWidget(default_value='1.0', label='Optical Power [mW]', component_label='optical_power', multiplicative_factor=1e-3),
+            InputWidget(default_value='0.2', label='Numerical Aperture (NA)', component_label='NA')
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)

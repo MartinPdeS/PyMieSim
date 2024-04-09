@@ -15,7 +15,7 @@ namespace DETECTOR {
     template <class T>
     double Detector::get_coupling_point_no_coherent(T &scatterer)
     {
-        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
+        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->state.fibonacci_mesh);
 
         double
             coupling_theta = this->get_norm2_squared(theta_field),
@@ -27,7 +27,7 @@ namespace DETECTOR {
             state.polarization_filter
         );
 
-        return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
+        return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->state.fibonacci_mesh.dOmega;
     }
 
 
@@ -41,7 +41,7 @@ namespace DETECTOR {
     template <class T>
     double Detector::get_coupling_point_coherent(T &scatterer)
     {
-        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
+        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->state.fibonacci_mesh);
 
         auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
 
@@ -57,14 +57,14 @@ namespace DETECTOR {
             state.polarization_filter
         );
 
-        return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
+        return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->state.fibonacci_mesh.dOmega;
     }
 
 
     template <class T> double
     Detector::get_coupling_mean_coherent(T &scatterer)
     {
-        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
+        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->state.fibonacci_mesh);
 
         auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
 
@@ -80,7 +80,7 @@ namespace DETECTOR {
             state.polarization_filter
         );
 
-        return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
+        return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->state.fibonacci_mesh.dOmega / this->state.fibonacci_mesh.Omega;
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
@@ -94,12 +94,12 @@ namespace DETECTOR {
         for (size_t i=0; i<theta_field.size(); ++i)
         {
             vertical_projection[i] =
-                theta_field[i] * this->fibonacci_mesh.vertical_perpendicular_projection[i] +
-                phi_field[i] * this->fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
+                theta_field[i] * this->state.fibonacci_mesh.vertical_perpendicular_projection[i] +
+                phi_field[i] * this->state.fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
 
             horizontal_projection[i] =
-                theta_field[i] * this->fibonacci_mesh.horizontal_perpendicular_projection[i] +
-                phi_field[i] * this->fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version
+                theta_field[i] * this->state.fibonacci_mesh.horizontal_perpendicular_projection[i] +
+                phi_field[i] * this->state.fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version
         }
 
         return std::make_tuple(horizontal_projection, vertical_projection);
@@ -109,10 +109,14 @@ namespace DETECTOR {
 
     void Detector::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
     {
+        auto buffer_scalar_field = state.scalar_field.request();
+
+        complex128 *scalar_field_ptr = (complex128 *) buffer_scalar_field.ptr;
+
         for (size_t i=0; i<field0.size(); i++)
         {
-            field0[i] *= state.scalar_field[i];
-            field1[i] *= state.scalar_field[i];
+            field0[i] *= scalar_field_ptr[i];
+            field1[i] *= scalar_field_ptr[i];
         }
     }
 

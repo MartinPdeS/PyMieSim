@@ -6,7 +6,7 @@ import numpy
 import tkinter
 
 
-class Widget:
+class InputWidget:
     """
     A Widget class that encapsulates a GUI widget with specific properties.
 
@@ -109,7 +109,7 @@ class WidgetCollection:
         widgets (tuple[Widget, ...]): A tuple of Widget instances included in the collection.
     """
 
-    def __init__(self, *widgets: Widget) -> None:
+    def __init__(self, *widgets: InputWidget) -> None:
         """
         Initializes a new instance of WidgetCollection with a given set of Widget instances.
 
@@ -127,7 +127,7 @@ class WidgetCollection:
         """
         return {widget.component_label: widget.value for widget in self.widgets}
 
-    def __getitem__(self, component_label: str) -> Widget:
+    def __getitem__(self, component_label: str) -> InputWidget:
         """
         Allows direct access to a Widget instance in the collection by its component label.
 
@@ -167,6 +167,7 @@ class WidgetCollection:
             widget._label.pack(side=tkinter.BOTTOM)
             widget._button = tkinter.Entry(frame, textvariable=widget.tk_widget)
             widget._button.pack(side=tkinter.BOTTOM)
+            # widget._button.configure(text='Password :')
 
     def __repr__(self) -> str:
         """

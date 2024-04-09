@@ -20,6 +20,10 @@ PYBIND11_MODULE(Fibonacci, module) {
         .def_property("y", &FibonacciMesh::get_y_py, &FibonacciMesh::set_y_py, "Y coordinates of points on the Fibonacci mesh.")
         .def_property("z", &FibonacciMesh::get_z_py, &FibonacciMesh::set_z_py, "Z coordinates of points on the Fibonacci mesh.")
 
+        .def_property_readonly("base_x", &FibonacciMesh::get_base_x_py, "X coordinates of points on the Fibonacci mesh.")
+        .def_property_readonly("base_y", &FibonacciMesh::get_base_y_py, "Y coordinates of points on the Fibonacci mesh.")
+        .def_property_readonly("base_z", &FibonacciMesh::get_base_z_py, "Z coordinates of points on the Fibonacci mesh.")
+
         // Readonly properties for spherical coordinates and differential solid angles
         .def_property_readonly("r", &FibonacciMesh::get_r_py, "Radial distance of points on the Fibonacci mesh.")
         .def_property_readonly("phi", &FibonacciMesh::get_phi_py, "Azimuthal angle (phi) of points on the Fibonacci mesh.")

@@ -1,5 +1,7 @@
 #include "fibonacci_mesh.cpp"
 #include "utils.cpp"
+#include "numpy_interface.cpp"
+
 
 #include <vector>
 #include <complex>
@@ -10,47 +12,125 @@ namespace DETECTOR {
     using complex128 = std::complex<double>;
 
     struct State {
-        std::vector<complex128> scalar_field;
-        double NA = 0.0, phi_offset = 0.0, gamma_offset = 0.0, polarization_filter = 0.0, rotation_angle = 0.0;
-        bool coherent = true, point_coupling = true;
+        py::array_t<complex128> scalar_field;
+        double NA = 0.0;
+        double phi_offset = 0.0;
+        double gamma_offset = 0.0;
+        double polarization_filter = 0.0;
+        double rotation_angle = 0.0;
+        bool coherent = true;
+        bool point_coupling = true;
+        double max_angle = 0;
+        size_t sampling = 0;
+        FibonacciMesh fibonacci_mesh;
 
         State() = default;
 
-        State(const std::vector<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
+        State(const py::array_t<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
               double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
             : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
-              coherent(coherent), point_coupling(point_coupling) {}
+              coherent(coherent), point_coupling(point_coupling)
+            {
+                this->max_angle = NA2Angle(this->NA);
+                this->sampling = this->scalar_field.size();
+
+                this->fibonacci_mesh = FibonacciMesh(
+                    this->sampling,
+                    this->max_angle,
+                    this->phi_offset,
+                    this->gamma_offset,
+                    this->rotation_angle
+                );
+
+            }
+
+        State(size_t sampling, double NA, double phi_offset, double gamma_offset,
+              double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
+            : NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+              polarization_filter(polarization_filter), rotation_angle(rotation_angle),
+              coherent(coherent), point_coupling(point_coupling)
+            {
+                this->max_angle = NA2Angle(this->NA);
+                this->sampling = sampling;
+
+                this->fibonacci_mesh = FibonacciMesh(
+                    this->sampling,
+                    this->max_angle,
+                    this->phi_offset,
+                    this->gamma_offset,
+                    this->rotation_angle
+                );
+            }
+    };
+
+    class Set
+    {
+        public:
+            py::array_t<complex128> scalar_field;
+
+            std::vector<double> NA;
+            std::vector<double> phi_offset;
+            std::vector<double> gamma_offset;
+            std::vector<double> polarization_filter;
+            std::vector<double> rotation_angle;
+
+            bool coherent;
+            bool point_coupling;
+
+            std::vector<State> state_list;
+
+            Set() = default;
+
+            Set(const py::array_t<complex128> &scalar_field,
+                const std::vector<double> &NA,
+                const std::vector<double> &phi_offset,
+                const std::vector<double> &gamma_offset,
+                const std::vector<double> &polarization_filter,
+                const std::vector<double> &rotation_angle,
+                const bool &coherent,
+                const bool &point_coupling)
+            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+              polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling){}
+
+            State operator[](const size_t &idx){return this->state_list[idx];}
+
+            std::vector<size_t> get_array_shape() const
+            {
+                return {(size_t) this->scalar_field.shape(0), this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
+            }
+
+            size_t get_array_size() const
+            {
+                std::vector<size_t> full_shape = this->get_array_shape();
+
+                size_t full_size = 1;
+                for (auto e: full_shape)
+                    full_size *= e;
+
+                return full_size;
+            }
     };
 
     class Detector {
     public:
-        FibonacciMesh fibonacci_mesh;
         State state;
-        bool coherent = true;
 
         Detector() = default;
 
-        Detector(const std::vector<complex128>& scalar_field, double NA, double phi_offset,
+        Detector(const State& state) : state(state) {}
+
+        Detector(const py::array_t<complex128>& scalar_field, double NA, double phi_offset,
                  double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
-            : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling) {
-            fibonacci_mesh = FibonacciMesh(
-                scalar_field.size(), NA2Angle(state.NA), state.phi_offset, state.gamma_offset, state.rotation_angle);
-        }
+               : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
 
-        Detector(const State& state) : state(state) {
-            fibonacci_mesh = FibonacciMesh(
-                state.scalar_field.size(), NA2Angle(state.NA), state.phi_offset, state.gamma_offset, state.rotation_angle);
-        }
+        Detector(
+            size_t sampling, double NA, double phi_offset,
+            double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
+            : state(sampling, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
 
-        void rotate_around_axis(double rotation_angle) {
-            fibonacci_mesh.rotate_around_axis(rotation_angle);
-        }
-
-        // Template method for coupling calculations
         template <typename T>
         double get_coupling(T& scatterer) {
-            // Method logic simplified with conditional operator
             if (state.coherent) {
                 return state.point_coupling ? get_coupling_point_coherent(scatterer) : get_coupling_mean_coherent(scatterer);
             } else {
@@ -58,17 +138,15 @@ namespace DETECTOR {
             }
         }
 
-        // Implementation details for coupling calculations should be defined here
         template <typename T> double get_coupling_point_no_coherent(T& scatterer);
         template <typename T> double get_coupling_mean_no_coherent(T& scatterer);
         template <typename T> double get_coupling_point_coherent(T& scatterer);
         template <typename T> double get_coupling_mean_coherent(T& scatterer);
 
     private:
-        // Private helper methods for coupling calculations
         template <typename T> double calculate_coupling(const T& scatterer, bool point, bool coherent);
         std::tuple<std::vector<complex128>, std::vector<complex128>> get_projected_fields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
-        void apply_scalar_field(std::vector<complex128>& field0, std::vector<complex128>& field1) const;
+        void apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const;
         template <typename T> inline double get_norm1_squared(const std::vector<T>& array) const;
         template <typename T> inline double get_norm2_squared(const std::vector<T>& array) const;
         template <typename T> inline void square_array(std::vector<T>& array);

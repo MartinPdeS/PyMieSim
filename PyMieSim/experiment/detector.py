@@ -11,10 +11,9 @@ if TYPE_CHECKING:
 import numpy
 from dataclasses import dataclass, field
 
-
-from PyMieSim import load_lp_mode
 from DataVisual import units
 from PyMieSim.binary.Sets import CppDetectorSet
+from PyMieSim.tools.modes import hermite_gauss, laguerre_gauss, linearly_polarized
 
 
 @dataclass
@@ -266,11 +265,11 @@ class LPMode(BaseDetector):
         """
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
 
-        scalarfield = load_lp_mode(
-            mode_numbers=self.mode_number,
-            sampling=self.sampling,
-            structure_type='unstructured'
-        ).astype(complex)
+        # scalarfield = linearly_polarized.(
+        #     mode_numbers=self.mode_number,
+        #     sampling=self.sampling,
+        #     structure_type='unstructured'
+        # ).astype(complex)
 
         self.scalarfield = units.Custom(
             long_label='Field',

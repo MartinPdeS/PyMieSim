@@ -5,7 +5,7 @@ from typing import NoReturn
 import tkinter
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import Widget, WidgetCollection
+from PyMieSim.gui.utils import InputWidget, WidgetCollection
 
 
 class AxisTab(BaseTab):
@@ -34,9 +34,9 @@ class AxisTab(BaseTab):
         self.y_axis_options = list(self.measure_map.keys())
 
         self.widget_collection = WidgetCollection(
-            Widget(default_value='phi', label='x-axis', component_label='x_axis', to_float=False),
-            Widget(default_value='coupling', label='y-axis', component_label='y_axis', to_float=False),
-            Widget(default_value='none', label='STD-axis', component_label='std_axis', to_float=False),
+            InputWidget(default_value='phi', label='x-axis', component_label='x_axis', to_float=False),
+            InputWidget(default_value='coupling', label='y-axis', component_label='y_axis', to_float=False),
+            InputWidget(default_value='none', label='STD-axis', component_label='std_axis', to_float=False),
         )
         self.non_permanent_widget = []
 
@@ -74,7 +74,8 @@ class AxisTab(BaseTab):
     @property
     def std_axis(self) -> str:
         std_axis = self.widget_collection['std_axis'].tk_widget.get()
-
+        if std_axis == 'none':
+            return None
         return self.axis_mapping[std_axis]
 
     @property

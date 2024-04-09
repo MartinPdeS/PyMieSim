@@ -1,5 +1,4 @@
-#ifndef FIBONACCI_CPP
-#define FIBONACCI_CPP
+#pragma once
 
 #include "coordinates.cpp"
 #include "utils.cpp"
@@ -7,27 +6,7 @@
 #include "fibonacci_mesh.h"
 
 
-FibonacciMesh::FibonacciMesh(
-    int sampling,
-    double max_angle,
-    double phi_offset,
-    double gamma_offset,
-    double rotation_angle):
-    sampling(sampling),
-    max_angle(max_angle),
-    phi_offset(phi_offset),
-    gamma_offset(gamma_offset) {
 
-    cartesian_coordinates = Cartesian(sampling);
-    compute_mesh();
-    base_cartesian_coordinates = cartesian_coordinates;
-
-    rotate_around_center();
-    rotate_around_axis(rotation_angle);
-
-    compute_vector_field();
-    compute_projections();
-}
 
 void FibonacciMesh::rotate_around_center() {
     if (gamma_offset != 0.0) {
@@ -153,6 +132,10 @@ ndarray FibonacciMesh::get_x_py() const {return cartesian_coordinates.get_x_py()
 ndarray FibonacciMesh::get_y_py() const {return cartesian_coordinates.get_y_py();};
 ndarray FibonacciMesh::get_z_py() const {return cartesian_coordinates.get_z_py();};
 
+ndarray FibonacciMesh::get_base_x_py() const {return base_cartesian_coordinates.get_x_py();};
+ndarray FibonacciMesh::get_base_y_py() const {return base_cartesian_coordinates.get_y_py();};
+ndarray FibonacciMesh::get_base_z_py() const {return base_cartesian_coordinates.get_z_py();};
+
 
 void FibonacciMesh::set_x_py(const std::vector<double> &value) {cartesian_coordinates.set_x_py(value);};
 void FibonacciMesh::set_y_py(const std::vector<double> &value) {cartesian_coordinates.set_y_py(value);};
@@ -221,8 +204,5 @@ class FullSteradian
         }
 
 };
-
-
-#endif
 
 // --

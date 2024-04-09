@@ -43,7 +43,7 @@ def test_energy_flow_coupling():
         phi_offset=0
     )
 
-    val0 = sphere.get_energy_flow(detector.cpp_binding.mesh)
+    val0 = sphere.get_energy_flow(detector.cpp_binding.state.mesh)
     val1 = detector.coupling(sphere)
 
     if not numpy.isclose(val0, val1, atol=0, rtol=1e-5):
