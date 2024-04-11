@@ -1,9 +1,10 @@
 #pragma once
 
+using namespace std;  // For the #include <iostream>
+
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan and std::pow
-// #include <iostream>
 #include "special_function.cpp"
 #include "fibonacci_mesh.cpp"
 #include "utils.cpp"
@@ -36,7 +37,6 @@ namespace DETECTOR {
             {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = this->scalar_field.request().size;
-                // std::cout<<sampling<<"\n";
                 this->scalar_field = scalar_field;
 
                 this->fibonacci_mesh = FibonacciMesh(
@@ -56,7 +56,6 @@ namespace DETECTOR {
               coherent(coherent), point_coupling(point_coupling), sampling(sampling)
             {
                 this->max_angle = NA2Angle(this->NA);
-                // std::cout<<sampling<<"\n";
 
                 this->fibonacci_mesh = FibonacciMesh(
                     this->sampling,

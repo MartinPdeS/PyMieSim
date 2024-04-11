@@ -5,6 +5,7 @@ import pytest
 
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single.detector import Photodiode
 from PyMieSim.materials import Silver, BK7, Aluminium
 
 cores_type = [
@@ -56,6 +57,7 @@ def test_coreshell_method(method, core_type, shell_type):
         optical_power=1,
         NA=0.3
     )
+
     scatterer = CoreShell(
         core_diameter=100e-9,
         shell_width=200e-9,
@@ -66,6 +68,35 @@ def test_coreshell_method(method, core_type, shell_type):
     )
 
     _ = getattr(scatterer, method)()
+
+
+@pytest.mark.parametrize('shell_type', shells_type, ids=['BK7', 'Silver', 'Aluminum', 'Index'])
+@pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
+def test_coreshell_coupling(core_type, shell_type):
+    detector = Photodiode(
+        NA=0.2,
+        gamma_offset=0,
+        phi_offset=0,
+    )
+
+    source = Gaussian(
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
+    )
+
+    scatterer = CoreShell(
+        core_diameter=100e-9,
+        shell_width=200e-9,
+        source=source,
+        **core_type,
+        **shell_type,
+        n_medium=1.0
+    )
+
+    _ = detector.coupling(scatterer)
 
 
 @pytest.mark.parametrize('shell_type', shells_type, ids=['BK7', 'Silver', 'Aluminum', 'Index'])

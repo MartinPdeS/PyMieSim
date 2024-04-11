@@ -5,6 +5,7 @@ import pytest
 
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single.detector import Photodiode
 from PyMieSim.materials import Silver, BK7
 
 cores_type = [
@@ -56,6 +57,32 @@ def test_cylinder_methods(method, core_type):
     )
 
     _ = getattr(scatterer, method)()
+
+
+@pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
+def test_cylinder_coupling(core_type: object):
+    detector = Photodiode(
+        NA=0.2,
+        gamma_offset=0,
+        phi_offset=0,
+    )
+
+    source = Gaussian(
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
+    )
+
+    scatterer = Cylinder(
+        diameter=100e-9,
+        source=source,
+        **core_type,
+        n_medium=1.0
+    )
+
+    _ = detector.coupling(scatterer)
 
 
 @pytest.mark.parametrize('core_type', cores_type, ids=['BK7', 'Silver', 'Index'])
