@@ -97,7 +97,6 @@ namespace DETECTOR {
 
             std::vector<size_t> get_array_shape() const
             {
-                printf("shape is %ld, %ld", this->scalar_fields.request().shape[0], this->scalar_fields.request().shape[1]);
                 return {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
             }
 

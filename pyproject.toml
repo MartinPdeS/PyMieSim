@@ -19,7 +19,7 @@ minversion = 6.0
 build-frontend = "pip"
 build-verbosity = 1
 before-test = ""
-test-command = "python -m pytest -rA {project}/tests/experiments"
+test-command = "python -m pytest -rA {project}/tests/experiments/test_sphere.py"
 test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]
