@@ -31,7 +31,7 @@ namespace VSH{
           taun.push_back( 3.0 * cos(2. * acos(mu) ) );
 
           double n = 0;
-          for (uint i = 2; i < max_order; i++)
+          for (unsigned int i = 2; i < max_order; i++)
               {
                n = (double)i;
 
@@ -57,7 +57,7 @@ namespace VSH{
           taun.push_back( 3.0 * cos(2. * acos(mu) ) );
 
           double n = 0;
-          for (uint i = 2; i < max_order; i++)
+          for (unsigned int i = 2; i < max_order; i++)
               {
                n = (double)i;
 
@@ -71,7 +71,7 @@ namespace VSH{
 
 
 
-        inline void MiePiTau(double mu, uint max_order, complex128 *pin, complex128 *taun)
+        inline void MiePiTau(double mu, unsigned int max_order, complex128 *pin, complex128 *taun)
         {
           pin[0] = 1.;
           pin[1] = 3. * mu;
@@ -80,7 +80,7 @@ namespace VSH{
           taun[1] = 3.0 * cos(2. * acos(mu) );
 
           double n = 0;
-          for (uint i = 2; i < max_order; i++)
+          for (unsigned int i = 2; i < max_order; i++)
               {
                n = (double)i;
 
