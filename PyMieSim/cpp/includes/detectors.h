@@ -29,7 +29,7 @@ namespace DETECTOR {
 
         State() = default;
 
-        State(py::array_t<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
+        State(const py::array_t<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
               double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
             : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
