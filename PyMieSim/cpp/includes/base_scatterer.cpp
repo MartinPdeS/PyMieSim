@@ -52,8 +52,7 @@ public:
     std::vector<double>
     get_prefactor() const
     {
-        std::vector<double>
-            output;
+        std::vector<double> output;
 
         output.reserve(max_order);
 
@@ -75,12 +74,9 @@ public:
         const std::vector<double>& theta,
         const double& radius)
     {
-        std::vector<complex128>
-            phi_field,
-            theta_field;
+        std::vector<complex128> phi_field, theta_field;
 
-        size_t
-            full_size = theta.size() * S1.size();
+        size_t full_size = theta.size() * S1.size();
 
         phi_field.reserve(full_size);
         theta_field.reserve(full_size);
@@ -98,10 +94,7 @@ public:
                 theta_field.push_back(thetea_point_field);
             }
 
-        return std::make_tuple(
-            phi_field,
-            theta_field
-        );
+        return std::make_tuple(phi_field, theta_field);
     }
 
 
@@ -113,18 +106,14 @@ public:
     {
         auto [S1, S2] = this->compute_s1s2(phi);
 
-        std::vector<complex128>
-            phi_field,
-            theta_field;
+        std::vector<complex128> phi_field, theta_field;
 
-        size_t
-            full_size = theta.size();
+        size_t full_size = theta.size();
 
         phi_field.reserve(full_size);
         theta_field.reserve(full_size);
 
-        complex128
-            propagator = this->compute_propagator(radius);
+        complex128 propagator = this->compute_propagator(radius);
 
         for (uint idx=0; idx < full_size; idx++)
         {
@@ -152,8 +141,7 @@ public:
     std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
     compute_full_structured_fields(const size_t& sampling, const double& radius)
     {
-        FullSteradian
-            full_mesh = FullSteradian(sampling);
+        FullSteradian full_mesh = FullSteradian(sampling);
 
         auto [S1, S2] = this->compute_s1s2(full_mesh.spherical_coordinates.Phi);
 
@@ -187,8 +175,7 @@ public:
         Squared(phi_field);
         Squared(theta_field);
 
-        std::vector<complex128>
-            spf = Add(phi_field, theta_field);
+        std::vector<complex128> spf = Add(phi_field, theta_field);
 
         return std::make_tuple(spf, full_mesh);
     }
@@ -199,8 +186,7 @@ public:
         const std::vector<double>& theta,
         const double radius)
     {
-        complex128
-            propagator = this->compute_propagator(radius);
+        complex128 propagator = this->compute_propagator(radius);
 
         auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -248,10 +234,7 @@ public:
     {
         auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
 
-        return std::make_tuple(
-            vector_to_numpy(phi_field),
-            vector_to_numpy(theta_field)
-        );
+        return std::make_tuple(vector_to_numpy(phi_field), vector_to_numpy(theta_field));
     }
 
 

@@ -45,8 +45,8 @@ namespace CORESHELL
 
     void Scatterer::compute_an_bn()
     {
-        an = CVector(max_order);
-        bn = CVector(max_order);
+        an = std::vector<complex128>(max_order);
+        bn = std::vector<complex128>(max_order);
 
         complex128
             m = state.shell_index / state.core_index,
@@ -63,7 +63,7 @@ namespace CORESHELL
             mx = (size_t) std::max( abs( state.core_index * state.x_shell ), abs( state.shell_index*state.x_shell ) ),
             nmx  = (size_t) ( std::max( max_order, mx ) + 16. )  ;
 
-        CVector pv, pw, py, chv, chw, chy, p1y, ch1y, gsy, gs1y;
+        std::vector<complex128> pv, pw, py, chv, chw, chy, p1y, ch1y, gsy, gs1y;
 
         p1y. push_back( sin( state.x_shell ) ) ;
         ch1y.push_back( cos( state.x_shell ) ) ;
@@ -84,10 +84,10 @@ namespace CORESHELL
             gs1y.push_back ( p1y[i] - JJ * ch1y[i] );
         }
 
-        CVector
-            Du = CVector(nmx, 0.),
-            Dv = CVector(nmx, 0.),
-            Dw = CVector(nmx, 0.);
+        std::vector<complex128>
+            Du = std::vector<complex128>(nmx, 0.),
+            Dv = std::vector<complex128>(nmx, 0.),
+            Dw = std::vector<complex128>(nmx, 0.);
 
         for (int i = nmx-1; i > 1; i--){
             Du[i-1] = (double)i / u -1. / (Du[i] + (double)i / u);
@@ -99,7 +99,7 @@ namespace CORESHELL
         Dv.erase(Dv.begin());
         Dw.erase(Dw.begin());
 
-        CVector uu, vv, fv, dns, gns, a1, b1;
+        std::vector<complex128> uu, vv, fv, dns, gns, a1, b1;
         for (size_t i=0; i<max_order; i++){
             double n = (double) (i+1);
             uu.push_back ( m * Du[i] - Dv[i]  );
@@ -115,14 +115,14 @@ namespace CORESHELL
     }
 
 
-    std::tuple<CVector, CVector> Scatterer::compute_s1s2(const DVector &Phi){
-        CVector
+    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &Phi){
+        std::vector<complex128>
             S1(Phi.size(), 0.0),
             S2(Phi.size(), 0.0);
 
-        DVector Prefactor = get_prefactor();
+        std::vector<double> Prefactor = get_prefactor();
 
-        DVector Mu; Mu.reserve(Phi.size());
+        std::vector<double> Mu; Mu.reserve(Phi.size());
 
         for (double phi : Phi)
             Mu.push_back( cos( phi-PI/2.0 ) );
@@ -142,7 +142,7 @@ namespace CORESHELL
 
 
     double Scatterer::get_Qsca(){
-        CVector an = get_an(), bn = get_bn();
+        std::vector<complex128> an = get_an(), bn = get_bn();
 
         double value = 0;
         for(size_t it = 0; it < max_order; ++it){
@@ -154,7 +154,7 @@ namespace CORESHELL
 
 
     double Scatterer::get_Qext(){
-        CVector an = get_an(), bn = get_bn();
+        std::vector<complex128> an = get_an(), bn = get_bn();
 
         double value = 0;
         for(size_t it = 0; it < max_order; ++it){
@@ -166,7 +166,7 @@ namespace CORESHELL
 
 
     double Scatterer::get_Qback(){
-        CVector an = get_an(), bn = get_bn();
+        std::vector<complex128> an = get_an(), bn = get_bn();
 
         complex128 value = 0;
 

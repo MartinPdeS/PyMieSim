@@ -93,10 +93,10 @@ namespace CYLINDER
 
             State state;
 
-            Cndarray get_a1n_py() { return vector_to_numpy(a1n, {max_order}); }
-            Cndarray get_b1n_py() { return vector_to_numpy(b1n, {max_order}); }
-            Cndarray get_a2n_py() { return vector_to_numpy(a2n, {max_order}); }
-            Cndarray get_b2n_py() { return vector_to_numpy(b2n, {max_order}); }
+            pybind11::array_t<complex128> get_a1n_py() { return vector_to_numpy(a1n, {max_order}); }
+            pybind11::array_t<complex128> get_b1n_py() { return vector_to_numpy(b1n, {max_order}); }
+            pybind11::array_t<complex128> get_a2n_py() { return vector_to_numpy(a2n, {max_order}); }
+            pybind11::array_t<complex128> get_b2n_py() { return vector_to_numpy(b2n, {max_order}); }
 
             std::vector<complex128> get_a1n() { return a1n; };
             std::vector<complex128> get_b1n() { return b1n; };

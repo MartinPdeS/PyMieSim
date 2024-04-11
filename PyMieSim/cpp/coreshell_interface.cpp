@@ -14,7 +14,7 @@ PYBIND11_MODULE(CoreShellInterface, module) {
 
     // Binding for CoreShell::Scatterer class
     py::class_<Scatterer>(module, "CORESHELL")
-        .def(py::init<double, double, double, double, std::complex<double>, std::complex<double>, double, CVector>(),
+        .def(py::init<double, double, double, double, std::complex<double>, std::complex<double>, double, std::vector<complex128>>(),
              py::arg("wavelength"),
              py::arg("amplitude"),
              py::arg("core_diameter"),

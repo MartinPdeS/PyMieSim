@@ -24,7 +24,7 @@ PYBIND11_MODULE(DetectorInterface, module) {
 
     // Binding for DETECTOR::Detector class
     py::class_<Detector>(module, "BindedDetector")
-        .def(py::init<Cndarray, double, double, double, double, double, bool, bool>(),
+        .def(py::init<py::array_t<complex128>, double, double, double, double, double, bool, bool>(),
              py::arg("scalar_field"),
              py::arg("NA"),
              py::arg("phi_offset"),

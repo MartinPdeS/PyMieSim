@@ -1,10 +1,10 @@
-#ifndef COORDINATE_H
-#define COORDINATE_H
+#pragma once
 
 #include "definitions.cpp"
 #include "special_function.cpp"
 #include "numpy_interface.cpp"
 
+namespace py = pybind11;
 
 struct SphericalCoordinate {
     double r = 0.0, phi = 0.0, theta = 0.0;
@@ -14,7 +14,7 @@ struct SphericalCoordinate {
   struct VectorField
   {
     size_t sampling;
-    IVector shape;
+    std::vector<size_t> shape;
     std::vector<double> data_buffer;
 
     VectorField() = default;
@@ -350,9 +350,6 @@ struct SphericalCoordinate {
     }
 
   };
-
-
-#endif
 
 
 // --

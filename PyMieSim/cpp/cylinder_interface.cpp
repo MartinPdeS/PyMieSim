@@ -13,7 +13,7 @@ PYBIND11_MODULE(CylinderInterface, module) {
         .def(py::init<>());
 
     py::class_<Scatterer>(module, "CYLINDER")
-        .def(py::init<double, double, double, std::complex<double>, double, CVector>(),
+        .def(py::init<double, double, double, std::complex<double>, double, std::vector<complex128>>(),
              py::arg("wavelength"),
              py::arg("amplitude"),
              py::arg("diameter"),

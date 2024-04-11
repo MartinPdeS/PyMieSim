@@ -174,12 +174,12 @@
     class Scatterer: public ScatteringProperties
     {
         public:
-            CVector an, bn;
+            std::vector<complex128> an, bn;
 
             State state;
 
-            Cndarray get_an_py(){ return vector_to_numpy(this->an, {max_order}); }
-            Cndarray get_bn_py(){ return vector_to_numpy(this->bn, {max_order}); }
+            pybind11::array_t<complex128> get_an_py(){ return vector_to_numpy(this->an, {max_order}); }
+            pybind11::array_t<complex128> get_bn_py(){ return vector_to_numpy(this->bn, {max_order}); }
 
             std::vector<complex128> get_an(){ return an; };
             std::vector<complex128> get_bn(){ return bn; };
@@ -205,7 +205,7 @@
             double get_Qback();
 
             void compute_an_bn();
-            std::tuple<CVector, CVector> compute_s1s2(const DVector &Phi);
+            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi);
     };
 }
 

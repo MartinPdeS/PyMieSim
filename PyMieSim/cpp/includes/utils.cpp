@@ -96,10 +96,10 @@
     }
 
 
-    CVector
-    Unstructured(CVector &array0, CVector &array1, complex128 &scalar)
+    std::vector<complex128>
+    Unstructured(std::vector<complex128> &array0, std::vector<complex128> &array1, complex128 &scalar)
     {
-        CVector output;
+        std::vector<complex128> output;
         output.reserve(array1.size());
 
         for (size_t p=0; p < array1.size(); p++ )
