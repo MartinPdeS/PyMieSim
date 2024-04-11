@@ -286,7 +286,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            // #pragma omp parallel for collapse(10)
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -305,7 +305,7 @@ class Experiment
 
                 // py::array_t<double, py::array::c_style> tests(2);
 
-                py::array_t<double> tests = py::array_t<double>(5);
+                py::array_t<complex128> tests = py::array_t<complex128>(5);
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
