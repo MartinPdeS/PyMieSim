@@ -274,8 +274,6 @@ class Experiment
 
         pybind11::array_t<double> get_sphere_coupling_material() const
         {
-            // std::vector<double> output_array(100);
-            // return vector_to_numpy(output_array);
             using namespace SPHERE;
 
             std::vector<size_t> array_shape = concatenate_vector(
@@ -302,7 +300,7 @@ class Experiment
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-                // py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -328,10 +326,10 @@ class Experiment
                 //     detectorSet.point_coupling
                 // );
 
-                // SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-                //     scatterer_state,
-                //     source_state
-                // );
+                SPHERE::Scatterer scatterer = SPHERE::Scatterer(
+                    scatterer_state,
+                    source_state
+                );
 
                 // DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
