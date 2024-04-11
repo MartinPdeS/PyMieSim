@@ -307,17 +307,17 @@ class Experiment
 
                 py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
-                SOURCE::State source_state = SOURCE::State(
-                    sourceSet.wavelength[w],
-                    sourceSet.jones_vector[j],
-                    sourceSet.amplitude[w]
-                );
+                // SOURCE::State source_state = SOURCE::State(
+                //     sourceSet.wavelength[w],
+                //     sourceSet.jones_vector[j],
+                //     sourceSet.amplitude[w]
+                // );
 
-                SPHERE::State scatterer_state = SPHERE::State(
-                    sphereSet.diameter[d],
-                    sphereSet.material[i][w],
-                    sphereSet.n_medium[n]
-                );
+                // SPHERE::State scatterer_state = SPHERE::State(
+                //     sphereSet.diameter[d],
+                //     sphereSet.material[i][w],
+                //     sphereSet.n_medium[n]
+                // );
 
 
                 // DETECTOR::State detector_state  = DETECTOR::State(
