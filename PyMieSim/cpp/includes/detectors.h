@@ -53,15 +53,15 @@ namespace DETECTOR {
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
               coherent(coherent), point_coupling(point_coupling), sampling(sampling)
             {
-                // this->max_angle = NA2Angle(this->NA);
+                this->max_angle = NA2Angle(this->NA);
 
-                // this->fibonacci_mesh = FibonacciMesh(
-                //     this->sampling,
-                //     this->max_angle,
-                //     this->phi_offset,
-                //     this->gamma_offset,
-                //     this->rotation_angle
-                // );
+                this->fibonacci_mesh = FibonacciMesh(
+                    this->sampling,
+                    this->max_angle,
+                    this->phi_offset,
+                    this->gamma_offset,
+                    this->rotation_angle
+                );
             }
     };
 
@@ -93,8 +93,7 @@ namespace DETECTOR {
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
               {
-                this->shape = {10, 10, 10, 10, 10};
-                // this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
+                this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
               }
     };
 
