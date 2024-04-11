@@ -86,7 +86,7 @@
 
 
     void
-    Unstructured(uint Sampling, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
+    Unstructured(unsigned int Sampling, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
     {
         for (size_t p=0; p < Sampling; p++ )
         {
@@ -109,10 +109,10 @@
     }
 
     void
-    Structured(uint ThetaLength, uint PhiLength, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
+    Structured(unsigned int ThetaLength, unsigned int PhiLength, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
     {
-        for (uint p=0; p < PhiLength; p++ )
-            for (uint t=0; t < ThetaLength; t++ )
+        for (unsigned int p=0; p < PhiLength; p++ )
+            for (unsigned int t=0; t < ThetaLength; t++ )
             {
                 *output   = scalar * array0[p] * array1[t];
                 output++;
