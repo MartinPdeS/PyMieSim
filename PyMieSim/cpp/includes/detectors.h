@@ -79,7 +79,6 @@ namespace DETECTOR {
             bool point_coupling;
 
             std::vector<size_t> shape;
-            size_t size = 1;
 
             Set() = default;
 
@@ -94,10 +93,8 @@ namespace DETECTOR {
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
               {
-                this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
-
-                for (size_t e: shape)
-                    this->size *= e;
+                this->shape = {10, 10, 10, 10, 10};
+                // this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
               }
     };
 

@@ -45,7 +45,6 @@
             bool shell_is_material;
 
             std::vector<size_t> shape;
-            size_t size = 1;
 
             Set() = default;
 
@@ -66,9 +65,6 @@
                     this->shell_index.size(),
                     this->n_medium.size()
                 };
-
-                for (size_t e: shape)
-                    this->size *= e;
             }
 
             Set(
@@ -88,9 +84,6 @@
                     this->shell_material.size(),
                     this->n_medium.size()
                 };
-
-                for (size_t e: shape)
-                    this->size *= e;
             }
 
             Set(
@@ -110,9 +103,6 @@
                     this->shell_index.size(),
                     this->n_medium.size()
                 };
-
-                for (size_t e: shape)
-                    this->size *= e;
             }
 
             Set(
@@ -132,9 +122,6 @@
                     this->shell_material.size(),
                     this->n_medium.size()
                 };
-
-                for (size_t e: shape)
-                    this->size *= e;
             }
     };
 
