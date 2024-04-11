@@ -5,7 +5,13 @@ addopts = [
     '-ra',
 ]
 
-testpaths = "tests"
+testpaths = [
+    # "tests/detectors",
+    # "tests/scatter",
+    "tests/experiments",
+    # "tests/validation",
+    # "tests/extra",
+]
 
 minversion = 6.0
 

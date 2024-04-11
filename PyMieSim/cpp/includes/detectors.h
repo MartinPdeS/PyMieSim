@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <complex>
-// #include <iostream>
+#include <iostream>
 #include <cmath> // For std::isnan and std::pow
 
 #include "special_function.cpp"
@@ -31,22 +31,21 @@ namespace DETECTOR {
 
         State(const py::array_t<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
               double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
-            : NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
               coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
-                this->sampling = this->scalar_field.size();
+                this->sampling = this->scalar_field.request().size;
                 this->scalar_field = scalar_field;
-                this->fibonacci_mesh = FibonacciMesh(this->sampling, 0.3, 0, 0, 0);
 
-                // this->fibonacci_mesh = FibonacciMesh(
-                //     this->sampling,
-                //     this->max_angle,
-                //     this->phi_offset,
-                //     this->gamma_offset,
-                //     this->rotation_angle
-                // );
+                this->fibonacci_mesh = FibonacciMesh(
+                    this->sampling,
+                    this->max_angle,
+                    this->phi_offset,
+                    this->gamma_offset,
+                    this->rotation_angle
+                );
 
             }
 
@@ -58,15 +57,13 @@ namespace DETECTOR {
             {
                 this->max_angle = NA2Angle(this->NA);
 
-                this->fibonacci_mesh = FibonacciMesh(this->sampling, 0.3, 0, 0, 0);
-
-                // this->fibonacci_mesh = FibonacciMesh(
-                //     this->sampling,
-                //     this->max_angle,
-                //     this->phi_offset,
-                //     this->gamma_offset,
-                //     this->rotation_angle
-                // );
+                this->fibonacci_mesh = FibonacciMesh(
+                    this->sampling,
+                    this->max_angle,
+                    this->phi_offset,
+                    this->gamma_offset,
+                    this->rotation_angle
+                );
             }
     };
 
@@ -94,8 +91,8 @@ namespace DETECTOR {
                 const std::vector<double> &polarization_filter,
                 const std::vector<double> &rotation_angle,
                 const bool &coherent,
-                const bool &point_coupling
-            ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+                const bool &point_coupling)
+            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling){}
 
             State operator[](const size_t &idx){return this->state_list[idx];}
@@ -137,7 +134,6 @@ namespace DETECTOR {
 
         template <typename T>
         double get_coupling(T& scatterer) {
-            return 1.0;
             if (state.coherent) {
                 return state.point_coupling ? get_coupling_point_coherent(scatterer) : get_coupling_mean_coherent(scatterer);
             } else {
