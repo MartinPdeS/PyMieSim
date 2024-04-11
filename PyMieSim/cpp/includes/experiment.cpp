@@ -291,18 +291,18 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            // #pragma omp parallel for collapse(10)
-            // for (size_t w=0; w<array_shape[0]; ++w)
-            // for (size_t j=0; j<array_shape[1]; ++j)
-            // for (size_t d=0; d<array_shape[2]; ++d)
-            // for (size_t i=0; i<array_shape[3]; ++i)
-            // for (size_t n=0; n<array_shape[4]; ++n)
-            // for (size_t s=0; s<array_shape[5]; ++s)
-            // for (size_t na=0; na<array_shape[6]; ++na)
-            // for (size_t p=0; p<array_shape[7]; ++p)
-            // for (size_t g=0; g<array_shape[8]; ++g)
-            // for (size_t f=0; f<array_shape[9]; ++f)
-            // {
+            #pragma omp parallel for collapse(10)
+            for (size_t w=0; w<array_shape[0]; ++w)
+            for (size_t j=0; j<array_shape[1]; ++j)
+            for (size_t d=0; d<array_shape[2]; ++d)
+            for (size_t i=0; i<array_shape[3]; ++i)
+            for (size_t n=0; n<array_shape[4]; ++n)
+            for (size_t s=0; s<array_shape[5]; ++s)
+            for (size_t na=0; na<array_shape[6]; ++na)
+            for (size_t p=0; p<array_shape[7]; ++p)
+            for (size_t g=0; g<array_shape[8]; ++g)
+            for (size_t f=0; f<array_shape[9]; ++f)
+            {
             //     size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
             //     py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
@@ -339,7 +339,7 @@ class Experiment
             //     DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
             //     output_array[idx] = abs( detector.get_coupling(scatterer) );
-            // }
+            }
 
             return vector_to_numpy(output_array, array_shape);
         }
