@@ -133,6 +133,7 @@ namespace DETECTOR {
 
         template <typename T>
         double get_coupling(T& scatterer) {
+            return 1.0;
             if (state.coherent) {
                 return state.point_coupling ? get_coupling_point_coherent(scatterer) : get_coupling_mean_coherent(scatterer);
             } else {

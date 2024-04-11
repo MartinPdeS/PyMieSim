@@ -44,8 +44,8 @@ namespace CYLINDER
 
         for(size_t it = 1; it < max_order; it++)
         {
-            Qsca1 +=  pow( std::abs(a1n[it]), 2) + pow( std::abs(b1n[it]), 2) ;
-            Qsca2 +=  pow( std::abs(a2n[it]), 2) + pow( std::abs(b2n[it]), 2) ;
+            Qsca1 +=  pow( std::abs(a1n[it]), 2 ) + pow( std::abs(b1n[it]), 2 ) ;
+            Qsca2 +=  pow( std::abs(a2n[it]), 2 ) + pow( std::abs(b2n[it]), 2 ) ;
         }
 
         Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(b1n[0]), 2 ) );
