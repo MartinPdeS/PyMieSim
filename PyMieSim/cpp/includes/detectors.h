@@ -15,7 +15,6 @@ namespace DETECTOR {
     using complex128 = std::complex<double>;
 
     struct State {
-        py::array_t<complex128> scalar_field;
         double NA = 0.0;
         double phi_offset = 0.0;
         double gamma_offset = 0.0;
@@ -23,21 +22,22 @@ namespace DETECTOR {
         double rotation_angle = 0.0;
         bool coherent = true;
         bool point_coupling = true;
-        double max_angle = 0;
         size_t sampling = 0;
+        double max_angle = 0;
+        py::array_t<complex128> scalar_field;
         FibonacciMesh fibonacci_mesh;
 
         State() = default;
 
         State(const py::array_t<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
               double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
-            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+            : NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
               coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = this->scalar_field.size();
-
+                this->scalar_field = scalar_field;
                 this->fibonacci_mesh = FibonacciMesh(this->sampling, 0.3, 0, 0, 0);
 
                 // this->fibonacci_mesh = FibonacciMesh(
