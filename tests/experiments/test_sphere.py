@@ -54,7 +54,7 @@ def test_sphere_experiment(measure, core_type):
         polarization_filter=None,
         gamma_offset=0,
         phi_offset=0,
-        sampling=100
+        sampling=150
     )
 
     experiment = Setup(
