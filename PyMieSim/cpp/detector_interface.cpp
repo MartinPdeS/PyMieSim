@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include "special_function.cpp"
 #include "detectors.cpp"
 #include "cylinder.cpp"
 #include "sphere.cpp"

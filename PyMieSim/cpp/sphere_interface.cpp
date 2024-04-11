@@ -1,6 +1,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h> // For complex number support
+#include <pybind11/numpy.h>
 #include "sphere.cpp"
+
 
 namespace py = pybind11;
 using namespace SPHERE;

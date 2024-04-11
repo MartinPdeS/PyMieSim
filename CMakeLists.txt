@@ -61,6 +61,11 @@ pybind11_add_module(Fibonacci MODULE "${PYMIESIM_CXX_DIR}/mesh_interface.cpp")
 set_target_properties(Fibonacci PROPERTIES OUTPUT_NAME "Fibonacci")
 target_link_libraries(Fibonacci PRIVATE ZBessel "${STATIC_STDLIB}")
 
+#Building DETECTOR--------------------------------------------------
+pybind11_add_module(CXX_DETECTOR MODULE "${PYMIESIM_CXX_DIR}/detector_interface.cpp" )
+set_target_properties(CXX_DETECTOR PROPERTIES OUTPUT_NAME "DetectorInterface")
+target_link_libraries(CXX_DETECTOR PRIVATE ZBessel "${STATIC_STDLIB}")
+
 #Building SPHERE-----------------------------------------------------
 pybind11_add_module(CXX_SPHERE MODULE "${PYMIESIM_CXX_DIR}/sphere_interface.cpp" )
 set_target_properties(CXX_SPHERE PROPERTIES OUTPUT_NAME "SphereInterface")
@@ -75,11 +80,6 @@ target_link_libraries(CXX_CYLINDER PRIVATE ZBessel "${STATIC_STDLIB}")
 pybind11_add_module(CXX_CORESHELL MODULE "${PYMIESIM_CXX_DIR}/coreshell_interface.cpp" )
 set_target_properties(CXX_CORESHELL PROPERTIES OUTPUT_NAME "CoreShellInterface")
 target_link_libraries(CXX_CORESHELL PRIVATE ZBessel "${STATIC_STDLIB}")
-
-#Building DETECTOR--------------------------------------------------
-pybind11_add_module(CXX_DETECTOR MODULE "${PYMIESIM_CXX_DIR}/detector_interface.cpp" )
-set_target_properties(CXX_DETECTOR PROPERTIES OUTPUT_NAME "DetectorInterface")
-target_link_libraries(CXX_DETECTOR PRIVATE ZBessel "${STATIC_STDLIB}")
 
 #Building EXPERIMENT------------------------------------------------
 if (WIN32)
