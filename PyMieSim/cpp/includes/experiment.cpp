@@ -302,41 +302,44 @@ class Experiment
             // for (size_t p=0; p<array_shape[7]; ++p)
             // for (size_t g=0; g<array_shape[8]; ++g)
             // for (size_t f=0; f<array_shape[9]; ++f)
-            {
-                // size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
+            // {
+            //     size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-                // py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
+            //     py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
-                // SOURCE::State source_state = SOURCE::State(
-                //     sourceSet.wavelength[w],
-                //     sourceSet.jones_vector[j],
-                //     sourceSet.amplitude[w]
-                // );
+            //     SOURCE::State source_state = SOURCE::State(
+            //         sourceSet.wavelength[w],
+            //         sourceSet.jones_vector[j],
+            //         sourceSet.amplitude[w]
+            //     );
 
-                // SPHERE::State scatterer_state = SPHERE::State(
-                //     sphereSet.diameter[d],
-                //     sphereSet.material[i][w],
-                //     sphereSet.n_medium[n]
-                // );
+            //     SPHERE::State scatterer_state = SPHERE::State(
+            //         sphereSet.diameter[d],
+            //         sphereSet.material[i][w],
+            //         sphereSet.n_medium[n]
+            //     );
 
 
-                // DETECTOR::State detector_state  = DETECTOR::State(
-                //     scalar_field,
-                //     detectorSet.NA[na],
-                //     detectorSet.phi_offset[p],
-                //     detectorSet.gamma_offset[g],
-                //     detectorSet.polarization_filter[f],
-                //     detectorSet.rotation_angle[s],
-                //     detectorSet.coherent,
-                //     detectorSet.point_coupling
-                // );
+            //     DETECTOR::State detector_state  = DETECTOR::State(
+            //         scalar_field,
+            //         detectorSet.NA[na],
+            //         detectorSet.phi_offset[p],
+            //         detectorSet.gamma_offset[g],
+            //         detectorSet.polarization_filter[f],
+            //         detectorSet.rotation_angle[s],
+            //         detectorSet.coherent,
+            //         detectorSet.point_coupling
+            //     );
 
-                // SPHERE::Scatterer scatterer = SPHERE::Scatterer(scatterer_state, source_state);
+            //     SPHERE::Scatterer scatterer = SPHERE::Scatterer(
+            //         scatterer_state,
+            //         source_state
+            //     );
 
-                // DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+            //     DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                // output_array[idx] = abs( detector.get_coupling(scatterer) );
-            }
+            //     output_array[idx] = abs( detector.get_coupling(scatterer) );
+            // }
 
             return vector_to_numpy(output_array, array_shape);
         }
