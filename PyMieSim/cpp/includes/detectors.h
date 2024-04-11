@@ -1,8 +1,5 @@
 #pragma once
 
-using namespace std;  // For the #include <iostream>
-#include <iostream>
-
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan and std::pow
@@ -100,7 +97,7 @@ namespace DETECTOR {
 
             std::vector<size_t> get_array_shape() const
             {
-                std::cout<<this->scalar_fields.request().shape[0]<<"___________\n";
+                printf("shape is %d", this->scalar_fields.request().shape[0]);
                 return {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
             }
 
