@@ -84,8 +84,8 @@ public:
         complex128
             propagator = this->compute_propagator(radius);
 
-        for (uint p=0; p < S1.size(); p++ )
-            for (uint t=0; t < theta.size(); t++ )
+        for (unsigned int p=0; p < S1.size(); p++ )
+            for (unsigned int t=0; t < theta.size(); t++ )
             {
                 complex128 phi_point_field = propagator * S1[p] * (source.jones_vector[0] * cos(theta[t]) + source.jones_vector[1] * sin(theta[t]));
                 complex128 thetea_point_field = propagator * S2[p] * (source.jones_vector[0] * sin(theta[t]) - source.jones_vector[1] * cos(theta[t]));
@@ -115,7 +115,7 @@ public:
 
         complex128 propagator = this->compute_propagator(radius);
 
-        for (uint idx=0; idx < full_size; idx++)
+        for (unsigned int idx=0; idx < full_size; idx++)
         {
             complex128 phi_field_point = propagator * S1[idx] * (source.jones_vector[0] * cos(theta[idx]) + source.jones_vector[1] * sin(theta[idx])),
             theta_field_point = propagator * S2[idx] * (source.jones_vector[0] * sin(theta[idx]) - source.jones_vector[1] * cos(theta[idx]));
