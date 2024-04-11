@@ -178,8 +178,8 @@
 
             State state;
 
-            Cndarray get_an_py(){ return vector_to_ndarray(this->an, {max_order}); }
-            Cndarray get_bn_py(){ return vector_to_ndarray(this->bn, {max_order}); }
+            Cndarray get_an_py(){ return vector_to_numpy(this->an, {max_order}); }
+            Cndarray get_bn_py(){ return vector_to_numpy(this->bn, {max_order}); }
 
             std::vector<complex128> get_an(){ return an; };
             std::vector<complex128> get_bn(){ return bn; };

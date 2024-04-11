@@ -23,7 +23,7 @@
 
     template <typename T>
     pybind11::array_t<T>
-    vector_to_ndarray(const std::vector<T> &vector, const std::vector<size_t> &dimension)
+    vector_to_numpy(const std::vector<T> &vector, const std::vector<size_t> &dimension)
     {
         pybind11::array_t<T>  numpy_array;
 
@@ -49,7 +49,7 @@
 
     template <typename T>
     pybind11::array_t<T>
-    vector_to_ndarray(const std::vector<T> &vector)
+    vector_to_numpy(const std::vector<T> &vector)
     {
         pybind11::array_t<T>  numpy_array;
 
@@ -76,7 +76,7 @@
 
     template<typename T>
     pybind11::array_t<T>
-    vector_to_ndarray(std::vector<T> &vector, const std::vector<size_t> &dimension, const std::vector<size_t> &stride){
+    vector_to_numpy(std::vector<T> &vector, const std::vector<size_t> &dimension, const std::vector<size_t> &stride){
 
         pybind11::capsule free_when_done(
             vector.data(), [](void *f) { T *foo = reinterpret_cast<T *>(f); }
@@ -94,7 +94,7 @@
 
     template<typename T>
     inline pybind11::array_t<T>
-    vector_to_ndarray(std::vector<T>&& passthrough)
+    vector_to_numpy(std::vector<T>&& passthrough)
     {
         auto* ptr = new std::vector<T>(std::move(passthrough));
 
@@ -114,7 +114,7 @@
 
     template<typename T>
     inline pybind11::array_t<T>
-    vector_to_ndarray_copy(std::vector<T> passthrough)
+    vector_to_numpy_copy(std::vector<T> passthrough)
     {
         auto* ptr = new std::vector<T>(std::move(passthrough));
 
@@ -135,7 +135,7 @@
 
     template<typename T>
     inline pybind11::array_t<T>
-    vector_to_ndarray_copy(std::vector<T> passthrough, const std::vector<size_t> &shape)
+    vector_to_numpy_copy(std::vector<T> passthrough, const std::vector<size_t> &shape)
     {
         auto* ptr = new std::vector<T>(std::move(passthrough));
 
@@ -158,7 +158,7 @@
 
     template<typename T>
     inline pybind11::array_t<T>
-    vector_to_ndarray(std::vector<T>&& passthrough, const std::vector<size_t> &shape)
+    vector_to_numpy(std::vector<T>&& passthrough, const std::vector<size_t> &shape)
     {
         auto* ptr = new std::vector<T>(std::move(passthrough));
 

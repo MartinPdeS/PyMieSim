@@ -59,7 +59,7 @@ target_link_libraries(ZBessel PUBLIC "${STATIC_STDLIB}")
 #Building FibonacciMesh----------------------------------------------
 pybind11_add_module(Fibonacci MODULE "${PYMIESIM_CXX_DIR}/mesh_interface.cpp")
 set_target_properties(Fibonacci PROPERTIES OUTPUT_NAME "Fibonacci")
-target_link_libraries(Fibonacci PRIVATE "${STATIC_STDLIB}")
+target_link_libraries(Fibonacci PRIVATE ZBessel "${STATIC_STDLIB}")
 
 #Building SPHERE-----------------------------------------------------
 pybind11_add_module(CXX_SPHERE MODULE "${PYMIESIM_CXX_DIR}/sphere_interface.cpp" )

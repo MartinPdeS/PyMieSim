@@ -122,7 +122,7 @@ class Experiment
                 output_array[idx] = 0. * (scatterer.*function)()[max_order];
             }
 
-          return vector_to_ndarray(output_array, array_shape);
+          return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -170,7 +170,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)()[max_order];
             }
 
-          return vector_to_ndarray(output_array, array_shape);
+          return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -221,7 +221,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -269,7 +269,7 @@ class Experiment
                 output_array[idx] = (Scat.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -341,7 +341,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -411,7 +411,7 @@ class Experiment
                 output_array[idx] = abs(coupling);
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -485,7 +485,7 @@ class Experiment
                 output_array[idx] = (Scat.*function)()[max_order];
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -536,7 +536,7 @@ class Experiment
                 output_array[idx] = (Scat.*function)()[max_order];
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -584,7 +584,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -632,7 +632,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -699,7 +699,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -769,7 +769,7 @@ class Experiment
                 output_array[idx] = abs(detector.get_coupling(scatterer));
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -870,7 +870,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)()[max_order];
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -922,7 +922,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)()[max_order];
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -974,7 +974,7 @@ class Experiment
             output_array[idx] = (scatterer.*function)()[max_order];
         }
 
-        return vector_to_ndarray(output_array, array_shape);
+        return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1025,7 +1025,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)()[max_order];
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1076,7 +1076,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1128,7 +1128,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1179,7 +1179,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1230,7 +1230,7 @@ class Experiment
                 output_array[idx] = (scatterer.*function)();
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1301,7 +1301,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1373,7 +1373,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1445,7 +1445,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 
@@ -1515,7 +1515,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            return vector_to_ndarray(output_array, array_shape);
+            return vector_to_numpy(output_array, array_shape);
         }
 
 pybind11::array_t<double> get_sphere_Qsca() const { return get_sphere_data( &SPHERE::Scatterer::get_Qsca ) ; }

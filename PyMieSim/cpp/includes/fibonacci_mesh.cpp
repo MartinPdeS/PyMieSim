@@ -120,31 +120,6 @@ void FibonacciMesh::rotate_around_axis(double angle) {
     this->spherical_coordinates = this->cartesian_coordinates.cartesian_to_spherical();
 }
 
-ndarray FibonacciMesh::get_parallel_vector() const {return parallel_vector.get_numpy();};
-ndarray FibonacciMesh::get_perpendicular_vector() const {return perpendicular_vector.get_numpy();};
-
-ndarray FibonacciMesh::get_horizontal_parallel_projection() const {return vector_to_ndarray_copy(horizontal_parallel_projection);};
-ndarray FibonacciMesh::get_vertical_parallel_projection() const {return vector_to_ndarray_copy(vertical_parallel_projection);};
-ndarray FibonacciMesh::get_horizontal_perpendicular_projection() const {return vector_to_ndarray_copy(horizontal_perpendicular_projection);};
-ndarray FibonacciMesh::get_vertical_perpendicular_projection() const {return vector_to_ndarray_copy(vertical_perpendicular_projection);};
-
-ndarray FibonacciMesh::get_x_py() const {return cartesian_coordinates.get_x_py();};
-ndarray FibonacciMesh::get_y_py() const {return cartesian_coordinates.get_y_py();};
-ndarray FibonacciMesh::get_z_py() const {return cartesian_coordinates.get_z_py();};
-
-ndarray FibonacciMesh::get_base_x_py() const {return base_cartesian_coordinates.get_x_py();};
-ndarray FibonacciMesh::get_base_y_py() const {return base_cartesian_coordinates.get_y_py();};
-ndarray FibonacciMesh::get_base_z_py() const {return base_cartesian_coordinates.get_z_py();};
-
-
-void FibonacciMesh::set_x_py(const std::vector<double> &value) {cartesian_coordinates.set_x_py(value);};
-void FibonacciMesh::set_y_py(const std::vector<double> &value) {cartesian_coordinates.set_y_py(value);};
-void FibonacciMesh::set_z_py(const std::vector<double> &value) {cartesian_coordinates.set_z_py(value);};
-
-ndarray FibonacciMesh::get_r_py() const {return spherical_coordinates.get_r_py();};
-ndarray FibonacciMesh::get_phi_py() const {return spherical_coordinates.get_phi_py();};
-ndarray FibonacciMesh::get_theta_py() const { return spherical_coordinates.get_theta_py();};
-
 
 class FullSteradian
 {

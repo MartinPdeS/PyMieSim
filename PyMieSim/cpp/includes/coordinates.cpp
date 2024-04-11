@@ -21,7 +21,7 @@ struct SphericalCoordinate {
     VectorField(const std::vector<double>& vector) : sampling(1), shape({1, 3}), data_buffer(vector) {}
 
     explicit VectorField(size_t sampling) : sampling(sampling), data_buffer(3 * sampling, 0.0) {}
-    ndarray get_numpy() const { return vector_to_ndarray_copy((*this).data_buffer, (*this).shape); }
+    py::array_t<double> get_numpy() const { return vector_to_numpy_copy((*this).data_buffer, (*this).shape); }
 
     double &operator[](size_t i) { return data_buffer[i]; }
     double &operator()(size_t& i, size_t j) { return data_buffer[i * 3 + j]; }
@@ -190,7 +190,7 @@ struct SphericalCoordinate {
 
     void mx_rot_y(double theta)
     {
-      Matrix3 M
+      std::vector<std::vector<double>> M
       {
         { cos(theta),  0.,    sin(theta) },
         { 0.,          1.,    0.         },
@@ -201,7 +201,7 @@ struct SphericalCoordinate {
 
     void mx_rot_x(double gamma)
     {
-      Matrix3 M
+      std::vector<std::vector<double>> M
       {
         {1.,          0.,            0.         },
         {0.,          cos(gamma),   -sin(gamma) },
@@ -212,7 +212,7 @@ struct SphericalCoordinate {
 
     void mx_rot_z(double phi)
     {
-      Matrix3 M
+      std::vector<std::vector<double>> M
       {
         {cos(phi),    -sin(phi),   0.     },
         {sin(phi),     cos(phi),   0.     },
@@ -221,7 +221,7 @@ struct SphericalCoordinate {
     mx_apply(M);
     }
 
-    void mx_apply(Matrix3 M)
+    void mx_apply(std::vector<std::vector<double>> M)
     {
       double
         tempx,
@@ -247,14 +247,12 @@ struct SphericalCoordinate {
 
   struct Spherical
   {
-    std::vector<double>
-      Phi,
-      Theta,
-      R;
+    std::vector<double> Phi, Theta, R;
 
     size_t sampling;
 
-    Spherical(){}
+    Spherical() = default;
+
     Spherical(const size_t &sampling)
     : Phi(std::vector<double>(sampling)),
       Theta(std::vector<double>(sampling)),
@@ -262,22 +260,20 @@ struct SphericalCoordinate {
       sampling(sampling)
       {}
 
-    ndarray get_r_py() const {return vector_to_ndarray_copy(R);}
-    ndarray get_phi_py() const {return vector_to_ndarray_copy(Phi);}
-    ndarray get_theta_py() const {return vector_to_ndarray_copy(Theta);}
+    py::array_t<double> get_r_py() const {return vector_to_numpy_copy(R);}
+    py::array_t<double> get_phi_py() const {return vector_to_numpy_copy(Phi);}
+    py::array_t<double> get_theta_py() const {return vector_to_numpy_copy(Theta);}
   };
 
 
   struct Cartesian
   {
-    std::vector<double>
-      X,
-      Y,
-      Z;
+    std::vector<double> X, Y, Z;
 
     size_t sampling;
 
-    Cartesian(){}
+    Cartesian() = default;
+
     Cartesian(const size_t &sampling)
     : X(std::vector<double>(sampling)),
       Y(std::vector<double>(sampling)),
@@ -289,9 +285,9 @@ struct SphericalCoordinate {
     void set_y_py(const std::vector<double> &value){Y = value;}
     void set_z_py(const std::vector<double> &value){Z = value;}
 
-    ndarray get_x_py() const {return vector_to_ndarray_copy(X);}
-    ndarray get_y_py() const {return vector_to_ndarray_copy(Y);}
-    ndarray get_z_py() const {return vector_to_ndarray_copy(Z);}
+    py::array_t<double> get_x_py() const {return vector_to_numpy_copy(X);}
+    py::array_t<double> get_y_py() const {return vector_to_numpy_copy(Y);}
+    py::array_t<double> get_z_py() const {return vector_to_numpy_copy(Z);}
 
     Spherical cartesian_to_spherical()
     {
@@ -307,7 +303,7 @@ struct SphericalCoordinate {
 
     void mx_rot_y(double theta)
     {
-      Matrix3 M
+      std::vector<std::vector<double>> M
       {
         { cos(theta),  0.,    sin(theta) },
         { 0.,          1.,    0.         },
@@ -318,7 +314,7 @@ struct SphericalCoordinate {
 
     void mx_rot_x(double gamma)
     {
-      Matrix3 M
+      std::vector<std::vector<double>> M
       {
         {1.,          0.,            0.         },
         {0.,          cos(gamma),   -sin(gamma) },
@@ -329,7 +325,7 @@ struct SphericalCoordinate {
 
     void mx_rot_z(double phi)
     {
-      Matrix3 M
+      std::vector<std::vector<double>> M
       {
         {cos(phi),    -sin(phi),   0.     },
         {sin(phi),     cos(phi),   0.     },
@@ -338,7 +334,7 @@ struct SphericalCoordinate {
     mx_apply(M);
     }
 
-    void mx_apply(Matrix3 M)
+    void mx_apply(std::vector<std::vector<double>> M)
     {
       double tempx, tempy, tempz;
       for (size_t i = 0; i < sampling; i++){

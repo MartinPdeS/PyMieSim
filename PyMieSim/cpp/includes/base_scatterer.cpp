@@ -210,30 +210,27 @@ public:
     //--------------------------------------------------------PYTHON-------------------
 
 
-    std::tuple<Cndarray, Cndarray>
+    std::tuple<py::array_t<complex128>, py::array_t<complex128>>
     get_s1s2_py(const std::vector<double> &phi)
     {
         auto [S1, S2] = this->compute_s1s2(phi);
 
-        return std::make_tuple(
-            vector_to_ndarray(S1),
-            vector_to_ndarray(S2)
-        );
+        return std::make_tuple(vector_to_numpy(S1), vector_to_numpy(S2));
     }
 
 
-    std::tuple<Cndarray, Cndarray, ndarray, ndarray>
+    std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
     get_full_structured_fields_py(size_t &sampling, double& distance)
     {
         auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_fields(sampling, distance);
 
-        Cndarray
-            phi_field_py = vector_to_ndarray(phi_field, {sampling, sampling}),
-            theta_field_py = vector_to_ndarray(theta_field, {sampling, sampling});
+        py::array_t<complex128>
+            phi_field_py = vector_to_numpy(phi_field, {sampling, sampling}),
+            theta_field_py = vector_to_numpy(theta_field, {sampling, sampling});
 
-        ndarray
-            theta_py = vector_to_ndarray(theta),
-            phi_py = vector_to_ndarray(phi);
+        py::array_t<double>
+            theta_py = vector_to_numpy(theta),
+            phi_py = vector_to_numpy(phi);
 
         phi_field_py = phi_field_py.attr("transpose")();
         theta_field_py = theta_field_py.attr("transpose")();
@@ -246,14 +243,14 @@ public:
         );
     }
 
-    std::tuple<Cndarray, Cndarray>
+    std::tuple<py::array_t<complex128>, py::array_t<complex128>>
     get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius)
     {
         auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
 
         return std::make_tuple(
-            vector_to_ndarray(phi_field),
-            vector_to_ndarray(theta_field)
+            vector_to_numpy(phi_field),
+            vector_to_numpy(theta_field)
         );
     }
 

@@ -16,11 +16,10 @@ typedef std::vector<size_t>              IVector;
 typedef std::vector<double>              DVector;
 typedef std::vector<complex128>          CVector;
 
-typedef pybind11::array_t<double>        ndarray;
+// typedef pybind11::array_t<double>        ndarray;
 typedef pybind11::array_t<complex128>    Cndarray;
 typedef std::vector<std::vector<double>> Matrix3;
 
-typedef pybind11::array_t<size_t>        Indarray;
 typedef pybind11::buffer_info            info;
 
 #define JJ complex128(0.0,1.0)

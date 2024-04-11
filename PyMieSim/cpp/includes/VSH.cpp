@@ -8,9 +8,9 @@
 namespace VSH{
     namespace SPHERICAL {
 
-        CVector compute_dn(double &&nmx, complex128 &z) //Page 127 of BH
+        std::vector<complex128> compute_dn(double &&nmx, complex128 &z) //Page 127 of BH
         {
-          CVector Dn(nmx, 0.0);
+          std::vector<complex128> Dn(nmx, 0.0);
 
           for (double n = nmx - 1.; n > 1.; n--)
               Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
@@ -18,9 +18,9 @@ namespace VSH{
            return Dn;
         }
 
-        inline std::tuple<CVector, CVector> MiePiTau(double &mu, size_t &max_order)
+        inline std::tuple<std::vector<complex128>, std::vector<complex128>> MiePiTau(double &mu, size_t &max_order)
         {
-          CVector pin, taun;
+          std::vector<complex128> pin, taun;
           pin.reserve(max_order);
           taun.reserve(max_order);
 
@@ -44,9 +44,9 @@ namespace VSH{
         }
 
 
-        inline std::tuple<CVector, CVector> MiePiTau(double &mu, size_t &&max_order)
+        inline std::tuple<std::vector<complex128>, std::vector<complex128>> MiePiTau(double &mu, size_t &&max_order)
         {
-          CVector pin, taun;
+          std::vector<complex128> pin, taun;
           pin.reserve(max_order);
           taun.reserve(max_order);
 
@@ -133,9 +133,9 @@ namespace VSH{
 
     namespace CYLINDRICAL {
 
-      CVector compute_dn(double &&nmx, complex128 &z) //Page 205 of BH
+      std::vector<complex128> compute_dn(double &&nmx, complex128 &z) //Page 205 of BH
       {
-        CVector Dn(nmx, 0.0);
+        std::vector<complex128> Dn(nmx, 0.0);
 
         for (double n = nmx - 1; n > 0; n--)
             Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );

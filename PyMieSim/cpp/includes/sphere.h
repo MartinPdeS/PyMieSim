@@ -117,10 +117,10 @@ namespace SPHERE
             }
 
 
-            Cndarray get_an_py() { return vector_to_ndarray(an, {max_order}); }
-            Cndarray get_bn_py() { return vector_to_ndarray(bn, {max_order}); }
-            Cndarray get_cn_py() { return vector_to_ndarray(cn, {max_order}); }
-            Cndarray get_dn_py() { return vector_to_ndarray(dn, {max_order}); }
+            Cndarray get_an_py() { return vector_to_numpy(an, {max_order}); }
+            Cndarray get_bn_py() { return vector_to_numpy(bn, {max_order}); }
+            Cndarray get_cn_py() { return vector_to_numpy(cn, {max_order}); }
+            Cndarray get_dn_py() { return vector_to_numpy(dn, {max_order}); }
             std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi);
 
             std::vector<complex128> get_an() { return an; };
