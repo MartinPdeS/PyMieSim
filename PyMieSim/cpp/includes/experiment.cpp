@@ -286,7 +286,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            // #pragma omp parallel for collapse(10)
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -301,11 +301,11 @@ class Experiment
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
 
-                // py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 // py::array_t<double, py::array::c_style> tests(2);
 
-                py::array_t<complex128> tests = py::array_t<complex128>(5);
+                // py::array_t<complex128> tests = py::array_t<complex128>(5);
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -320,25 +320,25 @@ class Experiment
                 );
 
 
-                // DETECTOR::State detector_state  = DETECTOR::State(
-                //     scalar_field,
-                //     detectorSet.NA[na],
-                //     detectorSet.phi_offset[p],
-                //     detectorSet.gamma_offset[g],
-                //     detectorSet.polarization_filter[f],
-                //     detectorSet.rotation_angle[s],
-                //     detectorSet.coherent,
-                //     detectorSet.point_coupling
-                // );
+                DETECTOR::State detector_state  = DETECTOR::State(
+                    scalar_field,
+                    detectorSet.NA[na],
+                    detectorSet.phi_offset[p],
+                    detectorSet.gamma_offset[g],
+                    detectorSet.polarization_filter[f],
+                    detectorSet.rotation_angle[s],
+                    detectorSet.coherent,
+                    detectorSet.point_coupling
+                );
 
                 SPHERE::Scatterer scatterer = SPHERE::Scatterer(
                     scatterer_state,
                     source_state
                 );
 
-                // DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+                DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                // output_array[idx] = abs( detector.get_coupling(scatterer) );
+                output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
             return vector_to_numpy(output_array, array_shape);
