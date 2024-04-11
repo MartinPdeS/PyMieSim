@@ -3,7 +3,7 @@
 
 from typing import NoReturn
 import tkinter
-from PyMieSim.experiment.detector import Photodiode, LPMode
+from PyMieSim.experiment.detector import Photodiode, LPMode, HGMode, LGMode
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.utils import InputWidget, WidgetCollection
 
@@ -41,7 +41,7 @@ class DetectorTab(BaseTab):
         combobox = tkinter.ttk.Combobox(
             self.frame,
             textvariable=self.type_button,
-            values=['Photodiode', 'LPMode'],
+            values=['Photodiode', 'LPMode', 'LGMode', 'HGMode'],
             state="readonly"
         )
 
@@ -78,7 +78,13 @@ class DetectorTab(BaseTab):
                 self._setup_photodiode_component()
             case 'lpmode':
                 self._setup_lpmode_widgets()
-                self._setup_lpmode_component()
+                self._setup_lp_mode_component()
+            case 'hgmode':
+                self._setup_lpmode_widgets()
+                self._setup_lp_mode_component()
+            case 'lgmode':
+                self._setup_lpmode_widgets()
+                self._setup_lp_mode_component()
             case _:
                 raise ValueError('Detector type not valid')
 
@@ -93,18 +99,28 @@ class DetectorTab(BaseTab):
         self.widget_collection.setup_widgets(frame=self.frame)
 
     def _setup_lpmode_widgets(self):
+        selected_type = self.get_selected_type()
+
+        match selected_type.lower():
+            case 'lpmode':
+                default_field_value = 'LP01'
+            case 'hgmode':
+                default_field_value = 'HG01'
+            case 'lgmode':
+                default_field_value = 'LG01'
+
         self.widget_collection = WidgetCollection(
             # InputWidget(default_value='point', label='Coupling mode', component_label='coupling_mode', to_float=False),
             InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter'),
             InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
             InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset'),
             InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
-            InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', to_float=False),
+            InputWidget(default_value=default_field_value, label='Mode field', component_label='mode_number', to_float=False),
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)
 
-    def _setup_photodiode_component(self):
+    def _setup_photodiode_component(self) -> NoReturn:
         self.component = Photodiode(**self.widget_collection.to_component_dict(), sampling=500)
 
         self.mapping = {
@@ -114,8 +130,28 @@ class DetectorTab(BaseTab):
             'polarization_filter': self.component.polarization_filter
         }
 
-    def _setup_lpmode_component(self):
+    def _setup_lp_mode_component(self) -> NoReturn:
         self.component = LPMode(**self.widget_collection.to_component_dict(), sampling=500)
+
+        self.mapping = {
+            'NA': self.component.NA,
+            'gamma': self.component.gamma_offset,
+            'phi': self.component.phi_offset,
+            'polarization_filter': self.component.polarization_filter
+        }
+
+    def _setup_lg_mode_component(self) -> NoReturn:
+        self.component = LGMode(**self.widget_collection.to_component_dict(), sampling=500)
+
+        self.mapping = {
+            'NA': self.component.NA,
+            'gamma': self.component.gamma_offset,
+            'phi': self.component.phi_offset,
+            'polarization_filter': self.component.polarization_filter
+        }
+
+    def _setup_hg_mode_component(self) -> NoReturn:
+        self.component = HGMode(**self.widget_collection.to_component_dict(), sampling=500)
 
         self.mapping = {
             'NA': self.component.NA,
@@ -140,6 +176,10 @@ class DetectorTab(BaseTab):
             case 'photodiode':
                 self._setup_photodiode_component()
             case 'lpmode':
-                self._setup_lpmode_component()
+                self._setup_lp_mode_component()
+            case 'hgmode':
+                self._setup_hg_mode_component()
+            case 'lgmode':
+                self._setup_lg_mode_component()
 
 # -

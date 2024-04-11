@@ -13,7 +13,8 @@ from dataclasses import dataclass, field
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppDetectorSet
-from PyMieSim.tools.modes import hermite_gauss, laguerre_gauss, linearly_polarized
+from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh
+from PyMieSim.modes import hermite_gauss, laguerre_gauss, linearly_polarized
 
 
 @dataclass
@@ -57,7 +58,7 @@ class BaseDetector():
         """
         self.format_inputs()
 
-        self.get_fields_array()
+        self.compute_scalar_fields()
 
         self.get_rotation_angle_from_mode_number()
 
@@ -198,6 +199,29 @@ class BaseDetector():
             rotation_angle=self.rotation_angle.astype(float)
         )
 
+    def interpret_mode_name(self, mode_name: str) -> tuple[int, int, float]:
+        """
+        Intepret the mode_number parameter to check if there is a rotation associated
+
+        :returns:   The two mode numbers plus rotation angle
+        :rtype:     tuple[int, int, float]
+        """
+        assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or 'HG11:90 (rotation of 90 degree)'"
+        if ':' not in mode_name:
+            mode_name += ':0'
+
+        split = mode_name.split(':')
+
+        mode_name, rotation_angle = split
+
+        number_0, number_1 = mode_name[-2:]
+
+        number_0, number_1 = int(number_0), int(number_1)
+
+        rotation_angle = float(rotation_angle)
+
+        return number_0, number_1, rotation_angle
+
 
 @dataclass
 class Photodiode(BaseDetector):
@@ -213,7 +237,7 @@ class Photodiode(BaseDetector):
         name (str): The name of the detector, initialized to "Photodiode" and not intended for modification.
 
     Methods:
-        get_fields_array(): Overrides the BaseDetector method to provide the field arrays specific
+        compute_scalar_fields(): Overrides the BaseDetector method to provide the field arrays specific
                             to a photodiode detector. It generates a scalar field array representing
                             the detection scheme.
 
@@ -225,10 +249,10 @@ class Photodiode(BaseDetector):
     coherent: bool = field(default=False, init=False)
     name: str = field(default="Photodiode", init=False)
 
-    def get_fields_array(self) -> numpy.ndarray:
+    def compute_scalar_fields(self) -> numpy.ndarray:
         """
         Generates a scalar field array representing the photodiode detection scheme. This method overrides
-        the BaseDetector's get_fields_array method to provide functionality specific to photodiode detectors.
+        the BaseDetector's compute_scalar_fields method to provide functionality specific to photodiode detectors.
 
         Returns:
             numpy.ndarray: An array of scalar fields corresponding to the photodiode detection scheme.
@@ -255,25 +279,134 @@ class LPMode(BaseDetector):
     name: str = field(default="LPMode", init=False)
     """ name of the set """
 
-    def get_fields_array(self) -> numpy.ndarray:
+    def compute_scalar_fields(self) -> numpy.ndarray:
         """
         Loads and generates complex scalar field arrays representing the specified LP modes. This method
-        overrides the BaseDetector's get_fields_array to cater specifically to LPMode detectors.
+        overrides the BaseDetector's compute_scalar_fields to cater specifically to LPMode detectors.
 
         Returns:
             numpy.ndarray: An array of complex scalar fields representing the LP modes involved in the detection.
         """
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
 
-        # scalarfield = linearly_polarized.(
-        #     mode_numbers=self.mode_number,
-        #     sampling=self.sampling,
-        #     structure_type='unstructured'
-        # ).astype(complex)
+        proxy_fibonacci_mesh = CPPFibonacciMesh(
+            max_angle=0.3,
+            phi_offset=0,
+            gamma_offset=0,
+            sampling=self.sampling,
+            rotation_angle=0
+        )
+
+        scalar_fields = numpy.zeros([len(self.mode_number), self.sampling]).astype(complex)
+
+        for idx, mode_name in enumerate(self.mode_number):
+            azimuthal_number, radial_number, rotation_angle = self.interpret_mode_name(mode_name)
+
+            scalar_fields[idx] = linearly_polarized.interpolate_from_fibonacci_mesh(
+                fibonacci_mesh=proxy_fibonacci_mesh,
+                azimuthal_number=azimuthal_number,
+                radial_number=radial_number,
+            )
 
         self.scalarfield = units.Custom(
             long_label='Field',
             short_label='field',
-            base_values=scalarfield,
+            base_values=scalar_fields,
+            value_representation=self.mode_number
+        )
+
+
+@dataclass
+class HGMode(BaseDetector):
+    mode_number: Iterable
+    """ List of mode to be used. """
+    coupling_mode: str = 'point'
+    """ Method for computing mode coupling. Either point or Mean. """
+    coherent: bool = field(default=True, init=False)
+    """ Describe the detection scheme coherent or uncoherent. """
+    name: str = field(default="LPMode", init=False)
+    """ name of the set """
+
+    def compute_scalar_fields(self) -> numpy.ndarray:
+        """
+        Loads and generates complex scalar field arrays representing the specified LP modes. This method
+        overrides the BaseDetector's compute_scalar_fields to cater specifically to LPMode detectors.
+
+        Returns:
+            numpy.ndarray: An array of complex scalar fields representing the LP modes involved in the detection.
+        """
+        self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
+
+        proxy_fibonacci_mesh = CPPFibonacciMesh(
+            max_angle=0.3,
+            phi_offset=0,
+            gamma_offset=0,
+            sampling=self.sampling,
+            rotation_angle=0
+        )
+
+        scalar_fields = numpy.zeros([len(self.mode_number), self.sampling]).astype(complex)
+
+        for idx, mode_name in enumerate(self.mode_number):
+            x_number, y_number, rotation_angle = self.interpret_mode_name(mode_name)
+
+            scalar_fields[idx] = hermite_gauss.interpolate_from_fibonacci_mesh(
+                fibonacci_mesh=proxy_fibonacci_mesh,
+                x_number=x_number,
+                y_number=y_number,
+            )
+
+        self.scalarfield = units.Custom(
+            long_label='Field',
+            short_label='field',
+            base_values=scalar_fields,
+            value_representation=self.mode_number
+        )
+
+
+@dataclass
+class LGMode(BaseDetector):
+    mode_number: Iterable
+    """ List of mode to be used. """
+    coupling_mode: str = 'point'
+    """ Method for computing mode coupling. Either point or Mean. """
+    coherent: bool = field(default=True, init=False)
+    """ Describe the detection scheme coherent or uncoherent. """
+    name: str = field(default="LPMode", init=False)
+    """ name of the set """
+
+    def compute_scalar_fields(self) -> numpy.ndarray:
+        """
+        Loads and generates complex scalar field arrays representing the specified LP modes. This method
+        overrides the BaseDetector's compute_scalar_fields to cater specifically to LPMode detectors.
+
+        Returns:
+            numpy.ndarray: An array of complex scalar fields representing the LP modes involved in the detection.
+        """
+        self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
+
+        proxy_fibonacci_mesh = CPPFibonacciMesh(
+            max_angle=0.3,
+            phi_offset=0,
+            gamma_offset=0,
+            sampling=self.sampling,
+            rotation_angle=0
+        )
+
+        scalar_fields = numpy.zeros([len(self.mode_number), self.sampling]).astype(complex)
+
+        for idx, mode_name in enumerate(self.mode_number):
+            azimuthal_number, radial_number, rotation_angle = self.interpret_mode_name(mode_name)
+
+            scalar_fields[idx] = laguerre_gauss.interpolate_from_fibonacci_mesh(
+                fibonacci_mesh=proxy_fibonacci_mesh,
+                azimuthal_number=azimuthal_number,
+                radial_number=radial_number,
+            )
+
+        self.scalarfield = units.Custom(
+            long_label='Field',
+            short_label='field',
+            base_values=scalar_fields,
             value_representation=self.mode_number
         )

@@ -15,7 +15,7 @@ from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.tools.special_functions import NA_to_angle
-from PyMieSim.tools.modes import hermite_gauss, laguerre_gauss, linearly_polarized
+from PyMieSim.modes import hermite_gauss, laguerre_gauss, linearly_polarized
 
 from MPSPlots.render3D import SceneList as SceneList3D
 
@@ -28,7 +28,6 @@ class GenericDetector():
 
     def __init__(self, **kwargs):
         self.initialize_attributes(**kwargs)
-        self.initialize()
 
     def initialize_attributes(self, **kwargs):
         """
@@ -37,14 +36,24 @@ class GenericDetector():
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    def initialize(self):
+    def initialize(self, far_field: numpy.ndarray | None = None) -> None:
         """
         Perform initial setup by setting max angle based on NA, converting
         polarization_filter to float, and binding C++ backend.
         """
         self.max_angle = NA_to_angle(NA=self.NA)
+
         self.polarization_filter = numpy.float64(self.polarization_filter)
+
         self.set_cpp_binding()
+
+        if far_field is None:
+            far_field = numpy.ones(self.sampling)
+
+        self.cpp_binding.state.scalar_field = far_field
+
+        if self.rotation_angle != 0:
+            self.rotate_around_axis(self.rotation_angle)
 
     def set_cpp_binding(self):
         """
@@ -144,6 +153,37 @@ class GenericDetector():
 
         return figure
 
+    def interpret_mode_name(self, mode_name: str) -> tuple[int, int, float]:
+        """
+        Intepret the mode_number parameter to check if there is a rotation associated
+
+        :returns:   The two mode numbers plus rotation angle
+        :rtype:     tuple[int, int, float]
+        """
+        assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or 'HG11:90 (rotation of 90 degree)'"
+        if ':' not in mode_name:
+            mode_name += ':0'
+
+        split = mode_name.split(':')
+
+        mode_name, rotation_angle = split
+
+        number_0, number_1 = mode_name[-2:]
+
+        number_0, number_1 = int(number_0), int(number_1)
+
+        rotation_angle = float(rotation_angle)
+
+        return number_0, number_1, rotation_angle
+
+
+class CoherentGenericDetector(GenericDetector):
+    def __post_init__(self):
+        if self.NA > 0.3 or self.NA < 0:
+            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
+
+        super().__init__()
+
 
 @dataclass
 class Photodiode(GenericDetector):
@@ -164,12 +204,12 @@ class Photodiode(GenericDetector):
     coherent: bool = field(default=False, init=False)
     """ Indicate if the coupling mechanism is coherent or not """
     coupling_mode: str = field(default='point', init=False)
-    """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
+    """ Indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
+    rotation_angle: str = field(default=0, init=False)
+    """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
-        self.rotation_angle = 0
-
-        super().initialize()
+        self.initialize()
 
         self.cpp_binding.state.scalar_field = numpy.ones(self.sampling, dtype=complex)
 
@@ -197,11 +237,11 @@ class IntegratingSphere(GenericDetector):
     """ Indicate if the coupling mechanism is coherent or not """
     coupling_mode: str = field(default='point', init=False)
     """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
+    rotation_angle: str = field(default=0, init=False)
+    """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
-        self.rotation_angle = 0
-
-        super().initialize()
+        self.initialize()
 
         self.cpp_binding.state.scalar_field = numpy.ones(self.sampling, dtype=complex)
 
@@ -210,7 +250,7 @@ class IntegratingSphere(GenericDetector):
 
 
 @dataclass
-class HGMode(GenericDetector):
+class HGMode(CoherentGenericDetector):
     """
     Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
     and thus, dependent of the phase of the impinging scattered light field.
@@ -233,55 +273,33 @@ class HGMode(GenericDetector):
     """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
-        if self.NA > 0.3 or self.NA < 0:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
+        super().__post_init__()
 
-        self.interpret_mode_name()
+        self.x_number, self.y_number, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
 
-        super().initialize()
+        self.initialize()
 
         farfield = hermite_gauss.interpolate_from_fibonacci_mesh(
             fibonacci_mesh=self.cpp_binding.state.mesh,
-            n=self.n,
-            m=self.m,
+            x_number=self.x_number,
+            y_number=self.y_number,
         )
 
         self.cpp_binding.state.scalar_field = farfield
 
         if self.rotation_angle != 0:
             self.rotate_around_axis(self.rotation_angle)
-
-    def interpret_mode_name(self) -> None:
-        """
-        Intepret the mode_number parameter to check if there is a rotation associated
-
-        :returns:   { description_of_the_return_value }
-        :rtype:     None
-        """
-        assert isinstance(self.mode_number, str), "Mode number must be a string. Example 'LP01' or 'LP11:90 (rotation of 90 degree)'"
-        if ':' not in self.mode_number:
-            self.mode_number += ':0'
-
-        split = self.mode_number.split(':')
-
-        self.mode_number, rotation_angle = split
-
-        n, m = self.mode_number[-2:]
-
-        self.n, self.m = int(n), int(m)
-
-        self.rotation_angle = float(rotation_angle)
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return hermite_gauss.interpolate_from_structured_mesh(
             sampling=sampling,
-            n=self.n,
-            m=self.m
+            x_number=self.x_number,
+            y_number=self.y_number
         )
 
 
 @dataclass
-class LGMode(GenericDetector):
+class LGMode(CoherentGenericDetector):
     """
     Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
     and thus, dependent of the phase of the impinging scattered light field.
@@ -304,17 +322,16 @@ class LGMode(GenericDetector):
     """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
-        if self.NA > 0.3 or self.NA < 0:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
+        super().__post_init__()
 
-        self.interpret_mode_name()
+        self.azimuthal_number, self.radial_number, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
 
-        super().initialize()
+        self.initialize()
 
         farfield = laguerre_gauss.interpolate_from_fibonacci_mesh(
             fibonacci_mesh=self.cpp_binding.state.mesh,
-            p=self.p,
-            l=self.l,
+            azimuthal_number=self.azimuthal_number,
+            radial_number=self.radial_number,
         )
 
         self.cpp_binding.state.scalar_field = farfield
@@ -322,37 +339,16 @@ class LGMode(GenericDetector):
         if self.rotation_angle != 0:
             self.rotate_around_axis(self.rotation_angle)
 
-    def interpret_mode_name(self) -> None:
-        """
-        Intepret the mode_number parameter to check if there is a rotation associated
-
-        :returns:   { description_of_the_return_value }
-        :rtype:     None
-        """
-        assert isinstance(self.mode_number, str), "Mode number must be a string. Example 'LP01' or 'LP11:90 (rotation of 90 degree)'"
-        if ':' not in self.mode_number:
-            self.mode_number += ':0'
-
-        split = self.mode_number.split(':')
-
-        self.mode_number, rotation_angle = split
-
-        p, l = self.mode_number[-2:]
-
-        self.p, self.l = int(p), int(l)
-
-        self.rotation_angle = float(rotation_angle)
-
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return laguerre_gauss.interpolate_from_structured_mesh(
             sampling=sampling,
-            p=self.p,
-            l=self.l
+            azimuthal_number=self.azimuthal_number,
+            radial_number=self.radial_number
         )
 
 
 @dataclass
-class LPMode(GenericDetector):
+class LPMode(CoherentGenericDetector):
     """
     Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
     and thus, dependent of the phase of the impinging scattered light field.
@@ -369,23 +365,22 @@ class LPMode(GenericDetector):
     """ Sampling of the farfield distribution """
     polarization_filter: float = None
     """ Angle [Degree] of polarization filter in front of detector. """
-    coupling_mode: str = 'Point'
+    coupling_mode: str = 'point'
     """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
     coherent: bool = field(default=True, init=False)
     """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
-        if self.NA > 0.3 or self.NA < 0:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
+        super().__post_init__()
 
-        self.interpret_mode_name()
+        self.azimuthal_number, self.radial_number, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
 
-        super().initialize()
+        self.initialize()
 
         farfield = linearly_polarized.interpolate_from_fibonacci_mesh(
             fibonacci_mesh=self.cpp_binding.state.mesh,
-            l=self.l,
-            m=self.m,
+            azimuthal_number=self.azimuthal_number,
+            radial_number=self.radial_number,
         )
 
         self.cpp_binding.state.scalar_field = farfield
@@ -396,29 +391,8 @@ class LPMode(GenericDetector):
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return linearly_polarized.interpolate_from_structured_mesh(
             sampling=sampling,
-            l=self.l,
-            m=self.m
+            azimuthal_number=self.azimuthal_number,
+            radial_number=self.radial_number
         )
-
-    def interpret_mode_name(self) -> None:
-        """
-        Intepret the mode_number parameter to check if there is a rotation associated
-
-        :returns:   { description_of_the_return_value }
-        :rtype:     None
-        """
-        assert isinstance(self.mode_number, str), "Mode number must be a string. Example 'LP01' or 'LP11:90 (rotation of 90 degree)'"
-        if ':' not in self.mode_number:
-            self.mode_number += ':0'
-
-        split = self.mode_number.split(':')
-
-        self.mode_number, rotation_angle = split
-
-        l, m = self.mode_number[-2:]
-
-        self.l, self.m = int(l), int(m)
-
-        self.rotation_angle = float(rotation_angle)
 
 # -

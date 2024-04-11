@@ -1,61 +1,68 @@
-from PyMieSim.single.detector import HGMode
+"""
+Sphere: Coupling vs wavelength
+==============================
+"""
 
-test = HGMode(
-    mode_number='HG00',
-    NA=0.2,
-    gamma_offset=0,
-    phi_offset=0
+
+# %%
+# Importing the package dependencies: numpy, PyMieSim
+import numpy as np
+
+from PyMieSim.experiment.detector import LGMode
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+
+from PyMieSim import measure
+from PyMieSim.materials import BK7
+
+# %%
+# Defining the source to be employed.
+source_set = Gaussian(
+    wavelength=np.linspace(950e-9, 1050e-9, 200),
+    polarization_value=0,
+    polarization_type='linear',
+    optical_power=1e-3,
+    NA=0.2
 )
 
-# from PyMieSim.binary.DetectorInterface import BindedDetector
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer_set = Sphere(
+    diameter=5000e-9,
+    material=BK7,
+    n_medium=1,
+    source_set=source_set
+)
 
+# %%
+# Defining the detector to be employed.
+detector_set = LGMode(
+    mode_number=["LG11:00", "LG11:120"],
+    NA=0.05,
+    phi_offset=-180,
+    gamma_offset=0,
+    polarization_filter=None,
+    sampling=300
+)
 
-# from MPSPlots.render3D import SceneList as SceneList3D
-# from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh
-# import numpy
+# %%
+# Defining the experiment setup
+experiment = Setup(
+    scatterer_set=scatterer_set,
+    source_set=source_set,
+    detector_set=detector_set
+)
 
-# from scipy.linalg import norm
+# %%
+# Measuring the properties
+data = experiment.get(measure.coupling)
 
+# %%
+# Plotting the results
+figure = data.plot(
+    x=source_set.wavelength,
+    std=scatterer_set.diameter
+)
 
-# from PyMieSim.tools.modes.laguerre_gauss import interpolate_from_fibonacci_mesh
-
-
-# fibonacci_mesh = CPPFibonacciMesh(
-#     sampling=1500,
-#     max_angle=0.3,
-#     phi_offset=0,
-#     gamma_offset=0,
-#     rotation_angle=0
-# )
-
-
-# coordinate = numpy.row_stack((
-#     fibonacci_mesh.x,
-#     fibonacci_mesh.y,
-#     fibonacci_mesh.z
-# ))
-
-# mode_field = interpolate_from_fibonacci_mesh(
-#     fibonacci_mesh=fibonacci_mesh,
-#     p=3,
-#     l=0,
-#     waist_radius=0.08,
-# )
-# print("Mode Field Amplitudes:", norm(mode_field))
-
-# figure = SceneList3D()
-
-
-# ax = figure.append_ax()
-
-# ax.add_unstructured_mesh(
-#     coordinates=coordinate,
-#     scalar_coloring=mode_field,
-#     symmetric_map=True,
-#     symmetric_colormap=True
-# )
-
-# figure.show()
-
-
-# -
+_ = figure.show()

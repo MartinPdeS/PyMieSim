@@ -8,9 +8,9 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import LPMode
 
 mode_numbers = [
-    "LP01",
-    "LP11",
-    "LP21"
+    "LP01:00",
+    "LP11:45",
+    "LP21:90"
 ]
 
 

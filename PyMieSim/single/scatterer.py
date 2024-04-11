@@ -26,22 +26,9 @@ class GenericScatterer():
     """
     def print_properties(self) -> None:
         property_names = [
-            "size_parameter",
-            "area",
-            "index",
-            "Qsca",
-            "Qext",
-            "Qabs",
-            "Qback",
-            "Qratio",
-            "Qpr",
-            "Csca",
-            "Cext",
-            "Cabs",
-            "Cback",
-            "Cratio",
-            "Cpr",
-            "g",
+            "size_parameter", "area", "index", "Qsca", "Qext",
+            "Qabs", "Qback", "Qratio", "Qpr", "Csca",
+            "Cext", "Cabs", "Cback", "Cratio", "Cpr", "g",
         ]
 
         data = [getattr(self, name) for name in property_names]
@@ -54,75 +41,75 @@ class GenericScatterer():
         print(table)
 
     @property
-    def size_parameter(self):
+    def size_parameter(self) -> float:
         return self.Bind.size_parameter
 
     @property
-    def area(self):
+    def area(self) -> float:
         return self.Bind.area
 
     @property
-    def Qsca(self):
+    def Qsca(self) -> float:
         """ Scattering efficiency. """
         return self.Bind.Qsca
 
     @property
-    def Qext(self):
+    def Qext(self) -> float:
         """ Extinction efficiency. """
         return self.Bind.Qext
 
     @property
-    def Qabs(self):
+    def Qabs(self) -> float:
         """ Absorption efficiency. """
         return self.Bind.Qabs
 
     @property
-    def Qback(self):
+    def Qback(self) -> float:
         """ Backscattering efficiency. """
         return self.Bind.Qback
 
     @property
-    def Qratio(self):
+    def Qratio(self) -> float:
         """ Efficiency: Ratio of backscattering over total scattering. """
         return self.Bind.Qback / self.Bind.Qsca
 
     @property
-    def g(self):
+    def g(self) -> float:
         """ Anisotropy factor. """
         return self.Bind.g
 
     @property
-    def Qpr(self):
+    def Qpr(self) -> float:
         """ Radiation pressure efficiency. """
         return self.Bind.Qpr
 
     @property
-    def Csca(self):
+    def Csca(self) -> float:
         """ Scattering cross-section. """
         return self.Bind.Csca
 
     @property
-    def Cext(self):
+    def Cext(self) -> float:
         """ Extinction cross-section. """
         return self.Bind.Cext
 
     @property
-    def Cabs(self):
+    def Cabs(self) -> float:
         """ Absorption cross-section. """
         return self.Bind.Cabs
 
     @property
-    def Cpr(self):
+    def Cpr(self) -> float:
         """ Radiation pressure cross-section. """
         return self.Bind.Cpr
 
     @property
-    def Cback(self):
+    def Cback(self) -> float:
         """ Backscattering cross-section. """
         return self.Bind.Cback
 
     @property
-    def Cratio(self):
+    def Cratio(self) -> float:
         """ Ratio of backscattering cross-section over total scattering. """
         return self.Bind.Cback / self.Bind.Csca
 

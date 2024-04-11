@@ -97,7 +97,7 @@ class Stokes(BaseRepresentation):
         """
         intensity = numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2
 
-        self.I = intensity / numpy.max(intensity)
+        self.I = intensity / numpy.max(intensity)  # noqa: E741
         self.Q = (numpy.abs(self.E_phi)**2 - numpy.abs(self.E_theta)**2) / intensity
         self.U = (+2 * numpy.real(self.E_phi * self.E_theta.conjugate())) / intensity
         self.V = (-2 * numpy.imag(self.E_phi * self.E_theta.conjugate())) / intensity
@@ -380,12 +380,10 @@ class Footprint():
     """
     detector: Photodiode | LPmode | IntegratingSphere
     scatterer: Sphere | CoreShell | Cylinder
-    sampling: int = 500
+    sampling: int = 200
     padding_factor: int = 20
 
     def __post_init__(self):
-        assert self.sampling == 500, "Only a sampling of 500 is available for the moment."
-
         self.compute_footprint()
 
     def compute_footprint(self):

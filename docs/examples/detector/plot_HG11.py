@@ -1,8 +1,8 @@
 """
-Hermite-Gauss 11 Mode Detector
+Hermite-Gauss 31 Mode Detector
 ==============================
 
-This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.
+This example demonstrates the initialization and visualization of HG31 Mode detector using PyMieSim.
 """
 
 # %%
@@ -12,7 +12,7 @@ from PyMieSim.single.detector import HGMode
 # %%
 # Initializing the detector
 detector = HGMode(
-    mode_number="HG11",  # Specifying LP01 mode
+    mode_number="HG31",  # Specifying LP01 mode
     sampling=500,  # Number of sampling points
     NA=0.5,  # Numerical Aperture
     gamma_offset=0,  # Gamma offset
