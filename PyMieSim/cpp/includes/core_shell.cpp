@@ -27,6 +27,7 @@ namespace CORESHELL
     }
 
     void Scatterer::compute_area(){
+        
         this->area = PI * pow(state.shell_diameter/2.0, 2);
     }
 
@@ -128,10 +129,10 @@ namespace CORESHELL
             Mu.push_back( cos( phi-PI/2.0 ) );
 
 
-        for (uint i = 0; i < Phi.size(); i++){
+        for (unsigned int i = 0; i < Phi.size(); i++){
             auto [pin, taun] = VSH::SPHERICAL::MiePiTau( Mu[i], max_order);
 
-            for (uint m = 0; m < max_order ; m++){
+            for (unsigned int m = 0; m < max_order ; m++){
                 S1[i]    += Prefactor[m] * ( an[m] * pin[m] +  bn[m] * taun[m] );
                 S2[i]    += Prefactor[m] * ( an[m] * taun[m] + bn[m] * pin[m]  );
             }

@@ -135,7 +135,7 @@ namespace CYLINDER
         T1(phi.size()),
         T2(phi.size());
 
-        for (uint i = 0; i < phi.size(); i++){
+        for (unsigned int i = 0; i < phi.size(); i++){
             T1[i] = b1n[0];
             T2[i] = a2n[0];
             for (size_t order = 1; order < max_order ; order++){
