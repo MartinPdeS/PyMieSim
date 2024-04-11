@@ -303,7 +303,8 @@ class Experiment
 
                 // py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
-                py::array_t<complex128> scalar_field(detectorSet.scalar_fields.shape(1));
+                // py::array_t<complex128> scalar_field(detectorSet.scalar_fields.shape(1));
+
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
                     sourceSet.jones_vector[j],
