@@ -2,7 +2,7 @@
 addopts = [
     "--import-mode=importlib",
     '-v',
-    '-ra',
+    '-rA',
 ]
 
 testpaths = [

@@ -3,7 +3,7 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan and std::pow
-#include <iostream>
+// #include <iostream>
 #include "special_function.cpp"
 #include "fibonacci_mesh.cpp"
 #include "utils.cpp"
@@ -56,7 +56,7 @@ namespace DETECTOR {
               coherent(coherent), point_coupling(point_coupling), sampling(sampling)
             {
                 this->max_angle = NA2Angle(this->NA);
-                std::cout<<sampling<<"\n";
+                // std::cout<<sampling<<"\n";
 
                 this->fibonacci_mesh = FibonacciMesh(
                     this->sampling,
