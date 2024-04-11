@@ -38,13 +38,13 @@ namespace DETECTOR {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = this->scalar_field.size();
 
-                this->fibonacci_mesh = FibonacciMesh(
-                    this->sampling,
-                    this->max_angle,
-                    this->phi_offset,
-                    this->gamma_offset,
-                    this->rotation_angle
-                );
+                // this->fibonacci_mesh = FibonacciMesh(
+                //     this->sampling,
+                //     this->max_angle,
+                //     this->phi_offset,
+                //     this->gamma_offset,
+                //     this->rotation_angle
+                // );
 
             }
 
