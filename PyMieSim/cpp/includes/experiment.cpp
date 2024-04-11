@@ -300,7 +300,7 @@ class Experiment
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(0, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
