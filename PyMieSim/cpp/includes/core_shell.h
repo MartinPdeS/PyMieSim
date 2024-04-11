@@ -44,7 +44,8 @@
             bool bounded_core;
             bool bounded_shell;
 
-            std::vector<State> state_list;
+            std::vector<size_t> shape;
+            size_t size = 1;
 
             Set() = default;
 
@@ -55,14 +56,19 @@
                 const std::vector<complex128> &shell_index,
                 const std::vector<double> &n_medium)
             :
-                core_diameter(core_diameter),
-                shell_width(shell_width),
-                core_index(core_index),
-                shell_index(shell_index),
-                n_medium(n_medium)
+                core_diameter(core_diameter), shell_width(shell_width), core_index(core_index),
+                shell_index(shell_index), n_medium(n_medium), bounded_core(false), bounded_shell(false)
             {
-                bounded_core = false;
-                bounded_shell = false;
+                this->shape = {
+                    this->core_diameter.size(),
+                    this->shell_width.size(),
+                    this->core_index.size(),
+                    this->shell_index.size(),
+                    this->n_medium.size()
+                };
+
+                for (size_t e: shape)
+                    this->size *= e;
             }
 
             Set(
@@ -72,14 +78,19 @@
                 const std::vector<std::vector<complex128>> &shell_material,
                 const std::vector<double> &n_medium)
             :
-                core_diameter(core_diameter),
-                shell_width(shell_width),
-                core_index(core_index),
-                shell_material(shell_material),
-                n_medium(n_medium)
+                core_diameter(core_diameter), shell_width(shell_width), core_index(core_index),
+                shell_material(shell_material), n_medium(n_medium), bounded_core(false), bounded_shell(true)
             {
-                bounded_core = false;
-                bounded_shell = true;
+                this->shape = {
+                    this->core_diameter.size(),
+                    this->shell_width.size(),
+                    this->core_index.size(),
+                    this->shell_material.size(),
+                    this->n_medium.size()
+                };
+
+                for (size_t e: shape)
+                    this->size *= e;
             }
 
             Set(
@@ -89,14 +100,19 @@
                 const std::vector<complex128> &shell_index,
                 const std::vector<double> &n_medium)
             :
-                core_diameter(core_diameter),
-                shell_width(shell_width),
-                shell_index(shell_index),
-                core_material(core_material),
-                n_medium(n_medium)
+                core_diameter(core_diameter), shell_width(shell_width), shell_index(shell_index),
+                core_material(core_material), n_medium(n_medium), bounded_core(true), bounded_shell(false)
             {
-                bounded_core = true;
-                bounded_shell = false;
+                this->shape = {
+                    this->core_diameter.size(),
+                    this->shell_width.size(),
+                    this->core_material.size(),
+                    this->shell_index.size(),
+                    this->n_medium.size()
+                };
+
+                for (size_t e: shape)
+                    this->size *= e;
             }
 
             Set(
@@ -106,68 +122,19 @@
                 const std::vector<std::vector<complex128>> &shell_material,
                 const std::vector<double> &n_medium)
             :
-                core_diameter(core_diameter),
-                shell_width(shell_width),
-                core_material(core_material),
-                shell_material(shell_material),
-                n_medium(n_medium)
+                core_diameter(core_diameter), shell_width(shell_width), core_material(core_material),
+                shell_material(shell_material), n_medium(n_medium), bounded_core(true), bounded_shell(true)
             {
-                bounded_core = true;
-                bounded_shell = true;
-            }
+                this->shape = {
+                    this->core_diameter.size(),
+                    this->shell_width.size(),
+                    this->core_material.size(),
+                    this->shell_material.size(),
+                    this->n_medium.size()
+                };
 
-            State operator[](const size_t &idx){return this->state_list[idx];}
-
-            std::vector<size_t> get_array_shape() const
-            {
-
-                if (this->bounded_core && this->bounded_shell)
-                    return {
-                        this->core_diameter.size(),
-                        this->shell_width.size(),
-                        this->core_material.size(),
-                        this->shell_material.size(),
-                        this->n_medium.size()
-                    };
-
-                if (this->bounded_core && !this->bounded_shell)
-                    return {
-                        this->core_diameter.size(),
-                        this->shell_width.size(),
-                        this->core_material.size(),
-                        this->shell_index.size(),
-                        this->n_medium.size()
-                    };
-
-                if (!this->bounded_core && this->bounded_shell)
-                    return {
-                        this->core_diameter.size(),
-                        this->shell_width.size(),
-                        this->core_index.size(),
-                        1,
-                        this->n_medium.size()
-                    };
-
-                if (!this->bounded_core && !this->bounded_shell)
-                    return {
-                        this->core_diameter.size(),
-                        this->shell_width.size(),
-                        this->core_index.size(),
-                        this->shell_index.size(),
-                        this->n_medium.size()
-                    };
-            }
-
-            size_t get_array_size() const
-            {
-                std::vector<size_t>
-                    full_shape = this->get_array_shape();
-
-                size_t full_size = 1;
-                for (auto e: full_shape)
-                    full_size *= e;
-
-                return full_size;
+                for (size_t e: shape)
+                    this->size *= e;
             }
     };
 

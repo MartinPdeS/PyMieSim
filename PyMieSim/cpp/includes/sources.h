@@ -31,32 +31,22 @@ namespace SOURCE {
             std::vector<double> wavelength;
             std::vector<double> amplitude;
             std::vector<std::vector<complex128>> jones_vector;
-            std::vector<State> state_list;
+
+            std::vector<size_t> shape;
+            size_t size = 1;
 
             Set() = default;
 
-            Set(const std::vector<double> &wavelength,
+            Set(
+                const std::vector<double> &wavelength,
                 const std::vector<std::vector<complex128>> &jones_vector,
-                const std::vector<double> &amplitude)
-            : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude){}
-
-            State operator[](const size_t &idx){return this->state_list[idx];}
-
-            std::vector<size_t> get_array_shape() const
+                const std::vector<double> &amplitude
+            ) : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
             {
-                return {this->wavelength.size(), this->jones_vector.size()};
-            }
+                this->shape = {this->wavelength.size(), this->jones_vector.size()};
 
-            size_t get_array_size() const
-            {
-                std::vector<size_t> full_shape = this->get_array_shape();
-
-                size_t full_size = 1;
-
-                for (auto e: full_shape)
-                    full_size *= e;
-
-                return full_size;
+                for (size_t e: shape)
+                    this->size *= e;
             }
     };
 
@@ -69,8 +59,11 @@ namespace SOURCE {
 
         Source() = default;
 
-        Source(double wavelength, double polarization, double amplitude)
-            : wavelength(wavelength), polarization(polarization), amplitude(amplitude) {
+        Source(
+            double wavelength,
+            double polarization,
+            double amplitude
+        ) : wavelength(wavelength), polarization(polarization), amplitude(amplitude) {
             this->k = 2 * PI / this->wavelength;
         }
 

@@ -78,7 +78,8 @@ namespace DETECTOR {
             bool coherent;
             bool point_coupling;
 
-            std::vector<State> state_list;
+            std::vector<size_t> shape;
+            size_t size = 1;
 
             Set() = default;
 
@@ -91,25 +92,13 @@ namespace DETECTOR {
                 const bool &coherent,
                 const bool &point_coupling)
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling){}
+              polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
+              {
+                this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
 
-            // State operator[](const size_t &idx){return this->state_list[idx];}
-
-            std::vector<size_t> get_array_shape() const
-            {
-                return {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
-            }
-
-            size_t get_array_size() const
-            {
-                std::vector<size_t> full_shape = this->get_array_shape();
-
-                size_t full_size = 1;
-                for (size_t e: full_shape)
-                    full_size *= e;
-
-                return full_size;
-            }
+                for (size_t e: shape)
+                    this->size *= e;
+              }
     };
 
     class Detector {

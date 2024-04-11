@@ -26,62 +26,37 @@ namespace CYLINDER
         public:
             std::vector<double> diameter;
             std::vector<double> n_medium;
-
             std::vector<complex128> index;
-
             std::vector<std::vector<complex128>> material;
-
             bool bounded_index;
 
-            std::vector<State> state_list;
+            std::vector<size_t> shape;
+            size_t size = 1;
+
 
             Set() = default;
             Set(
                 const std::vector<double> &diameter,
                 const std::vector<std::vector<complex128>> &material,
                 const std::vector<double> &n_medium
-            ) : diameter(diameter), material(material), n_medium(n_medium)
+            ) : diameter(diameter), material(material), n_medium(n_medium), bounded_index(true)
             {
-                bounded_index = true;
+                this->shape = {this->diameter.size(), this->material.size(), this->n_medium.size()};
+
+                for (size_t e: shape)
+                    this->size *= e;
             }
 
             Set(
                 const std::vector<double> &diameter,
                 const std::vector<complex128> &index,
                 const std::vector<double> &n_medium
-            ) : diameter(diameter), index(index), n_medium(n_medium)
+            ) : diameter(diameter), index(index), n_medium(n_medium), bounded_index(false)
             {
-                bounded_index = false;
-            }
+                this->shape = {this->diameter.size(), this->index.size(), this->n_medium.size()};
 
-            State operator[](const size_t &idx){return this->state_list[idx];}
-
-            std::vector<size_t> get_array_shape() const
-            {
-                if (this->bounded_index)
-                    return {
-                        this->diameter.size(),
-                        this->material.size(),
-                        this->n_medium.size()
-                    };
-
-                if (!this->bounded_index)
-                    return {
-                        this->diameter.size(),
-                        this->index.size(),
-                        this->n_medium.size()
-                    };
-
-            }
-
-            size_t get_array_size() const
-            {
-                std::vector<size_t> full_shape = this->get_array_shape();
-                size_t full_size = 1;
-                for (auto e: full_shape)
-                    full_size *= e;
-
-                return full_size;
+                for (size_t e: shape)
+                    this->size *= e;
             }
     };
 
