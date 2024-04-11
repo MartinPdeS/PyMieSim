@@ -36,7 +36,7 @@ namespace DETECTOR {
             {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = this->scalar_field.request().size;
-                std::cout<<sampling<<"\n";
+                // std::cout<<sampling<<"\n";
                 this->scalar_field = scalar_field;
 
                 this->fibonacci_mesh = FibonacciMesh(
