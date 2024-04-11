@@ -46,17 +46,14 @@ namespace SPHERE
             Set(
                 const std::vector<double> &diameter,
                 const std::vector<std::vector<complex128>> &material,
-                const std::vector<double> &n_medium) :
-                diameter(diameter), material(material), n_medium(n_medium)
-            {
-                bounded_index = true;
-            }
+                const std::vector<double> &n_medium
+            ) : diameter(diameter), material(material), n_medium(n_medium), bounded_index(true){}
 
-            Set(const std::vector<double> &diameter, const std::vector<complex128> &index, const std::vector<double> &n_medium) :
-            diameter(diameter), index(index), n_medium(n_medium)
-            {
-                bounded_index = false;
-            }
+            Set(
+                const std::vector<double> &diameter,
+                const std::vector<complex128> &index,
+                const std::vector<double> &n_medium
+            ) : diameter(diameter), index(index), n_medium(n_medium), bounded_index(false){}
 
             State operator[](const size_t &idx){return this->state_list[idx];}
 
