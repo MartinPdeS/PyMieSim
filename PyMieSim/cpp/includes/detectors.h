@@ -52,10 +52,9 @@ namespace DETECTOR {
               double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
             : NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
-              coherent(coherent), point_coupling(point_coupling)
+              coherent(coherent), point_coupling(point_coupling), sampling(sampling)
             {
                 this->max_angle = NA2Angle(this->NA);
-                this->sampling = sampling;
 
                 // this->fibonacci_mesh = FibonacciMesh(
                 //     this->sampling,
@@ -71,7 +70,6 @@ namespace DETECTOR {
     {
         public:
             py::array_t<complex128> scalar_field;
-
             std::vector<double> NA;
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
