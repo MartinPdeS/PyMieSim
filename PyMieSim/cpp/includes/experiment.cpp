@@ -320,25 +320,22 @@ class Experiment
                 );
 
 
-                DETECTOR::State detector_state  = DETECTOR::State(
-                    scalar_field,
-                    detectorSet.NA[na],
-                    detectorSet.phi_offset[p],
-                    detectorSet.gamma_offset[g],
-                    detectorSet.polarization_filter[f],
-                    detectorSet.rotation_angle[s],
-                    detectorSet.coherent,
-                    detectorSet.point_coupling
-                );
+                // DETECTOR::State detector_state  = DETECTOR::State(
+                //     scalar_field,
+                //     detectorSet.NA[na],
+                //     detectorSet.phi_offset[p],
+                //     detectorSet.gamma_offset[g],
+                //     detectorSet.polarization_filter[f],
+                //     detectorSet.rotation_angle[s],
+                //     detectorSet.coherent,
+                //     detectorSet.point_coupling
+                // );
 
-                SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-                    scatterer_state,
-                    source_state
-                );
+                // SPHERE::Scatterer scatterer = SPHERE::Scatterer(scatterer_state, source_state);
 
-                DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
+                // DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
-                output_array[idx] = abs( detector.get_coupling(scatterer) );
+                // output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
             return vector_to_numpy(output_array, array_shape);
