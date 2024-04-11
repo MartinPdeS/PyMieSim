@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <complex>
-#include <iostream>
+// #include <iostream>
 #include <cmath> // For std::isnan and std::pow
 
 #include "special_function.cpp"
@@ -123,14 +123,15 @@ namespace DETECTOR {
 
         Detector(const State& state) : state(state) {}
 
-        Detector(const py::array_t<complex128>& scalar_field, double NA, double phi_offset,
-                 double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
-               : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
+        Detector(
+            const py::array_t<complex128>& scalar_field, double NA, double phi_offset,
+            double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling
+        ) : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
 
         Detector(
             size_t sampling, double NA, double phi_offset,
-            double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
-            : state(sampling, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
+            double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling
+        ) : state(sampling, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
 
         template <typename T>
         double get_coupling(T& scatterer) {
