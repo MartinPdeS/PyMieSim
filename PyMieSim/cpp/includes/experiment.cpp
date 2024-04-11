@@ -286,7 +286,9 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            // #pragma omp parallel for collapse(10)
+            pybind11::gil_scoped_release release;
+
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -302,10 +304,6 @@ class Experiment
 
 
                 py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
-
-                // py::array_t<double, py::array::c_style> tests(2);
-
-                // py::array_t<complex128> tests = py::array_t<complex128>(5);
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -340,6 +338,8 @@ class Experiment
 
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
+
+            pybind11::gil_scoped_acquire acquire;
 
             return vector_to_numpy(output_array, array_shape);
         }
