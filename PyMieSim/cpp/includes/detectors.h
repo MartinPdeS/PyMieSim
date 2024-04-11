@@ -93,7 +93,7 @@ namespace DETECTOR {
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling){}
 
-            State operator[](const size_t &idx){return this->state_list[idx];}
+            // State operator[](const size_t &idx){return this->state_list[idx];}
 
             std::vector<size_t> get_array_shape() const
             {
