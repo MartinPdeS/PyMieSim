@@ -94,8 +94,8 @@ namespace DETECTOR {
                 const std::vector<double> &polarization_filter,
                 const std::vector<double> &rotation_angle,
                 const bool &coherent,
-                const bool &point_coupling)
-            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+                const bool &point_coupling
+            ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling){}
 
             State operator[](const size_t &idx){return this->state_list[idx];}
@@ -110,7 +110,7 @@ namespace DETECTOR {
                 std::vector<size_t> full_shape = this->get_array_shape();
 
                 size_t full_size = 1;
-                for (auto e: full_shape)
+                for (size_t e: full_shape)
                     full_size *= e;
 
                 return full_size;

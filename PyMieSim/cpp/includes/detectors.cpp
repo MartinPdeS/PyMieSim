@@ -103,7 +103,7 @@ namespace DETECTOR {
 
     void Detector::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
     {
-        auto buffer_scalar_field = state.scalar_field.request();
+        py::buffer_info buffer_scalar_field = state.scalar_field.request();
 
         complex128 *scalar_field_ptr = (complex128 *) buffer_scalar_field.ptr;
 
