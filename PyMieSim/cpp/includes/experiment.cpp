@@ -339,7 +339,7 @@ class Experiment
                 output_array[idx] = abs( detector.get_coupling(scatterer) );
             }
 
-            pybind11::gil_scoped_acquire acquire;
+            pybind11::gil_scoped_acquire acquire; 
 
             return vector_to_numpy(output_array, array_shape);
         }
