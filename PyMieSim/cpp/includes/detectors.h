@@ -1,6 +1,7 @@
 #pragma once
 
 using namespace std;  // For the #include <iostream>
+#include <iostream>
 
 #include <vector>
 #include <complex>
@@ -70,7 +71,7 @@ namespace DETECTOR {
     class Set
     {
         public:
-            py::array_t<complex128> scalar_field;
+            py::array_t<complex128> scalar_fields;
             std::vector<double> NA;
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
@@ -84,7 +85,7 @@ namespace DETECTOR {
 
             Set() = default;
 
-            Set(const py::array_t<complex128> &scalar_field,
+            Set(const py::array_t<complex128> &scalar_fields,
                 const std::vector<double> &NA,
                 const std::vector<double> &phi_offset,
                 const std::vector<double> &gamma_offset,
@@ -92,14 +93,15 @@ namespace DETECTOR {
                 const std::vector<double> &rotation_angle,
                 const bool &coherent,
                 const bool &point_coupling)
-            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+            : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling){}
 
             State operator[](const size_t &idx){return this->state_list[idx];}
 
             std::vector<size_t> get_array_shape() const
             {
-                return {(size_t) this->scalar_field.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
+                std::cout<<this->scalar_fields.request().shape[0]<<"___________\n";
+                return {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
             }
 
             size_t get_array_size() const

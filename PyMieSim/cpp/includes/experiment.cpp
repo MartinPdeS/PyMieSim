@@ -305,7 +305,7 @@ class Experiment
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -373,7 +373,7 @@ class Experiment
             for (size_t f=0; f<array_shape[9]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -663,7 +663,7 @@ class Experiment
             for (size_t f=0; f<array_shape[9]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
 
                 SOURCE::State source_state = SOURCE::State(
@@ -734,7 +734,7 @@ class Experiment
             for (size_t f=0; f<array_shape[9]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1264,7 +1264,7 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1336,7 +1336,7 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1408,7 +1408,7 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1478,7 +1478,7 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_field[py::make_tuple(s, py::ellipsis())];
+                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
