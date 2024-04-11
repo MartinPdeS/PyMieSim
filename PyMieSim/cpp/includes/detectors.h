@@ -38,6 +38,8 @@ namespace DETECTOR {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = this->scalar_field.size();
 
+                this->fibonacci_mesh = FibonacciMesh(this->sampling, 0.3, 0, 0, 0);
+
                 // this->fibonacci_mesh = FibonacciMesh(
                 //     this->sampling,
                 //     this->max_angle,
@@ -55,6 +57,8 @@ namespace DETECTOR {
               coherent(coherent), point_coupling(point_coupling), sampling(sampling)
             {
                 this->max_angle = NA2Angle(this->NA);
+
+                this->fibonacci_mesh = FibonacciMesh(this->sampling, 0.3, 0, 0, 0);
 
                 // this->fibonacci_mesh = FibonacciMesh(
                 //     this->sampling,
