@@ -31,6 +31,57 @@ namespace SPHERE
 
     };
 
+    class Set
+    {
+        public:
+            std::vector<double> diameter;
+            std::vector<complex128> index;
+            std::vector<std::vector<complex128>> material;
+            std::vector<double> n_medium;
+            bool bounded_index;
+
+            std::vector<State> state_list;
+
+            Set() = default;
+            Set(
+                const std::vector<double> &diameter,
+                const std::vector<std::vector<complex128>> &material,
+                const std::vector<double> &n_medium) :
+                diameter(diameter), material(material), n_medium(n_medium)
+            {
+                bounded_index = true;
+            }
+
+            Set(const std::vector<double> &diameter, const std::vector<complex128> &index, const std::vector<double> &n_medium) :
+            diameter(diameter), index(index), n_medium(n_medium)
+            {
+                bounded_index = false;
+            }
+
+            State operator[](const size_t &idx){return this->state_list[idx];}
+
+            std::vector<size_t> get_array_shape() const
+            {
+                if (this->bounded_index)
+                    return {this->diameter.size(), this->material.size(), this->n_medium.size()};
+
+                if (!this->bounded_index)
+                    return {this->diameter.size(), this->index.size(), this->n_medium.size()};
+
+            }
+
+            size_t get_array_size() const
+            {
+                std::vector<size_t> full_shape = this->get_array_shape();
+                size_t full_size = 1;
+
+                for (auto e: full_shape)
+                    full_size *= e;
+
+                return full_size;
+            }
+    };
+
     class Scatterer: public ScatteringProperties
     {
 
@@ -44,14 +95,17 @@ namespace SPHERE
 
             Scatterer() = default;
 
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0)
-                : ScatteringProperties(wavelength, jones_vector, amplitude), state(diameter, index, n_medium) {
+            Scatterer(
+                double wavelength, double amplitude, double diameter, complex128 index,
+                double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0) :
+                ScatteringProperties(wavelength, jones_vector, amplitude), state(diameter, index, n_medium)
+            {
                 initialize(max_order);
             }
 
-            Scatterer(State &state, SOURCE::State &source, size_t max_order = 0)
-            : ScatteringProperties(source), state(state) {
+            Scatterer(State &state, SOURCE::State &source, size_t max_order = 0) :
+                ScatteringProperties(source), state(state)
+            {
                 this->initialize(max_order);
             }
 

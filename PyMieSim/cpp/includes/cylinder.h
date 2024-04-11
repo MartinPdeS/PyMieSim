@@ -1,5 +1,4 @@
-#ifndef CYLINDER_H
-#define CYLINDER_H
+#pragma once
 
 #include "base_scatterer.cpp"
 
@@ -22,6 +21,69 @@ namespace CYLINDER
         }
     };
 
+    class Set
+    {
+        public:
+            std::vector<double> diameter;
+            std::vector<double> n_medium;
+
+            std::vector<complex128> index;
+
+            std::vector<std::vector<complex128>> material;
+
+            bool bounded_index;
+
+            std::vector<State> state_list;
+
+            Set() = default;
+            Set(
+                const std::vector<double> &diameter,
+                const std::vector<std::vector<complex128>> &material,
+                const std::vector<double> &n_medium
+            ) : diameter(diameter), material(material), n_medium(n_medium)
+            {
+                bounded_index = true;
+            }
+
+            Set(
+                const std::vector<double> &diameter,
+                const std::vector<complex128> &index,
+                const std::vector<double> &n_medium
+            ) : diameter(diameter), index(index), n_medium(n_medium)
+            {
+                bounded_index = false;
+            }
+
+            State operator[](const size_t &idx){return this->state_list[idx];}
+
+            std::vector<size_t> get_array_shape() const
+            {
+                if (this->bounded_index)
+                    return {
+                        this->diameter.size(),
+                        this->material.size(),
+                        this->n_medium.size()
+                    };
+
+                if (!this->bounded_index)
+                    return {
+                        this->diameter.size(),
+                        this->index.size(),
+                        this->n_medium.size()
+                    };
+
+            }
+
+            size_t get_array_size() const
+            {
+                std::vector<size_t> full_shape = this->get_array_shape();
+                size_t full_size = 1;
+                for (auto e: full_shape)
+                    full_size *= e;
+
+                return full_size;
+            }
+    };
 
     class Scatterer: public ScatteringProperties
     {
@@ -76,4 +138,3 @@ namespace CYLINDER
 
 }
 
-#endif

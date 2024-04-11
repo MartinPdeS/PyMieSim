@@ -1,13 +1,6 @@
 #pragma once
 
-#include "special_function.cpp"
-#include "fibonacci_mesh.cpp"
-#include "utils.cpp"
 #include "detectors.h"
-
-#include <vector>
-#include <complex>
-#include <cmath> // For std::isnan and std::pow
 
 namespace DETECTOR {
 

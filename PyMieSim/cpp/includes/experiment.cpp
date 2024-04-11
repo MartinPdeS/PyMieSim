@@ -1,10 +1,12 @@
-#ifndef EXPERIMENT_H
-#define EXPERIMENT_H
+#pragma once
 
 #include "definitions.cpp"
 #include "numpy_interface.cpp"
-#include "sets.cpp"
-#include <iostream>
+#include "sources.cpp"
+#include "sphere.cpp"
+#include "cylinder.cpp"
+#include "core_shell.cpp"
+#include "detectors.cpp"
 
 
 class Experiment
@@ -1594,7 +1596,4 @@ pybind11::array_t<complex128> get_coreshell_a3() const { return get_coreshell_co
 pybind11::array_t<complex128> get_coreshell_b3() const { return get_coreshell_coefficient( &CORESHELL::Scatterer::get_bn, 3 ) ; }
 };
 
-
-
-#endif
 

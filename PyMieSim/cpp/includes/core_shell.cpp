@@ -1,8 +1,5 @@
 #pragma once
 
-#include "base_scatterer.cpp"
-#include "numpy_interface.cpp"
-#include "VSH.cpp"
 #include "core_shell.h"
 
 namespace CORESHELL

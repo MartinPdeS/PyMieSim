@@ -1,11 +1,13 @@
-#include "fibonacci_mesh.cpp"
-#include "utils.cpp"
-#include "numpy_interface.cpp"
-
+#pragma once
 
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan and std::pow
+
+#include "special_function.cpp"
+#include "fibonacci_mesh.cpp"
+#include "utils.cpp"
+#include "numpy_interface.cpp"
 
 namespace DETECTOR {
 

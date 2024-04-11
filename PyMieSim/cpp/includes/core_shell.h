@@ -31,6 +31,146 @@
         }
     };
 
+    class Set
+    {
+        public:
+            std::vector<double> core_diameter;
+            std::vector<double> shell_width;
+            std::vector<double> n_medium;
+            std::vector<complex128> core_index;
+            std::vector<complex128> shell_index;
+            std::vector<std::vector<complex128>> core_material;
+            std::vector<std::vector<complex128>> shell_material;
+            bool bounded_core;
+            bool bounded_shell;
+
+            std::vector<State> state_list;
+
+            Set() = default;
+
+            Set(
+                const std::vector<double> &core_diameter,
+                const std::vector<double> &shell_width,
+                const std::vector<complex128> &core_index,
+                const std::vector<complex128> &shell_index,
+                const std::vector<double> &n_medium)
+            :
+                core_diameter(core_diameter),
+                shell_width(shell_width),
+                core_index(core_index),
+                shell_index(shell_index),
+                n_medium(n_medium)
+            {
+                bounded_core = false;
+                bounded_shell = false;
+            }
+
+            Set(
+                const std::vector<double> &core_diameter,
+                const std::vector<double> &shell_width,
+                const std::vector<complex128> &core_index,
+                const std::vector<std::vector<complex128>> &shell_material,
+                const std::vector<double> &n_medium)
+            :
+                core_diameter(core_diameter),
+                shell_width(shell_width),
+                core_index(core_index),
+                shell_material(shell_material),
+                n_medium(n_medium)
+            {
+                bounded_core = false;
+                bounded_shell = true;
+            }
+
+            Set(
+                const std::vector<double> &core_diameter,
+                const std::vector<double> &shell_width,
+                const std::vector<std::vector<complex128>> &core_material,
+                const std::vector<complex128> &shell_index,
+                const std::vector<double> &n_medium)
+            :
+                core_diameter(core_diameter),
+                shell_width(shell_width),
+                shell_index(shell_index),
+                core_material(core_material),
+                n_medium(n_medium)
+            {
+                bounded_core = true;
+                bounded_shell = false;
+            }
+
+            Set(
+                const std::vector<double> &core_diameter,
+                const std::vector<double> &shell_width,
+                const std::vector<std::vector<complex128>> &core_material,
+                const std::vector<std::vector<complex128>> &shell_material,
+                const std::vector<double> &n_medium)
+            :
+                core_diameter(core_diameter),
+                shell_width(shell_width),
+                core_material(core_material),
+                shell_material(shell_material),
+                n_medium(n_medium)
+            {
+                bounded_core = true;
+                bounded_shell = true;
+            }
+
+            State operator[](const size_t &idx){return this->state_list[idx];}
+
+            std::vector<size_t> get_array_shape() const
+            {
+
+                if (this->bounded_core && this->bounded_shell)
+                    return {
+                        this->core_diameter.size(),
+                        this->shell_width.size(),
+                        this->core_material.size(),
+                        this->shell_material.size(),
+                        this->n_medium.size()
+                    };
+
+                if (this->bounded_core && !this->bounded_shell)
+                    return {
+                        this->core_diameter.size(),
+                        this->shell_width.size(),
+                        this->core_material.size(),
+                        this->shell_index.size(),
+                        this->n_medium.size()
+                    };
+
+                if (!this->bounded_core && this->bounded_shell)
+                    return {
+                        this->core_diameter.size(),
+                        this->shell_width.size(),
+                        this->core_index.size(),
+                        1,
+                        this->n_medium.size()
+                    };
+
+                if (!this->bounded_core && !this->bounded_shell)
+                    return {
+                        this->core_diameter.size(),
+                        this->shell_width.size(),
+                        this->core_index.size(),
+                        this->shell_index.size(),
+                        this->n_medium.size()
+                    };
+            }
+
+            size_t get_array_size() const
+            {
+                std::vector<size_t>
+                    full_shape = this->get_array_shape();
+
+                size_t full_size = 1;
+                for (auto e: full_shape)
+                    full_size *= e;
+
+                return full_size;
+            }
+    };
+
     class Scatterer: public ScatteringProperties
     {
         public:

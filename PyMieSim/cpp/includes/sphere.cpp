@@ -1,11 +1,5 @@
 #pragma once
 
-#include "base_scatterer.cpp"
-#include "numpy_interface.cpp"
-#include "VSH.cpp"
-#include <cmath>
-#include <vector>
-#include <complex>
 #include "sphere.h"
 
 namespace SPHERE
