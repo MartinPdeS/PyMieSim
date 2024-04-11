@@ -103,16 +103,11 @@ namespace DETECTOR {
 
     void Detector::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
     {
-        py::buffer_info buffer_scalar_field = state.scalar_field.request();
-
-        complex128 *scalar_field_ptr = (complex128 *) buffer_scalar_field.ptr;
-
         for (size_t i=0; i<field0.size(); i++)
         {
-            field0[i] *= scalar_field_ptr[i];
-            field1[i] *= scalar_field_ptr[i];
+            field0[i] *= state.scalar_field[i];
+            field1[i] *= state.scalar_field[i];
         }
-        scalar_field_ptr = NULL;
     }
 
     template <class T> inline

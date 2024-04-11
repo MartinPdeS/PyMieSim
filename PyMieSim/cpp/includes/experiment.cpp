@@ -300,9 +300,6 @@ class Experiment
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-                // for (auto e: {w, j, d, i, n, s, na, p, g, f})
-                //     printf("%ld\n", e);
-
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
                     sourceSet.jones_vector[j],
@@ -315,9 +312,8 @@ class Experiment
                     sphereSet.n_medium[n]
                 );
 
-
                 DETECTOR::State detector_state  = DETECTOR::State(
-                    detectorSet.scalar_field_list[s],
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -327,10 +323,7 @@ class Experiment
                     detectorSet.point_coupling
                 );
 
-                SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-                    scatterer_state,
-                    source_state
-                );
+                SPHERE::Scatterer scatterer = SPHERE::Scatterer(scatterer_state, source_state);
 
                 DETECTOR::Detector detector = DETECTOR::Detector(detector_state);
 
@@ -369,7 +362,6 @@ class Experiment
             for (size_t f=0; f<array_shape[9]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -385,7 +377,7 @@ class Experiment
 
 
                 DETECTOR::State detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -659,8 +651,6 @@ class Experiment
             for (size_t f=0; f<array_shape[9]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
-
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -675,7 +665,7 @@ class Experiment
                 );
 
                 DETECTOR::State detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -730,7 +720,6 @@ class Experiment
             for (size_t f=0; f<array_shape[9]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -745,7 +734,7 @@ class Experiment
                 );
 
                 DETECTOR::State detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -1260,7 +1249,6 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1277,7 +1265,7 @@ class Experiment
                 );
 
                 DETECTOR::State detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -1332,7 +1320,6 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1349,7 +1336,7 @@ class Experiment
                 );
 
                 DETECTOR::State detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -1404,7 +1391,6 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1421,7 +1407,7 @@ class Experiment
                 );
 
                 DETECTOR::State detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],
@@ -1474,7 +1460,6 @@ class Experiment
             for (size_t f=0; f<array_shape[11]; ++f)
             {
                 size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
-                py::array scalar_field = detectorSet.scalar_fields[py::make_tuple(s, py::ellipsis())];
 
                 SOURCE::State source_state = SOURCE::State(
                     sourceSet.wavelength[w],
@@ -1491,7 +1476,7 @@ class Experiment
                 );
 
                 DETECTOR::State  detector_state = DETECTOR::State(
-                    scalar_field,
+                    detectorSet.scalar_fields[s],
                     detectorSet.NA[na],
                     detectorSet.phi_offset[p],
                     detectorSet.gamma_offset[g],

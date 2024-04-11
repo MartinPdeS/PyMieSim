@@ -41,4 +41,6 @@ def test_lp_modes(mode_number: str):
 
     detector.get_footprint(scatterer=scatterer)
 
+    detector.plot()
+
 # -

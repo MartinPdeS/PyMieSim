@@ -22,19 +22,19 @@ namespace DETECTOR {
         bool point_coupling = true;
         size_t sampling = 0;
         double max_angle = 0;
-        py::array_t<complex128> scalar_field;
+        std::vector<complex128> scalar_field;
         FibonacciMesh fibonacci_mesh;
 
         State() = default;
 
-        State(const py::array_t<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
+        State(const std::vector<complex128>& scalar_field, double NA, double phi_offset, double gamma_offset,
               double polarization_filter, double rotation_angle, bool coherent, bool point_coupling)
-            : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+            : NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
               coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
-                this->sampling = this->scalar_field.request().size;
+                this->sampling = scalar_field.size();
                 this->scalar_field = scalar_field;
 
                 this->fibonacci_mesh = FibonacciMesh(
@@ -68,8 +68,7 @@ namespace DETECTOR {
     class Set
     {
         public:
-            py::array_t<complex128> scalar_fields;
-            std::vector<py::array_t<complex128>> scalar_field_list;
+            std::vector<std::vector<complex128>> scalar_fields;
             std::vector<double> NA;
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
@@ -83,7 +82,7 @@ namespace DETECTOR {
 
             Set() = default;
 
-            Set(const py::array_t<complex128> &scalar_fields,
+            Set(const std::vector<std::vector<complex128>> &scalar_fields,
                 const std::vector<double> &NA,
                 const std::vector<double> &phi_offset,
                 const std::vector<double> &gamma_offset,
@@ -94,15 +93,7 @@ namespace DETECTOR {
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
               {
-                this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
-
-                for (size_t idx=0; idx<this->scalar_fields.request().shape[0]; ++idx)
-                {
-                    py::array scalar_field = scalar_fields[py::make_tuple(idx, py::ellipsis())];
-
-                    scalar_field_list.push_back(scalar_field);
-                }
-
+                this->shape = {(size_t) this->scalar_fields.size(), this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
               }
     };
 
@@ -115,7 +106,7 @@ namespace DETECTOR {
         Detector(const State& state) : state(state) {}
 
         Detector(
-            const py::array_t<complex128>& scalar_field, double NA, double phi_offset,
+            const std::vector<complex128>& scalar_field, double NA, double phi_offset,
             double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling
         ) : state(scalar_field, NA, phi_offset, gamma_offset, polarization_filter, rotation_angle, coherent, point_coupling){}
 

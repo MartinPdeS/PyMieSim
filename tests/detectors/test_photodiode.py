@@ -35,4 +35,6 @@ def test_photodiode(sampling: int):
 
     detector.get_footprint(scatterer=scatterer)
 
+    detector.plot()
+
 # -

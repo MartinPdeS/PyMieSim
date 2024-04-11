@@ -137,7 +137,7 @@ class GenericDetector():
         figure = SceneList3D()
 
         for scalar_type in ['real', 'imag']:
-            scalar = getattr(self.cpp_binding.state.scalar_field, scalar_type)
+            scalar = getattr(numpy.asarray(self.cpp_binding.state.scalar_field), scalar_type)
 
             ax = figure.append_ax()
             artist = ax.add_unstructured_mesh(
@@ -218,7 +218,7 @@ class Photodiode(GenericDetector):
 
 
 @dataclass
-class IntegratingSphere(GenericDetector):
+class IntegratingSphere(Photodiode):
     """
     Detector type class representing a photodiode, light coupling mechanism is non-coherent and thus
     independent of the phase of the impinging scattered light field.
@@ -241,9 +241,7 @@ class IntegratingSphere(GenericDetector):
     """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
-        self.initialize()
-
-        self.cpp_binding.state.scalar_field = numpy.ones(self.sampling, dtype=complex)
+        super().__post_init__()
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return numpy.ones([sampling, sampling])

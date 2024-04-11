@@ -189,7 +189,7 @@ class BaseDetector():
         polarization_filter_rad = numpy.deg2rad(self.polarization_filter)
 
         self.binding = CppDetectorSet(
-            scalarfield=self.scalarfield.base_values.astype(complex),
+            scalar_field=self.scalarfield.base_values.astype(complex),
             NA=self.NA,
             phi_offset=phi_offset_rad,
             gamma_offset=gamma_offset_rad,
