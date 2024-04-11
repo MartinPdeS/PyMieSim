@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <complex>
-#include <iostream>
 #include <cmath> // For std::isnan and std::pow
 
 #include "special_function.cpp"

@@ -1,10 +1,9 @@
-#ifndef BASE_SCATTERER_H
-#define BASE_SCATTERER_H
+#pragma once
 
-  #include "definitions.cpp"
-  #include "utils.cpp"
-  #include "sources.cpp"
-  #include "fibonacci_mesh.cpp"
+#include "definitions.cpp"
+#include "utils.cpp"
+#include "sources.cpp"
+#include "fibonacci_mesh.cpp"
 
 
 class ScatteringProperties
@@ -252,4 +251,3 @@ public:
 
 };
 
-#endif
