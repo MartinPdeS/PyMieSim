@@ -41,8 +41,8 @@
             std::vector<complex128> shell_index;
             std::vector<std::vector<complex128>> core_material;
             std::vector<std::vector<complex128>> shell_material;
-            bool bounded_core;
-            bool bounded_shell;
+            bool core_is_material;
+            bool shell_is_material;
 
             std::vector<size_t> shape;
             size_t size = 1;
@@ -57,7 +57,7 @@
                 const std::vector<double> &n_medium)
             :
                 core_diameter(core_diameter), shell_width(shell_width), core_index(core_index),
-                shell_index(shell_index), n_medium(n_medium), bounded_core(false), bounded_shell(false)
+                shell_index(shell_index), n_medium(n_medium), core_is_material(false), shell_is_material(false)
             {
                 this->shape = {
                     this->core_diameter.size(),
@@ -79,7 +79,7 @@
                 const std::vector<double> &n_medium)
             :
                 core_diameter(core_diameter), shell_width(shell_width), core_index(core_index),
-                shell_material(shell_material), n_medium(n_medium), bounded_core(false), bounded_shell(true)
+                shell_material(shell_material), n_medium(n_medium), core_is_material(false), shell_is_material(true)
             {
                 this->shape = {
                     this->core_diameter.size(),
@@ -101,7 +101,7 @@
                 const std::vector<double> &n_medium)
             :
                 core_diameter(core_diameter), shell_width(shell_width), shell_index(shell_index),
-                core_material(core_material), n_medium(n_medium), bounded_core(true), bounded_shell(false)
+                core_material(core_material), n_medium(n_medium), core_is_material(true), shell_is_material(false)
             {
                 this->shape = {
                     this->core_diameter.size(),
@@ -123,7 +123,7 @@
                 const std::vector<double> &n_medium)
             :
                 core_diameter(core_diameter), shell_width(shell_width), core_material(core_material),
-                shell_material(shell_material), n_medium(n_medium), bounded_core(true), bounded_shell(true)
+                shell_material(shell_material), n_medium(n_medium), core_is_material(true), shell_is_material(true)
             {
                 this->shape = {
                     this->core_diameter.size(),

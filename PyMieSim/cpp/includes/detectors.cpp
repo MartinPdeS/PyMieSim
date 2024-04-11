@@ -112,6 +112,7 @@ namespace DETECTOR {
             field0[i] *= scalar_field_ptr[i];
             field1[i] *= scalar_field_ptr[i];
         }
+        scalar_field_ptr = NULL;
     }
 
     template <class T> inline

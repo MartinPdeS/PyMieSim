@@ -34,7 +34,7 @@ class Experiment
         //--------------------------------------SPHERE------------------------------------
         pybind11::array_t<complex128> get_sphere_coefficient(std::vector<complex128> (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
         {
-            if (sphereSet.bounded_index)
+            if (sphereSet.is_material)
                 return get_sphere_coefficient_material(function, max_order);
             else
                 return get_sphere_coefficient_index(function, max_order);
@@ -42,7 +42,7 @@ class Experiment
 
         pybind11::array_t<double> get_sphere_data(double (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
         {
-            if (sphereSet.bounded_index)
+            if (sphereSet.is_material)
                 return get_sphere_data_material(function, max_order);
             else
                 return get_sphere_data_index(function, max_order);
@@ -51,7 +51,7 @@ class Experiment
 
         pybind11::array_t<double> get_sphere_coupling() const
         {
-            if (sphereSet.bounded_index)
+            if (sphereSet.is_material)
                 return get_sphere_coupling_material();
             else
                 return get_sphere_coupling_index();
@@ -418,7 +418,7 @@ class Experiment
         //--------------------------------------CYLINDER------------------------------------
         pybind11::array_t<complex128> get_cylinder_coefficient(std::vector<complex128> (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
         {
-            if (cylinderSet.bounded_index)
+            if (cylinderSet.is_material)
                 return get_cylinder_coefficient_material(function, max_order);
             else
                 return get_cylinder_coefficient_index(function, max_order);
@@ -426,7 +426,7 @@ class Experiment
 
         pybind11::array_t<double> get_cylinder_data(double (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
         {
-            if (cylinderSet.bounded_index)
+            if (cylinderSet.is_material)
                 return get_cylinder_data_material(function, max_order);
             else
                 return get_cylinder_data_index(function, max_order);
@@ -434,7 +434,7 @@ class Experiment
 
         pybind11::array_t<double> get_cylinder_coupling() const
         {
-            if (cylinderSet.bounded_index)
+            if (cylinderSet.is_material)
                 return get_cylinder_coupling_bound();
             else
                 return get_cylinder_coupling_unbound();
@@ -778,47 +778,47 @@ class Experiment
         //--------------------------------------CORESHELL------------------------------------
         pybind11::array_t<complex128> get_coreshell_coefficient(std::vector<complex128> (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
         {
-            if (coreshellSet.bounded_core && coreshellSet.bounded_shell)
+            if (coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_coefficient_core_material_shell_material(function, max_order);
 
-            if (coreshellSet.bounded_core && !coreshellSet.bounded_shell)
+            if (coreshellSet.core_is_material && !coreshellSet.shell_is_material)
                 return get_coreshell_coefficient_core_material_shell_index(function, max_order);
 
-            if (!coreshellSet.bounded_core && coreshellSet.bounded_shell)
+            if (!coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_coefficient_core_index_shell_material(function, max_order);
 
-            if (!coreshellSet.bounded_core && !coreshellSet.bounded_shell)
+            if (!coreshellSet.core_is_material && !coreshellSet.shell_is_material)
                 return get_coreshell_coefficient_core_index_shell_index(function, max_order);
         }
 
         pybind11::array_t<double> get_coreshell_data(double (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
         {
-            if (coreshellSet.bounded_core && coreshellSet.bounded_shell)
+            if (coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_data_core_material_shell_material(function, max_order);
 
-            if (coreshellSet.bounded_core && !coreshellSet.bounded_shell)
+            if (coreshellSet.core_is_material && !coreshellSet.shell_is_material)
                 return get_coreshell_data_core_material_shell_index(function, max_order);
 
-            if (!coreshellSet.bounded_core && coreshellSet.bounded_shell)
+            if (!coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_data_core_index_shell_material(function, max_order);
 
-            if (!coreshellSet.bounded_core && !coreshellSet.bounded_shell)
+            if (!coreshellSet.core_is_material && !coreshellSet.shell_is_material)
                 return get_coreshell_data_core_index_shell_index(function, max_order);
         }
 
 
         pybind11::array_t<double> get_coreshell_coupling() const
         {
-            if (coreshellSet.bounded_core && coreshellSet.bounded_shell)
+            if (coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_coupling_core_material_shell_material();
 
-            if (coreshellSet.bounded_core && !coreshellSet.bounded_shell)
+            if (coreshellSet.core_is_material && !coreshellSet.shell_is_material)
                 return get_coreshell_coupling_core_material_shell_index();
 
-            if (!coreshellSet.bounded_core && coreshellSet.bounded_shell)
+            if (!coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_coupling_core_index_shell_material();
 
-            if (!coreshellSet.bounded_core && !coreshellSet.bounded_shell)
+            if (!coreshellSet.core_is_material && !coreshellSet.shell_is_material)
                 return get_coreshell_coupling_core_index_shell_index();
         }
 
