@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import numpy
+
+a = numpy.random.random([1, 400])
+
+b = a[0, :]
+
+print(b.shape)
+
+dsa
+
+
+
 import pytest
 import numpy
 
