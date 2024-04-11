@@ -53,7 +53,7 @@ namespace DETECTOR {
               polarization_filter(polarization_filter), rotation_angle(rotation_angle),
               coherent(coherent), point_coupling(point_coupling), sampling(sampling)
             {
-                this->max_angle = NA2Angle(this->NA);
+                // this->max_angle = NA2Angle(this->NA);
 
                 // this->fibonacci_mesh = FibonacciMesh(
                 //     this->sampling,
