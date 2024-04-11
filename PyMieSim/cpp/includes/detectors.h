@@ -69,6 +69,7 @@ namespace DETECTOR {
     {
         public:
             py::array_t<complex128> scalar_fields;
+            std::vector<py::array_t<complex128>> scalar_field_list;
             std::vector<double> NA;
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
@@ -94,6 +95,14 @@ namespace DETECTOR {
               polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
               {
                 this->shape = {(size_t) this->scalar_fields.request().shape[0], this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
+
+                for (size_t idx=0; idx<this->scalar_fields.request().shape[0]; ++idx)
+                {
+                    py::array scalar_field = scalar_fields[py::make_tuple(idx, py::ellipsis())];
+
+                    scalar_field_list.push_back(scalar_field);
+                }
+
               }
     };
 
