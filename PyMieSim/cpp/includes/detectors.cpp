@@ -1,5 +1,6 @@
 #pragma once
 
+#include "special_function.cpp"
 #include "fibonacci_mesh.cpp"
 #include "utils.cpp"
 #include "detectors.h"

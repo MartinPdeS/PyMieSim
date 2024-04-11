@@ -88,12 +88,20 @@ class DetectorTab(BaseTab):
             case _:
                 raise ValueError('Detector type not valid')
 
+        self.mapping = {
+            'NA': self.component.NA,
+            'gamma': self.component.gamma_offset,
+            'phi': self.component.phi_offset,
+            'polarization_filter': self.component.polarization_filter
+        }
+
     def _setup_photodiode_widgets(self):
         self.widget_collection = WidgetCollection(
             InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
             InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
             InputWidget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset'),
-            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter')
+            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter'),
+            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True)
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)
@@ -116,49 +124,26 @@ class DetectorTab(BaseTab):
             InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset'),
             InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
             InputWidget(default_value=default_field_value, label='Mode field', component_label='mode_number', to_float=False),
+            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True)
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)
 
     def _setup_photodiode_component(self) -> NoReturn:
-        self.component = Photodiode(**self.widget_collection.to_component_dict(), sampling=500)
+        kwargs = self.widget_collection.to_component_dict()
 
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
+        # kwargs['sampling'] = 300
+        # print(self.widget_collection.to_component_dict())
+        self.component = Photodiode(**kwargs)
 
     def _setup_lp_mode_component(self) -> NoReturn:
-        self.component = LPMode(**self.widget_collection.to_component_dict(), sampling=500)
-
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
+        self.component = LPMode(**self.widget_collection.to_component_dict())
 
     def _setup_lg_mode_component(self) -> NoReturn:
-        self.component = LGMode(**self.widget_collection.to_component_dict(), sampling=500)
-
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
+        self.component = LGMode(**self.widget_collection.to_component_dict())
 
     def _setup_hg_mode_component(self) -> NoReturn:
-        self.component = HGMode(**self.widget_collection.to_component_dict(), sampling=500)
-
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
+        self.component = HGMode(**self.widget_collection.to_component_dict())
 
     def setup_component(self) -> NoReturn:
         """
@@ -181,5 +166,12 @@ class DetectorTab(BaseTab):
                 self._setup_hg_mode_component()
             case 'lgmode':
                 self._setup_lg_mode_component()
+
+        self.mapping = {
+            'NA': self.component.NA,
+            'gamma': self.component.gamma_offset,
+            'phi': self.component.phi_offset,
+            'polarization_filter': self.component.polarization_filter
+        }
 
 # -

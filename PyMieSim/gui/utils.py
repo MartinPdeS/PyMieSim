@@ -32,6 +32,7 @@ class InputWidget:
             component_label: str,
             multiplicative_factor: float | None = None,
             to_float: bool = True,
+            to_int: bool = False,
             is_permanent: bool = False,
             is_mappable: bool = True) -> None:
         """
@@ -42,6 +43,7 @@ class InputWidget:
         self.label = label
         self.component_label = component_label
         self.to_float = to_float
+        self.to_int = to_int
         self.value = None
         self.multiplicative_factor = multiplicative_factor
         self.is_permanent = is_permanent
@@ -94,6 +96,9 @@ class InputWidget:
         # Apply multiplicative factor if present
         if self.multiplicative_factor is not None:
             values *= self.multiplicative_factor
+
+        if self.to_int:
+            values = int(values)
 
         return values
 
