@@ -8,7 +8,7 @@ Sphere: Coupling vs wavelength
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 
-from PyMieSim.experiment.detector import LPMode
+from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
@@ -37,7 +37,7 @@ scatterer_set = Sphere(
 
 # %%
 # Defining the detector to be employed.
-detector_set = LPMode(
+detector_set = CoherentMode(
     mode_number="LP11:00",
     NA=[0.05, 0.01],
     phi_offset=-180,

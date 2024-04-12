@@ -42,7 +42,7 @@ Source code structures
 ----
 
 
-.. autoclass:: PyMieSim.single.detector.LPMode
+.. autoclass:: PyMieSim.single.detector.CoherentMode
     :inherited-members:
 
 
@@ -92,36 +92,6 @@ Source code structures
 .. autoclass:: PyMieSim.experiment.source.PlaneWave
     :inherited-members:
     :no-undoc-members:
-
-
-----
-
-
-.. autoclass:: PyMieSim.experiment.detector.Photodiode
-    :inherited-members:
-    :no-undoc-members:
-
-
-----
-
-
-.. autoclass:: PyMieSim.experiment.detector.LPMode
-    :inherited-members:
-    :no-undoc-members:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

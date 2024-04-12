@@ -16,7 +16,7 @@ core_type = [
     {'name': 'BK7', 'kwarg': {'material': BK7}},
     {'name': 'Silver', 'kwarg': {'material': Silver}},
     {'name': 'Aluminium', 'kwarg': {'material': Aluminium}},
-    # {'name': 'Index', 'kwarg': {'index': 1.4}}
+    {'name': 'Index', 'kwarg': {'index': 1.4}}
 ]
 
 

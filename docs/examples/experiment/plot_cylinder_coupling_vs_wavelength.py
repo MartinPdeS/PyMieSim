@@ -8,7 +8,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from PyMieSim.experiment.detector import LPMode
+from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
@@ -37,7 +37,7 @@ scatterer_set = Cylinder(
 
 # %%
 # Defining the detector
-detector_set = LPMode(
+detector_set = CoherentMode(
     mode_number="LP11",  # Specifying the LP11 mode
     NA=[0.05, 0.01],  # Array of Numerical Apertures for the detector
     phi_offset=-180,  # Phi offset in degrees

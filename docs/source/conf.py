@@ -88,6 +88,7 @@ autodoc_default_options = {
     'members-order': 'bysource',
     'undoc-members': False,
     'show-inheritance': True,
+    'ignore-module-all': True
 }
 
 numpydoc_show_class_members = False

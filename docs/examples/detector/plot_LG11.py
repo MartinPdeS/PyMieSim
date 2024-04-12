@@ -7,11 +7,11 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.single.detector import HGMode
+from PyMieSim.single.detector import CoherentMode
 
 # %%
 # Initializing the detector
-detector = HGMode(
+detector = CoherentMode(
     mode_number="LG23:30",  # Specifying LP23 mode
     sampling=900,  # Number of sampling points
     NA=0.4,  # Numerical Aperture

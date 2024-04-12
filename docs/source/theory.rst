@@ -236,7 +236,7 @@ Coupling mechanism
 
   There are two main coupling mechanisms, **coherent coupling** and non-coherent coupling.
   For instance, photodiode collect light via a **non-coherent mechanism**. On the other part,
-  fiber optic LP mode collects light in a coherent way and as such they usually
+  fiber optic CoherentMode mode collects light in a coherent way and as such they usually
   collect a lot less light but they add additional information on the sample studied.
 
 

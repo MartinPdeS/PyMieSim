@@ -7,7 +7,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 
 # Import necessary components from PyMieSim
 from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.detector import LPMode
+from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single.source import Gaussian
 from PyMieSim.materials import BK7
 
@@ -28,8 +28,8 @@ scatterer = Sphere(
 )
 
 # Define the LPMode detector with specific parameters
-detector = LPMode(
-    mode_number="LP21",
+detector = CoherentMode(
+    mode_number="HG02",
     NA=0.3,
     sampling=200,  # Number of sampling points
     gamma_offset=0,

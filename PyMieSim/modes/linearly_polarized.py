@@ -58,7 +58,7 @@ def get_mode_field(
     return field
 
 
-def interpolate_from_structured_mesh(sampling: int = 50, **kwargs) -> numpy.ndarray:
+def interpolate_from_structured_mesh(number_0: int, number_1: int, sampling: int = 50) -> numpy.ndarray:
     """
     Generate a structured mesh grid.
 
@@ -77,12 +77,18 @@ def interpolate_from_structured_mesh(sampling: int = 50, **kwargs) -> numpy.ndar
 
     norm = numpy.sqrt(numpy.square(coordinate).sum(axis=0)).max()
 
-    mode_field = get_mode_field(coordinate[:2, :] / norm, **kwargs)
+    coordinate /= norm
+
+    mode_field = get_mode_field(
+        coordinate[:2, :],
+        azimuthal_number=number_0,
+        radial_number=number_1
+    )
 
     return mode_field.reshape([sampling, sampling])
 
 
-def interpolate_from_fibonacci_mesh(fibonacci_mesh, **kwargs) -> numpy.ndarray:
+def interpolate_from_fibonacci_mesh(fibonacci_mesh, number_0: int, number_1: int) -> numpy.ndarray:
     """
     Calculate the Hermite-Gaussian mode field for given mode indices on a Fibonacci mesh.
 
@@ -104,6 +110,12 @@ def interpolate_from_fibonacci_mesh(fibonacci_mesh, **kwargs) -> numpy.ndarray:
 
     norm = numpy.sqrt(numpy.square(coordinate).sum(axis=0)).max()
 
-    mode_field = get_mode_field(coordinate[:2, :] / norm, **kwargs)
+    coordinate /= norm
+
+    mode_field = get_mode_field(
+        coordinate[:2, :],
+        azimuthal_number=number_0,
+        radial_number=number_1
+    )
 
     return mode_field

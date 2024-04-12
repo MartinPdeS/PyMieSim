@@ -164,6 +164,8 @@ class GenericDetector():
         if ':' not in mode_name:
             mode_name += ':0'
 
+        mode_family_name = mode_name[:2].lower()
+
         split = mode_name.split(':')
 
         mode_name, rotation_angle = split
@@ -174,15 +176,7 @@ class GenericDetector():
 
         rotation_angle = float(rotation_angle)
 
-        return number_0, number_1, rotation_angle
-
-
-class CoherentGenericDetector(GenericDetector):
-    def __post_init__(self):
-        if self.NA > 0.3 or self.NA < 0:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
-
-        super().__init__()
+        return mode_family_name, (number_0, number_1), rotation_angle
 
 
 @dataclass
@@ -248,111 +242,13 @@ class IntegratingSphere(Photodiode):
 
 
 @dataclass
-class HGMode(CoherentGenericDetector):
+class CoherentMode(GenericDetector):
     """
     Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
     and thus, dependent of the phase of the impinging scattered light field.
     """
     mode_number: str
-    """ String representing the HG mode to be initialized (e.g. 'HG01', 'HG11' etc)"""
-    NA: float
-    """ Numerical aperture of imaging system. """
-    gamma_offset: float
-    """ Angle [Degree] offset of detector in the direction perpendicular to polarization. """
-    phi_offset: float
-    """ Angle [Degree] offset of detector in the direction parallel to polarization. """
-    sampling: int = 200
-    """ Sampling of the farfield distribution """
-    polarization_filter: float = None
-    """ Angle [Degree] of polarization filter in front of detector. """
-    coupling_mode: str = 'Point'
-    """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
-    coherent: bool = field(default=True, init=False)
-    """ Indicate if the coupling mechanism is coherent or not. """
-
-    def __post_init__(self):
-        super().__post_init__()
-
-        self.x_number, self.y_number, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
-
-        self.initialize()
-
-        farfield = hermite_gauss.interpolate_from_fibonacci_mesh(
-            fibonacci_mesh=self.cpp_binding.state.mesh,
-            x_number=self.x_number,
-            y_number=self.y_number,
-        )
-
-        self.cpp_binding.state.scalar_field = farfield
-
-        if self.rotation_angle != 0:
-            self.rotate_around_axis(self.rotation_angle)
-
-    def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
-        return hermite_gauss.interpolate_from_structured_mesh(
-            sampling=sampling,
-            x_number=self.x_number,
-            y_number=self.y_number
-        )
-
-
-@dataclass
-class LGMode(CoherentGenericDetector):
-    """
-    Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
-    and thus, dependent of the phase of the impinging scattered light field.
-    """
-    mode_number: str
-    """ String representing the HG mode to be initialized (e.g. 'HG01', 'HG11' etc)"""
-    NA: float
-    """ Numerical aperture of imaging system. """
-    gamma_offset: float
-    """ Angle [Degree] offset of detector in the direction perpendicular to polarization. """
-    phi_offset: float
-    """ Angle [Degree] offset of detector in the direction parallel to polarization. """
-    sampling: int = 200
-    """ Sampling of the farfield distribution """
-    polarization_filter: float = None
-    """ Angle [Degree] of polarization filter in front of detector. """
-    coupling_mode: str = 'Point'
-    """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
-    coherent: bool = field(default=True, init=False)
-    """ Indicate if the coupling mechanism is coherent or not. """
-
-    def __post_init__(self):
-        super().__post_init__()
-
-        self.azimuthal_number, self.radial_number, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
-
-        self.initialize()
-
-        farfield = laguerre_gauss.interpolate_from_fibonacci_mesh(
-            fibonacci_mesh=self.cpp_binding.state.mesh,
-            azimuthal_number=self.azimuthal_number,
-            radial_number=self.radial_number,
-        )
-
-        self.cpp_binding.state.scalar_field = farfield
-
-        if self.rotation_angle != 0:
-            self.rotate_around_axis(self.rotation_angle)
-
-    def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
-        return laguerre_gauss.interpolate_from_structured_mesh(
-            sampling=sampling,
-            azimuthal_number=self.azimuthal_number,
-            radial_number=self.radial_number
-        )
-
-
-@dataclass
-class LPMode(CoherentGenericDetector):
-    """
-    Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
-    and thus, dependent of the phase of the impinging scattered light field.
-    """
-    mode_number: str
-    """ String representing the HG mode to be initialized (e.g. 'HG01', 'HG11' etc)"""
+    """ String representing the HG mode to be initialized (e.g. 'LP01', 'HG11', 'LG22' etc)"""
     NA: float
     """ Numerical aperture of imaging system. """
     gamma_offset: float
@@ -369,16 +265,27 @@ class LPMode(CoherentGenericDetector):
     """ Indicate if the coupling mechanism is coherent or not. """
 
     def __post_init__(self):
-        super().__post_init__()
+        if self.NA > 0.3 or self.NA < 0:
+            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
 
-        self.azimuthal_number, self.radial_number, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
+        self.mode_family_name, self.numbers, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
 
         self.initialize()
 
-        farfield = linearly_polarized.interpolate_from_fibonacci_mesh(
+        match self.mode_family_name:
+            case 'lp':
+                self.mode_module = linearly_polarized
+            case 'hg':
+                self.mode_module = hermite_gauss
+            case 'lg':
+                self.mode_module = laguerre_gauss
+            case _:
+                raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
+
+        farfield = self.mode_module.interpolate_from_fibonacci_mesh(
             fibonacci_mesh=self.cpp_binding.state.mesh,
-            azimuthal_number=self.azimuthal_number,
-            radial_number=self.radial_number,
+            number_0=self.numbers[0],
+            number_1=self.numbers[1]
         )
 
         self.cpp_binding.state.scalar_field = farfield
@@ -387,10 +294,10 @@ class LPMode(CoherentGenericDetector):
             self.rotate_around_axis(self.rotation_angle)
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
-        return linearly_polarized.interpolate_from_structured_mesh(
+        return self.mode_module.interpolate_from_structured_mesh(
             sampling=sampling,
-            azimuthal_number=self.azimuthal_number,
-            radial_number=self.radial_number
+            number_0=self.numbers[0],
+            number_1=self.numbers[1]
         )
 
 # -
