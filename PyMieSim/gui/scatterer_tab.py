@@ -49,7 +49,7 @@ class ScattererTab(BaseTab):
             state="readonly"
         )
 
-        combobox.pack(side=tkinter.TOP)
+        combobox.grid(row=0, column=0)
         combobox.bind("<<ComboboxSelected>>", self.on_type_change)
 
     def on_type_change(self, event=None) -> NoReturn:

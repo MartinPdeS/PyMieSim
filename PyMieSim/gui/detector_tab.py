@@ -45,7 +45,7 @@ class DetectorTab(BaseTab):
             state="readonly"
         )
 
-        combobox.pack(side=tkinter.TOP)
+        # combobox.pack(side=tkinter.TOP)
         combobox.bind("<<ComboboxSelected>>", self.on_type_change)
 
     def on_type_change(self, event=None) -> NoReturn:
@@ -72,7 +72,9 @@ class DetectorTab(BaseTab):
         Sets up labels, entry fields, and other UI components based on the detector
         configuration options, enabling user interaction for configuring the detector.
         """
-        match self.get_selected_type().lower():
+        selected_type = self.get_selected_type()
+
+        match selected_type.lower():
             case 'photodiode':
                 self._setup_photodiode_widgets()
                 self._setup_photodiode_component()
@@ -80,7 +82,7 @@ class DetectorTab(BaseTab):
                 self._setup_coherent_mode_widgets()
                 self._setup_coherent_mode_component()
             case _:
-                raise ValueError('Detector type not valid')
+                raise ValueError(f'Detector type: {selected_type} is not valid')
 
         self.mapping = {
             'NA': self.component.NA,
@@ -139,7 +141,7 @@ class DetectorTab(BaseTab):
             case 'coherentmode':
                 self._setup_coherent_mode_component()
             case _:
-                raise ValueError('Detector type not valid')
+                raise ValueError(f'Detector type: {selected_type} is not valid')
 
         self.mapping = {
             'NA': self.component.NA,

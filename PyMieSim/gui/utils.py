@@ -6,6 +6,74 @@ import numpy
 import tkinter
 
 
+class ComBoxWidget:
+    """
+    A Widget class that encapsulates a GUI widget with specific properties.
+
+    Attributes:
+        default_value (float | str): The default value for the widget.
+        label (str): A label for the widget used for identification.
+        component_label (str): A label for the component part of the widget.
+        multiplicative_factor (float | None): An optional factor by which the widget's value is multiplied.
+        to_float (bool): A flag indicating whether the input should be converted to float. Defaults to True.
+        is_permanent (bool): A flag indicating if the widget's value is permanent. Defaults to False.
+        is_mappable (bool): A flag indicating if the widget's value can be mapped to other values. Defaults to True.
+
+    Methods:
+        update(): Updates the widget's value based on user input.
+        get_input(): Retrieves the current input from the widget.
+        process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
+    """
+
+    def __init__(
+            self,
+            label: str,
+            frame: object,
+            component_label: str,
+            is_permanent: bool = False,
+            default_options: int = 0,
+            options: list = []) -> None:
+        """
+        Initializes a new instance of the Widget class.
+        """
+        self.frame = frame
+
+        self.label = label
+        self.default_options = default_options
+        self.component_label = component_label
+        self.value = None
+        self.is_permanent = is_permanent
+        self.options = options
+
+    def setup(self, row: int):
+        self.tk_label = tkinter.Label(self.frame, text=self.label)
+        self.tk_widget = tkinter.ttk.Combobox(self.frame, values=self.options)
+        self.tk_widget.current(self.default_options)
+
+        if row is not None:
+            self.tk_widget.grid(row=row, column=1)
+
+            self.tk_label.grid(row=row, column=0)
+
+    def __repr__(self) -> str:
+        return f"Widget(label={self.label})"
+
+    def update(self) -> None:
+        """
+        Updates the widget's value based on the current user input.
+        """
+        self.value = self.tk_widget.get()
+
+    def get_input(self) -> str:
+        """
+        Retrieves the current input from the tkinter StringVar associated with the widget.
+
+        Returns:
+            str: The current input value as a string.
+        """
+        return self.tk_widget.get()
+
+
 class InputWidget:
     """
     A Widget class that encapsulates a GUI widget with specific properties.
@@ -49,6 +117,12 @@ class InputWidget:
         self.is_permanent = is_permanent
         self.is_mappable = is_mappable
         self.update()
+
+    def setup(self, row: int):
+        self._label = tkinter.Label(self.frame, text=self.label)
+        self._label.grid(row=row + 1, column=0, sticky="W", pady=2)
+        self._button = tkinter.Entry(self.frame, textvariable=self.tk_widget)
+        self._button.grid(row=row + 1, column=1, sticky="W", pady=2)
 
     def __repr__(self) -> str:
         return f"Widget(label={self.label})"
@@ -167,12 +241,29 @@ class WidgetCollection:
         Args:
             frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
         """
-        for widget in self.widgets:
-            widget._label = tkinter.Label(frame, text=widget.label)
-            widget._label.pack(side=tkinter.BOTTOM)
-            widget._button = tkinter.Entry(frame, textvariable=widget.tk_widget)
-            widget._button.pack(side=tkinter.BOTTOM)
-            # widget._button.configure(text='Password :')
+        for row, widget in enumerate(self.widgets):
+            if isinstance(widget, InputWidget):
+                self.setup_entry_widget(widget, row, frame)
+            elif isinstance(widget, ComBoxWidget):
+                self.setup_combox_widget(widget, row, frame)
+
+    def setup_combox_widget(self, widget, row, frame: tkinter.Frame) -> NoReturn:
+        """
+        Sets up and packs the widgets within a specified tkinter frame.
+
+        Args:
+            frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
+        """
+        widget.setup(row=row)
+
+    def setup_entry_widget(self, widget, row, frame: tkinter.Frame) -> NoReturn:
+        """
+        Sets up and packs the widgets within a specified tkinter frame.
+
+        Args:
+            frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
+        """
+        widget.setup(row=row)
 
     def __repr__(self) -> str:
         """

@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-import tkinter
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import InputWidget, WidgetCollection
+from PyMieSim.gui.utils import WidgetCollection, ComBoxWidget
 
 
 class AxisTab(BaseTab):
@@ -20,10 +19,6 @@ class AxisTab(BaseTab):
 
         super().__init__(*args, **kwargs)
 
-    def clear_button(self) -> NoReturn:
-        for element in self.non_permanent_widget:
-            element.destroy()
-
     def setup(self) -> NoReturn:
         """
         Sets up the GUI elements for the Axis Configuration tab, including labels and comboboxes
@@ -34,46 +29,21 @@ class AxisTab(BaseTab):
         self.y_axis_options = list(self.measure_map.keys())
 
         self.widget_collection = WidgetCollection(
-            InputWidget(default_value='phi', label='x-axis', component_label='x_axis', to_float=False),
-            InputWidget(default_value='coupling', label='y-axis', component_label='y_axis', to_float=False),
-            InputWidget(default_value='none', label='STD-axis', component_label='std_axis', to_float=False),
-        )
-        self.non_permanent_widget = []
-
-        self.setup_combox(sub_text='STD axis', component_label='std_axis')
-        self.setup_combox(sub_text='x axis', component_label='x_axis')
-        self.setup_combox(sub_text='y axis', component_label='y_axis')
-
-    def setup_combox(self, sub_text: str, component_label: str) -> NoReturn:
-        label = tkinter.Label(
-            self.frame,
-            text=sub_text
+            ComBoxWidget(label='x-axis', component_label='x_axis', options=self.x_axis_options, frame=self.frame, default_options=0),
+            ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, frame=self.frame, default_options=0),
+            ComBoxWidget(label='STD-axis', component_label='std_axis', options=['none', *self.x_axis_options], frame=self.frame, default_options=0),
         )
 
-        label.pack(side=tkinter.BOTTOM)
-
-        self.non_permanent_widget.append(label)
-
-        combox = tkinter.ttk.Combobox(
-            self.frame,
-            textvariable=self.widget_collection[component_label].tk_widget,
-            values=self.x_axis_options,
-            state="readonly"
-        )
-
-        combox.pack(side=tkinter.BOTTOM)
-
-        self.non_permanent_widget.append(combox)
+        self.widget_collection.setup_widgets(frame=self.frame)
 
     @property
     def x_axis(self) -> str:
-        x_axis = self.widget_collection['x_axis'].tk_widget.get()
-
+        x_axis = self.widget_collection.widgets[0].tk_widget.get()
         return self.axis_mapping[x_axis]
 
     @property
     def std_axis(self) -> str:
-        std_axis = self.widget_collection['std_axis'].tk_widget.get()
+        std_axis = self.widget_collection.widgets[2].tk_widget.get()
         if std_axis == 'none':
             return None
         return self.axis_mapping[std_axis]

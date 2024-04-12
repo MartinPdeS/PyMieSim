@@ -75,7 +75,7 @@ class PyMieSimGUI:
         Sets up the notebook widget with tabs for Source, Scatterer, and Detector configurations.
         """
         self.notebook = ttk.Notebook(self.master)
-        self.notebook.pack(fill=tk.BOTH, expand=True, side=tk.TOP)
+        self.notebook.grid(row=0, column=0, sticky="ewns")
 
         # Create tab instances
         self.source_tab = SourceTab(notebook=self.notebook, label='Source')
@@ -118,36 +118,35 @@ class PyMieSimGUI:
         Sets up control buttons for calculating results and saving data.
         """
         self.controls_frame = ttk.Frame(self.master)
-        self.controls_frame.pack(fill=tk.X, side=tk.TOP)
+        self.controls_frame.grid(row=1, column=0, sticky="ew")
 
         ttk.Button(
             self.controls_frame,
             text="Calculate",
-            style="Large.TButton",  # Apply the custom style for larger buttons
+            style="Large.TButton",
             command=self.update_plot
-        ).pack(side=tk.LEFT, fill=tk.BOTH)
+        ).grid(row=0, column=0, sticky="ew")
 
         ttk.Button(
             self.controls_frame,
             text="Save as CSV",
-            style="Large.TButton",  # Apply the custom style for larger buttons
+            style="Large.TButton",
             command=self.save_data_as_csv
-        ).pack(side=tk.LEFT, fill=tk.BOTH)
+        ).grid(row=0, column=1, sticky="ew")
 
-        # Add Export Plot button
         ttk.Button(
             self.controls_frame,
             text="Export Plot",
             style="Large.TButton",
-            command=self.export_plot  # Method to be implemented
-        ).pack(side=tk.LEFT, fill=tk.BOTH)
+            command=self.export_plot
+        ).grid(row=0, column=2, sticky="ew")
 
     def setup_plot_frame(self) -> NoReturn:
         """
         Sets up the frame for displaying plots.
         """
         self.plot_frame = tk.Frame(self.master)
-        self.plot_frame.pack(fill=tk.BOTH, expand=True)
+        self.plot_frame.grid(row=2, column=0, sticky="ewns")
 
     def setup_PyMieSim(self) -> NoReturn:
         """
@@ -176,8 +175,15 @@ class PyMieSimGUI:
         else:
             print("No data to save. Please calculate first.")
 
-    def generate_figure(self) -> NoReturn:
-        """Generates and displays the simulation results as a plot in the GUI."""
+    def generate_figure(self):
+        """
+        Generates and displays the simulation results as a plot in a new window.
+        """
+        if hasattr(self, 'new_window'):
+            self.new_window.destroy()
+
+        self.new_window = tk.Toplevel(self.master)
+        self.new_window.title("Plot Window")
 
         x_axis = self.axis_tab.x_axis
         std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
@@ -187,18 +193,13 @@ class PyMieSimGUI:
         figure._render_()
         self.figure = figure._mpl_figure
 
-        # Embed the plot
-        for widget in self.plot_frame.winfo_children():
-            widget.destroy()
-
-        canvas = FigureCanvasTkAgg(self.figure, master=self.plot_frame)
+        canvas = FigureCanvasTkAgg(self.figure, master=self.new_window)
         canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-        # Add the navigation toolbar
-        self.toolbar = NavigationToolbar2Tk(canvas, self.plot_frame)
+        self.toolbar = NavigationToolbar2Tk(canvas, self.new_window)
         self.toolbar.update()
-        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
     def update_plot(self) -> NoReturn:
         plt.close('all')
@@ -209,7 +210,7 @@ class PyMieSimGUI:
         self.setup_PyMieSim()
 
         self.data = self.experiment.get(self.y_axis)
-
+        print(self.data.y.values)
         self.x_axis = self.axis_tab.axis_mapping['wavelength']
 
         try:

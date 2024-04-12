@@ -20,19 +20,16 @@ class Experiment
 
         Experiment() = default;
 
-        void set_sphere(SPHERE::Set& ScattererSet){this->sphereSet = ScattererSet;}
-
-        void set_cylinder(CYLINDER::Set& ScattererSet) {this->cylinderSet = ScattererSet;}
-
-        void set_coreshell(CORESHELL::Set& ScattererSet) {this->coreshellSet = ScattererSet;}
-
-        void set_source(SOURCE::Set &sourceSet){this->sourceSet = sourceSet;}
-
-        void set_detector(DETECTOR::Set &detectorSet){this->detectorSet = detectorSet;}
+        void set_sphere(SPHERE::Set& set) { sphereSet = set; }
+        void set_cylinder(CYLINDER::Set& set) { cylinderSet = set; }
+        void set_coreshell(CORESHELL::Set& set) { coreshellSet = set; }
+        void set_source(SOURCE::Set &set) { sourceSet = set; }
+        void set_detector(DETECTOR::Set &set) { detectorSet = set; }
 
 
         //--------------------------------------SPHERE------------------------------------
-        pybind11::array_t<complex128> get_sphere_coefficient(std::vector<complex128> (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_sphere_coefficient(Function function, size_t max_order=0) const
         {
             if (sphereSet.is_material)
                 return get_sphere_coefficient_material(function, max_order);
@@ -40,7 +37,8 @@ class Experiment
                 return get_sphere_coefficient_index(function, max_order);
         }
 
-        pybind11::array_t<double> get_sphere_data(double (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_sphere_data(Function function, size_t max_order=0) const
         {
             if (sphereSet.is_material)
                 return get_sphere_data_material(function, max_order);
@@ -82,8 +80,8 @@ class Experiment
             return flatten_index;
         }
 
-        pybind11::array_t<complex128>
-        get_sphere_coefficient_material(std::vector<complex128> (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_sphere_coefficient_material(Function function, size_t max_order=0) const
         {
             using namespace SPHERE;
 
@@ -96,7 +94,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -119,14 +117,14 @@ class Experiment
 
                 SPHERE::Scatterer scatterer = SPHERE::Scatterer(scatterer_state, source_state, max_order+1);
 
-                output_array[idx] = 0. * (scatterer.*function)()[max_order];
+                output_array[idx] = (scatterer.*function)()[max_order];
             }
 
           return vector_to_numpy(output_array, array_shape);
         }
 
-
-        pybind11::array_t<complex128> get_sphere_coefficient_index(std::vector<complex128> (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_sphere_coefficient_index(Function function, size_t max_order=0) const
         {
             using namespace SPHERE;
 
@@ -173,12 +171,8 @@ class Experiment
           return vector_to_numpy(output_array, array_shape);
         }
 
-
-
-
-
-
-        pybind11::array_t<double> get_sphere_data_material(double (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_sphere_data_material(Function function, size_t max_order=0) const
         {
             using namespace SPHERE;
 
@@ -191,7 +185,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -225,7 +219,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<double> get_sphere_data_index(double (SPHERE::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_sphere_data_index(Function function, size_t max_order=0) const
         {
             using namespace SPHERE;
 
@@ -238,7 +233,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(5) shared(output_array)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -286,7 +281,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(10)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -349,7 +344,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(10)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -404,7 +399,8 @@ class Experiment
 
 
         //--------------------------------------CYLINDER------------------------------------
-        pybind11::array_t<complex128> get_cylinder_coefficient(std::vector<complex128> (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_cylinder_coefficient(Function function, size_t max_order=0) const
         {
             if (cylinderSet.is_material)
                 return get_cylinder_coefficient_material(function, max_order);
@@ -412,7 +408,8 @@ class Experiment
                 return get_cylinder_coefficient_index(function, max_order);
         }
 
-        pybind11::array_t<double> get_cylinder_data(double (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_cylinder_data(Function function, size_t max_order=0) const
         {
             if (cylinderSet.is_material)
                 return get_cylinder_data_material(function, max_order);
@@ -429,8 +426,8 @@ class Experiment
         }
 
 
-
-        pybind11::array_t<complex128> get_cylinder_coefficient_material(std::vector<complex128> (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_cylinder_coefficient_material(Function function, size_t max_order=0) const
         {
             using namespace CYLINDER;
 
@@ -443,7 +440,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -477,11 +474,8 @@ class Experiment
         }
 
 
-
-
-
-
-        pybind11::array_t<complex128> get_cylinder_coefficient_index(std::vector<complex128> (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_cylinder_coefficient_index(Function function, size_t max_order=0) const
         {
             using namespace CYLINDER;
 
@@ -494,7 +488,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -528,8 +522,8 @@ class Experiment
         }
 
 
-
-        pybind11::array_t<double> get_cylinder_data_material(double (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_cylinder_data_material(Function function, size_t max_order=0) const
         {
             using namespace CYLINDER;
 
@@ -542,7 +536,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -576,7 +570,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<double> get_cylinder_data_index(double (CYLINDER::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_cylinder_data_index(Function function, size_t max_order=0) const
         {
             using namespace CYLINDER;
 
@@ -590,7 +585,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -638,7 +633,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(10)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -707,7 +702,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(10)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -761,7 +756,8 @@ class Experiment
 
 
         //--------------------------------------CORESHELL------------------------------------
-        pybind11::array_t<complex128> get_coreshell_coefficient(std::vector<complex128> (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_coreshell_coefficient(Function function, size_t max_order=0) const
         {
             if (coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_coefficient_core_material_shell_material(function, max_order);
@@ -776,7 +772,8 @@ class Experiment
                 return get_coreshell_coefficient_core_index_shell_index(function, max_order);
         }
 
-        pybind11::array_t<double> get_coreshell_data(double (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_coreshell_data(Function function, size_t max_order=0) const
         {
             if (coreshellSet.core_is_material && coreshellSet.shell_is_material)
                 return get_coreshell_data_core_material_shell_material(function, max_order);
@@ -808,7 +805,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_material_shell_index(std::vector<complex128> (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_coreshell_coefficient_core_material_shell_index(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -821,7 +819,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -859,8 +857,8 @@ class Experiment
         }
 
 
-
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_index_shell_material(std::vector<complex128> (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_coreshell_coefficient_core_index_shell_material(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -873,7 +871,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(7)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -911,8 +909,8 @@ class Experiment
         }
 
 
-
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_material_shell_material(std::vector<complex128> (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_coreshell_coefficient_core_material_shell_material(Function function, size_t max_order=0) const
         {
         using namespace CORESHELL;
 
@@ -925,7 +923,7 @@ class Experiment
 
         std::vector<complex128> output_array(full_size);
 
-        #pragma omp parallel for collapse(7)
+        #pragma omp parallel for collapse(array_shape.size())
         for (size_t w=0; w<array_shape[0]; ++w)
         for (size_t j=0; j<array_shape[1]; ++j)
         for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -963,7 +961,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_index_shell_index(std::vector<complex128> (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<complex128> get_coreshell_coefficient_core_index_shell_index(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -976,7 +975,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(7)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1014,7 +1013,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<double> get_coreshell_data_core_material_shell_index(double (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_coreshell_data_core_material_shell_index(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -1027,7 +1027,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(5)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1065,8 +1065,8 @@ class Experiment
         }
 
 
-
-        pybind11::array_t<double> get_coreshell_data_core_index_shell_material(double (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_coreshell_data_core_index_shell_material(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -1079,7 +1079,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(7)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1117,7 +1117,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<double> get_coreshell_data_core_material_shell_material(double (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_coreshell_data_core_material_shell_material(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -1130,7 +1131,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(7)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1168,7 +1169,8 @@ class Experiment
         }
 
 
-        pybind11::array_t<double> get_coreshell_data_core_index_shell_index(double (CORESHELL::Scatterer::*function)(void), size_t max_order=0) const
+        template<typename Function>
+        pybind11::array_t<double> get_coreshell_data_core_index_shell_index(Function function, size_t max_order=0) const
         {
             using namespace CORESHELL;
 
@@ -1181,7 +1183,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(7)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1234,7 +1236,7 @@ class Experiment
             std::vector<double> output_array(full_size);
 
 
-            #pragma omp parallel for collapse(12)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1305,7 +1307,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(12)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1376,7 +1378,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(12)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1445,7 +1447,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(12)
+            #pragma omp parallel for collapse(array_shape.size())
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)

@@ -27,7 +27,7 @@ namespace CORESHELL
     }
 
     void Scatterer::compute_area(){
-        
+
         this->area = PI * pow(state.shell_diameter/2.0, 2);
     }
 

@@ -6,7 +6,7 @@ from PyMieSim.gui.main_window import PyMieSimGUI
 
 def main():
     root = tkinter.Tk()
-    root.geometry("800x850")
+    root.geometry("600x600")
     PyMieSimGUI(root)
     root.mainloop()
 
