@@ -94,7 +94,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -185,7 +185,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -233,7 +233,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -281,7 +281,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -344,7 +344,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -440,7 +440,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -488,7 +488,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -536,7 +536,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -585,7 +585,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(5)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -633,7 +633,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -702,7 +702,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(10)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t d=0; d<array_shape[2]; ++d)
@@ -819,7 +819,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -871,7 +871,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -923,7 +923,7 @@ class Experiment
 
         std::vector<complex128> output_array(full_size);
 
-        #pragma omp parallel for collapse(array_shape.size())
+        #pragma omp parallel for collapse(7)
         for (size_t w=0; w<array_shape[0]; ++w)
         for (size_t j=0; j<array_shape[1]; ++j)
         for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -975,7 +975,7 @@ class Experiment
 
             std::vector<complex128> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1027,7 +1027,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1079,7 +1079,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1131,7 +1131,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1183,7 +1183,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(7)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1236,7 +1236,7 @@ class Experiment
             std::vector<double> output_array(full_size);
 
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(12)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1307,7 +1307,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(12)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1378,7 +1378,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(12)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
@@ -1447,7 +1447,7 @@ class Experiment
 
             std::vector<double> output_array(full_size);
 
-            #pragma omp parallel for collapse(array_shape.size())
+            #pragma omp parallel for collapse(12)
             for (size_t w=0; w<array_shape[0]; ++w)
             for (size_t j=0; j<array_shape[1]; ++j)
             for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
