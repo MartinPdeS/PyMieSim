@@ -73,6 +73,10 @@ class ComBoxWidget:
         """
         return self.tk_widget.get()
 
+    def destroy(self) -> NoReturn:
+        self.tk_widget.destroy()
+        self.tk_label.destroy()
+
 
 class InputWidget:
     """
@@ -95,6 +99,7 @@ class InputWidget:
 
     def __init__(
             self,
+            frame: object,
             default_value: float | str,
             label: str,
             component_label: str,
@@ -106,6 +111,7 @@ class InputWidget:
         """
         Initializes a new instance of the Widget class.
         """
+        self.frame = frame
         self.default_value = default_value
         self.tk_widget = tkinter.StringVar(value=str(default_value))
         self.label = label
@@ -176,6 +182,10 @@ class InputWidget:
 
         return values
 
+    def destroy(self) -> NoReturn:
+        self._label.destroy()
+        self._button.destroy()
+
 
 class WidgetCollection:
     """
@@ -196,6 +206,7 @@ class WidgetCollection:
             *widgets (Widget): Variable length Widget instances to be included in the collection.
         """
         self.widgets = widgets
+        self.row_start = 0
 
     def to_component_dict(self) -> Dict[str, float | str]:
         """
@@ -224,8 +235,8 @@ class WidgetCollection:
         """
         for widget in self.widgets:
             if not widget.is_permanent:
-                widget._label.destroy()
-                widget._button.destroy()
+                widget.destroy()
+                widget.destroy()
 
     def update(self) -> NoReturn:
         """
@@ -243,9 +254,9 @@ class WidgetCollection:
         """
         for row, widget in enumerate(self.widgets):
             if isinstance(widget, InputWidget):
-                self.setup_entry_widget(widget, row, frame)
+                self.setup_entry_widget(widget, row + self.row_start, frame)
             elif isinstance(widget, ComBoxWidget):
-                self.setup_combox_widget(widget, row, frame)
+                self.setup_combox_widget(widget, row + self.row_start, frame)
 
     def setup_combox_widget(self, widget, row, frame: tkinter.Frame) -> NoReturn:
         """

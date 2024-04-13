@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-import tkinter
+from tkinter import ttk, StringVar
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import InputWidget, WidgetCollection
+from PyMieSim.gui.utils import InputWidget, WidgetCollection, ComBoxWidget
 
 
 class DetectorTab(BaseTab):
@@ -20,69 +20,111 @@ class DetectorTab(BaseTab):
         variables (WidgetCollection): A collection of widgets for detector configuration.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, master: ttk.Notebook, label: str) -> None:
         """
-        Initializes the DetectorTab with UI components for detector configuration.
+        Initialize the DetectorTab with UI components to configure the detector parameters.
 
-        Parameters:
-            *args: Variable length argument list for BaseTab.
-            **kwargs: Arbitrary keyword arguments for BaseTab.
+        Args:
+            master (ttk.Notebook): The notebook widget this tab is a part of.
+            label (str): The tab label.
         """
-        self.type_button = tkinter.StringVar(value='Photodiode')
+        super().__init__(master, label=label)
+        self.type_button = StringVar(value='Photodiode')
+        self.setup_type_combobox()
+        self.setup_widgets()
 
-        super().__init__(*args, **kwargs)
-
-        self._setup_combobox()
-
-    def _setup_combobox(self):
+    def setup_type_combobox(self) -> None:
         """
-        Sets up the combobox for selecting the scatterer type.
+        Create and configure a combobox to select the type of detector, binding it to update UI on change.
         """
-        combobox = tkinter.ttk.Combobox(
+        self.type_widget = ttk.Combobox(
             self.frame,
             textvariable=self.type_button,
             values=['Photodiode', 'CoherentMode'],
             state="readonly"
         )
-
-        # combobox.pack(side=tkinter.TOP)
-        combobox.bind("<<ComboboxSelected>>", self.on_type_change)
+        self.type_widget.grid(row=0, column=0)
+        self.type_widget.bind("<<ComboboxSelected>>", self.on_type_change)
 
     def on_type_change(self, event=None) -> NoReturn:
         """
-        Handles the scatterer type change event, updates the UI widgets and scatterer configuration accordingly.
+        Handles the event triggered by a change in the selected scatterer type. It updates the UI to match
+        the selected scatterer configuration.
+
+        Args:
+            event: The event that triggered this method (default is None).
         """
-        self.widget_collection.clear_widgets()
+        detector_type = self.type_widget.get().lower()
+        setup_method = getattr(self, f"setup_{detector_type}_widgets", None)
+        if callable(setup_method):
+            setup_method()
+        else:
+            raise ValueError(f"Unsupported detector type: {detector_type}")
 
-        self.setup()
-
-    def get_selected_type(self) -> str:
+    def setup_widgets(self) -> NoReturn:
         """
-        Retrieves the currently selected scatterer type.
-
-        Returns:
-            The selected scatterer type as a string.
+        Configures the GUI elements for the Scatterer tab based on the selected scatterer type.
         """
-        return self.type_button.get()
+        detector_type = self.type_widget.get()
 
-    def setup(self) -> NoReturn:
-        """
-        Configures the GUI elements for the Detector tab.
-
-        Sets up labels, entry fields, and other UI components based on the detector
-        configuration options, enabling user interaction for configuring the detector.
-        """
-        selected_type = self.get_selected_type()
-
-        match selected_type.lower():
-            case 'photodiode':
-                self._setup_photodiode_widgets()
-                self._setup_photodiode_component()
-            case 'coherentmode':
-                self._setup_coherent_mode_widgets()
-                self._setup_coherent_mode_component()
+        match detector_type:
+            case 'Photodiode':
+                self.setup_photodiode_widgets()
+            case 'CoherentMode':
+                self.setup_coherentmode_widgets()
             case _:
-                raise ValueError(f'Detector type: {selected_type} is not valid')
+                raise ValueError(f'Detector type not valid: {detector_type}')
+
+    def setup_photodiode_widgets(self) -> None:
+        """
+        Setup widgets specific to configuring a Photodiode detector.
+        """
+        self.widget_collection = WidgetCollection(
+            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', frame=self.frame),
+            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', frame=self.frame),
+            InputWidget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset', frame=self.frame),
+            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter', frame=self.frame),
+            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True, frame=self.frame)
+        )
+        self.widget_collection.row_start = 1
+        self.widget_collection.setup_widgets(self.frame)
+        self.setup_photodiode_component()
+
+    def setup_coherentmode_widgets(self) -> None:
+        """
+        Setup widgets specific to configuring a Coherent Mode detector.
+        """
+        self.widget_collection = WidgetCollection(
+            ComBoxWidget(label='Coupling mode', component_label='coupling_mode', options=['point', 'mean'], frame=self.frame, default_options=0),
+            InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter', frame=self.frame),
+            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', frame=self.frame),
+            InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset', frame=self.frame),
+            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', frame=self.frame),
+            InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', to_float=False, frame=self.frame),
+            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True, frame=self.frame)
+        )
+        self.widget_collection.row_start = 1
+        self.widget_collection.setup_widgets(self.frame)
+        self.setup_coherentmode_component()
+
+    def setup_component(self, event=None) -> NoReturn:
+        """
+        Handles the event triggered by a change in the selected scatterer type. It updates the UI to match
+        the selected scatterer configuration.
+
+        Args:
+            event: The event that triggered this method (default is None).
+        """
+        detector_type = self.type_button.get().lower()
+        self.widget_collection.update()
+        setup_method = getattr(self, f"setup_{detector_type}_component", None)
+        if callable(setup_method):
+            setup_method()
+        else:
+            raise ValueError(f"Unsupported scatterer type: {detector_type}")
+
+    def setup_photodiode_component(self) -> NoReturn:
+        self.component = Photodiode(**self.widget_collection.to_component_dict())
 
         self.mapping = {
             'NA': self.component.NA,
@@ -91,63 +133,13 @@ class DetectorTab(BaseTab):
             'polarization_filter': self.component.polarization_filter
         }
 
-    def _setup_photodiode_widgets(self):
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
-            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
-            InputWidget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset'),
-            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter'),
-            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True)
-        )
-
-        self.widget_collection.setup_widgets(frame=self.frame)
-
-    def _setup_coherent_mode_widgets(self):
-        self.widget_collection = WidgetCollection(
-            # InputWidget(default_value='point', label='Coupling mode', component_label='coupling_mode', to_float=False),
-            InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter'),
-            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset'),
-            InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset'),
-            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA'),
-            InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', to_float=False),
-            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True)
-        )
-
-        self.widget_collection.setup_widgets(frame=self.frame)
-
-    def _setup_photodiode_component(self) -> NoReturn:
-        kwargs = self.widget_collection.to_component_dict()
-
-        self.component = Photodiode(**kwargs)
-
-    def _setup_coherent_mode_component(self) -> NoReturn:
+    def setup_coherentmode_component(self) -> NoReturn:
         self.component = CoherentMode(**self.widget_collection.to_component_dict())
 
-    def setup_component(self) -> NoReturn:
-        """
-        Initializes the Photodiode detector component based on user input.
-
-        This method reads input values from the UI widgets and uses them to configure
-        a Photodiode detector component for the simulation, including setting the sampling
-        parameter explicitly.
-        """
-        self.update_user_input()
-
-        selected_type = self.get_selected_type()
-
-        match selected_type.lower():
-            case 'photodiode':
-                self._setup_photodiode_component()
-            case 'coherentmode':
-                self._setup_coherent_mode_component()
-            case _:
-                raise ValueError(f'Detector type: {selected_type} is not valid')
-
         self.mapping = {
             'NA': self.component.NA,
             'gamma': self.component.gamma_offset,
             'phi': self.component.phi_offset,
             'polarization_filter': self.component.polarization_filter
         }
-
 # -

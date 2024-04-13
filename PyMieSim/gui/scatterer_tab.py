@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
+from tkinter import ttk
 import tkinter
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
@@ -10,37 +11,50 @@ from PyMieSim.gui.utils import InputWidget, WidgetCollection
 
 class ScattererTab(BaseTab):
     """
-    GUI tab for configuring scatterer parameters in PyMieSim experiments. It allows for the selection of
-    scatterer type (Sphere, Cylinder, CoreShell) and specification of relevant parameters, including dimensions
-    and refractive indices. The class manages user input to update scatterer configurations dynamically.
+    A GUI tab for configuring scatterer parameters within PyMieSim experiments. This tab allows users
+    to choose between different scatterer types (Sphere, Cylinder, CoreShell) and set relevant
+    parameters like dimensions and refractive indices.
 
     Attributes:
-        type_button (tk.StringVar): Variable to hold the selected scatterer type.
-        widget_collections (dict): Dictionary of WidgetCollections for different scatterer configurations.
-        source_tab: Reference to the source tab for accessing the source component configurations.
+        master (ttk.Notebook): The notebook widget this tab is part of.
+        label (str): The label for the tab.
+        source_tab (BaseTab): Reference to the source tab for source component configurations.
     """
 
-    def __init__(self, *args, source_tab, **kwargs):
+    def __init__(self, master: ttk.Notebook, label: str, source_tab: BaseTab) -> NoReturn:
         """
-        Initializes the ScattererTab with UI elements for scatterer configuration.
+        Initializes the ScattererTab with user interface elements for scatterer configuration.
 
-        Parameters:
-            notebook (ttk.Notebook): The notebook widget this tab will be part of.
+        Args:
+            master (ttk.Notebook): The notebook widget this tab will be part of.
             label (str): The label for the tab.
-            source_tab: The tab containing source component settings.
-            **kwargs: Additional keyword arguments.
+            source_tab (BaseTab): Reference to the source tab for accessing source component settings.
         """
         self.type_button = tkinter.StringVar(value='Sphere')
-
         self.source_tab = source_tab
 
-        super().__init__(*args, **kwargs)
-
+        super().__init__(master, label=label)
         self._setup_combobox()
+        self.setup_widgets()
 
-    def _setup_combobox(self):
+    def setup_widgets(self) -> NoReturn:
         """
-        Sets up the combobox for selecting the scatterer type.
+        Configures the GUI elements for the Scatterer tab based on the selected scatterer type.
+        """
+        match self.type_button.get():
+            case 'Sphere':
+                self.setup_sphere_widgets()
+            case 'Cylinder':
+                self.setup_cylinder_widgets()
+            case 'CoreShell':
+                self.setup_coreshell_widgets()
+            case _:
+                raise ValueError('Scatterer type not valid')
+
+    def _setup_combobox(self) -> NoReturn:
+        """
+        Sets up a combobox for selecting the type of scatterer. It provides options for Sphere, Cylinder,
+        or CoreShell configurations.
         """
         combobox = tkinter.ttk.Combobox(
             self.frame,
@@ -54,62 +68,84 @@ class ScattererTab(BaseTab):
 
     def on_type_change(self, event=None) -> NoReturn:
         """
-        Handles the scatterer type change event, updates the UI widgets and scatterer configuration accordingly.
+        Handles the event triggered by a change in the selected scatterer type. It updates the UI to match
+        the selected scatterer configuration.
+
+        Args:
+            event: The event that triggered this method (default is None).
         """
-        self.widget_collection.clear_widgets()
+        scatterer_type = self.type_button.get().lower()
+        setup_method = getattr(self, f"setup_{scatterer_type}_widgets", None)
+        if callable(setup_method):
+            setup_method()
+        else:
+            raise ValueError(f"Unsupported scatterer type: {scatterer_type}")
 
-        self.setup()
-
-        self.main_window.axis_tab.clear_button()
-
-        self.main_window.axis_tab.setup_tab()
-
-    def get_selected_type(self) -> str:
+    def setup_sphere_widgets(self) -> NoReturn:
         """
-        Retrieves the currently selected scatterer type.
-
-        Returns:
-            The selected scatterer type as a string.
+        Sets up the configuration widgets for a Sphere scatterer and initializes the component.
         """
-        return self.type_button.get()
-
-    def _setup_sphere_widgets(self) -> NoReturn:
-        """Configures a sphere scatterer component with the selected parameters."""
         self.widget_collection = WidgetCollection(
-            InputWidget(default_value='500', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9),
-            InputWidget(default_value='1.4', label='Refractive Index', component_label='index'),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium')
+            InputWidget(default_value='500', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, frame=self.frame),
+            InputWidget(default_value='1.4', label='Refractive Index', component_label='index', frame=self.frame),
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium', frame=self.frame)
         )
+        self.widget_collection.setup_widgets(self.frame)
+        self.setup_sphere_component()
 
-        self.widget_collection.setup_widgets(frame=self.frame)
+    def setup_cylinder_widgets(self) -> NoReturn:
+        """
+        Sets up the configuration widgets for a Cylinder scatterer and initializes the component.
+        """
+        self.widget_collection = WidgetCollection(
+            InputWidget(default_value='1000', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, frame=self.frame),
+            InputWidget(default_value='1.4', label='Refractive Index', component_label='index', frame=self.frame),
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium', frame=self.frame)
+        )
+        self.widget_collection.setup_widgets(self.frame)
+        self.setup_cylinder_component()
+
+    def setup_coreshell_widgets(self) -> NoReturn:
+        """
+        Sets up the configuration widgets for a CoreShell scatterer and initializes the component.
+        """
+        self.widget_collection = WidgetCollection(
+            InputWidget(default_value='1000', label='Core Diameter [nm]', component_label='core_diameter', multiplicative_factor=1e-9, frame=self.frame),
+            InputWidget(default_value='200', label='Shell Width [nm]', component_label='shell_width', multiplicative_factor=1e-9, frame=self.frame),
+            InputWidget(default_value='1.4', label='Core Refractive Index', component_label='core_index', frame=self.frame),
+            InputWidget(default_value='1.4', label='Shell Refractive Index', component_label='shell_index', frame=self.frame),
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium', frame=self.frame)
+        )
+        self.widget_collection.setup_widgets(self.frame)
+        self.setup_coreshell_component()
+
+    def setup_component(self, event=None) -> NoReturn:
+        """
+        Handles the event triggered by a change in the selected scatterer type. It updates the UI to match
+        the selected scatterer configuration.
+
+        Args:
+            event: The event that triggered this method (default is None).
+        """
+        scatterer_type = self.type_button.get().lower()
+        self.widget_collection.update()
+        setup_method = getattr(self, f"setup_{scatterer_type}_component", None)
+        if callable(setup_method):
+            setup_method()
+        else:
+            raise ValueError(f"Unsupported scatterer type: {scatterer_type}")
 
     def setup_sphere_component(self) -> NoReturn:
-        self.component = scatterer.Sphere(
-            **self.widget_collection.to_component_dict(),
-            source_set=self.source_tab.component
-        )
+        self.component = scatterer.Sphere(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
 
         self.mapping = dict(
             diameter=self.component.diameter,
             index=self.component.index,
             n_medium=self.component.n_medium,
         )
-
-    def _setup_cylinder_widgets(self) -> NoReturn:
-        """Configures a cylinder scatterer component with the selected parameters."""
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='1000', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9),
-            InputWidget(default_value='1.4', label='Refractive Index', component_label='index'),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium')
-        )
-
-        self.widget_collection.setup_widgets(frame=self.frame)
 
     def setup_cylinder_component(self) -> NoReturn:
-        self.component = scatterer.Cylinder(
-            **self.widget_collection.to_component_dict(),
-            source_set=self.source_tab.component
-        )
+        self.component = scatterer.Cylinder(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
 
         self.mapping = dict(
             diameter=self.component.diameter,
@@ -117,23 +153,8 @@ class ScattererTab(BaseTab):
             n_medium=self.component.n_medium,
         )
 
-    def _setup_coreshell_widgets(self) -> NoReturn:
-        """Configures a core-shell scatterer component with the selected parameters."""
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='1000', label='Core Diameter [nm]', component_label='core_diameter', multiplicative_factor=1e-9),
-            InputWidget(default_value='1000', label='Shell Width [nm]', component_label='shell_width', multiplicative_factor=1e-9),
-            InputWidget(default_value='1.4', label='Core Refractive Index', component_label='core_index'),
-            InputWidget(default_value='1.4', label='Shell Refractive Index', component_label='shell_index'),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium')
-        )
-
-        self.widget_collection.setup_widgets(frame=self.frame)
-
     def setup_coreshell_component(self) -> NoReturn:
-        self.component = scatterer.CoreShell(
-            **self.widget_collection.to_component_dict(),
-            source_set=self.source_tab.component
-        )
+        self.component = scatterer.CoreShell(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
 
         self.mapping = dict(
             core_diameter=self.component.core_diameter,
@@ -143,39 +164,5 @@ class ScattererTab(BaseTab):
             n_medium=self.component.n_medium,
         )
 
-    def setup(self) -> NoReturn:
-        """
-        Configures the GUI elements for the Scatterer tab based on the selected scatterer type.
-        """
-        match self.get_selected_type():
-            case 'Sphere':
-                self._setup_sphere_widgets()
-                self.setup_sphere_component()
-            case 'Cylinder':
-                self._setup_cylinder_widgets()
-                self.setup_cylinder_component()
-            case 'CoreShell':
-                self._setup_coreshell_widgets()
-                self.setup_coreshell_component()
-            case _:
-                raise ValueError('Scatterer type not valid')
-
-    def setup_component(self) -> NoReturn:
-        """
-        Configures the GUI elements for the Scatterer tab based on the selected scatterer type.
-        """
-        self.update_user_input()
-
-        selected_type = self.get_selected_type()
-
-        match selected_type.lower():
-            case 'sphere':
-                self.setup_sphere_component()
-            case 'cylinder':
-                self.setup_cylinder_component()
-            case 'coreshell':
-                self.setup_coreshell_component()
-            case _:
-                raise ValueError('Scatterer type not valid')
 
 # -

@@ -7,7 +7,7 @@ from tkinter import ttk, filedialog, messagebox
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-# Assuming PyMieSim and its dependencies are installed
+
 from PyMieSim.experiment import Setup
 
 from PyMieSim.gui import SourceTab, ScattererTab, DetectorTab, AxisTab
@@ -34,12 +34,13 @@ class PyMieSimGUI:
         self.master.title("PyMieSim Graphic Interface")
 
         self.customize_notebook_style()
-        self.setup_plot_frame()
         self.setup_notebook()
         self.setup_controls()
 
     def on_close(self) -> NoReturn:
-        """Handles the GUI close event."""
+        """
+        Handles the GUI close event.
+        """
         plt.close('all')  # Close all matplotlib figures
         self.master.destroy()  # Close the Tkinter window
 
@@ -63,11 +64,10 @@ class PyMieSimGUI:
             expand=[("selected", [1, 1, 1, 0])]
         )
 
-        # Style for larger buttons
         style.configure(
             "Large.TButton",
-            font=('Helvetica', 18),    # Font size for buttons
-            padding=[20, 15]           # Increased padding for top and bottom to make the button taller
+            font=('Helvetica', 18),
+            padding=[20, 20]
         )
 
     def setup_notebook(self) -> NoReturn:
@@ -77,11 +77,14 @@ class PyMieSimGUI:
         self.notebook = ttk.Notebook(self.master)
         self.notebook.grid(row=0, column=0, sticky="ewns")
 
+        self.notebook_2 = ttk.Notebook(self.master)
+        self.notebook_2.grid(row=2, column=0, sticky="ewns")
+
         # Create tab instances
         self.source_tab = SourceTab(notebook=self.notebook, label='Source')
-        self.scatterer_tab = ScattererTab(self.notebook, 'Scatterer', source_tab=self.source_tab, main_window=self)
+        self.scatterer_tab = ScattererTab(self.notebook, 'Scatterer', source_tab=self.source_tab)
         self.detector_tab = DetectorTab(self.notebook, 'Detector')
-        self.axis_tab = AxisTab(self.notebook, 'Axis Configuration', other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab])
+        self.axis_tab = AxisTab(self.notebook_2, 'Axis Configuration', other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab])
 
     def export_plot(self) -> NoReturn:
         """
@@ -141,19 +144,12 @@ class PyMieSimGUI:
             command=self.export_plot
         ).grid(row=0, column=2, sticky="ew")
 
-    def setup_plot_frame(self) -> NoReturn:
-        """
-        Sets up the frame for displaying plots.
-        """
-        self.plot_frame = tk.Frame(self.master)
-        self.plot_frame.grid(row=2, column=0, sticky="ewns")
-
     def setup_PyMieSim(self) -> NoReturn:
         """
         Compute the B1 scattering data using either a single diameter or a range of diameters.
         """
-        self.source_tab.setup_component()
         self.scatterer_tab.setup_component()
+        self.source_tab.setup_component()
         self.detector_tab.setup_component()
 
         self.experiment = Setup(
@@ -210,7 +206,7 @@ class PyMieSimGUI:
         self.setup_PyMieSim()
 
         self.data = self.experiment.get(self.y_axis)
-        print(self.data.y.values)
+
         self.x_axis = self.axis_tab.axis_mapping['wavelength']
 
         try:

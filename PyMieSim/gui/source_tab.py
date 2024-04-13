@@ -28,8 +28,9 @@ class SourceTab(BaseTab):
             **kwargs: Arbitrary keyword arguments for BaseTab.
         """
         super().__init__(*args, **kwargs)
+        self.setup_widgets()
 
-    def setup(self) -> NoReturn:
+    def setup_widgets(self) -> NoReturn:
         """
         Configures the GUI elements for the Source tab.
 
@@ -37,14 +38,13 @@ class SourceTab(BaseTab):
         user interaction for the configuration of the light source.
         """
         self.widget_collection = WidgetCollection(
-            InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9),
-            InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value'),
-            InputWidget(default_value='1.0', label='Optical Power [mW]', component_label='optical_power', multiplicative_factor=1e-3),
-            InputWidget(default_value='0.2', label='Numerical Aperture (NA)', component_label='NA')
+            InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, frame=self.frame),
+            InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value', frame=self.frame),
+            InputWidget(default_value='1.0', label='Optical Power [mW]', component_label='optical_power', multiplicative_factor=1e-3, frame=self.frame),
+            InputWidget(default_value='0.2', label='Numerical Aperture (NA)', component_label='NA', frame=self.frame)
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)
-
         self.setup_component()
 
     def setup_component(self) -> NoReturn:
@@ -54,8 +54,7 @@ class SourceTab(BaseTab):
         This method reads input values from the UI widgets and uses them to configure
         a Gaussian source component for the simulation.
         """
-        self.update_user_input()
-
+        self.widget_collection.update()
         self.component = Gaussian(**self.widget_collection.to_component_dict())
 
         self.mapping = {
