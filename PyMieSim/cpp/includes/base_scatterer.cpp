@@ -9,14 +9,12 @@
 class ScatteringProperties
 {
 public:
-    size_t
-        max_order;
+    size_t max_order;
 
-    double
-        size_parameter,
-        area;
+    double size_parameter;
+    double area;
 
-    SOURCE::State source;
+    SOURCE::BaseSource source;
 
     virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi){};
     virtual double get_Qsca(){};
@@ -34,7 +32,7 @@ public:
         source(wavelength, jones_vector, amplitude)
     {}
 
-    ScatteringProperties(const SOURCE::State &source) : source(source){}
+    ScatteringProperties(const SOURCE::BaseSource &source) : source(source){}
 
     double get_Qforward(){return get_Qsca() - get_Qback();};
     double get_Qpr(){return get_Qext() - get_g() * get_Qsca();};

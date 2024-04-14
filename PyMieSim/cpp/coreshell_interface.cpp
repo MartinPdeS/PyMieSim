@@ -8,11 +8,6 @@ using namespace CORESHELL;
 PYBIND11_MODULE(CoreShellInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-    // Binding for CoreShell::State class
-    py::class_<State>(module, "CppCoreShellState")
-        .def(py::init<>()); 
-
-    // Binding for CoreShell::Scatterer class
     py::class_<Scatterer>(module, "CORESHELL")
         .def(py::init<double, double, double, double, std::complex<double>, std::complex<double>, double, std::vector<complex128>>(),
              py::arg("wavelength"),
@@ -41,7 +36,6 @@ PYBIND11_MODULE(CoreShellInterface, module) {
         .def_property_readonly("Cback", &Scatterer::get_Cback, "Backscattering cross-section.")
         .def_property_readonly("Cpr", &Scatterer::get_Cpr, "Radiation pressure cross-section.")
         .def_property_readonly("g", &Scatterer::get_g, "Asymmetry parameter.")
-        .def_readwrite("state", &Scatterer::state, "State of the scatterer.")
         .def_readwrite("area", &Scatterer::area, "Physical cross-sectional area.")
         .def_readwrite("size_parameter", &Scatterer::size_parameter, "Size parameter of the scatterer.");
 }

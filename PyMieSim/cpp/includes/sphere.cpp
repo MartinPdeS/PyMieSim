@@ -15,11 +15,11 @@ namespace SPHERE
     }
 
     void Scatterer::compute_size_parameter() {
-        this->size_parameter = PI * state.diameter / this->source.wavelength;
+        this->size_parameter = PI * this->diameter / this->source.wavelength;
     }
 
     void Scatterer::compute_area() {
-        this->area = PI * std::pow(state.diameter / 2.0, 2);
+        this->area = PI * std::pow(this->diameter / 2.0, 2);
     }
 
     void Scatterer::compute_an_bn(){
@@ -28,7 +28,7 @@ namespace SPHERE
 
         complex128
             x = size_parameter,
-            m = state.index,
+            m = this->index,
             mx = m * x,
             _da, _db, _gsx, _gs1x, _px, _chx, _p1x, _ch1x, _p2x, _ch2x;
 
@@ -70,7 +70,7 @@ namespace SPHERE
 
         complex128
             x = size_parameter,
-            m = state.index,
+            m = this->index,
             z = m * x;
 
         size_t nmx = std::max( max_order, (size_t) std::abs(z) ) + 16;

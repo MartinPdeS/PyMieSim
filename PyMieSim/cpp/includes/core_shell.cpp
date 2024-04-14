@@ -1,12 +1,13 @@
 #pragma once
 
 #include "core_shell.h"
+#include <iostream>
 
 namespace CORESHELL
 {
 
     void Scatterer::initialize(size_t &max_order){
-        state.apply_medium();
+        this->apply_medium();
         compute_size_parameter();
         compute_max_order(max_order);
         compute_area();
@@ -14,9 +15,9 @@ namespace CORESHELL
     }
 
     void Scatterer::compute_size_parameter(){
-        size_parameter = source.k * state.shell_diameter / 2;
-        state.x_shell = source.k * state.shell_diameter / 2.0;
-        state.x_core = source.k * state.core_diameter / 2.0;
+        size_parameter = source.k * this->shell_diameter / 2;
+        this->x_shell = source.k * this->shell_diameter / 2.0;
+        this->x_core = source.k * this->core_diameter / 2.0;
     }
 
     void Scatterer::compute_max_order(size_t &max_order){
@@ -28,7 +29,7 @@ namespace CORESHELL
 
     void Scatterer::compute_area(){
 
-        this->area = PI * pow(state.shell_diameter/2.0, 2);
+        this->area = PI * pow(this->shell_diameter/2.0, 2);
     }
 
     double Scatterer::get_g(){
@@ -50,34 +51,34 @@ namespace CORESHELL
         bn = std::vector<complex128>(max_order);
 
         complex128
-            m = state.shell_index / state.core_index,
-            u = state.core_index * state.x_core,
-            v = state.shell_index * state.x_core,
-            w = state.shell_index * state.x_shell;
+            m = this->shell_index / this->core_index,
+            u = this->core_index * this->x_core,
+            v = this->shell_index * this->x_core,
+            w = this->shell_index * this->x_shell;
 
         complex128
             sv = sqrt(0.5 * PI * v),
             sw = sqrt(0.5 * PI * w),
-            sy = sqrt(0.5 * PI * state.x_shell);
+            sy = sqrt(0.5 * PI * this->x_shell);
 
         size_t
-            mx = (size_t) std::max( abs( state.core_index * state.x_shell ), abs( state.shell_index*state.x_shell ) ),
+            mx = (size_t) std::max( abs( this->core_index * this->x_shell ), abs( this->shell_index*this->x_shell ) ),
             nmx  = (size_t) ( std::max( max_order, mx ) + 16. )  ;
 
         std::vector<complex128> pv, pw, py, chv, chw, chy, p1y, ch1y, gsy, gs1y;
 
-        p1y. push_back( sin( state.x_shell ) ) ;
-        ch1y.push_back( cos( state.x_shell ) ) ;
+        p1y. push_back( sin( this->x_shell ) ) ;
+        ch1y.push_back( cos( this->x_shell ) ) ;
 
         for (size_t i=0; i<max_order+1; i++){
             double nu = i + 1.5 ;
             pw.push_back( sw * compute_Jn(nu, w) );
             pv.push_back( sv * compute_Jn(nu, v) );
-            py.push_back( sy * compute_Jn(nu, state.x_shell) );
+            py.push_back( sy * compute_Jn(nu, this->x_shell) );
 
             chv.push_back( -sv * compute_Yn(nu, v) );
             chw.push_back( -sw * compute_Yn(nu, w) );
-            chy.push_back( -sy * compute_Yn(nu, state.x_shell) );
+            chy.push_back( -sy * compute_Yn(nu, this->x_shell) );
 
             p1y.push_back ( py[i]  );
             ch1y.push_back( chy[i] );
@@ -108,8 +109,8 @@ namespace CORESHELL
             fv.push_back ( pv[i] / chv[i]    );
             dns.push_back( ( ( uu[i] * fv[i] / pw[i] ) / ( uu[i] * ( pw[i] - chw[i] * fv[i] ) + ( pw[i] / pv[i] ) / chv[i] ) ) + Dw[i] );
             gns.push_back( ( ( vv[i] * fv[i] / pw[i] ) / ( vv[i] * ( pw[i] - chw[i] * fv[i] ) + ( pw[i] / pv[i] ) / chv[i] ) ) + Dw[i] );
-            a1.push_back ( dns[i] / state.shell_index + n / state.x_shell );
-            b1.push_back ( state.shell_index * gns[i] + n / state.x_shell );
+            a1.push_back ( dns[i] / this->shell_index + n / this->x_shell );
+            b1.push_back ( this->shell_index * gns[i] + n / this->x_shell );
             an[i] = ( py[i] * a1[i] - p1y[i] ) / ( gsy[i] * a1[i] - gs1y[i] ) ;
             bn[i] = ( py[i] * b1[i] - p1y[i] ) / ( gsy[i] * b1[i] - gs1y[i] ) ;
         }

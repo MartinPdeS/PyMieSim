@@ -50,7 +50,7 @@ class GenericDetector():
         if far_field is None:
             far_field = numpy.ones(self.sampling)
 
-        self.cpp_binding.state.scalar_field = far_field
+        self.cpp_binding.scalar_field = far_field
 
         if self.rotation_angle != 0:
             self.rotate_around_axis(self.rotation_angle)
@@ -79,7 +79,7 @@ class GenericDetector():
         Args:
             rotation_angle (float): Rotation angle in degrees.
         """
-        self.cpp_binding.state.mesh.rotate_around_axis(rotation_angle)
+        self.cpp_binding.mesh.rotate_around_axis(rotation_angle)
 
     def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
         r"""
@@ -129,15 +129,15 @@ class GenericDetector():
             SceneList3D: The 3D plotting scene containing the field plots.
         """
         coordinate = numpy.row_stack((
-            self.cpp_binding.state.mesh.x,
-            self.cpp_binding.state.mesh.y,
-            self.cpp_binding.state.mesh.z
+            self.cpp_binding.mesh.x,
+            self.cpp_binding.mesh.y,
+            self.cpp_binding.mesh.z
         ))
 
         figure = SceneList3D()
 
         for scalar_type in ['real', 'imag']:
-            scalar = getattr(numpy.asarray(self.cpp_binding.state.scalar_field), scalar_type)
+            scalar = getattr(numpy.asarray(self.cpp_binding.scalar_field), scalar_type)
 
             ax = figure.append_ax()
             artist = ax.add_unstructured_mesh(
@@ -205,7 +205,7 @@ class Photodiode(GenericDetector):
     def __post_init__(self):
         self.initialize()
 
-        self.cpp_binding.state.scalar_field = numpy.ones(self.sampling, dtype=complex)
+        self.cpp_binding.scalar_field = numpy.ones(self.sampling, dtype=complex)
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return numpy.ones([sampling, sampling])
@@ -283,12 +283,12 @@ class CoherentMode(GenericDetector):
                 raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
 
         farfield = self.mode_module.interpolate_from_fibonacci_mesh(
-            fibonacci_mesh=self.cpp_binding.state.mesh,
+            fibonacci_mesh=self.cpp_binding.mesh,
             number_0=self.numbers[0],
             number_1=self.numbers[1]
         )
 
-        self.cpp_binding.state.scalar_field = farfield
+        self.cpp_binding.scalar_field = farfield
 
         if self.rotation_angle != 0:
             self.rotate_around_axis(self.rotation_angle)

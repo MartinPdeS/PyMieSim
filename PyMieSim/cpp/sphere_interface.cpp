@@ -10,10 +10,6 @@ using namespace SPHERE;
 PYBIND11_MODULE(SphereInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-    // Binding for SPHERE::State class
-    py::class_<State>(module, "CppSphereState")
-        .def(py::init<>(), "Default constructor for the sphere state.");
-
     // Binding for SPHERE::Scatterer class
     py::class_<Scatterer>(module, "SPHERE")
         .def(py::init<double, double, double, std::complex<double>, double, std::vector<complex128>>(),
@@ -45,7 +41,6 @@ PYBIND11_MODULE(SphereInterface, module) {
         .def_property_readonly("Cback", &Scatterer::get_Cback, "Backscattering cross-section of the sphere.")
         .def_property_readonly("Cpr", &Scatterer::get_Cpr, "Radiation pressure cross-section of the sphere.")
         .def_property_readonly("g", &Scatterer::get_g, "Asymmetry parameter of the sphere.")
-        .def_readwrite("state", &Scatterer::state, "State of the sphere scatterer.")
         .def_readwrite("area", &Scatterer::area, "Physical cross-sectional area of the sphere.")
         .def_readwrite("size_parameter", &Scatterer::size_parameter, "Size parameter of the sphere scatterer.");
 }

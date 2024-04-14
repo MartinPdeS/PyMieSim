@@ -6,7 +6,7 @@ namespace CYLINDER
 {
 
     void Scatterer::initialize(size_t &max_order){
-        // state.apply_medium();
+        // this->apply_medium();
         this->compute_size_parameter();
         this->compute_max_order(max_order);
         this->compute_area();
@@ -22,11 +22,11 @@ namespace CYLINDER
     }
 
     void Scatterer::compute_size_parameter(){
-        this->size_parameter = PI * state.diameter / source.wavelength;
+        this->size_parameter = PI * this->diameter / source.wavelength;
     }
 
     void Scatterer::compute_area(){
-        this->area = state.diameter;
+        this->area = this->diameter;
     }
 
     double Scatterer::get_g(){
@@ -77,9 +77,9 @@ namespace CYLINDER
     }
 
     double Scatterer::process_polarization(complex128 &Value0, complex128& value1) {
-        if (source.is_polarized == false)
-            return 0.5 * ( abs( value1 ) + abs( Value0 ) );
-        else
+        // if (source.is_polarized == false)
+        //     return 0.5 * ( abs( value1 ) + abs( Value0 ) );
+        // else
             return abs( value1 ) * pow(abs(source.jones_vector[0]), 2) + abs( Value0 ) * pow(abs(source.jones_vector[1]), 2);
     }
 
@@ -93,7 +93,7 @@ namespace CYLINDER
         double x = size_parameter;
 
         complex128
-        m = state.index / state.n_medium,
+        m = this->index / this->n_medium,
         z = m * x,
         numerator,
         denominator;

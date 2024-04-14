@@ -5,19 +5,3 @@
 #include <complex>
 #include <cmath> // For std::isnan
 #include "sources.h"
-
-namespace SOURCE {
-
-    void Source::set_wavelength(double value) {
-        wavelength = value;
-        k = 2.0 * PI / value;
-    }
-
-    void Source::set_polarization(double value) {
-        polarization = value;
-    }
-
-    void Source::set_amplitude(double value) {
-        amplitude = value;
-    }
-}

@@ -8,10 +8,6 @@ using namespace CYLINDER;
 PYBIND11_MODULE(CylinderInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-    // Binding for Cylinder::State class
-    py::class_<State>(module, "CppCylinderState")
-        .def(py::init<>());
-
     py::class_<Scatterer>(module, "CYLINDER")
         .def(py::init<double, double, double, std::complex<double>, double, std::vector<complex128>>(),
              py::arg("wavelength"),
@@ -40,7 +36,6 @@ PYBIND11_MODULE(CylinderInterface, module) {
         .def_property_readonly("Cback", &Scatterer::get_Cback, "Backscattering cross-section of the cylinder.")
         .def_property_readonly("Cpr", &Scatterer::get_Cpr, "Radiation pressure cross-section of the cylinder.")
         .def_property_readonly("g", &Scatterer::get_g, "Asymmetry parameter of the cylinder.")
-        .def_readwrite("state", &Scatterer::state, "State of the cylinder scatterer.")
         .def_readwrite("area", &Scatterer::area, "Physical cross-sectional area of the cylinder.")
         .def_readwrite("size_parameter", &Scatterer::size_parameter, "Size parameter of the cylinder scatterer.");
 }

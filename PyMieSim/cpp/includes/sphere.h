@@ -14,23 +14,6 @@ namespace SPHERE
 {
     using complex128 = std::complex<double>;
 
-    struct State {
-        double diameter = 0.0;
-        double n_medium = 1.0;
-        complex128 index = {1.0, 0.0};
-
-        State() = default;
-
-        State(double diameter, complex128 index, double n_medium)
-            : diameter(diameter), index(index / n_medium), n_medium(n_medium) {}
-
-        void apply_medium() {
-            this->index /= this->n_medium;
-            this->diameter *= this->n_medium;
-        }
-
-    };
-
     class Set
     {
         public:
@@ -65,25 +48,27 @@ namespace SPHERE
     {
 
         public:
+            double diameter = 0.0;
+            double n_medium = 1.0;
+            complex128 index = {1.0, 0.0};
+
             std::vector<complex128> an;
             std::vector<complex128> bn;
             std::vector<complex128> cn;
             std::vector<complex128> dn;
-
-            State state;
 
             Scatterer() = default;
 
             Scatterer(
                 double wavelength, double amplitude, double diameter, complex128 index,
                 double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0) :
-                ScatteringProperties(wavelength, jones_vector, amplitude), state(diameter, index, n_medium)
+                ScatteringProperties(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
             {
                 initialize(max_order);
             }
 
-            Scatterer(State &state, SOURCE::State &source, size_t max_order = 0) :
-                ScatteringProperties(source), state(state)
+            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order = 0) :
+                ScatteringProperties(source), diameter(diameter), index(index), n_medium(n_medium)
             {
                 this->initialize(max_order);
             }
@@ -94,7 +79,6 @@ namespace SPHERE
                 compute_area();
                 compute_an_bn();
             }
-
 
             pybind11::array_t<complex128> get_an_py() { return vector_to_numpy(an, {max_order}); }
             pybind11::array_t<complex128> get_bn_py() { return vector_to_numpy(bn, {max_order}); }

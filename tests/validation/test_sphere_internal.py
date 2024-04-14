@@ -3,7 +3,7 @@ import numpy
 from PyMieSim.single.scatterer import Sphere, CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.mesh import FibonacciMesh
+from PyMieSim.mesh import FibonacciMesh  # noqa: F401
 
 
 def test_Qsca_cross_section():
@@ -43,7 +43,7 @@ def test_energy_flow_coupling():
         phi_offset=0
     )
 
-    val0 = sphere.get_energy_flow(detector.cpp_binding.state.mesh)
+    val0 = sphere.get_energy_flow(detector.cpp_binding.mesh)
     val1 = detector.coupling(sphere)
 
     if not numpy.isclose(val0, val1, atol=0, rtol=1e-5):
