@@ -24,6 +24,7 @@ find_package(Python ${PYBIND11_PYTHON_VERSION} EXACT COMPONENTS Interpreter Deve
 add_subdirectory("extern/pybind11")
 
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
+include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
 
 add_compile_options(-Wno-return-type)
 
