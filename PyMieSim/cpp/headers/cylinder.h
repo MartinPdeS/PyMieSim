@@ -42,7 +42,10 @@ namespace CYLINDER
             double n_medium = 1.0;
             complex128 index = {1.0, 0.0};
 
-            std::vector<complex128> a1n, b1n, a2n, b2n;
+            std::vector<complex128> a1n;
+            std::vector<complex128> b1n;
+            std::vector<complex128> a2n;
+            std::vector<complex128> b2n;
 
 
             pybind11::array_t<complex128> get_a1n_py() { return vector_to_numpy(a1n, {max_order}); }
@@ -50,10 +53,10 @@ namespace CYLINDER
             pybind11::array_t<complex128> get_a2n_py() { return vector_to_numpy(a2n, {max_order}); }
             pybind11::array_t<complex128> get_b2n_py() { return vector_to_numpy(b2n, {max_order}); }
 
-            std::vector<complex128> get_a1n() { return a1n; };
-            std::vector<complex128> get_b1n() { return b1n; };
-            std::vector<complex128> get_a2n() { return a2n; };
-            std::vector<complex128> get_b2n() { return b2n; };
+            std::vector<complex128> get_a1n() const { return a1n; };
+            std::vector<complex128> get_b1n() const { return b1n; };
+            std::vector<complex128> get_a2n() const { return a2n; };
+            std::vector<complex128> get_b2n() const { return b2n; };
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
             double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0)

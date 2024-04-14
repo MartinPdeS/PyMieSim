@@ -59,8 +59,7 @@ namespace SPHERE
 
             Scatterer() = default;
 
-            Scatterer(
-                double wavelength, double amplitude, double diameter, complex128 index,
+            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
                 double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0) :
                 ScatteringProperties(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
             {
@@ -86,16 +85,16 @@ namespace SPHERE
             pybind11::array_t<complex128> get_dn_py() { return vector_to_numpy(dn, {max_order}); }
             std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi);
 
-            std::vector<complex128> get_an() { return an; };
-            std::vector<complex128> get_bn() { return bn; };
-            std::vector<complex128> get_cn() { return cn; };
-            std::vector<complex128> get_dn() { return dn; };
+            std::vector<complex128> get_an() const { return an; };
+            std::vector<complex128> get_bn() const { return bn; };
+            std::vector<complex128> get_cn() const { return cn; };
+            std::vector<complex128> get_dn() const { return dn; };
 
 
-            double get_g();
-            double get_Qsca();
-            double get_Qext();
-            double get_Qback();
+            double get_g() const ;
+            double get_Qsca() const ;
+            double get_Qext() const ;
+            double get_Qback() const ;
             void compute_cn_dn();
             void compute_an_bn();
 

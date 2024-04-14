@@ -117,8 +117,8 @@
             pybind11::array_t<complex128> get_an_py(){ return vector_to_numpy(this->an, {max_order}); }
             pybind11::array_t<complex128> get_bn_py(){ return vector_to_numpy(this->bn, {max_order}); }
 
-            std::vector<complex128> get_an(){ return an; };
-            std::vector<complex128> get_bn(){ return bn; };
+            std::vector<complex128> get_an() const { return an; };
+            std::vector<complex128> get_bn() const { return bn; };
 
             Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
             complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order=0)

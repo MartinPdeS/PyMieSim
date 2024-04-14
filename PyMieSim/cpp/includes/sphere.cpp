@@ -115,18 +115,14 @@ namespace SPHERE
     }
 
 
-    double Scatterer::get_g(){
+    double Scatterer::get_g() const {
         double value = 0;
-
-        std::vector<complex128>
-            an = get_an(),
-            bn = get_bn();
 
           for(size_t it = 0; it < max_order-1; ++it) {
              double n = (double) it + 1;
 
-              value += ( n * (n + 2.) / (n + 1.) ) * std::real(an[it] * std::conj(an[it+1]) + bn[it] * std::conj(bn[it+1]) );
-              value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( an[it] * std::conj(bn[it]) );
+              value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
+              value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
           }
 
           return value * 4. / ( get_Qsca() * pow(size_parameter, 2) );
@@ -134,8 +130,6 @@ namespace SPHERE
 
     std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi){
         std::vector<complex128>
-            an = get_an(),
-            bn = get_bn(),
             S1(phi.size(), 0.0),
             S2(phi.size(), 0.0);
 
@@ -154,56 +148,44 @@ namespace SPHERE
             auto [pin, taun] = VSH::SPHERICAL::MiePiTau( Mu[i], max_order);
 
             for (unsigned int m = 0; m < max_order ; m++){
-                S1[i] += prefactor[m] * ( an[m] * pin[m] +  bn[m] * taun[m] );
-                S2[i] += prefactor[m] * ( an[m] * taun[m] + bn[m] * pin[m]  );
+                S1[i] += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
+                S2[i] += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
             }
       }
 
         return std::make_tuple(S1, S2)  ;
     }
 
-    double Scatterer::get_Qsca(){
-        std::vector<complex128>
-            an = get_an(),
-            bn = get_bn();
-
+    double Scatterer::get_Qsca() const {
         double value = 0;
 
         for(size_t it = 0; it < max_order; ++it) {
             double n = (double) it + 1;
-            value += (2.* n + 1.) * ( pow( std::abs(an[it]), 2) + pow( std::abs(bn[it]), 2)  );
+            value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
 
         }
         return value * 2. / pow( size_parameter, 2.);
     }
 
-    double Scatterer::get_Qext(){
-        std::vector<complex128>
-            an = get_an(),
-            bn = get_bn();
-
+    double Scatterer::get_Qext() const {
         double value = 0;
         for(size_t it = 0; it < max_order; ++it)
         {
             double n = (double) it + 1;
-            value += (2.* n + 1.) * std::real( an[it] + bn[it] );
+            value += (2.* n + 1.) * std::real( this->an[it] + this->bn[it] );
 
         }
         return value * 2. / pow( size_parameter, 2.);
     }
 
-    double Scatterer::get_Qback(){
-        std::vector<complex128>
-            an = get_an(),
-            bn = get_bn();
-
+    double Scatterer::get_Qback() const {
         complex128 value = 0;
 
         for(size_t it = 0; it < max_order-1; ++it)
         {
             double n = (double) it + 1;
 
-            value += (2. * n + 1) * pow(-1., n) * ( an[it] - bn[it] ) ;
+            value += (2. * n + 1) * pow(-1., n) * ( this->an[it] - this->bn[it] ) ;
         }
 
         value = pow( std::abs(value), 2. ) / pow( size_parameter, 2. );

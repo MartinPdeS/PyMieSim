@@ -34,44 +34,30 @@ namespace CYLINDER
     }
 
     double Scatterer::get_Qsca(){
-        std::vector<complex128>
-            a1n = get_a1n(),
-            b1n = get_b1n(),
-            a2n = get_a2n(),
-            b2n = get_b2n();
-
         complex128 Qsca1=0, Qsca2=0;
 
         for(size_t it = 1; it < max_order; it++)
         {
-            Qsca1 +=  pow( std::abs(a1n[it]), 2 ) + pow( std::abs(b1n[it]), 2 ) ;
-            Qsca2 +=  pow( std::abs(a2n[it]), 2 ) + pow( std::abs(b2n[it]), 2 ) ;
+            Qsca1 +=  pow( std::abs(this->a1n[it]), 2 ) + pow( std::abs(this->b1n[it]), 2 ) ;
+            Qsca2 +=  pow( std::abs(this->a2n[it]), 2 ) + pow( std::abs(this->b2n[it]), 2 ) ;
         }
 
-        Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(b1n[0]), 2 ) );
-        Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( abs(a2n[0]), 2 ) );
+        Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(this->b1n[0]), 2 ) );
+        Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( abs(this->a2n[0]), 2 ) );
 
         return process_polarization(Qsca1, Qsca2);
     }
 
     double Scatterer::get_Qext(){
-        std::vector<complex128>
-            a1n = get_a1n(),
-            b1n = get_b1n(),
-            a2n = get_a2n(),
-            b2n = get_b2n();
-
-        complex128
-            Qext1 = 0,
-            Qext2 = 0;
+        complex128 Qext1 = 0, Qext2 = 0;
 
         for(size_t it = 1; it < max_order; ++it){
-            Qext1 += b1n[it];
-            Qext2 += a2n[it];
+            Qext1 += this->b1n[it];
+            Qext2 += this->a2n[it];
         }
 
-        Qext1 = 2. / size_parameter * std::real( b1n[0] + 2.0 * Qext1 );
-        Qext2 = 2. / size_parameter * std::real( a1n[0] + 2.0 * Qext2 );
+        Qext1 = 2. / size_parameter * std::real( this->b1n[0] + 2.0 * Qext1 );
+        Qext2 = 2. / size_parameter * std::real( this->a1n[0] + 2.0 * Qext2 );
 
         return this->process_polarization(Qext1, Qext2);
     }
@@ -84,19 +70,19 @@ namespace CYLINDER
     }
 
     void Scatterer::compute_an_bn() {
-        a1n = std::vector<complex128>(max_order);
-        b1n = std::vector<complex128>(max_order);
+        this->a1n = std::vector<complex128>(max_order);
+        this->b1n = std::vector<complex128>(max_order);
 
-        a2n = std::vector<complex128>(max_order);
-        b2n = std::vector<complex128>(max_order);
+        this->a2n = std::vector<complex128>(max_order);
+        this->b2n = std::vector<complex128>(max_order);
 
         double x = size_parameter;
 
         complex128
-        m = this->index / this->n_medium,
-        z = m * x,
-        numerator,
-        denominator;
+            m = this->index / this->n_medium,
+            z = m * x,
+            numerator,
+            denominator;
 
         std::vector<complex128>
             J_z(max_order+1),
@@ -120,13 +106,13 @@ namespace CYLINDER
         for (size_t n = 0; n < (size_t) max_order; n++){
             numerator = m * J_z[n] * J_x_p[n] - J_z_p[n] * J_x[n];
             denominator = m * J_z[n] * H_x_p[n] - J_z_p[n] * H_x[n];
-            a1n[n] = 0.0 ;
-            a2n[n] = numerator/denominator ;
+            this->a1n[n] = 0.0 ;
+            this->a2n[n] = numerator/denominator ;
 
             numerator = J_z[n] * J_x_p[n] - m * J_z_p[n] * J_x[n];
             denominator = J_z[n] * H_x_p[n] - m * J_z_p[n] * H_x[n];
-            b1n[n] = numerator/denominator ;
-            b2n[n] = 0.0 ;
+            this->b1n[n] = numerator/denominator ;
+            this->b2n[n] = 0.0 ;
         }
     }
 

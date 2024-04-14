@@ -22,7 +22,7 @@ namespace CORESHELL
 
     void Scatterer::compute_max_order(size_t &max_order){
         if (max_order == 0)
-            this->max_order = (size_t) (2 + size_parameter + 4 * pow(size_parameter,1./3.));
+            this->max_order = (size_t) (2 + size_parameter + 4 * pow(size_parameter, 1./3.));
         else
             this->max_order = max_order;
     }
@@ -38,8 +38,8 @@ namespace CORESHELL
 
         for(size_t it = 0; it < max_order-1; ++it){
             double n = (double) it + 1;
-            value += ( n * (n + 2.) / (n + 1.) ) * std::real(an[it] * std::conj(an[it+1]) + bn[it] * std::conj(bn[it+1]) );
-            value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( an[it] * std::conj(bn[it]) );
+            value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
+            value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
         }
 
         return value * 4. / ( Qsca * pow(size_parameter, 2) );
@@ -117,25 +117,26 @@ namespace CORESHELL
     }
 
 
-    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &Phi){
+    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi){
         std::vector<complex128>
-            S1(Phi.size(), 0.0),
-            S2(Phi.size(), 0.0);
+            S1(phi.size(), 0.0),
+            S2(phi.size(), 0.0);
 
-        std::vector<double> Prefactor = get_prefactor();
+        std::vector<double> prefactor = get_prefactor();
 
-        std::vector<double> Mu; Mu.reserve(Phi.size());
+        std::vector<double> mu;
+        mu.reserve(phi.size());
 
-        for (double phi : Phi)
-            Mu.push_back( cos( phi-PI/2.0 ) );
+        for (double phi : phi)
+            mu.push_back( cos( phi-PI / 2.0 ) );
 
 
-        for (unsigned int i = 0; i < Phi.size(); i++){
-            auto [pin, taun] = VSH::SPHERICAL::MiePiTau( Mu[i], max_order);
+        for (unsigned int i = 0; i < phi.size(); i++){
+            auto [pin, taun] = VSH::SPHERICAL::MiePiTau(mu[i], max_order);
 
             for (unsigned int m = 0; m < max_order ; m++){
-                S1[i]    += Prefactor[m] * ( an[m] * pin[m] +  bn[m] * taun[m] );
-                S2[i]    += Prefactor[m] * ( an[m] * taun[m] + bn[m] * pin[m]  );
+                S1[i] += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
+                S2[i] += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
             }
         }
 
@@ -144,37 +145,33 @@ namespace CORESHELL
 
 
     double Scatterer::get_Qsca(){
-        std::vector<complex128> an = get_an(), bn = get_bn();
-
         double value = 0;
+
         for(size_t it = 0; it < max_order; ++it){
             double n = (double) it + 1;
-            value += (2.* n + 1.) * ( pow( std::abs(an[it]), 2) + pow( std::abs(bn[it]), 2)  );
+            value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
         }
         return value * 2. / pow( size_parameter, 2.);
     }
 
 
     double Scatterer::get_Qext(){
-        std::vector<complex128> an = get_an(), bn = get_bn();
-
         double value = 0;
+
         for(size_t it = 0; it < max_order; ++it){
             double n = (double) it + 1;
-            value += (2.* n + 1.) * std::real( an[it] + bn[it] );
+            value += (2.* n + 1.) * std::real( this->an[it] + this->bn[it] );
         }
         return value * 2. / pow( size_parameter, 2.);
     }
 
 
     double Scatterer::get_Qback(){
-        std::vector<complex128> an = get_an(), bn = get_bn();
-
         complex128 value = 0;
 
         for(size_t it = 0; it < max_order-1; ++it){
             double n = (double) it + 1;
-            value += (2. * n + 1) * pow(-1., n) * ( an[it] - bn[it] ) ;
+            value += (2. * n + 1) * pow(-1., n) * ( this->an[it] - this->bn[it] ) ;
         }
 
         value *= pow( std::abs(value), 2. ) / pow( size_parameter, 2. );
