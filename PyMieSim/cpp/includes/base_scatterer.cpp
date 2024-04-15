@@ -4,11 +4,9 @@
 #include "utils.cpp"
 #include "sources.cpp"
 #include "fibonacci_mesh.cpp"
-#include "VSH.cpp"
 #include <cmath>
 #include <vector>
 #include <complex>
-#include <iostream>
 
 class BaseScatterer
 {
