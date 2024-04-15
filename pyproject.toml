@@ -6,9 +6,9 @@ addopts = [
 ]
 
 testpaths = [
-    "tests/test_dummy.py",
+    # "tests/test_dummy.py",
     # "tests/detectors",
-    # "tests/scatterers/test_sphere.py",
+    "tests/scatterers/test_sphere.py",
     # "tests/experiments",
     # "tests/validation",
     # "tests/extra",
