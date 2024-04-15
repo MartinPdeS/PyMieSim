@@ -15,6 +15,7 @@ public:
     size_t max_order;
     double size_parameter;
     double area;
+    double n_medium;
 
     std::vector<complex128> an;
     std::vector<complex128> bn;
@@ -25,10 +26,10 @@ public:
 
     BaseSphericalScatterer() = default;
 
-    BaseSphericalScatterer(const double &wavelength, const std::vector<complex128> &jones_vector, const double &amplitude)
-    : source(wavelength, jones_vector, amplitude){}
+    BaseSphericalScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double n_medium)
+    : source(wavelength, jones_vector, amplitude), n_medium(n_medium){}
 
-    BaseSphericalScatterer(const SOURCE::BaseSource &source) : source(source){}
+    BaseSphericalScatterer(const SOURCE::BaseSource &source, const double n_medium) : source(source), n_medium(n_medium){}
 
     std::vector<complex128> get_an() const { return an; };
     std::vector<complex128> get_bn() const { return bn; };
@@ -51,6 +52,10 @@ public:
     double get_Cforward(){return get_Qforward() * area;};
     double get_Cpr(){return get_Qpr() * area;};
     double get_Cratio(){return get_Qratio() * area;};
+
+    size_t get_wiscombe_criterion(const double size_parameter){
+        return static_cast<size_t>(2 + size_parameter + 4 * std::cbrt(size_parameter)) + 16;
+    }
 
     std::vector<double> get_prefactor() const
     {

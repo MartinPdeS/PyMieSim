@@ -6,14 +6,6 @@ namespace SPHERE
 {
     using complex128 = std::complex<double>;
 
-    void Scatterer::compute_max_order(size_t max_order) {
-        if (max_order == 0) {
-            this->max_order = static_cast<size_t>(2 + this->size_parameter + 4 * std::cbrt(this->size_parameter)) + 16;
-        } else {
-            this->max_order = max_order;
-        }
-    }
-
     void Scatterer::compute_size_parameter() {
         this->size_parameter = PI * this->diameter / this->source.wavelength;
     }

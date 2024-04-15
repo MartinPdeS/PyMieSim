@@ -109,23 +109,22 @@
             double shell_diameter;
             complex128 core_index;
             complex128 shell_index;
-            double n_medium;
             double x_core;
             double x_shell;
 
             Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
-            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order=0)
-            : BaseSphericalScatterer(wavelength, jones, amplitude), core_diameter(core_diameter), shell_width(shell_width),
-            core_index(core_index), shell_index(shell_index), n_medium(n_medium)
+            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order = 0)
+            : BaseSphericalScatterer(wavelength, jones, amplitude, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+            core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
                 initialize(max_order);
             }
 
             Scatterer(double core_diameter, double shell_width, complex128 core_index, complex128 shell_index,
-                double n_medium, SOURCE::BaseSource &source, size_t max_order=0)
-            : BaseSphericalScatterer(source), core_diameter(core_diameter), shell_width(shell_width),
-            core_index(core_index), shell_index(shell_index), n_medium(n_medium)
+                double n_medium, SOURCE::BaseSource &source, size_t max_order = 0)
+            : BaseSphericalScatterer(source, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+            core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
                 initialize(max_order);

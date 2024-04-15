@@ -35,37 +35,48 @@ namespace SPHERE
 
         public:
             double diameter = 0.0;
-            double n_medium = 1.0;
             complex128 index = {1.0, 0.0};
 
             Scatterer() = default;
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0) :
-                BaseSphericalScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
+                double n_medium, std::vector<complex128> jones_vector, size_t max_order) :
+                BaseSphericalScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
             {
-                initialize(max_order);
-            }
-
-            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order = 0) :
-                BaseSphericalScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
-            {
-                this->initialize(max_order);
-            }
-
-            void initialize(size_t max_order) {
                 compute_size_parameter();
-                compute_max_order(max_order);
                 compute_area();
                 compute_an_bn();
             }
 
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const ;
+            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
+                double n_medium, std::vector<complex128> jones_vector) :
+                BaseSphericalScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
+            {
+                compute_size_parameter();
+                this->max_order = get_wiscombe_criterion(this->size_parameter);
+                compute_area();
+                compute_an_bn();
+            }
+
+            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order) :
+                BaseSphericalScatterer(source, n_medium), diameter(diameter), index(index)
+            {
+                compute_size_parameter();
+                compute_area();
+                compute_an_bn();
+            }
+
+            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source) :
+                BaseSphericalScatterer(source, n_medium), diameter(diameter), index(index)
+            {
+                compute_size_parameter();
+                this->max_order = this->get_wiscombe_criterion(this->size_parameter);
+                compute_area();
+                compute_an_bn();
+            }
 
             void compute_cn_dn();
             void compute_an_bn();
-
-            void compute_max_order(size_t max_order);
             void compute_size_parameter();
             void compute_area();
 
