@@ -50,11 +50,11 @@ namespace SPHERE
             _p2x = _px;
             _ch2x = _chx;
 
-            _gsx =  _px  - 1.*JJ * _chx;
-            _gs1x =  _p1x - 1.*JJ * _ch1x;
+            _gsx =  _px  - 1.0 * JJ * _chx;
+            _gs1x =  _p1x - 1.0 * JJ * _ch1x;
 
-            _da = Dn[i]/m + n/x;
-            _db = Dn[i]*m + n/x;
+            _da = Dn[i] / m + n / x;
+            _db = Dn[i] * m + n / x;
 
             an[i-1] = (_da * _px - _p1x) / (_da * _gsx - _gs1x);
             bn[i-1] = (_db * _px - _p1x) / (_db * _gsx - _gs1x);

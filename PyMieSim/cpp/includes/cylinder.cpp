@@ -69,11 +69,11 @@ namespace CYLINDER
     }
 
     void Scatterer::compute_an_bn() {
-        this->a1n = std::vector<complex128>(max_order);
-        this->b1n = std::vector<complex128>(max_order);
+        this->a1n.resize(max_order);
+        this->b1n.resize(max_order);
+        this->a2n.resize(max_order);
+        this->b2n.resize(max_order);
 
-        this->a2n = std::vector<complex128>(max_order);
-        this->b2n = std::vector<complex128>(max_order);
 
         double x = size_parameter;
 
@@ -116,9 +116,7 @@ namespace CYLINDER
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi) const{
-        std::vector<complex128>
-        T1(phi.size()),
-        T2(phi.size());
+        std::vector<complex128> T1(phi.size()), T2(phi.size());
 
         for (unsigned int i = 0; i < phi.size(); i++){
             T1[i] = this->b1n[0];
