@@ -1,13 +1,6 @@
 #pragma once
 
-
 #include "base_spherical_scatterer.cpp"
-#include "numpy_interface.cpp"
-#include "VSH.cpp"
-#include <cmath>
-#include <vector>
-#include <complex>
-
 
 namespace SPHERE
 {
