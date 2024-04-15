@@ -101,7 +101,7 @@
             }
     };
 
-    class Scatterer: public ScatteringProperties
+    class Scatterer: public BaseScatterer
     {
         public:
             double core_diameter;
@@ -112,7 +112,8 @@
             double n_medium;
             double x_core;
             double x_shell;
-            std::vector<complex128> an, bn;
+            std::vector<complex128> an;
+            std::vector<complex128> bn;
 
             pybind11::array_t<complex128> get_an_py(){ return vector_to_numpy(this->an, {max_order}); }
             pybind11::array_t<complex128> get_bn_py(){ return vector_to_numpy(this->bn, {max_order}); }
@@ -122,7 +123,7 @@
 
             Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
             complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order=0)
-            : ScatteringProperties(wavelength, jones, amplitude), core_diameter(core_diameter), shell_width(shell_width),
+            : BaseScatterer(wavelength, jones, amplitude), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index), n_medium(n_medium)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
@@ -131,7 +132,7 @@
 
             Scatterer(double core_diameter, double shell_width, complex128 core_index, complex128 shell_index,
                 double n_medium, SOURCE::BaseSource &source, size_t max_order=0)
-            : ScatteringProperties(source), core_diameter(core_diameter), shell_width(shell_width),
+            : BaseScatterer(source), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index), n_medium(n_medium)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
@@ -150,13 +151,13 @@
             void compute_size_parameter();
             void compute_max_order(size_t &max_order);
             void compute_area();
-            double get_g();
-            double get_Qsca();
-            double get_Qext();
-            double get_Qback();
+            double get_g() const ;
+            double get_Qsca() const;
+            double get_Qext() const;
+            double get_Qback() const;
 
             void compute_an_bn();
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi);
+            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const;
     };
 }
 

@@ -35,7 +35,7 @@ namespace CYLINDER
             }
     };
 
-    class Scatterer: public ScatteringProperties
+    class Scatterer: public BaseScatterer
     {
         public:
             double diameter = 0.0;
@@ -60,13 +60,13 @@ namespace CYLINDER
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
             double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0)
-            : ScatteringProperties(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
+            : BaseScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
             {
                 initialize(max_order);
             }
 
             Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order = 0) :
-                ScatteringProperties(source), diameter(diameter), index(index), n_medium(n_medium)
+                BaseScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
             {
                 this->initialize(max_order);
             }
@@ -75,15 +75,15 @@ namespace CYLINDER
             void compute_max_order(size_t &max_order);
             void compute_size_parameter();
             void compute_area();
-            double get_g();
-            double get_Qsca();
-            double get_Qext();
+            double get_g() const ;
+            double get_Qsca() const ;
+            double get_Qext() const ;
 
-            double process_polarization(complex128 &Value0, complex128& value1);
+            double process_polarization(complex128 &value_0, complex128& value_1) const ;
 
             void compute_an_bn();
 
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi);
+            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const;
 
   };
 

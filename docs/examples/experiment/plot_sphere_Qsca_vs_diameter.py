@@ -26,7 +26,7 @@ source_set = Gaussian(
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer_set = Sphere(
-    diameter=np.geomspace(6.36e-09, 10000e-9, 200),
+    diameter=np.geomspace(6.36e-09, 10000e-9, 1500),
     index=1.4,
     n_medium=1,
     source_set=source_set

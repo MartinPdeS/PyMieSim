@@ -9,7 +9,6 @@
 #include <complex>
 
 
-
 namespace SPHERE
 {
     using complex128 = std::complex<double>;
@@ -44,7 +43,7 @@ namespace SPHERE
             }
     };
 
-    class Scatterer: public ScatteringProperties
+    class Scatterer: public BaseScatterer
     {
 
         public:
@@ -61,13 +60,13 @@ namespace SPHERE
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
                 double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0) :
-                ScatteringProperties(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
+                BaseScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
             {
                 initialize(max_order);
             }
 
             Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order = 0) :
-                ScatteringProperties(source), diameter(diameter), index(index), n_medium(n_medium)
+                BaseScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
             {
                 this->initialize(max_order);
             }
@@ -83,7 +82,7 @@ namespace SPHERE
             pybind11::array_t<complex128> get_bn_py() { return vector_to_numpy(bn, {max_order}); }
             pybind11::array_t<complex128> get_cn_py() { return vector_to_numpy(cn, {max_order}); }
             pybind11::array_t<complex128> get_dn_py() { return vector_to_numpy(dn, {max_order}); }
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi);
+            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const ;
 
             std::vector<complex128> get_an() const { return an; };
             std::vector<complex128> get_bn() const { return bn; };

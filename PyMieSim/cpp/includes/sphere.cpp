@@ -124,28 +124,27 @@ namespace SPHERE
               value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
               value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
           }
-
           return value * 4. / ( get_Qsca() * pow(size_parameter, 2) );
       }
 
-    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi){
+    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi) const {
         std::vector<complex128>
             S1(phi.size(), 0.0),
             S2(phi.size(), 0.0);
 
         std::vector<double>
             prefactor = get_prefactor(),
-            Mu;
+            mu;
 
-        Mu.reserve(phi.size());
+        mu.reserve(phi.size());
 
         for (double phi : phi)
-            Mu.push_back( cos( phi - PI / 2.0 ) );
+            mu.push_back( cos( phi - PI / 2.0 ) );
 
 
         for (unsigned int i = 0; i < phi.size(); i++)
         {
-            auto [pin, taun] = VSH::SPHERICAL::MiePiTau( Mu[i], max_order);
+            auto [pin, taun] = VSH::SPHERICAL::MiePiTau(mu[i], max_order);
 
             for (unsigned int m = 0; m < max_order ; m++){
                 S1[i] += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
@@ -164,6 +163,7 @@ namespace SPHERE
             value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
 
         }
+
         return value * 2. / pow( size_parameter, 2.);
     }
 

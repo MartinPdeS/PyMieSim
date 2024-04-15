@@ -5,8 +5,7 @@
 #include "sources.cpp"
 #include "fibonacci_mesh.cpp"
 
-
-class ScatteringProperties
+class BaseScatterer
 {
 public:
     size_t max_order;
@@ -16,23 +15,18 @@ public:
 
     SOURCE::BaseSource source;
 
-    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi){};
-    virtual double get_Qsca(){};
-    virtual double get_Qext(){};
-    virtual double get_Qback(){};
-    virtual double get_g(){};
+    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi) const {};
+    virtual double get_Qsca() const {};
+    virtual double get_Qext() const {};
+    virtual double get_Qback() const {};
+    virtual double get_g() const {};
 
-    ScatteringProperties(){}
+    BaseScatterer(){}
 
-    ScatteringProperties(
-        const double &wavelength,
-        const std::vector<complex128> &jones_vector,
-        const double &amplitude)
-    :
-        source(wavelength, jones_vector, amplitude)
-    {}
+    BaseScatterer(const double &wavelength, const std::vector<complex128> &jones_vector, const double &amplitude)
+    : source(wavelength, jones_vector, amplitude){}
 
-    ScatteringProperties(const SOURCE::BaseSource &source) : source(source){}
+    BaseScatterer(const SOURCE::BaseSource &source) : source(source){}
 
     double get_Qforward(){return get_Qsca() - get_Qback();};
     double get_Qpr(){return get_Qext() - get_g() * get_Qsca();};
@@ -46,8 +40,7 @@ public:
     double get_Cpr(){return get_Qpr() * area;};
     double get_Cratio(){return get_Qratio() * area;};
 
-    std::vector<double>
-    get_prefactor() const
+    std::vector<double> get_prefactor() const
     {
         std::vector<double> output;
 
@@ -65,11 +58,8 @@ public:
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_structured_fields(
-        const std::vector<complex128>& S1,
-        const std::vector<complex128>& S2,
-        const std::vector<double>& theta,
-        const double& radius)
+    compute_structured_fields(const std::vector<complex128>& S1, const std::vector<complex128>& S2,
+        const std::vector<double>& theta, const double& radius) const
     {
         std::vector<complex128> phi_field, theta_field;
 
@@ -96,10 +86,7 @@ public:
 
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_fields(
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double radius=1.0)
+    compute_unstructured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius=1.0) const
     {
         auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -125,7 +112,7 @@ public:
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius=1.0)
+    compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius=1.0) const
     {
         return this->compute_unstructured_fields(
             fibonacci_mesh.spherical_coordinates.Phi,
@@ -136,7 +123,7 @@ public:
 
 
     std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
-    compute_full_structured_fields(const size_t& sampling, const double& radius)
+    compute_full_structured_fields(const size_t& sampling, const double& radius) const
     {
         FullSteradian full_mesh = FullSteradian(sampling);
 
@@ -159,7 +146,7 @@ public:
 
 
     std::tuple<std::vector<complex128>, FullSteradian>
-    compute_full_structured_spf(const size_t &sampling, const double &radius = 1.0)
+    compute_full_structured_spf(const size_t &sampling, const double &radius = 1.0) const
     {
         FullSteradian full_mesh = FullSteradian(sampling);
 
@@ -178,10 +165,7 @@ public:
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_structured_fields(
-        const std::vector<double>& phi,
-        const std::vector<double>& theta,
-        const double radius)
+    compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
     {
         complex128 propagator = this->compute_propagator(radius);
 
@@ -194,7 +178,7 @@ public:
 
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_s1s2_py(const std::vector<double> &phi)
+    get_s1s2_py(const std::vector<double> &phi) const
     {
         auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -203,7 +187,7 @@ public:
 
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
-    get_full_structured_fields_py(size_t &sampling, double& distance)
+    get_full_structured_fields_py(size_t &sampling, double& distance) const
     {
         auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_fields(sampling, distance);
 
@@ -227,7 +211,7 @@ public:
     }
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius)
+    get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
     {
         auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
 
@@ -236,7 +220,7 @@ public:
 
 
 
-    double get_g_with_fields(size_t sampling, double radius)
+    double get_g_with_fields(size_t sampling, double radius) const
     {
         auto [SPF, fibonacci_mesh] = this->compute_full_structured_spf(sampling, radius);
 

@@ -32,19 +32,6 @@ namespace CORESHELL
         this->area = PI * pow(this->shell_diameter/2.0, 2);
     }
 
-    double Scatterer::get_g(){
-        double Qsca = get_Qsca(),
-        value = 0;
-
-        for(size_t it = 0; it < max_order-1; ++it){
-            double n = (double) it + 1;
-            value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
-            value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
-        }
-
-        return value * 4. / ( Qsca * pow(size_parameter, 2) );
-    }
-
     void Scatterer::compute_an_bn()
     {
         an = std::vector<complex128>(max_order);
@@ -67,7 +54,7 @@ namespace CORESHELL
 
         std::vector<complex128> pv, pw, py, chv, chw, chy, p1y, ch1y, gsy, gs1y;
 
-        p1y. push_back( sin( this->x_shell ) ) ;
+        p1y.push_back( sin( this->x_shell ) ) ;
         ch1y.push_back( cos( this->x_shell ) ) ;
 
         for (size_t i=0; i<max_order+1; i++){
@@ -117,7 +104,7 @@ namespace CORESHELL
     }
 
 
-    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi){
+    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi) const {
         std::vector<complex128>
             S1(phi.size(), 0.0),
             S2(phi.size(), 0.0);
@@ -144,7 +131,7 @@ namespace CORESHELL
     }
 
 
-    double Scatterer::get_Qsca(){
+    double Scatterer::get_Qsca() const {
         double value = 0;
 
         for(size_t it = 0; it < max_order; ++it){
@@ -155,7 +142,7 @@ namespace CORESHELL
     }
 
 
-    double Scatterer::get_Qext(){
+    double Scatterer::get_Qext() const {
         double value = 0;
 
         for(size_t it = 0; it < max_order; ++it){
@@ -166,7 +153,7 @@ namespace CORESHELL
     }
 
 
-    double Scatterer::get_Qback(){
+    double Scatterer::get_Qback() const {
         complex128 value = 0;
 
         for(size_t it = 0; it < max_order-1; ++it){
@@ -176,6 +163,19 @@ namespace CORESHELL
 
         value *= pow( std::abs(value), 2. ) / pow( size_parameter, 2. );
         return std::abs(value);
+    }
+
+    double Scatterer::get_g() const {
+        double Qsca = get_Qsca(),
+        value = 0;
+
+        for(size_t it = 0; it < max_order-1; ++it){
+            double n = (double) it + 1;
+            value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
+            value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
+        }
+
+        return value * 4. / ( Qsca * pow(size_parameter, 2) );
     }
 
 }

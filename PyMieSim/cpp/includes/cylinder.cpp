@@ -4,7 +4,6 @@
 
 namespace CYLINDER
 {
-
     void Scatterer::initialize(size_t &max_order){
         // this->apply_medium();
         this->compute_size_parameter();
@@ -29,11 +28,11 @@ namespace CYLINDER
         this->area = this->diameter;
     }
 
-    double Scatterer::get_g(){
+    double Scatterer::get_g() const {
         return get_g_with_fields(1000, 1.0);
     }
 
-    double Scatterer::get_Qsca(){
+    double Scatterer::get_Qsca() const {
         complex128 Qsca1=0, Qsca2=0;
 
         for(size_t it = 1; it < max_order; it++)
@@ -48,7 +47,7 @@ namespace CYLINDER
         return process_polarization(Qsca1, Qsca2);
     }
 
-    double Scatterer::get_Qext(){
+    double Scatterer::get_Qext() const {
         complex128 Qext1 = 0, Qext2 = 0;
 
         for(size_t it = 1; it < max_order; ++it){
@@ -62,11 +61,11 @@ namespace CYLINDER
         return this->process_polarization(Qext1, Qext2);
     }
 
-    double Scatterer::process_polarization(complex128 &Value0, complex128& value1) {
+    double Scatterer::process_polarization(complex128 &value_0, complex128& value_1) const {
         // if (source.is_polarized == false)
         //     return 0.5 * ( abs( value1 ) + abs( Value0 ) );
         // else
-            return abs( value1 ) * pow(abs(source.jones_vector[0]), 2) + abs( Value0 ) * pow(abs(source.jones_vector[1]), 2);
+            return abs( value_1 ) * pow(abs(source.jones_vector[0]), 2) + abs( value_0 ) * pow(abs(source.jones_vector[1]), 2);
     }
 
     void Scatterer::compute_an_bn() {
@@ -116,17 +115,17 @@ namespace CYLINDER
         }
     }
 
-    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi){
+    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi) const{
         std::vector<complex128>
         T1(phi.size()),
         T2(phi.size());
 
         for (unsigned int i = 0; i < phi.size(); i++){
-            T1[i] = b1n[0];
-            T2[i] = a2n[0];
+            T1[i] = this->b1n[0];
+            T2[i] = this->a2n[0];
             for (size_t order = 1; order < max_order ; order++){
-                T1[i] += 2.0 * b1n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
-                T2[i] += 2.0 * a2n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
+                T1[i] += 2.0 * this->b1n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
+                T2[i] += 2.0 * this->a2n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
             }
         }
 
