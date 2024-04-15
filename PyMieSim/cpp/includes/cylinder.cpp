@@ -19,10 +19,10 @@ namespace CYLINDER
     double Scatterer::get_Qsca() const {
         complex128 Qsca1=0, Qsca2=0;
 
-        for(size_t it = 1; it < max_order; it++)
+        for(size_t order = 1; order < max_order; order++)
         {
-            Qsca1 +=  pow( std::abs(this->a1n[it]), 2 ) + pow( std::abs(this->b1n[it]), 2 ) ;
-            Qsca2 +=  pow( std::abs(this->a2n[it]), 2 ) + pow( std::abs(this->b2n[it]), 2 ) ;
+            Qsca1 +=  pow( std::abs(this->a1n[order]), 2 ) + pow( std::abs(this->b1n[order]), 2 ) ;
+            Qsca2 +=  pow( std::abs(this->a2n[order]), 2 ) + pow( std::abs(this->b2n[order]), 2 ) ;
         }
 
         Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(this->b1n[0]), 2 ) );

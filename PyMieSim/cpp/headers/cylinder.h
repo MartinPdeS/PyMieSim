@@ -39,7 +39,6 @@ namespace CYLINDER
     {
         public:
             double diameter = 0.0;
-            double n_medium = 1.0;
             complex128 index = {1.0, 0.0};
 
             std::vector<complex128> a1n;
@@ -60,7 +59,7 @@ namespace CYLINDER
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
             double n_medium, std::vector<complex128> jones_vector, size_t max_order)
-            : BaseScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
+            : BaseScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
             {
                 this->compute_size_parameter();
                 this->max_order = max_order;
@@ -70,7 +69,7 @@ namespace CYLINDER
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
             double n_medium, std::vector<complex128> jones_vector)
-            : BaseScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
+            : BaseScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
             {
                 this->compute_size_parameter();
                 this->max_order = get_wiscombe_criterion(this->size_parameter);
@@ -79,7 +78,7 @@ namespace CYLINDER
             }
 
             Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order) :
-                BaseScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
+                BaseScatterer(source, n_medium), diameter(diameter), index(index)
             {
                 this->compute_size_parameter();
                 this->max_order = max_order;
@@ -88,7 +87,7 @@ namespace CYLINDER
             }
 
             Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source) :
-                BaseScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
+                BaseScatterer(source, n_medium), diameter(diameter), index(index)
             {
                 this->compute_size_parameter();
                 this->max_order = get_wiscombe_criterion(this->size_parameter);

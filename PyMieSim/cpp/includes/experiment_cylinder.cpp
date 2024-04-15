@@ -149,8 +149,7 @@ pybind11::array_t<double> Experiment::get_cylinder_data_material(Function functi
             cylinderSet.diameter[d],
             cylinderSet.material[i][w],
             cylinderSet.n_medium[n],
-            source,
-            max_order
+            source
         );
 
         output_array[idx] = (scatterer.*function)();
@@ -194,8 +193,7 @@ pybind11::array_t<double> Experiment::get_cylinder_data_index(Function function,
             cylinderSet.diameter[d],
             cylinderSet.index[i],
             cylinderSet.n_medium[n],
-            source,
-            max_order
+            source
         );
 
         output_array[idx] = (scatterer.*function)();

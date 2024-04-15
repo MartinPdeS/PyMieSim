@@ -14,24 +14,18 @@ class BaseScatterer
 {
 public:
     size_t max_order;
-
     double size_parameter;
     double area;
+    double n_medium;
 
     SOURCE::BaseSource source;
 
-    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi) const {};
-    virtual double get_Qsca() const {};
-    virtual double get_Qext() const {};
-    virtual double get_Qback() const {};
-    virtual double get_g() const {};
-
     BaseScatterer() = default;
 
-    BaseScatterer(const double &wavelength, const std::vector<complex128> &jones_vector, const double &amplitude)
-    : source(wavelength, jones_vector, amplitude){}
+    BaseScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double n_medium)
+    : source(wavelength, jones_vector, amplitude), n_medium(n_medium){}
 
-    BaseScatterer(const SOURCE::BaseSource &source) : source(source){}
+    BaseScatterer(const SOURCE::BaseSource &source, const double n_medium) : source(source), n_medium(n_medium){}
 
     double get_Qforward() const {return get_Qsca() - get_Qback();};
     double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
@@ -44,6 +38,12 @@ public:
     double get_Cforward() const {return get_Qforward() * area;};
     double get_Cpr() const {return get_Qpr() * area;};
     double get_Cratio() const {return get_Qratio() * area;};
+
+    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi) const {};
+    virtual double get_Qsca() const {};
+    virtual double get_Qext() const {};
+    virtual double get_Qback() const {};
+    virtual double get_g() const {};
 
     size_t get_wiscombe_criterion(const double size_parameter) const {
         return static_cast<size_t>(2 + size_parameter + 4 * std::cbrt(size_parameter)) + 16;
@@ -184,8 +184,6 @@ public:
     }
 
     //--------------------------------------------------------PYTHON-------------------
-
-
     std::tuple<py::array_t<complex128>, py::array_t<complex128>>
     get_s1s2_py(const std::vector<double> &phi) const
     {
