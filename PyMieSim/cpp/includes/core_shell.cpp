@@ -40,11 +40,8 @@ namespace CORESHELL
 
     void Scatterer::compute_an_bn()
     {
-        // an.resize(max_order);
-        // bn.resize(max_order);
-
-        an = std::vector<complex128>(max_order);
-        bn = std::vector<complex128>(max_order);
+        an.resize(max_order);
+        bn.resize(max_order);
 
         complex128
             relative_index = this->shell_index / this->core_index,
@@ -85,7 +82,7 @@ namespace CORESHELL
 
         std::vector<complex128> Du(nmx, 0.0), Dv(nmx, 0.0), Dw(nmx, 0.0);
 
-        for (int i = nmx-1; i > 1; i--){
+        for (int i = nmx - 1; i > 1; i--){
             Du[i-1] = (double)i / u - 1.0 / (Du[i] + (double)i / u);
             Dv[i-1] = (double)i / v - 1.0 / (Dv[i] + (double)i / v);
             Dw[i-1] = (double)i / w - 1.0 / (Dw[i] + (double)i / w);

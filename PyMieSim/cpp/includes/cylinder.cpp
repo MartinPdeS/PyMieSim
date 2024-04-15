@@ -69,16 +69,12 @@ namespace CYLINDER
     }
 
     void Scatterer::compute_an_bn() {
-        // this->a1n.resize(max_order);
-        // this->b1n.resize(max_order);
-        // this->a2n.resize(max_order);
-        // this->b2n.resize(max_order);
+        this->a1n.resize(max_order);
+        this->b1n.resize(max_order);
+        this->a2n.resize(max_order);
+        this->b2n.resize(max_order);
 
-        a1n = std::vector<complex128>(max_order);
-        b1n = std::vector<complex128>(max_order);
-        a2n = std::vector<complex128>(max_order);
-        b2n = std::vector<complex128>(max_order);
-        
+
         double x = size_parameter;
 
         complex128

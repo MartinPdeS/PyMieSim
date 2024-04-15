@@ -23,10 +23,8 @@ namespace SPHERE
     }
 
     void Scatterer::compute_an_bn(){
-        // an.resize(max_order);
-        // bn.resize(max_order);
-        an = std::vector<complex128>(max_order);
-        bn = std::vector<complex128>(max_order);
+        an.resize(max_order);
+        bn.resize(max_order);
 
         complex128 psi_n, chi_n, psi_1, chi_1, xi_n, xi_nm1;
 
