@@ -23,8 +23,8 @@ namespace SPHERE
     }
 
     void Scatterer::compute_an_bn(){
-        an = std::vector<complex128>(max_order);
-        bn = std::vector<complex128>(max_order);
+        an.resize(max_order);
+        bn.resize(max_order);
 
         complex128
             x = size_parameter,
@@ -41,7 +41,7 @@ namespace SPHERE
         _p1x  = sin(x);
         _ch1x = cos(x);
 
-        for (size_t i = 1; i < max_order+1; ++i)
+        for (size_t i = 1; i < max_order + 1; ++i)
         {
             n = (double) i;
             _px =  x * compute_jn(n, x);
@@ -65,8 +65,8 @@ namespace SPHERE
     }
 
     void Scatterer::compute_cn_dn(){
-        cn = std::vector<complex128>(max_order);
-        dn = std::vector<complex128>(max_order);
+        cn.resize(max_order);
+        dn.resize(max_order);
 
         complex128
             x = size_parameter,

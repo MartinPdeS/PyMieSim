@@ -4,7 +4,6 @@
 
 namespace CORESHELL
 {
-
     void Scatterer::apply_medium(){
         this->core_index /= this->n_medium;
         this->shell_index /= this->n_medium;
