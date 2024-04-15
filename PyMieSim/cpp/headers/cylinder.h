@@ -102,9 +102,7 @@ namespace CYLINDER
             double get_g() const ;
             double get_Qsca() const ;
             double get_Qext() const ;
-
             double process_polarization(complex128 &value_0, complex128& value_1) const ;
-
             void compute_an_bn();
 
             std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const;
