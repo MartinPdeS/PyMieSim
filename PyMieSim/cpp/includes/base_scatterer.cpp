@@ -4,6 +4,11 @@
 #include "utils.cpp"
 #include "sources.cpp"
 #include "fibonacci_mesh.cpp"
+#include "VSH.cpp"
+#include <cmath>
+#include <vector>
+#include <complex>
+#include <iostream>
 
 class BaseScatterer
 {
@@ -21,7 +26,7 @@ public:
     virtual double get_Qback() const {};
     virtual double get_g() const {};
 
-    BaseScatterer(){}
+    BaseScatterer() = default;
 
     BaseScatterer(const double &wavelength, const std::vector<complex128> &jones_vector, const double &amplitude)
     : source(wavelength, jones_vector, amplitude){}
