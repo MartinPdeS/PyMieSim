@@ -11,8 +11,6 @@
 template<typename T, typename U> inline complex128 compute_jn(U order, T x){ return sp_bessel::sph_besselJ(order, x); }
 template<typename T, typename U> inline complex128 compute_yn(U order, T x){ return sp_bessel::sph_besselY(order, x); }
 
-
-
 template<typename T, typename U> inline complex128 compute_jn_p(U order, T x)  // https://dlmf.nist.gov/10.51 
 {
   return sp_bessel::sph_besselJ(order-1, x) - (order+1.0)/x * sp_bessel::sph_besselJ(order, x);

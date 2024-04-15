@@ -40,8 +40,11 @@ namespace CORESHELL
 
     void Scatterer::compute_an_bn()
     {
-        an.resize(max_order);
-        bn.resize(max_order);
+        // an.resize(max_order);
+        // bn.resize(max_order);
+
+        an = std::vector<complex128>(max_order);
+        bn = std::vector<complex128>(max_order);
 
         complex128
             relative_index = this->shell_index / this->core_index,

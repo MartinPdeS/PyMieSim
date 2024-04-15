@@ -23,14 +23,16 @@ namespace SPHERE
     }
 
     void Scatterer::compute_an_bn(){
-        an.resize(max_order);
-        bn.resize(max_order);
+        // an.resize(max_order);
+        // bn.resize(max_order);
+        an = std::vector<complex128>(max_order);
+        bn = std::vector<complex128>(max_order);
+
+        complex128 psi_n, chi_n, psi_1, chi_1, xi_n, xi_nm1;
 
         complex128
-            x = size_parameter,
-            m = this->index,
-            mx = m * x,
-            _da, _db, _gsx, _gs1x, _px, _chx, _p1x, _ch1x, _p2x, _ch2x;
+            mx = this->index * size_parameter,
+            derivative_a, derivative_b;
 
         size_t nmx = std::max( max_order, (size_t) std::abs(mx) ) + 16;
 
@@ -38,29 +40,30 @@ namespace SPHERE
 
         double n;
 
-        _p1x  = sin(x);
-        _ch1x = cos(x);
+        psi_1  = sin(size_parameter);
+        chi_1 = cos(size_parameter);
 
         for (size_t i = 1; i < max_order + 1; ++i)
         {
             n = (double) i;
-            _px =  x * compute_jn(n, x);
-            _chx = -x * compute_yn(n, x);
 
-            _p2x = _px;
-            _ch2x = _chx;
+            // Calculate psi and chi (Riccati-Bessel functions)
+            psi_n =  size_parameter * compute_jn(n, size_parameter);
+            chi_n = -size_parameter * compute_yn(n, size_parameter);
 
-            _gsx =  _px  - 1.0 * JJ * _chx;
-            _gs1x =  _p1x - 1.0 * JJ * _ch1x;
+            // Complex Riccati-Bessel functions
+            xi_n = psi_n  - 1.0 * JJ * chi_n;
+            xi_nm1 = psi_1 - 1.0 * JJ * chi_1;
 
-            _da = Dn[i] / m + n / x;
-            _db = Dn[i] * m + n / x;
+            // Derivative of the Riccati-Bessel functions
+            derivative_a = Dn[i] / this->index + n / size_parameter;
+            derivative_b = Dn[i] * this->index + n / size_parameter;
 
-            an[i-1] = (_da * _px - _p1x) / (_da * _gsx - _gs1x);
-            bn[i-1] = (_db * _px - _p1x) / (_db * _gsx - _gs1x);
+            an[i-1] = (derivative_a * psi_n - psi_1) / (derivative_a * xi_n - xi_nm1);
+            bn[i-1] = (derivative_b * psi_n - psi_1) / (derivative_b * xi_n - xi_nm1);
 
-            _p1x  = _p2x;
-            _ch1x = _ch2x;
+            psi_1 = psi_n;
+            chi_1 = chi_n;
         }
     }
 
