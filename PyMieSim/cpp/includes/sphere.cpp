@@ -41,24 +41,25 @@ namespace SPHERE
         psi_1  = sin(size_parameter);
         chi_1 = cos(size_parameter);
 
-        for (size_t i = 1; i < max_order + 1; ++i)
+        for (size_t order = 1; order < max_order + 1; ++order)
         {
-            n = (double) i;
+            n = (double) order;
 
             // Calculate psi and chi (Riccati-Bessel functions)
-            psi_n =  size_parameter * compute_jn(n, size_parameter);
+            psi_n = +size_parameter * compute_jn(n, size_parameter);
             chi_n = -size_parameter * compute_yn(n, size_parameter);
 
             // Complex Riccati-Bessel functions
-            xi_n = psi_n  - 1.0 * JJ * chi_n;
+            xi_n = psi_n - 1.0 * JJ * chi_n;
             xi_nm1 = psi_1 - 1.0 * JJ * chi_1;
 
             // Derivative of the Riccati-Bessel functions
-            derivative_a = Dn[i] / this->index + n / size_parameter;
-            derivative_b = Dn[i] * this->index + n / size_parameter;
+            derivative_a = Dn[order] / this->index + n / size_parameter;
+            derivative_b = Dn[order] * this->index + n / size_parameter;
 
-            an[i-1] = (derivative_a * psi_n - psi_1) / (derivative_a * xi_n - xi_nm1);
-            bn[i-1] = (derivative_b * psi_n - psi_1) / (derivative_b * xi_n - xi_nm1);
+            // Computation of the electric and magnetic multipole coefficients
+            an[order - 1] = (derivative_a * psi_n - psi_1) / (derivative_a * xi_n - xi_nm1);
+            bn[order - 1] = (derivative_b * psi_n - psi_1) / (derivative_b * xi_n - xi_nm1);
 
             psi_1 = psi_n;
             chi_1 = chi_n;
