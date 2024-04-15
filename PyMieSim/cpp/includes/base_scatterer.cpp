@@ -47,8 +47,7 @@ public:
         return static_cast<size_t>(2 + size_parameter + 4 * std::cbrt(size_parameter)) + 16;
     }
 
-    std::vector<double> get_prefactor() const
-    {
+    std::vector<double> get_prefactor() const {
         std::vector<double> output;
 
         output.reserve(max_order);
@@ -66,8 +65,7 @@ public:
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
     compute_structured_fields(const std::vector<complex128>& S1, const std::vector<complex128>& S2,
-        const std::vector<double>& theta, const double& radius) const
-    {
+        const std::vector<double>& theta, const double& radius) const {
         std::vector<complex128> phi_field, theta_field;
 
         size_t full_size = theta.size() * S1.size();
@@ -93,8 +91,7 @@ public:
 
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius=1.0) const
-    {
+    compute_unstructured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius=1.0) const {
         auto [S1, S2] = this->compute_s1s2(phi);
 
         std::vector<complex128> phi_field, theta_field;
@@ -118,9 +115,7 @@ public:
         return std::make_tuple(phi_field, theta_field);
     }
 
-    std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius=1.0) const
-    {
+    std::tuple<std::vector<complex128>, std::vector<complex128>> compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius=1.0) const {
         return this->compute_unstructured_fields(
             fibonacci_mesh.spherical_coordinates.Phi,
             fibonacci_mesh.spherical_coordinates.Theta,
@@ -152,9 +147,7 @@ public:
     }
 
 
-    std::tuple<std::vector<complex128>, FullSteradian>
-    compute_full_structured_spf(const size_t &sampling, const double &radius = 1.0) const
-    {
+    std::tuple<std::vector<complex128>, FullSteradian> compute_full_structured_spf(const size_t &sampling, const double &radius = 1.0) const {
         FullSteradian full_mesh = FullSteradian(sampling);
 
         auto [phi_field, theta_field] = this->compute_structured_fields(
@@ -172,8 +165,7 @@ public:
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
-    {
+    compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
         complex128 propagator = this->compute_propagator(radius);
 
         auto [S1, S2] = this->compute_s1s2(phi);
@@ -183,8 +175,7 @@ public:
 
     //--------------------------------------------------------PYTHON-------------------
     std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_s1s2_py(const std::vector<double> &phi) const
-    {
+    get_s1s2_py(const std::vector<double> &phi) const {
         auto [S1, S2] = this->compute_s1s2(phi);
 
         return std::make_tuple(vector_to_numpy(S1), vector_to_numpy(S2));
@@ -192,8 +183,7 @@ public:
 
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
-    get_full_structured_fields_py(size_t &sampling, double& distance) const
-    {
+    get_full_structured_fields_py(size_t &sampling, double& distance) const {
         auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_fields(sampling, distance);
 
         py::array_t<complex128>
@@ -216,8 +206,7 @@ public:
     }
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
-    {
+    get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
         auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
 
         return std::make_tuple(vector_to_numpy(phi_field), vector_to_numpy(theta_field));
@@ -225,8 +214,7 @@ public:
 
 
 
-    double get_g_with_fields(size_t sampling, double radius) const
-    {
+    double get_g_with_fields(size_t sampling, double radius) const {
         auto [SPF, fibonacci_mesh] = this->compute_full_structured_spf(sampling, radius);
 
         double

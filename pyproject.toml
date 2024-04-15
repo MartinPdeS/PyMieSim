@@ -6,12 +6,11 @@ addopts = [
 ]
 
 testpaths = [
-    # "tests/test_dummy.py",
-    # "tests/detectors",
+    "tests/detectors",
     "tests/scatterers",
-    # "tests/experiments",
-    # "tests/validation",
-    # "tests/extra",
+    "tests/experiments",
+    "tests/validation",
+    "tests/extra",
 ]
 
 minversion = 6.0
@@ -20,7 +19,7 @@ minversion = 6.0
 build-frontend = "pip"
 build-verbosity = 1
 before-test = ""
-test-command = "python -m pytest -rA {project}/tests/scatterers/test_cylinder.py"
+test-command = "python -m pytest -rA {project}/tests"
 test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]

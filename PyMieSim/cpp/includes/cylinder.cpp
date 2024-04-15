@@ -75,7 +75,7 @@ namespace CYLINDER
             H_x(max_order+1),
             H_x_p(max_order+1);
 
-        for (size_t n = 0; n < max_order+1; ++n){
+        for (size_t n = 0; n < max_order + 1; ++n){
             double nd = (double) n ;
 
             J_z[n] = compute_Jn(nd, z);
