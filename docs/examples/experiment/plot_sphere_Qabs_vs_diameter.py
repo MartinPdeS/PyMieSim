@@ -42,13 +42,13 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.get(measure.Qabs)
+data = experiment.get(measure.a1)
 
 # %%
 # Plotting the results
 figure = data.plot(
     x=scatterer_set.diameter,
-    y_scale="log"
+    # y_scale="log"
 )
 
 _ = figure.show()

@@ -41,24 +41,23 @@ public:
     pybind11::array_t<complex128> get_cn_py() { return vector_to_numpy(cn, {max_order}); }
     pybind11::array_t<complex128> get_dn_py() { return vector_to_numpy(dn, {max_order}); }
 
-    double get_Qforward(){return get_Qsca() - get_Qback();};
-    double get_Qpr(){return get_Qext() - get_g() * get_Qsca();};
-    double get_Qratio(){return get_Qback() / get_Qsca();};
-    double get_Qabs(){return get_Qext() - get_Qsca();};
-    double get_Csca(){return get_Qsca() * area;};
-    double get_Cext(){return get_Qext() * area;};
-    double get_Cabs(){return get_Qabs() * area;};
-    double get_Cback(){return get_Qback() * area;};
-    double get_Cforward(){return get_Qforward() * area;};
-    double get_Cpr(){return get_Qpr() * area;};
-    double get_Cratio(){return get_Qratio() * area;};
+    double get_Qforward() const {return get_Qsca() - get_Qback();};
+    double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
+    double get_Qratio() const {return get_Qback() / get_Qsca();};
+    double get_Qabs() const {return get_Qext() - get_Qsca();};
+    double get_Csca() const {return get_Qsca() * area;};
+    double get_Cext() const {return get_Qext() * area;};
+    double get_Cabs() const {return get_Qabs() * area;};
+    double get_Cback() const {return get_Qback() * area;};
+    double get_Cforward() const {return get_Qforward() * area;};
+    double get_Cpr() const {return get_Qpr() * area;};
+    double get_Cratio() const {return get_Qratio() * area;};
 
-    size_t get_wiscombe_criterion(const double size_parameter){
+    size_t get_wiscombe_criterion(const double size_parameter) const {
         return static_cast<size_t>(2 + size_parameter + 4 * std::cbrt(size_parameter)) + 16;
     }
 
-    std::vector<double> get_prefactor() const
-    {
+    std::vector<double> get_prefactor() const {
         std::vector<double> output;
 
         output.reserve(max_order);
@@ -69,15 +68,12 @@ public:
         return output;
     }
 
-    complex128 compute_propagator(const double &radius) const
-    {
+    complex128 compute_propagator(const double &radius) const {
         return source.amplitude / (source.k * radius) * exp(-JJ * source.k * radius);
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_structured_fields(const std::vector<complex128>& S1, const std::vector<complex128>& S2,
-        const std::vector<double>& theta, const double& radius) const
-    {
+    compute_structured_fields(const std::vector<complex128>& S1, const std::vector<complex128>& S2, const std::vector<double>& theta, const double& radius) const {
         std::vector<complex128> phi_field, theta_field;
 
         size_t full_size = theta.size() * S1.size();

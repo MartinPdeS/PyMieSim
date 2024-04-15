@@ -89,6 +89,7 @@ class Setup(object):
             raise ValueError(f"Cannot compute {measure.short_label} for {self.scatterer_set.name}")
 
         measure_string = f'get_{self.scatterer_set.name}_{measure.short_label}'
+        print(self.binding, measure_string)
         array = getattr(self.binding, measure_string)()
 
         if export_as_numpy:

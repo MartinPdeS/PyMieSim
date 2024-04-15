@@ -32,7 +32,6 @@ namespace SPHERE
 
     class Scatterer: public BaseSphericalScatterer
     {
-
         public:
             double diameter = 0.0;
             complex128 index = {1.0, 0.0};
@@ -44,6 +43,7 @@ namespace SPHERE
                 BaseSphericalScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
             {
                 compute_size_parameter();
+                this->max_order = max_order;
                 compute_area();
                 compute_an_bn();
             }
@@ -62,6 +62,7 @@ namespace SPHERE
                 BaseSphericalScatterer(source, n_medium), diameter(diameter), index(index)
             {
                 compute_size_parameter();
+                this->max_order = max_order;
                 compute_area();
                 compute_an_bn();
             }
