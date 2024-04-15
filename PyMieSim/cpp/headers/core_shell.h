@@ -113,25 +113,60 @@
             double x_shell;
 
             Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
-            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order = 0)
+            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order)
             : BaseSphericalScatterer(wavelength, jones, amplitude, n_medium), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
-                initialize(max_order);
+                apply_medium();
+                compute_size_parameter();
+                this->max_order = max_order;
+                compute_area();
+                compute_an_bn();
+            }
+
+            Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
+            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones)
+            : BaseSphericalScatterer(wavelength, jones, amplitude, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+            core_index(core_index), shell_index(shell_index)
+            {
+                this->shell_diameter = this->core_diameter + this->shell_width;
+                apply_medium();
+                compute_size_parameter();
+                this->max_order = get_wiscombe_criterion(this->size_parameter);
+                compute_area();
+                compute_an_bn();
             }
 
             Scatterer(double core_diameter, double shell_width, complex128 core_index, complex128 shell_index,
-                double n_medium, SOURCE::BaseSource &source, size_t max_order = 0)
+                double n_medium, SOURCE::BaseSource &source, size_t max_order)
             : BaseSphericalScatterer(source, n_medium), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
-                initialize(max_order);
+                apply_medium();
+                compute_size_parameter();
+                this->max_order = max_order;
+                compute_area();
+                compute_an_bn();
             }
 
+            Scatterer(double core_diameter, double shell_width, complex128 core_index, complex128 shell_index,
+                double n_medium, SOURCE::BaseSource &source)
+            : BaseSphericalScatterer(source, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+            core_index(core_index), shell_index(shell_index)
+            {
+                this->shell_diameter = this->core_diameter + this->shell_width;
+                apply_medium();
+                compute_size_parameter();
+                this->max_order = get_wiscombe_criterion(this->size_parameter);
+                compute_area();
+                compute_an_bn();
+            }
+
+
+
             void apply_medium();
-            void initialize(size_t max_order);
             void compute_cn_dn();
             void compute_an_bn();
             void compute_max_order(size_t max_order);

@@ -12,14 +12,6 @@ namespace CORESHELL
         this->shell_diameter *= this->n_medium;
     }
 
-    void Scatterer::initialize(size_t max_order){
-        this->apply_medium();
-        compute_size_parameter();
-        compute_max_order(max_order);
-        compute_area();
-        compute_an_bn();
-    }
-
     void Scatterer::compute_size_parameter(){
         size_parameter = source.k * this->shell_diameter / 2;
         this->x_shell = source.k * this->shell_diameter / 2.0;

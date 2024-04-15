@@ -59,20 +59,44 @@ namespace CYLINDER
             std::vector<complex128> get_b2n() const { return b2n; };
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-            double n_medium, std::vector<complex128> jones_vector, size_t max_order = 0)
+            double n_medium, std::vector<complex128> jones_vector, size_t max_order)
             : BaseScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
             {
-                initialize(max_order);
+                this->compute_size_parameter();
+                this->max_order = max_order;
+                this->compute_area();
+                this->compute_an_bn();
             }
 
-            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order = 0) :
+            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
+            double n_medium, std::vector<complex128> jones_vector)
+            : BaseScatterer(wavelength, jones_vector, amplitude), diameter(diameter), index(index), n_medium(n_medium)
+            {
+                this->compute_size_parameter();
+                this->max_order = get_wiscombe_criterion(this->size_parameter);
+                this->compute_area();
+                this->compute_an_bn();
+            }
+
+            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order) :
                 BaseScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
             {
-                this->initialize(max_order);
+                this->compute_size_parameter();
+                this->max_order = max_order;
+                this->compute_area();
+                this->compute_an_bn();
             }
 
-            void initialize(size_t &max_order);
-            void compute_max_order(size_t &max_order);
+            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source) :
+                BaseScatterer(source), diameter(diameter), index(index), n_medium(n_medium)
+            {
+                this->compute_size_parameter();
+                this->max_order = get_wiscombe_criterion(this->size_parameter);
+                this->compute_area();
+                this->compute_area();
+                this->compute_an_bn();
+            }
+
             void compute_size_parameter();
             void compute_area();
             double get_g() const ;

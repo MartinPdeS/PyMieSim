@@ -278,8 +278,7 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_material_shell_ind
             coreshellSet.core_material[Cm][w],
             coreshellSet.shell_index[Si],
             coreshellSet.n_medium[n],
-            source,
-            max_order
+            source
         );
 
         output_array[idx] = (scatterer.*function)();
@@ -326,8 +325,7 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_index_shell_materi
             coreshellSet.core_index[Ci],
             coreshellSet.shell_material[Sm][w],
             coreshellSet.n_medium[n],
-            source,
-            max_order
+            source
         );
 
         output_array[idx] = (scatterer.*function)();
@@ -374,8 +372,7 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_material_shell_mat
             coreshellSet.core_material[Cm][w],
             coreshellSet.shell_material[Sm][w],
             coreshellSet.n_medium[n],
-            source,
-            max_order
+            source
         );
 
         output_array[idx] = (scatterer.*function)();
@@ -422,8 +419,7 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_index_shell_index(
             coreshellSet.core_index[Ci],
             coreshellSet.shell_index[Si],
             coreshellSet.n_medium[n],
-            source,
-            max_order
+            source
         );
 
         output_array[idx] = (scatterer.*function)();
