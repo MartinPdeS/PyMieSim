@@ -11,12 +11,12 @@ def test_simple():
         NA=0.3
     )
 
-    # scatterer = Sphere(
-    #     diameter=100e-9,
-    #     source=source,
-    #     index=1.5,
-    #     n_medium=1.0
-    # )
+    scatterer = Sphere(
+        diameter=100e-9,
+        source=source,
+        index=1.5,
+        n_medium=1.0
+    )
 
     # print(scatterer.Qsca)
 
