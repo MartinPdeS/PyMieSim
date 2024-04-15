@@ -18,6 +18,6 @@ def test_simple():
         n_medium=1.0
     )
 
-    # print(scatterer.Qsca)
+    print(scatterer.Qsca)
 
 # -
