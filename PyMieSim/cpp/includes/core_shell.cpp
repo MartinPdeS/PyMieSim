@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core_shell.h"
-#include <iostream>
 
 namespace CORESHELL
 {
@@ -138,6 +137,7 @@ namespace CORESHELL
             double n = (double) it + 1;
             value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
         }
+
         return value * 2. / pow( size_parameter, 2.);
     }
 

@@ -158,10 +158,9 @@ namespace SPHERE
     double Scatterer::get_Qsca() const {
         double value = 0;
 
-        for(size_t it = 0; it < max_order; ++it) {
+        for(size_t it = 0; it < max_order; ++it){
             double n = (double) it + 1;
             value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
-
         }
 
         return value * 2. / pow( size_parameter, 2.);
