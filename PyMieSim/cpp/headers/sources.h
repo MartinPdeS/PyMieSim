@@ -4,6 +4,7 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan
+// #include <iterator.h>
 
 namespace SOURCE
 {
@@ -15,6 +16,8 @@ namespace SOURCE
             std::vector<std::vector<complex128>> jones_vector;
             std::vector<size_t> shape;
 
+            // Iterator iterator;
+
             Set() = default;
 
             Set(
@@ -24,6 +27,7 @@ namespace SOURCE
             ) : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
             {
                 this->shape = {this->wavelength.size(), this->jones_vector.size()};
+                // iterator = Iterator<double, std::vector<complex128>, double>(wavelength, jones_vector, amplitude)
             }
     };
 
