@@ -8,29 +8,6 @@
 
 namespace SOURCE
 {
-    class Set
-    {
-        public:
-            std::vector<double> wavelength;
-            std::vector<double> amplitude;
-            std::vector<std::vector<complex128>> jones_vector;
-            std::vector<size_t> shape;
-
-            // Iterator iterator;
-
-            Set() = default;
-
-            Set(
-                const std::vector<double> &wavelength,
-                const std::vector<std::vector<complex128>> &jones_vector,
-                const std::vector<double> &amplitude
-            ) : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
-            {
-                this->shape = {this->wavelength.size(), this->jones_vector.size()};
-                // iterator = Iterator<double, std::vector<complex128>, double>(wavelength, jones_vector, amplitude)
-            }
-    };
-
     class BaseSource {
         public:
             double wavelength = 0.0;
@@ -76,4 +53,32 @@ namespace SOURCE
                 this->amplitude = sqrt(2.0 * intensity / (C * EPSILON0));
             }
         };
+
+    class Set
+    {
+        public:
+            std::vector<double> wavelength;
+            std::vector<double> amplitude;
+            std::vector<std::vector<complex128>> jones_vector;
+            std::vector<size_t> shape;
+
+            Set() = default;
+
+            Set(const std::vector<double> &wavelength,
+                const std::vector<std::vector<complex128>> &jones_vector,
+                const std::vector<double> &amplitude
+            ) : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
+            {
+                this->shape = {this->wavelength.size(), this->jones_vector.size()};
+            }
+
+            Planewave to_object(size_t index_wavelength, size_t index_jones) const
+            {
+                return Planewave(
+                    this->wavelength[index_wavelength],
+                    this->jones_vector[index_jones],
+                    this->amplitude[index_wavelength]
+                );
+            }
+    };
 }

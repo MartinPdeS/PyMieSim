@@ -40,8 +40,8 @@ class SourceTab(BaseTab):
         self.widget_collection = WidgetCollection(
             InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, frame=self.frame),
             InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value', frame=self.frame),
-            InputWidget(default_value='1.0', label='Optical Power [mW]', component_label='optical_power', multiplicative_factor=1e-3, frame=self.frame),
-            InputWidget(default_value='0.2', label='Numerical Aperture (NA)', component_label='NA', frame=self.frame)
+            InputWidget(default_value='1.0', label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, frame=self.frame),
+            InputWidget(default_value='0.2', label='Numerical Aperture (NA) [fix]', component_label='NA', frame=self.frame)
         )
 
         self.widget_collection.setup_widgets(frame=self.frame)

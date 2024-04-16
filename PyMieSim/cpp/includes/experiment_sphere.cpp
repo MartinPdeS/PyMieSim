@@ -76,19 +76,9 @@ pybind11::array_t<complex128> Experiment::get_sphere_coefficient_material(Functi
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-            sphereSet.diameter[d],
-            sphereSet.material[i][w],
-            sphereSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        SPHERE::Scatterer scatterer = sphereSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -119,19 +109,9 @@ pybind11::array_t<complex128> Experiment::get_sphere_coefficient_index(Function 
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-            sphereSet.diameter[d],
-            sphereSet.index[i],
-            sphereSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        SPHERE::Scatterer scatterer = sphereSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -162,18 +142,9 @@ pybind11::array_t<double> Experiment::get_sphere_data_material(Function function
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-            sphereSet.diameter[d],
-            sphereSet.material[i][w],
-            sphereSet.n_medium[n],
-            source
-        );
+        SPHERE::Scatterer scatterer = sphereSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -205,18 +176,9 @@ pybind11::array_t<double> Experiment::get_sphere_data_index(Function function, s
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-            sphereSet.diameter[d],
-            sphereSet.index[i],
-            sphereSet.n_medium[n],
-            source
-        );
+        SPHERE::Scatterer scatterer = sphereSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -252,11 +214,7 @@ pybind11::array_t<double> Experiment::get_sphere_coupling_material() const
     {
         size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -269,12 +227,7 @@ pybind11::array_t<double> Experiment::get_sphere_coupling_material() const
             detectorSet.point_coupling
         );
 
-        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-            sphereSet.diameter[d],
-            sphereSet.material[i][w],
-            sphereSet.n_medium[n],
-            source
-        );
+        SPHERE::Scatterer scatterer = sphereSet.to_object(d, i, w, n, source);
 
         output_array[idx] = abs( detector.get_coupling(scatterer) );
     }
@@ -312,12 +265,7 @@ pybind11::array_t<double> Experiment::get_sphere_coupling_index() const
     {
         size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
-
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -330,12 +278,7 @@ pybind11::array_t<double> Experiment::get_sphere_coupling_index() const
             detectorSet.point_coupling
         );
 
-        SPHERE::Scatterer scatterer = SPHERE::Scatterer(
-            sphereSet.diameter[d],
-            sphereSet.index[i],
-            sphereSet.n_medium[n],
-            source
-        );
+        SPHERE::Scatterer scatterer = sphereSet.to_object(d, i, w, n, source);
 
         double coupling = detector.get_coupling(scatterer);
 

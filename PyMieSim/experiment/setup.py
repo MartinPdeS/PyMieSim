@@ -12,8 +12,7 @@ if TYPE_CHECKING:
 import numpy
 from dataclasses import dataclass
 
-from DataVisual import Array
-from DataVisual import Table
+from DataVisual import Array, Table
 from PyMieSim.binary.Experiment import CppExperiment
 
 
@@ -44,7 +43,6 @@ class Setup(object):
         """
         self.initialize_experiment()
         self.bind_components()
-        self.generate_x_table()
 
     def initialize_experiment(self) -> NoReturn:
         """
@@ -89,12 +87,13 @@ class Setup(object):
             raise ValueError(f"Cannot compute {measure.short_label} for {self.scatterer_set.name}")
 
         measure_string = f'get_{self.scatterer_set.name}_{measure.short_label}'
-        print(self.binding, measure_string)
+
         array = getattr(self.binding, measure_string)()
 
         if export_as_numpy:
             return array
 
+        self.generate_x_table()
         measure.set_base_values(array)
         return Array(x_table=Table(self.x_table), y=measure)
 

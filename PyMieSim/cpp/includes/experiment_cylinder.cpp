@@ -51,19 +51,9 @@ pybind11::array_t<complex128> Experiment::get_cylinder_coefficient_material(Func
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        CYLINDER::Scatterer scatterer = CYLINDER::Scatterer(
-            cylinderSet.diameter[d],
-            cylinderSet.material[i][w],
-            cylinderSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        CYLINDER::Scatterer scatterer = cylinderSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -95,19 +85,9 @@ pybind11::array_t<complex128> Experiment::get_cylinder_coefficient_index(Functio
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        CYLINDER::Scatterer scatterer = CYLINDER::Scatterer(
-            cylinderSet.diameter[d],
-            cylinderSet.index[i],
-            cylinderSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        CYLINDER::Scatterer scatterer = cylinderSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -139,18 +119,9 @@ pybind11::array_t<double> Experiment::get_cylinder_data_material(Function functi
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        CYLINDER::Scatterer scatterer = CYLINDER::Scatterer(
-            cylinderSet.diameter[d],
-            cylinderSet.material[i][w],
-            cylinderSet.n_medium[n],
-            source
-        );
+        CYLINDER::Scatterer scatterer = cylinderSet.to_object(d, i, w, n, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -183,18 +154,10 @@ pybind11::array_t<double> Experiment::get_cylinder_data_index(Function function,
     {
         size_t idx = flatten_multi_index({w, j, d, i, n}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
-        CYLINDER::Scatterer scatterer = CYLINDER::Scatterer(
-            cylinderSet.diameter[d],
-            cylinderSet.index[i],
-            cylinderSet.n_medium[n],
-            source
-        );
+        CYLINDER::Scatterer scatterer = cylinderSet.to_object(d, i, w, n, source);
+
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -231,11 +194,9 @@ pybind11::array_t<double> Experiment::get_cylinder_coupling_bound() const
     {
         size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
+
+        CYLINDER::Scatterer scatterer = cylinderSet.to_object(d, i, w, n, source);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -246,13 +207,6 @@ pybind11::array_t<double> Experiment::get_cylinder_coupling_bound() const
             detectorSet.rotation_angle[s],
             detectorSet.coherent,
             detectorSet.point_coupling
-        );
-
-        CYLINDER::Scatterer scatterer = CYLINDER::Scatterer(
-            cylinderSet.diameter[d],
-            cylinderSet.material[i][w],
-            cylinderSet.n_medium[n],
-            source
         );
 
         output_array[idx] = abs( detector.get_coupling(scatterer) );
@@ -294,11 +248,7 @@ pybind11::array_t<double> Experiment::get_cylinder_coupling_unbound() const
     {
         size_t idx = flatten_multi_index({w, j, d, i, n, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(w, j);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -311,12 +261,7 @@ pybind11::array_t<double> Experiment::get_cylinder_coupling_unbound() const
             detectorSet.point_coupling
         );
 
-        CYLINDER::Scatterer scatterer = CYLINDER::Scatterer(
-            cylinderSet.diameter[d],
-            cylinderSet.index[i],
-            cylinderSet.n_medium[n],
-            source
-        );
+        CYLINDER::Scatterer scatterer = cylinderSet.to_object(d, i, w, n, source);
 
         output_array[idx] = abs(detector.get_coupling(scatterer));
     }

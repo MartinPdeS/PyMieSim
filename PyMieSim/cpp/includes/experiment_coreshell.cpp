@@ -64,31 +64,19 @@ pybind11::array_t<complex128> Experiment::get_coreshell_coefficient_core_materia
     std::vector<complex128> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_material[Ci][w],
-            coreshellSet.shell_index[Si],
-            coreshellSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -112,31 +100,19 @@ pybind11::array_t<complex128> Experiment::get_coreshell_coefficient_core_index_s
     std::vector<complex128> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_index[Ci],
-            coreshellSet.shell_material[Si][w],
-            coreshellSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -160,31 +136,19 @@ size_t full_size = get_vector_sigma(array_shape);
 std::vector<complex128> output_array(full_size);
 
 #pragma omp parallel for collapse(7)
-for (size_t w=0; w<array_shape[0]; ++w)
-for (size_t j=0; j<array_shape[1]; ++j)
-for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-for (size_t Si=0; Si<array_shape[5]; ++Si)
-for (size_t n=0; n<array_shape[6]; ++n)
+for (size_t wl=0; wl<array_shape[0]; ++wl)
+for (size_t jv=0; jv<array_shape[1]; ++jv)
+for (size_t cd=0; cd<array_shape[2]; ++cd)
+for (size_t sw=0; sw<array_shape[3]; ++sw)
+for (size_t cm=0; cm<array_shape[4]; ++cm)
+for (size_t sm=0; sm<array_shape[5]; ++sm)
+for (size_t mi=0; mi<array_shape[6]; ++mi)
 {
-    size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
+    size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-    SOURCE::Planewave source = SOURCE::Planewave(
-        sourceSet.wavelength[w],
-        sourceSet.jones_vector[j],
-        sourceSet.amplitude[w]
-    );
+    SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-    CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-        coreshellSet.core_diameter[Cd],
-        coreshellSet.shell_width[Sd],
-        coreshellSet.core_material[Ci][w],
-        coreshellSet.shell_material[Si][w],
-        coreshellSet.n_medium[n],
-        source,
-        max_order + 1
-    );
+    CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
     output_array[idx] = (scatterer.*function)()[max_order];
 }
@@ -208,31 +172,19 @@ pybind11::array_t<complex128> Experiment::get_coreshell_coefficient_core_index_s
     std::vector<complex128> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_index[Ci],
-            coreshellSet.shell_index[Si],
-            coreshellSet.n_medium[n],
-            source,
-            max_order + 1
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)()[max_order];
     }
@@ -256,30 +208,19 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_material_shell_ind
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Cm=0; Cm<array_shape[4]; ++Cm)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Cm, Si, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_material[Cm][w],
-            coreshellSet.shell_index[Si],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -303,30 +244,19 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_index_shell_materi
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Sm=0; Sm<array_shape[5]; ++Sm)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Sm, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_index[Ci],
-            coreshellSet.shell_material[Sm][w],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -350,30 +280,19 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_material_shell_mat
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Cm=0; Cm<array_shape[4]; ++Cm)
-    for (size_t Sm=0; Sm<array_shape[5]; ++Sm)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Cm, Sm, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_material[Cm][w],
-            coreshellSet.shell_material[Sm][w],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -397,30 +316,19 @@ pybind11::array_t<double> Experiment::get_coreshell_data_core_index_shell_index(
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_index[Ci],
-            coreshellSet.shell_index[Si],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = (scatterer.*function)();
     }
@@ -445,26 +353,22 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_index_shell_in
 
 
     #pragma omp parallel for collapse(12)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     for (size_t s=0; s<array_shape[7]; ++s)
     for (size_t na=0; na<array_shape[8]; ++na)
     for (size_t p=0; p<array_shape[9]; ++p)
     for (size_t g=0; g<array_shape[10]; ++g)
     for (size_t f=0; f<array_shape[11]; ++f)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -477,14 +381,7 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_index_shell_in
             detectorSet.point_coupling
         );
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_index[Ci],
-            coreshellSet.shell_index[Si],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = abs( detector.get_coupling(scatterer) );
     }
@@ -510,26 +407,22 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_material_shell
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(12)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     for (size_t s=0; s<array_shape[7]; ++s)
     for (size_t na=0; na<array_shape[8]; ++na)
     for (size_t p=0; p<array_shape[9]; ++p)
     for (size_t g=0; g<array_shape[10]; ++g)
     for (size_t f=0; f<array_shape[11]; ++f)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -542,14 +435,7 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_material_shell
             detectorSet.point_coupling
         );
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_material[Ci][w],
-            coreshellSet.shell_index[Si],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = abs( detector.get_coupling(scatterer) );
     }
@@ -575,26 +461,22 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_index_shell_ma
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(12)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     for (size_t s=0; s<array_shape[7]; ++s)
     for (size_t na=0; na<array_shape[8]; ++na)
     for (size_t p=0; p<array_shape[9]; ++p)
     for (size_t g=0; g<array_shape[10]; ++g)
     for (size_t f=0; f<array_shape[11]; ++f)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -607,14 +489,7 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_index_shell_ma
             detectorSet.point_coupling
         );
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_index[Ci],
-            coreshellSet.shell_material[Si][w],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = abs( detector.get_coupling(scatterer) );
     }
@@ -638,26 +513,22 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_material_shell
     std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(12)
-    for (size_t w=0; w<array_shape[0]; ++w)
-    for (size_t j=0; j<array_shape[1]; ++j)
-    for (size_t Cd=0; Cd<array_shape[2]; ++Cd)
-    for (size_t Sd=0; Sd<array_shape[3]; ++Sd)
-    for (size_t Ci=0; Ci<array_shape[4]; ++Ci)
-    for (size_t Si=0; Si<array_shape[5]; ++Si)
-    for (size_t n=0; n<array_shape[6]; ++n)
+    for (size_t wl=0; wl<array_shape[0]; ++wl)
+    for (size_t jv=0; jv<array_shape[1]; ++jv)
+    for (size_t cd=0; cd<array_shape[2]; ++cd)
+    for (size_t sw=0; sw<array_shape[3]; ++sw)
+    for (size_t cm=0; cm<array_shape[4]; ++cm)
+    for (size_t sm=0; sm<array_shape[5]; ++sm)
+    for (size_t mi=0; mi<array_shape[6]; ++mi)
     for (size_t s=0; s<array_shape[7]; ++s)
     for (size_t na=0; na<array_shape[8]; ++na)
     for (size_t p=0; p<array_shape[9]; ++p)
     for (size_t g=0; g<array_shape[10]; ++g)
     for (size_t f=0; f<array_shape[11]; ++f)
     {
-        size_t idx = flatten_multi_index({w, j, Cd, Sd, Ci, Si, n, s, na, p, g, f}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi, s, na, p, g, f}, array_shape);
 
-        SOURCE::Planewave source = SOURCE::Planewave(
-            sourceSet.wavelength[w],
-            sourceSet.jones_vector[j],
-            sourceSet.amplitude[w]
-        );
+        SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
         DETECTOR::Detector detector = DETECTOR::Detector(
             detectorSet.scalar_fields[s],
@@ -670,14 +541,7 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling_core_material_shell
             detectorSet.point_coupling
         );
 
-        CORESHELL::Scatterer scatterer = CORESHELL::Scatterer(
-            coreshellSet.core_diameter[Cd],
-            coreshellSet.shell_width[Sd],
-            coreshellSet.core_material[Ci][w],
-            coreshellSet.shell_material[Si][w],
-            coreshellSet.n_medium[n],
-            source
-        );
+        CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 
         output_array[idx] = abs( detector.get_coupling(scatterer) );
     }

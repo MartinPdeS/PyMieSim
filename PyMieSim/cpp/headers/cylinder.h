@@ -6,36 +6,6 @@
 namespace CYLINDER
 {
 
-    class Set
-    {
-        public:
-            std::vector<double> diameter;
-            std::vector<double> n_medium;
-            std::vector<complex128> index;
-            std::vector<std::vector<complex128>> material;
-            bool is_material;
-            std::vector<size_t> shape;
-
-            Set() = default;
-            Set(
-                const std::vector<double> &diameter,
-                const std::vector<std::vector<complex128>> &material,
-                const std::vector<double> &n_medium
-            ) : diameter(diameter), material(material), n_medium(n_medium), is_material(true)
-            {
-                this->shape = {this->diameter.size(), this->material.size(), this->n_medium.size()};
-            }
-
-            Set(
-                const std::vector<double> &diameter,
-                const std::vector<complex128> &index,
-                const std::vector<double> &n_medium
-            ) : diameter(diameter), index(index), n_medium(n_medium), is_material(false)
-            {
-                this->shape = {this->diameter.size(), this->index.size(), this->n_medium.size()};
-            }
-    };
-
     class Scatterer: public BaseScatterer
     {
         public:
@@ -107,7 +77,55 @@ namespace CYLINDER
 
             std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const;
 
-  };
+    };
+
+    class Set
+    {
+        public:
+            std::vector<double> diameter;
+            std::vector<double> n_medium;
+            std::vector<complex128> index;
+            std::vector<std::vector<complex128>> material;
+            bool is_material;
+            std::vector<size_t> shape;
+
+            Set() = default;
+            Set(
+                const std::vector<double> &diameter,
+                const std::vector<std::vector<complex128>> &material,
+                const std::vector<double> &n_medium
+            ) : diameter(diameter), material(material), n_medium(n_medium), is_material(true)
+            {
+                this->shape = {this->diameter.size(), this->material.size(), this->n_medium.size()};
+            }
+
+            Set(
+                const std::vector<double> &diameter,
+                const std::vector<complex128> &index,
+                const std::vector<double> &n_medium
+            ) : diameter(diameter), index(index), n_medium(n_medium), is_material(false)
+            {
+                this->shape = {this->diameter.size(), this->index.size(), this->n_medium.size()};
+            }
+
+            Scatterer to_object(size_t d, size_t i, size_t wl, size_t mi, SOURCE::BaseSource &source) const
+            {
+                if (is_material)
+                    return Scatterer(
+                        this->diameter[d],
+                        this->material[i][wl],
+                        this->n_medium[mi],
+                        source
+                    );
+                else
+                    return Scatterer(
+                        this->diameter[d],
+                        this->index[i],
+                        this->n_medium[mi],
+                        source
+                    );
+            }
+    };
 
 }
 
