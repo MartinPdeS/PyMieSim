@@ -35,20 +35,19 @@ namespace CORESHELL
         an.resize(max_order);
         bn.resize(max_order);
 
+        // Calculate scaled parameters and initialize phase shift factors
         complex128
             relative_index = this->shell_index / this->core_index,
             u = this->core_index * this->x_core,
             v = this->shell_index * this->x_core,
-            w = this->shell_index * this->x_shell;
-
-        complex128
+            w = this->shell_index * this->x_shell,
             sv = sqrt(0.5 * PI * v),
             sw = sqrt(0.5 * PI * w),
             sy = sqrt(0.5 * PI * this->x_shell);
 
-        size_t
-            mx = (size_t) std::max( abs( this->core_index * this->x_shell ), abs( this->shell_index*this->x_shell ) ),
-            nmx  = (size_t) ( std::max( max_order, mx ) + 16. )  ;
+        // Determine the necessary array size for continuity factors
+        size_t mx = static_cast<size_t>(std::max( abs( this->core_index * this->x_shell ), abs( this->shell_index*this->x_shell ) ));
+        size_t nmx  = std::max( max_order, mx ) + 16  ;
 
         std::vector<complex128> pv(max_order + 1), pw(max_order + 1), py(max_order + 1), chv(max_order + 1), chw(max_order + 1), chy(max_order + 1), gsy(max_order + 1), gs1y(max_order + 1);
         std::vector<complex128> p1y(max_order + 2), ch1y(max_order + 2);
@@ -72,6 +71,7 @@ namespace CORESHELL
             gs1y[order] = p1y[order] - JJ * ch1y[order];
         }
 
+        // Calculate continuity factors in reverse order
         std::vector<complex128> Du(nmx, 0.0), Dv(nmx, 0.0), Dw(nmx, 0.0);
 
         for (int i = nmx - 1; i > 1; i--){
@@ -80,14 +80,17 @@ namespace CORESHELL
             Dw[i-1] = (double)i / w - 1.0 / (Dw[i] + (double)i / w);
         }
 
+        // Resize continuity factors to maximum order needed
         Du.erase(Du.begin());
         Dv.erase(Dv.begin());
         Dw.erase(Dw.begin());
 
+        // Calculate Mie coefficients
         std::vector<complex128> uu(max_order), vv(max_order), fv(max_order), dns(max_order), gns(max_order), a1(max_order), b1(max_order);
 
         for (size_t order=0; order < max_order; order++){
-            double idx = order + 1;
+            double idx = static_cast<double>(order + 1);
+
             uu[order] = relative_index * Du[order] - Dv[order];
             vv[order] = Du[order] / relative_index - Dv[order];
             fv[order] = pv[order] / chv[order];

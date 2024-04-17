@@ -45,8 +45,6 @@ class BaseScatterer():
 
         self.build_binding_kwargs()
 
-        self.build_x_parameters()
-
     def _validate_and_cleanup(self, part: str = '') -> NoReturn:
         """
         Validates and cleans up parameters for either the core or the shell.
@@ -117,19 +115,6 @@ class BaseScatterer():
 
             self.binding_kwargs[parameter_str] = values
 
-    def append_to_table(self, table: list) -> list:
-        """
-        Appends the scatterer's properties to a given table for visualization purposes. This enables the
-        representation of scatterer properties in graphical formats.
-
-        Parameters:
-            table (list): The table to which the scatterer's properties will be appended.
-
-        Returns:
-            list: The updated table with the scatterer's properties included.
-        """
-        return [*table, *self.x_table]
-
     def initialize_binding(self) -> NoReturn:
         """
         Initializes the C++ binding for the scatterer, setting up the interface for simulation within the
@@ -153,7 +138,7 @@ class BaseScatterer():
                 materials = getattr(self, parameter_str)
 
                 material_index = [
-                    material.get_refractive_index(self.source_set.wavelength.values) for material in materials
+                    material.get_refractive_index(self.source_set.wavelength) for material in materials
                 ]
 
                 material_index = numpy.asarray(material_index).astype(complex)
@@ -178,7 +163,6 @@ class Sphere(BaseScatterer):
     name: str = field(default="sphere", init=False)
 
     available_measure_list = measure.__sphere__
-    
 
     def __post_init__(self):
         self.cpp_binding_str: list = [
@@ -199,15 +183,18 @@ class Sphere(BaseScatterer):
 
         super().__post_init__()
 
-    def build_x_parameters(self) -> NoReturn:
+    def update_datavisual_table(self, table: list) -> NoReturn:
         """
-        Constructs Units for inclusion in the XTable for DataVisual, facilitating the visualization
-        of the scatterer's properties.
+        Appends the scatterer's properties to a given table for visualization purposes. This enables the
+        representation of scatterer properties in graphical formats.
+
+        Parameters:
+            table (list): The table to which the scatterer's properties will be appended.
 
         Returns:
-            None
+            list: The updated table with the scatterer's properties included.
         """
-        self.x_table = []
+        sub_table = []
 
         self.diameter = units.Length(
             long_label='Scatterer diameter',
@@ -215,7 +202,7 @@ class Sphere(BaseScatterer):
             base_values=self.diameter,
             string_format='.1f'
         )
-        self.x_table.append(self.diameter)
+        sub_table.append(self.diameter)
 
         if self.material is not None:
             self.material = units.Custom(
@@ -224,7 +211,7 @@ class Sphere(BaseScatterer):
                 value_representation=self.material,
                 use_prefix=False
             )
-            self.x_table.append(self.material)
+            sub_table.append(self.material)
 
         else:
             self.index = units.Index(
@@ -233,7 +220,7 @@ class Sphere(BaseScatterer):
                 base_values=self.index,
                 string_format='.1f'
             )
-            self.x_table.append(self.index)
+            sub_table.append(self.index)
 
         self.n_medium = units.Index(
             long_label=r'Refractive index of medium',
@@ -241,7 +228,9 @@ class Sphere(BaseScatterer):
             base_values=self.n_medium,
             string_format='.1f'
         )
-        self.x_table.append(self.n_medium)
+        sub_table.append(self.n_medium)
+
+        return [*table, *sub_table]
 
     def validate_material_or_index(self) -> NoReturn:
         """
@@ -304,15 +293,18 @@ class CoreShell(BaseScatterer):
 
         super().__post_init__()
 
-    def build_x_parameters(self) -> NoReturn:
+    def update_datavisual_table(self, table: list) -> NoReturn:
         """
-        Constructs Units for inclusion in the XTable for DataVisual, facilitating the visualization
-        of the scatterer's properties.
+        Appends the scatterer's properties to a given table for visualization purposes. This enables the
+        representation of scatterer properties in graphical formats.
+
+        Parameters:
+            table (list): The table to which the scatterer's properties will be appended.
 
         Returns:
-            None
+            list: The updated table with the scatterer's properties included.
         """
-        self.x_table = []
+        sub_table = []
 
         self.core_diameter = units.Length(
             long_label='Core diameter',
@@ -320,7 +312,7 @@ class CoreShell(BaseScatterer):
             base_values=self.core_diameter,
             string_format='.2f'
         )
-        self.x_table.append(self.core_diameter)
+        sub_table.append(self.core_diameter)
 
         self.shell_width = units.Length(
             long_label='Shell width',
@@ -328,7 +320,7 @@ class CoreShell(BaseScatterer):
             base_values=self.shell_width,
             string_format='.2f'
         )
-        self.x_table.append(self.shell_width)
+        sub_table.append(self.shell_width)
 
         if self.core_material is not None:
             self.core_material = units.Custom(
@@ -337,7 +329,7 @@ class CoreShell(BaseScatterer):
                 value_representation=self.core_material,
                 use_prefix=False,
             )
-            self.x_table.append(self.core_material)
+            sub_table.append(self.core_material)
 
         else:
             self.core_index = units.Index(
@@ -346,7 +338,7 @@ class CoreShell(BaseScatterer):
                 base_values=self.core_index,
                 string_format='.2f'
             )
-            self.x_table.append(self.core_index)
+            sub_table.append(self.core_index)
 
         if self.shell_material is not None:
             self.shell_material = units.Custom(
@@ -355,7 +347,7 @@ class CoreShell(BaseScatterer):
                 base_values=self.shell_material,
                 use_prefix=False
             )
-            self.x_table.append(self.shell_material)
+            sub_table.append(self.shell_material)
 
         else:
             self.shell_index = units.Index(
@@ -364,7 +356,7 @@ class CoreShell(BaseScatterer):
                 base_values=self.shell_index,
                 string_format='.2f'
             )
-            self.x_table.append(self.shell_index)
+            sub_table.append(self.shell_index)
 
         self.n_medium = units.Index(
             long_label=r'Refractive index of medium',
@@ -372,7 +364,9 @@ class CoreShell(BaseScatterer):
             base_values=self.n_medium,
             string_format='.2f'
         )
-        self.x_table.append(self.n_medium)
+        sub_table.append(self.n_medium)
+
+        return [*table, *sub_table]
 
     def validate_material_or_index(self) -> NoReturn:
         """
@@ -425,15 +419,18 @@ class Cylinder(BaseScatterer):
 
         super().__post_init__()
 
-    def build_x_parameters(self) -> NoReturn:
+    def update_datavisual_table(self, table: list) -> NoReturn:
         """
-        Constructs Units for inclusion in the XTable for DataVisual, facilitating the visualization
-        of the scatterer's properties.
+        Appends the scatterer's properties to a given table for visualization purposes. This enables the
+        representation of scatterer properties in graphical formats.
+
+        Parameters:
+            table (list): The table to which the scatterer's properties will be appended.
 
         Returns:
-            None
+            list: The updated table with the scatterer's properties included.
         """
-        self.x_table = []
+        sub_table = []
 
         self.diameter = units.Length(
             long_label='Scatterer diameter',
@@ -441,7 +438,7 @@ class Cylinder(BaseScatterer):
             base_values=self.diameter,
             string_format='.2f'
         )
-        self.x_table.append(self.diameter)
+        sub_table.append(self.diameter)
 
         if self.material is not None:
             self.material = units.Custom(
@@ -450,7 +447,7 @@ class Cylinder(BaseScatterer):
                 base_values=self.material,
                 value_representation=self.material
             )
-            self.x_table.append(self.material)
+            sub_table.append(self.material)
 
         else:
             self.index = units.Index(
@@ -459,7 +456,7 @@ class Cylinder(BaseScatterer):
                 base_values=self.index,
                 string_format='.2f'
             )
-            self.x_table.append(self.index)
+            sub_table.append(self.index)
 
         self.n_medium = units.Index(
             long_label=r'Refractive index of medium',
@@ -467,7 +464,9 @@ class Cylinder(BaseScatterer):
             base_values=self.n_medium,
             string_format='.2f'
         )
-        self.x_table.append(self.n_medium)
+        sub_table.append(self.n_medium)
+
+        return [*table, *sub_table]
 
     def validate_material_or_index(self) -> NoReturn:
         """

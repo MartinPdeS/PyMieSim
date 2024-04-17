@@ -12,38 +12,6 @@ namespace DETECTOR {
 
     using complex128 = std::complex<double>;
 
-    class Set
-    {
-        public:
-            std::vector<std::vector<complex128>> scalar_fields;
-            std::vector<double> NA;
-            std::vector<double> phi_offset;
-            std::vector<double> gamma_offset;
-            std::vector<double> polarization_filter;
-            std::vector<double> rotation_angle;
-
-            bool coherent;
-            bool point_coupling;
-
-            std::vector<size_t> shape;
-
-            Set() = default;
-
-            Set(const std::vector<std::vector<complex128>> &scalar_fields,
-                const std::vector<double> &NA,
-                const std::vector<double> &phi_offset,
-                const std::vector<double> &gamma_offset,
-                const std::vector<double> &polarization_filter,
-                const std::vector<double> &rotation_angle,
-                const bool &coherent,
-                const bool &point_coupling)
-            : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
-              {
-                this->shape = {(size_t) this->scalar_fields.size(), this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
-              }
-    };
-
     class Detector {
         public:
             double NA = 0.0;
@@ -63,7 +31,7 @@ namespace DETECTOR {
             Detector(
                 const std::vector<complex128>& scalar_field, double NA, double phi_offset,
                 double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling
-            ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter), 
+            ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
             rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
@@ -79,10 +47,8 @@ namespace DETECTOR {
                 );
             }
 
-            Detector(
-                size_t sampling, double NA, double phi_offset,
-                double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling
-            ) : sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter), 
+            Detector( size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling) :
+            sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
             rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
@@ -118,6 +84,52 @@ namespace DETECTOR {
             template <typename T> inline double get_norm2_squared(const std::vector<T>& array) const;
             template <typename T> inline void square_array(std::vector<T>& array);
             template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
+    };
+
+    class Set
+    {
+        public:
+            std::vector<std::vector<complex128>> scalar_fields;
+            std::vector<double> NA;
+            std::vector<double> phi_offset;
+            std::vector<double> gamma_offset;
+            std::vector<double> polarization_filter;
+            std::vector<double> rotation_angle;
+
+            bool coherent;
+            bool point_coupling;
+
+            std::vector<size_t> shape;
+
+            Set() = default;
+
+            Set(const std::vector<std::vector<complex128>> &scalar_fields,
+                const std::vector<double> &NA,
+                const std::vector<double> &phi_offset,
+                const std::vector<double> &gamma_offset,
+                const std::vector<double> &polarization_filter,
+                const std::vector<double> &rotation_angle,
+                const bool &coherent,
+                const bool &point_coupling)
+            : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+              polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
+              {
+                this->shape = {(size_t) this->scalar_fields.size(), this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
+              }
+
+            Detector to_object(size_t sf, size_t na, size_t po, size_t go, size_t pf) const
+            {
+                return Detector(
+                    this->scalar_fields[sf],
+                    this->NA[na],
+                    this->phi_offset[po],
+                    this->gamma_offset[go],
+                    this->polarization_filter[pf],
+                    this->rotation_angle[sf],
+                    this->coherent,
+                    this->point_coupling
+                );
+            }
     };
 
 

@@ -26,89 +26,55 @@ class Experiment
         void set_source(SOURCE::Set &set) { sourceSet = set; }
         void set_detector(DETECTOR::Set &set) { detectorSet = set; }
 
-        size_t flatten_multi_index(const std::vector<size_t> &multi_index, const std::vector<size_t> &dimension) const;
+        size_t flatten_multi_index(const std::vector<size_t> &multi_index, const std::vector<size_t> &dimension) const
+        {
+            size_t
+                flatten_index = 0,
+                multiplier = 1,
+                dimension_size,
+                index;
+
+            for (size_t index_number=0; index_number<multi_index.size(); index_number++)
+            {
+                index = multi_index[index_number];
+                multiplier = 1;
+                for (size_t dim_number=index_number+1; dim_number<dimension.size(); dim_number++)
+                {
+                    dimension_size = dimension[dim_number];
+                    multiplier *= dimension_size;
+                }
+
+                flatten_index += index * multiplier;
+            }
+
+            return flatten_index;
+        }
         //--------------------------------------SPHERE------------------------------------
         template<typename Function>
         pybind11::array_t<complex128> get_sphere_coefficient(Function function, size_t max_order=0) const;
 
         template<typename Function>
-        pybind11::array_t<double> get_sphere_data(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_sphere_coefficient_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_sphere_coefficient_index(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_sphere_data_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_sphere_data_index(Function function, size_t max_order=0) const;
+        pybind11::array_t<double> get_sphere_data(Function function) const;
 
         pybind11::array_t<double> get_sphere_coupling() const;
-        pybind11::array_t<double> get_sphere_coupling_material() const;
-        pybind11::array_t<double> get_sphere_coupling_index() const;
 
         //--------------------------------------CYLINDER------------------------------------
         template<typename Function>
         pybind11::array_t<complex128> get_cylinder_coefficient(Function function, size_t max_order=0) const;
 
         template<typename Function>
-        pybind11::array_t<double> get_cylinder_data(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_cylinder_coefficient_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_cylinder_coefficient_index(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_cylinder_data_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_cylinder_data_index(Function function, size_t max_order=0) const;
+        pybind11::array_t<double> get_cylinder_data(Function function) const;
 
         pybind11::array_t<double> get_cylinder_coupling() const;
-        pybind11::array_t<double> get_cylinder_coupling_bound() const;
-        pybind11::array_t<double> get_cylinder_coupling_unbound() const;
 
         //--------------------------------------CORESHELL------------------------------------
         template<typename Function>
         pybind11::array_t<complex128> get_coreshell_coefficient(Function function, size_t max_order=0) const;
 
         template<typename Function>
-        pybind11::array_t<double> get_coreshell_data(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_material_shell_index(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_index_shell_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_material_shell_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<complex128> get_coreshell_coefficient_core_index_shell_index(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_coreshell_data_core_material_shell_index(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_coreshell_data_core_index_shell_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_coreshell_data_core_material_shell_material(Function function, size_t max_order=0) const;
-
-        template<typename Function>
-        pybind11::array_t<double> get_coreshell_data_core_index_shell_index(Function function, size_t max_order=0) const;
+        pybind11::array_t<double> get_coreshell_data(Function function) const;
 
         pybind11::array_t<double> get_coreshell_coupling() const;
-        pybind11::array_t<double> get_coreshell_coupling_core_index_shell_index() const;
-        pybind11::array_t<double> get_coreshell_coupling_core_material_shell_index() const;
-        pybind11::array_t<double> get_coreshell_coupling_core_index_shell_material() const;
-        pybind11::array_t<double> get_coreshell_coupling_core_material_shell_material() const;
 
         pybind11::array_t<double> get_sphere_Qsca() const { return get_sphere_data( &SPHERE::Scatterer::get_Qsca ) ; }
         pybind11::array_t<double> get_sphere_Qext() const { return get_sphere_data( &SPHERE::Scatterer::get_Qext ) ; }

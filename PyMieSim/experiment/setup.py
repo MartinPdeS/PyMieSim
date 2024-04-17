@@ -66,9 +66,11 @@ class Setup(object):
         Returns:
             NoReturn
         """
-        table = self.source_set.append_to_table(table=[])
-        table = self.scatterer_set.append_to_table(table=table)
-        self.x_table = table if not self.detector_set else self.detector_set.append_to_table(table=table)
+        self.x_table = []
+        self.x_table = self.source_set.update_datavisual_table(self.x_table)
+        self.x_table = self.scatterer_set.update_datavisual_table(self.x_table)
+        if self.detector_set:
+            self.detector_set.update_datavisual_table(self.x_table)
 
     def get(self, measure: Table, export_as_numpy: bool = False) -> numpy.ndarray | Array:
         """

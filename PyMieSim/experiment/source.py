@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Iterable
+from typing import TYPE_CHECKING, Iterable, NoReturn
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
 
@@ -34,7 +34,6 @@ class BaseSource:
         self.generate_polarization_attribute()
         self.generate_amplitude()
         self.generate_binding()
-        self.build_x_parameters()
 
     def format_inputs(self):
         """Formats input wavelengths and polarization values into numpy arrays."""
@@ -53,8 +52,19 @@ class BaseSource:
         """Abstract method for generating amplitude, to be implemented by subclasses."""
         raise NotImplementedError("Subclass must implement this method.")
 
-    def build_x_parameters(self):
-        """Builds Xparameters for wavelength and linear polarization for DataVisual representations."""
+    def update_datavisual_table(self, table: list) -> NoReturn:
+        """
+        Appends the scatterer's properties to a given table for visualization purposes. This enables the
+        representation of scatterer properties in graphical formats.
+
+        Parameters:
+            table (list): The table to which the scatterer's properties will be appended.
+
+        Returns:
+            list: The updated table with the scatterer's properties included.
+        """
+        sub_table = []
+
         self.wavelength = units.Length(
             long_label='Wavelength',
             short_label=r'$\lambda$',
@@ -62,12 +72,18 @@ class BaseSource:
             string_format='.2f'
         )
 
+        sub_table.append(self.wavelength)
+
         self.linear_polarization = units.Degree(
             long_label='Polarization',
             short_label=r'Pol.',
             base_values=self.polarization_value,
             string_format='.2f'
         )
+
+        sub_table.append(self.linear_polarization)
+
+        return [*table, *sub_table]
 
     def generate_binding(self):
         """Generates the C++ binding for the source set."""
@@ -85,18 +101,6 @@ class BaseSource:
             experiment (Setup): The experiment setup to bind the source to.
         """
         experiment.binding.set_source(self.binding)
-
-    def append_to_table(self, table: list) -> list:
-        """
-        Appends the wavelength and linear polarization to a given table.
-
-        Parameters:
-            table (list): The table to append data to.
-
-        Returns:
-            list: The updated table with appended data.
-        """
-        return [*table, self.wavelength, self.linear_polarization]
 
 
 @dataclass

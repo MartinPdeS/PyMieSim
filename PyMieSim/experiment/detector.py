@@ -64,8 +64,6 @@ class BaseDetector():
 
         self.initialize_binding()
 
-        self.build_x_parameters()
-
     def get_rotation_angle_from_mode_number(self) -> NoReturn:
         """
         Computes the rotation angle from the mode number for CoherentMode detectors; for others, sets it to zero.
@@ -76,7 +74,7 @@ class BaseDetector():
             NoReturn
         """
         if self.name.lower() == 'photodiode':
-            self.rotation_angle = numpy.zeros(self.scalarfield.base_values.size)
+            self.rotation_angle = numpy.zeros(self.scalar_fields.size)
             return
 
         rotation_angle_list = []
@@ -118,15 +116,26 @@ class BaseDetector():
         """
         experiment.binding.set_detector(self.binding)
 
-    def build_x_parameters(self) -> NoReturn:
+    def update_datavisual_table(self, table: list) -> NoReturn:
         """
-        Constructs the BaseUnit for visualization, translating the detector's attributes into a format
-        suitable for inclusion in data visualization tools. This facilitates the graphical representation
-        of simulation results.
+        Appends the scatterer's properties to a given table for visualization purposes. This enables the
+        representation of scatterer properties in graphical formats.
+
+        Parameters:
+            table (list): The table to which the scatterer's properties will be appended.
 
         Returns:
-            NoReturn
+            list: The updated table with the scatterer's properties included.
         """
+
+        self.scalarfield = units.Custom(
+            long_label='Field',
+            short_label='field',
+            base_values=self.scalar_fields,
+            value_representation=self.detector_name
+        )
+        table.append(self.scalarfield)
+
         self.NA = units.Index(
             long_label='Numerical aperture',
             short_label='NA',
@@ -134,6 +143,7 @@ class BaseDetector():
             use_prefix=False,
             string_format=""
         )
+        table.append(self.NA)
 
         self.gamma_offset = units.Degree(
             long_label='Gamma angle',
@@ -142,6 +152,7 @@ class BaseDetector():
             use_prefix=False,
             string_format='.1f'
         )
+        table.append(self.gamma_offset)
 
         self.phi_offset = units.Degree(
             long_label='Phi angle',
@@ -150,6 +161,7 @@ class BaseDetector():
             use_prefix=False,
             string_format='.1f'
         )
+        table.append(self.phi_offset)
 
         self.polarization_filter = units.Degree(
             long_label=r'Polarization filter',
@@ -158,18 +170,9 @@ class BaseDetector():
             use_prefix=False,
             string_format='.1f'
         )
+        table.append(self.polarization_filter)
 
-    def append_to_table(self, table: list) -> list:
-        """
-        Appends the detector's attributes to a given visualization table.
-
-        Parameters:
-            table (list): The table to which the detector's attributes will be appended.
-
-        Returns:
-            list: The updated table with the detector's attributes included.
-        """
-        return [*table, self.scalarfield, self.NA, self.phi_offset, self.gamma_offset, self.polarization_filter]
+        return table
 
     def initialize_binding(self) -> NoReturn:
         """
@@ -189,7 +192,7 @@ class BaseDetector():
         polarization_filter_rad = numpy.deg2rad(self.polarization_filter)
 
         self.binding = CppDetectorSet(
-            scalar_field=self.scalarfield.base_values.astype(complex),
+            scalar_field=self.scalar_fields.astype(complex),
             NA=self.NA,
             phi_offset=phi_offset_rad,
             gamma_offset=gamma_offset_rad,
@@ -259,15 +262,9 @@ class Photodiode(BaseDetector):
         Returns:
             numpy.ndarray: An array of scalar fields corresponding to the photodiode detection scheme.
         """
-        scalarfield = numpy.ones([1, self.sampling])
+        self.scalar_fields = numpy.ones([1, self.sampling])
 
-        self.scalarfield = units.Custom(
-            long_label='Field',
-            short_label=r'field',
-            base_values=scalarfield,
-            use_long_label_for_repr=True,
-            value_representation=['Photodiode']
-        )
+        self.detector_name = ['Photodiode']
 
 
 @dataclass
@@ -299,7 +296,9 @@ class CoherentMode(BaseDetector):
             rotation_angle=0
         )
 
-        scalar_fields = numpy.zeros([len(self.mode_number), self.sampling]).astype(complex)
+        self.scalar_fields = numpy.zeros([len(self.mode_number), self.sampling]).astype(complex)
+
+        self.detector_name = self.mode_number
 
         for idx, mode_name in enumerate(self.mode_number):
             mode_family_name, number_0, number_1, rotation_angle = self.interpret_mode_name(mode_name)
@@ -314,15 +313,9 @@ class CoherentMode(BaseDetector):
                 case _:
                     raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
 
-            scalar_fields[idx] = mode_module.interpolate_from_fibonacci_mesh(
+            self.scalar_fields[idx] = mode_module.interpolate_from_fibonacci_mesh(
                 fibonacci_mesh=proxy_fibonacci_mesh,
                 number_0=number_0,
                 number_1=number_1,
             )
-
-        self.scalarfield = units.Custom(
-            long_label='Field',
-            short_label='field',
-            base_values=scalar_fields,
-            value_representation=self.mode_number
-        )
+# -
