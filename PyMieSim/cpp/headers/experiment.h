@@ -8,6 +8,15 @@
 #include "core_shell.cpp"
 #include "detectors.cpp"
 
+#define DEFINE_SPHERE_FUNCTION(name) \
+    pybind11::array_t<double> get_sphere_##name() const { return get_sphere_data(&SPHERE::Scatterer::get_##name); }
+
+#define DEFINE_CYLINDER_FUNCTION(name) \
+    pybind11::array_t<double> get_cylinder_##name() const { return get_cylinder_data(&CYLINDER::Scatterer::get_##name); }
+
+#define DEFINE_CORESHELL_FUNCTION(name) \
+    pybind11::array_t<double> get_coreshell_##name() const { return get_coreshell_data(&CORESHELL::Scatterer::get_##name); }
+
 
 class Experiment
 {
@@ -26,69 +35,83 @@ class Experiment
         void set_source(SOURCE::Set &set) { sourceSet = set; }
         void set_detector(DETECTOR::Set &set) { detectorSet = set; }
 
-        size_t flatten_multi_index(const std::vector<size_t> &multi_index, const std::vector<size_t> &dimension) const
-        {
-            size_t
-                flatten_index = 0,
-                multiplier = 1,
-                dimension_size,
-                index;
+        static size_t flatten_multi_index(const std::vector<size_t>& multi_index, const std::vector<size_t>& dimensions) { // Trust chatGPT on that one
+            size_t flatten_index = 0;
+            size_t stride = 1;
 
-            for (size_t index_number=0; index_number<multi_index.size(); index_number++)
-            {
-                index = multi_index[index_number];
-                multiplier = 1;
-                for (size_t dim_number=index_number+1; dim_number<dimension.size(); dim_number++)
-                {
-                    dimension_size = dimension[dim_number];
-                    multiplier *= dimension_size;
-                }
-
-                flatten_index += index * multiplier;
+            // Iterate from the last dimension to the first
+            for (int i = dimensions.size() - 1; i >= 0; --i) {
+                flatten_index += multi_index[i] * stride;
+                stride *= dimensions[i];
             }
 
             return flatten_index;
         }
-        //--------------------------------------SPHERE------------------------------------
-        template<typename Function>
-        pybind11::array_t<complex128> get_sphere_coefficient(Function function, size_t max_order=0) const;
 
-        template<typename Function>
-        pybind11::array_t<double> get_sphere_data(Function function) const;
+
+        //--------------------------------------SPHERE------------------------------------
+        template<typename Function> pybind11::array_t<complex128> get_sphere_coefficient(Function function, size_t max_order=0) const;
+
+        template<typename Function> pybind11::array_t<double> get_sphere_data(Function function) const;
 
         pybind11::array_t<double> get_sphere_coupling() const;
 
-        //--------------------------------------CYLINDER------------------------------------
-        template<typename Function>
-        pybind11::array_t<complex128> get_cylinder_coefficient(Function function, size_t max_order=0) const;
+        DEFINE_SPHERE_FUNCTION(Qsca)
+        DEFINE_SPHERE_FUNCTION(Qext)
+        DEFINE_SPHERE_FUNCTION(Qabs)
+        DEFINE_SPHERE_FUNCTION(Qpr)
+        DEFINE_SPHERE_FUNCTION(Qback)
+        DEFINE_SPHERE_FUNCTION(Qforward)
+        DEFINE_SPHERE_FUNCTION(Csca)
+        DEFINE_SPHERE_FUNCTION(Cext)
+        DEFINE_SPHERE_FUNCTION(Cabs)
+        DEFINE_SPHERE_FUNCTION(Cpr)
+        DEFINE_SPHERE_FUNCTION(Cback)
+        DEFINE_SPHERE_FUNCTION(Cforward)
+        DEFINE_SPHERE_FUNCTION(g)
 
-        template<typename Function>
-        pybind11::array_t<double> get_cylinder_data(Function function) const;
+        //--------------------------------------CYLINDER------------------------------------
+        template<typename Function> pybind11::array_t<complex128> get_cylinder_coefficient(Function function, size_t max_order=0) const;
+
+        template<typename Function> pybind11::array_t<double> get_cylinder_data(Function function) const;
 
         pybind11::array_t<double> get_cylinder_coupling() const;
 
-        //--------------------------------------CORESHELL------------------------------------
-        template<typename Function>
-        pybind11::array_t<complex128> get_coreshell_coefficient(Function function, size_t max_order=0) const;
+        DEFINE_CYLINDER_FUNCTION(Qsca)
+        DEFINE_CYLINDER_FUNCTION(Qext)
+        DEFINE_CYLINDER_FUNCTION(Qabs)
+        DEFINE_CYLINDER_FUNCTION(Qpr)
+        DEFINE_CYLINDER_FUNCTION(Qback)
+        DEFINE_CYLINDER_FUNCTION(Qforward)
+        DEFINE_CYLINDER_FUNCTION(Csca)
+        DEFINE_CYLINDER_FUNCTION(Cext)
+        DEFINE_CYLINDER_FUNCTION(Cabs)
+        DEFINE_CYLINDER_FUNCTION(Cpr)
+        DEFINE_CYLINDER_FUNCTION(Cback)
+        DEFINE_CYLINDER_FUNCTION(Cforward)
+        DEFINE_CYLINDER_FUNCTION(g)
 
-        template<typename Function>
-        pybind11::array_t<double> get_coreshell_data(Function function) const;
+        //--------------------------------------CORESHELL------------------------------------
+        template<typename Function> pybind11::array_t<complex128> get_coreshell_coefficient(Function function, size_t max_order=0) const;
+
+        template<typename Function> pybind11::array_t<double> get_coreshell_data(Function function) const;
 
         pybind11::array_t<double> get_coreshell_coupling() const;
 
-        pybind11::array_t<double> get_sphere_Qsca() const { return get_sphere_data( &SPHERE::Scatterer::get_Qsca ) ; }
-        pybind11::array_t<double> get_sphere_Qext() const { return get_sphere_data( &SPHERE::Scatterer::get_Qext ) ; }
-        pybind11::array_t<double> get_sphere_Qabs() const { return get_sphere_data( &SPHERE::Scatterer::get_Qabs ) ; }
-        pybind11::array_t<double> get_sphere_Qpr() const { return get_sphere_data( &SPHERE::Scatterer::get_Qpr ) ; }
-        pybind11::array_t<double> get_sphere_Qback() const { return get_sphere_data( &SPHERE::Scatterer::get_Qback ) ; }
-        pybind11::array_t<double> get_sphere_Qforward() const { return get_sphere_data( &SPHERE::Scatterer::get_Qforward ) ; }
-        pybind11::array_t<double> get_sphere_Csca() const { return get_sphere_data( &SPHERE::Scatterer::get_Csca ) ; }
-        pybind11::array_t<double> get_sphere_Cext() const { return get_sphere_data( &SPHERE::Scatterer::get_Cext ) ; }
-        pybind11::array_t<double> get_sphere_Cabs() const { return get_sphere_data( &SPHERE::Scatterer::get_Cabs ) ; }
-        pybind11::array_t<double> get_sphere_Cpr() const { return get_sphere_data( &SPHERE::Scatterer::get_Cpr ) ; }
-        pybind11::array_t<double> get_sphere_Cback() const { return get_sphere_data( &SPHERE::Scatterer::get_Cback ) ; }
-        pybind11::array_t<double> get_sphere_Cforward() const { return get_sphere_data( &SPHERE::Scatterer::get_Cforward ) ; }
-        pybind11::array_t<double> get_sphere_g() const { return get_sphere_data( &SPHERE::Scatterer::get_g ) ; }
+        DEFINE_CORESHELL_FUNCTION(Qsca)
+        DEFINE_CORESHELL_FUNCTION(Qext)
+        DEFINE_CORESHELL_FUNCTION(Qabs)
+        DEFINE_CORESHELL_FUNCTION(Qpr)
+        DEFINE_CORESHELL_FUNCTION(Qback)
+        DEFINE_CORESHELL_FUNCTION(Qforward)
+        DEFINE_CORESHELL_FUNCTION(Csca)
+        DEFINE_CORESHELL_FUNCTION(Cext)
+        DEFINE_CORESHELL_FUNCTION(Cabs)
+        DEFINE_CORESHELL_FUNCTION(Cpr)
+        DEFINE_CORESHELL_FUNCTION(Cback)
+        DEFINE_CORESHELL_FUNCTION(Cforward)
+        DEFINE_CORESHELL_FUNCTION(g)
+
 
         pybind11::array_t<complex128> get_sphere_an(size_t max_order) const { return get_sphere_coefficient( &SPHERE::Scatterer::get_an, max_order ) ; }
         pybind11::array_t<complex128> get_sphere_bn(size_t max_order) const { return get_sphere_coefficient( &SPHERE::Scatterer::get_bn, max_order ) ; }
@@ -98,20 +121,6 @@ class Experiment
         pybind11::array_t<complex128> get_sphere_b2() const { return get_sphere_coefficient( &SPHERE::Scatterer::get_bn, 2 ) ; }
         pybind11::array_t<complex128> get_sphere_a3() const { return get_sphere_coefficient( &SPHERE::Scatterer::get_an, 3 ) ; }
         pybind11::array_t<complex128> get_sphere_b3() const { return get_sphere_coefficient( &SPHERE::Scatterer::get_bn, 3 ) ; }
-
-        pybind11::array_t<double> get_cylinder_Qsca() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Qsca ) ; }
-        pybind11::array_t<double> get_cylinder_Qext() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Qext ) ; }
-        pybind11::array_t<double> get_cylinder_Qabs() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Qabs ) ; }
-        pybind11::array_t<double> get_cylinder_Qpr() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Qpr ) ; }
-        pybind11::array_t<double> get_cylinder_Qback() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Qback ) ; }
-        pybind11::array_t<double> get_cylinder_Qforward() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Qforward ) ; }
-        pybind11::array_t<double> get_cylinder_Csca() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Csca ) ; }
-        pybind11::array_t<double> get_cylinder_Cext() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Cext ) ; }
-        pybind11::array_t<double> get_cylinder_Cabs() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Cabs ) ; }
-        pybind11::array_t<double> get_cylinder_Cpr() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Cpr ) ; }
-        pybind11::array_t<double> get_cylinder_Cback() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Cback ) ; }
-        pybind11::array_t<double> get_cylinder_Cforward() const { return get_cylinder_data( &CYLINDER::Scatterer::get_Cforward ) ; }
-        pybind11::array_t<double> get_cylinder_g() const { return get_cylinder_data( &CYLINDER::Scatterer::get_g ) ; }
 
         pybind11::array_t<complex128> get_cylinder_a1n(size_t max_order) const { return get_cylinder_coefficient( &CYLINDER::Scatterer::get_a1n, max_order ) ; }
         pybind11::array_t<complex128> get_cylinder_b1n(size_t max_order) const { return get_cylinder_coefficient( &CYLINDER::Scatterer::get_b1n, max_order ) ; }
@@ -129,20 +138,6 @@ class Experiment
         pybind11::array_t<complex128> get_cylinder_b13() const { return get_cylinder_coefficient( &CYLINDER::Scatterer::get_b1n, 3 ) ; }
         pybind11::array_t<complex128> get_cylinder_a23() const { return get_cylinder_coefficient( &CYLINDER::Scatterer::get_a2n, 3 ) ; }
         pybind11::array_t<complex128> get_cylinder_b23() const { return get_cylinder_coefficient( &CYLINDER::Scatterer::get_b2n, 3 ) ; }
-
-        pybind11::array_t<double> get_coreshell_Qsca() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Qsca ) ; }
-        pybind11::array_t<double> get_coreshell_Qext() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Qext ) ; }
-        pybind11::array_t<double> get_coreshell_Qabs() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Qabs ) ; }
-        pybind11::array_t<double> get_coreshell_Qpr() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Qpr ) ; }
-        pybind11::array_t<double> get_coreshell_Qback() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Qback ) ; }
-        pybind11::array_t<double> get_coreshell_Qforward() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Qforward ) ; }
-        pybind11::array_t<double> get_coreshell_Csca() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Csca ) ; }
-        pybind11::array_t<double> get_coreshell_Cext() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Cext ) ; }
-        pybind11::array_t<double> get_coreshell_Cabs() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Cabs ) ; }
-        pybind11::array_t<double> get_coreshell_Cpr() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Cpr ) ; }
-        pybind11::array_t<double> get_coreshell_Cback() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Cback ) ; }
-        pybind11::array_t<double> get_coreshell_Cforward() const { return get_coreshell_data( &CORESHELL::Scatterer::get_Cforward ) ; }
-        pybind11::array_t<double> get_coreshell_g() const { return get_coreshell_data( &CORESHELL::Scatterer::get_g ) ; }
 
         pybind11::array_t<complex128> get_coreshell_an(size_t max_order) const { return get_coreshell_coefficient( &CORESHELL::Scatterer::get_an, max_order ) ; }
         pybind11::array_t<complex128> get_coreshell_bn(size_t max_order) const { return get_coreshell_coefficient( &CORESHELL::Scatterer::get_bn, max_order ) ; }

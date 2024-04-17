@@ -62,7 +62,6 @@ pybind11::array_t<double> Experiment::get_cylinder_data(Function function) const
 
         CYLINDER::Scatterer scatterer = cylinderSet.to_object(sd, si, wl, mi, source);
 
-
         output_array[idx] = (scatterer.*function)();
     }
 
