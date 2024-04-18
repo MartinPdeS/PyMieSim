@@ -2,12 +2,13 @@
 
 #include "sphere.h"
 
+
 namespace SPHERE
 {
     using complex128 = std::complex<double>;
 
     void Scatterer::compute_size_parameter() {
-        this->size_parameter = PI * this->diameter / this->source.wavelength;
+        this->size_parameter = PI * this->diameter / this->source.wavelength * this->medium_index;
     }
 
     void Scatterer::compute_area() {
@@ -21,7 +22,8 @@ namespace SPHERE
         complex128 psi_n, chi_n, psi_1, chi_1, xi_n, xi_nm1;
 
         complex128
-            mx = this->index * size_parameter,
+            m = this->index / this->medium_index,
+            mx = m * size_parameter,
             derivative_a, derivative_b;
 
         size_t nmx = std::max( max_order, (size_t) std::abs(mx) ) + 16;
@@ -42,8 +44,8 @@ namespace SPHERE
             xi_nm1 = psi_1 - 1.0 * JJ * chi_1;
 
             // Derivative of the Riccati-Bessel functions
-            derivative_a = Dn[order] / this->index + order / size_parameter;
-            derivative_b = Dn[order] * this->index + order / size_parameter;
+            derivative_a = Dn[order] / m + order / size_parameter;
+            derivative_b = Dn[order] * m + order / size_parameter;
 
             // Computation of the electric and magnetic multipole coefficients
             an[order - 1] = (derivative_a * psi_n - psi_1) / (derivative_a * xi_n - xi_nm1);

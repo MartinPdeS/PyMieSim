@@ -29,14 +29,14 @@ class BaseSource:
     polarization_value: Iterable
     name: str = field(default='PlaneWave', init=False)
 
-    mapping = {
-        'wavelength': None,
-        'polarization': None
-    }
-
     def __post_init__(self):
+        self.mapping = {
+            'wavelength': None,
+            'polarization': None
+        }
+
         self.format_inputs()
-        self.generate_polarization_attribute()
+        # self.generate_polarization_attribute()
         self.generate_amplitude()
         self.generate_binding()
 
@@ -44,18 +44,6 @@ class BaseSource:
         """Formats input wavelengths and polarization values into numpy arrays."""
         self.polarization_value = numpy.atleast_1d(self.polarization_value).astype(float)
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
-
-    def generate_polarization_attribute(self):
-        """
-        Generates the polarization attribute based on specified polarization values.
-        Raises an error for invalid polarization types not handled in subclasses.
-        """
-        self.polarization = polarization.Linear(*self.polarization_value)
-        self.jones_vector = numpy.atleast_1d(self.polarization.jones_vector).astype(numpy.complex128).T
-
-    def generate_amplitude(self):
-        """Abstract method for generating amplitude, to be implemented by subclasses."""
-        raise NotImplementedError("Subclass must implement this method.")
 
     def get_datavisual_table(self) -> NoReturn:
         """
@@ -84,14 +72,6 @@ class BaseSource:
 
         return [v for k, v in self.mapping.items() if v is not None]
 
-    def generate_binding(self):
-        """Generates the C++ binding for the source set."""
-        self.binding = CppSourceSet(
-            wavelength=self.wavelength,
-            jones_vector=self.jones_vector,
-            amplitude=self.amplitude
-        )
-
     def bind_to_experiment(self, experiment: Setup):
         """
         Binds the source set to an experiment.
@@ -118,6 +98,24 @@ class Gaussian(BaseSource):
     optical_power: float
     polarization_type: str = 'linear'
 
+    def generate_binding(self) -> NoReturn:
+        """
+        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
+        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+
+        Returns:
+            None
+        """
+        linear_polarization = polarization.Linear(*self.polarization_value)
+
+        self.binding_kwargs = dict(
+            wavelength=numpy.atleast_1d(self.wavelength).astype(float),
+            jones_vector=numpy.atleast_2d(linear_polarization.jones_vector).astype(complex).T,
+            amplitude=numpy.atleast_1d(self.amplitude).astype(float),
+        )
+
+        self.binding = CppSourceSet(**self.binding_kwargs)
+
     def generate_amplitude(self):
         """Generates the amplitude of the Gaussian source based on its optical power and numerical aperture."""
         self.amplitude = power_to_amplitude(
@@ -140,6 +138,22 @@ class PlaneWave(BaseSource):
     """
     amplitude: float
     polarization_type: str = 'linear'
+
+    def generate_binding(self) -> NoReturn:
+        """
+        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
+        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+
+        Returns:
+            None
+        """
+        self.binding_kwargs = dict(
+            wavelength=self.wavelength,
+            jones_vector=self.jones_vector,
+            amplitude=self.amplitude
+        )
+
+        self.binding = CppSourceSet(**self.binding_kwargs)
 
     def generate_amplitude(self):
         """Sets the amplitude of the plane wave as a numpy array."""

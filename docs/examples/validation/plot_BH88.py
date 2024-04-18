@@ -1,65 +1,77 @@
 """
-Bohren-Huffman (figure~8.8)
-===========================
+Comparison of PyMieSim and Theoretical Bohren-Huffman Data for Cylinder Scattering
+==================================================================================
 
 """
 
-# %%
-# Importing the dependencies: numpy, matplotlib, PyMieSim
-import numpy
+# Standard library imports
+import numpy as np
 import matplotlib.pyplot as plt
 
+# PyMieSim imports
 from PyMieSim.tools.directories import validation_data_path
-
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
+import PyMieSim.measure as measure
 
-from PyMieSim import measure
+# Load theoretical data
+theoretical_data = np.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimiter=',')
 
-theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimiter=',')
+# Define parameters
+wavelength = 632.8e-9  # Wavelength of the source in meters
+polarization_values = [0, 90]  # Polarization values in degrees
+optical_power = 1e-3  # Optical power in watts
+NA = 0.2  # Numerical aperture
+diameters = np.geomspace(10e-9, 6e-6, 800)  # Diameters from 10 nm to 6 μm
+index = 1.55  # Refractive index of the cylinder
+medium_index = 1.335  # Refractive index of the medium
 
-diameter = numpy.geomspace(10e-9, 6e-6, 800)
-volume = numpy.pi * (diameter / 2)**2
+# Calculate the volume of the cylinders
+volumes = np.pi * (diameters / 2)**2
 
-source_set = Gaussian(
-    wavelength=632.8e-9,
-    polarization_value=[0, 90],
+# Configure the Gaussian source
+source = Gaussian(
+    wavelength=wavelength,
+    polarization_value=polarization_values,
     polarization_type='linear',
-    optical_power=1e-3,
-    NA=0.2
-)
-scatterer_set = Cylinder(
-    diameter=diameter,
-    index=1.55,
-    medium_index=1.335,
-    source_set=source_set
+    optical_power=optical_power,
+    NA=NA
 )
 
+# Setup cylindrical scatterers
+scatterer = Cylinder(
+    diameter=diameters,
+    index=index,
+    medium_index=medium_index,
+    source_set=source
+)
 
+# Create experimental setup
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
+    scatterer_set=scatterer,
+    source_set=source,
     detector_set=None
 )
 
-data = experiment.get(measure.Csca, export_as_numpy=True)
-data = data.squeeze() / volume * 1e-4 / 100
+# Compute PyMieSim scattering cross section data
+csca_data = experiment.get(measure.Csca, export_as_numpy=True).squeeze()
+normalized_csca = csca_data / volumes * 1e-4 / 100  # Normalize the data as per specific needs
 
+# Plotting the results
 plt.figure(figsize=(8, 4))
-plt.plot(diameter, data[0], 'C0-', linewidth=3, label='PyMieSim')
-plt.plot(diameter, data[1], 'C1-', linewidth=3, label='PyMieSim')
+plt.plot(diameters * 1e6, normalized_csca[0], 'C0-', linewidth=3, label='PyMieSim Polarization: 0')
+plt.plot(diameters * 1e6, normalized_csca[1], 'C1-', linewidth=3, label='PyMieSim Polarization: 90')
+plt.plot(diameters * 1e6, theoretical_data[0], 'k--', linewidth=1, label='Theoretical BH 8.8 Polarization: 0')
+plt.plot(diameters * 1e6, theoretical_data[1], 'k--', linewidth=1, label='Theoretical BH 8.8 Polarization: 90')
 
-plt.plot(diameter, theoretical[0], 'k--', linewidth=1, label='BH 8.8')
-plt.plot(diameter, theoretical[1], 'k--', linewidth=1, label='BH 8.8')
-
-plt.xlabel(r'diameter [$\mu$m]')
-plt.ylabel('Scattering cross section [Cylinder]')
+plt.xlabel('Diameter (μm)')
+plt.ylabel('Normalized Scattering Cross Section')
+plt.title('Comparison of Scattering Cross Sections for Cylinders')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
 
-assert numpy.all(numpy.isclose(data, theoretical, 1e-9)), 'Error: mismatch on BH_8.8 calculation occuring'
-
-# -
+# Verify data accuracy
+assert np.allclose(normalized_csca, theoretical_data, atol=1e-9), 'Error: mismatch on BH 8.8 calculation occurring'

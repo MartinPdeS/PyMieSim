@@ -47,14 +47,6 @@ class BaseDetector():
     polarization_filter: Iterable
     sampling: int
 
-    mapping = {
-        'scalarfield': None,
-        'NA': None,
-        'phi_offset': None,
-        'gamma_offset': None,
-        'polarization_filter': None,
-    }
-
     def __post_init__(self) -> NoReturn:
         """
         Initializes and prepares the detector instance by formatting inputs, computing field arrays,
@@ -64,7 +56,13 @@ class BaseDetector():
         Returns:
             NoReturn
         """
-        self.format_inputs()
+        self.mapping = {
+            'scalarfield': None,
+            'NA': None,
+            'phi_offset': None,
+            'gamma_offset': None,
+            'polarization_filter': None,
+        }
 
         self.compute_scalar_fields()
 
@@ -97,20 +95,6 @@ class BaseDetector():
             rotation_angle_list.append(rotation_angle)
 
         self.rotation_angle = numpy.asarray(rotation_angle_list).astype(float)
-
-    def format_inputs(self) -> NoReturn:
-        """
-        Formats the input attributes (NA, phi_offset, gamma_offset, polarization_filter) into numpy arrays
-        for further processing. This ensures that all input parameters are correctly structured for the
-        simulation and C++ binding processes.
-
-        Returns:
-            NoReturn
-        """
-        self.NA = numpy.atleast_1d(self.NA).astype(float)
-        self.phi_offset = numpy.atleast_1d(self.phi_offset).astype(float)
-        self.gamma_offset = numpy.atleast_1d(self.gamma_offset).astype(float)
-        self.polarization_filter = numpy.atleast_1d(self.polarization_filter).astype(float)
 
     def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
@@ -146,7 +130,7 @@ class BaseDetector():
         self.mapping['NA'] = units.Index(
             long_label='Numerical aperture',
             short_label='NA',
-            base_values=numpy.array(self.NA),
+            base_values=self.NA,
             use_prefix=False,
             string_format=""
         )
@@ -154,7 +138,7 @@ class BaseDetector():
         self.mapping['phi_offset'] = units.Degree(
             long_label='Phi angle',
             short_label=r'$\phi_{offset}$',
-            base_values=numpy.array(self.phi_offset),
+            base_values=self.phi_offset,
             use_prefix=False,
             string_format='.1f'
         )
@@ -162,7 +146,7 @@ class BaseDetector():
         self.mapping['gamma_offset'] = units.Degree(
             long_label='Gamma angle',
             short_label=r'$\phi_{offset}$',
-            base_values=numpy.array(self.gamma_offset),
+            base_values=self.gamma_offset,
             use_prefix=False,
             string_format='.1f'
         )
@@ -170,7 +154,7 @@ class BaseDetector():
         self.mapping['polarization_filter'] = units.Degree(
             long_label=r'Polarization filter',
             short_label=r'f$_{pol}$',
-            base_values=numpy.array(self.polarization_filter),
+            base_values=self.polarization_filter,
             use_prefix=False,
             string_format='.1f'
         )
@@ -188,22 +172,18 @@ class BaseDetector():
         """
         point_coupling = True if self.coupling_mode == 'point' else False
 
-        phi_offset_rad = numpy.deg2rad(self.phi_offset)
-
-        gamma_offset_rad = numpy.deg2rad(self.gamma_offset)
-
-        polarization_filter_rad = numpy.deg2rad(self.polarization_filter)
-
-        self.binding = CppDetectorSet(
+        self.binding_kwargs = dict(
             scalar_field=self.scalar_fields.astype(complex),
-            NA=self.NA,
-            phi_offset=phi_offset_rad,
-            gamma_offset=gamma_offset_rad,
-            polarization_filter=polarization_filter_rad,
+            NA=numpy.atleast_1d(self.NA).astype(float),
+            phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
+            gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
+            polarization_filter=numpy.atleast_1d(self.polarization_filter).astype(float),
             point_coupling=point_coupling,
             coherent=self.coherent,
             rotation_angle=self.rotation_angle.astype(float)
         )
+
+        self.binding = CppDetectorSet(**self.binding_kwargs)
 
     def interpret_mode_name(self, mode_name: str) -> tuple[int, int, float]:
         """

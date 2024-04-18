@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 import numpy
 from dataclasses import dataclass
-from itertools import chain
 
 from DataVisual import Array, Table
 from PyMieSim.binary.Experiment import CppExperiment
@@ -93,9 +92,25 @@ class Setup(object):
         measure_string = f'get_{self.scatterer_set.name}_{measure.short_label}'
 
         array = getattr(self.binding, measure_string)()
-        if export_as_numpy:
-            return array
 
+        if export_as_numpy:
+            return self._export_as_numpy(array)
+
+        return self._export_as_data_visual(measure, array)
+
+    def _export_as_numpy(self, array):
+        for k, v in self.source_set.binding_kwargs.items():
+            setattr(self, k, v)
+        for k, v in self.scatterer_set.binding_kwargs.items():
+            setattr(self, k, v)
+        if self.detector_set is not None:
+            for k, v in self.detector_set.binding_kwargs.items():
+                print('hllo', k)
+                setattr(self, k, v)
+
+        return array
+
+    def _export_as_data_visual(self, measure, array):
         self.generate_datavisual_table()
         measure.set_base_values(array)
 

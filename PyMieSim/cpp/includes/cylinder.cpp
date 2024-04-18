@@ -63,7 +63,7 @@ namespace CYLINDER
         // Compute the arguments used in the Bessel and Hankel function calculations
         complex128
             m = this->index / this->medium_index, // Relative refractive index
-            z = m * size_parameter; // Scaled size parameter for internal calculations
+            mx = m * size_parameter; // Scaled size parameter for internal calculations
 
         // Precompute Bessel and Hankel functions up to max_order
         std::vector<complex128>
@@ -75,8 +75,8 @@ namespace CYLINDER
             H_x_p(max_order + 1);
 
         for (size_t order = 0; order < max_order + 1; ++order){
-            J_z[order] = compute_Jn(order, z);
-            J_z_p[order] = compute_Jn_p(order, z);
+            J_z[order] = compute_Jn(order, mx);
+            J_z_p[order] = compute_Jn_p(order, mx);
             J_x[order] = compute_Jn(order, size_parameter);
             J_x_p[order] = compute_Jn_p(order, size_parameter);
             H_x[order] = compute_H1(order, size_parameter);

@@ -4,7 +4,6 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan
-// #include <iterator.h>
 
 namespace SOURCE
 {

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "base_spherical_scatterer.cpp"
-#include <iostream>
 
 namespace SPHERE
 {

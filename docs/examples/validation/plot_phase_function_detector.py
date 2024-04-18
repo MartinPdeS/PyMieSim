@@ -1,59 +1,66 @@
 """
-Goniometrique coupling vs S1 S2
-===============================
+Goniometric Coupling vs S1 S2 Comparison
+========================================
 
 """
 
-# %%
-# Importing the dependencies: numpy, matplotlib, PyMieSim
-import numpy
+# Standard library imports
+import numpy as np
 import matplotlib.pyplot as plt
 
+# PyMieSim imports
 from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Sphere as SetSphere
-from PyMieSim.experiment.source import Gaussian as SetGaussian
+from PyMieSim.experiment.scatterer import Sphere as ExperimentSphere
+from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
 from PyMieSim.experiment import Setup
 
 from PyMieSim import measure
 from PyMieSim.single.scatterer import Sphere as SingleSphere
 from PyMieSim.single.source import Gaussian as SingleGaussian
 
-scatterer_diameter = 0.3e-6
-scatterer_index = 1.4
-source_wavelength = 1.2e-6
+# Setup parameters
+scatterer_diameter = 0.3e-6  # Diameter of the scatterer in meters
+scatterer_index = 1.4  # Refractive index of the scatterer
+source_wavelength = 1.2e-6  # Wavelength of the source in meters
 
-source_set = SetGaussian(
+# Experiment source and scatterer setup
+source = ExperimentGaussian(
     wavelength=source_wavelength,
     polarization_value=[0, 90],
     polarization_type='linear',
     optical_power=1,
     NA=0.2
 )
-scatterer_set = SetSphere(
+
+scatterer = ExperimentSphere(
     diameter=scatterer_diameter,
     index=scatterer_index,
     medium_index=1.0,
-    source_set=source_set
+    source_set=source
 )
 
-
-detector_set = Photodiode(
+# Detector setup
+detector = Photodiode(
     NA=[0.1],
-    phi_offset=numpy.linspace(-180, 180, 100),
+    phi_offset=np.linspace(-180, 180, 100),
     gamma_offset=0.0,
     sampling=1000,
     polarization_filter=None
 )
 
+# Configure experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer_set=scatterer,
+    source_set=source,
+    detector_set=detector
 )
 
-data = experiment.get(measure.coupling, export_as_numpy=True)
+# Gather data
+coupling_data = experiment.get(measure.coupling, export_as_numpy=True).squeeze()
+coupling_data /= coupling_data.max()  # Normalize data
 
-source = SingleGaussian(
+# Single scatterer simulation for S1 and S2
+single_source = SingleGaussian(
     wavelength=source_wavelength,
     polarization_value=90,
     polarization_type='linear',
@@ -61,34 +68,27 @@ source = SingleGaussian(
     NA=0.2
 )
 
-scatterer = SingleSphere(
+single_scatterer = SingleSphere(
     diameter=scatterer_diameter,
-    source=source,
+    source=single_source,
     index=scatterer_index,
     medium_index=1.0
 )
 
-s1s2 = scatterer.get_s1s2()
-phi, s1, s2 = s1s2.phi, s1s2.S1, s1s2.S2
+s1s2 = single_scatterer.get_s1s2()
+phi, s1, s2 = s1s2.phi, np.abs(s1s2.S1)**2, np.abs(s1s2.S2)**2
+s1 /= s1.max()  # Normalize S1 data
+s2 /= s2.max()  # Normalize S2 data
 
-figure, (ax0, ax1) = plt.subplots(1, 2, figsize=(10, 4), subplot_kw={'projection': 'polar'})
+# Plotting the results
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4), subplot_kw={'projection': 'polar'})
+ax1.plot(np.deg2rad(phi), s1, 'b-', linewidth=3, label='Computed S1')
+ax1.plot(np.deg2rad(detector.phi_offset), coupling_data[0], 'k--', linewidth=1, label='Coupling for polarization: 0')
 
-data0_S1 = numpy.abs(s1)**2
-data0_S1 /= data0_S1.max()
-data0_S2 = numpy.abs(s2)**2
-data0_S2 /= data0_S2.max()
+ax2.plot(np.deg2rad(phi), s2, 'r-', linewidth=3, label='Computed S2')
+ax2.plot(np.deg2rad(detector.phi_offset), coupling_data[1], 'k--', linewidth=1, label='Coupling for polarization: 90')
 
-data1 = data.squeeze()
-data1 /= data1.max()
-
-ax0.plot(numpy.deg2rad(phi), data0_S1, linewidth=3, zorder=1, label='Computed s1')
-ax0.plot(numpy.deg2rad(detector_set.phi_offset.values.squeeze()), data1[0], linestyle='--', color='k', zorder=10, label='Computed coupling for polarization: 0')
-
-ax1.plot(numpy.deg2rad(phi), data0_S2, linewidth=3, zorder=1, label='Computed s2')
-ax1.plot(numpy.deg2rad(detector_set.phi_offset.values.squeeze()), data1[1], linestyle='--', color='k', zorder=10, label='Computed coupling for polarization: 90')
-
-ax0.legend()
-ax1.legend()
+ax1.legend(loc='upper right')
+ax2.legend(loc='upper right')
+plt.tight_layout()
 plt.show()
-
-# -
