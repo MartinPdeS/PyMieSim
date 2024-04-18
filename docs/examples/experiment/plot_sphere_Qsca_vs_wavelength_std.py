@@ -29,7 +29,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=np.linspace(400e-9, 1400e-9, 10),
     material=Silver,
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -48,9 +48,9 @@ data = experiment.get(measure.Qsca)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=source_set.wavelength,
+    x=experiment.wavelength,
     y_scale='log',
-    std=scatterer_set.diameter
+    std=experiment.diameter
 )
 
 _ = figure.show()

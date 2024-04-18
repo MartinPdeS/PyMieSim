@@ -32,7 +32,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=diameter,
     index=1.4,
-    n_medium=1.21,
+    medium_index=1.21,
     source_set=source_set
 )
 
@@ -64,7 +64,7 @@ plt.plot(
 )
 
 plt.xlabel(r'diameter [$\mu$m]')
-plt.ylabel('Scattering efficiency [Sphere + n_medium]')
+plt.ylabel('Scattering efficiency [Sphere + medium_index]')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()

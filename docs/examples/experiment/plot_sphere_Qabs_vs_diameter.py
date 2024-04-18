@@ -29,7 +29,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=np.linspace(1e-09, 800e-9, 300),
     material=[Silver, Gold, Aluminium],
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -47,7 +47,7 @@ data = experiment.get(measure.Qabs)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=scatterer_set.diameter,
+    x=experiment.diameter,
     y_scale="log"
 )
 

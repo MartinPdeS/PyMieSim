@@ -57,9 +57,4 @@ class SourceTab(BaseTab):
         self.widget_collection.update()
         self.component = Gaussian(**self.widget_collection.to_component_dict())
 
-        self.mapping = {
-            'wavelength': self.component.wavelength,
-            'polarization': self.component.linear_polarization
-        }
-
 # -

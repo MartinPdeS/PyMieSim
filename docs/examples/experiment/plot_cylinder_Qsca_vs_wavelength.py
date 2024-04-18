@@ -30,7 +30,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=[200e-9, 150e-9, 100e-9],  # Array of diameters: 200 nm, 150 nm, 100 nm
     index=[2, 3, 4],  # Array of refractive indices: 2, 3, 4
-    n_medium=1,  # Refractive index of the surrounding medium
+    medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -51,7 +51,7 @@ data = data.mean(scatterer_set.index)
 # Plotting the results
 # Visualizing how the Qsca varies with wavelength for the given cylinder configurations.
 figure = data.plot(
-    x=source_set.wavelength,  # Wavelength as the x-axis
+    x=experiment.wavelength,  # Wavelength as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 

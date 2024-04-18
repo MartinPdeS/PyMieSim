@@ -31,7 +31,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=diameters,
     index=index,
-    n_medium=1.,
+    medium_index=1.,
     source_set=source_set
 )
 

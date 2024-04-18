@@ -29,7 +29,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=np.linspace(1e-9, 800e-9, 300),  # Diameters ranging from 1 nm to 800 nm
     material=[Silver, Gold, Aluminium],  # Scatterer materials
-    n_medium=1,  # Refractive index of the surrounding medium
+    medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -50,7 +50,7 @@ data = experiment.get(measure.Qabs)  # Assuming Qabs was intended, replace with 
 # Plotting the results
 # Visualizing how the scattering efficiency varies with the cylinder diameter.
 figure = data.plot(
-    x=scatterer_set.diameter,  # Cylinder diameter as the x-axis
+    x=experiment.diameter,  # Cylinder diameter as the x-axis
     y_scale="linear"  # Linear scale for the y-axis
 )
 

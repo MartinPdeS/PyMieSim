@@ -28,7 +28,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=800e-9,
     index=np.linspace(1.3, 1.9, 1500),
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -46,7 +46,7 @@ data = experiment.get(measure.Qsca)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=scatterer_set.index
+    x=experiment.index
 )
 
 _ = figure.show()

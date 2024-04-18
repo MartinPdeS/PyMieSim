@@ -30,7 +30,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=2e-6,  # 2000 nm
     material=BK7,  # Material of the cylinder
-    n_medium=1,  # Refractive index of the surrounding medium
+    medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -60,7 +60,7 @@ data = experiment.get(measure.coupling)
 # Plotting the results
 # Visualizing how the coupling efficiency varies with angular displacement.
 figure = data.plot(
-    x=detector_set.phi_offset,  # Angular displacement as the x-axis
+    x=experiment.phi_offset,  # Angular displacement as the x-axis
     y_scale='log',  # Logarithmic scale for the y-axis
     normalize=True  # Normalizing the results
 )

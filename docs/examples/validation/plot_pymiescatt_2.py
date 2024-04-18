@@ -34,7 +34,7 @@ scatterer_set = CoreShell(
     shell_width=shell_width,
     core_index=core_index,
     shell_index=shell_index,
-    n_medium=1.0,
+    medium_index=1.0,
     source_set=source_set
 )
 

@@ -28,7 +28,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=np.geomspace(6.36e-9, 10000e-9, 1000),  # Diameters ranging from ~6.36 nm to 10000 nm
     index=[1.4],  # Refractive index of the cylinder
-    n_medium=1,  # Refractive index of the surrounding medium
+    medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -47,7 +47,7 @@ data = experiment.get(measure.Qsca)
 # Plotting the results
 # Visualizing how the Qsca varies with the cylinder diameter.
 figure = data.plot(
-    x=scatterer_set.diameter,  # Cylinder diameter as the x-axis
+    x=experiment.diameter,  # Cylinder diameter as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 

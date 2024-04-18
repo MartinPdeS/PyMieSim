@@ -17,7 +17,7 @@ PYBIND11_MODULE(SphereInterface, module) {
              py::arg("amplitude"),
              py::arg("diameter"),
              py::arg("index"),
-             py::arg("n_medium"),
+             py::arg("medium_index"),
              py::arg("jones_vector"),
              "Constructor for SPHERE, initializing it with physical and optical properties.")
 

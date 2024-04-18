@@ -28,7 +28,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=np.linspace(100e-9, 10000e-9, 800),  # Diameters ranging from 100 nm to 10000 nm
     index=1.4,  # Refractive index of the cylinder
-    n_medium=1,  # Refractive index of the surrounding medium
+    medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -47,7 +47,7 @@ data = experiment.get(measure.b11)
 # Plotting the results
 # Visualizing how the B1 scattering coefficient varies with the cylinder diameter.
 figure = data.plot(
-    x=scatterer_set.diameter  # Cylinder diameter as the x-axis
+    x=experiment.diameter  # Cylinder diameter as the x-axis
 )
 
 # %%

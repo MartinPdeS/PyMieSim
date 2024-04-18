@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 
 import numpy
 from dataclasses import dataclass
+from itertools import chain
 
 from DataVisual import Array, Table
 from PyMieSim.binary.Experiment import CppExperiment
@@ -49,7 +50,7 @@ class Setup(object):
         Initializes the experiment with necessary bindings.
         """
         self.scatterer_set.source_set = self.source_set
-        self.scatterer_set.initialize_binding()
+
         self.binding = CppExperiment()
 
     def bind_components(self):
@@ -58,7 +59,7 @@ class Setup(object):
             if component:
                 component.bind_to_experiment(experiment=self)
 
-    def generate_x_table(self) -> NoReturn:
+    def generate_datavisual_table(self) -> NoReturn:
         """
         Generates and populates the 'x_table' with parameters from the source, scatterer, and detector sets.
         This table is instrumental for data visualization and analysis.
@@ -67,10 +68,11 @@ class Setup(object):
             NoReturn
         """
         self.x_table = []
-        self.x_table = self.source_set.update_datavisual_table(self.x_table)
-        self.x_table = self.scatterer_set.update_datavisual_table(self.x_table)
+        self.x_table.extend(self.source_set.get_datavisual_table())
+        self.x_table.extend(self.scatterer_set.get_datavisual_table())
+
         if self.detector_set:
-            self.detector_set.update_datavisual_table(self.x_table)
+            self.x_table.extend(self.detector_set.get_datavisual_table())
 
     def get(self, measure: Table, export_as_numpy: bool = False) -> numpy.ndarray | Array:
         """
@@ -91,13 +93,20 @@ class Setup(object):
         measure_string = f'get_{self.scatterer_set.name}_{measure.short_label}'
 
         array = getattr(self.binding, measure_string)()
-
         if export_as_numpy:
             return array
 
-        self.generate_x_table()
+        self.generate_datavisual_table()
         measure.set_base_values(array)
-        return Array(x_table=Table(self.x_table), y=measure)
 
+        for k, v in self.source_set.mapping.items():
+            setattr(self, k, v)
+        for k, v in self.scatterer_set.mapping.items():
+            setattr(self, k, v)
+        if self.detector_set is not None:
+            for k, v in self.detector_set.mapping.items():
+                setattr(self, k, v)
+
+        return Array(x_table=Table(self.x_table), y=measure)
 
 # -

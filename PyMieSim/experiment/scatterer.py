@@ -24,10 +24,9 @@ class BaseScatterer():
     scatterer parameters for use in PyMieSim simulations.
 
     Attributes:
-        n_medium (Iterable): Refractive index of the medium in which the scatterers are placed.
+        medium_index (Iterable): Refractive index of the medium in which the scatterers are placed.
         source_set (Union[Gaussian, PlaneWave]): Light source configuration for the simulation.
     """
-    n_medium: Iterable
     source_set: Gaussian | PlaneWave
 
     def __post_init__(self) -> NoReturn:
@@ -41,47 +40,7 @@ class BaseScatterer():
         """
         self.validate_material_or_index()
 
-        self.format_inputs()
-
         self.build_binding_kwargs()
-
-    def _validate_and_cleanup(self, part: str = '') -> NoReturn:
-        """
-        Validates and cleans up parameters for either the core or the shell.
-
-        Args:
-            part (str): Specifies the part to validate, either 'core' or 'shell' or ''.
-        """
-        material = getattr(self, f"{part}material")
-        index = getattr(self, f"{part}index")
-
-        if material is not None and index is not None:
-            raise ValueError(f"Either {part} material or index must be provided, not both.")
-        if material is None and index is None:
-            raise ValueError(f"One of {part} material or index must be provided.")
-
-        # Cleanup parameters
-        if material is not None:
-            del self.parameter_dictionnary[f'{part}index']
-            self.cpp_binding_str.remove(f'{part}index')
-        else:
-            del self.parameter_dictionnary[f'{part}material']
-            self.cpp_binding_str.remove(f'{part}material_index')
-
-    def format_inputs(self) -> NoReturn:
-        """
-        Formats the input attributes into numpy arrays for further processing and ensures compatibility
-        with C++ binding. This method standardizes the input parameters for simulation.
-
-        Returns:
-            None
-        """
-        for parameter_str in self.parameter_dictionnary.keys():
-            parameter = getattr(self, parameter_str)
-
-            parameter = numpy.atleast_1d(parameter)
-
-            setattr(self, parameter_str, parameter)
 
     def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
@@ -98,52 +57,29 @@ class BaseScatterer():
 
         getattr(experiment.binding, method_str)(self.binding)
 
-    def build_binding_kwargs(self) -> NoReturn:
-        """
-        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
-        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+    def add_material_index_to_mapping(self, name: str = None) -> NoReturn:
+        detached_material_name = f"{name} material" if name else "material"
+        attached_material_name = detached_material_name.replace(' ', '_').lower()
 
-        Returns:
-            None
-        """
-        self.evaluate_index_material()
+        detached_index_name = f"{name} index" if name else "index"
+        attached_index_name = detached_index_name.replace(' ', '_').lower()
 
-        self.binding_kwargs = dict()
+        if getattr(self, attached_material_name):
+            self.mapping[attached_material_name] = units.Custom(
+                long_label=detached_material_name,
+                short_label=attached_material_name,
+                value_representation=getattr(self, attached_material_name),
+                base_values=getattr(self, attached_material_name),
+                use_prefix=False,
+            )
 
-        for parameter_str in self.cpp_binding_str:
-            values = getattr(self, parameter_str)
-
-            self.binding_kwargs[parameter_str] = values
-
-    def initialize_binding(self) -> NoReturn:
-        """
-        Initializes the C++ binding for the scatterer, setting up the interface for simulation within the
-        C++ computational framework.
-
-        Returns:
-            None
-        """
-        self.binding = self.binding_class(**self.binding_kwargs)
-
-    def evaluate_index_material(self) -> NoReturn:
-        """
-        Evaluates the indices of materials for all scatterer sets that are specified by their material
-        properties. This is crucial for accurately simulating the scatterer's interaction with light.
-
-        Returns:
-            None
-        """
-        for parameter_str, value in self.parameter_dictionnary.items():
-            if parameter_str.endswith('material'):
-                materials = getattr(self, parameter_str)
-
-                material_index = [
-                    material.get_refractive_index(self.source_set.wavelength) for material in materials
-                ]
-
-                material_index = numpy.asarray(material_index).astype(complex)
-
-                setattr(self, parameter_str + '_index', material_index)
+        else:
+            self.mapping[attached_index_name] = units.Index(
+                long_label=detached_index_name,
+                short_label=attached_index_name,
+                base_values=self.binding_kwargs.get(attached_index_name),
+                string_format='.2f'
+            )
 
 
 @dataclass
@@ -157,33 +93,53 @@ class Sphere(BaseScatterer):
         material (Iterable, optional): Material(s) of the scatterers, used if `index` is not provided.
     """
     diameter: Iterable
+    medium_index: Iterable | None = None
+    medium_material: Iterable | None = None
     index: Iterable | None = None
     material: Iterable | None = None
-
     name: str = field(default="sphere", init=False)
-
     available_measure_list = measure.__sphere__
 
     def __post_init__(self):
-        self.cpp_binding_str: list = [
-            'diameter',
-            'material_index',
-            'index',
-            'n_medium',
-        ]
-
-        self.parameter_dictionnary: dict = dict(
-            diameter=dict(type=float, value=None),
-            material=dict(type=complex, value=None),
-            index=dict(type=complex, value=None),
-            n_medium=dict(type=float, value=None),
-        )
-
-        self.binding_class: type = CppSphereSet
+        self.mapping: dict = {
+            'diameter': None,
+            'index': None,
+            'material': None,
+            'medium_index': None,
+            'medium_material': None
+        }
 
         super().__post_init__()
 
-    def update_datavisual_table(self, table: list) -> NoReturn:
+    def build_binding_kwargs(self) -> NoReturn:
+        """
+        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
+        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+
+        Returns:
+            None
+        """
+        self.binding_kwargs = dict(
+            diameter=numpy.atleast_1d(self.diameter).astype(float),
+        )
+
+        if self.material:
+            self.binding_kwargs['material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.material)
+            ]).astype(complex)
+        else:
+            self.binding_kwargs['index'] = numpy.atleast_1d(self.index).astype(complex)
+
+        if self.medium_material:
+            self.binding_kwargs['medium_material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.medium_material)
+            ]).real.astype(float)
+        else:
+            self.binding_kwargs['medium_index'] = numpy.atleast_1d(self.medium_index).astype(float)
+
+        self.binding = CppSphereSet(**self.binding_kwargs)
+
+    def get_datavisual_table(self) -> NoReturn:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -194,43 +150,17 @@ class Sphere(BaseScatterer):
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        sub_table = []
-
-        self.diameter = units.Length(
+        self.mapping['diameter'] = units.Length(
             long_label='Scatterer diameter',
             short_label='diameter',
-            base_values=self.diameter,
+            base_values=self.binding_kwargs.get('diameter'),
             string_format='.1f'
         )
-        sub_table.append(self.diameter)
 
-        if self.material is not None:
-            self.material = units.Custom(
-                long_label='Scatterer material',
-                short_label='material',
-                value_representation=self.material,
-                use_prefix=False
-            )
-            sub_table.append(self.material)
+        self.add_material_index_to_mapping(name=None)
+        self.add_material_index_to_mapping(name='Medium')
 
-        else:
-            self.index = units.Index(
-                long_label='Refractive index',
-                short_label='index',
-                base_values=self.index,
-                string_format='.1f'
-            )
-            sub_table.append(self.index)
-
-        self.n_medium = units.Index(
-            long_label=r'Refractive index of medium',
-            short_label=r'n$_{medium}$',
-            base_values=self.n_medium,
-            string_format='.1f'
-        )
-        sub_table.append(self.n_medium)
-
-        return [*table, *sub_table]
+        return [v for k, v in self.mapping.items() if v is not None]
 
     def validate_material_or_index(self) -> NoReturn:
         """
@@ -241,7 +171,15 @@ class Sphere(BaseScatterer):
         Returns:
             NoReturn
         """
-        self._validate_and_cleanup()
+        if self.material is not None and self.index is not None:
+            raise ValueError(f"Either material or index must be provided, not both.")
+        if self.material is None and self.index is None:
+            raise ValueError(f"One of material or index must be provided.")
+
+        if self.medium_material is not None and self.medium_index is not None:
+            raise ValueError(f"Either material or index must be provided, not both.")
+        if self.medium_material is None and self.medium_index is None:
+            raise ValueError(f"One of material or index must be provided.")
 
 
 @dataclass
@@ -259,41 +197,70 @@ class CoreShell(BaseScatterer):
     """
     core_diameter: Iterable
     shell_width: Iterable
+    medium_index: Iterable | None = None
+    medium_material: Iterable | None = None
     core_index: Iterable | None = None
     shell_index: Iterable | None = None
     core_material: Iterable | None = None
     shell_material: Iterable | None = None
-
     name: str = field(default="coreshell", init=False)
 
     available_measure_list = measure.__coreshell__
 
     def __post_init__(self):
-        self.cpp_binding_str: list = [
-            'core_diameter',
-            'shell_width',
-            'core_material_index',
-            'shell_material_index',
-            'core_index',
-            'shell_index',
-            'n_medium',
-        ]
-
-        self.parameter_dictionnary: dict = dict(
-            core_diameter=dict(type=float, value=None),
-            shell_width=dict(type=float, value=None),
-            core_material=dict(type=complex, value=None),
-            core_index=dict(type=complex, value=None),
-            shell_material=dict(type=complex, value=None),
-            shell_index=dict(type=complex, value=None),
-            n_medium=dict(type=float, value=None),
-        )
+        self.mapping = {
+            'core_diameter': None,
+            'shell_diameter': None,
+            'core_index': None,
+            'core_material': None,
+            'shell_index': None,
+            'shell_material': None,
+            'medium_index': None,
+            'medium_material': None
+        }
 
         self.binding_class: type = CppCoreShellSet
 
         super().__post_init__()
 
-    def update_datavisual_table(self, table: list) -> NoReturn:
+    def build_binding_kwargs(self) -> NoReturn:
+        """
+        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
+        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+
+        Returns:
+            None
+        """
+        self.binding_kwargs = dict(
+            core_diameter=numpy.atleast_1d(self.core_diameter).astype(float),
+            shell_width=numpy.atleast_1d(self.shell_width).astype(float),
+        )
+
+        if self.core_material:
+            self.binding_kwargs['core_material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.core_material)
+            ]).astype(complex)
+
+        else:
+            self.binding_kwargs['core_index'] = numpy.atleast_1d(self.core_index).astype(complex)
+
+        if self.shell_material:
+            self.binding_kwargs['shell_material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.shell_material)
+            ]).astype(complex)
+        else:
+            self.binding_kwargs['shell_index'] = numpy.atleast_1d(self.shell_index).astype(complex)
+
+        if self.medium_material:
+            self.binding_kwargs['medium_material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.medium_material)
+            ]).real.astype(float)
+        else:
+            self.binding_kwargs['medium_index'] = numpy.atleast_1d(self.medium_index).astype(float)
+
+        self.binding = CppCoreShellSet(**self.binding_kwargs)
+
+    def get_datavisual_table(self) -> NoReturn:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -304,69 +271,25 @@ class CoreShell(BaseScatterer):
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        sub_table = []
-
-        self.core_diameter = units.Length(
+        self.mapping['core_diameter'] = units.Length(
             long_label='Core diameter',
             short_label='core_diameter',
-            base_values=self.core_diameter,
+            base_values=self.binding_kwargs.get('core_diameter'),
             string_format='.2f'
         )
-        sub_table.append(self.core_diameter)
 
-        self.shell_width = units.Length(
+        self.mapping['shell_width'] = units.Length(
             long_label='Shell width',
             short_label='shell_width',
-            base_values=self.shell_width,
+            base_values=self.binding_kwargs.get('shell_width'),
             string_format='.2f'
         )
-        sub_table.append(self.shell_width)
 
-        if self.core_material is not None:
-            self.core_material = units.Custom(
-                long_label='Core material',
-                short_label='core_material',
-                value_representation=self.core_material,
-                use_prefix=False,
-            )
-            sub_table.append(self.core_material)
+        self.add_material_index_to_mapping(name='Core')
+        self.add_material_index_to_mapping(name='Shell')
+        self.add_material_index_to_mapping(name='Medium')
 
-        else:
-            self.core_index = units.Index(
-                long_label='Core index',
-                short_label='core_index',
-                base_values=self.core_index,
-                string_format='.2f'
-            )
-            sub_table.append(self.core_index)
-
-        if self.shell_material is not None:
-            self.shell_material = units.Custom(
-                long_label='Shell material',
-                short_label='shell_material',
-                base_values=self.shell_material,
-                use_prefix=False
-            )
-            sub_table.append(self.shell_material)
-
-        else:
-            self.shell_index = units.Index(
-                long_label='Shell index',
-                short_label='shell_index',
-                base_values=self.shell_index,
-                string_format='.2f'
-            )
-            sub_table.append(self.shell_index)
-
-        self.n_medium = units.Index(
-            long_label=r'Refractive index of medium',
-            short_label=r'n$_{medium}$',
-            base_values=self.n_medium,
-            string_format='.2f'
-        )
-        sub_table.append(self.n_medium)
-
-        return [*table, *sub_table]
+        return [v for k, v in self.mapping.items() if v is not None]
 
     def validate_material_or_index(self) -> NoReturn:
         """
@@ -377,8 +300,20 @@ class CoreShell(BaseScatterer):
         Returns:
             NoReturn
         """
-        self._validate_and_cleanup('core_')
-        self._validate_and_cleanup('shell_')
+        if self.core_material is not None and self.core_index is not None:
+            raise ValueError(f"Either core material or index must be provided, not both.")
+        if self.core_material is None and self.core_index is None:
+            raise ValueError(f"One of core material or index must be provided.")
+
+        if self.shell_material is not None and self.shell_index is not None:
+            raise ValueError(f"Either shell material or index must be provided, not both.")
+        if self.shell_material is None and self.shell_index is None:
+            raise ValueError(f"One of shell material or index must be provided.")
+
+        if self.medium_material is not None and self.medium_index is not None:
+            raise ValueError(f"Either material or index must be provided, not both.")
+        if self.medium_material is None and self.medium_index is None:
+            raise ValueError(f"One of material or index must be provided.")
 
 
 @dataclass
@@ -393,33 +328,54 @@ class Cylinder(BaseScatterer):
         material (Iterable, optional): Material(s) of the cylinder, used if `index` is not provided.
     """
     diameter: Iterable
+    medium_index: Iterable | None = None
+    medium_material: Iterable | None = None
     index: Iterable | None = None
     material: Iterable | None = None
-
     name: str = field(default="cylinder", init=False)
 
     available_measure_list = measure.__cylinder__
 
     def __post_init__(self):
-        self.cpp_binding_str: list = [
-            'diameter',
-            'material_index',
-            'index',
-            'n_medium',
-        ]
-
-        self.parameter_dictionnary: dict = dict(
-            diameter=dict(type=float, value=None),
-            material=dict(type=complex, value=None),
-            index=dict(type=complex, value=None),
-            n_medium=dict(type=float, value=None),
-        )
-
-        self.binding_class: type = CppCylinderSet
+        self.mapping = {
+            'diameter': None,
+            'index': None,
+            'material': None,
+            'medium_index': None,
+            'medium_material': None
+        }
 
         super().__post_init__()
 
-    def update_datavisual_table(self, table: list) -> NoReturn:
+    def build_binding_kwargs(self) -> NoReturn:
+        """
+        Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
+        involves evaluating material indices and organizing them into a dictionary for the C++ interface.
+
+        Returns:
+            None
+        """
+        self.binding_kwargs = dict(
+            diameter=numpy.atleast_1d(self.diameter).astype(float),
+        )
+
+        if self.material:
+            self.binding_kwargs['material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.material)
+            ]).astype(complex)
+        else:
+            self.binding_kwargs['index'] = numpy.atleast_1d(self.index).astype(complex)
+
+        if self.medium_material:
+            self.binding_kwargs['medium_material'] = numpy.asarray([
+                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(self.medium_material)
+            ]).real.astype(float)
+        else:
+            self.binding_kwargs['medium_index'] = numpy.atleast_1d(self.medium_index).astype(float)
+
+        self.binding = CppCylinderSet(**self.binding_kwargs)
+
+    def get_datavisual_table(self) -> NoReturn:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -430,43 +386,17 @@ class Cylinder(BaseScatterer):
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        sub_table = []
-
-        self.diameter = units.Length(
+        self.mapping['diameter'] = units.Length(
             long_label='Scatterer diameter',
             short_label='diameter',
-            base_values=self.diameter,
-            string_format='.2f'
+            base_values=self.binding_kwargs.get('diameter'),
+            string_format='.1f'
         )
-        sub_table.append(self.diameter)
 
-        if self.material is not None:
-            self.material = units.Custom(
-                long_label='Scatterer material',
-                short_label='material',
-                base_values=self.material,
-                value_representation=self.material
-            )
-            sub_table.append(self.material)
+        self.add_material_index_to_mapping(name=None)
+        self.add_material_index_to_mapping(name='Medium')
 
-        else:
-            self.index = units.Index(
-                long_label='Refractive index',
-                short_label='index',
-                base_values=self.index,
-                string_format='.2f'
-            )
-            sub_table.append(self.index)
-
-        self.n_medium = units.Index(
-            long_label=r'Refractive index of medium',
-            short_label=r'n$_{medium}$',
-            base_values=self.n_medium,
-            string_format='.2f'
-        )
-        sub_table.append(self.n_medium)
-
-        return [*table, *sub_table]
+        return [v for k, v in self.mapping.items() if v is not None]
 
     def validate_material_or_index(self) -> NoReturn:
         """
@@ -477,6 +407,13 @@ class Cylinder(BaseScatterer):
         Returns:
             NoReturn
         """
-        self._validate_and_cleanup()
+        if self.material is not None and self.index is not None:
+            raise ValueError(f"Either material or index must be provided, not both.")
+        if self.material is None and self.index is None:
+            raise ValueError(f"One of material or index must be provided.")
 
+        if self.medium_material is not None and self.medium_index is not None:
+            raise ValueError(f"Either material or index must be provided, not both.")
+        if self.medium_material is None and self.medium_index is None:
+            raise ValueError(f"One of material or index must be provided.")
 # -

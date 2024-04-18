@@ -14,7 +14,7 @@ PYBIND11_MODULE(CylinderInterface, module) {
              py::arg("amplitude"),
              py::arg("diameter"),
              py::arg("index"),
-             py::arg("n_medium"),
+             py::arg("medium_index"),
              py::arg("jones_vector"),
              "Constructor for CYLINDER, initializing it with physical and optical properties.")
 

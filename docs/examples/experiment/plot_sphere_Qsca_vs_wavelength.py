@@ -28,7 +28,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=[200e-9, 150e-9, 100e-9],
     index=[2, 4],
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -46,7 +46,7 @@ data = experiment.get(measure.Csca)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=source_set.wavelength
+    x=experiment.wavelength
 )
 
 _ = figure.show()

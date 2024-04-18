@@ -47,6 +47,14 @@ class BaseDetector():
     polarization_filter: Iterable
     sampling: int
 
+    mapping = {
+        'scalarfield': None,
+        'NA': None,
+        'phi_offset': None,
+        'gamma_offset': None,
+        'polarization_filter': None,
+    }
+
     def __post_init__(self) -> NoReturn:
         """
         Initializes and prepares the detector instance by formatting inputs, computing field arrays,
@@ -116,7 +124,7 @@ class BaseDetector():
         """
         experiment.binding.set_detector(self.binding)
 
-    def update_datavisual_table(self, table: list) -> NoReturn:
+    def get_datavisual_table(self) -> NoReturn:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -128,51 +136,46 @@ class BaseDetector():
             list: The updated table with the scatterer's properties included.
         """
 
-        self.scalarfield = units.Custom(
+        self.mapping['scalarfield'] = units.Custom(
             long_label='Field',
             short_label='field',
             base_values=self.scalar_fields,
             value_representation=self.detector_name
         )
-        table.append(self.scalarfield)
 
-        self.NA = units.Index(
+        self.mapping['NA'] = units.Index(
             long_label='Numerical aperture',
             short_label='NA',
             base_values=numpy.array(self.NA),
             use_prefix=False,
             string_format=""
         )
-        table.append(self.NA)
 
-        self.gamma_offset = units.Degree(
-            long_label='Gamma angle',
-            short_label=r'$\phi_{offset}$',
-            base_values=numpy.array(self.gamma_offset),
-            use_prefix=False,
-            string_format='.1f'
-        )
-        table.append(self.gamma_offset)
-
-        self.phi_offset = units.Degree(
+        self.mapping['phi_offset'] = units.Degree(
             long_label='Phi angle',
             short_label=r'$\phi_{offset}$',
             base_values=numpy.array(self.phi_offset),
             use_prefix=False,
             string_format='.1f'
         )
-        table.append(self.phi_offset)
 
-        self.polarization_filter = units.Degree(
+        self.mapping['gamma_offset'] = units.Degree(
+            long_label='Gamma angle',
+            short_label=r'$\phi_{offset}$',
+            base_values=numpy.array(self.gamma_offset),
+            use_prefix=False,
+            string_format='.1f'
+        )
+
+        self.mapping['polarization_filter'] = units.Degree(
             long_label=r'Polarization filter',
             short_label=r'f$_{pol}$',
             base_values=numpy.array(self.polarization_filter),
             use_prefix=False,
             string_format='.1f'
         )
-        table.append(self.polarization_filter)
 
-        return table
+        return [v for k, v in self.mapping.items() if v is not None]
 
     def initialize_binding(self) -> NoReturn:
         """

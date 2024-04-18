@@ -29,7 +29,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=np.linspace(100e-9, 10000e-9, 800),
     index=1.4,
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -47,7 +47,7 @@ data = experiment.get(measure.b1)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=scatterer_set.diameter
+    x=experiment.diameter
 )
 
 _ = figure.show()

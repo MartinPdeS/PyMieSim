@@ -31,7 +31,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=np.linspace(100e-9, 2000e-9, 20),
     material=BK7,
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -61,8 +61,8 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=detector_set.polarization_filter,
-    std=scatterer_set.diameter
+    x=experiment.polarization_filter,
+    std=experiment.diameter
 )
 
 _ = figure.show()

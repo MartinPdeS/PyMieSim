@@ -4,6 +4,7 @@
 #include "numpy_interface.cpp"
 #include "VSH.cpp"
 
+
   namespace CORESHELL
   {
     class Scatterer: public BaseSphericalScatterer
@@ -18,8 +19,8 @@
             double x_shell;
 
             Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
-            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones, size_t max_order)
-            : BaseSphericalScatterer(wavelength, jones, amplitude, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+            complex128 core_index, complex128 shell_index, double medium_index, std::vector<complex128> jones, size_t max_order)
+            : BaseSphericalScatterer(wavelength, jones, amplitude, medium_index), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
@@ -31,8 +32,8 @@
             }
 
             Scatterer(double wavelength, double amplitude, double core_diameter, double shell_width,
-            complex128 core_index, complex128 shell_index, double n_medium, std::vector<complex128> jones)
-            : BaseSphericalScatterer(wavelength, jones, amplitude, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+            complex128 core_index, complex128 shell_index, double medium_index, std::vector<complex128> jones)
+            : BaseSphericalScatterer(wavelength, jones, amplitude, medium_index), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
@@ -44,8 +45,8 @@
             }
 
             Scatterer(double core_diameter, double shell_width, complex128 core_index, complex128 shell_index,
-                double n_medium, SOURCE::BaseSource &source, size_t max_order)
-            : BaseSphericalScatterer(source, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+                double medium_index, SOURCE::BaseSource &source, size_t max_order)
+            : BaseSphericalScatterer(source, medium_index), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
@@ -57,8 +58,8 @@
             }
 
             Scatterer(double core_diameter, double shell_width, complex128 core_index, complex128 shell_index,
-                double n_medium, SOURCE::BaseSource &source)
-            : BaseSphericalScatterer(source, n_medium), core_diameter(core_diameter), shell_width(shell_width),
+                double medium_index, SOURCE::BaseSource &source)
+            : BaseSphericalScatterer(source, medium_index), core_diameter(core_diameter), shell_width(shell_width),
             core_index(core_index), shell_index(shell_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_width;
@@ -79,148 +80,87 @@
             void compute_area();
     };
 
-    class Set
-    {
+    class Set {
         public:
             std::vector<double> core_diameter;
             std::vector<double> shell_width;
-            std::vector<double> n_medium;
-            std::vector<complex128> core_index;
-            std::vector<complex128> shell_index;
-            std::vector<std::vector<complex128>> core_material;
-            std::vector<std::vector<complex128>> shell_material;
-            bool core_is_material;
-            bool shell_is_material;
-
+            std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> core;
+            std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> shell;
+            std::variant<std::vector<double>, std::vector<std::vector<double>>> medium;
             std::vector<size_t> shape;
 
             Set() = default;
 
             Set(
-                const std::vector<double> &core_diameter,
-                const std::vector<double> &shell_width,
-                const std::vector<complex128> &core_index,
-                const std::vector<complex128> &shell_index,
-                const std::vector<double> &n_medium)
-            :
-                core_diameter(core_diameter), shell_width(shell_width), core_index(core_index),
-                shell_index(shell_index), n_medium(n_medium), core_is_material(false), shell_is_material(false)
-            {
-                this->shape = {
-                    this->core_diameter.size(),
-                    this->shell_width.size(),
-                    this->core_index.size(),
-                    this->shell_index.size(),
-                    this->n_medium.size()
-                };
+                const std::vector<double>& core_diameter,
+                const std::vector<double>& shell_width,
+                std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> core_param,
+                std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> shell_param,
+                std::variant<std::vector<double>, std::vector<std::vector<double>>> medium_param
+            ) : core_diameter(core_diameter), shell_width(shell_width),
+                core(core_param), shell(shell_param), medium(medium_param) {
+                update_shape();
             }
 
-            Set(
-                const std::vector<double> &core_diameter,
-                const std::vector<double> &shell_width,
-                const std::vector<complex128> &core_index,
-                const std::vector<std::vector<complex128>> &shell_material,
-                const std::vector<double> &n_medium)
-            :
-                core_diameter(core_diameter), shell_width(shell_width), core_index(core_index),
-                shell_material(shell_material), n_medium(n_medium), core_is_material(false), shell_is_material(true)
-            {
-                this->shape = {
-                    this->core_diameter.size(),
-                    this->shell_width.size(),
-                    this->core_index.size(),
-                    this->shell_material.size(),
-                    this->n_medium.size()
-                };
+            void update_shape() {
+                shape.clear();
+                shape.push_back(core_diameter.size());
+                shape.push_back(shell_width.size());
+
+                // Safely obtaining sizes
+                shape.push_back(
+                    std::holds_alternative<std::vector<complex128>>(core) ?
+                    std::get<std::vector<complex128>>(core).size() :
+                    std::get<std::vector<std::vector<complex128>>>(core).size()
+                );
+
+                shape.push_back(
+                    std::holds_alternative<std::vector<complex128>>(shell) ?
+                    std::get<std::vector<complex128>>(shell).size() :
+                    std::get<std::vector<std::vector<complex128>>>(shell).size()
+                );
+
+                shape.push_back(
+                    std::holds_alternative<std::vector<double>>(medium) ?
+                    std::get<std::vector<double>>(medium).size() :
+                    std::get<std::vector<std::vector<double>>>(medium).size()
+                );
             }
 
-            Set(
-                const std::vector<double> &core_diameter,
-                const std::vector<double> &shell_width,
-                const std::vector<std::vector<complex128>> &core_material,
-                const std::vector<complex128> &shell_index,
-                const std::vector<double> &n_medium)
-            :
-                core_diameter(core_diameter), shell_width(shell_width), shell_index(shell_index),
-                core_material(core_material), n_medium(n_medium), core_is_material(true), shell_is_material(false)
-            {
-                this->shape = {
-                    this->core_diameter.size(),
-                    this->shell_width.size(),
-                    this->core_material.size(),
-                    this->shell_index.size(),
-                    this->n_medium.size()
-                };
+            Scatterer to_object(size_t wl, size_t cd, size_t sw, size_t ci, size_t si, size_t mi, SOURCE::BaseSource &source) const {
+                complex128 core_value;
+                complex128 shell_value;
+                double medium_value;
+
+                if (std::holds_alternative<std::vector<std::vector<complex128>>>(core)) {
+                    const auto& materials = std::get<std::vector<std::vector<complex128>>>(core);
+                    core_value = materials[ci][wl];
+                } else {
+                    const auto& indices = std::get<std::vector<complex128>>(core);
+                    core_value = indices[ci];
+                }
+
+                if (std::holds_alternative<std::vector<std::vector<complex128>>>(shell)) {
+                    const auto& materials = std::get<std::vector<std::vector<complex128>>>(shell);
+                    shell_value = materials[si][wl];
+                } else {
+                    const auto& indices = std::get<std::vector<complex128>>(shell);
+                    shell_value = indices[si];
+                }
+
+                if (std::holds_alternative<std::vector<std::vector<double>>>(medium)) {
+                    const auto& mat = std::get<std::vector<std::vector<double>>>(medium);
+                    medium_value = mat[mi][wl];
+                } else {
+                    const auto& indices = std::get<std::vector<double>>(medium);
+                    medium_value = indices[mi];
+                }
+
+                return Scatterer(core_diameter[cd], shell_width[sw], core_value, shell_value, medium_value, source);
             }
 
-            Set(
-                const std::vector<double> &core_diameter,
-                const std::vector<double> &shell_width,
-                const std::vector<std::vector<complex128>> &core_material,
-                const std::vector<std::vector<complex128>> &shell_material,
-                const std::vector<double> &n_medium)
-            :
-                core_diameter(core_diameter), shell_width(shell_width), core_material(core_material),
-                shell_material(shell_material), n_medium(n_medium), core_is_material(true), shell_is_material(true)
-            {
-                this->shape = {
-                    this->core_diameter.size(),
-                    this->shell_width.size(),
-                    this->core_material.size(),
-                    this->shell_material.size(),
-                    this->n_medium.size()
-                };
-            }
-
-            Scatterer to_object(size_t wl, size_t cd, size_t sw, size_t ci, size_t si, size_t mi, SOURCE::BaseSource &source) const
-            {
-                if (core_is_material && shell_is_material)
-                    return Scatterer(
-                        this->core_diameter[cd],
-                        this->shell_width[sw],
-                        this->core_material[ci][wl],
-                        this->shell_material[si][wl],
-                        this->n_medium[mi],
-                        source
-                    );
-
-                if (core_is_material && !shell_is_material)
-                    return Scatterer(
-                        this->core_diameter[cd],
-                        this->shell_width[sw],
-                        this->core_material[ci][wl],
-                        this->shell_index[si],
-                        this->n_medium[mi],
-                        source
-                    );
-
-                if (!core_is_material && shell_is_material)
-                    return Scatterer(
-                        this->core_diameter[cd],
-                        this->shell_width[sw],
-                        this->core_index[ci],
-                        this->shell_material[si][wl],
-                        this->n_medium[mi],
-                        source
-                    );
-
-                if (!core_is_material && !shell_is_material)
-                    return Scatterer(
-                        this->core_diameter[cd],
-                        this->shell_width[sw],
-                        this->core_index[ci],
-                        this->shell_index[si],
-                        this->n_medium[mi],
-                        source
-                    );
-
-
-
-
-
-
-            }
     };
+
 }
 
 

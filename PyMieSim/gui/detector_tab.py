@@ -126,20 +126,7 @@ class DetectorTab(BaseTab):
     def setup_photodiode_component(self) -> NoReturn:
         self.component = Photodiode(**self.widget_collection.to_component_dict())
 
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
-
     def setup_coherentmode_component(self) -> NoReturn:
         self.component = CoherentMode(**self.widget_collection.to_component_dict())
 
-        self.mapping = {
-            'NA': self.component.NA,
-            'gamma': self.component.gamma_offset,
-            'phi': self.component.phi_offset,
-            'polarization_filter': self.component.polarization_filter
-        }
 # -

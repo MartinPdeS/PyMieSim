@@ -32,7 +32,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=diameter,
     index=1.55,
-    n_medium=1.335,
+    medium_index=1.335,
     source_set=source_set
 )
 

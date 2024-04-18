@@ -57,7 +57,7 @@ def test_sphere_method(method: str, core_type: object):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = getattr(scatterer, method)()
@@ -78,7 +78,7 @@ def test_sphere_attribute(attribute: str, core_type: object):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = getattr(scatterer, attribute)
@@ -104,7 +104,7 @@ def test_sphere_coupling(core_type: object):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = detector.coupling(scatterer)
@@ -125,7 +125,7 @@ def test_sphere_plottings(plotting: str, core_type: object):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     data = getattr(scatterer, plotting)()

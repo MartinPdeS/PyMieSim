@@ -32,7 +32,7 @@ scatterer_set = CoreShell(
     shell_width=800e-9,  # Shell width of 800 nm
     core_material=Silver,  # Core material
     shell_material=BK7,  # Shell material
-    n_medium=1,  # Surrounding medium's refractive index
+    medium_index=1,  # Surrounding medium's refractive index
     source_set=source_set
 )
 
@@ -62,7 +62,7 @@ data = experiment.get(measure.coupling)
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the core diameter.
 figure = data.plot(
-    x=scatterer_set.core_diameter,  # Core diameter as the x-axis
+    x=experiment.core_diameter,  # Core diameter as the x-axis
     y_scale='linear',  # Linear scale for the y-axis
     normalize=True,  # Normalizing the results
     add_box=True  # Adding a box around the plot for clarity

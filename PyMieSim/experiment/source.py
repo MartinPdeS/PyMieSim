@@ -29,6 +29,11 @@ class BaseSource:
     polarization_value: Iterable
     name: str = field(default='PlaneWave', init=False)
 
+    mapping = {
+        'wavelength': None,
+        'polarization': None
+    }
+
     def __post_init__(self):
         self.format_inputs()
         self.generate_polarization_attribute()
@@ -52,7 +57,7 @@ class BaseSource:
         """Abstract method for generating amplitude, to be implemented by subclasses."""
         raise NotImplementedError("Subclass must implement this method.")
 
-    def update_datavisual_table(self, table: list) -> NoReturn:
+    def get_datavisual_table(self) -> NoReturn:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -63,27 +68,21 @@ class BaseSource:
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        sub_table = []
-
-        self.wavelength = units.Length(
+        self.mapping['wavelength'] = units.Length(
             long_label='Wavelength',
             short_label=r'$\lambda$',
             base_values=self.wavelength,
             string_format='.2f'
         )
 
-        sub_table.append(self.wavelength)
-
-        self.linear_polarization = units.Degree(
+        self.mapping['polarization'] = units.Degree(
             long_label='Polarization',
-            short_label=r'Pol.',
+            short_label=r'Pol',
             base_values=self.polarization_value,
             string_format='.2f'
         )
 
-        sub_table.append(self.linear_polarization)
-
-        return [*table, *sub_table]
+        return [v for k, v in self.mapping.items() if v is not None]
 
     def generate_binding(self):
         """Generates the C++ binding for the source set."""

@@ -25,6 +25,11 @@ shell_type = [
     {'name': 'Index', 'kwarg': {'shell_index': 1.4}}
 ]
 
+medium_type = [
+    {'name': 'BK7', 'kwarg': {'medium_material': BK7}},
+    {'name': 'Index', 'kwarg': {'medium_index': 1.1}}
+]
+
 measures = [
     measure.Qsca,
     measure.Qabs,
@@ -36,10 +41,11 @@ measures = [
 ]
 
 
+@pytest.mark.parametrize('medium_type', [p['kwarg'] for p in medium_type], ids=[p['name'] for p in medium_type])
 @pytest.mark.parametrize('shell_type', [p['kwarg'] for p in core_type], ids=[p['name'] for p in core_type])
 @pytest.mark.parametrize('core_type', [p['kwarg'] for p in shell_type], ids=[p['name'] for p in shell_type])
 @pytest.mark.parametrize('measure', measures, ids=[p.short_label for p in measures])
-def test_coreshell_experiment(measure, core_type, shell_type):
+def test_coreshell_experiment(measure, medium_type, core_type, shell_type):
     source_set = Gaussian(
         wavelength=numpy.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
@@ -49,7 +55,7 @@ def test_coreshell_experiment(measure, core_type, shell_type):
     )
 
     scatterer_set = CoreShell(
-        n_medium=1,
+        **medium_type,
         core_diameter=numpy.linspace(400e-9, 1400e-9, 10),
         shell_width=300e-9,
         **core_type,

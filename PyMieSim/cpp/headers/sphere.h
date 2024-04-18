@@ -1,6 +1,7 @@
 #pragma once
 
 #include "base_spherical_scatterer.cpp"
+#include <iostream>
 
 namespace SPHERE
 {
@@ -15,8 +16,8 @@ namespace SPHERE
             Scatterer() = default;
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double n_medium, std::vector<complex128> jones_vector, size_t max_order) :
-                BaseSphericalScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
+                double medium_index, std::vector<complex128> jones_vector, size_t max_order) :
+                BaseSphericalScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
             {
                 compute_size_parameter();
                 this->max_order = max_order;
@@ -25,8 +26,8 @@ namespace SPHERE
             }
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double n_medium, std::vector<complex128> jones_vector) :
-                BaseSphericalScatterer(wavelength, jones_vector, amplitude, n_medium), diameter(diameter), index(index)
+                double medium_index, std::vector<complex128> jones_vector) :
+                BaseSphericalScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
             {
                 compute_size_parameter();
                 this->max_order = get_wiscombe_criterion(this->size_parameter);
@@ -34,8 +35,8 @@ namespace SPHERE
                 compute_an_bn();
             }
 
-            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source, size_t max_order) :
-                BaseSphericalScatterer(source, n_medium), diameter(diameter), index(index)
+            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order) :
+                BaseSphericalScatterer(source, medium_index), diameter(diameter), index(index)
             {
                 compute_size_parameter();
                 this->max_order = max_order;
@@ -43,8 +44,8 @@ namespace SPHERE
                 compute_an_bn();
             }
 
-            Scatterer(double diameter, complex128 index, double n_medium, SOURCE::BaseSource &source) :
-                BaseSphericalScatterer(source, n_medium), diameter(diameter), index(index)
+            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source) :
+                BaseSphericalScatterer(source, medium_index), diameter(diameter), index(index)
             {
                 compute_size_parameter();
                 this->max_order = this->get_wiscombe_criterion(this->size_parameter);
@@ -63,42 +64,49 @@ namespace SPHERE
     {
         public:
             std::vector<double> diameter;
-            std::vector<complex128> index;
-            std::vector<std::vector<complex128>> material;
-            std::vector<double> n_medium;
-            bool is_material;
+            std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> scatterer;
+            std::variant<std::vector<double>, std::vector<std::vector<double>>> medium;
             std::vector<size_t> shape;
 
             Set() = default;
-            Set(const std::vector<double> &diameter, const std::vector<std::vector<complex128>> &material, const std::vector<double> &n_medium) :
-            diameter(diameter), material(material), n_medium(n_medium), is_material(true)
+
+            // Unified Constructor for all types of scatterer and medium
+            Set(const std::vector<double>& diameter,
+                std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> scatterer_param,
+                std::variant<std::vector<double>, std::vector<std::vector<double>>> medium_param)
+                : diameter(diameter), scatterer(scatterer_param), medium(medium_param)
             {
-                this->shape = {this->diameter.size(), this->material.size(), this->n_medium.size()};
+                update_shape();
             }
 
-            Set(const std::vector<double> &diameter, const std::vector<complex128> &index, const std::vector<double> &n_medium):
-            diameter(diameter), index(index), n_medium(n_medium), is_material(false)
-            {
-                this->shape = {this->diameter.size(), this->index.size(), this->n_medium.size()};
+            void update_shape() {
+                shape.clear();
+                shape.push_back(diameter.size());
+
+                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer)) {
+
+                    shape.push_back(std::get<std::vector<std::vector<complex128>>>(scatterer).size());
+
+                } else {
+                    shape.push_back(std::get<std::vector<complex128>>(scatterer).size());
+                }
+
+                if (std::holds_alternative<std::vector<std::vector<double>>>(medium)) {
+                    shape.push_back(std::get<std::vector<std::vector<double>>>(medium).size());
+                } else {
+                    shape.push_back(std::get<std::vector<double>>(medium).size());
+                }
             }
 
-            Scatterer to_object(size_t d, size_t i, size_t wl, size_t mi, SOURCE::BaseSource &source) const
-            {
-                if (is_material)
-                    return Scatterer(
-                        this->diameter[d],
-                        this->material[i][wl],
-                        this->n_medium[mi],
-                        source
-                    );
-                else
-                    return Scatterer(
-                        this->diameter[d],
-                        this->index[i],
-                        this->n_medium[mi],
-                        source
-                    );
-            }
+        Scatterer to_object(size_t d, size_t i, size_t wl, size_t mi, SOURCE::BaseSource& source) const
+        {
+            return Scatterer(
+                diameter[d],
+                std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer) ? std::get<std::vector<std::vector<complex128>>>(scatterer)[i][wl] : std::get<std::vector<complex128>>(scatterer)[i],
+                std::holds_alternative<std::vector<std::vector<double>>>(medium) ? std::get<std::vector<std::vector<double>>>(medium)[mi][wl] : std::get<std::vector<double>>(medium)[mi],
+                source
+            );
+        }
     };
 }
 

@@ -35,7 +35,7 @@ scatterer_set = CoreShell(
     shell_width=shell_width,
     core_index=core_index,
     shell_index=shell_index,
-    n_medium=1.0,
+    medium_index=1.0,
     source_set=source_set
 )
 
@@ -68,7 +68,7 @@ plt.plot(core_diameters, PyMieSim_data, 'C1-', linewidth=3, label='PyMieSim')
 plt.plot(core_diameters, PyMieScatt_data, 'k--', linewidth=1, label='PyMieScatt')
 
 plt.xlabel(r'diameter [$\mu$m]')
-plt.ylabel('Scattering efficiency [CoreShell + n_medium]')
+plt.ylabel('Scattering efficiency [CoreShell + medium_index]')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()

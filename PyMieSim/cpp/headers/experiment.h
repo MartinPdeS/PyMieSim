@@ -48,7 +48,6 @@ class Experiment
             return flatten_index;
         }
 
-
         //--------------------------------------SPHERE------------------------------------
         template<typename Function> pybind11::array_t<complex128> get_sphere_coefficient(Function function, size_t max_order=0) const;
 

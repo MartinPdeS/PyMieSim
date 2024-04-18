@@ -53,7 +53,7 @@ def test_cylinder_methods(method, core_type):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = getattr(scatterer, method)()
@@ -79,7 +79,7 @@ def test_cylinder_coupling(core_type: object):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = detector.coupling(scatterer)
@@ -100,7 +100,7 @@ def test_cylinder_attributes(attribute, core_type):
         diameter=100e-9,
         source=source,
         **core_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = getattr(scatterer, attribute)

@@ -182,6 +182,7 @@ class PyMieSimGUI:
         self.new_window.title("Plot Window")
 
         x_axis = self.axis_tab.x_axis
+
         std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
 
         figure = self.data.plot(x=x_axis, std=std_axis)
@@ -207,7 +208,7 @@ class PyMieSimGUI:
 
         self.data = self.experiment.get(self.y_axis)
 
-        self.x_axis = self.axis_tab.axis_mapping['wavelength']
+        self.x_axis = self.axis_tab.axis_mapping[x_axis]
 
         try:
             self.generate_figure()

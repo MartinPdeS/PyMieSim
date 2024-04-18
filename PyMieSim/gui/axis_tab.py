@@ -75,6 +75,6 @@ class AxisTab(BaseTab):
         """
         _axis_mapping = {}
         for tab in self.other_tabs:
-            _axis_mapping.update(tab.mapping)
+            _axis_mapping.update(tab.component.mapping)
 
         return _axis_mapping

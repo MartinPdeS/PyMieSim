@@ -31,7 +31,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=2000e-9,
     material=BK7,
-    n_medium=1,
+    medium_index=1,
     source_set=source_set
 )
 
@@ -60,7 +60,7 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=detector_set.phi_offset,
+    x=experiment.phi_offset,
     y_scale='log',
     normalize=True
 )

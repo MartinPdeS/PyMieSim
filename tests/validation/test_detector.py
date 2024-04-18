@@ -49,7 +49,7 @@ def test_detector_experiment_polarization_filter():
     )
 
     scatterer = experiment.scatterer.Sphere(
-        n_medium=1.0,
+        medium_index=1.0,
         diameter=1e-6,
         index=1.5 + 0.5j,
         source_set=source_set

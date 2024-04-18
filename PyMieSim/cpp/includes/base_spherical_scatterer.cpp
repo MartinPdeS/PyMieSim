@@ -15,7 +15,7 @@ public:
     size_t max_order;
     double size_parameter;
     double area;
-    double n_medium;
+    double medium_index;
 
     std::vector<complex128> an;
     std::vector<complex128> bn;
@@ -26,10 +26,10 @@ public:
 
     BaseSphericalScatterer() = default;
 
-    BaseSphericalScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double n_medium)
-    : source(wavelength, jones_vector, amplitude), n_medium(n_medium){}
+    BaseSphericalScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double medium_index)
+    : source(wavelength, jones_vector, amplitude), medium_index(medium_index){}
 
-    BaseSphericalScatterer(const SOURCE::BaseSource &source, const double n_medium) : source(source), n_medium(n_medium){}
+    BaseSphericalScatterer(const SOURCE::BaseSource &source, const double medium_index) : source(source), medium_index(medium_index){}
 
     std::vector<complex128> get_an() const { return an; };
     std::vector<complex128> get_bn() const { return bn; };

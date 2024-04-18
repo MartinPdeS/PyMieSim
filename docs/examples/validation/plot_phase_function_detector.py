@@ -32,7 +32,7 @@ source_set = SetGaussian(
 scatterer_set = SetSphere(
     diameter=scatterer_diameter,
     index=scatterer_index,
-    n_medium=1.0,
+    medium_index=1.0,
     source_set=source_set
 )
 
@@ -65,7 +65,7 @@ scatterer = SingleSphere(
     diameter=scatterer_diameter,
     source=source,
     index=scatterer_index,
-    n_medium=1.0
+    medium_index=1.0
 )
 
 s1s2 = scatterer.get_s1s2()

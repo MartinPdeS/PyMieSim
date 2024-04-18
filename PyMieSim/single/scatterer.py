@@ -327,7 +327,7 @@ class Sphere(GenericScatterer):
     """ Light source object containing info on polarization and wavelength. """
     index: complex = None
     """ Refractive index of scatterer. """
-    n_medium: float = 1.0
+    medium_index: float = 1.0
     """ Refractive index of scatterer medium. """
     material: DataMeasurement | Sellmeier | None = None
     """ Material of which the scatterer is made of. Only if index is not specified. """
@@ -349,7 +349,7 @@ class Sphere(GenericScatterer):
             amplitude=self.source.amplitude,
             diameter=self.diameter,
             index=self.index,
-            n_medium=self.n_medium,
+            medium_index=self.medium_index,
             jones_vector=self.source.polarization.jones_vector.squeeze(),
         )
 
@@ -434,7 +434,7 @@ class CoreShell(GenericScatterer):
     """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
     shell_material: DataMeasurement | Sellmeier | None = None
     """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
-    n_medium: float = 1.0
+    medium_index: float = 1.0
     """ Refractive index of scatterer medium. """
 
     def __post_init__(self):
@@ -458,7 +458,7 @@ class CoreShell(GenericScatterer):
             shell_width=self.shell_width,
             core_diameter=self.core_diameter,
             wavelength=self.source.wavelength,
-            n_medium=self.n_medium,
+            medium_index=self.medium_index,
             jones_vector=self.source.polarization.jones_vector.squeeze(),
             amplitude=self.source.amplitude
         )
@@ -494,7 +494,7 @@ class Cylinder(GenericScatterer):
     """ Light source object containing info on polarization and wavelength. """
     index: complex = None
     """ Refractive index of scatterer. """
-    n_medium: float = 1.0
+    medium_index: float = 1.0
     """ Material of which the scatterer is made of. Only if index is not specified. """
     material: DataMeasurement | Sellmeier | None = None
     """ Refractive index of scatterer medium. """
@@ -517,7 +517,7 @@ class Cylinder(GenericScatterer):
             index=self.index,
             diameter=self.diameter,
             wavelength=self.source.wavelength,
-            n_medium=self.n_medium,
+            medium_index=self.medium_index,
             amplitude=self.source.amplitude,
             jones_vector=self.source.polarization.jones_vector.squeeze()
         )

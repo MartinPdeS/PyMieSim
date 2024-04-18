@@ -64,7 +64,7 @@ def test_coreshell_method(method, core_type, shell_type):
         source=source,
         **core_type,
         **shell_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = getattr(scatterer, method)()
@@ -93,7 +93,7 @@ def test_coreshell_coupling(core_type, shell_type):
         source=source,
         **core_type,
         **shell_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = detector.coupling(scatterer)
@@ -117,7 +117,7 @@ def test_coreshell_attribute(attribute, core_type, shell_type):
         source=source,
         **core_type,
         **shell_type,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     _ = getattr(scatterer, attribute)

@@ -35,7 +35,7 @@ scatterer_set = CoreShell(
     shell_width=800e-9,  # Shell width of 800 nm
     core_index=1.6,  # Refractive index of the core
     shell_material=BK7,  # BK7 glass material for the shell
-    n_medium=1,  # Refractive index of the surrounding medium
+    medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -55,7 +55,7 @@ data = experiment.get(measure.b1)
 # Plotting the results
 # Visualizing how the B1 parameter varies with the core diameter.
 figure = data.plot(
-    x=scatterer_set.core_diameter,  # Core diameter as the x-axis
+    x=experiment.core_diameter,  # Core diameter as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 

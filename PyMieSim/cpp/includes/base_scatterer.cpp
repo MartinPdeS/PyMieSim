@@ -14,16 +14,16 @@ public:
     size_t max_order;
     double size_parameter;
     double area;
-    double n_medium;
+    double medium_index;
 
     SOURCE::BaseSource source;
 
     BaseScatterer() = default;
 
-    BaseScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double n_medium)
-    : source(wavelength, jones_vector, amplitude), n_medium(n_medium){}
+    BaseScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double medium_index)
+    : source(wavelength, jones_vector, amplitude), medium_index(medium_index){}
 
-    BaseScatterer(const SOURCE::BaseSource &source, const double n_medium) : source(source), n_medium(n_medium){}
+    BaseScatterer(const SOURCE::BaseSource &source, const double medium_index) : source(source), medium_index(medium_index){}
 
     double get_Qforward() const {return get_Qsca() - get_Qback();};
     double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};

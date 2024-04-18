@@ -30,7 +30,7 @@ scatterer_set = Cylinder(
     diameter=3000e-9,
     source=source,
     index=1.0 + 0.07j,
-    n_medium=1.0
+    medium_index=1.0
 )
 
 S1S2 = scatterer_set.get_s1s2(sampling=800)

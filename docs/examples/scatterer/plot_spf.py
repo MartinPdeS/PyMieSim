@@ -26,7 +26,7 @@ scatterer = Sphere(
     diameter=1.2e-6,  # 1200 nm
     source=source,
     index=1.4,  # Refractive index of the scatterer
-    n_medium=1.0,  # Refractive index of the surrounding medium
+    medium_index=1.0,  # Refractive index of the surrounding medium
 )
 
 # %%

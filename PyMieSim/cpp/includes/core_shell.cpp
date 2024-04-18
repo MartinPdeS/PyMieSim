@@ -5,11 +5,11 @@
 namespace CORESHELL
 {
     void Scatterer::apply_medium(){
-        this->core_index /= this->n_medium;
-        this->shell_index /= this->n_medium;
-        this->core_diameter *= this->n_medium;
-        this->shell_width *= this->n_medium;
-        this->shell_diameter *= this->n_medium;
+        this->core_index /= this->medium_index;
+        this->shell_index /= this->medium_index;
+        this->core_diameter *= this->medium_index;
+        this->shell_width *= this->medium_index;
+        this->shell_diameter *= this->medium_index;
     }
 
     void Scatterer::compute_size_parameter(){

@@ -88,7 +88,7 @@ class ScattererTab(BaseTab):
         self.widget_collection = WidgetCollection(
             InputWidget(default_value='500', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, frame=self.frame),
             InputWidget(default_value='1.4', label='Refractive Index', component_label='index', frame=self.frame),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium', frame=self.frame)
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', frame=self.frame)
         )
         self.widget_collection.setup_widgets(self.frame)
         self.setup_sphere_component()
@@ -100,7 +100,7 @@ class ScattererTab(BaseTab):
         self.widget_collection = WidgetCollection(
             InputWidget(default_value='1000', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, frame=self.frame),
             InputWidget(default_value='1.4', label='Refractive Index', component_label='index', frame=self.frame),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium', frame=self.frame)
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', frame=self.frame)
         )
         self.widget_collection.setup_widgets(self.frame)
         self.setup_cylinder_component()
@@ -114,7 +114,7 @@ class ScattererTab(BaseTab):
             InputWidget(default_value='200', label='Shell Width [nm]', component_label='shell_width', multiplicative_factor=1e-9, frame=self.frame),
             InputWidget(default_value='1.4', label='Core Refractive Index', component_label='core_index', frame=self.frame),
             InputWidget(default_value='1.4', label='Shell Refractive Index', component_label='shell_index', frame=self.frame),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='n_medium', frame=self.frame)
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', frame=self.frame)
         )
         self.widget_collection.setup_widgets(self.frame)
         self.setup_coreshell_component()
@@ -138,31 +138,10 @@ class ScattererTab(BaseTab):
     def setup_sphere_component(self) -> NoReturn:
         self.component = scatterer.Sphere(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
 
-        self.mapping = dict(
-            diameter=self.component.diameter,
-            index=self.component.index,
-            n_medium=self.component.n_medium,
-        )
-
     def setup_cylinder_component(self) -> NoReturn:
         self.component = scatterer.Cylinder(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
 
-        self.mapping = dict(
-            diameter=self.component.diameter,
-            index=self.component.index,
-            n_medium=self.component.n_medium,
-        )
-
     def setup_coreshell_component(self) -> NoReturn:
         self.component = scatterer.CoreShell(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
-
-        self.mapping = dict(
-            core_diameter=self.component.core_diameter,
-            shell_width=self.component.shell_width,
-            core_index=self.component.core_index,
-            shell_index=self.component.shell_index,
-            n_medium=self.component.n_medium,
-        )
-
 
 # -

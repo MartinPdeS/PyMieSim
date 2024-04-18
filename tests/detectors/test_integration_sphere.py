@@ -24,7 +24,7 @@ def test_photodiode(sampling: int):
         diameter=100e-9,
         source=source,
         index=1.4,
-        n_medium=1.0
+        medium_index=1.0
     )
 
     detector = IntegratingSphere(sampling=sampling)

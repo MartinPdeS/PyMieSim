@@ -30,7 +30,7 @@ source_set = Gaussian(
 scatterer_set = Cylinder(
     diameter=np.linspace(100e-9, 3000e-9, 200),  # Diameters ranging from 100 nm to 3000 nm
     material=BK7,  # Material of the cylinder
-    n_medium=1.0,  # Refractive index of the surrounding medium
+    medium_index=1.0,  # Refractive index of the surrounding medium
     source_set=source_set
 )
 
@@ -60,7 +60,7 @@ data = experiment.get(measure.coupling)
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the cylinder diameter.
 figure = data.plot(
-    x=scatterer_set.diameter,  # Cylinder diameter as the x-axis
+    x=experiment.diameter,  # Cylinder diameter as the x-axis
     y_scale='linear',  # Linear scale for the y-axis
     normalize=True  # Normalizing the results
 )

@@ -16,7 +16,7 @@ PYBIND11_MODULE(CoreShellInterface, module) {
              py::arg("shell_width"),
              py::arg("core_index"),
              py::arg("shell_index"),
-             py::arg("n_medium"),
+             py::arg("medium_index"),
              py::arg("jones_vector"),
              "Constructor for CORESHELL, initializing it with physical and optical properties.")
 

@@ -29,7 +29,7 @@ source_set = Gaussian(
 scatterer_set = Sphere(
     diameter=numpy.linspace(100e-9, 3000e-9, 600),
     material=BK7,
-    n_medium=1.0,
+    medium_index=1.0,
     source_set=source_set
 )
 
@@ -58,7 +58,7 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=scatterer_set.diameter,
+    x=experiment.diameter,
     y_scale='linear',
     normalize=True
 )
