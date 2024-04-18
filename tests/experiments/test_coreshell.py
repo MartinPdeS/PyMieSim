@@ -2,67 +2,69 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import numpy
+import numpy as np
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim import measure
+import PyMieSim.measure as pms_measure
 from PyMieSim.materials import Silver, BK7, Aluminium
 
-core_type = [
-    {'name': 'BK7', 'kwarg': {'core_material': BK7}},
-    {'name': 'Silver', 'kwarg': {'core_material': Silver}},
-    {'name': 'Aluminium', 'kwarg': {'core_material': Aluminium}},
-    {'name': 'Index', 'kwarg': {'core_index': 1.4}}
+# Define core materials and properties
+core_options = [
+    {'name': 'BK7', 'properties': {'core_material': BK7}},
+    {'name': 'Silver', 'properties': {'core_material': Silver}},
+    {'name': 'Aluminium', 'properties': {'core_material': Aluminium}},
+    {'name': 'Index', 'properties': {'core_index': 1.4}}
 ]
 
-shell_type = [
-    {'name': 'BK7', 'kwarg': {'shell_material': BK7}},
-    {'name': 'Silver', 'kwarg': {'shell_material': Silver}},
-    {'name': 'Aluminium', 'kwarg': {'shell_material': Aluminium}},
-    {'name': 'Index', 'kwarg': {'shell_index': 1.4}}
+# Define shell materials and properties
+shell_options = [
+    {'name': 'BK7', 'properties': {'shell_material': BK7}},
+    {'name': 'Silver', 'properties': {'shell_material': Silver}},
+    {'name': 'Aluminium', 'properties': {'shell_material': Aluminium}},
+    {'name': 'Index', 'properties': {'shell_index': 1.4}}
 ]
 
-medium_type = [
-    {'name': 'BK7', 'kwarg': {'medium_material': BK7}},
-    {'name': 'Index', 'kwarg': {'medium_index': 1.1}}
+# Define medium materials and properties
+medium_options = [
+    {'name': 'BK7', 'properties': {'medium_material': BK7}},
+    {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
+# Define measures to test
 measures = [
-    measure.Qsca,
-    measure.Qabs,
-    measure.Qback,
-    measure.g,
-    measure.a1,
-    measure.b1,
-    measure.coupling
+    pms_measure.Qsca, pms_measure.Qabs, pms_measure.Qback,
+    pms_measure.g, pms_measure.a1, pms_measure.b1, pms_measure.coupling
 ]
 
 
-@pytest.mark.parametrize('medium_type', [p['kwarg'] for p in medium_type], ids=[p['name'] for p in medium_type])
-@pytest.mark.parametrize('shell_type', [p['kwarg'] for p in core_type], ids=[p['name'] for p in core_type])
-@pytest.mark.parametrize('core_type', [p['kwarg'] for p in shell_type], ids=[p['name'] for p in shell_type])
-@pytest.mark.parametrize('measure', measures, ids=[p.short_label for p in measures])
-def test_coreshell_experiment(measure, medium_type, core_type, shell_type):
+@pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
+@pytest.mark.parametrize('shell_config', [s['properties'] for s in shell_options], ids=[s['name'] for s in shell_options])
+@pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
+@pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
+def test_coreshell_scattering_properties(measure, medium_config, core_config, shell_config):
+    # Setup Gaussian source
     source_set = Gaussian(
-        wavelength=numpy.linspace(400e-9, 1800e-9, 50),
+        wavelength=np.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
         polarization_type='linear',
         optical_power=1e-3,
         NA=0.2
     )
 
+    # Setup core-shell scatterer
     scatterer_set = CoreShell(
-        **medium_type,
-        core_diameter=numpy.linspace(400e-9, 1400e-9, 10),
+        core_diameter=np.linspace(400e-9, 1400e-9, 10),
         shell_width=300e-9,
-        **core_type,
-        **shell_type,
-        source_set=source_set
+        source_set=source_set,
+        **medium_config,
+        **core_config,
+        **shell_config
     )
 
+    # Setup detector
     detector_set = Photodiode(
         NA=0.2,
         polarization_filter=None,
@@ -71,12 +73,14 @@ def test_coreshell_experiment(measure, medium_type, core_type, shell_type):
         sampling=100
     )
 
+    # Configure and run the experiment
     experiment = Setup(
         scatterer_set=scatterer_set,
         source_set=source_set,
         detector_set=detector_set
     )
 
+    # Execute measurement
     experiment.get(measure)
 
 # -

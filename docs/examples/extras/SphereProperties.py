@@ -19,7 +19,8 @@ source.plot().show()
 scatterer = Sphere(
     diameter=800e-9,
     source=source,
-    index=1.4
+    index=1.4,
+    medium_index=1.0
 )
 
 

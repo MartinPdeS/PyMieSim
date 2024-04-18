@@ -2,59 +2,58 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-import numpy
+import numpy as np
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim import measure
+import PyMieSim.measure as pms_measure
 from PyMieSim.materials import Silver, BK7, Aluminium
 
-
-core_type = [
-    {'name': 'BK7', 'kwarg': {'material': BK7}},
-    {'name': 'Silver', 'kwarg': {'material': Silver}},
-    {'name': 'Aluminium', 'kwarg': {'material': Aluminium}},
-    {'name': 'Index', 'kwarg': {'index': 1.4}}
+# Configure the core materials for the sphere
+core_options = [
+    {'name': 'BK7', 'properties': {'material': BK7}},
+    {'name': 'Silver', 'properties': {'material': Silver}},
+    {'name': 'Aluminium', 'properties': {'material': Aluminium}},
+    {'name': 'Index', 'properties': {'index': 1.4}}
 ]
 
-
-medium_type = [
-    {'name': 'BK7', 'kwarg': {'medium_material': BK7}},
-    {'name': 'Index', 'kwarg': {'medium_index': 1.1}}
+# Define medium options
+medium_options = [
+    {'name': 'BK7', 'properties': {'medium_material': BK7}},
+    {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
+# List of measures to be tested
 measures = [
-    measure.Qsca,
-    measure.Qabs,
-    measure.Qback,
-    measure.g,
-    measure.a1,
-    measure.b1,
-    measure.coupling
+    pms_measure.Qsca, pms_measure.Qabs, pms_measure.Qback,
+    pms_measure.g, pms_measure.a1, pms_measure.b1, pms_measure.coupling
 ]
 
 
-@pytest.mark.parametrize('medium_type', [p['kwarg'] for p in medium_type], ids=[p['name'] for p in medium_type])
-@pytest.mark.parametrize('core_type', [p['kwarg'] for p in core_type], ids=[p['name'] for p in core_type])
-@pytest.mark.parametrize('measure', measures, ids=[p.short_label for p in measures])
-def test_sphere_experiment(measure, core_type, medium_type):
+@pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
+@pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
+@pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
+def test_sphere_scattering_properties(measure, core_config, medium_config):
+    # Set up the Gaussian source
     source_set = Gaussian(
-        wavelength=numpy.linspace(400e-9, 1800e-9, 50),
+        wavelength=np.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
         polarization_type='linear',
         optical_power=1e-3,
         NA=0.2
     )
 
+    # Configure the spherical scatterer
     scatterer_set = Sphere(
-        **medium_type,
-        diameter=numpy.linspace(400e-9, 1400e-9, 10),
-        **core_type,
-        source_set=source_set
+        diameter=np.linspace(400e-9, 1400e-9, 10),
+        source_set=source_set,
+        **medium_config,
+        **core_config
     )
 
+    # Configure the detector
     detector_set = Photodiode(
         NA=0.2,
         polarization_filter=None,
@@ -63,12 +62,14 @@ def test_sphere_experiment(measure, core_type, medium_type):
         sampling=100
     )
 
+    # Set up and run the experiment
     experiment = Setup(
         scatterer_set=scatterer_set,
         source_set=source_set,
         detector_set=detector_set
     )
 
+    # Perform the measurement
     experiment.get(measure)
 
 # -
