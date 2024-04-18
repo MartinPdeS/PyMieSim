@@ -5,12 +5,12 @@ import pytest
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.materials import Silver, BK7
+from PyOptik import UsualMaterial
 
 # Core configurations separated for clarity and functionality
 core_configs = [
-    {'config': {'material': BK7}, 'id': 'BK7'},
-    {'config': {'material': Silver}, 'id': 'Silver'},
+    {'config': {'material': UsualMaterial.BK7}, 'id': 'BK7'},
+    {'config': {'material': UsualMaterial.Silver}, 'id': 'Silver'},
     {'config': {'index': 1.4}, 'id': 'Index 1.4'}
 ]
 

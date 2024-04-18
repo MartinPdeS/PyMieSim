@@ -12,7 +12,7 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.materials import BK7
+from PyOptik import UsualMaterial
 from PyMieSim import measure
 
 # %%
@@ -29,7 +29,7 @@ source_set = Gaussian(
 # Defining the scatterer distribution
 scatterer_set = Cylinder(
     diameter=2e-6,  # 2000 nm
-    material=BK7,  # Material of the cylinder
+    material=UsualMaterial.BK7,  # Material of the cylinder
     medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )

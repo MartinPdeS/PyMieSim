@@ -8,13 +8,11 @@ Sphere: Goniometer
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy
-
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
-from PyMieSim.materials import BK7
+from PyOptik import UsualMaterial
 from PyMieSim import measure
 
 # %%
@@ -30,7 +28,7 @@ source_set = Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer_set = Sphere(
     diameter=2000e-9,
-    material=BK7,
+    material=UsualMaterial.BK7,
     medium_index=1,
     source_set=source_set
 )

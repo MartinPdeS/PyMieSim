@@ -5,19 +5,19 @@ import pytest
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyMieSim.materials import Silver, BK7, Aluminium
+from PyOptik import UsualMaterial
 
 # Core and shell configurations with clear separation of test ids and parameters
 core_configs = [
-    {'config': {'core_material': BK7}, 'id': 'BK7'},
-    {'config': {'core_material': Silver}, 'id': 'Silver'},
+    {'config': {'core_material': UsualMaterial.BK7}, 'id': 'BK7'},
+    {'config': {'core_material': UsualMaterial.Silver}, 'id': 'Silver'},
     {'config': {'core_index': 1.4}, 'id': 'Index 1.4'}
 ]
 
 shell_configs = [
-    {'config': {'shell_material': BK7}, 'id': 'BK7'},
-    {'config': {'shell_material': Silver}, 'id': 'Silver'},
-    {'config': {'shell_material': Aluminium}, 'id': 'Aluminium'},
+    {'config': {'shell_material': UsualMaterial.BK7}, 'id': 'BK7'},
+    {'config': {'shell_material': UsualMaterial.Silver}, 'id': 'Silver'},
+    {'config': {'shell_material': UsualMaterial.Aluminium}, 'id': 'Aluminium'},
     {'config': {'shell_index': 1.4}, 'id': 'Index 1.4'}
 ]
 

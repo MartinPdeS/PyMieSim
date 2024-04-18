@@ -12,9 +12,8 @@ from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
 from PyMieSim import measure
-from PyMieSim.materials import BK7
+from PyOptik import UsualMaterial
 
 # %%
 # Defining the source to be employed.
@@ -30,7 +29,7 @@ source_set = Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer_set = Sphere(
     diameter=np.linspace(100e-9, 8000e-9, 5),
-    material=BK7,
+    material=UsualMaterial.BK7,
     medium_index=1,
     source_set=source_set
 )

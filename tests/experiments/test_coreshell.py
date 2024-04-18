@@ -9,27 +9,28 @@ from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.measure as pms_measure
-from PyMieSim.materials import Silver, BK7, Aluminium
+from PyOptik import UsualMaterial
 
 # Define core materials and properties
 core_options = [
-    {'name': 'BK7', 'properties': {'core_material': BK7}},
-    {'name': 'Silver', 'properties': {'core_material': Silver}},
-    {'name': 'Aluminium', 'properties': {'core_material': Aluminium}},
+    {'name': 'BK7', 'properties': {'core_material': UsualMaterial.BK7}},
+    {'name': 'Silver', 'properties': {'core_material': UsualMaterial.Silver}},
+    {'name': 'Aluminium', 'properties': {'core_material': UsualMaterial.Aluminium}},
     {'name': 'Index', 'properties': {'core_index': 1.4}}
 ]
 
 # Define shell materials and properties
 shell_options = [
-    {'name': 'BK7', 'properties': {'shell_material': BK7}},
-    {'name': 'Silver', 'properties': {'shell_material': Silver}},
-    {'name': 'Aluminium', 'properties': {'shell_material': Aluminium}},
+    {'name': 'BK7', 'properties': {'shell_material': UsualMaterial.BK7}},
+    {'name': 'Silver', 'properties': {'shell_material': UsualMaterial.Silver}},
+    {'name': 'Aluminium', 'properties': {'shell_material': UsualMaterial.Aluminium}},
     {'name': 'Index', 'properties': {'shell_index': 1.4}}
 ]
 
 # Define medium materials and properties
 medium_options = [
-    {'name': 'BK7', 'properties': {'medium_material': BK7}},
+    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.Water}},
+    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.Water}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 

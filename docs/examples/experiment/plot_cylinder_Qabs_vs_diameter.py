@@ -11,8 +11,8 @@ import numpy as np
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.materials import Gold, Silver, Aluminium
 from PyMieSim import measure
+from PyOptik import UsualMaterial
 
 # %%
 # Defining the source
@@ -28,7 +28,7 @@ source_set = Gaussian(
 # Defining the scatterer distribution
 scatterer_set = Cylinder(
     diameter=np.linspace(1e-9, 800e-9, 300),  # Diameters ranging from 1 nm to 800 nm
-    material=[Silver, Gold, Aluminium],  # Scatterer materials
+    material=[UsualMaterial.Silver, UsualMaterial.Gold, UsualMaterial.Aluminium],  # Scatterer materials
     medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )

@@ -11,7 +11,7 @@ import numpy as np
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.materials import BK7
+from PyOptik import UsualMaterial
 from PyMieSim import measure
 
 # %%
@@ -34,7 +34,7 @@ scatterer_set = CoreShell(
     core_diameter=np.geomspace(100e-9, 3000e-9, 5000),  # Geometrically spaced core diameters
     shell_width=800e-9,  # Shell width of 800 nm
     core_index=1.6,  # Refractive index of the core
-    shell_material=BK7,  # BK7 glass material for the shell
+    shell_material=UsualMaterial.BK7,  # BK7 glass material for the shell
     medium_index=1,  # Refractive index of the surrounding medium
     source_set=source_set
 )

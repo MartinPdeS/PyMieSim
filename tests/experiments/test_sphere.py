@@ -9,19 +9,19 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.measure as pms_measure
-from PyMieSim.materials import Silver, BK7, Aluminium
+from PyOptik import UsualMaterial
 
 # Configure the core materials for the sphere
 core_options = [
-    {'name': 'BK7', 'properties': {'material': BK7}},
-    {'name': 'Silver', 'properties': {'material': Silver}},
-    {'name': 'Aluminium', 'properties': {'material': Aluminium}},
+    {'name': 'BK7', 'properties': {'material': UsualMaterial.BK7}},
+    {'name': 'Silver', 'properties': {'material': UsualMaterial.Silver}},
+    {'name': 'Aluminium', 'properties': {'material': UsualMaterial.Aluminium}},
     {'name': 'Index', 'properties': {'index': 1.4}}
 ]
 
 # Define medium options
 medium_options = [
-    {'name': 'BK7', 'properties': {'medium_material': BK7}},
+    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.BK7}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
