@@ -177,7 +177,7 @@ class BaseDetector():
             NA=numpy.atleast_1d(self.NA).astype(float),
             phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
             gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
-            polarization_filter=numpy.atleast_1d(self.polarization_filter).astype(float),
+            polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
             point_coupling=point_coupling,
             coherent=self.coherent,
             rotation_angle=self.rotation_angle.astype(float)

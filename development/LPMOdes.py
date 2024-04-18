@@ -33,4 +33,4 @@ scatterer = Sphere(
     source=source
 )
 
-print(scatterer.Qsca)
+print(scatterer.print_properties())
