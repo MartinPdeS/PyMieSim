@@ -45,7 +45,7 @@ experiment = Setup(
 # Measuring the scattering efficiency (Qsca)
 # Averaging the data across the different indices to simplify visualization.
 data = experiment.get(measure.Qsca)
-data = data.mean(scatterer_set.index)
+data = data.mean(experiment.index)
 
 # %%
 # Plotting the results
