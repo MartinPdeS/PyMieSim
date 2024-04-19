@@ -35,10 +35,8 @@ class FibonacciMesh {
 
         FibonacciMesh() = default;
 
-        FibonacciMesh(int sampling, double max_angle, double phi_offset,
-            double gamma_offset, double rotation_angle):
-            sampling(sampling), max_angle(max_angle),
-            phi_offset(phi_offset), gamma_offset(gamma_offset) {
+        FibonacciMesh(int sampling, double max_angle, double phi_offset, double gamma_offset, double rotation_angle):
+            sampling(sampling), max_angle(max_angle), phi_offset(phi_offset), gamma_offset(gamma_offset) {
 
             cartesian_coordinates = Cartesian(sampling);
             compute_mesh();
@@ -62,29 +60,25 @@ class FibonacciMesh {
 
         std::vector<double> get_principal_axis() const;
 
-        py::array_t<double> get_parallel_vector() const {return parallel_vector.get_numpy();};
-        py::array_t<double> get_perpendicular_vector() const {return perpendicular_vector.get_numpy();};
+        py::array_t<double> get_parallel_vector() const {return vector_to_numpy_copy(parallel_vector.data, {parallel_vector.sampling, 3});};
+        py::array_t<double> get_perpendicular_vector() const {return vector_to_numpy_copy(perpendicular_vector.data, {perpendicular_vector.sampling, 3});};
 
         py::array_t<double> get_horizontal_parallel_projection() const {return vector_to_numpy_copy(horizontal_parallel_projection);};
         py::array_t<double> get_vertical_parallel_projection() const {return vector_to_numpy_copy(vertical_parallel_projection);};
         py::array_t<double> get_horizontal_perpendicular_projection() const {return vector_to_numpy_copy(horizontal_perpendicular_projection);};
         py::array_t<double> get_vertical_perpendicular_projection() const {return vector_to_numpy_copy(vertical_perpendicular_projection);};
 
-        py::array_t<double> get_x_py() const {return cartesian_coordinates.get_x_py();};
-        py::array_t<double> get_y_py() const {return cartesian_coordinates.get_y_py();};
-        py::array_t<double> get_z_py() const {return cartesian_coordinates.get_z_py();};
+        py::array_t<double> get_x_py() const {return vector_to_numpy_copy(cartesian_coordinates.x);};
+        py::array_t<double> get_y_py() const {return vector_to_numpy_copy(cartesian_coordinates.y);};
+        py::array_t<double> get_z_py() const {return vector_to_numpy_copy(cartesian_coordinates.z);};
 
-        py::array_t<double> get_base_x_py() const {return base_cartesian_coordinates.get_x_py();};
-        py::array_t<double> get_base_y_py() const {return base_cartesian_coordinates.get_y_py();};
-        py::array_t<double> get_base_z_py() const {return base_cartesian_coordinates.get_z_py();};
+        py::array_t<double> get_base_x_py() const {return vector_to_numpy_copy(base_cartesian_coordinates.x);};
+        py::array_t<double> get_base_y_py() const {return vector_to_numpy_copy(base_cartesian_coordinates.y);};
+        py::array_t<double> get_base_z_py() const {return vector_to_numpy_copy(base_cartesian_coordinates.z);};
 
-        void set_x_py(const std::vector<double> &value) {cartesian_coordinates.set_x_py(value);};
-        void set_y_py(const std::vector<double> &value) {cartesian_coordinates.set_y_py(value);};
-        void set_z_py(const std::vector<double> &value) {cartesian_coordinates.set_z_py(value);};
-
-        py::array_t<double> get_r_py() const {return spherical_coordinates.get_r_py();};
-        py::array_t<double> get_phi_py() const {return spherical_coordinates.get_phi_py();};
-        py::array_t<double> get_theta_py() const { return spherical_coordinates.get_theta_py();};
+        py::array_t<double> get_r_py() const {return vector_to_numpy_copy(spherical_coordinates.r);};
+        py::array_t<double> get_phi_py() const {return vector_to_numpy_copy(spherical_coordinates.phi);};
+        py::array_t<double> get_theta_py() const { return vector_to_numpy_copy(spherical_coordinates.theta);};
 
 };
 

@@ -16,9 +16,9 @@ PYBIND11_MODULE(Fibonacci, module) {
              "Initializes a Fibonacci mesh with specified parameters.")
 
         // Properties for coordinates
-        .def_property("x", &FibonacciMesh::get_x_py, &FibonacciMesh::set_x_py, "X coordinates of points on the Fibonacci mesh.")
-        .def_property("y", &FibonacciMesh::get_y_py, &FibonacciMesh::set_y_py, "Y coordinates of points on the Fibonacci mesh.")
-        .def_property("z", &FibonacciMesh::get_z_py, &FibonacciMesh::set_z_py, "Z coordinates of points on the Fibonacci mesh.")
+        .def_property_readonly("x", &FibonacciMesh::get_x_py, "X coordinates of points on the Fibonacci mesh.")
+        .def_property_readonly("y", &FibonacciMesh::get_y_py, "Y coordinates of points on the Fibonacci mesh.")
+        .def_property_readonly("z", &FibonacciMesh::get_z_py, "Z coordinates of points on the Fibonacci mesh.")
 
         .def_property_readonly("base_x", &FibonacciMesh::get_base_x_py, "X coordinates of points on the Fibonacci mesh.")
         .def_property_readonly("base_y", &FibonacciMesh::get_base_y_py, "Y coordinates of points on the Fibonacci mesh.")

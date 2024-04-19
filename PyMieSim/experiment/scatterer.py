@@ -121,7 +121,10 @@ class BaseScatterer():
         if material_value:
             self.binding_kwargs[attached_material_name] = numpy.asarray([
                 mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(getattr(self, attached_material_name))
-            ]).astype(data_type)
+            ])
+            if data_type is float:
+                self.binding_kwargs[attached_material_name] = self.binding_kwargs[attached_material_name].real
+            self.binding_kwargs[attached_material_name] = self.binding_kwargs[attached_material_name].astype(data_type)
 
         else:
             self.binding_kwargs[attached_index_name] = numpy.atleast_1d(index_value).astype(data_type)

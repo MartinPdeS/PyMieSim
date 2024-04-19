@@ -13,7 +13,7 @@ from PyMieSim.single.source import Gaussian
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=1e-6,  # 1000 nm
+    wavelength=0.5e-6,  # 1000 nm
     polarization_value='right',  # Right circular polarization
     polarization_type='circular',
     optical_power=1,  # Arbitrary units

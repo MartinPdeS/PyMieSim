@@ -10,15 +10,15 @@
 
 void FibonacciMesh::rotate_around_center() {
     if (gamma_offset != 0.0) {
-        cartesian_coordinates.mx_rot_x(gamma_offset);
-        vertical_vector_field.mx_rot_x(gamma_offset);
-        horizontal_vector_field.mx_rot_x(gamma_offset);
+        cartesian_coordinates.rotate_about_axis('x', gamma_offset);
+        vertical_vector_field.rotate_about_axis('x', gamma_offset);
+        horizontal_vector_field.rotate_about_axis('x', gamma_offset);
     }
 
     if (phi_offset != 0.0) {
-        cartesian_coordinates.mx_rot_y(phi_offset);
-        vertical_vector_field.mx_rot_y(phi_offset);
-        horizontal_vector_field.mx_rot_y(phi_offset);
+        cartesian_coordinates.rotate_about_axis('y', phi_offset);
+        vertical_vector_field.rotate_about_axis('y', phi_offset);
+        horizontal_vector_field.rotate_about_axis('y', phi_offset);
     }
 }
 
@@ -27,13 +27,13 @@ void FibonacciMesh::compute_vector_field(){
     perpendicular_vector = VectorField(sampling);
 
     for (size_t i = 0; i < sampling; i++){
-        this->perpendicular_vector(i,0) = -cartesian_coordinates.Y[i] ;
-        this->perpendicular_vector(i,1) = cartesian_coordinates.X[i] ;
-        this->perpendicular_vector(i,2) = 0.0;
+        this->perpendicular_vector.at(i,0) = -cartesian_coordinates.y[i] ;
+        this->perpendicular_vector.at(i,1) = cartesian_coordinates.x[i] ;
+        this->perpendicular_vector.at(i,2) = 0.0;
 
-        this->parallel_vector(i,0) = cartesian_coordinates.X[i] * cartesian_coordinates.Z[i] ;
-        this->parallel_vector(i,1) = cartesian_coordinates.Y[i] * cartesian_coordinates.Z[i] ;
-        this->parallel_vector(i,2) = -( pow( cartesian_coordinates.X[i], 2 ) + pow( cartesian_coordinates.Y[i], 2 ) );
+        this->parallel_vector.at(i,0) = cartesian_coordinates.x[i] * cartesian_coordinates.z[i] ;
+        this->parallel_vector.at(i,1) = cartesian_coordinates.y[i] * cartesian_coordinates.z[i] ;
+        this->parallel_vector.at(i,2) = -( pow( cartesian_coordinates.x[i], 2 ) + pow( cartesian_coordinates.y[i], 2 ) );
     }
 
     parallel_vector.normalize();
@@ -65,14 +65,14 @@ void FibonacciMesh::compute_mesh(){
     double golden_angle = PI * (3. - sqrt(5.));  // golden angle = 2.39996322972865332
 
     for (size_t i = 0; i < true_number_of_sample; i++){
-        cartesian_coordinates.Z[i] = 1 - (i / (double)( true_number_of_sample - 1) ) * 2 ;
+        cartesian_coordinates.z[i] = 1 - (i / (double)( true_number_of_sample - 1) ) * 2 ;
 
         double
             theta = golden_angle * i,
-            radius = sqrt(1 - cartesian_coordinates.Z[i] * cartesian_coordinates.Z[i]);
+            radius = sqrt(1 - cartesian_coordinates.z[i] * cartesian_coordinates.z[i]);
 
-        cartesian_coordinates.X[i] = cos(theta) * radius ;
-        cartesian_coordinates.Y[i] = sin(theta) * radius ;
+        cartesian_coordinates.x[i] = cos(theta) * radius ;
+        cartesian_coordinates.y[i] = sin(theta) * radius ;
 
         if (i == (size_t) sampling - 1)
             break;
@@ -93,9 +93,9 @@ void FibonacciMesh::compute_properties(){
 
 std::vector<double> FibonacciMesh::get_principal_axis() const {
     std::vector<double> principal_axis = {
-        cartesian_coordinates.X[0],
-        cartesian_coordinates.Y[0],
-        cartesian_coordinates.Z[0]
+        cartesian_coordinates.x[0],
+        cartesian_coordinates.y[0],
+        cartesian_coordinates.z[0]
     };
 
     return principal_axis;
@@ -106,18 +106,18 @@ void FibonacciMesh::rotate_around_axis(double angle) {
 
     std::vector<std::vector<double>> rotation_matrix = get_rotation_matrix(rotation_axis, angle);
 
-    for (size_t i = 0; i < cartesian_coordinates.X.size(); ++i){
+    for (size_t i = 0; i < cartesian_coordinates.x.size(); ++i){
         double
-            x = cartesian_coordinates.X[i],
-            y = cartesian_coordinates.Y[i],
-            z = cartesian_coordinates.Z[i];
+            x = cartesian_coordinates.x[i],
+            y = cartesian_coordinates.y[i],
+            z = cartesian_coordinates.z[i];
 
-        cartesian_coordinates.X[i] = rotation_matrix[0][0] * x + rotation_matrix[0][1] * y + rotation_matrix[0][2] * z;
-        cartesian_coordinates.Y[i] = rotation_matrix[1][0] * x + rotation_matrix[1][1] * y + rotation_matrix[1][2] * z;
-        cartesian_coordinates.Z[i] = rotation_matrix[2][0] * x + rotation_matrix[2][1] * y + rotation_matrix[2][2] * z;
+        cartesian_coordinates.x[i] = rotation_matrix[0][0] * x + rotation_matrix[0][1] * y + rotation_matrix[0][2] * z;
+        cartesian_coordinates.y[i] = rotation_matrix[1][0] * x + rotation_matrix[1][1] * y + rotation_matrix[1][2] * z;
+        cartesian_coordinates.z[i] = rotation_matrix[2][0] * x + rotation_matrix[2][1] * y + rotation_matrix[2][2] * z;
     }
 
-    this->spherical_coordinates = this->cartesian_coordinates.cartesian_to_spherical();
+    this->spherical_coordinates = this->cartesian_coordinates.to_spherical();
 }
 
 
@@ -136,10 +136,10 @@ class FullSteradian
             dPhi   = 1.0 * PI / (sampling-1);
 
             for (size_t p=0; p<sampling; p++)
-                spherical_coordinates.Phi[p]   = p * dPhi   - PI/2.0;
+                spherical_coordinates.phi[p]   = p * dPhi   - PI/2.0;
 
             for (size_t t=0; t<sampling; t++)
-                spherical_coordinates.Theta[t] = t * dTheta - PI/1.0;
+                spherical_coordinates.theta[t] = t * dTheta - PI/1.0;
         }
 
         template<typename T>
@@ -149,7 +149,7 @@ class FullSteradian
 
             for (size_t p=0; p<sampling; p++)
                 for (size_t t=0; t<sampling; t++)
-                    integral += Vector[p*sampling + t] * sin(spherical_coordinates.Phi[p] + PI/2.0) * dPhi * dTheta;
+                    integral += Vector[p*sampling + t] * sin(spherical_coordinates.phi[p] + PI/2.0) * dPhi * dTheta;
 
             return integral;
         }
@@ -162,7 +162,7 @@ class FullSteradian
 
             for (size_t p=0; p<sampling; p++)
                 for (size_t t=0; t<sampling; t++)
-                    integral += vector[p*sampling + t] * cos(spherical_coordinates.Phi[p] + PI/2.0) * sin(spherical_coordinates.Phi[p] + PI/2.0) * dPhi * dTheta;
+                    integral += vector[p*sampling + t] * cos(spherical_coordinates.phi[p] + PI/2.0) * sin(spherical_coordinates.phi[p] + PI/2.0) * dPhi * dTheta;
 
             return integral;
         }
@@ -171,8 +171,8 @@ class FullSteradian
         {
             double integral = 0;
 
-            for (auto phi : spherical_coordinates.Phi)
-                for (auto theta : spherical_coordinates.Theta)
+            for (auto phi : spherical_coordinates.phi)
+                for (auto theta : spherical_coordinates.theta)
                     integral += sin(phi+PI/2.0) * dPhi * dTheta;
 
             return integral;

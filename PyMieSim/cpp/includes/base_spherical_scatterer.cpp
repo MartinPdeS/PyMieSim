@@ -127,8 +127,8 @@ public:
     compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius=1.0) const
     {
         return this->compute_unstructured_fields(
-            fibonacci_mesh.spherical_coordinates.Phi,
-            fibonacci_mesh.spherical_coordinates.Theta,
+            fibonacci_mesh.spherical_coordinates.phi,
+            fibonacci_mesh.spherical_coordinates.theta,
             radius
         );
     }
@@ -139,20 +139,20 @@ public:
     {
         FullSteradian full_mesh = FullSteradian(sampling);
 
-        auto [S1, S2] = this->compute_s1s2(full_mesh.spherical_coordinates.Phi);
+        auto [S1, S2] = this->compute_s1s2(full_mesh.spherical_coordinates.phi);
 
         auto [phi_field, theta_field] = this->compute_structured_fields(
             S1,
             S2,
-            full_mesh.spherical_coordinates.Theta,
+            full_mesh.spherical_coordinates.theta,
             radius
         );
 
         return std::make_tuple(
             phi_field,
             theta_field,
-            full_mesh.spherical_coordinates.Phi,
-            full_mesh.spherical_coordinates.Theta
+            full_mesh.spherical_coordinates.phi,
+            full_mesh.spherical_coordinates.theta
         );
     }
 
@@ -163,8 +163,8 @@ public:
         FullSteradian full_mesh = FullSteradian(sampling);
 
         auto [phi_field, theta_field] = this->compute_structured_fields(
-            full_mesh.spherical_coordinates.Phi,
-            full_mesh.spherical_coordinates.Theta,
+            full_mesh.spherical_coordinates.phi,
+            full_mesh.spherical_coordinates.theta,
             radius
         );
 
