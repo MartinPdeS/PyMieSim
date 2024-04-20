@@ -91,6 +91,8 @@ namespace DETECTOR {
                 theta_field[i] * this->fibonacci_mesh.vertical_perpendicular_projection[i] +
                 phi_field[i] * this->fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
 
+
+
             horizontal_projection[i] =
                 theta_field[i] * this->fibonacci_mesh.horizontal_perpendicular_projection[i] +
                 phi_field[i] * this->fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version

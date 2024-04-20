@@ -5,7 +5,8 @@ from typing import NoReturn
 from tkinter import ttk, StringVar
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import InputWidget, WidgetCollection, ComBoxWidget
+from PyMieSim.gui.widgets import InputWidget, ComBoxWidget
+from PyMieSim.gui.widget_collection import WidgetCollection
 
 
 class DetectorTab(BaseTab):
@@ -56,6 +57,7 @@ class DetectorTab(BaseTab):
         """
         detector_type = self.type_widget.get().lower()
         setup_method = getattr(self, f"setup_{detector_type}_widgets", None)
+        self.widget_collection.clear_widgets()
         if callable(setup_method):
             setup_method()
         else:
@@ -79,32 +81,36 @@ class DetectorTab(BaseTab):
         """
         Setup widgets specific to configuring a Photodiode detector.
         """
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', frame=self.frame),
-            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', frame=self.frame),
-            InputWidget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset', frame=self.frame),
-            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter', frame=self.frame),
-            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True, frame=self.frame)
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', dtype=float),
+            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', dtype=float),
+            InputWidget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset', dtype=float),
+            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
+            InputWidget(default_value='500', label='Sampling', component_label='sampling', dtype=int)
         )
-        self.widget_collection.row_start = 1
-        self.widget_collection.setup_widgets(self.frame)
+
+        self.widget_collection.setup_widgets(row_start=1)
         self.setup_photodiode_component()
 
     def setup_coherentmode_widgets(self) -> None:
         """
         Setup widgets specific to configuring a Coherent Mode detector.
         """
-        self.widget_collection = WidgetCollection(
-            ComBoxWidget(label='Coupling mode', component_label='coupling_mode', options=['point', 'mean'], frame=self.frame, default_options=0),
-            InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter', frame=self.frame),
-            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', frame=self.frame),
-            InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset', frame=self.frame),
-            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', frame=self.frame),
-            InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', to_float=False, frame=self.frame),
-            InputWidget(default_value='500', label='Sampling', component_label='sampling', to_int=True, frame=self.frame)
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            ComBoxWidget(label='Coupling mode', component_label='coupling_mode', options=['point', 'mean'], default_options=0),
+            InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
+            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', dtype=float),
+            InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset', dtype=float),
+            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', dtype=float),
+            InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', dtype=str),
+            InputWidget(default_value='500', label='Sampling', component_label='sampling', dtype=int)
         )
-        self.widget_collection.row_start = 1
-        self.widget_collection.setup_widgets(self.frame)
+
+        self.widget_collection.setup_widgets(row_start=1)
         self.setup_coherentmode_component()
 
     def setup_component(self, event=None) -> NoReturn:

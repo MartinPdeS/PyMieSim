@@ -4,7 +4,8 @@
 from typing import NoReturn
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import InputWidget, WidgetCollection
+from PyMieSim.gui.widgets import InputWidget
+from PyMieSim.gui.widget_collection import WidgetCollection
 
 
 class SourceTab(BaseTab):
@@ -37,14 +38,16 @@ class SourceTab(BaseTab):
         This method sets up labels and entry fields for each source parameter, facilitating
         user interaction for the configuration of the light source.
         """
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, frame=self.frame),
-            InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value', frame=self.frame),
-            InputWidget(default_value='1.0', label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, frame=self.frame),
-            InputWidget(default_value='0.2', label='Numerical Aperture (NA) [fix]', component_label='NA', frame=self.frame)
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, dtype=float),
+            InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value', dtype=float),
+            InputWidget(default_value='1.0', label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, dtype=float),
+            InputWidget(default_value='0.2', label='Numerical Aperture (NA) [fix]', component_label='NA', dtype=float)
         )
 
-        self.widget_collection.setup_widgets(frame=self.frame)
+        self.widget_collection.setup_widgets()
         self.setup_component()
 
     def setup_component(self) -> NoReturn:

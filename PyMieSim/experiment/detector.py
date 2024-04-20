@@ -301,4 +301,6 @@ class CoherentMode(BaseDetector):
                 number_0=number_0,
                 number_1=number_1,
             )
+
+            print(self.scalar_fields[idx])
 # -

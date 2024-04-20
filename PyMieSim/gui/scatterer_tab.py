@@ -6,7 +6,8 @@ from tkinter import ttk
 import tkinter
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import InputWidget, WidgetCollection
+from PyMieSim.gui.widgets import InputWidget
+from PyMieSim.gui.widget_collection import WidgetCollection
 
 
 class ScattererTab(BaseTab):
@@ -76,6 +77,7 @@ class ScattererTab(BaseTab):
         """
         scatterer_type = self.type_button.get().lower()
         setup_method = getattr(self, f"setup_{scatterer_type}_widgets", None)
+        self.widget_collection.clear_widgets()
         if callable(setup_method):
             setup_method()
         else:
@@ -85,38 +87,44 @@ class ScattererTab(BaseTab):
         """
         Sets up the configuration widgets for a Sphere scatterer and initializes the component.
         """
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='500', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, frame=self.frame),
-            InputWidget(default_value='1.4', label='Refractive Index', component_label='index', frame=self.frame),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', frame=self.frame)
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            InputWidget(default_value='500', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, dtype=float),
+            InputWidget(default_value='1.4', label='Refractive Index', component_label='index', dtype=float),
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', dtype=float)
         )
-        self.widget_collection.setup_widgets(self.frame)
+        self.widget_collection.setup_widgets()
         self.setup_sphere_component()
 
     def setup_cylinder_widgets(self) -> NoReturn:
         """
         Sets up the configuration widgets for a Cylinder scatterer and initializes the component.
         """
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='1000', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, frame=self.frame),
-            InputWidget(default_value='1.4', label='Refractive Index', component_label='index', frame=self.frame),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', frame=self.frame)
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            InputWidget(default_value='1000', label='Diameter [nm]', component_label='diameter', multiplicative_factor=1e-9, dtype=float),
+            InputWidget(default_value='1.4', label='Refractive Index', component_label='index', dtype=complex),
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', dtype=float)
         )
-        self.widget_collection.setup_widgets(self.frame)
+        self.widget_collection.setup_widgets()
         self.setup_cylinder_component()
 
     def setup_coreshell_widgets(self) -> NoReturn:
         """
         Sets up the configuration widgets for a CoreShell scatterer and initializes the component.
         """
-        self.widget_collection = WidgetCollection(
-            InputWidget(default_value='1000', label='Core Diameter [nm]', component_label='core_diameter', multiplicative_factor=1e-9, frame=self.frame),
-            InputWidget(default_value='200', label='Shell Width [nm]', component_label='shell_width', multiplicative_factor=1e-9, frame=self.frame),
-            InputWidget(default_value='1.4', label='Core Refractive Index', component_label='core_index', frame=self.frame),
-            InputWidget(default_value='1.4', label='Shell Refractive Index', component_label='shell_index', frame=self.frame),
-            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', frame=self.frame)
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            InputWidget(default_value='1000', label='Core Diameter [nm]', component_label='core_diameter', multiplicative_factor=1e-9, dtype=float),
+            InputWidget(default_value='200', label='Shell Width [nm]', component_label='shell_width', multiplicative_factor=1e-9, dtype=float),
+            InputWidget(default_value='1.4', label='Core Refractive Index', component_label='core_index', dtype=complex),
+            InputWidget(default_value='1.4', label='Shell Refractive Index', component_label='shell_index', dtype=complex),
+            InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', dtype=float)
         )
-        self.widget_collection.setup_widgets(self.frame)
+        self.widget_collection.setup_widgets()
         self.setup_coreshell_component()
 
     def setup_component(self, event=None) -> NoReturn:

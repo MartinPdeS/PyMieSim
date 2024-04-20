@@ -5,7 +5,8 @@ from typing import NoReturn, Optional, Dict
 from tkinter import ttk
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.utils import WidgetCollection, ComBoxWidget
+from PyMieSim.gui.widgets import ComBoxWidget
+from PyMieSim.gui.widget_collection import WidgetCollection
 
 
 class AxisTab(BaseTab):
@@ -32,13 +33,15 @@ class AxisTab(BaseTab):
         self.x_axis_options = list(self.axis_mapping.keys())
         self.y_axis_options = list(self.measure_map.keys())
 
-        self.widget_collection = WidgetCollection(
-            ComBoxWidget(label='x-axis', component_label='x_axis', options=self.x_axis_options, frame=self.frame, default_options=7),
-            ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, frame=self.frame, default_options=21),
-            ComBoxWidget(label='STD-axis', component_label='std_axis', options=['none', *self.x_axis_options], frame=self.frame, default_options=0),
+        self.widget_collection = WidgetCollection(frame=self.frame)
+
+        self.widget_collection.add_widgets(
+            ComBoxWidget(label='x-axis', component_label='x_axis', options=self.x_axis_options, default_options=9),
+            ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, default_options=21),
+            ComBoxWidget(label='STD-axis', component_label='std_axis', options=['none', *self.x_axis_options], default_options=0),
         )
 
-        self.widget_collection.setup_widgets(frame=self.frame)
+        self.widget_collection.setup_widgets()
 
     @property
     def x_axis(self) -> str:

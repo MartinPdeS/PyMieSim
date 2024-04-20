@@ -208,6 +208,8 @@ class PyMieSimGUI:
 
         self.data = self.experiment.get(self.y_axis)
 
+        print(self.data.y.values)
+
         self.x_axis = self.axis_tab.axis_mapping[x_axis]
 
         try:

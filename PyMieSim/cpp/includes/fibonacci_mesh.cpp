@@ -5,7 +5,7 @@
 #include "numpy_interface.cpp"
 #include "fibonacci_mesh.h"
 
-
+#include <iostream>
 
 
 void FibonacciMesh::rotate_around_center() {
@@ -45,6 +45,10 @@ void FibonacciMesh::compute_projections(){
     vertical_parallel_projection = parallel_vector.get_scalar_product(vertical_vector_field);
 
     horizontal_perpendicular_projection = perpendicular_vector.get_scalar_product(horizontal_vector_field);
+
+    for (auto e: horizontal_vector_field)
+        std::cout<<e<<"\n";
+
     vertical_perpendicular_projection = perpendicular_vector.get_scalar_product(vertical_vector_field);
 }
 
