@@ -21,8 +21,9 @@ struct VectorField {
 
     double &operator[](size_t i) { return data[i]; }
     double &at(size_t i, size_t j) { return data[i * 3 + j]; }
+    double &operator()(const size_t& i, const size_t j) { return data[i * 3 + j]; }
 
-    VectorField operator+(const VectorField &other) const {
+    VectorField operator+(const VectorField &other) {
         VectorField result(sampling);
         for (size_t i = 0; i < data.size(); ++i) {
             result.data[i] = data[i] + other.data[i];
@@ -31,11 +32,12 @@ struct VectorField {
     }
 
     std::vector<double> get_scalar_product(VectorField &base) {
-        std::vector<double> result(sampling);
-        for (size_t i = 0; i < sampling; ++i)
-            result[i] = at(i, 0) * base.at(i, 0) + at(i, 1) * base.at(i, 1) + at(i, 2) * base.at(i, 2);
+      std::vector<double> output(sampling);
 
-        return result;
+      for (size_t i=0; i<sampling; i++)
+          output[i] = (*this)(i,0) * base[0] + (*this)(i,1) * base[1] + (*this)(i,2) * base[2];
+
+      return output;
     }
 
     void normalize() {
@@ -49,7 +51,7 @@ struct VectorField {
         }
     }
 
-    void rotate_about_axis(char axis, double angle) {
+    void rotate_about_axis(const char axis, const double angle) {
         const double c = std::cos(angle), s = std::sin(angle);
         std::vector<std::vector<double>> matrix;
 
@@ -82,7 +84,7 @@ struct VectorField {
 
 struct Spherical {
     std::vector<double> r, phi, theta;
-    explicit Spherical(size_t sampling = 0) : r(sampling), phi(sampling), theta(sampling) {}
+    explicit Spherical(const size_t sampling = 0) : r(sampling), phi(sampling), theta(sampling) {}
 
     py::array_t<double> get_r_py() const { return vector_to_numpy_copy(r); }
     py::array_t<double> get_phi_py() const { return vector_to_numpy_copy(phi); }
@@ -109,7 +111,7 @@ struct Cartesian {
         return sph;
     }
 
-    void rotate_about_axis(char axis, double angle) {
+    void rotate_about_axis(const char axis, const double angle) {
         const double c = std::cos(angle), s = std::sin(angle);
         std::vector<std::vector<double>> matrix;
 
@@ -129,14 +131,14 @@ struct Cartesian {
         apply_matrix(matrix);
     }
 
-    void apply_matrix(std::vector<std::vector<double>>& M)
+    void apply_matrix(const std::vector<std::vector<double>>& matrix)
     {
       double tempx, tempy, tempz;
       for (size_t i = 0; i < x.size(); i++){
 
-          tempx = M[0][0] * x[i] + M[0][1] * y[i] + M[0][2] * z[i];
-          tempy = M[1][0] * x[i] + M[1][1] * y[i] + M[1][2] * z[i];
-          tempz = M[2][0] * x[i] + M[2][1] * y[i] + M[2][2] * z[i];
+          tempx = matrix[0][0] * x[i] + matrix[0][1] * y[i] + matrix[0][2] * z[i];
+          tempy = matrix[1][0] * x[i] + matrix[1][1] * y[i] + matrix[1][2] * z[i];
+          tempz = matrix[2][0] * x[i] + matrix[2][1] * y[i] + matrix[2][2] * z[i];
 
           x[i] = tempx;
           y[i] = tempy;

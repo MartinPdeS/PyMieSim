@@ -5,9 +5,6 @@
 #include "numpy_interface.cpp"
 #include "fibonacci_mesh.h"
 
-#include <iostream>
-
-
 void FibonacciMesh::rotate_around_center() {
     if (gamma_offset != 0.0) {
         cartesian_coordinates.rotate_about_axis('x', gamma_offset);
@@ -46,18 +43,15 @@ void FibonacciMesh::compute_projections(){
 
     horizontal_perpendicular_projection = perpendicular_vector.get_scalar_product(horizontal_vector_field);
 
-    for (auto e: horizontal_vector_field)
-        std::cout<<e<<"\n";
-
     vertical_perpendicular_projection = perpendicular_vector.get_scalar_product(vertical_vector_field);
 }
 
 double FibonacciMesh::NA2Angle(const double &NA) const {
     if (NA <= 1.0)
-    return asin(NA);
+        return asin(NA);
 
     if (NA >= 1.0)
-    return asin(NA-1.0) + PI/2.0;
+        return asin(NA-1.0) + PI/2.0;
 
     return 1.0;
 }

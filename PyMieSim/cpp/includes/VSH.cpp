@@ -1,5 +1,4 @@
-#ifndef VSH_H
-  #define VSH_H
+#pragma once
 
 #include "definitions.cpp"
 #include "fibonacci_mesh.cpp"
@@ -91,17 +90,7 @@ namespace VSH{
             Output.theta = 0;
             return Output;
         }
-
-
-
-
-
-
-
     }
-
-
-
 
     namespace CYLINDRICAL {
 
@@ -116,14 +105,5 @@ namespace VSH{
       }
 
     }
-
-
-
-
-
-
-
 }
 
-
-#endif
