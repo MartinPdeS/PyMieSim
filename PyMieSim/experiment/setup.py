@@ -105,7 +105,6 @@ class Setup(object):
             setattr(self, k, v)
         if self.detector_set is not None:
             for k, v in self.detector_set.binding_kwargs.items():
-                print('hllo', k)
                 setattr(self, k, v)
 
         return array

@@ -2,7 +2,6 @@
 
 #include "sphere.h"
 
-
 namespace SPHERE
 {
     using complex128 = std::complex<double>;

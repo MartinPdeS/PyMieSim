@@ -3,7 +3,6 @@
 #include "definitions.cpp"
 #include "fibonacci_mesh.cpp"
 
-
 namespace VSH{
     namespace SPHERICAL {
 
@@ -29,12 +28,11 @@ namespace VSH{
           taun.push_back( mu );
           taun.push_back( 3.0 * cos(2. * acos(mu) ) );
 
-          double n = 0;
-          for (size_t order = 2; order < max_order; order++)
+          for (int order = 2; order < max_order; order++)
               {
-               pin.push_back( ( (2. * n + 1.) * mu * pin[order - 1] - (n + 1.) * pin[order - 2] ) / n );
+               pin.push_back( ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order );
 
-               taun.push_back( (n + 1.) * mu * pin[order] - (n + 2.) * pin[order - 1] );
+               taun.push_back( ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1] );
              }
 
           return std::make_tuple(pin, taun);
@@ -48,12 +46,11 @@ namespace VSH{
           taun[0] = mu;
           taun[1] = 3.0 * cos(2. * acos(mu) );
 
-          double n = 0;
-          for (size_t order = 2; order < max_order; order++)
+          for (int order = 2; order < max_order; order++)
               {
-               pin[order] = ( (2. * n + 1.) * mu * pin[order - 1] - (n + 1.) * pin[order - 2] ) / n;
+               pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
 
-               taun[order] = (n + 1.) * mu * pin[order] - (n + 2.) * pin[order - 1];
+               taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
              }
         }
     }

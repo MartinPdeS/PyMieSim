@@ -46,7 +46,7 @@ void FibonacciMesh::compute_projections(){
     vertical_perpendicular_projection = perpendicular_vector.get_scalar_product(vertical_vector_field);
 }
 
-double FibonacciMesh::NA2Angle(const double &NA) const {
+double FibonacciMesh::NA2Angle(double NA) const {
     if (NA <= 1.0)
         return asin(NA);
 

@@ -56,7 +56,7 @@ class FibonacciMesh {
         void compute_mesh();
         void compute_properties();
 
-        double NA2Angle(const double &NA) const;
+        double NA2Angle(double NA) const;
 
         std::vector<double> get_principal_axis() const;
 

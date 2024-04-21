@@ -9,6 +9,7 @@
 #include <vector>
 #include <complex>
 
+
 class BaseSphericalScatterer
 {
 public:
@@ -290,7 +291,6 @@ public:
 
         for (double phi : phi)
             mu.push_back( cos( phi - PI / 2.0 ) );
-
 
         for (unsigned int i = 0; i < phi.size(); i++){
             auto [pin, taun] = VSH::SPHERICAL::MiePiTau(mu[i], max_order);
