@@ -17,7 +17,7 @@ from PyOptik import UsualMaterial
 
 # %%
 # Defining the source
-source_set = Gaussian(
+source = Gaussian(
     wavelength=np.linspace(950e-9, 1050e-9, 300),  # Wavelengths ranging from 950 nm to 1050 nm
     polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
@@ -28,16 +28,16 @@ source_set = Gaussian(
 # %%
 # Defining the scatterer distribution
 # Here we look at cylinders with a set diameter, refractive index, and medium.
-scatterer_set = Cylinder(
+scatterer = Cylinder(
     diameter=np.linspace(100e-9, 8000e-9, 5),  # Diameters ranging from 100 nm to 8000 nm
     material=UsualMaterial.BK7,  # Material of the cylinder
     medium_index=1,  # Refractive index of the surrounding medium
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Defining the detector
-detector_set = CoherentMode(
+detector = CoherentMode(
     mode_number="LP11",  # Specifying the LP11 mode
     NA=[0.05, 0.01],  # Array of Numerical Apertures for the detector
     phi_offset=-180,  # Phi offset in degrees
@@ -49,9 +49,9 @@ detector_set = CoherentMode(
 # %%
 # Setting up the experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer=scatterer,
+    source=source,
+    detector=detector
 )
 
 # %%

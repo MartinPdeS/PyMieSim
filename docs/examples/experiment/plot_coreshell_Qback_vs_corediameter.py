@@ -17,7 +17,7 @@ from PyMieSim import measure
 
 # %%
 # Defining the source
-source_set = Gaussian(
+source = Gaussian(
     wavelength=[800e-9, 900e-9, 1000e-9],  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
     polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
@@ -27,20 +27,20 @@ source_set = Gaussian(
 
 # %%
 # Defining the scatterer distribution
-scatterer_set = CoreShell(
+scatterer = CoreShell(
     core_diameter=numpy.geomspace(100e-9, 600e-9, 400),  # Core diameters from 100 nm to 600 nm
     shell_width=800e-9,  # Shell width of 800 nm
     core_material=UsualMaterial.Silver,  # Core material
     shell_material=UsualMaterial.BK7,  # Shell material
     medium_index=1,  # Surrounding medium's refractive index
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Setting up the experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 # %%

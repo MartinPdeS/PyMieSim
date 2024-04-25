@@ -45,14 +45,14 @@ scatterer = CoreShell(
     core_index=core_index,
     shell_index=shell_index,
     medium_index=medium_index,
-    source_set=source
+    source=source
 )
 
 # Create experimental setup
 experiment = Setup(
-    scatterer_set=scatterer,
-    source_set=source,
-    detector_set=None
+    scatterer=scatterer,
+    source=source,
+    detector=None
 )
 
 # Compute PyMieSim scattering efficiency data

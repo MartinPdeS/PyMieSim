@@ -158,9 +158,6 @@
     std::vector<std::vector<double>>
     get_rotation_matrix(std::vector<double> rotation_axis, double rotation_angle)
     {
-
-        rotation_angle = rotation_angle * PI / 180;
-
         double norm_rotation_axis = sqrt(pow(rotation_axis[0], 2) + pow(rotation_axis[1], 2) + pow(rotation_axis[2], 2));
 
         for (double &x: rotation_axis)

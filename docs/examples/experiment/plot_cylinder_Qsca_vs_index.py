@@ -15,7 +15,7 @@ from PyMieSim import measure
 
 # %%
 # Defining the source
-source_set = Gaussian(
+source = Gaussian(
     wavelength=[500e-9, 1000e-9, 1500e-9],  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
     polarization_value=30,  # Polarization angle in degrees
     polarization_type='linear',
@@ -25,18 +25,18 @@ source_set = Gaussian(
 
 # %%
 # Defining the scatterer distribution
-scatterer_set = Cylinder(
+scatterer = Cylinder(
     diameter=800e-9,  # Fixed diameter of 800 nm
     index=np.linspace(1.3, 1.9, 1500),  # Refractive index ranging from 1.3 to 1.9
     medium_index=1,  # Refractive index of the surrounding medium
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Setting up the experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 # %%

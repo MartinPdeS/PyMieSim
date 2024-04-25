@@ -26,14 +26,14 @@ source = Gaussian(
     NA=0.1,
 )
 
-scatterer_set = Cylinder(
+scatterer = Cylinder(
     diameter=3000e-9,
     source=source,
     index=1.0 + 0.07j,
     medium_index=1.0
 )
 
-S1S2 = scatterer_set.get_s1s2(sampling=800)
+S1S2 = scatterer.get_s1s2(sampling=800)
 Data = (numpy.abs(S1S2.S1)**2 + numpy.abs(S1S2.S2)**2) * (0.5 / (numpy.pi * source.k))**(1 / 4)
 
 plt.figure(figsize=(8, 4))
@@ -41,7 +41,7 @@ plt.plot(S1S2.phi, Data, 'C1-', linewidth=3, label='PyMieSim')
 
 plt.plot(x, y, 'k--', linewidth=1, label='B&H [8.10]')
 
-plt.xlabel('scatterer_settering angle [degree]')
+plt.xlabel('scatterertering angle [degree]')
 plt.ylabel('Phase function')
 plt.yscale('log')
 plt.grid(True)

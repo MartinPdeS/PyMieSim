@@ -16,7 +16,7 @@ from PyMieSim import measure
 
 # %%
 # Defining the source to be employed.
-source_set = Gaussian(
+source = Gaussian(
     wavelength=np.linspace(200e-9, 1800e-9, 300),
     polarization_value=0,
     polarization_type='linear',
@@ -25,19 +25,19 @@ source_set = Gaussian(
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = Sphere(
+scatterer = Sphere(
     diameter=np.linspace(400e-9, 1400e-9, 10),
     material=UsualMaterial.Silver,
     medium_index=1,
-    source_set=source_set
+    source=source
 )
 
 
 # %%
 # Defining the experiment setup
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 # %%

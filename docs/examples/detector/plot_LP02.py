@@ -12,7 +12,7 @@ from PyMieSim.single.detector import CoherentMode
 # %%
 # Initializing the detector
 detector = CoherentMode(
-    mode_number="LP02:00",  # Specifying LP02 mode
+    mode_number="LP02",  # Specifying LP02 mode
     sampling=500,  # Number of sampling points
     NA=0.3,  # Numerical Aperture
     gamma_offset=0,  # Gamma offset

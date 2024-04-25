@@ -16,7 +16,7 @@ from PyOptik import UsualMaterial
 
 # %%
 # Defining the source
-source_set = Gaussian(
+source = Gaussian(
     wavelength=400e-9,  # 400 nm
     polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
@@ -26,18 +26,18 @@ source_set = Gaussian(
 
 # %%
 # Defining the scatterer distribution
-scatterer_set = Cylinder(
+scatterer = Cylinder(
     diameter=np.linspace(1e-9, 800e-9, 300),  # Diameters ranging from 1 nm to 800 nm
     material=[UsualMaterial.Silver, UsualMaterial.Gold, UsualMaterial.Aluminium],  # Scatterer materials
     medium_index=1,  # Refractive index of the surrounding medium
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Setting up the experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 # %%

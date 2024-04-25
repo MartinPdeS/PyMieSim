@@ -22,18 +22,18 @@ PyMieScatt_measures = {
 }
 
 
-def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
-    scatterer_set = Sphere(
+def get_PyMieSim_data(source, index, diameters, measure_string: str):
+    scatterer = Sphere(
         diameter=diameters,
         index=index,
         medium_index=1.,
-        source_set=source_set
+        source=source
     )
 
     experiment = Setup(
-        scatterer_set=scatterer_set,
-        source_set=source_set,
-        detector_set=None
+        scatterer=scatterer,
+        source=source,
+        detector=None
     )
 
     data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
@@ -41,12 +41,12 @@ def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
     return data.squeeze()
 
 
-def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
+def get_PyMieScatt_data(source, index, diameters, measure_string: str):
     PyMieScatt_data = []
     for diameter in diameters:
         efficiencies = ps.MieQ(
             m=index,
-            wavelength=source_set.wavelength[0],
+            wavelength=source.wavelength[0],
             diameter=diameter,
         )
 
@@ -58,7 +58,7 @@ def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
 
 
 def get_comparison(wavelength, index, diameters, measure_string: str):
-    source_set = Gaussian(
+    source = Gaussian(
         wavelength=wavelength,
         polarization_value=0,
         polarization_type='linear',
@@ -67,14 +67,14 @@ def get_comparison(wavelength, index, diameters, measure_string: str):
     )
 
     PyMieScatt_data = get_PyMieScatt_data(
-        source_set=source_set,
+        source=source,
         index=index,
         diameters=diameters,
         measure_string=measure_string
     )
 
     PyMieSim_data = get_PyMieSim_data(
-        source_set=source_set,
+        source=source,
         index=index,
         diameters=diameters,
         measure_string=measure_string

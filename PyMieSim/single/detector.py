@@ -52,9 +52,6 @@ class GenericDetector():
 
         self.cpp_binding.scalar_field = far_field
 
-        if self.rotation_angle != 0:
-            self.rotate_around_axis(self.rotation_angle)
-
     def set_cpp_binding(self):
         """
         Establish binding with the C++ backend for the detector.
@@ -68,18 +65,9 @@ class GenericDetector():
             gamma_offset=numpy.deg2rad(self.gamma_offset),
             polarization_filter=numpy.deg2rad(self.polarization_filter),
             coherent=self.coherent,
-            rotation_angle=numpy.deg2rad(self.rotation_angle),
+            rotation=numpy.deg2rad(self.rotation),
             point_coupling=point_coupling
         )
-
-    def rotate_around_axis(self, rotation_angle: float):
-        """
-        Rotate the detector mesh around its principal axis by a given angle.
-
-        Args:
-            rotation_angle (float): Rotation angle in degrees.
-        """
-        self.cpp_binding.mesh.rotate_around_axis(rotation_angle)
 
     def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
         r"""
@@ -160,23 +148,15 @@ class GenericDetector():
         :returns:   The two mode numbers plus rotation angle
         :rtype:     tuple[int, int, float]
         """
-        assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or 'HG11:90 (rotation of 90 degree)'"
-        if ':' not in mode_name:
-            mode_name += ':0'
+        assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or HG11"
 
         mode_family_name = mode_name[:2].lower()
-
-        split = mode_name.split(':')
-
-        mode_name, rotation_angle = split
 
         number_0, number_1 = mode_name[-2:]
 
         number_0, number_1 = int(number_0), int(number_1)
 
-        rotation_angle = float(rotation_angle)
-
-        return mode_family_name, (number_0, number_1), rotation_angle
+        return mode_family_name, (number_0, number_1)
 
 
 @dataclass
@@ -199,7 +179,7 @@ class Photodiode(GenericDetector):
     """ Indicate if the coupling mechanism is coherent or not """
     coupling_mode: str = field(default='point', init=False)
     """ Indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
-    rotation_angle: str = field(default=0, init=False)
+    rotation: str = field(default=0, init=False)
     """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
@@ -231,7 +211,7 @@ class IntegratingSphere(Photodiode):
     """ Indicate if the coupling mechanism is coherent or not """
     coupling_mode: str = field(default='point', init=False)
     """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
-    rotation_angle: str = field(default=0, init=False)
+    rotation: float = field(default=0, init=False)
     """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
@@ -263,12 +243,14 @@ class CoherentMode(GenericDetector):
     """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
     coherent: bool = field(default=True, init=False)
     """ Indicate if the coupling mechanism is coherent or not. """
+    rotation: float = 90
+    """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
         if self.NA > 0.3 or self.NA < 0:
             logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
 
-        self.mode_family_name, self.numbers, self.rotation_angle = self.interpret_mode_name(mode_name=self.mode_number)
+        self.mode_family_name, self.numbers = self.interpret_mode_name(mode_name=self.mode_number)
 
         self.initialize()
 
@@ -289,9 +271,6 @@ class CoherentMode(GenericDetector):
         )
 
         self.cpp_binding.scalar_field = farfield
-
-        if self.rotation_angle != 0:
-            self.rotate_around_axis(self.rotation_angle)
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return self.mode_module.interpolate_from_structured_mesh(

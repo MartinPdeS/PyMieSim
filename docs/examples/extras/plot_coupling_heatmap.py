@@ -24,7 +24,7 @@ index = numpy.linspace(1.3, 2.1, 300)
 
 diameter = numpy.linspace(1e-9, 2000e-9, 300)
 
-source_set = Gaussian(
+source = Gaussian(
     wavelength=400e-9,
     polarization_value=90,
     polarization_type='linear',
@@ -33,15 +33,15 @@ source_set = Gaussian(
 )
 
 
-scatterer_set = Sphere(
+scatterer = Sphere(
     diameter=diameter,
     index=index,
     medium_index=1,
-    source_set=source_set
+    source=source
 )
 
 
-detector_set = Photodiode(
+detector = Photodiode(
     polarization_filter=None,
     NA=0.3,
     phi_offset=0,
@@ -50,9 +50,9 @@ detector_set = Photodiode(
 )
 
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer=scatterer,
+    source=source,
+    detector=detector
 )
 
 data = experiment.get(measure.coupling)

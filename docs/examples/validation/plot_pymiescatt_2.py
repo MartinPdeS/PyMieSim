@@ -44,14 +44,14 @@ scatterer = CoreShell(
     core_index=core_index,
     shell_index=shell_index,
     medium_index=medium_index,
-    source_set=source
+    source=source
 )
 
 # Define experiment setup
 experiment = Setup(
-    scatterer_set=scatterer,
-    source_set=source,
-    detector_set=None  # No detector set specified
+    scatterer=scatterer,
+    source=source,
+    detector=None  # No detector set specified
 )
 
 # Simulate using PyMieSim

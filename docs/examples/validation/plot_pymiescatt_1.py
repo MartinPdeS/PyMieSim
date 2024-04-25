@@ -39,14 +39,14 @@ scatterer = Sphere(
     diameter=diameters,
     index=index,
     medium_index=medium_index,
-    source_set=source
+    source=source
 )
 
 # Create experimental setup
 experiment = Setup(
-    scatterer_set=scatterer,
-    source_set=source,
-    detector_set=None  # No detector configuration
+    scatterer=scatterer,
+    source=source,
+    detector=None  # No detector configuration
 )
 
 # Compute PyMieSim scattering efficiency data

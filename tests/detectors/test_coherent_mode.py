@@ -1,52 +1,59 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import pytest
-
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import CoherentMode
 
+# Define a list of mode numbers and rotation angles to be tested
 mode_numbers = [
-    "LP01:00",
-    "LP11:45",
-    "LP21:90",
-    "LG01:00",
-    "LG11:45",
-    "LG21:90",
-    "HG01:00",
-    "HG11:45",
-    "HG21:90"
+    "LP01", "LP11", "LP21",
+    "LG01", "LG11", "LG21",
+    "HG01", "HG11", "HG21"
 ]
+
+rotations = [0, 90]
+
+
+@pytest.fixture
+def setup_source():
+    """Fixture to create a Gaussian source used across multiple tests."""
+
+    return Gaussian(
+        wavelength=750e-9,  # Wavelength of the source in meters
+        polarization_value=0,  # Polarization value
+        polarization_type='linear',  # Type of polarization
+        optical_power=1,  # Optical power in watts
+        NA=0.3  # Numerical aperture
+    )
+
+
+@pytest.fixture
+def setup_scatterer(setup_source):
+    """Fixture to create a scatterer with a provided source."""
+
+    return Sphere(
+        diameter=100e-9,  # Diameter in meters
+        source=setup_source,  # Source defined in the setup_source fixture
+        index=1.4,  # Refractive index of the scatterer
+        medium_index=1.0  # Refractive index of the medium
+    )
 
 
 @pytest.mark.parametrize('mode_number', mode_numbers)
-def test_lp_modes(mode_number: str):
-    source = Gaussian(
-        wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
-        optical_power=1,
-        NA=0.3
-    )
-
-    scatterer = Sphere(
-        diameter=100e-9,
-        source=source,
-        index=1.4,
-        medium_index=1.0
-    )
+@pytest.mark.parametrize('rotation', rotations)
+def test_lp_modes(mode_number, rotation, setup_scatterer):
+    """Test different LP, LG, and HG modes with varying rotations."""
 
     detector = CoherentMode(
         mode_number=mode_number,
-        NA=0.2,
-        sampling=100,
-        gamma_offset=0,
-        phi_offset=0
+        NA=0.2,  # Numerical aperture for the detector
+        sampling=100,  # Sampling rate
+        gamma_offset=0,  # Gamma offset
+        phi_offset=0,  # Phi offset
+        rotation=rotation  # Rotation angle
     )
 
-    detector.get_footprint(scatterer=scatterer)
+    footprint = detector.get_footprint(scatterer=setup_scatterer)
 
-    detector.plot()
+    assert footprint is not None, "Expected a valid footprint but got None."
 
 # -

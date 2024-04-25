@@ -58,6 +58,7 @@ class BaseDetector():
         """
         self.mapping = {
             'scalarfield': None,
+            'rotation': None,
             'NA': None,
             'phi_offset': None,
             'gamma_offset': None,
@@ -66,35 +67,7 @@ class BaseDetector():
 
         self.compute_scalar_fields()
 
-        self.get_rotation_angle_from_mode_number()
-
         self.initialize_binding()
-
-    def get_rotation_angle_from_mode_number(self) -> NoReturn:
-        """
-        Computes the rotation angle from the mode number for CoherentMode detectors; for others, sets it to zero.
-        This method establishes the orientation of the detector based on its mode number, which is crucial
-        for accurate simulation of light detection.
-
-        Returns:
-            NoReturn
-        """
-        if self.name.lower() == 'photodiode':
-            self.rotation_angle = numpy.zeros(self.scalar_fields.size)
-            return
-
-        rotation_angle_list = []
-
-        self.mode_number = [
-            mode if ":" in mode else mode + ":00" for mode in self.mode_number
-        ]
-
-        for mode_number in self.mode_number:
-            _, rotation_angle = mode_number.split(':')
-
-            rotation_angle_list.append(rotation_angle)
-
-        self.rotation_angle = numpy.asarray(rotation_angle_list).astype(float)
 
     def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
@@ -127,6 +100,13 @@ class BaseDetector():
             value_representation=self.detector_name
         )
 
+        self.mapping['rotation'] = units.Degree(
+            long_label='Rotation angle',
+            short_label='rot',
+            base_values=self.rotation,
+            string_format='.1f'
+        )
+
         self.mapping['NA'] = units.Index(
             long_label='Numerical aperture',
             short_label='NA',
@@ -137,7 +117,7 @@ class BaseDetector():
 
         self.mapping['phi_offset'] = units.Degree(
             long_label='Phi angle',
-            short_label=r'$\phi_{offset}$',
+            short_label=r'$\phi$',
             base_values=self.phi_offset,
             use_prefix=False,
             string_format='.1f'
@@ -145,7 +125,7 @@ class BaseDetector():
 
         self.mapping['gamma_offset'] = units.Degree(
             long_label='Gamma angle',
-            short_label=r'$\phi_{offset}$',
+            short_label=r'$\gamma$',
             base_values=self.gamma_offset,
             use_prefix=False,
             string_format='.1f'
@@ -178,9 +158,9 @@ class BaseDetector():
             phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
             gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
             polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
+            rotation=numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float),
             point_coupling=point_coupling,
-            coherent=self.coherent,
-            rotation_angle=self.rotation_angle.astype(float)
+            coherent=self.coherent
         )
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
@@ -193,22 +173,14 @@ class BaseDetector():
         :rtype:     tuple[int, int, float]
         """
         assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or 'HG11:90 (rotation of 90 degree)'"
-        if ':' not in mode_name:
-            mode_name += ':0'
 
         mode_family_name = mode_name[:2].lower()
-
-        split = mode_name.split(':')
-
-        mode_name, rotation_angle = split
 
         number_0, number_1 = mode_name[-2:]
 
         number_0, number_1 = int(number_0), int(number_1)
 
-        rotation_angle = float(rotation_angle)
-
-        return mode_family_name, number_0, number_1, rotation_angle
+        return mode_family_name, number_0, number_1
 
 
 @dataclass
@@ -233,9 +205,9 @@ class Photodiode(BaseDetector):
         This class specifically models a photodiode detector and its interaction within a Mie scattering
         simulation experiment.
     """
+    rotation: float = 0
     coupling_mode: str = 'point'
     coherent: bool = field(default=False, init=False)
-    name: str = field(default="Photodiode", init=False)
 
     def compute_scalar_fields(self) -> numpy.ndarray:
         """
@@ -256,10 +228,10 @@ class CoherentMode(BaseDetector):
     """ List of mode to be used. """
     coupling_mode: str = 'point'
     """ Method for computing mode coupling. Either point or Mean. """
+    rotation: float = 0
+    """ Rotation of the coherent mode field. (degree)"""
     coherent: bool = field(default=True, init=False)
     """ Describe the detection scheme coherent or uncoherent. """
-    name: str = field(default="CoherentMode", init=False)
-    """ name of the set """
 
     def compute_scalar_fields(self) -> numpy.ndarray:
         """
@@ -284,7 +256,7 @@ class CoherentMode(BaseDetector):
         self.detector_name = self.mode_number
 
         for idx, mode_name in enumerate(self.mode_number):
-            mode_family_name, number_0, number_1, rotation_angle = self.interpret_mode_name(mode_name)
+            mode_family_name, number_0, number_1 = self.interpret_mode_name(mode_name)
 
             match mode_family_name:
                 case 'lp':

@@ -18,7 +18,7 @@ PYBIND11_MODULE(DetectorInterface, module) {
              py::arg("phi_offset"),
              py::arg("gamma_offset"),
              py::arg("polarization_filter"),
-             py::arg("rotation_angle"),
+             py::arg("rotation"),
              py::arg("coherent"),
              py::arg("point_coupling"),
              "Constructs a Detector with given parameters. The `point_coupling` parameter determines the coupling type (true for point, false for mean).")
@@ -29,7 +29,7 @@ PYBIND11_MODULE(DetectorInterface, module) {
              py::arg("phi_offset"),
              py::arg("gamma_offset"),
              py::arg("polarization_filter"),
-             py::arg("rotation_angle"),
+             py::arg("rotation"),
              py::arg("coherent"),
              py::arg("point_coupling"),
              "Constructs a Detector with given parameters. The `point_coupling` parameter determines the coupling type (true for point, false for mean).")
@@ -45,6 +45,6 @@ PYBIND11_MODULE(DetectorInterface, module) {
         .def_readonly("phi_offset", &Detector::phi_offset, "Offset in the azimuthal angle (phi) used to calibrate the detector orientation.")
         .def_readonly("gamma_offset", &Detector::gamma_offset, "Offset in the polar angle (gamma) used for angular calibration of the detector.")
         .def_readonly("polarization_filter", &Detector::polarization_filter, "Indicates the presence and characteristics of any polarization filter in the detector.")
-        .def_readonly("rotation_angle", &Detector::rotation_angle, "The rotation angle of the detector's field of view, typically used in alignment procedures.")
+        .def_readonly("rotation", &Detector::rotation, "The rotation angle of the detector's field of view, typically used in alignment procedures.")
         .def_readonly("mesh", &Detector::fibonacci_mesh, "The Fibonacci mesh used by the detector.");
 }

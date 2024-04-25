@@ -18,7 +18,7 @@ from PyOptik import UsualMaterial
 
 # %%
 # Defining the source to be employed.
-source_set = Gaussian(
+source = Gaussian(
     wavelength=950e-9,
     polarization_value=0,
     polarization_type='linear',
@@ -28,16 +28,16 @@ source_set = Gaussian(
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = Sphere(
+scatterer = Sphere(
     diameter=np.linspace(100e-9, 2000e-9, 20),
     material=UsualMaterial.BK7,
     medium_index=1,
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Defining the detector to be employed.
-detector_set = CoherentMode(
+detector = CoherentMode(
     mode_number="HG11:00",
     NA=[0.1],
     phi_offset=-180,
@@ -49,9 +49,9 @@ detector_set = CoherentMode(
 # %%
 # Defining the experiment setup
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer=scatterer,
+    source=source,
+    detector=detector
 )
 
 # %%

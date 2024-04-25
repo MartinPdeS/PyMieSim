@@ -47,7 +47,7 @@ measures = [
 @pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
 def test_coreshell_scattering_properties(measure, medium_config, core_config, shell_config):
     # Setup Gaussian source
-    source_set = Gaussian(
+    source = Gaussian(
         wavelength=np.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
         polarization_type='linear',
@@ -56,17 +56,17 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
     )
 
     # Setup core-shell scatterer
-    scatterer_set = CoreShell(
+    scatterer = CoreShell(
         core_diameter=np.linspace(400e-9, 1400e-9, 10),
         shell_width=300e-9,
-        source_set=source_set,
+        source=source,
         **medium_config,
         **core_config,
         **shell_config
     )
 
     # Setup detector
-    detector_set = Photodiode(
+    detector = Photodiode(
         NA=0.2,
         polarization_filter=None,
         gamma_offset=0,
@@ -76,9 +76,9 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
 
     # Configure and run the experiment
     experiment = Setup(
-        scatterer_set=scatterer_set,
-        source_set=source_set,
-        detector_set=detector_set
+        scatterer=scatterer,
+        source=source,
+        detector=detector
     )
 
     # Execute measurement

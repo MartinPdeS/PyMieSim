@@ -1,40 +1,50 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import pytest
-
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 
+# Define different sampling for testing
 samplings = [100, 200, 300, 400]
 
 
+@pytest.fixture
+def setup_source():
+    """Fixture to create a Gaussian source that can be reused in different tests."""
+
+    return Gaussian(
+        wavelength=750e-9,  # Wavelength of the source in meters
+        polarization_value=0,  # Polarization value
+        polarization_type='linear',  # Polarization type
+        optical_power=1,  # Optical power in watts
+        NA=0.3  # Numerical aperture
+    )
+
+
+@pytest.fixture
+def setup_scatterer(setup_source):
+    """Fixture to create a scatterer using the Gaussian source defined above."""
+
+    return Sphere(
+        diameter=100e-9,  # Diameter of the scatterer in meters
+        source=setup_source,  # Source from setup_source fixture
+        index=1.4,  # Refractive index of the scatterer
+        medium_index=1.0  # Refractive index of the surrounding medium
+    )
+
+
 @pytest.mark.parametrize('sampling', samplings)
-def test_photodiode(sampling: int):
-    source = Gaussian(
-        wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
-        optical_power=1,
-        NA=0.3
-    )
-    scatterer = Sphere(
-        diameter=100e-9,
-        source=source,
-        index=1.4,
-        medium_index=1.0
-    )
+def test_photodiode_sampling(sampling, setup_scatterer):
+    """Test the Photodiode detector with various sampling rates."""
 
     detector = Photodiode(
-        NA=0.2,
-        sampling=sampling,
-        gamma_offset=0,
-        phi_offset=0
+        NA=0.2,  # Numerical aperture of the detector
+        sampling=sampling,  # Sampling rate
+        gamma_offset=0,  # Gamma offset
+        phi_offset=0  # Phi offset
     )
 
-    detector.get_footprint(scatterer=scatterer)
+    # Perform the operation to be tested
+    footprint = detector.get_footprint(scatterer=setup_scatterer)
 
-    detector.plot()
-
-# -
+    # Example verification step (not operational as we're not evaluating the output here)
+    assert footprint is not None, "Expected a valid footprint but got None."

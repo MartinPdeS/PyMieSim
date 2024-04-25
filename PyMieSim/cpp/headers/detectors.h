@@ -18,7 +18,7 @@ namespace DETECTOR {
             double phi_offset = 0.0;
             double gamma_offset = 0.0;
             double polarization_filter = 0.0;
-            double rotation_angle = 0.0;
+            double rotation = 0.0;
             bool coherent = true;
             bool point_coupling = true;
             size_t sampling = 0;
@@ -30,9 +30,9 @@ namespace DETECTOR {
 
             Detector(
                 const std::vector<complex128>& scalar_field, double NA, double phi_offset,
-                double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling
+                double gamma_offset, double polarization_filter, double rotation, bool coherent, bool point_coupling
             ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
+            rotation(rotation), coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = scalar_field.size();
@@ -43,13 +43,13 @@ namespace DETECTOR {
                     this->max_angle,
                     this->phi_offset,
                     this->gamma_offset,
-                    this->rotation_angle
+                    this->rotation
                 );
             }
 
-            Detector( size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation_angle, bool coherent, bool point_coupling) :
+            Detector(size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool point_coupling) :
             sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
+            rotation(rotation), coherent(coherent), point_coupling(point_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
 
@@ -58,7 +58,7 @@ namespace DETECTOR {
                     this->max_angle,
                     this->phi_offset,
                     this->gamma_offset,
-                    this->rotation_angle
+                    this->rotation
                 );
             }
 
@@ -94,7 +94,7 @@ namespace DETECTOR {
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
             std::vector<double> polarization_filter;
-            std::vector<double> rotation_angle;
+            std::vector<double> rotation;
 
             bool coherent;
             bool point_coupling;
@@ -108,16 +108,16 @@ namespace DETECTOR {
                 const std::vector<double> &phi_offset,
                 const std::vector<double> &gamma_offset,
                 const std::vector<double> &polarization_filter,
-                const std::vector<double> &rotation_angle,
+                const std::vector<double> &rotation,
                 const bool &coherent,
                 const bool &point_coupling)
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation_angle(rotation_angle), coherent(coherent), point_coupling(point_coupling)
+              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), point_coupling(point_coupling)
               {
-                this->shape = {(size_t) this->scalar_fields.size(), this->NA.size(), this->phi_offset.size(), this->gamma_offset.size(), this->polarization_filter.size()};
+                this->shape = {scalar_fields.size(), rotation.size(), NA.size(), phi_offset.size(), gamma_offset.size(), polarization_filter.size()};
               }
 
-            Detector to_object(size_t sf, size_t na, size_t po, size_t go, size_t pf) const
+            Detector to_object(size_t sf, size_t ra, size_t na, size_t po, size_t go, size_t pf) const
             {
                 return Detector(
                     this->scalar_fields[sf],
@@ -125,7 +125,7 @@ namespace DETECTOR {
                     this->phi_offset[po],
                     this->gamma_offset[go],
                     this->polarization_filter[pf],
-                    this->rotation_angle[sf],
+                    this->rotation[ra],
                     this->coherent,
                     this->point_coupling
                 );

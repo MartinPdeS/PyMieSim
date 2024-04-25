@@ -17,7 +17,7 @@ from PyMieSim import measure
 # %%
 # Defining the source
 # In the LMT framework, the source is always considered a plane wave with a default amplitude of one.
-source_set = Gaussian(
+source = Gaussian(
     wavelength=800e-9,  # 800 nm
     polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
@@ -28,22 +28,21 @@ source_set = Gaussian(
 # %%
 # Defining the scatterer distribution
 # Here, we explore core/shell scatterers with a constant shell diameter and variable core diameter.
-scatterer_set = CoreShell(
+scatterer = CoreShell(
     core_diameter=np.geomspace(100e-9, 3000e-9, 5000),  # Geometrically spaced core diameters
     shell_width=800e-9,  # Shell width of 800 nm
     core_index=1.6,  # Refractive index of the core
     shell_material=[UsualMaterial.BK7, UsualMaterial.Silver],  # BK7 glass material for the shell
-    # shell_index=1,
     medium_index=1,  # Refractive index of the surrounding medium
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Defining the experiment setup
 # Integrating the defined source and scatterers into a single experimental setup.
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 # %%

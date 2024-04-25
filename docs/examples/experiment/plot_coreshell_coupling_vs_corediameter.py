@@ -17,7 +17,7 @@ from PyOptik import UsualMaterial
 
 # %%
 # Defining the source
-source_set = Gaussian(
+source = Gaussian(
     wavelength=1.2e-6,  # 1200 nm
     polarization_value=90,  # Polarization angle in degrees
     polarization_type='linear',
@@ -27,18 +27,18 @@ source_set = Gaussian(
 
 # %%
 # Defining the scatterer distribution
-scatterer_set = CoreShell(
+scatterer = CoreShell(
     core_diameter=numpy.geomspace(100e-9, 600e-9, 400),  # Core diameters from 100 nm to 600 nm
     shell_width=800e-9,  # Shell width of 800 nm
     core_material=UsualMaterial.Silver,  # Core material
     shell_material=UsualMaterial.BK7,  # Shell material
     medium_index=1,  # Surrounding medium's refractive index
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Defining the detector
-detector_set = Photodiode(
+detector = Photodiode(
     NA=[0.1, 0.05],  # Numerical Apertures for the detector
     phi_offset=-180.0,  # Phi offset in degrees
     gamma_offset=0.0,  # Gamma offset in degrees
@@ -49,9 +49,9 @@ detector_set = Photodiode(
 # %%
 # Setting up the experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer=scatterer,
+    source=source,
+    detector=detector
 )
 
 # %%

@@ -150,7 +150,7 @@ PYBIND11_MODULE(Sets, module) {
              py::arg("phi_offset"),
              py::arg("gamma_offset"),
              py::arg("polarization_filter"),
-             py::arg("rotation_angle"),
+             py::arg("rotation"),
              py::arg("coherent"),
              py::arg("point_coupling"),
              "Initializes a detector set with scalar fields, numerical aperture, offsets, filters, angle, coherence, and coupling type.");

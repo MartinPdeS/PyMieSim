@@ -17,7 +17,7 @@ from PyMieSim import measure
 
 # %%
 # Defining the source to be employed.
-source_set = Gaussian(
+source = Gaussian(
     wavelength=1200e-9,
     polarization_value=90,
     polarization_type='linear',
@@ -26,16 +26,16 @@ source_set = Gaussian(
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer_set = Sphere(
+scatterer = Sphere(
     diameter=2000e-9,
     material=UsualMaterial.BK7,
     medium_index=1,
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Defining the detector to be employed.
-detector_set = Photodiode(
+detector = Photodiode(
     NA=[0.5, 0.3, 0.1, 0.05],
     phi_offset=numpy.linspace(-180, 180, 400),
     gamma_offset=0,
@@ -46,9 +46,9 @@ detector_set = Photodiode(
 # %%
 # Defining the experiment setup
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer=scatterer,
+    source=source,
+    detector=detector
 )
 
 # %%

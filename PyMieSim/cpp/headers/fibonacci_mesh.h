@@ -1,5 +1,4 @@
-#ifndef FIBONACCI_MESH_H
-#define FIBONACCI_MESH_H
+#pragma once
 
 #include <vector>
 #include <cmath>
@@ -35,7 +34,7 @@ class FibonacciMesh {
 
         FibonacciMesh() = default;
 
-        FibonacciMesh(int sampling, double max_angle, double phi_offset, double gamma_offset, double rotation_angle):
+        FibonacciMesh(int sampling, double max_angle, double phi_offset, double gamma_offset, double rotation):
             sampling(sampling), max_angle(max_angle), phi_offset(phi_offset), gamma_offset(gamma_offset) {
 
             cartesian_coordinates = Cartesian(sampling);
@@ -43,7 +42,7 @@ class FibonacciMesh {
             base_cartesian_coordinates = cartesian_coordinates;
 
             rotate_around_center();
-            rotate_around_axis(rotation_angle);
+            rotate_around_axis(rotation);
 
             compute_vector_field();
             compute_projections();
@@ -82,4 +81,3 @@ class FibonacciMesh {
 
 };
 
-#endif // FIBONACCI_MESH_H

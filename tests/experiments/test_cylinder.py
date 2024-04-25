@@ -38,7 +38,7 @@ measures = [
 @pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
 def test_cylinder_scattering_properties(measure, medium_config, core_config):
     # Setup Gaussian source
-    source_set = Gaussian(
+    source = Gaussian(
         wavelength=np.linspace(400e-9, 1800e-9, 50),
         polarization_value=0,
         polarization_type='linear',
@@ -47,15 +47,15 @@ def test_cylinder_scattering_properties(measure, medium_config, core_config):
     )
 
     # Setup cylindrical scatterer
-    scatterer_set = Cylinder(
+    scatterer = Cylinder(
         diameter=np.linspace(400e-9, 1400e-9, 10),
-        source_set=source_set,
+        source=source,
         **medium_config,
         **core_config
     )
 
     # Setup detector
-    detector_set = Photodiode(
+    detector = Photodiode(
         NA=0.2,
         polarization_filter=None,
         gamma_offset=0,
@@ -65,9 +65,9 @@ def test_cylinder_scattering_properties(measure, medium_config, core_config):
 
     # Configure and run the experiment
     experiment = Setup(
-        scatterer_set=scatterer_set,
-        source_set=source_set,
-        detector_set=detector_set
+        scatterer=scatterer,
+        source=source,
+        detector=detector
     )
 
     # Execute measurement

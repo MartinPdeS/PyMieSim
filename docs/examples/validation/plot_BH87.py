@@ -22,7 +22,7 @@ theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure87BH.csv", delimit
 diameter = numpy.geomspace(10e-9, 6e-6, 800)
 volume = numpy.pi * (diameter / 2)**2
 
-source_set = Gaussian(
+source = Gaussian(
     wavelength=632.8e-9,
     polarization_value=[0, 90],
     polarization_type='linear',
@@ -30,17 +30,17 @@ source_set = Gaussian(
     NA=0.2
 )
 
-scatterer_set = Cylinder(
+scatterer = Cylinder(
     diameter=diameter,
     index=1.55,
     medium_index=1,
-    source_set=source_set
+    source=source
 )
 
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=None
+    scatterer=scatterer,
+    source=source,
+    detector=None
 )
 
 data = experiment.get(measure.Csca, export_as_numpy=True)

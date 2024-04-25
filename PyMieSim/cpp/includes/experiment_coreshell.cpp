@@ -85,7 +85,7 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling() const
 
     std::vector<double> output_array(full_size);
 
-    #pragma omp parallel for collapse(12)
+    #pragma omp parallel for collapse(13)
     for (size_t wl=0; wl<array_shape[0]; ++wl)
     for (size_t jv=0; jv<array_shape[1]; ++jv)
     for (size_t cd=0; cd<array_shape[2]; ++cd)
@@ -94,16 +94,17 @@ pybind11::array_t<double> Experiment::get_coreshell_coupling() const
     for (size_t sm=0; sm<array_shape[5]; ++sm)
     for (size_t mi=0; mi<array_shape[6]; ++mi)
     for (size_t sf=0; sf<array_shape[7]; ++sf)
-    for (size_t na=0; na<array_shape[8]; ++na)
-    for (size_t po=0; po<array_shape[9]; ++po)
-    for (size_t go=0; go<array_shape[10]; ++go)
-    for (size_t pf=0; pf<array_shape[11]; ++pf)
+    for (size_t ra=0; ra<array_shape[8]; ++ra)
+    for (size_t na=0; na<array_shape[9]; ++na)
+    for (size_t po=0; po<array_shape[10]; ++po)
+    for (size_t go=0; go<array_shape[11]; ++go)
+    for (size_t pf=0; pf<array_shape[12]; ++pf)
     {
-        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi, sf, na, po, go, pf}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, cd, sw, cm, sm, mi, sf, ra, na, po, go, pf}, array_shape);
 
         SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        DETECTOR::Detector detector = detectorSet.to_object(sf, na, po, go, pf);
+        DETECTOR::Detector detector = detectorSet.to_object(sf, ra, na, po, go, pf);
 
         CORESHELL::Scatterer scatterer = coreshellSet.to_object(wl, cd, sw, cm, sm, mi, source);
 

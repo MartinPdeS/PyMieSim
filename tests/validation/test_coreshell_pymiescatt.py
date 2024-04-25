@@ -22,20 +22,20 @@ PyMieScatt_measures = {
 }
 
 
-def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
-    scatterer_set = CoreShell(
+def get_PyMieSim_data(source, core_index, shell_index, core_diameters, shell_width, measure_string: str):
+    scatterer = CoreShell(
         core_diameter=core_diameters,
         shell_width=shell_width,
         core_index=core_index,
         shell_index=shell_index,
         medium_index=1.,
-        source_set=source_set
+        source=source
     )
 
     experiment = Setup(
-        scatterer_set=scatterer_set,
-        source_set=source_set,
-        detector_set=None
+        scatterer=scatterer,
+        source=source,
+        detector=None
     )
 
     data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
@@ -43,13 +43,13 @@ def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell
     return data.squeeze()
 
 
-def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
+def get_PyMieScatt_data(source, core_index, shell_index, core_diameters, shell_width, measure_string: str):
     PyMieScatt_data = []
     for core_diameter in core_diameters:
         efficiencies = ps.MieQCoreShell(
             mCore=core_index,
             mShell=shell_index,
-            wavelength=source_set.wavelength[0],
+            wavelength=source.wavelength[0],
             dCore=core_diameter,
             dShell=core_diameter + shell_width
         )
@@ -62,7 +62,7 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
 
 
 def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_width, measure_string: str):
-    source_set = Gaussian(
+    source = Gaussian(
         wavelength=wavelength,
         polarization_value=0,
         polarization_type='linear',
@@ -71,7 +71,7 @@ def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_wi
     )
 
     PyMieScatt_data = get_PyMieScatt_data(
-        source_set=source_set,
+        source=source,
         core_index=core_index,
         shell_index=shell_index,
         core_diameters=core_diameters,
@@ -80,7 +80,7 @@ def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_wi
     )
 
     PyMieSim_data = get_PyMieSim_data(
-        source_set=source_set,
+        source=source,
         core_index=core_index,
         shell_index=shell_index,
         core_diameters=core_diameters,

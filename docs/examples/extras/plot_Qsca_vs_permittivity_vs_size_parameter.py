@@ -27,7 +27,7 @@ index = numpy.sqrt(permitivity.astype(complex))
 
 diameter = numpy.linspace(1e-9, 200e-9, 400)
 
-source_set = Gaussian(
+source = Gaussian(
     wavelength=400e-9,
     polarization_value=90,
     polarization_type='linear',
@@ -36,16 +36,16 @@ source_set = Gaussian(
 )
 
 
-scatterer_set = Sphere(
+scatterer = Sphere(
     diameter=diameter,
     index=index,
     medium_index=1,
-    source_set=source_set
+    source=source
 )
 
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 data = experiment.get(measure.Qsca)

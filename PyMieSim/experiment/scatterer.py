@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
 import numpy
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
@@ -25,9 +25,9 @@ class BaseScatterer():
 
     Attributes:
         medium_index (Iterable): Refractive index of the medium in which the scatterers are placed.
-        source_set (Union[Gaussian, PlaneWave]): Light source configuration for the simulation.
+        source (Union[Gaussian, PlaneWave]): Light source configuration for the simulation.
     """
-    source_set: Gaussian | PlaneWave
+    source: Gaussian | PlaneWave
 
     def __post_init__(self) -> NoReturn:
         """
@@ -51,7 +51,7 @@ class BaseScatterer():
                                 should be capable of integrating scatterers and managing their interactions
                                 with defined light sources and measurement configurations.
         """
-        method_str = 'set_' + self.name
+        method_str = 'set_' + self.__class__.__name__.lower()
 
         getattr(experiment.binding, method_str)(self.binding)
 
@@ -120,7 +120,7 @@ class BaseScatterer():
 
         if material_value:
             self.binding_kwargs[attached_material_name] = numpy.asarray([
-                mat.get_refractive_index(self.source_set.wavelength) for mat in numpy.atleast_1d(getattr(self, attached_material_name))
+                mat.get_refractive_index(self.source.wavelength) for mat in numpy.atleast_1d(getattr(self, attached_material_name))
             ])
             if data_type is float:
                 self.binding_kwargs[attached_material_name] = self.binding_kwargs[attached_material_name].real
@@ -152,7 +152,6 @@ class Sphere(BaseScatterer):
     medium_material: Iterable | None = None
     index: Iterable | None = None
     material: Iterable | None = None
-    name: str = field(default="sphere", init=False)
     available_measure_list = measure.__sphere__
 
     def __post_init__(self):
@@ -235,7 +234,6 @@ class CoreShell(BaseScatterer):
     shell_index: Iterable | None = None
     core_material: Iterable | None = None
     shell_material: Iterable | None = None
-    name: str = field(default="coreshell", init=False)
 
     available_measure_list = measure.__coreshell__
 
@@ -254,8 +252,6 @@ class CoreShell(BaseScatterer):
             'medium_index': None,
             'medium_material': None
         }
-
-        self.binding_class: type = CppCoreShellSet
 
         super().__post_init__()
 
@@ -322,7 +318,6 @@ class Cylinder(BaseScatterer):
     medium_material: Iterable | None = None
     index: Iterable | None = None
     material: Iterable | None = None
-    name: str = field(default="cylinder", init=False)
 
     available_measure_list = measure.__cylinder__
 

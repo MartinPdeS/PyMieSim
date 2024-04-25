@@ -16,7 +16,7 @@ from PyMieSim import measure
 # %%
 # Defining the source
 # Studying the scattering efficiency across a range of wavelengths.
-source_set = Gaussian(
+source = Gaussian(
     wavelength=np.linspace(400e-9, 1000e-9, 500),  # Wavelengths ranging from 400 nm to 1000 nm
     polarization_value=0,  # Linear polarization angle in radians
     polarization_type='linear',
@@ -27,18 +27,18 @@ source_set = Gaussian(
 # %%
 # Defining the scatterer distribution
 # Considering cylinders with specific diameters and refractive indices.
-scatterer_set = Cylinder(
+scatterer = Cylinder(
     diameter=[200e-9, 150e-9, 100e-9],  # Array of diameters: 200 nm, 150 nm, 100 nm
     index=[2, 3, 4],  # Array of refractive indices: 2, 3, 4
     medium_index=1,  # Refractive index of the surrounding medium
-    source_set=source_set
+    source=source
 )
 
 # %%
 # Setting up the experiment
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set
+    scatterer=scatterer,
+    source=source
 )
 
 # %%

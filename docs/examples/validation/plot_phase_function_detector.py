@@ -36,7 +36,7 @@ scatterer = ExperimentSphere(
     diameter=scatterer_diameter,
     index=scatterer_index,
     medium_index=1.0,
-    source_set=source
+    source=source
 )
 
 # Detector setup
@@ -50,9 +50,9 @@ detector = Photodiode(
 
 # Configure experiment
 experiment = Setup(
-    scatterer_set=scatterer,
-    source_set=source,
-    detector_set=detector
+    scatterer=scatterer,
+    source=source,
+    detector=detector
 )
 
 # Gather data

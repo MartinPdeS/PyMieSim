@@ -81,23 +81,24 @@ pybind11::array_t<double> Experiment::get_sphere_coupling() const
 
     std::vector<double> output_array(full_size);
 
-    #pragma omp parallel for collapse(10)
+    #pragma omp parallel for collapse(11)
     for (size_t wl=0; wl<array_shape[0]; ++wl)
     for (size_t jv=0; jv<array_shape[1]; ++jv)
     for (size_t sd=0; sd<array_shape[2]; ++sd)
     for (size_t si=0; si<array_shape[3]; ++si)
     for (size_t mi=0; mi<array_shape[4]; ++mi)
     for (size_t sf=0; sf<array_shape[5]; ++sf)
-    for (size_t na=0; na<array_shape[6]; ++na)
-    for (size_t po=0; po<array_shape[7]; ++po)
-    for (size_t go=0; go<array_shape[8]; ++go)
-    for (size_t pf=0; pf<array_shape[9]; ++pf)
+    for (size_t ra=0; ra<array_shape[6]; ++ra)
+    for (size_t na=0; na<array_shape[7]; ++na)
+    for (size_t po=0; po<array_shape[8]; ++po)
+    for (size_t go=0; go<array_shape[9]; ++go)
+    for (size_t pf=0; pf<array_shape[10]; ++pf)
     {
-        size_t idx = flatten_multi_index({wl, jv, sd, si, mi, sf, na, po, go, pf}, array_shape);
+        size_t idx = flatten_multi_index({wl, jv, sd, si, mi, sf, ra, na, po, go, pf}, array_shape);
 
         SOURCE::Planewave source = sourceSet.to_object(wl, jv);
 
-        DETECTOR::Detector detector = detectorSet.to_object(sf, na, po, go, pf);
+        DETECTOR::Detector detector = detectorSet.to_object(sf, ra, na, po, go, pf);
 
         SPHERE::Scatterer scatterer = sphereSet.to_object(sd, si, wl, mi, source);
 
