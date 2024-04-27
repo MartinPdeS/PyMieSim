@@ -13,8 +13,6 @@ from dataclasses import dataclass, field
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppDetectorSet
-from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh
-from PyMieSim.modes import hermite_gauss, laguerre_gauss, linearly_polarized
 
 
 @dataclass
@@ -57,7 +55,8 @@ class BaseDetector():
             NoReturn
         """
         self.mapping = {
-            'scalarfield': None,
+            'mode_number': None,
+            'sampling': None,
             'rotation': None,
             'NA': None,
             'phi_offset': None,
@@ -65,9 +64,32 @@ class BaseDetector():
             'polarization_filter': None,
         }
 
-        self.compute_scalar_fields()
-
         self.initialize_binding()
+
+    def initialize_binding(self) -> NoReturn:
+        """
+        Initializes the C++ binding for the detector, configuring it with the necessary parameters for
+        simulation. This step is essential for integrating the Python-defined detector with the underlying
+        C++ simulation engine.
+
+        Returns:
+            NoReturn
+        """
+        point_coupling = True if self.coupling_mode == 'point' else False
+
+        self.binding_kwargs = dict(
+            mode_number=numpy.atleast_1d(self.mode_number).astype(str),
+            sampling=numpy.atleast_1d(self.sampling).astype(int),
+            NA=numpy.atleast_1d(self.NA).astype(float),
+            phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
+            gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
+            polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
+            rotation=numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float),
+            point_coupling=point_coupling,
+            coherent=self.coherent
+        )
+
+        self.binding = CppDetectorSet(**self.binding_kwargs)
 
     def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
@@ -93,11 +115,16 @@ class BaseDetector():
             list: The updated table with the scatterer's properties included.
         """
 
-        self.mapping['scalarfield'] = units.Custom(
-            long_label='Field',
-            short_label='field',
-            base_values=self.scalar_fields,
-            value_representation=self.detector_name
+        self.mapping['mode_number'] = units.Custom(
+            long_label='Mode number',
+            short_label='mode',
+            base_values=self.mode_number,
+        )
+
+        self.mapping['sampling'] = units.Custom(
+            long_label='Sampling',
+            short_label='sampling',
+            base_values=self.sampling,
         )
 
         self.mapping['rotation'] = units.Degree(
@@ -141,47 +168,6 @@ class BaseDetector():
 
         return [v for k, v in self.mapping.items() if v is not None]
 
-    def initialize_binding(self) -> NoReturn:
-        """
-        Initializes the C++ binding for the detector, configuring it with the necessary parameters for
-        simulation. This step is essential for integrating the Python-defined detector with the underlying
-        C++ simulation engine.
-
-        Returns:
-            NoReturn
-        """
-        point_coupling = True if self.coupling_mode == 'point' else False
-
-        self.binding_kwargs = dict(
-            scalar_field=self.scalar_fields.astype(complex),
-            NA=numpy.atleast_1d(self.NA).astype(float),
-            phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
-            gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
-            polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
-            rotation=numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float),
-            point_coupling=point_coupling,
-            coherent=self.coherent
-        )
-
-        self.binding = CppDetectorSet(**self.binding_kwargs)
-
-    def interpret_mode_name(self, mode_name: str) -> tuple[int, int, float]:
-        """
-        Intepret the mode_number parameter to check if there is a rotation associated
-
-        :returns:   The two mode numbers plus rotation angle
-        :rtype:     tuple[int, int, float]
-        """
-        assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or 'HG11:90 (rotation of 90 degree)'"
-
-        mode_family_name = mode_name[:2].lower()
-
-        number_0, number_1 = mode_name[-2:]
-
-        number_0, number_1 = int(number_0), int(number_1)
-
-        return mode_family_name, number_0, number_1
-
 
 @dataclass
 class Photodiode(BaseDetector):
@@ -208,18 +194,7 @@ class Photodiode(BaseDetector):
     rotation: float = 0
     coupling_mode: str = 'point'
     coherent: bool = field(default=False, init=False)
-
-    def compute_scalar_fields(self) -> numpy.ndarray:
-        """
-        Generates a scalar field array representing the photodiode detection scheme. This method overrides
-        the BaseDetector's compute_scalar_fields method to provide functionality specific to photodiode detectors.
-
-        Returns:
-            numpy.ndarray: An array of scalar fields corresponding to the photodiode detection scheme.
-        """
-        self.scalar_fields = numpy.ones([1, self.sampling])
-
-        self.detector_name = ['Photodiode']
+    mode_number: str = field(default='NC00', init=False)
 
 
 @dataclass
@@ -233,7 +208,7 @@ class CoherentMode(BaseDetector):
     coherent: bool = field(default=True, init=False)
     """ Describe the detection scheme coherent or uncoherent. """
 
-    def compute_scalar_fields(self) -> numpy.ndarray:
+    def __post_init__(self) -> numpy.ndarray:
         """
         Loads and generates complex scalar field arrays representing the specified CoherentMode modes. This method
         overrides the BaseDetector's compute_scalar_fields to cater specifically to CoherentMode detectors.
@@ -243,34 +218,12 @@ class CoherentMode(BaseDetector):
         """
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
 
-        proxy_fibonacci_mesh = CPPFibonacciMesh(
-            max_angle=0.3,
-            phi_offset=0,
-            gamma_offset=0,
-            sampling=self.sampling,
-            rotation_angle=0
-        )
-
-        self.scalar_fields = numpy.zeros([len(self.mode_number), self.sampling]).astype(complex)
-
-        self.detector_name = self.mode_number
-
         for idx, mode_name in enumerate(self.mode_number):
-            mode_family_name, number_0, number_1 = self.interpret_mode_name(mode_name)
+            mode_family_name = mode_name[0: 2]
 
-            match mode_family_name:
-                case 'lp':
-                    mode_module = linearly_polarized
-                case 'hg':
-                    mode_module = hermite_gauss
-                case 'lg':
-                    mode_module = laguerre_gauss
-                case _:
-                    raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
+            if mode_family_name not in ['LP', 'HG', 'LG', 'NC']:
+                raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
 
-            self.scalar_fields[idx] = mode_module.interpolate_from_fibonacci_mesh(
-                fibonacci_mesh=proxy_fibonacci_mesh,
-                number_0=number_0,
-                number_1=number_1,
-            )
+        super().__post_init__()
+
 # -

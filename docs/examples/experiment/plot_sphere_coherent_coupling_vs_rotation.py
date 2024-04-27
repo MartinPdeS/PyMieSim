@@ -36,7 +36,7 @@ scatterer = Sphere(
 # %%
 # Defining the detector to be employed.
 detector = CoherentMode(
-    mode_number='LP11',
+    mode_number='HG11',
     NA=[0.05],
     phi_offset=0,
     gamma_offset=20,

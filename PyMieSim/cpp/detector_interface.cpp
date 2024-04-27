@@ -34,6 +34,18 @@ PYBIND11_MODULE(DetectorInterface, module) {
              py::arg("point_coupling"),
              "Constructs a Detector with given parameters. The `point_coupling` parameter determines the coupling type (true for point, false for mean).")
 
+        .def(py::init<std::string, size_t, double, double, double, double, double, bool, bool>(),
+             py::arg("mode_number"),
+             py::arg("sampling"),
+             py::arg("NA"),
+             py::arg("phi_offset"),
+             py::arg("gamma_offset"),
+             py::arg("polarization_filter"),
+             py::arg("rotation"),
+             py::arg("coherent"),
+             py::arg("point_coupling"),
+             "Constructs a Detector with given parameters. The `point_coupling` parameter determines the coupling type (true for point, false for mean).")
+
         .def("CouplingSphere", &Detector::get_coupling<SPHERE::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a sphere scatterer.")
         .def("CouplingCylinder", &Detector::get_coupling<CYLINDER::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a cylinder scatterer.")
         .def("CouplingCoreShell", &Detector::get_coupling<CORESHELL::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a core-shell scatterer.")

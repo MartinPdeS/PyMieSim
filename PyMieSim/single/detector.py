@@ -15,7 +15,7 @@ from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.tools.special_functions import NA_to_angle
-from PyMieSim.modes import hermite_gauss, laguerre_gauss, linearly_polarized
+
 
 from MPSPlots.render3D import SceneList as SceneList3D
 
@@ -250,27 +250,23 @@ class CoherentMode(GenericDetector):
         if self.NA > 0.3 or self.NA < 0:
             logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
 
-        self.mode_family_name, self.numbers = self.interpret_mode_name(mode_name=self.mode_number)
+        self.max_angle = NA_to_angle(NA=self.NA)
 
-        self.initialize()
+        self.polarization_filter = numpy.float64(self.polarization_filter)
 
-        match self.mode_family_name:
-            case 'lp':
-                self.mode_module = linearly_polarized
-            case 'hg':
-                self.mode_module = hermite_gauss
-            case 'lg':
-                self.mode_module = laguerre_gauss
-            case _:
-                raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
+        point_coupling = (self.coupling_mode.lower() == 'point')
 
-        farfield = self.mode_module.interpolate_from_fibonacci_mesh(
-            fibonacci_mesh=self.cpp_binding.mesh,
-            number_0=self.numbers[0],
-            number_1=self.numbers[1]
+        self.cpp_binding = BindedDetector(
+            mode_number=self.mode_number,
+            sampling=self.sampling,
+            NA=self.NA,
+            phi_offset=numpy.deg2rad(self.phi_offset),
+            gamma_offset=numpy.deg2rad(self.gamma_offset),
+            polarization_filter=numpy.deg2rad(self.polarization_filter),
+            coherent=self.coherent,
+            rotation=numpy.deg2rad(self.rotation),
+            point_coupling=point_coupling
         )
-
-        self.cpp_binding.scalar_field = farfield
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return self.mode_module.interpolate_from_structured_mesh(
