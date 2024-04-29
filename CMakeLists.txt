@@ -84,6 +84,11 @@ pybind11_add_module(CXX_CORESHELL MODULE "${PYMIESIM_CXX_DIR}/coreshell_interfac
 set_target_properties(CXX_CORESHELL PROPERTIES OUTPUT_NAME "CoreShellInterface")
 target_link_libraries(CXX_CORESHELL PRIVATE ZBessel "${STATIC_STDLIB}")
 
+#Building MODEFIELD--------------------------------------------------
+pybind11_add_module(CXX_MODEFIELD MODULE "${PYMIESIM_CXX_DIR}/mode_field_interface.cpp" )
+set_target_properties(CXX_MODEFIELD PROPERTIES OUTPUT_NAME "ModeField")
+target_link_libraries(CXX_MODEFIELD PRIVATE "${STATIC_STDLIB}")
+
 #Building EXPERIMENT------------------------------------------------
 if (WIN32)
     pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )

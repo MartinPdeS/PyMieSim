@@ -1,3 +1,4 @@
+#include "numpy_interface.cpp"
 #include <vector>
 #include <cmath>
 #include <complex>
@@ -64,8 +65,8 @@ double laguerre_imp(unsigned n, unsigned m, double x)
 std::vector<complex128> get_LG_mode_field(
     std::vector<double> x_coords,
     std::vector<double> y_coords,
-    int radial_number,
     int azimuthal_number,
+    int radial_number,
     double wavelength = 1.55,
     double waist_radius = 0.3,
     double z = 0.0)
@@ -105,11 +106,11 @@ std::vector<complex128> get_LG_mode_field(
       double gouy_phase = std::atan(z * PI / (wavelength * w0 * w0));
 
       // Laguerre polynomial
-      double L_pl = laguerre_imp(radial_number, std::abs(azimuthal_number), 2 * r * r / (w * w));
-      double amplitude = std::pow(std::sqrt(2) * r / w, std::abs(azimuthal_number)) * L_pl * std::exp(-r * r / (w * w));
+      double L_pl = laguerre_imp(azimuthal_number, std::abs(radial_number), 2 * r * r / (w * w));
+      double amplitude = std::pow(std::sqrt(2) * r / w, std::abs(radial_number)) * L_pl * std::exp(-r * r / (w * w));
 
       // Phase factor
-      double phase = azimuthal_number * theta - k * r * r / (2 * R) + (2 * radial_number + std::abs(azimuthal_number) + 1) * gouy_phase;
+      double phase = radial_number * theta - k * r * r / (2 * R) + (2 * azimuthal_number + std::abs(radial_number) + 1) * gouy_phase;
 
       field[i] = amplitude * std::cos(phase); // store the real part of the field
     }
@@ -128,6 +129,16 @@ std::vector<complex128> get_LG_mode_field(
    return field;
 }
 
+pybind11::array_t<complex128> get_LG_mode_field_py(
+   std::vector<double> x_coords,
+   std::vector<double> y_coords,
+   int azimuthal_number,
+   int radial_number)
+{
+    return vector_to_numpy(
+        get_LG_mode_field(x_coords, y_coords, azimuthal_number, radial_number)
+    );
+}
 
 
 

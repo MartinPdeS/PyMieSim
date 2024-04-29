@@ -5,8 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
-    from collections.abc import Iterable
-    from typing import NoReturn
+    from typing import NoReturn, Iterable
 
 import numpy
 from dataclasses import dataclass, field

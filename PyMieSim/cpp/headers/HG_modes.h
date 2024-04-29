@@ -1,3 +1,4 @@
+#include "numpy_interface.cpp"
 #include <vector>
 #include <cmath>
 #include <complex>
@@ -100,3 +101,17 @@ std::vector<complex128> get_HG_mode_field(
 
    return field;
 }
+
+
+// Helper function to calculate the Hermite-Gaussian mode field amplitude
+pybind11::array_t<complex128> get_HG_mode_field_py(
+   std::vector<double> x_coords,
+   std::vector<double> y_coords,
+   int x_number,
+   int y_number)
+{
+    return vector_to_numpy(
+        get_HG_mode_field(x_coords, y_coords, x_number, y_number)
+    );
+}
+

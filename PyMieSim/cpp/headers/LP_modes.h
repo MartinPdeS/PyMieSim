@@ -1,118 +1,8 @@
+#include "numpy_interface.cpp"
 #include <vector>
 #include <cmath>
-#include <definitions.cpp>
-// #include <special_function.cpp>
-#include <iostream>
-
-// Factorial function using recursion
-unsigned long long factorial(int n) {
-    return (n == 0 || n == 1) ? 1 : n * factorial(n - 1);
-}
-
-// Function to calculate Bessel function of the first kind J_n(x) using series expansion
-double bessel_J(int n, double x) {
-    const int num_terms = 20;  // Number of terms in the series expansion
-    double sum = 0.0;
-    double x_half_pow_n = std::pow(x / 2.0, n);  // (x/2)^n part of the series
-
-    for (int m = 0; m < num_terms; ++m) {
-        double term = std::pow(-1.0, m) * std::pow(x / 2.0, 2 * m) / (factorial(m) * factorial(m + n));
-        sum += term;
-    }
-
-    return x_half_pow_n * sum;
-}
-
-// Spherical Bessel function of the first kind j_n(x) using the relation to J_n(x)
-double bessel_j(int n, double x) {
-    if (x == 0) {
-        return (n == 0) ? 1.0 : 0.0;  // j_0(0) = 1, j_n(0) = 0 for n > 0
-    }
-    double order = n + 0.5;
-    double cylindrical_part = bessel_J(static_cast<int>(order), x);
-    return std::sqrt(M_PI / (2 * x)) * cylindrical_part;
-}
-
-double bessel_jp(int n, double x)
-{
-    return 0.5 * (bessel_j(n - 1, x) - bessel_j(n + 1, x));
-}
-
-extern "C" {
-    void jdzo(int& nt, int* n, int* m, double* zo);
-}
-
-
-
-
-
-
-
-
-
-
-
-void bjndd(int n, double x, std::vector<double>& bj, std::vector<double>& dj, std::vector<double>& fj) {
-    if (x == 0) throw std::domain_error("x cannot be zero.");
-
-    int m, mt, nt;
-    double bs = 0.0, f0 = 0.0, f1 = 1e-35, f;
-
-    // Determine the value of m based on the stability condition
-    for (nt = 1; nt <= 900; ++nt) {
-        mt = static_cast<int>(0.5 * log10(6.28 * nt) - nt * log10(1.36 * std::abs(x) / nt));
-        if (mt > 20) break;
-    }
-
-    m = nt;
-    // Recurrence for Bessel functions
-    for (int k = m; k >= 0; --k) {
-        f = 2.0 * (k + 1.0) * f1 / x - f0;
-        if (k <= n) {
-            bj[k] = f;
-        }
-        if (k % 2 == 0) {  // Check if k is even
-            bs += 2.0 * f;
-        }
-        f0 = f1;
-        f1 = f;
-    }
-
-    // Normalize Bessel functions
-    for (int k = 0; k <= n; ++k) {
-        bj[k] /= (bs - f);
-    }
-
-    // Calculate derivatives
-    dj[0] = -bj[1];
-    fj[0] = -bj[0] - dj[0] / x;
-    for (int k = 1; k <= n; ++k) {
-        dj[k] = bj[k-1] - k * bj[k] / x;
-        fj[k] = (k * k / (x * x) - 1.0) * bj[k] - dj[k] / x;
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#include "definitions.cpp"
+#include "bessel_subroutine.h"
 
 
 
@@ -141,23 +31,10 @@ std::vector<complex128> get_LP_mode_field(
       }
    }
 
-   double u = 3.831705970207512315614435886308;
+   double rj0[radial_number], rj1[radial_number], ry0[radial_number], ry1[radial_number];
 
-   #define N 40
-   int nt = N; // Number of zeros
-   int n[N], m[N];
-   double zo[N];
+   bessel_zeros(azimuthal_number, radial_number, rj0, rj1, ry0, ry1);
 
-
-   // Call the Fortran subroutine
-   jdzo(nt, n, m, zo);
-
-    // Printing all elements in the array
-    for (int i = 0; i < N; i++)
-        std::cout << "n: "<<n[i]<< "  zo[" << i << "] = " << zo[i] << std::endl;
-
-
-   std::cout<<"U C++ " << u<<"\n";
    for (size_t i = 0; i < x_coords.size(); ++i)
    {
       double x = x_coords[i];
@@ -166,8 +43,7 @@ std::vector<complex128> get_LP_mode_field(
       double r = std::sqrt(x * x + y * y);
       double phi = std::atan2(y, x);
 
-      // complex128 radial_part = bessel_j(azimuthal_number, u * r / core_radius);
-      complex128 radial_part = bessel_J(azimuthal_number, r * u);
+      complex128 radial_part = bessel_J(azimuthal_number, r * rj0[radial_number-1]);
 
       double azimuthal_part = std::cos(azimuthal_number * phi);
 
@@ -188,9 +64,16 @@ std::vector<complex128> get_LP_mode_field(
    return field;
 }
 
-
-
-
+pybind11::array_t<complex128> get_LP_mode_field_py(
+   std::vector<double> x_coords,
+   std::vector<double> y_coords,
+   int azimuthal_number,
+   int radial_number)
+{
+    return vector_to_numpy(
+        get_LP_mode_field(x_coords, y_coords, azimuthal_number, radial_number)
+    );
+}
 
 
 

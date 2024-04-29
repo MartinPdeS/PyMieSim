@@ -15,6 +15,7 @@ from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.tools.special_functions import NA_to_angle
+from PyMieSim.binary import ModeField
 
 
 from MPSPlots.render3D import SceneList as SceneList3D
@@ -250,6 +251,25 @@ class CoherentMode(GenericDetector):
         if self.NA > 0.3 or self.NA < 0:
             logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
 
+        self.mode_family = self.mode_number[:2]
+
+        if self.mode_family.lower() not in ['lp', 'lg', 'hg']:
+            raise ValueError(f'Invalid mode family: {self.mode_family}. Options are ["LP", "LG", "HG"]')
+
+        number_0, number_1 = self.mode_number[2:]
+        number_0, number_1 = int(number_0), int(number_1)
+
+        match self.mode_family.lower():
+            case 'lp':
+                self.azimuthal_number, self.radial_number = number_0, number_1
+                self.cpp_mode_field_getter = ModeField.get_LP
+            case 'lg':
+                self.azimuthal_number, self.radial_number = number_0, number_1
+                self.cpp_mode_field_getter = ModeField.get_LG
+            case 'hg':
+                self.x_number, self.y_number = number_0, number_1
+                self.cpp_mode_field_getter = ModeField.get_HG
+
         self.max_angle = NA_to_angle(NA=self.NA)
 
         self.polarization_filter = numpy.float64(self.polarization_filter)
@@ -269,10 +289,25 @@ class CoherentMode(GenericDetector):
         )
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
-        return self.mode_module.interpolate_from_structured_mesh(
-            sampling=sampling,
-            number_0=self.numbers[0],
-            number_1=self.numbers[1]
+        x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
+
+        coordinates = numpy.row_stack((
+            x_mesh.ravel(),
+            y_mesh.ravel(),
+        ))
+
+        norm = numpy.sqrt(numpy.square(coordinates).sum(axis=0)).max()
+
+        coordinates /= norm
+
+        field = self.cpp_mode_field_getter(
+            x=coordinates[0],
+            y=coordinates[1],
+            azimuthal_number=self.azimuthal_number,
+            radial_number=self.radial_number
         )
+
+        return field.reshape([sampling, sampling])
+
 
 # -
