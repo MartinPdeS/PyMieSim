@@ -54,7 +54,6 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/libraries/amos_iso_c_fortran_wrapper.f90
     ${CMAKE_CURRENT_SOURCE_DIR}/libraries/machine.for
     ${CMAKE_CURRENT_SOURCE_DIR}/libraries/zbesh.for
-    ${CMAKE_CURRENT_SOURCE_DIR}/libraries/bessel_zeros.f90
 )
 target_link_libraries(ZBessel PUBLIC "${STATIC_STDLIB}")
 

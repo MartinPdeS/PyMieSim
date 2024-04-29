@@ -11,8 +11,6 @@
 #include <HG_modes.h>
 #include <LP_modes.h>
 
-#include <iostream>
-
 namespace DETECTOR {
 
     using complex128 = std::complex<double>;
@@ -25,7 +23,7 @@ namespace DETECTOR {
             double polarization_filter = 0.0;
             double rotation = 0.0;
             bool coherent = true;
-            bool point_coupling = true;
+            bool mean_coupling = true;
             size_t sampling = 0;
             double max_angle = 0;
             std::vector<complex128> scalar_field;
@@ -35,9 +33,9 @@ namespace DETECTOR {
 
             Detector(
                 const std::vector<complex128>& scalar_field, double NA, double phi_offset,
-                double gamma_offset, double polarization_filter, double rotation, bool coherent, bool point_coupling
+                double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling
             ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation(rotation), coherent(coherent), point_coupling(point_coupling)
+            rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
                 this->sampling = scalar_field.size();
@@ -52,9 +50,9 @@ namespace DETECTOR {
                 );
             }
 
-            Detector(size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool point_coupling) :
+            Detector(size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling) :
             sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation(rotation), coherent(coherent), point_coupling(point_coupling)
+            rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
 
@@ -67,9 +65,9 @@ namespace DETECTOR {
                 );
             }
 
-            Detector(std::string mode_number, size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool point_coupling) :
+            Detector(std::string mode_number, size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling) :
             sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation(rotation), coherent(coherent), point_coupling(point_coupling)
+            rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
 
@@ -113,9 +111,9 @@ namespace DETECTOR {
             template <typename T>
             double get_coupling(T& scatterer) {
                 if (this->coherent)
-                    return this->point_coupling ? get_coupling_point_coherent(scatterer) : get_coupling_mean_coherent(scatterer);
+                    return this->mean_coupling ? get_coupling_mean_coherent(scatterer) : get_coupling_point_coherent(scatterer);
                 else
-                    return this->point_coupling ? get_coupling_point_no_coherent(scatterer) : get_coupling_mean_no_coherent(scatterer);
+                    return this->mean_coupling ? get_coupling_mean_no_coherent(scatterer) : get_coupling_point_no_coherent(scatterer);
             }
 
             template <typename T> double get_coupling_point_no_coherent(T& scatterer);
@@ -146,7 +144,7 @@ namespace DETECTOR {
             std::vector<unsigned> sampling;
 
             bool coherent;
-            bool point_coupling;
+            bool mean_coupling;
 
             std::vector<size_t> shape;
 
@@ -159,9 +157,9 @@ namespace DETECTOR {
                 const std::vector<double> &polarization_filter,
                 const std::vector<double> &rotation,
                 const bool &coherent,
-                const bool &point_coupling)
+                const bool &mean_coupling)
             : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), point_coupling(point_coupling)
+              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
               {
                 this->shape = {scalar_fields.size(), rotation.size(), NA.size(), phi_offset.size(), gamma_offset.size(), polarization_filter.size()};
               }
@@ -174,9 +172,9 @@ namespace DETECTOR {
                 const std::vector<double> &polarization_filter,
                 const std::vector<double> &rotation,
                 const bool &coherent,
-                const bool &point_coupling)
+                const bool &mean_coupling)
             : mode_numbers(mode_numbers), sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), point_coupling(point_coupling)
+              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
               {
                 this->shape = {mode_numbers.size(), sampling.size(), rotation.size(), NA.size(), phi_offset.size(), gamma_offset.size(), polarization_filter.size()};
               }
@@ -192,7 +190,7 @@ namespace DETECTOR {
                     this->polarization_filter[pf],
                     this->rotation[ra],
                     this->coherent,
-                    this->point_coupling
+                    this->mean_coupling
                 );
             }
     };

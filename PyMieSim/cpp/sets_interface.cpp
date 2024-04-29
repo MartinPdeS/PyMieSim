@@ -152,7 +152,7 @@ PYBIND11_MODULE(Sets, module) {
              py::arg("polarization_filter"),
              py::arg("rotation"),
              py::arg("coherent"),
-             py::arg("point_coupling"),
+             py::arg("mean_coupling"),
              "Initializes a detector set with scalar fields, numerical aperture, offsets, filters, angle, coherence, and coupling type.")
 
         .def(py::init<std::vector<std::string>, std::vector<unsigned>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, bool, bool>(),
@@ -164,7 +164,7 @@ PYBIND11_MODULE(Sets, module) {
              py::arg("polarization_filter"),
              py::arg("rotation"),
              py::arg("coherent"),
-             py::arg("point_coupling"),
+             py::arg("mean_coupling"),
              "Initializes a detector set with scalar fields, numerical aperture, offsets, filters, angle, coherence, and coupling type.");
 }
 

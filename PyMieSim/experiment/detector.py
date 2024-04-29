@@ -74,8 +74,6 @@ class BaseDetector():
         Returns:
             NoReturn
         """
-        point_coupling = True if self.coupling_mode == 'point' else False
-
         self.binding_kwargs = dict(
             mode_number=numpy.atleast_1d(self.mode_number).astype(str),
             sampling=numpy.atleast_1d(self.sampling).astype(int),
@@ -84,7 +82,7 @@ class BaseDetector():
             gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
             polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
             rotation=numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float),
-            point_coupling=point_coupling,
+            mean_coupling=self.mean_coupling,
             coherent=self.coherent
         )
 
@@ -191,7 +189,7 @@ class Photodiode(BaseDetector):
         simulation experiment.
     """
     rotation: float = 0
-    coupling_mode: str = 'point'
+    mean_coupling: bool = True
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
@@ -200,8 +198,8 @@ class Photodiode(BaseDetector):
 class CoherentMode(BaseDetector):
     mode_number: Iterable
     """ List of mode to be used. """
-    coupling_mode: str = 'point'
-    """ Method for computing mode coupling. Either point or Mean. """
+    mean_coupling: bool = False
+    """ Method for computing mode coupling. Either point (False) or Mean (True). """
     rotation: float = 0
     """ Rotation of the coherent mode field. (degree)"""
     coherent: bool = field(default=True, init=False)
