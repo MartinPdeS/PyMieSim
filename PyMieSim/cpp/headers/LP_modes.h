@@ -12,7 +12,6 @@ std::vector<complex128> get_LP_mode_field(
    int azimuthal_number,
    int radial_number)
 {
-
    std::vector<complex128> field(x_coords.size());
 
    // Normalize the coordinates
@@ -60,7 +59,6 @@ std::vector<complex128> get_LP_mode_field(
    for (complex128& f : field)
       f /= norm;
 
-
    return field;
 }
 
@@ -70,9 +68,10 @@ pybind11::array_t<complex128> get_LP_mode_field_py(
    int azimuthal_number,
    int radial_number)
 {
-    return vector_to_numpy(
-        get_LP_mode_field(x_coords, y_coords, azimuthal_number, radial_number)
-    );
+   return vector_to_numpy(
+      get_LP_mode_field(x_coords, y_coords, azimuthal_number, radial_number),
+      {x_coords.size()}
+   );
 }
 
 

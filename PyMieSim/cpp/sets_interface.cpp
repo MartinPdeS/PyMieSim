@@ -144,17 +144,6 @@ PYBIND11_MODULE(Sets, module) {
 
 // Binding for DETECTOR::Set
     py::class_<DETECTOR::Set>(module, "CppDetectorSet")
-        .def(py::init<std::vector<std::vector<complex128>>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, bool, bool>(),
-             py::arg("scalar_field"),
-             py::arg("NA"),
-             py::arg("phi_offset"),
-             py::arg("gamma_offset"),
-             py::arg("polarization_filter"),
-             py::arg("rotation"),
-             py::arg("coherent"),
-             py::arg("mean_coupling"),
-             "Initializes a detector set with scalar fields, numerical aperture, offsets, filters, angle, coherence, and coupling type.")
-
         .def(py::init<std::vector<std::string>, std::vector<unsigned>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, bool, bool>(),
              py::arg("mode_number"),
              py::arg("sampling"),

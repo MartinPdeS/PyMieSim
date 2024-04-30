@@ -33,7 +33,7 @@ class BaseRepresentation():
     distance: float = 1.0
 
     def __post_init__(self):
-        fields = self.scatterer.Bind.get_full_fields(
+        fields = self.scatterer.binding.get_full_fields(
             sampling=self.sampling,
             r=self.distance
         )
@@ -319,7 +319,7 @@ class S1S2():
 
         The method calculates these parameters for a range of phi angles and stores them as the S1 and S2 attributes of the instance.
         """
-        self.S1, self.S2 = self.scatterer.Bind.get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
+        self.S1, self.S2 = self.scatterer.binding.get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
 
     def plot(self) -> SceneList:
         """
@@ -409,10 +409,9 @@ class Footprint():
         _, phi, theta = rotate_on_x(phi + numpy.pi / 2, theta, numpy.pi / 2)
 
         far_field_para, far_field_perp = self.scatterer.get_farfields_array(
-            phi=phi.flatten() + numpy.pi / 2,
-            theta=theta.flatten(),
+            phi=phi.ravel() + numpy.pi / 2,
+            theta=theta.ravel(),
             r=1.0,
-            structured=False
         )
 
         detector_structured_farfield = self.detector.get_structured_scalarfield(sampling=self.sampling)

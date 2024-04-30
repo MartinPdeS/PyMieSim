@@ -38,7 +38,7 @@ def test_photodiode_sampling(sampling, setup_scatterer):
 
     detector = Photodiode(
         NA=0.2,  # Numerical aperture of the detector
-        sampling=sampling,  # Sampling rate
+        sampling=sampling,  # Field sampling
         gamma_offset=0,  # Gamma offset
         phi_offset=0  # Phi offset
     )

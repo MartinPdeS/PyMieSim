@@ -14,10 +14,8 @@ from dataclasses import dataclass, field
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.binary.DetectorInterface import BindedDetector
-from PyMieSim.tools.special_functions import NA_to_angle
 from PyMieSim.binary import ModeField
-
-
+from PyMieSim.tools.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
 
 
@@ -28,45 +26,11 @@ class GenericDetector():
     """
 
     def __init__(self, **kwargs):
-        self.initialize_attributes(**kwargs)
-
-    def initialize_attributes(self, **kwargs):
         """
         Initialize detector attributes from keyword arguments.
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
-
-    def initialize(self, far_field: numpy.ndarray | None = None) -> None:
-        """
-        Perform initial setup by setting max angle based on NA, converting
-        polarization_filter to float, and binding C++ backend.
-        """
-        self.max_angle = NA_to_angle(NA=self.NA)
-
-        self.polarization_filter = numpy.float64(self.polarization_filter)
-
-        self.set_cpp_binding()
-
-        if far_field is None:
-            far_field = numpy.ones(self.sampling)
-
-        self.cpp_binding.scalar_field = far_field
-
-    def set_cpp_binding(self):
-        """
-        Establish binding with the C++ backend for the detector.
-        """
-        self.cpp_binding = BindedDetector(
-            sampling=self.sampling,
-            NA=self.NA,
-            phi_offset=numpy.deg2rad(self.phi_offset),
-            gamma_offset=numpy.deg2rad(self.gamma_offset),
-            polarization_filter=numpy.deg2rad(self.polarization_filter),
-            coherent=self.coherent,
-            rotation=numpy.deg2rad(self.rotation),
-            mean_coupling=self.mean_coupling
-        )
 
     def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
         r"""
@@ -85,7 +49,7 @@ class GenericDetector():
         Returns:
             float: The coupling in watts.
         """
-        return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.Bind)
+        return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
 
     def get_footprint(self, scatterer: Sphere | CoreShell | Cylinder) -> Footprint:
         r"""
@@ -140,23 +104,6 @@ class GenericDetector():
 
         return figure
 
-    def interpret_mode_name(self, mode_name: str) -> tuple[int, int, float]:
-        """
-        Intepret the mode_number parameter to check if there is a rotation associated
-
-        :returns:   The two mode numbers plus rotation angle
-        :rtype:     tuple[int, int, float]
-        """
-        assert isinstance(mode_name, str), "Mode number must be a string. Example 'LP01' or HG11"
-
-        mode_family_name = mode_name[:2].lower()
-
-        number_0, number_1 = mode_name[-2:]
-
-        number_0, number_1 = int(number_0), int(number_1)
-
-        return mode_family_name, (number_0, number_1)
-
 
 @dataclass
 class Photodiode(GenericDetector):
@@ -182,9 +129,21 @@ class Photodiode(GenericDetector):
     """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
-        self.initialize()
+        self.polarization_filter = numpy.float64(self.polarization_filter)
 
-        self.cpp_binding.scalar_field = numpy.ones(self.sampling, dtype=complex)
+        self.max_angle = NA_to_angle(NA=self.NA)
+
+        self.cpp_binding = BindedDetector(
+            mode_number='NC00',
+            sampling=self.sampling,
+            NA=self.NA,
+            phi_offset=numpy.deg2rad(self.phi_offset),
+            gamma_offset=numpy.deg2rad(self.gamma_offset),
+            polarization_filter=numpy.deg2rad(self.polarization_filter),
+            rotation=numpy.deg2rad(self.rotation),
+            coherent=self.coherent,
+            mean_coupling=self.mean_coupling
+        )
 
     def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
         return numpy.ones([sampling, sampling])

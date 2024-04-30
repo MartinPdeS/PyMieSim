@@ -110,8 +110,9 @@ pybind11::array_t<complex128> get_HG_mode_field_py(
    int x_number,
    int y_number)
 {
-    return vector_to_numpy(
-        get_HG_mode_field(x_coords, y_coords, x_number, y_number)
-    );
+   return vector_to_numpy(
+      get_HG_mode_field(x_coords, y_coords, x_number, y_number),
+      {x_coords.size()}
+   );
 }
 

@@ -31,40 +31,6 @@ namespace DETECTOR {
 
             Detector() = default;
 
-            Detector(
-                const std::vector<complex128>& scalar_field, double NA, double phi_offset,
-                double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling
-            ) : scalar_field(scalar_field), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
-            {
-                this->max_angle = NA2Angle(this->NA);
-                this->sampling = scalar_field.size();
-                this->scalar_field = scalar_field;
-
-                this->fibonacci_mesh = FibonacciMesh(
-                    this->sampling,
-                    this->max_angle,
-                    this->phi_offset,
-                    this->gamma_offset,
-                    this->rotation
-                );
-            }
-
-            Detector(size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling) :
-            sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
-            {
-                this->max_angle = NA2Angle(this->NA);
-
-                this->fibonacci_mesh = FibonacciMesh(
-                    this->sampling,
-                    this->max_angle,
-                    this->phi_offset,
-                    this->gamma_offset,
-                    this->rotation
-                );
-            }
-
             Detector(std::string mode_number, size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling) :
             sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
             rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
@@ -82,30 +48,32 @@ namespace DETECTOR {
                 int number_0 = mode_number[2] - '0';
                 int number_1 = mode_number[3] - '0';
 
-                if(mode_number.substr(0, 2) == "LG")  // Laguerre-Gauss mode
+                if (mode_number.substr(0, 2) == "LG")  // Laguerre-Gauss mode
                     this->scalar_field = get_LG_mode_field(
                         this->fibonacci_mesh.base_cartesian_coordinates.x,
                         this->fibonacci_mesh.base_cartesian_coordinates.y,
                         number_0,
                         number_1
                     );
-                if(mode_number.substr(0, 2) == "HG")  // Hermit-Gauss mode
+                else if (mode_number.substr(0, 2) == "HG")  // Hermit-Gauss mode
                     this->scalar_field = get_HG_mode_field(
                         this->fibonacci_mesh.base_cartesian_coordinates.x,
                         this->fibonacci_mesh.base_cartesian_coordinates.y,
                         number_0,
                         number_1
                     );
-                if(mode_number.substr(0, 2) == "LP")  // Fiber Linearly Polarized mode
+                else if (mode_number.substr(0, 2) == "LP")  // Fiber Linearly Polarized mode
                     this->scalar_field = get_LP_mode_field(
                         this->fibonacci_mesh.base_cartesian_coordinates.x,
                         this->fibonacci_mesh.base_cartesian_coordinates.y,
                         number_0,
                         number_1
                     );
-                if(mode_number.substr(0, 2) == "NC")  // Non-coherent mode
+                else if (mode_number.substr(0, 2) == "NC")  // Non-coherent mode
                     this->scalar_field = std::vector<complex128>(this->fibonacci_mesh.base_cartesian_coordinates.x.size(), 1.0);
 
+                else
+                    throw std::invalid_argument("Invalid mode family name");
             }
 
             template <typename T>
@@ -149,20 +117,6 @@ namespace DETECTOR {
             std::vector<size_t> shape;
 
             Set() = default;
-
-            Set(const std::vector<std::vector<complex128>> &scalar_fields,
-                const std::vector<double> &NA,
-                const std::vector<double> &phi_offset,
-                const std::vector<double> &gamma_offset,
-                const std::vector<double> &polarization_filter,
-                const std::vector<double> &rotation,
-                const bool &coherent,
-                const bool &mean_coupling)
-            : scalar_fields(scalar_fields), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
-              {
-                this->shape = {scalar_fields.size(), rotation.size(), NA.size(), phi_offset.size(), gamma_offset.size(), polarization_filter.size()};
-              }
 
             Set(const std::vector<std::string> &mode_numbers,
                 const std::vector<unsigned> &sampling,

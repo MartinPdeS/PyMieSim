@@ -27,7 +27,7 @@ def setup_source():
 
 
 @pytest.fixture
-def setup_scatterer(setup_source):
+def scatterer(setup_source):
     """Fixture to create a scatterer with a provided source."""
 
     return Sphere(
@@ -40,19 +40,19 @@ def setup_scatterer(setup_source):
 
 @pytest.mark.parametrize('mode_number', mode_numbers)
 @pytest.mark.parametrize('rotation', rotations)
-def test_lp_modes(mode_number, rotation, setup_scatterer):
+def test_lp_modes(mode_number, rotation, scatterer):
     """Test different LP, LG, and HG modes with varying rotations."""
 
     detector = CoherentMode(
         mode_number=mode_number,
         NA=0.2,  # Numerical aperture for the detector
-        sampling=100,  # Sampling rate
+        sampling=100,  # Field sampling
         gamma_offset=0,  # Gamma offset
         phi_offset=0,  # Phi offset
         rotation=rotation  # Rotation angle
     )
 
-    footprint = detector.get_footprint(scatterer=setup_scatterer)
+    footprint = detector.get_footprint(scatterer=scatterer)
 
     assert footprint is not None, "Expected a valid footprint but got None."
 

@@ -74,7 +74,7 @@ std::vector<complex128> get_LG_mode_field(
    double k = 2 * PI / wavelength;  // Wave number
    double w0 = waist_radius;  // Beam waist
 
-    std::vector<complex128> field(x_coords.size());
+   std::vector<complex128> field(x_coords.size());
 
    // Normalize the coordinates
    double max_norm = 0.0;
@@ -101,8 +101,7 @@ std::vector<complex128> get_LG_mode_field(
 
       // Beam parameters at z
       double w = w0 * std::sqrt(1 + (z * wavelength / (PI * w0 * w0)) * (z * wavelength / (PI * w0 * w0)));
-      double R = (z == 0) ? std::numeric_limits<double>::infinity() :
-                   z * (1 + (PI * w0 * w0 / (z * wavelength)) * (PI * w0 * w0 / (z * wavelength)));
+      double R = (z == 0) ? std::numeric_limits<double>::infinity() : z * (1 + (PI * w0 * w0 / (z * wavelength)) * (PI * w0 * w0 / (z * wavelength)));
       double gouy_phase = std::atan(z * PI / (wavelength * w0 * w0));
 
       // Laguerre polynomial
@@ -135,9 +134,10 @@ pybind11::array_t<complex128> get_LG_mode_field_py(
    int azimuthal_number,
    int radial_number)
 {
-    return vector_to_numpy(
-        get_LG_mode_field(x_coords, y_coords, azimuthal_number, radial_number)
-    );
+   return vector_to_numpy(
+      get_LG_mode_field(x_coords, y_coords, azimuthal_number, radial_number),
+      {x_coords.size()}
+   );
 }
 
 

@@ -34,7 +34,6 @@ detector = CoherentMode(
     sampling=200,  # Number of sampling points
     gamma_offset=0,
     phi_offset=0,
-    coupling_mode='Point'  # Coupling mode
 )
 
 # Compute the footprint data using the defined scatterer and detector

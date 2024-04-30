@@ -20,7 +20,7 @@ PYBIND11_MODULE(CylinderInterface, module) {
 
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a cylinder.")
         .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), "Returns the unstructured electromagnetic fields around the cylinder.")
-        .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the cylinder.")
+        .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the sphere.")
         .def("a1n", py::overload_cast<>(&Scatterer::get_a1n_py), "Returns the a1n coefficient.")
         .def("b1n", py::overload_cast<>(&Scatterer::get_b1n_py), "Returns the b1n coefficient.")
         .def("a2n", py::overload_cast<>(&Scatterer::get_a2n_py), "Returns the a2n coefficient.")

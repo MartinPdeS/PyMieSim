@@ -23,7 +23,7 @@ PYBIND11_MODULE(SphereInterface, module) {
 
         .def(py::init<>(), "Default constructor for SPHERE scatterer.")
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a sphere.")
-        .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), "Returns the unstructured electromagnetic fields around the sphere.")
+        .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), py::return_value_policy::move, "Returns the unstructured electromagnetic fields around the sphere.")
         .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the sphere.")
         .def("an", py::overload_cast<>(&Scatterer::get_an_py), "Returns the an coefficient.")
         .def("bn", py::overload_cast<>(&Scatterer::get_bn_py), "Returns the bn coefficient.")

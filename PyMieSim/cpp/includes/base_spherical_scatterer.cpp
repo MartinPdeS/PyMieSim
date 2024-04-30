@@ -10,6 +10,10 @@
 #include <complex>
 
 
+
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+
 class BaseSphericalScatterer
 {
 public:
@@ -134,6 +138,14 @@ public:
         );
     }
 
+    std::tuple<py::array_t<complex128>, py::array_t<complex128>>
+    get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
+    {
+        auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
+
+        return std::make_tuple(vector_to_numpy(phi_field), vector_to_numpy(theta_field));
+    }
+
 
     std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
     compute_full_structured_fields(const size_t& sampling, const double& radius) const
@@ -247,7 +259,7 @@ public:
 
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
-    get_full_structured_fields_py(size_t &sampling, double& distance) const
+    get_full_structured_fields_py(size_t sampling, double distance) const
     {
         auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_fields(sampling, distance);
 
@@ -268,14 +280,6 @@ public:
             phi_py,
             theta_py
         );
-    }
-
-    std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-    get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
-    {
-        auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
-
-        return std::make_tuple(vector_to_numpy(phi_field), vector_to_numpy(theta_field));
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const {

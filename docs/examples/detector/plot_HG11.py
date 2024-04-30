@@ -18,7 +18,6 @@ detector = CoherentMode(
     gamma_offset=0,  # Gamma offset
     phi_offset=40,  # Phi offset in degrees
     rotation=0,
-    coupling_mode='Point'  # Coupling mode set to 'Point'
 )
 
 # %%

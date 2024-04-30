@@ -1,6 +1,8 @@
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 
+import numpy
+
 
 def test_simple():
     source = Gaussian(
@@ -18,6 +20,16 @@ def test_simple():
         medium_index=1.0
     )
 
-    print(scatterer.Qsca)
+    phi, theta = numpy.mgrid[
+        -0.3: 0.3: 100, 0: numpy.pi: 100
+    ]
+
+    phi = phi.ravel() + numpy.pi / 2
+
+    theta = theta.ravel()
+
+    a = scatterer.binding.get_fields(phi=phi, theta=theta, r=1.0)
+
+    print(a)
 
 # -

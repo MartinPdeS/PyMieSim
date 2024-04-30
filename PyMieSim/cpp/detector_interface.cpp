@@ -12,28 +12,6 @@ PYBIND11_MODULE(DetectorInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
     py::class_<Detector>(module, "BindedDetector")
-        .def(py::init<std::vector<complex128>, double, double, double, double, double, bool, bool>(),
-             py::arg("scalar_field"),
-             py::arg("NA"),
-             py::arg("phi_offset"),
-             py::arg("gamma_offset"),
-             py::arg("polarization_filter"),
-             py::arg("rotation"),
-             py::arg("coherent"),
-             py::arg("mean_coupling"),
-             "Constructs a Detector with given parameters. The `mean_coupling` parameter determines the coupling type (true for point, false for mean).")
-
-        .def(py::init<size_t, double, double, double, double, double, bool, bool>(),
-             py::arg("sampling"),
-             py::arg("NA"),
-             py::arg("phi_offset"),
-             py::arg("gamma_offset"),
-             py::arg("polarization_filter"),
-             py::arg("rotation"),
-             py::arg("coherent"),
-             py::arg("mean_coupling"),
-             "Constructs a Detector with given parameters. The `mean_coupling` parameter determines the coupling type (true for point, false for mean).")
-
         .def(py::init<std::string, size_t, double, double, double, double, double, bool, bool>(),
              py::arg("mode_number"),
              py::arg("sampling"),

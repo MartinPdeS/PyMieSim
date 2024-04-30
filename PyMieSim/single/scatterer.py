@@ -42,83 +42,78 @@ class GenericScatterer():
 
     @property
     def size_parameter(self) -> float:
-        return self.Bind.size_parameter
+        return self.binding.size_parameter
 
     @property
     def area(self) -> float:
-        return self.Bind.area
+        return self.binding.area
 
     @property
     def Qsca(self) -> float:
         """ Scattering efficiency. """
-        return self.Bind.Qsca
+        return self.binding.Qsca
 
     @property
     def Qext(self) -> float:
         """ Extinction efficiency. """
-        return self.Bind.Qext
+        return self.binding.Qext
 
     @property
     def Qabs(self) -> float:
         """ Absorption efficiency. """
-        return self.Bind.Qabs
+        return self.binding.Qabs
 
     @property
     def Qback(self) -> float:
         """ Backscattering efficiency. """
-        return self.Bind.Qback
+        return self.binding.Qback
 
     @property
     def Qratio(self) -> float:
         """ Efficiency: Ratio of backscattering over total scattering. """
-        return self.Bind.Qback / self.Bind.Qsca
+        return self.binding.Qback / self.binding.Qsca
 
     @property
     def g(self) -> float:
         """ Anisotropy factor. """
-        return self.Bind.g
+        return self.binding.g
 
     @property
     def Qpr(self) -> float:
         """ Radiation pressure efficiency. """
-        return self.Bind.Qpr
+        return self.binding.Qpr
 
     @property
     def Csca(self) -> float:
         """ Scattering cross-section. """
-        return self.Bind.Csca
+        return self.binding.Csca
 
     @property
     def Cext(self) -> float:
         """ Extinction cross-section. """
-        return self.Bind.Cext
+        return self.binding.Cext
 
     @property
     def Cabs(self) -> float:
         """ Absorption cross-section. """
-        return self.Bind.Cabs
+        return self.binding.Cabs
 
     @property
     def Cpr(self) -> float:
         """ Radiation pressure cross-section. """
-        return self.Bind.Cpr
+        return self.binding.Cpr
 
     @property
     def Cback(self) -> float:
         """ Backscattering cross-section. """
-        return self.Bind.Cback
+        return self.binding.Cback
 
     @property
     def Cratio(self) -> float:
         """ Ratio of backscattering cross-section over total scattering. """
-        return self.Bind.Cback / self.Bind.Csca
+        return self.binding.Cback / self.binding.Csca
 
-    def get_farfields_array(
-            self,
-            phi: numpy.ndarray,
-            theta: numpy.ndarray,
-            r: numpy.ndarray,
-            structured: bool = False) -> numpy.array:
+    def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray) -> numpy.array:
         r"""
         Method Compute scattering Far Field for unstructured coordinate.
 
@@ -143,10 +138,7 @@ class GenericScatterer():
         :returns:   The far fields
         :rtype:     numpy.ndarray
         """
-        if structured:
-            return self.Bind.get_full_fields(phi.size, r=r)
-        else:
-            return self.Bind.get_fields(phi=phi, theta=theta, r=r)
+        return self.binding.get_fields(phi=phi, theta=theta, r=r)
 
     def get_s1s2(self, **kwargs) -> S1S2:
         r"""
@@ -259,12 +251,7 @@ class GenericScatterer():
             Mesh : Number of voxel in the 4 pi space to compute energy flow.
 
         """
-        Ephi, Etheta = self.get_farfields_array(
-            phi=mesh.phi,
-            theta=mesh.theta,
-            r=1.,
-            structured=False
-        )
+        Ephi, Etheta = self.get_farfields_array(phi=mesh.phi, theta=mesh.theta, r=1.)
 
         E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
 
@@ -344,7 +331,7 @@ class Sphere(GenericScatterer):
         """
         from PyMieSim.binary.SphereInterface import SPHERE
 
-        self.Bind = SPHERE(
+        self.binding = SPHERE(
             wavelength=self.source.wavelength,
             amplitude=self.source.amplitude,
             diameter=self.diameter,
@@ -366,7 +353,7 @@ class Sphere(GenericScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
         """
-        return self.Bind.an()
+        return self.binding.an()
 
     def bn(self, max_order: int = None) -> numpy.array:
         r"""
@@ -381,7 +368,7 @@ class Sphere(GenericScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
         """
-        return self.Bind.bn()
+        return self.binding.bn()
 
     def cn(self, max_order: int = None) -> numpy.array:
         r"""
@@ -396,7 +383,7 @@ class Sphere(GenericScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
         """
-        return self.Bind.cn()
+        return self.binding.cn()
 
     def dn(self, max_order: int = None) -> numpy.array:
         r"""
@@ -411,7 +398,7 @@ class Sphere(GenericScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
         """
-        return self.Bind.dn()
+        return self.binding.dn()
 
 
 @dataclass()
@@ -452,7 +439,7 @@ class CoreShell(GenericScatterer):
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
-        self.Bind = CORESHELL(
+        self.binding = CORESHELL(
             shell_index=self.shell_index,
             core_index=self.core_index,
             shell_width=self.shell_width,
@@ -468,18 +455,18 @@ class CoreShell(GenericScatterer):
         Compute :math:`a_n` coefficient
         """
         if max_order is None:
-            return self.Bind.an()
+            return self.binding.an()
         else:
-            return self.Bind._an(max_order)
+            return self.binding._an(max_order)
 
     def bn(self, max_order: int = None) -> numpy.array:
         r"""
         Compute :math:`b_n` coefficient.
         """
         if max_order is None:
-            return self.Bind.bn()
+            return self.binding.bn()
         else:
-            return self.Bind._bn(max_order)
+            return self.binding._bn(max_order)
 
 
 @dataclass()
@@ -513,7 +500,7 @@ class Cylinder(GenericScatterer):
         """
         from PyMieSim.binary.CylinderInterface import CYLINDER
 
-        self.Bind = CYLINDER(
+        self.binding = CYLINDER(
             index=self.index,
             diameter=self.diameter,
             wavelength=self.source.wavelength,
@@ -539,7 +526,7 @@ class Cylinder(GenericScatterer):
         :returns:   The first electric mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.Bind.a1n()
+        return self.binding.a1n()
 
     def a2n(self, max_order: int = None) -> numpy.array:
         r"""
@@ -558,7 +545,7 @@ class Cylinder(GenericScatterer):
         :returns:   The second electric mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.Bind.a2n()
+        return self.binding.a2n()
 
     def b1n(self, max_order: int = None) -> numpy.array:
         r"""
@@ -578,7 +565,7 @@ class Cylinder(GenericScatterer):
         :returns:   The first magnetic mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.Bind.b1n()
+        return self.binding.b1n()
 
     def b2n(self, max_order: int = None) -> numpy.array:
         r"""
@@ -597,7 +584,7 @@ class Cylinder(GenericScatterer):
         :returns:   The second magnetic mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.Bind.b2n()
+        return self.binding.b2n()
 
     @property
     def Cback(self) -> None:
