@@ -43,7 +43,8 @@ detector = CoherentMode(
     phi_offset=-180,  # Phi offset in degrees
     gamma_offset=0,  # Gamma offset in degrees
     polarization_filter=None,  # No polarization filter
-    sampling=300  # Number of sampling points
+    sampling=300,  # Number of sampling points
+    rotation=0,  # Rotation of the mode field
 )
 
 # %%

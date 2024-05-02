@@ -43,7 +43,8 @@ detector = CoherentMode(
     phi_offset=-180,
     gamma_offset=0,
     polarization_filter=np.linspace(-180, 180, 100),
-    sampling=300
+    sampling=300,
+    rotation=0,  # Rotation of the mode field
 )
 
 # %%
