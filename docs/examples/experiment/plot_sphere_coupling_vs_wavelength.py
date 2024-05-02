@@ -42,6 +42,7 @@ detector = CoherentMode(
     phi_offset=-180,
     gamma_offset=0,
     polarization_filter=[0, None],
+    rotation=0,
     sampling=300
 )
 
