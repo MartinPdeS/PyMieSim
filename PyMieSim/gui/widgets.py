@@ -59,6 +59,11 @@ class ComBoxWidget(BaseWidget):
         self.tk_widget.grid(row=row, column=1)
         self.tk_label.grid(row=row, column=0)
 
+    def get_value(self):
+        self.update()
+
+        return self.value
+
     def update(self) -> None:
         """
         Updates the widget's value based on the current user input.
@@ -73,6 +78,42 @@ class ComBoxWidget(BaseWidget):
             str: The current input value as a string.
         """
         return self.tk_widget.get()
+
+
+class RadioButtonWidget(BaseWidget):
+
+    def __init__(self, option_text: list, options_values: list, **kwargs):
+        super().__init__(**kwargs)
+        self.option_text = option_text
+        self.tk_variable = tkinter.IntVar()
+        self.options_values = options_values
+
+    def update(self):
+        pass
+
+    def setup(self, row: int):
+        self.tk_label = tkinter.Label(self.frame, text='Coupling mode: ')
+        self.tk_label.grid(row=row, column=0, sticky="W")
+
+        self.tk_widgets = []
+
+        for column, text in enumerate(self.option_text):
+            option = tkinter.Radiobutton(
+                self.frame,
+                text=text,
+                variable=self.tk_variable,
+                value=column,
+            )
+
+            option.grid(row=row, column=column + 1)
+            self.tk_widgets.append(option)
+
+    def destroy(self) -> NoReturn:
+        for widget in self.tk_widgets:
+            widget.destroy()
+
+    def get_value(self):
+        return self.options_values[self.tk_variable.get()]
 
 
 class InputWidget(BaseWidget):
@@ -109,6 +150,11 @@ class InputWidget(BaseWidget):
         self.tk_widget = tkinter.Entry(self.frame, textvariable=self.tk_widget)
         self.tk_widget.grid(row=row + 1, column=1, sticky="W", pady=2)
 
+    def get_value(self):
+        self.update()
+
+        return self.value
+
     def update(self) -> None:
         """
         Processes the user input, converting it into a float or numpy array based on the input format.
@@ -117,31 +163,25 @@ class InputWidget(BaseWidget):
             numpy.ndarray | float: The processed input value, either as a float or numpy array.
         """
         user_input = self.tk_widget.get()
-        values = numpy.nan  # Default case
+        value = numpy.nan  # Default case
 
         # Handling different input formats
         if "," in user_input:
-            values = self.process_coma_input(user_input=user_input)
+            value = [numpy.nan if p.lower() == 'none' else p.strip() for p in user_input.split(',')]
         elif ":" in user_input:
-            values = self.process_coma_double_point(user_input=user_input)
+            start, end, points = map(float, user_input.split(':'))
+            value = numpy.linspace(start, end, int(points))
         else:
-            values = self.process_coma_else(user_input=user_input)
+            value = numpy.nan if user_input.lower() == 'none' else user_input
+
+        value = numpy.asarray(value)
 
         if self.dtype:
-            values = values.astype(self.dtype)
+            value = value.astype(self.dtype)
         if self.multiplicative_factor is not None:
-            values *= self.multiplicative_factor
+            value *= self.multiplicative_factor
 
-        self.value = values
+        self.value = value
 
-    def process_coma_input(self, user_input: str) -> numpy.ndarray | float:
-        parts = [numpy.nan if p.lower() == 'none' else p.strip() for p in user_input.split(',')]
-        return numpy.asarray(parts)
 
-    def process_coma_double_point(self, user_input: str) -> numpy.ndarray | float:
-        start, end, points = map(float, user_input.split(':'))
-        return numpy.linspace(start, end, int(points))
 
-    def process_coma_else(self, user_input: str) -> numpy.ndarray | float:
-        values = numpy.nan if user_input.lower() == 'none' else user_input
-        return numpy.asarray(values)

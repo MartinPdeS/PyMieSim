@@ -5,7 +5,7 @@ from typing import NoReturn
 from tkinter import ttk, StringVar
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.widgets import InputWidget, ComBoxWidget
+from PyMieSim.gui.widgets import InputWidget, ComBoxWidget, RadioButtonWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
 
 
@@ -101,12 +101,13 @@ class DetectorTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            ComBoxWidget(label='Coupling mode', component_label='coupling_mode', options=['point', 'mean'], default_options=0),
+            RadioButtonWidget(option_text=['Point', 'Mean'], options_values=[False, True], component_label='mean_coupling', label='Mean coupling'),
             InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
             InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', dtype=float),
             InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset', dtype=float),
             InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', dtype=float),
             InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', dtype=str),
+            InputWidget(default_value='0', label='Field rotation [degree]', component_label='rotation', dtype=float),
             InputWidget(default_value='500', label='Sampling', component_label='sampling', dtype=int)
         )
 
@@ -130,9 +131,13 @@ class DetectorTab(BaseTab):
             raise ValueError(f"Unsupported scatterer type: {detector_type}")
 
     def setup_photodiode_component(self) -> NoReturn:
-        self.component = Photodiode(**self.widget_collection.to_component_dict())
+        kwargs = self.widget_collection.to_component_dict()
+
+        self.component = Photodiode(**kwargs)
 
     def setup_coherentmode_component(self) -> NoReturn:
-        self.component = CoherentMode(**self.widget_collection.to_component_dict())
+        kwargs = self.widget_collection.to_component_dict()
+
+        self.component = CoherentMode(**kwargs)
 
 # -

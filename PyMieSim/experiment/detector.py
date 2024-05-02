@@ -17,43 +17,38 @@ from PyMieSim.binary.Sets import CppDetectorSet
 @dataclass
 class BaseDetector():
     """
-    A base class for detectors in Mie scattering simulations, handling the common functionalities
-    for different types of detectors. It is designed to format input parameters, compute necessary
-    detector properties, and bind the detector to a simulation experiment setup.
+    Base class for constructing detectors in Mie scattering simulations, managing common attributes and methods.
+
+    This class is responsible for formatting input parameters, calculating detector characteristics, and
+    binding detectors to a simulation experiment. It should be subclassed to create specific detector types.
 
     Attributes:
-        NA (Iterable[float]): Numerical aperture of the imaging system. It defines the range of angles
-                              over which the system can accept or emit light.
-        gamma_offset (Iterable[float]): Angle offset of the detector in the direction perpendicular
-                                        to polarization, in degrees.
-        phi_offset (Iterable[float]): Angle offset of the detector in the direction parallel to
-                                      polarization, in degrees.
-        polarization_filter (Iterable[float]): Angle of the polarization filter in front of the
-                                              detector, in degrees. This specifies the orientation
-                                              of the polarization filter.
-        sampling (int): Number of sampling points for field evaluation. It dictates the resolution
-                        at which the field is sampled by the detector.
+        NA (Iterable[float]): Defines the numerical aperture, which is the range of angles the system can accept light.
+        gamma_offset (Iterable[float]): Specifies the angular offset perpendicular to polarization (in degrees).
+        phi_offset (Iterable[float]): Specifies the angular offset parallel to polarization (in degrees).
+        polarization_filter (Iterable[float]): Sets the angle of the polarization filter (in degrees).
+        sampling (Iterable[int]): Dictates the resolution for field sampling.
 
-    Note:
-        This class is not intended to be instantiated directly but serves as a base for specific
-        detector types.
+    This class is not intended for direct instantiation.
     """
-    NA: Iterable
-    gamma_offset: Iterable
-    phi_offset: Iterable
-    polarization_filter: Iterable
-    sampling: int
 
     def __post_init__(self) -> NoReturn:
         """
-        Initializes and prepares the detector instance by formatting inputs, computing field arrays,
-        determining rotation angles, building parameters for visualization, and initializing C++ bindings.
-        This method is automatically called after the class has been initialized.
+        Called automatically after the class initialization to prepare the detector by formatting inputs, computing
+        field arrays, setting up rotation angles, and initializing visualization and C++ bindings.
+        """
+        self.mapping = self.setup_mapping()
+        self.initialize_binding()
+
+    def setup_mapping(self) -> dict:
+        """
+        Creates a dictionary to map detector settings to their respective values, serving as a base for data visualization
+        and C++ integration setup.
 
         Returns:
-            NoReturn
+            dict: A mapping of detector settings to values.
         """
-        self.mapping = {
+        return {
             'mode_number': None,
             'sampling': None,
             'rotation': None,
@@ -63,16 +58,10 @@ class BaseDetector():
             'polarization_filter': None,
         }
 
-        self.initialize_binding()
-
     def initialize_binding(self) -> NoReturn:
         """
-        Initializes the C++ binding for the detector, configuring it with the necessary parameters for
-        simulation. This step is essential for integrating the Python-defined detector with the underlying
-        C++ simulation engine.
-
-        Returns:
-            NoReturn
+        Prepares and initializes the C++ bindings necessary for the simulation, configuring the detector with simulation
+        parameters.
         """
         self.binding_kwargs = dict(
             mode_number=numpy.atleast_1d(self.mode_number).astype(str),
@@ -90,28 +79,20 @@ class BaseDetector():
 
     def bind_to_experiment(self, experiment: Setup) -> NoReturn:
         """
-        Binds this detector to a specified experimental setup, integrating it into the simulation workflow.
+        Binds the detector to a specified experimental setup, ensuring integration into the simulation workflow.
 
         Parameters:
-            experiment (Setup): The experimental setup to which the detector will be bound.
-
-        Returns:
-            NoReturn
+            experiment (Setup): The experiment setup to which the detector is bound.
         """
         experiment.binding.set_detector(self.binding)
 
     def get_datavisual_table(self) -> NoReturn:
         """
-        Appends the scatterer's properties to a given table for visualization purposes. This enables the
-        representation of scatterer properties in graphical formats.
-
-        Parameters:
-            table (list): The table to which the scatterer's properties will be appended.
+        Compiles the detector's properties into a table format for data visualization.
 
         Returns:
-            list: The updated table with the scatterer's properties included.
+            list: A list of formatted data visual elements representing the detector's properties.
         """
-
         self.mapping['mode_number'] = units.Custom(
             long_label='Mode number',
             short_label='mode',
@@ -169,57 +150,65 @@ class BaseDetector():
 @dataclass
 class Photodiode(BaseDetector):
     """
-    Represents a photodiode detector in Mie scattering simulations, extending the BaseDetector
-    with specific attributes and methods for photodiode-type detection.
+    Represents a photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
 
     Attributes:
-        coupling_mode (str): Defines the method for computing mode coupling, either 'point' or 'Mean'.
-                             Default is 'point'.
-        coherent (bool): Indicates whether the detection scheme is coherent (True) or incoherent (False).
-                         This is initialized to False and not meant to be modified.
-        name (str): The name of the detector, initialized to "Photodiode" and not intended for modification.
-
-    Methods:
-        compute_scalar_fields(): Overrides the BaseDetector method to provide the field arrays specific
-                            to a photodiode detector. It generates a scalar field array representing
-                            the detection scheme.
+        coupling_mode (str): Indicates the mode coupling method, either 'point' or 'Mean'.
+        coherent (bool): Specifies if the detection is coherent (True) or incoherent (False). Defaults to False.
+        name (str): The name of the detector, initialized to "Photodiode". Not intended to be modified.
 
     Note:
-        This class specifically models a photodiode detector and its interaction within a Mie scattering
-        simulation experiment.
+        This class is specifically configured to simulate a photodiode detector within a Mie scattering experiment.
     """
-    rotation: float = 0
+    NA: Iterable[float] | float
+    gamma_offset: Iterable[float] | float
+    phi_offset: Iterable[float] | float
+    polarization_filter: Iterable[float] | float
+    sampling: Iterable[int] | int
     mean_coupling: bool = True
+    rotation: Iterable[float] | float = field(default=0, init=False)
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
 
 @dataclass
 class CoherentMode(BaseDetector):
-    mode_number: Iterable
-    """ List of mode to be used. """
-    mean_coupling: bool = False
-    """ Method for computing mode coupling. Either point (False) or Mean (True). """
-    rotation: float = 0
-    """ Rotation of the coherent mode field. (degree)"""
-    coherent: bool = field(default=True, init=False)
-    """ Describe the detection scheme coherent or uncoherent. """
+    """
+    Specialized for coherent detection modes in Mie scattering simulations, this class extends BaseDetector.
 
-    def __post_init__(self) -> numpy.ndarray:
+    It manages the initialization and representation of coherent detection modes, specifically addressing their unique requirements.
+
+    Attributes:
+        mode_number (Iterable[str] | str): Designates the mode numbers involved in the detection.
+        mean_coupling (bool): Indicates whether to use average coupling for calculations. Defaults to False.
+        coherent (bool): Specifies if the detection is inherently coherent. Defaults to True.
+
+    Note:
+        This class is specifically designed to handle and simulate coherent detection modes.
+    """
+    mode_number: Iterable[str] | str
+    rotation: Iterable[float] | float
+    NA: Iterable[float] | float
+    gamma_offset: Iterable[float] | float
+    phi_offset: Iterable[float] | float
+    polarization_filter: Iterable[float] | float
+    sampling: Iterable[int] | int
+    mean_coupling: bool = False
+    coherent: bool = field(default=True, init=False)
+
+    def __post_init__(self):
         """
-        Loads and generates complex scalar field arrays representing the specified CoherentMode modes. This method
-        overrides the BaseDetector's compute_scalar_fields to cater specifically to CoherentMode detectors.
+        Initializes complex scalar field arrays to represent CoherentMode modes, preparing the detector for simulation.
 
         Returns:
-            numpy.ndarray: An array of complex scalar fields representing the CoherentMode modes involved in the detection.
+            numpy.ndarray: An array of complex scalar fields representing the modes used in detection.
         """
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
 
         for idx, mode_name in enumerate(self.mode_number):
-            mode_family_name = mode_name[0: 2]
-
+            mode_family_name = mode_name[:2]
             if mode_family_name not in ['LP', 'HG', 'LG', 'NC']:
-                raise ValueError('Invalid mode family name, it has to be in either: LP, HG or LG')
+                raise ValueError('Invalid mode family name, must be one of: LP, HG, LG, NC')
 
         super().__post_init__()
 

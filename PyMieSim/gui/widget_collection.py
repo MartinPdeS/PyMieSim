@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn, Dict
-import tkinter
-from PyMieSim.gui.widgets import BaseWidget, InputWidget, ComBoxWidget
+
+from PyMieSim.gui.widgets import BaseWidget
 
 
 class WidgetCollection:
@@ -40,7 +40,7 @@ class WidgetCollection:
         Returns:
             dict[str, float | str]: A dictionary where keys are component labels and values are widget values.
         """
-        return {widget.component_label: widget.value for widget in self.widgets}
+        return {widget.component_label: widget.get_value() for widget in self.widgets}
 
     def __getitem__(self, component_label: str) -> BaseWidget:
         """
@@ -78,28 +78,7 @@ class WidgetCollection:
             frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
         """
         for row, widget in enumerate(self.widgets):
-            if isinstance(widget, InputWidget):
-                self.setup_entry_widget(widget, row + row_start, frame=self.frame)
-            elif isinstance(widget, ComBoxWidget):
-                self.setup_combox_widget(widget, row + row_start, frame=self.frame)
-
-    def setup_combox_widget(self, widget, row, frame: tkinter.Frame) -> NoReturn:
-        """
-        Sets up and packs the widgets within a specified tkinter frame.
-
-        Args:
-            frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
-        """
-        widget.setup(row=row)
-
-    def setup_entry_widget(self, widget, row, frame: tkinter.Frame) -> NoReturn:
-        """
-        Sets up and packs the widgets within a specified tkinter frame.
-
-        Args:
-            frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
-        """
-        widget.setup(row=row)
+            widget.setup(row=row + row_start)
 
     def __repr__(self) -> str:
         """

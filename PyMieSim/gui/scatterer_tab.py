@@ -144,12 +144,12 @@ class ScattererTab(BaseTab):
             raise ValueError(f"Unsupported scatterer type: {scatterer_type}")
 
     def setup_sphere_component(self) -> NoReturn:
-        self.component = scatterer.Sphere(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
+        self.component = scatterer.Sphere(**self.widget_collection.to_component_dict(), source=self.source_tab.component)
 
     def setup_cylinder_component(self) -> NoReturn:
-        self.component = scatterer.Cylinder(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
+        self.component = scatterer.Cylinder(**self.widget_collection.to_component_dict(), source=self.source_tab.component)
 
     def setup_coreshell_component(self) -> NoReturn:
-        self.component = scatterer.CoreShell(**self.widget_collection.to_component_dict(), source_set=self.source_tab.component)
+        self.component = scatterer.CoreShell(**self.widget_collection.to_component_dict(), source=self.source_tab.component)
 
 # -

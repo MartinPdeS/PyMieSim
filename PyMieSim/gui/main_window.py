@@ -153,9 +153,9 @@ class PyMieSimGUI:
         self.detector_tab.setup_component()
 
         self.experiment = Setup(
-            scatterer_set=self.scatterer_tab.component,
-            source_set=self.source_tab.component,
-            detector_set=self.detector_tab.component
+            scatterer=self.scatterer_tab.component,
+            source=self.source_tab.component,
+            detector=self.detector_tab.component
         )
 
     def save_data_as_csv(self) -> NoReturn:
@@ -207,8 +207,6 @@ class PyMieSimGUI:
         self.setup_PyMieSim()
 
         self.data = self.experiment.get(self.y_axis)
-
-        print(self.data.y.values)
 
         self.x_axis = self.axis_tab.axis_mapping[x_axis]
 

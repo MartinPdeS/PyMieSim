@@ -36,7 +36,7 @@ class AxisTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            ComBoxWidget(label='x-axis', component_label='x_axis', options=self.x_axis_options, default_options=9),
+            ComBoxWidget(label='x-axis', component_label='x_axis', options=self.x_axis_options, default_options=11),
             ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, default_options=21),
             ComBoxWidget(label='STD-axis', component_label='std_axis', options=['none', *self.x_axis_options], default_options=0),
         )
