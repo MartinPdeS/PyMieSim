@@ -43,8 +43,8 @@ class SourceTab(BaseTab):
         self.widget_collection.add_widgets(
             InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, dtype=float),
             InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value', dtype=float),
-            InputWidget(default_value='1.0', label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, dtype=float),
-            InputWidget(default_value='0.2', label='Numerical Aperture (NA) [fix]', component_label='NA', dtype=float)
+            InputWidget(default_value='1.0', label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, can_axis=False, dtype=float), #If can_axis is false, then will not put the yo widget!
+            InputWidget(default_value='0.2', label='Numerical Aperture (NA) [fix]', component_label='NA', can_axis=False, dtype=float)
         )
 
         self.widget_collection.setup_widgets()

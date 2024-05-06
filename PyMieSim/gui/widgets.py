@@ -133,7 +133,7 @@ class InputWidget(BaseWidget):
         process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
     """
 
-    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, **kwargs) -> None:
+    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, can_axis = True, **kwargs) -> None:
         """
         Initializes a new instance of the Widget class.
         """
@@ -142,6 +142,7 @@ class InputWidget(BaseWidget):
         self.tk_widget = tkinter.StringVar(value=str(default_value))
         self.value = None
         self.multiplicative_factor = multiplicative_factor
+        self.can_axis = can_axis
         self.update()
 
     def setup(self, row: int):
@@ -149,7 +150,11 @@ class InputWidget(BaseWidget):
         self.tk_label.grid(row=row + 1, column=0, sticky="W", pady=2)
         self.tk_widget = tkinter.Entry(self.frame, textvariable=self.tk_widget)
         self.tk_widget.grid(row=row + 1, column=1, sticky="W", pady=2)
-
+        # Adds new widgets to the right
+        if self.can_axis == True:
+            self.tk_radio_button1 = tkinter.Radiobutton(self.frame, text="Yes", variable = "Yes", value = row)
+            self.tk_radio_button1.grid(row=row + 1, column=2, sticky="W", pady=2)
+            
     def get_value(self):
         self.update()
 

@@ -32,6 +32,7 @@ class PyMieSimGUI:
         self.master = master
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.title("PyMieSim Graphic Interface")
+        self.link_radio_button = "link"
 
         self.customize_notebook_style()
         self.setup_notebook()
