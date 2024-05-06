@@ -9,7 +9,7 @@
 |PyPi_download|
 
 
-PyYourSim
+PyYourSimu
 ========
 
 PyMieSim is a software designed for comprehensive Mie scattering analysis, featuring a user-friendly installation and operation process. The characterization of the scattering event within PyMieSim is determined by a set of specific properties, as illustrated in the subsequent figure.
