@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn, Dict
+import tkinter
 
 from PyMieSim.gui.widgets import BaseWidget
 
@@ -69,14 +70,33 @@ class WidgetCollection:
         """
         for widget in self.widgets:
             widget.update()
+    
+    def title_bar(self, title_bar = False):
+        """
+        Sets up a title bar on each page of the source, detector and scatterer tabs
 
-    def setup_widgets(self, row_start: int = 0) -> NoReturn:
+        Args:
+            title_bar: A boolean indiquating if the tab requires a. titble_bar
+        """
+        if title_bar == True:
+            self.tk_label = tkinter.Label(self.frame, text="Variable")
+            self.tk_label.grid(row=1, column=0, sticky="W", pady=2)
+            self.tk_widget_title = tkinter.Label(self.frame, text = "Values")
+            self.tk_widget_title.grid(row=1, column=1, sticky="W", pady=2)
+            self.x_axis_title = tkinter.Label(self.frame, text = "x-axis")
+            self.x_axis_title.grid(row=1, column=2, sticky="W", pady=2)
+            self.STD_axis_title = tkinter.Label(self.frame, text = "STD-axis")
+            self.STD_axis_title.grid(row=1, column=3, sticky="W", pady=2)
+        
+    def setup_widgets(self, row_start: int = 1, title_bar = True) -> NoReturn:
         """
         Sets up and packs the widgets within a specified tkinter frame.
 
         Args:
             frame (tkinter.Frame): The tkinter frame where widgets are to be packed.
         """
+        self.title_bar(title_bar)
+
         for row, widget in enumerate(self.widgets):
             widget.setup(row=row + row_start)
 

@@ -41,7 +41,7 @@ class AxisTab(BaseTab):
             ComBoxWidget(label='STD-axis', component_label='std_axis', options=['none', *self.x_axis_options], default_options=0),
         )
 
-        self.widget_collection.setup_widgets()
+        self.widget_collection.setup_widgets(title_bar = False)
 
     @property
     def x_axis(self) -> str:
