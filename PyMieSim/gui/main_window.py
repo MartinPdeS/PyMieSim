@@ -33,7 +33,8 @@ class PyMieSimGUI:
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.title("PyMieSim Graphic Interface")
         self.link_radio_button = "link"
-        self.button_variable1 = "test"
+        self.x_axis = tk.StringVar(value = 'phi_offset')
+        self.STD_axis = tk.StringVar(value = None)
 
         self.customize_notebook_style()
         self.setup_notebook()
@@ -83,9 +84,9 @@ class PyMieSimGUI:
         self.notebook_2.grid(row=2, column=0, sticky="ewns")
 
         # Create tab instances
-        self.source_tab = SourceTab(notebook=self.notebook, label='Source')
-        self.scatterer_tab = ScattererTab(self.notebook, 'Scatterer', source_tab=self.source_tab)
-        self.detector_tab = DetectorTab(self.notebook, 'Detector')
+        self.source_tab = SourceTab(self.x_axis, self.STD_axis, notebook=self.notebook, label='Source')
+        self.scatterer_tab = ScattererTab(self.x_axis, self.STD_axis, self.notebook, 'Scatterer', source_tab=self.source_tab)
+        self.detector_tab = DetectorTab(self.x_axis, self.STD_axis, self.notebook, 'Detector')
         self.axis_tab = AxisTab(self.notebook_2, 'Axis Configuration', other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab])
 
     def export_plot(self) -> NoReturn:
@@ -202,7 +203,9 @@ class PyMieSimGUI:
 
     def update_plot(self) -> NoReturn:
         plt.close('all')
-        x_axis, y_axis, std_axis = self.axis_tab.get_inputs()
+        x_axis, y_axis, std_axis = self.x_axis.get(), 'coupling', self.STD_axis.get
+        
+        #self.axis_tab.get_inputs() #replace this input
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
 

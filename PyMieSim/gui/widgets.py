@@ -135,7 +135,7 @@ class InputWidget(BaseWidget):
         process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
     """
 
-    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, can_axis = True, **kwargs) -> None:
+    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, can_be_axis = True, x_axis = None, STD_axis = None, **kwargs) -> None:
         """
         Initializes a new instance of the Widget class.
         """
@@ -144,13 +144,14 @@ class InputWidget(BaseWidget):
         self.tk_widget = tkinter.StringVar(value=str(default_value))
         self.value = None
         self.multiplicative_factor = multiplicative_factor
-        self.can_axis = can_axis
+        self.can_be_axis = can_be_axis
         self.update()
 
 
         # The variables for the radiobuttons used to select the X and STD axis
-        self.button_variableX = "x_axis" 
-        self.button_variableSTD = "STD_axis" 
+        self.button_variableX = x_axis
+        self.button_variableSTD = STD_axis
+        self.button_variableSTD.set(None)
 
     def setup(self, row: int):
         row += 1
@@ -159,10 +160,10 @@ class InputWidget(BaseWidget):
         self.tk_widget = tkinter.Entry(self.frame, textvariable=self.tk_widget)
         self.tk_widget.grid(row=row + 1, column=1, sticky="W", pady=2)
         # Adds the radiobuttons used to select wether this variable is used as an axis
-        if self.can_axis == True:
-            self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable = self.button_variableX, value = id(self.tk_widget))
+        if self.can_be_axis == True:
+            self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable = self.button_variableX, value = self.component_label)
             self.tk_radio_button_1.grid(row=row + 1, column=2, sticky="W", pady=2)
-            self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable = self.button_variableSTD, value = id(self.tk_widget))
+            self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable = self.button_variableSTD, value = self.component_label)
             self.tk_radio_button_2.grid(row=row + 1, column=3, sticky="W", pady=2)
         # Sets a default value for the x-axis
         if self.default_value == '0:360:200':
@@ -204,50 +205,8 @@ class InputWidget(BaseWidget):
     def destroy(self) -> NoReturn:
         self.tk_label.destroy()
         self.tk_widget.destroy()
-        if self.can_axis == True:
+        if self.can_be_axis == True:
             self.tk_radio_button_1.destroy()
             self.tk_radio_button_2.destroy()
 
 
-"""class LegacyNoSTDButton(BaseWidget):
-    
-    A Widget class that encapsulates a GUI widget with specific properties.
-
-    Attributes:
-        default_value (float | str): The default value for the widget.
-        label (str): A label for the widget used for identification.
-        component_label (str): A label for the component part of the widget.
-        multiplicative_factor (float | None): An optional factor by which the widget's value is multiplied.
-        to_float (bool): A flag indicating whether the input should be converted to float. Defaults to True.
-        is_permanent (bool): A flag indicating if the widget's value is permanent. Defaults to False.
-
-    Methods:
-        update(): Updates the widget's value based on user input.
-        process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
-    
-
-    def __init__(self, **kwargs) -> None:
-        
-        Initializes a new instance of the Widget class.
-        
-        super().__init__(**kwargs)
-        
-
-        self.button_variableSTD = "STD_axis" 
-
-    def setup(self, row: int):
-        row += 1
-        self.tk_label = tkinter.Label(self.frame, text="Select if no STD-axis")
-        self.tk_label.grid(row=row + 1, column=0, sticky="W", pady=2)
-        self.tk_radio_button = tkinter.Radiobutton(self.frame, variable = self.button_variableSTD, value = id(self.tk_label))
-        self.tk_radio_button.grid(row=row + 1, column=3, sticky="W", pady=2)
-        self.tk_radio_button.invoke()
-
-    def update(self):
-        pass
-        
-    def destroy(self) -> NoReturn:
-        self.tk_label.destroy()
-        self.tk_radio_button.destroy()
-    
-"""

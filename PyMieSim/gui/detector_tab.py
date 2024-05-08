@@ -21,7 +21,7 @@ class DetectorTab(BaseTab):
         variables (WidgetCollection): A collection of widgets for detector configuration.
     """
 
-    def __init__(self, master: ttk.Notebook, label: str) -> None:
+    def __init__(self, x_axis, STD_axis, master: ttk.Notebook, label: str) -> None:
         """
         Initialize the DetectorTab with UI components to configure the detector parameters.
 
@@ -29,11 +29,13 @@ class DetectorTab(BaseTab):
             master (ttk.Notebook): The notebook widget this tab is a part of.
             label (str): The tab label.
         """
+        self.x_axis = x_axis
+        self.STD_axis = STD_axis
         super().__init__(master, label=label)
         self.type_button = StringVar(value='Photodiode')
         self.setup_type_combobox()
         self.setup_widgets()
-
+    
     def setup_type_combobox(self) -> None:
         """
         Create and configure a combobox to select the type of detector, binding it to update UI on change.
@@ -84,11 +86,11 @@ class DetectorTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', dtype=float),
-            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', dtype=float),
-            InputWidget(default_value='0:360:200', label='Phi [degree]', component_label='phi_offset', dtype=float),
-            InputWidget(default_value='None', label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
-            InputWidget(default_value='500', label='Sampling', component_label='sampling', dtype=int)
+            InputWidget(default_value='0.2, 0.3, 0.4', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Numerical aperture (NA)', component_label='NA', dtype=float),
+            InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Gamma [degree]', component_label='gamma_offset', dtype=float),
+            InputWidget(default_value='0:360:200', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Phi [degree]', component_label='phi_offset', dtype=float),
+            InputWidget(default_value='None', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
+            InputWidget(default_value='500', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Sampling', component_label='sampling', dtype=int)
         )
 
         self.widget_collection.setup_widgets(row_start=1)
@@ -101,14 +103,14 @@ class DetectorTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            RadioButtonWidget(option_text=['Point', 'Mean'], options_values=[False, True], component_label='mean_coupling', label='Mean coupling'),
-            InputWidget(default_value='0.', label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
-            InputWidget(default_value='0', label='Gamma [degree]', component_label='gamma_offset', dtype=float),
-            InputWidget(default_value='180:-180:200', label='Phi [degree]', component_label='phi_offset', dtype=float),
-            InputWidget(default_value='0.2, 0.3, 0.4', label='Numerical aperture (NA)', component_label='NA', dtype=float),
-            InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', dtype=str),
-            InputWidget(default_value='0', label='Field rotation [degree]', component_label='rotation', dtype=float),
-            InputWidget(default_value='500', label='Sampling', component_label='sampling', dtype=int)
+            RadioButtonWidget(option_text=['Point', 'Mean'], x_axis = self.x_axis, STD_axis= self.STD_axis, options_values=[False, True], component_label='mean_coupling', label='Mean coupling'),
+            InputWidget(default_value='0.', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
+            InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Gamma [degree]', component_label='gamma_offset', dtype=float),
+            InputWidget(default_value='180:-180:200', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Phi [degree]', component_label='phi_offset', dtype=float),
+            InputWidget(default_value='0.2, 0.3, 0.4', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Numerical aperture (NA)', component_label='NA', dtype=float),
+            InputWidget(default_value='LP01', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Mode field', component_label='mode_number', dtype=str),
+            InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Field rotation [degree]', component_label='rotation', dtype=float),
+            InputWidget(default_value='500', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Sampling', component_label='sampling', dtype=int)
         )
 
         self.widget_collection.setup_widgets(row_start=1)

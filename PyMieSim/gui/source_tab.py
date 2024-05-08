@@ -20,7 +20,7 @@ class SourceTab(BaseTab):
         variables (WidgetCollection): A collection of widgets for source configuration.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, x_axis, STD_axis, *args, **kwargs):
         """
         Initializes the SourceTab with UI components for source configuration.
 
@@ -29,6 +29,8 @@ class SourceTab(BaseTab):
             **kwargs: Arbitrary keyword arguments for BaseTab.
         """
         super().__init__(*args, **kwargs)
+        self.x_axis = x_axis
+        self.STD_axis = STD_axis
         self.setup_widgets()
 
     def setup_widgets(self) -> NoReturn:
@@ -41,10 +43,10 @@ class SourceTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            InputWidget(default_value='1310', label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, dtype=float),
-            InputWidget(default_value='0', label='Polarization angle [degree]', component_label='polarization_value', dtype=float),
-            InputWidget(default_value='1.0', label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, can_axis=False, dtype=float), #If can_axis is false, then will not put the yo widget!
-            InputWidget(default_value='0.2', label='Numerical Aperture (NA) [fix]', component_label='NA', can_axis=False, dtype=float),
+            InputWidget(default_value='1310', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, dtype=float),
+            InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization angle [degree]', component_label='polarization_value', dtype=float),
+            InputWidget(default_value='1.0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, can_be_axis=False, dtype=float), #If can_be_axis is false, then will not put the yo widget!
+            InputWidget(default_value='0.2', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Numerical Aperture (NA) [fix]', component_label='NA', can_be_axis=False, dtype=float),
             )
 
         self.widget_collection.setup_widgets()
