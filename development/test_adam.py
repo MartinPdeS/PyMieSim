@@ -1,34 +1,36 @@
-import tkinter as tk
-from tk import *
+'''argument = dict(
+    b=2,
+    c=0,
+    d=4
+)
 
-win = tk.Tk()
+def function(**kwargs):
+    lis = []
+    for i in kwargs:
+        if i =="c" or i == "d":
+            lis.append(kwargs[i])
 
-win.geometry('500x500')
+    def wrapper(*lis):
+        print(*lis)
 
-button_var = "1"
+    wrapper(*lis)
 
-class Input:
-    
-    def __init__(self, win) -> None:
-        self.win = win
+function(**argument)
+'''
 
-    def set_up(self, row):
-        self.label = tk.Label(self.win, text="input")
-        self.label.grid(row = row, column = 0)
-        self.inp = tk.Entry(self.win)
-        self.inp.grid(row = row, column = 1)
-        self.button1 = tk.Radiobutton(self.win, variable= button_var, value=row, command= self.get_entry())
-        self.button1.grid(row= row, column= 2)
-        
-    def get_entry(self):
-        print(self.inp.get())
-        
-widgets = []
+argument = dict(
+    b=2,
+    c=0,
+    d=4
+)
 
-for i in range(2):
-    A = Input(win)
-    A.set_up(i)
-    widgets.append(A)
+def function(**kwargs):
+    def wrapper(c, d):
+        print(c, d)
 
+    del kwargs["a"]
+    del kwargs["b"]
 
-win.mainloop()
+    return wrapper(**kwargs)
+
+wrap = function(a=0, b=1, c=2, d=3)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from typing import NoReturn
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
@@ -33,8 +34,9 @@ class PyMieSimGUI:
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.title("PyMieSim Graphic Interface")
         self.link_radio_button = "link"
-        self.x_axis = tk.StringVar(value = 'phi_offset')
-        self.STD_axis = tk.StringVar(value = None)
+        self.x_axis_label_widget = tk.StringVar(value='phi_offset')
+        self.STD_axis_label_widget = tk.StringVar(value=None)
+        self.STD_axis_label_widget.set(None)
 
         self.customize_notebook_style()
         self.setup_notebook()
@@ -84,9 +86,9 @@ class PyMieSimGUI:
         self.notebook_2.grid(row=2, column=0, sticky="ewns")
 
         # Create tab instances
-        self.source_tab = SourceTab(self.x_axis, self.STD_axis, notebook=self.notebook, label='Source')
-        self.scatterer_tab = ScattererTab(self.x_axis, self.STD_axis, self.notebook, 'Scatterer', source_tab=self.source_tab)
-        self.detector_tab = DetectorTab(self.x_axis, self.STD_axis, self.notebook, 'Detector')
+        self.source_tab = SourceTab(self.x_axis_label_widget, self.STD_axis_label_widget, notebook=self.notebook, label='Source')
+        self.scatterer_tab = ScattererTab(self.x_axis_label_widget, self.STD_axis_label_widget, self.notebook, 'Scatterer', source_tab=self.source_tab)
+        self.detector_tab = DetectorTab(self.x_axis_label_widget, self.STD_axis_label_widget, self.notebook, 'Detector')
         self.axis_tab = AxisTab(self.notebook_2, 'Axis Configuration', other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab])
 
     def export_plot(self) -> NoReturn:
@@ -147,6 +149,16 @@ class PyMieSimGUI:
             command=self.export_plot
         ).grid(row=0, column=2, sticky="ew")
 
+        ttk.Button(
+            self.controls_frame,
+            text="Reset STD-axis",
+            style="Large.TButton",
+            command=self.reset_axis_selection
+        ).grid(row=0, column=3, sticky="ew")
+
+    def reset_axis_selection(self):
+        self.STD_axis_label_widget.set(None)
+
     def setup_PyMieSim(self) -> NoReturn:
         """
         Compute the B1 scattering data using either a single diameter or a range of diameters.
@@ -184,11 +196,8 @@ class PyMieSimGUI:
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("Plot Window")
 
-        x_axis = self.axis_tab.x_axis
-
-        std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
-
-        figure = self.data.plot(x=x_axis, std=std_axis)
+        #std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
+        figure = self.data.plot(x=self.x_axis_component, std=self.STD_axis_component)
         figure.unit_size = (9, 4)
         figure._render_()
         self.figure = figure._mpl_figure
@@ -203,9 +212,17 @@ class PyMieSimGUI:
 
     def update_plot(self) -> NoReturn:
         plt.close('all')
-        x_axis, y_axis, std_axis = self.x_axis.get(), 'coupling', self.STD_axis.get
         
-        #self.axis_tab.get_inputs() #replace this input
+        x_axis, y_axis, std_axis = self.x_axis_label_widget.get(), self.axis_tab.get_inputs()[0], self.STD_axis_label_widget.get()
+
+        if x_axis == std_axis:
+            raise ValueError("X-axis cannot be equal to STD-axis.")
+        
+        if y_axis != "coupling" and std_axis in self.detector_tab.component_dict.keys():
+            raise ValueError("STD-axis cannot be associated to detector if y-axis is not coupling.")
+        
+        if y_axis != "coupling" and x_axis in self.detector_tab.component_dict.keys():
+            raise ValueError("x-axis cannot be associated to detector if y-axis is not coupling.")
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
 
@@ -213,7 +230,9 @@ class PyMieSimGUI:
 
         self.data = self.experiment.get(self.y_axis)
 
-        self.x_axis = self.axis_tab.axis_mapping[x_axis]
+        self.x_axis_component = self.axis_tab.axis_mapping[x_axis]
+
+        self.STD_axis_component = None if std_axis == "None" else self.axis_tab.axis_mapping[std_axis]
 
         try:
             self.generate_figure()

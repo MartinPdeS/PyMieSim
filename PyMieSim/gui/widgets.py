@@ -151,8 +151,7 @@ class InputWidget(BaseWidget):
         # The variables for the radiobuttons used to select the X and STD axis
         self.button_variableX = x_axis
         self.button_variableSTD = STD_axis
-        self.button_variableSTD.set(None)
-
+        
     def setup(self, row: int):
         row += 1
         self.tk_label = tkinter.Label(self.frame, text=self.label)

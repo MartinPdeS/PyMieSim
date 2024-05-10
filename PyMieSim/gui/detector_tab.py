@@ -86,7 +86,7 @@ class DetectorTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            InputWidget(default_value='0.2, 0.3, 0.4', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Numerical aperture (NA)', component_label='NA', dtype=float),
+            InputWidget(default_value='0.2, 0.3, 0.4', x_axis=self.x_axis, STD_axis=self.STD_axis, label='Numerical aperture (NA)', component_label='NA', dtype=float),
             InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Gamma [degree]', component_label='gamma_offset', dtype=float),
             InputWidget(default_value='0:360:200', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Phi [degree]', component_label='phi_offset', dtype=float),
             InputWidget(default_value='None', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
@@ -103,7 +103,7 @@ class DetectorTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            RadioButtonWidget(option_text=['Point', 'Mean'], x_axis = self.x_axis, STD_axis= self.STD_axis, options_values=[False, True], component_label='mean_coupling', label='Mean coupling'),
+            RadioButtonWidget(option_text=['Point', 'Mean'], options_values=[False, True], component_label='mean_coupling', label='Mean coupling'),
             InputWidget(default_value='0.', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
             InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Gamma [degree]', component_label='gamma_offset', dtype=float),
             InputWidget(default_value='180:-180:200', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Phi [degree]', component_label='phi_offset', dtype=float),
@@ -135,10 +135,14 @@ class DetectorTab(BaseTab):
     def setup_photodiode_component(self) -> NoReturn:
         kwargs = self.widget_collection.to_component_dict()
 
+        self.component_dict = kwargs
+
         self.component = Photodiode(**kwargs)
 
     def setup_coherentmode_component(self) -> NoReturn:
         kwargs = self.widget_collection.to_component_dict()
+
+        self.component_dict = kwargs
 
         self.component = CoherentMode(**kwargs)
 
