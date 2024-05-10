@@ -90,7 +90,7 @@ If, however, this fail you can build the package from scratch following the step
 Manual building
 ***************
 
-To manually buld the project on your computer make sure that you do have gcc installed (c++ and fortran compiler), plus python version 3.7+.
+To manually build the project on your computer make sure that you do have gcc installed (c++ and fortran compiler), plus python version 3.7+.
 For windows system I recommend install MingGW with g++ and fortran compiler.
 
 This being done, the following commands should do the trick.

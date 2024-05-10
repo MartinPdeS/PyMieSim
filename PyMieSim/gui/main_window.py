@@ -157,6 +157,9 @@ class PyMieSimGUI:
         ).grid(row=0, column=3, sticky="ew")
 
     def reset_axis_selection(self):
+        """
+        Allows the user to unselect the std-axis radiobuttons.
+        """
         self.STD_axis_label_widget.set(None)
 
     def setup_PyMieSim(self) -> NoReturn:
@@ -216,12 +219,15 @@ class PyMieSimGUI:
         x_axis, y_axis, std_axis = self.x_axis_label_widget.get(), self.axis_tab.get_inputs()[0], self.STD_axis_label_widget.get()
 
         if x_axis == std_axis:
+            tk.messagebox.showerror(title = "error", message = "X-axis cannot be equal to STD-axis.", parent = self.master)
             raise ValueError("X-axis cannot be equal to STD-axis.")
         
         if y_axis != "coupling" and std_axis in self.detector_tab.component_dict.keys():
+            tk.messagebox.showerror(title = "error", message = "STD-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
             raise ValueError("STD-axis cannot be associated to detector if y-axis is not coupling.")
         
         if y_axis != "coupling" and x_axis in self.detector_tab.component_dict.keys():
+            tk.messagebox.showerror(title = "error", message = "x-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
             raise ValueError("x-axis cannot be associated to detector if y-axis is not coupling.")
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
