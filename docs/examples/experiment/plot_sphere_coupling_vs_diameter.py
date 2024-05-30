@@ -36,11 +36,11 @@ scatterer = Sphere(
 # %%
 # Defining the detector to be employed.
 detector = Photodiode(
-    NA=[0.15, 0.1, 0.05],
-    phi_offset=-180.0,
-    gamma_offset=0.0,
-    sampling=600,
-    polarization_filter=None
+    NA=numpy.linspace(0.3, 0.2, 3),
+    phi_offset=[-180.0],
+    gamma_offset=[0.0],
+    sampling=[600],
+    polarization_filter=[None]
 )
 
 # %%

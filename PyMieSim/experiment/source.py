@@ -2,17 +2,20 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Iterable, NoReturn
+from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
 
 import numpy
-from dataclasses import dataclass, field
+from pydantic.dataclasses import dataclass
+from dataclasses import field
 
 from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
 from PyMieSim.binary.Sets import CppSourceSet
 from DataVisual import units
+
+from typing import List, Union, NoReturn
 
 
 @dataclass
@@ -21,12 +24,12 @@ class BaseSource:
     Base class for light sources in PyMieSim experiments.
 
     Attributes:
-        wavelength (Iterable): The wavelength(s) of the light source.
-        polarization_value (Iterable): The polarization values of the light source, in degrees.
+        wavelength (List): The wavelength(s) of the light source.
+        polarization_value (List): The polarization values of the light source, in degrees.
         name (str): The name of the source set, defaults to 'PlaneWave'.
     """
-    wavelength: Iterable
-    polarization_value: Iterable
+    wavelength: Union[List[float], float]
+    polarization_value: Union[List[float], float]
     name: str = field(default='PlaneWave', init=False)
 
     def __post_init__(self):
@@ -90,11 +93,11 @@ class Gaussian(BaseSource):
     Inherits from BaseSource and adds specific attributes for Gaussian sources.
 
     Attributes:
-        NA (Iterable): The numerical aperture(s) of the Gaussian source.
+        NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
-    NA: Iterable
+    NA: Union[List[float], float]
     optical_power: float
     polarization_type: str = 'linear'
 
@@ -136,7 +139,7 @@ class PlaneWave(BaseSource):
         amplitude (float): The amplitude of the plane wave, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
-    amplitude: float
+    amplitude: Union[List[float], float]
     polarization_type: str = 'linear'
 
     def generate_binding(self) -> NoReturn:

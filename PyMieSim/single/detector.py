@@ -9,7 +9,9 @@ if TYPE_CHECKING:
 
 import numpy
 import logging
-from dataclasses import dataclass, field
+from dataclasses import field
+from pydantic.dataclasses import dataclass
+from typing import Union
 
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
@@ -119,7 +121,7 @@ class Photodiode(GenericDetector):
     """ Angle [Degree] offset of detector in the direction parallel to polarization. """
     sampling: int = 200
     """ Sampling of the farfield distribution """
-    polarization_filter: float = None
+    polarization_filter: Union[float, None] = None
     """ Angle [Degree] of polarization filter in front of detector. """
     coherent: bool = field(default=False, init=False)
     """ Indicate if the coupling mechanism is coherent or not """
@@ -157,7 +159,7 @@ class IntegratingSphere(Photodiode):
     """
     sampling: int = 200
     """ Sampling of the farfield distribution """
-    polarization_filter: float = None
+    polarization_filter: Union[float, None] = None
     """ Angle [Degree] of polarization filter in front of detector. """
     NA: float = field(default=2, init=False)
     """ Numerical aperture of imaging system. """
@@ -195,7 +197,7 @@ class CoherentMode(GenericDetector):
     """ Angle [Degree] offset of detector in the direction parallel to polarization. """
     sampling: int = 200
     """ Sampling of the farfield distribution """
-    polarization_filter: float = None
+    polarization_filter: Union[float, None] = None
     """ Angle [Degree] of polarization filter in front of detector. """
     mean_coupling: bool = False
     """ indicate if the coupling mechanism is point-wise (if setted True) or mean-wise (if setted False). """

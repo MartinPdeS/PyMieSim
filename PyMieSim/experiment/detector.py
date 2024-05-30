@@ -5,16 +5,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from PyMieSim.experiment.setup import Setup
-    from typing import NoReturn, Iterable
 
 import numpy
-from dataclasses import dataclass, field
+from dataclasses import field
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppDetectorSet
+from pydantic.dataclasses import dataclass
+
+from typing import List, Union, NoReturn
 
 
-@dataclass
 class BaseDetector():
     """
     Base class for constructing detectors in Mie scattering simulations, managing common attributes and methods.
@@ -23,11 +24,11 @@ class BaseDetector():
     binding detectors to a simulation experiment. It should be subclassed to create specific detector types.
 
     Attributes:
-        NA (Iterable[float]): Defines the numerical aperture, which is the range of angles the system can accept light.
-        gamma_offset (Iterable[float]): Specifies the angular offset perpendicular to polarization (in degrees).
-        phi_offset (Iterable[float]): Specifies the angular offset parallel to polarization (in degrees).
-        polarization_filter (Iterable[float]): Sets the angle of the polarization filter (in degrees).
-        sampling (Iterable[int]): Dictates the resolution for field sampling.
+        NA (List[float]): Defines the numerical aperture, which is the range of angles the system can accept light.
+        gamma_offset (List[float]): Specifies the angular offset perpendicular to polarization (in degrees).
+        phi_offset (List[float]): Specifies the angular offset parallel to polarization (in degrees).
+        polarization_filter (List[float]): Sets the angle of the polarization filter (in degrees).
+        sampling (List[int]): Dictates the resolution for field sampling.
 
     This class is not intended for direct instantiation.
     """
@@ -160,13 +161,13 @@ class Photodiode(BaseDetector):
     Note:
         This class is specifically configured to simulate a photodiode detector within a Mie scattering experiment.
     """
-    NA: Iterable[float] | float
-    gamma_offset: Iterable[float] | float
-    phi_offset: Iterable[float] | float
-    polarization_filter: Iterable[float] | float
-    sampling: Iterable[int] | int
+    NA: Union[List[float], float]
+    gamma_offset: Union[List[float], float]
+    phi_offset: Union[List[float], float]
+    polarization_filter: Union[List[float | None], float | None]
+    sampling: Union[List[int], int]
     mean_coupling: bool = True
-    rotation: Iterable[float] | float = field(default=0, init=False)
+    rotation: Union[List[float] | float] = field(default=0, init=False)
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
@@ -179,20 +180,20 @@ class CoherentMode(BaseDetector):
     It manages the initialization and representation of coherent detection modes, specifically addressing their unique requirements.
 
     Attributes:
-        mode_number (Iterable[str] | str): Designates the mode numbers involved in the detection.
+        mode_number (List[str] | str): Designates the mode numbers involved in the detection.
         mean_coupling (bool): Indicates whether to use average coupling for calculations. Defaults to False.
         coherent (bool): Specifies if the detection is inherently coherent. Defaults to True.
 
     Note:
         This class is specifically designed to handle and simulate coherent detection modes.
     """
-    mode_number: Iterable[str] | str
-    rotation: Iterable[float] | float
-    NA: Iterable[float] | float
-    gamma_offset: Iterable[float] | float
-    phi_offset: Iterable[float] | float
-    polarization_filter: Iterable[float] | float
-    sampling: Iterable[int] | int
+    mode_number: Union[List[str], str]
+    rotation: Union[List[float], float]
+    NA: Union[List[float], float]
+    gamma_offset: Union[List[float], float]
+    phi_offset: Union[List[float], float]
+    polarization_filter: Union[List[float | None], float | None]
+    sampling: Union[List[int], int]
     mean_coupling: bool = False
     coherent: bool = field(default=True, init=False)
 

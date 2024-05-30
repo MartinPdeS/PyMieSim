@@ -1,19 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from typing import NoReturn
-    from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
-    from PyMieSim.experiment.detector import Photodiode, LPMode
-    from PyMieSim.experiment.source import Gaussian, PlaneWave
-
 import numpy
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 
 from DataVisual import Array, Table
 from PyMieSim.binary.Experiment import CppExperiment
+
+from typing import Union, NoReturn
+from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
+from PyMieSim.experiment.detector import Photodiode, CoherentMode
+from PyMieSim.experiment.source import Gaussian, PlaneWave
 
 
 @dataclass
@@ -26,15 +23,15 @@ class Setup(object):
             Defines the physical properties of the particle being studied.
         source (Union[Gaussian, PlaneWave]): Configuration for the light source. Specifies the characteristics
             of the light (e.g., wavelength, polarization) illuminating the scatterer.
-        detector (Union[Photodiode, LPMode, None], optional): Configuration for the detector, if any. Details the
+        detector (Union[Photodiode, CoherentMode, None], optional): Configuration for the detector, if any. Details the
             method of detection for scattered light, including positional and analytical parameters. Defaults to None.
 
     Methods provide functionality for initializing bindings, generating parameter tables for visualization,
     and executing the simulation to compute and retrieve specified measures.
     """
-    scatterer: Sphere | Cylinder | CoreShell
-    source: Gaussian | PlaneWave
-    detector: Photodiode | LPMode | None = None
+    scatterer: Union[Sphere, Cylinder, CoreShell]
+    source: Union[Gaussian, PlaneWave]
+    detector: Union[Photodiode, CoherentMode, None] = None
 
     def __post_init__(self):
         """
