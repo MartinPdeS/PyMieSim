@@ -137,7 +137,7 @@ PyMieSim was developed with the aim of being an intuitive and easy to use tool.
 Below is and example that illustrate this:
 
 .. code:: python
-"""
+
    import numpy
    from PyMieSim.experiment.detector import Photodiode
    from PyMieSim.experiment.scatterer import Sphere
