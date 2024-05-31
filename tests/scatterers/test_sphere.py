@@ -42,6 +42,8 @@ def test_sphere_method(method, core_config):
     )
     _ = getattr(scatterer, method)()
 
+    _ = getattr(scatterer, method)(max_order=3)
+
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
 @pytest.mark.parametrize('attribute', attributes)

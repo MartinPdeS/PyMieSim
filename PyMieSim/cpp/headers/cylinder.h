@@ -18,10 +18,10 @@ namespace CYLINDER
             std::vector<complex128> b2n;
 
 
-            pybind11::array_t<complex128> get_a1n_py() { return vector_to_numpy(a1n, {max_order}); }
-            pybind11::array_t<complex128> get_b1n_py() { return vector_to_numpy(b1n, {max_order}); }
-            pybind11::array_t<complex128> get_a2n_py() { return vector_to_numpy(a2n, {max_order}); }
-            pybind11::array_t<complex128> get_b2n_py() { return vector_to_numpy(b2n, {max_order}); }
+            pybind11::array_t<complex128> get_a1n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(a1n, {_max_order}); }
+            pybind11::array_t<complex128> get_b1n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(b1n, {_max_order}); }
+            pybind11::array_t<complex128> get_a2n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(a2n, {_max_order}); }
+            pybind11::array_t<complex128> get_b2n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(b2n, {_max_order}); }
 
             std::vector<complex128> get_a1n() const { return a1n; };
             std::vector<complex128> get_b1n() const { return b1n; };

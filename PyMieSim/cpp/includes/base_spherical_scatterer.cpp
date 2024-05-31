@@ -41,10 +41,10 @@ public:
     std::vector<complex128> get_cn() const { return cn; };
     std::vector<complex128> get_dn() const { return dn; };
 
-    pybind11::array_t<complex128> get_an_py() { return vector_to_numpy(an, {max_order}); }
-    pybind11::array_t<complex128> get_bn_py() { return vector_to_numpy(bn, {max_order}); }
-    pybind11::array_t<complex128> get_cn_py() { return vector_to_numpy(cn, {max_order}); }
-    pybind11::array_t<complex128> get_dn_py() { return vector_to_numpy(dn, {max_order}); }
+    pybind11::array_t<complex128> get_an_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(an, {_max_order}); }
+    pybind11::array_t<complex128> get_bn_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(bn, {_max_order}); }
+    pybind11::array_t<complex128> get_cn_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(cn, {_max_order}); }
+    pybind11::array_t<complex128> get_dn_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(dn, {_max_order}); }
 
     double get_Qforward() const {return get_Qsca() - get_Qback();};
     double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};

@@ -51,7 +51,7 @@ class GenericDetector():
         Returns:
             float: The coupling in watts.
         """
-        return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
+        return getattr(self.binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
 
     def get_footprint(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> Footprint:
         r"""
@@ -82,15 +82,15 @@ class GenericDetector():
             SceneList3D: The 3D plotting scene containing the field plots.
         """
         coordinate = numpy.row_stack((
-            self.cpp_binding.mesh.x,
-            self.cpp_binding.mesh.y,
-            self.cpp_binding.mesh.z
+            self.binding.mesh.x,
+            self.binding.mesh.y,
+            self.binding.mesh.z
         ))
 
         figure = SceneList3D()
 
         for scalar_type in ['real', 'imag']:
-            scalar = getattr(numpy.asarray(self.cpp_binding.scalar_field), scalar_type)
+            scalar = getattr(numpy.asarray(self.binding.scalar_field), scalar_type)
 
             ax = figure.append_ax()
             artist = ax.add_unstructured_mesh(
@@ -135,7 +135,7 @@ class Photodiode(GenericDetector):
 
         self.max_angle = NA_to_angle(NA=self.NA)
 
-        self.cpp_binding = BindedDetector(
+        self.binding = BindedDetector(
             mode_number='NC00',
             sampling=self.sampling,
             NA=self.NA,
@@ -233,7 +233,7 @@ class CoherentMode(GenericDetector):
 
         self.polarization_filter = numpy.float64(self.polarization_filter)
 
-        self.cpp_binding = BindedDetector(
+        self.binding = BindedDetector(
             mode_number=self.mode_number,
             sampling=self.sampling,
             NA=self.NA,

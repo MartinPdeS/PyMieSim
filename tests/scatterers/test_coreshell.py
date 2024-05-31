@@ -23,10 +23,6 @@ shell_configs = [
 
 # Methods and attributes to test
 methods = [
-    "get_far_field",
-    "get_stokes",
-    "get_spf",
-    "get_s1s2",
     "an",
     "bn",
 ]
@@ -44,6 +40,10 @@ attributes = [
     "Cback",
     "Cratio",
     "Cpr",
+]
+
+plottings = [
+    "get_far_field", "get_stokes", "get_spf", "get_s1s2",
 ]
 
 
@@ -70,6 +70,8 @@ def test_coreshell_method(method, core_config, shell_config):
     # Execute the method
     _ = getattr(scatterer, method)()
 
+    _ = getattr(scatterer, method)(max_order=3)
+
 
 @pytest.mark.parametrize('shell_config', shell_configs, ids=[config['id'] for config in shell_configs])
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
@@ -79,6 +81,7 @@ def test_coreshell_coupling(core_config, shell_config):
         gamma_offset=0,
         phi_offset=0,
     )
+
     source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
@@ -86,6 +89,7 @@ def test_coreshell_coupling(core_config, shell_config):
         optical_power=1,
         NA=0.3
     )
+
     scatterer = CoreShell(
         core_diameter=100e-9,
         shell_width=200e-9,
@@ -110,6 +114,7 @@ def test_coreshell_attribute(attribute, core_config, shell_config):
         optical_power=1,
         NA=0.3
     )
+
     scatterer = CoreShell(
         core_diameter=100e-9,
         shell_width=200e-9,
@@ -121,5 +126,30 @@ def test_coreshell_attribute(attribute, core_config, shell_config):
 
     # Access and verify the attribute
     _ = getattr(scatterer, attribute)
+
+
+@pytest.mark.parametrize('shell_config', shell_configs, ids=[config['id'] for config in shell_configs])
+@pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
+@pytest.mark.parametrize('plotting', plottings)
+def test_coreshell_plottings(plotting, core_config, shell_config):
+    source = Gaussian(
+        wavelength=750e-9,
+        polarization_value=0,
+        polarization_type='linear',
+        optical_power=1,
+        NA=0.3
+    )
+
+    scatterer = CoreShell(
+        core_diameter=100e-9,
+        shell_width=200e-9,
+        source=source,
+        medium_index=1.0,
+        **core_config['config'],
+        **shell_config['config']
+    )
+
+    data = getattr(scatterer, plotting)()
+    assert data is not None, "Plotting data should not be None"
 
 # -

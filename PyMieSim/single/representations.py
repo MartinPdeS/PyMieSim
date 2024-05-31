@@ -127,9 +127,7 @@ class Stokes(BaseRepresentation):
             ax = figure.append_ax()
 
             artist = ax.add_mesh(
-                x=x,
-                y=y,
-                z=z,
+                x=x, y=y, z=z,
                 scalar_coloring=field,
                 colormap='seismic',
                 show_edges=False

@@ -16,7 +16,7 @@ from PyOptik import UsualMaterial
 
 # %%
 # Defining the source to be employed.
-source = experiment.Gaussian(
+source = experiment.source.Gaussian(
     wavelength=50e-9,
     polarization_value=0,
     polarization_type='linear',
@@ -26,7 +26,7 @@ source = experiment.Gaussian(
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer = experiment.Sphere(
+scatterer = experiment.scatterer.Sphere(
     diameter=500e-9,
     material=UsualMaterial.BK7,
     medium_index=1,
@@ -35,7 +35,7 @@ scatterer = experiment.Sphere(
 
 # %%
 # Defining the detector to be employed.
-detector = experiment.Photodiode(
+detector = experiment.detector.Photodiode(
     NA=np.linspace(0.1, 1.9, 1500),
     phi_offset=0,
     gamma_offset=0,

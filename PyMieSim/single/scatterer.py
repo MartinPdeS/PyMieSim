@@ -5,14 +5,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from PyMieSim import single
     from PyOptik import DataMeasurement, Sellmeier
+    from PyMieSim import single
 
 import numpy
-import logging
 from dataclasses import dataclass
 from tabulate import tabulate
-from typing import Union
+from typing import Union, Optional
 
 
 from PyMieSim.mesh import FibonacciMesh
@@ -243,7 +242,7 @@ class GenericScatterer():
         """
         return Footprint(scatterer=self, detector=detector)
 
-    def get_poynting_vector(self, mesh: FibonacciMesh) -> float:
+    def get_poynting_vector(self, obj: FibonacciMesh, /) -> float:
         r"""
 
         Method return the Poynting vector norm defined as:
@@ -255,6 +254,12 @@ class GenericScatterer():
             Mesh : Number of voxel in the 4 pi space to compute energy flow.
 
         """
+        from PyMieSim.single.detector import GenericDetector
+        if isinstance(obj, GenericDetector):
+            mesh = obj.binding.mesh
+        else:
+            mesh = obj
+
         Ephi, Etheta = self.get_farfields_array(phi=mesh.phi, theta=mesh.theta, r=1.)
 
         E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
@@ -265,7 +270,7 @@ class GenericScatterer():
 
         return poynting
 
-    def get_energy_flow(self, mesh: FibonacciMesh) -> float:
+    def get_energy_flow(self, obj: FibonacciMesh, /) -> float:
         r"""
         Returns energy flow defined as:
 
@@ -289,22 +294,34 @@ class GenericScatterer():
         :returns:   The energy flow.
         :rtype:     float
         """
-        Poynting = self.get_poynting_vector(mesh)
+        from PyMieSim.single.detector import GenericDetector
+        if isinstance(obj, GenericDetector):
+            mesh = obj.binding.mesh
+        else:
+            mesh = obj
 
-        total_power = 0.5 * numpy.sum(Poynting) * mesh.d_omega
+        poynting = self.get_poynting_vector(mesh)
+
+        total_power = 0.5 * numpy.sum(poynting) * mesh.d_omega
 
         return total_power
 
     def get_cross_section(self):
         return (self.Qsca * self.area)  # similar to self.EnergyFlow(Mesh) / self.source.I
 
-    def _assign_index_or_material(self, index, material) -> tuple:
-        assert bool(index) ^ bool(material), logging.error("Exactly one of the parameter [index or Material] have to be assigned.")
-        index = index if index is not None else material.get_refractive_index(self.source.wavelength)
-        material = material if material is not None else None
+    def _assign_index_or_material(self, index: Optional[complex], material: Optional[Union[DataMeasurement, Sellmeier]]) -> tuple:
+        """
+        Assign the refractive index or material.
+        Either `index` or `material` must be specified, but not both.
+        """
+        if (index is None) == (material is None):
+            raise ValueError("Either index or material must be specified, but not both.")
+
+        if index is None:
+            index = material.get_refractive_index(self.source.wavelength)
 
         if not numpy.isscalar(index) and len(index) == 1:
-            return index[0], material
+            index = index[0]
 
         return index, material
 
@@ -316,19 +333,19 @@ class Sphere(GenericScatterer):
     """ diameter of the single scatterer in unit of meter. """
     source: Union[single.detector.PlaneWave, single.detector.Gaussian]
     """ Light source object containing info on polarization and wavelength. """
-    index: complex = None
+    index: Optional[complex] = None
     """ Refractive index of scatterer. """
     medium_index: float = 1.0
     """ Refractive index of scatterer medium. """
-    material: DataMeasurement | Sellmeier | None = None
+    material: Union[DataMeasurement, Sellmeier, None] = None
     """ Material of which the scatterer is made of. Only if index is not specified. """
 
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(self.index, self.material)
 
-        self.set_cpp_binding()
+        self.set_binding()
 
-    def set_cpp_binding(self) -> None:
+    def set_binding(self) -> None:
         """
         Method call and bind c++ scatterer class
 
@@ -344,7 +361,7 @@ class Sphere(GenericScatterer):
             jones_vector=self.source.polarization.jones_vector.squeeze(),
         )
 
-    def an(self, max_order: int = None) -> numpy.array:
+    def an(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
@@ -357,9 +374,9 @@ class Sphere(GenericScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
         """
-        return self.binding.an()
+        return self.binding.an() if max_order is None else self.binding.an(max_order)
 
-    def bn(self, max_order: int = None) -> numpy.array:
+    def bn(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
@@ -372,9 +389,9 @@ class Sphere(GenericScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
         """
-        return self.binding.bn()
+        return self.binding.bn() if max_order is None else self.binding.bn(max_order)
 
-    def cn(self, max_order: int = None) -> numpy.array:
+    def cn(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
 
@@ -389,7 +406,7 @@ class Sphere(GenericScatterer):
         """
         return self.binding.cn()
 
-    def dn(self, max_order: int = None) -> numpy.array:
+    def dn(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
 
@@ -417,13 +434,13 @@ class CoreShell(GenericScatterer):
     """ diameter of the shell of the single scatterer [m]. """
     source: Union[single.detector.PlaneWave, single.detector.Gaussian]
     """ Light source object containing info on polarization and wavelength. """
-    core_index: complex = None
+    core_index: Optional[complex] = None
     """ Refractive index of the core of the scatterer. """
-    shell_index: complex = None
+    shell_index: Optional[complex] = None
     """ Refractive index of the shell of the scatterer. """
-    core_material: DataMeasurement | Sellmeier | None = None
+    core_material: Union[DataMeasurement, Sellmeier, None] = None
     """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
-    shell_material: DataMeasurement | Sellmeier | None = None
+    shell_material: Union[DataMeasurement, Sellmeier, None] = None
     """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
     medium_index: float = 1.0
     """ Refractive index of scatterer medium. """
@@ -435,9 +452,9 @@ class CoreShell(GenericScatterer):
 
         self.shell_diameter = self.core_diameter + self.shell_width
 
-        self.set_cpp_binding()
+        self.set_binding()
 
-    def set_cpp_binding(self) -> None:
+    def set_binding(self) -> None:
         """
         Method call and bind c++ scatterer class
         """
@@ -454,23 +471,17 @@ class CoreShell(GenericScatterer):
             amplitude=self.source.amplitude
         )
 
-    def an(self, max_order: int = None) -> numpy.array:
+    def an(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`a_n` coefficient
         """
-        if max_order is None:
-            return self.binding.an()
-        else:
-            return self.binding._an(max_order)
+        return self.binding.an() if max_order is None else self.binding.an(max_order)
 
-    def bn(self, max_order: int = None) -> numpy.array:
+    def bn(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`b_n` coefficient.
         """
-        if max_order is None:
-            return self.binding.bn()
-        else:
-            return self.binding._bn(max_order)
+        return self.binding.bn() if max_order is None else self.binding.bn(max_order)
 
 
 @dataclass()
@@ -483,11 +494,11 @@ class Cylinder(GenericScatterer):
     """ diameter of the single scatterer in unit of meter. """
     source: Union[single.detector.PlaneWave, single.detector.Gaussian]
     """ Light source object containing info on polarization and wavelength. """
-    index: complex = None
+    index: Optional[complex] = None
     """ Refractive index of scatterer. """
     medium_index: float = 1.0
     """ Material of which the scatterer is made of. Only if index is not specified. """
-    material: DataMeasurement | Sellmeier | None = None
+    material: Union[DataMeasurement, Sellmeier, None] = None
     """ Refractive index of scatterer medium. """
 
     def __post_init__(self):
@@ -496,9 +507,9 @@ class Cylinder(GenericScatterer):
             material=self.material
         )
 
-        self.set_cpp_binding()
+        self.set_binding()
 
-    def set_cpp_binding(self) -> None:
+    def set_binding(self) -> None:
         """
         Binds the Python representation of the cylinder to its C++ counterpart using provided properties.
         """
@@ -513,7 +524,7 @@ class Cylinder(GenericScatterer):
             jones_vector=self.source.polarization.jones_vector.squeeze()
         )
 
-    def a1n(self, max_order: int = None) -> numpy.array:
+    def a1n(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`a_n` coefficient as defined ref[5]:
 
@@ -525,14 +536,14 @@ class Cylinder(GenericScatterer):
         |      :math:`m_t` being the refractive index of the index.
 
         :param      max_order:  The maximum order
-        :type       max_order:  int
+        :type       max_order:  Optional[int]
 
         :returns:   The first electric mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.binding.a1n()
+        return self.binding.a1n() if max_order is None else self.binding.a1n(max_order)
 
-    def a2n(self, max_order: int = None) -> numpy.array:
+    def a2n(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`a_n` coefficient as defined ref[5]:
 
@@ -544,14 +555,14 @@ class Cylinder(GenericScatterer):
         |      :math:`m_t` being the refractive index of the index.
 
         :param      max_order:  The maximum order
-        :type       max_order:  int
+        :type       max_order:  Optional[int]
 
         :returns:   The second electric mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.binding.a2n()
+        return self.binding.a2n() if max_order is None else self.binding.a2n(max_order)
 
-    def b1n(self, max_order: int = None) -> numpy.array:
+    def b1n(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`b_n` coefficient as defined in ref[5]:
 
@@ -564,14 +575,14 @@ class Cylinder(GenericScatterer):
 
 
         :param      max_order:  The maximum order
-        :type       max_order:  int
+        :type       max_order:  Optional[int]
 
         :returns:   The first magnetic mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.binding.b1n()
+        return self.binding.b1n() if max_order is None else self.binding.b1n(max_order)
 
-    def b2n(self, max_order: int = None) -> numpy.array:
+    def b2n(self, max_order: Optional[int] = None) -> numpy.array:
         r"""
         Compute :math:`b_n` coefficient as defined in ref[5]:
 
@@ -583,12 +594,12 @@ class Cylinder(GenericScatterer):
         |      :math:`m_t` being the refractive index of the index.
 
         :param      max_order:  The maximum order
-        :type       max_order:  int
+        :type       max_order:  Optional[int]
 
         :returns:   The second magnetic mutlipole amplitude
         :rtype:     numpy.array
         """
-        return self.binding.b2n()
+        return self.binding.b2n() if max_order is None else self.binding.b2n(max_order)
 
     @property
     def Cback(self) -> None:
