@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyMieSim.experiment.setup import Setup
 
 import numpy
 from pydantic.dataclasses import dataclass
@@ -74,15 +70,6 @@ class BaseSource:
         )
 
         return [v for k, v in self.mapping.items() if v is not None]
-
-    def bind_to_experiment(self, experiment: Setup):
-        """
-        Binds the source set to an experiment.
-
-        Parameters:
-            experiment (Setup): The experiment setup to bind the source to.
-        """
-        experiment.binding.set_source(self.binding)
 
 
 @dataclass

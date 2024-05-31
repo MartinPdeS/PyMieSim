@@ -3,9 +3,9 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
-    from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
-    from PyMieSim.single.detector import Photodiode, LPmode, IntegratingSphere
+    from PyMieSim import single
 
 
 import numpy
@@ -13,6 +13,7 @@ from MPSPlots.render3D import SceneList as SceneList3D
 from MPSPlots.render2D import SceneList
 from dataclasses import dataclass
 from PyMieSim.tools.special_functions import spherical_to_cartesian, rotate_on_x
+from typing import Union
 
 
 @dataclass
@@ -21,14 +22,14 @@ class BaseRepresentation():
     Base class for scattering representations.
 
     Attributes:
-        scatterer (Union[Sphere, CoreShell, Cylinder]): The scatterer object, representing the physical scatterer in the simulation.
+        scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object, representing the physical scatterer in the simulation.
         sampling (int): The number of points used for evaluating the Stokes parameters in spherical coordinates (default is 100).
         distance (float): The distance from the scatterer at which fields are evaluated (default is 1.0).
 
     Methods:
         compute_components: A placeholder method intended to be overridden by subclasses for computing specific scattering components.
     """
-    scatterer: Sphere | CoreShell | Cylinder
+    scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]
     sampling: int = 100
     distance: float = 1.0
 
@@ -294,7 +295,7 @@ class S1S2():
     Represents the S1 and S2 scattering functions, which are components of the scattering matrix.
 
     Attributes:
-        scatterer (Union[Sphere, CoreShell, Cylinder]): The scatterer object.
+        scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object.
         sampling (int): Number of points for evaluating the S1 and S2 functions.
         distance (float): Distance at which the fields are evaluated.
 
@@ -302,7 +303,7 @@ class S1S2():
         compute_components: Computes the S1 and S2 functions based on the scatterer's properties.
         plot: Visualizes the S1 and S2 functions on a polar plot.
     """
-    scatterer: Sphere | CoreShell | Cylinder
+    scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]
     sampling: int = 300
     distance: float = 1.0
 
@@ -369,8 +370,8 @@ class Footprint():
     The footprint is defined as:
 
     Attributes:
-        detector (Union[Photodiode, LPmode, IntegratingSphere]): The detector object.
-        scatterer (Union[Sphere, CoreShell, Cylinder]): The scatterer object.
+        detector (Union[single.detector.Photodiode, single.detector.LPmode, single.detector.IntegratingSphere]): The detector object.
+        scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object.
         sampling (int): Number of points to evaluate the Stokes parameters in spherical coordinates (default is 500).
         padding_factor (int): Padding factor for the Fourier transform (default is 20).
 
@@ -378,8 +379,8 @@ class Footprint():
         compute_footprint: Computes the footprint based on the far-field patterns and detector characteristics.
         plot: Visualizes the computed footprint.
     """
-    detector: Photodiode | LPmode | IntegratingSphere
-    scatterer: Sphere | CoreShell | Cylinder
+    detector: Union[single.detector.Photodiode, single.detector.LPmode, single.detector.IntegratingSphere]
+    scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]
     sampling: int = 200
     padding_factor: int = 20
 

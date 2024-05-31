@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyMieSim.experiment.setup import Setup
-from PyMieSim.experiment.source import Gaussian, PlaneWave
+import PyMieSim.experiment.source as source
 
 import numpy
 
@@ -26,9 +22,9 @@ class BaseScatterer():
 
     Attributes:
         medium_index (List): Refractive index of the medium in which the scatterers are placed.
-        source (Union[Gaussian, PlaneWave]): Light source configuration for the simulation.
+        source (Union[experiment.source.Gaussian, experiment.source.PlaneWave]): Light source configuration for the simulation.
     """
-    source: Gaussian | PlaneWave
+    source: Union[source.Gaussian, source.PlaneWave]
 
     def __post_init__(self) -> NoReturn:
         """
@@ -40,21 +36,6 @@ class BaseScatterer():
             NoReturn
         """
         self.build_binding_kwargs()
-
-    def bind_to_experiment(self, experiment: Setup) -> NoReturn:
-        """
-        Binds this scatterer instance to a given experimental setup. This method is crucial for integrating
-        the scatterer into the simulation environment, allowing its optical properties to be evaluated
-        within the context of the specified experiment.
-
-        Parameters:
-            experiment (Setup): The experimental setup to which the scatterer will be bound. The setup
-                                should be capable of integrating scatterers and managing their interactions
-                                with defined light sources and measurement configurations.
-        """
-        method_str = 'set_' + self.__class__.__name__.lower()
-
-        getattr(experiment.binding, method_str)(self.binding)
 
     def add_material_index_to_mapping(self, name: str = None) -> NoReturn:
         """

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from collections.abc import Iterable
+from typing import List
 import numpy
 from dataclasses import dataclass
 
@@ -44,12 +44,12 @@ class LightSource:
             case _:
                 raise ValueError(f'Invalid polarization type: {self.polarization_type}. Supported options are "linear", "jones vector", "circular".')
 
-    def interpret_jones_vector(self, value: Iterable) -> polarization.JonesVector:
+    def interpret_jones_vector(self, value: List) -> polarization.JonesVector:
         """
         Interprets the given value as a Jones vector.
 
         Parameters:
-            value (Iterable): A size 2 iterable representing the Jones vector.
+            value (List): A size 2 iterable representing the Jones vector.
 
         Returns:
             polarization.JonesVector: The Jones vector representation of the polarization.

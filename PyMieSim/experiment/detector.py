@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyMieSim.experiment.setup import Setup
 
 import numpy
 from dataclasses import field
@@ -78,14 +74,6 @@ class BaseDetector():
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-    def bind_to_experiment(self, experiment: Setup) -> NoReturn:
-        """
-        Binds the detector to a specified experimental setup, ensuring integration into the simulation workflow.
-
-        Parameters:
-            experiment (Setup): The experiment setup to which the detector is bound.
-        """
-        experiment.binding.set_detector(self.binding)
 
     def get_datavisual_table(self) -> NoReturn:
         """

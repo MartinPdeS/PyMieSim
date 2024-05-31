@@ -51,9 +51,15 @@ class Setup(object):
 
     def bind_components(self):
         """Binds the experiment components to the CppExperiment instance."""
-        for component in [self.source, self.scatterer, self.detector]:
-            if component:
-                component.bind_to_experiment(experiment=self)
+
+        self.binding.set_source(self.source.binding)
+
+        method_str = 'set_' + self.scatterer.__class__.__name__.lower()
+
+        getattr(self.binding, method_str)(self.scatterer.binding)
+
+        if self.detector is not None:
+            self.binding.set_detector(self.detector.binding)
 
     def generate_datavisual_table(self) -> NoReturn:
         """

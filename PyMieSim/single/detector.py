@@ -3,9 +3,9 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
 
+if TYPE_CHECKING:
+    from PyMieSim import single
 
 import numpy
 import logging
@@ -34,7 +34,7 @@ class GenericDetector():
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
+    def coupling(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> float:
         r"""
         Calculate the light coupling between the detector and a scatterer.
 
@@ -46,14 +46,14 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         Args:
-            scatterer (Sphere|CoreShell|Cylinder): The scatterer object.
+            scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object.
 
         Returns:
             float: The coupling in watts.
         """
         return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
 
-    def get_footprint(self, scatterer: Sphere | CoreShell | Cylinder) -> Footprint:
+    def get_footprint(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> Footprint:
         r"""
         Generate the footprint of the scattered light coupling with the detector.
 
@@ -67,7 +67,7 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         Args:
-            scatterer (Sphere|CoreShell|Cylinder): The scatterer object.
+            scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object.
 
         Returns:
             Footprint: The scatterer footprint with this detector.

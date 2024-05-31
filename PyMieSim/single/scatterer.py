@@ -3,18 +3,21 @@
 
 from __future__ import annotations
 from typing import TYPE_CHECKING
+
 if TYPE_CHECKING:
+    from PyMieSim import single
     from PyOptik import DataMeasurement, Sellmeier
 
 import numpy
 import logging
 from dataclasses import dataclass
 from tabulate import tabulate
+from typing import Union
 
 
 from PyMieSim.mesh import FibonacciMesh
-from PyMieSim.single.source import PlaneWave, Gaussian
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
+
 
 c = 299792458.0  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
@@ -24,6 +27,7 @@ class GenericScatterer():
     """
     Generic class for scatterer
     """
+
     def print_properties(self) -> None:
         property_names = [
             "size_parameter", "area", "index", "Qsca", "Qext",
@@ -310,7 +314,7 @@ class Sphere(GenericScatterer):
     """ Class representing a homogeneous spherical scatterer """
     diameter: float
     """ diameter of the single scatterer in unit of meter. """
-    source: PlaneWave | Gaussian
+    source: Union[single.detector.PlaneWave, single.detector.Gaussian]
     """ Light source object containing info on polarization and wavelength. """
     index: complex = None
     """ Refractive index of scatterer. """
@@ -411,7 +415,7 @@ class CoreShell(GenericScatterer):
     """ diameter of the core of the single scatterer [m]. """
     shell_width: float
     """ diameter of the shell of the single scatterer [m]. """
-    source: PlaneWave | Gaussian
+    source: Union[single.detector.PlaneWave, single.detector.Gaussian]
     """ Light source object containing info on polarization and wavelength. """
     core_index: complex = None
     """ Refractive index of the core of the scatterer. """
@@ -477,7 +481,7 @@ class Cylinder(GenericScatterer):
 
     diameter: float
     """ diameter of the single scatterer in unit of meter. """
-    source: PlaneWave | Gaussian
+    source: Union[single.detector.PlaneWave, single.detector.Gaussian]
     """ Light source object containing info on polarization and wavelength. """
     index: complex = None
     """ Refractive index of scatterer. """
