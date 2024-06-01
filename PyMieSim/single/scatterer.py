@@ -13,13 +13,7 @@ from dataclasses import dataclass
 from tabulate import tabulate
 from typing import Union, Optional
 
-
-from PyMieSim.mesh import FibonacciMesh
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
-
-
-c = 299792458.0  #: Speed of light in vacuum (m/s).
-epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
 
 
 class GenericScatterer():
@@ -241,70 +235,6 @@ class GenericScatterer():
         :rtype:     Footprint
         """
         return Footprint(scatterer=self, detector=detector)
-
-    def get_poynting_vector(self, obj: FibonacciMesh, /) -> float:
-        r"""
-
-        Method return the Poynting vector norm defined as:
-
-        .. math::
-            \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
-
-        Parameters :
-            Mesh : Number of voxel in the 4 pi space to compute energy flow.
-
-        """
-        from PyMieSim.single.detector import GenericDetector
-        if isinstance(obj, GenericDetector):
-            mesh = obj.binding.mesh
-        else:
-            mesh = obj
-
-        Ephi, Etheta = self.get_farfields_array(phi=mesh.phi, theta=mesh.theta, r=1.)
-
-        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
-
-        B_norm = E_norm / c
-
-        poynting = epsilon0 * c**2 * E_norm * B_norm
-
-        return poynting
-
-    def get_energy_flow(self, obj: FibonacciMesh, /) -> float:
-        r"""
-        Returns energy flow defined as:
-
-        .. math::
-            W_a &= \sigma_{sca} * I_{inc} \\[10pt]
-            P &= \int_{A} I dA \\[10pt]
-            I &= \frac{c n \epsilon_0}{2} |E|^2 \\[10pt]
-
-        | With:
-        |     I : Energy density
-        |     n  : Refractive index of the medium
-        |     :math:`\epsilon_0` : Vaccum permitivity
-        |     E  : Electric field
-        |     \sigma_{sca}: Scattering cross section.
-
-        More info on wikipedia link (see ref[6]).
-
-        :param      Mesh:  The mesh
-        :type       Mesh:  FibonacciMesh
-
-        :returns:   The energy flow.
-        :rtype:     float
-        """
-        from PyMieSim.single.detector import GenericDetector
-        if isinstance(obj, GenericDetector):
-            mesh = obj.binding.mesh
-        else:
-            mesh = obj
-
-        poynting = self.get_poynting_vector(mesh)
-
-        total_power = 0.5 * numpy.sum(poynting) * mesh.d_omega
-
-        return total_power
 
     def get_cross_section(self):
         return (self.Qsca * self.area)  # similar to self.EnergyFlow(Mesh) / self.source.I

@@ -20,6 +20,9 @@ from PyMieSim.binary import ModeField
 from PyMieSim.tools.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
 
+c = 299792458.0  #: Speed of light in vacuum (m/s).
+epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
+
 
 class GenericDetector():
     """
@@ -105,6 +108,59 @@ class GenericDetector():
             ax.add_colorbar(artist=artist, title=f'field [{scalar_type}]')
 
         return figure
+
+    def get_poynting_vector(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> float:
+        r"""
+
+        Method return the Poynting vector norm defined as:
+
+        .. math::
+            \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
+
+        Parameters :
+            Mesh : Number of voxel in the 4 pi space to compute energy flow.
+
+        """
+        Ephi, Etheta = scatterer.get_farfields_array(phi=self.binding.mesh.phi, theta=self.binding.mesh.theta, r=1.)
+
+        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
+
+        B_norm = E_norm / c
+
+        poynting = epsilon0 * c**2 * E_norm * B_norm
+
+        return poynting
+
+    def get_energy_flow(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> float:
+        r"""
+        Returns energy flow defined as:
+
+        .. math::
+            W_a &= \sigma_{sca} * I_{inc} \\[10pt]
+            P &= \int_{A} I dA \\[10pt]
+            I &= \frac{c n \epsilon_0}{2} |E|^2 \\[10pt]
+
+        | With:
+        |     I : Energy density
+        |     n  : Refractive index of the medium
+        |     :math:`\epsilon_0` : Vaccum permitivity
+        |     E  : Electric field
+        |     \sigma_{sca}: Scattering cross section.
+
+        More info on wikipedia link (see ref[6]).
+
+        :param      Mesh:  The mesh
+        :type       Mesh:  FibonacciMesh
+
+        :returns:   The energy flow.
+        :rtype:     float
+        """
+
+        poynting = self.get_poynting_vector(scatterer=scatterer)
+
+        total_power = 0.5 * numpy.sum(poynting) * self.binding.mesh.d_omega
+
+        return total_power
 
 
 @dataclass
