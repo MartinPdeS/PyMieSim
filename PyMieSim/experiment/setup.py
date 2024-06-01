@@ -76,7 +76,7 @@ class Setup(object):
         if self.detector:
             self.x_table.extend(self.detector.get_datavisual_table())
 
-    def get(self, measure: Table, export_as_numpy: bool = False) -> numpy.ndarray | Array:
+    def get(self, measure: Table, export_as_numpy: bool = False) -> Union[numpy.ndarray, Array]:
         """
         Executes the simulation to compute and retrieve the specified measure.
 

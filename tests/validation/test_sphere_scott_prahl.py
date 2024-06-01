@@ -28,7 +28,8 @@ def test_validation_scott_prahl(measure_str):
     scatterer = Sphere(
         diameter=1e-6,
         index=1.5 + 0.5j,
-        source=source
+        source=source,
+        medium_index=1.0
     )
 
     scott_prahl_value = scott_prahl_values.get(measure_str)

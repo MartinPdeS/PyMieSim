@@ -25,6 +25,7 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=300e-9,  # 300 nm
     source=source,
+    medium_index=1.0,  # Refractive index of the surrounding medium
     index=1.4  # Refractive index of the scatterer
 )
 

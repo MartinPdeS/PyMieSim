@@ -24,6 +24,7 @@ source = Gaussian(
 scatterer = Sphere(
     diameter=2e-6,  # 2000 nm
     source=source,
+    medium_index=1.0,  # Refractive index of the surrounding medium
     material=UsualMaterial.BK7  # Using BK7 glass material
 )
 

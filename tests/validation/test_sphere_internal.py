@@ -14,7 +14,13 @@ def test_Qsca_cross_section():
         optical_power=1,
         NA=0.3
     )
-    sphere = Sphere(diameter=300e-9, index=1.4, source=source)
+    sphere = Sphere(
+        diameter=300e-9,
+        index=1.4,
+        medium_index=1.0,
+        source=source
+    )
+
     val0 = sphere.get_cross_section()
     val1 = sphere.Qsca * sphere.area
 
@@ -30,9 +36,11 @@ def test_energy_flow_coupling():
         optical_power=1,
         NA=0.3
     )
+
     sphere = Sphere(
         diameter=300e-9,
         index=1.4,
+        medium_index=1.0,
         source=source
     )
 
@@ -62,7 +70,8 @@ def test_compare_sphere_coreshell_0():
     sphere = Sphere(
         diameter=1e-6,
         index=1.5,
-        source=source
+        source=source,
+        medium_index=1.0
     )
 
     coreshell = CoreShell(
@@ -70,6 +79,7 @@ def test_compare_sphere_coreshell_0():
         shell_width=0,
         core_index=1.5,
         shell_index=1.8,
+        medium_index=1.0,
         source=source
     )
 

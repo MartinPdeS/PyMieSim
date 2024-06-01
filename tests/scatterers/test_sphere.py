@@ -6,9 +6,13 @@ from PyOptik import UsualMaterial
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 core_configs = [
-    {'config': {'material': UsualMaterial.BK7}, 'id': 'BK7'},
-    {'config': {'material': UsualMaterial.Silver}, 'id': 'Silver'},
-    {'config': {'index': 1.4}, 'id': 'Index 1.4'}
+    {'config': {'material': UsualMaterial.Silver}, 'id': 'core:BK7'},
+    {'config': {'index': 1.6}, 'id': 'core:1.6'}
+]
+
+medium_configs = [
+    {'config': {'medium_material': UsualMaterial.BK7}, 'id': 'medium:BK7'},
+    {'config': {'medium_index': 1.4}, 'id': 'medium:index'}
 ]
 
 methods = ["an", "bn"]
@@ -24,8 +28,9 @@ plottings = [
 
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
+@pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
 @pytest.mark.parametrize('method', methods)
-def test_sphere_method(method, core_config):
+def test_sphere_method(method, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
@@ -37,7 +42,7 @@ def test_sphere_method(method, core_config):
     scatterer = Sphere(
         diameter=100e-9,
         source=source,
-        medium_index=1.0,
+        **medium_config['config'],
         **core_config['config']
     )
     _ = getattr(scatterer, method)()
@@ -46,8 +51,9 @@ def test_sphere_method(method, core_config):
 
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
+@pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
 @pytest.mark.parametrize('attribute', attributes)
-def test_sphere_attribute(attribute, core_config):
+def test_sphere_attribute(attribute, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
@@ -58,14 +64,15 @@ def test_sphere_attribute(attribute, core_config):
     scatterer = Sphere(
         diameter=100e-9,
         source=source,
-        medium_index=1.0,
+        **medium_config['config'],
         **core_config['config']
     )
     _ = getattr(scatterer, attribute)
 
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
-def test_sphere_coupling(core_config):
+@pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
+def test_sphere_coupling(core_config, medium_config):
     detector = Photodiode(
         NA=0.2,
         gamma_offset=0,
@@ -81,15 +88,16 @@ def test_sphere_coupling(core_config):
     scatterer = Sphere(
         diameter=100e-9,
         source=source,
-        medium_index=1.0,
+        **medium_config['config'],
         **core_config['config']
     )
     _ = detector.coupling(scatterer)
 
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
+@pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
 @pytest.mark.parametrize('plotting', plottings)
-def test_sphere_plottings(plotting, core_config):
+def test_sphere_plottings(plotting, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
         polarization_value=0,
@@ -100,7 +108,7 @@ def test_sphere_plottings(plotting, core_config):
     scatterer = Sphere(
         diameter=100e-9,
         source=source,
-        medium_index=1.0,
+        **medium_config['config'],
         **core_config['config']
     )
     data = getattr(scatterer, plotting)()
