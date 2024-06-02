@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from PyMieSim import single
-
 import numpy
 import logging
 from dataclasses import field
@@ -19,6 +13,8 @@ from PyMieSim.binary import ModeField
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.tools.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
+
+from PyMieSim.single import scatterer
 
 c = 299792458.0  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
@@ -37,7 +33,7 @@ class GenericDetector():
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    def coupling(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> float:
+    def coupling(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
         r"""
         Calculate the light coupling between the detector and a scatterer.
 
@@ -49,14 +45,14 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         Args:
-            scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object.
+            scatterer (Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]): The scatterer object.
 
         Returns:
             float: The coupling in watts.
         """
         return getattr(self.binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
 
-    def get_footprint(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> Footprint:
+    def get_footprint(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> Footprint:
         r"""
         Generate the footprint of the scattered light coupling with the detector.
 
@@ -70,7 +66,7 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         Args:
-            scatterer (Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]): The scatterer object.
+            scatterer (Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]): The scatterer object.
 
         Returns:
             Footprint: The scatterer footprint with this detector.
@@ -109,7 +105,7 @@ class GenericDetector():
 
         return figure
 
-    def get_poynting_vector(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> float:
+    def get_poynting_vector(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
         r"""
 
         Method return the Poynting vector norm defined as:
@@ -131,7 +127,7 @@ class GenericDetector():
 
         return poynting
 
-    def get_energy_flow(self, scatterer: Union[single.scatterer.Sphere, single.scatterer.CoreShell, single.scatterer.Cylinder]) -> float:
+    def get_energy_flow(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
         r"""
         Returns energy flow defined as:
 

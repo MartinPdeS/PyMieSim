@@ -1,19 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from PyOptik import DataMeasurement, Sellmeier
-    from PyMieSim import single
+from PyOptik import DataMeasurement, Sellmeier
 
 import numpy
-from dataclasses import dataclass
 from tabulate import tabulate
-from typing import Union, Optional
+from typing import Union, Optional, Any  # Any is for complex as no
 
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
+from PyMieSim.single import source  # noqa: F401
+from pydantic.dataclasses import dataclass
 
 
 class GenericScatterer():
@@ -31,10 +27,8 @@ class GenericScatterer():
         data = [getattr(self, name) for name in property_names]
         property_dict = {"Property": property_names, "value": data}
 
-        table = tabulate(
-            property_dict,
-            headers="keys"
-        )
+        table = tabulate(property_dict, headers="keys")
+
         print(table)
 
     @property
@@ -236,10 +230,10 @@ class GenericScatterer():
         """
         return Footprint(scatterer=self, detector=detector)
 
-    def get_cross_section(self):
+    def get_cross_section(self) -> float:
         return (self.Qsca * self.area)  # similar to self.EnergyFlow(Mesh) / self.source.I
 
-    def _assign_index_or_material(self, index: Optional[complex], material: Optional[Union[DataMeasurement, Sellmeier]]) -> tuple:
+    def _assign_index_or_material(self, index: Optional[Any], material: Optional[Union[DataMeasurement, Sellmeier]]) -> tuple:
         """
         Assign the refractive index or material.
         Either `index` or `material` must be specified, but not both.
@@ -263,15 +257,15 @@ class Sphere(GenericScatterer):
 
     Attributes:
         diameter (float): Diameter of the single scatterer in unit of meter.
-        source (Union[single.detector.PlaneWave, single.detector.Gaussian]): Light source object containing info on polarization and wavelength.
-        index (Optional[complex]): Refractive index of scatterer. Default is None.
+        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
+        index (Optional[Any]): Refractive index of scatterer. Default is None.
         medium_index (float): Refractive index of scatterer medium. Default is 1.0.
         material (Union[DataMeasurement, Sellmeier, None]): Material of which the scatterer is made, if index is not specified. Default is None.
     """
 
     diameter: float
-    source: Union[single.detector.PlaneWave, single.detector.Gaussian]
-    index: Optional[complex] = None
+    source: Union[source.PlaneWave, source.Gaussian]
+    index: Optional[Any] = None
     medium_index: Optional[float] = None
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     material: Optional[Union[Sellmeier, DataMeasurement]] = None
@@ -398,9 +392,9 @@ class CoreShell(GenericScatterer):
     Attributes:
         core_diameter (float): Diameter of the core of the single scatterer [m].
         shell_width (float): Diameter of the shell of the single scatterer [m].
-        source (Union[single.detector.PlaneWave, single.detector.Gaussian]): Light source object containing info on polarization and wavelength.
-        core_index (Optional[complex]): Refractive index of the core of the scatterer. Default is None.
-        shell_index (Optional[complex]): Refractive index of the shell of the scatterer. Default is None.
+        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
+        core_index (Optional[Any]): Refractive index of the core of the scatterer. Default is None.
+        shell_index (Optional[Any]): Refractive index of the shell of the scatterer. Default is None.
         core_material (Union[DataMeasurement, Sellmeier, None]): Core material of which the scatterer is made of, if core_index is not specified. Default is None.
         shell_material (Union[DataMeasurement, Sellmeier, None]): Shell material of which the scatterer is made of, if shell_index is not specified. Default is None.
         medium_index (float): Refractive index of the scatterer medium. Default is 1.0.
@@ -408,9 +402,9 @@ class CoreShell(GenericScatterer):
 
     core_diameter: float
     shell_width: float
-    source: Union[single.detector.PlaneWave, single.detector.Gaussian]
-    core_index: Optional[complex] = None
-    shell_index: Optional[complex] = None
+    source: Union[source.PlaneWave, source.Gaussian]
+    core_index: Optional[Any] = None
+    shell_index: Optional[Any] = None
     core_material: Union[DataMeasurement, Sellmeier, None] = None
     shell_material: Union[DataMeasurement, Sellmeier, None] = None
     medium_index: Optional[float] = None
@@ -476,15 +470,15 @@ class Cylinder(GenericScatterer):
 
     Attributes:
         diameter (float): Diameter of the single scatterer in unit of meter.
-        source (Union[single.detector.PlaneWave, single.detector.Gaussian]): Light source object containing info on polarization and wavelength.
-        index (Optional[complex]): Refractive index of scatterer. Default is None.
+        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
+        index (Optional[Any]): Refractive index of scatterer. Default is None.
         medium_index (float): Refractive index of scatterer medium. Default is 1.0.
         material (Union[DataMeasurement, Sellmeier, None]): Material of which the scatterer is made, if index is not specified. Default is None.
     """
 
     diameter: float
-    source: Union[single.detector.PlaneWave, single.detector.Gaussian]
-    index: Optional[complex] = None
+    source: Union[source.PlaneWave, source.Gaussian]
+    index: Optional[Any] = None
     medium_index: Optional[float] = None
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     material: Union[DataMeasurement, Sellmeier, None] = None

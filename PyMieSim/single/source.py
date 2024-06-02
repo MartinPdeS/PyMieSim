@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import List
+from typing import List, Union
 import numpy
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
 
 from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
@@ -23,7 +23,7 @@ class LightSource:
         amplitude (float): Amplitude of the electric field.
     """
     wavelength: float
-    polarization_value: float
+    polarization_value: Union[float, str]
     polarization_type: str = 'linear'
 
     def __post_init__(self):
