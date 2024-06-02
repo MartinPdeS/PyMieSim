@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 
 from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
-from PyMieSim.tools.special_functions import NA_to_angle
+from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
 
 
@@ -91,11 +91,10 @@ class PlaneWave(LightSource):
     Inherits from LightSource and specifies amplitude directly.
     """
 
-    amplitude: float | None = None
+    amplitude: float = 1
 
     def __post_init__(self):
         super().__post_init__()
-        # Assuming amplitude is directly specified; no additional calculation required for PlaneWave.
 
     def plot(self) -> SceneList3D:
         """

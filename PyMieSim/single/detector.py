@@ -11,7 +11,7 @@ from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.binary import ModeField
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
-from PyMieSim.tools.special_functions import NA_to_angle
+from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
 
 from PyMieSim.single import scatterer

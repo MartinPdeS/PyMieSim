@@ -6,7 +6,7 @@ from sphinx_gallery.sorting import ExplicitOrder
 from MPSPlots.styles import use_mpsplots_style
 from packaging.version import parse
 
-from PyMieSim.tools.directories import (
+from PyMieSim.directories import (
     project_path,
     doc_css_path,
     version_path,

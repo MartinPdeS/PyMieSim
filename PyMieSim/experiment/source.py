@@ -31,7 +31,7 @@ class BaseSource:
     def __post_init__(self):
         self.mapping = {
             'wavelength': None,
-            'polarization': None
+            'polarization_value': None
         }
 
         self.format_inputs()

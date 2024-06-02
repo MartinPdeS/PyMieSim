@@ -12,7 +12,7 @@ import numpy
 from MPSPlots.render3D import SceneList as SceneList3D
 from MPSPlots.render2D import SceneList
 from dataclasses import dataclass
-from PyMieSim.tools.special_functions import spherical_to_cartesian, rotate_on_x
+from PyMieSim.special_functions import spherical_to_cartesian, rotate_on_x
 from typing import Union
 
 
