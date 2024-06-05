@@ -10,8 +10,7 @@ import numpy as np
 
 from PyMieSim import experiment
 from PyMieSim import single
-
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 from PyOptik import UsualMaterial
 
 # %%

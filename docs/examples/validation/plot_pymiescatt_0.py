@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-import PyMieSim.measure as measure
+from PyMieSim.experiment import measure
 
 # PyMieScatt import
 import PyMieScatt as pms

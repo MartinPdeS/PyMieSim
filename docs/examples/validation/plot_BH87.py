@@ -14,8 +14,7 @@ from PyMieSim.tools.directories import validation_data_path
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 
 theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure87BH.csv", delimiter=',')
 

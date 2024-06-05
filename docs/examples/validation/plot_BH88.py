@@ -13,7 +13,7 @@ from PyMieSim.tools.directories import validation_data_path
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-import PyMieSim.measure as measure
+from PyMieSim.experiment import measure
 
 # Load theoretical data
 theoretical_data = np.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimiter=',')

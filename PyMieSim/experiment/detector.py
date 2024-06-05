@@ -74,7 +74,6 @@ class BaseDetector():
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-
     def get_datavisual_table(self) -> NoReturn:
         """
         Compiles the detector's properties into a table format for data visualization.
@@ -111,7 +110,7 @@ class BaseDetector():
 
         self.mapping['phi_offset'] = units.Degree(
             long_label='Phi angle',
-            short_label=r'$\phi$',
+            short_label=r'phi',
             base_values=self.phi_offset,
             use_prefix=False,
             string_format='.1f'
@@ -119,7 +118,7 @@ class BaseDetector():
 
         self.mapping['gamma_offset'] = units.Degree(
             long_label='Gamma angle',
-            short_label=r'$\gamma$',
+            short_label=r'gamma',
             base_values=self.gamma_offset,
             use_prefix=False,
             string_format='.1f'
@@ -136,7 +135,7 @@ class BaseDetector():
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True)
 class Photodiode(BaseDetector):
     """
     Represents a photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
@@ -160,7 +159,7 @@ class Photodiode(BaseDetector):
     mode_number: str = field(default='NC00', init=False)
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True)
 class CoherentMode(BaseDetector):
     """
     Specialized for coherent detection modes in Mie scattering simulations, this class extends BaseDetector.

@@ -4,7 +4,8 @@
 import numpy
 import pytest
 from PyMieSim import single
-from PyMieSim import experiment, measure
+from PyMieSim import experiment
+from PyMieSim.experiment import measure
 
 
 @pytest.fixture

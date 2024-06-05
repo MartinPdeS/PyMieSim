@@ -8,12 +8,11 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-import PyMieSim.measure as pms_measure
+import PyMieSim.experiment.measure as pms_measure
 from PyOptik import UsualMaterial
 
 # Material configurations for the cylinder core
 core_options = [
-    {'name': 'BK7', 'properties': {'material': UsualMaterial.BK7}},
     {'name': 'Silver', 'properties': {'material': UsualMaterial.Silver}},
     {'name': 'Aluminium', 'properties': {'material': UsualMaterial.Aluminium}},
     {'name': 'Index', 'properties': {'index': 1.4}}

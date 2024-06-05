@@ -7,7 +7,7 @@ import numpy
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 from PyOptik import Sellmeier, DataMeasurement
 
 from pydantic.dataclasses import dataclass

@@ -12,8 +12,7 @@ import numpy as np
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 
 # %%
 # Defining the source to be employed.

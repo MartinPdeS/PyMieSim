@@ -11,8 +11,7 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 from PyOptik import UsualMaterial
 
 # %%

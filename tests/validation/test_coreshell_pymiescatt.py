@@ -7,8 +7,7 @@ import numpy
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 
 import PyMieScatt as ps
 PyMieScatt_measures = {

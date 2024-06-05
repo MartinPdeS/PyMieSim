@@ -35,7 +35,6 @@ class BaseSource:
         }
 
         self.format_inputs()
-        # self.generate_polarization_attribute()
         self.generate_amplitude()
         self.generate_binding()
 
@@ -62,13 +61,13 @@ class BaseSource:
             string_format='.2f'
         )
 
-        self.mapping['polarization'] = units.Degree(
+        self.mapping['polarization_value'] = units.Degree(
             long_label='Polarization',
             short_label=r'Pol',
             base_values=self.polarization_value,
             string_format='.2f'
         )
-
+        
         return [v for k, v in self.mapping.items() if v is not None]
 
 

@@ -13,7 +13,7 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import UsualMaterial
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 
 # %%
 # Defining the source to be employed.

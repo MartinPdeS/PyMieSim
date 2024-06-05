@@ -11,7 +11,7 @@ import numpy as np
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 from PyOptik import UsualMaterial
 
 # %%
