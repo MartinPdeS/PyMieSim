@@ -193,6 +193,7 @@ class InputWidget(BaseWidget):
             value = numpy.linspace(start, end, int(points))
         else:
             value = numpy.nan if user_input.lower() == 'none' else user_input
+            value = numpy.atleast_1d(value)
 
         value = numpy.asarray(value)
 

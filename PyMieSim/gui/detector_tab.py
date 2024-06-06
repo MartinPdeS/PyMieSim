@@ -104,7 +104,7 @@ class DetectorTab(BaseTab):
 
         self.widget_collection.add_widgets(
             RadioButtonWidget(option_text=['Point', 'Mean'], options_values=[False, True], component_label='mean_coupling', label='Mean coupling'),
-            InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization filter [degree]', component_label='polarization_label', dtype=float),
+            InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization filter [degree]', component_label='polarization_filter', dtype=float),
             InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Gamma [degree]', component_label='gamma_offset', dtype=float),
             InputWidget(default_value='180:-180:200', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Phi [degree]', component_label='phi_offset', dtype=float),
             InputWidget(default_value='0.2, 0.3, 0.4', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Numerical aperture (NA)', component_label='NA', dtype=float),

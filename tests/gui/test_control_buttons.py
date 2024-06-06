@@ -3,9 +3,28 @@ import tkinter
 from PyMieSim.gui.main_window import PyMieSimGUI
 from unittest.mock import patch, MagicMock
 
+def reset_std_button(possible_widgets, gui):
+
+    for widget in possible_widgets:
+
+        widget = gui.source_tab.widget_collection.widgets[0]
+        widget.tk_radio_button_2.invoke()
+        gui.reset_std_button.invoke()
+
+        assert gui.STD_axis_label_widget.get() == 'None', f"reset button did not worl for {widget.tk_radio_button_2['value']} widget"
 
 @patch('matplotlib.backends.backend_tkagg.FigureCanvasTkAgg.draw')
-def test_x_axis_calculate_button(mock_draw):
+def x_axis_calculate_button(mock_draw, possible_widgets, gui):
+    # Run the tests
+    error_button_values = ['polarization_value', 'polarization_label'] #this is a list of the values of all the buttons that for which the calculate button does not work
+
+    for x_widget in possible_widgets:
+        x_widget.tk_radio_button_1.invoke()
+        mock_draw.reset_mock()
+        gui.calculate_button.invoke()
+        assert mock_draw.call_count == 1, f"{x_widget.tk_radio_button_1['value']} button did not call the mock"
+
+def test_in_all_combination_of_widgets():
     root = tkinter.Tk()
     root.geometry("750x600")
     gui = PyMieSimGUI(root)
@@ -31,15 +50,8 @@ def test_x_axis_calculate_button(mock_draw):
 
             possible_widgets = [*source_widgets, *scatter_widgets, *detector_widgets] # The widgets it is possible to choose from for the std and x axis
             
-            # Run the tests
-            error_button_values = ['polarization_value', 'polarization_label'] #this is a list of the values of all the buttons that for which the calculate button does not work
-        
-            for x_widget in possible_widgets:
-                x_widget.tk_radio_button_1.invoke()
-                if gui.x_axis_label_widget.get() not in error_button_values:
-                    mock_draw.reset_mock()
-                    gui.calculate_button.invoke()
-                    assert mock_draw.call_count == 1, f"{x_widget.tk_radio_button_1['value']} button did not call the mock"
+            reset_std_button(possible_widgets=possible_widgets, gui=gui)
+            x_axis_calculate_button(possible_widgets=possible_widgets, gui=gui)
 
     root.destroy()
 
