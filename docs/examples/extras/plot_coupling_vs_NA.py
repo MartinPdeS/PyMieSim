@@ -39,8 +39,7 @@ detector = experiment.detector.Photodiode(
     phi_offset=0,
     gamma_offset=0,
     polarization_filter=[None],
-    sampling=2000,
-    rotation=0,  # Rotation of the mode field
+    sampling=2000
 )
 
 # %%

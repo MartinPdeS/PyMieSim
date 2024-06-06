@@ -34,7 +34,7 @@ scatterer = Cylinder(
 )
 
 S1S2 = scatterer.get_s1s2(sampling=800)
-Data = (numpy.abs(S1S2.S1)**2 + numpy.abs(S1S2.S2)**2) * (0.5 / (numpy.pi * source.k))**(1 / 4)
+Data = (numpy.abs(S1S2.S1)**2 + numpy.abs(S1S2.S2)**2) * (0.5 / (numpy.pi * source.wavenumber))**(1 / 4)
 
 plt.figure(figsize=(8, 4))
 plt.plot(S1S2.phi, Data, 'C1-', linewidth=3, label='PyMieSim')
