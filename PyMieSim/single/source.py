@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from collections.abc import Iterable
+from typing import List, Union
 import numpy
-from dataclasses import dataclass
+from pydantic.dataclasses import dataclass
+from dataclasses import field
 
 from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
-from PyMieSim.tools.special_functions import NA_to_angle
+from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
 
 
-@dataclass(kw_only=True)
+# @dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class LightSource:
     """
     Abstract class for light sources in light scattering simulations.
@@ -22,12 +23,12 @@ class LightSource:
         polarization_type (str): Specifies how the polarization_value should be interpreted ('linear', 'jones vector', 'circular').
         amplitude (float): Amplitude of the electric field.
     """
-    wavelength: float
-    polarization_value: float
-    polarization_type: str = 'linear'
+
+    wavenumber: float
+    jones_vector: polarization.JonesVector
 
     def __post_init__(self):
-        self.k = 2 * numpy.pi / self.wavelength  # Wave number
+        self.wavenumber = 2 * numpy.pi / self.wavelength
         self.generate_polarization_attribute()
 
     def generate_polarization_attribute(self) -> None:
@@ -36,20 +37,20 @@ class LightSource:
         """
         match self.polarization_type.lower():
             case 'linear':
-                self.polarization = polarization.Linear(self.polarization_value)
+                self.jones_vector = polarization.Linear(self.polarization_value)
             case 'jones vector':
-                self.polarization = self.interpret_jones_vector(self.polarization_value)
+                self.jones_vector = self.interpret_jones_vector(self.polarization_value)
             case 'circular':
-                self.polarization = self.interpret_circular_polarization(self.polarization_value)
+                self.jones_vector = self.interpret_circular_polarization(self.polarization_value)
             case _:
                 raise ValueError(f'Invalid polarization type: {self.polarization_type}. Supported options are "linear", "jones vector", "circular".')
 
-    def interpret_jones_vector(self, value: Iterable) -> polarization.JonesVector:
+    def interpret_jones_vector(self, value: List) -> polarization.JonesVector:
         """
         Interprets the given value as a Jones vector.
 
         Parameters:
-            value (Iterable): A size 2 iterable representing the Jones vector.
+            value (List): A size 2 iterable representing the Jones vector.
 
         Returns:
             polarization.JonesVector: The Jones vector representation of the polarization.
@@ -83,19 +84,26 @@ class LightSource:
         raise NotImplementedError("Subclass must implement this method.")
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class PlaneWave(LightSource):
     """
     Represents a plane wave light source for light scattering simulations.
 
     Inherits from LightSource and specifies amplitude directly.
-    """
 
-    amplitude: float | None = None
+    Attributes:
+        wavelength (float): Wavelength of the light field in meters.
+        polarization_value (float): Polarization state of the light field.
+        polarization_type (str): Specifies how the polarization_value should be interpreted ('linear', 'jones vector', 'circular').
+        amplitude (float): Amplitude of the electric field.
+    """
+    wavelength: float
+    polarization_value: Union[float, str]
+    polarization_type: str = 'linear'
+    amplitude: float = 1
 
     def __post_init__(self):
-        super().__post_init__()
-        # Assuming amplitude is directly specified; no additional calculation required for PlaneWave.
+        super(PlaneWave, self).__post_init__()
 
     def plot(self) -> SceneList3D:
         """
@@ -112,17 +120,25 @@ class PlaneWave(LightSource):
         return figure
 
 
-@dataclass(kw_only=True)
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Gaussian(LightSource):
     """
     Represents a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
 
     Attributes:
+        wavelength (float): Wavelength of the light field in meters.
+        polarization_value (float): Polarization state of the light field.
+        polarization_type (str): Specifies how the polarization_value should be interpreted ('linear', 'jones vector', 'circular').
+        amplitude (float): Amplitude of the electric field.
         optical_power (float): Optical power of the source in Watts.
         NA (float): Numerical aperture of the source.
     """
+    wavelength: float
+    polarization_value: Union[float, str]
+    polarization_type: str = 'linear'
     optical_power: float
     NA: float
+    amplitude: float = field(init=False, repr=False)
 
     def __post_init__(self):
         self.amplitude = power_to_amplitude(
@@ -131,7 +147,7 @@ class Gaussian(LightSource):
             NA=self.NA
         )
 
-        super().__post_init__()
+        super(Gaussian, self).__post_init__()
 
     def plot(self) -> SceneList3D:
         """

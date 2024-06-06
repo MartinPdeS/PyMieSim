@@ -1,42 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING, Iterable, NoReturn
-if TYPE_CHECKING:
-    from PyMieSim.experiment.setup import Setup
 
 import numpy
-from dataclasses import dataclass, field
+from pydantic.dataclasses import dataclass
+from dataclasses import field
 
 from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
 from PyMieSim.binary.Sets import CppSourceSet
 from DataVisual import units
 
+from typing import List, Union, NoReturn
+
 
 @dataclass
 class BaseSource:
     """
     Base class for light sources in PyMieSim experiments.
-
-    Attributes:
-        wavelength (Iterable): The wavelength(s) of the light source.
-        polarization_value (Iterable): The polarization values of the light source, in degrees.
-        name (str): The name of the source set, defaults to 'PlaneWave'.
     """
-    wavelength: Iterable
-    polarization_value: Iterable
-    name: str = field(default='PlaneWave', init=False)
 
     def __post_init__(self):
         self.mapping = {
             'wavelength': None,
-            'polarization': None
+            'polarization_value': None
         }
 
         self.format_inputs()
-        # self.generate_polarization_attribute()
         self.generate_amplitude()
         self.generate_binding()
 
@@ -63,7 +53,7 @@ class BaseSource:
             string_format='.2f'
         )
 
-        self.mapping['polarization'] = units.Degree(
+        self.mapping['polarization_value'] = units.Degree(
             long_label='Polarization',
             short_label=r'Pol',
             base_values=self.polarization_value,
@@ -72,17 +62,8 @@ class BaseSource:
 
         return [v for k, v in self.mapping.items() if v is not None]
 
-    def bind_to_experiment(self, experiment: Setup):
-        """
-        Binds the source set to an experiment.
 
-        Parameters:
-            experiment (Setup): The experiment setup to bind the source to.
-        """
-        experiment.binding.set_source(self.binding)
-
-
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Gaussian(BaseSource):
     """
     Represents a Gaussian light source with a specified numerical aperture and optical power.
@@ -90,13 +71,18 @@ class Gaussian(BaseSource):
     Inherits from BaseSource and adds specific attributes for Gaussian sources.
 
     Attributes:
-        NA (Iterable): The numerical aperture(s) of the Gaussian source.
+        wavelength (List): The wavelength(s) of the light source.
+        polarization_value (List): The polarization values of the light source, in degrees.
+        NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
-    NA: Iterable
+    wavelength: Union[List[float], float]
+    polarization_value: Union[List[float], float]
+    NA: Union[List[float], float]
     optical_power: float
     polarization_type: str = 'linear'
+    name: str = field(default='PlaneWave', init=False)
 
     def generate_binding(self) -> NoReturn:
         """
@@ -110,7 +96,7 @@ class Gaussian(BaseSource):
 
         self.binding_kwargs = dict(
             wavelength=numpy.atleast_1d(self.wavelength).astype(float),
-            jones_vector=numpy.atleast_2d(linear_polarization.jones_vector).astype(complex).T,
+            jones_vector=numpy.atleast_2d(linear_polarization.values).astype(complex).T,
             amplitude=numpy.atleast_1d(self.amplitude).astype(float),
         )
 
@@ -125,7 +111,7 @@ class Gaussian(BaseSource):
         )
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class PlaneWave(BaseSource):
     """
     Represents a Plane Wave light source with a specified amplitude.
@@ -133,11 +119,16 @@ class PlaneWave(BaseSource):
     Inherits from BaseSource and specifies amplitude directly.
 
     Attributes:
+        wavelength (List): The wavelength(s) of the light source.
+        polarization_value (List): The polarization values of the light source, in degrees.
         amplitude (float): The amplitude of the plane wave, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
-    amplitude: float
+    wavelength: Union[List[float], float]
+    polarization_value: Union[List[float], float]
+    amplitude: Union[List[float], float]
     polarization_type: str = 'linear'
+    name: str = field(default='PlaneWave', init=False)
 
     def generate_binding(self) -> NoReturn:
         """

@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyMieSim.single.scatterer import Sphere, CoreShell, Cylinder
-
-
 import numpy
 import logging
-from dataclasses import dataclass, field
+from dataclasses import field
+from pydantic.dataclasses import dataclass
+from typing import Union, Optional
 
 from PyMieSim.single.representations import Footprint
-from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.binary import ModeField
-from PyMieSim.tools.special_functions import NA_to_angle
+from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
+from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
+
+from PyMieSim.single import scatterer
+
+c = 299792458.0  #: Speed of light in vacuum (m/s).
+epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
 
 
 class GenericDetector():
@@ -32,7 +33,7 @@ class GenericDetector():
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-    def coupling(self, scatterer: Sphere | CoreShell | Cylinder) -> float:
+    def coupling(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
         r"""
         Calculate the light coupling between the detector and a scatterer.
 
@@ -44,14 +45,14 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         Args:
-            scatterer (Sphere|CoreShell|Cylinder): The scatterer object.
+            scatterer (Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]): The scatterer object.
 
         Returns:
             float: The coupling in watts.
         """
-        return getattr(self.cpp_binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
+        return getattr(self.binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
 
-    def get_footprint(self, scatterer: Sphere | CoreShell | Cylinder) -> Footprint:
+    def get_footprint(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> Footprint:
         r"""
         Generate the footprint of the scattered light coupling with the detector.
 
@@ -65,7 +66,7 @@ class GenericDetector():
         |   :math:`\Psi_{scat}` is the scattered field.
 
         Args:
-            scatterer (Sphere|CoreShell|Cylinder): The scatterer object.
+            scatterer (Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]): The scatterer object.
 
         Returns:
             Footprint: The scatterer footprint with this detector.
@@ -80,15 +81,15 @@ class GenericDetector():
             SceneList3D: The 3D plotting scene containing the field plots.
         """
         coordinate = numpy.row_stack((
-            self.cpp_binding.mesh.x,
-            self.cpp_binding.mesh.y,
-            self.cpp_binding.mesh.z
+            self.binding.mesh.x,
+            self.binding.mesh.y,
+            self.binding.mesh.z
         ))
 
         figure = SceneList3D()
 
         for scalar_type in ['real', 'imag']:
-            scalar = getattr(numpy.asarray(self.cpp_binding.scalar_field), scalar_type)
+            scalar = getattr(numpy.asarray(self.binding.scalar_field), scalar_type)
 
             ax = figure.append_ax()
             artist = ax.add_unstructured_mesh(
@@ -104,36 +105,90 @@ class GenericDetector():
 
         return figure
 
+    def get_poynting_vector(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
+        r"""
 
-@dataclass
+        Method return the Poynting vector norm defined as:
+
+        .. math::
+            \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
+
+        Parameters :
+            Mesh : Number of voxel in the 4 pi space to compute energy flow.
+
+        """
+        Ephi, Etheta = scatterer.get_farfields_array(phi=self.binding.mesh.phi, theta=self.binding.mesh.theta, r=1.)
+
+        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
+
+        B_norm = E_norm / c
+
+        poynting = epsilon0 * c**2 * E_norm * B_norm
+
+        return poynting
+
+    def get_energy_flow(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
+        r"""
+        Returns energy flow defined as:
+
+        .. math::
+            W_a &= \sigma_{sca} * I_{inc} \\[10pt]
+            P &= \int_{A} I dA \\[10pt]
+            I &= \frac{c n \epsilon_0}{2} |E|^2 \\[10pt]
+
+        | With:
+        |     I : Energy density
+        |     n  : Refractive index of the medium
+        |     :math:`\epsilon_0` : Vaccum permitivity
+        |     E  : Electric field
+        |     \sigma_{sca}: Scattering cross section.
+
+        More info on wikipedia link (see ref[6]).
+
+        :param      Mesh:  The mesh
+        :type       Mesh:  FibonacciMesh
+
+        :returns:   The energy flow.
+        :rtype:     float
+        """
+
+        poynting = self.get_poynting_vector(scatterer=scatterer)
+
+        total_power = 0.5 * numpy.sum(poynting) * self.binding.mesh.d_omega
+
+        return total_power
+
+
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Photodiode(GenericDetector):
     """
-    Detector type class representing a photodiode, light coupling mechanism is non-coherent and thus
-    independent of the phase of the impinging scattered light field.
+    Detector class representing a photodiode with a non-coherent light coupling mechanism.
+    This means it is independent of the phase of the impinging scattered light field.
+
+    Attributes:
+        NA (float): Numerical aperture of the imaging system.
+        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization.
+        sampling (int): Sampling rate of the far-field distribution. Default is 200.
+        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
+        coherent (bool): Indicates if the coupling mechanism is coherent. Default is False.
+        mean_coupling (bool): Indicates if the coupling mechanism is point-wise or mean-wise. Default is False.
+        rotation (float): Rotation angle of the field along the axis of propagation. Default is 0.
     """
+
     NA: float
-    """ Numerical aperture of imaging system. """
     gamma_offset: float
-    """ Angle [Degree] offset of detector in the direction perpendicular to polarization. """
     phi_offset: float
-    """ Angle [Degree] offset of detector in the direction parallel to polarization. """
     sampling: int = 200
-    """ Sampling of the farfield distribution """
-    polarization_filter: float = None
-    """ Angle [Degree] of polarization filter in front of detector. """
+    polarization_filter: Union[float, None] = None
     coherent: bool = field(default=False, init=False)
-    """ Indicate if the coupling mechanism is coherent or not """
     mean_coupling: bool = field(default=False, init=False)
-    """ Indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
-    rotation: str = field(default=0, init=False)
-    """ Indicate the rotation of the field in the axis of propagation. """
+    rotation: float = field(default=0, init=False)
 
     def __post_init__(self):
         self.polarization_filter = numpy.float64(self.polarization_filter)
-
         self.max_angle = NA_to_angle(NA=self.NA)
-
-        self.cpp_binding = BindedDetector(
+        self.binding = BindedDetector(
             mode_number='NC00',
             sampling=self.sampling,
             NA=self.NA,
@@ -145,68 +200,92 @@ class Photodiode(GenericDetector):
             mean_coupling=self.mean_coupling
         )
 
-    def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
+    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
+        """
+        Generate a structured scalar field as a numpy array.
+
+        Args:
+            sampling (int): The sampling rate for the scalar field. Default is 100.
+
+        Returns:
+            numpy.ndarray: A 2D array representing the structured scalar field.
+        """
         return numpy.ones([sampling, sampling])
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class IntegratingSphere(Photodiode):
     """
-    Detector type class representing a photodiode, light coupling mechanism is non-coherent and thus
-    independent of the phase of the impinging scattered light field.
+    Detector class representing a photodiode with a non-coherent light coupling mechanism.
+    This implies independence from the phase of the impinging scattered light field.
+
+    Attributes:
+        sampling (int): Sampling rate of the far-field distribution. Default is 200.
+        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
+        NA (float): Numerical aperture of the imaging system. Default is 2.
+        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization. Default is 0.
+        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization. Default is 0.
+        coherent (bool): Indicates if the coupling mechanism is coherent. Default is False.
+        mean_coupling (bool): Indicates if the coupling mechanism is point-wise or mean-wise. Default is False.
+        rotation (float): Rotation angle of the field along the axis of propagation. Default is 0.
     """
+
     sampling: int = 200
-    """ Sampling of the farfield distribution """
-    polarization_filter: float = None
-    """ Angle [Degree] of polarization filter in front of detector. """
+    polarization_filter: Union[float, None] = None
     NA: float = field(default=2, init=False)
-    """ Numerical aperture of imaging system. """
     gamma_offset: float = field(default=0, init=False)
-    """ Angle [Degree] offset of detector in the direction perpendicular to polarization. """
     phi_offset: float = field(default=0, init=False)
-    """ Angle [Degree] offset of detector in the direction parallel to polarization. """
     coherent: bool = field(default=False, init=False)
-    """ Indicate if the coupling mechanism is coherent or not """
     mean_coupling: bool = field(default=False, init=False)
-    """ indicate if the coupling mechanism is point-wise or mean-wise. Value is either point or mean. """
     rotation: float = field(default=0, init=False)
-    """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
-        super().__post_init__()
+        super(IntegratingSphere, self).__post_init__()
 
-    def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
+    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
+        """
+        Generate a structured scalar field as a numpy array.
+
+        Args:
+            sampling (int): The sampling rate for the scalar field. Default is 100.
+
+        Returns:
+            numpy.ndarray: A 2D array representing the structured scalar field.
+        """
         return numpy.ones([sampling, sampling])
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoherentMode(GenericDetector):
     """
-    Detector type class representing a laser Hermite-Gauss mode, light coupling mechanism is coherent
-    and thus, dependent of the phase of the impinging scattered light field.
+    Detector class representing a laser Hermite-Gauss mode with a coherent light coupling mechanism.
+    This means it depends on the phase of the impinging scattered light field.
+
+    Attributes:
+        mode_number (str): String representing the HG mode to be initialized (e.g., 'LP01', 'HG11', 'LG22').
+        NA (float): Numerical aperture of the imaging system.
+        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization.
+        sampling (int): Sampling rate of the far-field distribution. Default is 200.
+        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
+        mean_coupling (bool): Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
+        coherent (bool): Indicates if the coupling mechanism is coherent. Default is True.
+        rotation (float): Rotation angle of the field along the axis of propagation. Default is 90.
     """
+
     mode_number: str
-    """ String representing the HG mode to be initialized (e.g. 'LP01', 'HG11', 'LG22' etc)"""
     NA: float
-    """ Numerical aperture of imaging system. """
     gamma_offset: float
-    """ Angle [Degree] offset of detector in the direction perpendicular to polarization. """
     phi_offset: float
-    """ Angle [Degree] offset of detector in the direction parallel to polarization. """
     sampling: int = 200
-    """ Sampling of the farfield distribution """
-    polarization_filter: float = None
-    """ Angle [Degree] of polarization filter in front of detector. """
+    polarization_filter: Union[float, None] = None
     mean_coupling: bool = False
-    """ indicate if the coupling mechanism is point-wise (if setted True) or mean-wise (if setted False). """
     coherent: bool = field(default=True, init=False)
-    """ Indicate if the coupling mechanism is coherent or not. """
     rotation: float = 90
-    """ Indicate the rotation of the field in the axis of propagation. """
 
     def __post_init__(self):
         if self.NA > 0.3 or self.NA < 0:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Value under 0.3 are prefered.")
+            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Values under 0.3 are preferred.")
 
         self.mode_family = self.mode_number[:2]
 
@@ -231,7 +310,7 @@ class CoherentMode(GenericDetector):
 
         self.polarization_filter = numpy.float64(self.polarization_filter)
 
-        self.cpp_binding = BindedDetector(
+        self.binding = BindedDetector(
             mode_number=self.mode_number,
             sampling=self.sampling,
             NA=self.NA,
@@ -243,7 +322,16 @@ class CoherentMode(GenericDetector):
             mean_coupling=self.mean_coupling
         )
 
-    def get_structured_scalarfield(self, sampling: int = 100) -> numpy.ndarray:
+    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
+        """
+        Generate a structured scalar field as a numpy array.
+
+        Args:
+            sampling (int): The sampling rate for the scalar field. Default is 100.
+
+        Returns:
+            numpy.ndarray: A 2D array representing the structured scalar field.
+        """
         x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
 
         coordinates = numpy.row_stack((

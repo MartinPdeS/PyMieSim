@@ -33,11 +33,6 @@ class build_ext(build_ext_orig):
         build_ext_orig.run(self)
         self.inplace = old_inplace
 
-        # if old_inplace:
-        #     self.copy_extensions_to_source()
-
-        # super().run()
-
     def build_cmake(self, ext):
         self.inplace = 1
 

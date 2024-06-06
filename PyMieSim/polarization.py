@@ -10,17 +10,17 @@ class JonesVector:
     Represents a Jones vector for describing the polarization state of light.
     """
 
-    def __init__(self, jones_vector: Iterable) -> None:
+    def __init__(self, values: Iterable) -> None:
         """
         Initialize the Jones vector.
 
         Parameters:
             - jones_vector: Iterable, a collection that represents the Jones vector components.
         """
-        self.jones_vector = numpy.atleast_2d(jones_vector).astype(complex)
+        self.values = numpy.atleast_2d(values).astype(complex)
 
     def __repr__(self) -> str:
-        return f"JonesVector({self.jones_vector})"
+        return f"JonesVector({self.values})"
 
     def __add__(self, other) -> 'JonesVector':
         """
@@ -32,7 +32,7 @@ class JonesVector:
         Returns:
             - JonesVector, the combined Jones vector.
         """
-        return JonesVector(numpy.vstack((self.jones_vector, other.jones_vector)))
+        return JonesVector(numpy.vstack((self.values, other.values)))
 
 
 class RightCircular(JonesVector):
@@ -70,4 +70,4 @@ class Linear(JonesVector):
             raise ValueError("Unpolarized light source is not implemented yet.")
 
         jones_vector = numpy.array([numpy.cos(self.angles * numpy.pi / 180), numpy.sin(self.angles * numpy.pi / 180)])
-        super().__init__(jones_vector=jones_vector)
+        super().__init__(jones_vector)

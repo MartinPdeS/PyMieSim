@@ -132,7 +132,62 @@ To test localy (with cloning the GitHub repository) you'll need to install the d
 
 Coding examples
 ***************
-Plenty of examples are available online, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_
+
+PyMieSim was developed with the aim of being an intuitive and easy to use tool.
+Below is and example that illustrate this:
+
+.. code:: python
+
+   import numpy
+   from PyMieSim.experiment.detector import Photodiode
+   from PyMieSim.experiment.scatterer import Sphere
+   from PyMieSim.experiment.source import Gaussian
+   from PyMieSim.experiment import Setup
+
+   from PyMieSim import measure
+   from PyOptik import UsualMaterial
+
+   source = Gaussian(
+       wavelength=1200e-9,
+       polarization_value=90,
+       polarization_type='linear',
+       optical_power=1e-3,
+       NA=0.2
+   )
+
+   scatterer = Sphere(
+       diameter=numpy.linspace(100e-9, 3000e-9, 600),
+       material=UsualMaterial.BK7,
+       medium_index=1.0,
+       source=source
+   )
+
+   detector = Photodiode(
+       NA=[0.15, 0.1, 0.05],
+       phi_offset=-180.0,
+       gamma_offset=0.0,
+       sampling=600,
+       polarization_filter=None
+   )
+
+   experiment = Setup(
+       scatterer=scatterer,
+       source=source,
+       detector=detector
+   )
+
+   data = experiment.get(measure.coupling)
+
+   figure = data.plot(
+       x=experiment.diameter,
+       y_scale='linear',
+       normalize=True
+   )
+
+   figure.show()
+
+
+Plenty of other examples are available online, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_
 section of the documentation.
 
 

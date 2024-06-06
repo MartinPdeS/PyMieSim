@@ -1,20 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyMieSim.experiment.setup import Setup
-    from typing import NoReturn, Iterable
 
 import numpy
-from dataclasses import dataclass, field
+from dataclasses import field
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppDetectorSet
+from pydantic.dataclasses import dataclass
+
+from typing import List, Union, NoReturn
 
 
-@dataclass
 class BaseDetector():
     """
     Base class for constructing detectors in Mie scattering simulations, managing common attributes and methods.
@@ -23,11 +20,11 @@ class BaseDetector():
     binding detectors to a simulation experiment. It should be subclassed to create specific detector types.
 
     Attributes:
-        NA (Iterable[float]): Defines the numerical aperture, which is the range of angles the system can accept light.
-        gamma_offset (Iterable[float]): Specifies the angular offset perpendicular to polarization (in degrees).
-        phi_offset (Iterable[float]): Specifies the angular offset parallel to polarization (in degrees).
-        polarization_filter (Iterable[float]): Sets the angle of the polarization filter (in degrees).
-        sampling (Iterable[int]): Dictates the resolution for field sampling.
+        NA (List[float]): Defines the numerical aperture, which is the range of angles the system can accept light.
+        gamma_offset (List[float]): Specifies the angular offset perpendicular to polarization (in degrees).
+        phi_offset (List[float]): Specifies the angular offset parallel to polarization (in degrees).
+        polarization_filter (List[float]): Sets the angle of the polarization filter (in degrees).
+        sampling (List[int]): Dictates the resolution for field sampling.
 
     This class is not intended for direct instantiation.
     """
@@ -77,15 +74,6 @@ class BaseDetector():
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-    def bind_to_experiment(self, experiment: Setup) -> NoReturn:
-        """
-        Binds the detector to a specified experimental setup, ensuring integration into the simulation workflow.
-
-        Parameters:
-            experiment (Setup): The experiment setup to which the detector is bound.
-        """
-        experiment.binding.set_detector(self.binding)
-
     def get_datavisual_table(self) -> NoReturn:
         """
         Compiles the detector's properties into a table format for data visualization.
@@ -122,7 +110,7 @@ class BaseDetector():
 
         self.mapping['phi_offset'] = units.Degree(
             long_label='Phi angle',
-            short_label=r'$\phi$',
+            short_label=r'phi',
             base_values=self.phi_offset,
             use_prefix=False,
             string_format='.1f'
@@ -130,7 +118,7 @@ class BaseDetector():
 
         self.mapping['gamma_offset'] = units.Degree(
             long_label='Gamma angle',
-            short_label=r'$\gamma$',
+            short_label=r'gamma',
             base_values=self.gamma_offset,
             use_prefix=False,
             string_format='.1f'
@@ -147,31 +135,37 @@ class BaseDetector():
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Photodiode(BaseDetector):
     """
-    Represents a photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
+    A photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
 
     Attributes:
-        coupling_mode (str): Indicates the mode coupling method, either 'point' or 'Mean'.
-        coherent (bool): Specifies if the detection is coherent (True) or incoherent (False). Defaults to False.
-        name (str): The name of the detector, initialized to "Photodiode". Not intended to be modified.
+        NA (Union[List[float], float]): Numerical aperture(s) for the detector.
+        gamma_offset (Union[List[float], float]): Gamma offset(s) for the detector.
+        phi_offset (Union[List[float], float]): Phi offset(s) for the detector.
+        polarization_filter (Union[List[Optional[float]], Optional[float]]): Polarization filter(s) for the detector.
+        sampling (Union[List[int], int]): Sampling rate(s) for the detector.
+        mean_coupling (bool): Specifies if mean coupling is used. Defaults to True.
+        rotation (Union[List[float], float]): Rotation angle(s) for the detector. Initialized to 0.
+        coherent (bool): Indicates if the detection is coherent. Initialized to False.
+        mode_number (str): Mode number of the detector. Initialized to 'NC00'.
 
-    Note:
+    Notes:
         This class is specifically configured to simulate a photodiode detector within a Mie scattering experiment.
     """
-    NA: Iterable[float] | float
-    gamma_offset: Iterable[float] | float
-    phi_offset: Iterable[float] | float
-    polarization_filter: Iterable[float] | float
-    sampling: Iterable[int] | int
+    NA: Union[List[float], float]
+    gamma_offset: Union[List[float], float]
+    phi_offset: Union[List[float], float]
+    polarization_filter: Union[List[float | None], float | None]
+    sampling: Union[List[int], int]
     mean_coupling: bool = True
-    rotation: Iterable[float] | float = field(default=0, init=False)
+    rotation: Union[List[float] | float] = field(default=0, init=False)
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoherentMode(BaseDetector):
     """
     Specialized for coherent detection modes in Mie scattering simulations, this class extends BaseDetector.
@@ -179,20 +173,20 @@ class CoherentMode(BaseDetector):
     It manages the initialization and representation of coherent detection modes, specifically addressing their unique requirements.
 
     Attributes:
-        mode_number (Iterable[str] | str): Designates the mode numbers involved in the detection.
+        mode_number (List[str] | str): Designates the mode numbers involved in the detection.
         mean_coupling (bool): Indicates whether to use average coupling for calculations. Defaults to False.
         coherent (bool): Specifies if the detection is inherently coherent. Defaults to True.
 
     Note:
         This class is specifically designed to handle and simulate coherent detection modes.
     """
-    mode_number: Iterable[str] | str
-    rotation: Iterable[float] | float
-    NA: Iterable[float] | float
-    gamma_offset: Iterable[float] | float
-    phi_offset: Iterable[float] | float
-    polarization_filter: Iterable[float] | float
-    sampling: Iterable[int] | int
+    mode_number: Union[List[str], str]
+    rotation: Union[List[float], float]
+    NA: Union[List[float], float]
+    gamma_offset: Union[List[float], float]
+    phi_offset: Union[List[float], float]
+    polarization_filter: Union[List[float | None], float | None]
+    sampling: Union[List[int], int]
     mean_coupling: bool = False
     coherent: bool = field(default=True, init=False)
 
@@ -210,6 +204,6 @@ class CoherentMode(BaseDetector):
             if mode_family_name not in ['LP', 'HG', 'LG', 'NC']:
                 raise ValueError('Invalid mode family name, must be one of: LP, HG, LG, NC')
 
-        super().__post_init__()
+        super(CoherentMode, self).__post_init__()
 
 # -

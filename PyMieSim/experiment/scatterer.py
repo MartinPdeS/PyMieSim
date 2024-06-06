@@ -1,33 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from typing import NoReturn
-    from PyMieSim.experiment.setup import Setup
-    from PyMieSim.experiment.source import Gaussian, PlaneWave
-    from collections.abc import Iterable
+import PyMieSim.experiment.source as source
 
 import numpy
-from dataclasses import dataclass
 
 from DataVisual import units
 from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
-from PyMieSim import measure
+from PyMieSim.experiment import measure
+from PyOptik import Sellmeier, DataMeasurement
+
+from pydantic.dataclasses import dataclass
+from pydantic import Field
+from typing import List, Union, NoReturn, Any
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class BaseScatterer():
     """
     Base class for scatterer objects. This class handles the initialization and setup of
     scatterer parameters for use in PyMieSim simulations.
 
     Attributes:
-        medium_index (Iterable): Refractive index of the medium in which the scatterers are placed.
-        source (Union[Gaussian, PlaneWave]): Light source configuration for the simulation.
+        medium_index (List): Refractive index of the medium in which the scatterers are placed.
+        source (Union[experiment.source.Gaussian, experiment.source.PlaneWave]): Light source configuration for the simulation.
     """
-    source: Gaussian | PlaneWave
+    source: Union[source.Gaussian, source.PlaneWave]
+    mapping: dict = Field(init=False, repr=False)
+    binding_kwargs: dict = Field(init=False, repr=False)
+    binding: object = Field(init=False, repr=False)
 
     def __post_init__(self) -> NoReturn:
         """
@@ -39,21 +40,6 @@ class BaseScatterer():
             NoReturn
         """
         self.build_binding_kwargs()
-
-    def bind_to_experiment(self, experiment: Setup) -> NoReturn:
-        """
-        Binds this scatterer instance to a given experimental setup. This method is crucial for integrating
-        the scatterer into the simulation environment, allowing its optical properties to be evaluated
-        within the context of the specified experiment.
-
-        Parameters:
-            experiment (Setup): The experimental setup to which the scatterer will be bound. The setup
-                                should be capable of integrating scatterers and managing their interactions
-                                with defined light sources and measurement configurations.
-        """
-        method_str = 'set_' + self.__class__.__name__.lower()
-
-        getattr(experiment.binding, method_str)(self.binding)
 
     def add_material_index_to_mapping(self, name: str = None) -> NoReturn:
         """
@@ -130,7 +116,7 @@ class BaseScatterer():
             self.binding_kwargs[attached_index_name] = numpy.atleast_1d(index_value).astype(data_type)
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Sphere(BaseScatterer):
     """
     A data class that represents a spherical scatterer configuration used in PyMieSim simulations.
@@ -140,18 +126,18 @@ class Sphere(BaseScatterer):
     adding spherical-specific attributes and methods for handling simulation setups.
 
     Attributes:
-        diameter (Iterable): Diameter(s) of the spherical scatterers in meters.
-        medium_index (Iterable, optional): Refractive index or indices of the medium surrounding the scatterers.
-        medium_material (Iterable, optional): Material(s) defining the medium, used if `medium_index` is not provided.
-        index (Iterable, optional): Refractive index or indices of the spherical scatterers themselves.
-        material (Iterable, optional): Material(s) of the scatterers, used if `index` is not provided.
+        diameter (List): Diameter(s) of the spherical scatterers in meters.
+        medium_index (List, optional): Refractive index or indices of the medium surrounding the scatterers.
+        medium_material (List, optional): Material(s) defining the medium, used if `medium_index` is not provided.
+        index (List, optional): Refractive index or indices of the spherical scatterers themselves.
+        material (List, optional): Material(s) of the scatterers, used if `index` is not provided.
         name (str): Name identifier for the scatterer type, defaulted to 'sphere' and not intended for initialization.
     """
-    diameter: Iterable
-    medium_index: Iterable | None = None
-    medium_material: Iterable | None = None
-    index: Iterable | None = None
-    material: Iterable | None = None
+    diameter: Union[List[float], float]
+    medium_index: Union[List[float], float, None] = None
+    medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    index: Union[List[Any], Any] = None
+    material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
     available_measure_list = measure.__sphere__
 
     def __post_init__(self):
@@ -167,7 +153,7 @@ class Sphere(BaseScatterer):
             'medium_material': None
         }
 
-        super().__post_init__()
+        super(Sphere, self).__post_init__()
 
     def build_binding_kwargs(self) -> NoReturn:
         """
@@ -206,7 +192,7 @@ class Sphere(BaseScatterer):
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoreShell(BaseScatterer):
     """
     A data class representing a core-shell scatterer configuration used in PyMieSim simulations.
@@ -216,24 +202,24 @@ class CoreShell(BaseScatterer):
     It extends the BaseScatterer class, adding specific attributes and methods relevant to core-shell geometries.
 
     Attributes:
-        core_diameter (Iterable): Diameters of the core components in meters.
-        shell_width (Iterable): Thicknesses of the shell components in meters.
-        medium_index (Iterable, optional): Refractive index or indices of the medium where the scatterers are placed.
-        medium_material (Iterable, optional): Material(s) defining the medium, used if `medium_index` is not provided.
-        core_index (Iterable, optional): Refractive index or indices of the core.
-        shell_index (Iterable, optional): Refractive index or indices of the shell.
-        core_material (Iterable, optional): Material(s) of the core, used if `core_index` is not provided.
-        shell_material (Iterable, optional): Material(s) of the shell, used if `shell_index` is not provided.
+        core_diameter (Union[List[float], float]): Diameters of the core components in meters.
+        shell_width (Union[List[float], float]): Thicknesses of the shell components in meters.
+        medium_index (List, optional): Refractive index or indices of the medium where the scatterers are placed.
+        medium_material (List, optional): Material(s) defining the medium, used if `medium_index` is not provided.
+        core_index (List, optional): Refractive index or indices of the core.
+        shell_index (List, optional): Refractive index or indices of the shell.
+        core_material (List, optional): Material(s) of the core, used if `core_index` is not provided.
+        shell_material (List, optional): Material(s) of the shell, used if `shell_index` is not provided.
         name (str): An identifier for the scatterer type, defaulted to 'coreshell' and not intended for initialization.
     """
-    core_diameter: Iterable
-    shell_width: Iterable
-    medium_index: Iterable | None = None
-    medium_material: Iterable | None = None
-    core_index: Iterable | None = None
-    shell_index: Iterable | None = None
-    core_material: Iterable | None = None
-    shell_material: Iterable | None = None
+    core_diameter: Union[List[float], float]
+    shell_width: Union[List[float], float]
+    medium_index: Union[List[float], float, None] = None
+    medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    shell_index: Union[List[Any], Any, None] = None
+    core_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    core_index: Union[List[Any], Any, None] = None
+    shell_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
 
     available_measure_list = measure.__coreshell__
 
@@ -253,7 +239,7 @@ class CoreShell(BaseScatterer):
             'medium_material': None
         }
 
-        super().__post_init__()
+        super(CoreShell, self).__post_init__()
 
     def build_binding_kwargs(self) -> NoReturn:
         """
@@ -302,22 +288,22 @@ class CoreShell(BaseScatterer):
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Cylinder(BaseScatterer):
     """
     Represents a cylindrical scatterer configuration for PyMieSim simulations.
 
     Attributes:
-        diameter (Iterable): Diameter(s) of the cylinder in meters.
-        height (Iterable): Height(s) of the cylinder in meters.
-        index (Iterable, optional): Refractive index of the cylinder.
-        material (Iterable, optional): Material(s) of the cylinder, used if `index` is not provided.
+        diameter (List): Diameter(s) of the cylinder in meters.
+        height (List): Height(s) of the cylinder in meters.
+        index (List, optional): Refractive index of the cylinder.
+        material (List, optional): Material(s) of the cylinder, used if `index` is not provided.
     """
-    diameter: Iterable
-    medium_index: Iterable | None = None
-    medium_material: Iterable | None = None
-    index: Iterable | None = None
-    material: Iterable | None = None
+    diameter: Union[List[float], float]
+    medium_index: Union[List[float], float, None] = None
+    medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    index: Union[List[Any], Any, None] = None
+    material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
 
     available_measure_list = measure.__cylinder__
 
@@ -330,7 +316,7 @@ class Cylinder(BaseScatterer):
             'medium_material': None
         }
 
-        super().__post_init__()
+        super(Cylinder, self).__post_init__()
 
     def build_binding_kwargs(self) -> NoReturn:
         """

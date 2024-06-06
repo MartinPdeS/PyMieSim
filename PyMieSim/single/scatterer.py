@@ -1,29 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import annotations
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from PyOptik import DataMeasurement, Sellmeier
+from PyOptik import DataMeasurement, Sellmeier
 
 import numpy
-import logging
-from dataclasses import dataclass
 from tabulate import tabulate
+from typing import Union, Optional, Any  # Any is for complex as no
 
-
-from PyMieSim.mesh import FibonacciMesh
-from PyMieSim.single.source import PlaneWave, Gaussian
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
-
-c = 299792458.0  #: Speed of light in vacuum (m/s).
-epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
+from PyMieSim.single import source  # noqa: F401
+from pydantic.dataclasses import dataclass
 
 
 class GenericScatterer():
     """
     Generic class for scatterer
     """
+
     def print_properties(self) -> None:
         property_names = [
             "size_parameter", "area", "index", "Qsca", "Qext",
@@ -34,10 +27,8 @@ class GenericScatterer():
         data = [getattr(self, name) for name in property_names]
         property_dict = {"Property": property_names, "value": data}
 
-        table = tabulate(
-            property_dict,
-            headers="keys"
-        )
+        table = tabulate(property_dict, headers="keys")
+
         print(table)
 
     @property
@@ -239,95 +230,55 @@ class GenericScatterer():
         """
         return Footprint(scatterer=self, detector=detector)
 
-    def get_poynting_vector(self, mesh: FibonacciMesh) -> float:
-        r"""
-
-        Method return the Poynting vector norm defined as:
-
-        .. math::
-            \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
-
-        Parameters :
-            Mesh : Number of voxel in the 4 pi space to compute energy flow.
-
-        """
-        Ephi, Etheta = self.get_farfields_array(phi=mesh.phi, theta=mesh.theta, r=1.)
-
-        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
-
-        B_norm = E_norm / c
-
-        poynting = epsilon0 * c**2 * E_norm * B_norm
-
-        return poynting
-
-    def get_energy_flow(self, mesh: FibonacciMesh) -> float:
-        r"""
-        Returns energy flow defined as:
-
-        .. math::
-            W_a &= \sigma_{sca} * I_{inc} \\[10pt]
-            P &= \int_{A} I dA \\[10pt]
-            I &= \frac{c n \epsilon_0}{2} |E|^2 \\[10pt]
-
-        | With:
-        |     I : Energy density
-        |     n  : Refractive index of the medium
-        |     :math:`\epsilon_0` : Vaccum permitivity
-        |     E  : Electric field
-        |     \sigma_{sca}: Scattering cross section.
-
-        More info on wikipedia link (see ref[6]).
-
-        :param      Mesh:  The mesh
-        :type       Mesh:  FibonacciMesh
-
-        :returns:   The energy flow.
-        :rtype:     float
-        """
-        Poynting = self.get_poynting_vector(mesh)
-
-        total_power = 0.5 * numpy.sum(Poynting) * mesh.d_omega
-
-        return total_power
-
-    def get_cross_section(self):
+    def get_cross_section(self) -> float:
         return (self.Qsca * self.area)  # similar to self.EnergyFlow(Mesh) / self.source.I
 
-    def _assign_index_or_material(self, index, material) -> tuple:
-        assert bool(index) ^ bool(material), logging.error("Exactly one of the parameter [index or Material] have to be assigned.")
-        index = index if index is not None else material.get_refractive_index(self.source.wavelength)
-        material = material if material is not None else None
+    def _assign_index_or_material(self, index: Optional[Any], material: Optional[Union[DataMeasurement, Sellmeier]]) -> tuple:
+        """
+        Assign the refractive index or material.
+        Either `index` or `material` must be specified, but not both.
+        """
+        if (index is None) == (material is None):
+            raise ValueError("Either index or material must be specified, but not both.")
+
+        if index is None:
+            index = material.get_refractive_index(self.source.wavelength)
 
         if not numpy.isscalar(index) and len(index) == 1:
-            return index[0], material
+            index = index[0]
 
         return index, material
 
 
-@dataclass()
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Sphere(GenericScatterer):
-    """ Class representing a homogeneous spherical scatterer """
+    """
+    Class representing a homogeneous spherical scatterer.
+
+    Attributes:
+        diameter (float): Diameter of the single scatterer in unit of meter.
+        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
+        index (Optional[Any]): Refractive index of scatterer. Default is None.
+        medium_index (float): Refractive index of scatterer medium. Default is 1.0.
+        material (Union[DataMeasurement, Sellmeier, None]): Material of which the scatterer is made, if index is not specified. Default is None.
+    """
+
     diameter: float
-    """ diameter of the single scatterer in unit of meter. """
-    source: PlaneWave | Gaussian
-    """ Light source object containing info on polarization and wavelength. """
-    index: complex = None
-    """ Refractive index of scatterer. """
-    medium_index: float = 1.0
-    """ Refractive index of scatterer medium. """
-    material: DataMeasurement | Sellmeier | None = None
-    """ Material of which the scatterer is made of. Only if index is not specified. """
+    source: Union[source.PlaneWave, source.Gaussian]
+    index: Optional[Any] = None
+    medium_index: Optional[float] = None
+    medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
+    material: Optional[Union[Sellmeier, DataMeasurement]] = None
 
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(self.index, self.material)
 
-        self.set_cpp_binding()
+        self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_index, self.medium_material)
+        self.set_binding()
 
-    def set_cpp_binding(self) -> None:
+    def set_binding(self) -> None:
         """
-        Method call and bind c++ scatterer class
-
+        Binds the Python representation of the sphere to its C++ counterpart using provided properties.
         """
         from PyMieSim.binary.SphereInterface import SPHERE
 
@@ -337,10 +288,10 @@ class Sphere(GenericScatterer):
             diameter=self.diameter,
             index=self.index,
             medium_index=self.medium_index,
-            jones_vector=self.source.polarization.jones_vector.squeeze(),
+            jones_vector=self.source.jones_vector.values.squeeze(),
         )
 
-    def an(self, max_order: int = None) -> numpy.array:
+    def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
         Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
@@ -352,10 +303,18 @@ class Sphere(GenericScatterer):
             \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-        """
-        return self.binding.an()
 
-    def bn(self, max_order: int = None) -> numpy.array:
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
+
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`a_n` coefficients.
+        """
+        return self.binding.an(max_order)
+
+    def bn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
         Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
@@ -367,10 +326,18 @@ class Sphere(GenericScatterer):
             \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-        """
-        return self.binding.bn()
 
-    def cn(self, max_order: int = None) -> numpy.array:
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
+
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`b_n` coefficients.
+        """
+        return self.binding.bn(max_order)
+
+    def cn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
         Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
 
@@ -382,10 +349,18 @@ class Sphere(GenericScatterer):
             \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-        """
-        return self.binding.cn()
 
-    def dn(self, max_order: int = None) -> numpy.array:
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
+
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`c_n` coefficients.
+        """
+        return self.binding.cn(max_order)
+
+    def dn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
         Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
 
@@ -397,45 +372,54 @@ class Sphere(GenericScatterer):
             \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
+
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
+
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`d_n` coefficients.
         """
-        return self.binding.dn()
+        return self.binding.dn(max_order)
 
 
-@dataclass()
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoreShell(GenericScatterer):
     """
     Class representing a core/shell spherical scatterer.
+
+    Attributes:
+        core_diameter (float): Diameter of the core of the single scatterer [m].
+        shell_width (float): Diameter of the shell of the single scatterer [m].
+        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
+        core_index (Optional[Any]): Refractive index of the core of the scatterer. Default is None.
+        shell_index (Optional[Any]): Refractive index of the shell of the scatterer. Default is None.
+        core_material (Union[DataMeasurement, Sellmeier, None]): Core material of which the scatterer is made of, if core_index is not specified. Default is None.
+        shell_material (Union[DataMeasurement, Sellmeier, None]): Shell material of which the scatterer is made of, if shell_index is not specified. Default is None.
+        medium_index (float): Refractive index of the scatterer medium. Default is 1.0.
     """
 
     core_diameter: float
-    """ diameter of the core of the single scatterer [m]. """
     shell_width: float
-    """ diameter of the shell of the single scatterer [m]. """
-    source: PlaneWave | Gaussian
-    """ Light source object containing info on polarization and wavelength. """
-    core_index: complex = None
-    """ Refractive index of the core of the scatterer. """
-    shell_index: complex = None
-    """ Refractive index of the shell of the scatterer. """
-    core_material: DataMeasurement | Sellmeier | None = None
-    """ Core material of which the scatterer is made of. Only if core_index is not specified.  """
-    shell_material: DataMeasurement | Sellmeier | None = None
-    """ Shell material of which the scatterer is made of. Only if shell_index is not specified.  """
-    medium_index: float = 1.0
-    """ Refractive index of scatterer medium. """
+    source: Union[source.PlaneWave, source.Gaussian]
+    core_index: Optional[Any] = None
+    shell_index: Optional[Any] = None
+    core_material: Union[DataMeasurement, Sellmeier, None] = None
+    shell_material: Union[DataMeasurement, Sellmeier, None] = None
+    medium_index: Optional[float] = None
+    medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
 
     def __post_init__(self):
         self.core_index, self.core_material = self._assign_index_or_material(self.core_index, self.core_material)
-
         self.shell_index, self.shell_material = self._assign_index_or_material(self.shell_index, self.shell_material)
-
+        self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_index, self.medium_material)
         self.shell_diameter = self.core_diameter + self.shell_width
+        self.set_binding()
 
-        self.set_cpp_binding()
-
-    def set_cpp_binding(self) -> None:
+    def set_binding(self) -> None:
         """
-        Method call and bind c++ scatterer class
+        Bind the C++ scatterer class.
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
@@ -446,55 +430,65 @@ class CoreShell(GenericScatterer):
             core_diameter=self.core_diameter,
             wavelength=self.source.wavelength,
             medium_index=self.medium_index,
-            jones_vector=self.source.polarization.jones_vector.squeeze(),
+            jones_vector=self.source.jones_vector.values.squeeze(),
             amplitude=self.source.amplitude
         )
 
-    def an(self, max_order: int = None) -> numpy.array:
+    def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
-        Compute :math:`a_n` coefficient
-        """
-        if max_order is None:
-            return self.binding.an()
-        else:
-            return self.binding._an(max_order)
+        Compute :math:`a_n` coefficient.
 
-    def bn(self, max_order: int = None) -> numpy.array:
+        If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.
+
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`a_n` coefficients.
+        """
+        return self.binding.an(max_order)
+
+    def bn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
         Compute :math:`b_n` coefficient.
+
+        If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.
+
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`b_n` coefficients.
         """
-        if max_order is None:
-            return self.binding.bn()
-        else:
-            return self.binding._bn(max_order)
+        return self.binding.bn(max_order)
 
 
-@dataclass()
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Cylinder(GenericScatterer):
     """
     Class representing a right angle cylindrical scatterer.
+
+    Attributes:
+        diameter (float): Diameter of the single scatterer in unit of meter.
+        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
+        index (Optional[Any]): Refractive index of scatterer. Default is None.
+        medium_index (float): Refractive index of scatterer medium. Default is 1.0.
+        material (Union[DataMeasurement, Sellmeier, None]): Material of which the scatterer is made, if index is not specified. Default is None.
     """
 
     diameter: float
-    """ diameter of the single scatterer in unit of meter. """
-    source: PlaneWave | Gaussian
-    """ Light source object containing info on polarization and wavelength. """
-    index: complex = None
-    """ Refractive index of scatterer. """
-    medium_index: float = 1.0
-    """ Material of which the scatterer is made of. Only if index is not specified. """
-    material: DataMeasurement | Sellmeier | None = None
-    """ Refractive index of scatterer medium. """
+    source: Union[source.PlaneWave, source.Gaussian]
+    index: Optional[Any] = None
+    medium_index: Optional[float] = None
+    medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
+    material: Union[DataMeasurement, Sellmeier, None] = None
 
     def __post_init__(self):
-        self.index, self.material = self._assign_index_or_material(
-            index=self.index,
-            material=self.material
-        )
+        self.index, self.material = self._assign_index_or_material(index=self.index, material=self.material)
+        self.medium_index, self.medium_material = self._assign_index_or_material(index=self.medium_index, material=self.medium_material)
+        self.set_binding()
 
-        self.set_cpp_binding()
-
-    def set_cpp_binding(self) -> None:
+    def set_binding(self) -> None:
         """
         Binds the Python representation of the cylinder to its C++ counterpart using provided properties.
         """
@@ -506,85 +500,92 @@ class Cylinder(GenericScatterer):
             wavelength=self.source.wavelength,
             medium_index=self.medium_index,
             amplitude=self.source.amplitude,
-            jones_vector=self.source.polarization.jones_vector.squeeze()
+            jones_vector=self.source.jones_vector.values.squeeze()
         )
 
-    def a1n(self, max_order: int = None) -> numpy.array:
+    def a1n(self, max_order: Optional[int] = 0) -> numpy.array:
         r"""
-        Compute :math:`a_n` coefficient as defined ref[5]:
+        Compute :math:`a_{1n}` coefficient as defined in ref[5]:
 
         .. math::
-            a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-            { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+            a_{1n} = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+                  { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
 
-        | With :math:`m` being the refractive index of the medium and
-        |      :math:`m_t` being the refractive index of the index.
+        With :math:`m` being the refractive index of the medium and
+        :math:`m_t` being the refractive index of the scatterer.
 
-        :param      max_order:  The maximum order
-        :type       max_order:  int
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        :returns:   The first electric mutlipole amplitude
-        :rtype:     numpy.array
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`a_{1n}` coefficients.
         """
-        return self.binding.a1n()
+        return self.binding.a1n(max_order)
 
-    def a2n(self, max_order: int = None) -> numpy.array:
+    def a2n(self, max_order: Optional[int] = 0) -> numpy.array:
         r"""
-        Compute :math:`a_n` coefficient as defined ref[5]:
+        Compute :math:`a_{2n}` coefficient as defined in ref[5]:
 
         .. math::
-            a_n = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-            { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+            a_{2n} = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
+                  { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
 
-        | With :math:`m` being the refractive index of the medium and
-        |      :math:`m_t` being the refractive index of the index.
+        With :math:`m` being the refractive index of the medium and
+        :math:`m_t` being the refractive index of the scatterer.
 
-        :param      max_order:  The maximum order
-        :type       max_order:  int
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        :returns:   The second electric mutlipole amplitude
-        :rtype:     numpy.array
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`a_{2n}` coefficients.
         """
-        return self.binding.a2n()
+        return self.binding.a2n(max_order)
 
-    def b1n(self, max_order: int = None) -> numpy.array:
+    def b1n(self, max_order: Optional[int] = 0) -> numpy.array:
         r"""
-        Compute :math:`b_n` coefficient as defined in ref[5]:
+        Compute :math:`b_{1n}` coefficient as defined in ref[5]:
 
         .. math::
-            b_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-            { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+            b_{1n} = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+                  { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
 
-        | With :math:`m` being the refractive index of the medium and
-        |      :math:`m_t` being the refractive index of the index.
+        With :math:`m` being the refractive index of the medium and
+        :math:`m_t` being the refractive index of the scatterer.
 
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        :param      max_order:  The maximum order
-        :type       max_order:  int
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
 
-        :returns:   The first magnetic mutlipole amplitude
-        :rtype:     numpy.array
+        Returns:
+            numpy.ndarray: Array of :math:`b_{1n}` coefficients.
         """
-        return self.binding.b1n()
+        return self.binding.b1n(max_order)
 
-    def b2n(self, max_order: int = None) -> numpy.array:
+    def b2n(self, max_order: Optional[int] = 0) -> numpy.array:
         r"""
-        Compute :math:`b_n` coefficient as defined in ref[5]:
+        Compute :math:`b_{2n}` coefficient as defined in ref[5]:
 
         .. math::
-            b_n = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-            { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+            b_{2n} = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
+                  { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
 
-        | With :math:`m` being the refractive index of the medium and
-        |      :math:`m_t` being the refractive index of the index.
+        With :math:`m` being the refractive index of the medium and
+        :math:`m_t` being the refractive index of the scatterer.
 
-        :param      max_order:  The maximum order
-        :type       max_order:  int
+        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        :returns:   The second magnetic mutlipole amplitude
-        :rtype:     numpy.array
+        Args:
+            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+
+        Returns:
+            numpy.ndarray: Array of :math:`b_{2n}` coefficients.
         """
-        return self.binding.b2n()
+        return self.binding.b2n(max_order)
 
     @property
     def Cback(self) -> None:
