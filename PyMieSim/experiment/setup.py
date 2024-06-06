@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 from DataVisual import Array, Table
 from PyMieSim.binary.Experiment import CppExperiment
 
-from typing import Union, NoReturn
+from typing import Union, NoReturn, Optional
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
@@ -31,7 +31,7 @@ class Setup(object):
     """
     scatterer: Union[Sphere, Cylinder, CoreShell]
     source: Union[Gaussian, PlaneWave]
-    detector: Union[Photodiode, CoherentMode, None] = None
+    detector: Optional[Union[Photodiode, CoherentMode]] = None
 
     def __post_init__(self):
         """

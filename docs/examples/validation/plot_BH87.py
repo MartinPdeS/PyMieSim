@@ -9,7 +9,7 @@ Bohren-Huffman (figure~8.7)
 import numpy
 import matplotlib.pyplot as plt
 
-from PyMieSim.tools.directories import validation_data_path
+from PyMieSim.directories import validation_data_path
 
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian

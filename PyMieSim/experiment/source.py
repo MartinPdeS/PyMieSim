@@ -18,15 +18,7 @@ from typing import List, Union, NoReturn
 class BaseSource:
     """
     Base class for light sources in PyMieSim experiments.
-
-    Attributes:
-        wavelength (List): The wavelength(s) of the light source.
-        polarization_value (List): The polarization values of the light source, in degrees.
-        name (str): The name of the source set, defaults to 'PlaneWave'.
     """
-    wavelength: Union[List[float], float]
-    polarization_value: Union[List[float], float]
-    name: str = field(default='PlaneWave', init=False)
 
     def __post_init__(self):
         self.mapping = {
@@ -67,11 +59,11 @@ class BaseSource:
             base_values=self.polarization_value,
             string_format='.2f'
         )
-        
+
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Gaussian(BaseSource):
     """
     Represents a Gaussian light source with a specified numerical aperture and optical power.
@@ -79,13 +71,18 @@ class Gaussian(BaseSource):
     Inherits from BaseSource and adds specific attributes for Gaussian sources.
 
     Attributes:
+        wavelength (List): The wavelength(s) of the light source.
+        polarization_value (List): The polarization values of the light source, in degrees.
         NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
+    wavelength: Union[List[float], float]
+    polarization_value: Union[List[float], float]
     NA: Union[List[float], float]
     optical_power: float
     polarization_type: str = 'linear'
+    name: str = field(default='PlaneWave', init=False)
 
     def generate_binding(self) -> NoReturn:
         """
@@ -114,7 +111,7 @@ class Gaussian(BaseSource):
         )
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class PlaneWave(BaseSource):
     """
     Represents a Plane Wave light source with a specified amplitude.
@@ -122,11 +119,16 @@ class PlaneWave(BaseSource):
     Inherits from BaseSource and specifies amplitude directly.
 
     Attributes:
+        wavelength (List): The wavelength(s) of the light source.
+        polarization_value (List): The polarization values of the light source, in degrees.
         amplitude (float): The amplitude of the plane wave, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
+    wavelength: Union[List[float], float]
+    polarization_value: Union[List[float], float]
     amplitude: Union[List[float], float]
     polarization_type: str = 'linear'
+    name: str = field(default='PlaneWave', init=False)
 
     def generate_binding(self) -> NoReturn:
         """

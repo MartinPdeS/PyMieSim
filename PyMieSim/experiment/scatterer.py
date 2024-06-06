@@ -11,10 +11,11 @@ from PyMieSim.experiment import measure
 from PyOptik import Sellmeier, DataMeasurement
 
 from pydantic.dataclasses import dataclass
+from pydantic import Field
 from typing import List, Union, NoReturn, Any
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class BaseScatterer():
     """
     Base class for scatterer objects. This class handles the initialization and setup of
@@ -25,6 +26,9 @@ class BaseScatterer():
         source (Union[experiment.source.Gaussian, experiment.source.PlaneWave]): Light source configuration for the simulation.
     """
     source: Union[source.Gaussian, source.PlaneWave]
+    mapping: dict = Field(init=False, repr=False)
+    binding_kwargs: dict = Field(init=False, repr=False)
+    binding: object = Field(init=False, repr=False)
 
     def __post_init__(self) -> NoReturn:
         """
@@ -112,7 +116,7 @@ class BaseScatterer():
             self.binding_kwargs[attached_index_name] = numpy.atleast_1d(index_value).astype(data_type)
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Sphere(BaseScatterer):
     """
     A data class that represents a spherical scatterer configuration used in PyMieSim simulations.
@@ -149,7 +153,7 @@ class Sphere(BaseScatterer):
             'medium_material': None
         }
 
-        super().__post_init__()
+        super(Sphere, self).__post_init__()
 
     def build_binding_kwargs(self) -> NoReturn:
         """
@@ -188,7 +192,7 @@ class Sphere(BaseScatterer):
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoreShell(BaseScatterer):
     """
     A data class representing a core-shell scatterer configuration used in PyMieSim simulations.
@@ -284,7 +288,7 @@ class CoreShell(BaseScatterer):
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Cylinder(BaseScatterer):
     """
     Represents a cylindrical scatterer configuration for PyMieSim simulations.

@@ -135,17 +135,23 @@ class BaseDetector():
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True)
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Photodiode(BaseDetector):
     """
-    Represents a photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
+    A photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
 
     Attributes:
-        coupling_mode (str): Indicates the mode coupling method, either 'point' or 'Mean'.
-        coherent (bool): Specifies if the detection is coherent (True) or incoherent (False). Defaults to False.
-        name (str): The name of the detector, initialized to "Photodiode". Not intended to be modified.
+        NA (Union[List[float], float]): Numerical aperture(s) for the detector.
+        gamma_offset (Union[List[float], float]): Gamma offset(s) for the detector.
+        phi_offset (Union[List[float], float]): Phi offset(s) for the detector.
+        polarization_filter (Union[List[Optional[float]], Optional[float]]): Polarization filter(s) for the detector.
+        sampling (Union[List[int], int]): Sampling rate(s) for the detector.
+        mean_coupling (bool): Specifies if mean coupling is used. Defaults to True.
+        rotation (Union[List[float], float]): Rotation angle(s) for the detector. Initialized to 0.
+        coherent (bool): Indicates if the detection is coherent. Initialized to False.
+        mode_number (str): Mode number of the detector. Initialized to 'NC00'.
 
-    Note:
+    Notes:
         This class is specifically configured to simulate a photodiode detector within a Mie scattering experiment.
     """
     NA: Union[List[float], float]
@@ -158,8 +164,11 @@ class Photodiode(BaseDetector):
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
+    class Config:
+        extra = "forbid"
 
-@dataclass(kw_only=True, slots=True)
+
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoherentMode(BaseDetector):
     """
     Specialized for coherent detection modes in Mie scattering simulations, this class extends BaseDetector.
@@ -199,5 +208,8 @@ class CoherentMode(BaseDetector):
                 raise ValueError('Invalid mode family name, must be one of: LP, HG, LG, NC')
 
         super().__post_init__()
+
+    class Config:
+        extra = "forbid"
 
 # -

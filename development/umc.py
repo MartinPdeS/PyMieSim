@@ -21,7 +21,6 @@ sphere = Sphere(
     medium_material=UsualMaterial.Water
 )
 
-
 detector = Photodiode(
     sampling=500,
     NA=0.2,
