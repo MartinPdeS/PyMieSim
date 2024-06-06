@@ -59,15 +59,15 @@ class ScattererTab(BaseTab):
         Sets up a combobox for selecting the type of scatterer. It provides options for Sphere, Cylinder,
         or CoreShell configurations.
         """
-        combobox = tkinter.ttk.Combobox(
+        self.type_widget = tkinter.ttk.Combobox(
             self.frame,
             textvariable=self.type_button,
             values=['Sphere', 'Cylinder', 'CoreShell'],
             state="readonly"
         )
 
-        combobox.grid(row=0, column=0)
-        combobox.bind("<<ComboboxSelected>>", self.on_type_change)
+        self.type_widget.grid(row=0, column=0)
+        self.type_widget.bind("<<ComboboxSelected>>", self.on_type_change)
 
     def on_type_change(self, event=None) -> NoReturn:
         """
@@ -77,7 +77,7 @@ class ScattererTab(BaseTab):
         Args:
             event: The event that triggered this method (default is None).
         """
-        scatterer_type = self.type_button.get().lower()
+        scatterer_type = self.type_widget.get().lower()
         setup_method = getattr(self, f"setup_{scatterer_type}_widgets", None)
         self.widget_collection.clear_widgets()
         if callable(setup_method):

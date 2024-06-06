@@ -107,17 +107,17 @@ class PyMieSimGUI:
                 ('All files', '*.*')
             ]
 
-            filepath = filedialog.asksaveasfilename(
+            self.filepath = filedialog.asksaveasfilename(
                 defaultextension=".png",
                 filetypes=filetypes,
                 title="Save plot as..."
             )
-
+            
             # If a file was selected (i.e., dialog not cancelled)
-            if filepath:
+            if self.filepath:
                 # Save the figure using matplotlib's savefig
-                self.figure.savefig(filepath)
-                messagebox.showinfo("Export Successful", f"Plot successfully saved to {filepath}")
+                self.figure.savefig(self.filepath)
+                messagebox.showinfo("Export Successful", f"Plot successfully saved to {self.filepath}")
         else:
             messagebox.showwarning("Export Failed", "No plot available to export.")
 
@@ -128,35 +128,39 @@ class PyMieSimGUI:
         self.controls_frame = ttk.Frame(self.master)
         self.controls_frame.grid(row=1, column=0, sticky="ew")
 
-        ttk.Button(
+        self.calculate_button = ttk.Button(
             self.controls_frame,
             text="Calculate",
             style="Large.TButton",
             command=self.update_plot
-        ).grid(row=0, column=0, sticky="ew")
+        )
+        self.calculate_button.grid(row=0, column=0, sticky="ew")
 
-        ttk.Button(
+        self.save_button = ttk.Button(
             self.controls_frame,
             text="Save as CSV",
             style="Large.TButton",
             command=self.save_data_as_csv
-        ).grid(row=0, column=1, sticky="ew")
+        )
+        self.save_button.grid(row=0, column=1, sticky="ew")
 
-        ttk.Button(
+        self.export_button = ttk.Button(
             self.controls_frame,
             text="Export Plot",
             style="Large.TButton",
             command=self.export_plot
-        ).grid(row=0, column=2, sticky="ew")
+        )
+        self.export_button.grid(row=0, column=2, sticky="ew")
 
-        ttk.Button(
+        self.reset_std_button = ttk.Button(
             self.controls_frame,
             text="Reset STD-axis",
             style="Large.TButton",
-            command=self.reset_axis_selection
-        ).grid(row=0, column=3, sticky="ew")
+            command=self.reset_STDaxis_selection
+        )
+        self.reset_std_button.grid(row=0, column=3, sticky="ew")
 
-    def reset_axis_selection(self):
+    def reset_STDaxis_selection(self):
         """
         Allows the user to unselect the std-axis radiobuttons.
         """
@@ -180,12 +184,13 @@ class PyMieSimGUI:
         """
         Triggered by the "Save as CSV" button. Opens a file dialog to save the computed data as a CSV file.
         """
+
         if hasattr(self, 'data'):
-            filepath = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
-            if filepath:
+            self.filepath = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+            if self.filepath:
                 # Assuming self.data is a pandas DataFrame or can be converted to one
-                np.savetxt(filepath, self.data.y.values.squeeze(), delimiter=",")
-                print(f"Data saved to {filepath}")
+                np.savetxt(self.filepath, self.data.y.values.squeeze(), delimiter=",")
+                print(f"Data saved to {self.filepath}")
         else:
             print("No data to save. Please calculate first.")
 
@@ -206,12 +211,13 @@ class PyMieSimGUI:
         self.figure = figure._mpl_figure
 
         canvas = FigureCanvasTkAgg(self.figure, master=self.new_window)
-        canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         self.toolbar = NavigationToolbar2Tk(canvas, self.new_window)
-        self.toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        canvas.draw()
+        self.toolbar.update()
 
     def update_plot(self) -> NoReturn:
         plt.close('all')
@@ -219,15 +225,15 @@ class PyMieSimGUI:
         x_axis, y_axis, std_axis = self.x_axis_label_widget.get(), self.axis_tab.get_inputs()[0], self.STD_axis_label_widget.get()
 
         if x_axis == std_axis:
-            tk.messagebox.showerror(title = "error", message = "X-axis cannot be equal to STD-axis.", parent = self.master)
+            #self.messagebox1 = tk.messagebox.showerror(title = "error", message = "X-axis cannot be equal to STD-axis.", parent = self.master)
             raise ValueError("X-axis cannot be equal to STD-axis.")
-        
+         
         if y_axis != "coupling" and std_axis in self.detector_tab.component_dict.keys():
-            tk.messagebox.showerror(title = "error", message = "STD-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
+            #self.messagebox2 = tk.messagebox.showerror(title = "error", message = "STD-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
             raise ValueError("STD-axis cannot be associated to detector if y-axis is not coupling.")
         
         if y_axis != "coupling" and x_axis in self.detector_tab.component_dict.keys():
-            tk.messagebox.showerror(title = "error", message = "x-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
+            #self.messagebox3 = tk.messagebox.showerror(title = "error", message = "x-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
             raise ValueError("x-axis cannot be associated to detector if y-axis is not coupling.")
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
