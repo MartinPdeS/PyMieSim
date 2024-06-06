@@ -164,9 +164,6 @@ class Photodiode(BaseDetector):
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
-    class Config:
-        extra = "forbid"
-
 
 @dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoherentMode(BaseDetector):
@@ -207,9 +204,6 @@ class CoherentMode(BaseDetector):
             if mode_family_name not in ['LP', 'HG', 'LG', 'NC']:
                 raise ValueError('Invalid mode family name, must be one of: LP, HG, LG, NC')
 
-        super().__post_init__()
-
-    class Config:
-        extra = "forbid"
+        super(CoherentMode, self).__post_init__()
 
 # -

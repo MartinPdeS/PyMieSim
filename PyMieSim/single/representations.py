@@ -401,7 +401,7 @@ class Footprint():
             -max_angle: max_angle: n_point, 0: numpy.pi: n_point
         ]
 
-        max_distance_direct_space = 1 / (numpy.sin(self.detector.max_angle) * self.scatterer.source.k / (2 * numpy.pi))
+        max_distance_direct_space = 1 / (numpy.sin(self.detector.max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi))
 
         x = y = numpy.linspace(-1, 1, self.sampling) * self.sampling / 2 * max_distance_direct_space / self.padding_factor
 

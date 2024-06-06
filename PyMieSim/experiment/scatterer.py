@@ -239,7 +239,7 @@ class CoreShell(BaseScatterer):
             'medium_material': None
         }
 
-        super().__post_init__()
+        super(CoreShell, self).__post_init__()
 
     def build_binding_kwargs(self) -> NoReturn:
         """
@@ -316,7 +316,7 @@ class Cylinder(BaseScatterer):
             'medium_material': None
         }
 
-        super().__post_init__()
+        super(Cylinder, self).__post_init__()
 
     def build_binding_kwargs(self) -> NoReturn:
         """

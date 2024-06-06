@@ -159,7 +159,7 @@ class GenericDetector():
         return total_power
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Photodiode(GenericDetector):
     """
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
@@ -213,7 +213,7 @@ class Photodiode(GenericDetector):
         return numpy.ones([sampling, sampling])
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class IntegratingSphere(Photodiode):
     """
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
@@ -240,7 +240,7 @@ class IntegratingSphere(Photodiode):
     rotation: float = field(default=0, init=False)
 
     def __post_init__(self):
-        super().__post_init__()
+        super(IntegratingSphere, self).__post_init__()
 
     def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
         """
@@ -255,7 +255,7 @@ class IntegratingSphere(Photodiode):
         return numpy.ones([sampling, sampling])
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoherentMode(GenericDetector):
     """
     Detector class representing a laser Hermite-Gauss mode with a coherent light coupling mechanism.

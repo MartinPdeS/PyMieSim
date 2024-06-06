@@ -250,7 +250,7 @@ class GenericScatterer():
         return index, material
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Sphere(GenericScatterer):
     """
     Class representing a homogeneous spherical scatterer.
@@ -288,7 +288,7 @@ class Sphere(GenericScatterer):
             diameter=self.diameter,
             index=self.index,
             medium_index=self.medium_index,
-            jones_vector=self.source.polarization.jones_vector.squeeze(),
+            jones_vector=self.source.jones_vector.values.squeeze(),
         )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
@@ -384,7 +384,7 @@ class Sphere(GenericScatterer):
         return self.binding.dn(max_order)
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class CoreShell(GenericScatterer):
     """
     Class representing a core/shell spherical scatterer.
@@ -430,7 +430,7 @@ class CoreShell(GenericScatterer):
             core_diameter=self.core_diameter,
             wavelength=self.source.wavelength,
             medium_index=self.medium_index,
-            jones_vector=self.source.polarization.jones_vector.squeeze(),
+            jones_vector=self.source.jones_vector.values.squeeze(),
             amplitude=self.source.amplitude
         )
 
@@ -463,7 +463,7 @@ class CoreShell(GenericScatterer):
         return self.binding.bn(max_order)
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
 class Cylinder(GenericScatterer):
     """
     Class representing a right angle cylindrical scatterer.
@@ -500,7 +500,7 @@ class Cylinder(GenericScatterer):
             wavelength=self.source.wavelength,
             medium_index=self.medium_index,
             amplitude=self.source.amplitude,
-            jones_vector=self.source.polarization.jones_vector.squeeze()
+            jones_vector=self.source.jones_vector.values.squeeze()
         )
 
     def a1n(self, max_order: Optional[int] = 0) -> numpy.array:

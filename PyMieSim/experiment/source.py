@@ -96,7 +96,7 @@ class Gaussian(BaseSource):
 
         self.binding_kwargs = dict(
             wavelength=numpy.atleast_1d(self.wavelength).astype(float),
-            jones_vector=numpy.atleast_2d(linear_polarization.jones_vector).astype(complex).T,
+            jones_vector=numpy.atleast_2d(linear_polarization.values).astype(complex).T,
             amplitude=numpy.atleast_1d(self.amplitude).astype(float),
         )
 
