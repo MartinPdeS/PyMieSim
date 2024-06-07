@@ -22,5 +22,3 @@ def test_inputwidgetsExist():
         gui.detector_tab.type_widget.set(tab)
         gui.detector_tab.on_type_change()
         assert len(gui.detector_tab.widget_collection.widgets) == widget_count
-
-test_inputwidgetsExist()
