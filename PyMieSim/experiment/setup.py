@@ -101,7 +101,7 @@ class Setup(object):
 
         return self._export_as_data_visual(measure, array)
 
-    def _export_as_numpy(self, array):
+    def _export_as_numpy(self, array: numpy.array) -> numpy.array:
         for k, v in self.source.binding_kwargs.items():
             setattr(self, k, v)
         for k, v in self.scatterer.binding_kwargs.items():
@@ -112,7 +112,7 @@ class Setup(object):
 
         return array
 
-    def _export_as_data_visual(self, measure, array):
+    def _export_as_data_visual(self, measure: Table, array: numpy.array) -> Array:
         self.generate_datavisual_table()
         measure.set_base_values(array)
 

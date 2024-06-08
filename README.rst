@@ -129,6 +129,16 @@ To test localy (with cloning the GitHub repository) you'll need to install the d
 ----
 
 
+Result examples
+***************
+Here are two examples that showcases the computational abilities of PyMieSim
+
+|example_plasmon|
+
+
+|example_qsca|
+
+
 
 Coding examples
 ***************
@@ -248,6 +258,10 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
     :target: https://badge.fury.io/py/PyMieSim
 
 .. |Logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
+
+.. |example_plasmon| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonc_resonances.png
+
+.. |example_qsca| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png
 
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
    :target: https://pypistats.org/packages/pymiesim
