@@ -133,8 +133,14 @@ Result examples
 ***************
 Here are two examples that showcases the computational abilities of PyMieSim
 
+
+# Plasmonic resonances for Core/Shell particles with SIO2 inner layer and Gold outer layer
+
 |example_plasmon|
 
+
+
+# Scattering efficiency as a function of diameter for spherical scatterers.
 
 |example_qsca|
 
