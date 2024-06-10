@@ -230,7 +230,7 @@ class CoreShell(BaseScatterer):
         """
         self.mapping = {
             'core_diameter': None,
-            'shell_diameter': None,
+            'shell_width': None,
             'core_index': None,
             'core_material': None,
             'shell_index': None,

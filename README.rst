@@ -10,7 +10,7 @@
 
 
 PyMieSim
-****************
+========
 
 PyMieSim is a software designed for comprehensive Mie scattering analysis, featuring a user-friendly installation and operation process. The characterization of the scattering event within PyMieSim is determined by a set of specific properties, as illustrated in the subsequent figure.
 
@@ -90,7 +90,7 @@ If, however, this fail you can build the package from scratch following the step
 Manual building
 ***************
 
-To manually build the project on your computer make sure that you do have gcc installed (c++ and fortran compiler), plus python version 3.7+.
+To manually buld the project on your computer make sure that you do have gcc installed (c++ and fortran compiler), plus python version 3.7+.
 For windows system I recommend install MingGW with g++ and fortran compiler.
 
 This being done, the following commands should do the trick.
@@ -127,6 +127,22 @@ To test localy (with cloning the GitHub repository) you'll need to install the d
    >>> coverage report --show-missing
 
 ----
+
+
+Result examples
+***************
+Here are two examples that showcases the computational abilities of PyMieSim
+
+
+# Plasmonic resonances for Core/Shell particles with SIO2 inner layer and Gold outer layer
+
+|example_plasmon|
+
+
+
+# Scattering efficiency as a function of diameter for spherical scatterers.
+
+|example_qsca|
 
 
 
@@ -248,6 +264,10 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
     :target: https://badge.fury.io/py/PyMieSim
 
 .. |Logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
+
+.. |example_plasmon| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png
+
+.. |example_qsca| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png
 
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
    :target: https://pypistats.org/packages/pymiesim

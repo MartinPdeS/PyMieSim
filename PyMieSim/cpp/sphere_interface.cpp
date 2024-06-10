@@ -25,21 +25,28 @@ PYBIND11_MODULE(SphereInterface, module) {
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a sphere.")
         .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), py::return_value_policy::move, "Returns the unstructured electromagnetic fields around the sphere.")
         .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the sphere.")
-        .def("an", &SPHERE::Scatterer::get_an_py, py::arg("max_order") = 0, "Returns the an coefficient.")
-        .def("bn", &SPHERE::Scatterer::get_bn_py, py::arg("max_order") = 0, "Returns the bn coefficient.")
-        .def("cn", &SPHERE::Scatterer::get_cn_py, py::arg("max_order") = 0, "Returns the cn coefficient, if applicable.")
-        .def("dn", &SPHERE::Scatterer::get_dn_py, py::arg("max_order") = 0, "Returns the dn coefficient, if applicable.")
+        // Note: Downward are the scattering coeffcients
+        .def("an", &Scatterer::get_an_py, py::arg("max_order") = 0, "Returns the an coefficient.")
+        .def("bn", &Scatterer::get_bn_py, py::arg("max_order") = 0, "Returns the bn coefficient.")
+        .def("cn", &Scatterer::get_cn_py, py::arg("max_order") = 0, "Returns the cn coefficient, if applicable.")
+        .def("dn", &Scatterer::get_dn_py, py::arg("max_order") = 0, "Returns the dn coefficient, if applicable.")
+        // Note: Downward are the efficiencies
         .def_property_readonly("Qsca", &Scatterer::get_Qsca, "Scattering efficiency of the sphere.")
         .def_property_readonly("Qext", &Scatterer::get_Qext, "Extinction efficiency of the sphere.")
         .def_property_readonly("Qabs", &Scatterer::get_Qabs, "Absorption efficiency of the sphere.")
         .def_property_readonly("Qback", &Scatterer::get_Qback, "Backscattering efficiency of the sphere.")
-        // Note: Qforward is commented out; assuming it's either not implemented or was an oversight.
+        .def_property_readonly("Qforward", &Scatterer::get_Qforward, "Forward-scattering efficiency of the sphere.")
+        .def_property_readonly("Qratio", &Scatterer::get_Qratio, "Ratio of the forward and backward scattering efficiency of the sphere.")
         .def_property_readonly("Qpr", &Scatterer::get_Qpr, "Radiation pressure efficiency of the sphere.")
+        // Note: Downward are the cross-sections
         .def_property_readonly("Csca", &Scatterer::get_Csca, "Scattering cross-section of the sphere.")
         .def_property_readonly("Cext", &Scatterer::get_Cext, "Extinction cross-section of the sphere.")
         .def_property_readonly("Cabs", &Scatterer::get_Cabs, "Absorption cross-section of the sphere.")
         .def_property_readonly("Cback", &Scatterer::get_Cback, "Backscattering cross-section of the sphere.")
+        .def_property_readonly("Cforward", &Scatterer::get_Cforward, "Forward-scattering efficiency of the sphere.")
+        .def_property_readonly("Cratio", &Scatterer::get_Cratio, "Ratio of the forward and backward scattering efficiency of the sphere.")
         .def_property_readonly("Cpr", &Scatterer::get_Cpr, "Radiation pressure cross-section of the sphere.")
+        // Note: Downward are the extra parameters
         .def_property_readonly("g", &Scatterer::get_g, "Asymmetry parameter of the sphere.")
         .def_readwrite("area", &Scatterer::area, "Physical cross-sectional area of the sphere.")
         .def_readwrite("size_parameter", &Scatterer::size_parameter, "Size parameter of the sphere scatterer.");

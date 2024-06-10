@@ -3,7 +3,7 @@
 *__pycache__*
 *.so
 *.a
-
+docs/source
 .tox
 .coverage*
 .coveragerc
