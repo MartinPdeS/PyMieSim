@@ -18,6 +18,7 @@ build
 perso/
 
 docs/source/Gallery
+docs/source/api
 
 CMakeCache.txt
 CMakeFiles
