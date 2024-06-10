@@ -60,9 +60,14 @@ class GenericScatterer():
         return self.binding.Qback
 
     @property
+    def Qforward(self) -> float:
+        """ Forwardcattering efficiency. """
+        return self.binding.Qforward
+
+    @property
     def Qratio(self) -> float:
         """ Efficiency: Ratio of backscattering over total scattering. """
-        return self.binding.Qback / self.binding.Qsca
+        return self.binding.Qratio
 
     @property
     def g(self) -> float:
@@ -100,9 +105,14 @@ class GenericScatterer():
         return self.binding.Cback
 
     @property
+    def Cforward(self) -> float:
+        """ Forward-scattering cross-section. """
+        return self.binding.Qforward
+
+    @property
     def Cratio(self) -> float:
         """ Ratio of backscattering cross-section over total scattering. """
-        return self.binding.Cback / self.binding.Csca
+        return self.binding.Cratio
 
     def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray) -> numpy.array:
         r"""
@@ -601,14 +611,6 @@ class Cylinder(GenericScatterer):
 
     @property
     def Qratio(self) -> None:
-        raise NotImplementedError
-
-    @property
-    def Cpr(self) -> None:
-        raise NotImplementedError
-
-    @property
-    def Qpr(self) -> None:
         raise NotImplementedError
 
 # -

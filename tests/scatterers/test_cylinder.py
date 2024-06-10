@@ -28,15 +28,9 @@ methods = [
 
 # Attributes to check
 attributes = [
-    "size_parameter",
-    "area",
-    "Qsca",
-    "Qext",
-    "Qabs",
-    "Csca",
-    "Cext",
-    "Cabs",
-    "g",
+    "size_parameter", "area", "g",
+    "Qsca", "Qext", "Qabs", "Qpr",
+    "Csca", "Cext", "Cabs", "Cpr"
 ]
 
 plottings = [

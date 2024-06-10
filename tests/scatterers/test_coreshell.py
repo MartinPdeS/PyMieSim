@@ -26,24 +26,12 @@ medium_configs = [
 ]
 
 # Methods and attributes to test
-methods = [
-    "an",
-    "bn",
-]
+methods = ["an", "bn"]
 
 attributes = [
-    "size_parameter",
-    "area",
-    "Qsca",
-    "Qext",
-    "Qback",
-    "Qratio",
-    "Qpr",
-    "Csca",
-    "Cext",
-    "Cback",
-    "Cratio",
-    "Cpr",
+    "size_parameter", "area", "g",
+    "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qforward", "Qpr",
+    "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr",
 ]
 
 plottings = [
