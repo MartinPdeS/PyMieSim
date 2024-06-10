@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import pytest
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 
@@ -31,5 +35,9 @@ def test_simple():
     a = scatterer.binding.get_fields(phi=phi, theta=theta, r=1.0)
 
     print(a)
+
+
+if __name__ == "__main__":
+    pytest.main()
 
 # -

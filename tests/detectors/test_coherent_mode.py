@@ -56,4 +56,8 @@ def test_lp_modes(mode_number, rotation, scatterer):
 
     assert footprint is not None, "Expected a valid footprint but got None."
 
+
+if __name__ == "__main__":
+    pytest.main()
+
 # -
