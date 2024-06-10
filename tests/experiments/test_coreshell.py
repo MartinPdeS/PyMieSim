@@ -35,16 +35,13 @@ medium_options = [
 ]
 
 # Define measures to test
-measures = [
-    pms_measure.Qsca, pms_measure.Qabs, pms_measure.Qback,
-    pms_measure.g, pms_measure.a1, pms_measure.b1, pms_measure.coupling
-]
+measures = pms_measure.__coreshell__
 
 
 @pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
 @pytest.mark.parametrize('shell_config', [s['properties'] for s in shell_options], ids=[s['name'] for s in shell_options])
 @pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
-@pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
+@pytest.mark.parametrize('measure', measures.values(), ids=measures.keys())
 def test_coreshell_scattering_properties(measure, medium_config, core_config, shell_config):
     # Setup Gaussian source
     source = Gaussian(
@@ -81,7 +78,11 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
         detector=detector
     )
 
-    # Execute measurement
     experiment.get(measure)
+
+
+if __name__ == "__main__":
+    pytest.main()
+
 
 # -

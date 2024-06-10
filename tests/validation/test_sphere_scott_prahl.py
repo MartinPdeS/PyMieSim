@@ -38,4 +38,8 @@ def test_validation_scott_prahl(measure_str):
     if not numpy.isclose(pymiesim_value, scott_prahl_value, atol=0, rtol=1e-3):
         raise ValueError('Mismatch with testing values')
 
+
+if __name__ == "__main__":
+    pytest.main()
+
 # -

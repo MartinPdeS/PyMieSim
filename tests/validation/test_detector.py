@@ -119,4 +119,9 @@ def test_detector_experiment_polarization_filter(source_experiment, scatterer_ex
 
     if not coupling_values[0] == coupling_values[-1]:
         raise ValueError('Mismatch with coupling value for detector with polarization filter of 0 and 180 degrees')
+
+
+if __name__ == "__main__":
+    pytest.main()
+
 # -

@@ -43,4 +43,8 @@ def test_photodiode_with_sampling(sampling, setup_scatterer):
     # Example verification step (not operational as we're not evaluating the output here)
     assert footprint is not None, "Expected a valid footprint but got None."
 
+
+if __name__ == "__main__":
+    pytest.main()
+
 # -

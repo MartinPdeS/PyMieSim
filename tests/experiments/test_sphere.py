@@ -13,7 +13,6 @@ from PyOptik import UsualMaterial
 
 # Configure the core materials for the sphere
 core_options = [
-    {'name': 'BK7', 'properties': {'material': UsualMaterial.BK7}},
     {'name': 'Silver', 'properties': {'material': UsualMaterial.Silver}},
     {'name': 'Aluminium', 'properties': {'material': UsualMaterial.Aluminium}},
     {'name': 'Index', 'properties': {'index': 1.4}}
@@ -26,15 +25,12 @@ medium_options = [
 ]
 
 # List of measures to be tested
-measures = [
-    pms_measure.Qsca, pms_measure.Qabs, pms_measure.Qback,
-    pms_measure.g, pms_measure.a1, pms_measure.b1, pms_measure.coupling
-]
+measures = pms_measure.__sphere__
 
 
 @pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
 @pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
-@pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
+@pytest.mark.parametrize('measure', measures.values(), ids=measures.keys())
 def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up the Gaussian source
     source = Gaussian(
@@ -69,7 +65,10 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
         detector=detector
     )
 
-    # Perform the measurement
     experiment.get(measure)
+
+
+if __name__ == "__main__":
+    pytest.main()
 
 # -

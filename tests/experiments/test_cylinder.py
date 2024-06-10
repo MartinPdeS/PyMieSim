@@ -25,16 +25,12 @@ medium_options = [
 ]
 
 # Measures to be tested
-measures = [
-    pms_measure.Qsca,
-    pms_measure.Qabs,
-    pms_measure.coupling
-]
+measures = pms_measure.__cylinder__
 
 
 @pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
 @pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
-@pytest.mark.parametrize('measure', measures, ids=[m.short_label for m in measures])
+@pytest.mark.parametrize('measure', measures.values(), ids=measures.keys())
 def test_cylinder_scattering_properties(measure, medium_config, core_config):
     # Setup Gaussian source
     source = Gaussian(
@@ -71,5 +67,9 @@ def test_cylinder_scattering_properties(measure, medium_config, core_config):
 
     # Execute measurement
     experiment.get(measure)
+
+
+if __name__ == "__main__":
+    pytest.main()
 
 # -

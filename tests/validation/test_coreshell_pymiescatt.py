@@ -106,4 +106,8 @@ def test_comparison(measure_string: str):
     if not discrepency.astype(int).mean() > 0.5:
         raise ValueError('Error: mismatch on PyMieScatt calculation occuring')
 
+
+if __name__ == "__main__":
+    pytest.main()
+
 # -
