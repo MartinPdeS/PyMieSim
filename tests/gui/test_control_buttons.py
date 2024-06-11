@@ -1,46 +1,82 @@
 from pytest import raises
+import pytest
+import random
 import tkinter
 from PyMieSim.gui.main_window import PyMieSimGUI
+from PyMieSim.experiment.measure import __sphere__
 from unittest.mock import patch, MagicMock
 
-def reset_std_button(possible_widgets, gui):
+def random_list(min, max):
+    lenght = 3
+    return [random.randint(min, max) for i in range(lenght)]
 
-    for widget in possible_widgets:
 
-        widget = gui.source_tab.widget_collection.widgets[0]
-        widget.tk_radio_button_2.invoke()
-        gui.reset_std_button.invoke()
+def reset_std_button(widget, gui):
+    '''
+    This is the function that will assert whether the reset_std_button works properly
+    '''
+    gui.reset_std_button.invoke()
+    assert gui.STD_axis_label_widget.get() == 'None', f"reset button did not worlkfor {widget.tk_radio_button_2['value']} widget"
 
-        assert gui.STD_axis_label_widget.get() == 'None', f"reset button did not worl for {widget.tk_radio_button_2['value']} widget"
 
 @patch('matplotlib.backends.backend_tkagg.FigureCanvasTkAgg.draw')
-def x_axis_calculate_button(mock_draw, possible_widgets, gui):
-    # Run the tests
-    error_button_values = ['polarization_value', 'polarization_label'] #this is a list of the values of all the buttons that for which the calculate button does not work
+def calculate_button(mock_draw, gui, y_axis_index, source_widgets, scatterer_widgets, detector_widgets):
+    """
+    This function ensures that the calculate button generates a graph for all possible x-axis values, along with some combination of random std-axis values. It does not test for all possible combinations of x and std axes due to computational time constraints.
+    """
+
+    # Axis choices from the detector tab only makes sense if the y_axis is coupling
+    possible_widgets = [*source_widgets, *scatterer_widgets]
+    if y_axis_index == 21:
+        possible_widgets.extend(detector_widgets)
+
 
     for x_widget in possible_widgets:
-        x_widget.tk_radio_button_1.invoke()
         mock_draw.reset_mock()
-        gui.calculate_button.invoke()
-        assert mock_draw.call_count == 1, f"{x_widget.tk_radio_button_1['value']} button did not call the mock"
 
-def test_in_all_combination_of_widgets():
+        x_widget.tk_radio_button_1.invoke()
+        gui.calculate_button.invoke()
+
+        assert mock_draw.call_count == 1, f"calculate_button with x-axis selection '{x_widget.tk_radio_button_1['value']}' did not call the draw"
+
+        for position in random_list(0,len(possible_widgets)-1): # This will make a test for 3 random std_axis selection (doing them all takes too much computational time)
+            mock_draw.reset_mock()
+
+            std_widget = possible_widgets[position]
+            std_widget.tk_radio_button_2.invoke()
+            gui.calculate_button.invoke()
+
+            try:
+                assert mock_draw.call_count == 1
+            except:
+                assert x_widget.tk_radio_button_1['value'] == std_widget.tk_radio_button_2['value'], f"calculate_button with x-axis selection '{x_widget.tk_radio_button_1['value']}' and x-axis selection '{std_widget.tk_radio_button_2['value']}' did not call the draw as intended"
+
+            reset_std_button(widget=std_widget, gui=gui)
+
+@pytest.mark.parametrize('y_axis_index', [index for index in range(len(__sphere__))], ids=__sphere__) 
+def test_in_all_combination_of_widgets(y_axis_index):
+    """
+    This function is meant to cycle through all combinations of tabs and generate the corresponding battery of widgets with which the tests should be run. It will then execute the tests for all tab combinations.
+    """
     root = tkinter.Tk()
     root.geometry("750x600")
     gui = PyMieSimGUI(root)
 
-    """
-    This function is ment to cycle trough all combinations of tabs and generate the corresponding battery of widgets with which the tests should be ran
-    It will then pass the tests for all tab combination
-    """
+    y_axis_widget = gui.axis_tab.widget_collection.widgets[0]
+    y_axis_widget.tk_widget.current(y_axis_index)
+    
+    if gui.axis_tab.get_inputs()[0] not in ['Qsca', 'Csca', 'Qext', 'Cext', 'Qabs', 'Cabs', 'coupling'] :
+        root.destroy()
+        return
 
-    # This combination of for loops will create all the possible widget combinations (this is slow. Check if it is best to separate the function in multiple fonctions without the loops)
+    # These nested for loops will create all possible widget combinations    source_widgets = gui.source_tab.widget_collection.widgets[0:2]
+
     source_widgets = gui.source_tab.widget_collection.widgets[0:2]
 
-    for scatter_tab in gui.scatterer_tab.type_widget['values']:
-        gui.scatterer_tab.type_widget.set(scatter_tab)
+    for scatterer_tab in gui.scatterer_tab.type_widget['values']:
+        gui.scatterer_tab.type_widget.set(scatterer_tab)
         gui.scatterer_tab.on_type_change()
-        scatter_widgets = gui.scatterer_tab.widget_collection.widgets
+        scatterer_widgets = gui.scatterer_tab.widget_collection.widgets
 
         for detector_tab in gui.detector_tab.type_widget['values'][:-1]:
             gui.detector_tab.type_widget.set(detector_tab)
@@ -48,19 +84,20 @@ def test_in_all_combination_of_widgets():
             all_detector_widgets = gui.detector_tab.widget_collection.widgets
             detector_widgets =[widget for widget in all_detector_widgets if widget.component_label != "mean_coupling"]
 
-            possible_widgets = [*source_widgets, *scatter_widgets, *detector_widgets] # The widgets it is possible to choose from for the std and x axis
-            
-            reset_std_button(possible_widgets=possible_widgets, gui=gui)
-            x_axis_calculate_button(possible_widgets=possible_widgets, gui=gui)
+            calculate_button(gui=gui, 
+                             y_axis_index=y_axis_index, 
+                             source_widgets=source_widgets, 
+                             scatterer_widgets=scatterer_widgets, 
+                             detector_widgets=detector_widgets
+                            )
 
     root.destroy()
-
 
 @patch('tkinter.filedialog.asksaveasfilename')
 @patch('tkinter.messagebox.showinfo')
 def test_export_plot_button(mock_messagebox, mock_filepath):
     """
-    This function is testing if the export_plot_button function is working as intended
+    This function tests whether the export_plot_button function is working as intended.
     """
     
     # setting up the environment
@@ -85,9 +122,7 @@ def test_export_plot_button(mock_messagebox, mock_filepath):
 @patch('tkinter.filedialog.asksaveasfilename')
 def test_save_as_csv_button(mock_filepath, mock_save):
     """
-    This test takes in a battery of widgets, and checks if the calculate button calls upon the draw method (i.e. creates a graph) for all the selections of x-axis buttons
-    > At the moment, 2 widgets do not work properly
-    > The testing time of this function is very long (50-60 seconds)
+    This test takes a battery of widgets and checks if the calculate button calls the draw method (i.e., creates a graph) for all selections of x-axis buttons.
     """
 
     # setting up the environment
@@ -106,28 +141,4 @@ def test_save_as_csv_button(mock_filepath, mock_save):
     assert mock_save.call_count == 1
     
     root.destroy()
-
-
-
-
-# -------------------------- LEGACY -------------------------
-'''
-@patch('PyMieSim.gui.main_window.PyMieSimGUI.save_data_as_csv')
-def x_axis_save_as_csv_button(mock_save, widgets : list):
-    """
-    This test takes in a battery of widgets and checks if the save as CSV button calls upon the save_data_as_csv method for all selections of x-axis
-    > This test is not ideal. Ideally, it should mock the np.savetxt method, but that requires to also mock two conditions to be true, and I don't know how to do that
-    """
-
-    # Initialize the root and the gui
-    root1 = tkinter.Tk()
-    root1.geometry("750x600")
-    gui1 = PyMieSimGUI(root)
-
-    # The Test
-    for widget in widgets:
-                mock_save.reset_mock()
-                widget.tk_radio_button_1.invoke()
-                gui1.save_button.invoke()
-                assert mock_save.call_count == 1
-'''
+    

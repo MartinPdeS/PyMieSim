@@ -1,69 +1,77 @@
-from PyMieSim.gui.main_window import PyMieSimGUI
-import tkinter as tk
 from pytest import raises
-from unittest.mock import patch
+import pytest
+import random
+import tkinter as tk
+from PyMieSim.gui.main_window import PyMieSimGUI
+from unittest.mock import patch, MagicMock
 
-
-root = tk.Tk()
-root.geometry("750x600")
-gui = PyMieSimGUI(root)
-
-"""
-The following 3 tests are checking if pressing the radio buttons of the gui is 
-possible and if the self.STD_axis_label_widget and self.STD_axis_label_widget variables of the
-PyMieSimGUI class are updated on click
-"""
-
-def radio_button_invoke(widgets : list) -> None:
+def set_up_gui(foo):
     """
-    This function will take a list of widgets in a tab and check if all the radiobuttons work properly
+    This is a decorator that will set up the gui, run the function and destroy the gui
     """
+    def set_up():
+        root = tk.Tk()
+        root.geometry("750x600")
+        gui = PyMieSimGUI(root)
+
+        foo(gui=gui)
+
+        root.destroy()
+
+    return set_up
+
+def radio_button_invoke(widgets : list, gui) -> None:
     for widget in widgets:
         try:
+            # Defining the radiobuttons
             radio_button_x_axis = widget.tk_radio_button_1
             radio_button_STD_axis = widget.tk_radio_button_2
-        # The first part of the loop makes sure the buttons work individually
-            
-            # This part checks for the x-axis radiobuttons
+
+            # The first part of the loop makes sure the buttons work individually
+            ## Checks if the x-axis radiobuttons work
             radio_button_x_axis.invoke()
-            assert radio_button_x_axis['value'] == gui.x_axis_label_widget.get()
+            assert radio_button_x_axis['value'] == gui.x_axis_label_widget.get(), f"x-axis selection for the {radio_button_x_axis['value']} radio button did not work"
             gui.x_axis_label_widget.set(None)
 
-            # This part checks for the std-axis radiobuttons
+            # Checks if the std-axis radiobuttons work
             radio_button_STD_axis.invoke()
-            assert radio_button_STD_axis['value'] == gui.STD_axis_label_widget.get()
+            assert radio_button_STD_axis['value'] == gui.STD_axis_label_widget.get(), f"std-axis selection for the {radio_button_STD_axis['value']} radio button did not work"
             gui.x_axis_label_widget.set(None)
-            
-                
 
-        # The second part of the loop checks if correct ValueErrors get raised if both selected axis are the same
-            # This part necessitated that there are no message boxes
+            # The second part of the loop checks if the correct ValueError gets raised if both selected axis are the same
+            ## This part needed no messagebox -------> to improve
             radio_button_x_axis.invoke()
             radio_button_STD_axis.invoke()
             with raises(ValueError):
                 gui.update_plot()
+            
         except:
-            assert widget.can_be_axis == False
+            assert widget.can_be_axis == False, f"impossible axis selection: x-axis == std-axis but no ValueError is raised for the {radio_button_x_axis['value']} radio button"
 
+"""
+The following three tests are checking if pressing the radio buttons of the GUI is possible and if the variables self.STD_axis_label_widget and self.STD_axis_label_widget of the PyMieSimGUI class are updated upon clicking.
+"""
 
-def test_source_widgets() -> None:
+@set_up_gui
+def test_source_widgets(**kwargs) -> None:
+    gui = kwargs['gui']
     widgets = gui.source_tab.widget_collection.widgets
-    radio_button_invoke(widgets)
+    radio_button_invoke(widgets=widgets, gui=gui)
 
-
-def test_scatterer_widgets() -> None:
+@set_up_gui
+def test_scatterer_widgets(**kwargs) -> None:
+    gui = kwargs['gui']
     for tab in gui.scatterer_tab.type_widget['values']:
         gui.scatterer_tab.type_widget.set(tab)
         gui.scatterer_tab.on_type_change()
         widgets = gui.scatterer_tab.widget_collection.widgets
-        radio_button_invoke(widgets)
+        radio_button_invoke(widgets=widgets, gui=gui)
 
-
-def test_detector_widgets() -> None:
+@set_up_gui
+def test_detector_widgets(**kwargs) -> None:
+    gui = kwargs['gui']
     for tab in gui.detector_tab.type_widget['values']:
         gui.detector_tab.type_widget.set(tab)
         gui.detector_tab.on_type_change()
         widgets = gui.detector_tab.widget_collection.widgets
-        radio_button_invoke(widgets)
-
-
+        radio_button_invoke(widgets=widgets, gui=gui)
