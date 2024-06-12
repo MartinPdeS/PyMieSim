@@ -4,12 +4,19 @@
 
 import numpy
 from dataclasses import field
-
-from DataVisual import units
-from PyMieSim.binary.Sets import CppDetectorSet
 from pydantic.dataclasses import dataclass
-
+from pydantic import ConfigDict
+from PyMieSim.binary.Sets import CppDetectorSet
+from PyMieSim.experiment import parameters
 from typing import List, Union, NoReturn
+
+
+config_dict = ConfigDict(
+    kw_only=True,
+    slots=True,
+    extra='forbid',
+    arbitrary_types_allowed=True
+)
 
 
 class BaseDetector():
@@ -81,61 +88,16 @@ class BaseDetector():
         Returns:
             list: A list of formatted data visual elements representing the detector's properties.
         """
-        self.mapping['mode_number'] = units.Custom(
-            long_label='Mode number',
-            short_label='mode',
-            base_values=self.mode_number,
-        )
 
-        self.mapping['sampling'] = units.Custom(
-            long_label='Sampling',
-            short_label='sampling',
-            base_values=self.sampling,
-        )
-
-        self.mapping['rotation'] = units.Degree(
-            long_label='Rotation angle',
-            short_label='rot',
-            base_values=self.rotation,
-            string_format='.1f'
-        )
-
-        self.mapping['NA'] = units.Index(
-            long_label='Numerical aperture',
-            short_label='NA',
-            base_values=self.NA,
-            use_prefix=False,
-            string_format=""
-        )
-
-        self.mapping['phi_offset'] = units.Degree(
-            long_label='Phi angle',
-            short_label=r'phi',
-            base_values=self.phi_offset,
-            use_prefix=False,
-            string_format='.1f'
-        )
-
-        self.mapping['gamma_offset'] = units.Degree(
-            long_label='Gamma angle',
-            short_label=r'gamma',
-            base_values=self.gamma_offset,
-            use_prefix=False,
-            string_format='.1f'
-        )
-
-        self.mapping['polarization_filter'] = units.Degree(
-            long_label=r'Polarization filter',
-            short_label=r'f$_{pol}$',
-            base_values=self.polarization_filter,
-            use_prefix=False,
-            string_format='.1f'
-        )
+        for parameter_str in ['mode_number', 'sampling', 'rotation', 'NA', 'phi_offset', 'gamma_offset', 'polarization_filter']:
+            parameters_values = getattr(self, parameter_str)
+            self.mapping['parameter_str'] = getattr(parameters, parameter_str)
+            self.mapping['parameter_str'].set_base_values(parameters_values)
 
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Photodiode(BaseDetector):
     """
     A photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
@@ -154,18 +116,18 @@ class Photodiode(BaseDetector):
     Notes:
         This class is specifically configured to simulate a photodiode detector within a Mie scattering experiment.
     """
-    NA: Union[List[float], float]
-    gamma_offset: Union[List[float], float]
-    phi_offset: Union[List[float], float]
-    polarization_filter: Union[List[float | None], float | None]
-    sampling: Union[List[int], int]
+    NA: Union[numpy.ndarray, List[float], float]
+    gamma_offset: Union[numpy.ndarray, List[float], float]
+    phi_offset: Union[numpy.ndarray, List[float], float]
+    polarization_filter: Union[numpy.ndarray, List[float | None], float | None]
+    sampling: Union[numpy.ndarray, List[int], int]
     mean_coupling: bool = True
-    rotation: Union[List[float] | float] = field(default=0, init=False)
+    rotation: Union[numpy.ndarray, List[float] | float] = field(default=0, init=False)
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class CoherentMode(BaseDetector):
     """
     Specialized for coherent detection modes in Mie scattering simulations, this class extends BaseDetector.
@@ -180,13 +142,13 @@ class CoherentMode(BaseDetector):
     Note:
         This class is specifically designed to handle and simulate coherent detection modes.
     """
-    mode_number: Union[List[str], str]
-    rotation: Union[List[float], float]
-    NA: Union[List[float], float]
-    gamma_offset: Union[List[float], float]
-    phi_offset: Union[List[float], float]
-    polarization_filter: Union[List[float | None], float | None]
-    sampling: Union[List[int], int]
+    mode_number: Union[numpy.ndarray, List[str], str]
+    rotation: Union[numpy.ndarray, List[float], float]
+    NA: Union[numpy.ndarray, List[float], float]
+    gamma_offset: Union[numpy.ndarray, List[float], float]
+    phi_offset: Union[numpy.ndarray, List[float], float]
+    polarization_filter: Union[numpy.ndarray, List[float | None], float | None]
+    sampling: Union[numpy.ndarray, List[int], int]
     mean_coupling: bool = False
     coherent: bool = field(default=True, init=False)
 
