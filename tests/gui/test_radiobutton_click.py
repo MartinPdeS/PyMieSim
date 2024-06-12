@@ -20,7 +20,8 @@ def set_up_gui(foo):
 
     return set_up
 
-def radio_button_invoke(widgets : list, gui) -> None:
+@patch('tkinter.messagebox.showerror')
+def radio_button_invoke(mock, widgets : list, gui) -> None:
     for widget in widgets:
         try:
             # Defining the radiobuttons
@@ -39,7 +40,6 @@ def radio_button_invoke(widgets : list, gui) -> None:
             gui.x_axis_label_widget.set(None)
 
             # The second part of the loop checks if the correct ValueError gets raised if both selected axis are the same
-            ## This part needed no messagebox -------> to improve
             radio_button_x_axis.invoke()
             radio_button_STD_axis.invoke()
             with raises(ValueError):
