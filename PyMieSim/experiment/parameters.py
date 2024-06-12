@@ -7,18 +7,18 @@ from DataVisual import units
 diameter = units.Length(long_label='Scatterer diameter', short_label='diameter', string_format='.1f')
 core_diameter = units.Length(long_label='Core diameter', short_label='core_diameter', string_format='.1f')
 shell_width = units.Length(long_label='Shell width', short_label='shell_width', string_format='.1f')
-wavelength = units.Length(long_label='Wavelength', short_label=r'$\lambda$', string_format='.2f')
+wavelength = units.Length(long_label='Wavelength', short_label=r'$\lambda$', string_format='.1f')
 
 
 # Angle units
-polarization_value = units.Degree(long_label='Polarization', short_label=r'Pol', string_format='.2f')
+polarization_value = units.Degree(long_label='Polarization', short_label=r'Pol', string_format='.1f')
 rotation = units.Degree(long_label='Rotation angle', short_label='rot', string_format='.1f')
 phi_offset = units.Degree(long_label='Phi angle', short_label=r'phi', use_prefix=False, string_format='.1f')
 gamma_offset = units.Degree(long_label='Gamma angle', short_label=r'gamma', use_prefix=False, string_format='.1f')
 polarization_filter = units.Degree(long_label=r'Polarization filter', short_label=r'f$_{pol}$', use_prefix=False, string_format='.1f')
 
 # Index units
-NA = units.Index(long_label='Numerical aperture', short_label='NA', use_prefix=False, string_format="")
+NA = units.Index(long_label='Numerical aperture', short_label='NA', use_prefix=False, string_format=".2f")
 index = units.Index(long_label='Refractive index', short_label='index', use_prefix=False, string_format=".2f")
 core_index = units.Index(long_label='Core refractive index', short_label='core index', use_prefix=False, string_format=".2f")
 shell_index = units.Index(long_label='Shell refractive index', short_label='shell index', use_prefix=False, string_format=".2f")

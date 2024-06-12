@@ -91,8 +91,8 @@ class BaseDetector():
 
         for parameter_str in ['mode_number', 'sampling', 'rotation', 'NA', 'phi_offset', 'gamma_offset', 'polarization_filter']:
             parameters_values = getattr(self, parameter_str)
-            self.mapping['parameter_str'] = getattr(parameters, parameter_str)
-            self.mapping['parameter_str'].set_base_values(parameters_values)
+            self.mapping[parameter_str] = getattr(parameters, parameter_str)
+            self.mapping[parameter_str].set_base_values(parameters_values)
 
         return [v for k, v in self.mapping.items() if v is not None]
 
