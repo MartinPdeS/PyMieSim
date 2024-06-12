@@ -39,7 +39,7 @@ class AxisTab(BaseTab):
             ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, default_options=len(self.y_axis_options)-1),
         )
 
-        self.widget_collection.setup_widgets(title_bar = False)
+        self.widget_collection.setup_widgets(title_bar=False)
 
     @property
     def x_axis(self) -> str:
@@ -79,3 +79,5 @@ class AxisTab(BaseTab):
             _axis_mapping.update(tab.component.mapping)
 
         return _axis_mapping
+
+# -

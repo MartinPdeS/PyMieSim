@@ -1,9 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from pytest import raises
-import pytest
-import random
 import tkinter as tk
 from PyMieSim.gui.main_window import PyMieSimGUI
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 def set_up_gui(foo):
     """
@@ -49,18 +50,17 @@ def radio_button_invoke(mock, widgets : list, gui) -> None:
             assert widget.can_be_axis == False, f"impossible axis selection: x-axis == std-axis but no ValueError is raised for the {radio_button_x_axis['value']} radio button"
 
 """
-The following three tests are checking if pressing the radio buttons of the GUI is possible and if the variables self.STD_axis_label_widget and self.STD_axis_label_widget of the PyMieSimGUI class are updated upon clicking.
+The following three tests are checking if pressing the 
+radio buttons of the GUI is possible and if the variables self.STD_axis_label_widget and self.STD_axis_label_widget of the PyMieSimGUI class are updated upon clicking.
 """
 
 @set_up_gui
-def test_source_widgets(**kwargs) -> None:
-    gui = kwargs['gui']
+def test_source_widgets(gui) -> None:
     widgets = gui.source_tab.widget_collection.widgets
     radio_button_invoke(widgets=widgets, gui=gui)
 
 @set_up_gui
-def test_scatterer_widgets(**kwargs) -> None:
-    gui = kwargs['gui']
+def test_scatterer_widgets(gui) -> None:
     for tab in gui.scatterer_tab.type_widget['values']:
         gui.scatterer_tab.type_widget.set(tab)
         gui.scatterer_tab.on_type_change()
@@ -68,8 +68,7 @@ def test_scatterer_widgets(**kwargs) -> None:
         radio_button_invoke(widgets=widgets, gui=gui)
 
 @set_up_gui
-def test_detector_widgets(**kwargs) -> None:
-    gui = kwargs['gui']
+def test_detector_widgets(gui) -> None:
     for tab in gui.detector_tab.type_widget['values']:
         gui.detector_tab.type_widget.set(tab)
         gui.detector_tab.on_type_change()

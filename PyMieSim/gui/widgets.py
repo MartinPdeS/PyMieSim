@@ -82,12 +82,12 @@ class ComBoxWidget(BaseWidget):
 
 class RadioButtonWidget(BaseWidget):
 
-    def __init__(self, option_text: list, options_values: list, **kwargs):
+    def __init__(self, option_text: list, options_values: list, can_be_axis: bool = False, **kwargs):
         super().__init__(**kwargs)
         self.option_text = option_text
         self.tk_variable = tkinter.IntVar()
         self.options_values = options_values
-        self.can_be_axis = False
+        self.can_be_axis = can_be_axis
 
     def update(self):
         pass
@@ -162,13 +162,10 @@ class InputWidget(BaseWidget):
         self.tk_widget.grid(row=row + 1, column=1, sticky="W", pady=2)
         # Adds the radiobuttons used to select wether this variable is used as an axis
         if self.can_be_axis == True:
-            self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable = self.button_variableX, value = self.component_label)
+            self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable=self.button_variableX, value=self.component_label)
             self.tk_radio_button_1.grid(row=row + 1, column=2, sticky="W", pady=2)
-            self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable = self.button_variableSTD, value = self.component_label)
+            self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable=self.button_variableSTD, value=self.component_label)
             self.tk_radio_button_2.grid(row=row + 1, column=3, sticky="W", pady=2)
-        # Sets a default value for the x-axis
-        if self.default_value == '0:360:200':
-            self.tk_radio_button_1.invoke()
         
     def get_value(self):
         self.update()
@@ -199,6 +196,7 @@ class InputWidget(BaseWidget):
 
         if self.dtype:
             value = value.astype(self.dtype)
+
         if self.multiplicative_factor is not None:
             value *= self.multiplicative_factor
 
@@ -211,4 +209,4 @@ class InputWidget(BaseWidget):
             self.tk_radio_button_1.destroy()
             self.tk_radio_button_2.destroy()
 
-
+# -

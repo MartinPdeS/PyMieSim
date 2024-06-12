@@ -63,7 +63,7 @@ class BaseSource:
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
 class Gaussian(BaseSource):
     """
     Represents a Gaussian light source with a specified numerical aperture and optical power.
@@ -77,9 +77,9 @@ class Gaussian(BaseSource):
         optical_power (float): The optical power of the source, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
-    wavelength: Union[List[float], float]
-    polarization_value: Union[List[float], float]
-    NA: Union[List[float], float]
+    wavelength: Union[numpy.ndarray, List[float], float]
+    polarization_value: Union[numpy.ndarray, List[float], float]
+    NA: Union[numpy.ndarray, List[float], float]
     optical_power: float
     polarization_type: str = 'linear'
     name: str = field(default='PlaneWave', init=False)

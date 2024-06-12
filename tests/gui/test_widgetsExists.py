@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from PyMieSim.gui.main_window import PyMieSimGUI
 import tkinter as tk
 from tkinter.ttk import Button
@@ -25,17 +28,17 @@ def test_input_widgets_exist(**kwargs):
     """
     gui = kwargs['gui']
 
-    assert len(gui.source_tab.widget_collection.widgets) == 4, 'missing widgets in the source_tab'
+    assert len(gui.source_tab.widget_collection.widgets) == 4, 'Missing widgets in the source_tab'
 
     for tab, widget_count in zip(gui.scatterer_tab.type_widget['values'],[3,3,5]):
         gui.scatterer_tab.type_widget.set(tab)
         gui.scatterer_tab.on_type_change()
-        assert len(gui.scatterer_tab.widget_collection.widgets) == widget_count, f' missing widget in the source/{tab} tab'
+        assert len(gui.scatterer_tab.widget_collection.widgets) == widget_count, f'Missing widget in the source/{tab} tab'
 
     for tab, widget_count in zip(gui.detector_tab.type_widget['values'],[5,8]):
         gui.detector_tab.type_widget.set(tab)
         gui.detector_tab.on_type_change()
-        assert len(gui.detector_tab.widget_collection.widgets) == widget_count, f' missing widget in the detector/{tab} tab'
+        assert len(gui.detector_tab.widget_collection.widgets) == widget_count, f'Missing widget in the detector/{tab} tab'
 
 @set_up_gui
 def test_control_button_exist(**kwargs):

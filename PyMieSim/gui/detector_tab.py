@@ -21,7 +21,7 @@ class DetectorTab(BaseTab):
         variables (WidgetCollection): A collection of widgets for detector configuration.
     """
 
-    def __init__(self, x_axis, STD_axis, master: ttk.Notebook, label: str) -> None:
+    def __init__(self, x_axis, STD_axis, notebook: ttk.Notebook, label: str) -> None:
         """
         Initialize the DetectorTab with UI components to configure the detector parameters.
 
@@ -31,7 +31,7 @@ class DetectorTab(BaseTab):
         """
         self.x_axis = x_axis
         self.STD_axis = STD_axis
-        super().__init__(master, label=label)
+        super().__init__(notebook=notebook, label=label)
         self.type_button = StringVar(value='Photodiode')
         self.setup_type_combobox()
         self.setup_widgets()

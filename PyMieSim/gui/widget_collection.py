@@ -71,7 +71,7 @@ class WidgetCollection:
         for widget in self.widgets:
             widget.update()
     
-    def title_bar(self, title_bar = False):
+    def title_bar(self, title_bar: bool = False):
         """
         Sets up a title bar on each page of the source, detector and scatterer tabs
 
@@ -108,3 +108,5 @@ class WidgetCollection:
             str: A space-separated string of widget labels.
         """
         return " ".join(str(widget) for widget in self.widgets)
+
+# -

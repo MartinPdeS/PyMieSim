@@ -47,10 +47,11 @@ class SourceTab(BaseTab):
             InputWidget(default_value='0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Polarization angle [degree]', component_label='polarization_value', dtype=float),
             InputWidget(default_value='1.0', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Optical Power [mW] [fix]', component_label='optical_power', multiplicative_factor=1e-3, can_be_axis=False, dtype=float), #If can_be_axis is false, then will not put the yo widget!
             InputWidget(default_value='0.2', x_axis = self.x_axis, STD_axis= self.STD_axis, label='Numerical Aperture (NA) [fix]', component_label='NA', can_be_axis=False, dtype=float),
-            )
+        )
 
         self.widget_collection.setup_widgets()
         self.setup_component()
+
 
     def setup_component(self) -> NoReturn:
         """
@@ -60,6 +61,10 @@ class SourceTab(BaseTab):
         a Gaussian source component for the simulation.
         """
         self.widget_collection.update()
-        self.component = Gaussian(**self.widget_collection.to_component_dict())
+        kwargs = self.widget_collection.to_component_dict()
+
+        kwargs["optical_power"] = kwargs["optical_power"][0]
+
+        self.component = Gaussian(**kwargs)
 
 # -

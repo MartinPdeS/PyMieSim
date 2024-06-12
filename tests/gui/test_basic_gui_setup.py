@@ -1,9 +1,10 @@
 from pytest import raises
+from unittest.mock import patch
 import tkinter
 from tkinter.ttk import Notebook
 from PyMieSim.gui.main_window import PyMieSimGUI
 import PyMieSim
-from unittest.mock import patch, MagicMock
+
 
 def set_up_gui(foo):
     """
@@ -42,4 +43,10 @@ def test_setup_notebook(**kwargs):
     assert gui.scatterer_tab.__class__ == PyMieSim.gui.scatterer_tab.ScattererTab
     assert gui.axis_tab.__class__ == PyMieSim.gui.axis_tab.AxisTab
     kwargs['root'].destroy()
-    
+
+@set_up_gui
+@patch('matplotlib.backends.backend_tkagg.FigureCanvasTkAgg.draw')
+def test_generate_figure(mock_draw, **kwargs):
+    gui = kwargs['gui']
+    gui.calculate_button.invoke()
+    assert mock_draw.call_count == 1, "mock_draw is not called by generate_figure"

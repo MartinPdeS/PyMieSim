@@ -116,7 +116,7 @@ class BaseScatterer():
             self.binding_kwargs[attached_index_name] = numpy.atleast_1d(index_value).astype(data_type)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
 class Sphere(BaseScatterer):
     """
     A data class that represents a spherical scatterer configuration used in PyMieSim simulations.
@@ -130,13 +130,13 @@ class Sphere(BaseScatterer):
         medium_index (List, optional): Refractive index or indices of the medium surrounding the scatterers.
         medium_material (List, optional): Material(s) defining the medium, used if `medium_index` is not provided.
         index (List, optional): Refractive index or indices of the spherical scatterers themselves.
-        material (List, optional): Material(s) of the scatterers, used if `index` is not provided.
+        material (List, optionalnumpy.ndarray, ): Material(s) of the scatterers, used if `index` is not provided.
         name (str): Name identifier for the scatterer type, defaulted to 'sphere' and not intended for initialization.
     """
-    diameter: Union[List[float], float]
-    medium_index: Union[List[float], float, None] = None
+    diameter: Union[numpy.ndarray, List[float], float]
+    medium_index: Union[numpy.ndarray, List[float], float, None] = None
     medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
-    index: Union[List[Any], Any] = None
+    index: Union[numpy.ndarray, List[Any], Any] = None
     material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
     available_measure_list = measure.__sphere__
 
@@ -192,7 +192,7 @@ class Sphere(BaseScatterer):
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
 class CoreShell(BaseScatterer):
     """
     A data class representing a core-shell scatterer configuration used in PyMieSim simulations.
@@ -212,13 +212,13 @@ class CoreShell(BaseScatterer):
         shell_material (List, optional): Material(s) of the shell, used if `shell_index` is not provided.
         name (str): An identifier for the scatterer type, defaulted to 'coreshell' and not intended for initialization.
     """
-    core_diameter: Union[List[float], float]
-    shell_width: Union[List[float], float]
-    medium_index: Union[List[float], float, None] = None
+    core_diameter: Union[numpy.ndarray, List[float], float]
+    shell_width: Union[numpy.ndarray, List[float], float]
+    medium_index: Union[numpy.ndarray, List[float], float, None] = None
     medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
-    shell_index: Union[List[Any], Any, None] = None
+    shell_index: Union[numpy.ndarray, List[Any], Any, None] = None
     core_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
-    core_index: Union[List[Any], Any, None] = None
+    core_index: Union[numpy.ndarray, List[Any], Any, None] = None
     shell_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
 
     available_measure_list = measure.__coreshell__
@@ -288,7 +288,7 @@ class CoreShell(BaseScatterer):
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
 class Cylinder(BaseScatterer):
     """
     Represents a cylindrical scatterer configuration for PyMieSim simulations.
@@ -299,10 +299,10 @@ class Cylinder(BaseScatterer):
         index (List, optional): Refractive index of the cylinder.
         material (List, optional): Material(s) of the cylinder, used if `index` is not provided.
     """
-    diameter: Union[List[float], float]
-    medium_index: Union[List[float], float, None] = None
+    diameter: Union[numpy.ndarray, List[float], float]
+    medium_index: Union[numpy.ndarray, List[float], float, None] = None
     medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
-    index: Union[List[Any], Any, None] = None
+    index: Union[numpy.ndarray, List[Any], Any, None] = None
     material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
 
     available_measure_list = measure.__cylinder__

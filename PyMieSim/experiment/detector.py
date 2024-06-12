@@ -135,7 +135,7 @@ class BaseDetector():
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
 class Photodiode(BaseDetector):
     """
     A photodiode detector tailored for Mie scattering simulations, enhancing the BaseDetector with specific features.
@@ -154,18 +154,18 @@ class Photodiode(BaseDetector):
     Notes:
         This class is specifically configured to simulate a photodiode detector within a Mie scattering experiment.
     """
-    NA: Union[List[float], float]
-    gamma_offset: Union[List[float], float]
-    phi_offset: Union[List[float], float]
-    polarization_filter: Union[List[float | None], float | None]
-    sampling: Union[List[int], int]
+    NA: Union[numpy.ndarray, List[float], float]
+    gamma_offset: Union[numpy.ndarray, List[float], float]
+    phi_offset: Union[numpy.ndarray, List[float], float]
+    polarization_filter: Union[numpy.ndarray, List[float | None], float | None]
+    sampling: Union[numpy.ndarray, List[int], int]
     mean_coupling: bool = True
-    rotation: Union[List[float] | float] = field(default=0, init=False)
+    rotation: Union[numpy.ndarray, List[float] | float] = field(default=0, init=False)
     coherent: bool = field(default=False, init=False)
     mode_number: str = field(default='NC00', init=False)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
 class CoherentMode(BaseDetector):
     """
     Specialized for coherent detection modes in Mie scattering simulations, this class extends BaseDetector.
@@ -180,13 +180,13 @@ class CoherentMode(BaseDetector):
     Note:
         This class is specifically designed to handle and simulate coherent detection modes.
     """
-    mode_number: Union[List[str], str]
-    rotation: Union[List[float], float]
-    NA: Union[List[float], float]
-    gamma_offset: Union[List[float], float]
-    phi_offset: Union[List[float], float]
-    polarization_filter: Union[List[float | None], float | None]
-    sampling: Union[List[int], int]
+    mode_number: Union[numpy.ndarray, List[str], str]
+    rotation: Union[numpy.ndarray, List[float], float]
+    NA: Union[numpy.ndarray, List[float], float]
+    gamma_offset: Union[numpy.ndarray, List[float], float]
+    phi_offset: Union[numpy.ndarray, List[float], float]
+    polarization_filter: Union[numpy.ndarray, List[float | None], float | None]
+    sampling: Union[numpy.ndarray, List[int], int]
     mean_coupling: bool = False
     coherent: bool = field(default=True, init=False)
 

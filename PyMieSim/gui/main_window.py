@@ -36,7 +36,7 @@ class PyMieSimGUI:
         self.link_radio_button = "link"
         self.x_axis_label_widget = tk.StringVar(value='phi_offset')
         self.STD_axis_label_widget = tk.StringVar(value=None)
-        self.STD_axis_label_widget.set(None)
+        self.STD_axis_label_widget.set(None) 
 
         self.customize_notebook_style()
         self.setup_notebook()
@@ -84,12 +84,35 @@ class PyMieSimGUI:
 
         self.notebook_2 = ttk.Notebook(self.master)
         self.notebook_2.grid(row=2, column=0, sticky="ewns")
-
+ 
         # Create tab instances
-        self.source_tab = SourceTab(self.x_axis_label_widget, self.STD_axis_label_widget, notebook=self.notebook, label='Source')
-        self.scatterer_tab = ScattererTab(self.x_axis_label_widget, self.STD_axis_label_widget, self.notebook, 'Scatterer', source_tab=self.source_tab)
-        self.detector_tab = DetectorTab(self.x_axis_label_widget, self.STD_axis_label_widget, self.notebook, 'Detector')
-        self.axis_tab = AxisTab(self.notebook_2, 'Axis Configuration', other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab])
+        self.source_tab = SourceTab(
+            x_axis=self.x_axis_label_widget,
+            STD_axis=self.STD_axis_label_widget,
+            notebook=self.notebook,
+            label='Source'
+        )
+
+        self.scatterer_tab = ScattererTab(
+            x_axis=self.x_axis_label_widget, 
+            STD_axis=self.STD_axis_label_widget, 
+            notebook=self.notebook, 
+            label='Scatterer', 
+            source_tab=self.source_tab
+        )
+        
+        self.detector_tab = DetectorTab(
+            x_axis=self.x_axis_label_widget, 
+            STD_axis=self.STD_axis_label_widget, 
+            notebook=self.notebook, 
+            label='Detector'
+        )
+        
+        self.axis_tab = AxisTab(
+            master=self.notebook_2, 
+            label='Axis Configuration', 
+            other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab]
+        )
 
     def export_plot(self) -> NoReturn:
         """
@@ -204,7 +227,6 @@ class PyMieSimGUI:
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("Plot Window")
 
-        #std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
         figure = self.data.plot(x=self.x_axis_component, std=self.STD_axis_component)
         figure.unit_size = (9, 4)
         figure._render_()
@@ -226,18 +248,18 @@ class PyMieSimGUI:
 
         if x_axis == std_axis:
             self.messagebox1 = tk.messagebox.showerror(title = "error", message = "X-axis cannot be equal to STD-axis.", parent = self.master)
-            raise ValueError("X-axis cannot be equal to STD-axis.")
+            raise ValueError("Warning: x-axis cannot be equal to STD-axis.")
          
         if y_axis != "coupling" and std_axis in self.detector_tab.component_dict.keys():
             self.messagebox2 = tk.messagebox.showerror(title = "error", message = "STD-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
-            raise ValueError("STD-axis cannot be associated to detector if y-axis is not coupling.")
+            raise ValueError("Warning: STD-axis cannot be associated to detector if y-axis is not coupling.")
         
         if y_axis != "coupling" and x_axis in self.detector_tab.component_dict.keys():
             self.messagebox3 = tk.messagebox.showerror(title = "error", message = "x-axis cannot be associated to detector if y-axis is not coupling.", parent = self.master)
-            raise ValueError("x-axis cannot be associated to detector if y-axis is not coupling.")
+            raise ValueError("Warning: x-axis cannot be associated to detector if y-axis is not coupling.")
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
-
+    
         self.setup_PyMieSim()
 
         self.data = self.experiment.get(self.y_axis)

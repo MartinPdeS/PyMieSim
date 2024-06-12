@@ -17,16 +17,20 @@ class ScattererTab(BaseTab):
     parameters like dimensions and refractive indices.
 
     Attributes:
+        x_axis (tkinter.StringVar): empty.
+        STD_axis (tkinter.StringVar): empty.
         master (ttk.Notebook): The notebook widget this tab is part of.
         label (str): The label for the tab.
         source_tab (BaseTab): Reference to the source tab for source component configurations.
     """
 
-    def __init__(self, x_axis, STD_axis, master: ttk.Notebook, label: str, source_tab: BaseTab) -> NoReturn:
+    def __init__(self, x_axis: tkinter.StringVar, STD_axis: tkinter.StringVar, notebook: ttk.Notebook, label: str, source_tab: BaseTab) -> NoReturn:
         """
         Initializes the ScattererTab with user interface elements for scatterer configuration.
 
         Args:
+            x_axis (tkinter.StringVar): empty.
+            STD_axis (tkinter.StringVar): empty.
             master (ttk.Notebook): The notebook widget this tab will be part of.
             label (str): The label for the tab.
             source_tab (BaseTab): Reference to the source tab for accessing source component settings.
@@ -35,8 +39,7 @@ class ScattererTab(BaseTab):
         self.source_tab = source_tab
         self.x_axis = x_axis
         self.STD_axis = STD_axis
-
-        super().__init__(master, label=label)
+        super().__init__(notebook=notebook, label=label)
         self._setup_combobox()
         self.setup_widgets()
 
@@ -146,12 +149,16 @@ class ScattererTab(BaseTab):
             raise ValueError(f"Unsupported scatterer type: {scatterer_type}")
 
     def setup_sphere_component(self) -> NoReturn:
-        self.component = scatterer.Sphere(**self.widget_collection.to_component_dict(), source=self.source_tab.component)
+        kwargs = self.widget_collection.to_component_dict()
+        self.component = scatterer.Sphere(**kwargs, source=self.source_tab.component)
+
 
     def setup_cylinder_component(self) -> NoReturn:
-        self.component = scatterer.Cylinder(**self.widget_collection.to_component_dict(), source=self.source_tab.component)
+        kwargs = self.widget_collection.to_component_dict()
+        self.component = scatterer.Cylinder(**kwargs, source=self.source_tab.component)
 
     def setup_coreshell_component(self) -> NoReturn:
-        self.component = scatterer.CoreShell(**self.widget_collection.to_component_dict(), source=self.source_tab.component)
+        kwargs = self.widget_collection.to_component_dict()
+        self.component = scatterer.CoreShell(**kwargs, source=self.source_tab.component)
 
 # -
