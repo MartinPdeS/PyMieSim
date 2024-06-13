@@ -37,13 +37,21 @@ namespace SOURCE
 
             Gaussian() = default;
 
+            Gaussian(double wavelength) {
+                this->wavelength = wavelength;
+                this->NA = 0.3;
+                this->optical_power = 1.0;
+                this->k = 2 * PI / this->wavelength;
+                this->jones_vector = {1.0, 0.0};
+                this->compute_amplitude_from_power();
+            }
+
             Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
             : NA(NA), optical_power(optical_power) {
                 this->wavelength = wavelength;
                 this->k = 2 * PI / this->wavelength;
                 this->jones_vector = jones_vector;
                 this->compute_amplitude_from_power();
-
             }
 
             double compute_amplitude_from_power()

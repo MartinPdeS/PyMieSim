@@ -155,13 +155,11 @@ class Gaussian(LightSource):
         super(Gaussian, self).__post_init__()
 
         self.binding = BindedGaussian(
-            # wavelength=1e-6,
+            wavelength=1e-6,
             # NA=0.3,
             # optical_power=1.0,
             # jones_vector=[1.0, 0.0]
         )
-
-        # self.binding = BindedGaussian()
 
         # self.binding = BindedGaussian(
         #     wavelength=self.wavelength,
