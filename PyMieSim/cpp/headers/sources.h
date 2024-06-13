@@ -4,7 +4,6 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan
-#include <iostream>
 
 namespace SOURCE
 {
@@ -44,7 +43,6 @@ namespace SOURCE
                 this->k = 2 * PI / this->wavelength;
                 this->jones_vector = jones_vector;
                 this->compute_amplitude_from_power();
-                std::cout<<wavelength<<"  "<<optical_power<<"  " <<jones_vector[0]<<"   "<<jones_vector[1] <<"   "<<amplitude<<"\n";
 
             }
 
