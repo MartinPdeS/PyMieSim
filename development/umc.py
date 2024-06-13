@@ -7,7 +7,7 @@ from PyOptik import UsualMaterial
 import numpy
 
 source = Gaussian(
-    wavelength=[400e-9],
+    wavelength=[400e-9, 488e-9, 638e-9],
     polarization_value=numpy.linspace(0, 180, 15),
     polarization_type='linear',
     optical_power=1,
@@ -25,7 +25,7 @@ detector = Photodiode(
     sampling=500,
     NA=0.2,
     gamma_offset=0,
-    phi_offset=[15],
+    phi_offset=[0, 45, 90],
     polarization_filter=0,
 )
 
