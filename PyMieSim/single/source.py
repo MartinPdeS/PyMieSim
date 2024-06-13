@@ -6,11 +6,10 @@ import numpy
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 
-from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
 from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
-from PyMieSim.binary.SourceInterface import BindedGaussian, BindedPlanewave, BindedBaseSource
+from PyMieSim.binary.SourceInterface import BindedGaussian, BindedPlanewave, BindedBaseSource  # noqa: F401
 
 
 config_dict = dict(
@@ -154,6 +153,8 @@ class Gaussian(LightSource):
 
     def __post_init__(self):
         super(Gaussian, self).__post_init__()
+
+        self.binding = BindedGaussian()
 
         # self.binding = BindedGaussian(
         #     wavelength=self.wavelength,
