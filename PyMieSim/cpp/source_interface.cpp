@@ -32,8 +32,8 @@ PYBIND11_MODULE(SourceInterface, module) {
 
         .def(py::init<>())
 
-        .def_readonly("wavelength", &SOURCE::Planewave::wavelength, "Wavelength of the source.")
-        .def_readonly("jones_vector", &SOURCE::Planewave::jones_vector, "Jones vector of the source.")
-        .def_readonly("amplitude", &SOURCE::Planewave::amplitude, "Electric field amplitude of the source.")
+        .def_readonly("wavelength", &SOURCE::Gaussian::wavelength, "Wavelength of the source.")
+        .def_readonly("jones_vector", &SOURCE::Gaussian::jones_vector, "Jones vector of the source.")
+        .def_readonly("amplitude", &SOURCE::Gaussian::amplitude, "Electric field amplitude of the source.")
         ;
 }
