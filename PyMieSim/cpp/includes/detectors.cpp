@@ -2,6 +2,9 @@
 
 #include "detectors.h"
 
+#define EPSILON0 (double)8.854187817620389e-12
+#define C (double)299792458.0
+
 namespace DETECTOR {
 
     using complex128 = std::complex<double>;

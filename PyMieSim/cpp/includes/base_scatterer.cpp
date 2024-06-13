@@ -1,6 +1,6 @@
 #pragma once
 
-#include "definitions.cpp"
+
 #include "utils.cpp"
 #include "sources.cpp"
 #include "fibonacci_mesh.cpp"
@@ -8,15 +8,17 @@
 #include <vector>
 #include <complex>
 
+typedef std::complex<double> complex128;
+#define JJ complex128(0.0,1.0)
+
 class BaseScatterer
 {
 public:
+    SOURCE::BaseSource source;
     size_t max_order;
     double size_parameter;
     double area;
     double medium_index;
-
-    SOURCE::BaseSource source;
 
     BaseScatterer() = default;
 
@@ -38,10 +40,10 @@ public:
     double get_Cratio() const {return get_Qratio() * area;};
 
     virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi) const {};
-    virtual double get_Qsca() const {};
-    virtual double get_Qext() const {};
-    virtual double get_Qback() const {};
-    virtual double get_g() const {};
+    virtual double get_Qsca() const {return 0.;};
+    virtual double get_Qext() const {return 0.;};
+    virtual double get_Qback() const {return 0.;};
+    virtual double get_g() const {return 0.;};
 
     size_t get_wiscombe_criterion(const double size_parameter) const {
         return static_cast<size_t>(2 + size_parameter + 4 * std::cbrt(size_parameter)) + 16;
@@ -73,8 +75,7 @@ public:
         phi_field.reserve(full_size);
         theta_field.reserve(full_size);
 
-        complex128
-            propagator = this->compute_propagator(radius);
+        complex128 propagator = this->compute_propagator(radius);
 
         for (unsigned int p=0; p < S1.size(); p++ )
             for (unsigned int t=0; t < theta.size(); t++ )
@@ -166,8 +167,6 @@ public:
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
     compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
-        complex128 propagator = this->compute_propagator(radius);
-
         auto [S1, S2] = this->compute_s1s2(phi);
 
         return this->compute_structured_fields(S1, S2, theta, radius);

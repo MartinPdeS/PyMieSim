@@ -1,6 +1,5 @@
 #pragma once
 
-#include "definitions.cpp"
 #include "special_function.cpp"
 #include "numpy_interface.cpp"
 
@@ -12,8 +11,8 @@ struct SphericalCoordinate {
 
 struct VectorField {
     size_t sampling = 0;
-    std::vector<double> data;
     std::vector<size_t> shape;
+    std::vector<double> data;
 
     VectorField() = default;
     VectorField(const std::vector<double>& vector) : sampling(1), shape({1, 3}), data(vector) {}

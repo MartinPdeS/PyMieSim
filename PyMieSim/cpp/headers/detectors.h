@@ -17,6 +17,7 @@ namespace DETECTOR {
 
     class Detector {
         public:
+            size_t sampling = 0;
             double NA = 0.0;
             double phi_offset = 0.0;
             double gamma_offset = 0.0;
@@ -24,7 +25,6 @@ namespace DETECTOR {
             double rotation = 0.0;
             bool coherent = true;
             bool mean_coupling = true;
-            size_t sampling = 0;
             double max_angle = 0;
             std::vector<complex128> scalar_field;
             FibonacciMesh fibonacci_mesh;
@@ -102,17 +102,20 @@ namespace DETECTOR {
     class Set
     {
         public:
-            std::vector<std::vector<complex128>> scalar_fields;
+            std::vector<std::string> mode_numbers;
+            std::vector<unsigned> sampling;
             std::vector<double> NA;
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
             std::vector<double> polarization_filter;
             std::vector<double> rotation;
-            std::vector<std::string> mode_numbers;
-            std::vector<unsigned> sampling;
-
             bool coherent;
             bool mean_coupling;
+
+            std::vector<std::vector<complex128>> scalar_fields;
+
+
+
 
             std::vector<size_t> shape;
 

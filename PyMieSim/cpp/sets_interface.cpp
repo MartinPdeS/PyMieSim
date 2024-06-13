@@ -2,7 +2,6 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 #include <pybind11/complex.h> // For std::complex support
 
-#include "includes/definitions.cpp"
 #include "includes/sources.cpp"
 #include "includes/sphere.cpp"
 #include "includes/cylinder.cpp"

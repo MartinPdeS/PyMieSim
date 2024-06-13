@@ -5,6 +5,8 @@
 #include "numpy_interface.cpp"
 #include "fibonacci_mesh.h"
 
+#define PI (double)3.14159265358979323846264338
+
 void FibonacciMesh::rotate_around_center() {
     if (gamma_offset != 0.0) {
         cartesian_coordinates.rotate_about_axis('x', gamma_offset);

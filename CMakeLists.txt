@@ -26,7 +26,7 @@ add_subdirectory("extern/pybind11")
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
 
-add_compile_options(-Wno-return-type)
+add_compile_options(-Wall -Wextra -Wno-uninitialized)
 
 if (WIN32)
     message("Windows OS detected")

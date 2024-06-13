@@ -1,9 +1,10 @@
 #include "numpy_interface.cpp"
 #include <vector>
 #include <cmath>
-#include "definitions.cpp"
 #include "bessel_subroutine.h"
 
+#define PI (double)3.14159265358979323846264338
+typedef std::complex<double> complex128;
 
 
 std::vector<complex128> get_LP_mode_field(

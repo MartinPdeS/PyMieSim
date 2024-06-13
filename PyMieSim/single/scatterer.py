@@ -12,6 +12,13 @@ from PyMieSim.single import source  # noqa: F401
 from pydantic.dataclasses import dataclass
 
 
+config_dict = dict(
+    kw_only=True,
+    slots=True,
+    extra='forbid'
+)
+
+
 class GenericScatterer():
     """
     Generic class for scatterer
@@ -260,7 +267,7 @@ class GenericScatterer():
         return index, material
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Sphere(GenericScatterer):
     """
     Class representing a homogeneous spherical scatterer.
@@ -392,7 +399,7 @@ class Sphere(GenericScatterer):
         return self.binding.dn(max_order)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class CoreShell(GenericScatterer):
     """
     Class representing a core/shell spherical scatterer.
@@ -436,10 +443,8 @@ class CoreShell(GenericScatterer):
             core_index=self.core_index,
             shell_width=self.shell_width,
             core_diameter=self.core_diameter,
-            wavelength=self.source.wavelength,
             medium_index=self.medium_index,
-            jones_vector=self.source.jones_vector.values.squeeze(),
-            amplitude=self.source.amplitude
+            source=self.source.binding
         )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
@@ -471,7 +476,7 @@ class CoreShell(GenericScatterer):
         return self.binding.bn(max_order)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Cylinder(GenericScatterer):
     """
     Class representing a right angle cylindrical scatterer.
@@ -505,10 +510,8 @@ class Cylinder(GenericScatterer):
         self.binding = CYLINDER(
             index=self.index,
             diameter=self.diameter,
-            wavelength=self.source.wavelength,
             medium_index=self.medium_index,
-            amplitude=self.source.amplitude,
-            jones_vector=self.source.jones_vector.values.squeeze()
+            source=self.source.binding
         )
 
     def a1n(self, max_order: Optional[int] = 0) -> numpy.array:
