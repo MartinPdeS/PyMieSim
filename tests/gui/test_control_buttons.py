@@ -7,7 +7,7 @@ import tkinter
 from PyMieSim.gui.main_window import PyMieSimGUI
 from PyMieSim.experiment.measure import __sphere__
 from unittest.mock import patch, MagicMock
-import DataVisual
+
 
 def random_list(min, max):
     lenght = 3
@@ -24,7 +24,7 @@ def reset_std_button(widget, gui):
 
 @patch('DataVisual.multi_array.Array.plot')
 @patch('tkinter.messagebox.showerror')
-def calculate_button(mock_messagebox, mock_draw, gui, y_axis_index, source_widgets, scatterer_widgets, detector_widgets):
+def calculate_button(mock_messagebox, mock_plot, gui, y_axis_index, source_widgets, scatterer_widgets, detector_widgets):
     """
     This function ensures that the calculate button generates a graph for
     all possible x-axis values, along with some combination of random std-axis values.
@@ -40,22 +40,22 @@ def calculate_button(mock_messagebox, mock_draw, gui, y_axis_index, source_widge
     for x_widget in possible_widgets:
         if x_widget.tk_radio_button_1['value'] == 'mode_number':
             continue
-        mock_draw.reset_mock()
+        mock_plot.reset_mock()
 
         x_widget.tk_radio_button_1.invoke()
         gui.calculate_button.invoke()
 
-        assert mock_draw.call_count == 1, f"calculate_button with x-axis selection '{x_widget.tk_radio_button_1['value']}' did not call the draw"
+        assert mock_plot.call_count == 1, f"calculate_button with x-axis selection '{x_widget.tk_radio_button_1['value']}' did not call the draw"
 
         for position in random_list(0,len(possible_widgets)-1): # This will make a test for 3 random std_axis selection (doing them all takes too much computational time)
-            mock_draw.reset_mock()
+            mock_plot.reset_mock()
 
             std_widget = possible_widgets[position]
             std_widget.tk_radio_button_2.invoke()
             gui.calculate_button.invoke()
 
             try:
-                assert mock_draw.call_count == 1
+                assert mock_plot.call_count == 1
             except:
                 assert x_widget.tk_radio_button_1['value'] == std_widget.tk_radio_button_2['value'], f"calculate_button with x-axis selection '{x_widget.tk_radio_button_1['value']}' and std-axis selection '{std_widget.tk_radio_button_2['value']}' did not call the draw as intended"
 
@@ -81,7 +81,7 @@ def test_in_all_combination_of_widgets(y_axis_index):
 
     # The following nested for loops will create all possible widget combinations
 
-    source_widgets = gui.source_tab.widget_collection.widgets[0:2] # Only the first two widgets can be choosen as axis
+    source_widgets = gui.source_tab.widget_collection.widgets 
 
     for scatterer_str in gui.scatterer_tab.type_widget['values']:
         gui.scatterer_tab.type_widget.set(scatterer_str)
@@ -97,9 +97,9 @@ def test_in_all_combination_of_widgets(y_axis_index):
             calculate_button(
                 gui=gui,
                 y_axis_index=y_axis_index,
-                source_widgets=source_widgets,
-                scatterer_widgets=scatterer_widgets,
-                detector_widgets=detector_widgets
+                source_widgets=source_widgets[0:2], # Only the first two widgets can be choosen as axis.
+                scatterer_widgets=scatterer_widgets[0:2], # Only test necessary widgets to reduce computational time.
+                detector_widgets=detector_widgets[0:3] # Only test necessary widgets to reduce computational time.
             )
 
     root.destroy()

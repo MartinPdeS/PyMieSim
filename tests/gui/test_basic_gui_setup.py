@@ -47,6 +47,10 @@ def test_setup_notebook(**kwargs):
 @set_up_gui
 @patch('matplotlib.backends.backend_tkagg.FigureCanvasTkAgg.draw')
 def test_generate_figure(mock_draw, **kwargs):
+    """
+This test ensures that the `generate_figure` method, when called by the calculate button, does indeed invoke the canvas draw function.
+    """
     gui = kwargs['gui']
     gui.calculate_button.invoke()
     assert mock_draw.call_count == 1, "mock_draw is not called by generate_figure"
+    kwargs['root'].destroy()
