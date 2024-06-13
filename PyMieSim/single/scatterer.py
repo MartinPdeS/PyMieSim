@@ -431,16 +431,16 @@ class CoreShell(GenericScatterer):
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
-        # self.binding = CORESHELL(
-        #     shell_index=self.shell_index,
-        #     core_index=self.core_index,
-        #     shell_width=self.shell_width,
-        #     core_diameter=self.core_diameter,
-        #     wavelength=self.source.wavelength,
-        #     medium_index=self.medium_index,
-        #     jones_vector=self.source.jones_vector.values.squeeze(),
-        #     amplitude=self.source.amplitude
-        # )
+        self.binding = CORESHELL(
+            shell_index=self.shell_index,
+            core_index=self.core_index,
+            shell_width=self.shell_width,
+            core_diameter=self.core_diameter,
+            wavelength=self.source.wavelength,
+            medium_index=self.medium_index,
+            jones_vector=self.source.jones_vector.values.squeeze(),
+            amplitude=self.source.amplitude
+        )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
@@ -502,14 +502,14 @@ class Cylinder(GenericScatterer):
         """
         from PyMieSim.binary.CylinderInterface import CYLINDER
 
-        # self.binding = CYLINDER(
-        #     index=self.index,
-        #     diameter=self.diameter,
-        #     wavelength=self.source.wavelength,
-        #     medium_index=self.medium_index,
-        #     amplitude=self.source.amplitude,
-        #     jones_vector=self.source.jones_vector.values.squeeze()
-        # )
+        self.binding = CYLINDER(
+            index=self.index,
+            diameter=self.diameter,
+            wavelength=self.source.wavelength,
+            medium_index=self.medium_index,
+            amplitude=self.source.amplitude,
+            jones_vector=self.source.jones_vector.values.squeeze()
+        )
 
     def a1n(self, max_order: Optional[int] = 0) -> numpy.array:
         r"""
