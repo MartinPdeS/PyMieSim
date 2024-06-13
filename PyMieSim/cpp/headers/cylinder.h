@@ -29,40 +29,30 @@ namespace CYLINDER
             std::vector<complex128> get_b2n() const { return b2n; };
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-            double medium_index, std::vector<complex128> jones_vector, size_t max_order)
+            double medium_index, std::vector<complex128> jones_vector, size_t max_order = 0)
             : BaseScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
             {
                 this->compute_size_parameter();
-                this->max_order = max_order;
+
+                if (max_order == 0)
+                    this->max_order = get_wiscombe_criterion(this->size_parameter);
+                else
+                    this->max_order = max_order;
+
                 this->compute_area();
                 this->compute_an_bn();
             }
 
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-            double medium_index, std::vector<complex128> jones_vector)
-            : BaseScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
-                this->max_order = get_wiscombe_criterion(this->size_parameter);
-                this->compute_area();
-                this->compute_an_bn();
-            }
-
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order) :
+            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order = 0) :
                 BaseScatterer(source, medium_index), diameter(diameter), index(index)
             {
                 this->compute_size_parameter();
-                this->max_order = max_order;
-                this->compute_area();
-                this->compute_an_bn();
-            }
 
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source) :
-                BaseScatterer(source, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
-                this->max_order = get_wiscombe_criterion(this->size_parameter);
-                this->compute_area();
+                if (max_order == 0)
+                    this->max_order = get_wiscombe_criterion(this->size_parameter);
+                else
+                    this->max_order = max_order;
+
                 this->compute_area();
                 this->compute_an_bn();
             }
