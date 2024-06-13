@@ -26,8 +26,12 @@ namespace SOURCE
         public:
             Planewave() = default;
 
-            Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude)
-            : BaseSource(wavelength, jones_vector, amplitude) {}
+            Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude) {
+                this->wavelength = wavelength;
+                this->k = 2 * PI / this->wavelength;
+                this->jones_vector = jones_vector;
+                this->amplitude = amplitude;
+            }
         };
 
     class Gaussian: public BaseSource {
