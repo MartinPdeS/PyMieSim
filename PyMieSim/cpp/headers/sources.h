@@ -39,8 +39,10 @@ namespace SOURCE
 
             Gaussian(double wavelength, std::vector<std::complex<double>> jones_vector, double NA, double optical_power)
             : NA(NA), optical_power(optical_power) {
+                this->wavelength = wavelength;
+                this->k = 2 * PI / this->wavelength;
+                this->jones_vector = jones_vector;
                 this->compute_amplitude_from_power();
-                BaseSource(wavelength, jones_vector, amplitude);
 
             }
 
