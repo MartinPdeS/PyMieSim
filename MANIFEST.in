@@ -1,0 +1,8 @@
+graft PyMieSim
+
+prune extern
+prune docs
+prune libraries
+prune Makefile
+prune tests
+prune PyMieSim/cpp
