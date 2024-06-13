@@ -156,13 +156,13 @@ class Gaussian(LightSource):
     def __post_init__(self):
         super(Gaussian, self).__post_init__()
 
-        self.binding = BindedGaussian(
-            wavelength=self.wavelength,
-            NA=self.NA,
-            optical_power=self.optical_power,
-            jones_vector=self.jones_vector.values[:, 0]
-        )
-        dsa
+        # self.binding = BindedGaussian(
+        #     wavelength=self.wavelength,
+        #     NA=self.NA,
+        #     optical_power=self.optical_power,
+        #     jones_vector=self.jones_vector.values[:, 0]
+        # )
+        # dsa
 
     def plot(self) -> SceneList3D:
         """
