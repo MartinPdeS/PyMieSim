@@ -4,18 +4,19 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan
+#include <iostream>
 
 namespace SOURCE
 {
     class BaseSource {
         public:
             double wavelength = 0.0;
-            std::vector<std::complex<double>> jones_vector;
+            std::vector<complex128> jones_vector;
             double amplitude = 0.0;
             double k = 0.0;
 
         BaseSource() = default;
-        BaseSource(double wavelength, std::vector<std::complex<double>> jones_vector, double amplitude): wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
+        BaseSource(double wavelength, std::vector<complex128> jones_vector, double amplitude): wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
         {
             this->k = 2 * PI / this->wavelength;
         }
@@ -26,7 +27,7 @@ namespace SOURCE
         public:
             Planewave() = default;
 
-            Planewave(double wavelength, std::vector<std::complex<double>> jones_vector, double amplitude)
+            Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude)
             : BaseSource(wavelength, jones_vector, amplitude) {}
         };
 
@@ -37,12 +38,13 @@ namespace SOURCE
 
             Gaussian() = default;
 
-            Gaussian(double wavelength, std::vector<std::complex<double>> jones_vector, double NA, double optical_power)
+            Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
             : NA(NA), optical_power(optical_power) {
                 this->wavelength = wavelength;
                 this->k = 2 * PI / this->wavelength;
                 this->jones_vector = jones_vector;
                 this->compute_amplitude_from_power();
+                std::cout<<wavelength<<"  "<<optical_power<<"  " <<jones_vector[0]<<"   "<<jones_vector[1] <<"   "<<amplitude<<"\n";
 
             }
 

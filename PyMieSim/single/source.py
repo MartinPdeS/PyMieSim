@@ -162,6 +162,7 @@ class Gaussian(LightSource):
             optical_power=self.optical_power,
             jones_vector=self.jones_vector.values[:, 0]
         )
+        dsa
 
     def plot(self) -> SceneList3D:
         """

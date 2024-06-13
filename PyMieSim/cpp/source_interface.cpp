@@ -30,6 +30,8 @@ PYBIND11_MODULE(SourceInterface, module) {
             py::arg("optical_power"),
             "Constructs a Planewave source with specified optical properties. ")
 
+        .def(py::init<>())
+
         .def_readonly("wavelength", &SOURCE::Planewave::wavelength, "Wavelength of the source.")
         .def_readonly("jones_vector", &SOURCE::Planewave::jones_vector, "Jones vector of the source.")
         .def_readonly("amplitude", &SOURCE::Planewave::amplitude, "Electric field amplitude of the source.")
