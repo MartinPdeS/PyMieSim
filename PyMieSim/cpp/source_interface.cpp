@@ -31,13 +31,6 @@ PYBIND11_MODULE(SourceInterface, module) {
             py::arg("optical_power"),
             "Constructs a Gaussian source with specified optical properties. ")
 
-        // .def(
-        //     py::init<double, double, double>(),
-        //     py::arg("wavelength"),
-        //     py::arg("NA"),
-        //     py::arg("optical_power"),
-        //     "Constructs a Gaussian source with specified optical properties. ")
-
         .def(py::init<>())
 
         .def_readonly("wavelength", &Gaussian::wavelength, "Wavelength of the source.")
