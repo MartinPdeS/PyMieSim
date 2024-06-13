@@ -293,12 +293,13 @@ class Sphere(GenericScatterer):
         from PyMieSim.binary.SphereInterface import SPHERE
 
         self.binding = SPHERE(
-            wavelength=self.source.wavelength,
-            amplitude=self.source.amplitude,
+            # wavelength=self.source.wavelength,
+            # amplitude=self.source.amplitude,
             diameter=self.diameter,
             index=self.index,
             medium_index=self.medium_index,
-            jones_vector=self.source.jones_vector.values.squeeze(),
+            source=self.source.binding
+            # jones_vector=self.source.jones_vector.values.squeeze(),
         )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
