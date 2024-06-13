@@ -20,12 +20,14 @@ PYBIND11_MODULE(SphereInterface, module) {
              py::arg("medium_index"),
              py::arg("jones_vector"),
              "Constructor for SPHERE, initializing it with physical and optical properties.")
-        .def(py::init<double, complex128, double, SOURCE::BaseSource&>(),
-             py::arg("diameter"),
-             py::arg("index"),
-             py::arg("medium_index"),
-             py::arg("source"),
-             "Constructor for SPHERE, initializing it with physical and optical properties.")
+
+        .def(
+            py::init<double, complex128, double, SOURCE::BaseSource&>(),
+            py::arg("diameter"),
+            py::arg("index"),
+            py::arg("medium_index"),
+            py::arg("source"),
+            "Constructor for SPHERE, initializing it with physical and optical properties.")
 
         .def(py::init<>(), "Default constructor for SPHERE scatterer.")
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a sphere.")

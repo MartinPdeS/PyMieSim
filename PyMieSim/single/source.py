@@ -141,9 +141,9 @@ class Gaussian(LightSource):
     """
     wavelength: float
     polarization_value: Union[float, str]
-    polarization_type: str = 'linear'
     optical_power: float
     NA: float
+    polarization_type: str = 'linear'
     amplitude: float = field(init=False, repr=False)
 
     def __post_init__(self):
