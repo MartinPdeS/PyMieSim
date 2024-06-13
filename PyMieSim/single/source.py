@@ -12,7 +12,13 @@ from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
 
 
-# @dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+config_dict = dict(
+    kw_only=True,
+    slots=True,
+    extra='forbid'
+)
+
+
 class LightSource:
     """
     Abstract class for light sources in light scattering simulations.
@@ -84,7 +90,7 @@ class LightSource:
         raise NotImplementedError("Subclass must implement this method.")
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class PlaneWave(LightSource):
     """
     Represents a plane wave light source for light scattering simulations.
@@ -120,7 +126,7 @@ class PlaneWave(LightSource):
         return figure
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Gaussian(LightSource):
     """
     Represents a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.

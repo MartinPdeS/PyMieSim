@@ -48,7 +48,7 @@ class FibonacciMesh:
 
         self._plan = None
 
-        self.vertical_vector = numpy.array([1, 0, 0]) 
+        self.vertical_vector = numpy.array([1, 0, 0])
         self.horizontal_vector = numpy.array([0, 1, 0])
 
         self.binding = CPPFibonacciMesh(
