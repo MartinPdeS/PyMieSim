@@ -1,5 +1,5 @@
 #include <pybind11/pybind11.h>
-#include "sources.cpp"  // Assuming this includes the necessary DETECTOR definitions
+#include "sources.cpp"
 
 namespace py = pybind11;
 
@@ -28,7 +28,7 @@ PYBIND11_MODULE(SourceInterface, module) {
             py::arg("jones_vector"),
             py::arg("NA"),
             py::arg("optical_power"),
-            "Constructs a Planewave source with specified optical properties. ")
+            "Constructs a Gaussian source with specified optical properties. ")
 
         .def(py::init<>())
 
