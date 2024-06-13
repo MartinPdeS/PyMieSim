@@ -19,6 +19,7 @@ def set_up_gui(foo):
 
     return set_up
 
+
 @set_up_gui
 def test_on_close(**kwargs):
     """
@@ -27,8 +28,9 @@ def test_on_close(**kwargs):
     gui = kwargs['gui']
     gui.calculate_button.invoke()
     gui.on_close()
-    with raises(tkinter.TclError): # the gui is closed, so invoking the button should cause an error
+    with raises(tkinter.TclError):  # the gui is closed, so invoking the button should cause an error
         gui.calculate_button.invoke()
+
 
 @set_up_gui
 def test_setup_notebook(**kwargs):
@@ -43,6 +45,7 @@ def test_setup_notebook(**kwargs):
     assert gui.scatterer_tab.__class__ == PyMieSim.gui.scatterer_tab.ScattererTab
     assert gui.axis_tab.__class__ == PyMieSim.gui.axis_tab.AxisTab
     kwargs['root'].destroy()
+
 
 @set_up_gui
 @patch('matplotlib.backends.backend_tkagg.FigureCanvasTkAgg.draw')

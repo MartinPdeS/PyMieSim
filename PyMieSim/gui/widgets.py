@@ -137,7 +137,7 @@ class InputWidget(BaseWidget):
         process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
     """
 
-    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, can_be_axis = True, x_axis = None, STD_axis = None, **kwargs) -> None:
+    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, can_be_axis=True, x_axis=None, STD_axis=None, **kwargs) -> None:
         """
         Initializes a new instance of the Widget class.
         """
@@ -149,24 +149,24 @@ class InputWidget(BaseWidget):
         self.can_be_axis = can_be_axis
         self.update()
 
-
         # The variables for the radiobuttons used to select the X and STD axis
         self.button_variableX = x_axis
         self.button_variableSTD = STD_axis
-        
+
     def setup(self, row: int):
         row += 1
         self.tk_label = tkinter.Label(self.frame, text=self.label)
         self.tk_label.grid(row=row + 1, column=0, sticky="W", pady=2)
         self.tk_widget = tkinter.Entry(self.frame, textvariable=self.tk_widget)
         self.tk_widget.grid(row=row + 1, column=1, sticky="W", pady=2)
+
         # Adds the radiobuttons used to select wether this variable is used as an axis
-        if self.can_be_axis == True:
+        if self.can_be_axis:
             self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable=self.button_variableX, value=self.component_label)
             self.tk_radio_button_1.grid(row=row + 1, column=2, sticky="W", pady=2)
             self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable=self.button_variableSTD, value=self.component_label)
             self.tk_radio_button_2.grid(row=row + 1, column=3, sticky="W", pady=2)
-        
+
     def get_value(self):
         self.update()
 
@@ -205,7 +205,7 @@ class InputWidget(BaseWidget):
     def destroy(self) -> NoReturn:
         self.tk_label.destroy()
         self.tk_widget.destroy()
-        if self.can_be_axis == True:
+        if self.can_be_axis:
             self.tk_radio_button_1.destroy()
             self.tk_radio_button_2.destroy()
 
