@@ -7,7 +7,9 @@ using namespace SOURCE;
 PYBIND11_MODULE(SourceInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-    py::class_<BaseSource>(module, "BindedBaseSource");
+    py::class_<BaseSource>(module, "BindedBaseSource")
+        .def(py::init<>())
+    ;
 
     py::class_<Planewave>(module, "BindedPlanewave")
         .def(
