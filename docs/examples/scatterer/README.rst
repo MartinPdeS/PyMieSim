@@ -1,0 +1,4 @@
+.. scatterer-index:
+
+Scatterers
+~~~~~~~~~~
