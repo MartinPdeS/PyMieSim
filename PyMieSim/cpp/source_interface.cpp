@@ -60,13 +60,13 @@ namespace SOURCE {
 
     class BaseSource {
     public:
-        double wavelength = 1.0;
-        std::vector<std::complex<double>> jones_vector;
-        double amplitude = 2.0;
-        double k = 1.0;
+        double wavelength;
+        std::vector<complex128> jones_vector;
+        double amplitude;
+        double k;
 
         BaseSource() = default;
-        BaseSource(double wavelength, std::vector<std::complex<double>> jones_vector, double amplitude)
+        BaseSource(double wavelength, std::vector<complex128> jones_vector, double amplitude)
             : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude) {
             this->k = 2 * PI / this->wavelength;
         }
@@ -75,17 +75,17 @@ namespace SOURCE {
     class Planewave : public BaseSource {
     public:
         Planewave() = default;
-        Planewave(double wavelength, std::vector<std::complex<double>> jones_vector, double amplitude)
+        Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude)
             : BaseSource(wavelength, jones_vector, amplitude) {}
     };
 
     class Gaussian : public BaseSource {
     public:
-        double NA = 0.5;
-        double optical_power = 1;
+        double NA;
+        double optical_power;
 
         Gaussian() = default;
-        Gaussian(double wavelength, std::vector<std::complex<double>> jones_vector, double NA, double optical_power)
+        Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
             : BaseSource(wavelength, jones_vector, 0.0), NA(NA), optical_power(optical_power) {}
     };
 
@@ -102,7 +102,7 @@ PYBIND11_MODULE(SourceInterface, module) {
 
     py::class_<Planewave, BaseSource>(module, "BindedPlanewave")
         .def(
-            py::init<double, std::vector<std::complex<double>>, double>(),
+            py::init<double, std::vector<complex128>, double>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
             py::arg("amplitude"),
@@ -113,7 +113,7 @@ PYBIND11_MODULE(SourceInterface, module) {
 
     py::class_<Gaussian, BaseSource>(module, "BindedGaussian")
         .def(
-            py::init<double, std::vector<std::complex<double>>, double, double>(),
+            py::init<double, std::vector<complex128>, double, double>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
             py::arg("NA"),
