@@ -9,17 +9,6 @@ PYBIND11_MODULE(CoreShellInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
     py::class_<Scatterer>(module, "CORESHELL")
-        .def(py::init<double, double, double, double, std::complex<double>, std::complex<double>, double, std::vector<complex128>>(),
-             py::arg("wavelength"),
-             py::arg("amplitude"),
-             py::arg("core_diameter"),
-             py::arg("shell_width"),
-             py::arg("core_index"),
-             py::arg("shell_index"),
-             py::arg("medium_index"),
-             py::arg("jones_vector"),
-             "Constructor for CORESHELL, initializing it with physical and optical properties.")
-
         .def(py::init<double, double, std::complex<double>, std::complex<double>, double, SOURCE::BaseSource&>(),
              py::arg("core_diameter"),
              py::arg("shell_width"),

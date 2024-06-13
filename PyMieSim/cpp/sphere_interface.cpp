@@ -12,15 +12,6 @@ PYBIND11_MODULE(SphereInterface, module) {
 
     // Binding for SPHERE::Scatterer class
     py::class_<Scatterer>(module, "SPHERE")
-        .def(py::init<double, double, double, std::complex<double>, double, std::vector<complex128>>(),
-             py::arg("wavelength"),
-             py::arg("amplitude"),
-             py::arg("diameter"),
-             py::arg("index"),
-             py::arg("medium_index"),
-             py::arg("jones_vector"),
-             "Constructor for SPHERE, initializing it with physical and optical properties.")
-
         .def(
             py::init<double, complex128, double, SOURCE::BaseSource&>(),
             py::arg("diameter"),
