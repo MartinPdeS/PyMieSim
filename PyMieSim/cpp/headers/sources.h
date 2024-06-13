@@ -37,10 +37,10 @@ namespace SOURCE
 
             Gaussian() = default;
 
-            Gaussian(double wavelength) {
+            Gaussian(double wavelength, double NA, double optical_power) {
                 this->wavelength = wavelength;
-                this->NA = 0.3;
-                this->optical_power = 1.0;
+                this->NA = NA;
+                this->optical_power = optical_power;
                 this->k = 2 * PI / this->wavelength;
                 this->jones_vector = {1.0, 0.0};
                 this->compute_amplitude_from_power();
