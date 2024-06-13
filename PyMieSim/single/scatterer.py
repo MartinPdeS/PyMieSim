@@ -292,12 +292,12 @@ class Sphere(GenericScatterer):
         """
         from PyMieSim.binary.SphereInterface import SPHERE
 
-        # self.binding = SPHERE(
-        #     diameter=self.diameter,
-        #     index=self.index,
-        #     medium_index=self.medium_index,
-        #     source=self.source.binding
-        # )
+        self.binding = SPHERE(
+            diameter=self.diameter,
+            index=self.index,
+            medium_index=self.medium_index,
+            source=self.source.binding
+        )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
