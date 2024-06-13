@@ -22,7 +22,7 @@ PYBIND11_MODULE(SourceInterface, module) {
         .def_readonly("amplitude", &Planewave::amplitude, "Electric field amplitude of the source.")
         ;
 
-    py::class_<Gaussian>(module, "BindedGaussian")
+    py::class_<Gaussian, BaseSource>(module, "BindedGaussian")
         .def(
             py::init<double, std::vector<complex128>, double, double>(),
             py::arg("wavelength"),
