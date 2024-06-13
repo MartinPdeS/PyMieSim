@@ -10,6 +10,7 @@ from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
 from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
+from PyMieSim.binary.SourceInterface import BindedGaussian, BindedPlanewave, BindedBaseSource
 
 
 config_dict = dict(
