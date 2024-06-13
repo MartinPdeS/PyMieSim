@@ -112,11 +112,11 @@ class PlaneWave(LightSource):
     def __post_init__(self):
         super(PlaneWave, self).__post_init__()
 
-        self.binding = BindedPlanewave(
-            wavelength=self.wavelength,
-            amplitude=self.amplitude,
-            jones_vector=self.jones_vector.values[:, 0]
-        )
+        # self.binding = BindedPlanewave(
+        #     wavelength=self.wavelength,
+        #     amplitude=self.amplitude,
+        #     jones_vector=self.jones_vector.values[:, 0]
+        # )
 
     def plot(self) -> SceneList3D:
         """
@@ -125,7 +125,6 @@ class PlaneWave(LightSource):
         Returns:
             SceneList3D: A 3D plotting scene object.
         """
-        # Example plotting logic; adjust as needed for your specific visualization requirements.
         figure = SceneList3D()
         ax = figure.append_ax()
         ax.add_unit_sphere(opacity=0.3)

@@ -19,9 +19,9 @@ class GenericScatterer():
 
     def print_properties(self) -> None:
         property_names = [
-            "size_parameter", "area", "index", "Qsca", "Qext",
-            "Qabs", "Qback", "Qratio", "Qpr", "Csca",
-            "Cext", "Cabs", "Cback", "Cratio", "Cpr", "g",
+            "size_parameter", "area", "index", "g",
+            "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
+            "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
         ]
 
         data = [getattr(self, name) for name in property_names]
