@@ -2,14 +2,16 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-from tkinter import ttk
 import tkinter
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.widgets import InputWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class ScattererTab(BaseTab):
     """
     A GUI tab for configuring scatterer parameters within PyMieSim experiments. This tab allows users
@@ -23,8 +25,11 @@ class ScattererTab(BaseTab):
         label (str): The label for the tab.
         source_tab (BaseTab): Reference to the source tab for source component configurations.
     """
+    x_axis: tkinter.StringVar
+    STD_axis: tkinter.StringVar
+    source_tab: BaseTab
 
-    def __init__(self, x_axis: tkinter.StringVar, STD_axis: tkinter.StringVar, notebook: ttk.Notebook, label: str, source_tab: BaseTab) -> NoReturn:
+    def __post_init__(self) -> NoReturn:
         """
         Initializes the ScattererTab with user interface elements for scatterer configuration.
 
@@ -36,10 +41,7 @@ class ScattererTab(BaseTab):
             source_tab (BaseTab): Reference to the source tab for accessing source component settings.
         """
         self.type_button = tkinter.StringVar(value='Sphere')
-        self.source_tab = source_tab
-        self.x_axis = x_axis
-        self.STD_axis = STD_axis
-        super().__init__(notebook=notebook, label=label)
+        super().__post_init__()
         self._setup_combobox()
         self.setup_widgets()
 

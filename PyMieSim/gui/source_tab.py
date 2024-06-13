@@ -2,12 +2,16 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
+import tkinter
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.widgets import InputWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class SourceTab(BaseTab):
     """
     A GUI tab for configuring the light source parameters for simulations in PyMieSim.
@@ -19,8 +23,10 @@ class SourceTab(BaseTab):
     Attributes:
         variables (WidgetCollection): A collection of widgets for source configuration.
     """
+    x_axis: tkinter.StringVar
+    STD_axis: tkinter.StringVar
 
-    def __init__(self, x_axis, STD_axis, *args, **kwargs):
+    def __post_init__(self):
         """
         Initializes the SourceTab with UI components for source configuration.
 
@@ -28,9 +34,7 @@ class SourceTab(BaseTab):
             *args: Variable length argument list for BaseTab.
             **kwargs: Arbitrary keyword arguments for BaseTab.
         """
-        super().__init__(*args, **kwargs)
-        self.x_axis = x_axis
-        self.STD_axis = STD_axis
+        super().__post_init__()
         self.setup_widgets()
 
     def setup_widgets(self) -> NoReturn:

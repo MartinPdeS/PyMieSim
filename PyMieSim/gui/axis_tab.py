@@ -7,12 +7,17 @@ from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.widgets import ComBoxWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class AxisTab(BaseTab):
+    notebook: ttk.Notebook
+    other_tabs: list[BaseTab]
     measure_map = scatterer.Sphere.available_measure_list
 
-    def __init__(self, master: ttk.Notebook, label: str, other_tabs: list[BaseTab], **kwargs) -> NoReturn:
+    def __post_init__(self) -> NoReturn:
         """
         Initializes the Axis Configuration tab with references to other tabs to gather possible axis choices.
 
@@ -21,8 +26,7 @@ class AxisTab(BaseTab):
             label (str): The label for the tab.
             other_tabs (List[BaseTab]): List of other tab instances to reference for setting up axis mappings.
         """
-        self.other_tabs = other_tabs
-        super().__init__(master, label=label)
+        super().__post_init__()
         self.setup()
 
     def setup(self) -> NoReturn:
