@@ -112,6 +112,12 @@ class PlaneWave(LightSource):
     def __post_init__(self):
         super(PlaneWave, self).__post_init__()
 
+        self.binding = BindedPlanewave(
+            wavelength=self.wavelength,
+            amplitude=self.amplitude,
+            jones_vector=self.jones_vector.values[:, 0]
+        )
+
     def plot(self) -> SceneList3D:
         """
         Plots the structure of the PlaneWave source.
