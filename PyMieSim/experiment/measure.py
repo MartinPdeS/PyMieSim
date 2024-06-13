@@ -8,7 +8,7 @@ Qsca = units.Efficiency(long_label='Scattering Efficiencies', short_label='Qsca'
 Qext = units.Efficiency(long_label='Extinction Efficiencies', short_label='Qext')
 Qabs = units.Efficiency(long_label='Absorption Efficiencies', short_label='Qabs')
 Qratio = units.Efficiency(long_label='Ratio Efficiencies', short_label='Qratio')
-Qforw = units.Efficiency(long_label='Forward Efficiencies', short_label='Qforw')
+Qforward = units.Efficiency(long_label='Forward Efficiencies', short_label='Qforward')
 Qback = units.Efficiency(long_label='Backward Efficiencies', short_label='Qback')
 Qpr = units.Efficiency(long_label='Radiation pres Efficiencies', short_label='Qpr')
 
@@ -17,7 +17,7 @@ Csca = units.Area(long_label='Scattering Cross-Section', short_label='Csca')
 Cext = units.Area(long_label='Extinction Cross-Section', short_label='Cext')
 Cabs = units.Area(long_label='Absorption Cross-Section', short_label='Cabs')
 Cratio = units.Area(long_label='Ratio Cross-Section', short_label='Cratio')
-Cforw = units.Area(long_label='Forward Cross-Section', short_label='Cforw')
+Cforward = units.Area(long_label='Forward Cross-Section', short_label='Cforward')
 Cback = units.Area(long_label='Backward Cross-Section', short_label='Cback')
 Cpr = units.Area(long_label='Radiation pres Cross-Section', short_label='Cpr')
 
@@ -55,14 +55,14 @@ __sphere__ = __coreshell__ = {
     'Qext': Qext,
     'Qabs': Qabs,
     'Qratio': Qratio,
-    'Qforw': Qforw,
+    'Qforward': Qforward,
     'Qback': Qback,
     'Qpr': Qpr,
     'Csca': Csca,
     'Cext': Cext,
     'Cabs': Cabs,
     'Cratio': Cratio,
-    'Cforw': Cforw,
+    'Cforward': Cforward,
     'Cback': Cback,
     'Cpr': Cpr,
     'a1': a1,

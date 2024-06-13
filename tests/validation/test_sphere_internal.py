@@ -1,5 +1,8 @@
-import numpy
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+import numpy
+import pytest
 from PyMieSim.single.scatterer import Sphere, CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
@@ -89,5 +92,9 @@ def test_compare_sphere_coreshell_0():
 
         if not numpy.isclose(value_sphere, value_coreshell, atol=1e-12, rtol=1e-5):
             raise ValueError(f'Mismatch with juxtaposing CoreShell with zero shell and Sphere for parameter: {parameter}')
+
+
+if __name__ == "__main__":
+    pytest.main()
 
 # -

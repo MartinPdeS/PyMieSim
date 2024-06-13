@@ -1,17 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+from typing import List, Union, NoReturn
 import numpy
 from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 from dataclasses import field
 
 from PyMieSim.physics import power_to_amplitude
+from PyMieSim.experiment import parameters
 from PyMieSim import polarization
 from PyMieSim.binary.Sets import CppSourceSet
-from DataVisual import units
 
-from typing import List, Union, NoReturn
+config_dict = ConfigDict(
+    kw_only=True,
+    slots=True,
+    extra='forbid',
+    arbitrary_types_allowed=True
+)
 
 
 @dataclass
@@ -46,24 +52,16 @@ class BaseSource:
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        self.mapping['wavelength'] = units.Length(
-            long_label='Wavelength',
-            short_label=r'$\lambda$',
-            base_values=self.wavelength,
-            string_format='.2f'
-        )
+        self.mapping['wavelength'] = parameters.wavelength
+        self.mapping['wavelength'].set_base_values(self.wavelength)
 
-        self.mapping['polarization_value'] = units.Degree(
-            long_label='Polarization',
-            short_label=r'Pol',
-            base_values=self.polarization_value,
-            string_format='.2f'
-        )
+        self.mapping['polarization_value'] = parameters.polarization_value
+        self.mapping['polarization_value'].set_base_values(self.polarization_value)
 
         return [v for k, v in self.mapping.items() if v is not None]
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid', arbitrary_types_allowed=True))
+@dataclass(config=config_dict)
 class Gaussian(BaseSource):
     """
     Represents a Gaussian light source with a specified numerical aperture and optical power.
@@ -111,7 +109,7 @@ class Gaussian(BaseSource):
         )
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class PlaneWave(BaseSource):
     """
     Represents a Plane Wave light source with a specified amplitude.
@@ -124,9 +122,9 @@ class PlaneWave(BaseSource):
         amplitude (float): The amplitude of the plane wave, in Watts.
         polarization_type (str): The type of polarization, defaults to 'linear'.
     """
-    wavelength: Union[List[float], float]
-    polarization_value: Union[List[float], float]
-    amplitude: Union[List[float], float]
+    wavelength: Union[numpy.ndarray, List[float], float]
+    polarization_value: Union[numpy.ndarray, List[float], float]
+    amplitude: Union[numpy.ndarray, List[float], float]
     polarization_type: str = 'linear'
     name: str = field(default='PlaneWave', init=False)
 

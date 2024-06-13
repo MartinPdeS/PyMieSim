@@ -148,4 +148,8 @@ def test_coreshell_plottings(plotting, core_config, shell_config, medium_config)
     data = getattr(scatterer, plotting)()
     assert data is not None, "Plotting data should not be None"
 
+
+if __name__ == "__main__":
+    pytest.main()
+
 # -
