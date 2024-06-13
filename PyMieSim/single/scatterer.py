@@ -292,12 +292,12 @@ class Sphere(GenericScatterer):
         """
         from PyMieSim.binary.SphereInterface import SPHERE
 
-        self.binding = SPHERE(
-            diameter=self.diameter,
-            index=self.index,
-            medium_index=self.medium_index,
-            source=self.source.binding
-        )
+        # self.binding = SPHERE(
+        #     diameter=self.diameter,
+        #     index=self.index,
+        #     medium_index=self.medium_index,
+        #     source=self.source.binding
+        # )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
@@ -413,8 +413,8 @@ class CoreShell(GenericScatterer):
     source: Union[source.PlaneWave, source.Gaussian]
     core_index: Optional[Any] = None
     shell_index: Optional[Any] = None
-    core_material: Union[DataMeasurement, Sellmeier, None] = None
-    shell_material: Union[DataMeasurement, Sellmeier, None] = None
+    core_material: Optional[Union[Sellmeier, DataMeasurement]] = None
+    shell_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     medium_index: Optional[float] = None
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
 
@@ -431,16 +431,16 @@ class CoreShell(GenericScatterer):
         """
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
-        self.binding = CORESHELL(
-            shell_index=self.shell_index,
-            core_index=self.core_index,
-            shell_width=self.shell_width,
-            core_diameter=self.core_diameter,
-            wavelength=self.source.wavelength,
-            medium_index=self.medium_index,
-            jones_vector=self.source.jones_vector.values.squeeze(),
-            amplitude=self.source.amplitude
-        )
+        # self.binding = CORESHELL(
+        #     shell_index=self.shell_index,
+        #     core_index=self.core_index,
+        #     shell_width=self.shell_width,
+        #     core_diameter=self.core_diameter,
+        #     wavelength=self.source.wavelength,
+        #     medium_index=self.medium_index,
+        #     jones_vector=self.source.jones_vector.values.squeeze(),
+        #     amplitude=self.source.amplitude
+        # )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
@@ -502,14 +502,14 @@ class Cylinder(GenericScatterer):
         """
         from PyMieSim.binary.CylinderInterface import CYLINDER
 
-        self.binding = CYLINDER(
-            index=self.index,
-            diameter=self.diameter,
-            wavelength=self.source.wavelength,
-            medium_index=self.medium_index,
-            amplitude=self.source.amplitude,
-            jones_vector=self.source.jones_vector.values.squeeze()
-        )
+        # self.binding = CYLINDER(
+        #     index=self.index,
+        #     diameter=self.diameter,
+        #     wavelength=self.source.wavelength,
+        #     medium_index=self.medium_index,
+        #     amplitude=self.source.amplitude,
+        #     jones_vector=self.source.jones_vector.values.squeeze()
+        # )
 
     def a1n(self, max_order: Optional[int] = 0) -> numpy.array:
         r"""
