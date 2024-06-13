@@ -9,7 +9,7 @@ PYBIND11_MODULE(SourceInterface, module) {
 
     py::class_<BaseSource>(module, "BindedBaseSource");
 
-    py::class_<Planewave, BaseSource>(module, "BindedPlanewave")
+    py::class_<Planewave>(module, "BindedPlanewave")
         .def(
             py::init<double, std::vector<complex128>, double>(),
             py::arg("wavelength"),
@@ -22,7 +22,7 @@ PYBIND11_MODULE(SourceInterface, module) {
         .def_readonly("amplitude", &Planewave::amplitude, "Electric field amplitude of the source.")
         ;
 
-    py::class_<Gaussian, BaseSource>(module, "BindedGaussian")
+    py::class_<Gaussian>(module, "BindedGaussian")
         .def(
             py::init<double, std::vector<complex128>, double, double>(),
             py::arg("wavelength"),
@@ -31,12 +31,12 @@ PYBIND11_MODULE(SourceInterface, module) {
             py::arg("optical_power"),
             "Constructs a Gaussian source with specified optical properties. ")
 
-        .def(
-            py::init<double, double, double>(),
-            py::arg("wavelength"),
-            py::arg("NA"),
-            py::arg("optical_power"),
-            "Constructs a Gaussian source with specified optical properties. ")
+        // .def(
+        //     py::init<double, double, double>(),
+        //     py::arg("wavelength"),
+        //     py::arg("NA"),
+        //     py::arg("optical_power"),
+        //     "Constructs a Gaussian source with specified optical properties. ")
 
         .def(py::init<>())
 
