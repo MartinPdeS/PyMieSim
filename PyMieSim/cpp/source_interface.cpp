@@ -83,23 +83,22 @@ namespace SOURCE {
     };
 
     class Gaussian : public BaseSource {
-    public:
-        double NA;
-        double optical_power;
+        public:
+            double NA;
+            double optical_power;
 
-        Gaussian() = default;
-        Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
-            : BaseSource(wavelength, jones_vector, 0.0), NA(NA), optical_power(optical_power) {
-                this->compute_amplitude_from_power();
+            Gaussian() = default;
+            Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
+                : BaseSource(wavelength, jones_vector, 0.0), NA(NA), optical_power(optical_power) {
+                    // this->compute_amplitude_from_power();
+                }
+
+            double compute_amplitude_from_power() {
+                // double omega = 0.61 * wavelength / NA;
+                // double area = PI * pow(omega / 2, 2);
+                // double intensity = optical_power / area;
+                // this->amplitude = sqrt(2.0 * intensity / (C * EPSILON0));
             }
-
-        double compute_amplitude_from_power()
-        {
-            // double omega = 0.61 * wavelength / NA;
-            // double area = 3.1415926535 * pow(omega / 2, 2);
-            // double intensity = optical_power / area;
-            // this->amplitude = sqrt(2.0 * intensity / (C * EPSILON0));
-        }
     };
 
 }
