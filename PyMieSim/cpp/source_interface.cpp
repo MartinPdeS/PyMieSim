@@ -2,24 +2,36 @@
 #include "sources.cpp"  // Assuming this includes the necessary DETECTOR definitions
 
 namespace py = pybind11;
-using DETECTOR::Detector;
 
-PYBIND11_MODULE(DetectorInterface, module) {
+PYBIND11_MODULE(SourceInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
-    py::class_<Detector>(module, "BindedDetector")
-        .def(py::init<CVector, double, double, double, double, bool, bool>(),
-             py::arg("ScalarField"),
-             py::arg("NA"),
-             py::arg("PhiOffset"),
-             py::arg("GammaOffset"),
-             py::arg("Filter"),
-             py::arg("Coherent"),
-             py::arg("PointCoupling"),
-             "Constructs a Detector with specified optical properties and detection parameters. "
-             "`PointCoupling` indicates whether to use point (true) or mean (false) coupling.")
+    py::class_<SOURCE::BaseSource>(module, "BindedBaseSource");
 
-        .def("CouplingSphere", &Detector::Coupling<SPHERE::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a sphere scatterer.")
-        .def("CouplingCylinder", &Detector::Coupling<CYLINDER::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a cylinder scatterer.")
-        .def("CouplingCoreShell", &Detector::Coupling<CORESHELL::Scatterer>, py::arg("Scatterer"), "Calculates coupling with a core-shell scatterer.");
+    py::class_<SOURCE::Planewave, SOURCE::BaseSource>(module, "BindedPlanewave")
+        .def(
+            py::init<double, std::vector<complex128>, double>(),
+            py::arg("wavelength"),
+            py::arg("jones_vector"),
+            py::arg("amplitude"),
+            "Constructs a Planewave source with specified optical properties. ")
+
+        .def_readonly("wavelength", &SOURCE::Planewave::wavelength, "Wavelength of the source.")
+        .def_readonly("jones_vector", &SOURCE::Planewave::jones_vector, "Jones vector of the source.")
+        .def_readonly("amplitude", &SOURCE::Planewave::amplitude, "Electric field amplitude of the source.")
+        ;
+
+    py::class_<SOURCE::Gaussian, SOURCE::BaseSource>(module, "BindedGaussian")
+        .def(
+            py::init<double, std::vector<complex128>, double, double>(),
+            py::arg("wavelength"),
+            py::arg("jones_vector"),
+            py::arg("NA"),
+            py::arg("optical_power"),
+            "Constructs a Planewave source with specified optical properties. ")
+
+        .def_readonly("wavelength", &SOURCE::Planewave::wavelength, "Wavelength of the source.")
+        .def_readonly("jones_vector", &SOURCE::Planewave::jones_vector, "Jones vector of the source.")
+        .def_readonly("amplitude", &SOURCE::Planewave::amplitude, "Electric field amplitude of the source.")
+        ;
 }
