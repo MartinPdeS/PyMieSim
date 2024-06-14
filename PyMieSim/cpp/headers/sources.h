@@ -3,7 +3,6 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan
-#include <iostream>
 
 #define PI (double)3.14159265358979323846264338
 #define EPSILON0 (double)8.854187817620389e-12
