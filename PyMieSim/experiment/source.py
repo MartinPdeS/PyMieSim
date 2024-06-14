@@ -29,17 +29,20 @@ class BaseSource:
     def __post_init__(self):
         self.mapping = {
             'wavelength': None,
-            'polarization_value': None
+            'polarization_value': None,
+            'NA': None,
+            'optical_power': None
         }
 
         self.format_inputs()
-        self.generate_amplitude()
         self.generate_binding()
 
     def format_inputs(self):
         """Formats input wavelengths and polarization values into numpy arrays."""
         self.polarization_value = numpy.atleast_1d(self.polarization_value).astype(float)
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
+        self.NA = numpy.atleast_1d(self.NA).astype(float)
+        self.optical_power = numpy.atleast_1d(self.optical_power).astype(float)
 
     def get_datavisual_table(self) -> NoReturn:
         """
@@ -57,6 +60,12 @@ class BaseSource:
 
         self.mapping['polarization_value'] = parameters.polarization_value
         self.mapping['polarization_value'].set_base_values(self.polarization_value)
+
+        self.mapping['NA'] = parameters.NA_source
+        self.mapping['NA'].set_base_values(self.NA)
+
+        self.mapping['optical_power'] = parameters.optical_power
+        self.mapping['optical_power'].set_base_values(self.optical_power)
 
         return [v for k, v in self.mapping.items() if v is not None]
 
@@ -78,7 +87,7 @@ class Gaussian(BaseSource):
     wavelength: Union[numpy.ndarray, List[float], float]
     polarization_value: Union[numpy.ndarray, List[float], float]
     NA: Union[numpy.ndarray, List[float], float]
-    optical_power: float
+    optical_power: Union[numpy.ndarray, List[float], float]
     polarization_type: str = 'linear'
     name: str = field(default='PlaneWave', init=False)
 
@@ -95,18 +104,11 @@ class Gaussian(BaseSource):
         self.binding_kwargs = dict(
             wavelength=numpy.atleast_1d(self.wavelength).astype(float),
             jones_vector=numpy.atleast_2d(linear_polarization.values).astype(complex).T,
-            amplitude=numpy.atleast_1d(self.amplitude).astype(float),
+            NA=numpy.atleast_1d(self.NA).astype(float),
+            optical_power=numpy.atleast_1d(self.optical_power).astype(float)
         )
 
         self.binding = CppSourceSet(**self.binding_kwargs)
-
-    def generate_amplitude(self):
-        """Generates the amplitude of the Gaussian source based on its optical power and numerical aperture."""
-        self.amplitude = power_to_amplitude(
-            wavelength=self.wavelength,
-            optical_power=self.optical_power,
-            NA=self.NA
-        )
 
 
 @dataclass(config=config_dict)
@@ -144,6 +146,4 @@ class PlaneWave(BaseSource):
 
         self.binding = CppSourceSet(**self.binding_kwargs)
 
-    def generate_amplitude(self):
-        """Sets the amplitude of the plane wave as a numpy array."""
-        self.amplitude = numpy.atleast_1d(self.amplitude)
+# -

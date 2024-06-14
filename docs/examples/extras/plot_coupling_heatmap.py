@@ -21,7 +21,7 @@ from MPSPlots.render2D import SceneList
 
 index = numpy.linspace(1.3, 2.1, 300)
 
-diameter = numpy.linspace(1e-9, 2000e-9, 300)
+diameter = numpy.linspace(1e-9, 2000e-9, 200)
 
 source = Gaussian(
     wavelength=400e-9,

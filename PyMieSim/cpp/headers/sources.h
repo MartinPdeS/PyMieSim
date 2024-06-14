@@ -3,6 +3,7 @@
 #include <vector>
 #include <complex>
 #include <cmath> // For std::isnan
+#include <iostream>
 
 #define PI (double)3.14159265358979323846264338
 #define EPSILON0 (double)8.854187817620389e-12
@@ -67,25 +68,33 @@ namespace SOURCE
         public:
             std::vector<double> wavelength;
             std::vector<std::vector<complex128>> jones_vector;
-            std::vector<double> amplitude;
+            std::vector<double> NA;
+            std::vector<double> optical_power;
             std::vector<size_t> shape;
 
             Set() = default;
 
             Set(const std::vector<double> &wavelength,
                 const std::vector<std::vector<complex128>> &jones_vector,
-                const std::vector<double> &amplitude
-            ) : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude)
+                const std::vector<double> &NA,
+                const std::vector<double> &optical_power
+            ) : wavelength(wavelength), jones_vector(jones_vector), NA(NA), optical_power(optical_power)
             {
-                this->shape = {this->wavelength.size(), this->jones_vector.size()};
+                this->shape = {
+                    this->wavelength.size(),
+                    this->jones_vector.size(),
+                    this->NA.size(),
+                    this->optical_power.size()
+                };
             }
 
-            Planewave to_object(size_t index_wavelength, size_t index_jones) const
+            Gaussian to_object(size_t index_wavelength, size_t index_jones, size_t index_na, size_t index_optical_power) const
             {
-                return Planewave(
+                return Gaussian(
                     this->wavelength[index_wavelength],
                     this->jones_vector[index_jones],
-                    this->amplitude[index_wavelength]
+                    this->NA[index_na],
+                    this->optical_power[index_optical_power]
                 );
             }
     };
