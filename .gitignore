@@ -1,4 +1,4 @@
-*.DS_store
+,l*.DS_store
 *.ipynb_checkpoints*
 *__pycache__*
 *.so
