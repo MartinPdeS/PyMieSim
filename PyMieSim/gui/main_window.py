@@ -37,7 +37,6 @@ class PyMieSimGUI:
         self.x_axis_label_widget = tk.StringVar(value='phi_offset')
         self.STD_axis_label_widget = tk.StringVar(value=None)
         self.STD_axis_label_widget.set(None)
-
         self.customize_notebook_style()
         self.setup_notebook()
         self.setup_controls()
@@ -109,7 +108,7 @@ class PyMieSimGUI:
         )
 
         self.axis_tab = AxisTab(
-            master=self.notebook_2,
+            notebook=self.notebook_2,
             label='Axis Configuration',
             other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab]
         )

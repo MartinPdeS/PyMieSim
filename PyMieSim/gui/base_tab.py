@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import NoReturn
 from tkinter import ttk
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
+from typing import NoReturn
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class BaseTab:
     """
     Base class for creating tabs within a notebook in a GUI application. This class provides the foundational
@@ -18,21 +21,18 @@ class BaseTab:
         label (str): The label of the tab, displayed in the notebook.
         frame (ttk.Frame): The frame serving as the container for the tab's contents.
         main_window: Reference to the main window of the application, if applicable.
+        notebook (ttk.Notebook): The parent notebook widget to which this tab will be added.
     """
+    notebook: ttk.Notebook
+    label: str
+    main_window = None
 
-    def __init__(self, notebook: ttk.Notebook, label: str, main_window=None):
+    def __post_init__(self):
         """
         Initializes a new tab within the provided notebook widget.
-
-        Parameters:
-            notebook (ttk.Notebook): The parent notebook widget to which this tab will be added.
-            label (str): The text label for the tab.
-            main_window: An optional reference to the main application window, allowing access to shared resources or controls.
         """
-        self.label = label
-        self.frame = ttk.Frame(notebook)
-        notebook.add(self.frame, text=self.label)
-        self.main_window = main_window
+        self.frame = ttk.Frame(self.notebook)
+        self.notebook.add(self.frame, text=self.label)
 
     def setup_tab(self) -> NoReturn:
         """

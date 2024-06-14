@@ -3,12 +3,16 @@
 
 from typing import NoReturn
 from tkinter import ttk, StringVar
+import tkinter
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.widgets import InputWidget, RadioButtonWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class DetectorTab(BaseTab):
     """
     A GUI tab for configuring the detector parameters for simulations in PyMieSim.
@@ -19,19 +23,23 @@ class DetectorTab(BaseTab):
 
     Attributes:
         variables (WidgetCollection): A collection of widgets for detector configuration.
+        x_axis (tkinter.StringVar): empty.
+        STD_axis (tkinter.StringVar): empty.
+
+    Inherited attributes:
+        notebook (ttk.Notebook): The notebook widget this tab is part of.
+        label (str): The label for the tab.
+        frame (ttk.Frame): The frame serving as the container for the tab's contents.
+        main_window: Reference to the main window of the application, if applicable.
     """
+    x_axis: tkinter.StringVar
+    STD_axis: tkinter.StringVar
 
-    def __init__(self, x_axis, STD_axis, notebook: ttk.Notebook, label: str) -> None:
+    def __post_init__(self) -> None:
         """
-        Initialize the DetectorTab with UI components to configure the detector parameters.
-
-        Args:
-            master (ttk.Notebook): The notebook widget this tab is a part of.
-            label (str): The tab label.
+        Calls for BaseTab's post initialisation, and initializes the SourceTab with UI components for source configuration
         """
-        self.x_axis = x_axis
-        self.STD_axis = STD_axis
-        super().__init__(notebook=notebook, label=label)
+        super().__post_init__()
         self.type_button = StringVar(value='Photodiode')
         self.setup_type_combobox()
         self.setup_widgets()
