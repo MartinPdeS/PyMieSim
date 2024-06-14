@@ -66,7 +66,9 @@ sphinx_gallery_conf = {
         [
             "../examples/scatterer",
             "../examples/detector",
-            "../examples/experiment",
+            "../examples/experiment/sphere",
+            "../examples/experiment/cylinder",
+            "../examples/experiment/coreshell",
             "../examples/validation",
             "../examples/extras",
         ]
