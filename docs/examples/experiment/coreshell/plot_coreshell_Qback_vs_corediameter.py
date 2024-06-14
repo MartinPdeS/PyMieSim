@@ -52,7 +52,7 @@ data = experiment.get(measure.Qback)
 # Plotting the results
 # Visualizing how the backscattering efficiency varies with the core diameter.
 figure = data.plot(
-    x=experiment.core_diameter,  # Core diameter as the x-axis
+    x=scatterer.core_diameter,  # Core diameter as the x-axis
     y_scale='log'  # Logarithmic scale for the y-axis
 )
 

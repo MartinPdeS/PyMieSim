@@ -57,6 +57,6 @@ data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-figure = data.plot(x=experiment.phi_offset)
+figure = data.plot(x=detector.phi_offset)
 
 _ = figure.show()

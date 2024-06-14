@@ -44,8 +44,6 @@ data = experiment.get(measure.Qsca)
 
 # %%
 # Plotting the results
-figure = data.plot(
-    x=experiment.index
-)
+figure = data.plot(x=scatterer.index)
 
 _ = figure.show()

@@ -54,7 +54,7 @@ data = experiment.get(measure.a3)
 # Plotting the results
 # Visualizing how the B1 (a3) parameter varies with the core diameter.
 figure = data.plot(
-    x=experiment.core_diameter,  # Core diameter as the x-axis
+    x=scatterer.core_diameter,  # Core diameter as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 

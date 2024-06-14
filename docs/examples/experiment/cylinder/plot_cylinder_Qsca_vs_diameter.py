@@ -47,7 +47,7 @@ data = experiment.get(measure.Qsca)
 # Plotting the results
 # Visualizing how the Qsca varies with the cylinder diameter.
 figure = data.plot(
-    x=experiment.diameter,  # Cylinder diameter as the x-axis
+    x=scatterer.diameter,  # Cylinder diameter as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 

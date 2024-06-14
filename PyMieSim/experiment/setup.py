@@ -103,12 +103,12 @@ class Setup(object):
 
     def _export_as_numpy(self, array: numpy.array) -> numpy.array:
         for k, v in self.source.binding_kwargs.items():
-            setattr(self, k, v)
+            setattr(self.source, k, v)
         for k, v in self.scatterer.binding_kwargs.items():
-            setattr(self, k, v)
+            setattr(self.scatterer, k, v)
         if self.detector is not None:
             for k, v in self.detector.binding_kwargs.items():
-                setattr(self, k, v)
+                setattr(self.detector, k, v)
 
         return array
 
@@ -117,12 +117,12 @@ class Setup(object):
         measure.set_base_values(array)
 
         for k, v in self.source.mapping.items():
-            setattr(self, k, v)
+            setattr(self.source, k, v)
         for k, v in self.scatterer.mapping.items():
-            setattr(self, k, v)
+            setattr(self.scatterer, k, v)
         if self.detector is not None:
             for k, v in self.detector.mapping.items():
-                setattr(self, k, v)
+                setattr(self.detector, k, v)
 
         return Array(x_table=Table(self.x_table), y=measure)
 

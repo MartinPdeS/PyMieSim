@@ -61,7 +61,7 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=experiment.polarization_filter,
+    x=detector.polarization_filter,
     std=experiment.diameter
 )
 

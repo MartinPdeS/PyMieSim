@@ -47,9 +47,9 @@ data = experiment.get(measure.Qsca)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=experiment.wavelength,
+    x=source.wavelength,
     y_scale='log',
-    std=experiment.diameter
+    std=scatterer.diameter
 )
 
 _ = figure.show()

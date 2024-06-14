@@ -57,7 +57,7 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=experiment.NA,
+    x=detector.NA,
 )
 
 single_source = single.Gaussian(

@@ -60,7 +60,7 @@ data = experiment.get(measure.coupling)
 # Plotting the results
 # Visualizing how the coupling efficiency varies with angular displacement.
 figure = data.plot(
-    x=experiment.phi_offset,  # Angular displacement as the x-axis
+    x=detector.phi_offset,  # Angular displacement as the x-axis
     y_scale='log',  # Logarithmic scale for the y-axis
     normalize=True  # Normalizing the results
 )

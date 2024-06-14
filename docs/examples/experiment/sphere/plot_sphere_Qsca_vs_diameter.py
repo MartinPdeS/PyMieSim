@@ -45,7 +45,7 @@ data = experiment.get(measure.Csca)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=experiment.diameter
+    x=scatterer.diameter
 )
 
 _ = figure.show()

@@ -7,7 +7,6 @@ from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 from dataclasses import field
 
-from PyMieSim.physics import power_to_amplitude
 from PyMieSim.experiment import parameters
 from PyMieSim import polarization
 from PyMieSim.binary.Sets import CppSourceSet
