@@ -22,17 +22,16 @@ class SourceTab(BaseTab):
 
     Attributes:
         variables (WidgetCollection): A collection of widgets for source configuration.
+        x_axis (tkinter.StringVar): empty.
+        STD_axis (tkinter.StringVar): empty.
+
     """
     x_axis: tkinter.StringVar
     STD_axis: tkinter.StringVar
 
     def __post_init__(self):
         """
-        Initializes the SourceTab with UI components for source configuration.
-
-        Parameters:
-            *args: Variable length argument list for BaseTab.
-            **kwargs: Arbitrary keyword arguments for BaseTab.
+        Calls for BaseTab's post initialisation, and initializes the SourceTab with UI components for source configuration
         """
         super().__post_init__()
         self.setup_widgets()

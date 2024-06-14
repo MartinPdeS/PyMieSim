@@ -23,17 +23,21 @@ class DetectorTab(BaseTab):
 
     Attributes:
         variables (WidgetCollection): A collection of widgets for detector configuration.
+        x_axis (tkinter.StringVar): empty.
+        STD_axis (tkinter.StringVar): empty.
+
+    Inherited attributes:
+        notebook (ttk.Notebook): The notebook widget this tab is part of.
+        label (str): The label for the tab.
+        frame (ttk.Frame): The frame serving as the container for the tab's contents.
+        main_window: Reference to the main window of the application, if applicable.
     """
     x_axis: tkinter.StringVar
     STD_axis: tkinter.StringVar
 
     def __post_init__(self) -> None:
         """
-        Initialize the DetectorTab with UI components to configure the detector parameters.
-
-        Args:
-            master (ttk.Notebook): The notebook widget this tab is a part of.
-            label (str): The tab label.
+        Calls for BaseTab's post initialisation, and initializes the SourceTab with UI components for source configuration
         """
         super().__post_init__()
         self.type_button = StringVar(value='Photodiode')

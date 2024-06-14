@@ -21,9 +21,13 @@ class ScattererTab(BaseTab):
     Attributes:
         x_axis (tkinter.StringVar): empty.
         STD_axis (tkinter.StringVar): empty.
-        master (ttk.Notebook): The notebook widget this tab is part of.
-        label (str): The label for the tab.
         source_tab (BaseTab): Reference to the source tab for source component configurations.
+
+    Inherited attributes:
+        notebook (ttk.Notebook): The notebook widget this tab is part of.
+        label (str): The label for the tab.
+        frame (ttk.Frame): The frame serving as the container for the tab's contents.
+        main_window: Reference to the main window of the application, if applicable.
     """
     x_axis: tkinter.StringVar
     STD_axis: tkinter.StringVar
@@ -31,14 +35,7 @@ class ScattererTab(BaseTab):
 
     def __post_init__(self) -> NoReturn:
         """
-        Initializes the ScattererTab with user interface elements for scatterer configuration.
-
-        Args:
-            x_axis (tkinter.StringVar): empty.
-            STD_axis (tkinter.StringVar): empty.
-            master (ttk.Notebook): The notebook widget this tab will be part of.
-            label (str): The label for the tab.
-            source_tab (BaseTab): Reference to the source tab for accessing source component settings.
+        Calls for BaseTab's post initialisation, and initializes the SourceTab with UI components for source configuration
         """
         self.type_button = tkinter.StringVar(value='Sphere')
         super().__post_init__()

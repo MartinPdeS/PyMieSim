@@ -21,6 +21,7 @@ class BaseTab:
         label (str): The label of the tab, displayed in the notebook.
         frame (ttk.Frame): The frame serving as the container for the tab's contents.
         main_window: Reference to the main window of the application, if applicable.
+        notebook (ttk.Notebook): The parent notebook widget to which this tab will be added.
     """
     notebook: ttk.Notebook
     label: str
@@ -29,11 +30,6 @@ class BaseTab:
     def __post_init__(self):
         """
         Initializes a new tab within the provided notebook widget.
-
-        Parameters:
-            notebook (ttk.Notebook): The parent notebook widget to which this tab will be added.
-            label (str): The text label for the tab.
-            main_window: An optional reference to the main application window, allowing access to shared resources or controls.
         """
         self.frame = ttk.Frame(self.notebook)
         self.notebook.add(self.frame, text=self.label)
