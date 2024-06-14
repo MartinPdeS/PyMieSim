@@ -1,6 +1,5 @@
 #pragma once
 
-#include "definitions.cpp"
 #include "utils.cpp"
 #include "sources.cpp"
 #include "fibonacci_mesh.cpp"
@@ -14,9 +13,15 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 
+typedef std::complex<double> complex128;
+
+#define JJ complex128(0.0,1.0)
+
 class BaseSphericalScatterer
 {
 public:
+    SOURCE::BaseSource source;
+
     size_t max_order;
     double size_parameter;
     double area;
@@ -26,8 +31,6 @@ public:
     std::vector<complex128> bn;
     std::vector<complex128> cn;
     std::vector<complex128> dn;
-
-    SOURCE::BaseSource source;
 
     BaseSphericalScatterer() = default;
 
@@ -192,8 +195,6 @@ public:
     std::tuple<std::vector<complex128>, std::vector<complex128>>
     compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
     {
-        complex128 propagator = this->compute_propagator(radius);
-
         auto [S1, S2] = this->compute_s1s2(phi);
 
         return this->compute_structured_fields(S1, S2, theta, radius);

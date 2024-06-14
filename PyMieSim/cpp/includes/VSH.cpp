@@ -1,7 +1,8 @@
 #pragma once
 
-#include "definitions.cpp"
 #include "fibonacci_mesh.cpp"
+
+typedef std::complex<double> complex128;
 
 namespace VSH{
     namespace SPHERICAL {
@@ -28,7 +29,7 @@ namespace VSH{
           taun.push_back( mu );
           taun.push_back( 3.0 * cos(2. * acos(mu) ) );
 
-          for (int order = 2; order < max_order; order++)
+          for (size_t order = 2; order < max_order; order++)
               {
                pin.push_back( ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order );
 
@@ -46,7 +47,7 @@ namespace VSH{
           taun[0] = mu;
           taun[1] = 3.0 * cos(2. * acos(mu) );
 
-          for (int order = 2; order < max_order; order++)
+          for (size_t order = 2; order < max_order; order++)
               {
                pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
 

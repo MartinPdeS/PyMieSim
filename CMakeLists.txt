@@ -26,7 +26,7 @@ add_subdirectory("extern/pybind11")
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
 
-add_compile_options(-Wno-return-type)
+add_compile_options(-Wall -Wextra -Wno-uninitialized)
 
 if (WIN32)
     message("Windows OS detected")
@@ -62,6 +62,11 @@ target_link_libraries(ZBessel PUBLIC "${STATIC_STDLIB}")
 pybind11_add_module(Fibonacci MODULE "${PYMIESIM_CXX_DIR}/mesh_interface.cpp")
 set_target_properties(Fibonacci PROPERTIES OUTPUT_NAME "Fibonacci")
 target_link_libraries(Fibonacci PRIVATE ZBessel "${STATIC_STDLIB}")
+
+#Building SOURCE--------------------------------------------------
+pybind11_add_module(CXX_SOURCE MODULE "${PYMIESIM_CXX_DIR}/source_interface.cpp" )
+set_target_properties(CXX_SOURCE PROPERTIES OUTPUT_NAME "SourceInterface")
+target_link_libraries(CXX_SOURCE PRIVATE ZBessel "${STATIC_STDLIB}")
 
 #Building DETECTOR--------------------------------------------------
 pybind11_add_module(CXX_DETECTOR MODULE "${PYMIESIM_CXX_DIR}/detector_interface.cpp" )

@@ -2,7 +2,9 @@
 #include <vector>
 #include <cmath>
 #include <complex>
-#include <definitions.cpp>
+
+#define PI (double)3.14159265358979323846264338
+typedef std::complex<double> complex128;
 
 double hermite_next(unsigned n, double x, double Hn, double Hnm1)
 {

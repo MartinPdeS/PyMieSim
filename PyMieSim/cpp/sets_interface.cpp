@@ -2,7 +2,6 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 #include <pybind11/complex.h> // For std::complex support
 
-#include "includes/definitions.cpp"
 #include "includes/sources.cpp"
 #include "includes/sphere.cpp"
 #include "includes/cylinder.cpp"
@@ -136,10 +135,11 @@ PYBIND11_MODULE(Sets, module) {
 
 // Binding for SOURCE::Set
     py::class_<SOURCE::Set>(module, "CppSourceSet")
-        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>>(),
+        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>, std::vector<double>>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
-            py::arg("amplitude"),
+            py::arg("NA"),
+            py::arg("optical_power"),
             "Initializes a source set with specific wavelengths, Jones vectors, and amplitudes.");
 
 // Binding for DETECTOR::Set

@@ -2,6 +2,8 @@
 
 #include "sphere.h"
 
+#define JJ complex128(0.0,1.0)
+
 namespace SPHERE
 {
     using complex128 = std::complex<double>;
@@ -81,8 +83,6 @@ namespace SPHERE
 
         for (size_t order = 0; order < max_order; order++)
         {
-            double n = (double) order;
-
             Cnn.push_back(Cnx[order]);
             jnx.push_back(compute_jn(order + 1, x));
 

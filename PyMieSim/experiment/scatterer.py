@@ -74,8 +74,7 @@ class BaseScatterer():
         for simulation use, and ensuring that either a material or an index is provided but not both.
 
         Parameters:
-            name (str): The base name for the material or index. This name helps identify the property and is used
-                        to handle multiple materials or indices.
+            name (str): The base name for the material or index. This name helps identify the property and is used to handle multiple materials or indices.
             indexes (numpy.ndarray): The array of refractive index values.
             materials (numpy.ndarray): The array of material objects.
             data_type (type): The expected data type of the material or index values. Default is `object`.
@@ -97,7 +96,12 @@ class BaseScatterer():
         else:
             key = f"{name}_index" if name else "index"
 
-        self.binding_kwargs[key] = numpy.atleast_1d(indexes).astype(data_type)
+        indexes = numpy.atleast_1d(indexes)
+
+        if data_type == float and numpy.any(numpy.iscomplex(indexes)):
+            indexes = indexes.real
+
+        self.binding_kwargs[key] = indexes.astype(data_type)
 
 
 @dataclass(config=config_dict)

@@ -6,13 +6,19 @@ import numpy
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 
-from PyMieSim.physics import power_to_amplitude
 from PyMieSim import polarization
 from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.render3D import SceneList as SceneList3D
+from PyMieSim.binary.SourceInterface import BindedGaussian, BindedPlanewave, BindedBaseSource  # noqa: F401
 
 
-# @dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+config_dict = dict(
+    kw_only=True,
+    slots=True,
+    extra='forbid'
+)
+
+
 class LightSource:
     """
     Abstract class for light sources in light scattering simulations.
@@ -84,7 +90,7 @@ class LightSource:
         raise NotImplementedError("Subclass must implement this method.")
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class PlaneWave(LightSource):
     """
     Represents a plane wave light source for light scattering simulations.
@@ -105,6 +111,12 @@ class PlaneWave(LightSource):
     def __post_init__(self):
         super(PlaneWave, self).__post_init__()
 
+        self.binding = BindedPlanewave(
+            wavelength=self.wavelength,
+            amplitude=self.amplitude,
+            jones_vector=self.jones_vector.values[:, 0]
+        )
+
     def plot(self) -> SceneList3D:
         """
         Plots the structure of the PlaneWave source.
@@ -112,7 +124,6 @@ class PlaneWave(LightSource):
         Returns:
             SceneList3D: A 3D plotting scene object.
         """
-        # Example plotting logic; adjust as needed for your specific visualization requirements.
         figure = SceneList3D()
         ax = figure.append_ax()
         ax.add_unit_sphere(opacity=0.3)
@@ -120,7 +131,7 @@ class PlaneWave(LightSource):
         return figure
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Gaussian(LightSource):
     """
     Represents a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
@@ -135,19 +146,20 @@ class Gaussian(LightSource):
     """
     wavelength: float
     polarization_value: Union[float, str]
-    polarization_type: str = 'linear'
     optical_power: float
     NA: float
+    polarization_type: str = 'linear'
     amplitude: float = field(init=False, repr=False)
 
     def __post_init__(self):
-        self.amplitude = power_to_amplitude(
-            wavelength=self.wavelength,
-            optical_power=self.optical_power,
-            NA=self.NA
-        )
-
         super(Gaussian, self).__post_init__()
+
+        self.binding = BindedGaussian(
+            wavelength=self.wavelength,
+            NA=self.NA,
+            optical_power=self.optical_power,
+            jones_vector=self.jones_vector.values[:, 0]
+        )
 
     def plot(self) -> SceneList3D:
         """

@@ -1,12 +1,14 @@
 #pragma once
 
-#include "definitions.cpp"
+
 #include "numpy_interface.cpp"
 #include "sources.cpp"
 #include "sphere.cpp"
 #include "cylinder.cpp"
 #include "core_shell.cpp"
 #include "detectors.cpp"
+
+typedef std::complex<double> complex128;
 
 #define DEFINE_SPHERE_FUNCTION(name) \
     pybind11::array_t<double> get_sphere_##name() const { return get_sphere_data(&SPHERE::Scatterer::get_##name); }

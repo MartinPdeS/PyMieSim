@@ -15,41 +15,32 @@ namespace SPHERE
             Scatterer() = default;
 
             Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double medium_index, std::vector<complex128> jones_vector, size_t max_order) :
+                double medium_index, std::vector<complex128> jones_vector, size_t max_order = 0) :
                 BaseSphericalScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
             {
-                compute_size_parameter();
-                this->max_order = max_order;
-                compute_area();
-                compute_an_bn();
+                this->compute_size_parameter();
+
+                if (max_order == 0)
+                    this->max_order = get_wiscombe_criterion(this->size_parameter);
+                else
+                    this->max_order = max_order;
+
+                this->compute_area();
+                this->compute_an_bn();
             }
 
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double medium_index, std::vector<complex128> jones_vector) :
-                BaseSphericalScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
-            {
-                compute_size_parameter();
-                this->max_order = get_wiscombe_criterion(this->size_parameter);
-                compute_area();
-                compute_an_bn();
-            }
-
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order) :
+            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order = 0) :
                 BaseSphericalScatterer(source, medium_index), diameter(diameter), index(index)
             {
-                compute_size_parameter();
-                this->max_order = max_order;
-                compute_area();
-                compute_an_bn();
-            }
+                this->compute_size_parameter();
 
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source) :
-                BaseSphericalScatterer(source, medium_index), diameter(diameter), index(index)
-            {
-                compute_size_parameter();
-                this->max_order = this->get_wiscombe_criterion(this->size_parameter);
-                compute_area();
-                compute_an_bn();
+                if (max_order == 0)
+                    this->max_order = get_wiscombe_criterion(this->size_parameter);
+                else
+                    this->max_order = max_order;
+
+                this->compute_area();
+                this->compute_an_bn();
             }
 
             void compute_cn_dn();

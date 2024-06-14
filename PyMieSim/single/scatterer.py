@@ -12,6 +12,13 @@ from PyMieSim.single import source  # noqa: F401
 from pydantic.dataclasses import dataclass
 
 
+config_dict = dict(
+    kw_only=True,
+    slots=True,
+    extra='forbid'
+)
+
+
 class GenericScatterer():
     """
     Generic class for scatterer
@@ -19,9 +26,9 @@ class GenericScatterer():
 
     def print_properties(self) -> None:
         property_names = [
-            "size_parameter", "area", "index", "Qsca", "Qext",
-            "Qabs", "Qback", "Qratio", "Qpr", "Csca",
-            "Cext", "Cabs", "Cback", "Cratio", "Cpr", "g",
+            "size_parameter", "area", "index", "g",
+            "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
+            "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
         ]
 
         data = [getattr(self, name) for name in property_names]
@@ -260,7 +267,7 @@ class GenericScatterer():
         return index, material
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Sphere(GenericScatterer):
     """
     Class representing a homogeneous spherical scatterer.
@@ -293,12 +300,10 @@ class Sphere(GenericScatterer):
         from PyMieSim.binary.SphereInterface import SPHERE
 
         self.binding = SPHERE(
-            wavelength=self.source.wavelength,
-            amplitude=self.source.amplitude,
             diameter=self.diameter,
             index=self.index,
             medium_index=self.medium_index,
-            jones_vector=self.source.jones_vector.values.squeeze(),
+            source=self.source.binding
         )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
@@ -394,7 +399,7 @@ class Sphere(GenericScatterer):
         return self.binding.dn(max_order)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class CoreShell(GenericScatterer):
     """
     Class representing a core/shell spherical scatterer.
@@ -415,8 +420,8 @@ class CoreShell(GenericScatterer):
     source: Union[source.PlaneWave, source.Gaussian]
     core_index: Optional[Any] = None
     shell_index: Optional[Any] = None
-    core_material: Union[DataMeasurement, Sellmeier, None] = None
-    shell_material: Union[DataMeasurement, Sellmeier, None] = None
+    core_material: Optional[Union[Sellmeier, DataMeasurement]] = None
+    shell_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     medium_index: Optional[float] = None
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
 
@@ -438,10 +443,8 @@ class CoreShell(GenericScatterer):
             core_index=self.core_index,
             shell_width=self.shell_width,
             core_diameter=self.core_diameter,
-            wavelength=self.source.wavelength,
             medium_index=self.medium_index,
-            jones_vector=self.source.jones_vector.values.squeeze(),
-            amplitude=self.source.amplitude
+            source=self.source.binding
         )
 
     def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
@@ -473,7 +476,7 @@ class CoreShell(GenericScatterer):
         return self.binding.bn(max_order)
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class Cylinder(GenericScatterer):
     """
     Class representing a right angle cylindrical scatterer.
@@ -507,10 +510,8 @@ class Cylinder(GenericScatterer):
         self.binding = CYLINDER(
             index=self.index,
             diameter=self.diameter,
-            wavelength=self.source.wavelength,
             medium_index=self.medium_index,
-            amplitude=self.source.amplitude,
-            jones_vector=self.source.jones_vector.values.squeeze()
+            source=self.source.binding
         )
 
     def a1n(self, max_order: Optional[int] = 0) -> numpy.array:
