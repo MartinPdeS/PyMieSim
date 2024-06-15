@@ -19,8 +19,7 @@ from PyMieSim.experiment import measure
 # Defining the source
 source = Gaussian(
     wavelength=1.2e-6,  # 1200 nm
-    polarization_value=90,  # Polarization angle in degrees
-    polarization_type='linear',
+    polarization=90,  # Polarization angle in degrees
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )

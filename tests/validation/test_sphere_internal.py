@@ -12,8 +12,7 @@ from PyMieSim.mesh import FibonacciMesh  # noqa: F401
 def test_Qsca_cross_section():
     source = Gaussian(
         wavelength=1e-6,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -34,8 +33,7 @@ def test_Qsca_cross_section():
 def test_energy_flow_coupling():
     source = Gaussian(
         wavelength=1e-6,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -64,8 +62,7 @@ def test_energy_flow_coupling():
 def test_compare_sphere_coreshell_0():
     source = Gaussian(
         wavelength=1e-6,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

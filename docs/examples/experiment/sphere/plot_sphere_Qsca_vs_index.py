@@ -17,8 +17,7 @@ from PyMieSim.experiment import measure
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=[500e-9, 1000e-9, 1500e-9],
-    polarization_value=30,
-    polarization_type='linear',
+    polarization=30,
     optical_power=1e-3,
     NA=0.2
 )

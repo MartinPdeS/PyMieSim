@@ -20,8 +20,7 @@ from PyMieSim.experiment import measure
 # The amplitude is set to one per default.
 source = Gaussian(
     wavelength=800e-9,  # 800 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )

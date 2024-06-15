@@ -23,8 +23,7 @@ volume = numpy.pi * (diameter / 2)**2
 
 source = Gaussian(
     wavelength=632.8e-9,
-    polarization_value=[0, 90],
-    polarization_type='linear',
+    polarization=[0, 90],
     optical_power=1e-3,
     NA=0.2
 )

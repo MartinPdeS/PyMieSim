@@ -25,8 +25,7 @@ diameter = numpy.linspace(1e-9, 2000e-9, 200)
 
 source = Gaussian(
     wavelength=400e-9,
-    polarization_value=90,
-    polarization_type='linear',
+    polarization=90,
     optical_power=1e-3,
     NA=0.2
 )

@@ -19,8 +19,7 @@ from PyOptik import UsualMaterial
 # Defining the source
 source = Gaussian(
     wavelength=np.linspace(950e-9, 1050e-9, 300),  # Wavelengths ranging from 950 nm to 1050 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )
@@ -64,7 +63,7 @@ data = experiment.get(measure.coupling)
 # Visualizing how the coupling efficiency varies with the wavelength.
 figure = data.plot(
     x=source.wavelength,  # Wavelength as the x-axis
-    std=experiment.diameter  # Standard deviation with respect to cylinder diameter
+    std=scatterer.diameter  # Standard deviation with respect to cylinder diameter
 )
 
 # %%

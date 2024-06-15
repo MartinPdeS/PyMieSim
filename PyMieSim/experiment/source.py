@@ -28,7 +28,7 @@ class BaseSource:
     def __post_init__(self):
         self.mapping = {
             'wavelength': None,
-            'polarization_value': None,
+            'polarization': None,
             'NA': None,
             'optical_power': None
         }
@@ -39,7 +39,10 @@ class BaseSource:
     def format_inputs(self):
         """Formats input wavelengths and polarization values into numpy arrays."""
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
-        self.polarization_value = numpy.atleast_1d(self.polarization_value).astype(float)
+
+        if not isinstance(self.polarization, polarization.JonesVector):
+            self.polarization = polarization.Linear(self.polarization)
+
         self.NA = numpy.atleast_1d(self.NA).astype(float)
         self.optical_power = numpy.atleast_1d(self.optical_power).astype(float)
 
@@ -57,8 +60,8 @@ class BaseSource:
         self.mapping['wavelength'] = parameters.wavelength
         self.mapping['wavelength'].set_base_values(self.wavelength)
 
-        self.mapping['polarization_value'] = parameters.polarization_value
-        self.mapping['polarization_value'].set_base_values(self.polarization_value)
+        self.mapping['polarization'] = parameters.polarization
+        self.mapping['polarization'].set_base_values(self.polarization.elements)
 
         self.mapping['NA'] = parameters.NA_source
         self.mapping['NA'].set_base_values(self.NA)
@@ -78,16 +81,14 @@ class Gaussian(BaseSource):
 
     Attributes:
         wavelength (List): The wavelength(s) of the light source.
-        polarization_value (List): The polarization values of the light source, in degrees.
+        polarization (List): The polarization values of the light source, in degrees.
         NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
-        polarization_type (str): The type of polarization, defaults to 'linear'.
     """
     wavelength: Union[numpy.ndarray, List[float], float]
-    polarization_value: Union[numpy.ndarray, List[float], float]
+    polarization: Union[polarization.JonesVector, numpy.ndarray, List[float], float]
     NA: Union[numpy.ndarray, List[float], float]
     optical_power: Union[numpy.ndarray, List[float], float]
-    polarization_type: str = 'linear'
     name: str = field(default='PlaneWave', init=False)
 
     def generate_binding(self) -> NoReturn:
@@ -98,11 +99,9 @@ class Gaussian(BaseSource):
         Returns:
             None
         """
-        linear_polarization = polarization.Linear(*self.polarization_value)
-
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
-            jones_vector=numpy.atleast_2d(linear_polarization.values).astype(complex).T,
+            jones_vector=self.polarization.jones_vector,
             NA=self.NA,
             optical_power=self.optical_power
         )
@@ -119,14 +118,12 @@ class PlaneWave(BaseSource):
 
     Attributes:
         wavelength (List): The wavelength(s) of the light source.
-        polarization_value (List): The polarization values of the light source, in degrees.
+        polarization (List): The polarization values of the light source, in degrees.
         amplitude (float): The amplitude of the plane wave, in Watts.
-        polarization_type (str): The type of polarization, defaults to 'linear'.
     """
     wavelength: Union[numpy.ndarray, List[float], float]
-    polarization_value: Union[numpy.ndarray, List[float], float]
+    polarization: Union[polarization.JonesVector, numpy.ndarray, List[float], float]
     amplitude: Union[numpy.ndarray, List[float], float]
-    polarization_type: str = 'linear'
     name: str = field(default='PlaneWave', init=False)
 
     def generate_binding(self) -> NoReturn:
@@ -139,7 +136,7 @@ class PlaneWave(BaseSource):
         """
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
-            jones_vector=self.jones_vector,
+            jones_vector=self.polarization.jones_vector,
             amplitude=self.amplitude
         )
 

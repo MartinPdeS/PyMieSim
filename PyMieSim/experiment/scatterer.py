@@ -46,14 +46,11 @@ class BaseScatterer():
         for UI or data outputs. The key in the mapping dictionary is constructed using the provided name.
 
         Parameters:
-            name (str): The base name to use for the keys in the mapping dictionary.
-                        This name is used to differentiate between different materials or indices.
+            name (str): The base name to use for the keys in the mapping dictionary. This name is used to differentiate between different materials or indices.
             indexes (numpy.ndarray): The array of refractive index values.
             materials (numpy.ndarray): The array of material objects.
             data_type (type): The expected data type of the material or index values. Default is `object`.
 
-        Returns:
-            NoReturn
         """
         if materials is not None:
             key = f"{name}_material" if name else "material"
@@ -63,7 +60,7 @@ class BaseScatterer():
             base_values = indexes
 
         res = getattr(parameters, key)
-        res.base_values = base_values
+        res.base_values = res.values = base_values
         self.mapping[key] = res
 
     def add_material_index_to_binding_kwargs(self, name: str, indexes: numpy.ndarray, materials: numpy.ndarray, data_type: type = object) -> NoReturn:
@@ -136,7 +133,7 @@ class Sphere(BaseScatterer):
         Extends the base class post-initialization process by setting up additional properties specific to spherical scatterers.
         Initializes a mapping dictionary to support visualization and other operations.
         """
-        self.mapping = dict.fromkeys(['diameter', 'index', 'material', 'medium_index', 'medium_material'])
+        self.mapping = dict.fromkeys(['diameter'])
 
         self.diameter = numpy.atleast_1d(self.diameter).astype(float)
 
@@ -180,8 +177,8 @@ class Sphere(BaseScatterer):
 
         self.add_material_index_to_mapping(
             name=None,
-            indexes=self.medium_index,
-            materials=self.medium_material,
+            indexes=self.index,
+            materials=self.material,
         )
         self.add_material_index_to_mapping(
             name='medium',
@@ -233,12 +230,6 @@ class CoreShell(BaseScatterer):
         self.mapping = dict.fromkeys([
             'core_diameter',
             'shell_width',
-            'core_index',
-            'core_material',
-            'shell_index',
-            'shell_material',
-            'medium_index',
-            'medium_material'
         ])
 
         self.core_diameter = numpy.atleast_1d(self.core_diameter).astype(float)
@@ -293,12 +284,6 @@ class CoreShell(BaseScatterer):
         self.mapping['shell_width'].set_base_values(self.binding_kwargs.get('shell_width'))
 
         self.add_material_index_to_mapping(
-            name=None,
-            indexes=self.medium_index,
-            materials=self.medium_material,
-        )
-
-        self.add_material_index_to_mapping(
             name='core',
             indexes=self.core_index,
             materials=self.core_material,
@@ -341,7 +326,8 @@ class Cylinder(BaseScatterer):
     available_measure_list = measure.__cylinder__
 
     def __post_init__(self):
-        self.mapping = dict.fromkeys(['diameter', 'index', 'material', 'medium_index', 'medium_material'])
+        self.mapping = dict.fromkeys(['diameter'])
+        self.diameter = numpy.atleast_1d(self.diameter).astype(float)
 
         super(Cylinder, self).__post_init__()
 
@@ -387,8 +373,8 @@ class Cylinder(BaseScatterer):
 
         self.add_material_index_to_mapping(
             name=None,
-            indexes=self.medium_index,
-            materials=self.medium_material,
+            indexes=self.index,
+            materials=self.material,
         )
         self.add_material_index_to_mapping(
             name='medium',

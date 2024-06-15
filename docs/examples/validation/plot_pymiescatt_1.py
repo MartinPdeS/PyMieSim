@@ -28,8 +28,7 @@ diameters = np.geomspace(10e-9, 6e-6, 800)  # Diameters from 10 nm to 6 μm
 # Configure the Gaussian source
 source = Gaussian(
     wavelength=wavelength,
-    polarization_value=0,
-    polarization_type='linear',
+    polarization=0,
     optical_power=optical_power,
     NA=NA
 )
