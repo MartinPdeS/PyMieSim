@@ -41,6 +41,14 @@ class BaseDetector():
         Called automatically after the class initialization to prepare the detector by formatting inputs, computing
         field arrays, setting up rotation angles, and initializing visualization and C++ bindings.
         """
+        self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
+        self.sampling = numpy.atleast_1d(self.sampling).astype(int)
+        self.NA = numpy.atleast_1d(self.NA).astype(float)
+        self.phi_offset = numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float))
+        self.gamma_offset = numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float))
+        self.polarization_filter = numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float))
+        self.rotation = numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float)
+
         self.mapping = self.setup_mapping()
         self.initialize_binding()
 
@@ -68,13 +76,13 @@ class BaseDetector():
         parameters.
         """
         self.binding_kwargs = dict(
-            mode_number=numpy.atleast_1d(self.mode_number).astype(str),
-            sampling=numpy.atleast_1d(self.sampling).astype(int),
-            NA=numpy.atleast_1d(self.NA).astype(float),
-            phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
-            gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
-            polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
-            rotation=numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float),
+            mode_number=self.mode_number,
+            sampling=self.sampling,
+            NA=self.NA,
+            phi_offset=self.phi_offset,
+            gamma_offset=self.gamma_offset,
+            polarization_filter=self.polarization_filter,
+            rotation=self.rotation,
             mean_coupling=self.mean_coupling,
             coherent=self.coherent
         )

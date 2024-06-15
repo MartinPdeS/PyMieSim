@@ -38,8 +38,8 @@ class BaseSource:
 
     def format_inputs(self):
         """Formats input wavelengths and polarization values into numpy arrays."""
-        self.polarization_value = numpy.atleast_1d(self.polarization_value).astype(float)
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
+        self.polarization_value = numpy.atleast_1d(self.polarization_value).astype(float)
         self.NA = numpy.atleast_1d(self.NA).astype(float)
         self.optical_power = numpy.atleast_1d(self.optical_power).astype(float)
 
@@ -101,10 +101,10 @@ class Gaussian(BaseSource):
         linear_polarization = polarization.Linear(*self.polarization_value)
 
         self.binding_kwargs = dict(
-            wavelength=numpy.atleast_1d(self.wavelength).astype(float),
+            wavelength=self.wavelength,
             jones_vector=numpy.atleast_2d(linear_polarization.values).astype(complex).T,
-            NA=numpy.atleast_1d(self.NA).astype(float),
-            optical_power=numpy.atleast_1d(self.optical_power).astype(float)
+            NA=self.NA,
+            optical_power=self.optical_power
         )
 
         self.binding = CppSourceSet(**self.binding_kwargs)
