@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from typing import NoReturn
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
@@ -32,7 +33,10 @@ class PyMieSimGUI:
         self.master = master
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.title("PyMieSim Graphic Interface")
-
+        self.link_radio_button = "link"
+        self.x_axis_label_widget = tk.StringVar(value='phi_offset')
+        self.STD_axis_label_widget = tk.StringVar(value=None)
+        self.STD_axis_label_widget.set(None)
         self.customize_notebook_style()
         self.setup_notebook()
         self.setup_controls()
@@ -81,10 +85,33 @@ class PyMieSimGUI:
         self.notebook_2.grid(row=2, column=0, sticky="ewns")
 
         # Create tab instances
-        self.source_tab = SourceTab(notebook=self.notebook, label='Source')
-        self.scatterer_tab = ScattererTab(self.notebook, 'Scatterer', source_tab=self.source_tab)
-        self.detector_tab = DetectorTab(self.notebook, 'Detector')
-        self.axis_tab = AxisTab(self.notebook_2, 'Axis Configuration', other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab])
+        self.source_tab = SourceTab(
+            x_axis=self.x_axis_label_widget,
+            STD_axis=self.STD_axis_label_widget,
+            notebook=self.notebook,
+            label='Source'
+        )
+
+        self.scatterer_tab = ScattererTab(
+            x_axis=self.x_axis_label_widget,
+            STD_axis=self.STD_axis_label_widget,
+            notebook=self.notebook,
+            label='Scatterer',
+            source_tab=self.source_tab
+        )
+
+        self.detector_tab = DetectorTab(
+            x_axis=self.x_axis_label_widget,
+            STD_axis=self.STD_axis_label_widget,
+            notebook=self.notebook,
+            label='Detector'
+        )
+
+        self.axis_tab = AxisTab(
+            notebook=self.notebook_2,
+            label='Axis Configuration',
+            other_tabs=[self.source_tab, self.scatterer_tab, self.detector_tab]
+        )
 
     def export_plot(self) -> NoReturn:
         """
@@ -102,17 +129,17 @@ class PyMieSimGUI:
                 ('All files', '*.*')
             ]
 
-            filepath = filedialog.asksaveasfilename(
+            self.filepath = filedialog.asksaveasfilename(
                 defaultextension=".png",
                 filetypes=filetypes,
                 title="Save plot as..."
             )
 
             # If a file was selected (i.e., dialog not cancelled)
-            if filepath:
+            if self.filepath:
                 # Save the figure using matplotlib's savefig
-                self.figure.savefig(filepath)
-                messagebox.showinfo("Export Successful", f"Plot successfully saved to {filepath}")
+                self.figure.savefig(self.filepath)
+                messagebox.showinfo("Export Successful", f"Plot successfully saved to {self.filepath}")
         else:
             messagebox.showwarning("Export Failed", "No plot available to export.")
 
@@ -123,26 +150,43 @@ class PyMieSimGUI:
         self.controls_frame = ttk.Frame(self.master)
         self.controls_frame.grid(row=1, column=0, sticky="ew")
 
-        ttk.Button(
+        self.calculate_button = ttk.Button(
             self.controls_frame,
             text="Calculate",
             style="Large.TButton",
             command=self.update_plot
-        ).grid(row=0, column=0, sticky="ew")
+        )
+        self.calculate_button.grid(row=0, column=0, sticky="ew")
 
-        ttk.Button(
+        self.save_button = ttk.Button(
             self.controls_frame,
             text="Save as CSV",
             style="Large.TButton",
             command=self.save_data_as_csv
-        ).grid(row=0, column=1, sticky="ew")
+        )
+        self.save_button.grid(row=0, column=1, sticky="ew")
 
-        ttk.Button(
+        self.export_button = ttk.Button(
             self.controls_frame,
             text="Export Plot",
             style="Large.TButton",
             command=self.export_plot
-        ).grid(row=0, column=2, sticky="ew")
+        )
+        self.export_button.grid(row=0, column=2, sticky="ew")
+
+        self.reset_std_button = ttk.Button(
+            self.controls_frame,
+            text="Reset STD-axis",
+            style="Large.TButton",
+            command=self.reset_STDaxis_selection
+        )
+        self.reset_std_button.grid(row=0, column=3, sticky="ew")
+
+    def reset_STDaxis_selection(self):
+        """
+        Allows the user to unselect the std-axis radiobuttons.
+        """
+        self.STD_axis_label_widget.set(None)
 
     def setup_PyMieSim(self) -> NoReturn:
         """
@@ -162,12 +206,13 @@ class PyMieSimGUI:
         """
         Triggered by the "Save as CSV" button. Opens a file dialog to save the computed data as a CSV file.
         """
+
         if hasattr(self, 'data'):
-            filepath = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
-            if filepath:
+            self.filepath = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
+            if self.filepath:
                 # Assuming self.data is a pandas DataFrame or can be converted to one
-                np.savetxt(filepath, self.data.y.values.squeeze(), delimiter=",")
-                print(f"Data saved to {filepath}")
+                np.savetxt(self.filepath, self.data.y.values.squeeze(), delimiter=",")
+                print(f"Data saved to {self.filepath}")
         else:
             print("No data to save. Please calculate first.")
 
@@ -181,26 +226,36 @@ class PyMieSimGUI:
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("Plot Window")
 
-        x_axis = self.axis_tab.x_axis
-
-        std_axis = None if self.axis_tab.std_axis == "none" else self.axis_tab.std_axis
-
-        figure = self.data.plot(x=x_axis, std=std_axis)
+        figure = self.data.plot(x=self.x_axis_component, std=self.STD_axis_component)
         figure.unit_size = (9, 4)
         figure._render_()
         self.figure = figure._mpl_figure
 
         canvas = FigureCanvasTkAgg(self.figure, master=self.new_window)
-        canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         self.toolbar = NavigationToolbar2Tk(canvas, self.new_window)
-        self.toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+        canvas.draw()
+        self.toolbar.update()
 
     def update_plot(self) -> NoReturn:
         plt.close('all')
-        x_axis, y_axis, std_axis = self.axis_tab.get_inputs()
+
+        x_axis, y_axis, std_axis = self.x_axis_label_widget.get(), self.axis_tab.get_inputs()[0], self.STD_axis_label_widget.get()
+
+        if x_axis == std_axis:
+            self.messagebox1 = tk.messagebox.showerror(title="error", message="X-axis cannot be equal to STD-axis.", parent=self.master)
+            raise ValueError("Warning: x-axis cannot be equal to STD-axis.")
+
+        if y_axis != "coupling" and std_axis in self.detector_tab.component_dict.keys():
+            self.messagebox2 = tk.messagebox.showerror(title="error", message="STD-axis cannot be associated to detector if y-axis is not coupling.", parent=self.master)
+            raise ValueError("Warning: STD-axis cannot be associated to detector if y-axis is not coupling.")
+
+        if y_axis != "coupling" and x_axis in self.detector_tab.component_dict.keys():
+            self.messagebox3 = tk.messagebox.showerror(title="error", message="x-axis cannot be associated to detector if y-axis is not coupling.", parent=self.master)
+            raise ValueError("Warning: x-axis cannot be associated to detector if y-axis is not coupling.")
 
         self.y_axis = self.axis_tab.measure_map[y_axis]
 
@@ -208,13 +263,14 @@ class PyMieSimGUI:
 
         self.data = self.experiment.get(self.y_axis)
 
-        self.x_axis = self.axis_tab.axis_mapping[x_axis]
+        self.x_axis_component = self.axis_tab.axis_mapping[x_axis]
+
+        self.STD_axis_component = None if std_axis == "None" else self.axis_tab.axis_mapping[std_axis]
 
         try:
             self.generate_figure()
 
         except ValueError as e:
             messagebox.showerror("Input Error", str(e))
-
 
 # -

@@ -2,6 +2,12 @@ import numpy
 from typing import List, Union
 from pydantic.dataclasses import dataclass
 
+scatterer_set = Sphere(
+    diameter=800e-9,
+    index=1.44,
+    medium_index=1,
+    source=source
+)
 
 @dataclass
 class TestClass:

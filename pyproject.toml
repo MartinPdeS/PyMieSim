@@ -11,7 +11,7 @@ testpaths = [
     "tests/scatterers",
     "tests/experiments",
     "tests/validation",
-    "tests/extra",
+    "tests/extra"
 ]
 
 minversion = 6.0

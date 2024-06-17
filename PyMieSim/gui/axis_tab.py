@@ -1,28 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import NoReturn, Optional, Dict
-from tkinter import ttk
+from typing import NoReturn, Dict
 from PyMieSim.experiment import scatterer
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.widgets import ComBoxWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class AxisTab(BaseTab):
-    measure_map = scatterer.Sphere.available_measure_list
+    """
+    A GUI tab for selecting the y axis of the PyMieSim experiment, as well as configuring its x and std axis.
 
-    def __init__(self, master: ttk.Notebook, label: str, other_tabs: list[BaseTab], **kwargs) -> NoReturn:
-        """
-        Initializes the Axis Configuration tab with references to other tabs to gather possible axis choices.
+    Attributes:
+        other_tabs (list[BaseTab]): The source, scatterer and detector tabs, in which the x and std axis are selected
+        measure_map: The list of the different measures (i.e. y axis) possible to choose from
 
-        Args:
-            master (ttk.Notebook): The notebook widget this tab will be part of.
-            label (str): The label for the tab.
-            other_tabs (List[BaseTab]): List of other tab instances to reference for setting up axis mappings.
+    Inherited attributes:
+        notebook (ttk.Notebook): The notebook widget this tab is part of.
+        label (str): The label for the tab.
+        frame (ttk.Frame): The frame serving as the container for the tab's contents.
+        main_window: Reference to the main window of the application, if applicable.
+    """
+    other_tabs: list[BaseTab]
+    measure_map = scatterer.Sphere.available_measure_list  # Note: this list should be updated with the specific scatterer tab selected, instead of always using the sphere
+
+    def __post_init__(self) -> NoReturn:
         """
-        self.other_tabs = other_tabs
-        super().__init__(master, label=label)
+         Calls for BaseTab's post initialisation, and initializes the Axis Configuration tab with references to other tabs to gather possible axis choices.
+        """
+        super().__post_init__()
         self.setup()
 
     def setup(self) -> NoReturn:
@@ -36,37 +46,10 @@ class AxisTab(BaseTab):
         self.widget_collection = WidgetCollection(frame=self.frame)
 
         self.widget_collection.add_widgets(
-            ComBoxWidget(label='x-axis', component_label='x_axis', options=self.x_axis_options, default_options=11),
-            ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, default_options=21),
-            ComBoxWidget(label='STD-axis', component_label='std_axis', options=['none', *self.x_axis_options], default_options=0),
+            ComBoxWidget(label='y-axis', component_label='y_axis', options=self.y_axis_options, default_options=len(self.y_axis_options) - 1),
         )
 
-        self.widget_collection.setup_widgets()
-
-    @property
-    def x_axis(self) -> str:
-        """
-        Retrieves the selected x-axis variable from the widget collection.
-
-        Returns:
-            str: The key in the axis mapping corresponding to the selected x-axis variable.
-        """
-        x_axis = self.widget_collection.widgets[0].tk_widget.get()
-        return self.axis_mapping[x_axis]
-
-    @property
-    def std_axis(self) -> Optional[str]:
-        """
-        Retrieves the selected standard deviation axis variable, if any.
-
-        Returns:
-            Optional[str]: The key in the axis mapping corresponding to the selected standard deviation axis variable,
-            or None if 'none' is selected.
-        """
-        std_axis = self.widget_collection.widgets[2].tk_widget.get()
-        if std_axis == 'none':
-            return None
-        return self.axis_mapping[std_axis]
+        self.widget_collection.setup_widgets(title_bar=False)
 
     @property
     def axis_mapping(self) -> Dict[str, str]:
@@ -81,3 +64,5 @@ class AxisTab(BaseTab):
             _axis_mapping.update(tab.component.mapping)
 
         return _axis_mapping
+
+# -

@@ -30,7 +30,7 @@ scatterer_set = Sphere(
     diameter=numpy.linspace(1000e-9 - 100e-9, 1000e-9 + 100e-9, 10),
     material=UsualMaterial.Polystyrene,
     medium_material=UsualMaterial.Water,
-    source_set=source_set
+    source=source_set
 )
 
 # %%
@@ -46,9 +46,9 @@ detector_set = Photodiode(
 # %%
 # Defining the experiment setup
 experiment = Setup(
-    scatterer_set=scatterer_set,
-    source_set=source_set,
-    detector_set=detector_set
+    scatterer=scatterer_set,
+    source=source_set,
+    detector=detector_set
 )
 
 # %%
