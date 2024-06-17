@@ -46,8 +46,7 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
     # Setup Gaussian source
     source = Gaussian(
         wavelength=np.linspace(400e-9, 1800e-9, 50),
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1e-3,
         NA=0.2
     )

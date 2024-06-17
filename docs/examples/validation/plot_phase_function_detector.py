@@ -26,8 +26,7 @@ source_wavelength = 1.2e-6  # Wavelength of the source in meters
 # Experiment source and scatterer setup
 source = ExperimentGaussian(
     wavelength=source_wavelength,
-    polarization_value=[0, 90],
-    polarization_type='linear',
+    polarization=[0, 90],
     optical_power=1,
     NA=0.2
 )
@@ -62,8 +61,7 @@ coupling_data /= coupling_data.max()  # Normalize data
 # Single scatterer simulation for S1 and S2
 single_source = SingleGaussian(
     wavelength=source_wavelength,
-    polarization_value=90,
-    polarization_type='linear',
+    polarization=90,
     optical_power=1,
     NA=0.2
 )

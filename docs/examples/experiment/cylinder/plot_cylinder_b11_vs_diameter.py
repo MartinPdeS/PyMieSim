@@ -11,14 +11,13 @@ import numpy as np
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim import measure
+from PyMieSim.experiment import measure
 
 # %%
 # Defining the source
 source = Gaussian(
     wavelength=400e-9,  # 400 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )
@@ -46,9 +45,7 @@ data = experiment.get(measure.b11)
 # %%
 # Plotting the results
 # Visualizing how the B1 scattering coefficient varies with the cylinder diameter.
-figure = data.plot(
-    x=experiment.diameter  # Cylinder diameter as the x-axis
-)
+figure = data.plot(x=scatterer.diameter)
 
 # %%
 # Displaying the plot

@@ -19,8 +19,7 @@ scott_prahl_values = {
 def test_validation_scott_prahl(measure_str):
     source = Gaussian(
         wavelength=1e-6,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

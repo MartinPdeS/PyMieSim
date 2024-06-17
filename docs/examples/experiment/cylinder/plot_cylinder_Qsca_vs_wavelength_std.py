@@ -18,8 +18,7 @@ from PyMieSim.experiment import measure
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=np.linspace(200e-9, 1800e-9, 300),
-    polarization_value=0,
-    polarization_type='linear',
+    polarization=0,
     optical_power=1e-3,
     NA=0.2
 )
@@ -47,9 +46,9 @@ data = experiment.get(measure.Qsca)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=experiment.wavelength,
+    x=source.wavelength,
     y_scale='log',
-    std=experiment.diameter
+    std=scatterer.diameter
 )
 
 _ = figure.show()

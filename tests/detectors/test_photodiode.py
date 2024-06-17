@@ -13,8 +13,7 @@ def setup_source():
 
     return Gaussian(
         wavelength=750e-9,  # Wavelength of the source in meters
-        polarization_value=0,  # Polarization value
-        polarization_type='linear',  # Polarization type
+        polarization=0,  # Polarization value
         optical_power=1,  # Optical power in watts
         NA=0.3  # Numerical aperture
     )

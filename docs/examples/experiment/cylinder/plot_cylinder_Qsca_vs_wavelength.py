@@ -18,8 +18,7 @@ from PyMieSim.experiment import measure
 # Studying the scattering efficiency across a range of wavelengths.
 source = Gaussian(
     wavelength=np.linspace(400e-9, 1000e-9, 500),  # Wavelengths ranging from 400 nm to 1000 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )
@@ -45,13 +44,13 @@ experiment = Setup(
 # Measuring the scattering efficiency (Qsca)
 # Averaging the data across the different indices to simplify visualization.
 data = experiment.get(measure.Qsca)
-data = data.mean(experiment.index)
+data = data.mean(scatterer.index)
 
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with wavelength for the given cylinder configurations.
 figure = data.plot(
-    x=experiment.wavelength,  # Wavelength as the x-axis
+    x=source.wavelength,  # Wavelength as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 

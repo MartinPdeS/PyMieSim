@@ -19,8 +19,7 @@ from PyOptik import UsualMaterial
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=np.linspace(950e-9, 1050e-9, 200),
-    polarization_value=0,
-    polarization_type='linear',
+    polarization=0,
     optical_power=1e-3,
     NA=0.2
 )
@@ -61,8 +60,8 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 figure = data.plot(
-    x=experiment.wavelength,
-    std=experiment.diameter
+    x=source.wavelength,
+    std=scatterer.diameter
 )
 
 _ = figure.show()

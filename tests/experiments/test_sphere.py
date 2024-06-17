@@ -35,8 +35,7 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up the Gaussian source
     source = Gaussian(
         wavelength=np.linspace(400e-9, 1800e-9, 50),
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1e-3,
         NA=0.2
     )

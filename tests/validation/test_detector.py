@@ -13,8 +13,7 @@ def source_single():
     """Fixture for creating a Gaussian source reused across tests."""
     return single.source.Gaussian(
         wavelength=1e-6,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -25,8 +24,7 @@ def source_experiment():
     """Fixture for creating a Gaussian source reused across tests."""
     return experiment.source.Gaussian(
         wavelength=1e-6,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

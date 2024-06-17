@@ -46,8 +46,7 @@ plottings = [
 def test_coreshell_method(method, core_config, shell_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -78,8 +77,7 @@ def test_coreshell_coupling(core_config, shell_config, medium_config):
 
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -104,8 +102,7 @@ def test_coreshell_coupling(core_config, shell_config, medium_config):
 def test_coreshell_attribute(attribute, core_config, shell_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -130,8 +127,7 @@ def test_coreshell_attribute(attribute, core_config, shell_config, medium_config
 def test_coreshell_plottings(plotting, core_config, shell_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

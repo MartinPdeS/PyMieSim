@@ -14,8 +14,7 @@ from PyMieSim.single.source import Gaussian
 # Defining the source
 source = Gaussian(
     wavelength=0.5e-6,  # 1000 nm
-    polarization_value='right',  # Right circular polarization
-    polarization_type='circular',
+    polarization=30,  # Right circular polarization
     optical_power=1,  # Arbitrary units
     NA=0.3  # Numerical Aperture
 )

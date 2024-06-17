@@ -18,8 +18,7 @@ from PyOptik import UsualMaterial
 # Defining the source
 source = Gaussian(
     wavelength=400e-9,  # 400 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )
@@ -50,7 +49,7 @@ data = experiment.get(measure.Qabs)  # Assuming Qabs was intended, replace with 
 # Plotting the results
 # Visualizing how the scattering efficiency varies with the cylinder diameter.
 figure = data.plot(
-    x=experiment.diameter,  # Cylinder diameter as the x-axis
+    x=scatterer.diameter,  # Cylinder diameter as the x-axis
     y_scale="linear"  # Linear scale for the y-axis
 )
 

@@ -19,8 +19,7 @@ from PyMieSim.experiment import measure
 # Defining the source
 source = Gaussian(
     wavelength=1.2e-6,  # 1200 nm
-    polarization_value=90,  # Polarization angle in degrees
-    polarization_type='linear',
+    polarization=90,  # Polarization angle in degrees
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )
@@ -60,7 +59,7 @@ data = experiment.get(measure.coupling)
 # Plotting the results
 # Visualizing how the coupling efficiency varies with angular displacement.
 figure = data.plot(
-    x=experiment.phi_offset,  # Angular displacement as the x-axis
+    x=detector.phi_offset,  # Angular displacement as the x-axis
     y_scale='log',  # Logarithmic scale for the y-axis
     normalize=True  # Normalizing the results
 )

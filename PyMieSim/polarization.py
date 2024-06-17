@@ -1,8 +1,29 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Iterable
+
+from typing import Iterable, List, Union, NoReturn
 import numpy
+from pydantic.dataclasses import dataclass
+
+
+config_dict = dict(
+    kw_only=True,
+    slots=True,
+    extra='forbid'
+)
+
+
+@dataclass(config=config_dict)
+class UnitPolarizationAngle:
+    angle: float
+
+    def __post_init__(self) -> NoReturn:
+        self.jones_vector = numpy.cos(self.angle * numpy.pi / 180), numpy.sin(self.angle * numpy.pi / 180)
+        self.jones_vector = numpy.asarray(self.jones_vector)
+
+    def __repr__(self) -> str:
+        return self.angle.__repr__()
 
 
 class JonesVector:
@@ -10,7 +31,7 @@ class JonesVector:
     Represents a Jones vector for describing the polarization state of light.
     """
 
-    def __init__(self, values: Iterable) -> None:
+    def __init__(self, values: Iterable) -> NoReturn:
         """
         Initialize the Jones vector.
 
@@ -40,7 +61,7 @@ class RightCircular(JonesVector):
     Represents right circular polarization.
     """
 
-    def __init__(self) -> None:
+    def __init__(self) -> NoReturn:
         super().__init__([1, 1j])
 
 
@@ -49,25 +70,38 @@ class LeftCircular(JonesVector):
     Represents left circular polarization.
     """
 
-    def __init__(self) -> None:
+    def __init__(self) -> NoReturn:
         super().__init__([1, -1j])
 
 
+@dataclass(config=config_dict)
 class Linear(JonesVector):
     """
     Represents linear polarization for a given angle or angles.
     """
+    angles: Union[List[float], float]
 
-    def __init__(self, *angles: float) -> None:
+    def __post_init__(self) -> NoReturn:
         """
         Initialize linear polarization with one or more angles.
 
         Parameters:
             - angles: float, the angle(s) of polarization in degrees.
         """
-        self.angles = numpy.array(angles, dtype=float)
-        if numpy.isnan(self.angles).any():
-            raise ValueError("Unpolarized light source is not implemented yet.")
+        self.angles = numpy.atleast_1d(self.angles)
 
-        jones_vector = numpy.array([numpy.cos(self.angles * numpy.pi / 180), numpy.sin(self.angles * numpy.pi / 180)])
-        super().__init__(jones_vector)
+        self.elements = [
+            UnitPolarizationAngle(angle=angle) for angle in self.angles
+        ]
+
+        self.jones_vector = numpy.asarray([
+            unit.jones_vector for unit in self.elements
+        ]).astype(complex)
+
+    def __getitem__(self, idx: int) -> UnitPolarizationAngle:
+        return self.elements[idx]
+
+    def __repr__(self):
+        return self.elements.__repr__()
+
+# -

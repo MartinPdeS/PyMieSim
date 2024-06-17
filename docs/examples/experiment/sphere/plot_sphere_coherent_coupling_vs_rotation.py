@@ -19,8 +19,7 @@ from PyMieSim.experiment import measure
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=1200e-9,
-    polarization_value=90,
-    polarization_type='linear',
+    polarization=90,
     optical_power=1e-3,
     NA=0.2
 )
@@ -59,6 +58,6 @@ data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-figure = data.plot(x=experiment.rotation)
+figure = data.plot(x=detector.rotation)
 
 _ = figure.show()

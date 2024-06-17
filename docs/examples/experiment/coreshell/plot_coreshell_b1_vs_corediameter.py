@@ -20,8 +20,7 @@ from PyMieSim.experiment import measure
 # The amplitude is set to one per default.
 source = Gaussian(
     wavelength=800e-9,  # 800 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1e-3,  # 1 milliwatt
     NA=0.2  # Numerical Aperture
 )
@@ -55,7 +54,7 @@ data = experiment.get(measure.b1)
 # Plotting the results
 # Visualizing how the B1 parameter varies with the core diameter.
 figure = data.plot(
-    x=experiment.core_diameter,  # Core diameter as the x-axis
+    x=scatterer.core_diameter,  # Core diameter as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
 
