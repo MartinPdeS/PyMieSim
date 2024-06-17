@@ -10,6 +10,7 @@ testpaths = [
     "tests/detectors",
     "tests/scatterers",
     "tests/experiments",
+    "tests/gui",
     "tests/validation",
     "tests/extra"
 ]
@@ -22,7 +23,7 @@ build-verbosity = 1
 before-test = ""
 test-command = "python -m pytest -rA {project}/tests"
 test-extras = ["testing"]
-test-skip = "*gui*"
+test-skip = "gui"
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
