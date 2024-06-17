@@ -20,9 +20,9 @@ minversion = 6.0
 build-frontend = "pip"
 build-verbosity = 1
 before-test = ""
-# test-command = "python -m pytest -rA {project}/tests"
-# test-command = "python -m pytest -rA -c {project}/pyproject.toml"
+test-command = "python -m pytest -rA {project}/tests"
 test-extras = ["testing"]
+test-skip = "*gui*"
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
