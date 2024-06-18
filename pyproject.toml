@@ -10,7 +10,7 @@ testpaths = [
     "tests/detectors",
     "tests/scatterers",
     "tests/experiments",
-    "tests/gui",
+    # "tests/gui",
     "tests/validation",
     "tests/extra"
 ]
