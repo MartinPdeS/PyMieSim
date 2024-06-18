@@ -40,7 +40,7 @@ class BaseSource:
         """Formats input wavelengths and polarization values into numpy arrays."""
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
 
-        if not isinstance(self.polarization, polarization.JonesVector):
+        if not isinstance(self.polarization, polarization.BasePolarization):
             self.polarization = polarization.Linear(self.polarization)
 
         self.NA = numpy.atleast_1d(self.NA).astype(float)
@@ -86,7 +86,7 @@ class Gaussian(BaseSource):
         optical_power (float): The optical power of the source, in Watts.
     """
     wavelength: Union[numpy.ndarray, List[float], float]
-    polarization: Union[polarization.JonesVector, numpy.ndarray, List[float], float]
+    polarization: Union[polarization.BasePolarization, numpy.ndarray, List[float], float]
     NA: Union[numpy.ndarray, List[float], float]
     optical_power: Union[numpy.ndarray, List[float], float]
     name: str = field(default='PlaneWave', init=False)
