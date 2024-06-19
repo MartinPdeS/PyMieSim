@@ -12,6 +12,7 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
+from PyMieSim.polarization import RightCircular
 from PyOptik import UsualMaterial
 from PyMieSim.experiment import measure
 
@@ -19,7 +20,7 @@ from PyMieSim.experiment import measure
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=1200e-9,
-    polarization=90,
+    polarization=RightCircular(),
     optical_power=1e-3,
     NA=0.2
 )

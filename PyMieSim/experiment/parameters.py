@@ -11,7 +11,7 @@ wavelength = units.Length(long_label='Wavelength', short_label=r'$\lambda$', str
 
 
 # Angle units
-polarization = units.Degree(long_label=r'Polarization angle', short_label=r'pol.')
+
 rotation = units.Degree(long_label='Rotation angle', short_label='rot', string_format='.1f')
 phi_offset = units.Degree(long_label='Phi angle', short_label=r'phi', use_prefix=False, string_format='.1f')
 gamma_offset = units.Degree(long_label='Gamma angle', short_label=r'gamma', use_prefix=False, string_format='.1f')
@@ -27,6 +27,7 @@ medium_index = units.Index(long_label='Medium refractive index', short_label='me
 
 
 # Custom units
+polarization = units.Custom(long_label=r'Polarization angle', short_label=r'pol')
 material = units.Custom(long_label='Material', short_label='material')
 core_material = units.Custom(long_label='Core material', short_label='core material')
 shell_material = units.Custom(long_label='Shell material', short_label='shell material')

@@ -24,6 +24,9 @@ class UnitPolarizationAngle:
         self.jones_vector = numpy.cos(self.angle * numpy.pi / 180), numpy.sin(self.angle * numpy.pi / 180)
         self.jones_vector = numpy.asarray(self.jones_vector)
 
+    def __repr__(self) -> str:
+        return f"{self.angle}"
+
 
 @dataclass(config=config_dict)
 class UnitJonesVector:
@@ -32,10 +35,13 @@ class UnitJonesVector:
     def __post_init__(self) -> NoReturn:
         self.jones_vector = numpy.asarray(self.jones_vector)
 
+    def __repr__(self) -> str:
+        return f"[{self.jones_vector[0]}, {self.jones_vector[1]}]"
+
 
 @dataclass(config=config_dict)
 class BasePolarization:
-    elements: object = field(init=False)  # List[Union[UnitPolarizationAngle, UnitJonesVector]] = field(init=False)
+    elements: List[Union[UnitPolarizationAngle, UnitJonesVector]] = field(init=False)
 
     @property
     def jones_vector(self) -> numpy.ndarray:
@@ -66,7 +72,7 @@ class JonesVector(BasePolarization):
     """
     Represents linear polarization for a given angle or angles.
     """
-    elements: Union[List[Tuple[Any, Any]], Tuple[Any, Any]]
+    elements: Union[numpy.ndarray, List[Tuple[Any, Any]], Tuple[Any, Any]]
 
     def __post_init__(self):
         self.elements = numpy.atleast_2d(self.elements).astype(complex)
@@ -81,7 +87,7 @@ class Linear(BasePolarization):
     """
     Represents linear polarization for a given angle or angles.
     """
-    angles: Union[List[float], float]
+    angles: Union[numpy.ndarray, List[float], float]
 
     def __post_init__(self) -> NoReturn:
         """
