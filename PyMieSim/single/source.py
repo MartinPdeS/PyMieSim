@@ -28,7 +28,7 @@ class PlaneWave():
 
     Attributes:
         wavelength (float): Wavelength of the light field in meters.
-        polarization_value (float): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+        polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
         amplitude (float): Amplitude of the electric field.
     """
     wavelength: float
