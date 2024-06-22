@@ -1,0 +1,166 @@
+
+
+.. _sphx_glr_gallery_examples_detector:
+
+Detectors
+~~~~~~~~~
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detecto...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_integrating_sphere_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_integrating_sphere.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP02 Mode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LP02_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LP02.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP02 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP11 Mode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LP11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LP11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP11 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of a Photodiode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_photodiode_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_photodiode.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_HG01_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_HG01.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 01 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LG11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LG11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Laguerre-Gauss 2-3 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP01 Mode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LP01_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LP01.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP01 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG31 Mode detector using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_HG11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_HG11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 31 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/examples/detector/plot_integrating_sphere
+   /gallery/examples/detector/plot_LP02
+   /gallery/examples/detector/plot_LP11
+   /gallery/examples/detector/plot_photodiode
+   /gallery/examples/detector/plot_HG01
+   /gallery/examples/detector/plot_LG11
+   /gallery/examples/detector/plot_LP01
+   /gallery/examples/detector/plot_HG11
+

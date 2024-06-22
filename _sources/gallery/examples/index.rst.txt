@@ -1,0 +1,573 @@
+:orphan:
+
+.. _examples_gallery:
+
+Examples
+========
+
+A gallery of examples and that showcase how PyMieSim can be used. Some examples demonstrate the use of the API in general and some demonstrate specific applications in tutorial form.
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    </div>
+
+.. scatterer-index:
+
+Scatterers
+~~~~~~~~~~
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to visualize the properties of a light source using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_plot_source_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_plot_source.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Source Plottings</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation of scattering properties using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_get_properties_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_get_properties.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Scattering properties</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Stokes parameters using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_plot_stokes_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_plot_stokes.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Stokes Parameters Computation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the S1 and S2 scattering functions using...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_plot_s1s2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_plot_s1s2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">S1 S2 Function Computation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scattere...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_plot_farfield_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_plot_farfield.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Scattering Phase Function (S...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_plot_spf_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_plot_spf.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">SPF Computation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the footprint of a scatterer using PyMie...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/scatterer/images/thumb/sphx_glr_plot_footprint_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_scatterer_plot_footprint.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Scatterer Footprint Calculation and Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+Detectors
+~~~~~~~~~
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detecto...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_integrating_sphere_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_integrating_sphere.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP02 Mode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LP02_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LP02.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP02 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP11 Mode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LP11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LP11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP11 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of a Photodiode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_photodiode_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_photodiode.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Photodiode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_HG01_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_HG01.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 01 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LG11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LG11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Laguerre-Gauss 2-3 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP01 Mode detector using P...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_LP01_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_LP01.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP01 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG31 Mode detector using PyMi...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/detector/images/thumb/sphx_glr_plot_HG11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_detector_plot_HG11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 31 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+Experiment
+~~~~~~~~~~
+
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    </div>
+
+
+
+Validation
+~~~~~~~~~~
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.10)">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_BH810_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_BH810.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.10)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.7)">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_BH87_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_BH87.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.7)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt Comparison">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_pymiescatt_0_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_pymiescatt_0.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt Comparison</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Comparison of Scattering Efficiency Using PyMieSim vs PyMieScatt">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_pymiescatt_1_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_pymiescatt_1.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Comparison of Scattering Efficiency Using PyMieSim vs PyMieScatt</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt for Core-Shell Particles">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_pymiescatt_2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_pymiescatt_2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt for Core-Shell Particles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt Scattering Efficiency Comparison for Core-Shell Particles">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_pymiescatt_3_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_pymiescatt_3.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt Scattering Efficiency Comparison for Core-Shell Particles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Comparison of PyMieSim and Theoretical Bohren-Huffman Data for Cylinder Scattering">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_BH88_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_BH88.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Comparison of PyMieSim and Theoretical Bohren-Huffman Data for Cylinder Scattering</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Goniometric Coupling vs S1 S2 Comparison">
+
+.. only:: html
+
+  .. image:: /gallery/examples/validation/images/thumb/sphx_glr_plot_phase_function_detector_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_validation_plot_phase_function_detector.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Goniometric Coupling vs S1 S2 Comparison</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+Extras examples
+~~~~~~~~~~~~~~~
+
+PyMieSim can be used in many ways. Below is a gallery of examples showing
+different ways to use the library.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Samples Properties">
+
+.. only:: html
+
+  .. image:: /gallery/examples/extras/images/thumb/sphx_glr_SphereProperties_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_extras_SphereProperties.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Samples Properties</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim makes it easy to create a source and a scatterer. With these objects defined, it is po...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/extras/images/thumb/sphx_glr_plot_Qsca_vs_permittivity_vs_size_parameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_extras_plot_Qsca_vs_permittivity_vs_size_parameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Scattering efficiency of a sphere</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs numerical aperture">
+
+.. only:: html
+
+  .. image:: /gallery/examples/extras/images/thumb/sphx_glr_plot_coupling_vs_NA_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_extras_plot_coupling_vs_NA.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs numerical aperture</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim makes it easy to create a source and a scatterer. With these objects defined, it is po...">
+
+.. only:: html
+
+  .. image:: /gallery/examples/extras/images/thumb/sphx_glr_plot_coupling_heatmap_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_examples_extras_plot_coupling_heatmap.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Coupling heatmap of a sphere</div>
+    </div>
+
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+   :includehidden:
+
+
+   /gallery/examples/scatterer/index.rst
+   /gallery/examples/detector/index.rst
+   /gallery/examples/experiment/index.rst
+   /gallery/examples/validation/index.rst
+   /gallery/examples/extras/index.rst
+
+
+
+.. only:: html
+
+ .. rst-class:: sphx-glr-signature
+
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_
