@@ -81,7 +81,7 @@ class Gaussian(BaseSource):
 
     Attributes:
         wavelength (List): The wavelength(s) of the light source.
-        polarization (List): The polarization values of the light source, in degrees.
+        polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
         NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
     """
@@ -118,7 +118,7 @@ class PlaneWave(BaseSource):
 
     Attributes:
         wavelength (List): The wavelength(s) of the light source.
-        polarization (List): The polarization values of the light source, in degrees.
+        polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
         amplitude (float): The amplitude of the plane wave, in Watts.
     """
     wavelength: Union[numpy.ndarray, List[float], float]
