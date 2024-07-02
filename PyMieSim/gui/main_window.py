@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 
-from typing import NoReturn
+from typing import NoReturn, Dict
 import tkinter
-from tkinter import ttk, filedialog, messagebox
-import numpy as np
+from tkinter import ttk
 import matplotlib.pyplot as plt
 
-from PyMieSim.gui.setup_tab import SetUp
 from PyMieSim.gui.singleton import datashelf
+from PyMieSim.gui import SourceTab, ScattererTab, DetectorTab, AxisTab
+from PyMieSim.gui.control_tab import ControlTab
 
 
 class PyMieSimGUI:
@@ -31,13 +31,14 @@ class PyMieSimGUI:
         self.master = master
         self.master.protocol("WM_DELETE_WINDOW", self.on_close)
         self.master.title("PyMieSim Graphic Interface")
+
+        datashelf.x_axis_label_widget = tkinter.StringVar(value='phi_offset')
+        datashelf.STD_axis_label_widget = tkinter.StringVar(value=None)
+        datashelf.STD_axis_label_widget.set(None)
+
         self.link_radio_button = "link"
         self.customize_notebook_style()
-        self.setup_tab = SetUp(master=self.master)
-        self.setup_controls()
-
-    def setup_tab(self):
-        self.setup_tab = SetUp(master=self.master)
+        self.setup_notebook()
 
     def on_close(self) -> NoReturn:
         """
@@ -46,7 +47,60 @@ class PyMieSimGUI:
         plt.close('all')  # Close all matplotlib figures
         self.master.destroy()  # Close the Tkinter window
 
+    @property
+    def axis_mapping(self) -> Dict[str, str]:
+        """
+        Combines mappings from all other tabs to provide a comprehensive dictionary of available axis options.
+
+        Returns:
+            Dict[str, str]: A dictionary mapping UI labels to internal scatterer parameter names.
+        """
+        _axis_mapping = {}
+        for tab in [datashelf.source_tab, datashelf.detector_tab, datashelf.scatterer_tab]:
+            _axis_mapping.update(tab.component.mapping)
+
+        return _axis_mapping
+
     # The following section of the class will setup the notebooks and their content
+    def setup_notebook(self) -> NoReturn:
+        """
+        Sets up the notebook widget with tabs for Source, Scatterer, and Detector configurations.
+        """
+        self.notebook = ttk.Notebook(self.master)
+        self.notebook.grid(row=0, column=0, sticky="ewns")
+
+        self.notebook_2 = ttk.Notebook(self.master)
+        self.notebook_2.grid(row=2, column=0, sticky="ewns")
+
+        self.controls_frame = ttk.Frame(self.master)
+        self.controls_frame.grid(row=1, column=0, sticky="ew")
+
+        # Create tab instances, in datashelf, for easy access by other classes
+        datashelf.axis_tab = AxisTab(
+            notebook=self.notebook_2,
+            label='Axis Configuration'
+        )
+
+        datashelf.control_tab = ControlTab(
+            frame=self.controls_frame,
+        )
+
+        datashelf.source_tab = SourceTab(
+            notebook=self.notebook,
+            label='Source'
+        )
+
+        datashelf.scatterer_tab = ScattererTab(
+            notebook=self.notebook,
+            label='Scatterer',
+            axis_tab=datashelf.axis_tab
+        )
+
+        datashelf.detector_tab = DetectorTab(
+            notebook=self.notebook,
+            label='Detector'
+        )
+
     def customize_notebook_style(self) -> NoReturn:
         """
         Customizes the ttk Notebook style for a unique appearance of tabs, making them larger.
@@ -72,96 +126,5 @@ class PyMieSimGUI:
             font=('Helvetica', 18),
             padding=[20, 20]
         )
-
-    # The following section of the class defines the control buttons and their respective commands
-    def setup_controls(self) -> NoReturn:
-        """
-        Sets up control buttons for calculating results and saving data.
-        """
-        self.controls_frame = ttk.Frame(self.master)
-        self.controls_frame.grid(row=1, column=0, sticky="ew")
-
-        self.calculate_button = ttk.Button(
-            self.controls_frame,
-            text="Calculate",
-            style="Large.TButton",
-            command=self.setup_tab.calculate_plot
-        )
-        self.calculate_button.grid(row=0, column=0, sticky="ew")
-
-        self.save_button = ttk.Button(
-            self.controls_frame,
-            text="Save as CSV",
-            style="Large.TButton",
-            command=self.save_data_as_csv
-        )
-        self.save_button.grid(row=0, column=1, sticky="ew")
-
-        self.export_button = ttk.Button(
-            self.controls_frame,
-            text="Export Plot",
-            style="Large.TButton",
-            command=self.export_plot
-        )
-        self.export_button.grid(row=0, column=2, sticky="ew")
-
-        self.reset_std_button = ttk.Button(
-            self.controls_frame,
-            text="Reset STD-axis",
-            style="Large.TButton",
-            command=self.reset_STDaxis_selection
-        )
-        self.reset_std_button.grid(row=0, column=3, sticky="ew")
-
-    def save_data_as_csv(self) -> NoReturn:
-        """
-        Triggered by the "Save as CSV" button. Opens a file dialog to save the computed data as a CSV file.
-        """
-
-        if hasattr(datashelf, 'data'):
-            self.filepath = filedialog.asksaveasfilename(defaultextension=".csv", filetypes=[("CSV files", "*.csv")])
-            if self.filepath:
-
-                # Assuming datashelf.data is a pandas DataFrame or can be converted to one
-                np.savetxt(self.filepath, datashelf.data.y.values.squeeze(), delimiter=",")
-                print(f"Data saved to {self.filepath}")
-        else:
-            print("No data to save. Please calculate first.")
-
-    def export_plot(self) -> NoReturn:
-        """
-        Opens a file dialog for the user to choose where to save the current plot,
-        then saves the plot to the specified location.
-        """
-        # Ensure there's a plot to save
-        if hasattr(datashelf, 'figure'):
-            # Open file dialog to choose file name and type
-            filetypes = [
-                ('PNG files', '*.png'),
-                ('JPEG files', '*.jpg;*.jpeg'),
-                ('PDF files', '*.pdf'),
-                ('SVG files', '*.svg'),
-                ('All files', '*.*')
-            ]
-
-            self.filepath = filedialog.asksaveasfilename(
-                defaultextension=".png",
-                filetypes=filetypes,
-                title="Save plot as..."
-            )
-
-            # If a file was selected (i.e., dialog not cancelled)
-            if self.filepath:
-                # Save the figure using matplotlib's savefig
-                datashelf.figure.savefig(self.filepath)
-                messagebox.showinfo("Export Successful", f"Plot successfully saved to {self.filepath}")
-        else:
-            messagebox.showwarning("Export Failed", "No plot available to export.")
-
-    def reset_STDaxis_selection(self):
-        """
-        Allows the user to unselect the std-axis radiobuttons.
-        """
-        datashelf.STD_axis_label_widget.set(None)
 
 # -

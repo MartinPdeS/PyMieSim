@@ -19,14 +19,14 @@ def test_export_plot_button(mock_messagebox, mock_filepath):
     # setting up the environment
     root = tkinter.Tk()
     root.geometry("750x600")
-    gui = PyMieSimGUI(root)
+    PyMieSimGUI(root)
 
     # mocking the necessary variables
     datashelf.figure = MagicMock()
-    gui.filepath = MagicMock()
+    datashelf.control_tab.filepath = MagicMock()
 
     # invoking the button
-    gui.export_button.invoke()
+    datashelf.control_tab.export_button.invoke()
 
     # the assertion
     assert datashelf.figure.savefig.call_count == 1
@@ -45,14 +45,14 @@ def test_save_as_csv_button(mock_filepath, mock_save):
     # setting up the environment
     root = tkinter.Tk()
     root.geometry("750x600")
-    gui = PyMieSimGUI(root)
+    PyMieSimGUI(root)
 
     # mocking the necessary variables
     datashelf.data = MagicMock()
-    gui.filepath = MagicMock()
+    datashelf.control_tab.filepath = MagicMock()
 
     # invoking the button
-    gui.save_button.invoke()
+    datashelf.control_tab.save_button.invoke()
 
     # the assertion
     assert mock_save.call_count == 1

@@ -45,7 +45,7 @@ class ScattererTab(BaseTab):
         """
         Configures the GUI elements for the Scatterer tab based on the selected scatterer type.
         """
-        match self.type_button.get():
+        match datashelf.scatterer_selection.get():
             case 'Sphere':
                 self.setup_sphere_widgets()
             case 'Cylinder':
@@ -60,15 +60,11 @@ class ScattererTab(BaseTab):
         Sets up a combobox for selecting the type of scatterer. It provides options for Sphere, Cylinder,
         or CoreShell configurations.
         """
-        self.type_widget = tkinter.ttk.Combobox(
-            self.frame,
-            textvariable=self.type_button,
-            values=['Sphere', 'Cylinder', 'CoreShell'],
-            state="readonly"
-        )
+        self.combox_widget_collection = WidgetCollection(frame=self.frame)
 
-        self.type_widget.grid(row=0, column=0)
-        self.type_widget.bind("<<ComboboxSelected>>", self.on_type_change)
+        self.type_widget = self.combox_widget_collection.setup_combobox_widget(tab='scatterer_tab', component='Combox')
+
+        self.type_widget.tk_widget.bind("<<ComboboxSelected>>", self.on_type_change)
 
     def on_type_change(self, event=None) -> NoReturn:
         """
@@ -79,7 +75,7 @@ class ScattererTab(BaseTab):
             event: The event that triggered this method (default is None).
         """
         # Changing axis tab
-        scatterer_type = self.type_widget.get()
+        scatterer_type = datashelf.scatterer_selection.get()
         setup_method = getattr(self, f"setup_{scatterer_type.lower()}_widgets", None)
 
         self.widget_collection.clear_widgets()
@@ -134,9 +130,9 @@ class ScattererTab(BaseTab):
         Args:
             event: The event that triggered this method (default is None).
         """
-        scatterer_type = self.type_button.get().lower()
+        scatterer_type = datashelf.scatterer_selection.get()
         self.widget_collection.update()
-        setup_method = getattr(self, f"setup_{scatterer_type}_component", None)
+        setup_method = getattr(self, f"setup_{scatterer_type.lower()}_component", None)
         if callable(setup_method):
             setup_method()
         else:

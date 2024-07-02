@@ -1,4 +1,8 @@
-from PyMieSim.gui.widgets import InputWidget, RadioButtonWidget, ComBoxWidget
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+from PyMieSim.gui.widgets import InputWidget, RadioButtonWidget, ComBoxWidget, ControlWidget
 from PyMieSim.gui.singleton import datashelf
 
 widget_dock = {
@@ -27,6 +31,9 @@ widget_dock = {
             InputWidget(default_value='1.4', label='Core Refractive Index', component_label='core_index', dtype=complex),
             InputWidget(default_value='1.4', label='Shell Refractive Index', component_label='shell_index', dtype=complex),
             InputWidget(default_value='1.0', label='Medium Refractive Index', component_label='medium_index', dtype=float)
+        ],
+        'Combox': [
+            ComBoxWidget(label='scatterer', component_label='scatterer', options=['Sphere', 'Cylinder', 'CoreShell'], default_options=0)
         ]
     },
     'detector_tab': {
@@ -46,11 +53,20 @@ widget_dock = {
             InputWidget(default_value='LP01', label='Mode field', component_label='mode_number', dtype=str),
             InputWidget(default_value='0', label='Field rotation [degree]', component_label='rotation', dtype=float),
             InputWidget(default_value='500', label='Sampling', component_label='sampling', dtype=int)
+        ],
+        'Combox': [
+            ComBoxWidget(label='detector', component_label='detector', options=['Photodiode', 'CoherentMode'], default_options=0)
         ]
     },
     'axis_tab': {
         'y_axis': [
             ComBoxWidget(label='y-axis', component_label='y_axis', options=list(datashelf.measure_map.keys()), default_options=len(list(datashelf.measure_map.keys())) - 1),
         ]
-    }
+    },
+    'control_tab': [
+        ControlWidget(label='Calculate'),
+        ControlWidget(label='Save as CSV'),
+        ControlWidget(label='Export Plot'),
+        ControlWidget(label='Reset STD-axis')
+    ]
 }

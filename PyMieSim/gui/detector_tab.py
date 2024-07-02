@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-from tkinter import ttk, StringVar
+from tkinter import StringVar
 
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.gui.base_tab import BaseTab
 from PyMieSim.gui.widget_collection import WidgetCollection
+from PyMieSim.gui.singleton import datashelf
 
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
@@ -44,15 +45,11 @@ class DetectorTab(BaseTab):
         """
         Create and configure a combobox to select the type of detector, binding it to update UI on change.
         """
-        self.type_widget = ttk.Combobox(
-            self.frame,
-            textvariable=self.type_button,
-            values=['Photodiode', 'CoherentMode'],
-            state="readonly"
-        )
+        self.combox_widget_collection = WidgetCollection(frame=self.frame)
 
-        self.type_widget.grid(row=0, column=0)
-        self.type_widget.bind("<<ComboboxSelected>>", self.on_type_change)
+        self.type_widget = self.combox_widget_collection.setup_combobox_widget(tab='detector_tab', component='Combox')
+
+        self.type_widget.tk_widget.bind("<<ComboboxSelected>>", self.on_type_change)
 
     def on_type_change(self, event=None) -> NoReturn:
         """
@@ -62,8 +59,8 @@ class DetectorTab(BaseTab):
         Args:
             event: The event that triggered this method (default is None).
         """
-        detector_type = self.type_widget.get().lower()
-        setup_method = getattr(self, f"setup_{detector_type}_widgets", None)
+        detector_type = datashelf.detector_selection.get()
+        setup_method = getattr(self, f"setup_{detector_type.lower()}_widgets", None)
         self.widget_collection.clear_widgets()
         if callable(setup_method):
             setup_method()
@@ -74,7 +71,7 @@ class DetectorTab(BaseTab):
         """
         Configures the GUI elements for the Scatterer tab based on the selected scatterer type.
         """
-        detector_type = self.type_widget.get()
+        detector_type = datashelf.detector_selection.get()
 
         match detector_type:
             case 'Photodiode':
@@ -114,9 +111,9 @@ class DetectorTab(BaseTab):
         Args:
             event: The event that triggered this method (default is None).
         """
-        detector_type = self.type_button.get().lower()
+        detector_type = datashelf.detector_selection.get()
         self.widget_collection.update()
-        setup_method = getattr(self, f"setup_{detector_type}_component", None)
+        setup_method = getattr(self, f"setup_{detector_type.lower()}_component", None)
         if callable(setup_method):
             setup_method()
         else:

@@ -14,6 +14,7 @@ class DataShelf:
     > source_component (PyMieSim.experiment.source.Gaussian)
     > data (DataVisual.multi_array.Array)
     > figure (matplotlib.figure.Figure)
+    > axis_tab (AxisTab), detector_tab (DetectorTab), source_tab (SourceTab), scatterer_tab (ScattererTab)
     """
 
     def __init__(self) -> None:
