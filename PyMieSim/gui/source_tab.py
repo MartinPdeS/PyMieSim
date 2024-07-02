@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from typing import NoReturn
-import tkinter
+
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.gui.base_tab import BaseTab
-from PyMieSim.gui.widgets import InputWidget
 from PyMieSim.gui.widget_collection import WidgetCollection
+from PyMieSim.gui.singleton import datashelf
+
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 
@@ -22,12 +23,13 @@ class SourceTab(BaseTab):
 
     Attributes:
         variables (WidgetCollection): A collection of widgets for source configuration.
-        x_axis (tkinter.StringVar): empty.
-        STD_axis (tkinter.StringVar): empty.
 
+    Inherited attributes:
+        notebook (ttk.Notebook): The notebook widget this tab is part of.
+        label (str): The label for the tab.
+        frame (ttk.Frame): The frame serving as the container for the tab's contents.
+        main_window: Reference to the main window of the application, if applicable.
     """
-    x_axis: tkinter.StringVar
-    STD_axis: tkinter.StringVar
 
     def __post_init__(self):
         """
@@ -45,13 +47,7 @@ class SourceTab(BaseTab):
         """
         self.widget_collection = WidgetCollection(frame=self.frame)
 
-        self.widget_collection.add_widgets(
-            InputWidget(default_value='1310', x_axis=self.x_axis, STD_axis=self.STD_axis, label='Wavelength [nm]', component_label='wavelength', multiplicative_factor=1e-9, dtype=float),
-            InputWidget(default_value='0', x_axis=self.x_axis, STD_axis=self.STD_axis, label='Polarization angle [degree]', component_label='polarization', dtype=float),
-            InputWidget(default_value='1.0', x_axis=self.x_axis, STD_axis=self.STD_axis, label='Optical Power [mW] [fix]', component_label='optical_power',
-                        multiplicative_factor=1e-3, can_be_axis=False, dtype=float),  # If can_be_axis is false, then will not put the yo widget!
-            InputWidget(default_value='0.2', x_axis=self.x_axis, STD_axis=self.STD_axis, label='Numerical Aperture (NA) [fix]', component_label='NA', can_be_axis=False, dtype=float),
-        )
+        self.widget_collection.add_widgets(tab='source_tab', component='Gaussian')
 
         self.widget_collection.setup_widgets()
         self.setup_component()
@@ -69,5 +65,7 @@ class SourceTab(BaseTab):
         kwargs["optical_power"] = kwargs["optical_power"][0]
 
         self.component = Gaussian(**kwargs)
+        datashelf.source_component = self.component
+
 
 # -

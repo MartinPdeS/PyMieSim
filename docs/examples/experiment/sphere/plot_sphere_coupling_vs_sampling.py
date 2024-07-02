@@ -14,12 +14,15 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import UsualMaterial
 from PyMieSim.experiment import measure
+from PyMieSim.polarization import Linear
+
+polarization = Linear([90])
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=400e-9,
-    polarization=90,
+    polarization=polarization,
     optical_power=1e-3,
     NA=0.2
 )
@@ -36,7 +39,7 @@ scatterer = Sphere(
 # Defining the detector to be employed.
 detector = Photodiode(
     NA=[0.2],
-    phi_offset=numpy.linspace(-20, 20, 400),
+    phi_offset=numpy.linspace(-20, 20, 4),
     gamma_offset=0,
     sampling=[20, 40, 80, 160],
     polarization_filter=None
@@ -56,6 +59,6 @@ data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-figure = data.plot(x=detector.phi_offset)
+figure = data.plot(x=source.polarization)
 
 _ = figure.show()
