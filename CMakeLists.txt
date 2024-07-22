@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 file(STRINGS PyMieSim/VERSION PYMIESIM_VERSION)
-
+set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for MacOS" FORCE)
 project(PyMieSim LANGUAGES Fortran CXX)
 
 message("CMAKE_CURRENT_LIST_DIR is ${CMAKE_CURRENT_LIST_DIR}")
