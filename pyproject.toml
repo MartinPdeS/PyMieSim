@@ -6,9 +6,9 @@ build-backend = "scikit_build_core.build"
 cmake.verbose = true
 editable.verbose = true
 logging.level = "DEBUG"
-wheel.exclude = ["LightWave2D/cpp"]
+wheel.exclude = ["PyMieSim/cpp"]
 install.strip = false
-sdist.include = ["LightWave2D/binary/*"]
+sdist.include = ["PyMieSim/binary/*"]
 sdist.exclude = [
     "tests",
     "docs",
