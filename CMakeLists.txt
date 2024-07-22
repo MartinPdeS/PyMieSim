@@ -13,8 +13,8 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
-
+# set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)
 #FIND_PACKAGE------------------------
 find_package(OpenMP)
 find_package(Python ${PYBIND11_PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
