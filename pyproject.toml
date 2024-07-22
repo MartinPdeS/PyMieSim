@@ -19,7 +19,7 @@ sdist.exclude = [
 
 [project]
 name = "PyMieSim"
-version = "1.12.3"
+version = {file = "PyMieSim/VERSION"}
 description = "A package for light scattering computation."
 license = {file = "LICENSE"}
 documentation = 'https://pymiesim.readthedocs.io/'
