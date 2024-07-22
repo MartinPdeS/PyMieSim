@@ -5,7 +5,7 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 cmake.verbose = true
 editable.verbose = true
-logging.level = "DEBUG"
+logging.level = "INFO"
 wheel.exclude = ["PyMieSim/cpp"]
 install.strip = false
 sdist.include = ["PyMieSim/binary/*"]
@@ -15,7 +15,6 @@ sdist.exclude = [
     ".git*",
     "developments",
 ]
-
 
 [project]
 name = "PyMieSim"
