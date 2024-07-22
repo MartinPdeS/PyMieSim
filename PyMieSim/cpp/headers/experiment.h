@@ -83,15 +83,9 @@ class Experiment
         DEFINE_CYLINDER_FUNCTION(Qsca)
         DEFINE_CYLINDER_FUNCTION(Qext)
         DEFINE_CYLINDER_FUNCTION(Qabs)
-        // DEFINE_CYLINDER_FUNCTION(Qpr)
-        // DEFINE_CYLINDER_FUNCTION(Qback)
-        // DEFINE_CYLINDER_FUNCTION(Qforward)
         DEFINE_CYLINDER_FUNCTION(Csca)
         DEFINE_CYLINDER_FUNCTION(Cext)
         DEFINE_CYLINDER_FUNCTION(Cabs)
-        // DEFINE_CYLINDER_FUNCTION(Cpr)
-        // DEFINE_CYLINDER_FUNCTION(Cback)
-        // DEFINE_CYLINDER_FUNCTION(Cforward)
         DEFINE_CYLINDER_FUNCTION(g)
 
         //--------------------------------------CORESHELL------------------------------------

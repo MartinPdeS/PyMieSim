@@ -28,11 +28,11 @@ PYBIND11_MODULE(CylinderInterface, module) {
         // Note: Downward are the efficiencies
         .def_property_readonly("Qsca", &Scatterer::get_Qsca, "Scattering efficiency of the cylinder.")
         .def_property_readonly("Qext", &Scatterer::get_Qext, "Extinction efficiency of the cylinder.")
-        // .def_property_readonly("Qabs", &Scatterer::get_Qabs, "Absorption efficiency of the cylinder.")
+        .def_property_readonly("Qabs", &Scatterer::get_Qabs, "Absorption efficiency of the cylinder.")
         // Note: Downward are the cross-sections
         .def_property_readonly("Csca", &Scatterer::get_Csca, "Scattering cross-section of the cylinder.")
         .def_property_readonly("Cext", &Scatterer::get_Cext, "Extinction cross-section of the cylinder.")
-        // .def_property_readonly("Cabs", &Scatterer::get_Cabs, "Absorption cross-section of the cylinder.")
+        .def_property_readonly("Cabs", &Scatterer::get_Cabs, "Absorption cross-section of the cylinder.")
         // Note: Downward are the extra parameters
         .def_property_readonly("g", &Scatterer::get_g, "Asymmetry parameter of the cylinder.")
         .def_readwrite("area", &Scatterer::area, "Physical cross-sectional area of the cylinder.")

@@ -16,21 +16,8 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
 
 
-
-# # Detect Apple Clang and set deployment target
-# if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-#     set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version" FORCE)
-#     set(CMAKE_OSX_ARCHITECTURES "x86_64" "arm64" CACHE STRING "Build architectures for MacOS" FORCE)
-# endif()
-
-# # Enable Address Sanitizer
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")
-# set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")
-
-
-
-# set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)  # WIP
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
+# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)  # WIP
 
 #FIND_PACKAGE------------------------
 find_package(OpenMP)
