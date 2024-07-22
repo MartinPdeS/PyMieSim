@@ -46,6 +46,18 @@ Clicking the "Calculate" button should render the following:
 
 |example_gui|
 
+
+----
+
+Installation
+************
+
+For common versions of Windows, Linux, and macOS, (on x86_64 architecture), the package can readily be installed using pip;
+
+.. code-block:: python
+
+   >>> pip install LightWave2D
+
 ----
 
 Documentation
@@ -150,7 +162,7 @@ Coding examples
 ***************
 
 PyMieSim was developed with the aim of being an intuitive and easy to use tool.
-Below is and example that illustrate this:
+Below is an example that illustrate this:
 
 .. code:: python
 
