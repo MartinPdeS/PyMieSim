@@ -100,8 +100,8 @@ testpaths = [
 ]
 
 [tool.cibuildwheel]
-build-frontend = "pip"
-build-verbosity = 0
+build-frontend = "build"
+build-verbosity = 3
 before-test = ""
 test-command = "python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 test-extras = ["testing"]
