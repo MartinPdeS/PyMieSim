@@ -19,10 +19,10 @@ jobs:
     macos_x86_64:
         runs-on: macos-latest
         steps:
-          - uses: MartinPdeS/MPSActions/build_package_for_MacOS@master
+          - uses: maxim-lobanov/setup-xcode@v1
             with:
-                xcode-version: 15.3
-
+                xcode-version: '15.3'
+          - uses: MartinPdeS/MPSActions/build_package_for_MacOS@master
 
     Windows_x86_64:
         runs-on: windows-latest
