@@ -51,16 +51,10 @@ PYBIND11_MODULE(Experiment, module) {
         .def("get_cylinder_Qsca", &Experiment::get_cylinder_Qsca, "Retrieves the scattering efficiency (Qsca) for a cylinder.")
         .def("get_cylinder_Qext", &Experiment::get_cylinder_Qext, "Retrieves the extinction efficiency (Qext) for a cylinder.")
         .def("get_cylinder_Qabs", &Experiment::get_cylinder_Qabs, "Retrieves the absorption efficiency (Qabs) for a cylinder.")
-        .def("get_cylinder_Qpr", &Experiment::get_cylinder_Qpr, "Retrieves the radiation pressure efficiency (Qpr) for a cylinder.")
-        .def("get_cylinder_Qforward", &Experiment::get_cylinder_Qforward, "Retrieves the forward scattering efficiency (Qforward) for a cylinder.")
-        .def("get_cylinder_Qback", &Experiment::get_cylinder_Qback, "Retrieves the backscattering efficiency (Qback) for a cylinder.")
         // Downward are the cylinder cross-sections
         .def("get_cylinder_Csca", &Experiment::get_cylinder_Csca, "Retrieves the scattering cross-section (Csca) for a cylinder.")
         .def("get_cylinder_Cext", &Experiment::get_cylinder_Cext, "Retrieves the extinction cross-section (Cext) for a cylinder.")
         .def("get_cylinder_Cabs", &Experiment::get_cylinder_Cabs, "Retrieves the absorption cross-section (Cabs) for a cylinder.")
-        .def("get_cylinder_Cpr", &Experiment::get_cylinder_Cpr, "Retrieves the radiation pressure cross-section (Cpr) for a cylinder.")
-        .def("get_cylinder_Cforward", &Experiment::get_cylinder_Cforward, "Retrieves the forward scattering cross-section (Cforward) for a cylinder.")
-        .def("get_cylinder_Cback", &Experiment::get_cylinder_Cback, "Retrieves the backscattering cross-section (Cback) for a cylinder.")
         // Downward are the cylinder extra parameters
         .def("get_cylinder_g", &Experiment::get_cylinder_g, "Retrieves the asymmetry parameter (g) for a cylinder.")
         .def("get_cylinder_coupling", &Experiment::get_cylinder_coupling, "Retrieves the coupling efficiency for a cylinder.")

@@ -13,8 +13,10 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
-# set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)  # WIP
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
+
+# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)  # WIP
 #FIND_PACKAGE------------------------
 find_package(OpenMP)
 find_package(Python ${PYBIND11_PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
@@ -37,11 +39,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("GNU compiler detected")
     set(STATIC_STDLIB "-w -lm -static-libstdc++ -static-libgcc")
 endif()
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fno-omit-frame-pointer")  # WIP
-# set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=address")  # WIP
-
-
 
 message(STATUS "OPENMP flags: "  ${OpenMP_CXX_FLAGS})
 message(STATUS "PyMieSim  version is: " ${PYMIESIM_VERSION})
