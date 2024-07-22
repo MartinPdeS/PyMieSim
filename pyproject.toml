@@ -1,5 +1,36 @@
 [project]
 name = "PyMieSim"
+version = "1.12.3"
+description = "A package for light scattering computation."
+documentation = 'https://pymiesim.readthedocs.io/'
+platforms = ['unix', 'linux', 'osx']
+readme = "README.rst"
+url = 'https://github.com/MartinPdeS/PyMieSim'
+requires-python = ">=3.10"
+authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Development Status :: 3 - Alpha',
+    'Topic :: Scientific/Engineering :: Physics',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Science/Research',
+]
+keywords = [
+    "mie",
+    "scattering",
+    "backscatter",
+    "sphere",
+    "cylinder",
+    "nanoparticle",
+    "phase function",
+    "efficiency",
+    "rayleigh",
+    "backscattering"
+]
 
 [tool.pytest.ini_options]
 addopts = [
