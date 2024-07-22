@@ -29,7 +29,7 @@ if (WIN32)
     message("Windows OS detected")
     set(STATIC_STDLIB "-w -lm -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive") # Need to keep -lwinpthread static because of MinGW dll directory not the same as windows' MSVC
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version" FORCE)
+    # set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version" FORCE)
     message("AppleClang compiler detected")
     set(STATIC_STDLIB "-w -lm -static-libstdc++")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
