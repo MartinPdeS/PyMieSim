@@ -1,11 +1,14 @@
+
+
+
 [project]
 name = "PyMieSim"
 version = "1.12.3"
 description = "A package for light scattering computation."
-documentation = 'https://pymiesim.readthedocs.io/'
-platforms = ['unix', 'linux', 'osx']
+# documentation = 'https://pymiesim.readthedocs.io/'
+# platforms = ['unix', 'linux', 'osx']
 readme = "README.rst"
-url = 'https://github.com/MartinPdeS/PyMieSim'
+# url = 'https://github.com/MartinPdeS/PyMieSim'
 requires-python = ">=3.10"
 authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
 classifiers = [
