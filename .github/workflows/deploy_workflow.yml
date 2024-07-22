@@ -17,7 +17,8 @@ jobs:
 
 
     macos_x86_64:
-        runs-on: macos-13
+        runs-on: macos-latest
+        xcode-version: [15.3]
         steps:
           - uses: MartinPdeS/MPSActions/build_package_for_MacOS@master
 
