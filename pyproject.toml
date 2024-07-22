@@ -7,7 +7,7 @@ version = "1.12.3"
 description = "A package for light scattering computation."
 license = {file = "LICENSE"}
 documentation = 'https://pymiesim.readthedocs.io/'
-# platforms = ['unix', 'linux', 'osx']
+platforms = ['unix', 'linux', 'osx']
 readme = "README.rst"
 url = 'https://github.com/MartinPdeS/PyMieSim'
 requires-python = ">=3.10"
@@ -35,8 +35,38 @@ keywords = [
     "rayleigh",
     "backscattering"
 ]
+dependencies = [
+    "numpy>=1.26.0",
+    "pydantic==2.6.3",
+    "scipy==1.11.3",
+    "DataVisual==1.4.1",
+    "PyOptik>=0.7.10",
+    "tabulate==0.9.0",
+]
+
+[project.optional-dependencies]
+testing = [
+    "pytest>=0.6",
+    "pytest-cov>=2.0",
+    "pytest-json-report==1.5.0",
+    "mypy>=0.910",
+    "flake8>=3.9",
+    "tox>=3.24",
+    "coverage==6.5.0"
+]
+
+documentation = [
+    "numpydoc==1.6.0",
+    "sphinx>=5.1.1",
+    "sphinx-gallery==0.15.0",
+    "sphinx-rtd-theme==2.0.0",
+    "pydata-sphinx-theme==0.14.1",
+]
 
 [tool.pytest.ini_options]
+minversion = "6.0"
+xfail_strict = true
+log_cli_level = "INFO"
 addopts = [
     "--import-mode=importlib",
     '-v',
@@ -48,7 +78,6 @@ testpaths = [
     "tests/detectors",
     "tests/scatterers",
     "tests/experiments",
-    # "tests/gui",
     "tests/validation",
     "tests/extra"
 ]
