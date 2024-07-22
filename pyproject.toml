@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
 cmake.verbose = false
-editable.verbose = true
+editable.verbose = false
 logging.level = "INFO"
 wheel.exclude = ["PyMieSim/cpp"]
 install.strip = false
