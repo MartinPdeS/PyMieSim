@@ -13,10 +13,11 @@ set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
-set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
 
+set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 # set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)  # WIP
+
 #FIND_PACKAGE------------------------
 find_package(OpenMP)
 find_package(Python ${PYBIND11_PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
@@ -31,8 +32,6 @@ if (WIN32)
     message("Windows OS detected")
     set(STATIC_STDLIB "-w -lm -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive") # Need to keep -lwinpthread static because of MinGW dll directory not the same as windows' MSVC
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    # set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version" FORCE)
-    # set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "Build architectures for MacOS" FORCE)
     message("AppleClang compiler detected")
     set(STATIC_STDLIB "-w -lm -static-libstdc++")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
