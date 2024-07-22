@@ -98,8 +98,6 @@ testpaths = [
     "tests/extra"
 ]
 
-minversion = 6.0
-
 [tool.cibuildwheel]
 build-frontend = "pip"
 build-verbosity = 1
