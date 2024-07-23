@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-file(STRINGS PyMieSim/VERSION PYMIESIM_VERSION)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "15.3" CACHE STRING "Minimum OS X deployment version")
 
 project(PyMieSim LANGUAGES Fortran CXX)
 
@@ -14,15 +14,16 @@ set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
-
-
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
-# set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Type of build" FORCE)  # WIP
+
+# Ensure -fPIC is used globally
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+add_compile_options(-fPIC)
 
 #FIND_PACKAGE------------------------
 find_package(OpenMP)
 find_package(Python ${PYBIND11_PYTHON_VERSION} COMPONENTS Interpreter Development)
-add_subdirectory("extern/pybind11")
+find_package(pybind11 CONFIG REQUIRED)
 
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
