@@ -63,7 +63,7 @@ dependencies = [
 ]
 
 [tool.setuptools_scm]
-write_to = "LightWave2D/_version.py"
+write_to = "PyMieSim/_version.py"
 version_scheme = "post-release"
 local_scheme = "no-local-version"
 
