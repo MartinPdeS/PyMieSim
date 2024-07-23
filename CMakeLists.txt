@@ -1,11 +1,8 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20...)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "15.3" CACHE STRING "Minimum OS X deployment version")
 
 project(PyMieSim LANGUAGES Fortran CXX)
-
-message("CMAKE_CURRENT_LIST_DIR is ${CMAKE_CURRENT_LIST_DIR}")
-message("CMAKE_CURRENT_SOURCE_DIR is ${CMAKE_CURRENT_SOURCE_DIR}")
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -29,19 +26,6 @@ include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
 
 add_compile_options(-Wall -Wextra -Wno-uninitialized)
-
-# if (WIN32)
-#     message("Windows OS detected")
-#     set(STATIC_STDLIB "-w -lm -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive") # Need to keep -lwinpthread static because of MinGW dll directory not the same as windows' MSVC
-# elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-#     message("AppleClang compiler detected")
-#     set(STATIC_STDLIB "-w -lm -static-libstdc++")
-# elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-#     message("GNU compiler detected")
-#     set(STATIC_STDLIB "-w -lm -static-libstdc++ -static-libgcc")
-# endif()
-
-
 
 # Platform-specific settings for static linking
 if (WIN32)
