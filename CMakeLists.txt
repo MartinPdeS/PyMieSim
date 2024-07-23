@@ -30,16 +30,31 @@ include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
 
 add_compile_options(-Wall -Wextra -Wno-uninitialized)
 
+# if (WIN32)
+#     message("Windows OS detected")
+#     set(STATIC_STDLIB "-w -lm -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive") # Need to keep -lwinpthread static because of MinGW dll directory not the same as windows' MSVC
+# elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+#     message("AppleClang compiler detected")
+#     set(STATIC_STDLIB "-w -lm -static-libstdc++")
+# elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+#     message("GNU compiler detected")
+#     set(STATIC_STDLIB "-w -lm -static-libstdc++ -static-libgcc")
+# endif()
+
+
+
+# Platform-specific settings for static linking
 if (WIN32)
     message("Windows OS detected")
-    set(STATIC_STDLIB "-w -lm -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive") # Need to keep -lwinpthread static because of MinGW dll directory not the same as windows' MSVC
+    set(STATIC_LINK_OPTIONS "-static" "-static-libgcc" "-static-libstdc++")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     message("AppleClang compiler detected")
-    set(STATIC_STDLIB "-w -lm -static-libstdc++")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("GNU compiler detected")
-    set(STATIC_STDLIB "-w -lm -static-libstdc++ -static-libgcc")
 endif()
+
+
+
 
 message(STATUS "OPENMP flags: "  ${OpenMP_CXX_FLAGS})
 message(STATUS "PyMieSim  version is: " ${PYMIESIM_VERSION})
@@ -61,51 +76,60 @@ target_link_libraries(ZBessel PUBLIC "${STATIC_STDLIB}")
 #Building FibonacciMesh----------------------------------------------
 pybind11_add_module(Fibonacci MODULE "${PYMIESIM_CXX_DIR}/mesh_interface.cpp")
 set_target_properties(Fibonacci PROPERTIES OUTPUT_NAME "Fibonacci")
-target_link_libraries(Fibonacci PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(Fibonacci PRIVATE ZBessel)
+target_link_options(Fibonacci PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building SOURCE--------------------------------------------------
 pybind11_add_module(CXX_SOURCE MODULE "${PYMIESIM_CXX_DIR}/source_interface.cpp" )
 set_target_properties(CXX_SOURCE PROPERTIES OUTPUT_NAME "SourceInterface")
-target_link_libraries(CXX_SOURCE PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(CXX_SOURCE PRIVATE ZBessel)
+target_link_options(CXX_SOURCE PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building DETECTOR--------------------------------------------------
 pybind11_add_module(CXX_DETECTOR MODULE "${PYMIESIM_CXX_DIR}/detector_interface.cpp" )
 set_target_properties(CXX_DETECTOR PROPERTIES OUTPUT_NAME "DetectorInterface")
-target_link_libraries(CXX_DETECTOR PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(CXX_DETECTOR PRIVATE ZBessel)
+target_link_options(CXX_DETECTOR PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building SPHERE-----------------------------------------------------
 pybind11_add_module(CXX_SPHERE MODULE "${PYMIESIM_CXX_DIR}/sphere_interface.cpp" )
 set_target_properties(CXX_SPHERE PROPERTIES OUTPUT_NAME "SphereInterface")
-target_link_libraries(CXX_SPHERE PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(CXX_SPHERE PRIVATE ZBessel)
+target_link_options(CXX_SPHERE PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building CYLINDER---------------------------------------------------
 pybind11_add_module(CXX_CYLINDER MODULE "${PYMIESIM_CXX_DIR}/cylinder_interface.cpp" )
 set_target_properties(CXX_CYLINDER PROPERTIES OUTPUT_NAME "CylinderInterface")
-target_link_libraries(CXX_CYLINDER PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(CXX_CYLINDER PRIVATE ZBessel)
+target_link_options(CXX_CYLINDER PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building CORESHELL--------------------------------------------------
 pybind11_add_module(CXX_CORESHELL MODULE "${PYMIESIM_CXX_DIR}/coreshell_interface.cpp" )
 set_target_properties(CXX_CORESHELL PROPERTIES OUTPUT_NAME "CoreShellInterface")
-target_link_libraries(CXX_CORESHELL PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(CXX_CORESHELL PRIVATE ZBessel)
+target_link_options(CXX_CORESHELL PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building MODEFIELD--------------------------------------------------
 pybind11_add_module(CXX_MODEFIELD MODULE "${PYMIESIM_CXX_DIR}/mode_field_interface.cpp" )
 set_target_properties(CXX_MODEFIELD PROPERTIES OUTPUT_NAME "ModeField")
-target_link_libraries(CXX_MODEFIELD PRIVATE "${STATIC_STDLIB}")
+target_link_options(CXX_MODEFIELD PUBLIC ${STATIC_LINK_OPTIONS})
 
 #Building EXPERIMENT------------------------------------------------
 if (WIN32)
     pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )
     set_target_properties(Experiment PROPERTIES OUTPUT_NAME "Experiment")
-    target_link_libraries(Experiment PRIVATE ZBessel "${STATIC_STDLIB}")
+    target_link_libraries(Experiment PRIVATE ZBessel)
+    target_link_options(Experiment PUBLIC ${STATIC_LINK_OPTIONS})
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )
     set_target_properties(Experiment PROPERTIES OUTPUT_NAME "Experiment")
-    target_link_libraries(Experiment PRIVATE ZBessel "${STATIC_STDLIB}" OpenMP::OpenMP_CXX )
+    target_link_libraries(Experiment PRIVATE ZBessel OpenMP::OpenMP_CXX )
+    target_link_options(Experiment PUBLIC ${STATIC_LINK_OPTIONS})
 else(APPLE)
     pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )
     set_target_properties(Experiment PROPERTIES OUTPUT_NAME "Experiment")
-    target_link_libraries(Experiment PRIVATE ZBessel "${STATIC_STDLIB} -Xpreprocessor -fopenmp")
+    target_link_libraries(Experiment PRIVATE ZBessel "-Xpreprocessor -fopenmp")
+    target_link_options(Experiment PUBLIC ${STATIC_LINK_OPTIONS})
 endif()
 
 #Building CppSets----------------------------------------------------
