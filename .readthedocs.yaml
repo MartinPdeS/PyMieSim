@@ -34,7 +34,6 @@ build:
       - Xvfb :99 &
       - export DISPLAY=:99
       - cd docs && rm -rf source/gallery
-      - mkdir build && cd build && cmake -G "Unix Makefiles" .. && make install
       - sleep 3
 
 python:
