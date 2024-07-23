@@ -30,7 +30,7 @@ add_compile_options(-Wall -Wextra -Wno-uninitialized)
 # Platform-specific settings for static linking
 if (WIN32)
     message("Windows OS detected")
-    set(STATIC_LINK_OPTIONS "-static" "-static-libgcc" "-static-libstdc++")
+    set(STATIC_LINK_OPTIONS "-static")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     message("AppleClang compiler detected")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -52,7 +52,7 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/libraries/machine.for
     ${CMAKE_CURRENT_SOURCE_DIR}/libraries/zbesh.for
 )
-target_link_libraries(ZBessel PUBLIC "${STATIC_STDLIB}")
+target_link_options(ZBessel PUBLIC ${STATIC_LINK_OPTIONS})
 
 
 #Building FibonacciMesh----------------------------------------------
@@ -117,7 +117,8 @@ endif()
 #Building CppSets----------------------------------------------------
 pybind11_add_module(Sets MODULE "${PYMIESIM_CXX_DIR}/sets_interface.cpp" )
 set_target_properties(Sets PROPERTIES OUTPUT_NAME "Sets")
-target_link_libraries(Sets PRIVATE ZBessel "${STATIC_STDLIB}")
+target_link_libraries(Sets PRIVATE ZBessel)
+target_link_options(Sets PUBLIC ${STATIC_LINK_OPTIONS})
 
 set_target_properties(ZBessel Fibonacci CXX_SPHERE CXX_CYLINDER CXX_CORESHELL CXX_DETECTOR Experiment Sets
     PROPERTIES
