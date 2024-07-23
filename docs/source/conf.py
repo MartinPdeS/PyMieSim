@@ -5,12 +5,8 @@ import sys
 from sphinx_gallery.sorting import ExplicitOrder
 from MPSPlots.styles import use_mpsplots_style
 from packaging.version import parse
-
-from PyMieSim.directories import (
-    project_path,
-    doc_css_path,
-    version_path,
-)
+import PyMieSim
+from PyMieSim.directories import project_path, doc_css_path
 
 sys.path.insert(0, project_path)
 sys.path.insert(0, project_path.joinpath('PyMieSim'))
@@ -35,8 +31,7 @@ copyright = '2021, Martin Poinsinet de Sivry-Houle'
 author = 'Martin Poinsinet de Sivry-Houle'
 today_fmt = '%B %d, %Y'
 
-with open(version_path, "r+") as f:
-    version = release = f.read()
+version = PyMieSim.__version__
 
 
 extensions = [
@@ -112,15 +107,10 @@ default_role = "autolink"
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
-v = parse(release)
-if v.release is None:
-    raise ValueError(f"Ill-formed version: {version!r}. Version should follow PEP440")
+binder_branch = "main"
 
-if v.is_devrelease:
-    binder_branch = "main"
-else:
-    major, minor = v.release[:2]
-    binder_branch = f"v{major}.{minor}.x"
+major, minor = version[:2]
+binder_branch = f"v{major}.{minor}.x"
 
 html_theme_options = {
     # Navigation bar

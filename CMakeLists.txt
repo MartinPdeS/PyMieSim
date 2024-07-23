@@ -7,9 +7,9 @@ project(PyMieSim LANGUAGES Fortran CXX)
 message("CMAKE_CURRENT_LIST_DIR is ${CMAKE_CURRENT_LIST_DIR}")
 message("CMAKE_CURRENT_SOURCE_DIR is ${CMAKE_CURRENT_SOURCE_DIR}")
 
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_VERBOSE_MAKEFILE OFF)
 set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
@@ -21,7 +21,7 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 
 #FIND_PACKAGE------------------------
 find_package(OpenMP)
-find_package(Python ${PYBIND11_PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
+find_package(Python ${PYBIND11_PYTHON_VERSION} COMPONENTS Interpreter Development)
 add_subdirectory("extern/pybind11")
 
 include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
