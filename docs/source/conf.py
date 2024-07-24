@@ -4,7 +4,6 @@
 import sys
 from sphinx_gallery.sorting import ExplicitOrder
 from MPSPlots.styles import use_mpsplots_style
-from packaging.version import parse
 import PyMieSim
 from PyMieSim.directories import project_path, doc_css_path
 
@@ -54,19 +53,8 @@ except ImportError:
     print('Could not load pyvista library for 3D rendering')
 
 sphinx_gallery_conf = {
-    "examples_dirs": ['../examples', '../examples/experiment'],
-    "gallery_dirs": ['gallery/examples', 'gallery/experiment'],
-    "backreferences_dir": "api",
-    "subsection_order": ExplicitOrder([
-        "../examples/scatterer",
-        "../examples/detector",
-        "../examples/experiment",
-        "../examples/experiment/sphere",
-        "../examples/experiment/cylinder",
-        "../examples/experiment/coreshell",
-        "../examples/validation",
-        "../examples/extras",
-    ]),
+    "examples_dirs": ['../examples'],
+    "gallery_dirs": ['gallery/examples'],
     'image_scrapers': ('matplotlib', 'pyvista'),
     'ignore_pattern': '/__',
     'plot_gallery': True,

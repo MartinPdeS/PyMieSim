@@ -12,5 +12,5 @@ PyMieSim's documentation
 
     theory
     code
-    gallery/index
+    gallery/examples/index
     references

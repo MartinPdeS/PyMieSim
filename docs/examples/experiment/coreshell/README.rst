@@ -1,2 +1,0 @@
-Scatterer: Core Shell
-~~~~~~~~~~~~~~~~~~~~~

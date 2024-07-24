@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Optional
+from typing import Optional, NoReturn
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 import numpy
@@ -102,15 +102,15 @@ class FibonacciMesh:
             return numpy.rad2deg(self.binding.theta)
 
     @property
-    def X(self):
+    def X(self) -> numpy.ndarray:
         return self.binding.x
 
     @property
-    def Y(self):
+    def Y(self) -> numpy.ndarray:
         return self.binding.y
 
     @property
-    def Z(self):
+    def Z(self) -> numpy.ndarray:
         return self.binding.z
 
     def initialize_properties(self):
@@ -200,7 +200,7 @@ class FibonacciMesh:
 
         return axis_vector / norm
 
-    def _add_mesh_to_ax_(self, ax) -> None:
+    def _add_mesh_to_ax_(self, ax) -> NoReturn:
         axis_vector = self.get_axis_vector()
 
         coordinates = self.get_cartesian_coordinates()
@@ -214,7 +214,7 @@ class FibonacciMesh:
         ax.add_unit_theta_vector(radius=1.1)
         ax.add_unit_phi_vector(radius=1.1)
 
-    def rotate_around_axis(self, rotation_angle: float) -> None:
+    def rotate_around_axis(self, rotation_angle: float) -> NoReturn:
         """
         Rotate the mesh around its principal axis.
 
