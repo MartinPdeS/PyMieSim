@@ -32,6 +32,7 @@ include_directories("${PYMIESIM_CXX_DIR}/includes" "${PYMIESIM_CXX_DIR}/headers"
 if (WIN32)
     message("Windows OS detected")
     set(STATIC_LINK_OPTIONS "-static")
+    add_compile_options(/openmp)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     message("AppleClang compiler detected")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -74,7 +75,7 @@ add_pymiesim_module(Experiment "experiment_interface.cpp")
 
 # Special handling for Experiment module
 if (WIN32)
-    # target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
+    target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
 else()
