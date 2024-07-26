@@ -6,7 +6,7 @@ from pydantic import ConfigDict
 from typing import List, Union, NoReturn, Any
 
 import numpy
-from PyMieSim.binary.Sets import CppCoreShellSet, CppCylinderSet, CppSphereSet
+from PyMieSim.binary.SetsInterface import CppCoreShellSet, CppCylinderSet, CppSphereSet
 from PyMieSim.experiment import measure, parameters
 import PyMieSim.experiment.source as source
 from PyOptik import Sellmeier, DataMeasurement

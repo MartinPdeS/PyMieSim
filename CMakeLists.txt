@@ -63,12 +63,13 @@ endfunction()
 
 # Add modules
 add_pymiesim_module(Fibonacci "mesh_interface.cpp")
-add_pymiesim_module(CXX_SOURCE "source_interface.cpp")
-add_pymiesim_module(CXX_DETECTOR "detector_interface.cpp")
-add_pymiesim_module(CXX_SPHERE "sphere_interface.cpp")
-add_pymiesim_module(CXX_CYLINDER "cylinder_interface.cpp")
-add_pymiesim_module(CXX_CORESHELL "coreshell_interface.cpp")
-add_pymiesim_module(CXX_MODEFIELD "mode_field_interface.cpp")
+add_pymiesim_module(SourceInterface "source_interface.cpp")
+add_pymiesim_module(DetectorInterface "detector_interface.cpp")
+add_pymiesim_module(SphereInterface "sphere_interface.cpp")
+add_pymiesim_module(CylinderInterface "cylinder_interface.cpp")
+add_pymiesim_module(CoreShellInterface "coreshell_interface.cpp")
+add_pymiesim_module(ModeField "mode_field_interface.cpp")
+add_pymiesim_module(SetsInterface "sets_interface.cpp")
 
 # Special handling for Experiment module
 if (WIN32)
@@ -88,8 +89,9 @@ else()
     target_link_options(Experiment PUBLIC ${STATIC_LINK_OPTIONS})
 endif()
 
-add_pymiesim_module(Sets "sets_interface.cpp")
 
 # Install targets
-install(TARGETS Fibonacci CXX_SPHERE CXX_CYLINDER CXX_CORESHELL CXX_DETECTOR Experiment Sets
-        DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+install(
+    TARGETS Fibonacci SphereInterface CylinderInterface CoreShellInterface DetectorInterface Experiment SetsInterface
+    DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+)

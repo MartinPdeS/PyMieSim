@@ -9,7 +9,7 @@ from dataclasses import field
 
 from PyMieSim.experiment import parameters
 from PyMieSim import polarization
-from PyMieSim.binary.Sets import CppSourceSet
+from PyMieSim.binary.SetsInterface import CppSourceSet
 
 config_dict = ConfigDict(
     kw_only=True,

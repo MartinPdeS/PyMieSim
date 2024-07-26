@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 import numpy
 from dataclasses import field
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-from PyMieSim.binary.Sets import CppDetectorSet
+from PyMieSim.binary.SetsInterface import CppDetectorSet
 from PyMieSim.experiment import parameters
 from typing import List, Union, NoReturn
 

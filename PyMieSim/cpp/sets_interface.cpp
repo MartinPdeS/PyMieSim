@@ -12,7 +12,7 @@
 namespace py = pybind11;
 using complex128 = complex128;
 
-PYBIND11_MODULE(Sets, module) {
+PYBIND11_MODULE(SetsInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
 // Binding for SPHERE::Set
