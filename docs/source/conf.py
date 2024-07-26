@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from sphinx_gallery.sorting import ExplicitOrder
 from MPSPlots.styles import use_mpsplots_style
 import PyMieSim
 from PyMieSim.directories import project_path, doc_css_path
