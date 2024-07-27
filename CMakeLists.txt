@@ -21,7 +21,7 @@ add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
 
 # Find packages
-find_package(OpenMP)
+find_package(OpenMP REQUIRED)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 
