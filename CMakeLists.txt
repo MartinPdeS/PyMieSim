@@ -75,7 +75,7 @@ add_pymiesim_module(Experiment "experiment_interface.cpp")
 
 # Special handling for Experiment module
 if (WIN32)
-    target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
+    # target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
 else()
