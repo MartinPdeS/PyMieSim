@@ -1,0 +1,58 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_examples_detector_sg_execution_times:
+
+
+Computation times
+=================
+**00:07.202** total execution time for 8 files **from gallery/examples/detector**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_integrating_sphere.py` (``plot_integrating_sphere.py``)
+     - 00:03.523
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_LP01.py` (``plot_LP01.py``)
+     - 00:00.722
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_LG11.py` (``plot_LG11.py``)
+     - 00:00.702
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_HG01.py` (``plot_HG01.py``)
+     - 00:00.690
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_HG11.py` (``plot_HG11.py``)
+     - 00:00.684
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_LP02.py` (``plot_LP02.py``)
+     - 00:00.299
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_LP11.py` (``plot_LP11.py``)
+     - 00:00.293
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_detector_plot_photodiode.py` (``plot_photodiode.py``)
+     - 00:00.290
+     - 0.0

@@ -1,0 +1,121 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_examples_experiment_sg_execution_times:
+
+
+Computation times
+=================
+**00:19.871** total execution time for 29 files **from gallery/examples/experiment**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coherent_coupling_vs_sampling.py` (``plot_sphere_coherent_coupling_vs_sampling.py``)
+     - 00:03.134
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coupling_vs_diameter.py` (``plot_sphere_coupling_vs_diameter.py``)
+     - 00:01.472
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coupling_vs_wavelength.py` (``plot_sphere_coupling_vs_wavelength.py``)
+     - 00:01.311
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_coupling_vs_wavelength.py` (``plot_cylinder_coupling_vs_wavelength.py``)
+     - 00:01.242
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_coreshell_a1_vs_corediameter.py` (``plot_coreshell_a1_vs_corediameter.py``)
+     - 00:01.130
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coherent_coupling_vs_phioffset.py` (``plot_sphere_coherent_coupling_vs_phioffset.py``)
+     - 00:00.743
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_b11_vs_diameter.py` (``plot_cylinder_b11_vs_diameter.py``)
+     - 00:00.725
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_a11_vs_diameter.py` (``plot_cylinder_a11_vs_diameter.py``)
+     - 00:00.722
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_coreshell_b1_vs_corediameter.py` (``plot_coreshell_b1_vs_corediameter.py``)
+     - 00:00.703
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_coupling_vs_phioffset.py` (``plot_cylinder_coupling_vs_phioffset.py``)
+     - 00:00.671
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coupling_vs_phioffset.py` (``plot_sphere_coupling_vs_phioffset.py``)
+     - 00:00.662
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coupling_vs_filter.py` (``plot_sphere_coupling_vs_filter.py``)
+     - 00:00.596
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_Qsca_vs_wavelength_std.py` (``plot_cylinder_Qsca_vs_wavelength_std.py``)
+     - 00:00.551
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coupling_vs_sampling.py` (``plot_sphere_coupling_vs_sampling.py``)
+     - 00:00.518
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_Qsca_vs_index.py` (``plot_cylinder_Qsca_vs_index.py``)
+     - 00:00.508
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_b1_vs_diameter.py` (``plot_sphere_b1_vs_diameter.py``)
+     - 00:00.488
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_Qsca_vs_diameter.py` (``plot_cylinder_Qsca_vs_diameter.py``)
+     - 00:00.478
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_Qabs_vs_diameter.py` (``plot_sphere_Qabs_vs_diameter.py``)
+     - 00:00.436
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_Qsca_vs_wavelength.py` (``plot_cylinder_Qsca_vs_wavelength.py``)
+     - 00:00.427
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_Qabs_vs_diameter.py` (``plot_cylinder_Qabs_vs_diameter.py``)
+     - 00:00.378
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_Qsca_vs_wavelength_std.py` (``plot_sphere_Qsca_vs_wavelength_std.py``)
+     - 00:00.368
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_coreshell_coupling_vs_corediameter.py` (``plot_coreshell_coupling_vs_corediameter.py``)
+     - 00:00.366
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_a1_vs_diameter.py` (``plot_sphere_a1_vs_diameter.py``)
+     - 00:00.365
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_coherent_coupling_vs_rotation.py` (``plot_sphere_coherent_coupling_vs_rotation.py``)
+     - 00:00.356
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_cylinder_coupling_vs_diameter.py` (``plot_cylinder_coupling_vs_diameter.py``)
+     - 00:00.349
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_Qsca_vs_diameter.py` (``plot_sphere_Qsca_vs_diameter.py``)
+     - 00:00.304
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_coreshell_Qback_vs_corediameter.py` (``plot_coreshell_Qback_vs_corediameter.py``)
+     - 00:00.299
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_Qsca_vs_index.py` (``plot_sphere_Qsca_vs_index.py``)
+     - 00:00.286
+     - 0.0
+   * - :ref:`sphx_glr_gallery_examples_experiment_plot_sphere_Qsca_vs_wavelength.py` (``plot_sphere_Qsca_vs_wavelength.py``)
+     - 00:00.285
+     - 0.0
