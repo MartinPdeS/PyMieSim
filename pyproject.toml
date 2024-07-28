@@ -54,7 +54,7 @@ keywords = [
 dependencies = [
     "setuptools_scm[toml]>=8.0",
     "numpy>=1.26.0",
-    "pydantic==2.6.3",
+    "pydantic==2.8.2",
     "scipy==1.11.3",
     "DataVisual==1.4.1",
     "PyOptik>=0.7.10",
