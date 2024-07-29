@@ -78,19 +78,16 @@ namespace CYLINDER
                 shape.clear();
                 shape.push_back(diameter.size());
 
-                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer)) {
-
+                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer))
                     shape.push_back(std::get<std::vector<std::vector<complex128>>>(scatterer).size());
-
-                } else {
+                else
                     shape.push_back(std::get<std::vector<complex128>>(scatterer).size());
-                }
 
-                if (std::holds_alternative<std::vector<std::vector<double>>>(medium)) {
+                if (std::holds_alternative<std::vector<std::vector<double>>>(medium))
                     shape.push_back(std::get<std::vector<std::vector<double>>>(medium).size());
-                } else {
+                else
                     shape.push_back(std::get<std::vector<double>>(medium).size());
-                }
+
             }
 
         Scatterer to_object(size_t d, size_t i, size_t wl, size_t mi, SOURCE::BaseSource& source) const
