@@ -80,7 +80,7 @@ testing = [
 
 documentation = [
     "pymiescatt",
-    "numpydoc==1.6.0",
+    "numpydoc==1.7.0",
     "sphinx>=5.1.1",
     "sphinx-gallery==0.15.0",
     "sphinx-rtd-theme==2.0.0",
