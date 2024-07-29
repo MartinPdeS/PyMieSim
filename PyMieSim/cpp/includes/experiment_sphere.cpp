@@ -1,4 +1,5 @@
 #pragma once
+#include <base_class.cpp>
 
 template<typename Function>
 pybind11::array_t<complex128> Experiment::get_sphere_coefficient(Function function, size_t max_order) const

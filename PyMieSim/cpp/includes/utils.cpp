@@ -2,7 +2,7 @@
 
 #include <algorithm>
 #include <vector>
-#include <cmath> 
+#include <cmath>
 
 typedef std::complex<double> complex128;
 #define PI (double)3.14159265358979323846264338

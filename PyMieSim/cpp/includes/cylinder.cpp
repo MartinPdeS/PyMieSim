@@ -4,18 +4,6 @@
 
 namespace CYLINDER
 {
-    void Scatterer::compute_size_parameter(){
-        this->size_parameter = PI * this->diameter / source.wavelength;
-    }
-
-    void Scatterer::compute_area(){
-        this->area = this->diameter;
-    }
-
-    double Scatterer::get_g() const {
-        return get_g_with_fields(1000, 1.0);
-    }
-
     double Scatterer::get_Qsca() const {
         complex128 Qsca1=0, Qsca2=0;
 
@@ -45,12 +33,12 @@ namespace CYLINDER
         return this->process_polarization(Qext1, Qext2);
     }
 
-    double Scatterer::process_polarization(complex128 &value_0, complex128& value_1) const {
+    double Scatterer::get_g() const {
+        return this->get_g_with_fields(1000);
+    }
+
+    double Scatterer::process_polarization(const complex128 value_0, const complex128 value_1) const {
         return abs( value_1 ) * pow(abs(source.jones_vector[0]), 2) + abs( value_0 ) * pow(abs(source.jones_vector[1]), 2);
-        // if (source.is_polarized == false)
-        //     return 0.5 * ( abs( value1 ) + abs( Value0 ) );
-        // else
-        //     return abs( value_1 ) * pow(abs(source.jones_vector[0]), 2) + abs( value_0 ) * pow(abs(source.jones_vector[1]), 2);
     }
 
     void Scatterer::compute_an_bn() {

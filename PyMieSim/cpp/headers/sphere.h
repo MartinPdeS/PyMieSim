@@ -2,52 +2,37 @@
 
 #include "base_spherical_scatterer.cpp"
 
+using complex128 = std::complex<double>;
+#include <iostream>
 namespace SPHERE
 {
-    using complex128 = std::complex<double>;
 
     class Scatterer: public BaseSphericalScatterer
     {
         public:
-            double diameter = 0.0;
-            complex128 index = {1.0, 0.0};
+            double diameter;
+            complex128 index;
 
-            Scatterer() = default;
-
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-                double medium_index, std::vector<complex128> jones_vector, size_t max_order = 0) :
-                BaseSphericalScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
+            Scatterer(const double diameter, const complex128 index, const double medium_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
+                BaseSphericalScatterer(source, max_order, medium_index), diameter(diameter), index(index)
             {
-                this->compute_size_parameter();
-
-                if (max_order == 0)
-                    this->max_order = get_wiscombe_criterion(this->size_parameter);
-                else
-                    this->max_order = max_order;
-
                 this->compute_area();
+                this->compute_size_parameter();
+                this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
                 this->compute_an_bn();
+
             }
 
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order = 0) :
-                BaseSphericalScatterer(source, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
+            void compute_size_parameter() override {
+                this->size_parameter = PI * this->diameter / this->source.wavelength * this->medium_index;
+            }
 
-                if (max_order == 0)
-                    this->max_order = get_wiscombe_criterion(this->size_parameter);
-                else
-                    this->max_order = max_order;
-
-                this->compute_area();
-                this->compute_an_bn();
+            void compute_area() override {
+                this->area = PI * std::pow(this->diameter / 2.0, 2);
             }
 
             void compute_cn_dn();
             void compute_an_bn();
-            void compute_size_parameter();
-            void compute_area();
-
     };
 
     class Set
@@ -73,19 +58,15 @@ namespace SPHERE
                 shape.clear();
                 shape.push_back(diameter.size());
 
-                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer)) {
-
+                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer))
                     shape.push_back(std::get<std::vector<std::vector<complex128>>>(scatterer).size());
-
-                } else {
+                else
                     shape.push_back(std::get<std::vector<complex128>>(scatterer).size());
-                }
 
-                if (std::holds_alternative<std::vector<std::vector<double>>>(medium)) {
+                if (std::holds_alternative<std::vector<std::vector<double>>>(medium))
                     shape.push_back(std::get<std::vector<std::vector<double>>>(medium).size());
-                } else {
+                else
                     shape.push_back(std::get<std::vector<double>>(medium).size());
-                }
             }
 
         Scatterer to_object(size_t d, size_t i, size_t wl, size_t mi, SOURCE::BaseSource& source) const

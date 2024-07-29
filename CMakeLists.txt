@@ -26,7 +26,7 @@ find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 
 # Include directories
-include_directories("${PYMIESIM_CXX_DIR}/includes" "${PYMIESIM_CXX_DIR}/headers")
+include_directories("${PYMIESIM_CXX_DIR}/includes" "${PYMIESIM_CXX_DIR}/headers" "${PYMIESIM_CXX_DIR}/interfaces")
 
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -57,7 +57,7 @@ target_link_options(ZBessel PUBLIC ${STATIC_LINK_OPTIONS})
 
 # Function to add pybind11 modules
 function(add_pymiesim_module name source)
-    pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/${source}")
+    pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/interfaces/${source}")
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
     target_link_libraries(${name} PRIVATE ZBessel)
     target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})

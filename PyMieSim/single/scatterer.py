@@ -279,7 +279,6 @@ class Sphere(GenericScatterer):
         medium_index (float): Refractive index of scatterer medium. Default is 1.0.
         material (Union[DataMeasurement, Sellmeier, None]): Material of which the scatterer is made, if index is not specified. Default is None.
     """
-
     diameter: float
     source: Union[source.PlaneWave, source.Gaussian]
     index: Optional[Any] = None

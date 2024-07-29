@@ -1,12 +1,12 @@
 #pragma once
 
 #include "base_scatterer.cpp"
-
+#include "base_class.cpp"
 
 namespace CYLINDER
 {
 
-    class Scatterer: public BaseScatterer
+    class Scatterer: public Base
     {
         public:
             double diameter = 0.0;
@@ -28,44 +28,30 @@ namespace CYLINDER
             std::vector<complex128> get_a2n() const { return a2n; };
             std::vector<complex128> get_b2n() const { return b2n; };
 
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-            double medium_index, std::vector<complex128> jones_vector, size_t max_order = 0)
-            : BaseScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
-
-                if (max_order == 0)
-                    this->max_order = get_wiscombe_criterion(this->size_parameter);
-                else
-                    this->max_order = max_order;
-
-                this->compute_area();
-                this->compute_an_bn();
-            }
-
             Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order = 0) :
-                BaseScatterer(source, medium_index), diameter(diameter), index(index)
+            Base(max_order, source, medium_index), diameter(diameter), index(index)
             {
-                this->compute_size_parameter();
-
-                if (max_order == 0)
-                    this->max_order = get_wiscombe_criterion(this->size_parameter);
-                else
-                    this->max_order = max_order;
-
                 this->compute_area();
+                this->compute_size_parameter();
+                this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
                 this->compute_an_bn();
             }
 
-            void compute_size_parameter();
-            void compute_area();
-            double get_g() const ;
-            double get_Qsca() const ;
-            double get_Qext() const ;
-            double process_polarization(complex128 &value_0, complex128& value_1) const ;
+            void compute_size_parameter() override {
+                this->size_parameter = PI * this->diameter / source.wavelength;
+            }
+
+            void compute_area() override {
+                this->area = this->diameter;
+            }
+
+            double get_g() const override;
+            double get_Qsca() const override;
+            double get_Qext() const override;
+            double process_polarization(const complex128 value_0, const complex128 value_1) const ;
             void compute_an_bn();
 
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const;
+            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
 
     };
 

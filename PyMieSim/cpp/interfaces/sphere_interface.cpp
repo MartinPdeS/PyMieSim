@@ -2,6 +2,7 @@
 #include <pybind11/complex.h> // For complex number support
 #include <pybind11/numpy.h>
 #include "sphere.cpp"
+#include "base_class.cpp"
 
 
 namespace py = pybind11;
@@ -13,14 +14,13 @@ PYBIND11_MODULE(SphereInterface, module) {
     // Binding for SPHERE::Scatterer class
     py::class_<Scatterer>(module, "SPHERE")
         .def(
-            py::init<double, complex128, double, SOURCE::BaseSource&>(),
+            py::init<const double, const complex128, const double, const SOURCE::BaseSource&, size_t>(),
             py::arg("diameter"),
             py::arg("index"),
             py::arg("medium_index"),
             py::arg("source"),
+            py::arg("max_order") = 0,
             "Constructor for SPHERE, initializing it with physical and optical properties.")
-
-        .def(py::init<>(), "Default constructor for SPHERE scatterer.")
         .def("get_s1s2", &Scatterer::get_s1s2_py, py::arg("phi"), "Calculates and returns the S1 and S2 scattering parameters for a sphere.")
         .def("get_fields", &Scatterer::get_unstructured_fields_py, py::arg("phi"), py::arg("theta"), py::arg("r"), py::return_value_policy::move, "Returns the unstructured electromagnetic fields around the sphere.")
         .def("get_full_fields", &Scatterer::get_full_structured_fields_py, py::arg("sampling"), py::arg("r"), "Returns the full structured electromagnetic fields around the sphere.")

@@ -30,7 +30,7 @@ scatterer = Sphere(
 
 # %%
 # Computing the data
-data = scatterer.get_s1s2(sampling=200)  # Specify the number of sampling points
+data = scatterer.get_spf(sampling=200)  # Specify the number of sampling points
 
 # %%
 # Plotting the data

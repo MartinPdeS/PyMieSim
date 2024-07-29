@@ -2,11 +2,11 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 #include <pybind11/complex.h> // For std::complex support
 
-#include "includes/sources.cpp"
-#include "includes/sphere.cpp"
-#include "includes/cylinder.cpp"
-#include "includes/core_shell.cpp"
-#include "includes/detectors.cpp"
+#include "sources.cpp"
+#include "sphere.cpp"
+#include "cylinder.cpp"
+#include "core_shell.cpp"
+#include "detectors.cpp"
 
 
 namespace py = pybind11;
