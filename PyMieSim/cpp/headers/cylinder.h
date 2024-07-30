@@ -1,6 +1,5 @@
 #pragma once
 
-#include "base_scatterer.cpp"
 #include "base_class.cpp"
 
 namespace CYLINDER

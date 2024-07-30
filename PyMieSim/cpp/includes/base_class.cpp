@@ -6,7 +6,8 @@
 #include <pybind11/numpy.h>
 #include "sources.cpp"
 #include "numpy_interface.cpp"
-#include <iostream>
+#include "fibonacci_mesh.cpp"
+
 typedef std::complex<double> complex128;
 
 
@@ -47,7 +48,7 @@ public:
         output.reserve(max_order);
 
         for (size_t m = 0; m < max_order ; ++m)
-            output[m] = (double) ( 2 * (m+1) + 1 ) / ( (m+1) * ( (m+1) + 1 ) );
+            output[m] = (double) ( 2 * (m + 1) + 1 ) / ( (m + 1) * ( (m + 1) + 1 ) );
 
         return output;
     }
