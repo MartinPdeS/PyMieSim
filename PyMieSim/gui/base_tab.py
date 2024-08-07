@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from tkinter import ttk
+from typing import NoReturn
+
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-from typing import NoReturn
 
 
 @dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
