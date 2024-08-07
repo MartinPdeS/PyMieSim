@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from pytest import raises
-import tkinter as tk
+import tkinter
 from PyMieSim.gui.main_window import PyMieSimGUI
+from PyMieSim.gui.singleton import datashelf
 from unittest.mock import patch
 
 
@@ -12,11 +13,11 @@ def set_up_gui(foo):
     This is a decorator that will set up the gui, run the function and destroy the gui
     """
     def set_up():
-        root = tk.Tk()
+        root = tkinter.Tk()
         root.geometry("750x600")
-        gui = PyMieSimGUI(root)
+        PyMieSimGUI(root)
 
-        foo(gui=gui)
+        foo()
 
         root.destroy()
 
@@ -24,9 +25,9 @@ def set_up_gui(foo):
 
 
 @patch('tkinter.messagebox.showerror')
-def radio_button_invoke(mock, widgets: list, gui) -> None:
+def radio_button_invoke(mock, widgets: list) -> None:
     for widget in widgets:
-        try:
+        if widget.can_be_axis:
             # Defining the radiobuttons
             radio_button_x_axis = widget.tk_radio_button_1
             radio_button_STD_axis = widget.tk_radio_button_2
@@ -34,22 +35,19 @@ def radio_button_invoke(mock, widgets: list, gui) -> None:
             # The first part of the loop makes sure the buttons work individually
             # Checks if the x-axis radiobuttons work
             radio_button_x_axis.invoke()
-            assert radio_button_x_axis['value'] == gui.x_axis_label_widget.get(), f"x-axis selection for the {radio_button_x_axis['value']} radio button did not work"
-            gui.x_axis_label_widget.set(None)
+            assert radio_button_x_axis['value'] == datashelf.x_axis_label_widget.get(), f"x-axis selection for the {radio_button_x_axis['value']} radio button did not work"
+            datashelf.x_axis_label_widget.set(None)
 
             # Checks if the std-axis radiobuttons work
             radio_button_STD_axis.invoke()
-            assert radio_button_STD_axis['value'] == gui.STD_axis_label_widget.get(), f"std-axis selection for the {radio_button_STD_axis['value']} radio button did not work"
-            gui.x_axis_label_widget.set(None)
+            assert radio_button_STD_axis['value'] == datashelf.STD_axis_label_widget.get(), f"std-axis selection for the {radio_button_STD_axis['value']} radio button did not work"
+            datashelf.x_axis_label_widget.set(None)
 
             # The second part of the loop checks if the correct ValueError gets raised if both selected axis are the same
             radio_button_x_axis.invoke()
             radio_button_STD_axis.invoke()
             with raises(ValueError):
-                gui.update_plot()
-
-        except:
-            assert widget.can_be_axis == False, f"impossible axis selection: x-axis == std-axis but no ValueError is raised for the {radio_button_x_axis['value']} radio button"
+                datashelf.control_tab.calculate_plot()
 
 
 """
@@ -59,24 +57,24 @@ radio buttons of the GUI is possible and if the variables self.STD_axis_label_wi
 
 
 @set_up_gui
-def test_source_widgets(gui) -> None:
-    widgets = gui.source_tab.widget_collection.widgets
-    radio_button_invoke(widgets=widgets, gui=gui)
+def test_source_widgets() -> None:
+    widgets = datashelf.source_tab.widget_collection.widgets
+    radio_button_invoke(widgets=widgets)
 
 
 @set_up_gui
-def test_scatterer_widgets(gui) -> None:
-    for tab in gui.scatterer_tab.type_widget['values']:
-        gui.scatterer_tab.type_widget.set(tab)
-        gui.scatterer_tab.on_type_change()
-        widgets = gui.scatterer_tab.widget_collection.widgets
-        radio_button_invoke(widgets=widgets, gui=gui)
+def test_scatterer_widgets() -> None:
+    for tab in datashelf.scatterer_tab.combobox_widget_collection.combobox_widget.tk_widget['values']:
+        datashelf.scatterer_tab.combobox_widget_collection.combobox_widget.tk_widget.set(tab)
+        datashelf.scatterer_tab.on_type_change()
+        widgets = datashelf.scatterer_tab.widget_collection.widgets
+        radio_button_invoke(widgets=widgets)
 
 
 @set_up_gui
-def test_detector_widgets(gui) -> None:
-    for tab in gui.detector_tab.type_widget['values']:
-        gui.detector_tab.type_widget.set(tab)
-        gui.detector_tab.on_type_change()
-        widgets = gui.detector_tab.widget_collection.widgets
-        radio_button_invoke(widgets=widgets, gui=gui)
+def test_detector_widgets() -> None:
+    for tab in datashelf.detector_tab.combobox_widget_collection.combobox_widget.tk_widget['values']:
+        datashelf.detector_tab.combobox_widget_collection.combobox_widget.tk_widget.set(tab)
+        datashelf.detector_tab.on_type_change()
+        widgets = datashelf.detector_tab.widget_collection.widgets
+        radio_button_invoke(widgets=widgets)
