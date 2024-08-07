@@ -1,12 +1,11 @@
 #pragma once
 
-#include "base_scatterer.cpp"
-
+#include "base_class.cpp"
 
 namespace CYLINDER
 {
 
-    class Scatterer: public BaseScatterer
+    class Scatterer: public Base
     {
         public:
             double diameter = 0.0;
@@ -28,54 +27,30 @@ namespace CYLINDER
             std::vector<complex128> get_a2n() const { return a2n; };
             std::vector<complex128> get_b2n() const { return b2n; };
 
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-            double medium_index, std::vector<complex128> jones_vector, size_t max_order)
-            : BaseScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
+            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order = 0) :
+            Base(max_order, source, medium_index), diameter(diameter), index(index)
             {
-                this->compute_size_parameter();
-                this->max_order = max_order;
                 this->compute_area();
+                this->compute_size_parameter();
+                this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
                 this->compute_an_bn();
             }
 
-            Scatterer(double wavelength, double amplitude, double diameter, complex128 index,
-            double medium_index, std::vector<complex128> jones_vector)
-            : BaseScatterer(wavelength, jones_vector, amplitude, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
-                this->max_order = get_wiscombe_criterion(this->size_parameter);
-                this->compute_area();
-                this->compute_an_bn();
+            void compute_size_parameter() override {
+                this->size_parameter = PI * this->diameter / source.wavelength;
             }
 
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order) :
-                BaseScatterer(source, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
-                this->max_order = max_order;
-                this->compute_area();
-                this->compute_an_bn();
+            void compute_area() override {
+                this->area = this->diameter;
             }
 
-            Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source) :
-                BaseScatterer(source, medium_index), diameter(diameter), index(index)
-            {
-                this->compute_size_parameter();
-                this->max_order = get_wiscombe_criterion(this->size_parameter);
-                this->compute_area();
-                this->compute_area();
-                this->compute_an_bn();
-            }
-
-            void compute_size_parameter();
-            void compute_area();
-            double get_g() const ;
-            double get_Qsca() const ;
-            double get_Qext() const ;
-            double process_polarization(complex128 &value_0, complex128& value_1) const ;
+            double get_g() const override;
+            double get_Qsca() const override;
+            double get_Qext() const override;
+            double process_polarization(const complex128 value_0, const complex128 value_1) const ;
             void compute_an_bn();
 
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const;
+            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
 
     };
 
@@ -102,19 +77,16 @@ namespace CYLINDER
                 shape.clear();
                 shape.push_back(diameter.size());
 
-                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer)) {
-
+                if (std::holds_alternative<std::vector<std::vector<complex128>>>(scatterer))
                     shape.push_back(std::get<std::vector<std::vector<complex128>>>(scatterer).size());
-
-                } else {
+                else
                     shape.push_back(std::get<std::vector<complex128>>(scatterer).size());
-                }
 
-                if (std::holds_alternative<std::vector<std::vector<double>>>(medium)) {
+                if (std::holds_alternative<std::vector<std::vector<double>>>(medium))
                     shape.push_back(std::get<std::vector<std::vector<double>>>(medium).size());
-                } else {
+                else
                     shape.push_back(std::get<std::vector<double>>(medium).size());
-                }
+
             }
 
         Scatterer to_object(size_t d, size_t i, size_t wl, size_t mi, SOURCE::BaseSource& source) const

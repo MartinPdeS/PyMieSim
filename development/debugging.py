@@ -1,14 +1,6 @@
-import numpy as np
-from PyMieSim.experiment import Sphere, Gaussian, Photodiode, Setup
-from PyMieSim import measure
-
-source = Gaussian(
-    wavelength=400e-9,
-    polarization_value=0,
-    polarization_type='linear',
-    optical_power=1e-3,
-    NA=0.3
-)
+import numpy
+from typing import List, Union
+from pydantic.dataclasses import dataclass
 
 scatterer_set = Sphere(
     diameter=800e-9,
@@ -17,25 +9,18 @@ scatterer_set = Sphere(
     source=source
 )
 
-detector_set = Photodiode(
-    NA=[0.1, 0.2],
-    phi_offset=np.linspace(-180, 180, 200),
-    gamma_offset=0,
-    sampling=[100, 300],
-    polarization_filter=None
-)
-
-setup = Setup(
-    source=source,
-    scatterer=scatterer_set,
-    detector=detector_set
-)
-
-data_set = setup.get(measure.coupling)
-
-figure = data_set.plot(
-    x=setup.phi_offset,
-)
+@dataclass
+class TestClass:
+    string_list: Union[List[str], str]
 
 
-_ = figure.show()
+string_list = ['LP01']
+string_list = numpy.asarray(string_list).astype(str)
+print(string_list.dtype)
+string_list = "LP01"
+
+test_instance = TestClass(string_list=string_list)
+
+print('finished')
+
+# -

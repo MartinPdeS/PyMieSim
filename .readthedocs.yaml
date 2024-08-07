@@ -10,7 +10,7 @@ submodules:
   recursive: true
 
 build:
-  os: "ubuntu-22.04"
+  os: ubuntu-22.04
   apt_packages:
     - cmake
     - gcc
@@ -34,10 +34,6 @@ build:
       - Xvfb :99 &
       - export DISPLAY=:99
       - cd docs && rm -rf source/gallery
-      - mkdir build && cd build && cmake -G "Unix Makefiles" .. && make install
-      # - export DISPLAY=:99.0
-      # - export PYVISTA_OFF_SCREEN=true
-      # - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
       - sleep 3
 
 python:

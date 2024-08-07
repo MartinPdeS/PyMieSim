@@ -29,8 +29,8 @@ methods = [
 # Attributes to check
 attributes = [
     "size_parameter", "area", "g",
-    "Qsca", "Qext", "Qabs", "Qpr",
-    "Csca", "Cext", "Cabs", "Cpr"
+    "Qsca", "Qext", "Qabs",
+    "Csca", "Cext", "Cabs",
 ]
 
 plottings = [
@@ -44,8 +44,7 @@ plottings = [
 def test_cylinder_methods(method, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -73,8 +72,7 @@ def test_cylinder_coupling(core_config, medium_config):
 
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -96,8 +94,7 @@ def test_cylinder_coupling(core_config, medium_config):
 def test_cylinder_attributes(attribute, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -119,8 +116,7 @@ def test_cylinder_attributes(attribute, core_config, medium_config):
 def test_cylinder_plottings(plotting, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

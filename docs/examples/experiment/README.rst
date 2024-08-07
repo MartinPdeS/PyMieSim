@@ -1,2 +1,5 @@
-Experiments
-~~~~~~~~~~~
+Experiment
+~~~~~~~~~~
+
+
+.. include:: sphere/README.rst

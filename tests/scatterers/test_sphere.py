@@ -34,8 +34,7 @@ plottings = [
 def test_sphere_method(method, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -57,8 +56,7 @@ def test_sphere_method(method, core_config, medium_config):
 def test_sphere_attribute(attribute, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -81,8 +79,7 @@ def test_sphere_coupling(core_config, medium_config):
     )
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )
@@ -101,8 +98,7 @@ def test_sphere_coupling(core_config, medium_config):
 def test_sphere_plottings(plotting, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

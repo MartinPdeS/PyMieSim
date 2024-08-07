@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 import pytest
 import numpy as np
 from PyMieSim.mesh import FibonacciMesh

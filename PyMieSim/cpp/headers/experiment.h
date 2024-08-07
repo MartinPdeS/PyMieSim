@@ -1,12 +1,14 @@
 #pragma once
 
-#include "definitions.cpp"
+
 #include "numpy_interface.cpp"
 #include "sources.cpp"
 #include "sphere.cpp"
 #include "cylinder.cpp"
 #include "core_shell.cpp"
 #include "detectors.cpp"
+
+typedef std::complex<double> complex128;
 
 #define DEFINE_SPHERE_FUNCTION(name) \
     pybind11::array_t<double> get_sphere_##name() const { return get_sphere_data(&SPHERE::Scatterer::get_##name); }
@@ -81,15 +83,9 @@ class Experiment
         DEFINE_CYLINDER_FUNCTION(Qsca)
         DEFINE_CYLINDER_FUNCTION(Qext)
         DEFINE_CYLINDER_FUNCTION(Qabs)
-        DEFINE_CYLINDER_FUNCTION(Qpr)
-        DEFINE_CYLINDER_FUNCTION(Qback)
-        DEFINE_CYLINDER_FUNCTION(Qforward)
         DEFINE_CYLINDER_FUNCTION(Csca)
         DEFINE_CYLINDER_FUNCTION(Cext)
         DEFINE_CYLINDER_FUNCTION(Cabs)
-        DEFINE_CYLINDER_FUNCTION(Cpr)
-        DEFINE_CYLINDER_FUNCTION(Cback)
-        DEFINE_CYLINDER_FUNCTION(Cforward)
         DEFINE_CYLINDER_FUNCTION(g)
 
         //--------------------------------------CORESHELL------------------------------------

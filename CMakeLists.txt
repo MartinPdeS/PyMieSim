@@ -1,125 +1,92 @@
 cmake_minimum_required(VERSION 3.20)
 
-file(STRINGS PyMieSim/VERSION PYMIESIM_VERSION)
+set(CMAKE_OSX_DEPLOYMENT_TARGET "15.3" CACHE STRING "Minimum OS X deployment version")
 
 project(PyMieSim LANGUAGES Fortran CXX)
 
-message("CMAKE_CURRENT_LIST_DIR is ${CMAKE_CURRENT_LIST_DIR}")
-message("CMAKE_CURRENT_SOURCE_DIR is ${CMAKE_CURRENT_SOURCE_DIR}")
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# CMake settings
+set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 17)
-
-set(CMAKE_VERBOSE_MAKEFILE OFF)
-set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
-set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
-
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
-
-
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 
-#FIND_PACKAGE------------------------
-find_package(OpenMP)
-find_package(Python ${PYBIND11_PYTHON_VERSION} EXACT COMPONENTS Interpreter Development)
-add_subdirectory("extern/pybind11")
+# Directories
+set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
+set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
 
-include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/includes")
-include_directories("${CMAKE_SOURCE_DIR}/PyMieSim/cpp/headers")
+# Compiler and linker options
+add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
+set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
 
-add_compile_options(-Wno-return-type)
+# Find packages
+find_package(OpenMP REQUIRED)
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG REQUIRED)
 
-if (WIN32)
-    message("Windows OS detected")
-    set(STATIC_STDLIB "-w -lm -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive") # Need to keep -lwinpthread static because of MinGW dll directory not the same as windows' MSVC
+# Include directories
+include_directories("${PYMIESIM_CXX_DIR}/includes" "${PYMIESIM_CXX_DIR}/headers" "${PYMIESIM_CXX_DIR}/interfaces")
+
+# Platform-specific settings for static linking
+if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    message("MinGW detected on Windows")
+    set(STATIC_LINK_OPTIONS "-static")
+    add_compile_options(-fopenmp)
+    add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version" FORCE)
     message("AppleClang compiler detected")
-    set(STATIC_STDLIB "-w -lm -static-libstdc++")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("GNU compiler detected")
-    set(STATIC_STDLIB "-w -lm -static-libstdc++ -static-libgcc")
 endif()
 
+# Print some messages
+message(STATUS "OPENMP flags: ${OpenMP_CXX_FLAGS}")
+message(STATUS "PyMieSim version is: ${PYMIESIM_VERSION}")
+message(STATUS "PyMieSim includes directory is: ${PYMIESIM_CXX_DIR}")
+message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION}")
+message(STATUS "Binary will be installed in location: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
-message(STATUS "OPENMP flags: "  ${OpenMP_CXX_FLAGS})
-message(STATUS "PyMieSim  version is: " ${PYMIESIM_VERSION})
-message(STATUS "PyMieSim includes directory is: " ${PYMIESIM_CXX_DIR})
-message(STATUS "Python version to being compiled against: " ${PYBIND11_PYTHON_VERSION})
-message(STATUS "Binary will be installed in location: " ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
-message(STATUS "Custom flags passed to linker: " ${STATIC_STDLIB})
-
-#Building libZBessel-------------------------------------------------
-add_library(
-    ZBessel STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/libraries/amos_iso_c_fortran_wrapper.f90
-    ${CMAKE_CURRENT_SOURCE_DIR}/libraries/machine.for
-    ${CMAKE_CURRENT_SOURCE_DIR}/libraries/zbesh.for
+# Build ZBessel library
+add_library(ZBessel STATIC
+    "${CMAKE_CURRENT_SOURCE_DIR}/libraries/amos_iso_c_fortran_wrapper.f90"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libraries/machine.for"
+    "${CMAKE_CURRENT_SOURCE_DIR}/libraries/zbesh.for"
 )
-target_link_libraries(ZBessel PUBLIC "${STATIC_STDLIB}")
+target_link_options(ZBessel PUBLIC ${STATIC_LINK_OPTIONS})
 
+# Function to add pybind11 modules
+function(add_pymiesim_module name source)
+    pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/interfaces/${source}")
+    set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
+    target_link_libraries(${name} PRIVATE ZBessel)
+    target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})
+endfunction()
 
-#Building FibonacciMesh----------------------------------------------
-pybind11_add_module(Fibonacci MODULE "${PYMIESIM_CXX_DIR}/mesh_interface.cpp")
-set_target_properties(Fibonacci PROPERTIES OUTPUT_NAME "Fibonacci")
-target_link_libraries(Fibonacci PRIVATE ZBessel "${STATIC_STDLIB}")
+# Add modules
+add_pymiesim_module(Fibonacci "mesh_interface.cpp")
+add_pymiesim_module(SourceInterface "source_interface.cpp")
+add_pymiesim_module(DetectorInterface "detector_interface.cpp")
+add_pymiesim_module(SphereInterface "sphere_interface.cpp")
+add_pymiesim_module(CylinderInterface "cylinder_interface.cpp")
+add_pymiesim_module(CoreShellInterface "coreshell_interface.cpp")
+add_pymiesim_module(ModeField "mode_field_interface.cpp")
+add_pymiesim_module(SetsInterface "sets_interface.cpp")
+add_pymiesim_module(Experiment "experiment_interface.cpp")
 
-#Building DETECTOR--------------------------------------------------
-pybind11_add_module(CXX_DETECTOR MODULE "${PYMIESIM_CXX_DIR}/detector_interface.cpp" )
-set_target_properties(CXX_DETECTOR PROPERTIES OUTPUT_NAME "DetectorInterface")
-target_link_libraries(CXX_DETECTOR PRIVATE ZBessel "${STATIC_STDLIB}")
-
-#Building SPHERE-----------------------------------------------------
-pybind11_add_module(CXX_SPHERE MODULE "${PYMIESIM_CXX_DIR}/sphere_interface.cpp" )
-set_target_properties(CXX_SPHERE PROPERTIES OUTPUT_NAME "SphereInterface")
-target_link_libraries(CXX_SPHERE PRIVATE ZBessel "${STATIC_STDLIB}")
-
-#Building CYLINDER---------------------------------------------------
-pybind11_add_module(CXX_CYLINDER MODULE "${PYMIESIM_CXX_DIR}/cylinder_interface.cpp" )
-set_target_properties(CXX_CYLINDER PROPERTIES OUTPUT_NAME "CylinderInterface")
-target_link_libraries(CXX_CYLINDER PRIVATE ZBessel "${STATIC_STDLIB}")
-
-#Building CORESHELL--------------------------------------------------
-pybind11_add_module(CXX_CORESHELL MODULE "${PYMIESIM_CXX_DIR}/coreshell_interface.cpp" )
-set_target_properties(CXX_CORESHELL PROPERTIES OUTPUT_NAME "CoreShellInterface")
-target_link_libraries(CXX_CORESHELL PRIVATE ZBessel "${STATIC_STDLIB}")
-
-#Building MODEFIELD--------------------------------------------------
-pybind11_add_module(CXX_MODEFIELD MODULE "${PYMIESIM_CXX_DIR}/mode_field_interface.cpp" )
-set_target_properties(CXX_MODEFIELD PROPERTIES OUTPUT_NAME "ModeField")
-target_link_libraries(CXX_MODEFIELD PRIVATE "${STATIC_STDLIB}")
-
-#Building EXPERIMENT------------------------------------------------
-if (WIN32)
-    pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )
-    set_target_properties(Experiment PROPERTIES OUTPUT_NAME "Experiment")
-    target_link_libraries(Experiment PRIVATE ZBessel "${STATIC_STDLIB}")
+# Special handling for Experiment module
+if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
+    add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )
-    set_target_properties(Experiment PROPERTIES OUTPUT_NAME "Experiment")
-    target_link_libraries(Experiment PRIVATE ZBessel "${STATIC_STDLIB}" OpenMP::OpenMP_CXX )
-else(APPLE)
-    pybind11_add_module(Experiment MODULE "${PYMIESIM_CXX_DIR}/experiment_interface.cpp" )
-    set_target_properties(Experiment PROPERTIES OUTPUT_NAME "Experiment")
-    target_link_libraries(Experiment PRIVATE ZBessel "${STATIC_STDLIB} -Xpreprocessor -fopenmp")
+    target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
+else()
+    target_link_libraries(Experiment PRIVATE "-Xpreprocessor -fopenmp")
 endif()
 
-#Building CppSets----------------------------------------------------
-pybind11_add_module(Sets MODULE "${PYMIESIM_CXX_DIR}/sets_interface.cpp" )
-set_target_properties(Sets PROPERTIES OUTPUT_NAME "Sets")
-target_link_libraries(Sets PRIVATE ZBessel "${STATIC_STDLIB}")
 
-set_target_properties(ZBessel Fibonacci CXX_SPHERE CXX_CYLINDER CXX_CORESHELL CXX_DETECTOR Experiment Sets
-    PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
-    POSITION_INDEPENDENT_CODE TRUE
+# Install targets
+install(
+    TARGETS Fibonacci SphereInterface CylinderInterface CoreShellInterface DetectorInterface Experiment SetsInterface
+    DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 )
-
-
-install(TARGETS Fibonacci CXX_SPHERE CXX_CYLINDER CXX_CORESHELL CXX_DETECTOR Experiment Sets
-        # RUNTIME_DEPENDENCIES # do not uncomment this as it will mixed dependencies that may not be manylinux-compatible
-        DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
-        )
-
-

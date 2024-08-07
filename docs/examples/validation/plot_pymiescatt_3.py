@@ -32,8 +32,7 @@ core_diameters = np.geomspace(10e-9, 500e-9, 400)  # Core diameters in meters
 # Configure the Gaussian source
 source = Gaussian(
     wavelength=wavelength,
-    polarization_value=polarization_value,
-    polarization_type=polarization_type,
+    polarization=polarization_value,
     optical_power=optical_power,
     NA=NA
 )

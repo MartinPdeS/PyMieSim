@@ -14,8 +14,7 @@ from PyMieSim.single.source import Gaussian
 # Defining the source
 source = Gaussian(
     wavelength=450e-9,  # 450 nm
-    polarization_value=0,  # Linear polarization angle in radians
-    polarization_type='linear',
+    polarization=0,  # Linear polarization angle in radians
     optical_power=1,  # Arbitrary units
     NA=0.3  # Numerical Aperture
 )
@@ -31,7 +30,7 @@ scatterer = Sphere(
 
 # %%
 # Computing the data
-data = scatterer.get_s1s2(sampling=200)  # Specify the number of sampling points
+data = scatterer.get_spf(sampling=200)  # Specify the number of sampling points
 
 # %%
 # Plotting the data

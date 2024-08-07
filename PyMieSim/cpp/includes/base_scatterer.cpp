@@ -1,6 +1,6 @@
 #pragma once
 
-#include "definitions.cpp"
+
 #include "utils.cpp"
 #include "sources.cpp"
 #include "fibonacci_mesh.cpp"
@@ -8,16 +8,19 @@
 #include <vector>
 #include <complex>
 
+typedef std::complex<double> complex128;
+#define JJ complex128(0.0,1.0)
+
 class BaseScatterer
 {
 public:
+    SOURCE::BaseSource source;
     size_t max_order;
     double size_parameter;
     double area;
     double medium_index;
 
-    SOURCE::BaseSource source;
-
+    virtual ~BaseScatterer() = default;
     BaseScatterer() = default;
 
     BaseScatterer(const double wavelength, const std::vector<complex128> jones_vector, const double amplitude, const double medium_index)
@@ -25,23 +28,20 @@ public:
 
     BaseScatterer(const SOURCE::BaseSource &source, const double medium_index) : source(source), medium_index(medium_index){}
 
-    double get_Qforward() const {return get_Qsca() - get_Qback();};
-    double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
-    double get_Qratio() const {return get_Qback() / get_Qsca();};
-    double get_Qabs() const {return get_Qext() - get_Qsca();};
-    double get_Csca() const {return get_Qsca() * area;};
-    double get_Cext() const {return get_Qext() * area;};
-    double get_Cabs() const {return get_Qabs() * area;};
-    double get_Cback() const {return get_Qback() * area;};
-    double get_Cforward() const {return get_Qforward() * area;};
-    double get_Cpr() const {return get_Qpr() * area;};
-    double get_Cratio() const {return get_Qratio() * area;};
+    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi) const = 0;
 
-    virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi) const {};
-    virtual double get_Qsca() const {};
-    virtual double get_Qext() const {};
-    virtual double get_Qback() const {};
-    virtual double get_g() const {};
+    virtual double get_Qsca() const = 0;
+    double get_Csca() const {return get_Qsca() * area;};
+
+    double get_Qabs() const {return get_Qext() - get_Qsca();};
+    double get_Cabs() const {return get_Qabs() * area;};
+
+    virtual double get_Qext() const = 0;
+    double get_Cext() const {return get_Qext() * area;};
+
+    virtual double get_g() const = 0;
+
+    double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
 
     size_t get_wiscombe_criterion(const double size_parameter) const {
         return static_cast<size_t>(2 + size_parameter + 4 * std::cbrt(size_parameter)) + 16;
@@ -73,8 +73,7 @@ public:
         phi_field.reserve(full_size);
         theta_field.reserve(full_size);
 
-        complex128
-            propagator = this->compute_propagator(radius);
+        complex128 propagator = this->compute_propagator(radius);
 
         for (unsigned int p=0; p < S1.size(); p++ )
             for (unsigned int t=0; t < theta.size(); t++ )
@@ -166,8 +165,6 @@ public:
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
     compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
-        complex128 propagator = this->compute_propagator(radius);
-
         auto [S1, S2] = this->compute_s1s2(phi);
 
         return this->compute_structured_fields(S1, S2, theta, radius);

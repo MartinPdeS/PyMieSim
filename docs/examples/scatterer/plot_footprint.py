@@ -14,8 +14,7 @@ from PyOptik import UsualMaterial
 # Define the Gaussian light source with specified properties
 source = Gaussian(
     wavelength=1e-6,  # 1000 nm
-    polarization_value=0,
-    polarization_type='linear',
+    polarization=0,
     optical_power=1,  # Arbitrary units
     NA=0.3  # Numerical Aperture
 )

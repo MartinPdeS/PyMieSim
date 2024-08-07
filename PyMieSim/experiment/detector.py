@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 import numpy
 from dataclasses import field
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-from PyMieSim.binary.Sets import CppDetectorSet
+from PyMieSim.binary.SetsInterface import CppDetectorSet
 from PyMieSim.experiment import parameters
 from typing import List, Union, NoReturn
 
@@ -41,10 +40,18 @@ class BaseDetector():
         Called automatically after the class initialization to prepare the detector by formatting inputs, computing
         field arrays, setting up rotation angles, and initializing visualization and C++ bindings.
         """
-        self.mapping = self.setup_mapping()
-        self.initialize_binding()
+        self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
+        self.sampling = numpy.atleast_1d(self.sampling).astype(int)
+        self.NA = numpy.atleast_1d(self.NA).astype(float)
+        self.phi_offset = numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float))
+        self.gamma_offset = numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float))
+        self.polarization_filter = numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float))
+        self.rotation = numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float)
 
-    def setup_mapping(self) -> dict:
+        self.mapping = self._setup_mapping()
+        self._initialize_binding()
+
+    def _setup_mapping(self) -> dict:
         """
         Creates a dictionary to map detector settings to their respective values, serving as a base for data visualization
         and C++ integration setup.
@@ -62,26 +69,26 @@ class BaseDetector():
             'polarization_filter': None,
         }
 
-    def initialize_binding(self) -> NoReturn:
+    def _initialize_binding(self) -> NoReturn:
         """
         Prepares and initializes the C++ bindings necessary for the simulation, configuring the detector with simulation
         parameters.
         """
         self.binding_kwargs = dict(
-            mode_number=numpy.atleast_1d(self.mode_number).astype(str),
-            sampling=numpy.atleast_1d(self.sampling).astype(int),
-            NA=numpy.atleast_1d(self.NA).astype(float),
-            phi_offset=numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float)),
-            gamma_offset=numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float)),
-            polarization_filter=numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float)),
-            rotation=numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float),
+            mode_number=self.mode_number,
+            sampling=self.sampling,
+            NA=self.NA,
+            phi_offset=self.phi_offset,
+            gamma_offset=self.gamma_offset,
+            polarization_filter=self.polarization_filter,
+            rotation=self.rotation,
             mean_coupling=self.mean_coupling,
             coherent=self.coherent
         )
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-    def get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> NoReturn:
         """
         Compiles the detector's properties into a table format for data visualization.
 

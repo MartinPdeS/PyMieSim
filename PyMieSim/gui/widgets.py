@@ -1,20 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import NoReturn
+from typing import Union, NoReturn, List
 import numpy
 import tkinter
+from tkinter.ttk import Button
+
+from PyMieSim.gui.singleton import datashelf
+
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class BaseWidget():
-    def __init__(self, label: str, component_label: str, dtype: type = None, is_permanent: bool = False) -> None:
-        """
-        Initializes a new instance of the Widget class.
-        """
-        self.label = label
-        self.component_label = component_label
-        self.dtype = dtype
-        self.is_permanent = is_permanent
+    label: str
+    component_label: str
+    dtype: type = None
+    is_permanent: bool = False
 
     def __repr__(self) -> str:
         return f"Widget(label={self.label})"
@@ -24,6 +27,7 @@ class BaseWidget():
         self.tk_widget.destroy()
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class ComBoxWidget(BaseWidget):
     """
     A Widget class that encapsulates a GUI widget with specific properties.
@@ -41,19 +45,24 @@ class ComBoxWidget(BaseWidget):
         get_input(): Retrieves the current input from the widget.
         process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
     """
+    default_options: int = 0
+    options: List[str]
+    value = None
 
-    def __init__(self, default_options: int = 0, options: list = [], **kwargs) -> None:
+    def initialize(self):
         """
-        Initializes a new instance of the Widget class.
+        Empty function to allow uniform widget_collection.add_widgets accross all widgets
         """
-        super().__init__(**kwargs)
-        self.default_options = default_options
-        self.value = None
-        self.options = options
+        pass
 
     def setup(self, row: int = 0):
+        # Sets up an attribute to datashelf that will hold the curent value of the combobox, for easy acces
+        setattr(datashelf, f"{self.component_label}_selection", tkinter.StringVar(value=self.options[self.default_options]))
+        self.text_variable = getattr(datashelf, f"{self.component_label}_selection")
+
+        # Sets up the Combobox
         self.tk_label = tkinter.Label(self.frame, text=self.label)
-        self.tk_widget = tkinter.ttk.Combobox(self.frame, values=self.options)
+        self.tk_widget = tkinter.ttk.Combobox(self.frame, values=self.options, textvariable=self.text_variable)
         self.tk_widget.current(self.default_options)
 
         self.tk_widget.grid(row=row, column=1)
@@ -80,14 +89,15 @@ class ComBoxWidget(BaseWidget):
         return self.tk_widget.get()
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class RadioButtonWidget(BaseWidget):
 
-    def __init__(self, option_text: list, options_values: list, can_be_axis: bool = False, **kwargs):
-        super().__init__(**kwargs)
-        self.option_text = option_text
+    option_text: list
+    options_values: list
+    can_be_axis: bool = False
+
+    def initialize(self):
         self.tk_variable = tkinter.IntVar()
-        self.options_values = options_values
-        self.can_be_axis = can_be_axis
 
     def update(self):
         pass
@@ -120,6 +130,7 @@ class RadioButtonWidget(BaseWidget):
         return self.options_values[self.tk_variable.get()]
 
 
+@dataclass(kw_only=True, config=ConfigDict(arbitrary_types_allowed=True))
 class InputWidget(BaseWidget):
     """
     A Widget class that encapsulates a GUI widget with specific properties.
@@ -136,22 +147,16 @@ class InputWidget(BaseWidget):
         update(): Updates the widget's value based on user input.
         process_input(): Processes the user input, converting it into a float or numpy array as appropriate.
     """
+    default_value: Union[float | str]
+    multiplicative_factor: float | None = None
+    can_be_axis: bool = True
 
-    def __init__(self, default_value: float | str, multiplicative_factor: float | None = None, can_be_axis=True, x_axis=None, STD_axis=None, **kwargs) -> None:
+    def initialize(self) -> NoReturn:
         """
         Initializes a new instance of the Widget class.
         """
-        super().__init__(**kwargs)
-        self.default_value = default_value
-        self.tk_widget = tkinter.StringVar(value=str(default_value))
-        self.value = None
-        self.multiplicative_factor = multiplicative_factor
-        self.can_be_axis = can_be_axis
+        self.tk_widget = tkinter.StringVar(value=str(self.default_value))
         self.update()
-
-        # The variables for the radiobuttons used to select the X and STD axis
-        self.button_variableX = x_axis
-        self.button_variableSTD = STD_axis
 
     def setup(self, row: int):
         row += 1
@@ -162,9 +167,9 @@ class InputWidget(BaseWidget):
 
         # Adds the radiobuttons used to select wether this variable is used as an axis
         if self.can_be_axis:
-            self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable=self.button_variableX, value=self.component_label)
+            self.tk_radio_button_1 = tkinter.Radiobutton(self.frame, variable=datashelf.x_axis_label_widget, value=self.component_label)
             self.tk_radio_button_1.grid(row=row + 1, column=2, sticky="W", pady=2)
-            self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable=self.button_variableSTD, value=self.component_label)
+            self.tk_radio_button_2 = tkinter.Radiobutton(self.frame, variable=datashelf.STD_axis_label_widget, value=self.component_label)
             self.tk_radio_button_2.grid(row=row + 1, column=3, sticky="W", pady=2)
 
     def get_value(self):
@@ -208,5 +213,37 @@ class InputWidget(BaseWidget):
         if self.can_be_axis:
             self.tk_radio_button_1.destroy()
             self.tk_radio_button_2.destroy()
+
+
+class ControlWidget():
+    """
+    Buttons that will allow the user to calculate the simulation, save it,
+    export it and reset their std-axis selection.
+
+    Attribute:
+    frame (ttk.Frame): given in WidgetCollection
+    command (method from ControlTab): given in WidgetCollection
+    component_label (str): given in WidgetCollection
+    label (str): the name of the button
+    style (str): the style of the button
+    """
+    def __init__(self, label: str, style: str = "Large.TButton") -> None:
+        self.label = label
+        self.style = style
+
+    def __repr__(self) -> str:
+        return f"Widget(label={self.label})"
+
+    def setup(self, column):
+        self.button = Button(
+            self.frame,
+            text=self.label,
+            style=self.style,
+            command=self.command
+        )
+        self.button.grid(row=0, column=column, sticky='ew')
+
+    def invoke(self):
+        self.button.invoke()
 
 # -

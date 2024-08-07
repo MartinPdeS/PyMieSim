@@ -11,8 +11,7 @@ import numpy
 def test_simple():
     source = Gaussian(
         wavelength=750e-9,
-        polarization_value=0,
-        polarization_type='linear',
+        polarization=0,
         optical_power=1,
         NA=0.3
     )

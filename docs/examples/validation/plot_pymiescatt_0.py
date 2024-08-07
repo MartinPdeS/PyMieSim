@@ -29,8 +29,7 @@ diameter_range = np.geomspace(10e-9, 1e-6, 50)  # Geometric space for diameters
 # Setup source
 source = Gaussian(
     wavelength=wavelength,
-    polarization_value=polarization_value,
-    polarization_type=polarization_type,
+    polarization=polarization_value,
     optical_power=optical_power,
     NA=NA
 )

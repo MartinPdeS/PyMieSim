@@ -21,8 +21,7 @@ Currently, PyMieSim integrates three distinct solvers tailored to three differen
   :width: 800
   :alt: Structure of the library
 
-The package also lets you construct an **Experiment** using **SphereSet**/**CoreShellSet**/**CylinderSet**, **SourceSet** and **DetectorSet**.
-Those class define the type of scatterers, light sources and detectors you want to study.
+The package is divided into two submodules: **single** and **experiment**. The first one (`single`) is devised to analyse properties of single scattering event, such as the far-field distribution, scattering phase function, Stokes parameters, etc. On the other hand the `experiment` submodule serves studying parameters (such as `coupling (power)`, `Qsca`, `Qext`, `g`, etc)  over large sets of `source`, `scatterer` and/or `detector` sets.
 
 
 ----
@@ -45,6 +44,18 @@ Once this is done you can run the graphic interface as follows:
 Clicking the "Calculate" button should render the following:
 
 |example_gui|
+
+
+----
+
+Installation
+************
+
+For common versions of Windows, Linux, and macOS, (on x86_64 architecture), the package can readily be installed using pip;
+
+.. code-block:: python
+
+   >>> pip install LightWave2D
 
 ----
 
@@ -75,7 +86,7 @@ For common version of Windows, Linux and MacOS, (on x86_64 architecture), the pa
 
    >>> pip install PyMieSim
 
-The ready to install wheel is not available for arm chip of the newer mac M1, M2 product. You can however install manually the package.
+The ready to install wheel is not available for arm chip of the newer mac M1, M2 ... product. You can however install manually the package.
 
 
 If, however, this fail you can build the package from scratch following the steps on the **Manual building** section.
@@ -122,10 +133,8 @@ To test localy (with cloning the GitHub repository) you'll need to install the d
 
    >>> git clone https://github.com/MartinPdeS/PyMieSim.git
    >>> cd PyMieSim
-   >>> pip install -r requirements/requirements.txt
-   >>> coverage run --source=PyMieSim --module pytest --verbose tests
-   >>> coverage report --show-missing
-
+   >>> pip install PyMieSim[testing]
+   >>> pytest
 ----
 
 
@@ -150,7 +159,7 @@ Coding examples
 ***************
 
 PyMieSim was developed with the aim of being an intuitive and easy to use tool.
-Below is and example that illustrate this:
+Below is an example that illustrate this:
 
 .. code:: python
 

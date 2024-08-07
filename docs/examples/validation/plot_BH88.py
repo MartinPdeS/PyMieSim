@@ -33,8 +33,7 @@ volumes = np.pi * (diameters / 2)**2
 # Configure the Gaussian source
 source = Gaussian(
     wavelength=wavelength,
-    polarization_value=polarization_values,
-    polarization_type='linear',
+    polarization=polarization_values,
     optical_power=optical_power,
     NA=NA
 )

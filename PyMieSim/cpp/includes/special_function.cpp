@@ -5,7 +5,8 @@
 #include <math.h>
 #include <tuple>
 #include "../../../libraries/complex_bessel.cpp"
-#include "definitions.cpp"
+
+typedef std::complex<double> complex128;
 
 //---------------------------------AMOS_LIBRARY_WRAPPING--------------------------------------
 template<typename T, typename U> inline complex128 compute_jn(U order, T x){ return sp_bessel::sph_besselJ(order, x); }

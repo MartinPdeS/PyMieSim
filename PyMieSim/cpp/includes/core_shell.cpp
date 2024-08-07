@@ -4,7 +4,7 @@
 
 namespace CORESHELL
 {
-    void Scatterer::apply_medium(){
+    void Scatterer::apply_medium() {
         this->core_index /= this->medium_index;
         this->shell_index /= this->medium_index;
         this->core_diameter *= this->medium_index;
@@ -12,22 +12,11 @@ namespace CORESHELL
         this->shell_diameter *= this->medium_index;
     }
 
-    void Scatterer::compute_size_parameter(){
-        size_parameter = source.k * this->shell_diameter / 2;
-        this->x_shell = source.k * this->shell_diameter / 2.0;
-        this->x_core = source.k * this->core_diameter / 2.0;
-    }
-
     void Scatterer::compute_max_order(size_t max_order){
         if (max_order == 0)
             this->max_order = (size_t) (2 + size_parameter + 4 * pow(size_parameter, 1./3.));
         else
             this->max_order = max_order;
-    }
-
-    void Scatterer::compute_area(){
-
-        this->area = PI * pow(this->shell_diameter/2.0, 2);
     }
 
     void Scatterer::compute_an_bn()
@@ -67,8 +56,8 @@ namespace CORESHELL
 
             p1y[order + 1] = py[order];
             ch1y[order + 1] = chy[order];
-            gsy[order] = py[order]  - JJ * chy[order];
-            gs1y[order] = p1y[order] - JJ * ch1y[order];
+            gsy[order] = py[order]  - complex128(0, 1) * chy[order];
+            gs1y[order] = p1y[order] - complex128(0, 1) * ch1y[order];
         }
 
         // Calculate continuity factors in reverse order

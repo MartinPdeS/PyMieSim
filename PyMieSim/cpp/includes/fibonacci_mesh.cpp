@@ -5,6 +5,8 @@
 #include "numpy_interface.cpp"
 #include "fibonacci_mesh.h"
 
+#define PI (double)3.14159265358979323846264338
+
 void FibonacciMesh::rotate_around_center() {
     if (gamma_offset != 0.0) {
         cartesian_coordinates.rotate_about_axis('x', gamma_offset);
@@ -170,7 +172,7 @@ class FullSteradian
             double integral = 0;
 
             for (auto phi : spherical_coordinates.phi)
-                for (auto theta : spherical_coordinates.theta)
+                for (size_t theta_idx = 0; theta_idx < spherical_coordinates.theta.size(); ++theta_idx)
                     integral += sin(phi+PI/2.0) * dPhi * dTheta;
 
             return integral;
