@@ -38,10 +38,10 @@ class Setup(object):
         Initializes the experiment by setting the source for the scatterer and establishing bindings
         between the components and the simulation environment.
         """
-        self.initialize_experiment()
-        self.bind_components()
+        self._initialize_experiment()
+        self._bind_components()
 
-    def initialize_experiment(self) -> NoReturn:
+    def _initialize_experiment(self) -> NoReturn:
         """
         Initializes the experiment with necessary bindings.
         """
@@ -49,7 +49,7 @@ class Setup(object):
 
         self.binding = CppExperiment()
 
-    def bind_components(self):
+    def _bind_components(self):
         """Binds the experiment components to the CppExperiment instance."""
 
         self.binding.set_source(self.source.binding)
@@ -61,7 +61,7 @@ class Setup(object):
         if self.detector is not None:
             self.binding.set_detector(self.detector.binding)
 
-    def generate_datavisual_table(self) -> NoReturn:
+    def _generate_datavisual_table(self) -> NoReturn:
         """
         Generates and populates the 'x_table' with parameters from the source, scatterer, and detector sets.
         This table is instrumental for data visualization and analysis.
@@ -70,11 +70,11 @@ class Setup(object):
             NoReturn
         """
         self.x_table = []
-        self.x_table.extend(self.source.get_datavisual_table())
-        self.x_table.extend(self.scatterer.get_datavisual_table())
+        self.x_table.extend(self.source._get_datavisual_table())
+        self.x_table.extend(self.scatterer._get_datavisual_table())
 
         if self.detector:
-            self.x_table.extend(self.detector.get_datavisual_table())
+            self.x_table.extend(self.detector._get_datavisual_table())
 
     def get(self, measure: Table, export_as_numpy: bool = False) -> Union[numpy.ndarray, Array]:
         """
@@ -113,7 +113,7 @@ class Setup(object):
         return array
 
     def _export_as_data_visual(self, measure: Table, array: numpy.array) -> Array:
-        self.generate_datavisual_table()
+        self._generate_datavisual_table()
         measure.set_base_values(array)
 
         for k, v in self.source.mapping.items():

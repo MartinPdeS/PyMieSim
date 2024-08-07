@@ -48,10 +48,10 @@ class BaseDetector():
         self.polarization_filter = numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float))
         self.rotation = numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float)
 
-        self.mapping = self.setup_mapping()
-        self.initialize_binding()
+        self.mapping = self._setup_mapping()
+        self._initialize_binding()
 
-    def setup_mapping(self) -> dict:
+    def _setup_mapping(self) -> dict:
         """
         Creates a dictionary to map detector settings to their respective values, serving as a base for data visualization
         and C++ integration setup.
@@ -69,7 +69,7 @@ class BaseDetector():
             'polarization_filter': None,
         }
 
-    def initialize_binding(self) -> NoReturn:
+    def _initialize_binding(self) -> NoReturn:
         """
         Prepares and initializes the C++ bindings necessary for the simulation, configuring the detector with simulation
         parameters.
@@ -88,7 +88,7 @@ class BaseDetector():
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-    def get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> NoReturn:
         """
         Compiles the detector's properties into a table format for data visualization.
 

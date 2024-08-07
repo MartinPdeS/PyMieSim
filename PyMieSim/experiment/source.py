@@ -33,10 +33,10 @@ class BaseSource:
             'optical_power': None
         }
 
-        self.format_inputs()
-        self.generate_binding()
+        self._format_inputs()
+        self._generate_binding()
 
-    def format_inputs(self):
+    def _format_inputs(self):
         """Formats input wavelengths and polarization values into numpy arrays."""
         self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
 
@@ -46,7 +46,7 @@ class BaseSource:
         self.NA = numpy.atleast_1d(self.NA).astype(float)
         self.optical_power = numpy.atleast_1d(self.optical_power).astype(float)
 
-    def get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> NoReturn:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -91,7 +91,7 @@ class Gaussian(BaseSource):
     optical_power: Union[numpy.ndarray, List[float], float]
     name: str = field(default='PlaneWave', init=False)
 
-    def generate_binding(self) -> NoReturn:
+    def _generate_binding(self) -> NoReturn:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
@@ -126,7 +126,7 @@ class PlaneWave(BaseSource):
     amplitude: Union[numpy.ndarray, List[float], float]
     name: str = field(default='PlaneWave', init=False)
 
-    def generate_binding(self) -> NoReturn:
+    def _generate_binding(self) -> NoReturn:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.

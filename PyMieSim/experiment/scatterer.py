@@ -36,9 +36,9 @@ class BaseScatterer():
         arguments, and Units for visualization. This method is automatically called after the
         class has been initialized.
         """
-        self.build_binding_kwargs()
+        self._build_binding_kwargs()
 
-    def add_material_index_to_mapping(self, name: str, indexes: numpy.ndarray, materials: numpy.ndarray, data_type: type = object) -> NoReturn:
+    def _add_material_index_to_mapping(self, name: str, indexes: numpy.ndarray, materials: numpy.ndarray, data_type: type = object) -> NoReturn:
         """
         Adds material or refractive index details to a mapping dictionary.
 
@@ -139,7 +139,7 @@ class Sphere(BaseScatterer):
 
         super(Sphere, self).__post_init__()
 
-    def build_binding_kwargs(self) -> NoReturn:
+    def _build_binding_kwargs(self) -> NoReturn:
         """
         Constructs the keyword arguments necessary for the C++ binding interface, specifically tailored for spherical scatterers.
         This includes processing material indices and organizing them into a structured dictionary for simulation interaction.
@@ -164,7 +164,7 @@ class Sphere(BaseScatterer):
 
         self.binding = CppSphereSet(**self.binding_kwargs)
 
-    def get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> NoReturn:
         """
         Constructs a table of the scatterer's properties formatted for data visualization.
         This method populates the `mapping` dictionary with user-friendly descriptions and formats of the scatterer properties.
@@ -175,12 +175,12 @@ class Sphere(BaseScatterer):
         self.mapping['diameter'] = parameters.diameter
         self.mapping['diameter'].set_base_values(self.diameter)
 
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name=None,
             indexes=self.index,
             materials=self.material,
         )
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name='medium',
             indexes=self.medium_index,
             materials=self.medium_material,
@@ -237,7 +237,7 @@ class CoreShell(BaseScatterer):
 
         super(CoreShell, self).__post_init__()
 
-    def build_binding_kwargs(self) -> NoReturn:
+    def _build_binding_kwargs(self) -> NoReturn:
         """
         Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.
         Prepares structured data from scatterer properties for efficient simulation integration.
@@ -269,7 +269,7 @@ class CoreShell(BaseScatterer):
 
         self.binding = CppCoreShellSet(**self.binding_kwargs)
 
-    def get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> NoReturn:
         """
         Generates a list of data visualizations for the scatterer's properties, which can be used in user interfaces or reports.
         Each property is formatted into a user-friendly structure, making it easier to visualize and understand.
@@ -283,19 +283,19 @@ class CoreShell(BaseScatterer):
         self.mapping['shell_width'] = parameters.shell_width
         self.mapping['shell_width'].set_base_values(self.binding_kwargs.get('shell_width'))
 
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name='core',
             indexes=self.core_index,
             materials=self.core_material,
         )
 
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name='shell',
             indexes=self.shell_index,
             materials=self.shell_material,
         )
 
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name='medium',
             indexes=self.medium_index,
             materials=self.medium_material,
@@ -331,7 +331,7 @@ class Cylinder(BaseScatterer):
 
         super(Cylinder, self).__post_init__()
 
-    def build_binding_kwargs(self) -> NoReturn:
+    def _build_binding_kwargs(self) -> NoReturn:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
@@ -357,7 +357,7 @@ class Cylinder(BaseScatterer):
 
         self.binding = CppCylinderSet(**self.binding_kwargs)
 
-    def get_datavisual_table(self) -> List:
+    def _get_datavisual_table(self) -> List:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -371,12 +371,12 @@ class Cylinder(BaseScatterer):
         self.mapping['diameter'] = parameters.diameter
         self.mapping['diameter'].set_base_values(self.binding_kwargs.get('diameter'))
 
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name=None,
             indexes=self.index,
             materials=self.material,
         )
-        self.add_material_index_to_mapping(
+        self._add_material_index_to_mapping(
             name='medium',
             indexes=self.medium_index,
             materials=self.medium_material,
