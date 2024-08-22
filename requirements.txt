@@ -1,7 +1,0 @@
-setuptools
-wheel
-numpy
-scipy
-pyvista
-matplotlib
-DataVisual

@@ -38,13 +38,7 @@ namespace sp_bessel {
  * We have to compute with scale=0, otherwise the derivative is not valid.
  */
 template<std::complex<double> (*T)(double, std::complex<double>, bool, BesselErrors*)>
-inline std::complex<double>
-diffBessel(
-  double                     order,
-  std::complex<double>       z,
-  int                        n,
-  double                     phase,
-  std::vector<BesselErrors>* errors = nullptr)
+inline std::complex<double> diffBessel(double order, std::complex<double> z, int n, double phase, std::vector<BesselErrors>* errors = nullptr)
 {
   // For J, Y, H1 and H2, phase = -1.
   // For I, e^(order*pi*i)K, phase = 1.
@@ -103,7 +97,7 @@ besselJ(double order, std::complex<double> z, bool scale = false, BesselErrors* 
 
     // We compute the Bessel Y function.
     double cyrY, cyiY, cwrkr, cwrki;
-    int    nzY, ierrY, kodeY(1), NY(1);
+    int nzY, ierrY, kodeY(1), NY(1);
 
     // External function call
     zbesy_wrap(zr, zi, nu, kodeY, NY, &cyrY, &cyiY, &nzY, &cwrkr, &cwrki, &ierrY);

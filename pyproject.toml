@@ -1,58 +1,130 @@
 [build-system]
-requires = ["setuptools >= 40.6.0", "wheel", "numpy"]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core>=0.3.3", "pybind11", "setuptools_scm[toml]>=8.0"]
+build-backend = "scikit_build_core.build"
 
+[tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+cmake.verbose = false
+editable.verbose = false
+logging.level = "INFO"
+wheel.exclude = ["PyMieSim/cpp"]
+install.strip = false
+sdist.include = ["PyMieSim/binary/*"]
+sdist.exclude = [
+    "tests",
+    "docs",
+    ".git*",
+    "developments",
+]
 
+[project]
+name = "PyMieSim"
+dynamic = ["version"]
+description = "A package for light scattering computation."
+license = {file = "LICENSE"}
+documentation = 'https://pymiesim.readthedocs.io/'
+platforms = ['unix', 'linux', 'osx']
+readme = "README.rst"
+url = 'https://github.com/MartinPdeS/PyMieSim'
+requires-python = ">=3.10"
+authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Development Status :: 3 - Alpha',
+    'Topic :: Scientific/Engineering :: Physics',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Science/Research',
+]
+keywords = [
+    "mie",
+    "scattering",
+    "backscatter",
+    "sphere",
+    "cylinder",
+    "nanoparticle",
+    "phase function",
+    "efficiency",
+    "rayleigh",
+    "backscattering"
+]
+dependencies = [
+    "setuptools_scm[toml]>=8.0",
+    "numpy>=1.26.0",
+    "pydantic==2.8.2",
+    "scipy==1.11.3",
+    "DataVisual==1.4.4.post0",
+    "PyOptik>=0.7.10",
+    "tabulate==0.9.0",
+]
 
-[tool.cibuildwheel]
-before-build = ""
-build-frontend = "pip"
-build-verbosity = 3
+[tool.setuptools_scm]
+write_to = "PyMieSim/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
 
-container-engine = "docker"
+[project.optional-dependencies]
+testing = [
+    "pymiescatt",
+    "pytest>=0.6",
+    "pytest-cov>=2.0",
+    "pytest-json-report==1.5.0",
+    "mypy>=0.910",
+    "flake8>=3.9",
+    "tox>=3.24",
+    "coverage==7.6.1"
+]
 
-manylinux-x86_64-image = "manylinux2014"
-manylinux-i686-image = "manylinux2014"
-manylinux-aarch64-image = "manylinux2014"
-manylinux-ppc64le-image = "manylinux2014"
-manylinux-s390x-image = "manylinux2014"
-manylinux-pypy_x86_64-image = "manylinux2014"
-manylinux-pypy_i686-image = "manylinux2014"
-manylinux-pypy_aarch64-image = "manylinux2014"
-
-
-[tool.cibuildwheel.linux]
-repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
-
-
-[tool.cibuildwheel.macos]
-repair-wheel-command = "delocate-wheel --require-archs {delocate_archs} -w {dest_dir} -v {wheel}"
-
-
-
+documentation = [
+    "pymiescatt",
+    "numpydoc==1.8.0",
+    "sphinx>=5.1.1",
+    "sphinx-gallery==0.17.1",
+    "sphinx-rtd-theme==2.0.0",
+    "pydata-sphinx-theme==0.15.4",
+]
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-v"
+xfail_strict = true
+log_cli_level = "INFO"
+addopts = [
+    "--import-mode=importlib",
+    '-v',
+    '-rA',
+    '-rw'
+]
+
 testpaths = [
-              "./tests/experiments/*",
-              "./tests/scatterers/*",
-              "./tests/detectors/*",
-              "./tests/validation/*"
-              ]
+    "tests/detectors",
+    "tests/scatterers",
+    "tests/experiments",
+    "tests/validation",
+    "tests/extra"
+]
 
-[tool.mypy]
-mypy_path = "PyMieSim"
-check_untyped_defs = true
-disallow_any_generics = true
-ignore_missing_imports = true
-no_implicit_optional = true
-show_error_codes = true
-strict_equality = true
-warn_redundant_casts = true
-warn_return_any = true
-warn_unreachable = true
-warn_unused_configs = true
-no_implicit_reexport = true
+[tool.cibuildwheel]
+build-frontend = "build"
+build-verbosity = 2
+before-test = ""
+test-command = "python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
+test-extras = ["testing"]
 
+[tool.cibuildwheel.linux]
+archs = ["x86_64"]
+build = ["cp310-manylinux*", "cp311-manylinux*", "cp312-manylinux*"]
+manylinux-x86_64-image = "manylinux2014"
+repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
+[tool.cibuildwheel.macos]
+environment = {MACOSX_DEPLOYMENT_TARGET = "15.0"}
+archs = ["arm64"]
+build = ["cp310-*", "cp311-*", "cp312-*"]
+repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
+
+[tool.cibuildwheel.windows]
+archs = ["AMD64"]
+build = ["cp310-*", "cp311-*", "cp312-*"]

@@ -1,218 +1,103 @@
-#ifndef CYLINDER_H
-#define CYLINDER_H
+#pragma once
 
-#include "base_scatterer.cpp"
+#include "cylinder.h"
 
 namespace CYLINDER
 {
+    double Scatterer::get_Qsca() const {
+        complex128 Qsca1=0, Qsca2=0;
 
-  struct State
-  {
-    double diameter;
-    complex128 index;
-    double n_medium;
-    State(){}
-    State(double &diameter, complex128 &index, double &n_medium)
-                : diameter(diameter), index(index), n_medium(n_medium){}
-
-    void apply_medium()
-    {
-      this->index    /= this->n_medium;
-      this->diameter *= this->n_medium;
-    }
-  };
-
-
-  class Scatterer: public ScatteringProperties
-  {
-      public:
-
-          std::vector<complex128> a1n, b1n, a2n, b2n;
-
-          State state;
-
-          Cndarray get_a1n_py() { return vector_to_ndarray(a1n, {max_order}); }
-          Cndarray get_b1n_py() { return vector_to_ndarray(b1n, {max_order}); }
-          Cndarray get_a2n_py() { return vector_to_ndarray(a2n, {max_order}); }
-          Cndarray get_b2n_py() { return vector_to_ndarray(b2n, {max_order}); }
-
-          std::vector<complex128> get_a1n() { return a1n; };
-          std::vector<complex128> get_b1n() { return b1n; };
-          std::vector<complex128> get_a2n() { return a2n; };
-          std::vector<complex128> get_b2n() { return b2n; };
-
-          double get_diameter(){return state.diameter;}
-          complex128 get_index(){return state.index;}
-          double get_wavelength(){return source.wavelength;}
-          double get_k(){return source.k;}
-          std::vector<complex128> get_jones_vector(){return source.jones_vector;}
-
-          Scatterer(double &wavelength,
-                    double &amplitude,
-                    double &diameter,
-                    complex128 &index,
-                    double &n_medium,
-                    std::vector<complex128> &jones_vector,
-                    size_t max_order = 0 )
-                     : state(diameter, index, n_medium), ScatteringProperties(wavelength, jones_vector, amplitude)
-                    {
-                      initialize(max_order);
-                    }
-
-          Scatterer(State &state, SOURCE::State &source, size_t max_order = 0)
-                    : state(state), ScatteringProperties(source)
-                    {
-                      initialize(max_order);
-                    }
-
-      void initialize(size_t &max_order)
-      {
-        // state.apply_medium();
-        compute_size_parameter();
-        compute_max_order(max_order);
-        compute_area();
-        compute_an_bn();
-
-      }
-
-      void compute_max_order(size_t &max_order)
-      {
-        if (max_order == 0)
-          this->max_order  = (size_t) (2 + this->size_parameter + 4 * pow(this->size_parameter, 1./3.)) + 16;
-        else
-          this->max_order = max_order;
-      }
-
-      void compute_size_parameter()
-      {
-        this->size_parameter = PI * state.diameter / source.wavelength;
-      }
-
-      void compute_area()
-      {
-        this->area = state.diameter;
-      }
-
-      double get_g()
-      {
-          return get_g_with_fields(1000, 1.0);
-      }
-
-      double get_Qsca()
-      {
-          std::vector<complex128> a1n = get_a1n(),
-                  b1n = get_b1n(),
-                  a2n = get_a2n(),
-                  b2n = get_b2n();
-
-          complex128 Qsca1=0, Qsca2=0;
-
-          for(size_t it = 1; it < max_order; it++)
-          {
-            Qsca1 +=  pow( std::abs(a1n[it]), 2) + pow( std::abs(b1n[it]), 2) ;
-            Qsca2 +=  pow( std::abs(a2n[it]), 2) + pow( std::abs(b2n[it]), 2) ;
-          }
-
-          Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(b1n[0]), 2 ) );
-          Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( abs(a2n[0]), 2 ) );
-
-          return process_polarization(Qsca1, Qsca2);
-      }
-
-      double get_Qext()
-      {
-        std::vector<complex128> a1n = get_a1n(),
-                                b1n = get_b1n(),
-                                a2n = get_a2n(),
-                                b2n = get_b2n();
-
-        complex128 Qext1=0, Qext2=0;
-
-        for(size_t it = 1; it < max_order; ++it)
+        for(size_t order = 1; order < max_order; order++)
         {
-          Qext1 += b1n[it];
-          Qext2 += a2n[it];
+            Qsca1 +=  pow( std::abs(this->a1n[order]), 2 ) + pow( std::abs(this->b1n[order]), 2 ) ;
+            Qsca2 +=  pow( std::abs(this->a2n[order]), 2 ) + pow( std::abs(this->b2n[order]), 2 ) ;
         }
 
-        Qext1 = 2. / size_parameter * std::real( b1n[0] + 2.0 * Qext1 );
-        Qext2 = 2. / size_parameter * std::real( a1n[0] + 2.0 * Qext2 );
+        Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(this->b1n[0]), 2 ) );
+        Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( abs(this->a2n[0]), 2 ) );
+
+        return process_polarization(Qsca1, Qsca2);
+    }
+
+    double Scatterer::get_Qext() const {
+        complex128 Qext1 = 0, Qext2 = 0;
+
+        for(size_t it = 1; it < max_order; ++it){
+            Qext1 += this->b1n[it];
+            Qext2 += this->a2n[it];
+        }
+
+        Qext1 = 2. / size_parameter * std::real( this->b1n[0] + 2.0 * Qext1 );
+        Qext2 = 2. / size_parameter * std::real( this->a1n[0] + 2.0 * Qext2 );
 
         return this->process_polarization(Qext1, Qext2);
-      }
+    }
 
-      double process_polarization(complex128 &Value0, complex128& value1)
-      {
-        if (source.is_polarized == false)
-            return 0.5 * ( abs( value1 ) + abs( Value0 ) );
-        else
-            return abs( value1 ) * pow(abs(source.jones_vector[0]), 2) + abs( Value0 ) * pow(abs(source.jones_vector[1]), 2);
-      }
+    double Scatterer::get_g() const {
+        return this->get_g_with_fields(1000);
+    }
 
-      void compute_an_bn()
-      {
-        a1n = std::vector<complex128>(max_order);
-        b1n = std::vector<complex128>(max_order);
+    double Scatterer::process_polarization(const complex128 value_0, const complex128 value_1) const {
+        return abs( value_1 ) * pow(abs(source.jones_vector[0]), 2) + abs( value_0 ) * pow(abs(source.jones_vector[1]), 2);
+    }
 
-        a2n = std::vector<complex128>(max_order);
-        b2n = std::vector<complex128>(max_order);
+    void Scatterer::compute_an_bn() {
+        // Resize vectors to hold Mie coefficients for the specified maximum order
+        this->a1n.resize(max_order);
+        this->b1n.resize(max_order);
+        this->a2n.resize(max_order);
+        this->b2n.resize(max_order);
 
-        double x = size_parameter;
+        // Compute the arguments used in the Bessel and Hankel function calculations
+        complex128
+            m = this->index / this->medium_index, // Relative refractive index
+            mx = m * size_parameter; // Scaled size parameter for internal calculations
 
-        complex128 m = state.index / state.n_medium,
-                   z = m * x,
-                   numerator,
-                   denominator;
+        // Precompute Bessel and Hankel functions up to max_order
+        std::vector<complex128>
+            J_z(max_order + 1),
+            J_z_p(max_order + 1),
+            J_x(max_order + 1),
+            J_x_p(max_order + 1),
+            H_x(max_order + 1),
+            H_x_p(max_order + 1);
 
-        std::vector<complex128> J_z(max_order+1),
-                                J_z_p(max_order+1),
-                                J_x(max_order+1),
-                                J_x_p(max_order+1),
-                                H_x(max_order+1),
-                                H_x_p(max_order+1);
-
-        for (size_t n = 0; n < max_order+1; ++n)
-        {
-          double nd = (double) n ;
-          J_z[n] = compute_Jn(nd, z);
-          J_z_p[n] = compute_Jn_p(nd, z);
-          J_x[n] = compute_Jn(nd, x);
-          J_x_p[n] = compute_Jn_p(nd, x);
-          H_x[n] = compute_H1(nd, x);
-          H_x_p[n] = compute_H1_p(nd, x);
+        for (size_t order = 0; order < max_order + 1; ++order){
+            J_z[order] = compute_Jn(order, mx);
+            J_z_p[order] = compute_Jn_p(order, mx);
+            J_x[order] = compute_Jn(order, size_parameter);
+            J_x_p[order] = compute_Jn_p(order, size_parameter);
+            H_x[order] = compute_H1(order, size_parameter);
+            H_x_p[order] = compute_H1_p(order, size_parameter);
         }
 
-        for (size_t n = 0; n < (size_t) max_order; n++)
-        {
-          numerator = m * J_z[n] * J_x_p[n] - J_z_p[n] * J_x[n];
-          denominator = m * J_z[n] * H_x_p[n] - J_z_p[n] * H_x[n];
-          a1n[n] = 0.0 ;
-          a2n[n] = numerator/denominator ;
+        // Compute Mie coefficients a1n, a2n, b1n, b2n for each order
+        for (size_t order = 0; order < max_order; order++){
+            complex128 numerator_a = m * J_z[order] * J_x_p[order] - J_z_p[order] * J_x[order];
+            complex128 denominator_a = m * J_z[order] * H_x_p[order] - J_z_p[order] * H_x[order];
+            this->a1n[order] = 0.0 ;
+            this->a2n[order] = numerator_a / denominator_a;
 
-          numerator = J_z[n] * J_x_p[n] - m * J_z_p[n] * J_x[n];
-          denominator = J_z[n] * H_x_p[n] - m * J_z_p[n] * H_x[n];
-          b1n[n] = numerator/denominator ;
-          b2n[n] = 0.0 ;
+            complex128 numerator_b = J_z[order] * J_x_p[order] - m * J_z_p[order] * J_x[order];
+            complex128 denominator_b = J_z[order] * H_x_p[order] - m * J_z_p[order] * H_x[order];
+            this->b1n[order] = numerator_b / denominator_b;
+            this->b2n[order] = 0.0 ;
         }
-      }
+    }
 
-      std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &Phi)
-      {
-        std::vector<complex128> T1(Phi.size()), T2(Phi.size());
+    std::tuple<std::vector<complex128>, std::vector<complex128>> Scatterer::compute_s1s2(const std::vector<double> &phi) const{
+        std::vector<complex128> T1(phi.size()), T2(phi.size());
 
-        for (uint i = 0; i < Phi.size(); i++){
-            T1[i] = b1n[0];
-            T2[i] = a2n[0];
+        for (size_t i = 0; i < phi.size(); i++){
+            T1[i] = this->b1n[0];
+            T2[i] = this->a2n[0];
             for (size_t order = 1; order < max_order ; order++){
-                T1[i] += 2.0 * b1n[order] * cos(order * (PI - (Phi[i] + PI/2.0) ) );
-                T2[i] += 2.0 * a2n[order] * cos(order * (PI - (Phi[i] + PI/2.0) ) );
-              }
+                T1[i] += 2.0 * this->b1n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
+                T2[i] += 2.0 * this->a2n[order] * cos(order * (PI - (phi[i] + PI/2.0) ) );
+            }
         }
 
         return std::make_tuple( T1, T2 )  ;
-      }
-
-  };
+    }
 
 }
-
-#endif

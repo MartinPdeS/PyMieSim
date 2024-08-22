@@ -4,8 +4,10 @@
 import pytest
 import numpy
 
-from PyMieSim.experiment import SourceSet, CoreShellSet, Setup
-from PyMieSim import measure
+from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+from PyMieSim.experiment import measure
 
 import PyMieScatt as ps
 PyMieScatt_measures = {
@@ -19,33 +21,34 @@ PyMieScatt_measures = {
 }
 
 
-def get_PyMieSim_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
-    scatterer_set = CoreShellSet(
+def get_PyMieSim_data(source, core_index, shell_index, core_diameters, shell_width, measure_string: str):
+    scatterer = CoreShell(
         core_diameter=core_diameters,
         shell_width=shell_width,
         core_index=core_index,
         shell_index=shell_index,
-        n_medium=1.
+        medium_index=1.,
+        source=source
     )
 
     experiment = Setup(
-        scatterer_set=scatterer_set,
-        source_set=source_set,
-        detector_set=None
+        scatterer=scatterer,
+        source=source,
+        detector=None
     )
 
-    data = experiment.Get(measures=getattr(measure, measure_string))
+    data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
 
-    return data.array.squeeze()
+    return data.squeeze()
 
 
-def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, shell_width, measure_string: str):
+def get_PyMieScatt_data(source, core_index, shell_index, core_diameters, shell_width, measure_string: str):
     PyMieScatt_data = []
     for core_diameter in core_diameters:
         efficiencies = ps.MieQCoreShell(
             mCore=core_index,
             mShell=shell_index,
-            wavelength=source_set.wavelength.values,
+            wavelength=source.wavelength[0],
             dCore=core_diameter,
             dShell=core_diameter + shell_width
         )
@@ -58,14 +61,15 @@ def get_PyMieScatt_data(source_set, core_index, shell_index, core_diameters, she
 
 
 def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_width, measure_string: str):
-    source_set = SourceSet(
+    source = Gaussian(
         wavelength=wavelength,
         polarization=0,
-        amplitude=1
+        optical_power=1e-3,
+        NA=0.2
     )
 
     PyMieScatt_data = get_PyMieScatt_data(
-        source_set=source_set,
+        source=source,
         core_index=core_index,
         shell_index=shell_index,
         core_diameters=core_diameters,
@@ -74,7 +78,7 @@ def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_wi
     )
 
     PyMieSim_data = get_PyMieSim_data(
-        source_set=source_set,
+        source=source,
         core_index=core_index,
         shell_index=shell_index,
         core_diameters=core_diameters,
@@ -100,5 +104,9 @@ def test_comparison(measure_string: str):
 
     if not discrepency.astype(int).mean() > 0.5:
         raise ValueError('Error: mismatch on PyMieScatt calculation occuring')
+
+
+if __name__ == "__main__":
+    pytest.main()
 
 # -

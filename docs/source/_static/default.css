@@ -1,32 +1,19 @@
-/**
- * Alternate Sphinx design
- * Originally created by Armin Ronacher for Werkzeug, adapted by Georg Brandl.
- */
-/*.hidden { display: none }*/
+/* Additional styling for the PyData Sphinx theme. */
 
+/* Use hyperlink color for grid-item-cards.
+TODO find a way to only apply this to grid-item-cards that link somewhere */
+.sd-card-title {
+    color: var(--pst-color-link);
+}
 
-body {
-    font: 400 16px Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    /*font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;*/
-    font-size: 15px;
-    letter-spacing: -0.01em;
-    line-height: normal;
-    text-align: right;
-    background-color: #333;
-    color: black;
-    border-color: black;
-    padding: 0;
-    border: 5px solid #aaa;
-    margin: 10px 20px 0px 10px;  
-    /*max-width: 100% !important;*/
-    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+/* Use text base color for hyperlinks in code cells. Pygments "default" theme
+doesn't seem to set this color, so the default light blue link color is applied
+which has a very low contrast with the background. */
+div.highlight a {
+    color: var(--pst-color-text-base);
 }
-/*
-div.body {
-    background-color: #444;
-    border-radius: 5px;
-    color: #ddd;
-    padding: 15px 30px 15px 30px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+
+/* Stack components in footer vertically. */
+.bd-footer .footer-items__end, .bd-footer .footer-items__start {
+  flex-direction: row;
 }
-*/

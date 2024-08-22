@@ -5,9 +5,9 @@
 *.a
 
 .tox
-.coverage.*
+.coverage*
+.coveragerc
 coverage.json
-htmlcov
 *.pytest_cache
 
 
@@ -15,11 +15,14 @@ dist
 build
 *.egg*
 *.whl
-Perso/
-Reports/*
+perso/
+
 docs/source/Gallery
+docs/source/api
+development
 
 CMakeCache.txt
 CMakeFiles
 install_manifest.txt
 cmake_install.cmake
+wheelhouse

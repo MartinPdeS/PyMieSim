@@ -4,8 +4,10 @@
 import pytest
 import numpy
 
-from PyMieSim.experiment import SourceSet, SphereSet, Setup
-from PyMieSim import measure
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+from PyMieSim.experiment import measure
 
 import PyMieScatt as ps
 PyMieScatt_measures = {
@@ -19,30 +21,31 @@ PyMieScatt_measures = {
 }
 
 
-def get_PyMieSim_data(source_set, index, diameters, measure_string: str):
-    scatterer_set = SphereSet(
+def get_PyMieSim_data(source, index, diameters, measure_string: str):
+    scatterer = Sphere(
         diameter=diameters,
         index=index,
-        n_medium=1.
+        medium_index=1.,
+        source=source
     )
 
     experiment = Setup(
-        scatterer_set=scatterer_set,
-        source_set=source_set,
-        detector_set=None
+        scatterer=scatterer,
+        source=source,
+        detector=None
     )
 
-    data = experiment.Get(measures=getattr(measure, measure_string))
+    data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
 
-    return data.array.squeeze()
+    return data.squeeze()
 
 
-def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
+def get_PyMieScatt_data(source, index, diameters, measure_string: str):
     PyMieScatt_data = []
     for diameter in diameters:
         efficiencies = ps.MieQ(
             m=index,
-            wavelength=source_set.wavelength.values,
+            wavelength=source.wavelength[0],
             diameter=diameter,
         )
 
@@ -54,21 +57,22 @@ def get_PyMieScatt_data(source_set, index, diameters, measure_string: str):
 
 
 def get_comparison(wavelength, index, diameters, measure_string: str):
-    source_set = SourceSet(
+    source = Gaussian(
         wavelength=wavelength,
         polarization=0,
-        amplitude=1
+        optical_power=1e-3,
+        NA=0.2
     )
 
     PyMieScatt_data = get_PyMieScatt_data(
-        source_set=source_set,
+        source=source,
         index=index,
         diameters=diameters,
         measure_string=measure_string
     )
 
     PyMieSim_data = get_PyMieSim_data(
-        source_set=source_set,
+        source=source,
         index=index,
         diameters=diameters,
         measure_string=measure_string
@@ -90,5 +94,9 @@ def test_comparison(measure_string: str):
 
     if not discrepency.mean() > 0.9:
         raise ValueError('Error: mismatch on PyMieScatt calculation occuring')
+
+
+if __name__ == "__main__":
+    pytest.main()
 
 # -

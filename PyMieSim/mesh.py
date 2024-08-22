@@ -1,28 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import Optional, NoReturn
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 import numpy
-from dataclasses import dataclass
 
-from PyMieSim.binary.Fibonacci import FIBONACCI
-from MPSPlots.render3D import Scene3D
+from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh
+from MPSPlots.render3D import SceneList as SceneList3D
 
+config_dict = ConfigDict(
+    kw_only=True,
+    extra='forbid',
+    slots=True
+)
 
-@dataclass
-class FibonacciMesh():
+@dataclass(config=config_dict)
+class FibonacciMesh:
     """
-    Class wich represent an angular mesh. The distribution of points inside
-    the mesh is similar to a Fibonacci sphere where each point cover an
-    equivalent solid angle.
+    Represents an angular mesh using a Fibonacci sphere distribution where each point covers
+    an equivalent solid angle. This setup is designed to simulate angular distributions
+    in light scattering experiments.
     """
-    max_angle: float = 1.5
-    """ Angle in radian defined by the numerical aperture of the imaging system. """
-    sampling: int = 1000
-    """Number of point distrubuted inside the Solid angle defined by the numerical aperture. """
-    phi_offset: float = 0.
-    """ Angle offset in the parallel direction of the polarization of incindent light. """
-    gamma_offset: float = 0.
-    """ Angle offset in the perpendicular direction of the polarization of incindent light. """
+    max_angle: float  # Angle in radians defined by the numerical aperture of the imaging system.
+    sampling: int  # Number of points distributed inside the solid angle.
+    phi_offset: float  # Angle offset in the parallel direction of incident light polarization in degrees.
+    gamma_offset: float  # Angle offset in the perpendicular direction of incident light polarization in degrees.
+    rotation_angle: Optional[float] = 0.  # Rotation of the mesh around its principal axis in degrees.
 
     def __post_init__(self):
         self.structured = False
@@ -45,123 +49,94 @@ class FibonacciMesh():
 
         self.vertical_vector = numpy.array([1, 0, 0])
         self.horizontal_vector = numpy.array([0, 1, 0])
-        self.generate_ledvedev_mesh()
 
-    @property
-    def plan(self):
-        if self._plan is None:
-            self.cpp_binding.Computeplan()
-            self._plan = numpy.asarray([self.cpp_binding.Xplan, self.cpp_binding.Yplan, self.cpp_binding.Zplan])
+        self.binding = CPPFibonacciMesh(
+            sampling=self.sampling,
+            max_angle=self.max_angle,
+            phi_offset=numpy.deg2rad(self.phi_offset),
+            gamma_offset=numpy.deg2rad(self.gamma_offset),
+            rotation_angle=self.rotation_angle
+        )
 
-        return self._plan
+        self.initialize_properties()
+
+        self.binding.compute_vector_field()
 
     @property
     def perpendicular_vector(self):
-        if self._perp is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.perpVector
+        return self.binding.perpendicular_vector
 
     @property
     def parallel_vector(self):
-        if self._para is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.paraVector
+        return self.binding.parallel_vector
 
     @property
     def horizontal_to_perpendicular(self):
-        if self._horizontal_to_perpendicular_vector is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.horizontal_to_perpendicular_vector
+        return self.binding.horizontal_to_perpendicular_vector
 
     @property
     def horizontal_to_parallel(self):
-        if self._horizontal_to_parallel_vector is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.horizontal_to_parallel_vector
+        return self.binding.horizontal_to_parallel_vector
 
     @property
     def vertical_to_perpendicular(self):
-        if self._vertical_to_perpendicular_vector is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.perpVector
+        return self.binding.perpendicular_vector
 
     @property
     def vertical_to_parallel(self):
-        if self._vertical_to_parallel_vector is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.paraVector
-
-    @property
-    def parallel_plan(self):
-        if self._parallel_vector_in_plan is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.paraVectorZplanar
-
-    @property
-    def perpendicular_plan(self):
-        if self._perpendicular_vector_in_plan is None:
-            self.cpp_binding.compute_vector_field()
-
-        return self.cpp_binding.perpVectorZplanar
+        return self.binding.parallel_vector
 
     def get_phi(self, unit: str = 'radian'):
         if unit.lower() in ['rad', 'radian']:
-            return self.cpp_binding.phi
+            return self.binding.phi
 
         elif unit.lower() in ['deg', 'degree']:
-            return numpy.rad2deg(self.cpp_binding.phi)
+            return numpy.rad2deg(self.binding.phi)
 
     def get_theta(self, unit: str = 'radian'):
         if unit.lower() in ['rad', 'radian']:
-            return self.cpp_binding.theta
+            return self.binding.theta
 
         elif unit.lower() in ['deg', 'degree']:
-            return numpy.rad2deg(self.cpp_binding.theta)
+            return numpy.rad2deg(self.binding.theta)
 
     @property
-    def X(self):
-        return self.cpp_binding.x
+    def X(self) -> numpy.ndarray:
+        return self.binding.x
 
     @property
-    def Y(self):
-        return self.cpp_binding.y
+    def Y(self) -> numpy.ndarray:
+        return self.binding.y
 
     @property
-    def Z(self):
-        return self.cpp_binding.z
+    def Z(self) -> numpy.ndarray:
+        return self.binding.z
 
     def initialize_properties(self):
-        self.cartesian_coordinates = numpy.c_[
-            self.cpp_binding.x,
-            self.cpp_binding.y,
-            self.cpp_binding.z
-        ].T
+        """
+        Initializes additional mesh properties based on the Fibonacci distribution
+        generated by the binding.
+        """
+        self.cartesian_coordinates = numpy.column_stack((self.binding.x, self.binding.y, self.binding.z))
 
-        self.d_omega_radian = self.cpp_binding.d_omega
-        self.d_omega_degree = self.cpp_binding.d_omega * (180 / numpy.pi)**2
+        self.d_omega_radian = self.binding.d_omega
+        self.d_omega_degree = self.binding.d_omega * (180 / numpy.pi)**2
 
-        self.omega_radian = self.cpp_binding.omega
-        self.omega_degree = self.cpp_binding.omega * (180 / numpy.pi)**2
+        self.omega_radian = self.binding.omega
+        self.omega_degree = self.binding.omega * (180 / numpy.pi)**2
 
     def projection_HV_vector(self) -> tuple:
         parallel_projection = [
             self.projection_on_base_vector(
-                Vector=self.vertical_to_parallel_plan,
-                BaseVector=X
+                vector=self.vertical_to_parallel,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
         perpendicular_projection = [
             self.projection_on_base_vector(
-                Vector=self.vertical_to_perpendicular_plan,
-                BaseVector=X
+                vector=self.vertical_to_perpendicular,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
@@ -170,15 +145,15 @@ class FibonacciMesh():
     def projection_HV_scalar(self) -> tuple:
         parallel_projection = [
             self.projection_on_base_scalar(
-                Vector=self.vertical_to_perpendicular_in_z_plan,
-                BaseVector=X
+                vector=self.vertical_to_parallel,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
         perpendicular_projection = [
             self.projection_on_base_scalar(
-                Vector=self.vertical_to_perpendicular_in_z_plan,
-                BaseVector=X
+                vector=self.vertical_to_perpendicular,
+                base_vector=X
             ) for X in [self.vertical_vector, self.horizontal_vector]
         ]
 
@@ -194,33 +169,61 @@ class FibonacciMesh():
 
         return base_projection
 
-    def plot(self) -> None:
-        figure = Scene3D(shape=(1, 1))
-        self._add_mesh_to_ax_(figure=figure, plot_number=(0, 0))
+    def plot(self) -> SceneList3D:
+        """
+        Plots the Fibonacci mesh using 3D rendering.
+
+        Returns:
+            SceneList3D: The 3D scene list object containing the mesh plot.
+        """
+        figure = SceneList3D()
+        ax = figure.append_ax()
+        self._add_mesh_to_ax_(ax)
 
         return figure
 
-    def _add_mesh_to_ax_(self, figure, plot_number: tuple) -> None:
-        coordinates = numpy.c_[self.X, self.Y, self.Z]
+    def get_cartesian_coordinates(self) -> numpy.ndarray:
+        return numpy.c_[self.X, self.Y, self.Z].T
 
-        figure.add_unstructured_mesh(
-            plot_number=plot_number,
-            coordinates=coordinates,
-        )
+    def get_axis_vector(self) -> numpy.ndarray:
+        """
+        Returns the axis vector that correspond ot the phi and gamma offset
 
-        figure.add_unit_sphere_to_ax(plot_number=plot_number)
-        figure.add_unit_axes_to_ax(plot_number=plot_number)
-        figure.add_theta_vector_field(plot_number=plot_number, radius=1.1)
-        figure.add_phi_vector_field(plot_number=plot_number, radius=1.1)
+        :returns:   The axis vector.
+        :rtype:     numpy.ndarray
+        """
+        x, y, z = self.get_cartesian_coordinates()
+        axis_vector = numpy.array([x[0], y[0], z[0]])
 
-    def generate_ledvedev_mesh(self) -> None:
-        self.cpp_binding = FIBONACCI(
-            self.sampling,
-            self.max_angle,
-            numpy.deg2rad(self.phi_offset),
-            numpy.deg2rad(self.gamma_offset)
-        )
+        norm = numpy.sqrt(numpy.square(axis_vector).sum())
 
-        self.initialize_properties()
+        return axis_vector / norm
+
+    def _add_mesh_to_ax_(self, ax) -> NoReturn:
+        axis_vector = self.get_axis_vector()
+
+        coordinates = self.get_cartesian_coordinates()
+
+        ax.add_unstructured_mesh(coordinates=coordinates)
+
+        ax.add_unstructured_mesh(coordinates=axis_vector * 1.4)
+
+        # ax.add_unit_sphere()
+        ax.add_unit_axis()
+        ax.add_unit_theta_vector(radius=1.1)
+        ax.add_unit_phi_vector(radius=1.1)
+
+    def rotate_around_axis(self, rotation_angle: float) -> NoReturn:
+        """
+        Rotate the mesh around its principal axis.
+
+        :param      rotation_angle:  The rotation angle [degree]
+        :type       rotation_angle:  float
+
+        :returns:   No returns
+        :rtype:     None
+        """
+        self.binding.rotate_around_axis(rotation_angle)
+
 
 # -

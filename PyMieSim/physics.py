@@ -2,55 +2,55 @@
 # -*- coding: utf-8 -*-
 
 import numpy
+from scipy.constants import epsilon_0, c
 
 
-def FraunhoferDiffraction(near_field: numpy.ndarray) -> numpy.ndarray:
-    r"""Function compute the Far-Field of a given Near-Field using Fraunhofer
-    relation under approximation of small angle.
-
-    Parameters
-    ----------
-    near_field : :class:`numpy.ndarray`
-        Near-Field input [2D].
-
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        Far-Field ouptut [2D].
-
+def fraunhofer_diffraction(near_field: numpy.ndarray) -> numpy.ndarray:
     """
-    temp = numpy.fft.fft2(near_field)
+    Calculate the Far-Field diffraction pattern from a given Near-Field pattern using the Fraunhofer approximation.
 
-    temp /= GenShift(temp.shape[0])
+    Parameters:
+        - near_field: numpy.ndarray, the near field pattern as a 2D numpy array.
 
-    return numpy.fft.fftshift(temp)
-
-
-def GenShift(npts: int) -> numpy.ndarray:
-    r"""Function generate a complex shift array that has to be multiplied to FFT in order to obtain
-    a phase accurate Fourier transform.
-
-    Parameters
-    ----------
-    npts : :class:`int`
-        Number of point (per dimension) of the FFT array.
-
-    Returns
-    -------
-    :class:`numpy.ndarray`
-        Complex array for FFT.
-
+    Returns:
+        - numpy.ndarray, the far field diffraction pattern as a 2D numpy array.
     """
-    if npts % 2 == 1:
-        phase_shift = numpy.exp(-complex(0, 1) * numpy.pi * numpy.arange(npts) * (npts - 1) / npts)
+    fft_result = numpy.fft.fft2(near_field)
+    fft_result /= generate_fft_shift(fft_result.shape[0])
+    far_field = numpy.fft.fftshift(fft_result)
+    return far_field
 
-        shift_grid, _ = numpy.meshgrid(phase_shift, phase_shift)
 
-        return shift_grid * shift_grid.T
+def generate_fft_shift(n_points: int) -> numpy.ndarray:
+    """
+    Generate a complex shift array for phase correction in FFT, ensuring accurate Fourier transform phase.
 
-    else:
-        phase_shift = numpy.exp(-complex(0, 1) * numpy.pi * numpy.arange(npts) * (npts) / npts)
+    Parameters:
+        - n_points: int, number of points in one dimension of the square array.
 
-        shift_grid, _ = numpy.meshgrid(phase_shift, phase_shift)
+    Returns:
+        - numpy.ndarray, a complex shift array for FFT phase correction.
+    """
+    phase_arg = numpy.pi * numpy.arange(n_points) * (n_points - (n_points % 2)) / n_points
+    phase_shift = numpy.exp(-1j * phase_arg)
+    shift_grid = numpy.outer(phase_shift, phase_shift)
+    return shift_grid
 
-        return shift_grid * shift_grid.T
+
+def power_to_amplitude(optical_power: float, NA: float, wavelength: float) -> float:
+    """
+    Calculate the optical field amplitude from the given optical power, numerical aperture (NA), and wavelength.
+
+    Parameters:
+        - optical_power: float, the optical power in watts.
+        - NA: float, the numerical aperture of the optical system.
+        - wavelength: float, the wavelength of the light in meters.
+
+    Returns:
+        - float, the amplitude of the optical field.
+    """
+    omega = 0.61 * wavelength / NA
+    area = numpy.pi * (omega / 2)**2
+    intensity = optical_power / area
+    amplitude = numpy.sqrt(2 * intensity / (c * epsilon_0))
+    return amplitude
