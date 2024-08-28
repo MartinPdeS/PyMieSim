@@ -3,7 +3,7 @@
 |python|
 |zenodo|
 |colab|
-|unittest|
+|coverage|
 |docs|
 |PyPi|
 |PyPi_download|
@@ -283,8 +283,6 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
     :target: https://pypistats.org/packages/pymiesim
 
-.. |unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/a3b36ca9f6bebaab5180686bef481ed0d2ebfb71/PyMieSimcoverage_badge.json
-
 .. |code_structure| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
     :width: 800
     :alt: Structure of the library
@@ -292,3 +290,7 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 .. |example_gui| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png
     :width: 800
     :alt: Structure of the library
+
+.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/MPSPlots/python-coverage-comment-action-data/badge.svg
+   :alt: Unittest coverage
+   :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
