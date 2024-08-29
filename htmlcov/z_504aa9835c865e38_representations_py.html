@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_504aa9835c865e38_scatterer_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-08-29 18:18 +0000
+            created at 2024-08-29 22:10 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -96,7 +96,7 @@
     <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t"><span class="key">import</span> <span class="nam">MPSPlots</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="key">from</span> <span class="nam">dataclasses</span> <span class="key">import</span> <span class="nam">dataclass</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">special_functions</span> <span class="key">import</span> <span class="nam">spherical_to_cartesian</span><span class="op">,</span> <span class="nam">rotate_on_x</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t"><span class="key">from</span> <span class="nam">typing</span> <span class="key">import</span> <span class="nam">Union</span><span class="op">,</span> <span class="nam">NoReturn</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t"><span class="key">from</span> <span class="nam">typing</span> <span class="key">import</span> <span class="nam">Union</span><span class="op">,</span> <span class="nam">NoReturn</span><span class="op">,</span> <span class="nam">List</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t"><span class="key">import</span> <span class="nam">pyvista</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t"><span class="key">from</span> <span class="nam">MPSPlots</span><span class="op">.</span><span class="nam">colormaps</span> <span class="key">import</span> <span class="nam">blue_black_red</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t18" href="#t18">18</a></span><span class="t"><span class="key">import</span> <span class="nam">matplotlib</span><span class="op">.</span><span class="nam">pyplot</span> <span class="key">as</span> <span class="nam">plt</span>&nbsp;</span><span class="r"></span></p>
@@ -455,7 +455,7 @@
     <p class="run"><span class="n"><a id="t371" href="#t371">371</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">SPF</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">sqrt</span><span class="op">(</span><span class="nam">numpy</span><span class="op">.</span><span class="nam">abs</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">E_phi</span><span class="op">)</span><span class="op">**</span><span class="num">2</span> <span class="op">+</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">abs</span><span class="op">(</span><span class="nam">self</span><span class="op">.</span><span class="nam">E_theta</span><span class="op">)</span><span class="op">**</span><span class="num">2</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t372" href="#t372">372</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t373" href="#t373">373</a></span><span class="t">    <span class="key">def</span> <span class="nam">plot</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t374" href="#t374">374</a></span><span class="t">            <span class="nam">unit_size</span><span class="op">:</span> <span class="nam">List</span><span class="op">[</span><span class="nam">float</span><span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="num">400</span><span class="op">,</span> <span class="num">400</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t374" href="#t374">374</a></span><span class="t">            <span class="nam">unit_size</span><span class="op">:</span> <span class="nam">List</span><span class="op">[</span><span class="nam">float</span><span class="op">,</span> <span class="nam">float</span><span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="num">400</span><span class="op">,</span> <span class="num">400</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t375" href="#t375">375</a></span><span class="t">            <span class="nam">background_color</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="str">'white'</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t376" href="#t376">376</a></span><span class="t">            <span class="nam">show_edges</span><span class="op">:</span> <span class="nam">bool</span> <span class="op">=</span> <span class="key">False</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t377" href="#t377">377</a></span><span class="t">            <span class="nam">colormap</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="str">'viridis'</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -727,7 +727,7 @@
             <a class="nav" href="z_504aa9835c865e38_scatterer_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-08-29 18:18 +0000
+            created at 2024-08-29 22:10 +0000
         </p>
     </div>
 </footer>
