@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 
-from PyMieSim.experiment.detector import Photodiode
+from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
@@ -49,7 +49,9 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
     )
 
     # Configure the detector
-    detector = Photodiode(
+    detector = CoherentMode(
+        mode_number='LP01',
+        rotation=0,
         NA=0.2,
         polarization_filter=None,
         gamma_offset=0,
