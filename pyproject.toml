@@ -101,6 +101,7 @@ addopts = [
 
 testpaths = [
     "tests/detectors",
+    "tests/sources",
     "tests/scatterers",
     "tests/experiments",
     "tests/validation",

@@ -9,11 +9,13 @@ if TYPE_CHECKING:
 
 
 import numpy
-from MPSPlots.render3D import SceneList as SceneList3D
-from MPSPlots.render2D import SceneList
+import MPSPlots
 from dataclasses import dataclass
 from PyMieSim.special_functions import spherical_to_cartesian, rotate_on_x
-from typing import Union
+from typing import Union, NoReturn, List
+import pyvista
+from MPSPlots.colormaps import blue_black_red
+import matplotlib.pyplot as plt
 
 
 @dataclass
@@ -48,6 +50,99 @@ class BaseRepresentation():
         Placeholder method for computing scattering components. Intended to be overridden by subclasses.
         """
         raise NotImplementedError("This method should be implemented by subclasses.")
+
+    def get_colormap_limits(self, scalar: numpy.ndarray, symmetric: bool = False):
+        if symmetric:
+            max_abs = numpy.abs(scalar).max()
+            return [-max_abs, max_abs]
+        else:
+            return None
+
+    def add_theta_vector_to_3d_plot(
+            self,
+            scene: pyvista.Plotter,
+            n_points: int = 20,
+            opacity: float = 1.0,
+            radius: float = 1.0,
+            color: str = 'black') -> None:
+        """
+        Adds a vector field to the 3D plot, representing vectors in the theta direction.
+
+        Args:
+            scene (pyvista.Plotter): The 3D plotting scene to which the vectors will be added.
+            n_points (int): Number of points to generate along the theta and phi directions. Default is 100.
+            opacity (float): Opacity of the vectors. Default is 1.0.
+            radius (float): Radius at which to place the vectors. Default is 1.0.
+            color (str): Color of the vectors. Default is 'black'.
+
+        Returns:
+            None: This method does not return a value. It adds the vector field to the provided scene.
+        """
+        theta = numpy.linspace(0, 360, n_points)
+        phi = numpy.linspace(180, 0, n_points)
+
+        # Define the vector direction (unit vector along x-axis)
+        vector = numpy.array([1, 0, 0])
+
+        # Convert spherical coordinates to Cartesian coordinates
+        x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+
+        # Combine the Cartesian coordinates into a vector array
+        vector_field = numpy.c_[x.ravel(), y.ravel(), z.ravel()]
+
+        # Create a structured grid from spherical coordinates
+        spherical_grid = pyvista.grid_from_sph_coords(theta, phi, radius)
+        spherical_grid.point_data["component"] = vector_field * 0.1
+
+        # Generate glyphs (arrows) for the vectors
+        glyphs = spherical_grid.glyph(orient="component", scale="component", tolerance=0.005)
+
+        # Add the vector glyphs to the scene
+        scene.add_mesh(glyphs, color=color, opacity=opacity)
+
+    def add_phi_vector_to_3d_plot(
+            self,
+            scene: pyvista.Plotter,
+            n_points: int = 20,
+            opacity: float = 1.0,
+            radius: float = 1.0,
+            color: str = 'black') -> None:
+        """
+        Adds a vector field to the 3D plot, representing vectors in the phi direction.
+
+        Args:
+            scene (pyvista.Plotter): The 3D plotting scene to which the vectors will be added.
+            n_points (int): Number of points to generate along the theta and phi directions. Default is 100.
+            opacity (float): Opacity of the vectors. Default is 1.0.
+            radius (float): Radius at which to place the vectors. Default is 1.0.
+            color (str): Color of the vectors. Default is 'black'.
+
+        Returns:
+            None: This method does not return a value. It adds the vector field to the provided scene.
+        """
+        theta = numpy.linspace(0, 360, n_points)
+        phi = numpy.linspace(180, 0, n_points)
+
+        # Define the vector direction (unit vector along y-axis)
+        vector = numpy.array([0, 1, 0])
+
+        # Convert spherical coordinates to Cartesian coordinates
+        x, y, z = pyvista.transform_vectors_sph_to_cart(theta, phi, radius, *vector)
+
+        # Combine the Cartesian coordinates into a vector array
+        vector_field = numpy.c_[x.ravel(), y.ravel(), z.ravel()]
+
+        # Create a structured grid from spherical coordinates
+        spherical_grid = pyvista.grid_from_sph_coords(theta, phi, radius)
+        spherical_grid.point_data["component"] = vector_field * 0.1
+
+        # Generate glyphs (arrows) for the vectors
+        glyphs = spherical_grid.glyph(orient="component", scale="component", tolerance=0.005)
+
+        # Add the vector glyphs to the scene
+        scene.add_mesh(glyphs, color=color, opacity=opacity)
+
+
 
 
 class Stokes(BaseRepresentation):
@@ -103,41 +198,61 @@ class Stokes(BaseRepresentation):
         self.U = (+2 * numpy.real(self.E_phi * self.E_theta.conjugate())) / intensity
         self.V = (-2 * numpy.imag(self.E_phi * self.E_theta.conjugate())) / intensity
 
-    def plot(self) -> SceneList3D:
+    def plot(self,
+            unit_size: List[float] = (400, 400),
+            background_color: str = 'white',
+            show_edges: bool = False,
+            colormap: str = blue_black_red,
+            opacity: float = 1.0,
+            symmetric_colormap: bool = False,
+            show_axis_label: bool = False) -> NoReturn:
         """
         Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.
 
+        Args:
+            unit_size (List[float]): The size of each subplot in pixels (width, height). Default is (400, 400).
+            background_color (str): The background color of the plot. Default is 'white'.
+            show_edges (bool): If True, displays the edges of the mesh. Default is False.
+            colormap (str): The colormap to use for scalar mapping. Default is 'blue_black_red'.
+            opacity (float): The opacity of the mesh. Default is 1.0.
+            symmetric_colormap (bool): If True, the colormap will be symmetric around zero. Default is False.
+            show_axis_label (bool): If True, shows the axis labels. Default is False.
+
         Returns:
-            - SceneList3D: An object containing the 3D visualization of the Stokes parameters.
+            NoReturn: This method does not return a value. It displays the 3D visualization.
         """
-
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
+        x, y, z = spherical_to_cartesian(r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh)
 
-        x, y, z = spherical_to_cartesian(
-            r=phi_mesh * 0 + 0.5,
-            phi=phi_mesh,
-            theta=theta_mesh
-        )
+        window_size = (unit_size[1] * 4, unit_size[0])  # Four subplots horizontally
 
-        figure = SceneList3D()
+        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 4))
+        scene.set_background(background_color)
 
-        for field_name in ['I', 'Q', 'U', 'V']:
-            field = getattr(self, field_name)
+        for idx, (name, field) in enumerate(zip(['I', 'Q', 'U', 'V'], [self.I, self.Q, self.U, self.V])):
+            field = field.flatten(order='F')
+            mesh = pyvista.StructuredGrid(x, y, z)
+            scene.subplot(0, idx)
 
-            ax = figure.append_ax()
-
-            artist = ax.add_mesh(
-                x=x, y=y, z=z,
-                scalar_coloring=field,
-                colormap='seismic',
-                show_edges=False
+            colormap_limits = self.get_colormap_limits(
+                scalar=field,
+                symmetric=symmetric_colormap
             )
 
-            ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(artist=artist, title=f'{field_name} field')
+            mapping = scene.add_mesh(
+                mesh,
+                cmap=colormap,
+                scalars=field, opacity=opacity,
+                style='surface',
+                show_edges=show_edges,
+                clim=colormap_limits,
+                show_scalar_bar=False
+            )
 
-        return figure
+            scene.add_axes_at_origin(labels_off=not show_axis_label)
+            scene.add_scalar_bar(mapper=mapping.mapper, title=f'{name} field')
 
+        scene.show()
 
 class FarField(BaseRepresentation):
     r"""
@@ -164,62 +279,70 @@ class FarField(BaseRepresentation):
         """
         return
 
-    def plot(self) -> SceneList3D:
+    def plot(self,
+            unit_size: List[float] = (400, 400),
+            background_color: str = 'white',
+            show_edges: bool = False,
+            colormap: str = blue_black_red,
+            opacity: float = 1.0,
+            symmetric_colormap: bool = False,
+            show_axis_label: bool = False) -> NoReturn:
         """
-        Visualizes the far-field pattern in a 3D plot, representing the squared magnitudes of the parallel and perpendicular components
-        of the electric field in spherical coordinates.
+        Visualizes the Far field (in phi and theta vector projections) on a 3D plot.
+
+        Args:
+            unit_size (List[float]): The size of each subplot in pixels (width, height). Default is (400, 400).
+            background_color (str): The background color of the plot. Default is 'white'.
+            show_edges (bool): If True, displays the edges of the mesh. Default is False.
+            colormap (str): The colormap to use for scalar mapping. Default is 'blue_black_red'.
+            opacity (float): The opacity of the mesh. Default is 1.0.
+            symmetric_colormap (bool): If True, the colormap will be symmetric around zero. Default is False.
+            show_axis_label (bool): If True, shows the axis labels. Default is False.
 
         Returns:
-        - SceneList3D: An object containing the 3D visualization of the far-field pattern.
+            NoReturn: This method does not return a value. It displays the 3D visualization.
         """
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
+        x, y, z = spherical_to_cartesian(r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh)
 
-        x, y, z = spherical_to_cartesian(r=phi_mesh * 0 + 0.5, phi=phi_mesh, theta=theta_mesh)
+        window_size = (unit_size[1] * 4, unit_size[0])  # Two subplots horizontally
 
-        figure = SceneList3D()
+        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 4))
+        scene.set_background(background_color)
 
-        for field_name in ['phi', 'theta']:
-            field_array = getattr(self, f"E_{field_name}")
-            ax = figure.append_ax()
+        repr = [self.E_phi.real, self.E_phi.imag, self.E_theta.real, self.E_theta.imag]
+        repr_label = ['phi real', 'phi imag', 'theta real', 'theta imag']
 
-            artist = ax.add_mesh(
-                x=x,
-                y=y,
-                z=z,
-                scalar_coloring=field_array.real,
-                colormap='seismic',
-                show_edges=False,
+        for idx, (label, field) in enumerate(zip(repr_label, repr)):
+            field = field.flatten(order='F')
+            mesh = pyvista.StructuredGrid(x, y, z)
+            scene.subplot(0, idx)
+
+            colormap_limits = self.get_colormap_limits(
+                scalar=field,
+                symmetric=symmetric_colormap
             )
 
-            ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(artist=artist, title=f'{field_name} field [real]')
-
-            if 'phi' in field_name:
-                ax.add_unit_phi_vector(radius=1 / 2)
-            elif 'theta' in field_name:
-                ax.add_unit_theta_vector(radius=1 / 2)
-
-            field_array = getattr(self, f"E_{field_name}")
-            ax = figure.append_ax()
-            artist = ax.add_mesh(
-                x=x,
-                y=y,
-                z=z,
-                scalar_coloring=field_array.imag,
-                colormap='seismic',
-                show_edges=False,
+            mapping = scene.add_mesh(
+                mesh,
+                cmap=colormap,
+                scalars=field,
+                opacity=opacity,
+                style='surface',
+                show_edges=show_edges,
+                clim=colormap_limits,
+                show_scalar_bar=False
             )
+            if 'theta' in label:
+                self.add_theta_vector_to_3d_plot(scene=scene, radius=0.6)
 
-            ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(artist=artist, title=f'{field_name} field [imag]')
+            if 'phi' in label:
+                self.add_phi_vector_to_3d_plot(scene=scene, radius=0.6)
 
-            if 'phi' in field_name:
-                ax.add_unit_phi_vector(radius=1 / 2)
-            elif 'theta' in field_name:
-                ax.add_unit_theta_vector(radius=1 / 2)
+            scene.add_axes_at_origin(labels_off=not show_axis_label)
+            scene.add_scalar_bar(mapper=mapping.mapper, title=f'{label} field')
 
-        return figure
-
+        scene.show()
 
 class SPF(BaseRepresentation):
     r"""
@@ -247,45 +370,53 @@ class SPF(BaseRepresentation):
         """
         self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
 
-    def plot(self, log_scale: bool = False) -> SceneList3D:
+    def plot(self,
+            unit_size: List[float, float] = (400, 400),
+            background_color: str = 'white',
+            show_edges: bool = False,
+            colormap: str = 'viridis',
+            opacity: float = 1.0,
+            show_axis_label: bool = False) -> NoReturn:
         """
-        Visualizes the Scattering Phase Function (SPF) on a 3D plot.
+        Visualizes the scattering phase function on a 3D plot.
 
-        The method maps the SPF values to radial distances from the origin in spherical coordinates, providing a visual representation
-        of how light is scattered by the particle in different directions.
+        Args:
+            unit_size (List[float]): The size of each subplot in pixels (width, height). Default is (400, 400).
+            background_color (str): The background color of the plot. Default is 'white'.
+            show_edges (bool): If True, displays the edges of the mesh. Default is False.
+            colormap (str): The colormap to use for scalar mapping. Default is 'blue_black_red'.
+            opacity (float): The opacity of the mesh. Default is 1.0.
+            show_axis_label (bool): If True, shows the axis labels. Default is False.
 
         Returns:
-        - SceneList3D: An object containing the 3D visualization of the SPF.
+            NoReturn: This method does not return a value. It displays the 3D visualization.
         """
-        scalar_mesh = self.SPF / self.SPF.max() * 2
-
-        if log_scale:
-            scalar_mesh = numpy.log(scalar_mesh)
-
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
 
-        x, y, z = spherical_to_cartesian(
-            r=scalar_mesh,
-            phi=phi_mesh,
-            theta=theta_mesh
+        window_size = (unit_size[1] * 1, unit_size[0])  # One subplots
+
+        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 1))
+        scene.set_background(background_color)
+
+        scalar = self.SPF / self.SPF.max() * 2
+
+        x, y, z = spherical_to_cartesian(r=scalar, phi=phi_mesh, theta=theta_mesh)
+        mesh = pyvista.StructuredGrid(x, y, z)
+
+        mapping = scene.add_mesh(
+            mesh,
+            cmap=colormap,
+            scalars=scalar.flatten(order='F'),
+            opacity=opacity,
+            style='surface',
+            show_edges=show_edges,
+            show_scalar_bar=False
         )
 
-        figure = SceneList3D()
+        scene.add_axes_at_origin(labels_off=not show_axis_label)
+        scene.add_scalar_bar(mapper=mapping.mapper, title=f'Scattering phase function')
 
-        ax = figure.append_ax()
-        artist = ax.add_mesh(
-            x=x,
-            y=y,
-            z=z,
-            scalar_coloring=scalar_mesh,
-            show_edges=False
-        )
-
-        ax.add_unit_axis(show_label=False)
-        ax.add_colorbar(artist=artist, title='Scattering phase function')
-
-        return figure
-
+        scene.show()
 
 @dataclass
 class S1S2():
@@ -320,37 +451,40 @@ class S1S2():
         """
         self.S1, self.S2 = self.scatterer.binding.get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
 
-    def plot(self) -> SceneList:
+    def plot(self) -> NoReturn:
         """
-        Visualizes the S1 and S2 scattering parameters on a polar plot.
+        Plots the S1 and S2 Stokes parameters on polar plots.
 
-        The method creates two polar plots representing the absolute values of S1 and S2 as functions of the scattering angle phi.
+        The method generates two polar plots: one for the absolute values of the S1 parameter and another
+        for the S2 parameter, filling the area between the radial axis and the parameter values.
 
         Returns:
-        - SceneList: An object containing the polar plots of the S1 and S2 parameters.
+            NoReturn: This method does not return a value. It displays the polar plots.
         """
-        figure = SceneList(unit_size=(3, 3))
+        with plt.style.context(MPSPlots.styles.mps):
+            figure, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={'polar': True})
 
-        ax_s1 = figure.append_ax(projection='polar', title=r'S_1 parameter')
-        ax_s2 = figure.append_ax(projection='polar', title=r'S_2 parameter')
+            # Plot for S1 parameter
+            axes[0].set(title=r'S$_1$ parameter')
+            axes[0].fill_between(
+                numpy.deg2rad(self.phi),
+                y1=0,
+                y2=numpy.abs(self.S1),
+                color='C0',
+                edgecolor='black'
+            )
 
-        ax_s1.add_fill_line(
-            x=numpy.deg2rad(self.phi),
-            y0=numpy.zeros(self.phi.shape),
-            y1=numpy.abs(self.S1),
-            color='C0',
-            line_style='-'
-        )
+            # Plot for S2 parameter
+            axes[1].set(title=r'S$_2$ parameter')
+            axes[1].fill_between(
+                numpy.deg2rad(self.phi),
+                y1=0,
+                y2=numpy.abs(self.S2),
+                color='C1',
+                edgecolor='black'
+            )
 
-        ax_s2.add_fill_line(
-            x=numpy.deg2rad(self.phi),
-            y0=numpy.zeros(self.phi.shape),
-            y1=numpy.abs(self.S2),
-            color='C1',
-            line_style='-'
-        )
-
-        return figure
+            plt.show()
 
 
 @dataclass
@@ -467,33 +601,36 @@ class Footprint():
 
         return central_portion
 
-    def plot(self) -> SceneList:
+    def plot(self, colormap: str = 'gray') -> NoReturn:
         """
-        Visualizes the footprint of the scatterer on the detector plane.
+        Plots the scatterer footprint using a 2D colormap.
 
-        Creates a 2D plot representing the intensity distribution of the scattered light as it would be detected by the specified detector,
-        providing insight into the spatial characteristics of the scattering pattern.
+        The method generates a plot representing the footprint of the scatterer, with the X and Y axes showing
+        offset distances in micrometers, and the colormap depicting the mapping values.
+
+        Args:
+            colormap (str): The colormap to use for the plot. Default is 'gray'.
 
         Returns:
-        - SceneList: An object containing the 2D plot of the scatterer's footprint.
+            NoReturn: This method does not return a value. It displays the scatterer footprint plot.
         """
-        figure = SceneList(unit_size=(6, 6))
+        with plt.style.context(MPSPlots.styles.mps):
+            figure, ax = plt.subplots()
 
-        ax = figure.append_ax(
-            title='Scatterer Footprint',
-            x_label=r'Offset distance in X-axis [$\mu$m]',
-            y_label=r'Offset distance in Y-axis [$\mu$m]',
-        )
+            ax.set(
+                title='Scatterer Footprint',
+                xlabel=r'Offset distance in X-axis [$\mu$m]',
+                ylabel=r'Offset distance in Y-axis [$\mu$m]',
+            )
 
-        artist = ax.add_mesh(
-            x=self.direct_y * 1e6,
-            y=self.direct_x * 1e6,
-            scalar=self.mapping,
-        )
+            ax.pcolormesh(
+                self.direct_y * 1e6,
+                self.direct_x * 1e6,
+                self.mapping,
+                cmap=colormap
+            )
 
-        ax.add_colorbar(artist=artist, colormap='gray')
-
-        return figure
+            plt.show()
 
 
 # -

@@ -41,7 +41,3 @@ data = detector.get_footprint(scatterer)
 
 # Plot the computed footprint data
 figure = data.plot()
-
-# %%
-# Display the plot
-_ = figure.show()

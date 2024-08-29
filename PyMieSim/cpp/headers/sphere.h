@@ -3,7 +3,7 @@
 #include "base_spherical_scatterer.cpp"
 
 using complex128 = std::complex<double>;
-#include <iostream>
+
 namespace SPHERE
 {
 
@@ -20,7 +20,6 @@ namespace SPHERE
                 this->compute_size_parameter();
                 this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
                 this->compute_an_bn();
-
             }
 
             void compute_size_parameter() override {

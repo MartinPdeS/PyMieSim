@@ -35,7 +35,3 @@ data = scatterer.get_far_field(sampling=100)  # Specify the number of sampling p
 # %%
 # Plotting the data
 figure = data.plot()
-
-# %%
-# Display the plot
-_ = figure.show()

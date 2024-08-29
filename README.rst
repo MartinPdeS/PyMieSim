@@ -291,6 +291,6 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
     :width: 800
     :alt: Structure of the library
 
-.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/MPSPlots/python-coverage-comment-action-data/badge.svg
+.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
    :alt: Unittest coverage
    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html

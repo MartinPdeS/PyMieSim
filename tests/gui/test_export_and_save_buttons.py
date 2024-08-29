@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import tkinter
-
+import pytest
 from PyMieSim.gui.main_window import PyMieSimGUI
 from PyMieSim.gui.singleton import datashelf
 
@@ -58,5 +58,8 @@ def test_save_as_csv_button(mock_filepath, mock_save):
     assert mock_save.call_count == 1
 
     root.destroy()
+
+if __name__ == "__main__":
+    pytest.main([__file__])
 
 # -

@@ -6,6 +6,7 @@ from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyOptik import UsualMaterial
+from unittest.mock import patch
 
 # Core configurations separated for clarity and functionality
 core_configs = [
@@ -33,7 +34,7 @@ attributes = [
     "Csca", "Cext", "Cabs",
 ]
 
-plottings = [
+plotting_functions = [
     "get_far_field", "get_stokes", "get_spf", "get_s1s2",
 ]
 
@@ -59,6 +60,7 @@ def test_cylinder_methods(method, core_config, medium_config):
     _ = getattr(scatterer, method)()
 
     _ = getattr(scatterer, method)(max_order=3)
+
 
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
@@ -109,11 +111,15 @@ def test_cylinder_attributes(attribute, core_config, medium_config):
     # Access and validate the specified attribute
     _ = getattr(scatterer, attribute)
 
+    scatterer.print_properties()
+
 
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
 @pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
-@pytest.mark.parametrize('plotting', plottings)
-def test_cylinder_plottings(plotting, core_config, medium_config):
+@pytest.mark.parametrize('plotting_function', plotting_functions)
+@patch('pyvista.Plotter.show')
+@patch('matplotlib.pyplot.show')
+def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function, core_config, medium_config):
     source = Gaussian(
         wavelength=750e-9,
         polarization=0,
@@ -128,11 +134,12 @@ def test_cylinder_plottings(plotting, core_config, medium_config):
         **core_config['config']
     )
 
-    data = getattr(scatterer, plotting)()
+    data = getattr(scatterer, plotting_function)()
+    data.plot()
     assert data is not None, "Plotting data should not be None"
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main([__file__])
 
 # -

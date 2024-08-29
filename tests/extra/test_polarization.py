@@ -90,6 +90,6 @@ def test_api(polarization_0, polarization_1):
     assert result is not None, 'Experiment setup or measurement failed!'
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main([__file__])
 
 # -

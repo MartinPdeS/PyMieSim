@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import pytest
 from pytest import raises
 import tkinter
 from PyMieSim.gui.main_window import PyMieSimGUI
@@ -78,3 +79,7 @@ def test_detector_widgets() -> None:
         datashelf.detector_tab.on_type_change()
         widgets = datashelf.detector_tab.widget_collection.widgets
         radio_button_invoke(widgets=widgets)
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

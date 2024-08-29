@@ -35,7 +35,3 @@ data = scatterer.get_spf(sampling=200)  # Specify the number of sampling points
 # %%
 # Plotting the data
 figure = data.plot()
-
-# %%
-# Display the plot
-_ = figure.show()

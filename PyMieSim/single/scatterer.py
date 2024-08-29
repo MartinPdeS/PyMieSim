@@ -19,241 +19,240 @@ config_dict = dict(
 )
 
 
-class GenericScatterer():
+class GenericScatterer:
     """
-    Generic class for scatterer
+    A generic class for a scatterer, providing properties and methods to compute various scattering-related quantities.
     """
 
     def print_properties(self) -> None:
-        property_names = [
-            "size_parameter", "area", "index", "g",
-            "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
-            "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
-        ]
-
-        data = [getattr(self, name) for name in property_names]
-        property_dict = {"Property": property_names, "value": data}
+        """Prints a table of the scatterer's properties and their values."""
+        data = [getattr(self, name) for name in self.property_names]
+        property_dict = {"Property": self.property_names, "Value": data}
 
         table = tabulate(property_dict, headers="keys")
-
         print(table)
 
     @property
     def size_parameter(self) -> float:
+        """Returns the size parameter of the scatterer."""
         return self.binding.size_parameter
 
     @property
     def area(self) -> float:
+        """Returns the area of the scatterer."""
         return self.binding.area
 
     @property
     def Qsca(self) -> float:
-        """ Scattering efficiency. """
+        """Returns the scattering efficiency."""
         return self.binding.Qsca
 
     @property
     def Qext(self) -> float:
-        """ Extinction efficiency. """
+        """Returns the extinction efficiency."""
         return self.binding.Qext
 
     @property
     def Qabs(self) -> float:
-        """ Absorption efficiency. """
+        """Returns the absorption efficiency."""
         return self.binding.Qabs
 
     @property
     def Qback(self) -> float:
-        """ Backscattering efficiency. """
+        """Returns the backscattering efficiency."""
         return self.binding.Qback
 
     @property
     def Qforward(self) -> float:
-        """ Forwardcattering efficiency. """
+        """Returns the forward-scattering efficiency."""
         return self.binding.Qforward
 
     @property
     def Qratio(self) -> float:
-        """ Efficiency: Ratio of backscattering over total scattering. """
+        """Returns the efficiency ratio of backscattering over total scattering."""
         return self.binding.Qratio
 
     @property
     def g(self) -> float:
-        """ Anisotropy factor. """
+        """Returns the anisotropy factor."""
         return self.binding.g
 
     @property
     def Qpr(self) -> float:
-        """ Radiation pressure efficiency. """
+        """Returns the radiation pressure efficiency."""
         return self.binding.Qpr
 
     @property
     def Csca(self) -> float:
-        """ Scattering cross-section. """
+        """Returns the scattering cross-section."""
         return self.binding.Csca
 
     @property
     def Cext(self) -> float:
-        """ Extinction cross-section. """
+        """Returns the extinction cross-section."""
         return self.binding.Cext
 
     @property
     def Cabs(self) -> float:
-        """ Absorption cross-section. """
+        """Returns the absorption cross-section."""
         return self.binding.Cabs
 
     @property
     def Cpr(self) -> float:
-        """ Radiation pressure cross-section. """
+        """Returns the radiation pressure cross-section."""
         return self.binding.Cpr
 
     @property
     def Cback(self) -> float:
-        """ Backscattering cross-section. """
+        """Returns the backscattering cross-section."""
         return self.binding.Cback
 
     @property
     def Cforward(self) -> float:
-        """ Forward-scattering cross-section. """
-        return self.binding.Qforward
+        """Returns the forward-scattering cross-section."""
+        return self.binding.Cforward
 
     @property
     def Cratio(self) -> float:
-        """ Ratio of backscattering cross-section over total scattering. """
+        """Returns the ratio of backscattering cross-section over total scattering."""
         return self.binding.Cratio
 
-    def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray) -> numpy.array:
-        r"""
-        Method Compute scattering Far Field for unstructured coordinate.
+    def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.ndarray) -> numpy.ndarray:
+        """
+        Computes the scattering far field for unstructured coordinates.
 
-        .. math::
-            \text{Fields} = E_{||}(\phi,\theta), E_{\perp}(\phi,\theta)
+        The method computes the fields up to a constant phase value.
 
+        Args:
+            phi (numpy.ndarray): The phi angles in radians.
+            theta (numpy.ndarray): The theta angles in radians.
+            r (numpy.ndarray): The radial distances.
 
-        The Fields are up to a constant phase value.
-
-        .. math::
-            \exp{\big(-i k r \big)}
-
-        :param      phi:         The phi array
-        :type       phi:         numpy.ndarray
-        :param      theta:       The theta array
-        :type       theta:       numpy.ndarray
-        :param      r:           The radial array
-        :type       r:           numpy.ndarray
-        :param      structured:  Indicates if computing mesh is structured or not
-        :type       structured:  bool
-
-        :returns:   The far fields
-        :rtype:     numpy.ndarray
+        Returns:
+            numpy.ndarray: The computed far fields.
         """
         return self.binding.get_fields(phi=phi, theta=theta, r=r)
 
     def get_s1s2(self, **kwargs) -> S1S2:
         r"""
-        Method compute :math:`S_1(\phi)` and :math:`S_2(\phi)`.
-        For spherical Scatterer such as here S1 and S2 are computed as follow:
+        Computes the S1 and S2 parameters.
+
+        These parameters are computed for spherical scatterers using the following formulas:
 
         .. math::
-            S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n) \\[10pt]
+            S_1=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \pi_n+b_n \tau_n) \\
+            S_2=\sum\limits_{n=1}^{n_{max}} \frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n)
 
-            S_2=\sum\limits_{n=1}^{n_{max}}\frac{2n+1}{n(n+1)}(a_n \tau_n+b_n \pi_n) \\[10pt]
+        Args:
+            **kwargs: Additional keyword arguments.
 
-        :param      kwargs:  The keywords arguments
-        :type       kwargs:  dictionary
-
-        :returns:   The S1 and S2 parameters
-        :rtype:     S1S2
+        Returns:
+            S1S2: The computed S1 and S2 parameters.
         """
         return S1S2(scatterer=self, **kwargs)
 
     def get_stokes(self, **kwargs) -> Stokes:
         r"""
-        Returns the four Stokes components. The method compute the Stokes parameters: I, Q, U, V.
-        Those parameters are defined as:
+        Computes the four Stokes components: I, Q, U, and V.
 
-        .. math:
-            I &= \big| E_x \big|^2 + \big| E_y \big|^2 \\[10pt]
+        These components are defined as:
 
-            Q &= \big| E_x \big|^2 - \big| E_y \big|^2 \\[10pt]
+        .. math::
+            I &= \big| E_x \big|^2 + \big| E_y \big|^2 \\
+            Q &= \big| E_x \big|^2 - \big| E_y \big|^2 \\
+            U &= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \\
+            V &= 2 \mathcal{Im} \big\{ E_x E_y^* \big\}
 
-            U &= 2 \mathcal{Re} \big\{ E_x E_y^* \big\} \\[10pt]
+        Args:
+            **kwargs: Additional keyword arguments.
 
-            V &= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \\[10pt]
-
-        :param      kwargs:  The keywords arguments
-        :type       kwargs:  dictionary
-
-        :returns:   The stokes.
-        :rtype:     Stokes
+        Returns:
+            Stokes: The computed Stokes parameters.
         """
         return Stokes(scatterer=self, **kwargs)
 
     def get_far_field(self, **kwargs) -> FarField:
         r"""
-        Returns the scattering far-fields defined as.
+        Computes the scattering far fields.
+
+        The far fields are computed as:
 
         .. math::
             \text{Fields} = E_{||}(\phi,\theta)^2, E_{\perp}(\phi,\theta)^2
 
-
-        The Fields are up to a constant phase value:
+        The fields are up to a constant phase value:
 
         .. math::
             \exp{\big(-i k r \big)}
 
-        :param      kwargs:  The keywords arguments
-        :type       kwargs:  dictionary
+        Args:
+            **kwargs: Additional keyword arguments.
 
-        :returns:   The far field.
-        :rtype:     FarField
+        Returns:
+            FarField: The computed far fields.
         """
         return FarField(scatterer=self, **kwargs)
 
     def get_spf(self, **kwargs) -> SPF:
         r"""
-        Returns the scattering phase function.
+        Computes the scattering phase function.
+
+        The scattering phase function is computed as:
 
         .. math::
-            \text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2
-            + E_{\perp}(\phi,\theta)^2 }
+            \text{SPF} = \sqrt{ E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2 }
 
-        :param      kwargs:  The keywords arguments
-        :type       kwargs:  dictionary
+        Args:
+            **kwargs: Additional keyword arguments.
 
-        :returns:   The scattering phase function.
-        :rtype:     SPF
+        Returns:
+            SPF: The computed scattering phase function.
         """
         return SPF(scatterer=self, **kwargs)
 
     def get_footprint(self, detector) -> Footprint:
         r"""
-        Return the footprint of the scattererd light coupling with the
-        detector as computed as:
+        Computes the footprint of the scattered light coupling with the detector.
+
+        The footprint is computed as:
 
         .. math::
             \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\
                    \tilde{ \phi}_{l,m}(\xi, \nu)  \big\}
                    (\delta_x, \delta_y) \big|^2
 
-        | Where:
-        |   :math:`\Phi_{det}` is the capturing field of the detector and
-        |   :math:`\Psi_{scat}` is the scattered field.
+        Args:
+            detector (GenericDetector): The detector object.
 
-        :param      detector:  The detector
-        :type       detector:  GenericDetector
-
-        :returns:   The scatterer footprint.
-        :rtype:     Footprint
+        Returns:
+            Footprint: The computed scatterer footprint.
         """
         return Footprint(scatterer=self, detector=detector)
 
     def get_cross_section(self) -> float:
-        return (self.Qsca * self.area)  # similar to self.EnergyFlow(Mesh) / self.source.I
+        """
+        Computes the scattering cross-section.
+
+        Returns:
+            float: The scattering cross-section, calculated as `Qsca * area`.
+        """
+        return self.Qsca * self.area
 
     def _assign_index_or_material(self, index: Optional[Any], material: Optional[Union[DataMeasurement, Sellmeier]]) -> tuple:
         """
-        Assign the refractive index or material.
+        Assigns the refractive index or material.
+
         Either `index` or `material` must be specified, but not both.
+
+        Args:
+            index (Optional[Any]): The refractive index.
+            material (Optional[Union[DataMeasurement, Sellmeier]]): The material.
+
+        Returns:
+            tuple: A tuple containing the refractive index and material.
+
+        Raises:
+            ValueError: If neither or both of `index` and `material` are specified.
         """
         if (index is None) == (material is None):
             raise ValueError("Either index or material must be specified, but not both.")
@@ -286,6 +285,11 @@ class Sphere(GenericScatterer):
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     material: Optional[Union[Sellmeier, DataMeasurement]] = None
 
+    property_names = [
+        "size_parameter", "area", "g",
+        "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
+        "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
+    ]
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(self.index, self.material)
 
@@ -353,6 +357,7 @@ class Sphere(GenericScatterer):
 
     def cn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
+        For future purpose only!
         Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
 
         .. math::
@@ -376,6 +381,7 @@ class Sphere(GenericScatterer):
 
     def dn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
         r"""
+        For future purpose only!
         Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
 
         .. math::
@@ -423,6 +429,12 @@ class CoreShell(GenericScatterer):
     shell_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     medium_index: Optional[float] = None
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
+
+    property_names = [
+        "size_parameter", "area", "g",
+        "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
+        "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
+    ]
 
     def __post_init__(self):
         self.core_index, self.core_material = self._assign_index_or_material(self.core_index, self.core_material)
@@ -494,6 +506,12 @@ class Cylinder(GenericScatterer):
     medium_index: Optional[float] = None
     medium_material: Optional[Union[Sellmeier, DataMeasurement]] = None
     material: Union[DataMeasurement, Sellmeier, None] = None
+
+    property_names = [
+        "size_parameter", "area", "g",
+        "Qsca", "Qext", "Qabs",
+        "Csca", "Cext", "Cabs"
+    ]
 
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(index=self.index, material=self.material)

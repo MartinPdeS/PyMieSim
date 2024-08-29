@@ -1,4 +1,5 @@
 from pytest import raises
+import pytest
 from unittest.mock import patch
 import tkinter
 from tkinter.ttk import Notebook, Frame
@@ -59,3 +60,6 @@ This test ensures that the `generate_figure` method, when called by the calculat
     datashelf.control_tab.calculate_button.invoke()
     assert mock_draw.call_count == 1, "mock_draw is not called by generate_figure"
     kwargs['root'].destroy()
+
+if __name__ == "__main__":
+    pytest.main([__file__])

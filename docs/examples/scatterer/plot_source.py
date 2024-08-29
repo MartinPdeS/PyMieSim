@@ -20,8 +20,4 @@ source = Gaussian(
 
 # %%
 # Plotting the source
-figure = source.plot()
-
-# %%
-# Display the plot
-_ = figure.show()
+source.plot()

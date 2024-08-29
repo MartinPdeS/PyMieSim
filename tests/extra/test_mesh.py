@@ -69,4 +69,4 @@ def test_rotate_around_axis(fibonacci_mesh):
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main([__file__])

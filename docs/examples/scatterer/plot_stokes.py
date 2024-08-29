@@ -35,7 +35,3 @@ data = scatterer.get_stokes(sampling=100)  # Specify the number of sampling poin
 # %%
 # Plotting the data
 figure = data.plot()
-
-# %%
-# Display the plot
-_ = figure.show()

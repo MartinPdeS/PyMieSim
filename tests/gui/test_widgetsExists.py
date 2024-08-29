@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import pytest
 import PyMieSim
 from PyMieSim.gui.main_window import PyMieSimGUI
 from PyMieSim.gui.singleton import datashelf
@@ -51,5 +52,9 @@ def test_control_button_exist():
     assert datashelf.control_tab.save_button.__class__ == PyMieSim.gui.widgets.ControlWidget
     assert datashelf.control_tab.export_button.__class__ == PyMieSim.gui.widgets.ControlWidget
     assert datashelf.control_tab.reset_std_button.__class__ == PyMieSim.gui.widgets.ControlWidget
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])
 
 # -

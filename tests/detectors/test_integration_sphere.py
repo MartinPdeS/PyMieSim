@@ -44,6 +44,6 @@ def test_photodiode_with_sampling(sampling, setup_scatterer):
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main([__file__])
 
 # -

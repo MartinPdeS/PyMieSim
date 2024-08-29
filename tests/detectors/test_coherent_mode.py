@@ -57,6 +57,6 @@ def test_lp_modes(mode_number, rotation, scatterer):
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main([__file__])
 
 # -

@@ -68,6 +68,6 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
 
 
 if __name__ == "__main__":
-    pytest.main()
+    pytest.main([__file__])
 
 # -
