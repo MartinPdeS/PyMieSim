@@ -45,11 +45,7 @@ data = experiment.get(measure.Qsca)
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with the refractive index of the cylinder.
-figure = data.plot(
+data.plot(
     x=scatterer.index,  # Refractive index as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
-
-# %%
-# Displaying the plot
-_ = figure.show()

@@ -44,6 +44,4 @@ data = experiment.get(measure.a1)
 
 # %%
 # Plotting the results
-figure = data.plot(x=scatterer.diameter)
-
-_ = figure.show()
+data.plot(x=scatterer.diameter)

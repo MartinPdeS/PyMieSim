@@ -44,9 +44,7 @@ data = experiment.get(measure.Qabs)
 
 # %%
 # Plotting the results
-figure = data.plot(
+data.plot(
     x=scatterer.diameter,
     y_scale="log"
 )
-
-_ = figure.show()

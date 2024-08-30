@@ -58,9 +58,7 @@ data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-figure = data.plot(
+data.plot(
     x=scatterer.diameter,
     y_scale='linear',
 )
-
-_ = figure.show()

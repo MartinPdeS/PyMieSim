@@ -41,18 +41,14 @@ experiment = Setup(
 
 # %%
 # Measuring the scattering efficiency (Qsca)
-# Note: The original request mentioned Qsca, but the measurement code uses Qabs. 
+# Note: The original request mentioned Qsca, but the measurement code uses Qabs.
 # If Qsca measurement is intended, ensure to use the correct measure object from PyMieSim.
 data = experiment.get(measure.Qabs)  # Assuming Qabs was intended, replace with measure.Qsca if needed
 
 # %%
 # Plotting the results
 # Visualizing how the scattering efficiency varies with the cylinder diameter.
-figure = data.plot(
+data.plot(
     x=scatterer.diameter,  # Cylinder diameter as the x-axis
     y_scale="linear"  # Linear scale for the y-axis
 )
-
-# %%
-# Displaying the plot
-_ = figure.show()

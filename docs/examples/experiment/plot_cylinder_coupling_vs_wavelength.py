@@ -61,11 +61,7 @@ data = experiment.get(measure.coupling)
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the wavelength.
-figure = data.plot(
+data.plot(
     x=source.wavelength,  # Wavelength as the x-axis
     std=scatterer.diameter  # Standard deviation with respect to cylinder diameter
 )
-
-# %%
-# Displaying the plot
-_ = figure.show()

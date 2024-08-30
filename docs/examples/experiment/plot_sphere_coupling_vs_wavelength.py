@@ -59,9 +59,7 @@ data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-figure = data.plot(
+data.plot(
     x=source.wavelength,
     std=scatterer.diameter
 )
-
-_ = figure.show()

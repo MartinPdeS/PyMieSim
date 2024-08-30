@@ -45,8 +45,4 @@ data = experiment.get(measure.b11)
 # %%
 # Plotting the results
 # Visualizing how the B1 scattering coefficient varies with the cylinder diameter.
-figure = data.plot(x=scatterer.diameter)
-
-# %%
-# Displaying the plot
-_ = figure.show()
+data.plot(x=scatterer.diameter)

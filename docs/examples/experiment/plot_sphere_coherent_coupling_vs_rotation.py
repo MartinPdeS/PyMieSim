@@ -58,6 +58,4 @@ data = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-figure = data.plot(x=detector.rotation)
-
-_ = figure.show()
+data.plot(x=detector.rotation)

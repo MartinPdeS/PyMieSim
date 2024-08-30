@@ -43,6 +43,4 @@ data = experiment.get(measure.Csca)
 
 # %%
 # Plotting the results
-figure = data.plot(x=source.wavelength)
-
-_ = figure.show()
+data.plot(x=source.wavelength)

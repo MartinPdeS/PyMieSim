@@ -49,11 +49,7 @@ data = data.mean(scatterer.index)
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with wavelength for the given cylinder configurations.
-figure = data.plot(
+data.plot(
     x=source.wavelength,  # Wavelength as the x-axis
     y_scale='linear'  # Linear scale for the y-axis
 )
-
-# %%
-# Displaying the plot
-_ = figure.show()
