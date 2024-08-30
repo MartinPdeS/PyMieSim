@@ -8,13 +8,12 @@ from PyMieSim.single.source import Gaussian
 
 source = Gaussian(
     wavelength=1000e-9,
-    polarization_value=0,
-    polarization_type='linear',
+    polarization=0,
     optical_power=1,
     NA=0.3
 )
 
-source.plot().show()
+source.plot()
 
 scatterer = Sphere(
     diameter=800e-9,
@@ -26,7 +25,7 @@ scatterer = Sphere(
 
 farfield = scatterer.get_far_field(sampling=300)
 
-farfield.plot().show()
+farfield.plot()
 
 scatterer.print_properties()
 

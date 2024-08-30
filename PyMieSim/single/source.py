@@ -158,6 +158,10 @@ class Gaussian():
         # Add axes at the origin, optionally showing axis labels
         scene.add_axes_at_origin(labels_off=not show_axis_label)
 
+        # Add a translucent sphere to the scene
+        sphere = pyvista.Sphere(radius=1)
+        scene.add_mesh(sphere, opacity=0.3)
+
         # Display the scene
         scene.show()
 
