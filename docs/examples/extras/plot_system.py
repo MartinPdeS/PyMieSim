@@ -1,4 +1,7 @@
 """
+Plot system
+===========
+
 Example Script: Using the `plot_system` Function
 
 This script demonstrates how to use the `plot_system` function to create a 3D visualization
