@@ -112,7 +112,44 @@ class GenericDetector():
         # Wrap the coordinates for PyVista
         points = pyvista.wrap(coordinates.T)
 
-        # Add points representing the real part of the scalar field
+        self._add_to_3d_ax(scene=scene, colormap=colormap)
+
+        # Optionally add axis labels
+        scene.add_axes_at_origin(labels_off=not show_axis_label)
+
+        # Add a translucent sphere to the scene
+        sphere = pyvista.Sphere(radius=1)
+        scene.add_mesh(sphere, opacity=0.3)
+
+        # Display the scene
+        scene.show()
+
+    def _add_to_3d_ax(self, scene: pyvista.Plotter, colormap: str = blue_black_red) -> NoReturn:
+        """
+        Adds the scalar field and a directional cone to a 3D PyVista plotting scene.
+
+        This method adds points representing the real part of the scalar field to the given 3D scene,
+        along with a cone mesh to indicate directional information. It also includes a scalar bar
+        to display the values of the scalar field.
+
+        Args:
+            scene (pyvista.Plotter): The PyVista plotting scene where the elements will be added.
+            colormap (str): The colormap to use for the scalar field visualization.
+
+        Returns:
+            NoReturn: This method does not return a value. It modifies the provided scene.
+        """
+        # Stack the mesh coordinates into a single array
+        coordinates = numpy.row_stack((
+            self.binding.mesh.x,
+            self.binding.mesh.y,
+            self.binding.mesh.z
+        ))
+
+        # Wrap the coordinates for PyVista visualization
+        points = pyvista.wrap(coordinates.T)
+
+        # Add the points to the scene, representing the real part of the scalar field
         mapping = scene.add_points(
             points,
             scalars=numpy.real(self.binding.scalar_field),
@@ -122,28 +159,21 @@ class GenericDetector():
             show_scalar_bar=False
         )
 
-        # Optionally add axis labels
-        scene.add_axes_at_origin(labels_off=not show_axis_label)
-
-        # Add a scalar bar for the real part of the field
-        scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
-
-        # Add a translucent sphere to the scene
-        sphere = pyvista.Sphere(radius=1)
-        scene.add_mesh(sphere, opacity=0.3)
-
-        # Create and add a cone mesh to represent directional information
+        # Create a cone mesh to indicate directional information
         cone_mesh = pyvista.Cone(
             center=coordinates.mean(axis=1) / 2,
             direction=-coordinates.mean(axis=1),
-            height=1 * numpy.cos(self.max_angle),
+            height=numpy.cos(self.max_angle),
             resolution=100,
             angle=numpy.rad2deg(self.max_angle)
         )
+
+        # Add the cone mesh to the scene with specified color and opacity
         scene.add_mesh(cone_mesh, color='blue', opacity=0.3)
 
-        # Display the scene
-        scene.show()
+        # Add a scalar bar to the scene for the real part of the field
+        scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
+
 
     def get_poynting_vector(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
         r"""

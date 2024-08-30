@@ -190,5 +190,5 @@ class Gaussian():
         )
 
         # Add the cone mesh to the scene
-        scene.add_mesh(cone_mesh, color='blue', opacity=0.3)
+        scene.add_mesh(cone_mesh, color=color, opacity=0.3)
 # -
