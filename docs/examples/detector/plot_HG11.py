@@ -22,13 +22,4 @@ detector = CoherentMode(
 
 # %%
 # Plotting the detector
-figure = detector.plot()
-
-# %%
-# Customizing the plot appearance
-figure.background_color = 'black'  # Setting the background color to black
-figure.unit_size = (1200, 1200)  # Adjusting the size of the plot
-
-# %%
-# Displaying the plot
-_ = figure.show()
+detector.plot()

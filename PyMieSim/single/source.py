@@ -182,8 +182,8 @@ class Gaussian():
 
         # Create the cone mesh
         cone_mesh = pyvista.Cone(
-            center=(0.0, 0.0, 0.45),
-            direction=(0.0, 0.0, -1.0),
+            center=(0.0, 0.0, -0.5),
+            direction=(0.0, 0.0, 1.0),
             height=0.9,
             resolution=100,
             angle=max_angle

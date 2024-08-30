@@ -21,8 +21,4 @@ detector = CoherentMode(
 
 # %%
 # Plotting the detector
-figure = detector.plot()
-
-# %%
-# Displaying the plot
-_ = figure.show()
+detector.plot()
