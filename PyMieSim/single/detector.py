@@ -76,29 +76,43 @@ class GenericDetector():
 
     def plot(self,
             unit_size: Tuple[float, float] = (600, 600),
-            background_color: bool = 'black',
+            background_color: str = 'black',
             show_axis_label: bool = False,
             colormap: str = blue_black_red) -> NoReturn:
         """
-        Plot the real and imaginary parts of the scattered fields.
+        Plot the real and imaginary parts of the scattered fields in a 3D scene.
+
+        This method creates a 3D plot of the scattered fields, displaying the real part of the field
+        as colored points in the scene. It also adds a translucent sphere and a directional cone
+        to represent additional geometrical information.
+
+        Args:
+            unit_size (Tuple[float, float]): The size of the plot window (width, height). Default is (600, 600).
+            background_color (str): The background color of the plot. Default is 'black'.
+            show_axis_label (bool): If True, axis labels will be shown. Default is False.
+            colormap (str): The colormap to use for the scalar field. Default is 'blue_black_red'.
 
         Returns:
-            SceneList3D: The 3D plotting scene containing the field plots.
+            NoReturn: This method does not return a value. It displays the 3D plot.
         """
+        # Stack the mesh coordinates
         coordinates = numpy.row_stack((
             self.binding.mesh.x,
             self.binding.mesh.y,
             self.binding.mesh.z
         ))
 
-        scene = pyvista.Plotter()
-        window_size = (unit_size[1] * 1, unit_size[0])  # Two subplots horizontally
+        # Create a 3D plotting scene with the specified window size and theme
+        window_size = (unit_size[1], unit_size[0])
+        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size)
 
-        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 1))
+        # Set the background color
         scene.set_background(background_color)
 
+        # Wrap the coordinates for PyVista
         points = pyvista.wrap(coordinates.T)
 
+        # Add points representing the real part of the scalar field
         mapping = scene.add_points(
             points,
             scalars=numpy.real(self.binding.scalar_field),
@@ -108,12 +122,17 @@ class GenericDetector():
             show_scalar_bar=False
         )
 
+        # Optionally add axis labels
         scene.add_axes_at_origin(labels_off=not show_axis_label)
-        scene.add_scalar_bar(mapper=mapping.mapper, title=f'collecting field real part')
+
+        # Add a scalar bar for the real part of the field
+        scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
+
+        # Add a translucent sphere to the scene
         sphere = pyvista.Sphere(radius=1)
         scene.add_mesh(sphere, opacity=0.3)
 
-        # Create the cone mesh
+        # Create and add a cone mesh to represent directional information
         cone_mesh = pyvista.Cone(
             center=coordinates.mean(axis=1) / 2,
             direction=-coordinates.mean(axis=1),
@@ -121,10 +140,9 @@ class GenericDetector():
             resolution=100,
             angle=numpy.rad2deg(self.max_angle)
         )
-
-        # Add the cone mesh to the scene
         scene.add_mesh(cone_mesh, color='blue', opacity=0.3)
 
+        # Display the scene
         scene.show()
 
     def get_poynting_vector(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
