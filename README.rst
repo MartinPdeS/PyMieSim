@@ -176,8 +176,7 @@ Below is an example that illustrate this:
 
     source = Gaussian(
         wavelength=1200e-9,
-        polarization_value=90,
-        polarization_type='linear',
+        polarization=90,
         optical_power=1e-3,
         NA=0.2
     )
@@ -205,13 +204,11 @@ Below is an example that illustrate this:
 
     data = experiment.get(measure.coupling)
 
-    figure = data.plot(
+    data.plot(
         x=experiment.diameter,
         y_scale='linear',
         normalize=True
     )
-
-    figure.show()
 
 
 Plenty of other examples are available online, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_
@@ -257,7 +254,7 @@ As of 2024, the project is still under development. If you want to collaborate, 
 
 PyMieSim was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
 
-Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=PyMieSim>`_ .
+Email:`martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmail.ca?subject=PyMieSim>`_ .
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
     :target: https://www.python.org/
