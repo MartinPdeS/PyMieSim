@@ -75,5 +75,3 @@ single_scatterer = single.scatterer.Sphere(
 
 
 print(single_scatterer.Qsca * 1e-3)
-
-_ = figure.show()
