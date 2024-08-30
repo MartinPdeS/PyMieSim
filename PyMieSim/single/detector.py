@@ -5,16 +5,17 @@ import numpy
 import logging
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from typing import Union, Optional
+from typing import Union, Optional, Tuple, NoReturn
 
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.binary import ModeField
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.special_functions import NA_to_angle
-from MPSPlots.render3D import SceneList as SceneList3D
+from MPSPlots.colormaps import blue_black_red
 
 from PyMieSim.single import scatterer
+import pyvista
 
 c = 299792458.0  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
@@ -73,37 +74,58 @@ class GenericDetector():
         """
         return Footprint(scatterer=scatterer, detector=self)
 
-    def plot(self) -> SceneList3D:
+    def plot(self,
+            unit_size: Tuple[float, float] = (600, 600),
+            background_color: bool = 'black',
+            show_axis_label: bool = False,
+            colormap: str = blue_black_red) -> NoReturn:
         """
         Plot the real and imaginary parts of the scattered fields.
 
         Returns:
             SceneList3D: The 3D plotting scene containing the field plots.
         """
-        coordinate = numpy.row_stack((
+        coordinates = numpy.row_stack((
             self.binding.mesh.x,
             self.binding.mesh.y,
             self.binding.mesh.z
         ))
 
-        figure = SceneList3D()
+        scene = pyvista.Plotter()
+        window_size = (unit_size[1] * 1, unit_size[0])  # Two subplots horizontally
 
-        for scalar_type in ['real', 'imag']:
-            scalar = getattr(numpy.asarray(self.binding.scalar_field), scalar_type)
+        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size, shape=(1, 1))
+        scene.set_background(background_color)
 
-            ax = figure.append_ax()
-            artist = ax.add_unstructured_mesh(
-                coordinates=coordinate,
-                scalar_coloring=scalar,
-                symmetric_map=True,
-                symmetric_colormap=True
-            )
+        points = pyvista.wrap(coordinates.T)
 
-            ax.add_unit_sphere(opacity=0.3)
-            ax.add_unit_axis(show_label=False)
-            ax.add_colorbar(artist=artist, title=f'field [{scalar_type}]')
+        mapping = scene.add_points(
+            points,
+            scalars=numpy.real(self.binding.scalar_field),
+            point_size=30,
+            render_points_as_spheres=True,
+            cmap=colormap,
+            show_scalar_bar=False
+        )
 
-        return figure
+        scene.add_axes_at_origin(labels_off=not show_axis_label)
+        scene.add_scalar_bar(mapper=mapping.mapper, title=f'collecting field real part')
+        sphere = pyvista.Sphere(radius=1)
+        scene.add_mesh(sphere, opacity=0.3)
+
+        # Create the cone mesh
+        cone_mesh = pyvista.Cone(
+            center=coordinates.mean(axis=1) / 2,
+            direction=-coordinates.mean(axis=1),
+            height=1 * numpy.cos(self.max_angle),
+            resolution=100,
+            angle=numpy.rad2deg(self.max_angle)
+        )
+
+        # Add the cone mesh to the scene
+        scene.add_mesh(cone_mesh, color='blue', opacity=0.3)
+
+        scene.show()
 
     def get_poynting_vector(self, scatterer: Union[scatterer.Sphere, scatterer.CoreShell, scatterer.Cylinder]) -> float:
         r"""

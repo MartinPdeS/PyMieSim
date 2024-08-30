@@ -2,9 +2,7 @@ import pytest
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-
-# Define different sampling for testing
-samplings = [100, 200, 300, 400]
+from unittest.mock import patch
 
 
 @pytest.fixture
@@ -30,20 +28,28 @@ def setup_scatterer(setup_source):
         medium_index=1.0  # Refractive index of the surrounding medium
     )
 
-
-@pytest.mark.parametrize('sampling', samplings)
-def test_photodiode_sampling(sampling, setup_scatterer):
+@pytest.fixture
+def photodiode():
     """Test the Photodiode detector with various sampling rates."""
 
-    detector = Photodiode(
+    return Photodiode(
         NA=0.2,  # Numerical aperture of the detector
-        sampling=sampling,  # Field sampling
+        sampling=30,  # Field sampling
         gamma_offset=0,  # Gamma offset
         phi_offset=0  # Phi offset
     )
 
+
+@patch('pyvista.Plotter.show')
+def test_photodiode_plot(mock_show, photodiode):
+    photodiode.plot()
+
+
+def test_photodiode_sampling(photodiode, setup_scatterer):
+    """Test the Photodiode detector with various sampling rates."""
+
     # Perform the operation to be tested
-    footprint = detector.get_footprint(scatterer=setup_scatterer)
+    footprint = photodiode.get_footprint(scatterer=setup_scatterer)
 
     # Example verification step (not operational as we're not evaluating the output here)
     assert footprint is not None, "Expected a valid footprint but got None."

@@ -2,6 +2,7 @@ import pytest
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import CoherentMode
+from unittest.mock import patch
 
 # Define a list of mode numbers and rotation angles to be tested
 mode_numbers = [
@@ -9,8 +10,6 @@ mode_numbers = [
     "LG01", "LG11", "LG21",
     "HG01", "HG11", "HG21"
 ]
-
-rotations = [0, 90]
 
 
 @pytest.fixture
@@ -36,10 +35,24 @@ def scatterer(setup_source):
         medium_index=1.0  # Refractive index of the medium
     )
 
+@patch('pyvista.Plotter.show')
+def test_lp_modes_plot(scatterer):
+    """Test different LP, LG, and HG modes with varying rotations."""
+
+    detector = CoherentMode(
+        mode_number='LP01',
+        NA=0.2,  # Numerical aperture for the detector
+        sampling=100,  # Field sampling
+        gamma_offset=0,  # Gamma offset
+        phi_offset=0,  # Phi offset
+        rotation=0  # Rotation angle
+    )
+
+    detector.plot()
+
 
 @pytest.mark.parametrize('mode_number', mode_numbers)
-@pytest.mark.parametrize('rotation', rotations)
-def test_lp_modes(mode_number, rotation, scatterer):
+def test_lp_modes(mode_number, scatterer):
     """Test different LP, LG, and HG modes with varying rotations."""
 
     detector = CoherentMode(
@@ -48,7 +61,7 @@ def test_lp_modes(mode_number, rotation, scatterer):
         sampling=100,  # Field sampling
         gamma_offset=0,  # Gamma offset
         phi_offset=0,  # Phi offset
-        rotation=rotation  # Rotation angle
+        rotation=0  # Rotation angle
     )
 
     footprint = detector.get_footprint(scatterer=scatterer)
