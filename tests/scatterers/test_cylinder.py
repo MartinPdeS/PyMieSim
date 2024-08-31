@@ -5,17 +5,17 @@ import pytest
 from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyOptik import UsualMaterial
+from PyOptik import materials
 from unittest.mock import patch
 
 # Core configurations separated for clarity and functionality
 core_configs = [
-    {'config': {'material': UsualMaterial.Silver}, 'id': 'Core:Silver'},
+    {'config': {'material': materials.BK7}, 'id': 'Core:BK7'},
     {'config': {'index': 1.6}, 'id': 'Core:1.6'}
 ]
 
 medium_configs = [
-    {'config': {'medium_material': UsualMaterial.BK7}, 'id': 'Medium:BK7'},
+    {'config': {'medium_material': materials.water}, 'id': 'Medium:water'},
     {'config': {'medium_index': 1.4}, 'id': 'Medium:1.4'}
 ]
 

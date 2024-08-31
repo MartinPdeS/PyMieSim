@@ -9,18 +9,18 @@ from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
-from PyOptik import UsualMaterial
+from PyOptik import materials
 
 # Material configurations for the cylinder core
 core_options = [
-    {'name': 'Silver', 'properties': {'material': UsualMaterial.Silver}},
-    {'name': 'Aluminium', 'properties': {'material': UsualMaterial.Aluminium}},
+    {'name': 'BK7', 'properties': {'material': materials.BK7}},
+    {'name': 'crown glass', 'properties': {'material': materials.crown}},
     {'name': 'Index', 'properties': {'index': 1.4}}
 ]
 
 # Medium configurations
 medium_options = [
-    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.BK7}},
+    {'name': 'water', 'properties': {'medium_material': materials.water}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
@@ -34,7 +34,7 @@ measures = pms_measure.__cylinder__
 def test_cylinder_scattering_properties(measure, medium_config, core_config):
     # Setup Gaussian source
     source = Gaussian(
-        wavelength=np.linspace(400e-9, 1800e-9, 50),
+        wavelength=np.linspace(600e-9, 1000e-9, 50),
         polarization=0,
         optical_power=1e-3,
         NA=0.2

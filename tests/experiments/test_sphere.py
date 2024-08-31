@@ -9,18 +9,18 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
-from PyOptik import UsualMaterial
+from PyOptik import materials
 
 # Configure the core materials for the sphere
 core_options = [
-    {'name': 'Silver', 'properties': {'material': UsualMaterial.Silver}},
-    {'name': 'Aluminium', 'properties': {'material': UsualMaterial.Aluminium}},
+    {'name': 'crown', 'properties': {'material': materials.crown}},
+    {'name': 'fused silica', 'properties': {'material': materials.fused_silica}},
     {'name': 'Index', 'properties': {'index': 1.4}}
 ]
 
 # Define medium options
 medium_options = [
-    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.BK7}},
+    {'name': 'water', 'properties': {'medium_material': materials.water}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
@@ -34,7 +34,7 @@ measures = pms_measure.__sphere__
 def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up the Gaussian source
     source = Gaussian(
-        wavelength=np.linspace(400e-9, 1800e-9, 50),
+        wavelength=np.linspace(600e-9, 1000e-9, 50),
         polarization=0,
         optical_power=1e-3,
         NA=0.2

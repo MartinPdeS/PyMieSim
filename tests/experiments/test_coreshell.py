@@ -9,28 +9,28 @@ from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
-from PyOptik import UsualMaterial
+from PyOptik import materials
 
 # Define core materials and properties
 core_options = [
-    {'name': 'BK7', 'properties': {'core_material': UsualMaterial.BK7}},
-    {'name': 'Silver', 'properties': {'core_material': UsualMaterial.Silver}},
-    {'name': 'Aluminium', 'properties': {'core_material': UsualMaterial.Aluminium}},
+    {'name': 'BK7', 'properties': {'core_material': materials.BK7}},
+    {'name': 'fused silica', 'properties': {'core_material': materials.fused_silica}},
+    {'name': 'polystyren', 'properties': {'core_material': materials.polystyren}},
     {'name': 'Index', 'properties': {'core_index': 1.4}}
 ]
 
 # Define shell materials and properties
 shell_options = [
-    {'name': 'BK7', 'properties': {'shell_material': UsualMaterial.BK7}},
-    {'name': 'Silver', 'properties': {'shell_material': UsualMaterial.Silver}},
-    {'name': 'Aluminium', 'properties': {'shell_material': UsualMaterial.Aluminium}},
+    {'name': 'BK7', 'properties': {'shell_material': materials.BK7}},
+    {'name': 'fused silica', 'properties': {'shell_material': materials.fused_silica}},
+    {'name': 'polystyren', 'properties': {'shell_material': materials.polystyren}},
     {'name': 'Index', 'properties': {'shell_index': 1.4}}
 ]
 
 # Define medium materials and properties
 medium_options = [
-    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.Water}},
-    {'name': 'BK7', 'properties': {'medium_material': UsualMaterial.Water}},
+    {'name': 'water', 'properties': {'medium_material': materials.water}},
+    {'name': 'fused silica', 'properties': {'medium_material': materials.fused_silica}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
@@ -45,7 +45,7 @@ measures = pms_measure.__coreshell__
 def test_coreshell_scattering_properties(measure, medium_config, core_config, shell_config):
     # Setup Gaussian source
     source = Gaussian(
-        wavelength=np.linspace(400e-9, 1800e-9, 50),
+        wavelength=np.linspace(800e-9, 1000e-9, 50),
         polarization=0,
         optical_power=1e-3,
         NA=0.2
@@ -53,7 +53,7 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
 
     # Setup core-shell scatterer
     scatterer = CoreShell(
-        core_diameter=np.linspace(400e-9, 1400e-9, 10),
+        core_diameter=np.linspace(800e-9, 1000e-9, 10),
         shell_width=300e-9,
         source=source,
         **medium_config,

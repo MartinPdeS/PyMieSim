@@ -9,7 +9,7 @@ import numpy
 from PyMieSim.binary.SetsInterface import CppCoreShellSet, CppCylinderSet, CppSphereSet
 from PyMieSim.experiment import measure, parameters
 import PyMieSim.experiment.source as source
-from PyOptik import Sellmeier, DataMeasurement
+from PyOptik import Material
 
 config_dict = ConfigDict(
     kw_only=True,
@@ -89,7 +89,7 @@ class BaseScatterer():
             key = f"{name}_material" if name else "material"
             wavelength = self.source.wavelength
             materials = numpy.atleast_1d(materials)
-            indexes = numpy.asarray([m.get_refractive_index(wavelength) for m in materials])
+            indexes = numpy.asarray([m.compute_refractive_index(wavelength) for m in materials])
         else:
             key = f"{name}_index" if name else "index"
 
@@ -122,9 +122,9 @@ class Sphere(BaseScatterer):
     source: Union[source.Gaussian, source.PlaneWave]
     diameter: Union[numpy.ndarray, List[float], float]
     medium_index: Union[numpy.ndarray, List[float], float, None] = None
-    medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    medium_material: Union[List[Material], Material, None] = None
     index: Union[numpy.ndarray, List[Any], Any] = None
-    material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    material: Union[List[Material], Material, None] = None
 
     available_measure_list = measure.__sphere__
 
@@ -214,11 +214,11 @@ class CoreShell(BaseScatterer):
     core_diameter: Union[numpy.ndarray, List[float], float]
     shell_width: Union[numpy.ndarray, List[float], float]
     medium_index: Union[numpy.ndarray, List[float], float, None] = None
-    medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    medium_material: Union[List[Material], Material, None] = None
     shell_index: Union[numpy.ndarray, List[Any], Any, None] = None
-    core_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    core_material: Union[List[Material], Material, None] = None
     core_index: Union[numpy.ndarray, List[Any], Any, None] = None
-    shell_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    shell_material: Union[List[Material], Material, None] = None
 
     available_measure_list = measure.__coreshell__
 
@@ -319,9 +319,9 @@ class Cylinder(BaseScatterer):
     source: Union[source.Gaussian, source.PlaneWave]
     diameter: Union[numpy.ndarray, List[float], float]
     medium_index: Union[numpy.ndarray, List[float], float, None] = None
-    medium_material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    medium_material: Union[List[Material], Material, None] = None
     index: Union[numpy.ndarray, List[Any], Any, None] = None
-    material: Union[List[Sellmeier | DataMeasurement], Sellmeier | DataMeasurement, None] = None
+    material: Union[List[Material], Material, None] = None
 
     available_measure_list = measure.__cylinder__
 
