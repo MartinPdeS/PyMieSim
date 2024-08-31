@@ -8,7 +8,7 @@
 | PyMieSim/experiment/detector.py    |       59 |        1 |       10 |        1 |     97% |       174 |
 | PyMieSim/experiment/measure.py     |       37 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/parameters.py  |       23 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/scatterer.py   |      118 |        1 |       16 |        1 |     99% |        86 |
+| PyMieSim/experiment/scatterer.py   |      118 |        2 |       16 |        2 |     97% |    86, 99 |
 | PyMieSim/experiment/setup.py       |       59 |        1 |       26 |        1 |     98% |        93 |
 | PyMieSim/experiment/source.py      |       50 |        2 |        8 |        0 |     97% |   137-143 |
 | PyMieSim/mesh.py                   |      111 |       15 |       28 |       11 |     81% |66->65, 67, 70->69, 71, 74->73, 75, 78->77, 79, 82->81, 86->85, 93->exit, 100->exit, 104->103, 108->107, 112->111, 179-183, 203-214 |
@@ -18,7 +18,7 @@
 | PyMieSim/single/scatterer.py       |      172 |        8 |       54 |       23 |     86% |36->35, 41->40, 46->45, 51->50, 56->55, 61->60, 66->65, 71->70, 76->75, 81->80, 86->85, 91->90, 96->95, 101->100, 106->105, 111->110, 116->115, 258, 264, 380, 404, 619->618, 620, 623->622, 624, 627->626, 628, 631->630, 632 |
 | PyMieSim/single/source.py          |       51 |        0 |        8 |        0 |    100% |           |
 | PyMieSim/special\_functions.py     |       49 |       24 |        4 |        0 |     51% |18-24, 53-56, 70-75, 130-135, 151-156 |
-|                          **TOTAL** | **1078** |   **72** |  **210** |   **43** | **91%** |           |
+|                          **TOTAL** | **1078** |   **73** |  **210** |   **44** | **90%** |           |
 
 
 ## Setup coverage badge
