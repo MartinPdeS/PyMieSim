@@ -55,6 +55,11 @@ add_library(ZBessel STATIC
 )
 target_link_options(ZBessel PUBLIC ${STATIC_LINK_OPTIONS})
 
+if (APPLE)
+    # On macOS, ensure that libquadmath is handled appropriately
+    target_link_libraries(ZBessel PRIVATE -static-libquadmath)
+endif()
+
 # Function to add pybind11 modules
 function(add_pymiesim_module name source)
     pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/interfaces/${source}")
