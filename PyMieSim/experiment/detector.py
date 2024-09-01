@@ -20,7 +20,7 @@ config_dict = ConfigDict(
 
 class BaseDetector():
     """
-    Base class for constructing detectors in Mie scattering simulations, managing common attributes and methods.
+    Base class for constructing detectors in Mie scattering simulations, managing common attributes and methods .
 
     This class is responsible for formatting input parameters, calculating detector characteristics, and
     binding detectors to a simulation experiment. It should be subclassed to create specific detector types.
