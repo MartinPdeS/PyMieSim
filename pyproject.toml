@@ -34,7 +34,7 @@ classifiers = [
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: Implementation :: CPython',
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 4 - Beta',
     'Topic :: Scientific/Engineering :: Physics',
     'License :: OSI Approved :: MIT License',
     'Intended Audience :: Science/Research',

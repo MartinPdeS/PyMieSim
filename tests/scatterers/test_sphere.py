@@ -5,17 +5,18 @@ import pytest
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyOptik import materials
+from PyOptik import UsualMaterial
 from unittest.mock import patch
+import matplotlib.pyplot as plt
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 core_configs = [
-    {'config': {'material': materials.BK7}, 'id': 'core:BK7'},
+    {'config': {'material': UsualMaterial.BK7}, 'id': 'core:BK7'},
     {'config': {'index': 1.6}, 'id': 'core:1.6'}
 ]
 
 medium_configs = [
-    {'config': {'medium_material': materials.water}, 'id': 'medium:water'},
+    {'config': {'medium_material': UsualMaterial.water}, 'id': 'medium:water'},
     {'config': {'medium_index': 1.4}, 'id': 'medium:index'}
 ]
 
@@ -120,6 +121,8 @@ def test_sphere_plottings(mock_show_plt, mock_show_pyvista, plotting_function, c
     data = getattr(scatterer, plotting_function)()
     data.plot()
     assert data is not None, "Plotting data should not be None"
+
+    plt.close()
 
 
 if __name__ == "__main__":

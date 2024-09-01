@@ -1,7 +1,7 @@
 *.DS_store
 *.ipynb_checkpoints*
 *__pycache__*
-*.so
+# *.so
 *.a
 
 .tox
@@ -9,6 +9,7 @@
 .coveragerc
 coverage.json
 *.pytest_cache
+htmlcov
 
 
 dist
@@ -19,7 +20,7 @@ perso/
 
 docs/source/Gallery
 docs/source/api
-development
+# development
 
 CMakeCache.txt
 CMakeFiles

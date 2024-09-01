@@ -9,18 +9,18 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
-from PyOptik import materials
+from PyOptik import UsualMaterial
 
 # Configure the core materials for the sphere
 core_options = [
-    {'name': 'crown', 'properties': {'material': materials.crown}},
-    {'name': 'fused silica', 'properties': {'material': materials.fused_silica}},
+    {'name': 'crown', 'properties': {'material': UsualMaterial.silver}},
+    {'name': 'fused silica', 'properties': {'material': UsualMaterial.fused_silica}},
     {'name': 'Index', 'properties': {'index': 1.4}}
 ]
 
 # Define medium options
 medium_options = [
-    {'name': 'water', 'properties': {'medium_material': materials.water}},
+    {'name': 'water', 'properties': {'medium_material': UsualMaterial.water}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 

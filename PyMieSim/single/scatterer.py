@@ -13,6 +13,7 @@ from pydantic.dataclasses import dataclass
 
 
 config_dict = dict(
+    arbitrary_types_allowed=True,
     kw_only=True,
     slots=True,
     extra='forbid'

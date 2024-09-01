@@ -5,24 +5,25 @@ import pytest
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyOptik import materials
+from PyOptik import UsualMaterial
 from unittest.mock import patch
+import matplotlib.pyplot as plt
 
 # Core and shell configurations with clear separation of test ids and parameters
 core_configs = [
-    {'config': {'core_material': materials.crown}, 'id': 'Shell:crown'},
-    {'config': {'core_material': materials.BK7}, 'id': 'Shell:BK7'},
+    {'config': {'core_material': UsualMaterial.iron}, 'id': 'Shell:iron'},
+    {'config': {'core_material': UsualMaterial.BK7}, 'id': 'Shell:BK7'},
     {'config': {'core_index': 1.6}, 'id': 'Shell:1.6'}
 ]
 
 shell_configs = [
-    {'config': {'shell_material': materials.BK7}, 'id': 'BK7'},
-    {'config': {'shell_material': materials.crown}, 'id': 'Core:crown'},
+    {'config': {'shell_material': UsualMaterial.BK7}, 'id': 'BK7'},
+    {'config': {'shell_material': UsualMaterial.iron}, 'id': 'Core:iron'},
     {'config': {'shell_index': 1.7}, 'id': 'Shell:1.7'}
 ]
 
 medium_configs = [
-    {'config': {'medium_material': materials.water}, 'id': 'Medium:water'},
+    {'config': {'medium_material': UsualMaterial.water}, 'id': 'Medium:water'},
     {'config': {'medium_index': 1.4}, 'id': 'Medium:1.4'}
 ]
 
@@ -149,6 +150,8 @@ def test_coreshell_plottings(mock_show_plt, mock_show_pyvista, plotting_function
     data = getattr(scatterer, plotting_function)()
     data.plot()
     assert data is not None, "Plotting data should not be None"
+
+    plt.close()
 
 
 if __name__ == "__main__":

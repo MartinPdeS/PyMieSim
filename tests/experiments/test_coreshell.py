@@ -9,28 +9,28 @@ from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
-from PyOptik import materials
+from PyOptik import UsualMaterial
 
 # Define core materials and properties
 core_options = [
-    {'name': 'BK7', 'properties': {'core_material': materials.BK7}},
-    {'name': 'fused silica', 'properties': {'core_material': materials.fused_silica}},
-    {'name': 'polystyren', 'properties': {'core_material': materials.polystyren}},
+    {'name': 'BK7', 'properties': {'core_material': UsualMaterial.BK7}},
+    {'name': 'fused silica', 'properties': {'core_material': UsualMaterial.fused_silica}},
+    {'name': 'polystyren', 'properties': {'core_material': UsualMaterial.polystyren}},
     {'name': 'Index', 'properties': {'core_index': 1.4}}
 ]
 
 # Define shell materials and properties
 shell_options = [
-    {'name': 'BK7', 'properties': {'shell_material': materials.BK7}},
-    {'name': 'fused silica', 'properties': {'shell_material': materials.fused_silica}},
-    {'name': 'polystyren', 'properties': {'shell_material': materials.polystyren}},
+    {'name': 'BK7', 'properties': {'shell_material': UsualMaterial.BK7}},
+    {'name': 'fused silica', 'properties': {'shell_material': UsualMaterial.fused_silica}},
+    {'name': 'polystyren', 'properties': {'shell_material': UsualMaterial.polystyren}},
     {'name': 'Index', 'properties': {'shell_index': 1.4}}
 ]
 
 # Define medium materials and properties
 medium_options = [
-    {'name': 'water', 'properties': {'medium_material': materials.water}},
-    {'name': 'fused silica', 'properties': {'medium_material': materials.fused_silica}},
+    {'name': 'water', 'properties': {'medium_material': UsualMaterial.water}},
+    {'name': 'fused silica', 'properties': {'medium_material': UsualMaterial.fused_silica}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 
