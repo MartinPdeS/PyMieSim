@@ -27,7 +27,7 @@ source = Gaussian(
 # Defining the scatterer distribution
 scatterer = Cylinder(
     diameter=np.linspace(1e-9, 800e-9, 300),  # Diameters ranging from 1 nm to 800 nm
-    material=[UsualMaterial.Silver, UsualMaterial.Gold, UsualMaterial.Aluminium],  # Scatterer materials
+    material=[UsualMaterial.silver, UsualMaterial.gold, UsualMaterial.aluminium],  # Scatterer materials
     medium_index=1,  # Refractive index of the surrounding medium
     source=source
 )

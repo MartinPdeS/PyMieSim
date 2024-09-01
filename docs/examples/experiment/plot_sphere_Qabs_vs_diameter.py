@@ -26,7 +26,7 @@ source = Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=np.linspace(1e-09, 800e-9, 300),
-    material=[UsualMaterial.Silver, UsualMaterial.Gold, UsualMaterial.Aluminium],
+    material=[UsualMaterial.silver, UsualMaterial.gold, UsualMaterial.aluminium],
     medium_index=1,
     source=source
 )
