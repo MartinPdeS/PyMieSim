@@ -55,7 +55,6 @@ dependencies = [
     "setuptools_scm[toml]>=8.0",
     "numpy>=1.26.0",
     "pydantic==2.8.2",
-    "scipy==1.11.3",
     "DataVisual>=1.5.0",
     "PyOptik>=1.3.0",
     "tabulate==0.9.0",
@@ -69,6 +68,7 @@ local_scheme = "no-local-version"
 [project.optional-dependencies]
 testing = [
     "pymiescatt",
+    "scipy==0.10.3",
     "pytest>=0.6",
     "pytest-cov>=2.0",
     "pytest-json-report==1.5.0",
@@ -80,6 +80,7 @@ testing = [
 
 documentation = [
     "pymiescatt",
+    "scipy==0.10.3",
     "numpydoc==1.8.0",
     "sphinx>=5.1.1",
     "sphinx-gallery==0.17.1",
@@ -122,7 +123,6 @@ manylinux-x86_64-image = "manylinux2014"
 repair-wheel-command = "auditwheel repair -w {dest_dir} {wheel}"
 
 [tool.cibuildwheel.macos]
-# environment =  {MACOSX_DEPLOYMENT_TARGET = "14.0"}
 archs = ["arm64"]
 build = ["cp310-*", "cp311-*", "cp312-*"]
 repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
