@@ -43,8 +43,8 @@ class BaseDetector():
         self.mode_number = numpy.atleast_1d(self.mode_number).astype(str)
         self.sampling = numpy.atleast_1d(self.sampling).astype(int)
         self.NA = numpy.atleast_1d(self.NA).astype(float)
-        self.phi_offset = numpy.deg2rad(numpy.atleast_1d(self.phi_offset).astype(float))
-        self.gamma_offset = numpy.deg2rad(numpy.atleast_1d(self.gamma_offset).astype(float))
+        self.phi_offset = numpy.atleast_1d(self.phi_offset).astype(float)
+        self.gamma_offset = numpy.atleast_1d(self.gamma_offset).astype(float)
         self.polarization_filter = numpy.deg2rad(numpy.atleast_1d(self.polarization_filter).astype(float))
         self.rotation = numpy.deg2rad(numpy.atleast_1d(self.rotation)).astype(float)
 
@@ -78,8 +78,8 @@ class BaseDetector():
             mode_number=self.mode_number,
             sampling=self.sampling,
             NA=self.NA,
-            phi_offset=self.phi_offset,
-            gamma_offset=self.gamma_offset,
+            phi_offset=numpy.deg2rad(self.phi_offset),
+            gamma_offset=numpy.deg2rad(self.gamma_offset),
             polarization_filter=self.polarization_filter,
             rotation=self.rotation,
             mean_coupling=self.mean_coupling,
