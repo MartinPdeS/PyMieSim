@@ -11,7 +11,7 @@ import numpy as np
 from PyMieSim import experiment
 from PyMieSim import single
 from PyMieSim.experiment import measure
-from PyOptik import UsualMaterial
+from PyOptik import Material
 
 # %%
 # Defining the source to be employed.
@@ -26,7 +26,7 @@ source = experiment.source.Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer = experiment.scatterer.Sphere(
     diameter=500e-9,
-    material=UsualMaterial.BK7,
+    material=Material.BK7,
     medium_index=1,
     source=source
 )
@@ -68,7 +68,7 @@ single_source = single.Gaussian(
 
 single_scatterer = single.scatterer.Sphere(
     diameter=500e-9,
-    material=UsualMaterial.BK7,
+    material=Material.BK7,
     medium_index=1,
     source=single_source
 )
