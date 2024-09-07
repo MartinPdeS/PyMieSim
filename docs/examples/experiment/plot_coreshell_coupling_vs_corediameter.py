@@ -13,7 +13,7 @@ from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
-from PyOptik import UsualMaterial
+from PyOptik import Material
 
 # %%
 # Defining the source
@@ -29,8 +29,8 @@ source = Gaussian(
 scatterer = CoreShell(
     core_diameter=numpy.geomspace(100e-9, 600e-9, 400),  # Core diameters from 100 nm to 600 nm
     shell_width=800e-9,  # Shell width of 800 nm
-    core_material=UsualMaterial.silver,  # Core material
-    shell_material=UsualMaterial.BK7,  # Shell material
+    core_material=Material.silver,  # Core material
+    shell_material=Material.BK7,  # Shell material
     medium_index=1,  # Surrounding medium's refractive index
     source=source
 )

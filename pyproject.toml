@@ -56,7 +56,7 @@ dependencies = [
     "numpy>=1.26.0",
     "pydantic==2.8.2",
     "DataVisual>=1.5.0",
-    "PyOptik>=1.5.0",
+    "PyOptik==1.5.*",
     "tabulate==0.9.0",
 ]
 

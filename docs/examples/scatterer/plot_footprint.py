@@ -9,7 +9,7 @@ This example demonstrates how to compute and visualize the footprint of a scatte
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.single.source import Gaussian
-from PyOptik import UsualMaterial
+from PyOptik import Material
 
 # Define the Gaussian light source with specified properties
 source = Gaussian(
@@ -24,7 +24,7 @@ scatterer = Sphere(
     diameter=2e-6,  # 2000 nm
     source=source,
     medium_index=1.0,  # Refractive index of the surrounding medium
-    material=UsualMaterial.BK7  # Using BK7 glass material
+    material=Material.BK7  # Using BK7 glass material
 )
 
 # Define the LPMode detector with specific parameters
