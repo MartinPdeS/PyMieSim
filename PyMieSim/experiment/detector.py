@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 from PyMieSim.binary.SetsInterface import CppDetectorSet
 from PyMieSim.experiment import parameters
-from typing import List, Union, NoReturn
+from typing import List, Union
 
 
 config_dict = ConfigDict(
@@ -35,7 +35,7 @@ class BaseDetector():
     This class is not intended for direct instantiation.
     """
 
-    def __post_init__(self) -> NoReturn:
+    def __post_init__(self) -> None:
         """
         Called automatically after the class initialization to prepare the detector by formatting inputs, computing
         field arrays, setting up rotation angles, and initializing visualization and C++ bindings.
@@ -69,7 +69,7 @@ class BaseDetector():
             'polarization_filter': None,
         }
 
-    def _initialize_binding(self) -> NoReturn:
+    def _initialize_binding(self) -> None:
         """
         Prepares and initializes the C++ bindings necessary for the simulation, configuring the detector with simulation
         parameters.
@@ -88,7 +88,7 @@ class BaseDetector():
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-    def _get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> None:
         """
         Compiles the detector's properties into a table format for data visualization.
 

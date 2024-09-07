@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import List, Union, NoReturn
+from typing import List, Union
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
@@ -46,7 +46,7 @@ class BaseSource:
         self.NA = numpy.atleast_1d(self.NA).astype(float)
         self.optical_power = numpy.atleast_1d(self.optical_power).astype(float)
 
-    def _get_datavisual_table(self) -> NoReturn:
+    def _get_datavisual_table(self) -> None:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -91,7 +91,7 @@ class Gaussian(BaseSource):
     optical_power: Union[numpy.ndarray, List[float], float]
     name: str = field(default='PlaneWave', init=False)
 
-    def _generate_binding(self) -> NoReturn:
+    def _generate_binding(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
@@ -126,7 +126,7 @@ class PlaneWave(BaseSource):
     amplitude: Union[numpy.ndarray, List[float], float]
     name: str = field(default='PlaneWave', init=False)
 
-    def _generate_binding(self) -> NoReturn:
+    def _generate_binding(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.

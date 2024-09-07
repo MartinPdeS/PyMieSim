@@ -5,6 +5,7 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import plot_system
 from math import sqrt
+import matplotlib.pyplot as plt
 
 @pytest.fixture
 def source():
@@ -68,6 +69,8 @@ def test_plot_system(mock_show, source, scatterer, detector):
     """
     spf = scatterer.get_spf()
     plot_system(source, detector, spf)
+
+    plt.close()
 
     # Ensure the show method was called exactly once
     mock_show.assert_called_once()

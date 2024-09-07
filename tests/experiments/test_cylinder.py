@@ -9,18 +9,18 @@ from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
-from PyOptik import UsualMaterial
+from PyOptik import Material
 
 # Material configurations for the cylinder core
 core_options = [
-    {'name': 'BK7', 'properties': {'material': UsualMaterial.BK7}},
-    {'name': 'crown glass', 'properties': {'material': UsualMaterial.silver}},
+    {'name': 'BK7', 'properties': {'material': Material.BK7}},
+    {'name': 'crown glass', 'properties': {'material': Material.silver}},
     {'name': 'Index', 'properties': {'index': 1.4}}
 ]
 
 # Medium configurations
 medium_options = [
-    {'name': 'water', 'properties': {'medium_material': UsualMaterial.water}},
+    {'name': 'water', 'properties': {'medium_material': Material.water}},
     {'name': 'Index', 'properties': {'medium_index': 1.1}}
 ]
 

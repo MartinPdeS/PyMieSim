@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 from DataVisual import Array, Table
 from PyMieSim.binary.Experiment import CppExperiment
 
-from typing import Union, NoReturn, Optional
+from typing import Union, Optional
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
@@ -41,7 +41,7 @@ class Setup(object):
         self._initialize_experiment()
         self._bind_components()
 
-    def _initialize_experiment(self) -> NoReturn:
+    def _initialize_experiment(self) -> None:
         """
         Initializes the experiment with necessary bindings.
         """
@@ -61,13 +61,13 @@ class Setup(object):
         if self.detector is not None:
             self.binding.set_detector(self.detector.binding)
 
-    def _generate_datavisual_table(self) -> NoReturn:
+    def _generate_datavisual_table(self) -> None:
         """
         Generates and populates the 'x_table' with parameters from the source, scatterer, and detector sets.
         This table is instrumental for data visualization and analysis.
 
         Returns:
-            NoReturn
+            None
         """
         self.x_table = []
         self.x_table.extend(self.source._get_datavisual_table())

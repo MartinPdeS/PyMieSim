@@ -5,7 +5,7 @@ import numpy
 import logging
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from typing import Union, Optional, Tuple, NoReturn
+from typing import Union, Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.DetectorInterface import BindedDetector
@@ -78,7 +78,7 @@ class GenericDetector():
             unit_size: Tuple[float, float] = (600, 600),
             background_color: str = 'black',
             show_axis_label: bool = False,
-            colormap: str = blue_black_red) -> NoReturn:
+            colormap: str = blue_black_red) -> None:
         """
         Plot the real and imaginary parts of the scattered fields in a 3D scene.
 
@@ -93,7 +93,7 @@ class GenericDetector():
             colormap (str): The colormap to use for the scalar field. Default is 'blue_black_red'.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the 3D plot.
+            None: This method does not return a value. It displays the 3D plot.
         """
         # Stack the mesh coordinates
         coordinates = numpy.row_stack((
@@ -124,7 +124,7 @@ class GenericDetector():
         # Display the scene
         scene.show()
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, colormap: str = blue_black_red) -> NoReturn:
+    def _add_to_3d_ax(self, scene: pyvista.Plotter, colormap: str = blue_black_red) -> None:
         """
         Adds the scalar field and a directional cone to a 3D PyVista plotting scene.
 
@@ -137,7 +137,7 @@ class GenericDetector():
             colormap (str): The colormap to use for the scalar field visualization.
 
         Returns:
-            NoReturn: This method does not return a value. It modifies the provided scene.
+            None: This method does not return a value. It modifies the provided scene.
         """
         # Stack the mesh coordinates into a single array
         coordinates = numpy.row_stack((

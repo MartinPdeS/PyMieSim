@@ -5,25 +5,25 @@ import pytest
 from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyOptik import UsualMaterial
+from PyOptik import Material
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 
 # Core and shell configurations with clear separation of test ids and parameters
 core_configs = [
-    {'config': {'core_material': UsualMaterial.iron}, 'id': 'Shell:iron'},
-    {'config': {'core_material': UsualMaterial.BK7}, 'id': 'Shell:BK7'},
+    {'config': {'core_material': Material.iron}, 'id': 'Shell:iron'},
+    {'config': {'core_material': Material.BK7}, 'id': 'Shell:BK7'},
     {'config': {'core_index': 1.6}, 'id': 'Shell:1.6'}
 ]
 
 shell_configs = [
-    {'config': {'shell_material': UsualMaterial.BK7}, 'id': 'BK7'},
-    {'config': {'shell_material': UsualMaterial.iron}, 'id': 'Core:iron'},
+    {'config': {'shell_material': Material.BK7}, 'id': 'BK7'},
+    {'config': {'shell_material': Material.iron}, 'id': 'Core:iron'},
     {'config': {'shell_index': 1.7}, 'id': 'Shell:1.7'}
 ]
 
 medium_configs = [
-    {'config': {'medium_material': UsualMaterial.water}, 'id': 'Medium:water'},
+    {'config': {'medium_material': Material.water}, 'id': 'Medium:water'},
     {'config': {'medium_index': 1.4}, 'id': 'Medium:1.4'}
 ]
 

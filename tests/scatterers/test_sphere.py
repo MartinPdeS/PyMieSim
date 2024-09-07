@@ -5,18 +5,18 @@ import pytest
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
-from PyOptik import UsualMaterial
+from PyOptik import Material
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 core_configs = [
-    {'config': {'material': UsualMaterial.BK7}, 'id': 'core:BK7'},
+    {'config': {'material': Material.BK7}, 'id': 'core:BK7'},
     {'config': {'index': 1.6}, 'id': 'core:1.6'}
 ]
 
 medium_configs = [
-    {'config': {'medium_material': UsualMaterial.water}, 'id': 'medium:water'},
+    {'config': {'medium_material': Material.water}, 'id': 'medium:water'},
     {'config': {'medium_index': 1.4}, 'id': 'medium:index'}
 ]
 

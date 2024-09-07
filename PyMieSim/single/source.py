@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union, NoReturn
+from typing import Union
 import numpy
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 
 from PyMieSim.polarization import UnitPolarizationAngle
 from PyMieSim.special_functions import NA_to_angle
-from MPSPlots.render3D import SceneList as SceneList3D
 from PyMieSim.binary.SourceInterface import BindedGaussian, BindedPlanewave, BindedBaseSource  # noqa: F401
 import pyvista
 
@@ -35,7 +34,7 @@ class PlaneWave():
     polarization: Union[UnitPolarizationAngle, float]
     amplitude: float = 1
 
-    def __post_init__(self) -> NoReturn:
+    def __post_init__(self) -> None:
         if not isinstance(self.polarization, UnitPolarizationAngle):
             self.polarization = UnitPolarizationAngle(self.polarization)
 
@@ -47,7 +46,7 @@ class PlaneWave():
             jones_vector=self.polarization.jones_vector
         )
 
-    def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> NoReturn:
+    def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:
         """
         Plots the 3D structure of the Gaussian source.
 
@@ -60,7 +59,7 @@ class PlaneWave():
             show_axis_label (bool): If True, axis labels will be shown. Default is False.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the 3D plot.
+            None: This method does not return a value. It displays the 3D plot.
         """
         # Create a 3D plotting scene
         scene = pyvista.Plotter()
@@ -75,7 +74,7 @@ class PlaneWave():
         scene.show()
 
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> NoReturn:
+    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
 
@@ -88,7 +87,7 @@ class PlaneWave():
             opacity (float): The opacity of the cone mesh. Default is 0.8.
 
         Returns:
-            NoReturn: This method does not return a value. It adds the cone mesh to the provided scene.
+            None: This method does not return a value. It adds the cone mesh to the provided scene.
         """
         # Define the cylinder parameters
         cylinder_mesh = pyvista.Cylinder(
@@ -121,7 +120,7 @@ class Gaussian():
     NA: float
     amplitude: float = field(init=False, repr=False)
 
-    def __post_init__(self) -> NoReturn:
+    def __post_init__(self) -> None:
         if not isinstance(self.polarization, UnitPolarizationAngle):
             self.polarization = UnitPolarizationAngle(self.polarization)
 
@@ -134,7 +133,7 @@ class Gaussian():
             jones_vector=self.polarization.jones_vector
         )
 
-    def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> NoReturn:
+    def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:
         """
         Plots the 3D structure of the Gaussian source.
 
@@ -147,7 +146,7 @@ class Gaussian():
             show_axis_label (bool): If True, axis labels will be shown. Default is False.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the 3D plot.
+            None: This method does not return a value. It displays the 3D plot.
         """
         # Create a 3D plotting scene
         scene = pyvista.Plotter()
@@ -166,7 +165,7 @@ class Gaussian():
         scene.show()
 
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> NoReturn:
+    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
 
@@ -179,7 +178,7 @@ class Gaussian():
             opacity (float): The opacity of the cone mesh. Default is 0.8.
 
         Returns:
-            NoReturn: This method does not return a value. It adds the cone mesh to the provided scene.
+            None: This method does not return a value. It adds the cone mesh to the provided scene.
         """
         # Calculate the maximum angle from the numerical aperture (NA)
         max_angle = numpy.rad2deg(NA_to_angle(NA=self.NA))

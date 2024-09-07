@@ -12,7 +12,7 @@ import numpy
 import MPSPlots
 from dataclasses import dataclass
 from PyMieSim.special_functions import spherical_to_cartesian, rotate_on_x
-from typing import Union, NoReturn, List
+from typing import Union, List
 import pyvista
 from MPSPlots.colormaps import blue_black_red
 import matplotlib.pyplot as plt
@@ -205,7 +205,7 @@ class Stokes(BaseRepresentation):
             colormap: str = blue_black_red,
             opacity: float = 1.0,
             symmetric_colormap: bool = False,
-            show_axis_label: bool = False) -> NoReturn:
+            show_axis_label: bool = False) -> None:
         """
         Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.
 
@@ -219,7 +219,7 @@ class Stokes(BaseRepresentation):
             show_axis_label (bool): If True, shows the axis labels. Default is False.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the 3D visualization.
+            None: This method does not return a value. It displays the 3D visualization.
         """
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
         x, y, z = spherical_to_cartesian(r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh)
@@ -286,7 +286,7 @@ class FarField(BaseRepresentation):
             colormap: str = blue_black_red,
             opacity: float = 1.0,
             symmetric_colormap: bool = False,
-            show_axis_label: bool = False) -> NoReturn:
+            show_axis_label: bool = False) -> None:
         """
         Visualizes the Far field (in phi and theta vector projections) on a 3D plot.
 
@@ -300,7 +300,7 @@ class FarField(BaseRepresentation):
             show_axis_label (bool): If True, shows the axis labels. Default is False.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the 3D visualization.
+            None: This method does not return a value. It displays the 3D visualization.
         """
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
         x, y, z = spherical_to_cartesian(r=numpy.full_like(phi_mesh, 0.5), phi=phi_mesh, theta=theta_mesh)
@@ -377,7 +377,7 @@ class SPF(BaseRepresentation):
             colormap: str = 'viridis',
             opacity: float = 1.0,
             set_surface: bool = True,
-            show_axis_label: bool = False) -> NoReturn:
+            show_axis_label: bool = False) -> None:
         """
         Visualizes the scattering phase function on a 3D plot.
 
@@ -395,7 +395,7 @@ class SPF(BaseRepresentation):
             show_axis_label (bool): If True, shows the axis labels. Default is False.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the 3D visualization.
+            None: This method does not return a value. It displays the 3D visualization.
         """
         # Define the window size based on the unit size provided
         window_size = (unit_size[1], unit_size[0])  # One subplot
@@ -424,7 +424,7 @@ class SPF(BaseRepresentation):
         # Display the scene
         scene.show()
 
-    def _add_to_3d_ax(self, scene: pyvista.Plotter, set_surface: bool = False, show_edges: bool = False, colormap: str = 'viridis', opacity: float = 1.0) -> NoReturn:
+    def _add_to_3d_ax(self, scene: pyvista.Plotter, set_surface: bool = False, show_edges: bool = False, colormap: str = 'viridis', opacity: float = 1.0) -> None:
         """
         Adds a 3D surface plot to the provided PyVista scene based on the scattering phase function (SPF).
 
@@ -440,7 +440,7 @@ class SPF(BaseRepresentation):
             opacity (float): The opacity of the surface mesh. Default is 1.0.
 
         Returns:
-            NoReturn: This method does not return a value. It modifies the provided scene.
+            None: This method does not return a value. It modifies the provided scene.
         """
         # Create mesh grids for phi and theta
         phi_mesh, theta_mesh = numpy.meshgrid(self.phi, self.theta)
@@ -505,7 +505,7 @@ class S1S2():
         """
         self.S1, self.S2 = self.scatterer.binding.get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
 
-    def plot(self) -> NoReturn:
+    def plot(self) -> None:
         """
         Plots the S1 and S2 Stokes parameters on polar plots.
 
@@ -513,7 +513,7 @@ class S1S2():
         for the S2 parameter, filling the area between the radial axis and the parameter values.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the polar plots.
+            None: This method does not return a value. It displays the polar plots.
         """
         with plt.style.context(MPSPlots.styles.mps):
             figure, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={'polar': True})
@@ -655,7 +655,7 @@ class Footprint():
 
         return central_portion
 
-    def plot(self, colormap: str = 'gray') -> NoReturn:
+    def plot(self, colormap: str = 'gray') -> None:
         """
         Plots the scatterer footprint using a 2D colormap.
 
@@ -666,7 +666,7 @@ class Footprint():
             colormap (str): The colormap to use for the plot. Default is 'gray'.
 
         Returns:
-            NoReturn: This method does not return a value. It displays the scatterer footprint plot.
+            None: This method does not return a value. It displays the scatterer footprint plot.
         """
         with plt.style.context(MPSPlots.styles.mps):
             figure, ax = plt.subplots()
