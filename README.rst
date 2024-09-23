@@ -265,8 +265,9 @@ Email:`martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmai
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
     :target: https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing
 
-.. |docs| image:: https://readthedocs.org/projects/pymiesim/badge/?version=latest
-    :target: https://pymiesim.readthedocs.io/en/latest/
+.. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg
+   :target: https://martinpdes.github.io/PyMieSim/
+   :alt: Documentation Status
 
 .. |PyPi| image:: https://badge.fury.io/py/PyMieSim.svg
     :target: https://badge.fury.io/py/PyMieSim
