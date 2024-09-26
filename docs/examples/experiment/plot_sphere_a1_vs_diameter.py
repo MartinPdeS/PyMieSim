@@ -13,21 +13,22 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=400e-9,
-    polarization=0,
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=400 * nanometer,
+    polarization=0 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=np.linspace(100e-9, 10000e-9, 1000),
-    index=1.4,
-    medium_index=1,
+    diameter=np.linspace(100, 10000, 1000) * nanometer,
+    index=1.4 * RIU,
+    medium_index=1 * RIU,
     source=source
 )
 
@@ -40,8 +41,8 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.get(measure.a1)
+dataframe = experiment.get(measure.a1)
 
 # %%
 # Plotting the results
-data.plot(x=scatterer.diameter)
+dataframe.plot_data(x='diameter')

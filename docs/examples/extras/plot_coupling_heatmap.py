@@ -15,36 +15,37 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import degree, watt, AU, nanometer, RIU
 
-from MPSPlots.render2D import SceneList
+import matplotlib.pyplot as plt
 
 
-index = numpy.linspace(1.3, 2.1, 300)
+index = numpy.linspace(1.3, 2.1, 300) * RIU
 
-diameter = numpy.linspace(1e-9, 2000e-9, 200)
+diameter = numpy.linspace(1, 2000, 200) * nanometer
 
 source = Gaussian(
-    wavelength=400e-9,
-    polarization=90,
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=400 * nanometer,
+    polarization=90 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
 )
 
 
 scatterer = Sphere(
     diameter=diameter,
     index=index,
-    medium_index=1,
+    medium_index=1 * RIU,
     source=source
 )
 
 
 detector = Photodiode(
-    polarization_filter=None,
-    NA=0.3,
-    phi_offset=0,
-    gamma_offset=0,
-    sampling=400
+    polarization_filter=0 * degree,
+    NA=0.3 * RIU,
+    phi_offset=0 * degree,
+    gamma_offset=0 * degree,
+    sampling=400 * AU
 )
 
 experiment = Setup(
@@ -53,31 +54,19 @@ experiment = Setup(
     detector=detector
 )
 
-data = experiment.get(measure.coupling)
+data = experiment.get(measure.coupling, export_as='numpy')
 
-data = abs(data.y.values.squeeze())
+data = abs(data.squeeze())
 
-figure = SceneList(unit_size=(6, 6))
 
-ax = figure.append_ax(
-    x_label="Permittivity",
-    y_label=r'Diameter [$\mu$m]',
+figure, ax = plt.subplots(1, 1)
+
+image = ax.pcolormesh(index, diameter * 1e6, data, shading='auto')
+ax.set(
+    xlabel="Permittivity",
+    ylabel=r'Diameter [$\mu$m]',
     title="Coupling power [Watt]"
 )
+plt.colorbar(mappable=image)
 
-artist = ax.add_mesh(
-    x=index,
-    y=diameter,
-    scalar=data,
-    y_scale_factor=1e6,
-)
-
-_ = ax.add_colorbar(
-    colormap='viridis',
-    artist=artist,
-    symmetric=False,
-    numeric_format='%.3e'
-)
-
-
-_ = figure.show()
+plt.show()

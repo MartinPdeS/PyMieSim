@@ -4,12 +4,14 @@
 from typing import List, Union
 import numpy
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
+from pydantic import ConfigDict, validator
 from dataclasses import field
+import pint_pandas
 
-from PyMieSim.experiment import parameters
 from PyMieSim import polarization
+from PyMieSim.units import degree
 from PyMieSim.binary.SetsInterface import CppSourceSet
+from PyMieSim.units import Quantity, meter
 
 config_dict = ConfigDict(
     kw_only=True,
@@ -26,27 +28,32 @@ class BaseSource:
     """
 
     def __post_init__(self):
-        self.mapping = {
-            'wavelength': None,
-            'polarization': None,
-            'NA': None,
-            'optical_power': None
-        }
-
-        self._format_inputs()
-        self._generate_binding()
-
-    def _format_inputs(self):
-        """Formats input wavelengths and polarization values into numpy arrays."""
-        self.wavelength = numpy.atleast_1d(self.wavelength).astype(float)
+        self.mapping = {}
 
         if not isinstance(self.polarization, polarization.BasePolarization):
             self.polarization = polarization.Linear(self.polarization)
 
-        self.NA = numpy.atleast_1d(self.NA).astype(float)
-        self.optical_power = numpy.atleast_1d(self.optical_power).astype(float)
+        self._generate_binding_kwargs()
 
-    def _get_datavisual_table(self) -> None:
+        binding_kwargs = {
+            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
+        }
+
+        self.binding = CppSourceSet(**binding_kwargs)
+
+    @validator('wavelength', pre=True, always=True)
+    def validate_length_quantity(cls, value):
+        """
+        Ensures that diameter is Quantity objects with length units."""
+        if not isinstance(value, Quantity):
+            raise ValueError(f"{value} must be a Quantity with meters units.")
+
+        if not value.check(meter):
+            raise ValueError(f"{value} must have length units (meters).")
+
+        return numpy.atleast_1d(value)
+
+    def _generate_mapping(self) -> None:
         """
         Appends the scatterer's properties to a given table for visualization purposes. This enables the
         representation of scatterer properties in graphical formats.
@@ -57,19 +64,11 @@ class BaseSource:
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        self.mapping['wavelength'] = parameters.wavelength
-        self.mapping['wavelength'].set_base_values(self.wavelength)
+        self.mapping['wavelength'] = pint_pandas.PintArray(self.wavelength, dtype=self.wavelength.units)
+        self.mapping['polarization'] = pint_pandas.PintArray(self.polarization.angles, dtype=degree)
+        self.mapping['source_NA'] = pint_pandas.PintArray(self.NA, dtype=self.NA.units)
+        self.mapping['optical_power'] = pint_pandas.PintArray(self.optical_power, dtype=self.optical_power.units)
 
-        self.mapping['polarization'] = parameters.polarization
-        self.mapping['polarization'].set_base_values(self.polarization.elements)
-
-        self.mapping['NA'] = parameters.NA_source
-        self.mapping['NA'].set_base_values(self.NA)
-
-        self.mapping['optical_power'] = parameters.optical_power
-        self.mapping['optical_power'].set_base_values(self.optical_power)
-
-        return [v for k, v in self.mapping.items() if v is not None]
 
 
 @dataclass(config=config_dict)
@@ -80,18 +79,39 @@ class Gaussian(BaseSource):
     Inherits from BaseSource and adds specific attributes for Gaussian sources.
 
     Attributes:
-        wavelength (List): The wavelength(s) of the light source.
+        wavelength (Quantity): The wavelength(s) of the light source.
         polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
         NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
     """
-    wavelength: Union[numpy.ndarray, List[float], float]
-    polarization: Union[polarization.BasePolarization, numpy.ndarray, List[float], float]
-    NA: Union[numpy.ndarray, List[float], float]
-    optical_power: Union[numpy.ndarray, List[float], float]
+    wavelength: Quantity
+    polarization: Union[polarization.BasePolarization, Quantity]
+    NA: Quantity
+    optical_power: Quantity
+
     name: str = field(default='PlaneWave', init=False)
 
-    def _generate_binding(self) -> None:
+    @validator('wavelength', pre=True, always=True)
+    def validate_length_quantity(cls, value):
+        """
+        Ensures that diameter is Quantity objects with length units."""
+        if not isinstance(value, Quantity):
+            raise ValueError(f"{value} must be a Quantity with meters units.")
+
+        if not value.check(meter):
+            raise ValueError(f"{value} must have length units (meters).")
+
+        return numpy.atleast_1d(value)
+
+    @validator('polarization', 'NA', 'optical_power', pre=True)
+    def validate_array(cls, value):
+        """Ensure that arrays are properly converted to numpy arrays."""
+        if not isinstance(value, numpy.ndarray):
+            value = numpy.atleast_1d(value)
+
+        return value
+
+    def _generate_binding_kwargs(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
@@ -106,8 +126,6 @@ class Gaussian(BaseSource):
             optical_power=self.optical_power
         )
 
-        self.binding = CppSourceSet(**self.binding_kwargs)
-
 
 @dataclass(config=config_dict)
 class PlaneWave(BaseSource):
@@ -117,16 +135,17 @@ class PlaneWave(BaseSource):
     Inherits from BaseSource and specifies amplitude directly.
 
     Attributes:
-        wavelength (List): The wavelength(s) of the light source.
+        wavelength (Quantity): The wavelength(s) of the light source.
         polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        amplitude (float): The amplitude of the plane wave, in Watts.
+        amplitude (Quantity): The amplitude of the plane wave, in Watts.
     """
-    wavelength: Union[numpy.ndarray, List[float], float]
-    polarization: Union[polarization.JonesVector, numpy.ndarray, List[float], float]
-    amplitude: Union[numpy.ndarray, List[float], float]
+    wavelength: Quantity
+    polarization: Union[polarization.JonesVector, Quantity]
+    amplitude: Quantity
+
     name: str = field(default='PlaneWave', init=False)
 
-    def _generate_binding(self) -> None:
+    def _generate_binding_kwargs(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
@@ -139,7 +158,5 @@ class PlaneWave(BaseSource):
             jones_vector=self.polarization.jones_vector,
             amplitude=self.amplitude
         )
-
-        self.binding = CppSourceSet(**self.binding_kwargs)
 
 # -

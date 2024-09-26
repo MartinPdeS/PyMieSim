@@ -12,22 +12,23 @@ from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=[500e-9, 1000e-9, 1500e-9],  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
-    polarization=30,  # Polarization angle in degrees
-    optical_power=1e-3,  # 1 milliwatt
-    NA=0.2  # Numerical Aperture
+    wavelength=[500, 1000, 1500] * nanometer,  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
+    polarization=30 * degree,  # Polarization angle in degrees
+    optical_power=1e-3 * watt,  # 1 milliwatt
+    NA=0.2 * AU # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer distribution
 scatterer = Cylinder(
-    diameter=np.geomspace(6.36e-9, 10000e-9, 1000),  # Diameters ranging from ~6.36 nm to 10000 nm
-    index=[1.4],  # Refractive index of the cylinder
-    medium_index=1,  # Refractive index of the surrounding medium
+    diameter=np.geomspace(6.36, 10000, 1000) * nanometer,  # Diameters ranging from ~6.36 nm to 10000 nm
+    index=[1.4] * RIU,  # Refractive index of the cylinder
+    medium_index=1 * RIU,  # Refractive index of the surrounding medium
     source=source
 )
 
@@ -40,12 +41,9 @@ experiment = Setup(
 
 # %%
 # Measuring the scattering efficiency (Qsca)
-data = experiment.get(measure.Qsca)
+dataframe = experiment.get(measure.Qsca)
 
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with the cylinder diameter.
-data.plot(
-    x=scatterer.diameter,  # Cylinder diameter as the x-axis
-    y_scale='linear'  # Linear scale for the y-axis
-)
+dataframe.plot_data(x='diameter')

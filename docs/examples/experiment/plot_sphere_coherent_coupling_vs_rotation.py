@@ -14,21 +14,22 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 from PyMieSim.experiment import measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=1200e-9,
-    polarization=90,
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=1200 * nanometer,
+    polarization=90 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=[2000e-9, 2300e-9],
+    diameter=[2000 * nanometer, 2300 * nanometer],
     material=Material.BK7,
-    medium_index=1,
+    medium_index=1 * RIU,
     source=source
 )
 
@@ -37,10 +38,10 @@ scatterer = Sphere(
 detector = CoherentMode(
     mode_number='HG11',
     NA=[0.05],
-    phi_offset=0,
-    gamma_offset=20,
+    phi_offset=0 * degree,
+    gamma_offset=20 * degree,
     sampling=400,
-    rotation=numpy.linspace(0, 180, 200),
+    rotation=numpy.linspace(0, 180, 200) * degree,
     polarization_filter=None
 )
 
@@ -54,8 +55,8 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.get(measure.coupling)
+dataframe = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
-data.plot(x=detector.rotation)
+dataframe.plot_data(x="rotation")

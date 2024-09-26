@@ -14,31 +14,32 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 from PyMieSim.experiment import measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=1.2e-6,  # 1200 nm
-    polarization=90,  # Polarization angle in degrees
-    optical_power=1e-3,  # 1 milliwatt
-    NA=0.2  # Numerical Aperture
+    wavelength=1200 * nanometer,  # 1200 nm
+    polarization=90 * degree,  # Polarization angle in degrees
+    optical_power=1e-3 * watt,  # 1 milliwatt
+    NA=0.2 * AU # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer distribution
 scatterer = Cylinder(
-    diameter=2e-6,  # 2000 nm
+    diameter=2000 * nanometer,  # 2000 nm
     material=Material.BK7,  # Material of the cylinder
-    medium_index=1,  # Refractive index of the surrounding medium
+    medium_index=1 * RIU,  # Refractive index of the surrounding medium
     source=source
 )
 
 # %%
 # Defining the detector
 detector = Photodiode(
-    NA=[0.5, 0.3, 0.1, 0.05],  # Array of Numerical Apertures for the detector
-    phi_offset=np.linspace(-180, 180, 400),  # Angular displacement from -180 to 180 degrees
-    gamma_offset=0,  # Gamma offset in degrees
+    NA=[0.5, 0.3, 0.1, 0.05] * AU,  # Array of Numerical Apertures for the detector
+    phi_offset=np.linspace(-180, 180, 400) * degree,  # Angular displacement from -180 to 180 degrees
+    gamma_offset=0 * degree,  # Gamma offset in degrees
     sampling=400,  # Number of sampling points
     polarization_filter=None  # No polarization filter
 )
@@ -53,13 +54,9 @@ experiment = Setup(
 
 # %%
 # Measuring the coupling efficiency
-data = experiment.get(measure.coupling)
+dataframe = experiment.get(measure.coupling)
 
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with angular displacement.
-data.plot(
-    x=detector.phi_offset,  # Angular displacement as the x-axis
-    y_scale='log',  # Logarithmic scale for the y-axis
-    normalize=True  # Normalizing the results
-)
+dataframe.plot_data(x="phi_offset")

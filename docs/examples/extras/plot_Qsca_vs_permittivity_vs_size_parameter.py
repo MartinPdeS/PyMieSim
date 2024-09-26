@@ -16,28 +16,30 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import degree, watt, AU, nanometer, RIU
 
+import matplotlib.pyplot as plt
 from MPSPlots.render2D import SceneList
 
 
 permitivity = numpy.linspace(-10, 50, 400)
 
-index = numpy.sqrt(permitivity.astype(complex))
+index = numpy.sqrt(permitivity.astype(complex)) * RIU
 
-diameter = numpy.linspace(1e-9, 200e-9, 400)
+diameter = numpy.linspace(1, 200, 400) * nanometer
 
 source = Gaussian(
-    wavelength=400e-9,
-    polarization=90,
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=400 * nanometer,
+    polarization=90 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
 )
 
 
 scatterer = Sphere(
     diameter=diameter,
     index=index,
-    medium_index=1,
+    medium_index=1 * RIU,
     source=source
 )
 
@@ -46,25 +48,19 @@ experiment = Setup(
     source=source
 )
 
-data = experiment.get(measure.Qsca)
+data = experiment.get(measure.Qsca, export_as='numpy')
 
-data = abs(data.y.values.squeeze())
+data = abs(data.squeeze())
 
-figure = SceneList(unit_size=(6, 6))
-
-ax = figure.append_ax(
-    x_label="Permittivity",
-    y_label=r'Diameter [$\mu$ m]',
+figure, ax = plt.subplots(1, 1)
+ax.set(
+    xlabel="Permittivity",
+    ylabel=r'Diameter [$\mu$ m]',
     title="Scattering efficiency of a sphere"
 )
 
-artist = ax.add_mesh(
-    x=permitivity,
-    y=diameter,
-    scalar=numpy.log(data),
-    y_scale_factor=1e6,
-)
+image = ax.pcolormesh(permitivity, diameter, numpy.log(data))
 
-_ = ax.add_colorbar(artist=artist, colormap='viridis')
+plt.colorbar(mappable=image)
 
-_ = figure.show()
+plt.show()

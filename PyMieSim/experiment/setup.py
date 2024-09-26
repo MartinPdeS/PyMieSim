@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy
+import pandas as pd
 from pydantic.dataclasses import dataclass
 
 from DataVisual import Array, Table
@@ -11,10 +12,11 @@ from typing import Union, Optional
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
+from PyMieSim.utils import generate_dataframe, plot_dataframe
 
 
 @dataclass
-class Setup(object):
+class Setup:
     """
     Orchestrates the setup and execution of light scattering experiments using PyMieSim.
 
@@ -61,34 +63,25 @@ class Setup(object):
         if self.detector is not None:
             self.binding.set_detector(self.detector.binding)
 
-    def _generate_datavisual_table(self) -> None:
-        """
-        Generates and populates the 'x_table' with parameters from the source, scatterer, and detector sets.
-        This table is instrumental for data visualization and analysis.
-
-        Returns:
-            None
-        """
-        self.x_table = []
-        self.x_table.extend(self.source._get_datavisual_table())
-        self.x_table.extend(self.scatterer._get_datavisual_table())
+    def _generate_mapping(self) -> None:
+        self.source._generate_mapping()
+        self.scatterer._generate_mapping()
 
         if self.detector:
-            self.x_table.extend(self.detector._get_datavisual_table())
+            self.detector._generate_mapping()
 
-    def get(self, measure: Table, export_as_numpy: bool = False) -> Union[numpy.ndarray, Array]:
+    def get(self, measure: Table, export_as: str = 'dataframe') -> Union[numpy.ndarray, Array]:
         """
         Executes the simulation to compute and retrieve the specified measure.
 
         Parameters:
             measure (Table): The measure to be computed by the simulation, defined by the user.
-            export_as_numpy (bool): Determines the format of the returned data. If True, returns a numpy array,
-                                    otherwise returns a Array object for enhanced visualization capabilities.
+            export_as (bool): Determines the format of the returned data. If True, returns a numpy array, otherwise returns a Array object for enhanced visualization capabilities.
 
         Returns:
-            Union[numpy.ndarray, Array]: The computed data in the specified format, either as raw numerical
-                                              values in a numpy array or structured for visualization with Array.
+            Union[numpy.ndarray, Array]: The computed data in the specified format, either as raw numerical values in a numpy array or structured for visualization with Array.
         """
+
         if measure.short_label not in self.scatterer.available_measure_list:
             raise ValueError(f"Cannot compute {measure.short_label} for {self.scatterer.__class__.__name__.lower()}")
 
@@ -96,10 +89,21 @@ class Setup(object):
 
         array = getattr(self.binding, measure_string)()
 
-        if export_as_numpy:
-            return self._export_as_numpy(array)
+        self._generate_mapping()
 
-        return self._export_as_data_visual(measure, array)
+        match export_as.lower():
+            case 'dataframe':
+                return self.export_as_dataframe(measure, array)
+            case 'numpy':
+                return self._export_as_numpy(array)
+
+    def export_as_dataframe(self, measure, array: numpy.ndarray) -> pd.DataFrame:
+        df = generate_dataframe(experiment=self, is_complex=numpy.iscomplex(array).any())
+        setattr(df.__class__, 'plot_data', plot_dataframe)
+
+        df[measure.short_label] = array.ravel().view(float)
+
+        return df
 
     def _export_as_numpy(self, array: numpy.array) -> numpy.array:
         for k, v in self.source.binding_kwargs.items():
@@ -112,18 +116,5 @@ class Setup(object):
 
         return array
 
-    def _export_as_data_visual(self, measure: Table, array: numpy.array) -> Array:
-        self._generate_datavisual_table()
-        measure.set_base_values(array)
-
-        for k, v in self.source.mapping.items():
-            setattr(self.source, k, v)
-        for k, v in self.scatterer.mapping.items():
-            setattr(self.scatterer, k, v)
-        if self.detector is not None:
-            for k, v in self.detector.mapping.items():
-                setattr(self.detector, k, v)
-
-        return Array(x_table=Table(self.x_table), y=measure)
 
 # -

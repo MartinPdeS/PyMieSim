@@ -16,7 +16,7 @@ config_dict = dict(
 )
 
 
-@dataclass(config=config_dict)
+@dataclass(config=config_dict, unsafe_hash=True)
 class UnitPolarizationAngle:
     angle: float
 
