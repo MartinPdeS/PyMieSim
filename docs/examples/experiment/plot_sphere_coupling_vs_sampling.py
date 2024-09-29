@@ -36,10 +36,10 @@ scatterer = Sphere(
 # %%
 # Defining the detector to be employed.
 detector = Photodiode(
-    NA=[0.2],
+    NA=[0.2] * AU,
     phi_offset=numpy.linspace(-20, 20, 400) * degree,
     gamma_offset=0 * degree,
-    sampling=[20, 40, 80, 160],
+    sampling=[20, 40, 80, 160] * AU,
 )
 
 # %%

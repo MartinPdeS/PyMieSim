@@ -40,7 +40,7 @@ detector = Photodiode(
     NA=[0.5, 0.3, 0.1, 0.05] * AU,  # Array of Numerical Apertures for the detector
     phi_offset=np.linspace(-180, 180, 400) * degree,  # Angular displacement from -180 to 180 degrees
     gamma_offset=0 * degree,  # Gamma offset in degrees
-    sampling=400,  # Number of sampling points
+    sampling=400 * AU,  # Number of sampling points
     polarization_filter=None  # No polarization filter
 )
 

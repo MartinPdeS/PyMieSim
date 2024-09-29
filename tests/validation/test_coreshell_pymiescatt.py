@@ -8,6 +8,7 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
 import PyMieScatt as ps
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # Mapping of measurement types to PyMieScatt indices
 PYMIESCATT_MEASURES = {
@@ -106,18 +107,18 @@ def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_wi
     # Create a Gaussian light source
     source = Gaussian(
         wavelength=wavelength,
-        polarization=0,
-        optical_power=1e-3,  # In Watts
-        NA=0.2
+        polarization=0 * degree,
+        optical_power=1e-3 * watt,  # In Watts
+        NA=0.2 * AU
     )
 
     # Get data from PyMieScatt
     pymiescatt_data = get_pymiescatt_data(
         source=source,
-        core_index=core_index,
-        shell_index=shell_index,
-        core_diameters=core_diameters,
-        shell_width=shell_width,
+        core_index=core_index.magnitude,
+        shell_index=shell_index.magnitude,
+        core_diameters=core_diameters.magnitude,
+        shell_width=shell_width.magnitude,
         measure_string=measure_string
     )
 
@@ -143,11 +144,11 @@ def test_comparison(measure_string):
         measure_string (str): The type of measurement to compare.
     """
     pymiesim_data, pymiescatt_data = get_comparison(
-        wavelength=632e-9,  # Wavelength in meters (e.g., 632 nm)
-        core_index=1.4 + 0.3j,  # Complex refractive index for core
-        shell_index=1.3,  # Refractive index for shell
-        core_diameters=np.geomspace(10e-9, 6000e-9, 800),  # Log-spaced array of core diameters
-        shell_width=600e-9,  # Shell thickness
+        wavelength=632 * nanometer,  # Wavelength in meters (e.g., 632 nm)
+        core_index=1.4 + 0.3j * RIU,  # Complex refractive index for core
+        shell_index=1.3 * RIU,  # Refractive index for shell
+        core_diameters=np.geomspace(10, 6000, 800) * nanometer,  # Log-spaced array of core diameters
+        shell_width=600 * nanometer,  # Shell thickness
         measure_string=measure_string
     )
 

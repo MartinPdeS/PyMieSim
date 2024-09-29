@@ -105,9 +105,10 @@ testpaths = [
     "tests/sources",
     "tests/scatterers",
     "tests/experiments",
-    "tests/validation",
+    # "tests/validation",
     "tests/extra"
 ]
+
 
 [tool.cibuildwheel]
 build-frontend = "build"

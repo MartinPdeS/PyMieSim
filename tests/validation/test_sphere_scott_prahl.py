@@ -5,6 +5,7 @@ import pytest
 import numpy as np
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # Reference values from Scott Prahl's Mie scattering database
 scott_prahl_values = {
@@ -23,18 +24,18 @@ def test_validation_scott_prahl(measure_str):
     """
     # Create a Gaussian light source
     source = Gaussian(
-        wavelength=1e-6,   # Wavelength in meters (e.g., 1 micron)
-        polarization=0,    # Polarization angle
-        optical_power=1,   # Optical power in watts
-        NA=0.3             # Numerical aperture
+        wavelength=1000 * nanometer,   # Wavelength in meters (e.g., 1 micron)
+        polarization=0 * degree,    # Polarization angle
+        optical_power=1 * watt,   # Optical power in watts
+        NA=0.3 * AU             # Numerical aperture
     )
 
     # Create a spherical scatterer
     scatterer = Sphere(
-        diameter=1e-6,       # Diameter in meters (e.g., 1 micron)
-        index=1.5 + 0.5j,    # Complex refractive index
+        diameter=1000 * nanometer,       # Diameter in meters (e.g., 1 micron)
+        index=1.5 + 0.5j * RIU,    # Complex refractive index
         source=source,       # Associated light source
-        medium_index=1.0     # Refractive index of the medium (e.g., air)
+        medium_index=1.0 * RIU     # Refractive index of the medium (e.g., air)
     )
 
     # Retrieve the reference value from Scott Prahl's data

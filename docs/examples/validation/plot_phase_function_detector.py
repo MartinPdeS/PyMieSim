@@ -61,17 +61,17 @@ coupling_data /= coupling_data.max()  # Normalize data
 
 # Single scatterer simulation for S1 and S2
 single_source = SingleGaussian(
-    wavelength=source_wavelength.to_base_units().magnitude,
-    polarization=90,
-    optical_power=1,
-    NA=0.2
+    wavelength=source_wavelength,
+    polarization=90 * degree,
+    optical_power=1 * watt,
+    NA=0.2 * AU
 )
 
 single_scatterer = SingleSphere(
-    diameter=scatterer_diameter.to_base_units().magnitude,
+    diameter=scatterer_diameter,
     source=single_source,
-    index=scatterer_index.to_base_units().magnitude,
-    medium_index=1.0
+    index=scatterer_index,
+    medium_index=1.0 * RIU
 )
 
 s1s2 = single_scatterer.get_s1s2()

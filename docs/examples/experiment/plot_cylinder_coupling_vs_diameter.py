@@ -40,7 +40,7 @@ detector = Photodiode(
     NA=[0.1, 0.05] * AU,  # Numerical Apertures for the detector
     phi_offset=-180.0 * degree,  # Phi offset in degrees
     gamma_offset=0.0 * degree,  # Gamma offset in degrees
-    sampling=600,  # Number of sampling points
+    sampling=600 * AU,  # Number of sampling points
     polarization_filter=None  # No polarization filter
 )
 

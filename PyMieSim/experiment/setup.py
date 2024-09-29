@@ -93,12 +93,16 @@ class Setup:
 
         match export_as.lower():
             case 'dataframe':
-                return self.export_as_dataframe(measure, array)
+                return self._export_as_dataframe(measure, array)
             case 'numpy':
                 return self._export_as_numpy(array)
 
-    def export_as_dataframe(self, measure, array: numpy.ndarray) -> pd.DataFrame:
-        df = generate_dataframe(experiment=self, is_complex=numpy.iscomplex(array).any())
+    def _export_as_dataframe(self, measure, array: numpy.ndarray) -> pd.DataFrame:
+        df = generate_dataframe(
+            experiment=self,
+            is_complex=numpy.iscomplexobj(array)
+        )
+
         setattr(df.__class__, 'plot_data', plot_dataframe)
 
         df[measure.short_label] = array.ravel().view(float)

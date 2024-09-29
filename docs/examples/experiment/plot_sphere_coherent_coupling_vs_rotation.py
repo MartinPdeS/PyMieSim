@@ -27,7 +27,7 @@ source = Gaussian(
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=[2000 * nanometer, 2300 * nanometer],
+    diameter=[2000, 2300] * nanometer,
     material=Material.BK7,
     medium_index=1 * RIU,
     source=source
@@ -37,10 +37,10 @@ scatterer = Sphere(
 # Defining the detector to be employed.
 detector = CoherentMode(
     mode_number='HG11',
-    NA=[0.05],
+    NA=[0.05] * AU,
     phi_offset=0 * degree,
     gamma_offset=20 * degree,
-    sampling=400,
+    sampling=400 * AU,
     rotation=numpy.linspace(0, 180, 200) * degree,
     polarization_filter=None
 )

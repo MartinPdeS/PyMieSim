@@ -53,8 +53,6 @@ experiment = Setup(
     detector=detector
 )
 
-experiment._generate_datavisual_table()
-
 # %%
 # Measuring the properties
 dataframe = experiment.get(measure.Qsca, export_as='dataframe')

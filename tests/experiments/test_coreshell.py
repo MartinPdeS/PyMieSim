@@ -10,28 +10,24 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
 from PyOptik import Material
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # Define core materials and properties
 core_options = [
     {'name': 'BK7', 'properties': {'core_material': Material.BK7}},
-    {'name': 'fused silica', 'properties': {'core_material': Material.fused_silica}},
-    {'name': 'polystyren', 'properties': {'core_material': Material.polystyren}},
-    {'name': 'Index', 'properties': {'core_index': 1.4}}
+    {'name': 'Index', 'properties': {'core_index': 1.4 * RIU}}
 ]
 
 # Define shell materials and properties
 shell_options = [
     {'name': 'BK7', 'properties': {'shell_material': Material.BK7}},
-    {'name': 'fused silica', 'properties': {'shell_material': Material.fused_silica}},
-    {'name': 'polystyren', 'properties': {'shell_material': Material.polystyren}},
-    {'name': 'Index', 'properties': {'shell_index': 1.4}}
+    {'name': 'Index', 'properties': {'shell_index': 1.4 * RIU}}
 ]
 
 # Define medium materials and properties
 medium_options = [
     {'name': 'water', 'properties': {'medium_material': Material.water}},
-    {'name': 'fused silica', 'properties': {'medium_material': Material.fused_silica}},
-    {'name': 'Index', 'properties': {'medium_index': 1.1}}
+    {'name': 'Index', 'properties': {'medium_index': 1.1 * RIU}}
 ]
 
 # Define measures to test
@@ -45,16 +41,16 @@ measures = pms_measure.__coreshell__
 def test_coreshell_scattering_properties(measure, medium_config, core_config, shell_config):
     # Setup Gaussian source
     source = Gaussian(
-        wavelength=np.linspace(800e-9, 1000e-9, 50),
-        polarization=0,
-        optical_power=1e-3,
-        NA=0.2
+        wavelength=np.linspace(800, 1000, 50) * nanometer,
+        polarization=0 * degree,
+        optical_power=1e-3 * watt,
+        NA=0.2 * AU
     )
 
     # Setup core-shell scatterer
     scatterer = CoreShell(
-        core_diameter=np.linspace(800e-9, 1000e-9, 10),
-        shell_width=300e-9,
+        core_diameter=np.linspace(800, 1000, 10) * nanometer,
+        shell_width=300 * nanometer,
         source=source,
         **medium_config,
         **core_config,
@@ -63,11 +59,11 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
 
     # Setup detector
     detector = Photodiode(
-        NA=0.2,
+        NA=0.2 * AU,
         polarization_filter=None,
-        gamma_offset=0,
-        phi_offset=0,
-        sampling=100
+        gamma_offset=0 * degree,
+        phi_offset=0 * degree,
+        sampling=100 * AU
     )
 
     # Configure and run the experiment

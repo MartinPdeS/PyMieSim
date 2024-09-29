@@ -12,19 +12,19 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 # PyMieScatt import
 import PyMieScatt as pms
 
 # Define parameters
-wavelength = 632.8e-9  # Wavelength of the light source in meters
-polarization_value = 0
-polarization_type = 'linear'
-optical_power = 1e-3  # Power in watts
-NA = 0.2  # Numerical aperture
-medium_index = 1.21
-refractive_index = 1.4
-diameter_range = np.geomspace(10e-9, 1e-6, 50)  # Geometric space for diameters
+wavelength = 632.8 * nanometer  # Wavelength of the light source in meters
+polarization_value = 0 * degree
+optical_power = 1e-3 * watt  # Power in watts
+NA = 0.2 * AU  # Numerical aperture
+medium_index = 1.21 * RIU
+refractive_index = 1.4 * RIU
+diameter_range = np.geomspace(10, 1_000, 50) * nanometer  # Geometric space for diameters
 
 # Setup source
 source = Gaussian(
@@ -50,11 +50,15 @@ experiment = Setup(
 )
 
 # Simulate using PyMieSim
-sim_data = experiment.get(measure.Qsca, export_as_numpy=True).squeeze()
+sim_data = experiment.get(measure.Qsca, export_as='numpy').squeeze()
 
 # Simulate using PyMieScatt
 scatt_data = np.array([
-    pms.MieQ(m=refractive_index, diameter=d, wavelength=wavelength, nMedium=medium_index)[1]
+    pms.MieQ(
+        m=refractive_index.magnitude,
+        diameter=d.to_base_units().magnitude,
+        wavelength=wavelength.to_base_units().magnitude,
+        nMedium=medium_index.magnitude)[1]
     for d in diameter_range
 ])
 

@@ -13,26 +13,26 @@ from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 # PyMieScatt import
 import PyMieScatt as pms
 
 # Define parameters
-wavelength = 600e-9  # Light source wavelength in meters
-polarization_value = 0
-polarization_type = 'linear'
-optical_power = 1  # Optical power in watts
-NA = 0.2  # Numerical aperture
-medium_index = 1.0
-core_index = 1.5
-shell_index = 1.4
-shell_width = 600e-9  # Shell width in meters
-core_diameters = np.geomspace(10e-9, 500e-9, 400)  # Core diameters in meters
+wavelength = 600 * nanometer  # Light source wavelength in meters
+polarization = 0 * degree
+optical_power = 1 * watt  # Optical power in watts
+NA = 0.2 * AU  # Numerical aperture
+medium_index = 1.0 * RIU
+core_index = 1.5 * RIU
+shell_index = 1.4 * RIU
+shell_width = 600 * nanometer  # Shell width in meters
+core_diameters = np.geomspace(10, 500, 400) * nanometer  # Core diameters in meters
 
 # Configure the Gaussian source
 source = Gaussian(
     wavelength=wavelength,
-    polarization=polarization_value,
+    polarization=polarization,
     optical_power=optical_power,
     NA=NA
 )
@@ -55,17 +55,17 @@ experiment = Setup(
 )
 
 # Compute PyMieSim scattering efficiency data
-sim_data = experiment.get(measure.Qsca, export_as_numpy=True).squeeze()
+sim_data = experiment.get(measure.Qsca, export_as='numpy').squeeze()
 
 # Compute PyMieScatt scattering efficiency data
 scatt_data = np.array([
     pms.MieQCoreShell(
-        mCore=core_index,
-        mShell=shell_index,
-        wavelength=wavelength,
+        mCore=core_index.to_base_units().magnitude,
+        mShell=shell_index.to_base_units().magnitude,
+        wavelength=wavelength.to_base_units().magnitude,
         dCore=diameter,
-        dShell=diameter + shell_width
-    )[1] for diameter in core_diameters
+        dShell=(diameter + shell_width.to_base_units().magnitude)
+    )[1] for diameter in core_diameters.to_base_units().magnitude
 ]).squeeze()
 
 # Plotting the results

@@ -10,18 +10,19 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
 from PyOptik import Material
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # Configure the core materials for the sphere
 core_options = [
     {'name': 'crown', 'properties': {'material': Material.silver}},
     {'name': 'fused silica', 'properties': {'material': Material.fused_silica}},
-    {'name': 'Index', 'properties': {'index': 1.4}}
+    {'name': 'Index', 'properties': {'index': 1.4 * RIU}}
 ]
 
 # Define medium options
 medium_options = [
     {'name': 'water', 'properties': {'medium_material': Material.water}},
-    {'name': 'Index', 'properties': {'medium_index': 1.1}}
+    {'name': 'Index', 'properties': {'medium_index': 1.1 * RIU}}
 ]
 
 # List of measures to be tested
@@ -34,15 +35,15 @@ measures = pms_measure.__sphere__
 def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up the Gaussian source
     source = Gaussian(
-        wavelength=np.linspace(600e-9, 1000e-9, 50),
-        polarization=0,
-        optical_power=1e-3,
-        NA=0.2
+        wavelength=np.linspace(600, 1000, 50) * nanometer,
+        polarization=0 * degree,
+        optical_power=1e-3 * watt,
+        NA=0.2 * AU
     )
 
     # Configure the spherical scatterer
     scatterer = Sphere(
-        diameter=np.linspace(400e-9, 1400e-9, 10),
+        diameter=np.linspace(400, 1400, 10) * nanometer,
         source=source,
         **medium_config,
         **core_config
@@ -51,12 +52,12 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Configure the detector
     detector = CoherentMode(
         mode_number='LP01',
-        rotation=0,
-        NA=0.2,
+        rotation=0 * degree,
+        NA=0.2 * AU,
         polarization_filter=None,
-        gamma_offset=0,
-        phi_offset=0,
-        sampling=100
+        gamma_offset=0 * degree,
+        phi_offset=0 * degree,
+        sampling=100 * AU
     )
 
     # Set up and run the experiment

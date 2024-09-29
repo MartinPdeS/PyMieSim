@@ -3,8 +3,10 @@
 
 import numpy
 import logging
+from typing import Optional
 from dataclasses import field
 from pydantic.dataclasses import dataclass
+from pydantic import validator
 from typing import Union, Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
@@ -13,12 +15,20 @@ from PyMieSim.binary import ModeField
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.colormaps import blue_black_red
+from PyMieSim.units import Quantity, degree, AU, radian
 
 from PyMieSim.single import scatterer
 import pyvista
 
 c = 299792458.0  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
+
+config_dict = dict(
+    kw_only=True,
+    slots=True,
+    extra='forbid',
+    arbitrary_types_allowed=True
+)
 
 
 class GenericDetector():
@@ -104,13 +114,14 @@ class GenericDetector():
 
         # Create a 3D plotting scene with the specified window size and theme
         window_size = (unit_size[1], unit_size[0])
-        scene = pyvista.Plotter(theme=pyvista.themes.DocumentTheme(), window_size=window_size)
+
+        scene = pyvista.Plotter(
+            theme=pyvista.themes.DarkTheme(),
+            window_size=window_size
+        )
 
         # Set the background color
         scene.set_background(background_color)
-
-        # Wrap the coordinates for PyVista
-        points = pyvista.wrap(coordinates.T)
 
         self._add_to_3d_ax(scene=scene, colormap=colormap)
 
@@ -228,8 +239,36 @@ class GenericDetector():
 
         return total_power
 
+    @validator('polarization_filter', pre=True, always=True)
+    def validate_polarization(cls, value):
+        """
+        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if value is None:
+            value = numpy.nan * degree
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+        if not value.check(degree):
+            raise ValueError(f"{value} must have angle units (degree or radian).")
+
+        return value
+
+    @validator('gamma_offset', 'phi_offset', 'rotation', pre=True, always=True)
+    def validate_angle_quantity(cls, value):
+        """
+        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if not isinstance(value, Quantity):
+            raise ValueError(f"{value} must be a Quantity with angle units.")
+
+        if not value.check(degree):
+            raise ValueError(f"{value} must have angle units (degree or radian).")
+
+        return value
+
+
+@dataclass(config=config_dict)
 class Photodiode(GenericDetector):
     """
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
@@ -246,26 +285,27 @@ class Photodiode(GenericDetector):
         rotation (float): Rotation angle of the field along the axis of propagation. Default is 0.
     """
 
-    NA: float
-    gamma_offset: float
-    phi_offset: float
-    sampling: int = 200
-    polarization_filter: Union[float, None] = None
+    NA: Quantity
+    gamma_offset: Quantity
+    phi_offset: Quantity
+    sampling: Optional[Quantity] = 200 * AU
+    polarization_filter: Optional[Quantity] = None
+
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)
-    rotation: float = field(default=0, init=False)
+    rotation: Quantity = field(default=0 * degree, init=False)
 
     def __post_init__(self):
-        self.polarization_filter = numpy.float64(self.polarization_filter)
-        self.max_angle = NA_to_angle(NA=self.NA)
+        self.max_angle = NA_to_angle(NA=self.NA.magnitude)
+
         self.binding = BindedDetector(
             mode_number='NC00',
-            sampling=self.sampling,
-            NA=self.NA,
-            phi_offset=numpy.deg2rad(self.phi_offset),
-            gamma_offset=numpy.deg2rad(self.gamma_offset),
-            polarization_filter=numpy.deg2rad(self.polarization_filter),
-            rotation=numpy.deg2rad(self.rotation),
+            sampling=self.sampling.magnitude,
+            NA=self.NA.magnitude,
+            phi_offset=self.phi_offset.to(radian),
+            gamma_offset=self.gamma_offset.to(radian),
+            polarization_filter=self.polarization_filter.to(radian),
+            rotation=self.rotation.to(radian),
             coherent=self.coherent,
             mean_coupling=self.mean_coupling
         )
@@ -283,7 +323,7 @@ class Photodiode(GenericDetector):
         return numpy.ones([sampling, sampling])
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class IntegratingSphere(Photodiode):
     """
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
@@ -300,14 +340,15 @@ class IntegratingSphere(Photodiode):
         rotation (float): Rotation angle of the field along the axis of propagation. Default is 0.
     """
 
-    sampling: int = 200
-    polarization_filter: Union[float, None] = None
-    NA: float = field(default=2, init=False)
-    gamma_offset: float = field(default=0, init=False)
-    phi_offset: float = field(default=0, init=False)
+    sampling: Optional[Quantity] = 200 * AU
+    polarization_filter: Optional[Quantity] = None
+
+    NA: Quantity = field(default=2 * AU, init=False)
+    gamma_offset: Quantity = field(default=0 * degree, init=False)
+    phi_offset: Quantity = field(default=0 * degree, init=False)
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)
-    rotation: float = field(default=0, init=False)
+    rotation: Quantity = field(default=0 * degree, init=False)
 
     def __post_init__(self):
         super(IntegratingSphere, self).__post_init__()
@@ -325,7 +366,7 @@ class IntegratingSphere(Photodiode):
         return numpy.ones([sampling, sampling])
 
 
-@dataclass(kw_only=True, slots=True, config=dict(extra='forbid'))
+@dataclass(config=config_dict)
 class CoherentMode(GenericDetector):
     """
     Detector class representing a laser Hermite-Gauss mode with a coherent light coupling mechanism.
@@ -344,14 +385,14 @@ class CoherentMode(GenericDetector):
     """
 
     mode_number: str
-    NA: float
-    gamma_offset: float
-    phi_offset: float
-    sampling: int = 200
-    polarization_filter: Union[float, None] = None
+    NA: Quantity
+    gamma_offset: Quantity
+    phi_offset: Quantity
+    sampling: Optional[Quantity] = 200 * AU
+    polarization_filter: Optional[Quantity] = None
     mean_coupling: bool = False
     coherent: bool = field(default=True, init=False)
-    rotation: float = 90
+    rotation: Optional[Quantity] = 90 * degree
 
     def __post_init__(self):
         if self.NA > 0.3 or self.NA < 0:
@@ -376,18 +417,16 @@ class CoherentMode(GenericDetector):
                 self.x_number, self.y_number = self.number_0, self.number_1
                 self.cpp_mode_field_getter = ModeField.get_HG
 
-        self.max_angle = NA_to_angle(NA=self.NA)
-
-        self.polarization_filter = numpy.float64(self.polarization_filter)
+        self.max_angle = NA_to_angle(NA=self.NA.magnitude)
 
         self.binding = BindedDetector(
             mode_number=self.mode_number,
-            sampling=self.sampling,
-            NA=self.NA,
-            phi_offset=numpy.deg2rad(self.phi_offset),
-            gamma_offset=numpy.deg2rad(self.gamma_offset),
-            polarization_filter=numpy.deg2rad(self.polarization_filter),
-            rotation=numpy.deg2rad(self.rotation),
+            sampling=self.sampling.magnitude,
+            NA=self.NA.magnitude,
+            phi_offset=self.phi_offset.to(radian),
+            gamma_offset=self.gamma_offset.to(radian),
+            polarization_filter=self.polarization_filter.to(radian),
+            rotation=self.rotation.to(radian),
             coherent=self.coherent,
             mean_coupling=self.mean_coupling
         )

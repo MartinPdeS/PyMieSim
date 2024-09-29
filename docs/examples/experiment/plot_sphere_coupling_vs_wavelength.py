@@ -38,12 +38,12 @@ scatterer = Sphere(
 # Defining the detector to be employed.
 detector = CoherentMode(
     mode_number="LP11",
-    NA=[0.05, 0.01],
+    NA=[0.05, 0.01] * AU,
     phi_offset=-180 * degree,
     gamma_offset=0 * degree,
-    polarization_filter=[0, None] * degree,
-    rotation=0,
-    sampling=300
+    polarization_filter=[0, 90] * degree,
+    rotation=0 * degree,
+    sampling=300 * AU
 )
 
 # %%

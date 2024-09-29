@@ -6,6 +6,7 @@ import numpy as np
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup, measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 import PyMieScatt as ps
 
 # Mapping PyMieScatt measure strings to their respective indices
@@ -18,6 +19,15 @@ PYMIESCATT_MEASURES = {
     'Qback': 5,
     'Qratio': 6
 }
+
+@pytest.fixture
+def gaussian_source():
+    return Gaussian(
+        wavelength=1000 * nanometer,  # Wavelength in meters
+        polarization=0 * degree,   # Polarization angle
+        optical_power=1 * watt,  # Optical power in watts
+        NA=0.3 * AU           # Numerical aperture
+    )
 
 
 def get_pymiesim_data(source, index, diameters, measure_string: str):
@@ -36,7 +46,7 @@ def get_pymiesim_data(source, index, diameters, measure_string: str):
     scatterer = Sphere(
         diameter=diameters,
         index=index,
-        medium_index=1.0,  # Assuming air as the medium
+        medium_index=1.0 * RIU,  # Assuming air as the medium
         source=source
     )
 
@@ -68,9 +78,9 @@ def get_pymiescatt_data(source, index, diameters, measure_string: str):
     for diameter in diameters:
         # Get scattering efficiencies from PyMieScatt
         efficiencies = ps.MieQ(
-            m=index,
-            wavelength=source.wavelength[0],
-            diameter=diameter,
+            m=index.magnitude,
+            wavelength=source.wavelength[0].magnitude,
+            diameter=diameter.magnitude,
         )
 
         # Extract the required measurement
@@ -80,7 +90,7 @@ def get_pymiescatt_data(source, index, diameters, measure_string: str):
     return np.asarray(pymiescatt_data).squeeze()
 
 
-def get_comparison(wavelength, index, diameters, measure_string: str):
+def get_comparison(gaussian_source, wavelength, index, diameters, measure_string: str):
     """
     Compare PyMieSim and PyMieScatt results for given parameters.
 
@@ -93,17 +103,9 @@ def get_comparison(wavelength, index, diameters, measure_string: str):
     Returns:
         tuple: (PyMieSim results, PyMieScatt results)
     """
-    # Create a Gaussian light source
-    source = Gaussian(
-        wavelength=wavelength,
-        polarization=0,
-        optical_power=1e-3,  # Optical power in Watts
-        NA=0.2
-    )
-
     # Get data from PyMieScatt
     pymiescatt_data = get_pymiescatt_data(
-        source=source,
+        source=gaussian_source,
         index=index,
         diameters=diameters,
         measure_string=measure_string
@@ -111,7 +113,7 @@ def get_comparison(wavelength, index, diameters, measure_string: str):
 
     # Get data from PyMieSim
     pymiesim_data = get_pymiesim_data(
-        source=source,
+        source=gaussian_source,
         index=index,
         diameters=diameters,
         measure_string=measure_string
@@ -129,9 +131,9 @@ def test_comparison(measure_string: str):
         measure_string (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
     pymiesim_data, pymiescatt_data = get_comparison(
-        wavelength=632e-9,  # Wavelength in meters (e.g., 632 nm)
-        index=1.4 + 0.3j,   # Complex refractive index of the sphere
-        diameters=np.geomspace(10e-9, 6000e-9, 800),  # Log-spaced array of diameters
+        wavelength=632 * nanometer,  # Wavelength in meters (e.g., 632 nm)
+        index=1.4 + 0.3j * RIU,   # Complex refractive index of the sphere
+        diameters=np.geomspace(10, 6000, 800) * nanometer,  # Log-spaced array of diameters
         measure_string=measure_string
     )
 

@@ -15,23 +15,24 @@ from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment import measure
+from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure87BH.csv", delimiter=',')
 
-diameter = numpy.geomspace(10e-9, 6e-6, 800)
-volume = numpy.pi * (diameter / 2)**2
+diameter = numpy.geomspace(10, 6000, 800) * nanometer
+volume = numpy.pi * (diameter.to_base_units().magnitude / 2)**2
 
 source = Gaussian(
-    wavelength=632.8e-9,
-    polarization=[0, 90],
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=632.8 * nanometer,
+    polarization=[0, 90] * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
 )
 
 scatterer = Cylinder(
     diameter=diameter,
-    index=1.55,
-    medium_index=1,
+    index=1.55 * RIU,
+    medium_index=1 * RIU,
     source=source
 )
 
@@ -41,7 +42,7 @@ experiment = Setup(
     detector=None
 )
 
-data = experiment.get(measure.Csca, export_as_numpy=True)
+data = experiment.get(measure.Csca, export_as='numpy')
 data = data.squeeze() / volume * 1e-4 / 100
 
 plt.figure(figsize=(8, 4))

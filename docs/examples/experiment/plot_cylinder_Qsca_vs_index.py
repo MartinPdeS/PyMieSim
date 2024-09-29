@@ -20,7 +20,7 @@ source = Gaussian(
     wavelength=[500, 1000, 1500] * nanometer,  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
     polarization=30 * degree,  # Polarization angle in degrees
     optical_power=1e-3 * watt,  # 1 milliwatt
-    NA=0.2 * AUs  # Numerical Aperture
+    NA=0.2 * AU  # Numerical Aperture
 )
 
 # %%

@@ -8,23 +8,24 @@ from PyMieSim.single.detector import Photodiode
 from PyOptik import Material
 from unittest.mock import patch
 import matplotlib.pyplot as plt
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # Core and shell configurations with clear separation of test ids and parameters
 core_configs = [
     {'config': {'core_material': Material.iron}, 'id': 'Shell:iron'},
     {'config': {'core_material': Material.BK7}, 'id': 'Shell:BK7'},
-    {'config': {'core_index': 1.6}, 'id': 'Shell:1.6'}
+    {'config': {'core_index': 1. * RIU}, 'id': 'Shell:1.6'}
 ]
 
 shell_configs = [
     {'config': {'shell_material': Material.BK7}, 'id': 'BK7'},
     {'config': {'shell_material': Material.iron}, 'id': 'Core:iron'},
-    {'config': {'shell_index': 1.7}, 'id': 'Shell:1.7'}
+    {'config': {'shell_index': 1.7 * RIU}, 'id': 'Shell:1.7'}
 ]
 
 medium_configs = [
     {'config': {'medium_material': Material.water}, 'id': 'Medium:water'},
-    {'config': {'medium_index': 1.4}, 'id': 'Medium:1.4'}
+    {'config': {'medium_index': 1.4 * RIU}, 'id': 'Medium:1.4'}
 ]
 
 # Methods and attributes to test
@@ -40,22 +41,24 @@ plotting_functions = [
     "get_far_field", "get_stokes", "get_spf", "get_s1s2",
 ]
 
+@pytest.fixture()
+def gaussian_source():
+    return Gaussian(
+        wavelength=750 * nanometer,
+        polarization=0 * degree,
+        optical_power=1 * watt,
+        NA=0.3 * AU
+    )
 
 @pytest.mark.parametrize('shell_config', shell_configs, ids=[config['id'] for config in shell_configs])
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
 @pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
 @pytest.mark.parametrize('method', methods)
-def test_coreshell_method(method, core_config, shell_config, medium_config):
-    source = Gaussian(
-        wavelength=750e-9,
-        polarization=0,
-        optical_power=1,
-        NA=0.3
-    )
+def test_coreshell_method(method, core_config, shell_config, medium_config, gaussian_source):
     scatterer = CoreShell(
-        core_diameter=100e-9,
-        shell_width=200e-9,
-        source=source,
+        core_diameter=100 * nanometer,
+        shell_width=200 * nanometer,
+        source=gaussian_source,
         **medium_config['config'],
         **core_config['config'],
         **shell_config['config']
@@ -70,24 +73,17 @@ def test_coreshell_method(method, core_config, shell_config, medium_config):
 @pytest.mark.parametrize('shell_config', shell_configs, ids=[config['id'] for config in shell_configs])
 @pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
-def test_coreshell_coupling(core_config, shell_config, medium_config):
+def test_coreshell_coupling(core_config, shell_config, medium_config, gaussian_source):
     detector = Photodiode(
         NA=0.2,
         gamma_offset=0,
         phi_offset=0,
     )
 
-    source = Gaussian(
-        wavelength=750e-9,
-        polarization=0,
-        optical_power=1,
-        NA=0.3
-    )
-
     scatterer = CoreShell(
-        core_diameter=100e-9,
-        shell_width=200e-9,
-        source=source,
+        core_diameter=100 * nanometer,
+        shell_width=200 * nanometer,
+        source=gaussian_source,
         **medium_config['config'],
         **core_config['config'],
         **shell_config['config']
@@ -101,18 +97,11 @@ def test_coreshell_coupling(core_config, shell_config, medium_config):
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
 @pytest.mark.parametrize('medium_config', medium_configs, ids=[config['id'] for config in medium_configs])
 @pytest.mark.parametrize('attribute', attributes)
-def test_coreshell_attribute(attribute, core_config, shell_config, medium_config):
-    source = Gaussian(
-        wavelength=750e-9,
-        polarization=0,
-        optical_power=1,
-        NA=0.3
-    )
-
+def test_coreshell_attribute(attribute, core_config, shell_config, medium_config, gaussian_source):
     scatterer = CoreShell(
-        core_diameter=100e-9,
-        shell_width=200e-9,
-        source=source,
+        core_diameter=100 * nanometer,
+        shell_width=200 * nanometer,
+        source=gaussian_source,
         **medium_config['config'],
         **core_config['config'],
         **shell_config['config']
@@ -130,18 +119,11 @@ def test_coreshell_attribute(attribute, core_config, shell_config, medium_config
 @pytest.mark.parametrize('plotting_function', plotting_functions)
 @patch('pyvista.Plotter.show')
 @patch('matplotlib.pyplot.show')
-def test_coreshell_plottings(mock_show_plt, mock_show_pyvista, plotting_function, core_config, shell_config, medium_config):
-    source = Gaussian(
-        wavelength=750e-9,
-        polarization=0,
-        optical_power=1,
-        NA=0.3
-    )
-
+def test_coreshell_plottings(mock_show_plt, mock_show_pyvista, plotting_function, core_config, shell_config, medium_config, gaussian_source):
     scatterer = CoreShell(
-        core_diameter=100e-9,
-        shell_width=200e-9,
-        source=source,
+        core_diameter=100 * nanometer,
+        shell_width=200 * nanometer,
+        source=gaussian_source,
         **medium_config['config'],
         **core_config['config'],
         **shell_config['config']

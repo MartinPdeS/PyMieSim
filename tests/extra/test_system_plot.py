@@ -6,6 +6,7 @@ from PyMieSim.single.detector import Photodiode
 from PyMieSim.single import plot_system
 from math import sqrt
 import matplotlib.pyplot as plt
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 @pytest.fixture
 def source():
@@ -16,10 +17,10 @@ def source():
         Gaussian: A Gaussian light source object.
     """
     return Gaussian(
-        wavelength=1550e-9,  # 1550 nm wavelength
-        polarization=0,      # Linear polarization angle in radians
-        optical_power=1,     # Optical power in arbitrary units
-        NA=0.3               # Numerical Aperture
+        wavelength=1550 * nanometer,  # 1550 nm wavelength
+        polarization=0 * degree,      # Linear polarization angle in radians
+        optical_power=1 * watt,     # Optical power in arbitrary units
+        NA=0.3 * AU               # Numerical Aperture
     )
 
 @pytest.fixture
@@ -34,10 +35,10 @@ def scatterer(source):
         Cylinder: A cylindrical scatterer object.
     """
     return Cylinder(
-        diameter=7.8e-6,     # 7.8 micrometers diameter
+        diameter=780 * nanometer,     # 7.8 micrometers diameter
         source=source,
-        medium_index=1.0,    # Refractive index of the surrounding medium
-        index=sqrt(1.5)      # Refractive index of the scatterer
+        medium_index=1.0 * RIU,    # Refractive index of the surrounding medium
+        index=sqrt(1.5) * RIU      # Refractive index of the scatterer
     )
 
 @pytest.fixture
@@ -50,9 +51,9 @@ def detector():
     """
     return Photodiode(
         NA=0.1,                 # Numerical Aperture
-        gamma_offset=90,        # Gamma offset in degrees
-        phi_offset=0,           # Phi offset in degrees
-        polarization_filter=0   # Polarization filter angle in degrees
+        gamma_offset=90 * degree,        # Gamma offset in degrees
+        phi_offset=0 * degree,           # Phi offset in degrees
+        polarization_filter=0 * degree   # Polarization filter angle in degrees
     )
 
 @patch('pyvista.Plotter.show')
