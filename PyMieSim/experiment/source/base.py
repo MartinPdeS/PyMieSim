@@ -3,7 +3,7 @@
 
 import numpy
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict, validator
+from pydantic import ConfigDict, field_validator
 import pint_pandas
 
 from PyMieSim import polarization
@@ -38,7 +38,7 @@ class BaseSource:
 
         self.binding = CppSourceSet(**binding_kwargs)
 
-    @validator('wavelength', pre=True, always=True)
+    @field_validator('wavelength', mode='before')
     def validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""

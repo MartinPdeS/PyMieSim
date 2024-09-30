@@ -6,19 +6,21 @@ import numpy as np
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder
+from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieSim.experiment.measure as pms_measure
 from PyOptik import Material
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
-# Material configurations for the cylinder core
+# Configure the core materials for the sphere
 core_options = [
-    {'name': 'BK7', 'properties': {'material': Material.BK7}},
+    {'name': 'crown', 'properties': {'material': Material.silver}},
+    {'name': 'fused silica', 'properties': {'material': Material.fused_silica}},
     {'name': 'Index', 'properties': {'index': 1.4 * RIU}}
 ]
 
-# Medium configurations
+# Define medium options
 medium_options = [
     {'name': 'water', 'properties': {'medium_material': Material.water}},
     {'name': 'Index', 'properties': {'medium_index': 1.1 * RIU}}
@@ -40,7 +42,7 @@ def test_cylinder_scattering_properties(measure, medium_config, core_config):
         NA=0.2 * AU
     )
 
-    # Setup cylindrical scatterer
+    # Configure the spherical scatterer
     scatterer = Cylinder(
         diameter=np.linspace(400, 1400, 10) * nanometer,
         source=source,
@@ -48,7 +50,7 @@ def test_cylinder_scattering_properties(measure, medium_config, core_config):
         **core_config
     )
 
-    # Setup detector
+    # Configure the detector
     detector = Photodiode(
         NA=0.2 * AU,
         polarization_filter=None,

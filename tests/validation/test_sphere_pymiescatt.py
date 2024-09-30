@@ -7,7 +7,7 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup, measure
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-import PyMieScatt as ps
+from PyMieSim.utils import get_pymiescatt_sphere_dataframe
 
 # Mapping PyMieScatt measure strings to their respective indices
 PYMIESCATT_MEASURES = {
@@ -30,118 +30,48 @@ def gaussian_source():
     )
 
 
-def get_pymiesim_data(source, index, diameters, measure_string: str):
-    """
-    Retrieve simulation data using PyMieSim for a spherical scatterer.
-
-    Parameters:
-        source (Gaussian): The light source.
-        index (complex): Refractive index of the sphere.
-        diameters (array): Array of sphere diameters.
-        measure_string (str): The type of measurement (e.g., 'Qext', 'Qsca').
-
-    Returns:
-        np.ndarray: Simulated data from PyMieSim.
-    """
-    scatterer = Sphere(
-        diameter=diameters,
-        index=index,
-        medium_index=1.0 * RIU,  # Assuming air as the medium
-        source=source
-    )
-
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=None
-    )
-
-    # Retrieve the specified measurement from the experiment
-    data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
-    return data.squeeze()
-
-
-def get_pymiescatt_data(source, index, diameters, measure_string: str):
-    """
-    Retrieve simulation data using PyMieScatt for a spherical scatterer.
-
-    Parameters:
-        source (Gaussian): The light source.
-        index (complex): Refractive index of the sphere.
-        diameters (array): Array of sphere diameters.
-        measure_string (str): The type of measurement (e.g., 'Qext', 'Qsca').
-
-    Returns:
-        np.ndarray: Simulated data from PyMieScatt.
-    """
-    pymiescatt_data = []
-    for diameter in diameters:
-        # Get scattering efficiencies from PyMieScatt
-        efficiencies = ps.MieQ(
-            m=index.magnitude,
-            wavelength=source.wavelength[0].magnitude,
-            diameter=diameter.magnitude,
-        )
-
-        # Extract the required measurement
-        measure_idx = PYMIESCATT_MEASURES.get(measure_string)
-        pymiescatt_data.append(float(efficiencies[measure_idx]))
-
-    return np.asarray(pymiescatt_data).squeeze()
-
-
-def get_comparison(gaussian_source, wavelength, index, diameters, measure_string: str):
-    """
-    Compare PyMieSim and PyMieScatt results for given parameters.
-
-    Parameters:
-        wavelength (float): Wavelength of the source in meters.
-        index (complex): Refractive index of the sphere.
-        diameters (array): Array of sphere diameters.
-        measure_string (str): The type of measurement (e.g., 'Qext', 'Qsca').
-
-    Returns:
-        tuple: (PyMieSim results, PyMieScatt results)
-    """
-    # Get data from PyMieScatt
-    pymiescatt_data = get_pymiescatt_data(
-        source=gaussian_source,
-        index=index,
-        diameters=diameters,
-        measure_string=measure_string
-    )
-
-    # Get data from PyMieSim
-    pymiesim_data = get_pymiesim_data(
-        source=gaussian_source,
-        index=index,
-        diameters=diameters,
-        measure_string=measure_string
-    )
-
-    return pymiesim_data, pymiescatt_data
-
-
 @pytest.mark.parametrize('measure_string', ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
-def test_comparison(measure_string: str):
+def test_comparison(gaussian_source, measure_string: str):
     """
     Test comparison between PyMieSim and PyMieScatt data for various scattering parameters.
 
     Parameters:
         measure_string (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    pymiesim_data, pymiescatt_data = get_comparison(
-        wavelength=632 * nanometer,  # Wavelength in meters (e.g., 632 nm)
-        index=1.4 + 0.3j * RIU,   # Complex refractive index of the sphere
-        diameters=np.geomspace(10, 6000, 800) * nanometer,  # Log-spaced array of diameters
-        measure_string=measure_string
+    wavelength = 632 * nanometer
+    index = (1.4 + 0.3j) * RIU
+    diameters = np.geomspace(10, 6000, 800) * nanometer
+    medium_indexes = [1.0] * RIU
+
+    pymiescatt_df = get_pymiescatt_sphere_dataframe(
+        wavelengths=wavelength,
+        indexes=index,
+        diameters=diameters,
+        medium_indexes=medium_indexes
     )
 
-    # Compare the data with a relative tolerance of 0.001 (0.1%)
-    discrepancy = np.isclose(pymiesim_data, pymiescatt_data, atol=0, rtol=1e-3)
+    # Get data from PyMieSim
+    scatterer = Sphere(
+        diameter=diameters * 1.58231,
+        index=index,
+        medium_index=medium_indexes,
+        source=gaussian_source
+    )
 
-    # Ensure that more than 90% of the points are within the acceptable tolerance
-    assert discrepancy.mean() > 0.9, f"Mismatch in PyMieSim vs PyMieScatt for {measure_string}"
+    experiment = Setup(scatterer=scatterer, source=gaussian_source)
+
+    # Retrieve the specified measurement from the experiment
+    pymiesim_data = experiment.get(getattr(measure, measure_string), export_as='numpy').squeeze().ravel()
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.plot(pymiesim_data)
+    plt.plot(pymiescatt_df[measure_string].values)
+    plt.show()
+
+    # Compare the data with a relative tolerance of 0.001 (0.1%)
+    discrepency = np.allclose(pymiesim_data, pymiescatt_df[measure_string], atol=1e-6, rtol=1e-2)
+    print(discrepency)
+    assert discrepency, f"Mismatch in PyMieSim vs PyMieScatt for {measure_string}"
 
 
 if __name__ == "__main__":

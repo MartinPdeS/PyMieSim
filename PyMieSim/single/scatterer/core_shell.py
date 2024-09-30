@@ -7,7 +7,7 @@ import numpy
 from typing import Optional, Any  # Any is for complex as no
 from PyMieSim.single.source.base import BaseSource
 from pydantic.dataclasses import dataclass
-from pydantic import validator
+from pydantic import field_validator
 from PyMieSim.units import Quantity, meter, RIU
 from PyMieSim.single.scatterer.base import GenericScatterer, config_dict
 
@@ -45,7 +45,7 @@ class CoreShell(GenericScatterer):
         "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
     ]
 
-    @validator('core_diameter', 'shell_width', pre=True)
+    @field_validator('core_diameter', 'shell_width', mode='before')
     def validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units.
@@ -58,7 +58,7 @@ class CoreShell(GenericScatterer):
 
         return value
 
-    @validator('core_index', 'shell_index', 'medium_index', pre=True)
+    @field_validator('core_index', 'shell_index', 'medium_index', mode='before')
     def validate_riu_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with RIU units.

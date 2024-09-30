@@ -5,7 +5,7 @@ from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # Define sampling to be tested
-samplings = [100, 200]
+samplings = [100, 200] * AU
 
 
 @pytest.fixture

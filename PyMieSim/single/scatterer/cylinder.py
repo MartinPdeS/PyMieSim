@@ -7,7 +7,7 @@ import numpy
 from typing import Optional, Any  # Any is for complex as no
 from PyMieSim.single.source.base import BaseSource
 from pydantic.dataclasses import dataclass
-from pydantic import validator
+from pydantic import field_validator
 from PyMieSim.units import Quantity, meter, RIU
 from PyMieSim.single.scatterer.base import GenericScatterer, config_dict
 
@@ -40,7 +40,7 @@ class Cylinder(GenericScatterer):
         "Csca", "Cext", "Cabs"
     ]
 
-    @validator('diameter', pre=True)
+    @field_validator('diameter', mode='before')
     def validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units.
@@ -53,7 +53,7 @@ class Cylinder(GenericScatterer):
 
         return value
 
-    @validator('index', 'medium_index', pre=True)
+    @field_validator('index', 'medium_index', mode='before')
     def validate_riu_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with RIU units.

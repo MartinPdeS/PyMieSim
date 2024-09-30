@@ -2,20 +2,16 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-import logging
 from typing import Optional
-from dataclasses import field
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from typing import Union, Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
-from PyMieSim.binary.DetectorInterface import BindedDetector
-from PyMieSim.binary import ModeField
+from PyMieSim.binary.DetectorInterface import BindedDetector  # has to be imported as extension  # noqa: F401
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
-from PyMieSim.special_functions import NA_to_angle
 from MPSPlots.colormaps import blue_black_red
-from PyMieSim.units import Quantity, degree, AU, radian
+from PyMieSim.units import Quantity, degree, AU
 
 from PyMieSim.single import scatterer
 import pyvista
@@ -29,9 +25,6 @@ config_dict = dict(
     extra='forbid',
     arbitrary_types_allowed=True
 )
-
-
-
 
 @dataclass(config=config_dict)
 class GenericDetector():
@@ -48,6 +41,34 @@ class GenericDetector():
     sampling: Optional[Quantity] = 200 * AU
     polarization_filter: Optional[Quantity] = numpy.nan * degree
     rotation: Optional[Quantity] = 90 * degree
+
+    @field_validator('polarization_filter', mode='before')
+    def validate_polarization(cls, value):
+        """
+        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if value is None:
+            value = numpy.nan * degree
+
+        if not value.check(degree):
+            raise ValueError(f"{value} must have angle units (degree or radian).")
+
+        return value
+
+    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
+    def validate_angle_quantity(cls, value):
+        """
+        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if not isinstance(value, Quantity):
+            raise ValueError(f"{value} must be a Quantity with angle units.")
+
+        if not value.check(degree):
+            raise ValueError(f"{value} must have angle units (degree or radian).")
+
+        return value
 
 
     def __post_init__(self):
@@ -247,199 +268,3 @@ class GenericDetector():
         total_power = 0.5 * numpy.sum(poynting) * self.binding.mesh.d_omega
 
         return total_power
-
-    @field_validator('polarization_filter', mode='before')
-    def validate_polarization(cls, value):
-        """
-        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
-        """
-        if value is None:
-            value = numpy.nan * degree
-
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
-
-        return value
-
-    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
-    def validate_angle_quantity(cls, value):
-        """
-        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
-        """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with angle units.")
-
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
-
-        return value
-
-
-@dataclass(config=config_dict)
-class Photodiode(GenericDetector):
-    """
-    Detector class representing a photodiode with a non-coherent light coupling mechanism.
-    This means it is independent of the phase of the impinging scattered light field.
-
-    Attributes:
-        NA (float): Numerical aperture of the imaging system.
-        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization.
-        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization.
-        sampling (int): Sampling rate of the far-field distribution. Default is 200.
-        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
-    """
-    coherent: bool = False
-    mean_coupling: bool = False
-    rotation: Quantity = field(default=0 * degree, init=False)
-    mode_number: str = field(default='NC00', init=False)
-
-    def __post_init__(self):
-        self.max_angle = NA_to_angle(NA=self.NA.magnitude)
-
-        self.binding = BindedDetector(
-            mode_number=self.mode_number,
-            sampling=self.sampling.magnitude,
-            NA=self.NA.magnitude,
-            phi_offset=self.phi_offset.to(radian),
-            gamma_offset=self.gamma_offset.to(radian),
-            polarization_filter=self.polarization_filter.to(radian),
-            rotation=self.rotation.to(radian),
-            coherent=self.coherent,
-            mean_coupling=self.mean_coupling
-        )
-
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
-        """
-        Generate a structured scalar field as a numpy array.
-
-        Args:
-            sampling (int): The sampling rate for the scalar field. Default is 100.
-
-        Returns:
-            numpy.ndarray: A 2D array representing the structured scalar field.
-        """
-        return numpy.ones([sampling, sampling])
-
-
-@dataclass(config=config_dict)
-class IntegratingSphere(Photodiode):
-    """
-    Detector class representing a photodiode with a non-coherent light coupling mechanism.
-    This implies independence from the phase of the impinging scattered light field.
-
-    Attributes:
-        sampling (int): Sampling rate of the far-field distribution. Default is 200.
-        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
-    """
-    NA: Quantity = field(default=2 * AU, init=False)
-    gamma_offset: Quantity = field(default=0 * degree, init=False)
-    phi_offset: Quantity = field(default=0 * degree, init=False)
-
-    def __post_init__(self):
-        super(IntegratingSphere, self).__post_init__()
-
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
-        """
-        Generate a structured scalar field as a numpy array.
-
-        Args:
-            sampling (int): The sampling rate for the scalar field. Default is 100.
-
-        Returns:
-            numpy.ndarray: A 2D array representing the structured scalar field.
-        """
-        return numpy.ones([sampling, sampling])
-
-
-@dataclass(config=config_dict)
-class CoherentMode(GenericDetector):
-    """
-    Detector class representing a laser Hermite-Gauss mode with a coherent light coupling mechanism.
-    This means it depends on the phase of the impinging scattered light field.
-
-    Attributes:
-        mode_number (str): String representing the HG mode to be initialized (e.g., 'LP01', 'HG11', 'LG22').
-        NA (float): Numerical aperture of the imaging system.
-        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization.
-        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization.
-        sampling (int): Sampling rate of the far-field distribution. Default is 200.
-        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
-        mean_coupling (bool): Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
-        coherent (bool): Indicates if the coupling mechanism is coherent. Default is True.
-        rotation (float): Rotation angle of the field along the axis of propagation. Default is 90.
-    """
-    mode_number: str
-    coherent: bool = True
-    mean_coupling: bool = True
-
-    def initialize(self):
-        if self.NA > 0.3 or self.NA < 0:
-            logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Values under 0.3 are preferred.")
-
-        self.mode_family = self.mode_number[:2]
-
-        if self.mode_family.lower() not in ['lp', 'lg', 'hg']:
-            raise ValueError(f'Invalid mode family: {self.mode_family}. Options are ["LP", "LG", "HG"]')
-
-        number_0, number_1 = self.mode_number[2:]
-        self.number_0, self.number_1 = int(number_0), int(number_1)
-
-        match self.mode_family.lower():
-            case 'lp':
-                self.azimuthal_number, self.radial_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = ModeField.get_LP
-            case 'lg':
-                self.azimuthal_number, self.radial_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = ModeField.get_LG
-            case 'hg':
-                self.x_number, self.y_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = ModeField.get_HG
-
-        self.max_angle = NA_to_angle(NA=self.NA.magnitude)
-
-        self.binding = BindedDetector(
-            mode_number=self.mode_number,
-            sampling=self.sampling.magnitude,
-            NA=self.NA.magnitude,
-            phi_offset=self.phi_offset.to(radian).magnitude,
-            gamma_offset=self.gamma_offset.to(radian).magnitude,
-            polarization_filter=self.polarization_filter.to(radian).magnitude,
-            rotation=self.rotation.to(radian).magnitude,
-            coherent=True,
-            mean_coupling=self.mean_coupling
-        )
-
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
-        """
-        Generate a structured scalar field as a numpy array.
-
-        Args:
-            sampling (int): The sampling rate for the scalar field. Default is 100.
-
-        Returns:
-            numpy.ndarray: A 2D array representing the structured scalar field.
-        """
-        x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
-
-        coordinates = numpy.row_stack((
-            x_mesh.ravel(),
-            y_mesh.ravel(),
-        ))
-
-        norm = numpy.sqrt(numpy.square(coordinates).sum(axis=0)).max()
-
-        coordinates /= norm
-
-        field = self.cpp_mode_field_getter(
-            coordinates[0],
-            coordinates[1],
-            self.number_0,
-            self.number_1
-        )
-
-        return field.reshape([sampling, sampling])
-
-
-# -

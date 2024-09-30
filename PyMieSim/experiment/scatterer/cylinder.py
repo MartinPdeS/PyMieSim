@@ -2,13 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from pydantic.dataclasses import dataclass
-from pydantic import validator
+from pydantic import field_validator
 from typing import List, Union, Any, Optional
-import pint_pandas
 
 import numpy
 from PyMieSim.binary.SetsInterface import CppCylinderSet
-from PyMieSim.experiment import measure, parameters
+from PyMieSim.experiment import measure
 import PyMieSim.experiment.source as source
 from PyOptik.base_class import BaseMaterial
 from PyMieSim.units import Quantity, meter
@@ -36,7 +35,7 @@ class Cylinder(BaseScatterer):
 
     available_measure_list = measure.__cylinder__
 
-    @validator('diameter', 'medium_index', 'medium_material', 'index', 'material', pre=True)
+    @field_validator('diameter', 'medium_index', 'medium_material', 'index', 'material', mode='before')
     def validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):
@@ -44,7 +43,7 @@ class Cylinder(BaseScatterer):
 
         return value
 
-    @validator('diameter', pre=True)
+    @field_validator('diameter', mode='before')
     def validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""

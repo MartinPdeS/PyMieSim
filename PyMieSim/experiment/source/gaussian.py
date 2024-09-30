@@ -4,7 +4,7 @@
 from typing import Union
 import numpy
 from pydantic.dataclasses import dataclass
-from pydantic import validator
+from pydantic import field_validator
 from dataclasses import field
 from PyMieSim import polarization
 from PyMieSim.units import Quantity, meter
@@ -30,7 +30,7 @@ class Gaussian(BaseSource):
 
     name: str = field(default='PlaneWave', init=False)
 
-    @validator('wavelength', pre=True, always=True)
+    @field_validator('wavelength', mode='before')
     def validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""
@@ -42,7 +42,7 @@ class Gaussian(BaseSource):
 
         return numpy.atleast_1d(value)
 
-    @validator('NA', 'optical_power', pre=True)
+    @field_validator('NA', 'optical_power', mode='before')
     def validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):

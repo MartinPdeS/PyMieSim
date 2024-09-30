@@ -5,7 +5,7 @@ ureg = pint.PintType.ureg
 
 ureg.setup_matplotlib()
 Quantity = ureg.Quantity
-ureg.default_format = '~P'
+ureg.formatter.default_format = '~P'
 
 
 _scaled_units_str_list = [

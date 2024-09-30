@@ -50,7 +50,7 @@ def detector():
         Photodiode: A photodiode detector object.
     """
     return Photodiode(
-        NA=0.1,                 # Numerical Aperture
+        NA=0.1 * AU,                     # Numerical Aperture
         gamma_offset=90 * degree,        # Gamma offset in degrees
         phi_offset=0 * degree,           # Phi offset in degrees
         polarization_filter=0 * degree   # Polarization filter angle in degrees

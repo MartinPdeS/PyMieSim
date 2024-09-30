@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pydantic import validator
+from pydantic import field_validator
 from PyMieSim.polarization import BasePolarization, Linear
 from PyMieSim.units import Quantity, watt, meter, degree, watt, AU
 
@@ -14,7 +14,7 @@ config_dict = dict(
 
 
 class BaseSource:
-    @validator('NA', pre=True, always=True)
+    @field_validator('NA', mode='before')
     def validate_NA(cls, value):
         """
         Ensures that diameter is Quantity objects with AU units."""
@@ -26,7 +26,7 @@ class BaseSource:
 
         return value
 
-    @validator('optical_power', pre=True, always=True)
+    @field_validator('optical_power', mode='before')
     def validate_optical_power(cls, value):
         """
         Ensures that diameter is Quantity objects with power units."""
@@ -38,7 +38,7 @@ class BaseSource:
 
         return value
 
-    @validator('wavelength', pre=True, always=True)
+    @field_validator('wavelength', mode='before')
     def validate_wavelength(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""
@@ -50,7 +50,7 @@ class BaseSource:
 
         return value
 
-    @validator('polarization', pre=True, always=True)
+    @field_validator('polarization', mode='before')
     def validate_polarization(cls, value):
         """
         Ensures that polarization is well defined."""

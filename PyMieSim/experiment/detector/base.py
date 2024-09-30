@@ -3,9 +3,11 @@
 
 import numpy as np
 import pint_pandas
-from pydantic import ConfigDict, validator
+from typing import Optional
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict, field_validator
 from PyMieSim.binary.SetsInterface import CppDetectorSet
-from PyMieSim.units import Quantity, radian, degree
+from PyMieSim.units import Quantity, radian, degree, AU
 from typing import Any
 
 
@@ -16,6 +18,7 @@ config_dict = ConfigDict(
     arbitrary_types_allowed=True
 )
 
+@dataclass(config=config_dict)
 class BaseDetector:
     """
     Base class for detectors in Mie scattering simulations, handling common attributes and methods.
@@ -24,14 +27,66 @@ class BaseDetector:
     the C++ bindings needed for high-performance calculations. It should be subclassed to create specific types of detectors.
 
     Attributes:
-        NA (List[float]): Numerical aperture(s) defining the range of angles the system can accept light.
-        gamma_offset (Quantity): Angular offset perpendicular to polarization (in degrees).
-        phi_offset (Quantity): Angular offset parallel to polarization (in degrees).
-        polarization_filter (List[float]): Angle(s) of the polarization filter (in degrees).
-        sampling (List[int]): Resolution for field sampling.
+        mode_number (Union[List[str], str]): Mode number(s) involved in the detection.
+        NA (Union[List[float], float]): Numerical aperture(s) of the detector.
+        gamma_offset (Quantity): Gamma angular offset (in degrees).
+        phi_offset (Quantity): Phi angular offset (in degrees).
+        rotation (Quantity): Rotation angle of the detector.
+        sampling (Union[List[int], int]): Sampling rate(s) for the detector.
+        polarization_filter (Optional[Quantity]): Polarization filter angle (in degrees).
+        mean_coupling (Optional[bool]): Whether mean coupling is used. Defaults to False.
+        coherent (bool): Specifies if the detection is coherent. Defaults to True.
 
     This class is not intended to be instantiated directly.
     """
+    mode_number: str
+    NA: Quantity
+    gamma_offset: Quantity
+    phi_offset: Quantity
+    rotation: Quantity
+    mean_coupling: bool
+    coherent: bool
+    sampling: Optional[Quantity] = 200 * AU
+    polarization_filter: Optional[Quantity] = np.nan * degree
+
+
+    @field_validator('polarization_filter', mode='before')
+    def validate_polarization(cls, value):
+        """
+        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if value is None:
+            value = np.nan * degree
+
+        value = np.atleast_1d(value).astype(float)
+
+        if not value.check(degree):
+            raise ValueError(f"{value} must have angle units (degree or radian).")
+
+        return value
+
+    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
+    def validate_angle_quantity(cls, value):
+        """
+        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if not isinstance(value, Quantity):
+            raise ValueError(f"{value} must be a Quantity with angle units.")
+
+        if not value.check(degree):
+            raise ValueError(f"{value} must have angle units (degree or radian).")
+
+        return np.atleast_1d(value).astype(float)
+
+    @field_validator('NA', 'sampling', 'mode_number', mode='before')
+    def validate_au_quantity(cls, value):
+        """Ensure that arrays are properly converted to numpy arrays."""
+        if not isinstance(value, np.ndarray):
+            value = np.atleast_1d(value)
+
+        return value
 
     def __post_init__(self) -> None:
         """Post-initialization: sets up mapping and binds the detector to the C++ engine."""
@@ -80,41 +135,3 @@ class BaseDetector:
         self.mapping['gamma_offset'] = pint_pandas.PintArray(self.gamma_offset, dtype=self.gamma_offset.units)
         self.mapping['sampling'] = pint_pandas.PintArray(self.sampling, dtype=self.sampling.units)
         self.mapping['polarization_filter'] = self.polarization_filter
-
-    @validator('polarization_filter', pre=True, always=True)
-    def validate_polarization(cls, value):
-        """
-        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
-        """
-        if value is None:
-            value = np.nan * degree
-
-        value = np.atleast_1d(value).astype(float)
-
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
-
-        return value
-
-    @validator('gamma_offset', 'phi_offset', 'rotation', pre=True, always=True)
-    def validate_angle_quantity(cls, value):
-        """
-        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
-        """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with angle units.")
-
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
-
-        return np.atleast_1d(value).astype(float)
-
-    @validator('NA', 'sampling', 'mode_number', pre=True, always=True)
-    def validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        if not isinstance(value, np.ndarray):
-            value = np.atleast_1d(value)
-
-        return value

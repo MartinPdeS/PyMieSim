@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from pydantic.dataclasses import dataclass
-from dataclasses import fields
-from pydantic import validator
+from pydantic import field_validator
 from typing import List, Union, Any, Optional
 
 import numpy
@@ -48,7 +47,7 @@ class CoreShell(BaseScatterer):
 
     available_measure_list = measure.__coreshell__
 
-    @validator('core_diameter', 'shell_width', 'core_index', 'shell_index', 'core_material', 'shell_material', 'medium_index', 'medium_material', pre=True)
+    @field_validator('core_diameter', 'shell_width', 'core_index', 'shell_index', 'core_material', 'shell_material', 'medium_index', 'medium_material', mode='before')
     def validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):
@@ -56,7 +55,7 @@ class CoreShell(BaseScatterer):
 
         return value
 
-    @validator('core_diameter', 'shell_wdith', pre=True)
+    @field_validator('core_diameter', 'shell_wdith', mode='before')
     def validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""

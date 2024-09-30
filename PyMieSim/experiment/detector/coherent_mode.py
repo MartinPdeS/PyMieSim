@@ -4,10 +4,10 @@
 import numpy as np
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from pydantic import validator
-from PyMieSim.units import Quantity
+from pydantic import field_validator
 from typing import List, Union, Optional
 from PyMieSim.experiment.detector.base import BaseDetector, config_dict
+from PyMieSim.units import Quantity, degree
 
 @dataclass(config=config_dict)
 class CoherentMode(BaseDetector):
@@ -28,18 +28,12 @@ class CoherentMode(BaseDetector):
         mean_coupling (Optional[bool]): Whether mean coupling is used. Defaults to False.
         coherent (bool): Specifies if the detection is coherent. Defaults to True.
     """
-    mode_number: Union[np.ndarray, List[str], str]
-    NA: Quantity
-    gamma_offset: Quantity
-    phi_offset: Quantity
-    rotation: Quantity
-    sampling: Quantity
-    polarization_filter: Optional[Quantity] = None
+    rotation: Quantity = 900 * degree
+    mode_number: Union[List[str], str]
     mean_coupling: Optional[bool] = False
-
     coherent: bool = field(default=True, init=False)
 
-    @validator('mode_number', pre=True)
+    @field_validator('mode_number', mode='before')
     def validate_mode_number(cls, mode_number):
         """Ensure mode numbers are valid and belong to supported families."""
         mode_number = np.atleast_1d(mode_number).astype(str)

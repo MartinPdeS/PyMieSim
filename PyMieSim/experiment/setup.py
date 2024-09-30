@@ -12,7 +12,7 @@ from typing import Union, Optional
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
-from PyMieSim.utils import generate_dataframe, plot_dataframe
+from PyMieSim.utils import plot_dataframe
 
 
 @dataclass
@@ -98,14 +98,43 @@ class Setup:
                 return self._export_as_numpy(array)
 
     def _export_as_dataframe(self, measure, array: numpy.ndarray) -> pd.DataFrame:
-        df = generate_dataframe(
-            experiment=self,
-            is_complex=numpy.iscomplexobj(array)
-        )
+        df = self.generate_dataframe(is_complex=numpy.iscomplexobj(array))
 
         setattr(df.__class__, 'plot_data', plot_dataframe)
 
         df[measure.short_label] = array.ravel().view(float)
+
+        return df
+
+    def generate_dataframe(self, is_complex: bool = False):
+        """
+        Generates a pandas DataFrame with a MultiIndex based on the mapping
+        of 'source' and 'scatterer' from an experiment object.
+
+        Parameters:
+        experiment: The experiment object containing 'source' and 'scatterer' mappings.
+
+        Returns:
+        pd.DataFrame: A DataFrame with a MultiIndex created from the experiment mappings.
+        """
+        # Combine 'source' and 'scatterer' mappings for values and names
+        iterables = {
+            **self.source.mapping, **self.scatterer.mapping
+        }
+
+        if self.detector is not None:
+            iterables.update(self.detector.mapping)
+
+        if is_complex:
+            iterables['type'] = ['real', 'imag']
+
+        # Create a MultiIndex from the iterables
+        row_index = pd.MultiIndex.from_product(iterables.values(), names=iterables.keys())
+
+        # Return an empty DataFrame with the generated MultiIndex
+        df = pd.DataFrame(index=row_index)
+
+        df.columns.names = ['Data']
 
         return df
 

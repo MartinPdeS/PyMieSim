@@ -75,9 +75,9 @@ def test_coreshell_method(method, core_config, shell_config, medium_config, gaus
 @pytest.mark.parametrize('core_config', core_configs, ids=[config['id'] for config in core_configs])
 def test_coreshell_coupling(core_config, shell_config, medium_config, gaussian_source):
     detector = Photodiode(
-        NA=0.2,
-        gamma_offset=0,
-        phi_offset=0,
+        NA=0.2 * AU,
+        gamma_offset=0 * degree,
+        phi_offset=0 * degree,
     )
 
     scatterer = CoreShell(
