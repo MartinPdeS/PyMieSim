@@ -44,9 +44,9 @@ ax.plot(S1S2.phi, data, 'C1-', linewidth=3, label='PyMieSim')
 ax.plot(x, y, 'k--', linewidth=1, label='B&H [8.10]')
 
 ax.set(
-    xlabel = 'scatterertering angle [degree]',
-    ylabel = 'Phase function',
-    yscale = 'log',
+    xlabel='scatterertering angle [degree]',
+    ylabel='Phase function',
+    yscale='log',
 )
 
 ax.legend()

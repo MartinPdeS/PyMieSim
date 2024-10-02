@@ -52,10 +52,9 @@ detector = Photodiode(
 experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # Gather data
-dataframe = experiment.get('coupling').reset_index('phi_offset')
-dataframe['phi_offset'] /= 180 / np.pi
+dataframe = experiment.get('coupling', drop_unique_level=True)
+# dataframe.index = /= 180 / np.pi
 dataframe['coupling'] /= dataframe['coupling'].max()  # Normalize data
-
 
 # Single scatterer simulation for S1 and S2
 single_source = SingleGaussian(
@@ -81,10 +80,17 @@ s2 /= s2.max()  # Normalize S2 data
 with plt.style.context(mps):
     figure, (ax0, ax1) = plt.subplots(1, 2, subplot_kw=dict(projection='polar'))
 
-dataframe.xs(0 * degree, level='polarization').plot(x='phi_offset', ax=ax0, linewidth=3, title='Polarization 0 degree')
+
+
+df = dataframe.unstack('polarization').pint.dequantify().reset_index().pint.quantify()
+df['phi_offset'] /= (180 / np.pi)
+
+df.plot(x='phi_offset', y=('coupling', 0 * degree), ax=ax0, linewidth=3, title='Polarization 90 degree')
+df.plot(x='phi_offset', y=('coupling', 90 * degree), ax=ax1, linewidth=3, title='Polarization 90 degree')
+
+
 ax0.plot(np.deg2rad(phi), s1, color='C1', linestyle='--', linewidth=1, label='Computed S1')
 
-dataframe.xs(90 * degree, level='polarization').plot(x='phi_offset', ax=ax1, linewidth=3, title='Polarization 90 degree')
 ax1.plot(np.deg2rad(phi), s2, color='C1', linestyle='--', linewidth=1, label='Computed S2')
 
 plt.show()

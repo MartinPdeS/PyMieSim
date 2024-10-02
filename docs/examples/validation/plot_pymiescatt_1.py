@@ -58,8 +58,8 @@ pymiescatt_dataframe = get_pymiescatt_sphere_dataframe(
 # Plot results
 with plt.style.context(mps):
     figure, ax = plt.subplots(1, 1)
-    pymiescatt_dataframe.plot(x='diameter', ax=ax, linewidth=3)
-    pymiesim_dataframe.plot(x='diameter', ax=ax, color='black', linestyle='--', linewidth=1.5)
+    pymiescatt_dataframe.plot(x=0, ax=ax, linewidth=3)
+    pymiesim_dataframe.plot(x=0, ax=ax, color='black', linestyle='--', linewidth=1.5)
     ax.set(
         xlabel=r'Diameter [$\mu$m]',
         ylabel='Scattering Efficiency',
