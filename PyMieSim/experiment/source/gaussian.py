@@ -58,7 +58,7 @@ class Gaussian(BaseSource):
         # dsa
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
-            jones_vector=self.polarization.element.T,
+            jones_vector=self.polarization.element,
             NA=self.NA,
             optical_power=self.optical_power
         )
