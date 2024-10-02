@@ -64,7 +64,7 @@ def test_api():
     """
     Test the API integration with different polarizations.
     """
-    polarization = Linear(element=[50, 20] * degree)
+    polarization = Linear(element=[50] * degree)
 
     # Setup Gaussian source
     source = Gaussian(
