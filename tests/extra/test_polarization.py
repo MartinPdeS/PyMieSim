@@ -58,9 +58,9 @@ def test_addition_operator(polarization_0, polarization_1):
     assert output is not None, 'Addition of polarizations failed!'
 
 
-# @pytest.mark.parametrize('polarization_0', polarizations, ids=lambda p: p.__class__.__name__)
-# @pytest.mark.parametrize('polarization_1', polarizations, ids=lambda p: p.__class__.__name__)
-def test_api():
+@pytest.mark.parametrize('polarization_0', polarizations, ids=lambda p: p.__class__.__name__)
+@pytest.mark.parametrize('polarization_1', polarizations, ids=lambda p: p.__class__.__name__)
+def test_api(polarization_0, polarization_1):
     """
     Test the API integration with different polarizations.
     """
