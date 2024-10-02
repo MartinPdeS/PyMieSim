@@ -70,53 +70,154 @@ class Setup:
         if self.detector:
             self.detector._generate_mapping()
 
-    def get(self, *measure, scale_unit: bool = False, drop_unique_level: bool = True) -> Union[numpy.ndarray]:
+    def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True) -> pd.DataFrame:
         """
-        Executes the simulation to compute and retrieve the specified measure.
+        Executes the simulation to compute and retrieve the specified measures.
 
         Parameters:
-            measure (Table): The measure to be computed by the simulation, defined by the user.
+        ----------
+        measures : tuple
+            The measures to be computed in the simulation, provided as arguments by the user.
+        scale_unit : bool, optional
+            If True, scales the units of the computed values to the most appropriate units. Defaults to False.
+        drop_unique_level : bool, optional
+            If True, drops levels from the MultiIndex where there is only one unique value, simplifying the DataFrame. Defaults to True.
+        add_units : bool, optional
+            If True, the resulting DataFrame will contain pint quantities with units. If False, no units will be added. Defaults to True.
 
         Returns:
-            Union[numpy.ndarray]: The computed data in the specified format, either as raw numerical values in a numpy array or structured for visualization.
+        -------
+        pd.DataFrame
+            A DataFrame containing the computed measures.
         """
-        measure = set(numpy.atleast_1d(measure))
 
-        if not measure.issubset(self.scatterer.available_measure_list):
-            raise ValueError(f"Cannot compute {measure} for {self.scatterer.__class__}")
+        measures = self._prepare_measures(measures)
+        is_complex = self._is_complex_measure(measures)
 
-        is_complex = True if numpy.any([m[0] in ['a', 'b'] for m in measure]) else False
+        df = self.generate_dataframe(
+            measure=list(measures),
+            is_complex=is_complex,
+            drop_unique_level=drop_unique_level
+        )
 
-        df = self.generate_dataframe(measure=list(measure), is_complex=is_complex)
+        for measure in measures:
+            df = self._compute_measure(df, measure, is_complex, add_units)
 
-        if drop_unique_level:
-            df = self.drop_unique_levels(df)
-
-        scatterer_name = self.scatterer.__class__.__name__.lower()
-        for m in measure:
-            call_str = f'get_{scatterer_name}_{m}'
-
-            array = getattr(self.binding, call_str)()
-
-            match m[0]:
-                case 'C':
-                    dtype = meter**2
-                case 'c':
-                    dtype = watt
-                case _:
-                    dtype = AU
-
-
-            df = self._set_data(measure=m, dataframe=df, array=array, dtype=dtype, is_complex=is_complex)
-
-        setattr(df.__class__, 'plot_data', plot_dataframe)
-
+        # Optionally scale the units in the DataFrame
         if scale_unit:
             df = self.scale_dataframe_units(df)
 
         return df
 
-    def _set_data(self, measure: str, dataframe: pd.DataFrame, array: numpy.ndarray, dtype: type, is_complex: bool) -> None:
+    def _prepare_measures(self, measures) -> set:
+        """
+        Ensure the provided measures are valid and available in the scatterer.
+
+        Parameters:
+        ----------
+        measures : tuple
+            The measures requested for computation.
+
+        Returns:
+        -------
+        set
+            A set of valid measures.
+
+        Raises:
+        -------
+        ValueError
+            If requested measures are not available in the scatterer.
+        """
+        measures = set(numpy.atleast_1d(measures))
+
+        # Check if requested measures are available in the scatterer
+        if not measures.issubset(self.scatterer.available_measure_list):
+            raise ValueError(f"Cannot compute {measures} for {self.scatterer.__class__}")
+
+        return measures
+
+    def _is_complex_measure(self, measures: set) -> bool:
+        """
+        Determines if the measures involve complex values based on measure names.
+
+        Parameters:
+        ----------
+        measures : set
+            A set of measures requested for computation.
+
+        Returns:
+        -------
+        bool
+            True if any measure involves complex values, False otherwise.
+        """
+        return any(m[0] in ['a', 'b'] for m in measures)
+
+    def _compute_measure(self, df: pd.DataFrame, measure: str, is_complex: bool, add_units: bool) -> pd.DataFrame:
+        """
+        Compute and set the data for a given measure in the DataFrame.
+
+        Parameters:
+        ----------
+        df : pd.DataFrame
+            The DataFrame in which to store the results.
+        measure : str
+            The measure to compute.
+        is_complex : bool
+            Whether the measure involves complex numbers.
+        add_units : bool
+            Whether to add units to the results.
+
+        Returns:
+        -------
+        pd.DataFrame
+            The updated DataFrame with the computed measure.
+        """
+        scatterer_name = self.scatterer.__class__.__name__.lower()
+        method_name = f'get_{scatterer_name}_{measure}'
+
+        # Compute the values using the binding method
+        array = getattr(self.binding, method_name)()
+
+        # Determine the unit based on the measure type
+        dtype = self._determine_dtype(measure)
+
+        # Set the data in the DataFrame
+        df = self._set_data(
+            measure=measure,
+            dataframe=df,
+            array=array,
+            dtype=dtype,
+            is_complex=is_complex,
+            add_units=add_units
+        )
+
+        return df
+
+    def _determine_dtype(self, measure: str):
+        """
+        Determine the appropriate unit (dtype) based on the measure's first character.
+
+        Parameters:
+        ----------
+        measure : str
+            The measure type to determine the unit for.
+
+        Returns:
+        -------
+        pint.Quantity
+            The appropriate unit for the measure.
+        """
+        match measure[0]:
+            case 'C':
+                return meter**2  # Cross-section measure
+            case 'c':
+                return watt  # Power measure
+            case _:
+                return AU  # Arbitrary units for other measures
+
+
+
+    def _set_data(self, measure: str, dataframe: pd.DataFrame, array: numpy.ndarray, dtype: type, is_complex: bool, add_units: bool) -> None:
         """
         Sets the real and imaginary parts of a NumPy array as separate 'real' and 'imag' levels
         in the 'type' index of a pandas DataFrame.
@@ -138,12 +239,17 @@ class Setup:
             A flag that indicates whether the input array is complex. If False, the 'type' level
             is not saved, and the array is treated as purely real.
         """
+        if add_units:
+            dtype = f'pint[{dtype}]'
+        else:
+            dtype = float
+
         if is_complex:
-            dataframe[(measure, 'real')] = pd.Series(array.ravel().real, dtype=f'pint[{dtype}]', index=dataframe.index)
-            dataframe[(measure, 'imag')] = pd.Series(array.ravel().imag, dtype=f'pint[{dtype}]', index=dataframe.index)
+            dataframe[(measure, 'real')] = pd.Series(array.ravel().real, dtype=dtype, index=dataframe.index)
+            dataframe[(measure, 'imag')] = pd.Series(array.ravel().imag, dtype=dtype, index=dataframe.index)
 
         else:
-            dataframe[measure] = pd.Series(array.ravel(), dtype=f'pint[{dtype}]', index=dataframe.index)
+            dataframe[measure] = pd.Series(array.ravel(), dtype=dtype, index=dataframe.index)
 
         return dataframe
 
@@ -197,7 +303,7 @@ class Setup:
 
         return dataframe.droplevel(unique_levels)
 
-    def generate_dataframe(self, measure, is_complex: bool = False):
+    def generate_dataframe(self, measure, is_complex: bool = False, drop_unique_level: bool = True):
         """
         Generates a pandas DataFrame with a MultiIndex based on the mapping
         of 'source' and 'scatterer' from an experiment object.
@@ -217,6 +323,11 @@ class Setup:
 
         if self.detector is not None:
             iterables.update(self.detector.mapping)
+
+        if drop_unique_level:
+            iterables = {
+                k: v for k, v in iterables.items() if len(v) > 1
+            }
 
         # Create a MultiIndex from the iterables
         row_index = pd.MultiIndex.from_product(

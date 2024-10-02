@@ -20,9 +20,9 @@ from PyMieSim.units import degree, watt, AU, nanometer, RIU
 import matplotlib.pyplot as plt
 
 
-index = numpy.linspace(1.3, 2.1, 300) * RIU
+index = numpy.linspace(1.3, 2.1, 100) * RIU
 
-diameter = numpy.linspace(1, 2000, 200) * nanometer
+diameter = numpy.linspace(1, 2000, 100) * nanometer
 
 source = Gaussian(
     wavelength=400 * nanometer,
@@ -48,20 +48,15 @@ detector = Photodiode(
     sampling=400 * AU
 )
 
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-data = experiment.get(measure.coupling, export_as='numpy')
+dataframe = experiment.get('coupling', add_units=False)
 
-data = abs(data.squeeze())
-
+values = dataframe.values.reshape([diameter.size, index.size])
 
 figure, ax = plt.subplots(1, 1)
 
-image = ax.pcolormesh(index, diameter * 1e6, data, shading='auto')
+image = ax.pcolormesh(index, diameter * 1e6, values, shading='auto')
 ax.set(
     xlabel="Permittivity",
     ylabel=r'Diameter [$\mu$m]',

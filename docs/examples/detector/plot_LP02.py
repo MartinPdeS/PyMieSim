@@ -8,15 +8,16 @@ This example demonstrates the initialization and visualization of an LP02 Mode d
 # %%
 # Importing the package: PyMieSim
 from PyMieSim.single.detector import CoherentMode
+from PyMieSim.units import AU, degree
 
 # %%
 # Initializing the detector
 detector = CoherentMode(
     mode_number="LP02",  # Specifying LP02 mode
-    sampling=500,  # Number of sampling points
-    NA=0.3,  # Numerical Aperture
-    gamma_offset=0,  # Gamma offset
-    phi_offset=40,  # Phi offset in degrees
+    sampling=500 * AU,  # Number of sampling points
+    NA=0.3 * AU,  # Numerical Aperture
+    gamma_offset=0 * degree,  # Gamma offset
+    phi_offset=40 * degree,  # Phi offset in degrees
 )
 
 # %%

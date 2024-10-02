@@ -88,7 +88,6 @@ df['phi_offset'] /= (180 / np.pi)
 df.plot(x='phi_offset', y=('coupling', 0 * degree), ax=ax0, linewidth=3, title='Polarization 90 degree')
 df.plot(x='phi_offset', y=('coupling', 90 * degree), ax=ax1, linewidth=3, title='Polarization 90 degree')
 
-
 ax0.plot(np.deg2rad(phi), s1, color='C1', linestyle='--', linewidth=1, label='Computed S1')
 
 ax1.plot(np.deg2rad(phi), s2, color='C1', linestyle='--', linewidth=1, label='Computed S2')

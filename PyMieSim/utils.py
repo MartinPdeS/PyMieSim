@@ -137,15 +137,11 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str) -> None:
     groupby_levels = [level for level in dataframe.index.names if level not in [x]]
 
     if groupby_levels:
-        for name, group in dataframe.groupby(groupby_levels):
+        for name, group in dataframe.groupby(groupby_levels, dropna=False):
             group = group.droplevel(groupby_levels)
             label = " : ".join(map(str, name))
 
-            ax.plot(
-                group.index,
-                group.squeeze(),
-                label=label
-            )
+            ax.plot(group.index, group.squeeze(), label=label)
 
     else:
         name = dataframe.columns[0]
