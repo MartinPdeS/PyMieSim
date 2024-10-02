@@ -5,8 +5,8 @@ import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict, field_validator
 import pint_pandas
-
-from PyMieSim import polarization
+from typing import Union
+from PyMieSim.polarization import BasePolarization, Linear
 from PyMieSim.units import degree
 from PyMieSim.binary.SetsInterface import CppSourceSet
 from PyMieSim.units import Quantity, meter
@@ -18,17 +18,19 @@ config_dict = ConfigDict(
     arbitrary_types_allowed=True
 )
 
-@dataclass
+@dataclass(config=config_dict)
 class BaseSource:
     """
     Base class for light sources in PyMieSim experiments.
     """
+    wavelength: Quantity
+    polarization: Union[BasePolarization, Quantity]
 
     def __post_init__(self):
         self.mapping = {}
 
-        if not isinstance(self.polarization, polarization.BasePolarization):
-            self.polarization = polarization.Linear(self.polarization)
+        if not isinstance(self.polarization, BasePolarization):
+            self.polarization = Linear(self.polarization)
 
         self._generate_binding_kwargs()
 

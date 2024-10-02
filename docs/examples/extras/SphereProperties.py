@@ -5,21 +5,22 @@ Samples Properties
 
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.units import degree, nanometer, AU, RIU, watt
 
 source = Gaussian(
-    wavelength=1000e-9,
-    polarization=0,
-    optical_power=1,
-    NA=0.3
+    wavelength=1000 * nanometer,
+    polarization=0 * degree,
+    optical_power=1 * watt,
+    NA=0.3 * AU
 )
 
 source.plot()
 
 scatterer = Sphere(
-    diameter=800e-9,
+    diameter=800 * nanometer,
     source=source,
-    index=1.4,
-    medium_index=1.0
+    index=1.4 * RIU,
+    medium_index=1.0 * RIU
 )
 
 

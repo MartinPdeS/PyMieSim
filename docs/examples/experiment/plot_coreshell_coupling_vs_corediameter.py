@@ -12,7 +12,6 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyOptik import Material
 from PyMieSim.units import micrometer, nanometer, degree, watt, AU, RIU
 

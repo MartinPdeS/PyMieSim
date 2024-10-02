@@ -25,10 +25,14 @@ class JonesVector(BasePolarization):
 
     def __add__(self, other: BasePolarization) -> BasePolarization:
         output = copy(self)
-        output.element = np.vstack([output.element, other.element])
+
+        if hasattr(output, 'angle'):
+            del output.angle
+
+        output.element = np.vstack([self.element, other.element])
 
         if hasattr(other, 'angle') and hasattr(self, 'angle'):
-            output.angle = np.hstack([output.angle, other.angle])
+            output.angle = np.hstack([self.angle, other.angle])
 
         return output
 

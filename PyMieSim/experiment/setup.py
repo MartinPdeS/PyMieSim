@@ -239,10 +239,7 @@ class Setup:
             A flag that indicates whether the input array is complex. If False, the 'type' level
             is not saved, and the array is treated as purely real.
         """
-        if add_units:
-            dtype = f'pint[{dtype}]'
-        else:
-            dtype = float
+        dtype = f'pint[{dtype}]' if add_units else float
 
         if is_complex:
             dataframe[(measure, 'real')] = pd.Series(array.ravel().real, dtype=dtype, index=dataframe.index)
@@ -324,10 +321,14 @@ class Setup:
         if self.detector is not None:
             iterables.update(self.detector.mapping)
 
-        if drop_unique_level:
-            iterables = {
+        if not drop_unique_level:
+            _iterables = {
                 k: v for k, v in iterables.items() if len(v) > 1
             }
+
+            if len(_iterables) != 0:
+                iterables = _iterables
+
 
         # Create a MultiIndex from the iterables
         row_index = pd.MultiIndex.from_product(
@@ -347,6 +348,10 @@ class Setup:
 
         # Return an empty DataFrame with the generated MultiIndex
         df = pd.DataFrame(columns=columns, index=row_index)
+
+        print(df)
+
+        setattr(df.__class__, 'plot_data', plot_dataframe)
 
         return df
 

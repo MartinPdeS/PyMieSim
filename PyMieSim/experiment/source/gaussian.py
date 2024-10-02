@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from dataclasses import field
-from PyMieSim import polarization
 from PyMieSim.units import Quantity, meter
 from PyMieSim.experiment.source.base import BaseSource, config_dict
 
@@ -23,8 +21,6 @@ class Gaussian(BaseSource):
         NA (List): The numerical aperture(s) of the Gaussian source.
         optical_power (float): The optical power of the source, in Watts.
     """
-    wavelength: Quantity
-    polarization: Union[polarization.BasePolarization, Quantity]
     NA: Quantity
     optical_power: Quantity
 

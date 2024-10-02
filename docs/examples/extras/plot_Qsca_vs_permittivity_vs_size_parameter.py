@@ -15,11 +15,9 @@ import numpy
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyMieSim.units import degree, watt, AU, nanometer, RIU
 
 import matplotlib.pyplot as plt
-from MPSPlots.render2D import SceneList
 
 
 permitivity = numpy.linspace(-10, 50, 400)
@@ -48,9 +46,7 @@ experiment = Setup(
     source=source
 )
 
-data = experiment.get(measure.Qsca, export_as='numpy')
-
-data = abs(data.squeeze())
+data = experiment.get('Qsca', add_units=False).squeeze().values.reshape([permitivity.size, diameter.size])
 
 figure, ax = plt.subplots(1, 1)
 ax.set(

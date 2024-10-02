@@ -3,7 +3,7 @@
 
 import pytest
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment import Setup, measure
+from PyMieSim.experiment import Setup
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.polarization import Linear, JonesVector, RightCircular, LeftCircular
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
@@ -50,7 +50,7 @@ polarizations = [
 
 @pytest.mark.parametrize('polarization_0', polarizations, ids=lambda p: p.__class__.__name__)
 @pytest.mark.parametrize('polarization_1', polarizations, ids=lambda p: p.__class__.__name__)
-def _test_addition_operator(polarization_0, polarization_1):
+def test_addition_operator(polarization_0, polarization_1):
     """
     Test the addition operator for different polarizations.
     """
@@ -65,11 +65,9 @@ def test_api(polarization_0, polarization_1):
     Test the API integration with different polarizations.
     """
     # Setup Gaussian source
-    a = polarization_0 + polarization_1
-
     source = Gaussian(
         wavelength=1000 * nanometer,
-        polarization=polarization_0,# + polarization_1,
+        polarization=polarization_0 + polarization_1,
         optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
@@ -85,7 +83,7 @@ def test_api(polarization_0, polarization_1):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source)
 
-    result = experiment.get('coupling', drop_unique_level=False)
+    result = experiment.get('coupling', drop_unique_level=True)
     assert result is not None, 'Experiment setup or measurement failed!'
 
 if __name__ == "__main__":

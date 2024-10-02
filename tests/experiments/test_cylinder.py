@@ -6,10 +6,8 @@ import numpy as np
 
 from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Cylinder
-from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-import PyMieSim.experiment.measure as pms_measure
 from PyOptik import Material
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 

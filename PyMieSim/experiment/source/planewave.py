@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union
 from pydantic.dataclasses import dataclass
 from dataclasses import field
-
-from PyMieSim import polarization
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource, config_dict
 
@@ -21,8 +18,6 @@ class PlaneWave(BaseSource):
         polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
         amplitude (Quantity): The amplitude of the plane wave, in Watts.
     """
-    wavelength: Quantity
-    polarization: Union[polarization.JonesVector, Quantity]
     amplitude: Quantity
 
     name: str = field(default='PlaneWave', init=False)

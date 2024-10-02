@@ -13,7 +13,6 @@ from PyMieSim.directories import validation_data_path
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 # Load theoretical data

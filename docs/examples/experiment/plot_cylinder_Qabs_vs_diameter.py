@@ -11,7 +11,6 @@ import numpy as np
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyOptik import Material
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
