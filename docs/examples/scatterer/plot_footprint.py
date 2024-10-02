@@ -32,7 +32,7 @@ scatterer = Sphere(
 detector = CoherentMode(
     mode_number="HG02",
     NA=0.3 * AU,
-    sampling=200,  # Number of sampling points
+    sampling=200 * AU,  # Number of sampling points
     gamma_offset=0 * degree,
     phi_offset=0 * degree,
 )

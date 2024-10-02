@@ -67,7 +67,8 @@ def test_api(polarization_0, polarization_1):
     # Setup Gaussian source
     source = Gaussian(
         wavelength=1000 * nanometer,
-        polarization=polarization_0 + polarization_1,
+        # polarization=polarization_0 + polarization_1,
+        polarization=[50, 20, 50, 20] * degree,
         optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
@@ -90,3 +91,15 @@ if __name__ == "__main__":
     pytest.main([__file__])
 
 # -
+
+
+# [[0.64278761+0.j 0.76604444+0.j]
+#  [0.93969262+0.j 0.34202014+0.j]
+#  [0.64278761+0.j 0.76604444+0.j]
+#  [0.93969262+0.j 0.34202014+0.j]]
+
+
+# [[0.64278761+0.j 0.76604444+0.j]
+#  [0.93969262+0.j 0.34202014+0.j]
+#  [0.64278761+0.j 0.76604444+0.j]
+#  [0.93969262+0.j 0.34202014+0.j]]
