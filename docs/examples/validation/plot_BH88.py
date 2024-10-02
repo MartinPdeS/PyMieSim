@@ -48,14 +48,10 @@ scatterer = Cylinder(
 )
 
 # Create experimental setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=None
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # Compute PyMieSim scattering cross section data
-csca_data = experiment.get(measure.Csca, export_as='numpy').squeeze()
+csca_data = experiment.get('Csca', add_units=False).squeeze().values.reshape([-1, diameters.size])
 normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100  # Normalize the data as per specific needs
 
 # Plotting the results
