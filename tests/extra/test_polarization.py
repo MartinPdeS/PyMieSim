@@ -60,7 +60,7 @@ def test_addition_operator(polarization_0, polarization_1):
 
 # @pytest.mark.parametrize('polarization_0', polarizations, ids=lambda p: p.__class__.__name__)
 # @pytest.mark.parametrize('polarization_1', polarizations, ids=lambda p: p.__class__.__name__)
-def test_api(polarization_0, polarization_1):
+def test_api():
     """
     Test the API integration with different polarizations.
     """
