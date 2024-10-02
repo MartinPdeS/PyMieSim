@@ -84,7 +84,7 @@ def test_api():
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source)
 
-    # result = experiment.get('coupling', drop_unique_level=True)
+    result = experiment.get('coupling', drop_unique_level=True)
     # assert result is not None, 'Experiment setup or measurement failed!'
 
 if __name__ == "__main__":
