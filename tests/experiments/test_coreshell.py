@@ -31,13 +31,17 @@ medium_options = [
 ]
 
 # Define measures to test
-measures = pms_measure.__coreshell__
+measures = [
+    'Qsca', 'Qext', 'Qabs', 'Qback', 'Qforward', 'Qratio',
+    'g', 'Qpr', 'Csca', 'Cext', 'Cabs', 'Cratio',
+    'a1', 'b1', 'a2', 'b2', 'a3', 'b3', 'coupling'
+]
 
 
 @pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
 @pytest.mark.parametrize('shell_config', [s['properties'] for s in shell_options], ids=[s['name'] for s in shell_options])
 @pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
-@pytest.mark.parametrize('measure', measures.values(), ids=measures.keys())
+@pytest.mark.parametrize('measure', measures)
 def test_coreshell_scattering_properties(measure, medium_config, core_config, shell_config):
     # Setup Gaussian source
     source = Gaussian(
@@ -73,7 +77,7 @@ def test_coreshell_scattering_properties(measure, medium_config, core_config, sh
         detector=detector
     )
 
-    experiment.get(measure)
+    experiment.get(measure, drop_unique_level=False)
 
 
 if __name__ == "__main__":

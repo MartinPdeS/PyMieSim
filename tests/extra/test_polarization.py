@@ -83,12 +83,9 @@ def test_api(polarization_0, polarization_1):
     )
 
     # Set up and run the experiment
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-    )
+    experiment = Setup(scatterer=scatterer, source=source)
 
-    result = experiment.get(measure.Qsca)
+    result = experiment.get('coupling', drop_unique_level=False)
     assert result is not None, 'Experiment setup or measurement failed!'
 
 if __name__ == "__main__":

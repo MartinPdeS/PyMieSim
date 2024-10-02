@@ -173,10 +173,10 @@ def test_detector_experiment_polarization_filter(source_experiment, scatterer_ex
     )
 
     # Get the coupling values for both polarization filters
-    coupling_values = setup.get(measure=measure.coupling, export_as='numpy').squeeze()
+    dataframe = setup.get('coupling')
 
     # Assert that the coupling values for 0° and 180° polarization are equal
-    assert coupling_values[0] == coupling_values[-1], (
+    assert dataframe.coupling.values[0] == dataframe.coupling.values[-1], (
         'Mismatch in coupling values for 0° and 180° polarization filters.'
     )
 

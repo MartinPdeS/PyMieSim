@@ -65,7 +65,7 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    experiment.get(measure)
+    experiment.get(measure, drop_unique_level=False)
 
 
 if __name__ == "__main__":

@@ -306,7 +306,7 @@ def get_pymiescatt_coreshell_dataframe(
     ]
 
     for name, col in dataframe.items():
-        dataframe[name] = pint.PintArray(col.values, dtype=AU)
+        dataframe[name] = pint.PintArray(col.values.astype(float), dtype=AU)
 
     # Save the DataFrame if a save_name is provided
     if save_name:
