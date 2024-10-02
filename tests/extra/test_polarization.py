@@ -64,11 +64,12 @@ def test_api():
     """
     Test the API integration with different polarizations.
     """
+    polarization = Linear(element=[50, 20] * degree)
+
     # Setup Gaussian source
     source = Gaussian(
         wavelength=1000 * nanometer,
-        # polarization=polarization_0 + polarization_1,
-        polarization=50 * degree,
+        polarization=polarization,
         optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
@@ -85,7 +86,7 @@ def test_api():
     experiment = Setup(scatterer=scatterer, source=source)
 
     result = experiment.get('coupling', drop_unique_level=True)
-    # assert result is not None, 'Experiment setup or measurement failed!'
+    assert result is not None, 'Experiment setup or measurement failed!'
 
 if __name__ == "__main__":
     pytest.main([__file__])
