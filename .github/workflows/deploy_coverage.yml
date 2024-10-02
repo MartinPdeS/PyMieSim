@@ -29,7 +29,8 @@ jobs:
         shell: bash
         run: |
             sudo apt-get update
-            sudo apt-get install libgl1-mesa-glx xvfb
+            # sudo apt-get install libgl1-mesa-glx xvfb
+            sudo apt-get install xvfb
 
       - name: "Checkout requirements and files for testing"
         uses: actions/checkout@v4
