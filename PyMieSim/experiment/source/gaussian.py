@@ -54,9 +54,11 @@ class Gaussian(BaseSource):
         Returns:
             None
         """
+        # print(self.polarization.element)
+        # dsa
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
-            jones_vector=self.polarization.element,
+            jones_vector=self.polarization.element.T,
             NA=self.NA,
             optical_power=self.optical_power
         )
