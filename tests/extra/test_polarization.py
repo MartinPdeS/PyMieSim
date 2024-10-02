@@ -64,12 +64,12 @@ def test_api():
     """
     Test the API integration with different polarizations.
     """
-    polarization = Linear(element=[50] * degree)
+    # polarization = Linear(element=[50] * degree)
 
     # Setup Gaussian source
     source = Gaussian(
         wavelength=1000 * nanometer,
-        polarization=polarization,
+        polarization=50 * degree,
         optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
