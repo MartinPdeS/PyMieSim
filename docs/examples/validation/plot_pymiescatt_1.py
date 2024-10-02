@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from PyMieSim.utils import get_pymiescatt_sphere_dataframe
 from MPSPlots.styles import mps
@@ -21,7 +20,7 @@ from MPSPlots.styles import mps
 # Define parameters
 wavelength = 632.8 * nanometer  # Wavelength of the source in meters
 index = (1.4 + 0.2j) * RIU  # Refractive index of the sphere
-medium_index = 1.0 * RIU  # Refractive index of the medium
+medium_index = 1.2 * RIU  # Refractive index of the medium
 optical_power = 1 * watt  # Power of the light source in watts
 NA = 0.2 * AU  # Numerical aperture
 diameters = np.geomspace(10, 6_000, 800) * nanometer  # Diameters from 10 nm to 6 μm
@@ -46,7 +45,7 @@ scatterer = Sphere(
 experiment = Setup(scatterer=scatterer, source=source)
 
 # Compute PyMieSim scattering efficiency data
-pymiesim_dataframe = experiment.get(measure.Qsca, export_as='dataframe').reset_index('diameter')
+pymiesim_dataframe = experiment.get('Qsca', 'Qext', 'Qabs', 'g', 'Qpr').reset_index('diameter')
 
 pymiescatt_dataframe = get_pymiescatt_sphere_dataframe(
     wavelengths=wavelength,
@@ -59,10 +58,10 @@ pymiescatt_dataframe = get_pymiescatt_sphere_dataframe(
 # Plot results
 with plt.style.context(mps):
     figure, ax = plt.subplots(1, 1)
-    pymiescatt_dataframe.plot(x='diameter', ax=ax)
-    pymiesim_dataframe.plot(x='diameter', ax=ax, color='black', linestyle='--')
+    pymiescatt_dataframe.plot(x='diameter', ax=ax, linewidth=3)
+    pymiesim_dataframe.plot(x='diameter', ax=ax, color='black', linestyle='--', linewidth=1.5)
     ax.set(
-        xlabel='Diameter [μm]',
+        xlabel=r'Diameter [$\mu$m]',
         ylabel='Scattering Efficiency',
         title='Scattering Efficiency Comparison for Sphere Particles'
     )

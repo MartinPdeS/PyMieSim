@@ -47,14 +47,10 @@ detector = Photodiode(
 
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get(measure.Qsca, export_as='dataframe')
+dataframe = experiment.get('coupling')
 
-dataframe.plot_data(x='diameter')
+dataframe.plot_data(x='polarization_filter', std='diameter')

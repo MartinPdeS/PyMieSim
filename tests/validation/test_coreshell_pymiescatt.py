@@ -41,7 +41,7 @@ def get_pymiesim_data(source, core_index, shell_index, core_diameters, shell_wid
         shell_width=shell_width,
         core_index=core_index,
         shell_index=shell_index,
-        medium_index=1.0,  # Assuming air as the medium
+        medium_index=1.0 * RIU,
         source=source
     )
 

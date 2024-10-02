@@ -42,14 +42,11 @@ scatterer = CoreShell(
 # %%
 # Defining the experiment setup
 # Integrating the defined source and scatterers into a single experimental setup.
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the B1 scattering parameter
-dataframe = experiment.get(measure.b1)
+dataframe = experiment.get('b1')
 
 # %%
 # Plotting the results

@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from PyMieSim.utils import get_pymiescatt_sphere_dataframe
 from MPSPlots.styles import mps
@@ -48,7 +47,7 @@ scatterer = Sphere(
 experiment = Setup(scatterer=scatterer, source=source)
 
 # Simulate using PyMieSim
-pymiesim_dataframe = experiment.get(measure.Qsca, export_as='dataframe').reset_index('diameter')
+pymiesim_dataframe = experiment.get('Qsca', 'Qext', 'Qabs', 'g', 'Qpr', 'Qback').reset_index('diameter')
 
 pymiescatt_dataframe = get_pymiescatt_sphere_dataframe(
     wavelengths=wavelength,
@@ -60,8 +59,8 @@ pymiescatt_dataframe = get_pymiescatt_sphere_dataframe(
 # Plot results
 with plt.style.context(mps):
     figure, ax = plt.subplots(1, 1)
-    pymiescatt_dataframe.plot(x='diameter', ax=ax)
-    pymiesim_dataframe.plot(x='diameter', ax=ax, color='black', linestyle='--')
+    pymiescatt_dataframe.plot(x='diameter', ax=ax, linewidth=3)
+    pymiesim_dataframe.plot(x='diameter', ax=ax, color='black', linestyle='--', linewidth=1.5)
     ax.set(
         xlabel='Diameter [μm]',
         ylabel='Scattering Efficiency',

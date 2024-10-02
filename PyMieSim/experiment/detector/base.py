@@ -46,12 +46,12 @@ class BaseDetector:
     rotation: Quantity
     mean_coupling: bool
     coherent: bool
-    sampling: Optional[Quantity] = 200 * AU
-    polarization_filter: Optional[Quantity] = np.nan * degree
+    sampling: Optional[Quantity] = (200,) * AU
+    polarization_filter: Optional[Quantity | None] = (np.nan,) * degree
 
 
     @field_validator('polarization_filter', mode='before')
-    def validate_polarization(cls, value):
+    def validate_polarization_filter(cls, value):
         """
         Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
@@ -59,12 +59,10 @@ class BaseDetector:
         if value is None:
             value = np.nan * degree
 
-        value = np.atleast_1d(value).astype(float)
-
         if not value.check(degree):
             raise ValueError(f"{value} must have angle units (degree or radian).")
 
-        return value
+        return np.atleast_1d(value).astype(float)
 
     @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
     def validate_angle_quantity(cls, value):
@@ -134,4 +132,4 @@ class BaseDetector:
         self.mapping['phi_offset'] = pint_pandas.PintArray(self.phi_offset, dtype=self.phi_offset.units)
         self.mapping['gamma_offset'] = pint_pandas.PintArray(self.gamma_offset, dtype=self.gamma_offset.units)
         self.mapping['sampling'] = pint_pandas.PintArray(self.sampling, dtype=self.sampling.units)
-        self.mapping['polarization_filter'] = self.polarization_filter
+        self.mapping['polarization_filter'] = pint_pandas.PintArray(self.polarization_filter, dtype=self.polarization_filter.units)

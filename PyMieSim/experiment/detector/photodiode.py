@@ -27,5 +27,5 @@ class Photodiode(BaseDetector):
     """
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)
-    mode_number: Tuple[str] = field(default=('NC00',), init=False)
+    mode_number: Tuple[str] = field(default_factory=lambda : ['NC00'], init=False)
     rotation: Quantity = field(default=(0,) * degree, init=False)

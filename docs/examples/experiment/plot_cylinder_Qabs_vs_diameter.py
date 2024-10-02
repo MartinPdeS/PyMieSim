@@ -35,16 +35,13 @@ scatterer = Cylinder(
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the scattering efficiency (Qsca)
 # Note: The original request mentioned Qsca, but the measurement code uses Qabs.
 # If Qsca measurement is intended, ensure to use the correct measure object from PyMieSim.
-dataframe = experiment.get(measure.Qabs)  # Assuming Qabs was intended, replace with measure.Qsca if needed
+dataframe = experiment.get('Qabs')  # Assuming Qabs was intended, replace with measure.Qsca if needed
 
 # %%
 # Plotting the results

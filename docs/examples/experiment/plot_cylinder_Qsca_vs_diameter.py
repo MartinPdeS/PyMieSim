@@ -34,14 +34,11 @@ scatterer = Cylinder(
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the scattering efficiency (Qsca)
-dataframe = experiment.get(measure.Qsca)
+dataframe = experiment.get('Qsca')
 
 # %%
 # Plotting the results

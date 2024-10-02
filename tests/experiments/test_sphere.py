@@ -8,7 +8,6 @@ from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-import PyMieSim.experiment.measure as pms_measure
 from PyOptik import Material
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
@@ -26,12 +25,15 @@ medium_options = [
 ]
 
 # List of measures to be tested
-measures = pms_measure.__sphere__
-
+measures = [
+    'Qsca', 'Qext', 'Qabs', 'Qback', 'Qforward', 'Qratio',
+    'g', 'Qpr', 'Csca', 'Cext', 'Cabs', 'Cratio',
+    'a1', 'b1', 'a2', 'b2', 'a3', 'b3', 'coupling'
+]
 
 @pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
 @pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
-@pytest.mark.parametrize('measure', measures.values(), ids=measures.keys())
+@pytest.mark.parametrize('measure', measures)
 def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up the Gaussian source
     source = Gaussian(
@@ -61,11 +63,7 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
     )
 
     # Set up and run the experiment
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector
-    )
+    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
     experiment.get(measure)
 

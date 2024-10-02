@@ -34,14 +34,11 @@ scatterer = Cylinder(
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the B1 scattering coefficient
-dataframe = experiment.get(measure.b11)
+dataframe = experiment.get('b11')
 
 # %%
 # Plotting the results

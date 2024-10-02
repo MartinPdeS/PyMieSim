@@ -19,30 +19,27 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=400 * nanometer,
-    polarization=0 * degree,
-    optical_power=1e-3 * watt,
+    polarization=[0] * degree,
+    optical_power=1e-6 * watt,
     NA=0.2 * AU
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=np.linspace(100, 10000, 1000) * nanometer,
-    index=1.4 * RIU,
-    medium_index=1 * RIU,
+    diameter=np.linspace(100, 10000, 100) * nanometer,
+    index=[1.2, 1.25] * RIU,
+    medium_index=[0.9, 1.1] * RIU,
     source=source
 )
-
+#
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get(measure.a1)
-
+dataframe = experiment.get('Qsca', 'Qpr')
+# print(dataframe)
 # %%
 # Plotting the results
-dataframe.plot_data(x='diameter')
+dataframe.plot_data(x='diameter', std='index')

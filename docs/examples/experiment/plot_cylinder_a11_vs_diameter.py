@@ -28,21 +28,18 @@ source = Gaussian(
 scatterer = Cylinder(
     diameter=np.linspace(100, 10000, 800) * nanometer,  # Diameters ranging from 100 nm to 10000 nm
     index=1.4 * RIU,  # Refractive index of the cylinder
-    medium_index=1 * RIU,  # Refractive index of the surrounding medium
+    medium_index=[1, 1.1] * RIU,  # Refractive index of the surrounding medium
     source=source
 )
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the A1 scattering coefficient
 # Note: The original request was for "a21"; assuming it meant A1, as "a21" might be a typo.
-dataframe = experiment.get(measure.a21)
+dataframe = experiment.get('a21')
 
 # %%
 # Plotting the results

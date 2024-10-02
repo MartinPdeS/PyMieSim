@@ -46,15 +46,11 @@ detector = Photodiode(
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the coupling efficiency
-dataframe = experiment.get(measure.coupling)
+dataframe = experiment.get('coupling')
 
 # %%
 # Plotting the results

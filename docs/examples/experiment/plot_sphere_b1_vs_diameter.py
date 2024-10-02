@@ -34,14 +34,11 @@ scatterer = Sphere(
 
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get(measure.b1)
+dataframe = experiment.get('b1')
 
 # %%
 # Plotting the results

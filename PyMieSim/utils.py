@@ -4,6 +4,10 @@ import pandas as pd
 import numpy as np
 from typing import Optional
 import pint_pandas
+from PyMieSim.units import AU, pint
+from itertools import product
+from PyMieSim.units import Quantity
+from PyMieSim.directories import validation_data_path
 
 def plot_dataframe(
         dataframe: pd.DataFrame,
@@ -21,74 +25,100 @@ def plot_dataframe(
         std (Optional[str]): The MultiIndex level to use for calculating the standard deviation.  If None, no standard deviation will be plotted.
 
     """
-    # Drop levels with only one unique value to avoid redundancy
-    unique_levels = [
-        l for l in dataframe.index.names if dataframe.index.get_level_values(l).nunique() == 1
-    ]
-    df_cleaned = dataframe.droplevel(unique_levels)
-
-    # Unstack all levels except the one specified for the x-axis
-    no_x_levels = [l for l in df_cleaned.index.names if l != x]
-
-    df_unstacked = df_cleaned.unstack(level=no_x_levels)
-
     # Calculate mean values for plotting
     with plt.style.context(mps):
         _, ax = plt.subplots(1, 1)
 
     if std is not None:
-        plot_with_std(df_unstacked, ax, x, std, alpha)
+        plot_with_std(dataframe, ax, x, std, alpha)
 
     else:
-        plot_without_std(df_unstacked, ax, x)
+        plot_without_std(dataframe, ax, x)
 
     # Set axis labels with units (if available)
-    xlabel_cleaned = x.replace('_', ' ').title()
-    units = getattr(df_unstacked.index.values, 'units', '')
+    # xlabel_cleaned = x.replace('_', ' ').title()
+    # units = getattr(df_unstacked.index.values, 'units', '')
 
     # Construct xlabel
-    xlabel = f"{xlabel_cleaned} [{units}]" if units else xlabel_cleaned
-    ax.set_xlabel(xlabel)
+    # xlabel = f"{xlabel_cleaned} [{units}]" if units else xlabel_cleaned
+    # ax.set_xlabel(xlabel)
 
     # Get the legend from the axes
-    legend = ax.get_legend()
+    # legend = ax.get_legend()
 
-    # Capitalize the legend labels
-    txt = legend.get_title().get_text().replace(',', ', ').replace('_', ' ').title()
-    legend.get_title().set_text(txt)
+    # # Capitalize the legend labels
+    # txt = legend.get_title().get_text().replace(',', ', ').replace('_', ' ').title()
+    # legend.get_title().set_text(txt)
 
     # Show the plot
     plt.show()
 
-def plot_with_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, std: str, alpha: float) -> None:
+def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5) -> None:
     """
-    Plots the mean with a shaded region representing mean ± standard deviation.
+    Plot the mean with standard deviation shading for a given dataframe.
 
     Parameters:
-        dataframe (pd.DataFrame): The DataFrame after unstacking.
-        ax (plt.Axes): The matplotlib axis on which to plot.
-        x (str): The index level for the x-axis.
-        std (str): The index level for calculating standard deviation.
-        alpha (float): Transparency for the shaded area.
+    ----------
+    dataframe : pd.DataFrame
+        A pandas DataFrame containing the data with pint units.
+    x : str
+        The index level used as the x-axis for the plot.
+    std : str
+        The index level representing the standard deviation group.
+    alpha : float, optional
+        The transparency level for the shaded area representing standard deviation.
+        Default is 0.5.
     """
-    no_std_levels = [l for l in dataframe.columns.names if l not in [x, std]]
 
-    grouped = dataframe.T.groupby(level=no_std_levels)
+    # Identify levels excluding the 'std' level
+    no_std_levels = [level for level in dataframe.index.names if level != std]
+    no_x_levels = [level for level in dataframe.index.names if level not in [x, std]]
 
-    group_mean = grouped.mean().T.plot(ax=ax, linestyle='--', linewidth=1)
+    # Calculate the mean and standard deviation, preserving pint units
+    std_df = (
+        dataframe.pint.dequantify()
+        .unstack(no_std_levels)
+        .apply(np.std)
+        .to_frame(name="std")
+        .unstack("unit")
+        .pint.quantify()
+    )
 
-    for _, group in grouped:
-        group_mean = group.mean()
-        group_std = group.std()
+    mean_df = (
+        dataframe.pint.dequantify()
+        .unstack(no_std_levels)
+        .apply(np.mean)
+        .to_frame(name="mean")
+        .unstack("unit")
+        .pint.quantify()
+    )
 
+    # Concatenate mean and std into a single DataFrame
+    combined_df = pd.concat([mean_df, std_df], axis=1)
+
+    # Determine grouping by column names and other levels excluding x and std
+    groupby_levels = dataframe.columns.names + no_x_levels
+
+    for name, group in combined_df.groupby(groupby_levels):
+        group = group.droplevel(groupby_levels)
+        name_str = " : ".join(map(str, name))  # Join group names into a label
+
+        # Plot the mean line
+        ax.plot(group.index, group['mean'], linewidth=1, linestyle='--')
+
+        # Shade the area representing the standard deviation
         ax.fill_between(
-            x=group_mean.index,
-            y1=group_mean - group_std,
-            y2=group_mean + group_std,
+            x=group.index,
+            y1=group['mean'] + group['std'],
+            y2=group['mean'] - group['std'],
             alpha=alpha,
-            edgecolor='black',
-            label=f'Mean ± 1 Std ({std})'
+            edgecolor="black",
+            label=name_str
         )
+
+    ax.legend()
+    plt.show()
+
 
 def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str) -> None:
     """
@@ -99,19 +129,34 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str) -> None:
         ax (plt.Axes): The matplotlib axis on which to plot.
         x (str): The index level for the x-axis.
     """
-    no_x_levels = [level for level in dataframe.columns.names if level not in [None, x]]
+    if 'type' in dataframe.columns.names:
+        dataframe = dataframe.stack('type', future_stack=True)
 
-    if len(no_x_levels) != 0:
-        dataframe.groupby(no_x_levels, axis=1).plot(ax=ax)
+    dataframe = dataframe.stack('data', future_stack=True)
+
+    groupby_levels = [level for level in dataframe.index.names if level not in [x]]
+
+    if groupby_levels:
+        for name, group in dataframe.groupby(groupby_levels):
+            group = group.droplevel(groupby_levels)
+            label = " : ".join(map(str, name))
+
+            ax.plot(
+                group.index,
+                group.squeeze(),
+                label=label
+            )
+
     else:
-        dataframe.plot(ax=ax)
+        name = dataframe.columns[0]
+        label = " : ".join(map(str, name))
+        ax.plot(
+            dataframe.index,
+            dataframe.squeeze(),
+            label=label
+        )
 
-
-from itertools import product
-import numpy as np
-from PyMieSim.units import Quantity
-import pandas as pd
-from PyMieSim.directories import validation_data_path
+    ax.legend()
 
 def get_pymiescatt_sphere_dataframe(
         wavelengths: Quantity,
@@ -160,9 +205,14 @@ def get_pymiescatt_sphere_dataframe(
 
     # Calculate Mie scattering properties for each combination
     # print(indexes, diameters, wavelengths, medium_indexes)
-    # dsa
+
     dataframe[:] = [
-        pms.MieQ(m=index, wavelength=wavelength, diameter=diameter, nMedium=medium_index)
+        pms.MieQ(
+            m=index,
+            wavelength=wavelength,
+            diameter=diameter,
+            nMedium=medium_index
+        )
         for index, diameter, wavelength, medium_index in product(
             indexes.magnitude,
             diameters.magnitude,
@@ -172,7 +222,8 @@ def get_pymiescatt_sphere_dataframe(
     ]
 
     # Assign the results to the DataFrame
-    dataframe = dataframe.astype(float)
+    for name, col in dataframe.items():
+        dataframe[name] = pint.PintArray(col.values.astype(float), dtype=AU)
 
     # Save the DataFrame if a save_name is provided
     if save_name:
@@ -254,7 +305,8 @@ def get_pymiescatt_coreshell_dataframe(
         )
     ]
 
-    dataframe = dataframe.astype(float)
+    for name, col in dataframe.items():
+        dataframe[name] = pint.PintArray(col.values, dtype=AU)
 
     # Save the DataFrame if a save_name is provided
     if save_name:

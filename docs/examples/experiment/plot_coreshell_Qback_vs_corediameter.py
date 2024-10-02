@@ -38,15 +38,12 @@ scatterer = CoreShell(
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the backscattering efficiency (Qback)
 # For demonstrating the measurement of Qsca, a separate call to `experiment.get()` with `measure.Qsca` is needed.
-dataframe = experiment.get(measure.Qback)
+dataframe = experiment.get('Qback')
 
 # %%
 # Plotting the results

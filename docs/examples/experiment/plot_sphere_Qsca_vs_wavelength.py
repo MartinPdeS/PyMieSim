@@ -33,14 +33,11 @@ scatterer = Sphere(
 
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get(measure.Csca)
+dataframe = experiment.get('Csca', scale_unit=True)
 
 # %%
 # Plotting the results

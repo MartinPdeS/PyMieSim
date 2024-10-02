@@ -41,15 +41,12 @@ scatterer = CoreShell(
 # %%
 # Defining the experiment setup
 # Integrating the defined source and scatterers into a single experimental setup.
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the B1 scattering parameter
 # Here, we're interested in the a3 (first magnetic coefficient) parameter, which seems to be a typo for B1.
-dataframe = experiment.get(measure.a1)
+dataframe = experiment.get('a1')
 
 # %%
 # Plotting the results

@@ -14,7 +14,6 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.polarization import RightCircular
 from PyOptik import Material
-from PyMieSim.experiment import measure
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
@@ -46,15 +45,11 @@ detector = Photodiode(
 
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get(measure.coupling)
+dataframe = experiment.get('coupling')
 
 # %%
 # Plotting the results

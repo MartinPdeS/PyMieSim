@@ -17,7 +17,7 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=[500, 1000, 1500] * nanometer,
+    wavelength=[500] * nanometer,
     polarization=30 * degree,
     optical_power=1e-3 * watt,
     NA=0.2 * AU
@@ -33,14 +33,11 @@ scatterer = Sphere(
 
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get(measure.Csca)
+dataframe = experiment.get('Csca', 'Cabs', scale_unit=True)
 
 # %%
 # Plotting the results

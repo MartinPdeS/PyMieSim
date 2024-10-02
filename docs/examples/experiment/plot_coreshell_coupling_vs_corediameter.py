@@ -43,19 +43,16 @@ detector = Photodiode(
     phi_offset=-180.0 * degree,  # Phi offset in degrees
     gamma_offset=0.0 * degree,  # Gamma offset in degrees
     sampling=600 * AU,  # Number of sampling points
+    polarization_filter=1 * degree
 )
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the coupling efficiency
-dataframe = experiment.get(measure.coupling)
+dataframe = experiment.get('coupling')
 
 # %%
 # Plotting the results

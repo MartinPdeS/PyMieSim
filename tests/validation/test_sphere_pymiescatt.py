@@ -61,16 +61,15 @@ def test_comparison(gaussian_source, measure_string: str):
     experiment = Setup(scatterer=scatterer, source=gaussian_source)
 
     # Retrieve the specified measurement from the experiment
-    pymiesim_data = experiment.get(getattr(measure, measure_string), export_as='numpy').squeeze().ravel()
-    import matplotlib.pyplot as plt
-    plt.figure()
-    plt.plot(pymiesim_data)
-    plt.plot(pymiescatt_df[measure_string].values)
-    plt.show()
+    pymiesim_data = experiment.get(measure_string)
 
-    # Compare the data with a relative tolerance of 0.001 (0.1%)
-    discrepency = np.allclose(pymiesim_data, pymiescatt_df[measure_string], atol=1e-6, rtol=1e-2)
-    print(discrepency)
+    discrepency = np.allclose(
+        pymiesim_data[measure_string].values.numpy_data,
+        pymiescatt_df[measure_string].values.numpy_data,
+        atol=1e-6,
+        rtol=1e-2
+    )
+
     assert discrepency, f"Mismatch in PyMieSim vs PyMieScatt for {measure_string}"
 
 

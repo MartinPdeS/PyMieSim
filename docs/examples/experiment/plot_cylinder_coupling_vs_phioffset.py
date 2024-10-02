@@ -38,7 +38,7 @@ scatterer = Cylinder(
 # Defining the detector
 detector = Photodiode(
     NA=[0.5, 0.3, 0.1, 0.05] * AU,  # Array of Numerical Apertures for the detector
-    phi_offset=np.linspace(-180, 180, 400) * degree,  # Angular displacement from -180 to 180 degrees
+    phi_offset=np.linspace(-180, 180, 200) * degree,  # Angular displacement from -180 to 180 degrees
     gamma_offset=0 * degree,  # Gamma offset in degrees
     sampling=400 * AU,  # Number of sampling points
     polarization_filter=None  # No polarization filter
@@ -46,15 +46,11 @@ detector = Photodiode(
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the coupling efficiency
-dataframe = experiment.get(measure.coupling)
+dataframe = experiment.get('coupling', scale_unit=True)
 
 # %%
 # Plotting the results

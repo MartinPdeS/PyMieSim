@@ -15,9 +15,9 @@ from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.units import degree, watt, AU, RIU, micrometer
 
-from PyMieSim.experiment import measure
 from PyMieSim.single.scatterer import Sphere as SingleSphere
 from PyMieSim.single.source import Gaussian as SingleGaussian
+from MPSPlots.styles import mps
 
 # Setup parameters
 scatterer_diameter = 0.3 * micrometer  # Diameter of the scatterer in meters
@@ -49,15 +49,13 @@ detector = Photodiode(
 )
 
 # Configure experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # Gather data
-coupling_data = experiment.get(measure.coupling, export_as='numpy').squeeze()
-coupling_data /= coupling_data.max()  # Normalize data
+dataframe = experiment.get('coupling').reset_index('phi_offset')
+dataframe['phi_offset'] /= 180 / np.pi
+dataframe['coupling'] /= dataframe['coupling'].max()  # Normalize data
+
 
 # Single scatterer simulation for S1 and S2
 single_source = SingleGaussian(
@@ -80,16 +78,13 @@ s1 /= s1.max()  # Normalize S1 data
 s2 /= s2.max()  # Normalize S2 data
 
 
-# Plotting the results
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4), subplot_kw={'projection': 'polar'})
-ax1.plot(np.deg2rad(phi), s1, 'b-', linewidth=3, label='Computed S1')
+with plt.style.context(mps):
+    figure, (ax0, ax1) = plt.subplots(1, 2, subplot_kw=dict(projection='polar'))
 
-ax1.plot(detector.phi_offset, coupling_data[0], 'k--', linewidth=1, label='Coupling for polarization: 0')
+dataframe.xs(0 * degree, level='polarization').plot(x='phi_offset', ax=ax0, linewidth=3, title='Polarization 0 degree')
+ax0.plot(np.deg2rad(phi), s1, color='C1', linestyle='--', linewidth=1, label='Computed S1')
 
-ax2.plot(np.deg2rad(phi), s2, 'r-', linewidth=3, label='Computed S2')
-ax2.plot(detector.phi_offset, coupling_data[1], 'k--', linewidth=1, label='Coupling for polarization: 90')
+dataframe.xs(90 * degree, level='polarization').plot(x='phi_offset', ax=ax1, linewidth=3, title='Polarization 90 degree')
+ax1.plot(np.deg2rad(phi), s2, color='C1', linestyle='--', linewidth=1, label='Computed S2')
 
-ax1.legend(loc='upper right')
-ax2.legend(loc='upper right')
-plt.tight_layout()
 plt.show()

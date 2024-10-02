@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from PyMieSim.utils import get_pymiescatt_coreshell_dataframe
 from MPSPlots.styles import mps
@@ -21,7 +20,7 @@ wavelength = 600 * nanometer  # Light source wavelength in meters
 polarization = 0 * degree
 optical_power = 1 * watt  # Power in watts
 NA = 0.2 * AU  # Numerical aperture
-medium_index = 1.2 * RIU
+medium_index = 1.0 * RIU
 core_index = 1.5 * RIU
 shell_index = 1.4 * RIU
 shell_width = 600 * nanometer  # Shell width in meters
@@ -49,7 +48,7 @@ scatterer = CoreShell(
 experiment = Setup(scatterer=scatterer, source=source)
 
 # Simulate using PyMieSim
-pymiesim_dataframe = experiment.get(measure.Qsca, export_as='dataframe').reset_index('core_diameter')
+pymiesim_dataframe = experiment.get('Qsca', 'Qabs', 'Qext', 'g', 'Qback', 'Qpr').reset_index('core_diameter')
 
 pymiescatt_dataframe = get_pymiescatt_coreshell_dataframe(
     wavelengths=wavelength,
@@ -64,10 +63,10 @@ pymiescatt_dataframe = get_pymiescatt_coreshell_dataframe(
 # Plot results
 with plt.style.context(mps):
     figure, ax = plt.subplots(1, 1)
-    pymiescatt_dataframe.plot(x='core_diameter', ax=ax)
-    pymiesim_dataframe.plot(x='core_diameter', ax=ax, color='black', linestyle='--')
+    pymiescatt_dataframe.plot(x='core_diameter', ax=ax, linewidth=3)
+    pymiesim_dataframe.plot(x='core_diameter', ax=ax, color='black', linestyle='--', linewidth=1.5)
     ax.set(
-        xlabel='Core Diameter [μm]',
+        xlabel=r'Core Diameter [$\mu$m]',
         ylabel='Scattering Efficiency',
         title='Scattering Efficiency Comparison for Core-Shell Particles'
     )
