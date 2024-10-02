@@ -68,7 +68,7 @@ def test_api(polarization_0, polarization_1):
     source = Gaussian(
         wavelength=1000 * nanometer,
         # polarization=polarization_0 + polarization_1,
-        polarization=[50, 20] * degree,
+        polarization=[50] * degree,
         optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
