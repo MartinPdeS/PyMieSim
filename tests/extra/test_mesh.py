@@ -4,7 +4,6 @@
 import pytest
 import numpy as np
 from PyMieSim.mesh import FibonacciMesh
-import matplotlib.pyplot as plt
 
 
 @pytest.fixture

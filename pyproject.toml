@@ -55,8 +55,9 @@ dependencies = [
     "setuptools_scm[toml]>=8.0",
     "numpy>=1.26.0",
     "pydantic==2.9.2",
+    'pint-pandas',
     "DataVisual>=1.5.0",
-    "PyOptik==1.5.*",
+    "PyOptik>=1.5,<1.7",
     "tabulate==0.9.0",
 ]
 
@@ -109,9 +110,9 @@ testpaths = [
     "tests/extra"
 ]
 
+
 [tool.cibuildwheel]
 build-frontend = "build"
-build-verbosity = 2
 before-test = ""
 test-command = "python -m pytest -rA {project}/tests --ignore={project}/tests/gui"
 test-extras = ["testing"]

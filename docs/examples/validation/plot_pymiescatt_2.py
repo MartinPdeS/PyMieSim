@@ -11,27 +11,25 @@ import matplotlib.pyplot as plt
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
-
-# PyMieScatt import
-import PyMieScatt as pms
+from PyMieSim.units import degree, watt, AU, RIU, nanometer
+from PyMieSim.utils import get_pymiescatt_coreshell_dataframe
+from MPSPlots.styles import mps
 
 # Define parameters
-wavelength = 600e-9  # Light source wavelength in meters
-polarization_value = 0
-polarization_type = 'linear'
-optical_power = 1  # Power in watts
-NA = 0.2  # Numerical aperture
-medium_index = 1.2
-core_index = 1.5
-shell_index = 1.4
-shell_width = 600e-9  # Shell width in meters
-core_diameters = np.geomspace(10e-9, 500e-9, 400)  # Core diameters in meters
+wavelength = 600 * nanometer  # Light source wavelength in meters
+polarization = 0 * degree
+optical_power = 1 * watt  # Power in watts
+NA = 0.2 * AU  # Numerical aperture
+medium_index = 1.0 * RIU
+core_index = 1.5 * RIU
+shell_index = 1.4 * RIU
+shell_width = 600 * nanometer  # Shell width in meters
+core_diameters = np.geomspace(10, 500, 40) * nanometer  # Core diameters in meters
 
 # Setup source
 source = Gaussian(
     wavelength=wavelength,
-    polarization=polarization_value,
+    polarization=polarization,
     optical_power=optical_power,
     NA=NA
 )
@@ -40,43 +38,36 @@ source = Gaussian(
 scatterer = CoreShell(
     core_diameter=core_diameters,
     shell_width=shell_width,
-    core_index=core_index,
-    shell_index=shell_index,
-    medium_index=medium_index,
+    core_property=core_index,
+    shell_property=shell_index,
+    medium_property=medium_index,
     source=source
 )
 
 # Define experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=None  # No detector set specified
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # Simulate using PyMieSim
-sim_data = experiment.get(measure.Qsca, export_as_numpy=True).squeeze()
+pymiesim_dataframe = experiment.get('Qsca', 'Qabs', 'Qext', 'g', 'Qback', 'Qpr').reset_index('core_diameter')
 
-# Simulate using PyMieScatt
-scatt_data = np.array([
-    pms.MieQCoreShell(
-        mCore=core_index,
-        mShell=shell_index,
-        wavelength=wavelength,
-        dCore=diameter,
-        dShell=diameter + shell_width,
-        nMedium=medium_index
-    )[1]
-    for diameter in core_diameters
-])
+pymiescatt_dataframe = get_pymiescatt_coreshell_dataframe(
+    wavelengths=wavelength,
+    core_indexes=core_index,
+    shell_indexes=shell_index,
+    core_diameters=core_diameters,
+    shell_widths=shell_width,
+    medium_indexes=medium_index
+).reset_index('core_diameter')
 
 # Plot results
-plt.figure(figsize=(8, 4))
-plt.plot(core_diameters * 1e6, sim_data, 'C1-', linewidth=3, label='PyMieSim')
-plt.plot(core_diameters * 1e6, scatt_data, 'k--', linewidth=1, label='PyMieScatt')
-plt.xlabel('Core Diameter (μm)')
-plt.ylabel('Scattering Efficiency')
-plt.title('Scattering Efficiency Comparison for Core-Shell Particles')
-plt.grid(True)
-plt.legend()
-plt.tight_layout()
-plt.show()
+with plt.style.context(mps):
+    figure, ax = plt.subplots(1, 1)
+    pymiescatt_dataframe.plot(x='core_diameter', ax=ax, linewidth=3)
+    pymiesim_dataframe.plot(x=0, ax=ax, color='black', linestyle='--', linewidth=1.5)
+    ax.set(
+        xlabel=r'Core Diameter [$\mu$m]',
+        ylabel='Scattering Efficiency',
+        title='Scattering Efficiency Comparison for Core-Shell Particles'
+    )
+    plt.legend()
+    plt.show()

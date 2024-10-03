@@ -8,11 +8,12 @@ This example demonstrates the initialization and visualization of an Integrating
 # %%
 # Importing the package: PyMieSim
 from PyMieSim.single.detector import IntegratingSphere
+from PyMieSim.units import AU
 
 # %%
 # Initializing the detector
 detector = IntegratingSphere(
-    sampling=500,  # Number of sampling points
+    sampling=500 * AU,  # Number of sampling points
     polarization_filter=None  # No polarization filter applied
 )
 

@@ -12,22 +12,22 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
-from PyMieSim.experiment import measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=400e-9,
-    polarization=0,
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=400 * nanometer,
+    polarization=0 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=np.linspace(1e-09, 800e-9, 300),
-    material=[Material.silver, Material.gold, Material.aluminium],
-    medium_index=1,
+    diameter=np.linspace(1, 800, 300) * nanometer,
+    property=[Material.silver, Material.gold],
+    medium_property=1 * RIU,
     source=source
 )
 
@@ -40,11 +40,8 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-data = experiment.get(measure.Qabs)
+dataframe = experiment.get('Qsca', 'Qabs')
 
 # %%
 # Plotting the results
-data.plot(
-    x=scatterer.diameter,
-    y_scale="log"
-)
+dataframe.plot_data(x='diameter')

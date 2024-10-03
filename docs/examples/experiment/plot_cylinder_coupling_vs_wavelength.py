@@ -12,25 +12,25 @@ from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 from PyOptik import Material
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=np.linspace(950e-9, 1050e-9, 300),  # Wavelengths ranging from 950 nm to 1050 nm
-    polarization=0,  # Linear polarization angle in radians
-    optical_power=1e-3,  # 1 milliwatt
-    NA=0.2  # Numerical Aperture
+    wavelength=np.linspace(950, 1050, 300) * nanometer,  # Wavelengths ranging from 950 nm to 1050 nm
+    polarization=0 * degree,  # Linear polarization angle in radians
+    optical_power=1e-3 * watt,  # 1 milliwatt
+    NA=0.2 * AU  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer distribution
 # Here we look at cylinders with a set diameter, refractive index, and medium.
 scatterer = Cylinder(
-    diameter=np.linspace(100e-9, 8000e-9, 5),  # Diameters ranging from 100 nm to 8000 nm
-    material=Material.BK7,  # Material of the cylinder
-    medium_index=1,  # Refractive index of the surrounding medium
+    diameter=np.linspace(100, 8000, 5) * nanometer,  # Diameters ranging from 100 nm to 8000 nm
+    property=Material.BK7,  # Material of the cylinder
+    medium_property=1 * RIU,  # Refractive index of the surrounding medium
     source=source
 )
 
@@ -38,30 +38,23 @@ scatterer = Cylinder(
 # Defining the detector
 detector = CoherentMode(
     mode_number="LP11",  # Specifying the LP11 mode
-    NA=[0.05, 0.01],  # Array of Numerical Apertures for the detector
-    phi_offset=-180,  # Phi offset in degrees
-    gamma_offset=0,  # Gamma offset in degrees
+    NA=[0.05, 0.01] * AU,  # Array of Numerical Apertures for the detector
+    phi_offset=-180 * degree,  # Phi offset in degrees
+    gamma_offset=0 * degree,  # Gamma offset in degrees
     polarization_filter=None,  # No polarization filter
-    sampling=300,  # Number of sampling points
-    rotation=0,  # Rotation of the mode field
+    sampling=300 * AU,  # Number of sampling points
+    rotation=0 * degree,  # Rotation of the mode field
 )
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the coupling efficiency
-data = experiment.get(measure.coupling)
+dataframe = experiment.get('coupling', scale_unit=True)
 
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the wavelength.
-data.plot(
-    x=source.wavelength,  # Wavelength as the x-axis
-    std=scatterer.diameter  # Standard deviation with respect to cylinder diameter
-)
+dataframe.plot_data(x="wavelength", std='diameter')

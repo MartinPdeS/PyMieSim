@@ -13,44 +13,38 @@ from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
-from PyMieSim.experiment import measure
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=[800e-9, 900e-9, 1000e-9],  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
-    polarization=0,  # Linear polarization angle in radians
-    optical_power=1e-3,  # 1 milliwatt
-    NA=0.2  # Numerical Aperture
+    wavelength=[800, 900, 1000] * nanometer,  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
+    polarization=0 * degree,  # Linear polarization angle in radians
+    optical_power=1e-3 * watt,  # 1 milliwatt
+    NA=0.2 * AU  # Numerical Aperture
 )
 
 # %%
 # Defining the scatterer distribution
 scatterer = CoreShell(
-    core_diameter=numpy.geomspace(100e-9, 600e-9, 400),  # Core diameters from 100 nm to 600 nm
-    shell_width=800e-9,  # Shell width of 800 nm
-    core_material=Material.silver,  # Core material
-    shell_material=Material.BK7,  # Shell material
-    medium_index=1,  # Surrounding medium's refractive index
+    core_diameter=numpy.geomspace(100, 600, 400) * nanometer,  # Core diameters from 100 nm to 600 nm
+    shell_width=800 * nanometer,  # Shell width of 800 nm
+    core_property=Material.silver,  # Core material
+    shell_property=Material.BK7,  # Shell material
+    medium_property=1 * RIU,  # Surrounding medium's refractive index
     source=source
 )
 
 # %%
 # Setting up the experiment
-experiment = Setup(
-    scatterer=scatterer,
-    source=source
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the backscattering efficiency (Qback)
 # For demonstrating the measurement of Qsca, a separate call to `experiment.get()` with `measure.Qsca` is needed.
-data = experiment.get(measure.Qback)
+dataframe = experiment.get('Qback')
 
 # %%
 # Plotting the results
 # Visualizing how the backscattering efficiency varies with the core diameter.
-figure = data.plot(
-    x=scatterer.core_diameter,  # Core diameter as the x-axis
-    y_scale='log'  # Logarithmic scale for the y-axis
-)
+dataframe.plot_data(x="core_diameter")

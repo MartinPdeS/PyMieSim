@@ -8,58 +8,48 @@ Sphere: Coupling vs polarization filter
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 
-from PyMieSim.experiment.detector import CoherentMode
+from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
+from PyMieSim.units import degree, nanometer, RIU, watt, AU
 from PyOptik import Material
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=950e-9,
-    polarization=0,
-    optical_power=1e-3,
-    NA=0.2
+    wavelength=[950, 1050] * nanometer,
+    polarization=0 * degree,
+    optical_power=[1e-3] * watt,
+    NA=0.2 * AU
 )
+
 
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=np.linspace(100e-9, 2000e-9, 20),
-    material=Material.BK7,
-    medium_index=1,
+    diameter=np.linspace(100, 2000, 20) * nanometer,
+    property=[Material.BK7, Material.water],
+    medium_property=1 * RIU,
     source=source
 )
 
 # %%
 # Defining the detector to be employed.
-detector = CoherentMode(
-    mode_number="HG11:00",
-    NA=[0.1],
-    phi_offset=-180,
-    gamma_offset=0,
-    polarization_filter=np.linspace(-180, 180, 100),
-    sampling=500,
-    rotation=0,  # Rotation of the mode field
+detector = Photodiode(
+    NA=[0.1] * AU,
+    phi_offset=-180 * degree,
+    gamma_offset=0 * degree,
+    polarization_filter=np.linspace(-180, 180, 100) * degree,
+    sampling=[500] * AU,
 )
 
 # %%
 # Defining the experiment setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=detector
-)
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the properties
-data = experiment.get(measure.coupling)
+dataframe = experiment.get('coupling')
 
-# %%
-# Plotting the results
-data.plot(
-    x=detector.polarization_filter,
-    std=scatterer.diameter
-)
+dataframe.plot_data(x='polarization_filter', std='diameter')

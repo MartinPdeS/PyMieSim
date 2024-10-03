@@ -8,14 +8,15 @@ This example demonstrates the initialization and visualization of a Photodiode d
 # %%
 # Importing the package: PyMieSim
 from PyMieSim.single.detector import Photodiode
+from PyMieSim.units import AU, degree
 
 # %%
 # Initializing the detector
 detector = Photodiode(
-    NA=0.3,  # Numerical Aperture
-    sampling=500,  # Number of sampling points
-    gamma_offset=-45,  # Gamma offset in degrees
-    phi_offset=20,  # Phi offset in degrees
+    NA=0.3 * AU,  # Numerical Aperture
+    sampling=500 * AU,  # Number of sampling points
+    gamma_offset=-45 * degree,  # Gamma offset in degrees
+    phi_offset=20 * degree,  # Phi offset in degrees
     polarization_filter=None  # No polarization filter applied
 )
 

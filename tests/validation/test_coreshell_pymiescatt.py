@@ -6,8 +6,9 @@ import numpy as np
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
 import PyMieScatt as ps
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
+from PyMieSim.utils import get_pymiescatt_coreshell_dataframe
 
 # Mapping of measurement types to PyMieScatt indices
 PYMIESCATT_MEASURES = {
@@ -20,142 +21,64 @@ PYMIESCATT_MEASURES = {
     'Qratio': 6
 }
 
-def get_pymiesim_data(source, core_index, shell_index, core_diameters, shell_width, measure_string):
-    """
-    Retrieve simulation data using PyMieSim for a core-shell scatterer setup.
-
-    Parameters:
-        source (Gaussian): The light source.
-        core_index (complex): Refractive index of the core.
-        shell_index (float): Refractive index of the shell.
-        core_diameters (array): Array of core diameters.
-        shell_width (float): Shell thickness.
-        measure_string (str): The type of measurement (e.g., 'Qext', 'Qsca').
-
-    Returns:
-        numpy.ndarray: Simulation results as a squeezed numpy array.
-    """
-    scatterer = CoreShell(
-        core_diameter=core_diameters,
-        shell_width=shell_width,
-        core_index=core_index,
-        shell_index=shell_index,
-        medium_index=1.0,  # Assuming air as the medium
-        source=source
+@pytest.fixture
+def gaussian_source():
+    return Gaussian(
+        wavelength=1000 * nanometer,  # Wavelength in meters
+        polarization=0 * degree,   # Polarization angle
+        optical_power=1 * watt,  # Optical power in watts
+        NA=0.3 * AU           # Numerical aperture
     )
 
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=None
-    )
 
-    # Retrieve the specified measurement from the experiment
-    data = experiment.get(getattr(measure, measure_string), export_as_numpy=True)
-    return data.squeeze()
-
-
-def get_pymiescatt_data(source, core_index, shell_index, core_diameters, shell_width, measure_string):
+@pytest.mark.parametrize('measure', ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
+def test_comparison(gaussian_source, measure: str):
     """
-    Retrieve simulation data using PyMieScatt for a core-shell scatterer setup.
+    Test comparison between PyMieSim and PyMieScatt data for various scattering parameters.
 
     Parameters:
-        source (Gaussian): The light source.
-        core_index (complex): Refractive index of the core.
-        shell_index (float): Refractive index of the shell.
-        core_diameters (array): Array of core diameters.
-        shell_width (float): Shell thickness.
-        measure_string (str): The type of measurement (e.g., 'Qext', 'Qsca').
-
-    Returns:
-        numpy.ndarray: Simulation results as a squeezed numpy array.
+        measure (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    pymiescatt_data = []
-    for core_diameter in core_diameters:
-        # Get Mie scattering efficiencies from PyMieScatt
-        efficiencies = ps.MieQCoreShell(
-            mCore=core_index,
-            mShell=shell_index,
-            wavelength=source.wavelength[0],
-            dCore=core_diameter,
-            dShell=core_diameter + shell_width
-        )
+    wavelength = gaussian_source.wavelength
+    core_index = 1.4 + 0.3j * RIU
+    core_index = 1.4 + 0.3j * RIU
+    shell_index = 1.3 * RIU
+    core_diameters = np.geomspace(10, 6000, 80) * nanometer
+    shell_width = 600 * nanometer
+    medium_indexes = [1.0] * RIU
 
-        # Extract the required measurement
-        measure_idx = PYMIESCATT_MEASURES.get(measure_string)
-        pymiescatt_data.append(float(efficiencies[measure_idx]))
-
-    return np.asarray(pymiescatt_data).squeeze()
-
-
-def get_comparison(wavelength, core_index, shell_index, core_diameters, shell_width, measure_string):
-    """
-    Compare PyMieSim and PyMieScatt results for given parameters.
-
-    Parameters:
-        wavelength (float): Wavelength of the source.
-        core_index (complex): Refractive index of the core.
-        shell_index (float): Refractive index of the shell.
-        core_diameters (array): Array of core diameters.
-        shell_width (float): Shell thickness.
-        measure_string (str): The type of measurement (e.g., 'Qext', 'Qsca').
-
-    Returns:
-        tuple: (PyMieSim results, PyMieScatt results)
-    """
-    # Create a Gaussian light source
-    source = Gaussian(
-        wavelength=wavelength,
-        polarization=0,
-        optical_power=1e-3,  # In Watts
-        NA=0.2
-    )
-
-    # Get data from PyMieScatt
-    pymiescatt_data = get_pymiescatt_data(
-        source=source,
-        core_index=core_index,
-        shell_index=shell_index,
+    pymiescatt_df = get_pymiescatt_coreshell_dataframe(
+        wavelengths=wavelength,
+        shell_indexes=shell_index,
+        core_indexes=core_index,
         core_diameters=core_diameters,
-        shell_width=shell_width,
-        measure_string=measure_string
+        shell_widths=shell_width,
+        medium_indexes=medium_indexes
     )
 
     # Get data from PyMieSim
-    pymiesim_data = get_pymiesim_data(
-        source=source,
-        core_index=core_index,
-        shell_index=shell_index,
-        core_diameters=core_diameters,
+    scatterer = CoreShell(
+        core_diameter=core_diameters,
+        core_property=core_index,
         shell_width=shell_width,
-        measure_string=measure_string
+        shell_property=shell_index,
+        medium_property=medium_indexes,
+        source=gaussian_source
     )
 
-    return pymiesim_data, pymiescatt_data
+    experiment = Setup(scatterer=scatterer, source=gaussian_source)
 
+    # Retrieve the specified measurement from the experiment
+    pymiesim_data = experiment.get(measure, drop_unique_level=False)
 
-@pytest.mark.parametrize('measure_string', ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
-def test_comparison(measure_string):
-    """
-    Test comparison between PyMieSim and PyMieScatt data for various measurements.
-
-    Parameters:
-        measure_string (str): The type of measurement to compare.
-    """
-    pymiesim_data, pymiescatt_data = get_comparison(
-        wavelength=632e-9,  # Wavelength in meters (e.g., 632 nm)
-        core_index=1.4 + 0.3j,  # Complex refractive index for core
-        shell_index=1.3,  # Refractive index for shell
-        core_diameters=np.geomspace(10e-9, 6000e-9, 800),  # Log-spaced array of core diameters
-        shell_width=600e-9,  # Shell thickness
-        measure_string=measure_string
+    discrepency = np.allclose(
+        pymiesim_data[measure].squeeze().values.quantity,
+        pymiescatt_df[measure].squeeze().values.quantity,
+        atol=1e-6,
+        rtol=1e-2
     )
 
-    # Compare the data with a relative tolerance of 0.0001 (0.01%)
-    discrepancy = np.isclose(pymiesim_data, pymiescatt_data, atol=0, rtol=1e-4)
-
-    # Ensure that more than half of the points are within the acceptable tolerance
-    assert discrepancy.astype(int).mean() > 0.5, f"Mismatch in PyMieSim vs PyMieScatt for {measure_string}"
+    assert discrepency, f"Mismatch in PyMieSim vs PyMieScatt for {measure}"
 
 
 if __name__ == "__main__":

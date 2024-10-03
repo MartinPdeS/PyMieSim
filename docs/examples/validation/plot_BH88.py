@@ -13,19 +13,19 @@ from PyMieSim.directories import validation_data_path
 from PyMieSim.experiment.scatterer import Cylinder
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.experiment import measure
+from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 # Load theoretical data
 theoretical_data = np.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimiter=',')
 
 # Define parameters
-wavelength = 632.8e-9  # Wavelength of the source in meters
-polarization_values = [0, 90]  # Polarization values in degrees
-optical_power = 1e-3  # Optical power in watts
-NA = 0.2  # Numerical aperture
-diameters = np.geomspace(10e-9, 6e-6, 800)  # Diameters from 10 nm to 6 μm
-index = 1.55  # Refractive index of the cylinder
-medium_index = 1.335  # Refractive index of the medium
+wavelength = 632.8 * nanometer  # Wavelength of the source in meters
+polarization_values = [0, 90] * degree # Polarization values in degrees
+optical_power = 1e-3 * watt  # Optical power in watts
+NA = 0.2 * AU  # Numerical aperture
+diameters = np.geomspace(10, 6000, 800) * nanometer  # Diameters from 10 nm to 6 μm
+index = 1.55 * RIU # Refractive index of the cylinder
+medium_index = 1.335 * RIU # Refractive index of the medium
 
 # Calculate the volume of the cylinders
 volumes = np.pi * (diameters / 2)**2
@@ -41,21 +41,17 @@ source = Gaussian(
 # Setup cylindrical scatterers
 scatterer = Cylinder(
     diameter=diameters,
-    index=index,
-    medium_index=medium_index,
+    property=index,
+    medium_property=medium_index,
     source=source
 )
 
 # Create experimental setup
-experiment = Setup(
-    scatterer=scatterer,
-    source=source,
-    detector=None
-)
+experiment = Setup(scatterer=scatterer, source=source)
 
 # Compute PyMieSim scattering cross section data
-csca_data = experiment.get(measure.Csca, export_as_numpy=True).squeeze()
-normalized_csca = csca_data / volumes * 1e-4 / 100  # Normalize the data as per specific needs
+csca_data = experiment.get('Csca', add_units=False).squeeze().values.reshape([-1, diameters.size])
+normalized_csca = csca_data / volumes.to_base_units() * 1e-4 / 100  # Normalize the data as per specific needs
 
 # Plotting the results
 plt.figure(figsize=(8, 4))
@@ -73,4 +69,4 @@ plt.tight_layout()
 plt.show()
 
 # Verify data accuracy
-assert np.allclose(normalized_csca, theoretical_data, atol=1e-9), 'Error: mismatch on BH 8.8 calculation occurring'
+assert np.allclose(normalized_csca.magnitude, theoretical_data, atol=1e-9), 'Error: mismatch on BH 8.8 calculation occurring'
