@@ -211,6 +211,7 @@ class Setup:
             case 'C':
                 return meter**2  # Cross-section measure
             case 'c':
+                assert self.detector is not None, "Detector needs to be defined in order to measure coupling"
                 return watt  # Power measure
             case _:
                 return AU  # Arbitrary units for other measures

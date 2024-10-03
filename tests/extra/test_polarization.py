@@ -42,11 +42,10 @@ def test_init_jones_vector():
 
 
 polarizations = [
-    'a'
-    # Linear(element=[50, 20] * degree),
-    # RightCircular(),
-    # LeftCircular(),
-    # JonesVector(element=[(1, 0), (0, 1)])
+    Linear(element=[50, 20] * degree),
+    RightCircular(),
+    LeftCircular(),
+    JonesVector(element=[(1, 0), (0, 1)])
 ]
 
 
