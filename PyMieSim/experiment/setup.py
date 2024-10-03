@@ -12,7 +12,7 @@ from typing import Union, Optional
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
-from PyMieSim.utils import plot_dataframe
+from PyMieSim.plotting import plot_dataframe
 
 
 @dataclass

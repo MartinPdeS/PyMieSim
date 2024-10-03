@@ -21,10 +21,14 @@ class BaseScatterer:
     """
     A generic class for a scatterer, providing properties and methods to compute various scattering-related quantities.
 
-    Attributes:
-        source (Union[source.PlaneWave, source.Gaussian]): Light source object containing info on polarization and wavelength.
-        medium_index (float): Refractive index of scatterer medium. Default is 1.0.
-        material (Optional[BaseMaterial]): BaseMaterial of which the scatterer is made, if index is not specified. Default is None.
+    Parameters
+    ----------
+    source: Union[source.PlaneWave, source.Gaussian]
+        Light source object containing info on polarization and wavelength.
+    medium_index: float
+        Refractive index of scatterer medium. Default is 1.0.
+    material: Optional[BaseMaterial]
+        BaseMaterial of which the scatterer is made, if index is not specified. Default is None.
     """
     source: BaseSource
     medium_property: Quantity | BaseMaterial
@@ -133,10 +137,14 @@ class BaseScatterer:
 
         The method computes the fields up to a constant phase value.
 
-        Args:
-            phi (numpy.ndarray): The phi angles in radians.
-            theta (numpy.ndarray): The theta angles in radians.
-            r (numpy.ndarray): The radial distances.
+        Parameters
+        ----------
+        phi : numpy.ndarray
+            The phi angles in radians.
+        theta : numpy.ndarray
+            The theta angles in radians.
+        r : numpy.ndarray
+            The radial distances.
 
         Returns:
             numpy.ndarray: The computed far fields.

@@ -19,20 +19,11 @@ class Cylinder(BaseScatterer):
 
     Parameters
     ----------
-        diameter (Quantity): Diameter of the cylindrical scatterer, given in meters.
-        property (Quantity | BaseMaterial): Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.
+    diameter : Quantity
+        Diameter of the cylindrical scatterer, given in meters.
+    property : Quantity | BaseMaterial
+        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.
 
-    Attributes
-    ----------
-        size_parameter: Dimensionless size parameter of the scatterer.
-        area: Effective scattering area.
-        g: Asymmetry factor, representing the average cosine of the scattering angle.
-        Qsca: Scattering efficiency, the ratio of the scattering cross-section to the geometric cross-section.
-        Qext: Extinction efficiency, the sum of scattering and absorption efficiencies.
-        Qabs: Absorption efficiency, quantifying the portion of light absorbed by the scatterer.
-        Csca: Scattering cross-section, the effective area that scatters light.
-        Cext: Extinction cross-section, the effective area accounting for both scattering and absorption.
-        Cabs: Absorption cross-section, representing the area that absorbs light.
     """
 
 

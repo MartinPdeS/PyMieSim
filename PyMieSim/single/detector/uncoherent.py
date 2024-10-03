@@ -17,12 +17,18 @@ class Photodiode(BaseDetector):
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
     This means it is independent of the phase of the impinging scattered light field.
 
-    Attributes:
-        NA (float): Numerical aperture of the imaging system.
-        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization.
-        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization.
-        sampling (int): Sampling rate of the far-field distribution. Default is 200.
-        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
+    Parameters
+    ----------
+    NA : Quantity
+        Numerical aperture of the imaging system.
+    gamma_offset : Quantity
+        Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+    phi_offset : Quantity
+        Angle [Degree] offset of the detector in the direction parallel to polarization.
+    sampling : Quantity
+        Sampling rate of the far-field distribution. Default is 200.
+    polarization_filter : Optional[Quantity]
+        Angle [Degree] of the polarization filter in front of the detector.
     """
     coherent: bool = False
     mean_coupling: bool = False
@@ -48,11 +54,15 @@ class Photodiode(BaseDetector):
         """
         Generate a structured scalar field as a numpy array.
 
-        Args:
-            sampling (int): The sampling rate for the scalar field. Default is 100.
+        Parameters
+        ----------
+            sampling : int
+                The sampling rate for the scalar field. Default is 100.
 
-        Returns:
-            numpy.ndarray: A 2D array representing the structured scalar field.
+        Returns
+        -------
+        numpy.ndarray
+            A 2D array representing the structured scalar field.
         """
         return numpy.ones([sampling, sampling])
 
@@ -63,9 +73,12 @@ class IntegratingSphere(Photodiode):
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
     This implies independence from the phase of the impinging scattered light field.
 
-    Attributes:
-        sampling (int): Sampling rate of the far-field distribution. Default is 200.
-        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
+    Parameters
+    ----------
+    sampling: int)
+        Sampling rate of the far-field distribution. Default is 200.
+    polarization_filter: Union[float, None])
+        Angle [Degree] of the polarization filter in front of the detector.
     """
     NA: Quantity = field(default=2 * AU, init=False)
     gamma_offset: Quantity = field(default=0 * degree, init=False)
@@ -78,8 +91,10 @@ class IntegratingSphere(Photodiode):
         """
         Generate a structured scalar field as a numpy array.
 
-        Args:
-            sampling (int): The sampling rate for the scalar field. Default is 100.
+        Parameters
+        ----------
+        sampling : int
+            The sampling rate for the scalar field. Default is 100.
 
         Returns:
             numpy.ndarray: A 2D array representing the structured scalar field.

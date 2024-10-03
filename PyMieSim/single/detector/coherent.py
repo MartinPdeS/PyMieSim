@@ -19,16 +19,26 @@ class CoherentMode(BaseDetector):
     Detector class representing a laser Hermite-Gauss mode with a coherent light coupling mechanism.
     This means it depends on the phase of the impinging scattered light field.
 
-    Attributes:
-        mode_number (str): String representing the HG mode to be initialized (e.g., 'LP01', 'HG11', 'LG22').
-        NA (float): Numerical aperture of the imaging system.
-        gamma_offset (float): Angle [Degree] offset of the detector in the direction perpendicular to polarization.
-        phi_offset (float): Angle [Degree] offset of the detector in the direction parallel to polarization.
-        sampling (int): Sampling rate of the far-field distribution. Default is 200.
-        polarization_filter (Union[float, None]): Angle [Degree] of the polarization filter in front of the detector.
-        mean_coupling (bool): Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
-        coherent (bool): Indicates if the coupling mechanism is coherent. Default is True.
-        rotation (float): Rotation angle of the field along the axis of propagation. Default is 90.
+    Parameters
+    ----------
+    mode_number: str
+        String representing the HG mode to be initialized (e.g., 'LP01', 'HG11', 'LG22').
+    NA: float
+        Numerical aperture of the imaging system.
+    gamma_offset: float
+        Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+    phi_offset: float
+        Angle [Degree] offset of the detector in the direction parallel to polarization.
+    sampling: int
+        Sampling rate of the far-field distribution. Default is 200.
+    polarization_filter: Union[float, None]
+        Angle [Degree] of the polarization filter in front of the detector.
+    mean_coupling: bool
+        Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
+    coherent: bool
+        Indicates if the coupling mechanism is coherent. Default is True.
+    rotation: float
+        Rotation angle of the field along the axis of propagation. Default is 90.
     """
     mode_number: str
     coherent: bool = True
@@ -75,10 +85,13 @@ class CoherentMode(BaseDetector):
         """
         Generate a structured scalar field as a numpy array.
 
-        Args:
-            sampling (int): The sampling rate for the scalar field. Default is 100.
+        Parameters
+        ----------
+        sampling : int
+            The sampling rate for the scalar field. Default is 100.
 
-        Returns:
+        Returns
+        -------
             numpy.ndarray: A 2D array representing the structured scalar field.
         """
         x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]

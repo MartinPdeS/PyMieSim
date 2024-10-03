@@ -19,12 +19,16 @@ class Gaussian(BaseSource):
     """
     Represents a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
 
-    Attributes:
-        wavelength (float): Wavelength of the light field in meters.
-        polarization_value (float): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        amplitude (float): Amplitude of the electric field.
-        optical_power (float): Optical power of the source in Watts.
-        NA (float): Numerical aperture of the source.
+    Parameters
+    ----------
+    wavelength: Quantity
+        Wavelength of the light field in meters.
+    polarization : BasePolarization | Quantity
+        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+    optical_power: Quantity
+        Optical power of the source in Watts.
+    NA: Quantity
+        Numerical aperture of the source.
     """
     wavelength: Quantity
     polarization: Union[BasePolarization, Quantity]
@@ -53,13 +57,15 @@ class Gaussian(BaseSource):
         This method creates a 3D plot of the Gaussian source, adds the structure to the plot,
         and optionally displays axis labels.
 
-        Args:
-            color (str): The color of the structure in the plot. Default is 'red'.
-            opacity (float): The opacity of the structure. Default is 0.8.
-            show_axis_label (bool): If True, axis labels will be shown. Default is False.
+        Parameters
+        ----------
+            color : str
+                The color of the structure in the plot. Default is 'red'.
+            opacity : float
+                The opacity of the structure. Default is 0.8.
+            show_axis_label : bool
+                If True, axis labels will be shown. Default is False.
 
-        Returns:
-            None: This method does not return a value. It displays the 3D plot.
         """
         # Create a 3D plotting scene
         scene = pyvista.Plotter()
@@ -85,13 +91,15 @@ class Gaussian(BaseSource):
         The cone represents the acceptance angle determined by the numerical aperture (NA) of the system.
         The cone is positioned at the origin and points downward along the z-axis.
 
-        Args:
-            scene (pyvista.Plotter): The 3D plotting scene to which the cone will be added.
-            color (str): The color of the cone mesh. Default is 'red'.
-            opacity (float): The opacity of the cone mesh. Default is 0.8.
+        Parameters
+        ----------
+            scene : pyvista.Plotter
+                The 3D plotting scene to which the cone will be added.
+            color : str
+                The color of the cone mesh. Default is 'red'.
+            opacity : float
+                The opacity of the cone mesh. Default is 0.8.
 
-        Returns:
-            None: This method does not return a value. It adds the cone mesh to the provided scene.
         """
         # Calculate the maximum angle from the numerical aperture (NA)
 

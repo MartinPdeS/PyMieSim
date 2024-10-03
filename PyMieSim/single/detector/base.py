@@ -42,7 +42,7 @@ class BaseDetector():
     rotation: Optional[Quantity] = 90 * degree
 
     @field_validator('polarization_filter', mode='before')
-    def validate_polarization(cls, value):
+    def _validate_polarization(cls, value):
         """
         Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
@@ -56,7 +56,7 @@ class BaseDetector():
         return value
 
     @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
-    def validate_angle_quantity(cls, value):
+    def _validate_angle_quantity(cls, value):
         """
         Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
@@ -125,11 +125,16 @@ class BaseDetector():
         as colored points in the scene. It also adds a translucent sphere and a directional cone
         to represent additional geometrical information.
 
-        Args:
-            unit_size (Tuple[float, float]): The size of the plot window (width, height). Default is (600, 600).
-            background_color (str): The background color of the plot. Default is 'black'.
-            show_axis_label (bool): If True, axis labels will be shown. Default is False.
-            colormap (str): The colormap to use for the scalar field. Default is 'blue_black_red'.
+        Parameters
+        ----------
+        unit_size : Tuple[float, float]
+            The size of the plot window (width, height). Default is (600, 600).
+        background_color : str
+            The background color of the plot. Default is 'black'.
+        show_axis_label : bool
+            If True, axis labels will be shown. Default is False.
+        colormap : str
+            The colormap to use for the scalar field. Default is 'blue_black_red'.
 
         Returns:
             None: This method does not return a value. It displays the 3D plot.
@@ -172,9 +177,12 @@ class BaseDetector():
         along with a cone mesh to indicate directional information. It also includes a scalar bar
         to display the values of the scalar field.
 
-        Args:
-            scene (pyvista.Plotter): The PyVista plotting scene where the elements will be added.
-            colormap (str): The colormap to use for the scalar field visualization.
+        Parameters
+        ----------
+        scene : pyvista.Plotter
+            The PyVista plotting scene where the elements will be added.
+        colormap : str
+            The colormap to use for the scalar field visualization.
 
         Returns:
             None: This method does not return a value. It modifies the provided scene.

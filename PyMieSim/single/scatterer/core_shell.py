@@ -19,28 +19,15 @@ class CoreShell(BaseScatterer):
 
     Parameters
     ----------
-        core_diameter (Quantity): Diameter of the core of the scatterer, in meters.
-        shell_width (Quantity): Width of the shell surrounding the core, in meters.
-        core_property (Quantity | BaseMaterial): Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer's core. Only one can be provided.
-        shell_property (Quantity | BaseMaterial): Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer's shell. Only one can be provided.
+    core_diameter : Quantity
+        Diameter of the core of the scatterer, in meters.
+    shell_width : Quantity
+        Width of the shell surrounding the core, in meters.
+    core_property : Quantity | BaseMaterial
+        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer's core. Only one can be provided.
+    shell_property : Quantity | BaseMaterial
+        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer's shell. Only one can be provided.
 
-    Attributes
-    ----------
-        size_parameter: Dimensionless size parameter of the scatterer.
-        area: Effective scattering area.
-        g: Asymmetry factor, representing the average cosine of the scattering angle.
-        Qsca: Scattering efficiency, the ratio of the scattering cross-section to the geometric cross-section.
-        Qext: Extinction efficiency, the sum of scattering and absorption efficiencies.
-        Qabs: Absorption efficiency, quantifying the portion of light absorbed by the scatterer.
-        Qback: Backscattering efficiency, representing the portion of light scattered in the backward direction.
-        Qratio: Ratio of backscattering to forward scattering.
-        Qpr: Radiation pressure efficiency, related to the momentum transfer to the scatterer.
-        Csca: Scattering cross-section, the effective area that scatters light.
-        Cext: Extinction cross-section, the effective area accounting for both scattering and absorption.
-        Cabs: Absorption cross-section, representing the area that absorbs light.
-        Cback: Backscattering cross-section, quantifying light scattered in the backward direction.
-        Cratio: Ratio of backscattering cross-section to forward scattering.
-        Cpr: Radiation pressure cross-section, related to the momentum transferred to the scatterer.
     """
 
     core_diameter: Quantity
