@@ -5,17 +5,17 @@
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | PyMieSim/\_\_main\_\_.py                       |        9 |        9 |        2 |        0 |      0% |      2-15 |
-| PyMieSim/experiment/detector/base.py           |       56 |        4 |       18 |        8 |     84% |54->53, 60, 63, 68->67, 74, 77, 82->81, 84->87 |
-| PyMieSim/experiment/detector/coherent\_mode.py |       20 |        5 |        8 |        1 |     64% |37->36, 39-43 |
-| PyMieSim/experiment/detector/photodiode.py     |       13 |        0 |        4 |        0 |    100% |           |
-| PyMieSim/experiment/scatterer/base\_class.py   |       37 |        5 |       16 |        4 |     77% |40->39, 69-74, 88->85, 97 |
-| PyMieSim/experiment/scatterer/core\_shell.py   |       38 |        2 |       14 |        6 |     85% |46->45, 52->51, 54->57, 60->59, 64, 67 |
-| PyMieSim/experiment/scatterer/cylinder.py      |       32 |       14 |       12 |        2 |     50% |36->35, 38-41, 44->43, 47-53, 62-73 |
-| PyMieSim/experiment/scatterer/sphere.py        |       32 |        2 |       12 |        5 |     84% |39->38, 41->44, 47->46, 51, 54 |
+| PyMieSim/experiment/detector/base.py           |       56 |        4 |       18 |        8 |     84% |64->63, 70, 73, 78->77, 84, 87, 92->91, 94->97 |
+| PyMieSim/experiment/detector/coherent\_mode.py |       20 |        5 |        8 |        1 |     64% |47->46, 49-53 |
+| PyMieSim/experiment/detector/photodiode.py     |       11 |        0 |        4 |        0 |    100% |           |
+| PyMieSim/experiment/scatterer/base.py          |       37 |        5 |       16 |        4 |     77% |40->39, 69-74, 88->85, 97 |
+| PyMieSim/experiment/scatterer/core\_shell.py   |       38 |        2 |       14 |        6 |     85% |53->52, 59->58, 61->64, 67->66, 71, 74 |
+| PyMieSim/experiment/scatterer/cylinder.py      |       32 |       14 |       12 |        2 |     50% |41->40, 43-46, 49->48, 52-58, 67-78 |
+| PyMieSim/experiment/scatterer/sphere.py        |       32 |        2 |       12 |        5 |     84% |44->43, 46->49, 52->51, 56, 59 |
 | PyMieSim/experiment/setup.py                   |       97 |       12 |       30 |        6 |     84% |108, 135, 212, 244-245, 271-276, 296-300, 328->333, 338 |
 | PyMieSim/experiment/source/base.py             |       35 |        6 |       12 |        3 |     72% |32->35, 44->43, 47-53, 73 |
-| PyMieSim/experiment/source/gaussian.py         |       25 |        2 |       12 |        5 |     81% |30->29, 34, 37, 42->41, 44->47 |
-| PyMieSim/experiment/source/planewave.py        |       10 |        1 |        2 |        0 |     92% |        33 |
+| PyMieSim/experiment/source/gaussian.py         |       25 |        2 |       12 |        5 |     81% |35->34, 39, 42, 47->46, 49->52 |
+| PyMieSim/experiment/source/planewave.py        |       10 |        1 |        2 |        0 |     92% |        36 |
 | PyMieSim/mesh.py                               |      111 |       15 |       28 |       11 |     81% |66->65, 67, 70->69, 71, 74->73, 75, 78->77, 79, 82->81, 86->85, 93->exit, 100->exit, 104->103, 108->107, 112->111, 179-183, 203-214 |
 | PyMieSim/polarization.py                       |       41 |        4 |       10 |        0 |     88% | 40, 43-46 |
 | PyMieSim/single/detector/base.py               |       72 |        3 |       14 |        5 |     91% |45->44, 54, 59->58, 65, 68 |
@@ -32,7 +32,7 @@
 | PyMieSim/special\_functions.py                 |       49 |       24 |        4 |        0 |     51% |18-24, 53-56, 70-75, 130-135, 151-156 |
 | PyMieSim/units.py                              |       24 |        0 |        4 |        0 |    100% |           |
 | PyMieSim/utils.py                              |       39 |        4 |        8 |        2 |     87% |79-80, 162-163 |
-|                                      **TOTAL** | **1298** |  **161** |  **378** |  **110** | **81%** |           |
+|                                      **TOTAL** | **1296** |  **161** |  **378** |  **110** | **81%** |           |
 
 
 ## Setup coverage badge
