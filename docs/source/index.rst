@@ -1,5 +1,5 @@
 PyMieSim's documentation
-============================
+========================
 
 **Date**: |today|, **Version**: |version|
 
@@ -13,6 +13,5 @@ PyMieSim's documentation
 
     theory.rst
     gallery/index.rst
-    code.rst
+    code/index.rst
     references.rst
-

@@ -17,16 +17,26 @@ class CoherentMode(BaseDetector):
     This detector is designed specifically for coherent modes, such as LP, HG, LG, and NC modes, which require specific handling
     in Mie scattering experiments.
 
-    Attributes:
-        mode_number (Union[List[str], str]): Mode number(s) involved in the detection.
-        NA (Union[List[float], float]): Numerical aperture(s) of the detector.
-        gamma_offset (Quantity): Gamma angular offset (in degrees).
-        phi_offset (Quantity): Phi angular offset (in degrees).
-        rotation (Quantity): Rotation angle of the detector.
-        sampling (Union[List[int], int]): Sampling rate(s) for the detector.
-        polarization_filter (Optional[Quantity]): Polarization filter angle (in degrees).
-        mean_coupling (Optional[bool]): Whether mean coupling is used. Defaults to False.
-        coherent (bool): Specifies if the detection is coherent. Defaults to True.
+    Parameters
+    ----------
+    mode_number : Union[List[str], str]
+        Mode number(s) involved in the detection.
+    NA : Union[List[float], float]
+        Numerical aperture(s) of the detector.
+    gamma_offset : Quantity
+        Gamma angular offset (in degrees).
+    phi_offset : Quantity
+        Phi angular offset (in degrees).
+    rotation : Quantity
+        Rotation angle of the detector.
+    sampling : Union[List[int], int]
+        Sampling rate(s) for the detector.
+    polarization_filter : Optional[Quantity]
+        Polarization filter angle (in degrees).
+    mean_coupling : Optional[bool]
+        Whether mean coupling is used. Defaults to False.
+    coherent : bool
+        Specifies if the detection is coherent. Defaults to True.
     """
     rotation: Quantity = 900 * degree
     mode_number: Union[List[str], str]
@@ -34,7 +44,7 @@ class CoherentMode(BaseDetector):
     coherent: bool = field(default=True, init=False)
 
     @field_validator('mode_number', mode='before')
-    def validate_mode_number(cls, mode_number):
+    def _validate_mode_number(cls, mode_number):
         """Ensure mode numbers are valid and belong to supported families."""
         mode_number = np.atleast_1d(mode_number).astype(str)
         for mode in mode_number:

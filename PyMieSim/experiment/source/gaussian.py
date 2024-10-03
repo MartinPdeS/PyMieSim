@@ -15,11 +15,16 @@ class Gaussian(BaseSource):
 
     Inherits from BaseSource and adds specific attributes for Gaussian sources.
 
-    Attributes:
-        wavelength (Quantity): The wavelength(s) of the light source.
-        polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        NA (List): The numerical aperture(s) of the Gaussian source.
-        optical_power (float): The optical power of the source, in Watts.
+    Parameters
+    ----------
+    wavelength : Quantity
+        The wavelength(s) of the light source.
+    polarization : Union[UnitPolarizationAngle, Quantity]
+        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+    NA : Quantity
+        The numerical aperture(s) of the Gaussian source.
+    optical_power : Quantity
+        The optical power of the source, in Watts.
     """
     NA: Quantity
     optical_power: Quantity
@@ -27,7 +32,7 @@ class Gaussian(BaseSource):
     name: str = field(default='PlaneWave', init=False)
 
     @field_validator('wavelength', mode='before')
-    def validate_length_quantity(cls, value):
+    def _validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""
         if not isinstance(value, Quantity):
@@ -39,7 +44,7 @@ class Gaussian(BaseSource):
         return numpy.atleast_1d(value)
 
     @field_validator('NA', 'optical_power', mode='before')
-    def validate_array(cls, value):
+    def _validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):
             value = numpy.atleast_1d(value)
@@ -51,8 +56,6 @@ class Gaussian(BaseSource):
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
 
-        Returns:
-            None
         """
         self.binding_kwargs = dict(
             wavelength=self.wavelength,

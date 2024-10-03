@@ -8,8 +8,8 @@ from typing import List
 import numpy
 from PyMieSim.binary.SetsInterface import CppSphereSet
 from PyOptik.base_class import BaseMaterial
-from PyMieSim.units import Quantity, meter, RIU
-from PyMieSim.experiment.scatterer.base_class import BaseScatterer, config_dict
+from PyMieSim.units import Quantity, meter
+from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
 
 @dataclass(config=config_dict, kw_only=True)
 class Sphere(BaseScatterer):
@@ -20,11 +20,16 @@ class Sphere(BaseScatterer):
     with their properties to a simulation environment. It extends the `BaseScatterer` class by
     adding spherical-specific attributes and methods for handling simulation setups.
 
-    Attributes:
-        source (PyMieSim.experiment.source.base.BaseSource): Light source configuration for the simulation.
-        diameter (Quantity): Diameter(s) of the spherical scatterers in meters.
-        property (List[BaseMaterial] | List[Quantity]): Refractive index or indices of the spherical scatterers themselves.
-        medium_property (List, optional): BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
+    Parameters
+    ----------
+    source : PyMieSim.experiment.source.base.BaseSource
+        Light source configuration for the simulation.
+    diameter : Quantity
+        Diameter(s) of the spherical scatterers in meters.
+    property : List[BaseMaterial] | List[Quantity]
+        Refractive index or indices of the spherical scatterers themselves.
+    medium_property : List, optional
+        BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
     diameter: Quantity
     property: List[BaseMaterial] | List[Quantity]
@@ -36,7 +41,7 @@ class Sphere(BaseScatterer):
     ]
 
     @field_validator('diameter', 'medium_index', 'medium_material', 'index', 'material', mode='before')
-    def validate_array(cls, value):
+    def _validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):
             value = numpy.atleast_1d(value)
@@ -44,7 +49,7 @@ class Sphere(BaseScatterer):
         return value
 
     @field_validator('diameter', mode='before')
-    def validate_length_quantity(cls, value):
+    def _validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""
         if not isinstance(value, Quantity):

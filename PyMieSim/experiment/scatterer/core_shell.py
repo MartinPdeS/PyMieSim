@@ -9,7 +9,7 @@ import numpy
 from PyMieSim.binary.SetsInterface import CppCoreShellSet
 from PyOptik.base_class import BaseMaterial
 from PyMieSim.units import Quantity, meter
-from PyMieSim.experiment.scatterer.base_class import BaseScatterer, config_dict
+from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -21,13 +21,20 @@ class CoreShell(BaseScatterer):
     attributes and methods that ensure the scatterers are configured correctly for simulations.
     It extends the BaseScatterer class, adding specific attributes and methods relevant to core-shell geometries.
 
-    Attributes:
-        source (PyMieSim.experiment.source.base.BaseSource): Light source configuration for the simulation.
-        core_diameter (Quantity): Diameters of the core components in meters.
-        shell_width (Quantity): Thicknesses of the shell components in meters.
-        core_property (List[BaseMaterial] | List[Quantity]): Refractive index or indices of the core.
-        shell_property (List[BaseMaterial] | List[Quantity]): Refractive index or indices of the shell.
-        medium_property (List[BaseMaterial] | List[Quantity]): BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
+    Parameters
+    ----------
+    source : PyMieSim.experiment.source.base.BaseSource
+        Light source configuration for the simulation.
+    core_diameter : Quantity
+        Diameters of the core components in meters.
+    shell_width : Quantity
+        Thicknesses of the shell components in meters.
+    core_property : List[BaseMaterial] | List[Quantity]
+        Refractive index or indices of the core.
+    shell_property : List[BaseMaterial] | List[Quantity]
+        Refractive index or indices of the shell.
+    medium_property : List[BaseMaterial] | List[Quantity]
+        BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
     """
     core_diameter: Quantity
@@ -43,13 +50,13 @@ class CoreShell(BaseScatterer):
     ]
 
     @field_validator('core_property', 'shell_property', 'medium_property', mode='plain')
-    def validate_properties(cls, value):
+    def _validate_properties(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
 
         return numpy.atleast_1d(value)
 
     @field_validator('core_diameter', 'shell_width', mode='before')
-    def validate_array(cls, value):
+    def _validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
         if not isinstance(value, numpy.ndarray):
             value = numpy.atleast_1d(value)
@@ -57,7 +64,7 @@ class CoreShell(BaseScatterer):
         return value
 
     @field_validator('core_diameter', 'shell_wdith', mode='before')
-    def validate_length_quantity(cls, value):
+    def _validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""
         if not isinstance(value, Quantity):

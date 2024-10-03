@@ -1,5 +1,5 @@
 Detectors
-==========
+=========
 
 .. autoclass:: PyMieSim.single.detector.Photodiode
     :inherited-members:

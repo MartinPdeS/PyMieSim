@@ -26,16 +26,26 @@ class BaseDetector:
     This class handles the initialization and binding of a detector to a simulation, formatting inputs, and managing
     the C++ bindings needed for high-performance calculations. It should be subclassed to create specific types of detectors.
 
-    Attributes:
-        mode_number (Union[List[str], str]): Mode number(s) involved in the detection.
-        NA (Union[List[float], float]): Numerical aperture(s) of the detector.
-        gamma_offset (Quantity): Gamma angular offset (in degrees).
-        phi_offset (Quantity): Phi angular offset (in degrees).
-        rotation (Quantity): Rotation angle of the detector.
-        sampling (Union[List[int], int]): Sampling rate(s) for the detector.
-        polarization_filter (Optional[Quantity]): Polarization filter angle (in degrees).
-        mean_coupling (Optional[bool]): Whether mean coupling is used. Defaults to False.
-        coherent (bool): Specifies if the detection is coherent. Defaults to True.
+    Attributes
+    ----------
+    mode_number : Union[List[str], str]
+        Mode number(s) involved in the detection.
+    NA : Union[List[float], float]
+        Numerical aperture(s) of the detector.
+    gamma_offset : Quantity
+        Gamma angular offset (in degrees).
+    phi_offset : Quantity
+        Phi angular offset (in degrees).
+    rotation : Quantity
+        Rotation angle of the detector.
+    sampling : Union[List[int], int]
+        Sampling rate(s) for the detector.
+    polarization_filter : Optional[Quantity]
+        Polarization filter angle (in degrees).
+    mean_coupling : Optional[bool]
+        Whether mean coupling is used. Defaults to False.
+    coherent : bool
+        Specifies if the detection is coherent. Defaults to True.
 
     This class is not intended to be instantiated directly.
     """

@@ -41,7 +41,7 @@ class BaseSource:
         self.binding = CppSourceSet(**binding_kwargs)
 
     @field_validator('wavelength', mode='before')
-    def validate_length_quantity(cls, value):
+    def _validate_length_quantity(cls, value):
         """
         Ensures that diameter is Quantity objects with length units."""
         if not isinstance(value, Quantity):

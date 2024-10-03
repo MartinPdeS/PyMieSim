@@ -37,7 +37,7 @@ class BaseScatterer():
     binding = None
 
     @field_validator('property', 'medium_property', mode='plain')
-    def validate_properties(cls, value):
+    def _validate_properties(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
 
         return numpy.atleast_1d(value)

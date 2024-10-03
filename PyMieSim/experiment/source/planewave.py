@@ -13,13 +13,16 @@ class PlaneWave(BaseSource):
 
     Inherits from BaseSource and specifies amplitude directly.
 
-    Attributes:
-        wavelength (Quantity): The wavelength(s) of the light source.
-        polarization (Union[UnitPolarizationAngle, float]): Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        amplitude (Quantity): The amplitude of the plane wave, in Watts.
+    Parameters
+    ----------
+    wavelength : Quantity
+        The wavelength(s) of the light source.
+    polarization : Union[UnitPolarizationAngle, Quantity]
+        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+    amplitude : Quantity
+        The amplitude of the plane wave, in Watts.
     """
     amplitude: Quantity
-
     name: str = field(default='PlaneWave', init=False)
 
     def _generate_binding_kwargs(self) -> None:

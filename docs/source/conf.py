@@ -85,6 +85,7 @@ autodoc_default_options = {
     'ignore-module-all': True
 }
 
+autosectionlabel_prefix_document = True
 numpydoc_show_class_members = False
 add_module_names = False
 
