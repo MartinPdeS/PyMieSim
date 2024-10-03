@@ -138,7 +138,8 @@ omit = [
     'PyMieSim/gui/*',
     '*\__init__.py',
     'PyMieSim/_version.py',
-    'PyMieSim/directories.py'
+    'PyMieSim/directories.py',
+    'PyMieSim/plotting.py'
 ]
 branch = true
 relative_files = true

@@ -58,6 +58,7 @@ def test_get_measure(mock_show, measure, property, medium_property):
     dataframe = experiment.get(measure, drop_unique_level=False)
 
     dataframe.plot_data(x='wavelength')
+
     plt.close()
 
 
