@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from unittest.mock import patch
 import numpy as np
+import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
@@ -34,7 +36,8 @@ measures = [
 @pytest.mark.parametrize('medium_config', [m['properties'] for m in medium_options], ids=[m['name'] for m in medium_options])
 @pytest.mark.parametrize('core_config', [c['properties'] for c in core_options], ids=[c['name'] for c in core_options])
 @pytest.mark.parametrize('measure', measures)
-def test_sphere_scattering_properties(measure, core_config, medium_config):
+@patch('matplotlib.pyplot.show')
+def test_sphere_scattering_properties(mock_show, measure, core_config, medium_config):
     # Set up the Gaussian source
     source = Gaussian(
         wavelength=np.linspace(600, 1000, 50) * nanometer,
@@ -65,7 +68,10 @@ def test_sphere_scattering_properties(measure, core_config, medium_config):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    experiment.get(measure, drop_unique_level=False)
+    dataframe = experiment.get(measure, drop_unique_level=False)
+
+    dataframe.plot_data(x='wavelength')
+    plt.close()
 
 
 if __name__ == "__main__":
