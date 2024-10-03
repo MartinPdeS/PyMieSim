@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+import numpy as np
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment import Setup
 from PyMieSim.experiment.source import Gaussian
@@ -66,18 +67,16 @@ def test_api(polarization_0, polarization_1):
     Test the API integration with different polarizations.
     """
     # polarization = Linear(element=[50] * degree)
-
-    # Setup Gaussian source
     source = Gaussian(
-        wavelength=1000 * nanometer,
-        polarization=50 * degree,
+        wavelength=np.linspace(600, 1000, 50) * nanometer,
+        polarization=0 * degree,
         optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
 
     # Configure the spherical scatterer
     scatterer = Sphere(
-        diameter=1000 * nanometer,
+        diameter=np.linspace(400, 1400, 10) * nanometer,
         source=source,
         index=1.4 * RIU,
         medium_index=1.0 * RIU
@@ -86,22 +85,10 @@ def test_api(polarization_0, polarization_1):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source)
 
-    result = experiment.get('coupling', drop_unique_level=True)
+    result = experiment.get('Qsca')
     assert result is not None, 'Experiment setup or measurement failed!'
 
 if __name__ == "__main__":
     pytest.main([__file__])
 
 # -
-
-
-# [[0.64278761+0.j 0.76604444+0.j]
-#  [0.93969262+0.j 0.34202014+0.j]
-#  [0.64278761+0.j 0.76604444+0.j]
-#  [0.93969262+0.j 0.34202014+0.j]]
-
-
-# [[0.64278761+0.j 0.76604444+0.j]
-#  [0.93969262+0.j 0.34202014+0.j]
-#  [0.64278761+0.j 0.76604444+0.j]
-#  [0.93969262+0.j 0.34202014+0.j]]

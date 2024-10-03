@@ -37,7 +37,6 @@ class BaseSource:
         binding_kwargs = {
             k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
         }
-        binding_kwargs['jones_vector'] = [[0, 1]]
 
         self.binding = CppSourceSet(**binding_kwargs)
 
