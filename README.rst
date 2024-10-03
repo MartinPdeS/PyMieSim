@@ -1,4 +1,4 @@
-|Logo|
+|logo|
 
 |python|
 |zenodo|
@@ -263,16 +263,16 @@ Email:`martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmai
     :target: https://doi.org/10.5281/zenodo.4556074
 
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :target: https://colab.research.google.com/drive/1FUi_hRUXxCVvkHBY10YE1yR-nTATcDei?usp=sharing
+    :target: https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb
 
 .. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg
-   :target: https://martinpdes.github.io/PyMieSim/
-   :alt: Documentation Status
+    :target: https://martinpdes.github.io/PyMieSim/
+    :alt: Documentation Status
 
 .. |PyPi| image:: https://badge.fury.io/py/PyMieSim.svg
     :target: https://badge.fury.io/py/PyMieSim
 
-.. |Logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
+.. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
 
 .. |example_plasmon| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png
 
@@ -290,5 +290,6 @@ Email:`martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmai
     :alt: Structure of the library
 
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
-   :alt: Unittest coverage
-   :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
+    :alt: Unittest coverage
+    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
+
