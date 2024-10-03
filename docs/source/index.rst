@@ -8,9 +8,11 @@ PyMieSim's documentation
     :start-line: 0
 
 .. toctree::
+    :maxdepth: 2
     :hidden:
 
-    theory
-    code
-    gallery/examples/index
-    references
+    theory.rst
+    gallery/index.rst
+    code.rst
+    references.rst
+

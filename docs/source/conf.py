@@ -8,6 +8,7 @@ from PyMieSim.directories import project_path, doc_css_path
 
 sys.path.insert(0, project_path)
 sys.path.insert(0, project_path.joinpath('PyMieSim'))
+sys.path.insert(0, project_path.joinpath('PyMieSim/docs/source'))
 
 
 def setup(app):
@@ -63,7 +64,7 @@ except ImportError:
 
 sphinx_gallery_conf = {
     "examples_dirs": ['../examples'],
-    "gallery_dirs": ['gallery/examples'],
+    "gallery_dirs": ['gallery'],
     'image_scrapers': ('matplotlib', 'pyvista'),
     'ignore_pattern': '/__',
     'plot_gallery': True,
@@ -85,6 +86,7 @@ autodoc_default_options = {
 }
 
 numpydoc_show_class_members = False
+add_module_names = False
 
 source_suffix = '.rst'
 
@@ -100,7 +102,7 @@ html_theme = "pydata_sphinx_theme"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 exclude_trees = []
-default_role = "autolink"
+# default_role = "autolink"
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
@@ -108,6 +110,7 @@ binder_branch = "master"
 
 major, minor = version[:2]
 binder_branch = f"v{major}.{minor}.x"
+
 
 html_theme_options = {
     # Navigation bar
@@ -165,9 +168,9 @@ texinfo_documents = [
 
 epub_title = project
 
-html_static_path = ['_static']
-templates_path = ['_templates']
-html_css_files = ['default.css']
+# html_static_path = ['_static']
+# templates_path = ['_templates']
+# html_css_files = ['default.css']
 epub_exclude_files = ['search.html']
 
 

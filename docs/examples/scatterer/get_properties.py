@@ -1,6 +1,6 @@
 """
-Scattering properties
-=====================
+Print properties
+================
 
 This example demonstrates the computation of scattering properties using PyMieSim.
 """

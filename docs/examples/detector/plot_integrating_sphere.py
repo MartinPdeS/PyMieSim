@@ -1,6 +1,6 @@
 """
-Photodiode Detector
-===================
+Integrating sphere
+==================
 
 This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.
 """

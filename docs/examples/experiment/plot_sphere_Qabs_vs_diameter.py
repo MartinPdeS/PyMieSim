@@ -1,5 +1,5 @@
 """
-Sphere: Qsca vs diameter
+Sphere: Qabs vs diameter
 ========================
 
 """

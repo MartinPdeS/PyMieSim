@@ -1,6 +1,6 @@
 """
-Sphere: Coupling vs sampling
-============================
+Sphere: coherent coupling vs sampling
+=====================================
 
 """
 

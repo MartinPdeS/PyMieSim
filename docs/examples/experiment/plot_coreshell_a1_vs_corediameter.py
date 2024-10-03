@@ -1,5 +1,5 @@
 """
-CoreShell: B1 vs Core Diameter
+CoreShell: A1 vs Core Diameter
 ==============================
 
 This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.
