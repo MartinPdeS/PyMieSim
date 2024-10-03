@@ -14,12 +14,12 @@
 | PyMieSim/experiment/scatterer/core\_shell.py   |       42 |        2 |       12 |        5 |     87% |51->50, 53->56, 59->58, 63, 66 |
 | PyMieSim/experiment/scatterer/cylinder.py      |       38 |        2 |       12 |        5 |     86% |39->38, 41->44, 47->46, 51, 54 |
 | PyMieSim/experiment/scatterer/sphere.py        |       38 |        2 |       12 |        5 |     86% |44->43, 46->49, 52->51, 56, 59 |
-| PyMieSim/experiment/setup.py                   |       97 |        8 |       30 |        3 |     90% |108, 135, 272-277, 297-301, 329->334 |
+| PyMieSim/experiment/setup.py                   |       98 |        8 |       30 |        3 |     90% |108, 135, 273-278, 298-302, 330->335 |
 | PyMieSim/experiment/source/base.py             |       35 |        6 |       12 |        3 |     72% |32->35, 44->43, 47-53, 73 |
 | PyMieSim/experiment/source/gaussian.py         |       25 |        2 |       12 |        5 |     81% |30->29, 34, 37, 42->41, 44->47 |
 | PyMieSim/experiment/source/planewave.py        |       10 |        1 |        2 |        0 |     92% |        33 |
 | PyMieSim/mesh.py                               |      111 |       15 |       28 |       11 |     81% |66->65, 67, 70->69, 71, 74->73, 75, 78->77, 79, 82->81, 86->85, 93->exit, 100->exit, 104->103, 108->107, 112->111, 179-183, 203-214 |
-| PyMieSim/polarization.py                       |       41 |       11 |       10 |        0 |     67% |27-37, 40, 43-46 |
+| PyMieSim/polarization.py                       |       41 |        4 |       10 |        0 |     88% | 40, 43-46 |
 | PyMieSim/single/detector.py                    |      129 |      129 |       30 |        0 |      0% |     4-442 |
 | PyMieSim/single/detector/base.py               |       73 |        3 |       14 |        5 |     91% |46->45, 55, 60->59, 66, 69 |
 | PyMieSim/single/detector/coherent.py           |       42 |        2 |       12 |        3 |     91% |39, 44, 56->60 |
@@ -35,7 +35,7 @@
 | PyMieSim/special\_functions.py                 |       49 |       24 |        4 |        0 |     51% |18-24, 53-56, 70-75, 130-135, 151-156 |
 | PyMieSim/units.py                              |       24 |        0 |        4 |        0 |    100% |           |
 | PyMieSim/utils.py                              |       77 |       36 |       20 |        2 |     48% |29-54, 74-120, 132-155, 226-227, 309-310 |
-|                                      **TOTAL** | **1568** |  **301** |  **418** |  **115** | **76%** |           |
+|                                      **TOTAL** | **1569** |  **294** |  **418** |  **115** | **77%** |           |
 
 
 ## Setup coverage badge
