@@ -24,11 +24,19 @@ pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
     for (size_t si=0; si<array_shape[5]; ++si)
     for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
+        size_t idx = flatten_multi_index({wl, jv, na, op, sd, si, mi}, array_shape);
+
         SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
 
         SPHERE::Scatterer scatterer = sphereSet.to_object(sd, si, wl, mi, source);
 
-        output_array.emplace_back((scatterer.*function)());
+        output_array[idx] = (scatterer.*function)()[max_order];
+
+        // SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
+
+        // SPHERE::Scatterer scatterer = sphereSet.to_object(sd, si, wl, mi, source);
+
+        // output_array.emplace_back((scatterer.*function)());
     }
 
     return vector_to_numpy(output_array, array_shape);
@@ -73,7 +81,6 @@ pybind11::array_t<double> Experiment::get_sphere_coupling() const
         SPHERE::Scatterer scatterer = sphereSet.to_object(sd, si, wl, mi, source);
 
         output_array.emplace_back(detector.get_coupling(scatterer));
-
     }
 
     return vector_to_numpy(output_array, array_shape);
