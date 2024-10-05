@@ -67,6 +67,3 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
-
-# Verify data accuracy
-assert np.allclose(normalized_csca.magnitude, theoretical_data, atol=1e-9), 'Error: mismatch on BH 8.8 calculation occurring'

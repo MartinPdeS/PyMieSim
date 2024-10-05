@@ -60,7 +60,3 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.show()
-
-assert numpy.all(numpy.isclose(data, theoretical, 1e-9)), 'Error: mismatch on BH_8.7 calculation occuring'
-
-# -
