@@ -30,7 +30,7 @@ pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
 
         SPHERE::Scatterer scatterer = sphereSet.to_object(sd, si, wl, mi, source);
 
-        output_array[idx] = (scatterer.*function)()[max_order];
+        output_array[idx] = (scatterer.*function)();
 
         // SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
 
