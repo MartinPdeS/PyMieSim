@@ -8,7 +8,8 @@ def plot_dataframe(
         dataframe: pd.DataFrame,
         x: str,
         alpha: float = 0.4,
-        std: Optional[str] = None) -> None:
+        std: Optional[str] = None,
+        **kwargs) -> None:
     """
     Plots a DataFrame using a specified MultiIndex level for the x-axis and
     optionally shades the mean ± standard deviation if provided.
@@ -25,14 +26,14 @@ def plot_dataframe(
         _, ax = plt.subplots(1, 1)
 
     if std is not None:
-        plot_with_std(dataframe, ax, x, std, alpha)
+        plot_with_std(dataframe, ax, x, std, alpha, **kwargs)
 
     else:
-        plot_without_std(dataframe, ax, x)
+        plot_without_std(dataframe, ax, x, **kwargs)
 
     plt.show()
 
-def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5) -> None:
+def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
     """
     Plot the mean with standard deviation shading for a given dataframe.
 
@@ -83,7 +84,7 @@ def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 
         name_str = " : ".join(map(str, name))  # Join group names into a label
 
         # Plot the mean line
-        ax.plot(group.index, group['mean'], linewidth=1, linestyle='--')
+        ax.plot(group.index, group['mean'], linewidth=1, linestyle='--', **kwargs)
 
         # Shade the area representing the standard deviation
         ax.fill_between(
@@ -99,7 +100,7 @@ def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 
     plt.show()
 
 
-def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str) -> None:
+def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, **kwargs) -> None:
     """
     Plots the data without standard deviation shading. Handles real and imaginary parts if the data is complex.
 
@@ -128,7 +129,8 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str) -> None:
         ax.plot(
             dataframe.index,
             dataframe.squeeze(),
-            label=label
+            label=label,
+            **kwargs
         )
 
     ax.legend(title=" : ".join(groupby_levels))

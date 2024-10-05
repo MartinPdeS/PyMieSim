@@ -170,45 +170,35 @@ Below is an example that illustrate this:
     from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-
-    from PyMieSim import measure
-    from PyOptik import UsualMaterial
+    from PyMieSim.units import nanometer, RIU, AU, watt, degree
+    from PyOptik import Material
 
     source = Gaussian(
-        wavelength=1200e-9,
-        polarization=90,
-        optical_power=1e-3,
-        NA=0.2
+        wavelength=1200 * nanometer,
+        polarization=90 * degree,
+        optical_power=1e-3 * watt,
+        NA=0.2 * AU
     )
 
     scatterer = Sphere(
-        diameter=numpy.linspace(100e-9, 3000e-9, 600),
-        material=UsualMaterial.BK7,
-        medium_index=1.0,
+        diameter=numpy.linspace(100, 3000, 600) * nanometer,
+        property=Material.BK7,
+        medium_property=1.0 * RIU,
         source=source
     )
 
     detector = Photodiode(
-        NA=[0.15, 0.1, 0.05],
-        phi_offset=-180.0,
-        gamma_offset=0.0,
-        sampling=600,
-        polarization_filter=None
+        NA=[0.15, 0.1, 0.05] * AU,
+        phi_offset=-180.0 * degree,
+        gamma_offset=0.0 * degree,
+        sampling=600 * AU
     )
 
-    experiment = Setup(
-        scatterer=scatterer,
-        source=source,
-        detector=detector
-    )
+    experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    data = experiment.get(measure.coupling)
+    data = experiment.get('coupling')
 
-    data.plot(
-        x=experiment.diameter,
-        y_scale='linear',
-        normalize=True
-    )
+    data.plot_data(x='diameter')
 
 
 Plenty of other examples are available online, I invite you to check the `examples <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_
