@@ -11,8 +11,7 @@ pybind11::array_t<dtype> Experiment::get_cylinder_data(Function function) const
 
     size_t full_size = get_vector_sigma(array_shape);
 
-    std::vector<dtype> output_array;
-    output_array.reserve(full_size);
+    std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
     for (size_t wl=0; wl<array_shape[0]; ++wl)
@@ -23,11 +22,13 @@ pybind11::array_t<dtype> Experiment::get_cylinder_data(Function function) const
     for (size_t si=0; si<array_shape[5]; ++si)
     for (size_t mi=0; mi<array_shape[6]; ++mi)
     {
+        size_t idx = flatten_multi_index({wl, jv, na, op, sd, si, mi}, array_shape);
+
         SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
 
         CYLINDER::Scatterer scatterer = cylinderSet.to_object(sd, si, wl, mi, source);
 
-        output_array.emplace_back((scatterer.*function)());
+        output_array[idx] = (scatterer.*function)();
     }
 
     return vector_to_numpy(output_array, array_shape);
@@ -45,8 +46,7 @@ pybind11::array_t<double> Experiment::get_cylinder_coupling() const
 
     size_t full_size = get_vector_sigma(array_shape);
 
-    std::vector<double> output_array;
-    output_array.reserve(full_size);
+    std::vector<double> output_array(full_size);
 
     #pragma omp parallel for collapse(14)
     for (size_t wl=0; wl<array_shape[0]; ++wl)
@@ -64,13 +64,15 @@ pybind11::array_t<double> Experiment::get_cylinder_coupling() const
     for (size_t go=0; go<array_shape[12]; ++go)
     for (size_t pf=0; pf<array_shape[13]; ++pf)
     {
+        size_t idx = flatten_multi_index({wl, jv, na_, op, sd, si, mi, mn, fs, ra, na, po, go, pf}, array_shape);
+
         SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na_, op);
 
         DETECTOR::Detector detector = detectorSet.to_object(mn, fs, ra, na, po, go, pf);
 
         CYLINDER::Scatterer scatterer = cylinderSet.to_object(sd, si, wl, mi, source);
 
-        output_array.emplace_back(detector.get_coupling(scatterer));
+        output_array[idx] = detector.get_coupling(scatterer);
     }
 
     return vector_to_numpy(output_array, array_shape);
