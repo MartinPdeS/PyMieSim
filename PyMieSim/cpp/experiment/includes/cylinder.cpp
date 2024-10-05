@@ -1,5 +1,7 @@
 #pragma once
 
+#include "single/includes/cylinder.cpp"
+
 template<typename dtype, typename Function>
 pybind11::array_t<dtype> Experiment::get_cylinder_data(Function function) const
 {

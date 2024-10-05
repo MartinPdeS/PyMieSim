@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <complex>
 #include <cmath>
 
 typedef std::complex<double> complex128;
@@ -73,7 +74,7 @@ void Squared(std::vector<T>& vector)
         vector[iter] = pow(abs(vector[iter]), 2);
 }
 
-template <class T> 
+template <class T>
 std::vector<T> Add(std::vector<T>& vector0, std::vector<T>& vector1)
 {
     std::vector<T> output_vector;

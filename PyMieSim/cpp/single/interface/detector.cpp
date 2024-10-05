@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include "utils/special_function.cpp"
 #include "single/includes/detectors.cpp"
-#include "single/includes/core_shell.cpp"
+#include "single/includes/coreshell.cpp"
 #include "single/includes/sphere.cpp"
 #include "single/includes/cylinder.cpp"
 

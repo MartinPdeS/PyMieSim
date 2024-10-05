@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h> // Ensure complex numbers are supported
-#include "single/includes/core_shell.cpp"
+#include "single/includes/coreshell.cpp"
 #include <single/includes/base_class.cpp>
 
 namespace py = pybind11;
