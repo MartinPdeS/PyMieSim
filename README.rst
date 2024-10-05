@@ -214,7 +214,8 @@ The associated article is free of access on this link `article <https://opg.opti
 
 Citing this work?
 ******************
-I spent a full year to develop this tool for you to use so if it helped you in your research, I would greatly appreciate you citing the article associated to my work. Many thanks!
+
+I spent a few years to develop this tool for you to use so if it helped you in your research, I would greatly appreciate you citing the article associated to my work. Many thanks!
 
 .. code-block:: none
 

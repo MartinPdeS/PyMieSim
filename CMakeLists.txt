@@ -26,7 +26,9 @@ find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 
 # Include directories
-include_directories("${PYMIESIM_CXX_DIR}/includes" "${PYMIESIM_CXX_DIR}/headers" "${PYMIESIM_CXX_DIR}/interfaces")
+include_directories(
+    "${PYMIESIM_CXX_DIR}"
+)
 
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -57,22 +59,24 @@ target_link_options(ZBessel PUBLIC ${STATIC_LINK_OPTIONS})
 
 # Function to add pybind11 modules
 function(add_pymiesim_module name source)
-    pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/interfaces/${source}")
+    pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/${source}")
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
     target_link_libraries(${name} PRIVATE ZBessel)
     target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})
 endfunction()
 
 # Add modules
-add_pymiesim_module(Fibonacci "mesh_interface.cpp")
-add_pymiesim_module(SourceInterface "source_interface.cpp")
-add_pymiesim_module(DetectorInterface "detector_interface.cpp")
-add_pymiesim_module(SphereInterface "sphere_interface.cpp")
-add_pymiesim_module(CylinderInterface "cylinder_interface.cpp")
-add_pymiesim_module(CoreShellInterface "coreshell_interface.cpp")
-add_pymiesim_module(ModeField "mode_field_interface.cpp")
-add_pymiesim_module(SetsInterface "sets_interface.cpp")
-add_pymiesim_module(Experiment "experiment_interface.cpp")
+add_pymiesim_module(Fibonacci "single/interface/mesh.cpp")
+
+add_pymiesim_module(SourceInterface "single/interface/source.cpp")
+add_pymiesim_module(DetectorInterface "single/interface/detector.cpp")
+add_pymiesim_module(SphereInterface "single/interface/sphere.cpp")
+add_pymiesim_module(CylinderInterface "single/interface/cylinder.cpp")
+add_pymiesim_module(CoreShellInterface "single/interface/coreshell.cpp")
+add_pymiesim_module(ModeField "single/interface/mode_field.cpp")
+
+add_pymiesim_module(SetsInterface "experiment/interface/sets.cpp")
+add_pymiesim_module(Experiment "experiment/interface/experiment.cpp")
 
 # Special handling for Experiment module
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
