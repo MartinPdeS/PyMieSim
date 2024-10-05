@@ -12,7 +12,7 @@ pybind11::array_t<dtype> Experiment::get_coreshell_data(Function function) const
 
     size_t full_size = get_vector_sigma(array_shape);
 
-    std::vector<double> output_array(full_size);
+    std::vector<dtype> output_array(full_size);
 
     #pragma omp parallel for collapse(9)
     for (size_t wl=0; wl<array_shape[0]; ++wl)
