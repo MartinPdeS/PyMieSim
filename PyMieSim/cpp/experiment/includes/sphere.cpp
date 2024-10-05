@@ -12,8 +12,8 @@ pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
 
     size_t full_size = get_vector_sigma(array_shape);
 
-    std::vector<dtype> output_array;
-    output_array.reserve(full_size);
+    std::vector<dtype> output_array(full_size);
+    // output_array.reserve(full_size);
 
     #pragma omp parallel for collapse(7)
     for (size_t wl=0; wl<array_shape[0]; ++wl)
