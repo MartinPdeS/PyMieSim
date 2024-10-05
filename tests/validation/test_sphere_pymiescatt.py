@@ -60,7 +60,7 @@ def test_comparison(gaussian_source, measure: str):
         rtol=1e-2
     )
 
-    assert discrepency, f"Mismatch in PyMieSim vs PyMieScatt for {measure}"
+    assert discrepency, f"Mismatch in PyMieSim vs PyMieScatt for {measure} \n {pymiesim_data[measure].squeeze().values.quantity}"
 
 
 if __name__ == "__main__":
