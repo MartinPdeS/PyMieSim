@@ -6,29 +6,23 @@ template<typename dtype, typename Function>
 pybind11::array_t<dtype> Experiment::get_cylinder_data(Function function) const
 {
     using namespace CYLINDER;
-
     std::vector<size_t> array_shape = concatenate_vector(sourceSet.shape, cylinderSet.shape);
-
     size_t full_size = get_vector_sigma(array_shape);
-
     std::vector<dtype> output_array(full_size);
 
-    #pragma omp parallel for collapse(7)
-    for (size_t wl=0; wl<array_shape[0]; ++wl)
-    for (size_t jv=0; jv<array_shape[1]; ++jv)
-    for (size_t na=0; na<array_shape[2]; ++na)
-    for (size_t op=0; op<array_shape[3]; ++op)
-    for (size_t sd=0; sd<array_shape[4]; ++sd)
-    for (size_t si=0; si<array_shape[5]; ++si)
-    for (size_t mi=0; mi<array_shape[6]; ++mi)
+    #pragma omp parallel for
+    for (size_t i = 0; i < sourceSet.total_combinations; ++i)
     {
-        size_t idx = flatten_multi_index({wl, jv, na, op, sd, si, mi}, array_shape);
+        SOURCE::BaseSource source = sourceSet.get_source_by_index(i);
 
-        SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
+        #pragma omp parallel for
+        for (size_t j = 0; j < cylinderSet.total_combinations; ++j)
+        {
+            Scatterer scatterer = cylinderSet.get_scatterer_by_index(j, source);
+            size_t idx = flatten_multi_index(source.indices, scatterer.indices, array_shape);
 
-        CYLINDER::Scatterer scatterer = cylinderSet.to_object(sd, si, wl, mi, source);
-
-        output_array[idx] = (scatterer.*function)();
+            output_array[idx] = (scatterer.*function)();
+        }
     }
 
     return vector_to_numpy(output_array, array_shape);
@@ -37,42 +31,32 @@ pybind11::array_t<dtype> Experiment::get_cylinder_data(Function function) const
 pybind11::array_t<double> Experiment::get_cylinder_coupling() const
 {
     using namespace CYLINDER;
+    using namespace SOURCE;
+    using namespace DETECTOR;
 
-    std::vector<size_t> array_shape = concatenate_vector(
-        sourceSet.shape,
-        cylinderSet.shape,
-        detectorSet.shape
-    );
-
+    std::vector<size_t> array_shape = concatenate_vector(sourceSet.shape, cylinderSet.shape, detectorSet.shape);
     size_t full_size = get_vector_sigma(array_shape);
-
     std::vector<double> output_array(full_size);
 
-    #pragma omp parallel for collapse(14)
-    for (size_t wl=0; wl<array_shape[0]; ++wl)
-    for (size_t jv=0; jv<array_shape[1]; ++jv)
-    for (size_t na_=0; na_<array_shape[2]; ++na_)
-    for (size_t op=0; op<array_shape[3]; ++op)
-    for (size_t sd=0; sd<array_shape[4]; ++sd)
-    for (size_t si=0; si<array_shape[5]; ++si)
-    for (size_t mi=0; mi<array_shape[6]; ++mi)
-    for (size_t mn=0; mn<array_shape[7]; ++mn)
-    for (size_t fs=0; fs<array_shape[8]; ++fs)
-    for (size_t ra=0; ra<array_shape[9]; ++ra)
-    for (size_t na=0; na<array_shape[10]; ++na)
-    for (size_t po=0; po<array_shape[11]; ++po)
-    for (size_t go=0; go<array_shape[12]; ++go)
-    for (size_t pf=0; pf<array_shape[13]; ++pf)
+    #pragma omp parallel for
+    for (size_t i = 0; i < sourceSet.total_combinations; ++i)
     {
-        size_t idx = flatten_multi_index({wl, jv, na_, op, sd, si, mi, mn, fs, ra, na, po, go, pf}, array_shape);
+        BaseSource source = sourceSet.get_source_by_index(i);
 
-        SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na_, op);
+        #pragma omp parallel for
+        for (size_t j = 0; j < cylinderSet.total_combinations; ++j)
+        {
+            Scatterer scatterer = cylinderSet.get_scatterer_by_index(j, source);
 
-        DETECTOR::Detector detector = detectorSet.to_object(mn, fs, ra, na, po, go, pf);
+            #pragma omp parallel for
+            for (size_t k = 0; k < detectorSet.total_combinations; ++k)
+            {
+                Detector detector = detectorSet.get_detector_by_index(k);
+                size_t idx = flatten_multi_index(source.indices, scatterer.indices, detector.indices, array_shape);
 
-        CYLINDER::Scatterer scatterer = cylinderSet.to_object(sd, si, wl, mi, source);
-
-        output_array[idx] = detector.get_coupling(scatterer);
+                output_array[idx] = detector.get_coupling(scatterer);
+            }
+        }
     }
 
     return vector_to_numpy(output_array, array_shape);

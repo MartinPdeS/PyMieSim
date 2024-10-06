@@ -4,7 +4,6 @@
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
-from dataclasses import field
 from PyMieSim.units import Quantity, meter
 from PyMieSim.experiment.source.base import BaseSource, config_dict
 

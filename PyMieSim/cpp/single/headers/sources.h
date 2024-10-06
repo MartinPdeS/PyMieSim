@@ -16,6 +16,7 @@ namespace SOURCE
             std::vector<complex128> jones_vector;
             double amplitude;
             double wavenumber;
+            std::vector<size_t> indices;
 
         BaseSource() = default;
         BaseSource(double wavelength, std::vector<complex128> jones_vector, double amplitude)

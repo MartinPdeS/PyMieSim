@@ -28,6 +28,7 @@ namespace DETECTOR {
             double max_angle = 0;
             std::vector<complex128> scalar_field;
             FibonacciMesh fibonacci_mesh;
+            std::vector<size_t> indices;
 
             Detector() = default;
 

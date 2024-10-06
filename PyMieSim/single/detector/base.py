@@ -5,7 +5,7 @@ import numpy
 from typing import Optional
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
-from typing import Union, Optional, Tuple
+from typing import Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import numpy
 from pydantic.dataclasses import dataclass
-from dataclasses import field
+from pydantic import field_validator
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource, config_dict
 
@@ -23,6 +24,14 @@ class PlaneWave(BaseSource):
         The amplitude of the plane wave, in Watts.
     """
     amplitude: Quantity
+
+    @field_validator('amplitude', mode='before')
+    def _validate_array(cls, value):
+        """Ensure that arrays are properly converted to numpy arrays."""
+        if not isinstance(value, numpy.ndarray):
+            value = numpy.atleast_1d(value)
+
+        return value
 
     def _generate_binding_kwargs(self) -> None:
         """

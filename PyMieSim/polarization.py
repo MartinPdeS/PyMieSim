@@ -23,6 +23,12 @@ class JonesVector(BasePolarization):
     def __post_init__(self):
         self.element = np.atleast_2d(self.element).astype(complex)
 
+    def __iter__(self):
+        if hasattr(self, 'angle'):
+            return iter(self.angle)
+        else:
+            return iter(self.element)
+
     def __add__(self, other: BasePolarization) -> BasePolarization:
         output = copy(self)
 

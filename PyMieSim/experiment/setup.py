@@ -238,6 +238,7 @@ class Setup:
         is_complex : bool
             A flag that indicates whether the input array is complex. If False, the 'type' level is not saved, and the array is treated as purely real.
         """
+        print('DSAD', array.shape)
         dtype = f'pint[{dtype}]' if add_units else float
 
         if is_complex:

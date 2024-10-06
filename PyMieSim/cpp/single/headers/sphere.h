@@ -12,6 +12,7 @@ namespace SPHERE
         public:
             double diameter;
             complex128 index;
+            std::vector<size_t> indices;
 
             Scatterer(const double diameter, const complex128 index, const double medium_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
                 BaseSphericalScatterer(source, max_order, medium_index), diameter(diameter), index(index)

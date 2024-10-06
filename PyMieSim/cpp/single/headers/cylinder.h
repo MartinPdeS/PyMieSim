@@ -10,6 +10,7 @@ namespace CYLINDER
         public:
             double diameter = 0.0;
             complex128 index = {1.0, 0.0};
+            std::vector<size_t> indices;
 
             std::vector<complex128> a1n;
             std::vector<complex128> b1n;

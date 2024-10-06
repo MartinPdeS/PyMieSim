@@ -140,7 +140,7 @@ PYBIND11_MODULE(SetsInterface, module) {
         .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
-            py::arg("amplitudes"),
+            py::arg("amplitude"),
             "Initializes a planewave source set with specific wavelengths, Jones vectors, and amplitudes.");
 
 // Binding for DETECTOR::Set

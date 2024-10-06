@@ -39,26 +39,46 @@ class Experiment
         void set_source(SOURCE::Set &set) { sourceSet = set; }
         void set_detector(DETECTOR::Set &set) { detectorSet = set; }
 
-    static size_t flatten_multi_index(const std::vector<size_t>& multi_index, const std::vector<size_t>& dimensions) {
-        size_t flatten_index = 0;
-        size_t stride = 1;
+        static size_t flatten_multi_index(const std::vector<size_t>& multi_index_0, const std::vector<size_t>& multi_index_1, const std::vector<size_t>& dimensions) {
 
-        const size_t* multi_index_ptr = multi_index.data();
-        const size_t* dimensions_ptr = dimensions.data();
+            std::vector<size_t> multi_index = concatenate_vector(multi_index_0, multi_index_1);
+            size_t flatten_index = 0;
+            size_t stride = 1;
 
-        // Iterate from the last dimension to the first
-        for (int i = dimensions.size() - 1; i >= 0; --i) {
-            flatten_index += multi_index_ptr[i] * stride;
-            stride *= dimensions_ptr[i];
+            const size_t* multi_index_ptr = multi_index.data();
+            const size_t* dimensions_ptr = dimensions.data();
+
+            // Iterate from the last dimension to the first
+            for (int i = dimensions.size() - 1; i >= 0; --i) {
+                flatten_index += multi_index_ptr[i] * stride;
+                stride *= dimensions_ptr[i];
+            }
+
+            return flatten_index;
         }
 
-        return flatten_index;
-    }
+        static size_t flatten_multi_index(const std::vector<size_t>& multi_index_0, const std::vector<size_t>& multi_index_1, const std::vector<size_t>& multi_index_2, const std::vector<size_t>& dimensions) {
+
+            std::vector<size_t> multi_index = concatenate_vector(multi_index_0, multi_index_1, multi_index_2);
+            size_t flatten_index = 0;
+            size_t stride = 1;
+
+            const size_t* multi_index_ptr = multi_index.data();
+            const size_t* dimensions_ptr = dimensions.data();
+
+            // Iterate from the last dimension to the first
+            for (int i = dimensions.size() - 1; i >= 0; --i) {
+                flatten_index += multi_index_ptr[i] * stride;
+                stride *= dimensions_ptr[i];
+            }
+
+            return flatten_index;
+        }
 
         //--------------------------------------SPHERE------------------------------------
-        template<typename dtype, typename Function> pybind11::array_t<dtype> get_sphere_data(Function function);// const;
+        template<typename dtype, typename Function> pybind11::array_t<dtype> get_sphere_data(Function function) const;
 
-        pybind11::array_t<double> get_sphere_coupling();// const;
+        pybind11::array_t<double> get_sphere_coupling() const;
 
         DEFINE_SPHERE_FUNCTION(complex128, a1)
         DEFINE_SPHERE_FUNCTION(complex128, a2)
