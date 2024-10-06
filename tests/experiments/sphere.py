@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment import Setup
 from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
+from PyMieSim.units import nanometer, degree, watt, AU, RIU, volt, meter
 
 # Configure the medium and core materials for the sphere
 properties = [Material.silver, Material.fused_silica, 1.4 * RIU]
@@ -20,19 +20,28 @@ medium_properties = [Material.water, 1.1 * RIU]
 # List of measures to be tested
 measures = Sphere.available_measure_list
 
+gaussian_source = Gaussian(
+    wavelength=np.linspace(600, 1000, 50) * nanometer,
+    polarization=0 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
+)
+
+planewave_source = PlaneWave(
+    wavelength=np.linspace(600, 1000, 50) * nanometer,
+    polarization=0 * degree,
+    amplitude=1 * volt / meter,
+)
+
+sources = [gaussian_source, planewave_source]
+
+
 @pytest.mark.parametrize('medium_property', medium_properties, ids=[f'Medium:{m}' for m in medium_properties])
+@pytest.mark.parametrize('source', sources, ids=[f'Source:{m.__class__.__name__}' for m in sources])
 @pytest.mark.parametrize('property', properties, ids=[f'Property:{m}' for m in properties])
 @pytest.mark.parametrize('measure', measures)
 @patch('matplotlib.pyplot.show')
-def test_get_measure(mock_show, measure, property, medium_property):
-    # Set up the Gaussian source
-    source = Gaussian(
-        wavelength=np.linspace(600, 1000, 50) * nanometer,
-        polarization=0 * degree,
-        optical_power=1e-3 * watt,
-        NA=0.2 * AU
-    )
-
+def test_get_measure(mock_show, source, measure, property, medium_property):
     # Configure the spherical scatterer
     scatterer = Sphere(
         diameter=np.linspace(400, 1400, 10) * nanometer,
