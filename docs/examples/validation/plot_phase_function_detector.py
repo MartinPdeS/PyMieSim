@@ -13,7 +13,7 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere as ExperimentSphere
 from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, RIU, micrometer
+from PyMieSim.units import degree, watt, AU, RIU, micrometer, Quantity
 
 from PyMieSim.single.scatterer import Sphere as SingleSphere
 from PyMieSim.single.source import Gaussian as SingleGaussian
@@ -78,18 +78,17 @@ s2 /= s2.max()  # Normalize S2 data
 
 
 with plt.style.context(mps):
-    figure, (ax0, ax1) = plt.subplots(1, 2, subplot_kw=dict(projection='polar'))
+    figure, ax0 = plt.subplots(1, 1, subplot_kw=dict(projection='polar'))
 
 
 
 df = dataframe.unstack('polarization').pint.dequantify().reset_index().pint.quantify()
 df['phi_offset'] /= (180 / np.pi)
 
-df.plot(x='phi_offset', y=('coupling', 0 * degree), ax=ax0, linewidth=3, title='Polarization 90 degree')
-df.plot(x='phi_offset', y=('coupling', 90 * degree), ax=ax1, linewidth=3, title='Polarization 90 degree')
+df.plot(x='phi_offset', y='coupling', ax=ax0, linewidth=3, title='Polarization 90 degree')
 
-ax0.plot(np.deg2rad(phi), s1, color='C1', linestyle='--', linewidth=1, label='Computed S1')
+ax0.plot(np.deg2rad(phi), s1, color='white', linestyle='--', linewidth=1, label='Computed S1')
 
-ax1.plot(np.deg2rad(phi), s2, color='C1', linestyle='--', linewidth=1, label='Computed S2')
+ax0.plot(np.deg2rad(phi), s2, color='cyan', linestyle='--', linewidth=1, label='Computed S2')
 
 plt.show()
