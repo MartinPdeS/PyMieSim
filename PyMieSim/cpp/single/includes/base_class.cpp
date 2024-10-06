@@ -55,7 +55,7 @@ public:
 
     complex128 compute_propagator(const double &radius) const
     {
-        return source.amplitude / (source.k * radius) * exp(-complex128(0, 1) * source.k * radius);
+        return source.amplitude / (source.wavenumber * radius) * exp(-complex128(0, 1) * source.wavenumber * radius);
     }
 
     size_t get_wiscombe_criterion(const double size_parameter) const {

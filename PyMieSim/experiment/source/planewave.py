@@ -23,7 +23,6 @@ class PlaneWave(BaseSource):
         The amplitude of the plane wave, in Watts.
     """
     amplitude: Quantity
-    name: str = field(default='PlaneWave', init=False)
 
     def _generate_binding_kwargs(self) -> None:
         """
@@ -35,7 +34,7 @@ class PlaneWave(BaseSource):
         """
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
-            jones_vector=self.polarization.jones_vector,
+            jones_vector=self.polarization.element,
             amplitude=self.amplitude
         )
 

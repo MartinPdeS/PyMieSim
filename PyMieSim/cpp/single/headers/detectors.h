@@ -98,61 +98,6 @@ namespace DETECTOR {
             template <typename T> inline void square_array(std::vector<T>& array);
             template <typename T> inline void apply_polarization_filter(T& coupling_theta, T& coupling_phi, double polarization_filter) const;
     };
-
-    class Set
-    {
-        public:
-            std::vector<std::string> mode_numbers;
-            std::vector<unsigned> sampling;
-            std::vector<double> NA;
-            std::vector<double> phi_offset;
-            std::vector<double> gamma_offset;
-            std::vector<double> polarization_filter;
-            std::vector<double> rotation;
-            bool coherent;
-            bool mean_coupling;
-
-            std::vector<std::vector<complex128>> scalar_fields;
-
-
-
-
-            std::vector<size_t> shape;
-
-            Set() = default;
-
-            Set(const std::vector<std::string> &mode_numbers,
-                const std::vector<unsigned> &sampling,
-                const std::vector<double> &NA,
-                const std::vector<double> &phi_offset,
-                const std::vector<double> &gamma_offset,
-                const std::vector<double> &polarization_filter,
-                const std::vector<double> &rotation,
-                const bool &coherent,
-                const bool &mean_coupling)
-            : mode_numbers(mode_numbers), sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
-              polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
-              {
-                this->shape = {mode_numbers.size(), sampling.size(), rotation.size(), NA.size(), phi_offset.size(), gamma_offset.size(), polarization_filter.size()};
-              }
-
-            Detector to_object(size_t mn, size_t fs, size_t ra, size_t na, size_t po, size_t go, size_t pf) const
-            {
-                return Detector(
-                    this->mode_numbers[mn],
-                    this->sampling[fs],
-                    this->NA[na],
-                    this->phi_offset[po],
-                    this->gamma_offset[go],
-                    this->polarization_filter[pf],
-                    this->rotation[ra],
-                    this->coherent,
-                    this->mean_coupling
-                );
-            }
-    };
-
-
 } // namespace DETECTOR
 
 

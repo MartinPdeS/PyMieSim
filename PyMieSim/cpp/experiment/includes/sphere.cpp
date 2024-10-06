@@ -4,14 +4,12 @@
 
 
 template<typename dtype, typename Function>
-pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
+pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) //const
 {
     using namespace SPHERE;
 
     std::vector<size_t> array_shape = concatenate_vector(sourceSet.shape, sphereSet.shape);
-
     size_t full_size = get_vector_sigma(array_shape);
-
     std::vector<dtype> output_array(full_size);
 
     #pragma omp parallel for collapse(7)
@@ -25,7 +23,9 @@ pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
     {
         size_t idx = flatten_multi_index({wl, jv, na, op, sd, si, mi}, array_shape);
 
-        SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
+        // SOURCE::Gaussian source = sourceSet.to_object(wl, jv, na, op);
+
+        SOURCE::Gaussian source = sourceSet.next();
 
         SPHERE::Scatterer scatterer = sphereSet.to_object(sd, si, wl, mi, source);
 
@@ -36,7 +36,8 @@ pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
 }
 
 
-pybind11::array_t<double> Experiment::get_sphere_coupling() const
+
+pybind11::array_t<double> Experiment::get_sphere_coupling()// const
 {
     using namespace SPHERE;
 

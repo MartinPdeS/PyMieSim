@@ -3,16 +3,17 @@
 
 #include "utils/numpy_interface.cpp"
 #include "single/includes/sources.cpp"
-#include "single/headers/core_shell.h"
+#include "single/headers/coreshell.h"
 #include "single/headers/sphere.h"
 #include "single/headers/cylinder.h"
 #include "single/includes/detectors.cpp"
+#include "experiment/includes/sets.cpp"
 
 
 typedef std::complex<double> complex128;
 
 #define DEFINE_SPHERE_FUNCTION(dtype, name) \
-    pybind11::array_t<dtype> get_sphere_##name() const { return get_sphere_data<dtype>(&SPHERE::Scatterer::get_##name); }
+    pybind11::array_t<dtype> get_sphere_##name() { return get_sphere_data<dtype>(&SPHERE::Scatterer::get_##name); }
 
 #define DEFINE_CYLINDER_FUNCTION(dtype, name) \
     pybind11::array_t<dtype> get_cylinder_##name() const { return get_cylinder_data<dtype>(&CYLINDER::Scatterer::get_##name); }
@@ -55,9 +56,9 @@ class Experiment
     }
 
         //--------------------------------------SPHERE------------------------------------
-        template<typename dtype, typename Function> pybind11::array_t<dtype> get_sphere_data(Function function) const;
+        template<typename dtype, typename Function> pybind11::array_t<dtype> get_sphere_data(Function function);// const;
 
-        pybind11::array_t<double> get_sphere_coupling() const;
+        pybind11::array_t<double> get_sphere_coupling();// const;
 
         DEFINE_SPHERE_FUNCTION(complex128, a1)
         DEFINE_SPHERE_FUNCTION(complex128, a2)

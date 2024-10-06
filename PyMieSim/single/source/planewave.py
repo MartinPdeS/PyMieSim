@@ -54,12 +54,12 @@ class PlaneWave(BaseSource):
 
         Parameters
         ----------
-            color : str
-                The color of the structure in the plot. Default is 'red'.
-            opacity : float
-                The opacity of the structure. Default is 0.8.
-            show_axis_label : bool
-                If True, axis labels will be shown. Default is False.
+        color : str
+            The color of the structure in the plot. Default is 'red'.
+        opacity : float
+            The opacity of the structure. Default is 0.8.
+        show_axis_label : bool
+            If True, axis labels will be shown. Default is False.
 
         """
         # Create a 3D plotting scene
@@ -84,12 +84,12 @@ class PlaneWave(BaseSource):
 
         Parameters
         ----------
-            scene : pyvista.Plotter
-                The 3D plotting scene to which the cone will be added.
-            color : str
-                The color of the cone mesh. Default is 'red'.
-            opacity : float
-                The opacity of the cone mesh. Default is 0.8.
+        scene : pyvista.Plotter
+            The 3D plotting scene to which the cone will be added.
+        color : str
+            The color of the cone mesh. Default is 'red'.
+        opacity : float
+            The opacity of the cone mesh. Default is 0.8.
 
         """
         # Define the cylinder parameters

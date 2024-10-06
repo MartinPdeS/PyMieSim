@@ -2,15 +2,11 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 #include <pybind11/complex.h> // For std::complex support
 
-#include "single/includes/sources.cpp"
-#include "single/includes/detectors.cpp"
-#include "single/includes/coreshell.cpp"
-#include "single/includes/sphere.cpp"
-#include "single/includes/cylinder.cpp"
-
+#include "experiment/includes/sets.cpp"
 
 namespace py = pybind11;
-using complex128 = complex128;
+typedef std::complex<double> complex128;
+
 
 PYBIND11_MODULE(SetsInterface, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
@@ -140,7 +136,12 @@ PYBIND11_MODULE(SetsInterface, module) {
             py::arg("jones_vector"),
             py::arg("NA"),
             py::arg("optical_power"),
-            "Initializes a source set with specific wavelengths, Jones vectors, and amplitudes.");
+            "Initializes a gaussian source set with specific wavelengths, Jones vectors, and amplitudes.")
+        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>>(),
+            py::arg("wavelength"),
+            py::arg("jones_vector"),
+            py::arg("amplitudes"),
+            "Initializes a planewave source set with specific wavelengths, Jones vectors, and amplitudes.");
 
 // Binding for DETECTOR::Set
     py::class_<DETECTOR::Set>(module, "CppDetectorSet")

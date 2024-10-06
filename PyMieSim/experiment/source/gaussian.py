@@ -29,8 +29,6 @@ class Gaussian(BaseSource):
     NA: Quantity
     optical_power: Quantity
 
-    name: str = field(default='PlaneWave', init=False)
-
     @field_validator('wavelength', mode='before')
     def _validate_length_quantity(cls, value):
         """
