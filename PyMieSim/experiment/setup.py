@@ -238,7 +238,6 @@ class Setup:
         is_complex : bool
             A flag that indicates whether the input array is complex. If False, the 'type' level is not saved, and the array is treated as purely real.
         """
-        print('DSAD', array.shape)
         dtype = f'pint[{dtype}]' if add_units else float
 
         if is_complex:
@@ -275,30 +274,6 @@ class Setup:
             dataframe[name] = col.pint.to(max_value_unit)
 
         return dataframe
-
-    def drop_unique_levels(self, dataframe: pd.DataFrame) -> pd.DataFrame:
-        """
-        Drops levels from a MultiIndex DataFrame where only a single unique value is present.
-
-        This method identifies any levels in the DataFrame's index that contain only one
-        unique value (i.e., they don't vary across the index) and removes those levels
-        to simplify the DataFrame.
-
-        Parameters:
-        ----------
-        dataframe : pd.DataFrame
-            The target DataFrame with a MultiIndex index.
-
-        Returns:
-        -------
-        pd.DataFrame
-            A DataFrame with the unique-value levels removed from the MultiIndex.
-        """
-        unique_levels = [
-            l for l in dataframe.index.names if dataframe.index.get_level_values(l).nunique() <= 1  # must be inferior becauase for whatever reason np.nan from polarization_filter would count to zero!
-        ]
-
-        return dataframe.droplevel(unique_levels)
 
     def generate_dataframe(self, measure, is_complex: bool = False, drop_unique_level: bool = True):
         """

@@ -8,7 +8,6 @@ import pint_pandas
 from typing import Union
 from dataclasses import fields
 from PyMieSim.polarization import BasePolarization, Linear
-from PyMieSim.units import degree
 from PyMieSim.binary.SetsInterface import CppSourceSet
 from PyMieSim.units import Quantity, meter
 
@@ -68,7 +67,6 @@ class BaseSource:
             if values is None: continue
 
             # attr = attr.replace('_', ' ').capitalize()
-            print(values)
 
             if hasattr(values, 'magnitude'):
                 magnitude = values.magnitude
@@ -76,23 +74,3 @@ class BaseSource:
                 self.mapping[attr] = pint_pandas.PintArray(magnitude, dtype=units)
             else:
                 self.mapping[attr] = [repr(m) for m in values]
-
-    # def _generate_mapping(self) -> None:
-    #     """
-    #     Appends the scatterer's properties to a given table for visualization purposes. This enables the
-    #     representation of scatterer properties in graphical formats.
-
-    #     Parameters:
-    #         table (list): The table to which the scatterer's properties will be appended.
-
-    #     Returns:
-    #         list: The updated table with the scatterer's properties included.
-    #     """
-    #     self.mapping['wavelength'] = pint_pandas.PintArray(self.wavelength, dtype=self.wavelength.units)
-    #     self.mapping['source_NA'] = pint_pandas.PintArray(self.NA, dtype=self.NA.units)
-    #     self.mapping['optical_power'] = pint_pandas.PintArray(self.optical_power, dtype=self.optical_power.units)
-
-    #     if hasattr(self.polarization, 'angle'):
-    #         self.mapping['polarization'] = pint_pandas.PintArray(self.polarization.angle, dtype=degree)
-    #     else:
-    #         self.mapping['polarization'] = [repr(e) for e in self.polarization.element]

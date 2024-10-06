@@ -46,20 +46,3 @@ class PlaneWave(BaseSource):
             jones_vector=self.polarization.element,
             amplitude=self.amplitude
         )
-
-
-import numpy as np
-from PyMieSim.units import nanometer, degree, watt, AU, RIU, volt, meter
-a = PlaneWave(
-    wavelength=np.linspace(600, 1000, 50) * nanometer,
-    polarization=0 * degree,
-    amplitude=1 * volt / meter,
-)
-
-sources = [a]
-
-# a = [f'Source:{m}' for m in sources]
-a = [m.__class__.__name__.__str__() for m in sources]
-
-print(a)
-# -
