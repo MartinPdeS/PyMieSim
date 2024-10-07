@@ -11,7 +11,7 @@
 typedef std::complex<double> complex128;
 
 
-class Base
+class BaseScatterer
 {
 public:
     size_t max_order;
@@ -20,8 +20,8 @@ public:
     double area;
     double medium_index;
 
-    Base() = default;
-    virtual ~Base() = default;
+    BaseScatterer() = default;
+    virtual ~BaseScatterer() = default;
 
     virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const = 0;
     virtual double get_Qsca() const = 0;
@@ -38,7 +38,7 @@ public:
     double get_Cpr() const {return get_Qpr() * area;};
 
 
-    Base(const size_t max_order, const SOURCE::BaseSource &source, const double medium_index)
+    BaseScatterer(const size_t max_order, const SOURCE::BaseSource &source, const double medium_index)
      : max_order(max_order), source(source), medium_index(medium_index)
      {}
 
@@ -206,7 +206,7 @@ public:
     {
         FullSteradian full_mesh = FullSteradian(sampling);
 
-        auto [phi_field, theta_field] = Base::compute_structured_fields(
+        auto [phi_field, theta_field] = this->compute_structured_fields(
             full_mesh.spherical_coordinates.phi,
             full_mesh.spherical_coordinates.theta,
             radius

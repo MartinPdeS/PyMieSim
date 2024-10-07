@@ -1,6 +1,7 @@
 #pragma once
 
 #include "single/includes/sphere.cpp"
+#include "single/includes/base_class.cpp"
 
 template<typename dtype, typename Function>
 pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const

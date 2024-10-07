@@ -14,7 +14,7 @@
 
 typedef std::complex<double> complex128;
 
-class BaseSphericalScatterer : public Base
+class BaseSphericalScatterer : public BaseScatterer
 {
 public:
     std::vector<complex128> an;
@@ -26,7 +26,7 @@ public:
     virtual ~BaseSphericalScatterer() = default;
 
     BaseSphericalScatterer(const SOURCE::BaseSource &source, const size_t max_order, const double medium_index) :
-    Base(max_order, source, medium_index){}
+    BaseScatterer(max_order, source, medium_index){}
 
     std::vector<complex128> get_an() const { return an; };
     std::vector<complex128> get_bn() const { return bn; };

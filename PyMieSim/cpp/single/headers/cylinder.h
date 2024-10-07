@@ -5,7 +5,7 @@
 namespace CYLINDER
 {
 
-    class Scatterer: public Base
+    class Scatterer: public BaseScatterer
     {
         public:
             double diameter = 0.0;
@@ -42,7 +42,7 @@ namespace CYLINDER
             complex128 get_b23() const { return this->b2n[2]; }
 
             Scatterer(double diameter, complex128 index, double medium_index, SOURCE::BaseSource &source, size_t max_order = 0) :
-            Base(max_order, source, medium_index), diameter(diameter), index(index)
+            BaseScatterer(max_order, source, medium_index), diameter(diameter), index(index)
             {
                 this->compute_area();
                 this->compute_size_parameter();
