@@ -24,7 +24,8 @@ The software also allows the user to customize the light source and detector att
 
 |code_structure|
 
-### Main Submodules
+Main Submodules
+---------------
 
 PyMieSim is organized into two primary submodules:
 
@@ -40,11 +41,13 @@ Both submodules work seamlessly together, making PyMieSim adaptable for a wide r
 
 ----
 
-## Getting Started
+Getting Started
+---------------
 
 To use PyMieSim in Python, simply install the package and begin incorporating it into your scripts.
 
-### Installation
+Installation
+************
 
 PyMieSim supports Windows, Linux, macOS (including Apple M1/M2 chips), and ARM architectures. To install the package, use pip:
 
@@ -56,7 +59,8 @@ For more details, visit the `documentation <https://pymiesim.readthedocs.io/en/l
 
 ----
 
-## Example Code
+Example Code
+------------
 
 Here is an example of how to use PyMieSim for a simple Mie scattering simulation. This example demonstrates how to configure a light source, scatterer, and detector, and retrieve the scattering data:
 
@@ -100,25 +104,30 @@ This is just one example of PyMieSim in action. You can find more examples in th
 
 ----
 
-## Examples
+Examples
+--------
 
 Here are a few more examples showcasing the capabilities of PyMieSim:
 
-### Example 1: Plasmonic Resonances for CoreShell Particles
+Example 1: Plasmonic Resonances for CoreShell Particles
+*******************************************************
 
 |example_plasmon|
 
-### Example 2: Scattering Efficiency vs Diameter for Spherical Particles
+Example 2: Scattering Efficiency vs Diameter for Spherical Particles
+********************************************************************
 
 |example_qsca|
 
 ----
 
-## Manual Building
+Manual Building
+---------------
 
 If you prefer or need to build the project manually (e.g., for Apple silicon devices), ensure you have a C++ compiler (such as gcc) and Fortran installed, as well as Python 3.7+.
 
-### Build Instructions
+Build Instructions
+******************
 
 Linux/MacOS
 ~~~~~~~~~~~
@@ -139,7 +148,8 @@ For Windows, use `MinGW Makefiles` instead of `Unix Makefiles` when invoking CMa
 
 ----
 
-## Testing
+Testing
+-------
 
 You can test the local version of PyMieSim by running the following commands:
 
@@ -154,7 +164,8 @@ This will run the suite of unit tests and provide coverage details.
 
 ----
 
-## Google Colab
+Google Colab
+------------
 
 In 2024, running code on your local machine is optional! You can leverage the power of Google Colab to run PyMieSim remotely. Use the provided
 `Colab notebook <https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb>`_ for an interactive experience.
@@ -163,7 +174,8 @@ In 2024, running code on your local machine is optional! You can leverage the po
 
 ----
 
-## Citing PyMieSim
+Citing PyMieSim
+---------------
 
 If PyMieSim contributes to your research, we kindly ask that you cite the following paper:
 
@@ -184,7 +196,8 @@ You can access the full article `here <https://opg.optica.org/optcon/fulltext.cf
 
 ----
 
-## Experimental Graphical User Interface (GUI)
+Experimental Graphical User Interface (GUI)
+-------------------------------------------
 
 Since version 1.7.0, PyMieSim offers an experimental GUI for users who prefer a graphical approach to simulations. While still under development, the GUI can be installed and accessed as follows:
 
@@ -199,7 +212,8 @@ The GUI is not yet as robust as the core Python API, but it provides a simplifie
 
 ----
 
-## Contact Information
+Contact Information
+-------------------
 
 PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle. If you're interested in contributing or have questions, feel free to reach out.
 
