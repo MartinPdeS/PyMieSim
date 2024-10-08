@@ -184,6 +184,28 @@ You can access the full article `here <https://opg.optica.org/optcon/fulltext.cf
 
 ----
 
+## Experimental Graphical User Interface (GUI)
+
+Since version 1.7.0, PyMieSim offers an experimental GUI for users who prefer a graphical approach to simulations. While still under development, the GUI can be installed and accessed as follows:
+
+.. code-block:: bash
+
+    pip install PyMieSim
+    python -m PyMieSim
+
+The GUI is not yet as robust as the core Python API, but it provides a simplified interface for generating simulations.
+
+|example_gui|
+
+----
+
+## Contact Information
+
+PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle. If you're interested in contributing or have questions, feel free to reach out.
+
+Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmail.ca?subject=PyMieSim>`_
+
+----
 
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
