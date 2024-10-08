@@ -74,7 +74,7 @@ class Setup:
         """
         Executes the simulation to compute and retrieve the specified measures.
 
-        Parameters:
+        Parameters
         ----------
         measures : tuple
             The measures to be computed in the simulation, provided as arguments by the user.
@@ -85,7 +85,7 @@ class Setup:
         add_units : bool, optional
             If True, the resulting DataFrame will contain pint quantities with units. If False, no units will be added. Defaults to True.
 
-        Returns:
+        Returns
         -------
         pd.DataFrame
             A DataFrame containing the computed measures.
@@ -113,12 +113,12 @@ class Setup:
         """
         Ensure the provided measures are valid and available in the scatterer.
 
-        Parameters:
+        Parameters
         ----------
         measures : tuple
             The measures requested for computation.
 
-        Returns:
+        Returns
         -------
         set
             A set of valid measures.
@@ -140,12 +140,12 @@ class Setup:
         """
         Determines if the measures involve complex values based on measure names.
 
-        Parameters:
+        Parameters
         ----------
         measures : set
             A set of measures requested for computation.
 
-        Returns:
+        Returns
         -------
         bool
             True if any measure involves complex values, False otherwise.
@@ -156,7 +156,7 @@ class Setup:
         """
         Compute and set the data for a given measure in the DataFrame.
 
-        Parameters:
+        Parameters
         ----------
         df : pd.DataFrame
             The DataFrame in which to store the results.
@@ -167,7 +167,7 @@ class Setup:
         add_units : bool
             Whether to add units to the results.
 
-        Returns:
+        Returns
         -------
         pd.DataFrame
             The updated DataFrame with the computed measure.
@@ -197,12 +197,12 @@ class Setup:
         """
         Determine the appropriate unit (dtype) based on the measure's first character.
 
-        Parameters:
+        Parameters
         ----------
         measure : str
             The measure type to determine the unit for.
 
-        Returns:
+        Returns
         -------
         pint.Quantity
             The appropriate unit for the measure.
@@ -223,18 +223,14 @@ class Setup:
         Sets the real and imaginary parts of a NumPy array as separate 'real' and 'imag' levels
         in the 'type' index of a pandas DataFrame.
 
-        Parameters:
+        Parameters
         ----------
         dataframe : pd.DataFrame
-            The target DataFrame with a MultiIndex that includes a 'type' level
-            (with possible values 'real' and 'imag').
-
+            The target DataFrame with a MultiIndex that includes a 'type' level (with possible values 'real' and 'imag').
         array : np.ndarray
             A complex NumPy array whose real and imaginary parts will be assigned to the DataFrame.
-
         dtype : type
             The data type to cast the real and imaginary parts into, using PintArrays.
-
         is_complex : bool
             A flag that indicates whether the input array is complex. If False, the 'type' level is not saved, and the array is treated as purely real.
         """
@@ -257,16 +253,15 @@ class Setup:
         This method iterates over each column in the DataFrame, retrieves the maximum value's
         unit, and converts the entire column to that unit using pint's unit system.
 
-        Parameters:
+        Parameters
         ----------
         dataframe : pd.DataFrame
             A DataFrame where each column contains PintArray elements with units.
 
-        Returns:
+        Returns
         -------
         pd.DataFrame
-            The updated DataFrame with all columns scaled to the most compact unit
-            based on the maximum value in each column.
+            The updated DataFrame with all columns scaled to the most compact unit based on the maximum value in each column.
         """
         max_value_unit = dataframe.max().max().to_compact().units
 
@@ -280,11 +275,15 @@ class Setup:
         Generates a pandas DataFrame with a MultiIndex based on the mapping
         of 'source' and 'scatterer' from an experiment object.
 
-        Parameters:
-            experiment: The experiment object containing 'source' and 'scatterer' mappings.
+        Parameters
+        ----------
+        experiment :
+            The experiment object containing 'source' and 'scatterer' mappings.
 
-        Returns:
-            pd.DataFrame: A DataFrame with a MultiIndex created from the experiment mappings.
+        Returns
+        -------
+        pd.DataFrame
+            A DataFrame with a MultiIndex created from the experiment mappings.
         """
         self._generate_mapping()
 
