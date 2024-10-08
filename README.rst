@@ -167,6 +167,23 @@ In 2024, running code on your local machine is optional! You can leverage the po
 
 If PyMieSim contributes to your research, we kindly ask that you cite the following paper:
 
+.. code-block:: none
+
+   @article{PoinsinetdeSivry-Houle:23,
+       author = {Martin Poinsinet de Sivry-Houle and Nicolas Godbout and Caroline Boudoux},
+       journal = {Opt. Continuum},
+       title = {PyMieSim: an open-source library for fast and flexible far-field Mie scattering simulations},
+       volume = {2},
+       number = {3},
+       pages = {520--534},
+       year = {2023},
+       doi = {10.1364/OPTCON.473102},
+   }
+
+You can access the full article `here <https://opg.optica.org/optcon/fulltext.cfm?uri=optcon-2-3-520&id=526697>`_
+
+----
+
 
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
