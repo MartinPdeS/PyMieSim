@@ -188,19 +188,22 @@ class Stokes(BaseRepresentation):
     """
 
     def compute_components(self) -> None:
-        """
+        r"""
         Computes the Stokes parameters (I, Q, U, V) based on the electric field components (E_phi and E_theta).
 
         The method calculates the normalized intensity (I), linear polarizations (Q and U), and circular polarization (V) of the light
         scattered by the particle, using the electric field components in spherical coordinates.
 
         The Stokes parameters are calculated using the following formulas:
-        I = |E_phi|^2 + |E_theta|^2
-        Q = |E_phi|^2 - |E_theta|^2
-        U = 2 * Re{E_phi * E_theta*}
-        V = -2 * Im{E_phi * E_theta*}
+
+        .. math:
+            - I = |E_phi|^2 + |E_theta|^2
+            - Q = |E_phi|^2 - |E_theta|^2
+            - U = 2 * Re{E_phi * E_theta*}
+            - V = -2 * Im{E_phi * E_theta*}
 
         The results are stored as attributes of the instance: I, Q, U, and V.
+
         """
         intensity = numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2
 

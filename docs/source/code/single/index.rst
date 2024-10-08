@@ -7,3 +7,4 @@ Single module
     source.rst
     scatterer.rst
     detector.rst
+    representation.rst
