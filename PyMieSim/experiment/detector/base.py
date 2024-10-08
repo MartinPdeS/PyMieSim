@@ -26,7 +26,7 @@ class BaseDetector:
     This class handles the initialization and binding of a detector to a simulation, formatting inputs, and managing
     the C++ bindings needed for high-performance calculations. It should be subclassed to create specific types of detectors.
 
-    Attributes
+    Parameters
     ----------
     mode_number : Union[List[str], str]
         Mode number(s) involved in the detection.

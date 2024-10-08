@@ -6,13 +6,12 @@ from PyOptik.base_class import BaseMaterial
 import numpy
 from typing import Optional
 from pydantic.dataclasses import dataclass
-from pydantic import field_validator
 from PyMieSim.units import Quantity, meter, RIU
 from PyMieSim.single.scatterer.base import BaseScatterer, config_dict
 
 
 
-@dataclass(config=config_dict,)
+@dataclass(config=config_dict, kw_only=True)
 class Sphere(BaseScatterer):
     """
     Class representing a homogeneous spherical scatterer.
@@ -25,10 +24,8 @@ class Sphere(BaseScatterer):
         Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one can be provided.
 
     """
-
     diameter: Quantity
     property: Quantity | BaseMaterial
-
 
     property_names = [
         "size_parameter", "area", "g",
@@ -36,37 +33,10 @@ class Sphere(BaseScatterer):
         "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
     ]
 
-    @field_validator('diameter', mode='before')
-    def validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return value
-
-    @field_validator('index', 'medium_index', mode='before')
-    def validate_riu_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with RIU units.
-        """
-        if value is None:
-            return None
-
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(RIU):
-            raise ValueError(f"{value} must have RIU units.")
-
-        return value
-
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(self.property)
+
+        self.cross_section = numpy.pi * (self.diameter / 2) ** 2
 
         super().__post_init__()
 

@@ -25,7 +25,7 @@ source = Gaussian(
 # %%
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=numpy.linspace(100, 3000, 600) * nanometer,
+    diameter=numpy.linspace(100, 10000, 600) * nanometer,
     property=Material.BK7,
     medium_property=1.0 * RIU,
     source=source
@@ -34,13 +34,13 @@ scatterer = Sphere(
 # %%
 # Defining the detector to be employed.
 detector = CoherentMode(
-    mode_number='LP11',
-    NA=numpy.linspace(0.05, 0.2, 5) * AU,
+    mode_number=['LP01', 'LP11', 'LP02'],
+    NA=0.2 * AU,
     rotation=0 * degree,
-    phi_offset=-180.0 * degree,
+    phi_offset=0.0 * degree,
     gamma_offset=0.0 * degree,
     sampling=600 * AU,
-    mean_coupling=False,
+    mean_coupling=True,
     polarization_filter=None
 )
 
@@ -50,7 +50,7 @@ experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('coupling')
+dataframe = experiment.get('coupling', drop_unique_level=True, scale_unit=True)
 
 # %%
 # Plotting the results

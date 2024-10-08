@@ -42,6 +42,8 @@ class Gaussian(BaseSource):
             self.polarization = BasePolarization(self.polarization)
 
         self.wavenumber = 2 * numpy.pi / self.wavelength
+        self.waist = self.wavelength / (self.NA * numpy.pi)
+        self.peak_intensity = 2 * self.optical_power / (numpy.pi * self.waist**2)
 
         self.binding = BindedGaussian(
             wavelength=self.wavelength.to_base_units().magnitude,

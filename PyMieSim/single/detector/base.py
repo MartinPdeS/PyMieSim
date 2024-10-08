@@ -10,13 +10,13 @@ from typing import Optional, Tuple
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from MPSPlots.colormaps import blue_black_red
-from PyMieSim.units import Quantity, degree, AU
+from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt
 
 from PyMieSim.single.scatterer.base import BaseScatterer
 import pyvista
 
-c = 299792458.0  #: Speed of light in vacuum (m/s).
-epsilon0 = 8.854187817620389e-12  #: Vacuum permittivity (F/m).
+c = 299792458.0 * meter / second  #: Speed of light in vacuum (m/s).
+epsilon0 = 8.854187817620389e-12 * farad / meter  #: Vacuum permittivity (F/m).
 
 config_dict = dict(
     kw_only=True,
@@ -27,9 +27,46 @@ config_dict = dict(
 
 @dataclass(config=config_dict)
 class BaseDetector():
-    """
-    Base class for different types of detectors with methods for setup, rotation,
-    calculating light coupling, and generating footprint and 3D plots.
+    r"""
+    A base class representing different types of detectors, providing methods for setup, light coupling calculations,
+    rotation adjustments, and generating visual representations such as 3D plots and footprints.
+
+    The `BaseDetector` class serves as the foundational structure for various types of detectors,
+    such as integrating spheres or photodiodes. It includes parameters to define the detector's
+    configuration, such as numerical aperture (NA), rotational offsets, and the handling of coherent
+    light interactions.
+
+    Attributes
+    ----------
+    mode_number : str
+        The mode of the detector, typically used to specify the mode of operation for light collection
+        (e.g., single-mode, multimode). This defines how the detector interacts with the incoming light.
+    NA : Quantity
+        The numerical aperture of the detector, a dimensionless number that defines its light-gathering
+        ability. Higher NA values indicate a wider acceptance angle for capturing light.
+    gamma_offset : Quantity
+        The rotational offset in the gamma direction, controlling the angular positioning of the detector
+        relative to the scatterer.
+    phi_offset : Quantity
+        The rotational offset in the phi direction, specifying the azimuthal angle of the detector's
+        orientation.
+    mean_coupling : bool
+        A flag indicating whether the mean value of the coupling is used when calculating the light
+        interaction with the scatterer. This is typically set for cases where an average coupling is
+        needed over multiple angles or configurations.
+    coherent : bool
+        Specifies whether the light coupling is calculated coherently. If `True`, the phase information
+        of the light is considered, making this relevant for coherent detection systems.
+    sampling : Optional[Quantity], default=200 * AU
+        The sampling resolution of the detector, controlling how finely the detector's field is sampled
+        over the surface. A higher value increases precision but may require more computational resources.
+    polarization_filter : Optional[Quantity], default=numpy.nan * degree
+        The polarization filter applied to the detected light. If specified, it allows the detector to
+        selectively capture light with a particular polarization. If set to `nan`, no filtering is applied.
+    rotation : Optional[Quantity], default=90 * degree
+        The rotational angle of the detector, defining its orientation relative to the incoming light or
+        scatterer. The default value rotates the detector by 90 degrees.
+
     """
     mode_number: str
     NA: Quantity
@@ -73,24 +110,45 @@ class BaseDetector():
     def __post_init__(self):
         self.initialize()
 
-    def coupling(self, scatterer: BaseScatterer) -> float:
+    def coupling(self, scatterer: BaseScatterer) -> Quantity:
         r"""
-        Calculate the light coupling between the detector and a scatterer.
+        Compute the light coupling between the detector and a scatterer.
+
+        The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:
 
         .. math::
-            |\iint_{\Omega}  \Phi_{det} \,\, \Psi_{scat}^* \,  d \Omega|^2
+            |\iint_{\Omega}  \Phi_{det} \, \Psi_{scat}^* \,  d \Omega|^2
 
-        | Where:
-        |   :math:`\Phi_{det}` is the capturing field of the detector and
-        |   :math:`\Psi_{scat}` is the scattered field.
+        Where:
 
-        Args:
-            scatterer (BaseScatterer): The scatterer object.
+        - \( \Phi_{det} \): The capturing field of the detector, representing the sensitivity of the detector to the incoming scattered field.
+        - \( \Psi_{scat} \): The scattered field produced by the scatterer.
+        - \( \Omega \): The solid angle over which the integration is performed, typically covering the full \( 4\pi \) steradians around the scatterer.
+        - \( d\Omega \): The differential solid angle element.
 
-        Returns:
-            float: The coupling in watts.
+        This integral computes the overlap between the detector's sensitivity pattern and the scattered field, which is then squared to represent the power coupled into the detector.
+
+        Parameters
+        ----------
+        scatterer : BaseScatterer
+            The scatterer object that interacts with the incident light, producing the scattered field.
+
+        Returns
+        -------
+        Quantity
+            The power coupling between the detector and the scatterer, expressed in watts (W). This value represents the amount of scattered power that is captured by the detector.
+
+        Notes
+        -----
+        - The method internally invokes the appropriate binding method based on the type of scatterer (e.g., Sphere, Cylinder) to calculate the coupling.
+        - The coupling depends on both the geometry of the detector and the nature of the scattered field, making it essential for evaluating the efficiency of light collection in scattering experiments.
+
+        Example
+        -------
+        A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.
+
         """
-        return getattr(self.binding, "Coupling" + type(scatterer).__name__)(scatterer.binding)
+        return getattr(self.binding, "Coupling" + type(scatterer).__name__)(scatterer.binding) * watt
 
     def get_footprint(self, scatterer: BaseScatterer) -> Footprint:
         r"""
@@ -117,7 +175,8 @@ class BaseDetector():
             unit_size: Tuple[float, float] = (600, 600),
             background_color: str = 'black',
             show_axis_label: bool = False,
-            colormap: str = blue_black_red) -> None:
+            colormap: str = blue_black_red,
+            save_name: str = None) -> None:
         """
         Plot the real and imaginary parts of the scattered fields in a 3D scene.
 
@@ -166,6 +225,9 @@ class BaseDetector():
         sphere = pyvista.Sphere(radius=1)
         scene.add_mesh(sphere, opacity=0.3)
 
+        if save_name is not None:
+            scene.save_graphic(save_name)
+
         # Display the scene
         scene.show()
 
@@ -197,14 +259,19 @@ class BaseDetector():
         # Wrap the coordinates for PyVista visualization
         points = pyvista.wrap(coordinates.T)
 
+        scalar_field = numpy.asarray(self.binding.scalar_field)
+
+        abs_max = abs(scalar_field).max()
+
         # Add the points to the scene, representing the real part of the scalar field
         mapping = scene.add_points(
             points,
-            scalars=numpy.real(self.binding.scalar_field),
+            scalars=scalar_field,
             point_size=30,
             render_points_as_spheres=True,
             cmap=colormap,
-            show_scalar_bar=False
+            show_scalar_bar=False,
+            clim=[-abs_max, abs_max]
         )
 
         # Create a cone mesh to indicate directional information
@@ -223,55 +290,108 @@ class BaseDetector():
         scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
 
 
-    def get_poynting_vector(self, scatterer: BaseScatterer) -> float:
+    def get_poynting_vector(self, scatterer: BaseScatterer, distance: Quantity = 1 * meter) -> float:
         r"""
+        Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
 
-        Method return the Poynting vector norm defined as:
+        The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:
 
         .. math::
-            \vec{S} = \epsilon c^2 \vec{E} \times \vec{B}
+            \vec{S} = \epsilon_0 c^2 \, \vec{E} \times \vec{B}
 
-        Parameters :
-            Mesh : Number of voxel in the 4 pi space to compute energy flow.
+        Where:
+
+        - \( \vec{S} \): Poynting vector (W/m²)
+        - \( \epsilon_0 \): Permittivity of free space (F/m)
+        - \( c \): Speed of light in vacuum (m/s)
+        - \( \vec{E} \): Electric field vector (V/m)
+        - \( \vec{B} \): Magnetic field vector (T)
+
+        The cross product of the electric and magnetic field vectors results in the Poynting vector, which represents the flow of electromagnetic energy in space.
+
+        Parameters
+        ----------
+        scatterer : BaseScatterer
+            The scatterer object that interacts with the incident electromagnetic wave, affecting the fields and energy flow.
+        distance : Quantity
+            The distance at which the Poynting vector is computed.
+
+        Returns
+        -------
+        Quantity
+            The norm of the Poynting vector, which gives the magnitude of the energy flux density in watts per square meter (W/m²).
+
+        Notes
+        -----
+        The Poynting vector is computed over a 3D mesh of voxels that cover the entire solid angle of \( 4\pi \) steradians. This method calculates the local energy flux at each voxel and returns the norm, which represents the magnitude of energy flow at each point in space around the scatterer.
+
+        The Poynting vector is fundamental in understanding how energy is transmitted through space in the form of electromagnetic waves.
+
+        Example
+        -------
+        This method is used to assess the distribution of energy around a scatterer. The total energy flow can be obtained by integrating the Poynting vector over the surface enclosing the scatterer.
 
         """
-        Ephi, Etheta = scatterer.get_farfields_array(phi=self.binding.mesh.phi, theta=self.binding.mesh.theta, r=1.)
+        Ephi, Etheta = scatterer.get_farfields_array(
+            phi=self.binding.mesh.phi,
+            theta=self.binding.mesh.theta,
+            r=distance
+        )
 
-        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2)
+        E_norm = numpy.sqrt(numpy.abs(Ephi)**2 + numpy.abs(Etheta)**2) * volt / meter
 
-        B_norm = E_norm / c
+        B_norm = (E_norm / c).to('tesla')
 
         poynting = epsilon0 * c**2 * E_norm * B_norm
 
-        return poynting
+        return poynting.to(watt/meter **2)
 
-    def get_energy_flow(self, scatterer: BaseScatterer) -> float:
+    def get_energy_flow(self, scatterer: BaseScatterer, distance: Quantity = 1 * meter) -> Quantity:
         r"""
-        Returns energy flow defined as:
+        Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.
+
+        The energy flow is computed using the following relationship between the scattered energy and the incident intensity:
 
         .. math::
-            W_a &= \sigma_{sca} * I_{inc} \\[10pt]
-            P &= \int_{A} I dA \\[10pt]
-            I &= \frac{c n \epsilon_0}{2} |E|^2 \\[10pt]
+            W_a &= \sigma_{sca} \cdot I_{inc} \\[10pt]
+            P &= \int_{A} I \, dA \\[10pt]
+            I &= \frac{c n \epsilon_0}{2} \, |E|^2
 
-        | With:
-        |     I : Energy density
-        |     n  : Refractive index of the medium
-        |     :math:`\epsilon_0` : Vaccum permitivity
-        |     E  : Electric field
-        |     \sigma_{sca}: Scattering cross section.
+        Where:
 
-        More info on wikipedia link (see ref[6]).
+        - \( W_a \): Energy flow (W)
+        - \( \sigma_{sca} \): Scattering cross section (m²)
+        - \( I_{inc} \): Incident intensity (W/m²)
+        - \( P \): Radiated power (W)
+        - \( I \): Energy density (W/m²)
+        - \( c \): Speed of light in vacuum (m/s)
+        - \( n \): Refractive index of the surrounding medium
+        - \( \epsilon_0 \): Permittivity of free space (F/m)
+        - \( E \): Electric field (V/m)
 
-        :param      Mesh:  The mesh
-        :type       Mesh:  FibonacciMesh
+        The total power is computed by integrating the intensity over the surface area of the scatterer.
 
-        :returns:   The energy flow.
-        :rtype:     float
+        Parameters
+        ----------
+        scatterer : BaseScatterer
+            The scatterer object, which contains information about the scattering properties of the particle, such as geometry and material.
+        distance : Quantity
+            The distance at which the Poynting vector is computed. It should change the computed total power.
+
+        Returns
+        -------
+        Quantity
+            The total energy flow (radiated power) from the scatterer, expressed in watts.
+
+        Notes
+        -----
+        This method computes the energy flow by calculating the Poynting vector (which represents the directional energy flux) and summing it over the surface mesh of the scatterer. The final result is the total radiated power.
+
         """
+        poynting_vector = self.get_poynting_vector(scatterer=scatterer, distance=distance)
 
-        poynting = self.get_poynting_vector(scatterer=scatterer)
+        dA = self.binding.mesh.d_omega * distance ** 2
 
-        total_power = 0.5 * numpy.sum(poynting) * self.binding.mesh.d_omega
+        total_power = 0.5 * numpy.trapz(y=poynting_vector, dx=dA)
 
         return total_power

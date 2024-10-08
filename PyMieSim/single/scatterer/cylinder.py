@@ -25,8 +25,6 @@ class Cylinder(BaseScatterer):
         Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.
 
     """
-
-
     diameter: Quantity
     property: Quantity | BaseMaterial
 
@@ -36,37 +34,10 @@ class Cylinder(BaseScatterer):
         "Csca", "Cext", "Cabs"
     ]
 
-    @field_validator('diameter', mode='before')
-    def validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return value
-
-    @field_validator('index', 'medium_index', mode='before')
-    def validate_riu_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with RIU units.
-        """
-        if value is None:
-            return None
-
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(RIU):
-            raise ValueError(f"{value} must have RIU units.")
-
-        return value
-
     def __post_init__(self):
         self.index, self.material = self._assign_index_or_material(self.property)
+
+        self.cross_section = numpy.pi * (self.diameter / 2) ** 2
 
         super().__post_init__()
 

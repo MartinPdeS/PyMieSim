@@ -18,6 +18,7 @@ for _units_str in _scaled_units_str_list:
         globals()[_unit] = getattr(ureg, _unit)
 
 
+farad = ureg.farad
 joule = ureg.joule
 coulomb = ureg.coulomb
 power = ureg.watt.dimensionality

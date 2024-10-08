@@ -97,7 +97,8 @@ addopts = [
     '-rA',
     '-rw',
     '--cov=PyMieSim',
-    '--cov-report=html'
+    '--cov-report=html',
+    '--cov-report=term'
 ]
 
 testpaths = [
@@ -134,6 +135,7 @@ build = ["cp310-*", "cp311-*", "cp312-*"]
 
 [tool.coverage.run]
 source = ['PyMieSim']
+
 omit = [
     'PyMieSim/gui/*',
     '*\__init__.py',

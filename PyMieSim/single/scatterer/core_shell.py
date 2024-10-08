@@ -47,36 +47,9 @@ class CoreShell(BaseScatterer):
 
         self.shell_index, self.shell_material = self._assign_index_or_material(self.core_property)
 
+        self.cross_section = numpy.pi * ((self.core_diameter / 2 + self.shell_width)) ** 2
+
         super().__post_init__()
-
-    @field_validator('core_diameter', 'shell_width', mode='before')
-    def validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return value
-
-    @field_validator('core_index', 'shell_index', 'medium_index', mode='before')
-    def validate_riu_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with RIU units.
-        """
-        if value is None:
-            return None
-
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(RIU):
-            raise ValueError(f"{value} must have RIU units.")
-
-        return value
 
     def set_binding(self) -> None:
         """

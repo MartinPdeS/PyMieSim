@@ -12,7 +12,7 @@ namespace DETECTOR {
     template <class T>
     double Detector::get_coupling_point_no_coherent(T &scatterer)
     {
-        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
+        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
 
         double
             coupling_theta = this->get_norm2_squared(theta_field),
@@ -38,7 +38,7 @@ namespace DETECTOR {
     template <class T>
     double Detector::get_coupling_point_coherent(T &scatterer)
     {
-        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
+        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
 
         auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
 
@@ -61,7 +61,7 @@ namespace DETECTOR {
     template <class T> double
     Detector::get_coupling_mean_coherent(T &scatterer)
     {
-        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh);
+        auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
 
         auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
 

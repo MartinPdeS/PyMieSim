@@ -13,7 +13,7 @@ from PyMieSim.units import AU, degree
 # %%
 # Initializing the detector
 detector = CoherentMode(
-    mode_number="LP02",  # Specifying LP02 mode
+    mode_number="LP11",  # Specifying LP02 mode
     sampling=500 * AU,  # Number of sampling points
     NA=0.3 * AU,  # Numerical Aperture
     gamma_offset=0 * degree,  # Gamma offset

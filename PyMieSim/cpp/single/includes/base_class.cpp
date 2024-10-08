@@ -94,7 +94,7 @@ public:
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius=1.0) const
+    compute_unstructured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
     {
         auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -120,7 +120,7 @@ public:
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius=1.0) const
+    compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius) const
     {
         return this->compute_unstructured_fields(
             fibonacci_mesh.spherical_coordinates.phi,

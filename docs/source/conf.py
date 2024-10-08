@@ -32,7 +32,6 @@ today_fmt = '%B %d, %Y'
 
 version = PyMieSim.__version__
 
-
 extensions = [
     'sphinx.ext.mathjax',
     'pyvista.ext.plot_directive',
@@ -43,8 +42,6 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.intersphinx',
 ]
-
-
 
 # Napoleon settings for docstrings
 napoleon_google_docstring = False
@@ -90,13 +87,9 @@ numpydoc_show_class_members = False
 add_module_names = False
 
 source_suffix = '.rst'
-
 master_doc = 'index'
-
 language = 'en'
-
 highlight_language = 'python3'
-
 html_theme = "pydata_sphinx_theme"
 
 # -- Options for HTML output -------------------------------------------------
@@ -119,7 +112,7 @@ html_theme_options = {
     "logo": {
         "alt_text": "PyMieSim's logo",
         "text": "PyMieSim",
-        "link": "https://pymiesim.readthedocs.io/en/latest/",
+        "link": "https://martinpdes.github.io/PyMieSim/",
     },
     "icon_links": [
         {
