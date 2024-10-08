@@ -118,16 +118,12 @@ void FibonacciMesh::rotate_around_axis(double angle) {
 }
 
 
-class FullSteradian
+class FullSteradian : public BaseMesh
 {
     public:
-        size_t sampling;
-
-        Spherical spherical_coordinates;
-
         double dTheta, dPhi;
 
-        FullSteradian(const size_t sampling) : sampling(sampling), spherical_coordinates(sampling)
+        FullSteradian(const size_t sampling, const double radius = 1.0) : BaseMesh(sampling, radius)
         {
             dTheta = 2.0 * PI / (sampling-1);
             dPhi   = 1.0 * PI / (sampling-1);
@@ -139,23 +135,23 @@ class FullSteradian
                 spherical_coordinates.theta[t] = t * dTheta - PI/1.0;
         }
 
-        template<typename T>
-        T get_integral(std::vector<T>& Vector)
+        template<typename dtype>
+        dtype get_integral(std::vector<dtype>& vector) const
         {
-            T integral = 0;
+            dtype integral = 0;
 
             for (size_t p=0; p<sampling; p++)
                 for (size_t t=0; t<sampling; t++)
-                    integral += Vector[p*sampling + t] * sin(spherical_coordinates.phi[p] + PI/2.0) * dPhi * dTheta;
+                    integral += vector[p*sampling + t] * sin(spherical_coordinates.phi[p] + PI/2.0) * dPhi * dTheta;
 
             return integral;
         }
 
 
-        template<typename T>
-        T get_cos_integral(const std::vector<T>& vector) const
+        template<typename dtype>
+        dtype get_cos_integral(const std::vector<dtype>& vector) const
         {
-            T integral = 0;
+            dtype integral = 0;
 
             for (size_t p=0; p<sampling; p++)
                 for (size_t t=0; t<sampling; t++)

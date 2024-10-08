@@ -122,7 +122,7 @@ public:
             }
         }
 
-        return std::make_tuple(S1, S2);
+        return std::make_tuple(std::move(S1), std::move(S2));
     }
 
 };

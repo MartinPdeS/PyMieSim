@@ -11,18 +11,31 @@ struct SphericalCoordinate {
 
 struct VectorField {
     size_t sampling = 0;
-    std::vector<size_t> shape;
+    std::vector<size_t> shape{1, 3};
     std::vector<double> data;
 
     VectorField() = default;
-    VectorField(const std::vector<double>& vector) : sampling(1), shape({1, 3}), data(vector) {}
-    VectorField(size_t sampling) : sampling(sampling), data(3 * sampling, 0.0) {}
 
-    double &operator[](size_t i) { return data[i]; }
-    double &at(size_t i, size_t j) { return data[i * 3 + j]; }
-    double &operator()(const size_t& i, const size_t j) { return data[i * 3 + j]; }
+    VectorField(const std::vector<double>& vector)
+    : sampling(1), shape({1, 3}), data(vector) {}
 
-    VectorField operator+(const VectorField &other) {
+    VectorField(size_t sampling)
+    : sampling(sampling), data(3 * sampling, 0.0) {}
+
+
+    // Accessors
+    double& operator[](size_t i) { return data[i]; }
+    const double& operator[](size_t i) const { return data[i]; }
+
+    double& at(size_t i, size_t j) { return data[i * 3 + j]; }
+    const double& at(size_t i, size_t j) const { return data[i * 3 + j]; }
+
+    double& operator()(const size_t i, const size_t j) { return data[i * 3 + j]; }
+    const double& operator()(const size_t i, const size_t j) const { return data[i * 3 + j]; }
+
+
+    // Vector addition with operator overloading
+    VectorField operator+(const VectorField& other) const {
         VectorField result(sampling);
         for (size_t i = 0; i < data.size(); ++i) {
             result.data[i] = data[i] + other.data[i];
@@ -30,15 +43,16 @@ struct VectorField {
         return result;
     }
 
-    std::vector<double> get_scalar_product(VectorField &base) {
-      std::vector<double> output(sampling);
-
-      for (size_t i=0; i<sampling; i++)
-          output[i] = (*this)(i,0) * base[0] + (*this)(i,1) * base[1] + (*this)(i,2) * base[2];
-
-      return output;
+    // Scalar product with a base vector
+    std::vector<double> get_scalar_product(const VectorField& base) const {
+        std::vector<double> output(sampling);
+        for (size_t i = 0; i < sampling; ++i) {
+            output[i] = (*this)(i, 0) * base[0] + (*this)(i, 1) * base[1] + (*this)(i, 2) * base[2];
+        }
+        return output;
     }
 
+    // Normalize each vector in the field
     void normalize() {
         for (size_t i = 0; i < sampling; ++i) {
             double norm = std::sqrt(at(i, 0) * at(i, 0) + at(i, 1) * at(i, 1) + at(i, 2) * at(i, 2));
@@ -50,9 +64,11 @@ struct VectorField {
         }
     }
 
+    // Rotate the vector field about a given axis by an angle
     void rotate_about_axis(const char axis, const double angle) {
-        const double c = std::cos(angle), s = std::sin(angle);
-        std::vector<std::vector<double>> matrix;
+        const double c = std::cos(angle);
+        const double s = std::sin(angle);
+        std::vector<std::vector<double>> matrix(3, std::vector<double>(3));
 
         switch (axis) {
             case 'x':
@@ -67,16 +83,18 @@ struct VectorField {
             default:
                 throw std::invalid_argument("Invalid axis for rotation.");
         }
+
         apply_matrix(matrix);
     }
 
+    // Apply a 3x3 rotation matrix to all vectors in the field
     void apply_matrix(const std::vector<std::vector<double>>& matrix) {
-        std::vector<double> temp(3);
+        std::array<double, 3> temp;
         for (size_t i = 0; i < sampling; ++i) {
             for (size_t j = 0; j < 3; ++j) {
                 temp[j] = matrix[j][0] * at(i, 0) + matrix[j][1] * at(i, 1) + matrix[j][2] * at(i, 2);
             }
-            std::copy(temp.begin(), temp.end(), &data[i*3]);
+            std::copy(temp.begin(), temp.end(), &data[i * 3]);
         }
     }
 };

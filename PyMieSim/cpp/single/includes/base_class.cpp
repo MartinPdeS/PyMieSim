@@ -1,6 +1,5 @@
 #pragma once
 
-#include "utils/utils.cpp"
 #include <vector>
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
@@ -132,22 +131,17 @@ public:
     std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
     compute_full_structured_fields(const size_t& sampling, const double& radius) const
     {
-        FullSteradian full_mesh = FullSteradian(sampling);
+        FullSteradian full_mesh = FullSteradian(sampling, radius);
 
         auto [S1, S2] = this->compute_s1s2(full_mesh.spherical_coordinates.phi);
 
-        auto [phi_field, theta_field] = this->compute_structured_fields(
-            S1,
-            S2,
-            full_mesh.spherical_coordinates.theta,
-            radius
-        );
+        auto [phi_field, theta_field] = this->compute_structured_fields(S1, S2, full_mesh.spherical_coordinates.theta, radius);
 
         return std::make_tuple(
-            phi_field,
-            theta_field,
-            full_mesh.spherical_coordinates.phi,
-            full_mesh.spherical_coordinates.theta
+            std::move(phi_field),
+            std::move(theta_field),
+            std::move(full_mesh.spherical_coordinates.phi),
+            std::move(full_mesh.spherical_coordinates.theta)
         );
     }
 
@@ -175,7 +169,10 @@ public:
     {
         auto [S1, S2] = this->compute_s1s2(phi);
 
-        return std::make_tuple(vector_to_numpy(S1), vector_to_numpy(S2));
+        return std::make_tuple(
+            vector_to_numpy(S1),
+            vector_to_numpy(S2)
+        );
     }
 
     std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
@@ -193,18 +190,13 @@ public:
         phi_field_py = phi_field_py.attr("transpose")();
         theta_field_py = theta_field_py.attr("transpose")();
 
-        return std::make_tuple(
-            phi_field_py,
-            theta_field_py,
-            phi_py,
-            theta_py
-        );
+        return std::make_tuple(phi_field_py, theta_field_py, phi_py, theta_py);
     }
 
     std::tuple<std::vector<complex128>, FullSteradian>
     compute_full_structured_spf(const size_t sampling, const double radius = 1.0) const
     {
-        FullSteradian full_mesh = FullSteradian(sampling);
+        FullSteradian full_mesh = FullSteradian(sampling, radius);
 
         auto [phi_field, theta_field] = this->compute_structured_fields(
             full_mesh.spherical_coordinates.phi,
@@ -217,7 +209,7 @@ public:
 
         std::vector<complex128> spf = Add(phi_field, theta_field);
 
-        return std::make_tuple(spf, full_mesh);
+        return std::make_tuple(std::move(spf), std::move(full_mesh));
     }
 
 };

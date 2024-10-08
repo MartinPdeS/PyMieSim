@@ -136,10 +136,13 @@ class BaseDetector:
         Returns:
             list: The updated table with the scatterer's properties included.
         """
-        self.mapping['mode_number'] = self.mode_number
-        self.mapping['rotation'] = pint_pandas.PintArray(self.rotation, dtype=self.rotation.units)
-        self.mapping['NA'] = pint_pandas.PintArray(self.NA, dtype=self.NA.units)
-        self.mapping['phi_offset'] = pint_pandas.PintArray(self.phi_offset, dtype=self.phi_offset.units)
-        self.mapping['gamma_offset'] = pint_pandas.PintArray(self.gamma_offset, dtype=self.gamma_offset.units)
-        self.mapping['sampling'] = pint_pandas.PintArray(self.sampling, dtype=self.sampling.units)
-        self.mapping['polarization_filter'] = pint_pandas.PintArray(self.polarization_filter, dtype=self.polarization_filter.units)
+        self.mapping.update(dict(
+            mode_number=self.mode_number,
+            NA=pint_pandas.PintArray(self.NA, dtype=self.NA.units),
+            phi_offset=pint_pandas.PintArray(self.phi_offset, dtype=self.phi_offset.units),
+            gamma_offset=pint_pandas.PintArray(self.gamma_offset, dtype=self.gamma_offset.units),
+            sampling=pint_pandas.PintArray(self.sampling, dtype=self.sampling.units),
+            rotation=pint_pandas.PintArray(self.rotation, dtype=self.rotation.units),
+            polarization_filter=pint_pandas.PintArray(self.polarization_filter, dtype=self.polarization_filter.units)
+            )
+        )

@@ -4,10 +4,8 @@
 import numpy
 import pandas as pd
 from pydantic.dataclasses import dataclass
-
 from PyMieSim.binary.Experiment import CppExperiment
 from PyMieSim.units import AU, meter, watt
-
 from typing import Union, Optional
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
@@ -178,6 +176,8 @@ class Setup:
         # Compute the values using the binding method
         array = getattr(self.binding, method_name)()
 
+        print('\t \t', array.shape)
+
         # Determine the unit based on the measure type
         dtype = self._determine_dtype(measure)
 
@@ -290,6 +290,10 @@ class Setup:
         iterables = dict()
 
         iterables.update(self.source.mapping)
+
+        iterables['NA_source'] = iterables['NA']
+        del iterables['NA']
+
         iterables.update(self.scatterer.mapping)
 
         if self.detector is not None:
