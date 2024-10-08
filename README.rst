@@ -95,6 +95,78 @@ It produces the following figure which is equivalent to the one found on `wikipe
 |wikipedia_example|
 
 
+This is just one example of PyMieSim in action. You can find more examples in the
+`examples section <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_ of the documentation.
+
+----
+
+## Examples
+
+Here are a few more examples showcasing the capabilities of PyMieSim:
+
+### Example 1: Plasmonic Resonances for CoreShell Particles
+
+|example_plasmon|
+
+### Example 2: Scattering Efficiency vs Diameter for Spherical Particles
+
+|example_qsca|
+
+----
+
+## Manual Building
+
+If you prefer or need to build the project manually (e.g., for Apple silicon devices), ensure you have a C++ compiler (such as gcc) and Fortran installed, as well as Python 3.7+.
+
+### Build Instructions
+
+Linux/MacOS
+~~~~~~~~~~~
+
+.. code-block:: bash
+
+    git clone https://github.com/MartinPdeS/PyMieSim.git
+    cd PyMieSim
+    git submodule init && git submodule update
+    mkdir build
+    cd build
+    cmake ../ -G"Unix Makefiles"
+    sudo make install
+    cd ..
+    python -m pip install .
+
+For Windows, use `MinGW Makefiles` instead of `Unix Makefiles` when invoking CMake.
+
+----
+
+## Testing
+
+You can test the local version of PyMieSim by running the following commands:
+
+.. code-block:: bash
+
+    git clone https://github.com/MartinPdeS/PyMieSim.git
+    cd PyMieSim
+    pip install PyMieSim[testing]
+    pytest
+
+This will run the suite of unit tests and provide coverage details.
+
+----
+
+## Google Colab
+
+In 2024, running code on your local machine is optional! You can leverage the power of Google Colab to run PyMieSim remotely. Use the provided
+`Colab notebook <https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb>`_ for an interactive experience.
+
+|colab|
+
+----
+
+## Citing PyMieSim
+
+If PyMieSim contributes to your research, we kindly ask that you cite the following paper:
+
 
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/pymiesim.svg
