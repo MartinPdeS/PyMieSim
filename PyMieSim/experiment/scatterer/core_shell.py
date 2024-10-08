@@ -49,32 +49,6 @@ class CoreShell(BaseScatterer):
         'a2', 'a3', 'b1', 'b2', 'b3', 'g', 'coupling',
     ]
 
-    @field_validator('core_property', 'shell_property', 'medium_property', mode='plain')
-    def _validate_properties(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-
-        return numpy.atleast_1d(value)
-
-    @field_validator('core_diameter', 'shell_width', mode='before')
-    def _validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
-
-    @field_validator('core_diameter', 'shell_wdith', mode='before')
-    def _validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return numpy.atleast_1d(value)
-
     def __post_init__(self) -> None:
         """
         Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.

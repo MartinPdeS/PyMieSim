@@ -40,26 +40,6 @@ class Sphere(BaseScatterer):
         'a2', 'a3', 'b1', 'b2', 'b3', 'g', 'coupling',
     ]
 
-    @field_validator('diameter', 'medium_index', 'medium_material', 'index', 'material', mode='before')
-    def _validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
-
-    @field_validator('diameter', mode='before')
-    def _validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return numpy.atleast_1d(value)
-
     def __post_init__(self) -> None:
         """
         Constructs the keyword arguments necessary for the C++ binding interface, specifically tailored for spherical scatterers.

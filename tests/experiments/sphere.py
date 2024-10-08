@@ -64,7 +64,7 @@ def test_get_measure(mock_show, source, measure, property, medium_property):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    dataframe = experiment.get(measure, drop_unique_level=False)
+    dataframe = experiment.get(measure, drop_unique_level=False, scale_unit=True)
 
     dataframe.plot_data(x='wavelength')
 

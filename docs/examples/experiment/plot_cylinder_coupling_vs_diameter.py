@@ -28,7 +28,7 @@ source = Gaussian(
 # Defining the scatterer distribution
 scatterer = Cylinder(
     diameter=np.linspace(100, 3000, 200) * nanometer,  # Diameters ranging from 100 nm to 3000 nm
-    property=Material.BK7,  # Material of the cylinder
+    property=[Material.BK7] * RIU,  # Material of the cylinder
     medium_property=1.0 * RIU,  # Refractive index of the surrounding medium
     source=source
 )
@@ -54,4 +54,4 @@ dataframe = experiment.get('coupling')
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the cylinder diameter.
-dataframe.plot_data(x="diameter")
+# dataframe.plot_data(x="diameter")

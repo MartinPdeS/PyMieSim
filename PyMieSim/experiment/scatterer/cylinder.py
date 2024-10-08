@@ -8,7 +8,7 @@ from typing import List
 import numpy
 from PyMieSim.binary.SetsInterface import CppCylinderSet
 from PyOptik.base_class import BaseMaterial
-from PyMieSim.units import Quantity, meter
+from PyMieSim.units import Quantity, meter, RIU
 from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
 
 
@@ -36,26 +36,6 @@ class Cylinder(BaseScatterer):
         'a21', 'a12', 'a22', 'a13', 'a23', 'b11', 'b21', 'b12',
         'b22', 'b13', 'b23', 'coupling',
     ]
-
-    @field_validator('diameter', 'medium_index', 'medium_material', 'index', 'material', mode='before')
-    def _validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
-
-    @field_validator('diameter', mode='before')
-    def _validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return numpy.atleast_1d(value)
 
     def __post_init__(self) -> None:
         """

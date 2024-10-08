@@ -259,7 +259,7 @@ class BaseDetector():
         # Wrap the coordinates for PyVista visualization
         points = pyvista.wrap(coordinates.T)
 
-        scalar_field = numpy.asarray(self.binding.scalar_field)
+        scalar_field = numpy.asarray(self.binding.scalar_field).real
 
         abs_max = abs(scalar_field).max()
 

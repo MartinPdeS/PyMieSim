@@ -14,11 +14,16 @@ def plot_dataframe(
     Plots a DataFrame using a specified MultiIndex level for the x-axis and
     optionally shades the mean ± standard deviation if provided.
 
-    Parameters:
-        dataframe (pd.DataFrame): The DataFrame to plot with a MultiIndex.
-        x (str): The MultiIndex level to use for the x-axis.
-        alpha (float): The transparency level for the shaded region (default is 0.4).
-        std (Optional[str]): The MultiIndex level to use for calculating the standard deviation.  If None, no standard deviation will be plotted.
+    Parameters
+    ----------
+    dataframe : pd.DataFrame
+        The DataFrame to plot with a MultiIndex.
+    x : str
+        The MultiIndex level to use for the x-axis.
+    alpha : float
+        The transparency level for the shaded region (default is 0.4).
+    std : Optional[str]
+        The MultiIndex level to use for calculating the standard deviation.  If None, no standard deviation will be plotted.
 
     """
     # Calculate mean values for plotting
@@ -37,7 +42,7 @@ def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 
     """
     Plot the mean with standard deviation shading for a given dataframe.
 
-    Parameters:
+    Parameters
     ----------
     dataframe : pd.DataFrame
         A pandas DataFrame containing the data with pint units.
@@ -104,10 +109,14 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, **kwargs) ->
     """
     Plots the data without standard deviation shading. Handles real and imaginary parts if the data is complex.
 
-    Parameters:
-        df_unstacked (pd.DataFrame): The DataFrame after unstacking.
-        ax (plt.Axes): The matplotlib axis on which to plot.
-        x (str): The index level for the x-axis.
+    Parameters
+    ----------
+    df_unstacked : pd.DataFrame
+        The DataFrame after unstacking.
+    ax : plt.Axes
+        The matplotlib axis on which to plot.
+    x : str
+        The index level for the x-axis.
     """
     if 'type' in dataframe.columns.names:
         dataframe = dataframe.stack('type', future_stack=True)

@@ -3,11 +3,11 @@
 
 from PyOptik.base_class import BaseMaterial
 from pydantic import field_validator
-from typing import Optional, List
+from typing import List
 from pydantic.dataclasses import dataclass
 from dataclasses import fields
 from pydantic import ConfigDict
-from PyMieSim.units import Quantity
+from PyMieSim.units import Quantity, meter, RIU
 import pint_pandas
 
 import numpy
@@ -36,11 +36,32 @@ class BaseScatterer():
     binding_kwargs = None
     binding = None
 
-    @field_validator('property', 'medium_property', mode='plain')
-    def _validate_properties(cls, value):
+    @field_validator('property', 'core_property', 'shell_property', 'medium_property', mode='plain')
+    def _validate_array(cls, value):
         """Ensure that arrays are properly converted to numpy arrays."""
+        value = numpy.atleast_1d(value)
 
-        return numpy.atleast_1d(value)
+        if isinstance(value, Quantity):
+            assert value.check(RIU), f"{value} must be a Quantity with refractive index units (RIU)."
+            return value
+
+
+        assert numpy.all([isinstance(p, BaseMaterial) for p in value] ), f"{value} must be either a refractive index quantity (RIU) or BaseMaterial."
+
+        return value
+
+    @field_validator('diameter', 'core_diameter', 'shell_width', mode='plain')
+    def _validate_length_quantity(cls, value):
+        """
+        Ensures that diameter is Quantity objects with length units.
+        """
+        value = numpy.atleast_1d(value)
+
+        if not isinstance(value, Quantity) or not value.check(meter):
+            raise ValueError(f"{value} must be a Quantity with meters units.")
+
+        return value
+
 
     def _assign_index_or_material(self, element: str, property: Quantity | BaseMaterial) -> tuple[Quantity | None, BaseMaterial | None]:
         """
