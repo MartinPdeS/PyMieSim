@@ -12,7 +12,7 @@
 | PyMieSim/experiment/scatterer/core\_shell.py   |       23 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       20 |        6 |        2 |        0 |     73% |     47-58 |
 | PyMieSim/experiment/scatterer/sphere.py        |       20 |        0 |        2 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |       94 |       10 |       30 |        6 |     85% |108, 135, 212, 244-245, 271-276, 304->309, 314 |
+| PyMieSim/experiment/setup.py                   |       94 |       10 |       30 |        6 |     85% |108, 135, 212, 240-241, 266-271, 303->308, 313 |
 | PyMieSim/experiment/source/base.py             |       37 |        5 |       16 |        3 |     77% |32->35, 44->43, 47-53, 67->64 |
 | PyMieSim/experiment/source/gaussian.py         |       23 |        2 |       12 |        5 |     80% |32->31, 36, 39, 44->43, 46->49 |
 | PyMieSim/experiment/source/planewave.py        |       15 |        4 |        6 |        1 |     67% |29->28, 31-34, 44 |
