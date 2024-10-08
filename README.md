@@ -5,14 +5,14 @@
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | PyMieSim/\_\_main\_\_.py                       |        9 |        9 |        2 |        0 |      0% |      2-15 |
-| PyMieSim/experiment/detector/base.py           |       56 |        4 |       18 |        8 |     84% |64->63, 70, 73, 78->77, 84, 87, 92->91, 94->97 |
+| PyMieSim/experiment/detector/base.py           |       50 |        4 |       18 |        8 |     82% |64->63, 70, 73, 78->77, 84, 87, 92->91, 94->97 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       20 |        5 |        8 |        1 |     64% |47->46, 49-53 |
 | PyMieSim/experiment/detector/photodiode.py     |       11 |        0 |        4 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/base.py          |       48 |        8 |       22 |        7 |     74% |40->39, 49-51, 54->53, 61, 90-95, 109->106, 118 |
 | PyMieSim/experiment/scatterer/core\_shell.py   |       23 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       20 |        6 |        2 |        0 |     73% |     47-58 |
 | PyMieSim/experiment/scatterer/sphere.py        |       20 |        0 |        2 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |       94 |       10 |       30 |        6 |     85% |108, 135, 212, 240-241, 266-271, 303->308, 313 |
+| PyMieSim/experiment/setup.py                   |       97 |       10 |       30 |        6 |     86% |106, 133, 212, 240-241, 266-271, 307->312, 317 |
 | PyMieSim/experiment/source/base.py             |       37 |        5 |       16 |        3 |     77% |32->35, 44->43, 47-53, 67->64 |
 | PyMieSim/experiment/source/gaussian.py         |       23 |        2 |       12 |        5 |     80% |32->31, 36, 39, 44->43, 46->49 |
 | PyMieSim/experiment/source/planewave.py        |       15 |        4 |        6 |        1 |     67% |29->28, 31-34, 44 |
@@ -32,7 +32,7 @@
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       25 |        0 |        4 |        0 |    100% |           |
 | PyMieSim/utils.py                              |       39 |        4 |        8 |        2 |     87% |79-80, 162-163 |
-|                                      **TOTAL** | **1202** |   **98** |  **334** |   **95** | **86%** |           |
+|                                      **TOTAL** | **1199** |   **98** |  **334** |   **95** | **86%** |           |
 
 
 ## Setup coverage badge
