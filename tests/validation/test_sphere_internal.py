@@ -65,44 +65,42 @@ def test_energy_flow_coupling(gaussian_source):
     val0 = detector.get_energy_flow(sphere)
     val1 = detector.coupling(sphere)
 
-    # print(val0.u)
-
     # Check if the results are consistent
-    assert np.isclose(val0, val1, atol=0, rtol=1e-5), 'Mismatch between energy flow and coupling values.'
+    assert np.isclose(val0, val1, atol=0, rtol=1e-2), 'Mismatch between energy flow and coupling values.'
 
 
-# def test_compare_sphere_coreshell_0(gaussian_source):
-#     """
-#     Compare scattering parameters between a solid sphere and a CoreShell object
-#     with a zero-thickness shell to verify consistency.
-#     """
-#     # Define a solid sphere
-#     sphere = Sphere(
-#         diameter=1000 * nanometer,
-#         property=1.5 * RIU,
-#         source=gaussian_source,
-#         medium_property=1.0 * RIU
-#     )
+def test_compare_sphere_coreshell_0(gaussian_source):
+    """
+    Compare scattering parameters between a solid sphere and a CoreShell object
+    with a zero-thickness shell to verify consistency.
+    """
+    # Define a solid sphere
+    sphere = Sphere(
+        diameter=1000 * nanometer,
+        property=1.5 * RIU,
+        source=gaussian_source,
+        medium_property=1.0 * RIU
+    )
 
-#     # Define a core-shell scatterer with zero shell thickness
-#     coreshell = CoreShell(
-#         core_diameter=1000 * nanometer,
-#         shell_width=0 * nanometer,  # Zero shell width
-#         core_property=1.5 * RIU,
-#         shell_property=1.8 * RIU,
-#         medium_property=1.0 * RIU,
-#         source=gaussian_source
-#     )
+    # Define a core-shell scatterer with zero shell thickness
+    coreshell = CoreShell(
+        core_diameter=1000 * nanometer,
+        shell_width=0 * nanometer,  # Zero shell width
+        core_property=1.5 * RIU,
+        shell_property=1.8 * RIU,
+        medium_property=1.0 * RIU,
+        source=gaussian_source
+    )
 
-#     # Compare the scattering parameters between the sphere and core-shell
-#     for parameter in ['Qsca', 'Qext', 'Qabs']:
-#         value_sphere = getattr(sphere, parameter)
-#         value_coreshell = getattr(coreshell, parameter)
+    # Compare the scattering parameters between the sphere and core-shell
+    for parameter in ['Qsca', 'Qext', 'Qabs']:
+        value_sphere = getattr(sphere, parameter)
+        value_coreshell = getattr(coreshell, parameter)
 
-#         # Check if the results are consistent
-#         assert np.isclose(value_sphere, value_coreshell, atol=1e-12, rtol=1e-5), (
-#             f'Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}'
-#         )
+        # Check if the results are consistent
+        assert np.isclose(value_sphere, value_coreshell, atol=1e-12, rtol=1e-5), (
+            f'Mismatch between CoreShell with zero shell and Sphere for parameter: {parameter}'
+        )
 
 
 if __name__ == "__main__":

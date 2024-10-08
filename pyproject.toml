@@ -102,9 +102,7 @@ addopts = [
 ]
 
 testpaths = [
-    "tests/detectors",
-    "tests/sources",
-    "tests/scatterers",
+    "tests/single",
     "tests/experiments",
     "tests/validation",
     "tests/extra"
