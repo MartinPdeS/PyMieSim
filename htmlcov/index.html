@@ -11,7 +11,7 @@
 <header>
     <div class="content">
         <h1>Coverage report:
-            <span class="pc_cov">0%</span>
+            <span class="pc_cov">84%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -26,6 +26,8 @@
                         <kbd>s</kbd>
                         <kbd>m</kbd>
                         <kbd>x</kbd>
+                        <kbd>b</kbd>
+                        <kbd>p</kbd>
                         <kbd>c</kbd>
                         &nbsp; change column sorting
                     </p>
@@ -54,7 +56,7 @@
         </h2>
         <p class="text">
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-10-08 15:43 +0000
+            created at 2024-10-08 15:49 +0000
         </p>
     </div>
 </header>
@@ -66,6 +68,8 @@
                 <th id="statements" aria-sort="none" data-default-sort-order="descending" data-shortcut="s">statements<span class="arrows"></span></th>
                 <th id="missing" aria-sort="none" data-default-sort-order="descending" data-shortcut="m">missing<span class="arrows"></span></th>
                 <th id="excluded" aria-sort="none" data-default-sort-order="descending" data-shortcut="x">excluded<span class="arrows"></span></th>
+                <th id="branches" aria-sort="none" data-default-sort-order="descending" data-shortcut="b">branches<span class="arrows"></span></th>
+                <th id="partial" aria-sort="none" data-default-sort-order="descending" data-shortcut="p">partial<span class="arrows"></span></th>
                 <th id="coverage" class="right" aria-sort="none" data-shortcut="c">coverage<span class="arrows"></span></th>
             </tr>
         </thead>
@@ -75,205 +79,263 @@
                 <td>9</td>
                 <td>9</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 9">0%</td>
-            </tr>
-            <tr class="region">
-                <td class="name left"><a href="z_8825ae3b34c453d7_base_py.html">PyMieSim/experiment/detector/base.py</a></td>
-                <td>56</td>
-                <td>56</td>
-                <td>0</td>
-                <td class="right" data-ratio="0 56">0%</td>
-            </tr>
-            <tr class="region">
-                <td class="name left"><a href="z_8825ae3b34c453d7_coherent_mode_py.html">PyMieSim/experiment/detector/coherent_mode.py</a></td>
-                <td>20</td>
-                <td>20</td>
-                <td>0</td>
-                <td class="right" data-ratio="0 20">0%</td>
-            </tr>
-            <tr class="region">
-                <td class="name left"><a href="z_8825ae3b34c453d7_photodiode_py.html">PyMieSim/experiment/detector/photodiode.py</a></td>
-                <td>11</td>
-                <td>11</td>
+                <td>2</td>
                 <td>0</td>
                 <td class="right" data-ratio="0 11">0%</td>
             </tr>
             <tr class="region">
+                <td class="name left"><a href="z_8825ae3b34c453d7_base_py.html">PyMieSim/experiment/detector/base.py</a></td>
+                <td>56</td>
+                <td>4</td>
+                <td>0</td>
+                <td>18</td>
+                <td>8</td>
+                <td class="right" data-ratio="62 74">84%</td>
+            </tr>
+            <tr class="region">
+                <td class="name left"><a href="z_8825ae3b34c453d7_coherent_mode_py.html">PyMieSim/experiment/detector/coherent_mode.py</a></td>
+                <td>20</td>
+                <td>5</td>
+                <td>0</td>
+                <td>8</td>
+                <td>1</td>
+                <td class="right" data-ratio="18 28">64%</td>
+            </tr>
+            <tr class="region">
+                <td class="name left"><a href="z_8825ae3b34c453d7_photodiode_py.html">PyMieSim/experiment/detector/photodiode.py</a></td>
+                <td>11</td>
+                <td>0</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="15 15">100%</td>
+            </tr>
+            <tr class="region">
                 <td class="name left"><a href="z_0a2e03dec8aa9585_base_py.html">PyMieSim/experiment/scatterer/base.py</a></td>
                 <td>37</td>
-                <td>37</td>
+                <td>5</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 37">0%</td>
+                <td>16</td>
+                <td>4</td>
+                <td class="right" data-ratio="41 53">77%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0a2e03dec8aa9585_core_shell_py.html">PyMieSim/experiment/scatterer/core_shell.py</a></td>
                 <td>38</td>
-                <td>38</td>
+                <td>2</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 38">0%</td>
+                <td>14</td>
+                <td>6</td>
+                <td class="right" data-ratio="44 52">85%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0a2e03dec8aa9585_cylinder_py.html">PyMieSim/experiment/scatterer/cylinder.py</a></td>
                 <td>32</td>
-                <td>32</td>
+                <td>14</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 32">0%</td>
+                <td>12</td>
+                <td>2</td>
+                <td class="right" data-ratio="22 44">50%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0a2e03dec8aa9585_sphere_py.html">PyMieSim/experiment/scatterer/sphere.py</a></td>
                 <td>32</td>
-                <td>32</td>
+                <td>2</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 32">0%</td>
+                <td>12</td>
+                <td>5</td>
+                <td class="right" data-ratio="37 44">84%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_35a478f1039d0b90_setup_py.html">PyMieSim/experiment/setup.py</a></td>
                 <td>94</td>
-                <td>94</td>
+                <td>10</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 94">0%</td>
+                <td>30</td>
+                <td>6</td>
+                <td class="right" data-ratio="106 124">85%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_4de2cfd94814ac66_base_py.html">PyMieSim/experiment/source/base.py</a></td>
                 <td>37</td>
-                <td>37</td>
+                <td>5</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 37">0%</td>
+                <td>16</td>
+                <td>3</td>
+                <td class="right" data-ratio="41 53">77%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_4de2cfd94814ac66_gaussian_py.html">PyMieSim/experiment/source/gaussian.py</a></td>
                 <td>23</td>
-                <td>23</td>
+                <td>2</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 23">0%</td>
+                <td>12</td>
+                <td>5</td>
+                <td class="right" data-ratio="28 35">80%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_4de2cfd94814ac66_planewave_py.html">PyMieSim/experiment/source/planewave.py</a></td>
                 <td>15</td>
-                <td>15</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 15">0%</td>
+                <td>6</td>
+                <td>1</td>
+                <td class="right" data-ratio="14 21">67%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0c9f1d60f1641146_mesh_py.html">PyMieSim/mesh.py</a></td>
                 <td>111</td>
-                <td>111</td>
+                <td>15</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 111">0%</td>
+                <td>28</td>
+                <td>11</td>
+                <td class="right" data-ratio="113 139">81%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0c9f1d60f1641146_polarization_py.html">PyMieSim/polarization.py</a></td>
                 <td>45</td>
-                <td>45</td>
+                <td>5</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 45">0%</td>
+                <td>12</td>
+                <td>1</td>
+                <td class="right" data-ratio="49 57">86%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_631d0f5aae0d4f46_base_py.html">PyMieSim/single/detector/base.py</a></td>
                 <td>77</td>
-                <td>77</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 77">0%</td>
+                <td>16</td>
+                <td>6</td>
+                <td class="right" data-ratio="83 93">89%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_631d0f5aae0d4f46_coherent_py.html">PyMieSim/single/detector/coherent.py</a></td>
                 <td>42</td>
-                <td>42</td>
+                <td>2</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 42">0%</td>
+                <td>12</td>
+                <td>3</td>
+                <td class="right" data-ratio="49 54">91%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_631d0f5aae0d4f46_uncoherent_py.html">PyMieSim/single/detector/uncoherent.py</a></td>
                 <td>28</td>
-                <td>28</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 28">0%</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="32 32">100%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_504aa9835c865e38_representations_py.html">PyMieSim/single/representations.py</a></td>
                 <td>168</td>
-                <td>168</td>
+                <td>3</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 168">0%</td>
+                <td>28</td>
+                <td>1</td>
+                <td class="right" data-ratio="192 196">98%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_48661ed48dc7ca6c_base_py.html">PyMieSim/single/scatterer/base.py</a></td>
                 <td>103</td>
-                <td>103</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 103">0%</td>
+                <td>50</td>
+                <td>23</td>
+                <td class="right" data-ratio="126 153">82%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_48661ed48dc7ca6c_core_shell_py.html">PyMieSim/single/scatterer/core_shell.py</a></td>
                 <td>26</td>
-                <td>26</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 26">0%</td>
+                <td>0</td>
+                <td>2</td>
+                <td>0</td>
+                <td class="right" data-ratio="28 28">100%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_48661ed48dc7ca6c_cylinder_py.html">PyMieSim/single/scatterer/cylinder.py</a></td>
                 <td>39</td>
-                <td>39</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 39">0%</td>
+                <td>10</td>
+                <td>4</td>
+                <td class="right" data-ratio="41 49">84%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_48661ed48dc7ca6c_sphere_py.html">PyMieSim/single/scatterer/sphere.py</a></td>
                 <td>26</td>
-                <td>26</td>
+                <td>2</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 26">0%</td>
+                <td>2</td>
+                <td>0</td>
+                <td class="right" data-ratio="26 28">93%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_1b2f0c2260893d98_base_py.html">PyMieSim/single/source/base.py</a></td>
                 <td>33</td>
-                <td>33</td>
+                <td>7</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 33">0%</td>
+                <td>24</td>
+                <td>11</td>
+                <td class="right" data-ratio="39 57">68%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_1b2f0c2260893d98_gaussian_py.html">PyMieSim/single/source/gaussian.py</a></td>
                 <td>35</td>
-                <td>35</td>
+                <td>1</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 35">0%</td>
+                <td>4</td>
+                <td>1</td>
+                <td class="right" data-ratio="37 39">95%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_1b2f0c2260893d98_planewave_py.html">PyMieSim/single/source/planewave.py</a></td>
                 <td>26</td>
-                <td>26</td>
+                <td>1</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 26">0%</td>
+                <td>4</td>
+                <td>1</td>
+                <td class="right" data-ratio="28 30">93%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0c9f1d60f1641146_special_functions_py.html">PyMieSim/special_functions.py</a></td>
                 <td>49</td>
-                <td>49</td>
+                <td>24</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 49">0%</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="27 53">51%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0c9f1d60f1641146_units_py.html">PyMieSim/units.py</a></td>
                 <td>25</td>
-                <td>25</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 25">0%</td>
+                <td>0</td>
+                <td>4</td>
+                <td>0</td>
+                <td class="right" data-ratio="29 29">100%</td>
             </tr>
             <tr class="region">
                 <td class="name left"><a href="z_0c9f1d60f1641146_utils_py.html">PyMieSim/utils.py</a></td>
                 <td>39</td>
-                <td>39</td>
+                <td>4</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 39">0%</td>
+                <td>8</td>
+                <td>2</td>
+                <td class="right" data-ratio="41 47">87%</td>
             </tr>
         </tbody>
         <tfoot>
             <tr class="total">
                 <td class="name left">Total</td>
                 <td>1276</td>
-                <td>1276</td>
+                <td>138</td>
                 <td>0</td>
-                <td class="right" data-ratio="0 1276">0%</td>
+                <td>362</td>
+                <td>105</td>
+                <td class="right" data-ratio="1368 1638">84%</td>
             </tr>
         </tfoot>
     </table>
@@ -285,7 +347,7 @@
     <div class="content">
         <p>
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-10-08 15:43 +0000
+            created at 2024-10-08 15:49 +0000
         </p>
     </div>
     <aside class="hidden">
