@@ -53,7 +53,7 @@ PyMieSim supports Windows, Linux, macOS (including Apple M1/M2 chips), and ARM a
 
     pip install PyMieSim
 
-For more details, visit the [documentation](https://pymiesim.readthedocs.io/en/latest/) for a comprehensive guide on how to use the package.
+For more details, visit the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_ for a comprehensive guide on how to use the package.
 
 ----
 
@@ -91,12 +91,13 @@ Here is an example of how to use PyMieSim for a simple Mie scattering simulation
     dataframe.plot_data(x="wavelength")
 
 
-It produces the following figure which is equivalent to the one found on  [wikipedia](https://en.wikipedia.org/wiki/Mie_scattering#/media/File:N4wiki.svg)`
+It produces the following figure which is equivalent to the one found on `wikipedia <https://en.wikipedia.org/wiki/Mie_scattering#/media/File:N4wiki.svg>`_.
 
 |wikipedia_example|
 
 
-This is just one example of PyMieSim in action. You can find more examples in the [examples section](https://pymiesim.readthedocs.io/en/master/gallery/index.html) of the documentation.
+This is just one example of PyMieSim in action. You can find more examples in the
+`examples section <https://pymiesim.readthedocs.io/en/master/gallery/index.html>`_ of the documentation.
 
 ----
 
@@ -156,7 +157,8 @@ This will run the suite of unit tests and provide coverage details.
 
 ## Google Colab
 
-In 2024, running code on your local machine is optional! You can leverage the power of Google Colab to run PyMieSim remotely. Use the provided [Colab notebook](https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb) for an interactive experience.
+In 2024, running code on your local machine is optional! You can leverage the power of Google Colab to run PyMieSim remotely. Use the provided
+`Colab notebook <https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb>`_ for an interactive experience.
 
 |colab|
 
@@ -179,7 +181,7 @@ If PyMieSim contributes to your research, we kindly ask that you cite the follow
        doi = {10.1364/OPTCON.473102},
    }
 
-You can access the full article [here](https://opg.optica.org/optcon/fulltext.cfm?uri=optcon-2-3-520&id=526697).
+You can access the full article `here <https://opg.optica.org/optcon/fulltext.cfm?uri=optcon-2-3-520&id=526697>`_
 
 ----
 
