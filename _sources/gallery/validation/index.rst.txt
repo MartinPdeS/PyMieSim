@@ -1,0 +1,171 @@
+
+
+.. _sphx_glr_gallery_validation:
+
+
+
+Validation
+~~~~~~~~~~
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.10)">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_BH810_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_BH810.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.10)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Bohren-Huffman (figure~8.7)">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_BH87_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_BH87.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Bohren-Huffman (figure~8.7)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt Comparison">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_pymiescatt_0_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_pymiescatt_0.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt Comparison</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Comparison of Scattering Efficiency Using PyMieSim vs PyMieScatt">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_pymiescatt_1_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_pymiescatt_1.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Comparison of Scattering Efficiency Using PyMieSim vs PyMieScatt</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt for Core-Shell Particles">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_pymiescatt_2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_pymiescatt_2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt for Core-Shell Particles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="PyMieSim vs PyMieScatt Scattering Efficiency Comparison for Core-Shell Particles">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_pymiescatt_3_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_pymiescatt_3.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">PyMieSim vs PyMieScatt Scattering Efficiency Comparison for Core-Shell Particles</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Comparison of PyMieSim and Theoretical Bohren-Huffman Data for Cylinder Scattering">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_BH88_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_BH88.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Comparison of PyMieSim and Theoretical Bohren-Huffman Data for Cylinder Scattering</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Goniometric Coupling vs S1 S2 Comparison">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_plot_phase_function_detector_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_validation_plot_phase_function_detector.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Goniometric Coupling vs S1 S2 Comparison</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/validation/plot_BH810
+   /gallery/validation/plot_BH87
+   /gallery/validation/plot_pymiescatt_0
+   /gallery/validation/plot_pymiescatt_1
+   /gallery/validation/plot_pymiescatt_2
+   /gallery/validation/plot_pymiescatt_3
+   /gallery/validation/plot_BH88
+   /gallery/validation/plot_phase_function_detector
+
