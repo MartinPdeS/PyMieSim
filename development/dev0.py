@@ -1,60 +1,50 @@
-import pytest
-import numpy as np
-from PyMieSim.single.detector import IntegratingSphere
-from PyMieSim.units import AU, degree, nanometer, watt, RIU, meter
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
+"""
+CoreShell: Qback vs Core Diameter
+=======================================
+
+This example demonstrates how to compute and visualize the backscattering efficiency (Qback)
+as functions of core diameter for CoreShell scatterers using PyMieSim.
+"""
+
+# %%
+# Importing the package dependencies: numpy, PyMieSim
+import numpy
+from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
 from PyOptik import Material
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
-@pytest.fixture
-def setup_simulation():
-    # Define the source
-    source = Gaussian(
-        wavelength=750 * nanometer,  # 750 nm
-        polarization=30 * degree,  # Polarization in degrees
-        optical_power=1 * watt,  # Power in watts
-        NA=0.3 * AU  # Numerical Aperture
-    )
+# %%
+# Defining the source
+source = Gaussian(
+    wavelength=numpy.geomspace(300, 1200, 400) * nanometer,  # Array of wavelengths: 800 nm, 900 nm, 1000 nm
+    polarization=0 * degree,  # Linear polarization angle in radians
+    optical_power=1e-3 * watt,  # 1 milliwatt
+    NA=0.2 * AU  # Numerical Aperture
+)
 
-    # Define the scatterer (sphere)
-    scatterer = Sphere(
-        diameter=1500 * nanometer,  # 1500 nm diameter
-        source=source,
-        property=1.4 * RIU,  # Refractive index
-        medium_property=Material.water  # Medium is water
-    )
+# %%
+# Defining the scatterer distribution
+scatterer = CoreShell(
+    core_diameter=600 * nanometer,  # Core diameters from 100 nm to 600 nm
+    shell_width=numpy.linspace(10, 400, 20) * nanometer,  # Shell width of 800 nm
+    core_property=[Material.silver, Material.gold],  # Core material
+    shell_property=Material.BK7,  # Shell material
+    medium_property=1 * RIU,  # Surrounding medium's refractive index
+    source=source
+)
 
-    # Define the detector (integrating sphere)
-    detector = IntegratingSphere(
-        sampling=1000 * AU,
-        polarization_filter=None
-    )
+# %%
+# Setting up the experiment
+experiment = Setup(scatterer=scatterer, source=source)
 
-    return source, scatterer, detector
+# %%
+# Measuring the backscattering efficiency (Qback)
+# For demonstrating the measurement of Qsca, a separate call to `experiment.get()` with `measure.Qsca` is needed.
+dataframe = experiment.get('Qsca')
 
-def test_simulation_results(setup_simulation):
-    source, scatterer, detector = setup_simulation
-
-    # Run simulation for Stokes parameters
-    scatterer.get_stokes(distance=2 * meter, sampling=100)
-
-    # Calculate coupling and scattering efficiency (Qsca)
-    coupling = detector.coupling(scatterer=scatterer)
-    Qsca = scatterer.Qsca
-
-    # Calculate energy flow
-    energy_flow = detector.get_energy_flow(scatterer, distance=1 * meter)
-
-    # Calculate scattered power
-    scattered_power = Qsca * source.peak_intensity * scatterer.cross_section
-
-    # Print the results
-    print(coupling, scattered_power, energy_flow)
-
-    # Assertions to validate the results
-    assert coupling > 0, "Coupling should be a positive value."
-    assert scattered_power > 0, "Scattered power should be a positive value."
-    assert energy_flow > 0, "Energy flow should be a positive value."
-
-if __name__ == '__main__':
-    pytest.main([__file__])
+# %%
+# Plotting the results
+# Visualizing how the backscattering efficiency varies with the core diameter.
+dataframe.plot_data(x="wavelength", std='shell_width')
