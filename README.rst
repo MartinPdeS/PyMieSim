@@ -204,7 +204,7 @@ Since version 1.7.0, PyMieSim offers an experimental GUI for users who prefer a 
 .. code-block:: bash
 
     pip install PyMieSim
-    python -m PyMieSim
+    python -m  PyMieSim
 
 The GUI is not yet as robust as the core Python API, but it provides a simplified interface for generating simulations.
 
