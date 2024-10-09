@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Create Conda Environment and Install Dependencies
+      - name: Create Conda  Environment and Install Dependencies
         run: |
           conda install conda-build anaconda-client -y
           cmake -DCMAKE_INSTALL_PREFIX=$PREFIX .
