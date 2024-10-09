@@ -1,0 +1,22 @@
+package:
+  name: flowcypy
+  version: "{{ load_setup_py_data().get('version') }}"
+
+source:
+  path: .
+
+build:
+  noarch: python
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv"
+
+requirements:
+  host:
+    - python >=3.10
+    - pip
+  run:
+    - python >=3.10
+
+about:
+  home: https://github.com/MartinPdeS/FlowCyPy
+  license: MIT
+  summary: "A package for flow-cytometry simulations."
