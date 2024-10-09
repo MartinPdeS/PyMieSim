@@ -7,18 +7,18 @@ source:
 
 build:
   noarch: python
-  script: |
-    {{ PYTHON }} -m pip install build --no-deps --ignore-installed -vvv  # Install the build tool from PyPI
-    {{ PYTHON }} -m build . --no-isolation -v                            # Use build to build the package
-    {{ PYTHON }} -m pip install dist/*.whl --no-deps --ignore-installed  # Install the built wheel
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv"  # Uses scikit-build's build system
 
 requirements:
   host:
-    - python >=3.10
-    - pip
-    - scikit-build-core >=0.3.3  # Required for scikit-build-core during build
-    - pybind11                   # Required for pybind11 during build
-    - setuptools_scm[toml] >=8.0 # Required for setuptools_scm during build
+    - python >=3.10                 # Python version requirement
+    - pip                           # Ensure pip is available
+    - scikit-build-core >=0.3.3     # Required for scikit-build to work properly
+    - cmake >=3.19                  # scikit-build requires cmake to build C/C++ extensions
+    - ninja                         # A lightweight build system often used by scikit-build
+    - pybind11                      # If you are using pybind11 to create Python bindings for C++ code
+    - setuptools_scm[toml] >=8.0    # Version management
+
 
   run:
     - python >=3.10
