@@ -23,6 +23,7 @@ jobs:
       - name: Create Conda Environment and Install Dependencies
         run: |
           conda install conda-build anaconda-client -y
+          cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
           conda config --set anaconda_upload yes
           conda build .
 
