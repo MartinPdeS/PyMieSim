@@ -5,7 +5,6 @@ from typing import Union
 import numpy
 from pydantic.dataclasses import dataclass
 from dataclasses import field
-
 from PyMieSim.polarization import BasePolarization
 from PyMieSim.special_functions import NA_to_angle
 from PyMieSim.binary.SourceInterface import BindedGaussian  # noqa: F401

@@ -1,5 +1,5 @@
 package:
-  name: flowcypy
+  name: PyMieSim
   version: "{{ load_setup_py_data().get('version') }}"
 
 source:
@@ -17,6 +17,6 @@ requirements:
     - python >=3.10
 
 about:
-  home: https://github.com/MartinPdeS/FlowCyPy
+  home: https://github.com/MartinPdeS/PyMieSim
   license: MIT
-  summary: "A package for flow-cytometry simulations."
+  summary: "A package for light scattering computation."

@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from pydantic import field_validator
 from typing import List, Union, Optional
 from PyMieSim.experiment.detector.base import BaseDetector, config_dict
 from PyMieSim.units import Quantity, degree

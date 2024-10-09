@@ -5,8 +5,6 @@ import numpy
 import logging
 from typing import Optional
 from pydantic.dataclasses import dataclass
-from typing import Optional
-
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.binary import ModeField
 from PyMieSim.special_functions import NA_to_angle

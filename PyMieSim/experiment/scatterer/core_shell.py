@@ -2,13 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from pydantic.dataclasses import dataclass
-from pydantic import field_validator
-from typing import List, Optional
-
-import numpy
+from typing import List
 from PyMieSim.binary.SetsInterface import CppCoreShellSet
 from PyOptik.base_class import BaseMaterial
-from PyMieSim.units import Quantity, meter
+from PyMieSim.units import Quantity
 from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
 
 
