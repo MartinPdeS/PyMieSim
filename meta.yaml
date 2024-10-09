@@ -6,24 +6,41 @@ source:
   path: .
 
 build:
+  number: 0
   noarch: python
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv"  # Uses scikit-build's build system
+  script: "mkdir build; cd build; cmake ..; make"
+  # cmake --build . --target install
+  # script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv"  # Uses scikit-build's build system
 
 requirements:
   host:
     - python >=3.10                 # Python version requirement
     - pip                           # Ensure pip is available
     - scikit-build-core >=0.3.3     # Required for scikit-build to work properly
-    - cmake >=3.19                  # scikit-build requires cmake to build C/C++ extensions
-    - ninja                         # A lightweight build system often used by scikit-build
     - pybind11                      # If you are using pybind11 to create Python bindings for C++ code
     - setuptools_scm[toml] >=8.0    # Version management
 
-
   run:
     - python >=3.10
+    - numpy >=1.26.0
+    - pydantic ==2.9.2
+    - pint-pandas
+    - pyoptik >=1.5,<1.7
+    - tabulate ==0.9.0
+
 
 about:
-  home: https://github.com/MartinPdeS/PyMieSim
-  license: MIT
-  summary: "A package for light scattering computation."
+  home: https://github.com/MartinPdeS/PyMieSim  # Your project's homepage
+  license: MIT                                  # The license for your project
+  summary: "A package for light scattering computation."  # A brief description of your project
+  description: PyMieSim is a library for light scattering simulation using the Mie theory.
+  dev_url: https://github.com/MartinPdeS/PyMieSim  # Link to the development repository
+
+
+test:
+  imports:
+    - pymiesim  # Ensure that your package can be imported after build
+
+extra:
+  recipe-maintainers:
+    - MartinPdeS
