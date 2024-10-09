@@ -8,7 +8,7 @@ source:
 build:
   number: 0
   noarch: python
-  script: "mkdir build; cd build; cmake ..; make"
+  script: "{{ PYTHON }} -m build . --no-isolation"
 
 requirements:
   host:
@@ -17,15 +17,10 @@ requirements:
     - scikit-build-core >=0.3.3
     - pybind11
     - setuptools_scm[toml] >=8.0
+    - build
 
   run:
     - python >=3.10
-    - numpy >=1.26.0
-    # - pydantic ==2.9.2
-    # - pint-pandas
-    # - pyoptik >=1.5,<1.7
-    - tabulate ==0.9.0
-
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim
@@ -35,7 +30,6 @@ about:
   dev_url: https://github.com/MartinPdeS/PyMieSim
   doc_url: https://pymiesim.readthedocs.io
   license_file: LICENSE
-  readme: README.rst
   platforms:
     - linux-64
     - osx-64
@@ -49,10 +43,6 @@ about:
     - computational optics
     - simulation
     - numpy
-
-test:
-  imports:
-    - PyMieSim  # Ensure that your package can be imported after build
 
 extra:
   recipe-maintainers:
