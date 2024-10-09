@@ -30,6 +30,8 @@ jobs:
         run: |
           anaconda upload /path/to/package.tar.bz2
         env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}  # Ensure the Anaconda token is set
+
 
 
 
