@@ -1,5 +1,5 @@
 package:
-  name: PyMieSim
+  name: pymiesim
   version: "{{ load_setup_py_data().get('version') }}"
 
 source:
