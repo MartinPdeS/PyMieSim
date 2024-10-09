@@ -23,9 +23,9 @@ requirements:
   run:
     - python >=3.10
     - numpy >=1.26.0
-    - pydantic ==2.9.2
-    - pint-pandas
-    - pyoptik >=1.5,<1.7
+    # - pydantic ==2.9.2
+    # - pint-pandas
+    # - pyoptik >=1.5,<1.7
     - tabulate ==0.9.0
 
 
@@ -35,7 +35,15 @@ about:
   summary: "A package for light scattering computation."  # A brief description of your project
   description: PyMieSim is a library for light scattering simulation using the Mie theory.
   dev_url: https://github.com/MartinPdeS/PyMieSim  # Link to the development repository
-
+  keywords:
+    - optics
+    - scattering
+    - mie theory
+    - light
+    - physics
+    - computational optics
+    - simulation
+    - numpy
 
 test:
   imports:
