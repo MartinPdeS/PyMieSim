@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit-build-core>=0.3.3", "pybind11", "setuptools_scm[toml]>=8.0", "setuptools"]
+requires = ["scikit-build-core>=0.3.3", "pybind11", "setuptools_scm[toml]>=8.0"]
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
@@ -39,18 +39,7 @@ classifiers = [
     'License :: OSI Approved :: MIT License',
     'Intended Audience :: Science/Research',
 ]
-keywords = [
-    "mie",
-    "scattering",
-    "backscatter",
-    "sphere",
-    "cylinder",
-    "nanoparticle",
-    "phase function",
-    "efficiency",
-    "rayleigh",
-    "backscattering"
-]
+
 dependencies = [
     "setuptools_scm[toml]>=8.0",
     "numpy>=1.26.0",
@@ -58,6 +47,12 @@ dependencies = [
     'pint-pandas',
     "PyOptik>=1.5,<1.7",
     "tabulate==0.9.0",
+]
+
+# Keywords for better discoverability
+keywords = [
+    "mie", "scattering", "backscatter", "sphere", "cylinder", "nanoparticle",
+    "phase function", "efficiency", "rayleigh", "backscattering"
 ]
 
 [tool.setuptools_scm]
@@ -93,19 +88,10 @@ minversion = "6.0"
 xfail_strict = true
 log_cli_level = "INFO"
 addopts = [
-    '-v',
-    '-rA',
-    '-rw',
-    '--cov=PyMieSim',
-    '--cov-report=html',
-    '--cov-report=term'
+    "-v", "-rA", "-rw", "--cov=PyMieSim", "--cov-report=html", "--cov-report=term"
 ]
-
 testpaths = [
-    "tests/single",
-    "tests/experiments",
-    "tests/validation",
-    "tests/extra"
+    "tests/single", "tests/experiments", "tests/validation", "tests/extra"
 ]
 
 

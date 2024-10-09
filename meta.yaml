@@ -13,6 +13,9 @@ requirements:
   host:
     - python >=3.10
     - pip
+    - scikit-build-core >=0.3.3   # Add scikit-build-core to host requirements
+    - pybind11                    # Add pybind11 to host requirements if used during build
+    - setuptools_scm[toml] >=8.0  # Add setuptools_scm for versioning
   run:
     - python >=3.10
 
