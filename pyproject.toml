@@ -22,7 +22,7 @@ name = "PyMieSim"
 dynamic = ["version"]
 description = "A package for light scattering computation."
 license = {file = "LICENSE"}
-documentation = 'https://pymiesim.readthedocs.io/'
+documentation = 'https://martinpdes.github.io/PyMieSim/'
 platforms = ['unix', 'linux', 'osx']
 readme = "README.rst"
 url = 'https://github.com/MartinPdeS/PyMieSim'
@@ -31,14 +31,23 @@ authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.
 classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: Implementation :: CPython',
-    'Development Status :: 4 - Beta',
-    'Topic :: Scientific/Engineering :: Physics',
-    'License :: OSI Approved :: MIT License',
+    'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Science/Research',
+    'Intended Audience :: Developers',
+    'Topic :: Scientific/Engineering :: Physics',
+    'Topic :: Scientific/Engineering :: Mathematics',
+    'Topic :: Scientific/Engineering :: Visualization',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+    'License :: OSI Approved :: MIT License',
+    'Operating System :: OS Independent',
+    'Framework :: Jupyter',  # If you provide Jupyter notebooks or examples
+    'Framework :: Sphinx'    # If you are using Sphinx for documentation
 ]
+
 
 dependencies = [
     "setuptools_scm[toml]>=8.0",

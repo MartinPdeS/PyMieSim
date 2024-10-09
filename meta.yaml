@@ -7,17 +7,27 @@ source:
 
 build:
   noarch: python
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv"
+  script: |
+    {{ PYTHON }} -m pip install build --no-deps --ignore-installed -vvv  # First install the build tool
+    {{ PYTHON }} -m build . --no-isolation -v                            # Use build to build the package
+    {{ PYTHON }} -m pip install dist/*.whl --no-deps --ignore-installed  # Install the built wheel
 
 requirements:
   host:
     - python >=3.10
     - pip
-    - scikit-build-core >=0.3.3   # Add scikit-build-core to host requirements
-    - pybind11                    # Add pybind11 to host requirements if used during build
-    - setuptools_scm[toml] >=8.0  # Add setuptools_scm for versioning
+    - scikit-build-core >=0.3.3  # Required for scikit-build-core during build
+    - pybind11                   # Required for pybind11 during build
+    - setuptools_scm[toml] >=8.0 # Required for setuptools_scm during build
+    - build                      # Add build to host dependencies for python -m build
+
   run:
     - python >=3.10
+    - numpy >=1.26.0              # Ensure runtime dependencies are listed in `run`
+    - pydantic ==2.9.2
+    - pint-pandas
+    - pyoptik >=1.5,<1.7
+    - tabulate ==0.9.0
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim
