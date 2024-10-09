@@ -23,9 +23,8 @@ jobs:
       - name: Create Conda Environment and Install Dependencies
         run: |
           conda install conda-build anaconda-client -y
-          cmake -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX .
-          conda config --set anaconda_upload yes
-          conda build .
+          cmake -DCMAKE_INSTALL_PREFIX=$PREFIX .
+          cmake --build . --target install -- VERBOSE=1
 
       - name: Upload to Anaconda (if tag)
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
