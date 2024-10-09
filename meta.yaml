@@ -8,7 +8,6 @@ source:
 build:
   noarch: python
   script: |
-    {{ PYTHON }} -m pip install pip --upgrade  # Ensure pip is up-to-date
     {{ PYTHON }} -m pip install build --no-deps --ignore-installed -vvv  # Install the build tool from PyPI
     {{ PYTHON }} -m build . --no-isolation -v                            # Use build to build the package
     {{ PYTHON }} -m pip install dist/*.whl --no-deps --ignore-installed  # Install the built wheel
@@ -20,7 +19,6 @@ requirements:
     - scikit-build-core >=0.3.3  # Required for scikit-build-core during build
     - pybind11                   # Required for pybind11 during build
     - setuptools_scm[toml] >=8.0 # Required for setuptools_scm during build
-    # - build                      # Add build to host dependencies for python -m build
 
   run:
     - python >=3.10
