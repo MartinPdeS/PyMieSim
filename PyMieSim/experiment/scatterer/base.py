@@ -8,7 +8,7 @@ from pydantic.dataclasses import dataclass
 from dataclasses import fields
 from pydantic import ConfigDict
 from PyMieSim.units import Quantity, meter, RIU
-import pint_pandas
+from pint_pandas import PintArray
 
 import numpy
 from PyMieSim.experiment.source.base import BaseSource
@@ -30,7 +30,6 @@ class BaseScatterer():
     """
     source: BaseSource
     medium_property: List[BaseMaterial] | List[Quantity]
-
 
     mapping = None
     binding_kwargs = None
@@ -68,18 +67,18 @@ class BaseScatterer():
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
 
-        Parameters:
+        Parameters
         ----------
         property : Quantity or BaseMaterial
             The core property to be assigned, which can either be a refractive index (Quantity) or a material (BaseMaterial).
 
-        Returns:
+        Returns
         -------
         tuple[Quantity | None, BaseMaterial | None]
             A tuple where the first element is the refractive index (Quantity) if provided, otherwise None.
             The second element is the material (BaseMaterial) if provided, otherwise None.
 
-        Raises:
+        Raises
         ------
         ValueError:
             If the provided property is neither a Quantity (refractive index) nor a BaseMaterial.
@@ -99,20 +98,17 @@ class BaseScatterer():
         Constructs a table of the scatterer's properties formatted for data visualization.
         This method populates the `mapping` dictionary with user-friendly descriptions and formats of the scatterer properties.
 
-        Returns:
-            list: A list of visual representations for each property in the `mapping` dictionary that has been populated.
+        Returns
+        -------
+        list
+            A list of visual representations for each property in the `mapping` dictionary that has been populated.
         """
 
         for attr in [f.name for f in fields(self) if f.name != 'source']:
             values = getattr(self, attr)
-
             if values is None: continue
 
-            # attr = attr.replace('_', ' ').capitalize()
-
             if hasattr(values, 'magnitude'):
-                magnitude = values.magnitude
-                units  = values.units
-                self.mapping[attr] = pint_pandas.PintArray(magnitude, dtype=units)
+                self.mapping[attr] = PintArray(values.magnitude, dtype=values.units)
             else:
                 self.mapping[attr] = [repr(m) for m in values]

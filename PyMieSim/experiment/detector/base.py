@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-import pint_pandas
+from pint_pandas import PintArray
 from typing import Optional
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict, field_validator
 from PyMieSim.binary.SetsInterface import CppDetectorSet
 from PyMieSim.units import Quantity, radian, degree, AU
-from typing import Any
+from typing import Any, Tuple
 
-
+# Configuration dictionary for the Pydantic dataclass
 config_dict = ConfigDict(
     kw_only=True,
     slots=True,
@@ -21,35 +21,50 @@ config_dict = ConfigDict(
 @dataclass(config=config_dict)
 class BaseDetector:
     """
-    Base class for detectors in Mie scattering simulations, handling common attributes and methods.
+    A base class for defining detectors in Mie scattering simulations.
 
-    This class handles the initialization and binding of a detector to a simulation, formatting inputs, and managing
-    the C++ bindings needed for high-performance calculations. It should be subclassed to create specific types of detectors.
+    This class provides the foundational structure for defining detectors that interface with C++ backends to perform
+    high-performance scattering calculations. It is designed to handle common parameters such as numerical aperture (NA),
+    angular offsets, rotation, and polarization. Subclasses should extend this base class to create specific detector types.
 
-    Parameters
+    Attributes
     ----------
-    mode_number : Union[List[str], str]
-        Mode number(s) involved in the detection.
-    NA : Union[List[float], float]
-        Numerical aperture(s) of the detector.
+    mode_number : str
+        The mode number used in the detection process, identifying the angular momentum mode involved.
+    NA : Quantity
+        The numerical aperture of the detector, typically a float-like value wrapped in a physical unit (e.g., steradian).
     gamma_offset : Quantity
-        Gamma angular offset (in degrees).
+        The angular offset in the gamma direction (in degrees).
     phi_offset : Quantity
-        Phi angular offset (in degrees).
+        The angular offset in the phi direction (in degrees).
     rotation : Quantity
-        Rotation angle of the detector.
-    sampling : Union[List[int], int]
-        Sampling rate(s) for the detector.
-    polarization_filter : Optional[Quantity]
-        Polarization filter angle (in degrees).
-    mean_coupling : Optional[bool]
-        Whether mean coupling is used. Defaults to False.
+        The rotational angle of the detector (in degrees).
+    mean_coupling : bool
+        Specifies whether the mean coupling of detected modes is to be considered (default is False).
     coherent : bool
-        Specifies if the detection is coherent. Defaults to True.
+        Specifies whether the detection process is coherent (default is True).
+    sampling : Optional[Quantity]
+        The sampling rate of the detector. If not specified, defaults to 200.
+    polarization_filter : Optional[Quantity]
+        The polarization filter angle (in degrees). Defaults to NaN if not provided.
 
-    This class is not intended to be instantiated directly.
+    Methods
+    -------
+    validate_polarization_filter(cls, value)
+        Ensures that the polarization filter is either None or a Quantity with angle units (degree or radian).
+    validate_angle_quantity(cls, value)
+        Validates that angles like gamma_offset, phi_offset, and rotation are Quantities with angle units.
+    validate_au_quantity(cls, value)
+        Ensures that numerical values are correctly cast as NumPy arrays.
+    __post_init__()
+        Initializes the internal detector mapping and binds the detector to the C++ backend.
+    _initialize_binding()
+        Sets up the C++ bindings required for efficient simulation by passing detector parameters.
+    _generate_mapping()
+        Generates a mapping of scatterer properties to be used for visualization purposes.
     """
-    mode_number: str
+
+    mode_number: Tuple[str]
     NA: Quantity
     gamma_offset: Quantity
     phi_offset: Quantity
@@ -59,12 +74,30 @@ class BaseDetector:
     sampling: Optional[Quantity] = (200,) * AU
     polarization_filter: Optional[Quantity | None] = (np.nan,) * degree
 
+    @field_validator('mode_number', mode='plain')
+    def _validate_mode_number(cls, mode_number):
+        """Ensure mode numbers are valid and belong to supported families."""
+        mode_number = np.atleast_1d(mode_number).astype(str)
+        for mode in mode_number:
+            if mode[:2] not in ['LP', 'HG', 'LG', 'NC']:
+                raise ValueError(f'Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC')
+        return mode_number
 
     @field_validator('polarization_filter', mode='before')
     def validate_polarization_filter(cls, value):
         """
-        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
+        Validates the polarization filter. If not provided, defaults to NaN degrees.
+        Ensures the value has angular units (degree or radian).
+
+        Parameters
+        ----------
+        value : Any
+            The input value for polarization filter.
+
+        Returns
+        -------
+        np.ndarray
+            A NumPy array containing the validated and converted polarization filter value.
         """
         if value is None:
             value = np.nan * degree
@@ -77,8 +110,17 @@ class BaseDetector:
     @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
     def validate_angle_quantity(cls, value):
         """
-        Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
+        Ensures that angular quantities (gamma_offset, phi_offset, rotation) are correctly formatted as Quantities with angle units.
+
+        Parameters
+        ----------
+        value : Any
+            The input value for the angle.
+
+        Returns
+        -------
+        np.ndarray
+            A NumPy array containing the validated and converted angle value.
         """
         if not isinstance(value, Quantity):
             raise ValueError(f"{value} must be a Quantity with angle units.")
@@ -90,21 +132,39 @@ class BaseDetector:
 
     @field_validator('NA', 'sampling', 'mode_number', mode='before')
     def validate_au_quantity(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
+        """
+        Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
+
+        Parameters
+        ----------
+        value : Any
+            The input value to be validated.
+
+        Returns
+        -------
+        np.ndarray
+            A NumPy array representing the validated input value.
+        """
         if not isinstance(value, np.ndarray):
             value = np.atleast_1d(value)
 
         return value
 
     def __post_init__(self) -> None:
-        """Post-initialization: sets up mapping and binds the detector to the C++ engine."""
+        """
+        Post-initialization hook to set up the detector's internal mappings and bind it to the C++ simulation engine.
+        This function automatically maps key parameters (mode_number, sampling, NA, offsets, etc.) to ensure they are
+        properly registered in the simulation backend.
+        """
         self.mapping = dict.fromkeys(['mode_number', 'sampling', 'rotation', 'NA', 'phi_offset', 'gamma_offset', 'polarization_filter'])
-
         self._initialize_binding()
 
     def _initialize_binding(self) -> None:
         """
-        Initializes C++ bindings for the simulation, configuring the detector with provided parameters.
+        Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the
+        detector is correctly linked to the backend, enabling high-performance Mie scattering calculations.
+
+        Sets up parameters such as mode number, sampling rate, NA, and various offsets for the simulation.
         """
         self.binding_kwargs = {
             "mode_number": self.mode_number,
@@ -116,7 +176,7 @@ class BaseDetector:
             "rotation": self.rotation.to(radian).magnitude,
         }
 
-        # Ensure all values are at least 1D arrays
+        # Ensure all values are at least 1D arrays for compatibility
         self.binding_kwargs = {k: np.atleast_1d(v) for k, v in self.binding_kwargs.items()}
 
         # Additional detector settings
@@ -125,24 +185,14 @@ class BaseDetector:
 
         self.binding = CppDetectorSet(**self.binding_kwargs)
 
-    def _generate_mapping(self) -> list:
+    def _generate_mapping(self) -> None:
         """
-        Appends the scatterer's properties to a given table for visualization purposes. This enables the
-        representation of scatterer properties in graphical formats.
+        Updates the internal mapping of the detector with current parameter values, allowing for visual representation
+        of the detector's properties in a tabular format (useful for debugging and visualization).
 
-        Parameters:
-            table (list): The table to which the scatterer's properties will be appended.
-
-        Returns:
-            list: The updated table with the scatterer's properties included.
+        Attributes like mode number, NA, offsets, and sampling are included in this mapping.
         """
-        self.mapping.update(dict(
-            mode_number=self.mode_number,
-            NA=pint_pandas.PintArray(self.NA, dtype=self.NA.units),
-            phi_offset=pint_pandas.PintArray(self.phi_offset, dtype=self.phi_offset.units),
-            gamma_offset=pint_pandas.PintArray(self.gamma_offset, dtype=self.gamma_offset.units),
-            sampling=pint_pandas.PintArray(self.sampling, dtype=self.sampling.units),
-            rotation=pint_pandas.PintArray(self.rotation, dtype=self.rotation.units),
-            polarization_filter=pint_pandas.PintArray(self.polarization_filter, dtype=self.polarization_filter.units)
-            )
-        )
+        self.mapping.update({'mode_number': self.mode_number})
+
+        for item in ['NA', 'phi_offset', 'gamma_offset', 'sampling', 'rotation', 'polarization_filter']:
+            self.mapping[item] = PintArray(getattr(self, item), dtype=getattr(self, item).units)

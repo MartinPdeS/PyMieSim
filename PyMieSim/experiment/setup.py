@@ -176,8 +176,6 @@ class Setup:
         # Compute the values using the binding method
         array = getattr(self.binding, method_name)()
 
-        print('\t \t', array.shape)
-
         # Determine the unit based on the measure type
         dtype = self._determine_dtype(measure)
 

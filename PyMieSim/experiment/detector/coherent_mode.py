@@ -42,12 +42,3 @@ class CoherentMode(BaseDetector):
     mode_number: Union[List[str], str]
     mean_coupling: Optional[bool] = False
     coherent: bool = field(default=True, init=False)
-
-    @field_validator('mode_number', mode='before')
-    def _validate_mode_number(cls, mode_number):
-        """Ensure mode numbers are valid and belong to supported families."""
-        mode_number = np.atleast_1d(mode_number).astype(str)
-        for mode in mode_number:
-            if mode[:2] not in ['LP', 'HG', 'LG', 'NC']:
-                raise ValueError(f'Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC')
-        return mode_number
