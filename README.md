@@ -31,8 +31,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        4 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       25 |        0 |        4 |        0 |    100% |           |
-| PyMieSim/utils.py                              |       41 |       41 |        8 |        0 |      0% |     2-175 |
-|                                      **TOTAL** | **1188** |  **135** |  **336** |   **93** | **83%** |           |
+|                                      **TOTAL** | **1147** |   **94** |  **328** |   **93** | **86%** |           |
 
 
 ## Setup coverage badge
