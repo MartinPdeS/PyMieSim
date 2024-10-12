@@ -3,12 +3,12 @@
 
 import pytest
 import numpy as np
+import pandas as pd
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-from PyMieSim.utils import get_pymiescatt_sphere_dataframe
-
+from PyMieSim.directories import validation_data_path
 
 @pytest.fixture
 def gaussian_source():
@@ -19,9 +19,13 @@ def gaussian_source():
         NA=0.3 * AU           # Numerical aperture
     )
 
+@pytest.fixture
+def pymiescatt_dataframe():
+    filename = validation_data_path / "pymiescatt/validation_sphere.csv"
+    return pd.read_csv(filename)
 
 @pytest.mark.parametrize('measure',  ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
-def test_comparison(gaussian_source, measure: str):
+def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     """
     Test comparison between PyMieSim and PyMieScatt data for various scattering parameters.
 
@@ -32,13 +36,6 @@ def test_comparison(gaussian_source, measure: str):
     index = (1.4 + 0.3j) * RIU
     diameters = np.geomspace(10, 6000, 800) * nanometer
     medium_indexes = [1.0] * RIU
-
-    pymiescatt_df = get_pymiescatt_sphere_dataframe(
-        wavelengths=wavelength,
-        indexes=index,
-        diameters=diameters,
-        medium_indexes=medium_indexes
-    )
 
     # Get data from PyMieSim
     scatterer = Sphere(
@@ -55,7 +52,7 @@ def test_comparison(gaussian_source, measure: str):
 
     discrepency = np.allclose(
         pymiesim_data[measure].squeeze().values.quantity,
-        pymiescatt_df[measure].squeeze().values.quantity,
+        pymiescatt_dataframe[measure].squeeze().values,
         atol=1e-3,
         rtol=1e-2
     )

@@ -57,4 +57,4 @@ dataframe = experiment.get('coupling', scale_unit=True)
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the wavelength.
-dataframe.plot_data(x="wavelength", std='diameter')
+dataframe.plot_data(x="source:wavelength", std='scatterer:diameter')

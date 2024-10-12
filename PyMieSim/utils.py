@@ -18,31 +18,35 @@ def get_pymiescatt_sphere_dataframe(
     Generate a DataFrame with Mie scattering data for spheres, based on the provided
     wavelengths, diameters, and refractive indices. Optionally saves the DataFrame to CSV.
 
-    Parameters:
-        - wavelengths: Quantity array of wavelengths
-        - diameters: Quantity array of sphere diameters
-        - indexes: Quantity array of refractive indices
-        - medium_indexes: Quantity array of medium refractive indices
-        - save_name: Optional name for saving the DataFrame as a CSV file
+    Parameters
+    ----------
+    wavelengths : Quantity
+        array of wavelengths
+    diameters : Quantity
+        array of sphere diameters
+    indexes : Quantity
+        array of refractive indices
+    medium_indexes : Quantity
+        array of medium refractive indices
+    save_name : Optional
+        name for saving the DataFrame as a CSV file
 
-    Returns:
-        - pd.DataFrame: DataFrame containing Mie scattering properties.
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing Mie scattering properties.
     """
     import PyMieScatt as pms
 
     # Ensure the inputs are 1D arrays
-    wavelengths = np.atleast_1d(wavelengths)
-    diameters = np.atleast_1d(diameters)
-    indexes = np.atleast_1d(indexes)
-    medium_indexes = np.atleast_1d(medium_indexes)
+    wavelengths = np.atleast_1d(wavelengths).magnitude
+    diameters = np.atleast_1d(diameters).magnitude
+    indexes = np.atleast_1d(indexes).magnitude
+    medium_indexes = np.atleast_1d(medium_indexes).magnitude
 
     # Create a MultiIndex from the parameters
-    indices = pd.MultiIndex.from_product([
-            pint_pandas.PintArray(indexes, dtype=indexes.units),
-            pint_pandas.PintArray(diameters, dtype=diameters.units),
-            pint_pandas.PintArray(wavelengths, dtype=wavelengths.units),
-            pint_pandas.PintArray(medium_indexes, dtype=medium_indexes.units),
-        ],
+    indices = pd.MultiIndex.from_product(
+        [indexes, diameters, wavelengths, medium_indexes],
         names=["index", "diameter", "wavelength", 'medium_index']
     )
 
@@ -52,9 +56,7 @@ def get_pymiescatt_sphere_dataframe(
         index=indices
     )
 
-
     # Calculate Mie scattering properties for each combination
-
     dataframe[:] = [
         pms.MieQ(
             m=index,
@@ -63,21 +65,25 @@ def get_pymiescatt_sphere_dataframe(
             nMedium=medium_index
         )
         for index, diameter, wavelength, medium_index in product(
-            indexes.magnitude,
-            diameters.magnitude,
-            wavelengths.magnitude,
-            medium_indexes.magnitude
+            indexes,
+            diameters,
+            wavelengths,
+            medium_indexes
         )
     ]
 
     # Assign the results to the DataFrame
     for name, col in dataframe.items():
-        dataframe[name] = pint.PintArray(col.values.astype(float), dtype=AU)
+        dataframe[name] = col.values
+
+    dataframe = dataframe.reset_index()
 
     # Save the DataFrame if a save_name is provided
     if save_name:
         save_path = validation_data_path / 'pymiescatt' / f"{save_name}.csv"
         dataframe.to_csv(save_path)
+
+    print(f'Saving data: {save_path}')
 
     return dataframe
 
@@ -94,37 +100,41 @@ def get_pymiescatt_coreshell_dataframe(
     Generate a DataFrame with Mie scattering data for spheres, based on the provided
     wavelengths, diameters, and refractive indices. Optionally saves the DataFrame to CSV.
 
-    Parameters:
-        - wavelengths: Quantity array of wavelengths
-        - core_diameters: Quantity array of core diameters
-        - shell_widths: Quantity array of shell diameters
-        - core_indexes: Quantity array of core refractive indices
-        - shell_indexes: Quantity array of shell refractive indices
-        - medium_indexes: Quantity array of medium refractive indices
-        - save_name: Optional name for saving the DataFrame as a CSV file
+    Parameters
+    ----------
+    wavelengths : Quantity
+        array of wavelengths
+    core_diameters : Quantity
+        array of core diameters
+    shell_widths : Quantity
+        array of shell diameters
+    core_indexes : Quantity
+        array of core refractive indices
+    shell_indexes : Quantity
+        array of shell refractive indices
+    medium_indexes : Quantity
+        array of medium refractive indices
+    save_name : Optional
+        name for saving the DataFrame as a CSV file
 
-    Returns:
-        - pd.DataFrame: DataFrame containing Mie scattering properties.
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing Mie scattering properties.
     """
     import PyMieScatt as pms
 
     # Ensure the inputs are 1D arrays
-    wavelengths = np.atleast_1d(wavelengths)
-    core_diameters = np.atleast_1d(core_diameters)
-    shell_widths = np.atleast_1d(shell_widths)
-    core_indexes = np.atleast_1d(core_indexes)
-    shell_indexes = np.atleast_1d(shell_indexes)
-    medium_indexes = np.atleast_1d(medium_indexes)
+    wavelengths = np.atleast_1d(wavelengths).magnitude
+    core_diameters = np.atleast_1d(core_diameters).magnitude
+    shell_widths = np.atleast_1d(shell_widths).magnitude
+    core_indexes = np.atleast_1d(core_indexes).magnitude
+    shell_indexes = np.atleast_1d(shell_indexes).magnitude
+    medium_indexes = np.atleast_1d(medium_indexes).magnitude
 
     # Create a MultiIndex from the parameters
-    indices = pd.MultiIndex.from_product([
-            pint_pandas.PintArray(core_indexes, dtype=core_indexes.units),
-            pint_pandas.PintArray(shell_indexes, dtype=shell_indexes.units),
-            pint_pandas.PintArray(core_diameters, dtype=core_diameters.units),
-            pint_pandas.PintArray(shell_widths, dtype=shell_widths.units),
-            pint_pandas.PintArray(wavelengths, dtype=wavelengths.units),
-            pint_pandas.PintArray(medium_indexes, dtype=medium_indexes.units),
-        ],
+    indices = pd.MultiIndex.from_product(
+        [core_indexes, shell_indexes, core_diameters, shell_widths, wavelengths, medium_indexes],
         names=["core_index", "shell_index", "core_diameter", "shell_width", "wavelength", 'medium_index']
     )
 
@@ -145,17 +155,17 @@ def get_pymiescatt_coreshell_dataframe(
             nMedium=medium_index
         )
         for core_index, shell_index, core_diameter, shell_width, wavelength, medium_index in product(
-            core_indexes.to_base_units().magnitude,
-            shell_indexes.to_base_units().magnitude,
-            core_diameters.to_base_units().magnitude,
-            shell_widths.to_base_units().magnitude,
-            wavelengths.to_base_units().magnitude,
-            medium_indexes.to_base_units().magnitude
+            core_indexes,
+            shell_indexes,
+            core_diameters,
+            shell_widths,
+            wavelengths,
+            medium_indexes
         )
     ]
 
     for name, col in dataframe.items():
-        dataframe[name] = pint.PintArray(col.values.astype(float), dtype=AU)
+        dataframe[name] = col.values
 
     # Save the DataFrame if a save_name is provided
     if save_name:

@@ -45,4 +45,4 @@ dataframe = experiment.get('Qsca')
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with wavelength for the given cylinder configurations.
-dataframe.plot_data(x='wavelength', std='property')
+dataframe.plot_data(x='source:wavelength', std='scatterer:property')

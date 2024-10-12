@@ -43,4 +43,4 @@ dataframe = experiment.get('Csca', 'Cabs', scale_unit=True, drop_unique_level=Tr
 
 # %%
 # Plotting the results
-dataframe.plot_data(x='core_diameter')
+dataframe.plot_data(x='scatterer:core_diameter')

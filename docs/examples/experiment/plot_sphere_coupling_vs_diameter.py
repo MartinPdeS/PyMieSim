@@ -54,4 +54,4 @@ dataframe = experiment.get('coupling', drop_unique_level=True, scale_unit=True)
 
 # %%
 # Plotting the results
-dataframe.plot_data(x='diameter')
+dataframe.plot_data(x='scatterer:diameter')

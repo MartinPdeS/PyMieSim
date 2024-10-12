@@ -41,4 +41,4 @@ dataframe = experiment.get('b1')
 
 # %%
 # Plotting the results
-dataframe.plot_data(x='diameter')
+dataframe.plot_data(x='scatterer:diameter')

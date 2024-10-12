@@ -8,7 +8,8 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 import PyMieScatt as ps
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-from PyMieSim.utils import get_pymiescatt_coreshell_dataframe
+import pandas as pd
+from PyMieSim.directories import validation_data_path
 
 # Mapping of measurement types to PyMieScatt indices
 PYMIESCATT_MEASURES = {
@@ -30,31 +31,26 @@ def gaussian_source():
         NA=0.3 * AU           # Numerical aperture
     )
 
+@pytest.fixture
+def pymiescatt_dataframe():
+    filename = validation_data_path / "pymiescatt/validation_coreshell.csv"
+    return pd.read_csv(filename)
+
 
 @pytest.mark.parametrize('measure', ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
-def test_comparison(gaussian_source, measure: str):
+def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     """
     Test comparison between PyMieSim and PyMieScatt data for various scattering parameters.
 
     Parameters:
         measure (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    wavelength = gaussian_source.wavelength
     core_index = 1.4 + 0.3j * RIU
     core_index = 1.4 + 0.3j * RIU
     shell_index = 1.3 * RIU
     core_diameters = np.geomspace(10, 6000, 80) * nanometer
     shell_width = 600 * nanometer
     medium_indexes = [1.0] * RIU
-
-    pymiescatt_df = get_pymiescatt_coreshell_dataframe(
-        wavelengths=wavelength,
-        shell_indexes=shell_index,
-        core_indexes=core_index,
-        core_diameters=core_diameters,
-        shell_widths=shell_width,
-        medium_indexes=medium_indexes
-    )
 
     # Get data from PyMieSim
     scatterer = CoreShell(
@@ -73,7 +69,7 @@ def test_comparison(gaussian_source, measure: str):
 
     discrepency = np.allclose(
         pymiesim_data[measure].squeeze().values.quantity,
-        pymiescatt_df[measure].squeeze().values.quantity,
+        pymiescatt_dataframe[measure].squeeze().values,
         atol=1e-6,
         rtol=1e-2
     )

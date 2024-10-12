@@ -50,4 +50,4 @@ dataframe = experiment.get('a1')
 # %%
 # Plotting the results
 # Visualizing how the B1 (a3) parameter varies with the core diameter.
-dataframe.plot_data(x="core_diameter")
+dataframe.plot_data(x="scatterer:core_diameter")

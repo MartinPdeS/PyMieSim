@@ -109,6 +109,6 @@ class BaseScatterer():
             if values is None: continue
 
             if hasattr(values, 'magnitude'):
-                self.mapping[attr] = PintArray(values.magnitude, dtype=values.units)
+                self.mapping["scatterer:" + attr] = PintArray(values.magnitude, dtype=values.units)
             else:
-                self.mapping[attr] = [repr(m) for m in values]
+                self.mapping["scatterer:" + attr] = [repr(m) for m in values]

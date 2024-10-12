@@ -18,11 +18,12 @@ jobs:
       - name: Set up Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
+          channels: conda-forge
           python-version: '3.11'
 
       - name: Create Conda Environment and Install Dependencies
         run: |
-          conda install conda-build anaconda-client -y
+          conda install conda-build anaconda-client conda-verify -y
           conda build .
 
       - name: Upload to Anaconda (if tag)

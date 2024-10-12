@@ -44,4 +44,4 @@ dataframe = experiment.get('Qsca', 'Qabs')
 
 # %%
 # Plotting the results
-dataframe.plot_data(x='diameter')
+dataframe.plot_data(x='scatterer:diameter')

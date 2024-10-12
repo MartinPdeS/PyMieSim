@@ -152,15 +152,6 @@ class BaseDetector:
 
     def __post_init__(self) -> None:
         """
-        Post-initialization hook to set up the detector's internal mappings and bind it to the C++ simulation engine.
-        This function automatically maps key parameters (mode_number, sampling, NA, offsets, etc.) to ensure they are
-        properly registered in the simulation backend.
-        """
-        self.mapping = dict.fromkeys(['mode_number', 'sampling', 'rotation', 'NA', 'phi_offset', 'gamma_offset', 'polarization_filter'])
-        self._initialize_binding()
-
-    def _initialize_binding(self) -> None:
-        """
         Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the
         detector is correctly linked to the backend, enabling high-performance Mie scattering calculations.
 
@@ -192,7 +183,8 @@ class BaseDetector:
 
         Attributes like mode number, NA, offsets, and sampling are included in this mapping.
         """
-        self.mapping.update({'mode_number': self.mode_number})
+        self.mapping = {}
+        self.mapping.update({'detector:mode_number': self.mode_number})
 
-        for item in ['NA', 'phi_offset', 'gamma_offset', 'sampling', 'rotation', 'polarization_filter']:
-            self.mapping[item] = PintArray(getattr(self, item), dtype=getattr(self, item).units)
+        for attr in ['NA', 'phi_offset', 'gamma_offset', 'sampling', 'rotation', 'polarization_filter']:
+            self.mapping["detector:" + attr] = PintArray(getattr(self, attr), dtype=getattr(self, attr).units)

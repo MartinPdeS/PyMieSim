@@ -54,4 +54,4 @@ dataframe = experiment.get('coupling')
 
 # %%
 # Plotting the results
-dataframe.plot_data(x="rotation")
+dataframe.plot_data(x="detector:rotation")

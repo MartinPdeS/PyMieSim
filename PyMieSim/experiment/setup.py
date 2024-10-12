@@ -289,13 +289,12 @@ class Setup:
 
         iterables.update(self.source.mapping)
 
-        iterables['NA_source'] = iterables['NA']
-        del iterables['NA']
-
         iterables.update(self.scatterer.mapping)
 
         if self.detector is not None:
             iterables.update(self.detector.mapping)
+
+        print(iterables.keys())
 
         if drop_unique_level:
             _iterables = {

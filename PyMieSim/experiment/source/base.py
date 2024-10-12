@@ -71,6 +71,6 @@ class BaseSource:
             if hasattr(values, 'magnitude'):
                 magnitude = values.magnitude
                 units  = values.units
-                self.mapping[attr] = pint_pandas.PintArray(magnitude, dtype=units)
+                self.mapping["source:" + attr] = pint_pandas.PintArray(magnitude, dtype=units)
             else:
-                self.mapping[attr] = [repr(m) for m in values]
+                self.mapping["source:" + attr] = [repr(m) for m in values]
