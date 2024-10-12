@@ -1,6 +1,7 @@
 """
-PyMieSim vs PyMieScatt for Core-Shell Particles
-===============================================
+Core-Shell Particles: 0
+=======================
+
 """
 
 # Standard library imports
