@@ -6,7 +6,6 @@ import numpy as np
 from PyMieSim.experiment.scatterer import CoreShell
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-import PyMieScatt as ps
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 import pandas as pd
 from PyMieSim.directories import validation_data_path
