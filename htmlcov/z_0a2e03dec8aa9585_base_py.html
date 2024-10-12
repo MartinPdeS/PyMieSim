@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_0a2e03dec8aa9585_core_shell_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-10-09 13:45 +0000
+            created at 2024-10-12 13:25 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -193,9 +193,9 @@
     <p class="par run show_par"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">            <span class="key">if</span> <span class="nam">values</span> <span class="key">is</span> <span class="key">None</span><span class="op">:</span> <span class="key">continue</span>&nbsp;</span><span class="r"><span class="annotate short">109&#x202F;&#x219B;&#x202F;107</span><span class="annotate long">line 109 didn't jump to line 107 because the continue on line 109 wasn't executed</span></span></p>
     <p class="pln"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="par run show_par"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">            <span class="key">if</span> <span class="nam">hasattr</span><span class="op">(</span><span class="nam">values</span><span class="op">,</span> <span class="str">'magnitude'</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"><span class="annotate short">111&#x202F;&#x219B;&#x202F;114</span><span class="annotate long">line 111 didn't jump to line 114 because the condition on line 111 was always true</span></span></p>
-    <p class="run"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">mapping</span><span class="op">[</span><span class="nam">attr</span><span class="op">]</span> <span class="op">=</span> <span class="nam">PintArray</span><span class="op">(</span><span class="nam">values</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span> <span class="nam">dtype</span><span class="op">=</span><span class="nam">values</span><span class="op">.</span><span class="nam">units</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">mapping</span><span class="op">[</span><span class="str">"scatterer:"</span> <span class="op">+</span> <span class="nam">attr</span><span class="op">]</span> <span class="op">=</span> <span class="nam">PintArray</span><span class="op">(</span><span class="nam">values</span><span class="op">.</span><span class="nam">magnitude</span><span class="op">,</span> <span class="nam">dtype</span><span class="op">=</span><span class="nam">values</span><span class="op">.</span><span class="nam">units</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t">            <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">mapping</span><span class="op">[</span><span class="nam">attr</span><span class="op">]</span> <span class="op">=</span> <span class="op">[</span><span class="nam">repr</span><span class="op">(</span><span class="nam">m</span><span class="op">)</span> <span class="key">for</span> <span class="nam">m</span> <span class="key">in</span> <span class="nam">values</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">                <span class="nam">self</span><span class="op">.</span><span class="nam">mapping</span><span class="op">[</span><span class="str">"scatterer:"</span> <span class="op">+</span> <span class="nam">attr</span><span class="op">]</span> <span class="op">=</span> <span class="op">[</span><span class="nam">repr</span><span class="op">(</span><span class="nam">m</span><span class="op">)</span> <span class="key">for</span> <span class="nam">m</span> <span class="key">in</span> <span class="nam">values</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -205,7 +205,7 @@
             <a class="nav" href="z_0a2e03dec8aa9585_core_shell_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-10-09 13:45 +0000
+            created at 2024-10-12 13:25 +0000
         </p>
     </div>
 </footer>
