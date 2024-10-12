@@ -1,12 +1,26 @@
 |logo|
 
-|python|
-|zenodo|
-|colab|
-|coverage|
-|docs|
-|PyPi|
-|PyPi_download|
+
+.. list-table::
+   :widths: 10 25 25 25
+   :header-rows: 1
+
+   * -
+     -
+     -
+     -
+   * - Testing
+     - |coverage|
+     -
+     -
+   * - Package
+     - |python|
+     - |PyPi|
+     - |PyPi_download|
+   * - Meta
+     - |docs|
+     - |zenodo|
+     - |colab|
 
 
 PyMieSim
@@ -240,12 +254,12 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
 
 .. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
 
-.. |example_plasmon| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png
-
-.. |example_qsca| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png
-
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
     :target: https://pypistats.org/packages/pymiesim
+
+.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
+    :alt: Unittest coverage
+    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
 
 .. |code_structure| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
     :width: 800
@@ -255,9 +269,8 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
     :width: 800
     :alt: Structure of the library
 
-.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
-    :alt: Unittest coverage
-    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html
-
 .. |wikipedia_example| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png
 
+.. |example_plasmon| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png
+
+.. |example_qsca| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png
