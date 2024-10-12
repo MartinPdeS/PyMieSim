@@ -59,10 +59,16 @@ try:
 except ImportError:
     print('Could not load pyvista library for 3D rendering')
 
+
+examples_files = [
+    'single', 'experiment', 'validation/pymiescatt', 'validation/bohren_huffman', 'validation/internal', 'extras'
+]
+
 sphinx_gallery_conf = {
-    "examples_dirs": ['../examples'],
-    "gallery_dirs": ['gallery'],
+    "examples_dirs": ['../examples/' + f for f in examples_files],
+    "gallery_dirs": ['gallery/' + f for f in examples_files],
     'image_scrapers': ('matplotlib', 'pyvista'),
+    'filename_pattern': r'.*\.py',
     'ignore_pattern': '/__',
     'plot_gallery': True,
     'reset_modules': reset_mpl,
