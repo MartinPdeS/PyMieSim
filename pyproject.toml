@@ -71,8 +71,6 @@ local_scheme = "no-local-version"
 
 [project.optional-dependencies]
 testing = [
-    "pymiescatt",
-    "scipy==1.11.3",
     "pytest>=0.6",
     "pytest-cov>=2.0",
     "pytest-json-report==1.5.0",
@@ -83,8 +81,6 @@ testing = [
 ]
 
 documentation = [
-    "pymiescatt",
-    "scipy==1.11.3",
     "numpydoc==1.8.0",
     "sphinx>=5.1.1",
     "sphinx-gallery==0.17.1",
