@@ -140,7 +140,7 @@ Goniometric Coupling vs S1 S2 Comparison
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.354 seconds)
+   **Total running time of the script:** (0 minutes 0.338 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_internal_phase_function_detector.py:

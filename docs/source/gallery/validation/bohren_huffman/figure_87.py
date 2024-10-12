@@ -16,7 +16,7 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
-theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure87BH.csv", delimiter=',')
+theoretical = numpy.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_87.csv", delimiter=',')
 
 diameter = numpy.geomspace(10, 6000, 800) * nanometer
 volume = numpy.pi * (diameter.to_base_units().magnitude / 2)**2

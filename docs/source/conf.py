@@ -18,11 +18,7 @@ def setup(app):
 autodoc_mock_imports = [
     'numpy',
     'matplotlib',
-    'DataVisual',
     'MPSPlots',
-    'scipy',
-    'PyMieSim.Tools.measure',
-    'PyMieSim.bin'
 ]
 
 project = 'PyMieSim'
@@ -61,7 +57,7 @@ except ImportError:
 
 
 examples_files = [
-    'single', 'experiment', 'validation/pymiescatt', 'validation/bohren_huffman', 'validation/internal', 'extras'
+    'single', 'experiment', 'validation', 'extras'
 ]
 
 sphinx_gallery_conf = {

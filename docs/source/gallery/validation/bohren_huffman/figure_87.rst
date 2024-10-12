@@ -39,7 +39,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
     from PyMieSim.experiment import Setup
     from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
-    theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure87BH.csv", delimiter=',')
+    theoretical = numpy.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_87.csv", delimiter=',')
 
     diameter = numpy.geomspace(10, 6000, 800) * nanometer
     volume = numpy.pi * (diameter.to_base_units().magnitude / 2)**2
@@ -105,7 +105,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.326 seconds)
+   **Total running time of the script:** (0 minutes 0.359 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_87.py:

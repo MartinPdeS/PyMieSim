@@ -44,8 +44,8 @@ classifiers = [
     'Topic :: Software Development :: Libraries :: Python Modules',
     'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
-    'Framework :: Jupyter',  # If you provide Jupyter notebooks or examples
-    'Framework :: Sphinx'    # If you are using Sphinx for documentation
+    'Framework :: Jupyter',
+    'Framework :: Sphinx'
 ]
 
 
@@ -131,6 +131,7 @@ omit = [
     'PyMieSim/_version.py',
     'PyMieSim/directories.py',
     'PyMieSim/plotting.py'
+    'tests/plotting.py'
 ]
 branch = true
 relative_files = true

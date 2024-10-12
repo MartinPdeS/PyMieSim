@@ -38,7 +38,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
     from PyMieSim.units import degree, watt, AU, RIU, nanometer
     from MPSPlots.styles import mps
 
-    theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure810BH.csv", delimiter=',')
+    theoretical = numpy.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_810.csv", delimiter=',')
 
     x = theoretical[:, 0]
     y = theoretical[:, 1]
@@ -92,7 +92,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.217 seconds)
+   **Total running time of the script:** (0 minutes 0.874 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_810.py:

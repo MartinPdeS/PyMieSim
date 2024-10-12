@@ -16,7 +16,7 @@ from PyMieSim.experiment import Setup
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
 # Load theoretical data
-theoretical_data = np.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimiter=',')
+theoretical_data = np.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=',')
 
 # Define parameters
 wavelength = 632.8 * nanometer  # Wavelength of the source in meters

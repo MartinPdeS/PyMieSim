@@ -61,7 +61,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
     from PyMieSim.units import degree, watt, AU, RIU, nanometer
 
     # Load theoretical data
-    theoretical_data = np.genfromtxt(f"{validation_data_path}/Figure88BH.csv", delimiter=',')
+    theoretical_data = np.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_88.csv", delimiter=',')
 
     # Define parameters
     wavelength = 632.8 * nanometer  # Wavelength of the source in meters
@@ -116,7 +116,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.8
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.356 seconds)
+   **Total running time of the script:** (0 minutes 0.396 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_88.py:

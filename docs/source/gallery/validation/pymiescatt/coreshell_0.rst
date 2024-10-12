@@ -18,10 +18,10 @@
 .. _sphx_glr_gallery_validation_pymiescatt_coreshell_0.py:
 
 
-PyMieSim vs PyMieScatt for Core-Shell Particles
-===============================================
+Core-Shell Particles: 0
+=======================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-73
+.. GENERATED FROM PYTHON SOURCE LINES 6-74
 
 
 
@@ -118,7 +118,7 @@ PyMieSim vs PyMieScatt for Core-Shell Particles
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.196 seconds)
+   **Total running time of the script:** (0 minutes 0.210 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_coreshell_0.py:

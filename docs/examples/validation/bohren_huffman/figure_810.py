@@ -15,7 +15,7 @@ from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from MPSPlots.styles import mps
 
-theoretical = numpy.genfromtxt(f"{validation_data_path}/Figure810BH.csv", delimiter=',')
+theoretical = numpy.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_810.csv", delimiter=',')
 
 x = theoretical[:, 0]
 y = theoretical[:, 1]
