@@ -130,7 +130,7 @@ omit = [
     '*\__init__.py',
     'PyMieSim/_version.py',
     'PyMieSim/directories.py',
-    'PyMieSim/plotting.py'
+    'PyMieSim/plotting.py',
     'tests/plotting.py'
 ]
 branch = true
