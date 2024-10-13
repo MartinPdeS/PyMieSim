@@ -96,7 +96,9 @@ class IntegratingSphere(Photodiode):
         sampling : int
             The sampling rate for the scalar field. Default is 100.
 
-        Returns:
-            numpy.ndarray: A 2D array representing the structured scalar field.
+        Returns
+        -------
+        numpy.ndarray
+            A 2D array representing the structured scalar field.
         """
         return numpy.ones([sampling, sampling])

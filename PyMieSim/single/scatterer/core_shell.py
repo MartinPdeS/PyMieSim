@@ -72,11 +72,15 @@ class CoreShell(BaseScatterer):
 
         If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`a_n` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`a_n` coefficients.
         """
         return self.binding.an(max_order)
 
@@ -86,10 +90,14 @@ class CoreShell(BaseScatterer):
 
         If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`b_n` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`b_n` coefficients.
         """
         return self.binding.bn(max_order)

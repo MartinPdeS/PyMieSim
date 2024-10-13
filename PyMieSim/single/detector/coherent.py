@@ -90,7 +90,8 @@ class CoherentMode(BaseDetector):
 
         Returns
         -------
-            numpy.ndarray: A 2D array representing the structured scalar field.
+        numpy.ndarray
+            A 2D array representing the structured scalar field.
         """
         x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
 

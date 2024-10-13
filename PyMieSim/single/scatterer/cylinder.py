@@ -67,11 +67,15 @@ class Cylinder(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`a_{1n}` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`a_{1n}` coefficients.
         """
         return self.binding.a1n(max_order)
 
@@ -88,11 +92,15 @@ class Cylinder(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`a_{2n}` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`a_{2n}` coefficients.
         """
         return self.binding.a2n(max_order)
 
@@ -109,11 +117,15 @@ class Cylinder(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`b_{1n}` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`b_{1n}` coefficients.
         """
         return self.binding.b1n(max_order)
 
@@ -130,11 +142,15 @@ class Cylinder(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`b_{2n}` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`b_{2n}` coefficients.
         """
         return self.binding.b2n(max_order)
 

@@ -5,10 +5,6 @@
    :widths: 10 25 25 25
    :header-rows: 1
 
-   * -
-     -
-     -
-     -
    * - Testing
      - |coverage|
      -
