@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_631d0f5aae0d4f46_uncoherent_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-10-12 23:56 +0000
+            created at 2024-10-13 21:27 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -174,30 +174,31 @@
     <p class="pln"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t"><span class="str">        Returns</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t"><span class="str">        -------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t"><span class="str">            numpy.ndarray: A 2D array representing the structured scalar field.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="nam">x_mesh</span><span class="op">,</span> <span class="nam">y_mesh</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">mgrid</span><span class="op">[</span><span class="op">-</span><span class="num">100</span><span class="op">:</span><span class="num">100</span><span class="op">:</span><span class="nam">complex</span><span class="op">(</span><span class="nam">sampling</span><span class="op">)</span><span class="op">,</span> <span class="op">-</span><span class="num">100</span><span class="op">:</span><span class="num">100</span><span class="op">:</span><span class="nam">complex</span><span class="op">(</span><span class="nam">sampling</span><span class="op">)</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">        <span class="nam">coordinates</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">row_stack</span><span class="op">(</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">            <span class="nam">x_mesh</span><span class="op">.</span><span class="nam">ravel</span><span class="op">(</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">            <span class="nam">y_mesh</span><span class="op">.</span><span class="nam">ravel</span><span class="op">(</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">        <span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">norm</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">sqrt</span><span class="op">(</span><span class="nam">numpy</span><span class="op">.</span><span class="nam">square</span><span class="op">(</span><span class="nam">coordinates</span><span class="op">)</span><span class="op">.</span><span class="nam">sum</span><span class="op">(</span><span class="nam">axis</span><span class="op">=</span><span class="num">0</span><span class="op">)</span><span class="op">)</span><span class="op">.</span><span class="nam">max</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">        <span class="nam">coordinates</span> <span class="op">/=</span> <span class="nam">norm</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">        <span class="nam">field</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">cpp_mode_field_getter</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">            <span class="nam">coordinates</span><span class="op">[</span><span class="num">0</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">            <span class="nam">coordinates</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">number_0</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">number_1</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t">        <span class="key">return</span> <span class="nam">field</span><span class="op">.</span><span class="nam">reshape</span><span class="op">(</span><span class="op">[</span><span class="nam">sampling</span><span class="op">,</span> <span class="nam">sampling</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t"><span class="str">        numpy.ndarray</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t"><span class="str">            A 2D array representing the structured scalar field.</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">        <span class="nam">x_mesh</span><span class="op">,</span> <span class="nam">y_mesh</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">mgrid</span><span class="op">[</span><span class="op">-</span><span class="num">100</span><span class="op">:</span><span class="num">100</span><span class="op">:</span><span class="nam">complex</span><span class="op">(</span><span class="nam">sampling</span><span class="op">)</span><span class="op">,</span> <span class="op">-</span><span class="num">100</span><span class="op">:</span><span class="num">100</span><span class="op">:</span><span class="nam">complex</span><span class="op">(</span><span class="nam">sampling</span><span class="op">)</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">        <span class="nam">coordinates</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">row_stack</span><span class="op">(</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">            <span class="nam">x_mesh</span><span class="op">.</span><span class="nam">ravel</span><span class="op">(</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">            <span class="nam">y_mesh</span><span class="op">.</span><span class="nam">ravel</span><span class="op">(</span><span class="op">)</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">        <span class="nam">norm</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">sqrt</span><span class="op">(</span><span class="nam">numpy</span><span class="op">.</span><span class="nam">square</span><span class="op">(</span><span class="nam">coordinates</span><span class="op">)</span><span class="op">.</span><span class="nam">sum</span><span class="op">(</span><span class="nam">axis</span><span class="op">=</span><span class="num">0</span><span class="op">)</span><span class="op">)</span><span class="op">.</span><span class="nam">max</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">        <span class="nam">coordinates</span> <span class="op">/=</span> <span class="nam">norm</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">        <span class="nam">field</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">cpp_mode_field_getter</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">            <span class="nam">coordinates</span><span class="op">[</span><span class="num">0</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">            <span class="nam">coordinates</span><span class="op">[</span><span class="num">1</span><span class="op">]</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">number_0</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">number_1</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">        <span class="key">return</span> <span class="nam">field</span><span class="op">.</span><span class="nam">reshape</span><span class="op">(</span><span class="op">[</span><span class="nam">sampling</span><span class="op">,</span> <span class="nam">sampling</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t115" href="#t115">115</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t"><span class="com"># -</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t117" href="#t117">117</a></span><span class="t"><span class="com"># -</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -207,7 +208,7 @@
             <a class="nav" href="z_631d0f5aae0d4f46_uncoherent_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.1">coverage.py v7.6.1</a>,
-            created at 2024-10-12 23:56 +0000
+            created at 2024-10-13 21:27 +0000
         </p>
     </div>
 </footer>

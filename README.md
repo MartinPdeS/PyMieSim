@@ -24,8 +24,8 @@
 | PyMieSim/single/representations.py             |      168 |        3 |       28 |        1 |     98% | 57, 61-62 |
 | PyMieSim/single/scatterer/base.py              |      103 |        4 |       50 |       23 |     82% |42->41, 47, 50, 55->54, 60, 73->72, 78->77, 83->82, 88->87, 93->92, 98->97, 103->102, 108->107, 113->112, 118->117, 123->122, 128->127, 133->132, 138->137, 143->142, 148->147, 153->152, 451 |
 | PyMieSim/single/scatterer/core\_shell.py       |       26 |        0 |        2 |        0 |    100% |           |
-| PyMieSim/single/scatterer/cylinder.py          |       39 |        4 |       10 |        4 |     84% |142->141, 143, 146->145, 147, 150->149, 151, 154->153, 155 |
-| PyMieSim/single/scatterer/sphere.py            |       26 |        2 |        2 |        0 |     93% |  124, 148 |
+| PyMieSim/single/scatterer/cylinder.py          |       39 |        4 |       10 |        4 |     84% |158->157, 159, 162->161, 163, 166->165, 167, 170->169, 171 |
+| PyMieSim/single/scatterer/sphere.py            |       26 |        2 |        2 |        0 |     93% |  136, 164 |
 | PyMieSim/single/source/base.py                 |       33 |        7 |       24 |       11 |     68% |18->17, 22, 25, 30->29, 34, 37, 42->41, 46, 49, 54->53, 63 |
 | PyMieSim/single/source/gaussian.py             |       35 |        1 |        4 |        1 |     95% |        41 |
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        4 |        1 |     93% |        37 |
