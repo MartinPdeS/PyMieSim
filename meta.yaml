@@ -16,7 +16,7 @@ requirements:
     - python >=3.10
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
-    - build ~=1.2
+    - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
   run:
     - martinpdes::pyoptik
