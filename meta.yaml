@@ -11,6 +11,10 @@ build:
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
+channels:
+  - conda-forge
+  - martinpdes
+
 requirements:
   host:
     - python >=3.10
@@ -33,10 +37,6 @@ about:
   dev_url: https://github.com/MartinPdeS/PyMieSim
   doc_url: https://pymiesim.readthedocs.io
   license_file: LICENSE
-  platforms:
-    - linux-64
-    - osx-64
-    - win-64
   keywords:
     - optics
     - scattering
@@ -61,17 +61,6 @@ test:
     - pytest --ignore=tests/gui
   source_files:
     - tests
-
-doc:
-  requires:
-    - numpydoc==1.8.0
-    - sphinx>=5.1.1
-    - sphinx-gallery==0.17.1
-    - sphinx-rtd-theme==2.0.0
-    - pydata-sphinx-theme==0.15.4
-  commands:
-    - sphinx-build -b html docs/source docs/build
-
 
 extra:
   recipe-maintainers:
