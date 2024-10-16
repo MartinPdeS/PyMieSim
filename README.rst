@@ -1,22 +1,25 @@
 |logo|
 
-
 .. list-table::
    :widths: 10 25 25 25
-   :header-rows: 1
+   :header-rows: 0
 
-   * - Testing
-     - |coverage|
-     -
-     -
-   * - Package
-     - |python|
-     - |PyPi|
-     - |PyPi_download|
    * - Meta
+     - |python|
      - |docs|
      - |zenodo|
-     - |colab|
+   * - Testing
+     - |ci/cd|
+     - |coverage|
+     -
+   * - PyPi
+     - |PyPi|
+     - |PyPi_download|
+     -
+   * - Anaconda
+     - |anaconda|
+     -
+     -
 
 
 PyMieSim

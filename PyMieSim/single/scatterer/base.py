@@ -3,7 +3,7 @@
 
 from typing import Tuple
 import numpy
-from PyOptik.base_class import BaseMaterial
+from PyOptik.material.base_class import BaseMaterial
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from tabulate import tabulate

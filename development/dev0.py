@@ -1,44 +1,49 @@
-"""
-S1 S2 Function Computation
-==========================
+from PyMieSim.experiment.source import PlaneWave
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment import Setup
+from PyMieSim.units import nanometer, degree, watt, RIU
+from PyOptik import Material
+import numpy as np
+import matplotlib.pyplot as plt
+import PyMieScatt
 
-This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.
-"""
 
-# %%
-# Importing the package: PyMieSim
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
-from PyMieSim.single.detector import Photodiode
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
+wavelength = np.linspace(200, 1200, 100)
+diameter = 50
+n_medium = 1.5
+material = Material.gold
 
-# %%
-# Defining the source
-source = Gaussian(
-    wavelength=450 * nanometer,  # 450 nm
-    polarization=0 * degree,  # Linear polarization angle in radians
-    optical_power=1 * watt,  # Arbitrary units
-    NA=0.3 * AU  # Numerical Aperture
+#%% PyMieSim
+source = PlaneWave(
+    wavelength=wavelength * nanometer,
+    polarization=0 * degree,
+    amplitude=0 * watt,
 )
 
-# %%
-# Defining the scatterer
 scatterer = Sphere(
-    diameter=6 * nanometer,  # 6 nm
-    source=source,
-    medium_property=1.0 * RIU,  # Refractive property of the surrounding medium
-    property=1.4 * RIU  # Refractive property of the scatterer
+    diameter=diameter * nanometer,
+    property=material,
+    medium_property=n_medium * RIU,
+    source=source
 )
 
-detector = Photodiode(
-    NA=0.1 * AU,
-    phi_offset=0 * degree,
-    gamma_offset=0 * degree,
-    sampling=200 * AU,
-    polarization_filter=None
-)
+experiment = Setup(scatterer=scatterer, source=source)
+
+pymiesim_dataframe = experiment.get('Qsca', 'Qabs', 'Qext', add_units=False).reset_index()
+pymiesim_dataframe.columns = pymiesim_dataframe.columns.get_level_values(0)
+ax = pymiesim_dataframe.plot(y=['Qsca', 'Qabs', 'Qext'], x='source:wavelength', linewidth=4, figsize=(10, 6))
+
+m = Material.gold.compute_refractive_index(wavelength * 1e-9)
+_, qext_pymiescatt, qsca_pymiescatt, qabs_pymiescatt, *_  = PyMieScatt.MieQ_withWavelengthRange(m, diameter, n_medium, wavelength)
 
 
-coupling = detector.coupling(scatterer)
+for name, value in zip(['Qsca', 'Qabs', 'Qext'], [qext_pymiescatt, qabs_pymiescatt, qsca_pymiescatt]):
+    ax.plot(wavelength, value, ls='-', lw=0.5, marker='o', markersize=4, c='black', label=r"$Q_{name}^{PyMieScatt}$")
 
-print(coupling)
+plt.show()
+
+
+
+
+
+

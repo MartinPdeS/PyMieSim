@@ -3,29 +3,27 @@ package:
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: .
+  path: ../
+  git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
-  script: |
-    {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
-    # export PIP_NO_BUILD_ISOLATION=True
-    # export PIP_NO_INDEX=False
-    # export PIP_NO_DEPENDENCIES=False
 
 requirements:
   host:
-    - python>=3.10
-    - scikit-build-core>=0.3.3
-    - pybind11
-    - build
-    - setuptools_scm[toml]>=8.0
+    - python >=3.10
+    - scikit-build-core ~=0.3
+    - pybind11 ~=2.13
+    - build ~=1.2
+    - setuptools_scm[toml] ~=8.0
   run:
-    - numpy>=1.26.0
-    - pydantic==2.9.2
-    - pint-pandas
-    - PyOptik
-    - tabulate==0.9.0
+    - martinpdes::pyoptik
+    - numpy ~=1.26
+    - pydantic ~=2.9.2
+    - pint-pandas ~=0.6
+    - tabulate ~=0.9
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim
@@ -47,7 +45,6 @@ about:
     - physics
     - computational optics
     - simulation
-    - numpy
 
 test:
   imports:
@@ -60,10 +57,10 @@ test:
     - flake8>=3.9
     - tox>=3.24
     - coverage==7.6.1
+  commands:
+    - pytest --ignore=tests/gui
   source_files:
     - tests
-  commands:
-    - pytest --ignore=tests/gui --ignore=tests/validation
 
 doc:
   requires:

@@ -23,7 +23,7 @@ source = Gaussian(
 # %%
 # Defining the scatterer
 scatterer = Sphere(
-    diameter=1200 * nanometer,  # 1200 nm
+    diameter=2000 * nanometer,  # 1200 nm
     source=source,
     property=1.4 * RIU,  # Refractive property of the scatterer
     medium_property=1.0 * RIU,  # Refractive property of the surrounding medium

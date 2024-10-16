@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyOptik.base_class import BaseMaterial
+from PyOptik.material.base_class import BaseMaterial
 
 import numpy
 from typing import Optional
