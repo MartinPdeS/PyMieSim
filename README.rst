@@ -11,7 +11,7 @@
    * - Testing
      - |ci/cd|
      - |coverage|
-     -
+     - |colab|
    * - PyPi
      - |PyPi|
      - |PyPi_download|
