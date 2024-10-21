@@ -66,7 +66,7 @@ function(add_pymiesim_module name source)
 endfunction()
 
 # Add modules
-add_pymiesim_module(Fibonacci "single/interface/mesh.cpp")
+
 
 add_pymiesim_module(SourceInterface "single/interface/source.cpp")
 add_pymiesim_module(DetectorInterface "single/interface/detector.cpp")
@@ -74,6 +74,8 @@ add_pymiesim_module(SphereInterface "single/interface/sphere.cpp")
 add_pymiesim_module(CylinderInterface "single/interface/cylinder.cpp")
 add_pymiesim_module(CoreShellInterface "single/interface/coreshell.cpp")
 add_pymiesim_module(ModeField "single/interface/mode_field.cpp")
+
+add_pymiesim_module(Fibonacci "single/interface/mesh.cpp")
 
 add_pymiesim_module(SetsInterface "experiment/interface/sets.cpp")
 add_pymiesim_module(Experiment "experiment/interface/experiment.cpp")
@@ -91,6 +93,6 @@ endif()
 
 # Install targets
 install(
-    TARGETS Fibonacci SphereInterface CylinderInterface CoreShellInterface DetectorInterface Experiment SetsInterface
+    TARGETS SphereInterface Fibonacci CylinderInterface CoreShellInterface DetectorInterface Experiment SetsInterface
     DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 )
