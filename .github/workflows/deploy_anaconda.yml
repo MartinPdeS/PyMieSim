@@ -26,14 +26,16 @@ jobs:
           channels: conda-forge, martinpdes
           python-version: ${{ matrix.python-version }}
 
+
       - run: |
+          # Step 1: Install required tools
           conda install anaconda-client conda-build
           conda config --set anaconda_upload yes
           conda config --add channels conda-forge
           conda config --add channels martinpdes
 
-          conda build . --debug
-          ls
+          # Step 2: Run conda-build with debug
+          conda build . --debug -vv
 
 
       # - name: publish-to-conda
