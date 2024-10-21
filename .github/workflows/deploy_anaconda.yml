@@ -29,6 +29,7 @@ jobs:
       - name: Conda environment creation and activation
         env:
           CONDA_UPLOAD_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
+          USER: martinpdes
         run: |
           conda install anaconda-client conda-build
           conda config --set anaconda_upload yes
