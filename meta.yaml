@@ -1,10 +1,11 @@
 package:
   name: pymiesim
-  version: {{ GIT_DESCRIBE_TAG }}
+  version: 0.0.1
+  # version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: ../
-  git_url: https://github.com/MartinPdeS/PyMieSim.git
+  path: ./
+  # git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
   noarch: python
@@ -17,12 +18,14 @@ channels:
 
 requirements:
   host:
-    - python >=3.10
+    # - python >=3.10
+    - python {{PY_VER}}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
   run:
+    - python {{PY_VER}}*
     - martinpdes::pyoptik
     - numpy ~=1.26
     - pydantic ~=2.9.2
@@ -54,6 +57,7 @@ test:
   imports:
     - PyMieSim
   requires:
+    - python {{PY_VER}}*
     - pytest>=0.6
     - pytest-cov>=2.0
     - pytest-json-report==1.5.0

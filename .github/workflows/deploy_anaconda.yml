@@ -29,6 +29,9 @@ jobs:
       - run: |
           conda install anaconda-client conda-build
           conda config --set anaconda_upload yes
+          conda config --add channels conda-forge
+          conda config --add channels martinpdes
+
           conda build .
 
       # - name: publish-to-conda
