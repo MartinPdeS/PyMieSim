@@ -64,7 +64,7 @@ function(add_pymiesim_module name source)
     target_link_libraries(${name} PRIVATE ZBessel)
     target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})
 
-    install(TARGETS name LIBRARY DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+    install(TARGETS ${name} LIBRARY DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
 endfunction()
 
