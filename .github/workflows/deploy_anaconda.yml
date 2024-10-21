@@ -32,7 +32,7 @@ jobs:
           conda config --add channels conda-forge
           conda config --add channels martinpdes
 
-          conda build .
+          conda build . --debug
 
       # - name: publish-to-conda
       #   uses: maxibor/conda-package-publish-action@v1.1
