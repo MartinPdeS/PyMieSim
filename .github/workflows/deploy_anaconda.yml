@@ -28,12 +28,13 @@ jobs:
 
       - run: |
           conda install conda-build
+          conda build .
 
-      - name: publish-to-conda
-        uses: maxibor/conda-package-publish-action@v1.1
-        with:
-          subDir: 'conda'
-          AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
+      # - name: publish-to-conda
+      #   uses: maxibor/conda-package-publish-action@v1.1
+      #   with:
+      #     subDir: 'conda'
+      #     AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
 
       # - name: Build and upload the conda packages
       #   uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
