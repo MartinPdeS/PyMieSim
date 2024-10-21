@@ -94,5 +94,5 @@ endif()
 # Install targets
 install(
     TARGETS SphereInterface Fibonacci CylinderInterface CoreShellInterface DetectorInterface Experiment SetsInterface
-    DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
+    LIBRARY DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
 )
