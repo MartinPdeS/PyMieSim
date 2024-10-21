@@ -27,15 +27,65 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
 
-      - run: |
-          # Step 1: Install required tools
-          conda install anaconda-client conda-build
-          conda config --set anaconda_upload yes
-          conda config --add channels conda-forge
-          conda config --add channels martinpdes
 
-          # Step 2: Run conda-build with debug
+
+
+
+
+
+
+
+      - name: Run conda build with debug
+        run: |
           conda build . --debug -vv
+        continue-on-error: true  # This ensures the workflow continues even if this step fails
+
+      - name: List conda build directory
+        if: always()  # Always run this step, even if the previous step fails
+        run: |
+          echo "Listing contents of /usr/share/miniconda/conda-bld/"
+          ls -la /usr/share/miniconda/conda-bld/
+
+      - name: Check for .so files
+        if: always()  # Always run this step
+        run: |
+          echo "Checking if any .so files are present in work directory"
+          find /usr/share/miniconda/conda-bld/ -name "*.so" -exec ls -l {} \;
+
+      - name: List work directory structure
+        if: always()  # Always run this step
+        run: |
+          echo "Checking the work directory structure after build"
+          tree /usr/share/miniconda/conda-bld/pymiesim_*/work/ || true  # Use '|| true' to prevent errors if tree command fails
+
+      - name: Output environment variables
+        if: always()  # Always run this step
+        run: |
+          echo "Printing key environment variables"
+          echo "PREFIX: $PREFIX"
+          echo "BUILD_PREFIX: $BUILD_PREFIX"
+
+      - name: Upload logs as artifacts
+        if: always()  # Always run this step
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-logs
+          path: /usr/share/miniconda/conda-bld/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
       # - name: publish-to-conda
