@@ -46,6 +46,10 @@ about:
     - computational optics
     - simulation
 
+files:
+  include:
+    - "PyMieSim/binary/*.so"
+
 test:
   imports:
     - PyMieSim
