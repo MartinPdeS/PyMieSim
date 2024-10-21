@@ -26,84 +26,11 @@ jobs:
           channels: conda-forge, martinpdes
           python-version: ${{ matrix.python-version }}
 
-
-
-
-
-
-
-      - run: |
-          # Step 1: Install required tools
-          conda install anaconda-client conda-build
-          conda config --set anaconda_upload yes
-          conda config --add channels conda-forge
-          conda config --add channels martinpdes
-
-
-      - name: Run conda build with debug
-        run: |
-          conda build . --debug
-        continue-on-error: true  # This ensures the workflow continues even if this step fails
-
-      - name: List conda build directory
-        if: always()  # Always run this step, even if the previous step fails
-        run: |
-          echo "Listing contents of /usr/share/miniconda/conda-bld/"
-          ls -la /usr/share/miniconda/conda-bld/
-
-      - name: Check for .so files
-        if: always()  # Always run this step
-        run: |
-          echo "Checking if any .so files are present in work directory"
-          find /usr/share/miniconda/conda-bld/ -name "*.so" -exec ls -l {} \;
-
-      - name: List work directory structure
-        if: always()  # Always run this step
-        run: |
-          echo "Checking the work directory structure after build"
-          tree /usr/share/miniconda/conda-bld/pymiesim_*/work/ || true  # Use '|| true' to prevent errors if tree command fails
-
-      - name: Output environment variables
-        if: always()  # Always run this step
-        run: |
-          echo "Printing key environment variables"
-          echo "PREFIX: $PREFIX"
-          echo "BUILD_PREFIX: $BUILD_PREFIX"
-
-      - name: Upload logs as artifacts
-        if: always()  # Always run this step
-        uses: actions/upload-artifact@v3
+      - name: Build and upload the conda packages
+        uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
         with:
-          name: build-logs
-          path: /usr/share/miniconda/conda-bld/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      # - name: publish-to-conda
-      #   uses: maxibor/conda-package-publish-action@v1.1
-      #   with:
-      #     subDir: 'conda'
-      #     AnacondaToken: ${{ secrets.ANACONDA_TOKEN }}
-
-      # - name: Build and upload the conda packages
-      #   uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
-      #   with:
-      #     meta_yaml_dir: .
-      #     python-version: ${{ matrix.python-version }}
-      #     user: martinpdes
-      #     label: auto
-      #     token: ${{ secrets.ANACONDA_TOKEN }}
+          meta_yaml_dir: .
+          python-version: ${{ matrix.python-version }}
+          user: martinpdes
+          label: auto
+          token: ${{ secrets.ANACONDA_TOKEN }}
