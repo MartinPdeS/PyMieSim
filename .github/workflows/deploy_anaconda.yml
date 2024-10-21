@@ -27,11 +27,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Conda environment creation and activation
-        env:
-          CONDA_UPLOAD_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
-          USER: martinpdes
         run: |
           conda install anaconda-client conda-build
           conda config --add channels conda-forge
           conda config --add channels martinpdes
-          conda build . --token ${{ secrets.ANACONDA_TOKEN }} --user martinpdes
+          conda build . --token ${{ secrets.ANACONDA_API_TOKEN }} --user martinpdes
