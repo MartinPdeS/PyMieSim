@@ -36,11 +36,11 @@ jobs:
           conda config --add channels martinpdes
           conda build .
 
-      - name: Build and upload the conda packages
-        uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
-        with:
-          meta_yaml_dir: .
-          python-version: ${{ matrix.python-version }}
-          user: martinpdes
-          label: auto
-          token: ${{ secrets.ANACONDA_TOKEN }}
+      # - name: Build and upload the conda packages
+      #   uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
+      #   with:
+      #     meta_yaml_dir: .
+      #     python-version: ${{ matrix.python-version }}
+      #     user: martinpdes
+      #     label: auto
+      #     token: ${{ secrets.ANACONDA_TOKEN }}
