@@ -27,7 +27,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - run: |
-          conda install conda-build
+          conda install anaconda-client conda-build
+          conda config --set anaconda_upload yes
           conda build .
 
       # - name: publish-to-conda
