@@ -27,7 +27,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Conda environment creation and activation
-        with:
+        env:
           CONDA_UPLOAD_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
         run: |
           conda install anaconda-client conda-build
