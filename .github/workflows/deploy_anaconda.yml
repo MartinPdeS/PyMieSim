@@ -26,6 +26,9 @@ jobs:
           channels: conda-forge, martinpdes
           python-version: ${{ matrix.python-version }}
 
+      - run: |
+          conda install conda-build
+
       - name: Build and upload the conda packages
         uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
         with:
@@ -34,5 +37,3 @@ jobs:
           user: martinpdes
           label: auto
           token: ${{ secrets.ANACONDA_TOKEN }}
-      - run: |
-          conda install conda-build
