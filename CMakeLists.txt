@@ -63,11 +63,12 @@ function(add_pymiesim_module name source)
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
     target_link_libraries(${name} PRIVATE ZBessel)
     target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})
+
+    install(TARGETS name LIBRARY DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+
 endfunction()
 
 # Add modules
-
-
 add_pymiesim_module(SourceInterface "single/interface/source.cpp")
 add_pymiesim_module(DetectorInterface "single/interface/detector.cpp")
 add_pymiesim_module(SphereInterface "single/interface/sphere.cpp")
@@ -89,10 +90,3 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 else()
     target_link_libraries(Experiment PRIVATE "-Xpreprocessor -fopenmp")
 endif()
-
-
-# Install targets
-install(
-    TARGETS SphereInterface Fibonacci CylinderInterface CoreShellInterface DetectorInterface Experiment SetsInterface
-    LIBRARY DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}"
-)
