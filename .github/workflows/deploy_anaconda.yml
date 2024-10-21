@@ -42,7 +42,7 @@ jobs:
 
       - name: Run conda build with debug
         run: |
-          conda build . --debug -vv
+          conda build . --debug
         continue-on-error: true  # This ensures the workflow continues even if this step fails
 
       - name: List conda build directory
