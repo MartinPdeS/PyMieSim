@@ -17,8 +17,10 @@ channels:
 
 requirements:
   host:
-    # - python >=3.10
-    - python {{PY_VER}}*
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
