@@ -34,3 +34,5 @@ jobs:
           user: martinpdes
           label: auto
           token: ${{ secrets.ANACONDA_TOKEN }}
+      - run: |
+          conda install conda-build
