@@ -53,9 +53,6 @@ test:
     - pytest>=0.6
     - pytest-cov>=2.0
     - pytest-json-report==1.5.0
-    - mypy>=0.910
-    - flake8>=3.9
-    - tox>=3.24
     - coverage==7.6.1
   commands:
     - pytest --ignore=tests/gui
