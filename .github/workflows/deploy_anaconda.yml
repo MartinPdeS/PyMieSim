@@ -10,7 +10,7 @@ on:
 
 jobs:
   conda_deployment:
-    name: OS: ${{ matrix.os }} -- Python: ${{ matrix.python-version }}
+    name: OS [${{ matrix.os }}] -- Python [${{ matrix.python-version }}]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
