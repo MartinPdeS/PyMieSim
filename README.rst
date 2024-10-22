@@ -106,7 +106,7 @@ Here is an example of how to use PyMieSim for a simple Mie scattering simulation
 
     dataframe = experiment.get('Qsca')
 
-    dataframe.plot_data(x="wavelength")
+    dataframe.plot_data(x="source:wavelength")
 
 
 It produces the following figure which is equivalent to the one found on `wikipedia <https://en.wikipedia.org/wiki/Mie_scattering#/media/File:N4wiki.svg>`_.

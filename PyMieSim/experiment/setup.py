@@ -292,8 +292,6 @@ class Setup:
         if self.detector is not None:
             iterables.update(self.detector.mapping)
 
-        print(iterables.keys())
-
         if drop_unique_level:
             _iterables = {
                 k: v for k, v in iterables.items() if len(v) > 1

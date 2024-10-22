@@ -78,7 +78,17 @@ class BaseDetector():
     polarization_filter: Optional[Quantity] = numpy.nan * degree
     rotation: Optional[Quantity] = 90 * degree
 
-    @field_validator('polarization_filter', mode='before')
+    @field_validator('NA', 'sampling', mode='plain')
+    def _validate_NA(cls, value):
+        """
+        Ensures that diameter is Quantity objects with AU units.
+        """
+        if not isinstance(value, Quantity) or not value.check(AU):
+            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
+
+        return value
+
+    @field_validator('polarization_filter', mode='plain')
     def _validate_polarization(cls, value):
         """
         Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
@@ -87,22 +97,19 @@ class BaseDetector():
         if value is None:
             value = numpy.nan * degree
 
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
+        if not isinstance(value, Quantity) or not value.check(degree):
+            raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
         return value
 
-    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
+    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='plain')
     def _validate_angle_quantity(cls, value):
         """
         Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
         """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with angle units.")
-
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
+        if not isinstance(value, Quantity) or not value.check(degree):
+            raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
         return value
 

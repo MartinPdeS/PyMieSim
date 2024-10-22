@@ -97,7 +97,10 @@ addopts = [
     "-v", "-rA", "-rw", "--cov=PyMieSim", "--cov-report=html", "--cov-report=term"
 ]
 testpaths = [
-    "tests/single", "tests/experiments", "tests/validation", "tests/extra"
+    "tests/single",
+    "tests/experiments/*",
+    "tests/validation",
+    "tests/extra"
 ]
 
 

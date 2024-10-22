@@ -91,19 +91,16 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyOptik import Material
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-
+from PyMieSim.polarization import Linear
 
 res = Material.polystyren.compute_refractive_index([780e-9, 900e-9])
 
-print(res)
-
-dsa
 
 # %%
 # Defining the source to be employed.
 source = Gaussian(
     wavelength=numpy.linspace(780, 900, 200) * nanometer,
-    polarization=0 * degree,
+    polarization=Linear(element=[0, 40] * degree),
     optical_power=10e-3 * watt,
     NA=[0.2] * AU
 )

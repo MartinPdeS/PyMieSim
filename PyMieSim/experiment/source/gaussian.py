@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
 from pydantic.dataclasses import dataclass
-from pydantic import field_validator
-from PyMieSim.units import Quantity, meter
+from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource, config_dict
 
 
@@ -28,26 +26,6 @@ class Gaussian(BaseSource):
     """
     NA: Quantity
     optical_power: Quantity
-
-    @field_validator('wavelength', mode='before')
-    def _validate_length_quantity(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
-
-        return numpy.atleast_1d(value)
-
-    @field_validator('NA', 'optical_power', mode='before')
-    def _validate_array(cls, value):
-        """Ensure that arrays are properly converted to numpy arrays."""
-        if not isinstance(value, numpy.ndarray):
-            value = numpy.atleast_1d(value)
-
-        return value
 
     def _generate_binding_kwargs(self) -> None:
         """

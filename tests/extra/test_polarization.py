@@ -18,6 +18,14 @@ def test_init_linear():
     assert output is not None, 'Initialization of Linear polarization failed!'
 
 
+def test_fail_init_linear():
+    """
+    Test fail of initialization of Linear polarization.
+    """
+    with pytest.raises(ValueError):
+        Linear(element=[50, 20])
+
+
 def test_init_right_circular():
     """
     Test initialization of Right Circular polarization.
@@ -57,6 +65,12 @@ def test_addition_operator(polarization_0, polarization_1):
     Test the addition operator for different polarizations.
     """
     output = polarization_0 + polarization_1
+
+    print(output)
+
+    for rep in output:
+        print(rep)
+
     assert output is not None, 'Addition of polarizations failed!'
 
 

@@ -17,43 +17,38 @@ class BaseSource:
     @field_validator('NA', mode='before')
     def _validate_NA(cls, value):
         """
-        Ensures that diameter is Quantity objects with AU units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with AU units.")
-
-        if not value.check(AU):
-            raise ValueError(f"{value} must have AU units.")
+        Ensures that diameter is Quantity objects with AU units.
+        """
+        if not isinstance(value, Quantity) or not value.check(AU):
+            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
 
         return value
 
     @field_validator('optical_power', mode='before')
     def _validate_optical_power(cls, value):
         """
-        Ensures that diameter is Quantity objects with power units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with power units.")
-
-        if not value.check(watt):
-            raise ValueError(f"{value} must have power units (watt).")
+        Ensures that diameter is Quantity objects with power units.
+        """
+        if not isinstance(value, Quantity) or not value.check(watt):
+            raise ValueError(f"{value} must be a Quantity with power units [watt].")
 
         return value
 
     @field_validator('wavelength', mode='before')
     def _validate_wavelength(cls, value):
         """
-        Ensures that diameter is Quantity objects with length units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
+        Ensures that diameter is Quantity objects with length units.
+        """
+        if not isinstance(value, Quantity) or not value.check(meter):
+            raise ValueError(f"{value} must be a Quantity with meters units [meter].")
 
         return value
 
     @field_validator('polarization', mode='before')
     def _validate_polarization(cls, value):
         """
-        Ensures that polarization is well defined."""
+        Ensures that polarization is well defined.
+        """
         if isinstance(value, BasePolarization):
             return value
 

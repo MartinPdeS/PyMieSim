@@ -9,7 +9,7 @@ from typing import Union
 from dataclasses import fields
 from PyMieSim.polarization import BasePolarization, Linear
 from PyMieSim.binary.SetsInterface import CppSourceSet
-from PyMieSim.units import Quantity, meter
+from PyMieSim.units import Quantity, meter, watt, AU, degree
 
 config_dict = ConfigDict(
     kw_only=True,
@@ -41,17 +41,55 @@ class BaseSource:
 
         self.binding = CppSourceSet(**binding_kwargs)
 
-    @field_validator('wavelength', mode='before')
-    def _validate_length_quantity(cls, value):
+    @field_validator('wavelength', mode='plain')
+    def _validate_length(cls, value):
         """
-        Ensures that diameter is Quantity objects with length units."""
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
+        Ensures that diameter is Quantity objects with length units.
+        """
+        if not isinstance(value, Quantity) or not value.check(meter):
+            raise ValueError(f"{value} must be a Quantity with meters units [meter].")
 
         return numpy.atleast_1d(value)
+
+    @field_validator('optical_power', mode='plain')
+    def _validate_power(cls, value):
+        """
+        Ensure that arrays are properly converted to numpy arrays.
+        """
+        if not isinstance(value, Quantity) or not value.check(watt):
+            raise ValueError(f"{value} must be a Quantity with power units [watt].")
+
+        if not isinstance(value, numpy.ndarray):
+            value = numpy.atleast_1d(value)
+
+        return value
+
+    @field_validator('NA', mode='plain')
+    def _validate_arbitrary_units(cls, value):
+        """
+        Ensure that arrays are properly converted to numpy arrays.
+        """
+        if not isinstance(value, Quantity) or not value.check(AU):
+            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
+
+        if not isinstance(value, numpy.ndarray):
+            value = numpy.atleast_1d(value)
+
+        return value
+
+    @field_validator('polarization', mode='before')
+    def _validate_polarization(cls, value):
+        """
+        Ensures that polarization is well defined.
+        """
+        if (not isinstance(value, Quantity) or not value.check(degree)) and not isinstance(value, BasePolarization):
+            raise ValueError(f"{value} must be a Quantity with degree units [degree] or a Polarization instance.")
+
+        if isinstance(value, BasePolarization):
+            return value
+
+        if isinstance(value, Quantity):
+            return Linear(value)
 
     def _generate_mapping(self) -> None:
         """
