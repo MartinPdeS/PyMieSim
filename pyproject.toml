@@ -80,7 +80,7 @@ testing = [
 documentation = [
     "numpydoc==1.8.0",
     "sphinx>=5.1.1",
-    "sphinx-gallery==0.17.1",
+    "sphinx-gallery==0.18.0",
     "sphinx-rtd-theme==2.0.0",
     "pydata-sphinx-theme==0.15.4",
 ]
