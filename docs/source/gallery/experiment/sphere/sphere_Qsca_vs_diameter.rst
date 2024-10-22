@@ -25,7 +25,7 @@ Sphere: Qsca vs diameter
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-17
+.. GENERATED FROM PYTHON SOURCE LINES 9-16
 
 .. code-block:: python3
 
@@ -34,7 +34,6 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.scatterer import CoreShell
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyOptik import Material
     from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
@@ -44,11 +43,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
+.. GENERATED FROM PYTHON SOURCE LINES 17-18
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-25
+.. GENERATED FROM PYTHON SOURCE LINES 18-24
 
 .. code-block:: python3
 
@@ -65,11 +64,11 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Defining the ranging parameters for the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-36
+.. GENERATED FROM PYTHON SOURCE LINES 26-35
 
 .. code-block:: python3
 
@@ -89,11 +88,11 @@ Defining the ranging parameters for the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 36-37
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-40
+.. GENERATED FROM PYTHON SOURCE LINES 37-39
 
 .. code-block:: python3
 
@@ -106,11 +105,11 @@ Defining the experiment setup
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
+.. GENERATED FROM PYTHON SOURCE LINES 40-41
 
 Measuring the properties
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-44
+.. GENERATED FROM PYTHON SOURCE LINES 41-43
 
 .. code-block:: python3
 
@@ -129,15 +128,16 @@ Measuring the properties
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-46
+.. GENERATED FROM PYTHON SOURCE LINES 44-45
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-46
+.. GENERATED FROM PYTHON SOURCE LINES 45-46
 
 .. code-block:: python3
 
     dataframe.plot_data(x='scatterer:core_diameter')
+
 
 
 .. image-sg:: /gallery/experiment/sphere/images/sphx_glr_sphere_Qsca_vs_diameter_001.png
@@ -152,7 +152,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.714 seconds)
+   **Total running time of the script:** (0 minutes 0.651 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:

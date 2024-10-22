@@ -1,3 +1,5 @@
+.. _experiment_index:
+
 Experiment Module
 =================
 

@@ -1,5 +1,7 @@
 :orphan:
 
+.. _experiment_index:
+
 Experiment Module
 =================
 
@@ -186,23 +188,6 @@ Cylinder
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a funct...">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a funct...">
 
 .. only:: html
@@ -215,6 +200,23 @@ Cylinder
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Cylinder: B1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a funct...">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
     </div>
 
 
@@ -369,23 +371,6 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs index">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_index_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_index.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs index</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength">
 
 .. only:: html
@@ -398,6 +383,23 @@ Sphere
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs index">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_index_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_index.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs index</div>
     </div>
 
 
@@ -556,23 +558,6 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs diameter">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs diameter</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs wavelength">
 
 .. only:: html
@@ -585,6 +570,23 @@ Sphere
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs diameter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs diameter</div>
     </div>
 
 

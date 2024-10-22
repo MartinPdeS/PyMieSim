@@ -161,11 +161,12 @@ Measuring the coupling efficiency
 Plotting the results
 Visualizing how the coupling efficiency varies with the wavelength.
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-60
+.. GENERATED FROM PYTHON SOURCE LINES 60-61
 
 .. code-block:: python3
 
     dataframe.plot_data(x="source:wavelength", std='scatterer:diameter')
+
 
 
 .. image-sg:: /gallery/experiment/cylinder/images/sphx_glr_cylinder_coupling_vs_wavelength_001.png
@@ -180,7 +181,7 @@ Visualizing how the coupling efficiency varies with the wavelength.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.278 seconds)
+   **Total running time of the script:** (0 minutes 1.026 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py:

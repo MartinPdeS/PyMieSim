@@ -31,7 +31,7 @@ Importing the package: PyMieSim
 
 .. code-block:: python3
 
-    from PyMieSim.single.scatterer import Sphere, Cylinder
+    from PyMieSim.single.scatterer import Cylinder
     from PyMieSim.single.source import Gaussian
     from PyMieSim.units import nanometer, degree, watt, AU, RIU
     from PyOptik import Material
@@ -93,13 +93,13 @@ Defining the scatterer
     --------------  ----------------------
     size_parameter  1.2566370614359172
     area            300000.00000000006 µm²
-    g               0.3755740879948269
-    Qsca            0.023186330283700998
+    g               0.37557408799482683
+    Qsca            0.023186330283701
     Qext            0.25098397196276695
-    Qabs            0.22779764167906597
-    Csca            6955.899085110301 µm²
+    Qabs            0.22779764167906594
+    Csca            6955.899085110302 µm²
     Cext            75295.1915888301 µm²
-    Cabs            68339.29250371981 µm²
+    Cabs            68339.2925037198 µm²
 
 
 
@@ -107,7 +107,7 @@ Defining the scatterer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.031 seconds)
+   **Total running time of the script:** (0 minutes 0.036 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_properties.py:

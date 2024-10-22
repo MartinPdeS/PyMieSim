@@ -18,6 +18,9 @@ build
 *.whl
 perso/
 
+docs/source/gallery/**/*.md5
+docs/source/gallery/**/*.pickle
+docs/source/gallery/**/*.png
 developments
 
 CMakeCache.txt

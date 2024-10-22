@@ -58,7 +58,7 @@ Defining the source
         wavelength=1200 * nanometer,  # 1200 nm
         polarization=90 * degree,  # Polarization angle in degrees
         optical_power=1e-3 * watt,  # 1 milliwatt
-        NA=0.2 * AU # Numerical Aperture
+        NA=0.2 * AU  # Numerical Aperture
     )
 
 
@@ -158,11 +158,12 @@ Measuring the coupling efficiency
 Plotting the results
 Visualizing how the coupling efficiency varies with angular displacement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-57
+.. GENERATED FROM PYTHON SOURCE LINES 57-58
 
 .. code-block:: python3
 
     dataframe.plot_data(x="detector:phi_offset")
+
 
 
 .. image-sg:: /gallery/experiment/cylinder/images/sphx_glr_cylinder_coupling_vs_phioffset_001.png
@@ -177,7 +178,7 @@ Visualizing how the coupling efficiency varies with angular displacement.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.271 seconds)
+   **Total running time of the script:** (0 minutes 0.211 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:

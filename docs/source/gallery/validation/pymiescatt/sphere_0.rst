@@ -21,7 +21,7 @@
 Sphere Particles: 0
 ===================
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-77
+.. GENERATED FROM PYTHON SOURCE LINES 6-74
 
 
 
@@ -61,8 +61,6 @@ Sphere Particles: 0
     from PyMieSim.directories import validation_data_path
     from MPSPlots.styles import mps
 
-    # PyMieScatt import
-    import PyMieScatt as pms
 
     # Define parameters
     wavelength = 632.8 * nanometer  # Wavelength of the light source in meters
@@ -118,10 +116,9 @@ Sphere Particles: 0
     plt.show()
 
 
-
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.299 seconds)
+   **Total running time of the script:** (0 minutes 0.166 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_sphere_0.py:

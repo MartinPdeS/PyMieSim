@@ -73,7 +73,7 @@ Defining the scatterer
 .. code-block:: python3
 
     scatterer = Sphere(
-        diameter=1200 * nanometer,  # 1200 nm
+        diameter=500 * nanometer,  # 1200 nm
         source=source,
         property=1.4 * RIU,  # Refractive property of the scatterer
         medium_property=1.0 * RIU,  # Refractive property of the surrounding medium
@@ -107,11 +107,12 @@ Computing the data
 
 Plotting the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 .. code-block:: python3
 
     figure = data.plot()
+
 
 
 .. image-sg:: /gallery/single/scatterer/images/sphx_glr_spf_001.png
@@ -126,7 +127,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.068 seconds)
+   **Total running time of the script:** (0 minutes 0.083 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_spf.py:

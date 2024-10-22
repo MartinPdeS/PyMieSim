@@ -134,11 +134,12 @@ Measuring the properties
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-47
+.. GENERATED FROM PYTHON SOURCE LINES 47-48
 
 .. code-block:: python3
 
     dataframe.plot_data(x='scatterer:diameter')
+
 
 
 .. image-sg:: /gallery/experiment/sphere/images/sphx_glr_sphere_Qabs_vs_diameter_001.png
@@ -153,7 +154,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.227 seconds)
+   **Total running time of the script:** (0 minutes 0.259 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py:

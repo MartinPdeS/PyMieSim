@@ -27,7 +27,7 @@ This example demonstrates how to compute and visualize the coupling efficiency a
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-18
+.. GENERATED FROM PYTHON SOURCE LINES 10-17
 
 .. code-block:: python3
 
@@ -36,7 +36,6 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
-    from PyOptik import Material
     from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
@@ -46,11 +45,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-20
+.. GENERATED FROM PYTHON SOURCE LINES 18-19
 
 Defining the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-27
+.. GENERATED FROM PYTHON SOURCE LINES 19-26
 
 .. code-block:: python3
 
@@ -68,11 +67,11 @@ Defining the source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-29
+.. GENERATED FROM PYTHON SOURCE LINES 27-28
 
 Defining the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 28-35
 
 .. code-block:: python3
 
@@ -90,11 +89,11 @@ Defining the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 36-37
 
 Defining the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-46
+.. GENERATED FROM PYTHON SOURCE LINES 37-45
 
 .. code-block:: python3
 
@@ -113,11 +112,11 @@ Defining the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 Setting up the experiment
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 47-49
 
 .. code-block:: python3
 
@@ -130,11 +129,11 @@ Setting up the experiment
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-51
 
 Measuring the coupling efficiency
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-54
+.. GENERATED FROM PYTHON SOURCE LINES 51-53
 
 .. code-block:: python3
 
@@ -153,16 +152,17 @@ Measuring the coupling efficiency
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-57
+.. GENERATED FROM PYTHON SOURCE LINES 54-56
 
 Plotting the results
 Visualizing how the coupling efficiency varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-57
 
 .. code-block:: python3
 
     dataframe.plot_data(x="scatterer:diameter")
+
 
 
 .. image-sg:: /gallery/experiment/cylinder/images/sphx_glr_cylinder_coupling_vs_diameter_001.png
@@ -177,7 +177,7 @@ Visualizing how the coupling efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.305 seconds)
+   **Total running time of the script:** (0 minutes 0.281 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_diameter.py:

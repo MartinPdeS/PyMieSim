@@ -134,11 +134,12 @@ Note: The original request was for "a21"; assuming it meant A1, as "a21" might b
 Plotting the results
 Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-46
+.. GENERATED FROM PYTHON SOURCE LINES 46-47
 
 .. code-block:: python3
 
     dataframe.plot_data(x='scatterer:diameter')
+
 
 
 .. image-sg:: /gallery/experiment/cylinder/images/sphx_glr_cylinder_a11_vs_diameter_001.png
@@ -153,7 +154,7 @@ Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.278 seconds)
+   **Total running time of the script:** (0 minutes 1.226 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py:

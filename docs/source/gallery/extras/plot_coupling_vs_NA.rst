@@ -154,7 +154,7 @@ Measuring the properties
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-71
+.. GENERATED FROM PYTHON SOURCE LINES 54-72
 
 .. code-block:: python3
 
@@ -163,7 +163,7 @@ Plotting the results
     single_source = single.Gaussian(
         wavelength=950 * nanometer,
         polarization=0 * degree,
-        optical_power=1e-3 *watt,
+        optical_power=1e-3 * watt,
         NA=0.2 * AU
     )
 
@@ -176,6 +176,7 @@ Plotting the results
 
 
     print(single_scatterer.Qsca * 1e-3)
+
 
 
 .. image-sg:: /gallery/extras/images/sphx_glr_plot_coupling_vs_NA_001.png
@@ -196,7 +197,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.527 seconds)
+   **Total running time of the script:** (0 minutes 0.483 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_coupling_vs_NA.py:

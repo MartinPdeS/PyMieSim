@@ -25,7 +25,7 @@ Sphere: Coherent Goniometer
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-19
+.. GENERATED FROM PYTHON SOURCE LINES 10-18
 
 .. code-block:: python3
 
@@ -33,7 +33,6 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.detector import CoherentMode
     from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
-    from PyMieSim.units import degree
     from PyMieSim.experiment import Setup
     from PyOptik import Material
     from PyMieSim.units import nanometer, degree, watt, AU, RIU
@@ -45,11 +44,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-21
+.. GENERATED FROM PYTHON SOURCE LINES 19-20
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-27
+.. GENERATED FROM PYTHON SOURCE LINES 20-26
 
 .. code-block:: python3
 
@@ -66,11 +65,11 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-29
+.. GENERATED FROM PYTHON SOURCE LINES 27-28
 
 Defining the ranging parameters for the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 28-35
 
 .. code-block:: python3
 
@@ -88,11 +87,11 @@ Defining the ranging parameters for the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 36-37
 
 Defining the detector to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-48
+.. GENERATED FROM PYTHON SOURCE LINES 37-47
 
 .. code-block:: python3
 
@@ -113,11 +112,11 @@ Defining the detector to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 49-51
 
 .. code-block:: python3
 
@@ -130,11 +129,11 @@ Defining the experiment setup
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 Measuring the properties
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-58
+.. GENERATED FROM PYTHON SOURCE LINES 53-58
 
 .. code-block:: python3
 
@@ -143,6 +142,7 @@ Measuring the properties
     # # %%
     # # Plotting the results
     dataframe.plot_data(x="detector:phi_offset")
+
 
 
 .. image-sg:: /gallery/experiment/sphere/images/sphx_glr_sphere_coherent_coupling_vs_phioffset_001.png
@@ -163,7 +163,7 @@ Measuring the properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.649 seconds)
+   **Total running time of the script:** (0 minutes 0.618 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py:

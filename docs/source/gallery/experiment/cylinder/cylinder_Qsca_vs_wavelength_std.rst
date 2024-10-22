@@ -132,12 +132,11 @@ Measuring the properties
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-47
+.. GENERATED FROM PYTHON SOURCE LINES 45-46
 
 .. code-block:: python3
 
     dataframe.plot_data(x="source:wavelength", std='scatterer:diameter')
-
 
 
 
@@ -153,7 +152,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.639 seconds)
+   **Total running time of the script:** (0 minutes 0.555 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py:

@@ -1,5 +1,7 @@
 :orphan:
 
+.. _extras_index:
+
 Extras Examples
 ===============
 

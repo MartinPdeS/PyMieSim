@@ -136,11 +136,12 @@ If Qsca measurement is intended, ensure to use the correct measure object from P
 Plotting the results
 Visualizing how the scattering efficiency varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-48
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 .. code-block:: python3
 
     dataframe.plot_data(x='scatterer:diameter')
+
 
 
 .. image-sg:: /gallery/experiment/cylinder/images/sphx_glr_cylinder_Qabs_vs_diameter_001.png
@@ -155,7 +156,7 @@ Visualizing how the scattering efficiency varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.284 seconds)
+   **Total running time of the script:** (0 minutes 0.439 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py:

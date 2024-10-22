@@ -56,7 +56,7 @@ Goniometric Coupling vs S1 S2 Comparison
     from PyMieSim.experiment.scatterer import Sphere as ExperimentSphere
     from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
     from PyMieSim.experiment import Setup
-    from PyMieSim.units import degree, watt, AU, RIU, micrometer, Quantity
+    from PyMieSim.units import degree, watt, AU, RIU, micrometer
 
     from PyMieSim.single.scatterer import Sphere as SingleSphere
     from PyMieSim.single.source import Gaussian as SingleGaussian
@@ -140,7 +140,7 @@ Goniometric Coupling vs S1 S2 Comparison
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.338 seconds)
+   **Total running time of the script:** (0 minutes 0.239 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_internal_phase_function_detector.py:

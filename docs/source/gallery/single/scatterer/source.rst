@@ -67,11 +67,12 @@ Defining the source
 
 Plotting the source
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-24
+.. GENERATED FROM PYTHON SOURCE LINES 24-25
 
 .. code-block:: python3
 
     source.plot()
+
 
 
 .. image-sg:: /gallery/single/scatterer/images/sphx_glr_source_001.png
@@ -86,7 +87,7 @@ Plotting the source
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.118 seconds)
+   **Total running time of the script:** (0 minutes 1.194 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_source.py:

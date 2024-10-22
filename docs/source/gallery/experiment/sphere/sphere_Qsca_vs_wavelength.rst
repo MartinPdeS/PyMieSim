@@ -25,7 +25,7 @@ Sphere: Qsca vs wavelength
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-17
+.. GENERATED FROM PYTHON SOURCE LINES 9-16
 
 .. code-block:: python3
 
@@ -35,7 +35,6 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment import Setup
     from PyMieSim.units import nanometer, degree, watt, AU, RIU
-    from PyOptik import Material
 
 
 
@@ -44,11 +43,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
+.. GENERATED FROM PYTHON SOURCE LINES 17-18
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 19-25
+.. GENERATED FROM PYTHON SOURCE LINES 18-24
 
 .. code-block:: python3
 
@@ -65,11 +64,11 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-27
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Defining the ranging parameters for the scatterer distribution
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-34
+.. GENERATED FROM PYTHON SOURCE LINES 26-33
 
 .. code-block:: python3
 
@@ -87,11 +86,11 @@ Defining the ranging parameters for the scatterer distribution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-36
+.. GENERATED FROM PYTHON SOURCE LINES 34-35
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-38
+.. GENERATED FROM PYTHON SOURCE LINES 35-37
 
 .. code-block:: python3
 
@@ -104,11 +103,11 @@ Defining the experiment setup
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 Measuring the properties
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 39-41
 
 .. code-block:: python3
 
@@ -127,11 +126,11 @@ Measuring the properties
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-44
+.. GENERATED FROM PYTHON SOURCE LINES 42-43
 
 Plotting the results
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-45
+.. GENERATED FROM PYTHON SOURCE LINES 43-44
 
 .. code-block:: python3
 
@@ -151,7 +150,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.152 seconds)
+   **Total running time of the script:** (0 minutes 0.144 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_wavelength.py:

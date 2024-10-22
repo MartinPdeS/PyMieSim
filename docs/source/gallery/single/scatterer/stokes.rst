@@ -107,11 +107,12 @@ Computing the data
 
 Plotting the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-38
+.. GENERATED FROM PYTHON SOURCE LINES 38-39
 
 .. code-block:: python3
 
     figure = data.plot()
+
 
 
 .. image-sg:: /gallery/single/scatterer/images/sphx_glr_stokes_001.png
@@ -126,7 +127,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.129 seconds)
+   **Total running time of the script:** (0 minutes 0.173 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_stokes.py:

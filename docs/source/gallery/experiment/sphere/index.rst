@@ -30,23 +30,6 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs index">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_index_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_index.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs index</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength">
 
 .. only:: html
@@ -59,6 +42,23 @@ Sphere
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs index">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_index_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_index.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs index</div>
     </div>
 
 
@@ -217,23 +217,6 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs diameter">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs diameter</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs wavelength">
 
 .. only:: html
@@ -246,6 +229,23 @@ Sphere
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs wavelength</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs diameter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs diameter</div>
     </div>
 
 
@@ -275,8 +275,8 @@ Sphere
    :hidden:
 
    /gallery/experiment/sphere/sphere_b1_vs_diameter
-   /gallery/experiment/sphere/sphere_Qsca_vs_index
    /gallery/experiment/sphere/sphere_Qsca_vs_wavelength
+   /gallery/experiment/sphere/sphere_Qsca_vs_index
    /gallery/experiment/sphere/sphere_a1_vs_diameter
    /gallery/experiment/sphere/sphere_Qabs_vs_diameter
    /gallery/experiment/sphere/sphere_Qsca_vs_wavelength_std
@@ -286,7 +286,7 @@ Sphere
    /gallery/experiment/sphere/sphere_coupling_vs_phioffset
    /gallery/experiment/sphere/sphere_coherent_coupling_vs_sampling
    /gallery/experiment/sphere/sphere_coupling_vs_filter
-   /gallery/experiment/sphere/sphere_coupling_vs_diameter
    /gallery/experiment/sphere/sphere_coupling_vs_wavelength
+   /gallery/experiment/sphere/sphere_coupling_vs_diameter
    /gallery/experiment/sphere/sphere_coherent_coupling_vs_phioffset
 

@@ -56,7 +56,7 @@ Defining the source
         wavelength=[500, 1000, 1500] * nanometer,  # Array of wavelengths: 500 nm, 1000 nm, 1500 nm
         polarization=30 * degree,  # Polarization angle in degrees
         optical_power=1e-3 * watt,  # 1 milliwatt
-        NA=0.2 * AU # Numerical Aperture
+        NA=0.2 * AU  # Numerical Aperture
     )
 
 
@@ -133,11 +133,12 @@ Measuring the scattering efficiency (Qsca)
 Plotting the results
 Visualizing how the Qsca varies with the cylinder diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-45
+.. GENERATED FROM PYTHON SOURCE LINES 45-46
 
 .. code-block:: python3
 
     dataframe.plot_data(x='scatterer:diameter')
+
 
 
 .. image-sg:: /gallery/experiment/cylinder/images/sphx_glr_cylinder_Qsca_vs_diameter_001.png
@@ -152,7 +153,7 @@ Visualizing how the Qsca varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.539 seconds)
+   **Total running time of the script:** (0 minutes 0.526 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_diameter.py:

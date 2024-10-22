@@ -141,11 +141,12 @@ Here, we're interested in the a3 (first magnetic coefficient) parameter, which s
 Plotting the results
 Visualizing how the B1 (a3) parameter varies with the core diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-53
+.. GENERATED FROM PYTHON SOURCE LINES 53-54
 
 .. code-block:: python3
 
     dataframe.plot_data(x="scatterer:core_diameter")
+
 
 
 .. image-sg:: /gallery/experiment/coreshell/images/sphx_glr_coreshell_a1_vs_corediameter_001.png
@@ -160,7 +161,7 @@ Visualizing how the B1 (a3) parameter varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.172 seconds)
+   **Total running time of the script:** (0 minutes 0.193 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_a1_vs_corediameter.py:

@@ -138,11 +138,12 @@ For demonstrating the measurement of Qsca, a separate call to `experiment.get()`
 Plotting the results
 Visualizing how the backscattering efficiency varies with the core diameter.
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-50
+.. GENERATED FROM PYTHON SOURCE LINES 50-51
 
 .. code-block:: python3
 
     dataframe.plot_data(x="scatterer:core_diameter")
+
 
 
 .. image-sg:: /gallery/experiment/coreshell/images/sphx_glr_coreshell_Qback_vs_corediameter_001.png
@@ -157,7 +158,7 @@ Visualizing how the backscattering efficiency varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.263 seconds)
+   **Total running time of the script:** (0 minutes 0.229 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_Qback_vs_corediameter.py:

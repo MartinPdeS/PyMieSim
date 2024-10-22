@@ -30,23 +30,6 @@ Cylinder
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a funct...">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a funct...">
 
 .. only:: html
@@ -59,6 +42,23 @@ Cylinder
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Cylinder: B1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a funct...">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
     </div>
 
 
@@ -190,8 +190,8 @@ Cylinder
    :hidden:
 
    /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength_std
-   /gallery/experiment/cylinder/cylinder_a11_vs_diameter
    /gallery/experiment/cylinder/cylinder_b11_vs_diameter
+   /gallery/experiment/cylinder/cylinder_a11_vs_diameter
    /gallery/experiment/cylinder/cylinder_Qsca_vs_index
    /gallery/experiment/cylinder/cylinder_Qsca_vs_diameter
    /gallery/experiment/cylinder/cylinder_Qsca_vs_wavelength
