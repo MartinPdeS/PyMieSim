@@ -84,7 +84,6 @@ class Gaussian(BaseSource):
         # Display the scene
         scene.show()
 
-
     def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.

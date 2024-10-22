@@ -1,11 +1,9 @@
 from typing import Optional
 from PyOptik.units import ureg
-import pint
-pint.set_application_registry(ureg)
-
+import pint as _pint
 import pint_pandas as pint
 
-
+_pint.set_application_registry(ureg)
 
 
 # Define a list of base units to scale
@@ -67,7 +65,6 @@ def initialize_registry(ureg: Optional[object] = None):
     globals().update(common_units)
 
     globals()['ureg'] = ureg
-
 
 
 initialize_registry()

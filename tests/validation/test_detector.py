@@ -161,7 +161,7 @@ def test_detector_experiment_polarization_filter(source_experiment, scatterer_ex
         gamma_offset=0 * degree,
         phi_offset=90 * degree,
         polarization_filter=[0, 180] * degree,  # List of polarization filters
-        sampling=100 * AU # Sampling points for the simulation
+        sampling=100 * AU  # Sampling points for the simulation
     )
 
     # Setup the experiment with the scatterer, detector, and source
@@ -181,4 +181,4 @@ def test_detector_experiment_polarization_filter(source_experiment, scatterer_ex
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

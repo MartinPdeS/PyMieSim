@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from typing import Optional
 
+
 def plot_dataframe(
         dataframe: pd.DataFrame,
         x: str,
@@ -37,6 +38,7 @@ def plot_dataframe(
         plot_without_std(dataframe, ax, x, **kwargs)
 
     plt.show()
+
 
 def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
     """

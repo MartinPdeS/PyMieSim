@@ -11,6 +11,7 @@ from PyMieSim.special_functions import NA_to_angle
 from PyMieSim.units import radian
 from PyMieSim.single.detector.base import BaseDetector, config_dict
 
+
 @dataclass(config=config_dict)
 class CoherentMode(BaseDetector):
     """

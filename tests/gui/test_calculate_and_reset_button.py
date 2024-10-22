@@ -81,7 +81,6 @@ def test_in_all_combination_of_widgets(scatterer_tab, detector_tab, measure):
 
     root.destroy()
 
-if __name__ == "__main__":
-    pytest.main([__file__])
 
-# -
+if __name__ == "__main__":
+    pytest.main(["-W error", __file__])

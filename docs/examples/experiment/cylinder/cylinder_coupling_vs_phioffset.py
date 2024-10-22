@@ -21,7 +21,7 @@ source = Gaussian(
     wavelength=1200 * nanometer,  # 1200 nm
     polarization=90 * degree,  # Polarization angle in degrees
     optical_power=1e-3 * watt,  # 1 milliwatt
-    NA=0.2 * AU # Numerical Aperture
+    NA=0.2 * AU  # Numerical Aperture
 )
 
 # %%

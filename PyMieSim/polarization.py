@@ -10,6 +10,7 @@ config_dict = dict(
     arbitrary_types_allowed=True
 )
 
+
 class BasePolarization:
     """
     Base class for polarization types.

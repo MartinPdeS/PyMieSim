@@ -6,9 +6,8 @@ from PyOptik.material.base_class import BaseMaterial
 import numpy
 from typing import Optional
 from pydantic.dataclasses import dataclass
-from PyMieSim.units import Quantity, meter, RIU
+from PyMieSim.units import Quantity
 from PyMieSim.single.scatterer.base import BaseScatterer, config_dict
-
 
 
 @dataclass(config=config_dict, kw_only=True)

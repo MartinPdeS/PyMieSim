@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from typing import Optional
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from typing import Optional, Tuple
@@ -24,6 +23,7 @@ config_dict = dict(
     extra='forbid',
     arbitrary_types_allowed=True
 )
+
 
 @dataclass(config=config_dict)
 class BaseDetector():
@@ -106,7 +106,6 @@ class BaseDetector():
 
         return value
 
-
     def __post_init__(self):
         self.initialize()
 
@@ -171,7 +170,8 @@ class BaseDetector():
         """
         return Footprint(scatterer=scatterer, detector=self)
 
-    def plot(self,
+    def plot(
+            self,
             unit_size: Tuple[float, float] = (600, 600),
             background_color: str = 'black',
             show_axis_label: bool = False,
@@ -198,13 +198,6 @@ class BaseDetector():
         Returns:
             None: This method does not return a value. It displays the 3D plot.
         """
-        # Stack the mesh coordinates
-        coordinates = numpy.row_stack((
-            self.binding.mesh.x,
-            self.binding.mesh.y,
-            self.binding.mesh.z
-        ))
-
         # Create a 3D plotting scene with the specified window size and theme
         window_size = (unit_size[1], unit_size[0])
 
@@ -289,7 +282,6 @@ class BaseDetector():
         # Add a scalar bar to the scene for the real part of the field
         scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')
 
-
     def get_poynting_vector(self, scatterer: BaseScatterer, distance: Quantity = 1 * meter) -> float:
         r"""
         Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.
@@ -344,7 +336,7 @@ class BaseDetector():
 
         poynting = epsilon0 * c**2 * E_norm * B_norm
 
-        return poynting.to(watt/meter **2)
+        return poynting.to(watt/meter ** 2)
 
     def get_energy_flow(self, scatterer: BaseScatterer, distance: Quantity = 1 * meter) -> Quantity:
         r"""
