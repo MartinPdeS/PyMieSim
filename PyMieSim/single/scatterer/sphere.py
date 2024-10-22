@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyOptik.base_class import BaseMaterial
+from PyOptik.material.base_class import BaseMaterial
 
 import numpy
 from typing import Optional
 from pydantic.dataclasses import dataclass
-from PyMieSim.units import Quantity, meter, RIU
+from PyMieSim.units import Quantity
 from PyMieSim.single.scatterer.base import BaseScatterer, config_dict
-
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -68,11 +67,15 @@ class Sphere(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`a_n` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`a_n` coefficients.
         """
         return self.binding.an(max_order)
 
@@ -91,11 +94,15 @@ class Sphere(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`b_n` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`b_n` coefficients.
         """
         return self.binding.bn(max_order)
 
@@ -115,11 +122,15 @@ class Sphere(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`c_n` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`c_n` coefficients.
         """
         return self.binding.cn(max_order)
 
@@ -139,10 +150,14 @@ class Sphere(BaseScatterer):
 
         If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
 
-        Args:
-            max_order (Optional[int]): The maximum order of the coefficient. Default is 0.
+        Parameters
+        ----------
+        max_order : Optional[int])
+            The maximum order of the coefficient. Default is 0.
 
-        Returns:
-            numpy.ndarray: Array of :math:`d_n` coefficients.
+        Returns
+        -------
+        numpy.ndarray
+            Array of :math:`d_n` coefficients.
         """
         return self.binding.dn(max_order)

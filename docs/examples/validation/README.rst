@@ -1,3 +1,5 @@
+.. _validation_index:
+
 Validation Module
 =================
 

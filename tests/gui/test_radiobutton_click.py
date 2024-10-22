@@ -82,4 +82,4 @@ def test_detector_widgets() -> None:
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

@@ -3,29 +3,33 @@ package:
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: .
+  git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
-  script: |
-    {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vvv
-    # export PIP_NO_BUILD_ISOLATION=True
-    # export PIP_NO_INDEX=False
-    # export PIP_NO_DEPENDENCIES=False
+
+channels:
+  - conda-forge
+  - martinpdes
 
 requirements:
   host:
-    - python>=3.10
-    - scikit-build-core>=0.3.3
-    - pybind11
-    - build
-    - setuptools_scm[toml]>=8.0
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - python {{ PY_VER }}*
+    - scikit-build-core ~=0.3
+    - pybind11 ~=2.13
+    - python-build ~=1.2
+    - setuptools_scm[toml] ~=8.0
   run:
-    - numpy>=1.26.0
-    - pydantic==2.9.2
-    - pint-pandas
-    - PyOptik
-    - tabulate==0.9.0
+    - python {{PY_VER}}*
+    - martinpdes::pyoptik
+    - numpy ~=1.26
+    - pydantic ~=2.9.2
+    - pint-pandas ~=0.6
+    - tabulate ~=0.9
 
 about:
   home: https://github.com/MartinPdeS/PyMieSim
@@ -35,10 +39,6 @@ about:
   dev_url: https://github.com/MartinPdeS/PyMieSim
   doc_url: https://pymiesim.readthedocs.io
   license_file: LICENSE
-  platforms:
-    - linux-64
-    - osx-64
-    - win-64
   keywords:
     - optics
     - scattering
@@ -47,34 +47,24 @@ about:
     - physics
     - computational optics
     - simulation
-    - numpy
+
+files:
+  include:
+    - "PyMieSim/binary/*.so"
 
 test:
   imports:
     - PyMieSim
   requires:
+    - python {{PY_VER}}*
     - pytest>=0.6
     - pytest-cov>=2.0
     - pytest-json-report==1.5.0
-    - mypy>=0.910
-    - flake8>=3.9
-    - tox>=3.24
     - coverage==7.6.1
+  commands:
+    - pytest --ignore=tests/gui
   source_files:
     - tests
-  commands:
-    - pytest --ignore=tests/gui --ignore=tests/validation
-
-doc:
-  requires:
-    - numpydoc==1.8.0
-    - sphinx>=5.1.1
-    - sphinx-gallery==0.17.1
-    - sphinx-rtd-theme==2.0.0
-    - pydata-sphinx-theme==0.15.4
-  commands:
-    - sphinx-build -b html docs/source docs/build
-
 
 extra:
   recipe-maintainers:

@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from typing import Optional
 
+
 def plot_dataframe(
         dataframe: pd.DataFrame,
         x: str,
@@ -37,6 +38,7 @@ def plot_dataframe(
         plot_without_std(dataframe, ax, x, **kwargs)
 
     plt.show()
+
 
 def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
     """
@@ -130,7 +132,11 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, **kwargs) ->
             group = group.droplevel(groupby_levels)
             label = " : ".join(map(str, name))
 
-            ax.plot(group.index, group.squeeze(), label=label)
+            values = group.squeeze().values
+            if hasattr(values, 'quantity'):
+                ax.plot(group.index, values.quantity, label=label)
+            else:
+                ax.plot(group.index, values, label=label)
 
     else:
         name = dataframe.columns[0]
@@ -143,3 +149,5 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, **kwargs) ->
         )
 
     ax.legend(title=" : ".join(groupby_levels))
+
+    return ax

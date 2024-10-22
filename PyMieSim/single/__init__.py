@@ -6,6 +6,7 @@ import pyvista
 from typing import NoReturn, Any
 from MPSPlots.colormaps import blue_black_red
 
+
 def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red, show_axis_label: bool = True) -> NoReturn:
     """
     Plots a 3D visualization of a system of objects, each of which must have a `_add_to_3d_ax` method for adding itself to the scene.
@@ -30,7 +31,6 @@ def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red,
             raise AttributeError(f'Object {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method.')
         obj._add_to_3d_ax(scene=scene)
 
-
     if data is not None:
         if not hasattr(data, '_add_to_3d_ax'):
             raise AttributeError(f'Data {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method.')
@@ -44,4 +44,3 @@ def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red,
 
     # Display the scene
     scene.show()
-

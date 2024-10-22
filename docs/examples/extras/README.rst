@@ -1,3 +1,5 @@
+.. _extras_index:
+
 Extras Examples
 ===============
 

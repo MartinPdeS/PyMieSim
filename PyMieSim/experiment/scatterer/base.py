@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyOptik.base_class import BaseMaterial
+from PyOptik.material.base_class import BaseMaterial
 from pydantic import field_validator
 from typing import List
 from pydantic.dataclasses import dataclass
@@ -44,8 +44,7 @@ class BaseScatterer():
             assert value.check(RIU), f"{value} must be a Quantity with refractive index units (RIU)."
             return value
 
-
-        assert numpy.all([isinstance(p, BaseMaterial) for p in value] ), f"{value} must be either a refractive index quantity (RIU) or BaseMaterial."
+        assert numpy.all([isinstance(p, BaseMaterial) for p in value]), f"{value} must be either a refractive index quantity (RIU) or BaseMaterial."
 
         return value
 
@@ -60,7 +59,6 @@ class BaseScatterer():
             raise ValueError(f"{value} must be a Quantity with meters units.")
 
         return value
-
 
     def _assign_index_or_material(self, element: str, property: Quantity | BaseMaterial) -> tuple[Quantity | None, BaseMaterial | None]:
         """
@@ -106,7 +104,8 @@ class BaseScatterer():
 
         for attr in [f.name for f in fields(self) if f.name != 'source']:
             values = getattr(self, attr)
-            if values is None: continue
+            if values is None:
+                continue
 
             if hasattr(values, 'magnitude'):
                 self.mapping["scatterer:" + attr] = PintArray(values.magnitude, dtype=values.units)

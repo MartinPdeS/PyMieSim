@@ -13,7 +13,7 @@ from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere as ExperimentSphere
 from PyMieSim.experiment.source import Gaussian as ExperimentGaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import degree, watt, AU, RIU, micrometer, Quantity
+from PyMieSim.units import degree, watt, AU, RIU, micrometer
 
 from PyMieSim.single.scatterer import Sphere as SingleSphere
 from PyMieSim.single.source import Gaussian as SingleGaussian

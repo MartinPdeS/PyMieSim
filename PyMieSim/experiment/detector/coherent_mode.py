@@ -7,6 +7,7 @@ from typing import List, Union, Optional
 from PyMieSim.experiment.detector.base import BaseDetector, config_dict
 from PyMieSim.units import Quantity, degree
 
+
 @dataclass(config=config_dict)
 class CoherentMode(BaseDetector):
     """

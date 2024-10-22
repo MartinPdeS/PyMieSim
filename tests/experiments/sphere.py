@@ -72,6 +72,4 @@ def test_get_measure(mock_show, source, measure, property, medium_property):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
-
-# -
+    pytest.main(["-W error", __file__])

@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import Linear
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
+from PyMieSim.units import nanometer, degree, watt, AU
 
 
 def test_gaussian_initialization():
@@ -30,11 +30,12 @@ def test_gaussian_initialization():
 def gaussian_source():
     """Fixture to create a Gaussian source with predefined parameters."""
     return Gaussian(
-        optical_power=1* watt,
+        optical_power=1 * watt,
         NA=0.1 * AU,
         polarization=0 * degree,
         wavelength=1550 * nanometer
     )
+
 
 @patch('pyvista.Plotter.show')
 def test_gaussian_plotting(mock_show, gaussian_source):
@@ -42,5 +43,6 @@ def test_gaussian_plotting(mock_show, gaussian_source):
     gaussian_source.plot()
     mock_show.assert_called_once()
 
+
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])
