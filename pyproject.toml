@@ -51,7 +51,7 @@ classifiers = [
 
 dependencies = [
     "setuptools_scm[toml] ~=8.0",
-    "numpy ~=1.26",
+    "numpy >=1.26,<3.0",
     "pydantic ~=2.9.2",
     'pint-pandas ~=0.6',
     "PyOptik ~=1.8",
