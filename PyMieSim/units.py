@@ -1,8 +1,9 @@
 from typing import Optional
 from PyOptik.units import ureg
+import pint as _pint
 import pint_pandas as pint
 
-pint.set_application_registry(ureg)
+_pint.set_application_registry(ureg)
 
 
 # Define a list of base units to scale

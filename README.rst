@@ -18,8 +18,10 @@
      -
    * - Anaconda
      - |anaconda|
+     - |anaconda_download|
      -
-     -
+
+
 
 
 PyMieSim
@@ -288,3 +290,11 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
 .. |example_qsca| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png
     :width: 800
     :alt: Qsca vs diameter
+
+.. |anaconda| image:: https://anaconda.org/martinpdes/pymiesim/badges/version.svg
+   :alt: Anaconda version
+   :target: https://anaconda.org/martinpdes/pymiesim
+
+.. |anaconda_download| image:: https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/pymiesim
