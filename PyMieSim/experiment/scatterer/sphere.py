@@ -8,6 +8,7 @@ from PyOptik.material.base_class import BaseMaterial
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
 
+
 @dataclass(config=config_dict, kw_only=True)
 class Sphere(BaseScatterer):
     """

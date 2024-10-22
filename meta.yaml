@@ -3,11 +3,9 @@ package:
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
-  path: ../
   git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
@@ -17,12 +15,16 @@ channels:
 
 requirements:
   host:
-    - python >=3.10
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
   run:
+    - python {{PY_VER}}*
     - martinpdes::pyoptik
     - numpy ~=1.26
     - pydantic ~=2.9.2
@@ -46,10 +48,15 @@ about:
     - computational optics
     - simulation
 
+files:
+  include:
+    - "PyMieSim/binary/*.so"
+
 test:
   imports:
     - PyMieSim
   requires:
+    - python {{PY_VER}}*
     - pytest>=0.6
     - pytest-cov>=2.0
     - pytest-json-report==1.5.0

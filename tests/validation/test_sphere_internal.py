@@ -19,6 +19,7 @@ def gaussian_source():
         NA=0.3 * AU           # Numerical aperture
     )
 
+
 def test_Qsca_cross_section(gaussian_source):
     """
     Test the consistency between the scattering cross-section obtained directly
@@ -26,10 +27,10 @@ def test_Qsca_cross_section(gaussian_source):
     """
     # Define a spherical scatterer
     sphere = Sphere(
-        diameter=300 * nanometer,  # Diameter in meters (e.g., 300 nm)
-        property=1.4 * RIU,        # Refractive index of the sphere
-        medium_property=1.0 * RIU, # Medium index (e.g., air)
-        source=gaussian_source     # Associated light source
+        diameter=300 * nanometer,   # Diameter in meters (e.g., 300 nm)
+        property=1.4 * RIU,         # Refractive index of the sphere
+        medium_property=1.0 * RIU,  # Medium index (e.g., air)
+        source=gaussian_source      # Associated light source
     )
 
     # Calculate scattering cross-section using two different methods
@@ -104,4 +105,4 @@ def test_compare_sphere_coreshell_0(gaussian_source):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

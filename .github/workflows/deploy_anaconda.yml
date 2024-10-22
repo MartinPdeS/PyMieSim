@@ -1,4 +1,4 @@
-name: Deploy Conda Package
+name: Deploy to Conda
 
 on:
   push:
@@ -10,27 +10,26 @@ on:
 
 jobs:
   conda_deployment:
-    name: Conda deployment of package for platform ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    name: OS [${{ matrix.os }}]  Python [${{ matrix.python-version }}]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macOS-latest, ubuntu-latest, windows-latest]
-        python-version: ["3.11"]
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.11", "3.12"]
 
     steps:
       - uses: actions/checkout@v3
 
       - name: Conda environment creation and activation
-        uses: conda-incubator/setup-miniconda@v2
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          channels: conda-forge martinpdes
+          channels: conda-forge, martinpdes
+
           python-version: ${{ matrix.python-version }}
 
-      - name: Build and upload the conda packages
-        uses: uibcdf/action-build-and-upload-conda-packages@v1.3.0
-        with:
-          meta_yaml_dir: .
-          python-version: ${{ matrix.python-version }} # Values previously defined in `matrix`
-          user: uibcdf
-          label: auto
-          token: ${{ secrets.ANACONDA_TOKEN }} # Replace with the right name of your secret
+      - name: Conda environment creation and activation
+        run: |
+          conda install anaconda-client conda-build
+          conda config --add channels conda-forge
+          conda config --add channels martinpdes
+          conda build . --token ${{ secrets.ANACONDA_API_TOKEN }} --user martinpdes

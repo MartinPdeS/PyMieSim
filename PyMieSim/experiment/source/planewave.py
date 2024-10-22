@@ -7,6 +7,7 @@ from pydantic import field_validator
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource, config_dict
 
+
 @dataclass(config=config_dict)
 class PlaneWave(BaseSource):
     """

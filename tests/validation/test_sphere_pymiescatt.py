@@ -10,6 +10,7 @@ from PyMieSim.experiment import Setup
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 from PyMieSim.directories import validation_data_path
 
+
 @pytest.fixture
 def gaussian_source():
     return Gaussian(
@@ -19,10 +20,12 @@ def gaussian_source():
         NA=0.3 * AU           # Numerical aperture
     )
 
+
 @pytest.fixture
 def pymiescatt_dataframe():
     filename = validation_data_path / "pymiescatt/validation_sphere.csv"
     return pd.read_csv(filename)
+
 
 @pytest.mark.parametrize('measure',  ['Qext', 'Qsca', 'Qabs', 'g', 'Qpr'])
 def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
@@ -32,7 +35,6 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     Parameters:
         measure (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
-    wavelength = gaussian_source.wavelength
     index = (1.4 + 0.3j) * RIU
     diameters = np.geomspace(10, 6000, 800) * nanometer
     medium_indexes = [1.0] * RIU
@@ -61,4 +63,4 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

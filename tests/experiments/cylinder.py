@@ -33,6 +33,7 @@ planewave_source = PlaneWave(
 
 sources = [gaussian_source, planewave_source]
 
+
 @pytest.mark.parametrize('medium_property', medium_properties, ids=[f'Medium:{m}' for m in medium_properties])
 @pytest.mark.parametrize('source', sources, ids=[f'Source:{m.__class__.__name__}' for m in sources])
 @pytest.mark.parametrize('property', properties, ids=[f'Property:{m}' for m in properties])
@@ -67,6 +68,4 @@ def test_measure(measure, source, medium_property, property):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
-
-# -
+    pytest.main(["-W error", __file__])

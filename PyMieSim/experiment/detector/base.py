@@ -8,7 +8,7 @@ from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict, field_validator
 from PyMieSim.binary.SetsInterface import CppDetectorSet
 from PyMieSim.units import Quantity, radian, degree, AU
-from typing import Any, Tuple
+from typing import Tuple
 
 # Configuration dictionary for the Pydantic dataclass
 config_dict = ConfigDict(
@@ -17,6 +17,7 @@ config_dict = ConfigDict(
     extra='forbid',
     arbitrary_types_allowed=True
 )
+
 
 @dataclass(config=config_dict)
 class BaseDetector:

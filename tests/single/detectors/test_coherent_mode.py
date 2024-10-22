@@ -36,6 +36,7 @@ def scatterer(setup_source):
         medium_property=1.0 * RIU  # Refractive index of the medium
     )
 
+
 @patch('pyvista.Plotter.show')
 def test_lp_modes_plot(scatterer):
     """Test different LP, LG, and HG modes with varying rotations."""
@@ -71,6 +72,4 @@ def test_lp_modes(mode_number, scatterer):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
-
-# -
+    pytest.main(["-W error", __file__])

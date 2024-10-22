@@ -6,6 +6,7 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyOptik import Material
 
+
 @pytest.fixture
 def setup_simulation():
     # Define the source
@@ -32,6 +33,7 @@ def setup_simulation():
 
     return source, scatterer, detector
 
+
 def test_simulation_results(setup_simulation):
     source, scatterer, detector = setup_simulation
 
@@ -48,7 +50,7 @@ def test_simulation_results(setup_simulation):
     # Calculate scattered power
     scattered_power = Qsca * source.peak_intensity * scatterer.cross_section
 
-        # Check if the results are consistent
+    # Check if the results are consistent
     assert np.isclose(coupling, scattered_power, atol=0, rtol=1e-2), "Mismatch betweend scattered power: {scattered_power} and coupling calculation: {coupling}"
     assert np.isclose(coupling, energy_flow, atol=0, rtol=1e-1), f"Mismatch betweend energy flow: {energy_flow} and coupling calculation: {coupling}"
 
@@ -57,5 +59,6 @@ def test_simulation_results(setup_simulation):
     assert scattered_power > 0, "Scattered power should be a positive value."
     assert energy_flow > 0, "Energy flow should be a positive value."
 
-if __name__ == '__main__':
-    pytest.main([__file__])
+
+if __name__ == "__main__":
+    pytest.main(["-W error", __file__])

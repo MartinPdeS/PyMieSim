@@ -8,6 +8,7 @@ from math import sqrt
 import matplotlib.pyplot as plt
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
+
 @pytest.fixture
 def source():
     """
@@ -22,6 +23,7 @@ def source():
         optical_power=1 * watt,     # Optical power in arbitrary units
         NA=0.3 * AU               # Numerical Aperture
     )
+
 
 @pytest.fixture
 def scatterer(source):
@@ -41,6 +43,7 @@ def scatterer(source):
         property=sqrt(1.5) * RIU      # Refractive index of the scatterer
     )
 
+
 @pytest.fixture
 def detector():
     """
@@ -55,6 +58,7 @@ def detector():
         phi_offset=0 * degree,           # Phi offset in degrees
         polarization_filter=0 * degree   # Polarization filter angle in degrees
     )
+
 
 @patch('pyvista.Plotter.show')
 def test_plot_system(mock_show, source, scatterer, detector):
@@ -76,5 +80,6 @@ def test_plot_system(mock_show, source, scatterer, detector):
     # Ensure the show method was called exactly once
     mock_show.assert_called_once()
 
+
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

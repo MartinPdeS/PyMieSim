@@ -56,7 +56,7 @@ dataframe.plot_data(x='detector:NA')
 single_source = single.Gaussian(
     wavelength=950 * nanometer,
     polarization=0 * degree,
-    optical_power=1e-3 *watt,
+    optical_power=1e-3 * watt,
     NA=0.2 * AU
 )
 

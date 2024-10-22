@@ -18,6 +18,7 @@ config_dict = ConfigDict(
     arbitrary_types_allowed=True
 )
 
+
 @dataclass(config=config_dict)
 class BaseSource:
     """
@@ -64,13 +65,12 @@ class BaseSource:
         for attr in [f.name for f in fields(self) if f.name != 'source']:
             values = getattr(self, attr)
 
-            if values is None: continue
-
-            # attr = attr.replace('_', ' ').capitalize()
+            if values is None:
+                continue
 
             if hasattr(values, 'magnitude'):
                 magnitude = values.magnitude
-                units  = values.units
+                units = values.units
                 self.mapping["source:" + attr] = pint_pandas.PintArray(magnitude, dtype=units)
             else:
                 self.mapping["source:" + attr] = [repr(m) for m in values]
