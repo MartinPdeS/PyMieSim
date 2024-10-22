@@ -10,11 +10,11 @@ on:
 
 jobs:
   conda_deployment:
-    name: Conda deployment of package for platform ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    name: OS: ${{ matrix.os }} -- Python: ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latestm]
+        os: [ubuntu-latest, macos-latest]
         python-version: ["3.11"]
 
     steps:
