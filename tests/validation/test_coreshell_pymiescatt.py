@@ -10,6 +10,7 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 import pandas as pd
 from PyMieSim.directories import validation_data_path
 
+
 # Mapping of measurement types to PyMieScatt indices
 PYMIESCATT_MEASURES = {
     'Qext': 0,
@@ -21,6 +22,7 @@ PYMIESCATT_MEASURES = {
     'Qratio': 6
 }
 
+
 @pytest.fixture
 def gaussian_source():
     return Gaussian(
@@ -29,6 +31,7 @@ def gaussian_source():
         optical_power=1 * watt,  # Optical power in watts
         NA=0.3 * AU           # Numerical aperture
     )
+
 
 @pytest.fixture
 def pymiescatt_dataframe():
@@ -41,8 +44,10 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     """
     Test comparison between PyMieSim and PyMieScatt data for various scattering parameters.
 
-    Parameters:
-        measure (str): The type of measurement to compare (e.g., 'Qext', 'Qsca').
+    Parameters
+    ----------
+    measure : str
+        The type of measurement to compare (e.g., 'Qext', 'Qsca').
     """
     core_index = 1.4 + 0.3j * RIU
     core_index = 1.4 + 0.3j * RIU
@@ -77,4 +82,4 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

@@ -18,8 +18,6 @@ from PyMieSim.units import degree, watt, AU, RIU, nanometer
 from PyMieSim.directories import validation_data_path
 from MPSPlots.styles import mps
 
-# PyMieScatt import
-import PyMieScatt as pms
 
 # Define parameters
 wavelength = 632.8 * nanometer  # Wavelength of the light source in meters
@@ -73,4 +71,3 @@ ax.set(
 
 plt.legend()
 plt.show()
-

@@ -15,6 +15,7 @@ config_dict = ConfigDict(
     slots=True
 )
 
+
 @dataclass(config=config_dict)
 class FibonacciMesh:
     """
@@ -352,7 +353,6 @@ class FibonacciMesh:
         ]
 
         return numpy.array(parallel_projection), numpy.array(perpendicular_projection)
-
 
     def projection_HV_scalar(self) -> tuple:
         """

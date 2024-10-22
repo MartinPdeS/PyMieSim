@@ -19,6 +19,7 @@ config_dict = dict(
     extra='forbid'
 )
 
+
 @dataclass(config=config_dict, kw_only=True)
 class BaseRepresentation():
     """
@@ -154,7 +155,6 @@ class BaseRepresentation():
         scene.add_mesh(glyphs, color=color, opacity=opacity)
 
 
-
 @dataclass(config=config_dict, kw_only=True)
 class Stokes(BaseRepresentation):
     r"""
@@ -212,7 +212,8 @@ class Stokes(BaseRepresentation):
         self.U = (+2 * numpy.real(self.E_phi * self.E_theta.conjugate())) / intensity
         self.V = (-2 * numpy.imag(self.E_phi * self.E_theta.conjugate())) / intensity
 
-    def plot(self,
+    def plot(
+            self,
             unit_size: List[float] = (400, 400),
             background_color: str = 'white',
             show_edges: bool = False,
@@ -273,6 +274,7 @@ class Stokes(BaseRepresentation):
 
         scene.show()
 
+
 @dataclass(config=config_dict, kw_only=True)
 class FarField(BaseRepresentation):
     r"""
@@ -299,7 +301,8 @@ class FarField(BaseRepresentation):
         """
         return
 
-    def plot(self,
+    def plot(
+            self,
             unit_size: List[float] = (400, 400),
             background_color: str = 'white',
             show_edges: bool = False,
@@ -369,6 +372,7 @@ class FarField(BaseRepresentation):
 
         scene.show()
 
+
 @dataclass(config=config_dict, kw_only=True)
 class SPF(BaseRepresentation):
     r"""
@@ -396,7 +400,8 @@ class SPF(BaseRepresentation):
         """
         self.SPF = numpy.sqrt(numpy.abs(self.E_phi)**2 + numpy.abs(self.E_theta)**2)
 
-    def plot(self,
+    def plot(
+            self,
             unit_size: List[float] = (400, 400),
             background_color: str = 'white',
             show_edges: bool = False,
@@ -503,7 +508,6 @@ class SPF(BaseRepresentation):
         )
 
         return mapping
-
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -726,6 +730,3 @@ class Footprint():
             )
 
             plt.show()
-
-
-# -

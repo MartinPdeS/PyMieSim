@@ -9,6 +9,7 @@ from unittest.mock import patch
 import matplotlib.pyplot as plt
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
+
 @patch('matplotlib.pyplot.show')
 def test_sphere_plottings(mock_show_plt):
     """
@@ -36,10 +37,10 @@ def test_sphere_plottings(mock_show_plt):
 
     # Create a photodiode detector
     detector = Photodiode(
-        NA=0.1 * AU,                   # Numerical aperture
-        phi_offset=0 * degree,         # Azimuthal angle offset
-        gamma_offset=0 * degree,       # Polar angle offset
-        polarization_filter=0 * degree # Polarization filter angle
+        NA=0.1 * AU,                    # Numerical aperture
+        phi_offset=0 * degree,          # Azimuthal angle offset
+        gamma_offset=0 * degree,        # Polar angle offset
+        polarization_filter=0 * degree  # Polarization filter angle
     )
 
     # Retrieve the footprint data for the scatterer
@@ -55,4 +56,4 @@ def test_sphere_plottings(mock_show_plt):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

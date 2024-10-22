@@ -29,6 +29,7 @@ plotting_functions = [
     "get_far_field", "get_stokes", "get_spf", "get_s1s2",
 ]
 
+
 @pytest.fixture()
 def gaussian_source():
     return Gaussian(
@@ -37,7 +38,6 @@ def gaussian_source():
         optical_power=1 * watt,
         NA=0.3 * AU
     )
-
 
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
@@ -55,7 +55,6 @@ def test_cylinder_methods(method, property, medium_property, gaussian_source):
     _ = getattr(scatterer, method)()
 
     _ = getattr(scatterer, method)(max_order=3)
-
 
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
@@ -119,6 +118,4 @@ def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function,
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
-
-# -
+    pytest.main(["-W error", __file__])

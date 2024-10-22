@@ -3,7 +3,7 @@
 
 from pydantic import field_validator
 from PyMieSim.polarization import BasePolarization, Linear
-from PyMieSim.units import Quantity, watt, meter, degree, watt, AU
+from PyMieSim.units import Quantity, watt, meter, AU
 
 config_dict = dict(
     kw_only=True,
@@ -61,5 +61,3 @@ class BaseSource:
             return Linear(value)
 
         raise ValueError(f"{value} must be a Linear or a Quantity with degree units.")
-
-

@@ -7,12 +7,14 @@ from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
+
 # Reference values from Scott Prahl's Mie scattering database
 scott_prahl_values = {
     'Qsca': 1.1759,  # Scattering efficiency
     'Qext': 2.6257,  # Extinction efficiency
     'g': 0.80335,    # Asymmetry parameter
 }
+
 
 @pytest.mark.parametrize('measure_str', scott_prahl_values.keys(), ids=scott_prahl_values.keys())
 def test_validation_scott_prahl(measure_str):

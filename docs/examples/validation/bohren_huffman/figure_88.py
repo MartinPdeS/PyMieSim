@@ -20,12 +20,12 @@ theoretical_data = np.genfromtxt(f"{validation_data_path}/bohren_huffman/figure_
 
 # Define parameters
 wavelength = 632.8 * nanometer  # Wavelength of the source in meters
-polarization_values = [0, 90] * degree # Polarization values in degrees
+polarization_values = [0, 90] * degree  # Polarization values in degrees
 optical_power = 1e-3 * watt  # Optical power in watts
 NA = 0.2 * AU  # Numerical aperture
 diameters = np.geomspace(10, 6000, 800) * nanometer  # Diameters from 10 nm to 6 μm
-index = 1.55 * RIU # Refractive index of the cylinder
-medium_index = 1.335 * RIU # Refractive index of the medium
+index = 1.55 * RIU  # Refractive index of the cylinder
+medium_index = 1.335 * RIU  # Refractive index of the medium
 
 # Calculate the volume of the cylinders
 volumes = np.pi * (diameters / 2)**2

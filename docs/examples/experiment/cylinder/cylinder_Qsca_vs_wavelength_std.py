@@ -43,4 +43,3 @@ dataframe = experiment.get('Qsca')
 # %%
 # Plotting the results
 dataframe.plot_data(x="source:wavelength", std='scatterer:diameter')
-

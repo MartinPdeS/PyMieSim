@@ -173,8 +173,6 @@ def get_pymiescatt_coreshell_dataframe(
     return dataframe
 
 
-
-
 # Define sphere parameters
 sphere_params = [
     dict(

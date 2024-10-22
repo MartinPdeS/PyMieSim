@@ -53,5 +53,3 @@ class Cylinder(BaseScatterer):
         }
 
         self.binding = CppCylinderSet(**binding_kwargs)
-
-# -

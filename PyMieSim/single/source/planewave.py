@@ -73,7 +73,6 @@ class PlaneWave(BaseSource):
         # Display the scene
         scene.show()
 
-
     def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'red', opacity: float = 0.8) -> None:
         """
         Adds a 3D cone representation to the given PyVista plotting scene.
@@ -102,4 +101,3 @@ class PlaneWave(BaseSource):
 
         # Add the cone mesh to the scene
         scene.add_mesh(cylinder_mesh, color='blue', opacity=0.3)
-

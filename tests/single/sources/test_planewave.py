@@ -4,6 +4,7 @@ from PyMieSim.single.source import PlaneWave
 from PyMieSim.polarization import Linear
 from PyMieSim.units import nanometer, degree, watt
 
+
 def test_planewave_initialization():
     """Test the initialization of PlaneWave source with different polarization inputs."""
     # Test with Linear
@@ -32,11 +33,13 @@ def source():
         wavelength=1550 * nanometer
     )
 
+
 @patch('pyvista.Plotter.show')
 def test_plotting(mock_show, source):
     """Test the plot method of PlaneWave to ensure it calls the show method once."""
     source.plot()
     mock_show.assert_called_once()
 
+
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

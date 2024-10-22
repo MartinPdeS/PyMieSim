@@ -18,6 +18,7 @@ config_dict = dict(
     extra='forbid'
 )
 
+
 @dataclass(config=config_dict, kw_only=True)
 class BaseScatterer:
     """
@@ -277,7 +278,8 @@ class BaseScatterer:
         r"""
         Compute the far-field scattering pattern for the scatterer.
 
-        The far fields describe the behavior of the scattered electromagnetic waves at a large distance from the scatterer, where the waves can be approximated as planar. The computed far fields represent the scattered electric field components in the directions parallel and perpendicular to the plane of incidence.
+        The far fields describe the behavior of the scattered electromagnetic waves at a large distance from the scatterer, where the waves can be approximated as planar.
+        The computed far fields represent the scattered electric field components in the directions parallel and perpendicular to the plane of incidence.
 
         The far fields are computed as:
 
@@ -377,7 +379,8 @@ class BaseScatterer:
         r"""
         Compute the footprint of the scattered light coupling with the detector.
 
-        The footprint represents the spatial distribution of the scattered light as it couples with the detector. This is important for understanding how the scattered light interacts with the detector’s field of view and is influenced by both the scatterer’s properties and the detector configuration.
+        The footprint represents the spatial distribution of the scattered light as it couples with the detector.
+        This is important for understanding how the scattered light interacts with the detector’s field of view and is influenced by both the scatterer’s properties and the detector configuration.
 
         The footprint is computed using an inverse Fourier transform:
 

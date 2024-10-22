@@ -61,5 +61,6 @@ This test ensures that the `generate_figure` method, when called by the calculat
     assert mock_draw.call_count == 1, "mock_draw is not called by generate_figure"
     kwargs['root'].destroy()
 
+
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

@@ -7,7 +7,7 @@ This example demonstrates the computation of scattering properties using PyMieSi
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.single.scatterer import Sphere, Cylinder
+from PyMieSim.single.scatterer import Cylinder
 from PyMieSim.single.source import Gaussian
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 from PyOptik import Material

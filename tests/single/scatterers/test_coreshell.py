@@ -24,6 +24,7 @@ attributes = [
 
 plotting_functions = ["get_far_field", "get_stokes", "get_spf", "get_s1s2"]
 
+
 # Reusable fixture for Gaussian source
 @pytest.fixture()
 def gaussian_source():
@@ -33,6 +34,7 @@ def gaussian_source():
         optical_power=1 * watt,
         NA=0.3 * AU
     )
+
 
 # Parametrized test for methods
 @pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
@@ -53,6 +55,7 @@ def test_method(method, core_material, shell_material, medium_property, gaussian
     _ = getattr(scatterer, method)()
     _ = getattr(scatterer, method)(max_order=3)
 
+
 # Parametrized test for coupling
 @pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
 @pytest.mark.parametrize('shell_material', shell_property, ids=[f'Shell:{m}' for m in shell_property])
@@ -72,6 +75,7 @@ def test_coupling(core_material, shell_material, medium_property, gaussian_sourc
     coupling = detector.coupling(scatterer)
     assert coupling is not None
 
+
 # Parametrized test for attributes
 @pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
 @pytest.mark.parametrize('shell_material', shell_property, ids=[f'Shell:{m}' for m in shell_property])
@@ -90,6 +94,7 @@ def test_attribute(attribute, core_material, shell_material, medium_property, ga
     # Access and verify the attribute
     attr_value = getattr(scatterer, attribute)
     assert attr_value is not None
+
 
 # Parametrized test for plotting functions
 @pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
@@ -113,5 +118,6 @@ def test_plottings(mock_show_plt, mock_show_pyvista, plotting_function, core_mat
     data.plot()
     plt.close()
 
+
 if __name__ == "__main__":
-    pytest.main([__file__])
+    pytest.main(["-W error", __file__])

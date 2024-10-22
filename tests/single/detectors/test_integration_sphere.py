@@ -45,6 +45,4 @@ def test_photodiode_with_sampling(sampling, setup_scatterer):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
-
-# -
+    pytest.main(["-W error", __file__])

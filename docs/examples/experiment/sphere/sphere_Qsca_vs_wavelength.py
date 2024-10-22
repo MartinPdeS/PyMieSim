@@ -12,7 +12,6 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-from PyOptik import Material
 
 # %%
 # Defining the source to be employed.

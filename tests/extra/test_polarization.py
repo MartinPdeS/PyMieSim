@@ -9,6 +9,7 @@ from PyMieSim.experiment.source import Gaussian
 from PyMieSim.polarization import Linear, JonesVector, RightCircular, LeftCircular
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
+
 def test_init_linear():
     """
     Test initialization of Linear polarization.
@@ -87,7 +88,6 @@ def test_api(polarization_0, polarization_1):
     result = experiment.get('Qsca')
     assert result is not None, 'Experiment setup or measurement failed!'
 
-if __name__ == "__main__":
-    pytest.main([__file__])
 
-# -
+if __name__ == "__main__":
+    pytest.main(["-W error", __file__])

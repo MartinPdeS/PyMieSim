@@ -4,8 +4,9 @@
 from dataclasses import field
 from pydantic.dataclasses import dataclass
 from PyMieSim.units import Quantity, degree
-from typing import List, Tuple
+from typing import Tuple
 from PyMieSim.experiment.detector.base import BaseDetector, config_dict
+
 
 @dataclass(config=config_dict)
 class Photodiode(BaseDetector):
@@ -35,5 +36,5 @@ class Photodiode(BaseDetector):
     """
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)
-    mode_number: Tuple[str] = field(default_factory=lambda : ['NC00'], init=False)
+    mode_number: Tuple[str] = field(default_factory=lambda: ['NC00'], init=False)
     rotation: Quantity = field(default=(0,) * degree, init=False)

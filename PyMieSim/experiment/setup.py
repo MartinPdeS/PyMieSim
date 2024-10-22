@@ -214,8 +214,6 @@ class Setup:
             case _:
                 return AU  # Arbitrary units for other measures
 
-
-
     def _set_data(self, measure: str, dataframe: pd.DataFrame, array: numpy.ndarray, dtype: type, is_complex: bool, add_units: bool) -> None:
         """
         Sets the real and imaginary parts of a NumPy array as separate 'real' and 'imag' levels
@@ -304,7 +302,6 @@ class Setup:
             if len(_iterables) != 0:
                 iterables = _iterables
 
-
         # Create a MultiIndex from the iterables
         row_index = pd.MultiIndex.from_product(
             iterables.values(), names=iterables.keys()
@@ -316,7 +313,7 @@ class Setup:
                 names=['data', 'type']
             )
         else:
-            columns = pd.MultiIndex.from_product([measure], names=['data'] )
+            columns = pd.MultiIndex.from_product([measure], names=['data'])
 
         # Return an empty DataFrame with the generated MultiIndex
         df = pd.DataFrame(columns=columns, index=row_index)
@@ -324,5 +321,3 @@ class Setup:
         setattr(df.__class__, 'plot_data', plot_dataframe)
 
         return df
-
-# -

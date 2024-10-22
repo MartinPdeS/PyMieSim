@@ -59,7 +59,6 @@ def test_save_as_csv_button(mock_filepath, mock_save):
 
     root.destroy()
 
-if __name__ == "__main__":
-    pytest.main([__file__])
 
-# -
+if __name__ == "__main__":
+    pytest.main(["-W error", __file__])
