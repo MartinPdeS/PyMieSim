@@ -40,15 +40,12 @@ class BaseScatterer:
         self.set_binding()
 
     @field_validator('diameter', 'core_diameter', 'shell_widths', mode='plain')
-    def _validate_length_quantity(cls, value):
+    def _validate_length(cls, value):
         """
         Ensures that diameter is Quantity objects with length units.
         """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with meters units.")
-
-        if not value.check(meter):
-            raise ValueError(f"{value} must have length units (meters).")
+        if not isinstance(value, Quantity) or not value.check(meter):
+            raise ValueError(f"{value} must be a Quantity with meters units [meter].")
 
         return value
 

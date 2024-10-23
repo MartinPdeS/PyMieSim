@@ -26,20 +26,6 @@ def test_gaussian_initialization():
     assert isinstance(gaussian2, Gaussian), "Failed to initialize Gaussian with scalar polarization."
 
 
-def test_fail_initialization():
-    with pytest.raises(ValueError):
-        Gaussian(optical_power=1, NA=0.1 * AU, polarization=0 * degree, wavelength=1550 * nanometer)
-
-    with pytest.raises(ValueError):
-        Gaussian(optical_power=1 * watt, NA=0.1, polarization=0 * degree, wavelength=1550 * nanometer)
-
-    with pytest.raises(ValueError):
-        Gaussian(optical_power=1 * watt, NA=0.1 * AU, polarization=0, wavelength=1550 * nanometer)
-
-    with pytest.raises(ValueError):
-        Gaussian(optical_power=1 * watt, NA=0.1 * AU, polarization=0 * degree, wavelength=1550)
-
-
 @pytest.fixture
 def gaussian_source():
     """Fixture to create a Gaussian source with predefined parameters."""

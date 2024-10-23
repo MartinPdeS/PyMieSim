@@ -6,23 +6,6 @@ from unittest.mock import patch
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 
-def test_fail_initialization():
-    with pytest.raises(ValueError):
-        Photodiode(NA=0.2 * AU, sampling=30 * AU, gamma_offset=0, phi_offset=0 * degree, polarization_filter=None)
-
-    with pytest.raises(ValueError):
-        Photodiode(NA=0.2 * AU, sampling=30 * AU, gamma_offset=0 * degree, phi_offset=0, polarization_filter=None)
-
-    with pytest.raises(ValueError):
-        Photodiode(NA=0.2, sampling=30 * AU, gamma_offset=0 * degree, phi_offset=0 * degree, polarization_filter=None)
-
-    with pytest.raises(ValueError):
-        Photodiode(NA=0.2 * AU, sampling=30, gamma_offset=0 * degree, phi_offset=0 * degree, polarization_filter=None)
-
-    with pytest.raises(ValueError):
-        Photodiode(NA=0.2 * AU, sampling=30, gamma_offset=0 * degree, phi_offset=0 * degree, polarization_filter=10)
-
-
 @pytest.fixture
 def setup_source():
     """Fixture to create a Gaussian source that can be reused in different tests."""

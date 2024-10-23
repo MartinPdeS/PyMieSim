@@ -84,8 +84,8 @@ class BaseDetector:
                 raise ValueError(f'Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC')
         return mode_number
 
-    @field_validator('polarization_filter', mode='before')
-    def validate_polarization_filter(cls, value):
+    @field_validator('polarization_filter', mode='plain')
+    def validate_polarization(cls, value):
         """
         Validates the polarization filter. If not provided, defaults to NaN degrees.
         Ensures the value has angular units (degree or radian).
@@ -103,12 +103,12 @@ class BaseDetector:
         if value is None:
             value = np.nan * degree
 
-        if not value.check(degree):
+        if not isinstance(value, Quantity) or not value.check(degree):
             raise ValueError(f"{value} must have angle units (degree or radian).")
 
         return np.atleast_1d(value).astype(float)
 
-    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='before')
+    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='plain')
     def validate_angle_quantity(cls, value):
         """
         Ensures that angular quantities (gamma_offset, phi_offset, rotation) are correctly formatted as Quantities with angle units.
@@ -123,15 +123,12 @@ class BaseDetector:
         np.ndarray
             A NumPy array containing the validated and converted angle value.
         """
-        if not isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a Quantity with angle units.")
+        if not isinstance(value, Quantity) or not value.check(degree):
+            raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
-        if not value.check(degree):
-            raise ValueError(f"{value} must have angle units (degree or radian).")
+        return np.atleast_1d(value)
 
-        return np.atleast_1d(value).astype(float)
-
-    @field_validator('NA', 'sampling', 'mode_number', mode='before')
+    @field_validator('NA', 'sampling', mode='plain')
     def validate_au_quantity(cls, value):
         """
         Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
@@ -146,6 +143,9 @@ class BaseDetector:
         np.ndarray
             A NumPy array representing the validated input value.
         """
+        if not isinstance(value, Quantity) or not value.check(degree):
+            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
+
         if not isinstance(value, np.ndarray):
             value = np.atleast_1d(value)
 
