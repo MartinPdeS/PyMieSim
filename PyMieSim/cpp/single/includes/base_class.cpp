@@ -8,7 +8,7 @@
 #include "single/includes/fibonacci_mesh.cpp"
 
 typedef std::complex<double> complex128;
-
+#include <iostream>
 
 class BaseScatterer
 {
@@ -108,6 +108,7 @@ public:
 
         for (unsigned int idx=0; idx < full_size; idx++)
         {
+
             complex128 phi_field_point = propagator * S1[idx] * (source.jones_vector[0] * cos(theta[idx]) + source.jones_vector[1] * sin(theta[idx])),
             theta_field_point = propagator * S2[idx] * (source.jones_vector[0] * sin(theta[idx]) - source.jones_vector[1] * cos(theta[idx]));
 

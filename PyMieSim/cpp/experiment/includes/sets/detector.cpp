@@ -15,6 +15,7 @@ namespace DETECTOR
             std::vector<std::string> mode_numbers;
             std::vector<unsigned> sampling;
             std::vector<double> NA;
+            std::vector<double> cache_NA;
             std::vector<double> phi_offset;
             std::vector<double> gamma_offset;
             std::vector<double> polarization_filter;
@@ -27,13 +28,14 @@ namespace DETECTOR
             Set(const std::vector<std::string> &mode_numbers,
                 const std::vector<unsigned> &sampling,
                 const std::vector<double> &NA,
+                const std::vector<double> &cache_NA,
                 const std::vector<double> &phi_offset,
                 const std::vector<double> &gamma_offset,
                 const std::vector<double> &polarization_filter,
                 const std::vector<double> &rotation,
                 const bool &coherent,
                 const bool &mean_coupling)
-            : mode_numbers(mode_numbers), sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+            : mode_numbers(mode_numbers), sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
               {
                 update_shape();
@@ -45,6 +47,7 @@ namespace DETECTOR
                     mode_numbers.size(),
                     sampling.size(),
                     NA.size(),
+                    cache_NA.size(),
                     phi_offset.size(),
                     gamma_offset.size(),
                     polarization_filter.size(),
@@ -60,10 +63,11 @@ namespace DETECTOR
                     this->mode_numbers[indices[0]],
                     this->sampling[indices[1]],
                     this->NA[indices[2]],
-                    this->phi_offset[indices[3]],
-                    this->gamma_offset[indices[4]],
-                    this->polarization_filter[indices[5]],
-                    this->rotation[indices[6]],
+                    this->cache_NA[indices[3]],
+                    this->phi_offset[indices[4]],
+                    this->gamma_offset[indices[5]],
+                    this->polarization_filter[indices[6]],
+                    this->rotation[indices[7]],
                     this->coherent,
                     this->mean_coupling
                 );

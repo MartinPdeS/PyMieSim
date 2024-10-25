@@ -57,5 +57,10 @@ def test_photodiode_sampling(photodiode, setup_scatterer):
     assert footprint is not None, "Expected a valid footprint but got None."
 
 
+def test_fails_initialization():
+    with pytest.raises(ValueError):
+        Photodiode(NA=0.2 * AU, block_NA=0.3 * AU, gamma_offset=0 * degree, phi_offset=0 * degree)
+
+
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

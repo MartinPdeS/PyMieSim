@@ -50,42 +50,37 @@ double FibonacciMesh::NA2Angle(double NA) const {
         return asin(NA);
 
     if (NA >= 1.0)
-        return asin(NA-1.0) + PI/2.0;
+        return asin(NA-1.0) + PI / 2.0;
 
     return 1.0;
 }
-
 
 void FibonacciMesh::compute_mesh(){
     this->compute_properties();
 
     double golden_angle = PI * (3. - sqrt(5.));  // golden angle = 2.39996322972865332
 
-    for (size_t i = 0; i < true_number_of_sample; i++){
-        cartesian_coordinates.z[i] = 1 - (i / (double)( true_number_of_sample - 1) ) * 2 ;
-
+    for (size_t i = 0; i < this->sampling; i++){
+        double z = + cos(this->min_angle) - (2. * i) / (this->true_number_of_sample - 1);
+        cartesian_coordinates.z.push_back(z);
         double
             theta = golden_angle * i,
-            radius = sqrt(1 - cartesian_coordinates.z[i] * cartesian_coordinates.z[i]);
+            radius = sqrt(1 - z * z);
 
-        cartesian_coordinates.x[i] = cos(theta) * radius ;
-        cartesian_coordinates.y[i] = sin(theta) * radius ;
-
-        if (i == (size_t) sampling - 1)
-            break;
+        cartesian_coordinates.x.push_back( cos(theta) * radius );
+        cartesian_coordinates.y.push_back( sin(theta) * radius );
     }
 }
 
 void FibonacciMesh::compute_properties(){
     double
-        solid_angle = abs( 2. * PI * ( cos(max_angle) - 1. ) ),   //cos(0) =1
+        solid_angle = abs( 2. * PI * ( cos(max_angle) - 1. ) ),   //cos(0) = 1
         ratio = ( 4. * PI / solid_angle );
 
-    size_t _true_number_of_sample = (size_t) ( sampling * ratio );
+    this->true_number_of_sample = (size_t) ( this->sampling * ratio );
 
-    dOmega = 4. * PI / _true_number_of_sample;
-    Omega = dOmega * sampling ;
-    true_number_of_sample = _true_number_of_sample;
+    dOmega = 4. * PI / this->true_number_of_sample;
+    Omega = dOmega * this->sampling ;
 }
 
 std::vector<double> FibonacciMesh::get_principal_axis() const {
@@ -129,10 +124,10 @@ class FullSteradian : public BaseMesh
             dPhi   = 1.0 * PI / (sampling-1);
 
             for (size_t p=0; p<sampling; p++)
-                spherical_coordinates.phi[p]   = p * dPhi   - PI/2.0;
+                spherical_coordinates.phi.push_back(p * dPhi - PI / 2.0);
 
             for (size_t t=0; t<sampling; t++)
-                spherical_coordinates.theta[t] = t * dTheta - PI/1.0;
+                spherical_coordinates.theta.push_back(t * dTheta - PI / 1.0);
         }
 
         template<typename dtype>

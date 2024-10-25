@@ -72,8 +72,9 @@ class BaseDetector:
     rotation: Quantity
     mean_coupling: bool
     coherent: bool
+    cache_NA: Quantity = (0.,) * AU
     sampling: Optional[Quantity] = (200,) * AU
-    polarization_filter: Optional[Quantity | None] = (np.nan,) * degree
+    polarization_filter: Optional[Quantity | None] = None
 
     @field_validator('mode_number', mode='plain')
     def _validate_mode_number(cls, mode_number):
@@ -128,7 +129,7 @@ class BaseDetector:
 
         return np.atleast_1d(value)
 
-    @field_validator('NA', 'sampling', mode='plain')
+    @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
     def validate_au_quantity(cls, value):
         """
         Ensures that numerical values such as numerical aperture (NA) and sampling rate are correctly cast into NumPy arrays.
@@ -162,6 +163,7 @@ class BaseDetector:
             "mode_number": self.mode_number,
             "sampling": self.sampling,
             "NA": self.NA,
+            "cache_NA": self.cache_NA,
             "polarization_filter": self.polarization_filter.to(radian).magnitude if self.polarization_filter is not None else np.nan,
             "phi_offset": self.phi_offset.to(radian).magnitude,
             "gamma_offset": self.gamma_offset.to(radian).magnitude,
@@ -187,5 +189,5 @@ class BaseDetector:
         self.mapping = {}
         self.mapping.update({'detector:mode_number': self.mode_number})
 
-        for attr in ['NA', 'phi_offset', 'gamma_offset', 'sampling', 'rotation', 'polarization_filter']:
+        for attr in ['NA', 'cache_NA', 'phi_offset', 'gamma_offset', 'sampling', 'rotation', 'polarization_filter']:
             self.mapping["detector:" + attr] = PintArray(getattr(self, attr), dtype=getattr(self, attr).units)

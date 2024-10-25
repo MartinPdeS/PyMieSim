@@ -622,15 +622,17 @@ class Footprint():
         using a Fourier transform to project the far-field onto the detector plane.
 
         The computed footprint and the corresponding spatial coordinates are stored as attributes of the instance.
+
+        Warning: this function do not currently take account of the cache block on the detector.
         """
-        max_angle = self.detector.max_angle
+        max_angle = self.detector.binding.max_angle
         n_point = complex(self.sampling)
 
         phi, theta = numpy.mgrid[
             -max_angle: max_angle: n_point, 0: numpy.pi: n_point
         ]
 
-        max_distance_direct_space = 1 / (numpy.sin(self.detector.max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi))
+        max_distance_direct_space = 1 / (numpy.sin(max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi))
 
         x = y = numpy.linspace(-1, 1, self.sampling) * self.sampling / 2 * max_distance_direct_space / self.padding_factor
 

@@ -145,10 +145,11 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for DETECTOR::Set
     py::class_<DETECTOR::Set>(module, "CppDetectorSet")
-        .def(py::init<std::vector<std::string>, std::vector<unsigned>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, bool, bool>(),
+        .def(py::init<std::vector<std::string>, std::vector<unsigned>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, bool, bool>(),
              py::arg("mode_number"),
              py::arg("sampling"),
              py::arg("NA"),
+             py::arg("cache_NA"),
              py::arg("phi_offset"),
              py::arg("gamma_offset"),
              py::arg("polarization_filter"),

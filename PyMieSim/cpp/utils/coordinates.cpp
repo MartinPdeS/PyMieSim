@@ -101,7 +101,13 @@ struct VectorField {
 
 struct Spherical {
     std::vector<double> r, phi, theta;
-    explicit Spherical(const size_t sampling = 0) : r(sampling), phi(sampling), theta(sampling) {}
+    Spherical() = default;
+
+    explicit Spherical(const size_t sampling){
+        r.reserve(sampling);
+        phi.reserve(sampling);
+        theta.reserve(sampling);
+    }
 
     py::array_t<double> get_r_py() const { return vector_to_numpy_copy(r); }
     py::array_t<double> get_phi_py() const { return vector_to_numpy_copy(phi); }
@@ -110,7 +116,13 @@ struct Spherical {
 
 struct Cartesian {
     std::vector<double> x, y, z;
-    explicit Cartesian(size_t sampling = 0) : x(sampling), y(sampling), z(sampling) {}
+    Cartesian() = default;
+
+    explicit Cartesian(const size_t sampling){
+        x.reserve(sampling);
+        y.reserve(sampling);
+        z.reserve(sampling);
+    }
 
     void set_coordinates_py(const std::vector<double> &x_values, const std::vector<double> &y_values, const std::vector<double> &z_values) {
         x = x_values;
@@ -121,9 +133,9 @@ struct Cartesian {
     Spherical to_spherical() const {
         Spherical sph(x.size());
         for (size_t i = 0; i < x.size(); ++i) {
-            sph.r[i] = std::sqrt(x[i]*x[i] + y[i]*y[i] + z[i]*z[i]);
-            sph.theta[i] = std::atan2(y[i], x[i]);
-            sph.phi[i] = std::asin(z[i] / sph.r[i]);
+            sph.r.push_back(std::sqrt(x[i]*x[i] + y[i]*y[i] + z[i]*z[i]));
+            sph.theta.push_back(std::atan2(y[i], x[i]));
+            sph.phi.push_back(std::asin(z[i] / sph.r[i]));
         }
         return sph;
     }

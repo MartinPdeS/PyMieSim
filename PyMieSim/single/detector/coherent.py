@@ -7,7 +7,6 @@ from typing import Optional
 from pydantic.dataclasses import dataclass
 from PyMieSim.binary.DetectorInterface import BindedDetector
 from PyMieSim.binary import ModeField
-from PyMieSim.special_functions import NA_to_angle
 from PyMieSim.units import radian
 from PyMieSim.single.detector.base import BaseDetector, config_dict
 
@@ -24,6 +23,8 @@ class CoherentMode(BaseDetector):
         String representing the HG mode to be initialized (e.g., 'LP01', 'HG11', 'LG22').
     NA: float
         Numerical aperture of the imaging system.
+    cache_NA : Quantity
+        Numerical aperture of the detector cache.
     gamma_offset: float
         Angle [Degree] offset of the detector in the direction perpendicular to polarization.
     phi_offset: float
@@ -43,7 +44,7 @@ class CoherentMode(BaseDetector):
     coherent: bool = True
     mean_coupling: bool = True
 
-    def initialize(self):
+    def __post_init__(self):
         if self.NA > 0.3 or self.NA < 0:
             logging.warning(f"High values of NA: {self.NA} do not comply with the paraxial approximation. Values under 0.3 are preferred.")
 
@@ -66,12 +67,11 @@ class CoherentMode(BaseDetector):
                 self.x_number, self.y_number = self.number_0, self.number_1
                 self.cpp_mode_field_getter = ModeField.get_HG
 
-        self.max_angle = NA_to_angle(NA=self.NA.magnitude)
-
         self.binding = BindedDetector(
             mode_number=self.mode_number,
             sampling=self.sampling.magnitude,
             NA=self.NA.magnitude,
+            cache_NA=self.cache_NA.magnitude,
             phi_offset=self.phi_offset.to(radian).magnitude,
             gamma_offset=self.gamma_offset.to(radian).magnitude,
             polarization_filter=self.polarization_filter.to(radian).magnitude,

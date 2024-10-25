@@ -1,37 +1,23 @@
 #pragma once
 
+#define DEFINE_PY_OUTPUT(dtype, name) \
+    py::array_t<dtype> get_##name() const { return vector_to_numpy_copy(name);}
+
+
 #include <vector>
 #include <cmath>
 #include "utils/coordinates.cpp"
 #include "utils/utils.cpp"
 #include "utils/numpy_interface.cpp"
+#include "single/headers/base_mesh.h"
 
 namespace py = pybind11;
-
-
-class BaseMesh
-{
-    public:
-        size_t sampling;
-        double radius;
-        Spherical spherical_coordinates;
-        Cartesian cartesian_coordinates;
-
-    BaseMesh() = default;
-    ~BaseMesh(){}
-
-    BaseMesh(size_t sampling, double radius)
-    :   sampling(sampling),
-        radius(radius),
-        spherical_coordinates(sampling),
-        cartesian_coordinates(sampling){}
-
-};
 
 class FibonacciMesh : public BaseMesh {
     public:
         size_t true_number_of_sample = 0;
         double max_angle = 0.0;
+        double min_angle = 0.0;
         double phi_offset = 0.0;
         double gamma_offset = 0.0;
         double dOmega = 0.0;
@@ -51,8 +37,8 @@ class FibonacciMesh : public BaseMesh {
 
         FibonacciMesh() = default;
 
-        FibonacciMesh(int sampling, double max_angle, double phi_offset, double gamma_offset, double rotation, double radius = 1.0):
-            BaseMesh(sampling, radius), max_angle(max_angle), phi_offset(phi_offset), gamma_offset(gamma_offset) {
+        FibonacciMesh(int sampling, double max_angle, double min_angle, double phi_offset, double gamma_offset, double rotation, double radius = 1.0):
+            BaseMesh(sampling, radius), max_angle(max_angle), min_angle(min_angle), phi_offset(phi_offset), gamma_offset(gamma_offset) {
 
             this->compute_mesh();
             base_cartesian_coordinates = cartesian_coordinates;
@@ -82,21 +68,10 @@ class FibonacciMesh : public BaseMesh {
             return vector_to_numpy_copy(perpendicular_vector.data, {perpendicular_vector.sampling, 3});
         };
 
-        py::array_t<double> get_horizontal_parallel_projection() const {
-            return vector_to_numpy_copy(horizontal_parallel_projection);
-        };
-
-        py::array_t<double> get_vertical_parallel_projection() const {
-            return vector_to_numpy_copy(vertical_parallel_projection);
-        };
-
-        py::array_t<double> get_horizontal_perpendicular_projection() const {
-            return vector_to_numpy_copy(horizontal_perpendicular_projection);
-        };
-
-        py::array_t<double> get_vertical_perpendicular_projection() const {
-            return vector_to_numpy_copy(vertical_perpendicular_projection);
-        };
+        DEFINE_PY_OUTPUT(double, horizontal_parallel_projection)
+        DEFINE_PY_OUTPUT(double, vertical_parallel_projection)
+        DEFINE_PY_OUTPUT(double, horizontal_perpendicular_projection)
+        DEFINE_PY_OUTPUT(double, vertical_perpendicular_projection)
 
         py::array_t<double> get_x_py() const {
             return vector_to_numpy_copy(cartesian_coordinates.x);
@@ -109,7 +84,6 @@ class FibonacciMesh : public BaseMesh {
         py::array_t<double> get_z_py() const {
             return vector_to_numpy_copy(cartesian_coordinates.z);
         };
-
 
         py::array_t<double> get_base_x_py() const {
             return vector_to_numpy_copy(base_cartesian_coordinates.x);
@@ -134,7 +108,4 @@ class FibonacciMesh : public BaseMesh {
         py::array_t<double> get_theta_py() const {
             return vector_to_numpy_copy(spherical_coordinates.theta);
         };
-
-
 };
-

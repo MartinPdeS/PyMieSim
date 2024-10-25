@@ -29,7 +29,6 @@ pybind11::array_t<dtype> Experiment::get_sphere_data(Function function) const
     return vector_to_numpy(output_array, array_shape);
 }
 
-
 pybind11::array_t<double> Experiment::get_sphere_coupling() const
 {
     using namespace SPHERE;
@@ -37,6 +36,7 @@ pybind11::array_t<double> Experiment::get_sphere_coupling() const
     using namespace DETECTOR;
 
     std::vector<size_t> array_shape = concatenate_vector(sourceSet.shape, sphereSet.shape, detectorSet.shape);
+
     size_t full_size = get_vector_sigma(array_shape);
     std::vector<double> output_array(full_size);
 

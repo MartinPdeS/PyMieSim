@@ -74,11 +74,12 @@ class BaseDetector():
     phi_offset: Quantity
     mean_coupling: bool
     coherent: bool
+    cache_NA: Optional[Quantity] = 0. * AU
     sampling: Optional[Quantity] = 200 * AU
     polarization_filter: Optional[Quantity] = numpy.nan * degree
     rotation: Optional[Quantity] = 90 * degree
 
-    @field_validator('NA', 'sampling', mode='plain')
+    @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
     def _validate_NA(cls, value):
         """
         Ensures that diameter is Quantity objects with AU units.
@@ -112,9 +113,6 @@ class BaseDetector():
             raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
         return value
-
-    def __post_init__(self):
-        self.initialize()
 
     def coupling(self, scatterer: BaseScatterer) -> Quantity:
         r"""
@@ -267,7 +265,7 @@ class BaseDetector():
         mapping = scene.add_points(
             points,
             scalars=scalar_field,
-            point_size=30,
+            point_size=20,
             render_points_as_spheres=True,
             cmap=colormap,
             show_scalar_bar=False,
@@ -278,9 +276,9 @@ class BaseDetector():
         cone_mesh = pyvista.Cone(
             center=coordinates.mean(axis=1) / 2,
             direction=-coordinates.mean(axis=1),
-            height=numpy.cos(self.max_angle),
+            height=numpy.cos(self.binding.max_angle),
             resolution=100,
-            angle=numpy.rad2deg(self.max_angle)
+            angle=numpy.rad2deg(self.binding.max_angle)
         )
 
         # Add the cone mesh to the scene with specified color and opacity

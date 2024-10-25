@@ -6,7 +6,6 @@ from typing import Optional
 from dataclasses import field
 from pydantic.dataclasses import dataclass
 from PyMieSim.binary.DetectorInterface import BindedDetector
-from PyMieSim.special_functions import NA_to_angle
 from PyMieSim.units import Quantity, degree, AU, radian
 from PyMieSim.single.detector.base import BaseDetector, config_dict
 
@@ -21,6 +20,8 @@ class Photodiode(BaseDetector):
     ----------
     NA : Quantity
         Numerical aperture of the imaging system.
+    cache_NA : Quantity
+        Numerical aperture of the detector cache.
     gamma_offset : Quantity
         Angle [Degree] offset of the detector in the direction perpendicular to polarization.
     phi_offset : Quantity
@@ -36,12 +37,11 @@ class Photodiode(BaseDetector):
     mode_number: str = field(default='NC00', init=False)
 
     def __post_init__(self):
-        self.max_angle = NA_to_angle(NA=self.NA.magnitude)
-
         self.binding = BindedDetector(
             mode_number=self.mode_number,
             sampling=self.sampling.magnitude,
             NA=self.NA.magnitude,
+            cache_NA=self.cache_NA.magnitude,
             phi_offset=self.phi_offset.to(radian),
             gamma_offset=self.gamma_offset.to(radian),
             polarization_filter=self.polarization_filter.to(radian),

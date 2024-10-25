@@ -10,6 +10,7 @@
 #include <single/headers/LG_modes.h>
 #include <single/headers/HG_modes.h>
 #include <single/headers/LP_modes.h>
+#include <stdexcept>
 
 namespace DETECTOR {
 
@@ -19,6 +20,7 @@ namespace DETECTOR {
         public:
             size_t sampling = 0;
             double NA = 0.0;
+            double block_NA = 0.0;
             double phi_offset = 0.0;
             double gamma_offset = 0.0;
             double polarization_filter = 0.0;
@@ -26,21 +28,29 @@ namespace DETECTOR {
             bool coherent = true;
             bool mean_coupling = true;
             double max_angle = 0;
+            double min_angle = 0;
             std::vector<complex128> scalar_field;
             FibonacciMesh fibonacci_mesh;
             std::vector<size_t> indices;
 
             Detector() = default;
 
-            Detector(std::string mode_number, size_t sampling, double NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling) :
-            sampling(sampling), NA(NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-            rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
+            Detector(std::string mode_number, size_t sampling, double NA, double block_NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling)
+            :
+                sampling(sampling), NA(NA), block_NA(block_NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
+                rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
+                this->min_angle = NA2Angle(this->block_NA);
+
+                if (this->max_angle < this->min_angle)
+                    throw std::invalid_argument("Cache NA cannot be larger than detector NA.");
+
 
                 this->fibonacci_mesh = FibonacciMesh(
                     this->sampling,
                     this->max_angle,
+                    this->min_angle,
                     this->phi_offset,
                     this->gamma_offset,
                     this->rotation

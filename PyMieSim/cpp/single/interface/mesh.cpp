@@ -7,8 +7,9 @@ PYBIND11_MODULE(Fibonacci, module) {
     module.doc() = "Generalized Lorenz-Mie Theory (GLMT) C++ binding module for light scattering from a spherical scatterer";
 
     py::class_<FibonacciMesh>(module, "FibonacciMesh")
-        .def(py::init<int, double, double, double, double>(),
+        .def(py::init<int, double, double, double, double, double>(),
              py::arg("sampling"),
+             py::arg("min_angle") = 0.,
              py::arg("max_angle"),
              py::arg("phi_offset"),
              py::arg("rotation_angle"),
