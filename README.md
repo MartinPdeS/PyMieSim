@@ -5,7 +5,7 @@
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
 | PyMieSim/\_\_main\_\_.py                       |        9 |        9 |        2 |        0 |      0% |      2-15 |
-| PyMieSim/experiment/detector/base.py           |       57 |        0 |       16 |        1 |     99% |  149->152 |
+| PyMieSim/experiment/detector/base.py           |       58 |        0 |       16 |        1 |     99% |  150->153 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       11 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       11 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/base.py          |       47 |        2 |       14 |        2 |     93% |   92, 108 |
@@ -18,9 +18,9 @@
 | PyMieSim/experiment/source/planewave.py        |       15 |        0 |        2 |        1 |     94% |    32->35 |
 | PyMieSim/mesh.py                               |       94 |        8 |        8 |        2 |     90% |117, 129, 141, 153, 195->exit, 214->exit, 275-279 |
 | PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        87 |
-| PyMieSim/single/detector/base.py               |       78 |        1 |       10 |        1 |     98% |       229 |
-| PyMieSim/single/detector/coherent.py           |       41 |        2 |       10 |        3 |     90% |48, 53, 65->69 |
-| PyMieSim/single/detector/uncoherent.py         |       28 |        0 |        0 |        0 |    100% |           |
+| PyMieSim/single/detector/base.py               |       77 |        1 |       10 |        1 |     98% |       227 |
+| PyMieSim/single/detector/coherent.py           |       39 |        2 |       10 |        3 |     90% |49, 54, 66->70 |
+| PyMieSim/single/detector/uncoherent.py         |       26 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations.py             |      168 |        3 |       12 |        1 |     98% | 58, 62-63 |
 | PyMieSim/single/scatterer/base.py              |      101 |        1 |        8 |        1 |     98% |       451 |
 | PyMieSim/single/scatterer/core\_shell.py       |       25 |        0 |        0 |        0 |    100% |           |
@@ -31,7 +31,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1139** |   **39** |  **160** |   **22** | **95%** |           |
+|                                      **TOTAL** | **1135** |   **39** |  **160** |   **22** | **95%** |           |
 
 
 ## Setup coverage badge
