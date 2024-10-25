@@ -74,7 +74,7 @@ class BaseDetector:
     coherent: bool
     cache_NA: Quantity = (0.,) * AU
     sampling: Optional[Quantity] = (200,) * AU
-    polarization_filter: Optional[Quantity | None] = None
+    polarization_filter: Optional[Quantity | None] = (np.nan, ) * degree
 
     @field_validator('mode_number', mode='plain')
     def _validate_mode_number(cls, mode_number):
@@ -189,5 +189,5 @@ class BaseDetector:
         self.mapping = {}
         self.mapping.update({'detector:mode_number': self.mode_number})
 
-        for attr in ['NA', 'cache_NA', 'phi_offset', 'gamma_offset', 'sampling', 'rotation', 'polarization_filter']:
+        for attr in ['NA', 'sampling', 'cache_NA', 'phi_offset', 'gamma_offset', 'rotation', 'polarization_filter']:
             self.mapping["detector:" + attr] = PintArray(getattr(self, attr), dtype=getattr(self, attr).units)

@@ -8,10 +8,9 @@
 #include "single/includes/fibonacci_mesh.cpp"
 
 typedef std::complex<double> complex128;
-#include <iostream>
 
-class BaseScatterer
-{
+
+class BaseScatterer {
 public:
     size_t max_order;
     SOURCE::BaseSource source;

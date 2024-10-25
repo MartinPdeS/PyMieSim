@@ -40,17 +40,17 @@ pybind11::array_t<double> Experiment::get_sphere_coupling() const
     size_t full_size = get_vector_sigma(array_shape);
     std::vector<double> output_array(full_size);
 
-    #pragma omp parallel for
+    // #pragma omp parallel for
     for (size_t i = 0; i < sourceSet.total_combinations; ++i)
     {
         BaseSource source = sourceSet.get_source_by_index(i);
 
-        #pragma omp parallel for
+        // #pragma omp parallel for
         for (size_t j = 0; j < sphereSet.total_combinations; ++j)
         {
             Scatterer scatterer = sphereSet.get_scatterer_by_index(j, source);
 
-            #pragma omp parallel for
+            // #pragma omp parallel for
             for (size_t k = 0; k < detectorSet.total_combinations; ++k)
             {
                 Detector detector = detectorSet.get_detector_by_index(k);

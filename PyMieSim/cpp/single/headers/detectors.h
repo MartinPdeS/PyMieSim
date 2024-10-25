@@ -12,6 +12,7 @@
 #include <single/headers/LP_modes.h>
 #include <stdexcept>
 
+
 namespace DETECTOR {
 
     using complex128 = std::complex<double>;
@@ -20,7 +21,7 @@ namespace DETECTOR {
         public:
             size_t sampling = 0;
             double NA = 0.0;
-            double block_NA = 0.0;
+            double cache_NA = 0.0;
             double phi_offset = 0.0;
             double gamma_offset = 0.0;
             double polarization_filter = 0.0;
@@ -35,13 +36,13 @@ namespace DETECTOR {
 
             Detector() = default;
 
-            Detector(std::string mode_number, size_t sampling, double NA, double block_NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling)
+            Detector(std::string mode_number, size_t sampling, double NA, double cache_NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling)
             :
-                sampling(sampling), NA(NA), block_NA(block_NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
+                sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
                 rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
             {
                 this->max_angle = NA2Angle(this->NA);
-                this->min_angle = NA2Angle(this->block_NA);
+                this->min_angle = NA2Angle(this->cache_NA);
 
                 if (this->max_angle < this->min_angle)
                     throw std::invalid_argument("Cache NA cannot be larger than detector NA.");
