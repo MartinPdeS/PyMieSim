@@ -8,7 +8,7 @@
 | PyMieSim/experiment/detector/base.py           |       58 |        0 |       16 |        1 |     99% |  150->153 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       11 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       11 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/scatterer/base.py          |       47 |        2 |       14 |        2 |     93% |   92, 108 |
+| PyMieSim/experiment/scatterer/base.py          |       49 |        2 |       14 |        2 |     94% |   89, 105 |
 | PyMieSim/experiment/scatterer/core\_shell.py   |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       18 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/sphere.py        |       18 |        0 |        0 |        0 |    100% |           |
@@ -31,7 +31,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1135** |   **39** |  **160** |   **22** | **95%** |           |
+|                                      **TOTAL** | **1137** |   **39** |  **160** |   **22** | **95%** |           |
 
 
 ## Setup coverage badge
