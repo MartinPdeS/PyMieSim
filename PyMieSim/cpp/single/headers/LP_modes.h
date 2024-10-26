@@ -47,6 +47,8 @@ std::vector<complex128> get_LP_mode_field(
       double r = std::sqrt(x * x + y * y);
       double phi = std::atan2(y, x);
 
+      __asm__("mov %0, %%rbx" : : "r"(x));
+
       complex128 radial_part = bessel_J(azimuthal_number, r * rj0[radial_number - 1]);
 
       double azimuthal_part = std::cos(azimuthal_number * phi);
