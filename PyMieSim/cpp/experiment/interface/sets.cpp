@@ -14,7 +14,7 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for SPHERE::Set
     py::class_<SPHERE::Set>(module, "CppSphereSet")
-        .def(py::init<std::vector<double>, ScattererProperties, MediumProperties>(),
+        .def(py::init<const std::vector<double>&, const ScattererProperties&, const MediumProperties&>(),
             py::arg("diameter"),
             py::arg("scatterer_properties"),
             py::arg("medium_properties"),
@@ -23,7 +23,7 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for CYLINDER::Set
     py::class_<CYLINDER::Set>(module, "CppCylinderSet")
-        .def(py::init<std::vector<double>, ScattererProperties, MediumProperties>(),
+        .def(py::init<const std::vector<double>&, const ScattererProperties&, const MediumProperties&>(),
             py::arg("diameter"),
             py::arg("scatterer_properties"),
             py::arg("medium_properties"),
@@ -32,7 +32,7 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for CORESHELL::Set
     py::class_<CORESHELL::Set>(module, "CppCoreShellSet")
-        .def(py::init<std::vector<double>, std::vector<double>, ScattererProperties, ScattererProperties, MediumProperties>(),
+        .def(py::init<const std::vector<double>&, const std::vector<double>&, const ScattererProperties&, const ScattererProperties&, const MediumProperties&>(),
             py::arg("core_diameter"),
             py::arg("shell_width"),
             py::arg("core_properties"),
@@ -43,13 +43,13 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for SOURCE::Set
     py::class_<SOURCE::Set>(module, "CppSourceSet")
-        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>, std::vector<double>>(),
+        .def(py::init<const std::vector<double>&, const std::vector<std::vector<complex128>>&, const std::vector<double>&, const std::vector<double>&>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
             py::arg("NA"),
             py::arg("optical_power"),
             "Initializes a gaussian source set with specific wavelengths, Jones vectors, and amplitudes.")
-        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>>(),
+        .def(py::init<const std::vector<double>&, const std::vector<std::vector<complex128>>&, const std::vector<double>&>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
             py::arg("amplitude"),
@@ -57,7 +57,7 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for DETECTOR::Set
     py::class_<DETECTOR::Set>(module, "CppDetectorSet")
-        .def(py::init<std::vector<std::string>, std::vector<unsigned>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, std::vector<double>, bool, bool>(),
+        .def(py::init<const std::vector<std::string>&, const std::vector<unsigned>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, bool, bool>(),
              py::arg("mode_number"),
              py::arg("sampling"),
              py::arg("NA"),

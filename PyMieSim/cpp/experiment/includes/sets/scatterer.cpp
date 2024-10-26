@@ -22,10 +22,7 @@ namespace SPHERE {
 
         Set() = default;
 
-        Set(
-            const std::vector<double>& diameter,
-            const ScattererProperties& property,
-            const MediumProperties& medium_property)
+        Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property)
             : diameter(diameter), property(property), medium(medium_property)
             {
                 update_shape();
@@ -40,7 +37,7 @@ namespace SPHERE {
             };
         }
 
-        Scatterer get_scatterer_by_index(size_t flat_index, SOURCE::BaseSource& source) const {
+        Scatterer get_scatterer_by_index(size_t flat_index, const SOURCE::BaseSource& source) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
             Scatterer scatterer(
@@ -67,10 +64,7 @@ namespace CYLINDER {
 
 
         Set() = default;
-        Set(
-            const std::vector<double>& diameter,
-            const ScattererProperties& property,
-            const MediumProperties& medium_property)
+        Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property)
             : diameter(diameter), property(property), medium(medium_property)
             {
                 update_shape();
@@ -85,7 +79,7 @@ namespace CYLINDER {
             };
         }
 
-        Scatterer get_scatterer_by_index(size_t flat_index, SOURCE::BaseSource& source) const {
+        Scatterer get_scatterer_by_index(size_t flat_index, const SOURCE::BaseSource& source) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
             Scatterer scatterer(
