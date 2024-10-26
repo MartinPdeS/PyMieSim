@@ -30,28 +30,25 @@ std::vector<complex128> get_LP_mode_field(
          y_coords[i] /= max_norm;
       }
    }
-   std::vector<double> rj0, rj1, ry0, ry1;
 
-   rj0.reserve(radial_number);
-   rj1.reserve(radial_number);
-   ry0.reserve(radial_number);
-   ry1.reserve(radial_number);
+   // double rj0[radial_number], rj1[radial_number], ry0[radial_number], ry1[radial_number];
+   std::vector<double> rj0(radial_number), rj1(radial_number), ry0(radial_number), ry1(radial_number);
 
    bessel_zeros(azimuthal_number, radial_number, &rj0[0], &rj1[0], &ry0[0], &ry1[0]);
 
+   double x, y, r, phi, azimuthal_part;
+
    for (size_t i = 0; i < x_coords.size(); ++i)
    {
-      double x = x_coords[i];
-      double y = y_coords[i];
+      x = x_coords[i];
+      y = y_coords[i];
 
-      double r = std::sqrt(x * x + y * y);
-      double phi = std::atan2(y, x);
+      r = std::sqrt(x * x + y * y);
+      phi = std::atan2(y, x);
 
-      __asm__("mov %0, %%rbx" : : "r"(x));
+      complex128 radial_part = bessel_J(azimuthal_number, r * rj0[radial_number-1]);
 
-      complex128 radial_part = bessel_J(azimuthal_number, r * rj0[radial_number - 1]);
-
-      double azimuthal_part = std::cos(azimuthal_number * phi);
+      azimuthal_part = std::cos(azimuthal_number * phi);
 
       field[i] = radial_part * azimuthal_part;
    }
