@@ -9,7 +9,7 @@ from dataclasses import fields
 from pydantic import ConfigDict
 from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
-from PyMieSim.binary.ScattererPropertiesInterface import CppScattererProperties
+from PyMieSim.binary.ScattererPropertiesInterface import CppScattererProperties, CppMediumProperties
 
 import numpy
 from PyMieSim.experiment.source.base import BaseSource
@@ -61,7 +61,7 @@ class BaseScatterer():
 
         return value
 
-    def _assign_index_or_material(self, element: str, property: Quantity | BaseMaterial) -> tuple[Quantity | None, BaseMaterial | None]:
+    def _add_properties(self, name: str, properties: Quantity | BaseMaterial) -> None:
         """
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
@@ -71,25 +71,19 @@ class BaseScatterer():
         property : Quantity or BaseMaterial
             The core property to be assigned, which can either be a refractive index (Quantity) or a material (BaseMaterial).
 
-        Returns
-        -------
-        tuple[Quantity | None, BaseMaterial | None]
-            A tuple where the first element is the refractive index (Quantity) if provided, otherwise None.
-            The second element is the material (BaseMaterial) if provided, otherwise None.
-
         Raises
         ------
         ValueError:
             If the provided property is neither a Quantity (refractive index) nor a BaseMaterial.
         """
-        if all(isinstance(item, Quantity) for item in property):
-            self.binding_kwargs[f'{element}index'] = property
-            self.binding_kwargs[element[:-1]] = CppScattererProperties(index_properties=property)
+        CPPClass = CppMediumProperties if name == 'medium' else CppScattererProperties
 
-        elif all(isinstance(item, BaseMaterial) for item in property):
-            eval_index = numpy.asarray([m.compute_refractive_index(self.source.wavelength.to_base_units().magnitude) for m in property])
-            self.binding_kwargs[f'{element}material'] = eval_index
-            self.binding_kwargs[element[:-1]] = CppScattererProperties(material_properties=eval_index)
+        if all(isinstance(item, Quantity) for item in properties):
+            self.binding_kwargs[f'{name}_properties'] = CPPClass(index_properties=properties.magnitude)
+
+        elif all(isinstance(item, BaseMaterial) for item in properties):
+            eval_index = numpy.asarray([m.compute_refractive_index(self.source.wavelength.to_base_units().magnitude) for m in properties])
+            self.binding_kwargs[f'{name}_properties'] = CPPClass(material_properties=eval_index)
 
         else:
             raise TypeError("All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both.")

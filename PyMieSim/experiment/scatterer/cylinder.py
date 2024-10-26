@@ -45,8 +45,9 @@ class Cylinder(BaseScatterer):
 
         self.binding_kwargs = dict(diameter=self.diameter)
 
-        self._assign_index_or_material(element='', property=self.property)
-        self._assign_index_or_material(element='medium_', property=self.medium_property)
+        self._add_properties(name='medium', properties=self.medium_property)
+
+        self._add_properties(name='scatterer', properties=self.property)
 
         binding_kwargs = {
             k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()

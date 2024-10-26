@@ -7,29 +7,69 @@
 typedef std::complex<double> complex128;
 
 class ScattererProperties {
-    public:
-        std::vector<complex128> c_index_properties;
-        std::vector<std::vector<complex128>> c_material_properties;
-        std::vector<double> d_index_properties;
-        std::vector<std::vector<double>> d_material_properties;
+    private:
+        std::optional<std::vector<complex128>> index_properties;
+        std::optional<std::vector<std::vector<complex128>>> material_properties;
 
-        ScattererProperties(std::vector<complex128> index_properties) : c_index_properties(index_properties) {}
-        ScattererProperties(std::vector<std::vector<complex128>> material_properties) : c_material_properties(material_properties) {}
-        ScattererProperties(std::vector<double> index_properties) : d_index_properties(index_properties) {}
-        ScattererProperties(std::vector<std::vector<double>> material_properties) : d_material_properties(material_properties) {}
+    public:
+        ScattererProperties() = default;
+
+        ScattererProperties(const std::vector<complex128> index_properties) : index_properties(index_properties) {}
+        ScattererProperties(const std::vector<std::vector<complex128>> material_properties) : material_properties(material_properties) {}
 
         size_t size()
         {
-            if (c_index_properties.size() != 0)
-                return c_index_properties.size();
+            if (index_properties)
+                return index_properties->size();
 
-            if (c_material_properties.size() != 0)
-                return c_material_properties.size();
+            if (material_properties)
+                return material_properties->size();
 
-            if (d_index_properties.size() != 0)
-                return d_index_properties.size();
+            throw std::runtime_error("Object not properly initialized with a valid vector.");
+        }
 
-            if (d_material_properties.size() != 0)
-                return d_material_properties.size();
+        complex128 get (const size_t &index, const size_t &wl_index) const {
+            if (index_properties)
+                return (*index_properties)[index];
+
+            if (material_properties)
+                return (*material_properties)[index][wl_index];
+
+            throw std::runtime_error("Object not properly initialized with a valid vector.");
+        }
+};
+
+
+
+class MediumProperties {
+    private:
+        std::optional<std::vector<double>> index_properties;
+        std::optional<std::vector<std::vector<double>>> material_properties;
+
+    public:
+        MediumProperties() = default;
+
+        MediumProperties(const std::vector<double> index_properties) : index_properties(index_properties) {}
+        MediumProperties(const std::vector<std::vector<double>> material_properties) : material_properties(material_properties) {}
+
+        size_t size()
+        {
+            if (index_properties)
+                return index_properties->size();
+
+            if (material_properties)
+                return material_properties->size();
+
+            throw std::runtime_error("Object not properly initialized with a valid vector.");
+        }
+
+        double get (const int &index, const size_t &wl_index) const {
+            if (index_properties)
+                return (*index_properties)[index];
+
+            if (material_properties)
+                return (*material_properties)[index][wl_index];
+
+            throw std::runtime_error("Object not properly initialized with a valid vector.");
         }
 };

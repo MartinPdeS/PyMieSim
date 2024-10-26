@@ -57,9 +57,11 @@ class CoreShell(BaseScatterer):
 
         self.binding_kwargs = dict(core_diameter=self.core_diameter, shell_width=self.shell_width)
 
-        self._assign_index_or_material(element='core_', property=self.core_property)
-        self._assign_index_or_material(element='shell_', property=self.shell_property)
-        self._assign_index_or_material(element='medium_', property=self.medium_property)
+        self._add_properties(name='medium', properties=self.medium_property)
+
+        self._add_properties(name='core', properties=self.core_property)
+
+        self._add_properties(name='shell', properties=self.shell_property)
 
         binding_kwargs = {
             k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
