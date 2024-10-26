@@ -37,7 +37,7 @@ namespace SOURCE
             const std::vector<double>& amplitude)
             : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude), is_gaussian(false)
         {
-            shape = {wavelength.size(), jones_vector.size(), amplitude.size()};
+            this->shape = {wavelength.size(), jones_vector.size(), amplitude.size()};
             total_combinations = get_vector_sigma(shape);
         }
 

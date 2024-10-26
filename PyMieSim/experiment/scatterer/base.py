@@ -9,6 +9,7 @@ from dataclasses import fields
 from pydantic import ConfigDict
 from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
+from PyMieSim.binary.ScattererPropertiesInterface import CppScattererProperties
 
 import numpy
 from PyMieSim.experiment.source.base import BaseSource
@@ -83,10 +84,12 @@ class BaseScatterer():
         """
         if all(isinstance(item, Quantity) for item in property):
             self.binding_kwargs[f'{element}index'] = property
+            self.binding_kwargs[element[:-1]] = CppScattererProperties(index_properties=property)
 
         elif all(isinstance(item, BaseMaterial) for item in property):
             eval_index = numpy.asarray([m.compute_refractive_index(self.source.wavelength.to_base_units().magnitude) for m in property])
             self.binding_kwargs[f'{element}material'] = eval_index
+            self.binding_kwargs[element[:-1]] = CppScattererProperties(material_properties=eval_index)
 
         else:
             raise TypeError("All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both.")

@@ -31,51 +31,44 @@ PYBIND11_MODULE(Experiment, module) {
 
 
         // Sphere metrics
-        EFFICIENCY_PROPERTY(sphere, sca)
+        EFFICIENCY_PROPERTY(sphere, sca)  // Efficiencies
         EFFICIENCY_PROPERTY(sphere, ext)
         EFFICIENCY_PROPERTY(sphere, abs)
         EFFICIENCY_PROPERTY(sphere, pr)
         EFFICIENCY_PROPERTY(sphere, forward)
         EFFICIENCY_PROPERTY(sphere, back)
         EFFICIENCY_PROPERTY(sphere, ratio)
-
-        COEFFICIENT_PROPERTY(sphere, 1)
+        COEFFICIENT_PROPERTY(sphere, 1)   // Coefficients
         COEFFICIENT_PROPERTY(sphere, 2)
         COEFFICIENT_PROPERTY(sphere, 3)
-
-        COUPLING_AND_G(sphere)
+        COUPLING_AND_G(sphere)            // Coupling and g
 
 
         // Cylinder metrics
-        EFFICIENCY_PROPERTY(cylinder, sca)
+        EFFICIENCY_PROPERTY(cylinder, sca)  // Efficiencies
         EFFICIENCY_PROPERTY(cylinder, ext)
         EFFICIENCY_PROPERTY(cylinder, abs)
-
-        COEFFICIENT_PROPERTY(cylinder, 11)
+        COEFFICIENT_PROPERTY(cylinder, 11)  // Coefficients
         COEFFICIENT_PROPERTY(cylinder, 21)
         COEFFICIENT_PROPERTY(cylinder, 12)
         COEFFICIENT_PROPERTY(cylinder, 22)
         COEFFICIENT_PROPERTY(cylinder, 13)
         COEFFICIENT_PROPERTY(cylinder, 23)
-
-        COUPLING_AND_G(cylinder)
+        COUPLING_AND_G(cylinder)            // Coupling and g
 
 
         // Coreshell metrics
-        EFFICIENCY_PROPERTY(coreshell, sca)
+        EFFICIENCY_PROPERTY(coreshell, sca)  // Efficiencies
         EFFICIENCY_PROPERTY(coreshell, ext)
         EFFICIENCY_PROPERTY(coreshell, abs)
         EFFICIENCY_PROPERTY(coreshell, pr)
         EFFICIENCY_PROPERTY(coreshell, forward)
         EFFICIENCY_PROPERTY(coreshell, back)
         EFFICIENCY_PROPERTY(coreshell, ratio)
-
-        COEFFICIENT_PROPERTY(coreshell, 1)
+        COEFFICIENT_PROPERTY(coreshell, 1)  // Coefficients
         COEFFICIENT_PROPERTY(coreshell, 2)
         COEFFICIENT_PROPERTY(coreshell, 3)
-
-        COUPLING_AND_G(coreshell)
-
+        COUPLING_AND_G(coreshell)           // Coupling and g
         ;
 
 

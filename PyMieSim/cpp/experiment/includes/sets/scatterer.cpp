@@ -1,9 +1,13 @@
 #pragma once
 
+#include "experiment/includes/scatterer_properties.cpp"
 #include "experiment/includes/sets/base.cpp"
 #include "single/includes/sphere.cpp"
 #include "single/includes/cylinder.cpp"
 #include "single/includes/coreshell.cpp"
+
+
+
 
 using complex128 = std::complex<double>;
 
@@ -13,15 +17,15 @@ namespace SPHERE {
     {
     public:
         std::vector<double> diameter;
-        std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>> property;
-        std::variant<std::vector<double>, std::vector<std::vector<double>>> medium;
+        scatterer_properties property;
+        scatterer_properties medium;
 
         Set() = default;
 
         Set(
             const std::vector<double>& diameter,
-            const std::variant<std::vector<complex128>, std::vector<std::vector<complex128>>>& property,
-            const std::variant<std::vector<double>, std::vector<std::vector<double>>>& medium_property)
+            const scatterer_properties& property,
+            const scatterer_properties& medium_property)
             : diameter(diameter), property(property), medium(medium_property)
             {
                 update_shape();
@@ -29,10 +33,11 @@ namespace SPHERE {
             }
 
         void update_shape() override {
-            shape.clear();
-            shape.push_back(diameter.size());
-            shape.push_back(get_variant_size(property));
-            shape.push_back(get_variant_size(medium));
+            this->shape = {
+                diameter.size(),
+                property.size(),
+                medium.size()
+            };
         }
 
         Scatterer get_scatterer_by_index(size_t flat_index, SOURCE::BaseSource& source) const {
@@ -121,12 +126,13 @@ namespace CORESHELL {
             }
 
         void update_shape() override {
-            shape.clear();
-            shape.push_back(core_diameter.size());
-            shape.push_back(shell_width.size());
-            shape.push_back(get_variant_size(core_property));
-            shape.push_back(get_variant_size(shell_property));
-            shape.push_back(get_variant_size(medium));
+            this->shape = {
+                core_diameter.size(),
+                shell_width.size(),
+                get_variant_size(core_property),
+                get_variant_size(shell_property),
+                get_variant_size(medium)
+            };
         }
 
         Scatterer get_scatterer_by_index(size_t flat_index, SOURCE::BaseSource& source) const {

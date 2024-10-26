@@ -63,9 +63,6 @@ function(add_pymiesim_module name source)
     set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
     target_link_libraries(${name} PRIVATE ZBessel)
     target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})
-
-    # install(TARGETS ${name} LIBRARY DESTINATION "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-
 endfunction()
 
 # Add modules
@@ -77,6 +74,7 @@ add_pymiesim_module(ModeField "single/interface/mode_field.cpp")
 add_pymiesim_module(SourceInterface "single/interface/source.cpp")
 add_pymiesim_module(Fibonacci "single/interface/mesh.cpp")
 add_pymiesim_module(SetsInterface "experiment/interface/sets.cpp")
+add_pymiesim_module(ScattererPropertiesInterface "experiment/interface/scatterer_properties.cpp")
 add_pymiesim_module(Experiment "experiment/interface/experiment.cpp")
 
 # Special handling for Experiment module

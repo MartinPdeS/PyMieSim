@@ -1,5 +1,6 @@
 #pragma once
 
+#include "experiment/includes/scatterer_properties.cpp"
 #include "experiment/headers/experiment.h"
 
 #include "single/includes/sphere.cpp"

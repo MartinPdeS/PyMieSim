@@ -43,7 +43,7 @@ namespace DETECTOR
               }
 
             void update_shape() override {
-                shape = {
+                this->shape = {
                     mode_numbers.size(),
                     sampling.size(),
                     NA.size(),

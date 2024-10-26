@@ -2,6 +2,7 @@
 #include <pybind11/stl.h> // For binding std::vector and similar STL containers
 #include <pybind11/complex.h> // For std::complex support
 
+#include "experiment/includes/scatterer_properties.cpp"
 #include "experiment/includes/sets.cpp"
 
 namespace py = pybind11;
@@ -13,29 +14,11 @@ PYBIND11_MODULE(SetsInterface, module) {
 
 // Binding for SPHERE::Set
     py::class_<SPHERE::Set>(module, "CppSphereSet")
-        .def(py::init<std::vector<double>, std::vector<complex128>, std::vector<double>>(),
+        .def(py::init<std::vector<double>, ScattererProperties, std::vector<double>>(),
             py::arg("diameter"),
-            py::arg("index"),
+            py::arg("scatterer_properties"),
             py::arg("medium_index"),
             "Initializes a set of spheres with given diameters, refractive indices, and medium refractive index.")
-
-        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<double>>(),
-            py::arg("diameter"),
-            py::arg("material"),
-            py::arg("medium_index"),
-            "Initializes a set of spheres with given diameters, material indices (for each wavelength), and medium refractive index.")
-
-        .def(py::init<std::vector<double>, std::vector<complex128>, std::vector<std::vector<double>>>(),
-            py::arg("diameter"),
-            py::arg("index"),
-            py::arg("medium_material"),
-            "Initializes a set of spheres with given diameters, material indices (for each wavelength), and medium material.")
-
-        .def(py::init<std::vector<double>, std::vector<std::vector<complex128>>, std::vector<std::vector<double>>>(),
-            py::arg("diameter"),
-            py::arg("material"),
-            py::arg("medium_material"),
-            "Initializes a set of spheres with given diameters, material indices (for each wavelength), and medium material.");
 
 // Binding for CYLINDER::Set
     py::class_<CYLINDER::Set>(module, "CppCylinderSet")

@@ -12,11 +12,11 @@ from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-
+from PyOptik import MaterialBank
 # %%
 # Defining the source to be employed.
 source = Gaussian(
-    wavelength=np.linspace(400, 1000, 500) * nanometer,
+    wavelength=np.linspace(400, 1000, 50) * nanometer,
     polarization=0 * degree,
     optical_power=1e-3 * watt,
     NA=0.2 * AU
@@ -25,7 +25,7 @@ source = Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=[200] * nanometer,
-    property=[4] * RIU,
+    property=MaterialBank.BK7,
     medium_property=1 * RIU,
     source=source
 )

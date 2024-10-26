@@ -31,7 +31,6 @@ std::vector<complex128> get_LP_mode_field(
       }
    }
 
-   // double rj0[radial_number], rj1[radial_number], ry0[radial_number], ry1[radial_number];
    std::vector<double> rj0(radial_number), rj1(radial_number), ry0(radial_number), ry1(radial_number);
 
    bessel_zeros(azimuthal_number, radial_number, &rj0[0], &rj1[0], &ry0[0], &ry1[0]);
