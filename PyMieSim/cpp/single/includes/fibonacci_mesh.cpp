@@ -38,6 +38,7 @@ void FibonacciMesh::compute_vector_field(){
 
 void FibonacciMesh::compute_projections(){
     horizontal_parallel_projection = parallel_vector.get_scalar_product(horizontal_vector_field);
+
     vertical_parallel_projection = parallel_vector.get_scalar_product(vertical_vector_field);
 
     horizontal_perpendicular_projection = perpendicular_vector.get_scalar_product(horizontal_vector_field);
@@ -50,7 +51,7 @@ double FibonacciMesh::NA2Angle(double NA) const {
         return asin(NA);
 
     if (NA >= 1.0)
-        return asin(NA-1.0) + PI / 2.0;
+        return asin(NA - 1.0) + PI / 2.0;
 
     return 1.0;
 }
@@ -60,27 +61,32 @@ void FibonacciMesh::compute_mesh(){
 
     double golden_angle = PI * (3. - sqrt(5.));  // golden angle = 2.39996322972865332
 
-    for (size_t i = 0; i < this->sampling; i++){
-        double z = + cos(this->min_angle) - (2. * i) / (this->true_number_of_sample - 1);
-        cartesian_coordinates.z.push_back(z);
+    for (size_t i = 0; i < true_number_of_sample; i++){
         double
+            z = 1 - (2. * i) / (true_number_of_sample - 1),
             theta = golden_angle * i,
-            radius = sqrt(1 - z * z);
+            radius = sqrt(1 - z * z),
+            angle = atan(radius / z);
 
-        cartesian_coordinates.x.push_back( cos(theta) * radius );
-        cartesian_coordinates.y.push_back( sin(theta) * radius );
+        if (angle < this->min_angle)
+            continue;
+        if (cartesian_coordinates.z.size() >= this->sampling)
+            break;
+        cartesian_coordinates.z.push_back(z);
+        cartesian_coordinates.x.push_back(cos(theta) * radius);
+        cartesian_coordinates.y.push_back(sin(theta) * radius);
     }
 }
 
+
 void FibonacciMesh::compute_properties(){
     double
-        solid_angle = abs( 2. * PI * ( cos(max_angle) - 1. ) ),   //cos(0) = 1
+        solid_angle = 2 * PI * abs(cos(min_angle) - cos(max_angle)),
         ratio = ( 4. * PI / solid_angle );
 
+    this->Omega = solid_angle;
+    this->dOmega = Omega / this->sampling;
     this->true_number_of_sample = (size_t) ( this->sampling * ratio );
-
-    dOmega = 4. * PI / this->true_number_of_sample;
-    Omega = dOmega * this->sampling ;
 }
 
 std::vector<double> FibonacciMesh::get_principal_axis() const {

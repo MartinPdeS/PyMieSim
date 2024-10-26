@@ -14,9 +14,10 @@ from PyMieSim.units import AU, degree
 # Initializing the detector
 detector = Photodiode(
     NA=0.3 * AU,  # Numerical Aperture
+    cache_NA=0.2 * AU,
     sampling=500 * AU,  # Number of sampling points
-    gamma_offset=-45 * degree,  # Gamma offset in degrees
-    phi_offset=20 * degree,  # Phi offset in degrees
+    gamma_offset=0 * degree,  # Gamma offset in degrees
+    phi_offset=0 * degree,  # Phi offset in degrees
     polarization_filter=None  # No polarization filter applied
 )
 
