@@ -1,5 +1,12 @@
 #pragma once
 
+
+
+#define DEFINE_COEFFICIENTS(name) \
+    std::vector<complex128> name; \
+    std::vector<complex128> get_##name() const { return name; }; \
+    pybind11::array_t<complex128> get_##name##_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(name, {_max_order}); }
+
 #include "utils/utils.cpp"
 #include "single/includes/sources.cpp"
 #include "single/includes/fibonacci_mesh.cpp"
@@ -17,26 +24,16 @@ typedef std::complex<double> complex128;
 class BaseSphericalScatterer : public BaseScatterer
 {
 public:
-    std::vector<complex128> an;
-    std::vector<complex128> bn;
-    std::vector<complex128> cn;
-    std::vector<complex128> dn;
+    DEFINE_COEFFICIENTS(an)
+    DEFINE_COEFFICIENTS(bn)
+    DEFINE_COEFFICIENTS(cn)
+    DEFINE_COEFFICIENTS(dn)
 
     BaseSphericalScatterer() = default;
     virtual ~BaseSphericalScatterer() = default;
 
     BaseSphericalScatterer(const SOURCE::BaseSource &source, const size_t max_order, const double medium_index) :
     BaseScatterer(max_order, source, medium_index){}
-
-    std::vector<complex128> get_an() const { return an; };
-    std::vector<complex128> get_bn() const { return bn; };
-    std::vector<complex128> get_cn() const { return cn; };
-    std::vector<complex128> get_dn() const { return dn; };
-
-    pybind11::array_t<complex128> get_an_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(an, {_max_order}); }
-    pybind11::array_t<complex128> get_bn_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(bn, {_max_order}); }
-    pybind11::array_t<complex128> get_cn_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(cn, {_max_order}); }
-    pybind11::array_t<complex128> get_dn_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(dn, {_max_order}); }
 
     double get_Qforward() const {return get_Qsca() - get_Qback();};
     double get_Qratio() const {return get_Qback() / get_Qsca();};
@@ -61,7 +58,7 @@ public:
               value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
               value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
           }
-          return value * 4. / ( get_Qsca() * pow(size_parameter, 2) );
+          return value * 4. / ( get_Qsca() * size_parameter_squared );
       }
 
     double get_Qsca() const {
@@ -71,7 +68,7 @@ public:
             double n = (double) it + 1;
             value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
         }
-        return value * 2. / pow( size_parameter, 2.);
+        return value * 2. / size_parameter_squared;
     }
 
     double get_Qext() const {
@@ -82,7 +79,7 @@ public:
             value += (2.* n + 1.) * std::real( this->an[it] + this->bn[it] );
 
         }
-        return value * 2. / pow( size_parameter, 2.);
+        return value * 2. / size_parameter_squared;
     }
 
     double get_Qback() const {
@@ -95,31 +92,33 @@ public:
             value += (2. * n + 1) * pow(-1., n) * ( this->an[it] - this->bn[it] ) ;
         }
 
-        value = pow( std::abs(value), 2. ) / pow(size_parameter, 2.);
+        value = pow( std::abs(value), 2. ) / size_parameter_squared;
         return std::abs(value);
     }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const {
-        std::vector<complex128>
-            S1(phi.size(), 0.0),
-            S2(phi.size(), 0.0);
+        std::vector<complex128> S1, S2;
 
-        std::vector<double>
-            prefactor = get_prefactor(),
-            mu;
+        S1.reserve(phi.size());
+        S2.reserve(phi.size());
+
+        std::vector<double> mu, prefactor = get_prefactor();
 
         mu.reserve(phi.size());
 
-        for (double phi : phi)
+        for (const double phi : phi)
             mu.push_back( cos( phi - PI / 2.0 ) );
 
-        for (unsigned int i = 0; i < phi.size(); i++){
+        for (size_t i = 0; i < phi.size(); i++){
             auto [pin, taun] = VSH::SPHERICAL::MiePiTau(mu[i], max_order);
+            complex128 S1_temp = 0., S2_temp = 0.;
 
-            for (unsigned int m = 0; m < max_order ; m++){
-                S1[i] += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
-                S2[i] += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
+            for (size_t m = 0; m < max_order ; m++){
+                S1_temp += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
+                S2_temp += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
             }
+            S1.push_back(S1_temp);
+            S2.push_back(S2_temp);
         }
 
         return std::make_tuple(std::move(S1), std::move(S2));

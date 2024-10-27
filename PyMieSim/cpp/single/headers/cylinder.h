@@ -52,6 +52,7 @@ namespace CYLINDER
 
             void compute_size_parameter() override {
                 this->size_parameter = PI * this->diameter / source.wavelength;
+                this->size_parameter_squared = pow(this->size_parameter, 2);
             }
 
             void compute_area() override {

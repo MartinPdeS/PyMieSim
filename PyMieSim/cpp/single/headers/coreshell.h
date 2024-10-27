@@ -33,7 +33,8 @@
             }
 
             void compute_size_parameter() override {
-                size_parameter = source.wavenumber * this->shell_diameter / 2;
+                this->size_parameter = source.wavenumber * this->shell_diameter / 2;
+                this->size_parameter_squared = pow(this->size_parameter, 2);
                 this->x_shell = source.wavenumber * this->shell_diameter / 2.0;
                 this->x_core = source.wavenumber * this->core_diameter / 2.0;
             }

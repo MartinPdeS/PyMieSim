@@ -15,6 +15,7 @@ public:
     size_t max_order;
     SOURCE::BaseSource source;
     double size_parameter;
+    double size_parameter_squared;
     double area;
     double medium_index;
 
