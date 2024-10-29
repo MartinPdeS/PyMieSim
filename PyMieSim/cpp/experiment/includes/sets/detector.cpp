@@ -76,5 +76,24 @@ namespace DETECTOR
 
                 return detector;
             }
+
+            Detector get_detector_by_index_sequential(size_t index) const {
+
+                Detector detector(
+                    this->mode_numbers[index],
+                    this->sampling[index],
+                    this->NA[index],
+                    this->cache_NA[index],
+                    this->phi_offset[index],
+                    this->gamma_offset[index],
+                    this->polarization_filter[index],
+                    this->rotation[index],
+                    this->coherent,
+                    this->mean_coupling
+                );
+
+                return detector;
+            }
+
     };
 }

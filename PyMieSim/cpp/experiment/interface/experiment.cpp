@@ -3,17 +3,21 @@
 
 #define EFFICIENCY_PROPERTY(scatterer, name) \
     .def("get_" #scatterer "_Q" #name, &Experiment::get_##scatterer##_Q##name, "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer) \
-    .def("get_" #scatterer "_C" #name, &Experiment::get_##scatterer##_C##name, "Retrieves the scattering cross-section (C" #name ") for a" #scatterer)
+    .def("get_" #scatterer "_C" #name, &Experiment::get_##scatterer##_C##name, "Retrieves the scattering cross-section (C" #name ") for a" #scatterer) \
+    .def("get_" #scatterer "_Q" #name "_sequential", &Experiment::get_##scatterer##_Q##name##_sequential, "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer " in a sequential manner.") \
+    .def("get_" #scatterer "_C" #name "_sequential", &Experiment::get_##scatterer##_C##name##_sequential, "Retrieves the scattering cross-section (C" #name ") for a" #scatterer " in a sequential manner.")
 
 #define COEFFICIENT_PROPERTY(scatterer, number) \
     .def("get_" #scatterer "_a" #number, &Experiment::get_##scatterer##_a##number, "Retrieves the electric multipole coefficient (a" #number ") coefficient for a " #scatterer) \
     .def("get_" #scatterer "_b" #number, &Experiment::get_##scatterer##_b##number, "Retrieves the magnetic multipole coefficient (b" #number ") coefficient for a " #scatterer) \
-    .def("get_" #scatterer "_a" #number "_abs", &Experiment::get_##scatterer##_a##number##_abs, "Retrieves the electric multipole coefficient (a" #number ") coefficient absolute value for a " #scatterer) \
-    .def("get_" #scatterer "_b" #number "_abs", &Experiment::get_##scatterer##_b##number##_abs, "Retrieves the magnetic multipole coefficient (b" #number ") coefficient absolute value for a " #scatterer) \
+    .def("get_" #scatterer "_a" #number "_sequential", &Experiment::get_##scatterer##_a##number##_sequential, "Retrieves the electric multipole coefficient (a" #number ") coefficient for a " #scatterer " in a sequential manner.") \
+    .def("get_" #scatterer "_b" #number "_sequential", &Experiment::get_##scatterer##_b##number##_sequential, "Retrieves the magnetic multipole coefficient (b" #number ") coefficient for a " #scatterer " in a sequential manner.")
 
 #define COUPLING_AND_G(scatterer) \
      .def("get_" #scatterer "_g", &Experiment::get_##scatterer##_g, "Retrieves the asymmetry parameter (g) for a " #scatterer) \
-     .def("get_" #scatterer "_coupling", &Experiment::get_##scatterer##_coupling, "Retrieves the coupling efficiency for a " #scatterer)
+     .def("get_" #scatterer "_coupling", &Experiment::get_##scatterer##_coupling, "Retrieves the coupling efficiency for a " #scatterer) \
+     .def("get_" #scatterer "_g_sequential", &Experiment::get_##scatterer##_g_sequential, "Retrieves the asymmetry parameter (g) for a " #scatterer " in a sequential manner.") \
+     .def("get_" #scatterer "_coupling_sequential", &Experiment::get_##scatterer##_coupling_sequential, "Retrieves the coupling efficiency for a " #scatterer " in a sequential manner.")
 
 
 namespace py = pybind11;
@@ -72,7 +76,5 @@ PYBIND11_MODULE(Experiment, module) {
         COEFFICIENT_PROPERTY(coreshell, 3)
         COUPLING_AND_G(coreshell)           // Coupling and g
         ;
-
-
 }
 

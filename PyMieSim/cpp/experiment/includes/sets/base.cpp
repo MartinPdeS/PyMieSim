@@ -32,7 +32,6 @@ class BaseSet{
         std::vector<size_t> shape;
         size_t current_index = 0;
         size_t total_combinations = 1;
-        void increment_index() { current_index = (current_index + 1) % total_combinations;}
         virtual void update_shape() {};
 
         BaseSet() = default;

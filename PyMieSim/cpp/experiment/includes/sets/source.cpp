@@ -5,7 +5,6 @@
 
 using complex128 = std::complex<double>;
 
-
 namespace SOURCE
 {
     class Set : public BaseSet
@@ -28,7 +27,9 @@ namespace SOURCE
             : wavelength(wavelength), jones_vector(jones_vector), NA(NA), optical_power(optical_power), is_gaussian(true)
         {
             shape = {wavelength.size(), jones_vector.size(), NA.size(), optical_power.size()};
+
             total_combinations = get_vector_sigma(shape);
+
         }
 
         // Constructor for Planewave source
@@ -44,38 +45,23 @@ namespace SOURCE
         BaseSource get_source_by_index(size_t flat_index) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
+            BaseSource source;
+
             if (is_gaussian)
-                return to_gaussian(indices);
+                source = Gaussian(this->wavelength[indices[0]], this->jones_vector[indices[1]], this->NA[indices[2]], this->optical_power[indices[3]]);
             else
-                return to_planewave(indices);
-        }
-
-    private:
-        Planewave to_planewave(const std::vector<size_t>& indices) const
-        {
-            Planewave source(
-                this->wavelength[indices[0]],
-                this->jones_vector[indices[1]],
-                this->amplitude[indices[2]]
-            );
+                source = Planewave(this->wavelength[indices[0]], this->jones_vector[indices[1]], this->amplitude[indices[2]]);
 
             source.indices = indices;
-
             return source;
         }
 
-        Gaussian to_gaussian(const std::vector<size_t>& indices) const
-        {
-            Gaussian source(
-                this->wavelength[indices[0]],
-                this->jones_vector[indices[1]],
-                this->NA[indices[2]],
-                this->optical_power[indices[3]]
-            );
+        BaseSource get_source_by_index_sequential(size_t index) const {
+            if (is_gaussian)
+                return Gaussian(this->wavelength[index], this->jones_vector[index], this->NA[index], this->optical_power[index]);
+            else
+                return Planewave(this->wavelength[index], this->jones_vector[index], this->amplitude[index]);
 
-            source.indices = indices;
-
-            return source;
         }
     };
 }

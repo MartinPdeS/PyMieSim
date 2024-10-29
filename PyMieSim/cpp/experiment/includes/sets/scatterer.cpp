@@ -6,9 +6,6 @@
 #include "single/includes/cylinder.cpp"
 #include "single/includes/coreshell.cpp"
 
-
-
-
 using complex128 = std::complex<double>;
 
 // Sphere class inheriting from BaseSet
@@ -37,15 +34,15 @@ namespace SPHERE {
             };
         }
 
+
+        Scatterer get_scatterer_by_index_sequential(size_t index, const SOURCE::BaseSource& source) const {
+            return Scatterer(diameter[index], property.get(index, source.indices[0]), medium.get(index, source.indices[0]), source);
+        }
+
         Scatterer get_scatterer_by_index(size_t flat_index, const SOURCE::BaseSource& source) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
-            Scatterer scatterer(
-                diameter[indices[0]],
-                property.get(indices[1], source.indices[0]),
-                medium.get(indices[2], source.indices[0]),
-                source
-            );
+            Scatterer scatterer(diameter[indices[0]], property.get(indices[1], source.indices[0]), medium.get(indices[2], source.indices[0]), source);
 
             scatterer.indices = indices;
 
@@ -79,15 +76,14 @@ namespace CYLINDER {
             };
         }
 
+        Scatterer get_scatterer_by_index_sequential(size_t index, const SOURCE::BaseSource& source) const {
+            return Scatterer(diameter[index], property.get(index, source.indices[0]), medium.get(index, source.indices[0]), source);
+        }
+
         Scatterer get_scatterer_by_index(size_t flat_index, const SOURCE::BaseSource& source) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
-            Scatterer scatterer(
-                diameter[indices[0]],
-                property.get(indices[1], source.indices[0]),
-                medium.get(indices[2], source.indices[0]),
-                source
-            );
+            Scatterer scatterer(diameter[indices[0]], property.get(indices[1], source.indices[0]), medium.get(indices[2], source.indices[0]), source);
 
             scatterer.indices = indices;
 
@@ -95,6 +91,7 @@ namespace CYLINDER {
         }
     };
 }
+
 
 // Core-shell class
 namespace CORESHELL {
@@ -144,6 +141,19 @@ namespace CORESHELL {
             );
 
             scatterer.indices = indices;
+
+            return scatterer;
+        }
+
+        Scatterer get_scatterer_by_index_sequential(size_t index, SOURCE::BaseSource& source) const {
+            Scatterer scatterer(
+                core_diameter[index],
+                shell_width[index],
+                core_property.get(index, source.indices[0]),
+                shell_property.get(index, source.indices[0]),
+                medium.get(index, source.indices[0]),
+                source
+            );
 
             return scatterer;
         }

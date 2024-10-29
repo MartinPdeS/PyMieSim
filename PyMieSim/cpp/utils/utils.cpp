@@ -19,20 +19,11 @@ double NA2Angle(const double &NA)
     return 1.0;
 }
 
-template <typename T>
-T concatenate_vector(const T &vector_0, const T &vector_1)
+template <typename T, typename... Ts>
+T concatenate_vector(const T& first_vector, const Ts&... other_vectors)
 {
-    T output_vector = vector_0;
-    output_vector.insert( output_vector.end(), vector_1.begin(), vector_1.end() );
-    return output_vector;
-}
-
-template <typename T>
-T concatenate_vector(const T &vector_0, const T &vector_1, const T &vector_2)
-{
-    T output_vector = vector_0;
-    output_vector.insert( output_vector.end(), vector_1.begin(), vector_1.end() );
-    output_vector.insert( output_vector.end(), vector_2.begin(), vector_2.end() );
+    T output_vector = first_vector;
+    (output_vector.insert(output_vector.end(), other_vectors.begin(), other_vectors.end()), ...);
     return output_vector;
 }
 
@@ -45,27 +36,6 @@ T get_vector_sigma(const std::vector<T> &vector)
 
     return sigma;
 }
-
-template <class T>
-T Sum(const std::vector<T>& vector)
-{
-    T sum = 0.;
-    for (auto v: vector)
-        sum += v;
-
-    return sum;
-}
-
-template <class T>
-T Sum(const std::vector<T>& vector_0, const std::vector<T>& vector_1)
-{
-    T sum = 0.;
-    for (size_t iter=0; iter<vector_0.size(); iter++)
-        sum += vector_0[iter] * vector_1[iter];
-
-    return sum;
-}
-
 
 template <class T>
 void Squared(std::vector<T>& vector)
@@ -84,39 +54,6 @@ std::vector<T> Add(std::vector<T>& vector0, std::vector<T>& vector1)
         output_vector.push_back( vector0[iter] + vector1[iter] );
 
     return output_vector;
-}
-
-
-
-void Unstructured(unsigned int Sampling, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
-{
-    for (size_t p=0; p < Sampling; p++ )
-    {
-        *output   = scalar * array0[p] * array1[p];
-        output++;
-    }
-}
-
-
-std::vector<complex128> Unstructured(std::vector<complex128> &array0, std::vector<complex128> &array1, complex128 &scalar)
-{
-    std::vector<complex128> output;
-    output.reserve(array1.size());
-
-    for (size_t p=0; p < array1.size(); p++ )
-        output.push_back( scalar * array0[p] * array1[p] );
-
-    return output;
-}
-
-void Structured(unsigned int ThetaLength, unsigned int PhiLength, complex128 *array0, complex128 *array1, complex128  scalar, complex128 *output)
-{
-    for (unsigned int p=0; p < PhiLength; p++ )
-        for (unsigned int t=0; t < ThetaLength; t++ )
-        {
-            *output   = scalar * array0[p] * array1[t];
-            output++;
-        }
 }
 
 template <class T>

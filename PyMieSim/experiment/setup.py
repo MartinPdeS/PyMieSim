@@ -68,6 +68,27 @@ class Setup:
         if self.detector:
             self.detector._generate_mapping()
 
+    def get_sequential(self, measure: str) -> numpy.ndarray:
+        """
+        Executes the simulation to compute and retrieve the specified measures in a sequential manner contrary to the standard get function.
+        This means that ranges are not iterated in a structured fashion into a dataframe but are only run once.
+        This methods was developed for specific aims, for the best suited vizualization tools go for the .get() method.
+
+        Parameters
+        ----------
+        measures : str
+            The measure to be computed in the simulation, provided as arguments by the user.
+        Returns
+        -------
+        numpy.ndarray
+            An array containing the computed measures.
+        """
+        scatterer_name = self.scatterer.__class__.__name__.lower()
+        method_name = f'get_{scatterer_name}_{measure}_sequential'
+
+        # Compute the values using the binding method
+        return getattr(self.binding, method_name)()
+
     def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True) -> pd.DataFrame:
         """
         Executes the simulation to compute and retrieve the specified measures.
