@@ -32,7 +32,7 @@ scatterer = CoreShell(
     core_diameter=np.geomspace(100, 300, 10) * nanometer,  # Geometrically spaced core diameters
     shell_width=800 * nanometer,  # Shell width of 800 nm
     core_property=[1.4] * RIU,  # Refractive index of the core
-    shell_property=[Material.BK7, Material.silver],  # BK7 glass material for the shell
+    shell_property=[Material.BK7],  # BK7 glass material for the shell
     medium_property=1 * RIU,  # Refractive index of the surrounding medium
     source=source
 )
@@ -45,7 +45,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 # %%
 # Measuring the B1 scattering parameter
 # Here, we're interested in the a3 (first magnetic coefficient) parameter, which seems to be a typo for B1.
-dataframe = experiment.get('a1')
+dataframe = experiment.get('a1_abs', 'a2_abs', 'a3_abs',  'Qsca')
 
 # %%
 # Plotting the results

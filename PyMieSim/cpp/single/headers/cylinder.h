@@ -1,5 +1,31 @@
 #pragma once
 
+
+
+
+#define DEFINE_COMPLEX_VECTOR(name) \
+    std::vector<complex128> name##n; \
+    std::vector<complex128> get_##name##n() const { return name##n; }
+
+#define DEFINE_GETTER(name, index) \
+    complex128 get_##name##index() const { return this->name##n[index - 1]; }
+
+#define DEFINE_GETTER_ABS(name, index) \
+    double get_##name##index##_abs() const { return abs(this->name##n[index - 1]); }
+
+#define DEFINE_COEFFICIENTS(name) \
+    DEFINE_COMPLEX_VECTOR(name) \
+    DEFINE_GETTER(name, 1) \
+    DEFINE_GETTER(name, 2) \
+    DEFINE_GETTER(name, 3) \
+    DEFINE_GETTER(name, 4) \
+    DEFINE_GETTER_ABS(name, 1) \
+    DEFINE_GETTER_ABS(name, 2) \
+    DEFINE_GETTER_ABS(name, 3) \
+    DEFINE_GETTER_ABS(name, 4) \
+    pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return vector_to_numpy(name##n, {_max_order}); }
+
+
 #include "single/includes/base_class.cpp"
 
 namespace CYLINDER
@@ -11,35 +37,10 @@ namespace CYLINDER
             double diameter = 0.0;
             complex128 index = {1.0, 0.0};
             std::vector<size_t> indices;
-
-            std::vector<complex128> a1n;
-            std::vector<complex128> b1n;
-            std::vector<complex128> a2n;
-            std::vector<complex128> b2n;
-
-
-            pybind11::array_t<complex128> get_a1n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(a1n, {_max_order}); }
-            pybind11::array_t<complex128> get_b1n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(b1n, {_max_order}); }
-            pybind11::array_t<complex128> get_a2n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(a2n, {_max_order}); }
-            pybind11::array_t<complex128> get_b2n_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(b2n, {_max_order}); }
-
-            std::vector<complex128> get_a1n() const { return a1n; };
-            std::vector<complex128> get_b1n() const { return b1n; };
-            std::vector<complex128> get_a2n() const { return a2n; };
-            std::vector<complex128> get_b2n() const { return b2n; };
-
-            complex128 get_a11() const { return this->a1n[0]; }
-            complex128 get_a12() const { return this->a1n[1]; }
-            complex128 get_a13() const { return this->a1n[2]; }
-            complex128 get_a21() const { return this->a2n[0]; }
-            complex128 get_a22() const { return this->a2n[1]; }
-            complex128 get_a23() const { return this->a2n[2]; }
-            complex128 get_b11() const { return this->b1n[0]; }
-            complex128 get_b12() const { return this->b1n[1]; }
-            complex128 get_b13() const { return this->b1n[2]; }
-            complex128 get_b21() const { return this->b2n[0]; }
-            complex128 get_b22() const { return this->b2n[1]; }
-            complex128 get_b23() const { return this->b2n[2]; }
+            DEFINE_COEFFICIENTS(a1)
+            DEFINE_COEFFICIENTS(b1)
+            DEFINE_COEFFICIENTS(a2)
+            DEFINE_COEFFICIENTS(b2)
 
             Scatterer(double diameter, complex128 index, double medium_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
             BaseScatterer(max_order, source, medium_index), diameter(diameter), index(index)

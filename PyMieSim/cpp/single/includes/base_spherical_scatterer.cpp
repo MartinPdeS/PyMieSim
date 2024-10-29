@@ -1,11 +1,27 @@
 #pragma once
 
 
+#define DEFINE_COMPLEX_VECTOR(name) \
+    std::vector<complex128> name##n; \
+    std::vector<complex128> get_##name##n() const { return name##n; }
+
+#define DEFINE_GETTER(name, index) \
+    complex128 get_##name##index() const { return this->name##n[index - 1]; }
+
+#define DEFINE_GETTER_ABS(name, index) \
+    double get_##name##index##_abs() const { return abs(this->name##n[index - 1]); }
 
 #define DEFINE_COEFFICIENTS(name) \
-    std::vector<complex128> name; \
-    std::vector<complex128> get_##name() const { return name; }; \
-    pybind11::array_t<complex128> get_##name##_py(size_t _max_order) { _max_order == 0 ? _max_order = this->max_order : _max_order = max_order; return vector_to_numpy(name, {_max_order}); }
+    DEFINE_COMPLEX_VECTOR(name) \
+    DEFINE_GETTER(name, 1) \
+    DEFINE_GETTER(name, 2) \
+    DEFINE_GETTER(name, 3) \
+    DEFINE_GETTER(name, 4) \
+    DEFINE_GETTER_ABS(name, 1) \
+    DEFINE_GETTER_ABS(name, 2) \
+    DEFINE_GETTER_ABS(name, 3) \
+    DEFINE_GETTER_ABS(name, 4) \
+    pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return vector_to_numpy(name##n, {_max_order}); }
 
 #include "utils/utils.cpp"
 #include "single/includes/sources.cpp"
@@ -24,10 +40,10 @@ typedef std::complex<double> complex128;
 class BaseSphericalScatterer : public BaseScatterer
 {
 public:
-    DEFINE_COEFFICIENTS(an)
-    DEFINE_COEFFICIENTS(bn)
-    DEFINE_COEFFICIENTS(cn)
-    DEFINE_COEFFICIENTS(dn)
+    DEFINE_COEFFICIENTS(a)
+    DEFINE_COEFFICIENTS(b)
+    DEFINE_COEFFICIENTS(c)
+    DEFINE_COEFFICIENTS(d)
 
     BaseSphericalScatterer() = default;
     virtual ~BaseSphericalScatterer() = default;
@@ -40,14 +56,6 @@ public:
     double get_Cback() const {return get_Qback() * area;};
     double get_Cforward() const {return get_Qforward() * area;};
     double get_Cratio() const {return get_Qratio() * area;};
-
-
-    complex128 get_a1() const { return this->an[0]; }
-    complex128 get_a2() const { return this->an[1]; }
-    complex128 get_a3() const { return this->an[2]; }
-    complex128 get_b1() const { return this->bn[0]; }
-    complex128 get_b2() const { return this->bn[1]; }
-    complex128 get_b3() const { return this->bn[2]; }
 
     double get_g() const {
         double value = 0;
@@ -66,7 +74,7 @@ public:
 
         for(size_t it = 0; it < max_order; ++it){
             double n = (double) it + 1;
-            value += (2.* n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
+            value += (2. * n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
         }
         return value * 2. / size_parameter_squared;
     }

@@ -24,7 +24,7 @@ namespace SPHERE
             }
 
             void compute_size_parameter() override {
-                this->size_parameter = PI * this->diameter / this->source.wavelength * this->medium_index;
+                this->size_parameter = source.wavenumber * this->diameter / 2 * this->medium_index;
                 this->size_parameter_squared = pow(this->size_parameter, 2);
             }
 

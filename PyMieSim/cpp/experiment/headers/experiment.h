@@ -15,6 +15,10 @@ typedef std::complex<double> complex128;
 #define DEFINE_SPHERE_FUNCTION(dtype, name) \
     pybind11::array_t<dtype> get_sphere_##name() { return get_sphere_data<dtype>(&SPHERE::Scatterer::get_##name); }
 
+#define DEFINE_SCATTERER_COEFFICIENT(scatterer, SCATTERER, name) \
+    pybind11::array_t<complex128> get_##scatterer##_##name() { return get_##scatterer##_data<complex128>(&SCATTERER::Scatterer::get_##name); } \
+    pybind11::array_t<double> get_##scatterer##_##name##_abs() { return get_##scatterer##_data<double>(&SCATTERER::Scatterer::get_##name##_abs); }
+
 #define DEFINE_CYLINDER_FUNCTION(dtype, name) \
     pybind11::array_t<dtype> get_cylinder_##name() const { return get_cylinder_data<dtype>(&CYLINDER::Scatterer::get_##name); }
 
@@ -80,12 +84,12 @@ class Experiment
 
         pybind11::array_t<double> get_sphere_coupling() const;
 
-        DEFINE_SPHERE_FUNCTION(complex128, a1)
-        DEFINE_SPHERE_FUNCTION(complex128, a2)
-        DEFINE_SPHERE_FUNCTION(complex128, a3)
-        DEFINE_SPHERE_FUNCTION(complex128, b1)
-        DEFINE_SPHERE_FUNCTION(complex128, b2)
-        DEFINE_SPHERE_FUNCTION(complex128, b3)
+        DEFINE_SCATTERER_COEFFICIENT(sphere, SPHERE, a1)
+        DEFINE_SCATTERER_COEFFICIENT(sphere, SPHERE, a2)
+        DEFINE_SCATTERER_COEFFICIENT(sphere, SPHERE, a3)
+        DEFINE_SCATTERER_COEFFICIENT(sphere, SPHERE, b1)
+        DEFINE_SCATTERER_COEFFICIENT(sphere, SPHERE, b2)
+        DEFINE_SCATTERER_COEFFICIENT(sphere, SPHERE, b3)
 
         DEFINE_SPHERE_FUNCTION(double, Qsca)
         DEFINE_SPHERE_FUNCTION(double, Qext)
@@ -108,18 +112,18 @@ class Experiment
 
         pybind11::array_t<double> get_cylinder_coupling() const;
 
-        DEFINE_CYLINDER_FUNCTION(complex128, a11)
-        DEFINE_CYLINDER_FUNCTION(complex128, a12)
-        DEFINE_CYLINDER_FUNCTION(complex128, a13)
-        DEFINE_CYLINDER_FUNCTION(complex128, a21)
-        DEFINE_CYLINDER_FUNCTION(complex128, a22)
-        DEFINE_CYLINDER_FUNCTION(complex128, a23)
-        DEFINE_CYLINDER_FUNCTION(complex128, b11)
-        DEFINE_CYLINDER_FUNCTION(complex128, b12)
-        DEFINE_CYLINDER_FUNCTION(complex128, b13)
-        DEFINE_CYLINDER_FUNCTION(complex128, b21)
-        DEFINE_CYLINDER_FUNCTION(complex128, b22)
-        DEFINE_CYLINDER_FUNCTION(complex128, b23)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, a11)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, a12)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, a13)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, a21)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, a22)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, a23)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, b11)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, b12)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, b13)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, b21)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, b22)
+        DEFINE_SCATTERER_COEFFICIENT(cylinder, CYLINDER, b23)
 
         DEFINE_CYLINDER_FUNCTION(double, Qsca)
         DEFINE_CYLINDER_FUNCTION(double, Qext)
@@ -134,12 +138,12 @@ class Experiment
 
         pybind11::array_t<double> get_coreshell_coupling() const;
 
-        DEFINE_CORESHELL_FUNCTION(complex128, a1)
-        DEFINE_CORESHELL_FUNCTION(complex128, a2)
-        DEFINE_CORESHELL_FUNCTION(complex128, a3)
-        DEFINE_CORESHELL_FUNCTION(complex128, b1)
-        DEFINE_CORESHELL_FUNCTION(complex128, b2)
-        DEFINE_CORESHELL_FUNCTION(complex128, b3)
+        DEFINE_SCATTERER_COEFFICIENT(coreshell, CORESHELL, a1)
+        DEFINE_SCATTERER_COEFFICIENT(coreshell, CORESHELL, a2)
+        DEFINE_SCATTERER_COEFFICIENT(coreshell, CORESHELL, a3)
+        DEFINE_SCATTERER_COEFFICIENT(coreshell, CORESHELL, b1)
+        DEFINE_SCATTERER_COEFFICIENT(coreshell, CORESHELL, b2)
+        DEFINE_SCATTERER_COEFFICIENT(coreshell, CORESHELL, b3)
 
         DEFINE_CORESHELL_FUNCTION(double, Qsca)
         DEFINE_CORESHELL_FUNCTION(double, Qext)

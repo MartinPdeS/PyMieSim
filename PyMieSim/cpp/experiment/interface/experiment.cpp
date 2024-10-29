@@ -7,7 +7,9 @@
 
 #define COEFFICIENT_PROPERTY(scatterer, number) \
     .def("get_" #scatterer "_a" #number, &Experiment::get_##scatterer##_a##number, "Retrieves the electric multipole coefficient (a" #number ") coefficient for a " #scatterer) \
-    .def("get_" #scatterer "_b" #number, &Experiment::get_##scatterer##_b##number, "Retrieves the magnetic multipole coefficient (b" #number ") coefficient for a " #scatterer)
+    .def("get_" #scatterer "_b" #number, &Experiment::get_##scatterer##_b##number, "Retrieves the magnetic multipole coefficient (b" #number ") coefficient for a " #scatterer) \
+    .def("get_" #scatterer "_a" #number "_abs", &Experiment::get_##scatterer##_a##number##_abs, "Retrieves the electric multipole coefficient (a" #number ") coefficient absolute value for a " #scatterer) \
+    .def("get_" #scatterer "_b" #number "_abs", &Experiment::get_##scatterer##_b##number##_abs, "Retrieves the magnetic multipole coefficient (b" #number ") coefficient absolute value for a " #scatterer) \
 
 #define COUPLING_AND_G(scatterer) \
      .def("get_" #scatterer "_g", &Experiment::get_##scatterer##_g, "Retrieves the asymmetry parameter (g) for a " #scatterer) \

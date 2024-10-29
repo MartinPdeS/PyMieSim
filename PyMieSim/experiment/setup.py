@@ -89,7 +89,7 @@ class Setup:
             A DataFrame containing the computed measures.
         """
 
-        measures = self._prepare_measures(measures)
+        measures = set(numpy.atleast_1d(measures))
         is_complex = self._is_complex_measure(measures)
 
         df = self.generate_dataframe(
@@ -107,33 +107,6 @@ class Setup:
 
         return df
 
-    def _prepare_measures(self, measures) -> set:
-        """
-        Ensure the provided measures are valid and available in the scatterer.
-
-        Parameters
-        ----------
-        measures : tuple
-            The measures requested for computation.
-
-        Returns
-        -------
-        set
-            A set of valid measures.
-
-        Raises:
-        -------
-        ValueError
-            If requested measures are not available in the scatterer.
-        """
-        measures = set(numpy.atleast_1d(measures))
-
-        # Check if requested measures are available in the scatterer
-        if not measures.issubset(self.scatterer.available_measure_list):
-            raise ValueError(f"Cannot compute {measures} for {self.scatterer.__class__}")
-
-        return measures
-
     def _is_complex_measure(self, measures: set) -> bool:
         """
         Determines if the measures involve complex values based on measure names.
@@ -148,7 +121,11 @@ class Setup:
         bool
             True if any measure involves complex values, False otherwise.
         """
-        return any(m[0] in ['a', 'b'] for m in measures)
+        condition = [
+            m[0] in ['a', 'b'] and 'abs' not in m for m in measures
+        ]
+
+        return any(condition)
 
     def _compute_measure(self, df: pd.DataFrame, measure: str, is_complex: bool, add_units: bool) -> pd.DataFrame:
         """
