@@ -8,16 +8,16 @@
 | PyMieSim/experiment/detector/base.py           |       58 |       27 |       16 |        0 |     42% |82-86, 104-110, 127-130, 147-153, 162-180, 189-193 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       11 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       11 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/scatterer/base.py          |       49 |        9 |       14 |        5 |     75% |48-50, 60, 84-89, 105, 110 |
+| PyMieSim/experiment/scatterer/base.py          |       49 |       14 |       14 |        3 |     60% |48-50, 60, 84-89, 102-110 |
 | PyMieSim/experiment/scatterer/core\_shell.py   |       21 |        7 |        0 |        0 |     67% |     56-70 |
 | PyMieSim/experiment/scatterer/cylinder.py      |       18 |        6 |        0 |        0 |     67% |     44-56 |
 | PyMieSim/experiment/scatterer/sphere.py        |       18 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |       93 |       14 |       24 |       10 |     78% |62, 69, 127, 205, 207-208, 231-232, 257-262, 288, 290->299, 295->299, 304 |
-| PyMieSim/experiment/source/base.py             |       58 |        7 |       24 |       10 |     79% |34, 50, 60, 62->65, 73, 75->78, 86, 89, 91->exit, 107 |
+| PyMieSim/experiment/setup.py                   |       93 |       58 |       24 |        1 |     31% |62, 65-69, 86-90, 113-129, 146, 168-187, 203-210, 228-237, 257-262, 279-316 |
+| PyMieSim/experiment/source/base.py             |       58 |       15 |       24 |        9 |     63% |34, 50, 60, 62->65, 73, 75->78, 86, 89, 91->exit, 103-114 |
 | PyMieSim/experiment/source/gaussian.py         |        9 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/source/planewave.py        |       15 |        4 |        2 |        0 |     65% | 32-35, 45 |
 | PyMieSim/mesh.py                               |       94 |       94 |        8 |        0 |      0% |     4-467 |
-| PyMieSim/polarization.py                       |       45 |       15 |        8 |        1 |     58% |65, 71, 74-84, 87, 90-93, 114, 135 |
+| PyMieSim/polarization.py                       |       45 |       17 |        8 |        0 |     53% |65, 68-71, 74-84, 87, 90-93, 114, 135 |
 | PyMieSim/single/detector/base.py               |       77 |       77 |       10 |        0 |      0% |     4-394 |
 | PyMieSim/single/detector/coherent.py           |       39 |       39 |       10 |        0 |      0% |     4-115 |
 | PyMieSim/single/detector/uncoherent.py         |       26 |       26 |        0 |        0 |      0% |     4-104 |
@@ -31,7 +31,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |       26 |        2 |        0 |      0% |     4-103 |
 | PyMieSim/special\_functions.py                 |       20 |       20 |        2 |        0 |      0% |      4-99 |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1136** |  **800** |  **158** |   **26** | **29%** |           |
+|                                      **TOTAL** | **1136** |  **859** |  **158** |   **13** | **23%** |           |
 
 
 ## Setup coverage badge
