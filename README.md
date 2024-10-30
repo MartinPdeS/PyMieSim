@@ -12,7 +12,7 @@
 | PyMieSim/experiment/scatterer/core\_shell.py   |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       18 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/sphere.py        |       18 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |       94 |        0 |       24 |        1 |     99% |  298->302 |
+| PyMieSim/experiment/setup.py                   |       93 |        3 |       24 |        3 |     95% |231-232, 295->299, 304 |
 | PyMieSim/experiment/source/base.py             |       58 |        3 |       24 |        6 |     89% |34, 62->65, 75->78, 89, 91->exit, 107 |
 | PyMieSim/experiment/source/gaussian.py         |        9 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/source/planewave.py        |       15 |        0 |        2 |        1 |     94% |    32->35 |
@@ -31,7 +31,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1137** |   **38** |  **158** |   **21** | **95%** |           |
+|                                      **TOTAL** | **1136** |   **41** |  **158** |   **23** | **95%** |           |
 
 
 ## Setup coverage badge
