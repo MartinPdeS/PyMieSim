@@ -4,7 +4,6 @@ build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
 metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
-build.verbose = false
 logging.level = "INFO"
 wheel.exclude = ["PyMieSim/cpp"]
 install.strip = false
@@ -72,16 +71,16 @@ local_scheme = "no-local-version"
 testing = [
     "pytest>=0.6",
     "pytest-cov>=2.0",
-    "pytest-json-report==1.5.0",
+    "pytest-json-report ==1.5.0",
     "coverage==7.6.4"
 ]
 
 documentation = [
-    "numpydoc==1.8.0",
-    "sphinx>=5.1.1",
-    "sphinx-rtd-theme==3.0.1",
-    "sphinx-gallery==0.18.0",
-    "pydata-sphinx-theme==0.15.4",
+    "numpydoc ==1.8.0",
+    "sphinx >=5.1.1",
+    "sphinx-rtd-theme ==3.0.1",
+    "sphinx-gallery ==0.18.0",
+    "pydata-sphinx-theme ==0.15.4",
 ]
 
 dev = [
