@@ -1,0 +1,60 @@
+# .github/workflows/deploy_documentation.yml
+name: Documentation
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  documentation:
+    name: Run the documentation building tools
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: "Set-up: Python 3.10"
+        uses: actions/setup-python@v4
+        id: cp310
+        with:
+            python-version: "3.10"
+
+      - name: "Install: Dependencies for headless server"
+        shell: bash
+        run: |
+            sudo apt-get update
+            sudo apt-get install xvfb
+
+      - name: "Checkout requirements and files for testing"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Install everything, run the tests, produce the .coverage file
+        run: |
+          python -m pip install wheel build
+          python -m build --wheel
+          python -m pip install .[documentation]
+
+      - name: Install dependencies
+        run: |
+          pip install sphinx sphinx_rtd_theme myst_parser
+
+      - name: Sphinx build
+        run: |
+          sphinx-build docs/source _build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        with:
+          publish_branch: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/
+          force_orphan: true
