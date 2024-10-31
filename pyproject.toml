@@ -80,7 +80,7 @@ documentation = [
     "sphinx >=5.1.1",
     "sphinx-rtd-theme ==3.0.1",
     "sphinx-gallery ==0.18.0",
-    "pydata-sphinx-theme ==0.15.4",
+    "pydata-sphinx-theme ==0.16.0",
 ]
 
 dev = [
