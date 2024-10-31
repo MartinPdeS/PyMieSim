@@ -6,7 +6,8 @@ source:
   git_url: https://github.com/MartinPdeS/PyMieSim.git
 
 build:
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  # script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: python -m pip install . -vv --no-deps --no-build-isolation
   number: 0
 
 channels:
