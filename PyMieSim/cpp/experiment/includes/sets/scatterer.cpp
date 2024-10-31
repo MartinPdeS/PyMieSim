@@ -15,12 +15,12 @@ namespace SPHERE {
     public:
         std::vector<double> diameter;
         ScattererProperties property;
-        MediumProperties medium;
+        MediumProperties medium_property;
 
         Set() = default;
 
         Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property)
-            : diameter(diameter), property(property), medium(medium_property)
+            : diameter(diameter), property(property), medium_property(medium_property)
             {
                 update_shape();
                 total_combinations = get_vector_sigma(shape);
@@ -30,19 +30,40 @@ namespace SPHERE {
             this->shape = {
                 diameter.size(),
                 property.size(),
-                medium.size()
+                medium_property.size()
             };
         }
 
+        void validate_sequential_data(const size_t expected_size) const {
+            // Check each vector's size and throw an error with the specific vector name if sizes don't match
+            if (this->diameter.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. diameter has a different size than expected size.");
 
-        Scatterer get_scatterer_by_index_sequential(size_t index, const SOURCE::BaseSource& source) const {
-            return Scatterer(diameter[index], property.get(index, source.indices[0]), medium.get(index, source.indices[0]), source);
+            if (this->property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. property has a different size than expected size.");
+
+            if (this->medium_property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
         }
 
-        Scatterer get_scatterer_by_index(size_t flat_index, const SOURCE::BaseSource& source) const {
+        Scatterer get_scatterer_by_index_sequential(const size_t index, const SOURCE::BaseSource& source) const {
+            return Scatterer(
+                this->diameter[index],
+                this->property.get(index, source.wavelength_index),
+                this->medium_property.get(index, source.wavelength_index),
+                source
+            );
+        }
+
+        Scatterer get_scatterer_by_index(const size_t flat_index, const SOURCE::BaseSource& source) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
-            Scatterer scatterer(diameter[indices[0]], property.get(indices[1], source.indices[0]), medium.get(indices[2], source.indices[0]), source);
+            Scatterer scatterer(
+                this->diameter[indices[0]],
+                this->property.get(indices[1], source.wavelength_index),
+                this->medium_property.get(indices[2], source.wavelength_index),
+                source
+            );
 
             scatterer.indices = indices;
 
@@ -57,12 +78,12 @@ namespace CYLINDER {
     public:
         std::vector<double> diameter;
         ScattererProperties property;
-        MediumProperties medium;
+        MediumProperties medium_property;
 
 
         Set() = default;
         Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property)
-            : diameter(diameter), property(property), medium(medium_property)
+            : diameter(diameter), property(property), medium_property(medium_property)
             {
                 update_shape();
                 total_combinations = get_vector_sigma(shape);
@@ -72,18 +93,40 @@ namespace CYLINDER {
             this->shape = {
                 diameter.size(),
                 property.size(),
-                medium.size()
+                medium_property.size()
             };
         }
 
-        Scatterer get_scatterer_by_index_sequential(size_t index, const SOURCE::BaseSource& source) const {
-            return Scatterer(diameter[index], property.get(index, source.indices[0]), medium.get(index, source.indices[0]), source);
+        void validate_sequential_data(const size_t expected_size) const {
+            // Check each vector's size and throw an error with the specific vector name if sizes don't match
+            if (this->diameter.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. diameter has a different size than expected size.");
+
+            if (this->property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. property has a different size than expected size.");
+
+            if (this->medium_property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
         }
 
-        Scatterer get_scatterer_by_index(size_t flat_index, const SOURCE::BaseSource& source) const {
+        Scatterer get_scatterer_by_index_sequential(const size_t index, const SOURCE::BaseSource& source) const {
+            return Scatterer(
+                this->diameter[index],
+                this->property.get(index, source.wavelength_index),
+                this->medium_property.get(index, source.wavelength_index),
+                source
+            );
+        }
+
+        Scatterer get_scatterer_by_index(const size_t flat_index, const SOURCE::BaseSource& source) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
-            Scatterer scatterer(diameter[indices[0]], property.get(indices[1], source.indices[0]), medium.get(indices[2], source.indices[0]), source);
+            Scatterer scatterer(
+                diameter[indices[0]],
+                property.get(indices[1], source.wavelength_index),
+                medium_property.get(indices[2], source.wavelength_index),
+                source
+            );
 
             scatterer.indices = indices;
 
@@ -101,7 +144,7 @@ namespace CORESHELL {
         std::vector<double> shell_width;
         ScattererProperties core_property;
         ScattererProperties shell_property;
-        MediumProperties medium;
+        MediumProperties medium_property;
 
         Set() = default;
 
@@ -111,7 +154,7 @@ namespace CORESHELL {
             const ScattererProperties& core_property,
             const ScattererProperties& shell_property,
             const MediumProperties& medium_property)
-            : core_diameter(core_diameter), shell_width(shell_width), core_property(core_property), shell_property(shell_property), medium(medium_property)
+            : core_diameter(core_diameter), shell_width(shell_width), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
             {
                 update_shape();
                 total_combinations = get_vector_sigma(shape);
@@ -123,20 +166,20 @@ namespace CORESHELL {
                 shell_width.size(),
                 core_property.size(),
                 shell_property.size(),
-                medium.size()
+                medium_property.size()
             };
         }
 
-        Scatterer get_scatterer_by_index(size_t flat_index, SOURCE::BaseSource& source) const {
+        Scatterer get_scatterer_by_index(const size_t flat_index, SOURCE::BaseSource& source) const {
 
             std::vector<size_t> indices = this->calculate_indices(flat_index);
 
             Scatterer scatterer(
                 core_diameter[indices[0]],
                 shell_width[indices[1]],
-                core_property.get(indices[2], source.indices[0]),
-                shell_property.get(indices[3], source.indices[0]),
-                medium.get(indices[4], source.indices[0]),
+                core_property.get(indices[2], source.wavelength_index),
+                shell_property.get(indices[3], source.wavelength_index),
+                medium_property.get(indices[4], source.wavelength_index),
                 source
             );
 
@@ -145,13 +188,31 @@ namespace CORESHELL {
             return scatterer;
         }
 
-        Scatterer get_scatterer_by_index_sequential(size_t index, SOURCE::BaseSource& source) const {
+        void validate_sequential_data(const size_t expected_size) const {
+            // Check each vector's size and throw an error with the specific vector name if sizes don't match
+            if (this->core_diameter.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. core_diameter has a different size than expected size.");
+
+            if (this->shell_width.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. shell_width has a different size than expected size.");
+
+            if (this->core_property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. core_property has a different size than expected size.");
+
+            if (this->shell_property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. shell_property has a different size than expected size.");
+
+            if (this->medium_property.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
+        }
+
+        Scatterer get_scatterer_by_index_sequential(const size_t index, SOURCE::BaseSource& source) const {
             Scatterer scatterer(
                 core_diameter[index],
                 shell_width[index],
-                core_property.get(index, source.indices[0]),
-                shell_property.get(index, source.indices[0]),
-                medium.get(index, source.indices[0]),
+                core_property.get(index, source.wavelength_index),
+                shell_property.get(index, source.wavelength_index),
+                medium_property.get(index, source.wavelength_index),
                 source
             );
 

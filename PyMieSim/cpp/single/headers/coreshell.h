@@ -1,7 +1,6 @@
 #pragma once
 
 #include "single/includes/base_spherical_scatterer.cpp"
-#include "utils/numpy_interface.cpp"
 #include "utils/VSH.cpp"
 
 

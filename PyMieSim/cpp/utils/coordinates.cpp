@@ -109,9 +109,9 @@ struct Spherical {
         theta.reserve(sampling);
     }
 
-    py::array_t<double> get_r_py() const { return vector_to_numpy_copy(r); }
-    py::array_t<double> get_phi_py() const { return vector_to_numpy_copy(phi); }
-    py::array_t<double> get_theta_py() const { return vector_to_numpy_copy(theta); }
+    py::array_t<double> get_r_py() const { return _vector_to_numpy(r, {r.size()}); }
+    py::array_t<double> get_phi_py() const { return _vector_to_numpy(phi, {phi.size()}); }
+    py::array_t<double> get_theta_py() const { return _vector_to_numpy(theta, {theta.size()}); }
 };
 
 struct Cartesian {

@@ -46,7 +46,7 @@ def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 
 
     Parameters
     ----------
-    dataframe : pd.DataFrame
+    dataframe :  pd.DataFrame
         A pandas DataFrame containing the data with pint units.
     x : str
         The index level used as the x-axis for the plot.

@@ -6,177 +6,37 @@
 #include <pybind11/stl.h>
 
 template <typename T>
-std::vector<size_t>
-get_stride(std::vector<size_t> dimension)
+std::vector<size_t> get_stride(const std::vector<size_t>& dimensions)
 {
-    std::reverse(dimension.begin(), dimension.end());
+    if (dimensions.empty())
+        return {};
 
-    std::vector<size_t> stride;
-    stride.push_back( sizeof(T) );
+    std::vector<size_t> stride(dimensions.size());
+    stride.back() = sizeof(T);  // Start from the innermost dimension
 
-    for (size_t i=0; i<dimension.size()-1; ++i)
-        stride.push_back( stride[i] * dimension[i] );
-
-    std::reverse(stride.begin(), stride.end());
+    for (ssize_t i = dimensions.size() - 2; i >= 0; --i)
+        stride[i] = stride[i + 1] * dimensions[i + 1];
 
     return stride;
-
-}
-
-template <typename T>
-pybind11::array_t<T>
-vector_to_numpy(const std::vector<T> &vector, const std::vector<size_t> &dimension)
-{
-    pybind11::array_t<T>  numpy_array;
-
-    std::vector<T> * output_vector = new std::vector<T>;
-    (*output_vector) = vector;
-
-    std::vector<size_t> stride = get_stride<T>(dimension);
-
-    pybind11::capsule free_when_done(
-        output_vector->data(), [](void *f) {T *foo = reinterpret_cast<T *>(f); delete []foo; }
-    );
-
-    numpy_array = pybind11::array_t<T>(
-        dimension,
-        stride,
-        output_vector->data(),
-        free_when_done
-      );
-
-    return numpy_array;
-}
-
-
-template <typename T>
-pybind11::array_t<T>
-vector_to_numpy(const std::vector<T> &vector)
-{
-    pybind11::array_t<T>  numpy_array;
-
-    std::vector<T> * output_vector = new std::vector<T>;
-    (*output_vector) = vector;
-
-    std::vector<size_t> stride = {sizeof(T)};
-    std::vector<size_t> dimension ={vector.size()};
-
-    pybind11::capsule free_when_done(
-        output_vector->data(), [](void *f) {T *foo = reinterpret_cast<T *>(f); delete []foo; }
-    );
-
-    numpy_array = pybind11::array_t<T>(
-        dimension,
-        stride,
-        output_vector->data(),
-        free_when_done
-      );
-
-    return numpy_array;
-}
-
-
-template<typename T>
-pybind11::array_t<T>
-vector_to_numpy(std::vector<T> &vector, const std::vector<size_t> &dimension, const std::vector<size_t> &stride){
-
-    pybind11::capsule free_when_done(
-        vector.data(), [](void *f) { T *foo = reinterpret_cast<T *>(f); }
-    );
-
-    pybind11::array_t<T> numpy_array = pybind11::array_t<T>(
-        dimension,
-        stride,
-        vector.data(),
-        free_when_done
-      );
-
-    return numpy_array;
 }
 
 template<typename T>
-inline pybind11::array_t<T>
-vector_to_numpy(std::vector<T>&& passthrough)
+pybind11::array_t<T> _vector_to_numpy(const std::vector<T> input_vector, std::vector<size_t> shape = {})
 {
-    auto* ptr = new std::vector<T>(std::move(passthrough));
+    // Set shape based on input_vector size if shape is empty
+    if (shape.empty()) {
+        shape.push_back(input_vector.size());
+    }
 
-    const pybind11::capsule freeWhenDone(
-        ptr, [](void *toFree) { delete static_cast<std::vector<T> *>(toFree); }
-    );
+    // Calculate strides
+    std::vector<size_t> strides(shape.size(), sizeof(T));
+    for (ssize_t i = shape.size() - 2; i >= 0; --i)
+        strides[i] = strides[i + 1] * shape[i + 1];
 
-    auto numpy_array = pybind11::array_t<T>(
-        {ptr->size()},
-        {sizeof(T)},
-        ptr->data(),
-        freeWhenDone
+    // Create numpy array directly from input_vector data, no copying
+    pybind11::array_t<T> numpy_array(
+        shape, strides, input_vector.data()
     );
 
     return numpy_array;
 }
-
-template<typename T>
-inline pybind11::array_t<T>
-vector_to_numpy_copy(std::vector<T> passthrough)
-{
-    auto* ptr = new std::vector<T>(std::move(passthrough));
-
-    const pybind11::capsule freeWhenDone(
-        ptr, [](void *toFree) { delete static_cast<std::vector<T> *>(toFree); }
-    );
-
-    auto numpy_array = pybind11::array_t<T>(
-        {ptr->size()},
-        {sizeof(T)},
-        ptr->data(),
-        freeWhenDone
-    );
-
-    return numpy_array;
-}
-
-
-template<typename T>
-inline pybind11::array_t<T>
-vector_to_numpy_copy(std::vector<T> passthrough, const std::vector<size_t> &shape)
-{
-    auto* ptr = new std::vector<T>(std::move(passthrough));
-
-    const pybind11::capsule freeWhenDone(
-        ptr, [](void *toFree) { delete static_cast<std::vector<T> *>(toFree); }
-    );
-
-    auto numpy_array = pybind11::array_t<T>(
-        {ptr->size()},
-        {sizeof(T)},
-        ptr->data(),
-        freeWhenDone
-    );
-
-    numpy_array.resize(shape);
-
-    return numpy_array;
-}
-
-
-template<typename T>
-inline pybind11::array_t<T>
-vector_to_numpy(std::vector<T>&& passthrough, const std::vector<size_t> &shape)
-{
-    auto* ptr = new std::vector<T>(std::move(passthrough));
-
-    const pybind11::capsule freeWhenDone(
-        ptr, [](void *toFree) { delete static_cast<std::vector<T> *>(toFree); }
-    );
-
-    auto numpy_array = pybind11::array_t<T>(
-        {ptr->size()},
-        {sizeof(T)},
-        ptr->data(),
-        freeWhenDone
-    );
-
-    numpy_array.resize(shape);
-
-    return numpy_array;
-}
-

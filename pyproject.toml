@@ -97,7 +97,7 @@ addopts = [
 ]
 testpaths = [
     "tests/single/*",
-    "tests/experiments/*",
+    "tests/experiment/*",
     "tests/validation/*",
     "tests/extra/*"
 ]

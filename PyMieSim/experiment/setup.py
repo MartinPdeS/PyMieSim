@@ -131,6 +131,7 @@ class Setup:
     def _is_complex_measure(self, measures: set) -> bool:
         """
         Determines if the measures involve complex values based on measure names.
+        No complex value are computed now, as the a & b parameters a return as absolute values for convienience.
 
         Parameters
         ----------
@@ -142,11 +143,7 @@ class Setup:
         bool
             True if any measure involves complex values, False otherwise.
         """
-        condition = [
-            m[0] in ['a', 'b'] and 'abs' not in m for m in measures
-        ]
-
-        return any(condition)
+        return False
 
     def _compute_measure(self, df: pd.DataFrame, measure: str, is_complex: bool, add_units: bool) -> pd.DataFrame:
         """

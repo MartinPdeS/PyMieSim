@@ -42,25 +42,70 @@ namespace SOURCE
             total_combinations = get_vector_sigma(shape);
         }
 
-        BaseSource get_source_by_index(size_t flat_index) const {
+        BaseSource get_source_by_index(const size_t flat_index) const {
             std::vector<size_t> indices = calculate_indices(flat_index);
 
             BaseSource source;
 
             if (is_gaussian)
-                source = Gaussian(this->wavelength[indices[0]], this->jones_vector[indices[1]], this->NA[indices[2]], this->optical_power[indices[3]]);
+                source = Gaussian(
+                    this->wavelength[indices[0]],
+                    this->jones_vector[indices[1]],
+                    this->NA[indices[2]],
+                    this->optical_power[indices[3]]
+                );
             else
-                source = Planewave(this->wavelength[indices[0]], this->jones_vector[indices[1]], this->amplitude[indices[2]]);
+                source = Planewave(
+                    this->wavelength[indices[0]],
+                    this->jones_vector[indices[1]],
+                    this->amplitude[indices[2]]
+                );
 
             source.indices = indices;
+            source.wavelength_index = indices[0];
             return source;
         }
 
-        BaseSource get_source_by_index_sequential(size_t index) const {
+
+        void validate_sequential_data(const size_t expected_size) const {
+            // Check each vector's size and throw an error with the specific vector name if sizes don't match
+            if (this->wavelength.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. wavelength has a different size than expected size.");
+
+            if (this->jones_vector.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. this->jones_vector has a different size than expected size.");
+
+
             if (is_gaussian)
-                return Gaussian(this->wavelength[index], this->jones_vector[index], this->NA[index], this->optical_power[index]);
+            {
+                if (NA.size() != expected_size)
+                    throw std::runtime_error("Error: Vector size mismatch in sequential computation. NA has a different size than expected size.");
+
+                if (optical_power.size() != expected_size)
+                    throw std::runtime_error("Error: Vector size mismatch in sequential computation. optical_power has a different size than expected size.");
+            }
             else
-                return Planewave(this->wavelength[index], this->jones_vector[index], this->amplitude[index]);
+                if (amplitude.size() != expected_size)
+                    throw std::runtime_error("Error: Vector size mismatch in sequential computation. amplitude has a different size than expected size.");
+
+
+        }
+
+
+        BaseSource get_source_by_index_sequential(const size_t index) const {
+            if (is_gaussian)
+                return  Gaussian(
+                    this->wavelength[index],
+                    this->jones_vector[index],
+                    this->NA[index],
+                    this->optical_power[index]
+                );
+            else
+                return Planewave(
+                    this->wavelength[index],
+                    this->jones_vector[index],
+                    this->amplitude[index]
+                );
 
         }
     };

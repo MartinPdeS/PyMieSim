@@ -151,7 +151,10 @@ public:
     {
         auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
 
-        return std::make_tuple(vector_to_numpy(phi_field), vector_to_numpy(theta_field));
+        return std::make_tuple(
+            _vector_to_numpy(phi_field, {phi_field.size()}),
+            _vector_to_numpy(theta_field, {theta_field.size()})
+        );
     }
 
     double get_g_with_fields(size_t sampling) const {
@@ -171,8 +174,8 @@ public:
         auto [S1, S2] = this->compute_s1s2(phi);
 
         return std::make_tuple(
-            vector_to_numpy(S1),
-            vector_to_numpy(S2)
+            _vector_to_numpy(S1, {S1.size()}),
+            _vector_to_numpy(S2, {S2.size()})
         );
     }
 
@@ -181,12 +184,12 @@ public:
         auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_fields(sampling, distance);
 
         py::array_t<complex128>
-            phi_field_py = vector_to_numpy(phi_field, {sampling, sampling}),
-            theta_field_py = vector_to_numpy(theta_field, {sampling, sampling});
+            phi_field_py = _vector_to_numpy(phi_field, {sampling, sampling}),
+            theta_field_py = _vector_to_numpy(theta_field, {sampling, sampling});
 
         py::array_t<double>
-            theta_py = vector_to_numpy(theta),
-            phi_py = vector_to_numpy(phi);
+            theta_py = _vector_to_numpy(theta, {theta.size()}),
+            phi_py = _vector_to_numpy(phi, {phi.size()});
 
         phi_field_py = phi_field_py.attr("transpose")();
         theta_field_py = theta_field_py.attr("transpose")();

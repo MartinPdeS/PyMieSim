@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyMieSim.single.source import PlaneWave as _  # noqa:F401  # Necessary for pybind11 binding initialization
+
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyMieSim.single.source import Gaussian as _  # noqa:F401  # Necessary for pybind11 binding initialization
 from pydantic.dataclasses import dataclass
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource, config_dict

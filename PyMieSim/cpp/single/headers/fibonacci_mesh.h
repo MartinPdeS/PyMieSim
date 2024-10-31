@@ -1,7 +1,7 @@
 #pragma once
 
-#define DEFINE_PY_OUTPUT(dtype, name) \
-    py::array_t<dtype> get_##name() const { return vector_to_numpy_copy(name);}
+#define DEFINE_PY_GETTER(dtype, py_name, name) \
+    py::array_t<dtype> get_##py_name() const {return _vector_to_numpy(name, {name.size()}); };
 
 
 #include <vector>
@@ -62,50 +62,27 @@ class FibonacciMesh : public BaseMesh {
         std::vector<double> get_principal_axis() const;
 
         py::array_t<double> get_parallel_vector() const {
-            return vector_to_numpy_copy(parallel_vector.data, {parallel_vector.sampling, 3});
+            return _vector_to_numpy(parallel_vector.data, {parallel_vector.sampling, 3});
         };
         py::array_t<double> get_perpendicular_vector() const {
-            return vector_to_numpy_copy(perpendicular_vector.data, {perpendicular_vector.sampling, 3});
+            return _vector_to_numpy(perpendicular_vector.data, {perpendicular_vector.sampling, 3});
         };
 
-        DEFINE_PY_OUTPUT(double, horizontal_parallel_projection)
-        DEFINE_PY_OUTPUT(double, vertical_parallel_projection)
-        DEFINE_PY_OUTPUT(double, horizontal_perpendicular_projection)
-        DEFINE_PY_OUTPUT(double, vertical_perpendicular_projection)
+        DEFINE_PY_GETTER(double, horizontal_parallel_projection, horizontal_parallel_projection)
+        DEFINE_PY_GETTER(double, vertical_parallel_projection, vertical_parallel_projection)
+        DEFINE_PY_GETTER(double, horizontal_perpendicular_projection, horizontal_perpendicular_projection)
+        DEFINE_PY_GETTER(double, vertical_perpendicular_projection, vertical_perpendicular_projection)
 
-        py::array_t<double> get_x_py() const {
-            return vector_to_numpy_copy(cartesian_coordinates.x);
-        };
+        DEFINE_PY_GETTER(double, x_py, cartesian_coordinates.x)
+        DEFINE_PY_GETTER(double, y_py, cartesian_coordinates.y)
+        DEFINE_PY_GETTER(double, z_py, cartesian_coordinates.z)
 
-        py::array_t<double> get_y_py() const {
-            return vector_to_numpy_copy(cartesian_coordinates.y);
-        };
+        DEFINE_PY_GETTER(double, base_x_py, base_cartesian_coordinates.x)
+        DEFINE_PY_GETTER(double, base_y_py, base_cartesian_coordinates.y)
+        DEFINE_PY_GETTER(double, base_z_py, base_cartesian_coordinates.z)
 
-        py::array_t<double> get_z_py() const {
-            return vector_to_numpy_copy(cartesian_coordinates.z);
-        };
+        DEFINE_PY_GETTER(double, r_py, spherical_coordinates.r)
+        DEFINE_PY_GETTER(double, phi_py, spherical_coordinates.phi)
+        DEFINE_PY_GETTER(double, theta_py, spherical_coordinates.theta)
 
-        py::array_t<double> get_base_x_py() const {
-            return vector_to_numpy_copy(base_cartesian_coordinates.x);
-        };
-
-        py::array_t<double> get_base_y_py() const {
-            return vector_to_numpy_copy(base_cartesian_coordinates.y);
-        };
-
-        py::array_t<double> get_base_z_py() const {
-            return vector_to_numpy_copy(base_cartesian_coordinates.z);
-        };
-
-        py::array_t<double> get_r_py() const {
-            return vector_to_numpy_copy(spherical_coordinates.r);
-        };
-
-        py::array_t<double> get_phi_py() const {
-            return vector_to_numpy_copy(spherical_coordinates.phi);
-        };
-
-        py::array_t<double> get_theta_py() const {
-            return vector_to_numpy_copy(spherical_coordinates.theta);
-        };
 };

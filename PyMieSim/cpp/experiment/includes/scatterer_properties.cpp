@@ -17,8 +17,7 @@ class ScattererProperties {
         ScattererProperties(const std::vector<complex128> index_properties) : index_properties(index_properties) {}
         ScattererProperties(const std::vector<std::vector<complex128>> material_properties) : material_properties(material_properties) {}
 
-        size_t size()
-        {
+        size_t size() const {
             if (index_properties)
                 return index_properties->size();
 
@@ -52,8 +51,7 @@ class MediumProperties {
         MediumProperties(const std::vector<double> index_properties) : index_properties(index_properties) {}
         MediumProperties(const std::vector<std::vector<double>> material_properties) : material_properties(material_properties) {}
 
-        size_t size()
-        {
+        size_t size() const {
             if (index_properties)
                 return index_properties->size();
 
