@@ -58,10 +58,10 @@ test:
     - PyMieSim
   requires:
     - python {{PY_VER}}*
-    - pytest>=0.6
-    - pytest-cov>=2.0
-    - pytest-json-report==1.5.0
-    - coverage==7.6.1
+    - pytest >=0.6
+    - pytest-cov >=2.0
+    - pytest-json-report ==1.5.0
+    - coverage ==7.6.1
   commands:
     - pytest --ignore=tests/gui
   source_files:
