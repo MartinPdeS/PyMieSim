@@ -19,17 +19,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Conda environment creation and activation
         uses: conda-incubator/setup-miniconda@v3
         with:
           channels: conda-forge, martinpdes
-
           python-version: ${{ matrix.python-version }}
 
       - name: Conda environment creation and activation
         run: |
           conda install anaconda-client conda-build
-          conda config --add channels conda-forge
-          conda config --add channels martinpdes
           conda build . --token ${{ secrets.ANACONDA_API_TOKEN }} --user martinpdes
