@@ -269,7 +269,6 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
 
 .. |ci/cd| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg
     :alt: Unittest Status
-    :target: https://martinpdes.github.io/PyMieSim/actions
 
 .. |code_structure| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png
     :width: 800
