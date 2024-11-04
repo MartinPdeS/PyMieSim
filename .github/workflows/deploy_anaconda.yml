@@ -31,4 +31,4 @@ jobs:
       - name: Conda environment creation and activation
         run: |
           conda install anaconda-client conda-build
-          conda build . --token ${{ secrets.ANACONDA_API_TOKEN }} --user martinpdes
+          conda build . --python ${{ matrix.python-version }} --token ${{ secrets.ANACONDA_API_TOKEN }} --user martinpdes

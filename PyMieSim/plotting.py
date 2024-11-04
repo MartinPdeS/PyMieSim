@@ -32,15 +32,15 @@ def plot_dataframe(
         _, ax = plt.subplots(1, 1)
 
     if std is not None:
-        plot_with_std(dataframe, ax, x, std, alpha, **kwargs)
+        return plot_with_std(dataframe, ax, x, std, alpha, **kwargs)
 
     else:
-        plot_without_std(dataframe, ax, x, **kwargs)
+        return plot_without_std(dataframe, ax, x, **kwargs)
 
     plt.show()
 
 
-def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
+def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 0.5, show: bool = True, **kwargs) -> None:
     """
     Plot the mean with standard deviation shading for a given dataframe.
 
@@ -104,10 +104,12 @@ def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 
         )
 
     ax.legend(title=" : ".join(groupby_levels))
-    plt.show()
+
+    if show:
+        plt.show()
 
 
-def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, **kwargs) -> None:
+def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, show: bool = True, **kwargs) -> None:
     """
     Plots the data without standard deviation shading. Handles real and imaginary parts if the data is complex.
 
@@ -149,5 +151,8 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, **kwargs) ->
         )
 
     ax.legend(title=" : ".join(groupby_levels))
+
+    if show:
+        plt.show()
 
     return ax
