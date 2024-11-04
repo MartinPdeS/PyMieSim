@@ -25,6 +25,8 @@ typedef std::complex<double> complex128;
     pybind11::array_t<double> get_##scatterer##_coupling_sequential() const { return get_scatterer_coupling_sequential<SCATTERER::Set>(scatterer##Set); }
 
 
+
+#include <iostream>
 class Experiment
 {
     public:
@@ -166,8 +168,6 @@ class Experiment
                 auto scatterer = scattererSet.get_scatterer_by_index_sequential(idx, source);
 
                 DETECTOR::Detector detector = detectorSet.get_detector_by_index_sequential(idx);
-
-                idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
 
                 output_array[idx] = detector.get_coupling(scatterer);
             }
