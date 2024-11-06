@@ -3,17 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting to Master Documentation</title>
+    <title>Documentation Versions</title>
 </head>
 <body>
-    <p>Redirecting to the master version of the documentation...</p>
+    <h1>Select Documentation Version</h1>
+    <p>If you are not redirected automatically, please choose a version below:</p>
+    <ul id="version-list">
+        <!-- JavaScript will populate this list dynamically -->
+    </ul>
 
     <script>
+        // URL for the version_switcher.json file on GitHub Pages
+        const versionJsonUrl = "https://martinpdes.github.io/PyMieSim/version_switcher.json";
+
         // Base URL for your GitHub Pages site
         const baseUrl = "https://martinpdes.github.io/PyMieSim";
 
-        // Redirect to the master version of the documentation
-        window.location.href = `${baseUrl}/docs/master/index.html`;
+        // Fetch available versions from version_switcher.json
+        fetch(versionJsonUrl)
+            .then(response => response.json())
+            .then(versionsData => {
+                // Log available versions to the console
+                console.log("Available documentation versions:", versionsData);
+
+                // Display a list of all versions as links
+                const versionList = document.getElementById('version-list');
+                versionsData.forEach(entry => {
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `${baseUrl}/docs/${entry.version}/index.html`;
+                    link.textContent = entry.name || `Version: ${entry.version}`;
+                    listItem.appendChild(link);
+                    versionList.appendChild(listItem);
+                });
+
+                // Optionally, redirect to the latest version (first in the JSON list or 'master')
+                const latestVersion = versionsData.find(entry => entry.version === 'master') || versionsData[0];
+                if (latestVersion) {
+                    window.location.href = `${baseUrl}/docs/${latestVersion.version}/index.html`;
+                }
+            })
+            .catch(error => {
+                console.error("Error loading versions from version_switcher.json:", error);
+                document.body.innerHTML += "<p>Could not load versions. Please try again later.</p>";
+            });
     </script>
 </body>
 </html>
