@@ -1,10 +1,5 @@
 [
     {
-        "name": "latest [stable]",
-        "version": "latest",
-        "url": "https://martinpdes.github.io/PyMieSim/docs/latest"
-    },
-    {
         "name": "v2.3.6.30",
         "version": "v2.3.6.30",
         "url": "https://martinpdes.github.io/PyMieSim/docs/v2.3.6.30"
