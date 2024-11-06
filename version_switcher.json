@@ -1,6 +1,6 @@
 [
     {
-        "name": "latest (stable)",
+        "name": "latest [stable]",
         "version": "latest",
         "url": "https://martinpdes.github.io/PyMieSim/docs/latest"
     },
