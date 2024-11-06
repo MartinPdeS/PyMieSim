@@ -1,8 +1,13 @@
 *
 
-!docs/
-# !docs/v*
-!.nojeykill
+
+!docs
+!docs/latest
+!docs/v*
+!.nojekyll
 !index.html
 !version_switcher.json
 !.gitignore
+!.git
+
+
