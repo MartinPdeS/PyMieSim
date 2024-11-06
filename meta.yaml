@@ -33,7 +33,7 @@ about:
   summary: "A package for light scattering computation."
   description: PyMieSim is a library for light scattering simulation using the Mie theory.
   dev_url: https://github.com/MartinPdeS/PyMieSim
-  doc_url: https://pymiesim.readthedocs.io
+  doc_url: https://martinpdes.github.io/PyMieSim/
   license_file: LICENSE
   keywords:
     - optics
@@ -53,12 +53,12 @@ test:
     - PyMieSim
   requires:
     - python {{PY_VER}}*
-    - pytest>=0.6
-    - pytest-cov>=2.0
-    - pytest-json-report==1.5.0
-    - coverage==7.6.1
+    - pytest >=0.6
+    - pytest-cov >=2.0
+    - pytest-json-report ~=1.5.0
+    - coverage ~=7.6.1
   commands:
-    - pytest --ignore=tests/gui
+    - python -m pytest --ignore=tests/gui
   source_files:
     - tests
 

@@ -25,7 +25,7 @@ config_dict = ConfigDict(
 @dataclass(config=config_dict, kw_only=True)
 class BaseScatterer():
     """
-    Base class for scatterer objects. This class handles the initialization and setup of
+    Base class for scatterer objects.  This class handles the initialization and setup of
     scatterer parameters for use in PyMieSim simulations.
 
     """

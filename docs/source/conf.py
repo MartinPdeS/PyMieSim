@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
 from MPSPlots.styles import use_mpsplots_style
 import PyMieSim
-from PyMieSim.directories import project_path, doc_css_path
+from pathlib import Path
+from PyMieSim.directories import doc_css_path
 
-sys.path.insert(0, project_path)
-sys.path.insert(0, project_path.joinpath('PyMieSim'))
-sys.path.insert(0, project_path.joinpath('PyMieSim/docs/source'))
+sys.path.append(str(Path(".").resolve()))
 
 
 def setup(app):
@@ -42,6 +42,9 @@ extensions = [
 # Napoleon settings for docstrings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
+
+html_logo = "_static/thumbnail.png"
+html_favicon = "_static/thumbnail.png"
 
 
 def reset_mpl(gallery_conf, fname):
@@ -107,15 +110,12 @@ binder_branch = "master"
 major, minor = version[:2]
 binder_branch = f"v{major}.{minor}.x"
 
+html_theme_options = dict()
 
-html_theme_options = {
-    # Navigation bar
-    "show_nav_level": 0,
-    "logo": {
-        "alt_text": "PyMieSim's logo",
-        "text": "PyMieSim",
-        "link": "https://martinpdes.github.io/PyMieSim/",
-    },
+html_theme_options['logo'] = dict(text='PyMieSim', image="_static/logo-dark.svg")
+html_theme_options["show_nav_level"] = 0
+
+html_theme_options.update({
     "icon_links": [
         {
             "name": "GitHub",
@@ -127,6 +127,11 @@ html_theme_options = {
             "url": "https://pypi.org/project/pymiesim/",
             "icon": "fa-solid fa-box",
         },
+        {
+            "name": "Anaconda",
+            "url": "https://anaconda.org/MartinPdeS/pymiesim",
+            "icon": "fa-brands fa-python",
+        },
     ],
     "navbar_align": "left",
     "navbar_end": ["version-switcher", "navbar-icon-links"],
@@ -136,10 +141,17 @@ html_theme_options = {
     "footer_start": ["copyright"],
     "footer_end": ["sphinx-version", "theme-version"],
     # Other
-    "pygment_light_style": "default",
-    "pygment_dark_style": "github-dark",
+    "pygments_light_style": "default",
+    "pygments_dark_style": "github-dark",
 }
+)
 
+current_version = os.getenv("tag", "latest")
+
+html_theme_options["switcher"] = dict(
+    json_url="https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json",
+    version_match=current_version,
+)
 
 htmlhelp_basename = 'PyMieSimdoc'
 
@@ -164,9 +176,9 @@ texinfo_documents = [
 
 epub_title = project
 
-# html_static_path = ['_static']
-# templates_path = ['_templates']
-# html_css_files = ['default.css']
+html_static_path = ['_static']
+templates_path = ['_templates']
+html_css_files = ['default.css']
 epub_exclude_files = ['search.html']
 
 
@@ -175,3 +187,4 @@ myst_enable_extensions = [
     # Enable fieldlist to allow for Field Lists like in rST (e.g., :orphan:)
     "fieldlist",
 ]
+

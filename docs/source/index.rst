@@ -12,6 +12,7 @@ PyMieSim's documentation
     :hidden:
 
     theory.rst
-    gallery/index.rst
+    examples.rst
+    gallery/validation/index.rst
     code/index.rst
     references.rst

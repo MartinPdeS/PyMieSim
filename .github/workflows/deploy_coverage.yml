@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: "Set-up: Python ${{ env.cp_python_version }}"
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         id: cp310
         with:
             python-version: "3.10"

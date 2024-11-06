@@ -1,4 +1,4 @@
-/* Additional styling for the PyData Sphinx theme. */
+/* Additional styling for the PyData Sphinx theme.
 
 /* Use hyperlink color for grid-item-cards.
 TODO find a way to only apply this to grid-item-cards that link somewhere */
@@ -16,4 +16,4 @@ div.highlight a {
 /* Stack components in footer vertically. */
 .bd-footer .footer-items__end, .bd-footer .footer-items__start {
   flex-direction: row;
-}
+} */

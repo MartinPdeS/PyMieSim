@@ -19,7 +19,7 @@
    * - Anaconda
      - |anaconda|
      - |anaconda_download|
-     -
+     - |anaconda_date|
 
 
 
@@ -27,7 +27,9 @@
 PyMieSim
 ========
 
-**PyMieSim** is a Python library designed to provide a robust and flexible framework for performing Mie scattering simulations. The software is easy to install and operate, making it accessible to both new users and experienced researchers. PyMieSim enables users to explore the scattering properties of particles under various configurations, and is tailored for investigating single scattering events, as well as conducting large-scale parametric experiments.
+**PyMieSim** is a Python library designed to provide a robust and flexible framework for performing Mie scattering simulations.
+The software is easy to install and operate, making it accessible to both new users and experienced researchers.
+PyMieSim enables users to explore the scattering properties of particles under various configurations, and is tailored for investigating single scattering events, as well as conducting large-scale parametric experiments.
 
 At its core, PyMieSim includes three solvers optimized for different types of scatterers:
 
@@ -259,9 +261,9 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
     :alt: PyPi version
     :target: https://badge.fury.io/py/PyMieSim
 
-.. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
-    :alt: PyPi version
-    :target: https://pypistats.org/packages/pymiesim
+.. |PyPi_download| image:: https://img.shields.io/pypi/dd/PyMieSim?style=plastic&label=PyPi%20downloads&labelColor=hex&color=hex
+   :alt: PyPI - Downloads
+   :target: https://pypistats.org/packages/pymiesim
 
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
     :alt: Unittest coverage
@@ -297,3 +299,7 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
 .. |anaconda_download| image:: https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg
    :alt: Anaconda downloads
    :target: https://anaconda.org/martinpdes/pymiesim
+
+.. |anaconda_date| image:: https://anaconda.org/martinpdes/pymiesim/badges/latest_release_relative_date.svg
+    :alt: Latest release date
+    :target: https://anaconda.org/martinpdes/pymiesim

@@ -9,10 +9,9 @@ Explore our gallery of examples demonstrating the usage of PyMieSim. These examp
     :maxdepth: 2
     :hidden:
 
-    single/index.rst
-    experiment/index.rst
-    validation/index.rst
-    extras/index.rst
+    gallery/single/index.rst
+    gallery/experiment/index.rst
+    gallery/extras/index.rst
 
 
 .. include:: single/index.rst
@@ -20,9 +19,6 @@ Explore our gallery of examples demonstrating the usage of PyMieSim. These examp
 
 .. include:: experiment/index.rst
     :start-after: .. _experiment_index:
-
-.. include:: validation/index.rst
-    :start-after: .. _validation_index:
 
 .. include:: extras/index.rst
     :start-after: .. _extras_index:
