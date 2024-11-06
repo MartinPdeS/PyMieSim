@@ -3,32 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation Versions</title>
+    <title>Redirecting to Master Documentation</title>
 </head>
 <body>
-    <h1>Available Documentation Versions</h1>
-    <p>Select a version to view:</p>
-    <ul id="version-list">
-        <!-- JavaScript will populate this list dynamically -->
-    </ul>
+    <p>Redirecting to the master version of the documentation...</p>
 
     <script>
-        // Base URL for the GitHub Pages site
-        const baseUrl = "https://martinpdes.github.io/PyMieSim";
+        // Base URL for your GitHub Pages site
+        const baseUrl = "https://yourusername.github.io/yourrepository";
 
-        // Array of available versions (folders within /docs)
-        const versions = ["master", "v1.0.0"];
-
-        // Populate the list of available versions
-        const versionList = document.getElementById('version-list');
-        versions.forEach(version => {
-            const listItem = document.createElement('li');
-            const link = document.createElement('a');
-            link.href = `${baseUrl}/docs/${version}/index.html`;
-            link.textContent = `Version: ${version}`;
-            listItem.appendChild(link);
-            versionList.appendChild(listItem);
-        });
+        // Redirect to the master version of the documentation
+        window.location.href = `${baseUrl}/docs/master/index.html`;
     </script>
 </body>
 </html>
