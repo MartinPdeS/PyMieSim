@@ -1,8 +1,8 @@
-# *
+*
 
-# !docs/latest
+!docs
 # !docs/v*
-# !.nojeykill
-# !index.html
-# !version_switcher.json
-# !.gitignore
+!.nojeykill
+!index.html
+!version_switcher.json
+!.gitignore
