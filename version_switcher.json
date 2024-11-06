@@ -3,5 +3,10 @@
         "name": "latest (stable)",
         "version": "latest",
         "url": "https://martinpdes.github.io/PyMieSim/latest"
+    },
+    {
+        "name": "v2.6.3.19",
+        "version": "v2.6.3.19",
+        "url": "https://martinpdes.github.io/PyMieSim/v2.6.3.19"
     }
 ]
