@@ -3,57 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting to Latest Documentation</title>
+    <title>Documentation Versions</title>
 </head>
 <body>
-    <p>Redirecting to the latest version of the documentation...</p>
-    <p>If you are not redirected, please select a version:</p>
+    <h1>Available Documentation Versions</h1>
+    <p>Select a version to view:</p>
     <ul id="version-list">
         <!-- JavaScript will populate this list dynamically -->
     </ul>
 
     <script>
-        // URL to the version_switcher.json file in the GitHub Pages site
-        const versionJsonUrl = "https://raw.githubusercontent.com/MartinPdeS/PyMieSim/refs/heads/documentation_page/version_switcher.json";
+        // Base URL for the GitHub Pages site
+        const baseUrl = "https://martinpdes.github.io/pymiesim";
 
-        // Fetch available versions from version_switcher.json
-        fetch(versionJsonUrl)
-            .then(response => response.json())
-            .then(versionsData => {
-                // Extract version names from the JSON data
-                const versions = versionsData.map(entry => entry.version);
+        // Array of available versions (folders within /docs)
+        const versions = ["master", "v1.0.0"];
 
-                // Parse and sort versions to find the latest
-                const parseVersion = (version) => version.slice(1).split('.').map(Number);
-                const latestVersion = versions.sort((a, b) => {
-                    const versionA = parseVersion(a);
-                    const versionB = parseVersion(b);
-                    for (let i = 0; i < versionA.length; i++) {
-                        if (versionA[i] !== versionB[i])  {
-                            return versionB[i] - versionA[i];
-                        }
-                    }
-                    return 0;
-                })[0];
-
-                // Redirect to the latest version
-                window.location.href = `./${latestVersion}/index.html`;
-
-                // Display a list of all versions as a fallback
-                const versionList = document.getElementById('version-list');
-                versionsData.forEach(entry => {
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = `./${entry.version}/index.html`;
-                    link.textContent = `${entry.name || entry.version}`;
-                    listItem.appendChild(link);
-                    versionList.appendChild(listItem);
-                });
-            })
-            .catch(error => {
-                console.error("Error loading versions:", error);
-                document.body.innerHTML += "<p>Could not load versions. Please try again later.</p>";
-            });
+        // Populate the list of available versions
+        const versionList = document.getElementById('version-list');
+        versions.forEach(version => {
+            const listItem = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = `${baseUrl}/docs/${version}/index.html`;
+            link.textContent = `Version: ${version}`;
+            listItem.appendChild(link);
+            versionList.appendChild(listItem);
+        });
     </script>
 </body>
 </html>
