@@ -1,7 +1,7 @@
 [
     {
-        "name": "master (stable)",
+        "name": "latest (stable)",
         "version": "latest",
-        "url": "https://martinpdes.github.io/PyMieSim/master"
+        "url": "https://martinpdes.github.io/PyMieSim/latest"
     }
 ]
