@@ -1,9 +1,17 @@
 *
 
 
-!docs
+# Unignore the docs directory
+!docs/
+
 !docs/latest
+!docs/latest/**
+!docs/latest/**/*
+
 !docs/v*
+!docs/v*/**
+!docs/v*/**/*
+
 !.nojekyll
 !index.html
 !version_switcher.json
