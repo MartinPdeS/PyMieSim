@@ -106,7 +106,7 @@ jobs:
           # Define the path to version_switcher.json and new version details
           json_file="version_switcher.json"
           current_tag="${TAG}"
-          json_url="https://martinpdes.github.io/FlowCyPy/docs/${current_tag}"
+          json_url="https://martinpdes.github.io/PyMieSim/docs/${current_tag}"
 
           # Create a new JSON entry for the current tag
           new_entry=$(jq -n \
