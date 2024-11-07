@@ -187,4 +187,3 @@ myst_enable_extensions = [
     # Enable fieldlist to allow for Field Lists like in rST (e.g., :orphan:)
     "fieldlist",
 ]
-
