@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.168** total execution time for 4 files **from gallery/validation/pymiescatt**:
+**00:02.188** total execution time for 4 files **from gallery/validation/pymiescatt**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_1.py` (``sphere_1.py``)
-     - 00:00.713
+     - 00:00.762
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_1.py` (``coreshell_1.py``)
-     - 00:00.677
+     - 00:00.610
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_coreshell_0.py` (``coreshell_0.py``)
-     - 00:00.441
+     - 00:00.429
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_pymiescatt_sphere_0.py` (``sphere_0.py``)
-     - 00:00.338
+     - 00:00.387
      - 0.0
