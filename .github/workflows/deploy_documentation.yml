@@ -36,6 +36,12 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Fetch version_switcher.json from documentation_page branch
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          git fetch origin documentation_page:documentation_page
+          git checkout documentation_page -- version_switcher.json
+
       - name: Install everything, run the tests, produce the .coverage file
         run: |
           python -m pip install wheel build
@@ -44,7 +50,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install sphinx sphinx_rtd_theme myst_parser
+          pip install sphinx sphinx_rtd_theme myst_parser jq
 
       - name: Get current tag
         id: get_tag
@@ -66,12 +72,56 @@ jobs:
           destination_dir: "docs/${{ env.tag }}"
           keep_files: true
 
-      - name: "Deploy to documentation_page: latest"
-        uses: peaceiris/actions-gh-pages@v3
-        if: github.event_name == 'push'  && startsWith(github.ref, 'refs/tags/')
+  update_version_switcher:
+    name: Update version_switcher.json
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    needs: documentation  # This job depends on the successful completion of the 'documentation' job
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Checkout documentation_page branch"
+        uses: actions/checkout@v4
         with:
-          publish_branch: documentation_page
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _build/
-          destination_dir: "docs/latest"
-          keep_files: true
+          fetch-depth: 0
+          ref: documentation_page  # Directly check out the documentation_page branch
+
+      - name: Install jq for JSON manipulation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Get current tag from GITHUB_REF
+        run: |
+          # Extract the tag name from GITHUB_REF, which should be refs/tags/<tag>
+          tag="${GITHUB_REF#refs/tags/}"
+          echo "tag=$tag" >> $GITHUB_ENV
+          echo "Current tag: $tag"
+
+      - name: Update version_switcher.json with new tag
+        env:
+          TAG: ${{ env.tag }}
+        run: |
+          # Define the path to version_switcher.json and new version details
+          json_file="version_switcher.json"
+          current_tag="${TAG}"
+          json_url="https://martinpdes.github.io/FlowCyPy/docs/${current_tag}"
+
+          # Create a new JSON entry for the current tag
+          new_entry=$(jq -n \
+            --arg name "$current_tag" \
+            --arg version "$current_tag" \
+            --arg url "$json_url" \
+            '{name: $name, version: $version, url: $url}')
+
+          # Append new entry to version_switcher.json
+          jq ". + [$new_entry]" $json_file > temp.json && mv temp.json $json_file
+
+      - name: Commit and push the updated version_switcher.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version_switcher.json
+          git commit -m "Update version_switcher.json with new tag ${{ env.tag }}"
+          git push origin documentation_page
