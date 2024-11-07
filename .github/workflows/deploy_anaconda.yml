@@ -26,6 +26,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           channels: conda-forge, martinpdes
+          conda-remove-defaults: true
           python-version: ${{ matrix.python-version }}
 
       - name: Conda environment creation and activation
