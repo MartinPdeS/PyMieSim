@@ -54,6 +54,7 @@ classifiers = [
 
 dependencies = [
     "setuptools_scm[toml] ~=8.0",
+    "flexparser <0.4",  # This is due to a dataclass inheritance problem coming from the pint package
     "numpy >=1.26,<3.0",
     "pydantic ~=2.9.2",
     'pint-pandas ~=0.6',

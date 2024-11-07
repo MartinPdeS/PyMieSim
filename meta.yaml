@@ -21,6 +21,7 @@ requirements:
     - setuptools_scm[toml] ~=8.0
   run:
     - python {{PY_VER}}*
+    - flexparser <0.4  # This is due to a dataclass inheritance problem coming from the pint package
     - martinpdes::pyoptik
     - numpy ~=1.26
     - pydantic ~=2.9.2
