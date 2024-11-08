@@ -725,8 +725,8 @@ class Footprint():
             )
 
             ax.pcolormesh(
-                self.direct_y * 1e6,
-                self.direct_x * 1e6,
+                self.direct_y,
+                self.direct_x,
                 self.mapping,
                 cmap=colormap
             )
