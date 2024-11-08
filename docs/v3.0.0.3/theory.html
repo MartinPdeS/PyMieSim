@@ -1,0 +1,703 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Theoretical Background &#8212; PyMieSim  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.10/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=bf03407a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'theory';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v3.0.0.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = true;
+        </script>
+    <link rel="icon" href="_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Coding examples" href="examples.html" />
+    <link rel="prev" title="PyMieSim’s documentation" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/thumbnail.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="_static/thumbnail.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/validation/index.html">
+    Validation Module
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code/index.html">
+    Source Code Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/pymiesim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/pymiesim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/validation/index.html">
+    Validation Module
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code/index.html">
+    Source Code Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/pymiesim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/pymiesim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Theoretical...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="theoretical-background">
+<h1>Theoretical Background<a class="headerlink" href="#theoretical-background" title="Link to this heading">#</a></h1>
+<section id="lorenz-mie-theory-lmt">
+<h2>Lorenz-Mie Theory (LMT)<a class="headerlink" href="#lorenz-mie-theory-lmt" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Lorenz-Mie Theory</strong> (LMT) provides the exact solution for the scattering of a plane wave by a spherical or cylindrical scatterer. The solution is expressed as an infinite summation, which is truncated in practical applications. PyMieSim solves these equations to retrieve several key scattering properties, such as scattering efficiencies and far-field intensities.</p>
+<p>In PyMieSim, the spherical coordinates <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\phi\)</span> are used to define the geometry, as depicted in the following figure:</p>
+<a class="reference internal image-reference" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/optical_setup.png"><img alt="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/optical_setup.png" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/optical_setup.png" style="width: 600px;" />
+</a>
+</div>
+</section>
+<section id="key-relations-governing-pymiesim">
+<h2>Key Relations Governing PyMieSim<a class="headerlink" href="#key-relations-governing-pymiesim" title="Link to this heading">#</a></h2>
+<p>The following are some of the core relations used in PyMieSim to compute the scattered fields and related parameters.</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}S_1 &amp;= \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \pi_n + b_n \tau_n \right) \\\end{split}\\\begin{split}S_2 &amp;= \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n + b_n \pi_n \right) \\\end{split}\\\begin{split}\text{Fields} &amp;= E_{\theta}(\phi, \theta) \hat{\theta} + E_{\phi}(\phi, \theta) \hat{\phi} \\\end{split}\\\text{SPF} &amp;= \sqrt{E_{\parallel}(\phi, \theta)^2 + E_{\perp}(\phi, \theta)^2}\end{aligned}\end{align} \]</div>
+<p><strong>Stokes Parameters:</strong></p>
+<p>These parameters describe the polarization state of the scattered light:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}I &amp;= |E_x|^2 + |E_y|^2 \\
+Q &amp;= |E_x|^2 - |E_y|^2 \\
+U &amp;= 2 \operatorname{Re}(E_x E_y^*) \\
+V &amp;= 2 \operatorname{Im}(E_x E_y^*)\end{split}\]</div>
+</section>
+<section id="scattering-properties">
+<h2>Scattering Properties<a class="headerlink" href="#scattering-properties" title="Link to this heading">#</a></h2>
+<p>Several important properties of the scatterer can be computed using PyMieSim. These include:</p>
+<ul class="simple">
+<li><p>Scattering efficiency</p></li>
+<li><p>Extinction efficiency</p></li>
+<li><p>Absorption efficiency</p></li>
+<li><p>Back-scattering efficiency</p></li>
+<li><p>Forward-to-back scattering ratio</p></li>
+<li><p>Radiation pressure efficiency</p></li>
+<li><p>Anisotropy factor <span class="math notranslate nohighlight">\(g\)</span></p></li>
+</ul>
+<p>These properties are computed as follows:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Q_{\text{sca}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1)(|a_n|^2 + |b_n|^2) \\
+Q_{\text{ext}} &amp;= \frac{2}{x^2} \sum_{n=1}^{n_{\text{max}}} (2n+1) \operatorname{Re}(a_n + b_n) \\
+Q_{\text{abs}} &amp;= Q_{\text{ext}} - Q_{\text{sca}} \\
+Q_{\text{back}} &amp;= \frac{1}{x^2} \left| \sum_{n=1}^{n_{\text{max}}} (2n+1)(-1)^n (a_n - b_n) \right|^2 \\
+Q_{\text{ratio}} &amp;= \frac{Q_{\text{back}}}{Q_{\text{sca}}} \\
+Q_{\text{pr}} &amp;= Q_{\text{ext}} - g \cdot Q_{\text{sca}} \\
+g &amp;= \frac{4}{Q_{\text{sca}} x^2} \left[ \sum_{n=1}^{n_{\text{max}}} \frac{n(n+2)}{n+1} \operatorname{Re}(a_n a_{n+1}^* + b_n b_{n+1}^*) + \sum_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \operatorname{Re}(a_n b_n^*) \right]\end{split}\]</div>
+<p>The cross-sectional areas can be computed as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A_s &amp;= \pi r^2 \\
+\sigma_i &amp;= Q_i A_s\end{split}\]</div>
+<p>Where:
+- <span class="math notranslate nohighlight">\(C\)</span> is the concentration of scatterers in the sample.
+- <span class="math notranslate nohighlight">\(\sigma_{\text{sca}}\)</span>, <span class="math notranslate nohighlight">\(\sigma_{\text{ext}}\)</span>, and <span class="math notranslate nohighlight">\(\sigma_{\text{abs}}\)</span> are the scattering, extinction, and absorption cross-sections, respectively.</p>
+</section>
+<section id="an-and-bn-coefficients">
+<h2>An and Bn Coefficients<a class="headerlink" href="#an-and-bn-coefficients" title="Link to this heading">#</a></h2>
+<p>The Lorenz-Mie theory also defines the coefficients <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span>, which characterize the scattered fields. These coefficients vary depending on the scatterer’s geometry.</p>
+<p>### Sphere</p>
+<p>For a spherical scatterer, the <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span> coefficients are given by:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}a_n &amp;= \frac{\mu_{\text{sp}} \Psi_n(x) \Psi_n'(Mx) - \mu M \Psi_n'(x) \Psi_n(Mx)}{\mu_{\text{sp}} \xi_n(x) \Psi_n'(Mx) - \mu M \xi_n'(x) \Psi_n(Mx)} \\\end{split}\\b_n &amp;= \frac{\mu M \Psi_n(x) \Psi_n'(Mx) - \mu_{\text{sp}} \Psi_n'(x) \Psi_n(Mx)}{\mu M \xi_n(x) \Psi_n'(Mx) - \mu_{\text{sp}} \xi_n'(x) \Psi_n(Mx)}\end{aligned}\end{align} \]</div>
+<p>With:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\psi_n\)</span> and <span class="math notranslate nohighlight">\(\xi_n\)</span> being spherical Bessel and Hankel functions.</p></li>
+<li><p><span class="math notranslate nohighlight">\(M = \frac{k_{\text{sp}}}{k}\)</span> is the relative complex refractive index.</p></li>
+<li><p><span class="math notranslate nohighlight">\(x = \frac{\pi d}{\lambda}\)</span> is the size parameter.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\lambda\)</span> is the wavelength in the surrounding medium.</p></li>
+</ul>
+<p><strong>Note</strong>: PyMieSim assumes <span class="math notranslate nohighlight">\(\mu_{\text{sp}} = \mu\)</span> for now, but this may change in future updates.</p>
+<p>### Cylinder</p>
+<p>For cylindrical scatterers, the coefficients are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}a_n &amp;= \frac{M J_n(Mx) J_n'(mx) - m J_n'(Mx) J_n(mx)}{m J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)} \\
+b_n &amp;= \frac{m J_n(Mx) J_n'(mx) - M J_n'(Mx) J_n(mx)}{M J_n(Mx) H_n'(mx) - m J_n'(Mx) H_n(mx)}\end{split}\]</div>
+<p>Where:
+- <span class="math notranslate nohighlight">\(M\)</span> is the refractive index of the scatterer.
+- <span class="math notranslate nohighlight">\(m\)</span> is the refractive index of the medium.
+- <span class="math notranslate nohighlight">\(H_n\)</span> is the Hankel function of the first kind of order <span class="math notranslate nohighlight">\(n\)</span>.</p>
+<p>### Core/Shell Sphere</p>
+<p>For core/shell spheres, the coefficients <span class="math notranslate nohighlight">\(a_n\)</span> and <span class="math notranslate nohighlight">\(b_n\)</span> are given by more complex expressions:</p>
+<div class="math notranslate nohighlight">
+\[a_n &amp;= \frac{\psi_n [\psi_n'(m_2 y) - A_n \chi_n'(m_2 y)] - m_2 \psi_n'(y) [\psi_n(m_2 y) - A_n \chi_n(m_2 y)]}{\xi_n(y) [\psi_n'(m_2 y) - A_n \chi_n'(m_2 y)] - m_2 \xi_n'(y) [\psi_n(m_2 y) - A_n \chi_n(m_2 y)]}\]</div>
+<p>With:
+- <span class="math notranslate nohighlight">\(x = \frac{2\pi R_{\text{core}}}{\lambda}\)</span> and <span class="math notranslate nohighlight">\(y = \frac{2\pi R_{\text{shell}}}{\lambda}\)</span>
+- <span class="math notranslate nohighlight">\(m_1 = \frac{n_{\text{core}}}{n_{\text{medium}}}\)</span> and <span class="math notranslate nohighlight">\(m_2 = \frac{n_{\text{shell}}}{n_{\text{medium}}}\)</span></p>
+</section>
+<section id="generalized-lorenz-mie-theory-glmt">
+<h2>Generalized Lorenz-Mie Theory (GLMT)<a class="headerlink" href="#generalized-lorenz-mie-theory-glmt" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Coming soon</strong> — Future updates will cover the extension of LMT to more complex scatterers using GLMT.</p>
+</div>
+</section>
+<section id="coupling-mechanisms">
+<h2>Coupling Mechanisms<a class="headerlink" href="#coupling-mechanisms" title="Link to this heading">#</a></h2>
+<p>There are two main coupling mechanisms for light collection: <strong>coherent coupling</strong> and <strong>non-coherent coupling</strong>.</p>
+<p><strong>Coherent coupling</strong> involves interference and usually results in less light being collected but offers additional information about the sample. <strong>Non-coherent coupling</strong> collects light without interference and is used by instruments like photodiodes.</p>
+<p>The mathematical definitions are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}C_{\text{coh}} &amp;= \left| \iint_{\Omega} \Phi_{\text{det}} \cdot \Psi_{\text{scat}}^* \, d\Omega \right|^2 \\
+C_{\text{non-coh}} &amp;= \iint_{\Omega} \left| \Phi_{\text{det}} \right|^2 \cdot \left| \Psi_{\text{scat}} \right|^2 \, d\Omega\end{split}\]</div>
+<p><strong>Centered Coupling</strong> assumes the scatterer is perfectly aligned with the detector. For non-centered scenarios, the footprint of the scatterer is defined by:</p>
+<div class="math notranslate nohighlight">
+\[\eta_{l,m}(\delta_x, \delta_y) = \left| \mathcal{F}^{-1} \{ \Phi_{\text{det}} \cdot \Psi_{\text{scat}} \} \right|^2\]</div>
+<p>The mean coupling can be calculated as:</p>
+<div class="math notranslate nohighlight">
+\[\widetilde{\eta}_{l,m} = \langle \eta_{l,m} (\delta_x, \delta_y) \rangle\]</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-mie-theory-lmt">Lorenz-Mie Theory (LMT)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-relations-governing-pymiesim">Key Relations Governing PyMieSim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scattering-properties">Scattering Properties</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-and-bn-coefficients">An and Bn Coefficients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalized-lorenz-mie-theory-glmt">Generalized Lorenz-Mie Theory (GLMT)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coupling-mechanisms">Coupling Mechanisms</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/theory.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
