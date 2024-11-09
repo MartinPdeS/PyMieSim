@@ -1,0 +1,73 @@
+name: Update Documentation Versions
+
+on:
+  push:
+    branches:
+      - documentation_page  # Run on pushes to documentation_page branch
+    tags:
+      - '*'  # Run on all new tags
+
+jobs:
+  update_version_switcher:
+    name: Update version_switcher.json
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: "Checkout documentation_page branch"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: documentation_page  # Directly check out the documentation_page branch
+
+      - name: Install jq for JSON manipulation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+
+      - name: Scan for versions in docs folder and update version_switcher.json
+        run: |
+          # Define the path to version_switcher.json
+          json_file="version_switcher.json"
+          docs_path="docs"
+          base_url="https://martinpdes.github.io/PyMieSim"
+
+          # Initialize an empty array for versions in JSON format
+          versions_list=$(mktemp)  # Temporary file to store the array
+
+          echo "[" > $versions_list  # Start of the JSON array
+
+          # Scan each directory in docs and add it to the versions list
+          first_entry=true
+          for version_dir in ${docs_path}/*/; do
+            version=$(basename "$version_dir")
+            version_url="${base_url}/${docs_path}/${version}"
+
+            # Add a comma if it's not the first entry
+            if [ "$first_entry" = true ]; then
+              first_entry=false
+            else
+              echo "," >> $versions_list
+            fi
+
+            # Append each version as a JSON entry
+            jq -n \
+              --arg name "$version" \
+              --arg version "$version" \
+              --arg url "$version_url" \
+              '{name: $name, version: $version, url: $url}' >> $versions_list
+          done
+
+          echo "]" >> $versions_list  # End of the JSON array
+
+          # Move the temporary array file to version_switcher.json
+          mv $versions_list $json_file
+
+      - name: Commit and push the updated version_switcher.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add version_switcher.json
+          git commit -m "Update version_switcher.json with all versions in docs folder"
+          git push origin documentation_page
