@@ -1,0 +1,73 @@
+# .github/workflows/deploy_documentation.yml
+name: Documentation
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  documentation:
+    name: Run the documentation building tools
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: "Set-up: Python 3.11"
+        uses: actions/setup-python@v5
+        id: cp311
+        with:
+            python-version: "3.11"
+
+      - name: "Install: Dependencies for headless server"
+        shell: bash
+        run: |
+            sudo apt-get update
+            sudo apt-get install xvfb
+
+      - name: "Checkout requirements and files for testing"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Fetch version_switcher.json from documentation_page branch
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          git fetch origin documentation_page:documentation_page
+          git checkout documentation_page -- version_switcher.json
+
+      - name: Install everything, run the tests, produce the .coverage file
+        run: |
+          python -m pip install wheel build
+          python -m build --wheel
+          python -m pip install .[documentation]
+
+      - name: Install dependencies
+        run: |
+          pip install sphinx sphinx_rtd_theme myst_parser jq
+
+      - name: Get current tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
+      - name: Sphinx build
+        run: |
+          sphinx-build docs/source _build
+
+      - name: "Deploy to documentation_page: specific version"
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        with:
+          publish_branch: documentation_page
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _build/
+          destination_dir: "docs/${{ env.tag }}"
+          keep_files: true
