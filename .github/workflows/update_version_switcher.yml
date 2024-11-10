@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - documentation_page  # Triggered by the push from master
-    tags:
-      - '*'  # Run on all new tags
 
 jobs:
   update_version_switcher:
