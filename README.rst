@@ -70,7 +70,9 @@ PyMieSim supports Windows, Linux, macOS (including Apple M1/M2 chips), and ARM a
 
 .. code-block:: bash
 
-    pip install PyMieSim
+    pip install PyMieSim (using pip package manager)
+
+    conda install PyMieSim (using conda environment manager)
 
 For more details, visit the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_ for a comprehensive guide on how to use the package.
 
@@ -236,6 +238,8 @@ PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle
 
 Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmail.ca?subject=PyMieSim>`_
 
+Flag_0
+
 ----
 
 .. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
@@ -253,7 +257,7 @@ Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gma
     :alt: Google Colab
     :target: https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb
 
-.. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg
+.. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/create_documentation.yml/badge.svg
     :target: https://martinpdes.github.io/PyMieSim/
     :alt: Documentation Status
 
