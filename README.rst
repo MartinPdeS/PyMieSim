@@ -236,6 +236,8 @@ PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle
 
 Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmail.ca?subject=PyMieSim>`_
 
+Flag_0
+
 ----
 
 .. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
