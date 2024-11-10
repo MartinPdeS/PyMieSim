@@ -255,7 +255,7 @@ Flag_0
     :alt: Google Colab
     :target: https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb
 
-.. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg
+.. |docs| image:: https://github.com/martinpdes/pymiesim/actions/workflows/update_version_switcher.yml/badge.svg
     :target: https://martinpdes.github.io/PyMieSim/
     :alt: Documentation Status
 
