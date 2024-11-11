@@ -1,0 +1,123 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy static content to Pages
+
+
+on:
+  workflow_run:
+    workflows: ["Documentation"]  # This references the name of the first workflow
+    types:
+      - completed  # Run when the Documentation workflow is completed successfully
+
+
+# Sets permissions of the GITHUB_TOKEN  to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: documentation_page
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name  "GitHub Actions"
+          git config --global user.email "actions@github.com"
+
+      - name: Download artifact
+        id: download-artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: build_documentation.yml
+          name: documentation_build
+          path: ./documentation_build
+
+      - name: Get current tag
+        id: get_tag
+        run: |
+          # Fetch all tags to ensure they are available
+          git fetch --tags
+          git tag -l
+
+          # Get the latest tag by creation date
+          TAG=$(git tag --sort=-creatordate | head -n 1)
+
+          # Fallback to a default tag if no tag is found
+          if [ -z "$TAG" ]; then
+            TAG="0.0.0.0"
+          fi
+
+          echo "tag=$TAG" >> $GITHUB_ENV
+          echo "Tag found or default: $TAG"
+
+      - name: Update new documentation version
+        run: |
+          rm -rf docs/${{ env.tag }}
+          mv documentation_build docs/${{ env.tag }}
+
+      - name: Scan, sort versions, and update version_switcher.json
+        run: |
+          # Define the path to version_switcher.json
+          json_file="version_switcher.json"
+          rm $json_file
+          docs_path="docs"
+          base_url="https://martinpdes.github.io/PyMieSim"
+
+          # Start the JSON array
+          echo "[" > $json_file
+
+          # Get sorted version directories in descending order
+          version_dirs=$(ls -v $docs_path | sort -V -r)
+
+
+          # Loop over sorted versions and add to JSON file
+          first_entry=true
+          for version in $version_dirs; do
+            version_url="${base_url}/${docs_path}/${version}"
+
+            # Add a comma if it's not the first entry
+            if [ "$first_entry" = true ]; then
+              first_entry=false
+            else
+              echo "," >> $json_file
+            fi
+
+            # Append each version as a JSON entry
+            jq -n \
+              --arg name "$version" \
+              --arg version "$version" \
+              --arg url "$version_url" \
+              '{name: $name, version: $version, url: $url}' >> $json_file
+          done
+
+          # End the JSON array
+          echo "]" >> $json_file
+
+          # Add and commit the updated version_switcher.json
+          git add $json_file
+          echo $json_file
+          git add docs/
+          git commit --allow-empty -m "Update version_switcher.json"
+          git push origin HEAD
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,60 @@
+# .github/workflows/deploy_documentation.yml
+name: Documentation
+
+on:
+  push:
+    branches: [ "master" ]
+    tags:
+      - '*'
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  documentation:
+    name: Run the documentation building tools
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: "Set-up: Python 3.11"
+        uses: actions/setup-python@v5
+        id: cp311
+        with:
+            python-version: 3.11
+
+      - name: "Install: Dependencies for headless server"
+        shell: bash
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y xvfb jq
+
+      - name: "Checkout requirements and files for testing"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+          ref: master
+
+      - name: Install everything, run the tests, produce the .coverage file
+        run: |
+          python -m pip install wheel build
+          python -m build --wheel
+          python -m pip install .[documentation]
+
+      - name: Get current tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          echo "tag=$(git describe --tags --abbrev=0)" >> $GITHUB_ENV
+
+      - name: "Sphinx build"
+        run: |
+          sphinx-build docs/source documentation_build
+
+      - name: "Upload Documentation Artifact"
+        uses: actions/upload-artifact@v4
+        with:
+          name: documentation_build
+          path: documentation_build
