@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,10 +23,15 @@
         fetch(versionJsonUrl)
             .then(response => response.json())
             .then(versionsData => {
-                // Log available versions to the console
                 console.log("Available documentation versions:", versionsData);
 
-                // Display a list of all versions as links
+                // Automatically redirect if only one version is available
+                if (versionsData.length === 1) {
+                    window.location.href = `${baseUrl}/docs/${versionsData[0].version}/index.html`;
+                    return;  // Stop further processing if redirecting
+                }
+
+                // Display a list of all versions as links if more than one version
                 const versionList = document.getElementById('version-list');
                 versionsData.forEach(entry => {
                     const listItem = document.createElement('li');
@@ -36,12 +41,6 @@
                     listItem.appendChild(link);
                     versionList.appendChild(listItem);
                 });
-
-                // Optionally, redirect to the latest version (first in the JSON list or 'master')
-                const latestVersion = versionsData.find(entry => entry.version === 'master') || versionsData[0];
-                if (latestVersion) {
-                    window.location.href = `${baseUrl}/docs/${latestVersion.version}/index.html`;
-                }
             })
             .catch(error => {
                 console.error("Error loading versions from version_switcher.json:", error);
