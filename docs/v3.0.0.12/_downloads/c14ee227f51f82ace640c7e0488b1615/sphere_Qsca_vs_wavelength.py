@@ -36,7 +36,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('Qsca', scale_unit=True)
+dataframe = experiment.get('Qsca', 'Qpr', scale_unit=True)
 
 # %%
 # Plotting the results
