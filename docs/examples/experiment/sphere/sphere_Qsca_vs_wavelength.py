@@ -36,8 +36,8 @@ experiment = Setup(scatterer=scatterer, source=source)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('Qsca', 'Qpr', scale_unit=True, as_numpy=True)
-print(dataframe.shape)
+dataframe = experiment.get('Qsca', 'Qpr', scale_unit=True)
+
 # %%
 # Plotting the results
 dataframe.plot_data(x="source:wavelength")

@@ -70,7 +70,7 @@ def test_get_measure(mock_show, source, measure, property, medium_property):
 
     plt.close()
 
-    data = experiment.get(measure, drop_unique_level=False, scale_unit=True, as_numpy=True)
+    experiment.get(measure, drop_unique_level=False, scale_unit=True, as_numpy=True)
 
 
 if __name__ == "__main__":
