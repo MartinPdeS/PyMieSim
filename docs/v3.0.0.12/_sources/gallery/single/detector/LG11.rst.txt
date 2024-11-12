@@ -61,12 +61,6 @@ Initializing the detector
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    WARNING:root:High values of NA: 0.4 do not comply with the paraxial approximation. Values under 0.3 are preferred.
-
 
 
 
@@ -94,7 +88,7 @@ Plotting the detector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.216 seconds)
+   **Total running time of the script:** (0 minutes 0.207 seconds)
 
 
 .. _sphx_glr_download_gallery_single_detector_LG11.py:

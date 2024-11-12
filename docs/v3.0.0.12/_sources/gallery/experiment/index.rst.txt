@@ -94,23 +94,6 @@ Core-Shell
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_b1_vs_corediameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the backscattering efficiency (Qback) as functions of core diameter for CoreShell scatterers using PyMieSim.">
 
 .. only:: html
@@ -140,6 +123,23 @@ Core-Shell
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">CoreShell: An vs Core Diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering parameter as a function of core diameter for CoreShell scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/coreshell/images/thumb/sphx_glr_coreshell_b1_vs_corediameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">CoreShell: B1 vs Core Diameter</div>
     </div>
 
 
@@ -195,69 +195,18 @@ Cylinder
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Cylinder: Qsca vs wavelength std">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.">
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_std_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qabs_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py`
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs wavelength std</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_b11_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_b11_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Cylinder: B1 Scattering Coefficient</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_index_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_index.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Index</div>
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qabs vs Diameter</div>
     </div>
 
 
@@ -280,6 +229,23 @@ Cylinder
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of refractive index for cylindrical scatterers using PyMieSim, considering multiple wavelengths.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_index_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_index.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs Index</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of wavelength for cylindrical scatterers using PyMieSim, considering cylinders with different diameters and refractive indices.">
 
 .. only:: html
@@ -297,18 +263,52 @@ Cylinder
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the scattering efficiency (Qsca) as a function of diameter for cylindrical scatterers using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Cylinder: Qsca vs wavelength std">
 
 .. only:: html
 
-  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qabs_vs_diameter_thumb.png
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_Qsca_vs_wavelength_std_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py`
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Cylinder: Qabs vs Diameter</div>
+      <div class="sphx-glr-thumbnail-title">Cylinder: Qsca vs wavelength std</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the A1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_a11_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: A1 Scattering Coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the B1 scattering coefficient as a function of diameter for cylindrical scatterers using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/cylinder/images/thumb/sphx_glr_cylinder_b11_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_b11_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Cylinder: B1 Scattering Coefficient</div>
     </div>
 
 
@@ -381,18 +381,35 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: B1 scattering coefficient">
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qabs vs diameter">
 
 .. only:: html
 
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_b1_vs_diameter_thumb.png
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qabs_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_b1_vs_diameter.py`
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Sphere: B1 scattering coefficient</div>
+      <div class="sphx-glr-thumbnail-title">Sphere: Qabs vs diameter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs diameter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_diameter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs diameter</div>
     </div>
 
 
@@ -432,40 +449,6 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: A1 scattering coefficient">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_a1_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_a1_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: A1 scattering coefficient</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qabs vs diameter">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qabs_vs_diameter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Qabs vs diameter</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs wavelength STD">
 
 .. only:: html
@@ -483,35 +466,52 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Qsca vs diameter">
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: A1 scattering coefficient">
 
 .. only:: html
 
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_Qsca_vs_diameter_thumb.png
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_a1_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py`
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_a1_vs_diameter.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Sphere: Qsca vs diameter</div>
+      <div class="sphx-glr-thumbnail-title">Sphere: A1 scattering coefficient</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs sampling">
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: B1 scattering coefficient">
 
 .. only:: html
 
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_sampling_thumb.png
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_b1_vs_diameter_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_sampling.py`
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_b1_vs_diameter.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs sampling</div>
+      <div class="sphx-glr-thumbnail-title">Sphere: B1 scattering coefficient</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coherent Goniometer">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_phioffset_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coherent Goniometer</div>
     </div>
 
 
@@ -534,23 +534,6 @@ Sphere
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Goniometer">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_phioffset_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Goniometer</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: coherent coupling vs sampling">
 
 .. only:: html
@@ -563,23 +546,6 @@ Sphere
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Sphere: coherent coupling vs sampling</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs polarization filter">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_filter_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_filter.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs polarization filter</div>
     </div>
 
 
@@ -602,6 +568,57 @@ Sphere
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs polarization filter">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_filter_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_filter.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs polarization filter</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Goniometer">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_phioffset_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_phioffset.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Goniometer</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs sampling">
+
+.. only:: html
+
+  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coupling_vs_sampling_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coupling_vs_sampling.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs sampling</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coupling vs wavelength">
 
 .. only:: html
@@ -614,23 +631,6 @@ Sphere
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Sphere: Coupling vs wavelength</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Sphere: Coherent Goniometer">
-
-.. only:: html
-
-  .. image:: /gallery/experiment/sphere/images/thumb/sphx_glr_sphere_coherent_coupling_vs_phioffset_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_experiment_sphere_sphere_coherent_coupling_vs_phioffset.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Sphere: Coherent Goniometer</div>
     </div>
 
 

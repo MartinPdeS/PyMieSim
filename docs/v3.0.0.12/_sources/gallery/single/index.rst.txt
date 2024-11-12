@@ -9,8 +9,10 @@ The Single module in PyMieSim is designed for simulating light scattering by ind
 It provides tools for defining single scatterers, their sources, and detectors, offering a detailed analysis of optical properties at the level of a single interaction.
 This module is ideal for researchers and engineers interested in exploring the scattering behavior of individual particles in isolation.
 
+
 Key Components
 --------------
+
 
 1. **Sources**:
    The `single` module offers several types of sources to illuminate the scatterer.
@@ -111,52 +113,35 @@ Detectors
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.">
 
 .. only:: html
 
-  .. image:: /gallery/single/detector/images/thumb/sphx_glr_integrating_sphere_thumb.png
+  .. image:: /gallery/single/detector/images/thumb/sphx_glr_HG01_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_single_detector_integrating_sphere.py`
+  :ref:`sphx_glr_gallery_single_detector_HG01.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Integrating sphere</div>
+      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 01 Mode Detector</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP11 Mode detector using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG31 Mode detector using PyMieSim.">
 
 .. only:: html
 
-  .. image:: /gallery/single/detector/images/thumb/sphx_glr_LP11_thumb.png
+  .. image:: /gallery/single/detector/images/thumb/sphx_glr_HG11_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_single_detector_LP11.py`
+  :ref:`sphx_glr_gallery_single_detector_HG11.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">LP11 Mode Detector</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP02 Mode detector using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/single/detector/images/thumb/sphx_glr_LP02_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_single_detector_LP02.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">LP02 Mode Detector</div>
+      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 31 Mode Detector</div>
     </div>
 
 
@@ -179,23 +164,6 @@ Detectors
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/single/detector/images/thumb/sphx_glr_HG01_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_single_detector_HG01.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 01 Mode Detector</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP01 Mode detector using PyMieSim.">
 
 .. only:: html
@@ -213,18 +181,52 @@ Detectors
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG31 Mode detector using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP02 Mode detector using PyMieSim.">
 
 .. only:: html
 
-  .. image:: /gallery/single/detector/images/thumb/sphx_glr_HG11_thumb.png
+  .. image:: /gallery/single/detector/images/thumb/sphx_glr_LP02_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_single_detector_HG11.py`
+  :ref:`sphx_glr_gallery_single_detector_LP02.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Hermite-Gauss 31 Mode Detector</div>
+      <div class="sphx-glr-thumbnail-title">LP02 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an LP11 Mode detector using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/single/detector/images/thumb/sphx_glr_LP11_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_single_detector_LP11.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">LP11 Mode Detector</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of an Integrating Sphere detector using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/single/detector/images/thumb/sphx_glr_integrating_sphere_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_single_detector_integrating_sphere.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Integrating sphere</div>
     </div>
 
 
@@ -264,18 +266,35 @@ Scatterers
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to visualize the properties of a light source using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.">
 
 .. only:: html
 
-  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_source_thumb.png
+  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_farfield_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_single_scatterer_source.py`
+  :ref:`sphx_glr_gallery_single_scatterer_farfield.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Source Plottings</div>
+      <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_footprint_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_single_scatterer_footprint.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Scatterer Footprint Calculation and Visualization</div>
     </div>
 
 
@@ -298,40 +317,6 @@ Scatterers
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Stokes parameters using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_stokes_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_single_scatterer_stokes.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Stokes Parameters Computation</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.">
-
-.. only:: html
-
-  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_farfield_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_single_scatterer_farfield.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the S1 and S2 scattering functions using PyMieSim.">
 
 .. only:: html
@@ -344,6 +329,23 @@ Scatterers
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">S1 S2 Function Computation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to visualize the properties of a light source using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_source_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_single_scatterer_source.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Source Plottings</div>
     </div>
 
 
@@ -366,18 +368,18 @@ Scatterers
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute and visualize the footprint of a scatterer using PyMieSim.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation and visualization of the Stokes parameters using PyMieSim.">
 
 .. only:: html
 
-  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_footprint_thumb.png
+  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_stokes_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_single_scatterer_footprint.py`
+  :ref:`sphx_glr_gallery_single_scatterer_stokes.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Scatterer Footprint Calculation and Visualization</div>
+      <div class="sphx-glr-thumbnail-title">Stokes Parameters Computation</div>
     </div>
 
 
