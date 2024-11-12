@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PyMieSim’s documentation &#8212; PyMieSim  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.10/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=bf03407a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.15.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v3.0.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = true;
+        </script>
+    <link rel="icon" href="_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theoretical Background" href="theory.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/thumbnail.png" class="logo__image only-light" alt=""/>
+    <script>document.write(`<img src="_static/thumbnail.png" class="logo__image only-dark" alt=""/>`);</script>
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/validation/index.html">
+    Validation Module
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code/index.html">
+    Source Code Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/validation/index.html">
+    Validation Module
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code/index.html">
+    Source Code Structures
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-3"
+      type="button"
+      class="version-switcher__button btn btn-sm dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-3"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-3"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-3">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pymiesim-s-documentation">
+<h1>PyMieSim’s documentation<a class="headerlink" href="#pymiesim-s-documentation" title="Link to this heading">#</a></h1>
+<p><strong>Date</strong>: Nov 12, 2024, <strong>Version</strong>: 3.0.1</p>
+<p><img alt="PyOptik logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 11.8%" />
+<col style="width: 29.4%" />
+<col style="width: 29.4%" />
+<col style="width: 29.4%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>Meta</p></td>
+<td><p><a class="reference external" href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/pypi/pyversions/pymiesim.svg" /></a></p></td>
+<td><p><a class="reference external" href="https://martinpdes.github.io/PyMieSim/"><img alt="Documentation Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/create_documentation.yml/badge.svg" /></a></p></td>
+<td><p><a class="reference external" href="https://doi.org/10.5281/zenodo.4556074"><img alt="Scientific article" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5593704.svg" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Testing</p></td>
+<td><p><img alt="Unittest Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg" /></p></td>
+<td><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html"><img alt="Unittest coverage" src="https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg" /></a></p></td>
+<td><p><a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb"><img alt="Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>PyPi</p></td>
+<td><p><a class="reference external" href="https://badge.fury.io/py/PyMieSim"><img alt="PyPi version" src="https://badge.fury.io/py/PyMieSim.svg" /></a></p></td>
+<td><p><a class="reference external" href="https://pypistats.org/packages/pymiesim"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dd/PyMieSim?style=plastic&amp;label=PyPi%20downloads&amp;labelColor=hex&amp;color=hex" /></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Anaconda</p></td>
+<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Anaconda version" src="https://anaconda.org/martinpdes/pymiesim/badges/version.svg" /></a></p></td>
+<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Anaconda downloads" src="https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg" /></a></p></td>
+<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Latest release date" src="https://anaconda.org/martinpdes/pymiesim/badges/latest_release_relative_date.svg" /></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pymiesim">
+<h1>PyMieSim<a class="headerlink" href="#pymiesim" title="Link to this heading">#</a></h1>
+<p><strong>PyMieSim</strong> is a Python library designed to provide a robust and flexible framework for performing Mie scattering simulations.
+The software is easy to install and operate, making it accessible to both new users and experienced researchers.
+PyMieSim enables users to explore the scattering properties of particles under various configurations, and is tailored for investigating single scattering events, as well as conducting large-scale parametric experiments.</p>
+<p>At its core, PyMieSim includes three solvers optimized for different types of scatterers:</p>
+<ul class="simple">
+<li><p><strong>Spherical particles</strong></p></li>
+<li><p><strong>Infinite cylindrical particles</strong></p></li>
+<li><p><strong>Core-shell spherical particles</strong></p></li>
+</ul>
+<p>The software also allows the user to customize the light source and detector attributes, depending on the specific simulation needs. The package is modular and provides an intuitive interface for users to model complex scattering scenarios with minimal effort.</p>
+<p><a class="reference internal" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png"><img alt="Structure of the library" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/code_structure.png" style="width: 800px;" /></a></p>
+<section id="main-submodules">
+<h2>Main Submodules<a class="headerlink" href="#main-submodules" title="Link to this heading">#</a></h2>
+<p>PyMieSim is organized into two primary submodules:</p>
+<ol class="arabic simple">
+<li><p><strong>single</strong>: Focused on analyzing individual scattering events, such as:
+- Far-field distributions
+- Scattering phase functions
+- Stokes parameters</p></li>
+<li><p><strong>experiment</strong>: Designed for exploring how scattering parameters, such as <cite>Qsca</cite>, <cite>Qext</cite>, <cite>g</cite>, and <cite>coupling (power)</cite>, behave over large datasets, incorporating variations in sources, scatterers, and detectors.</p></li>
+</ol>
+<p>Both submodules work seamlessly together, making PyMieSim adaptable for a wide range of scattering simulations.</p>
+</section>
+<hr class="docutils" />
+<section id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
+<p>To use PyMieSim in Python, simply install the package and begin incorporating it into your scripts.</p>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
+<p>PyMieSim supports Windows, Linux, macOS (including Apple M1/M2 chips), and ARM architectures. To install the package, use pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>pip<span class="w"> </span>package<span class="w"> </span>manager<span class="o">)</span>
+
+conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>conda<span class="w"> </span>environment<span class="w"> </span>manager<span class="o">)</span>
+</pre></div>
+</div>
+<p>For more details, visit the <a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/">documentation</a> for a comprehensive guide on how to use the package.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="example-code">
+<h2>Example Code<a class="headerlink" href="#example-code" title="Link to this heading">#</a></h2>
+<p>Here is an example of how to use PyMieSim for a simple Mie scattering simulation. This example demonstrates how to configure a light source, scatterer, and detector, and retrieve the scattering data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">PyMieSim.experiment.scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.experiment.source</span> <span class="kn">import</span> <span class="n">Gaussian</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.experiment</span> <span class="kn">import</span> <span class="n">Setup</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.units</span> <span class="kn">import</span> <span class="n">nanometer</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span>
+<span class="p">)</span>
+
+<span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="p">[</span><span class="mi">200</span><span class="p">]</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
+    <span class="nb">property</span><span class="o">=</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
+    <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+<span class="p">)</span>
+
+<span class="n">experiment</span> <span class="o">=</span> <span class="n">Setup</span><span class="p">(</span><span class="n">scatterer</span><span class="o">=</span><span class="n">scatterer</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+
+<span class="n">dataframe</span> <span class="o">=</span> <span class="n">experiment</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Qsca&#39;</span><span class="p">)</span>
+
+<span class="n">dataframe</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It produces the following figure which is equivalent to the one found on <a class="reference external" href="https://en.wikipedia.org/wiki/Mie_scattering#/media/File:N4wiki.svg">wikipedia</a>.</p>
+<p><a class="reference internal" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png"><img alt="Example wikipedia" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/wikipedia_example.png" style="width: 800px;" /></a></p>
+<p>This is just one example of PyMieSim in action. You can find more examples in the
+<a class="reference external" href="https://pymiesim.readthedocs.io/en/master/gallery/index.html">examples section</a> of the documentation.</p>
+</section>
+<hr class="docutils" />
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<p>Here are a few more examples showcasing the capabilities of PyMieSim:</p>
+<section id="example-1-plasmonic-resonances-for-coreshell-particles">
+<h3>Example 1: Plasmonic Resonances for CoreShell Particles<a class="headerlink" href="#example-1-plasmonic-resonances-for-coreshell-particles" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png"><img alt="Plasmonic resonances" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/plasmonic_resonances.png" style="width: 800px;" /></a></p>
+</section>
+<section id="example-2-scattering-efficiency-vs-diameter-for-spherical-particles">
+<h3>Example 2: Scattering Efficiency vs Diameter for Spherical Particles<a class="headerlink" href="#example-2-scattering-efficiency-vs-diameter-for-spherical-particles" title="Link to this heading">#</a></h3>
+<p><a class="reference internal" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png"><img alt="Qsca vs diameter" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/Qsca_diameter.png" style="width: 800px;" /></a></p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="manual-building">
+<h2>Manual Building<a class="headerlink" href="#manual-building" title="Link to this heading">#</a></h2>
+<p>If you prefer or need to build the project manually (e.g., for Apple silicon devices), ensure you have a C++ compiler (such as gcc) and Fortran installed, as well as Python 3.7+.</p>
+<section id="build-instructions">
+<h3>Build Instructions<a class="headerlink" href="#build-instructions" title="Link to this heading">#</a></h3>
+<section id="linux-macos">
+<h4>Linux/MacOS<a class="headerlink" href="#linux-macos" title="Link to this heading">#</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/MartinPdeS/PyMieSim.git
+<span class="nb">cd</span><span class="w"> </span>PyMieSim
+git<span class="w"> </span>submodule<span class="w"> </span>init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>submodule<span class="w"> </span>update
+mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>../<span class="w"> </span>-G<span class="s2">&quot;Unix Makefiles&quot;</span>
+sudo<span class="w"> </span>make<span class="w"> </span>install
+<span class="nb">cd</span><span class="w"> </span>..
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>For Windows, use <cite>MinGW Makefiles</cite> instead of <cite>Unix Makefiles</cite> when invoking CMake.</p>
+</section>
+</section>
+</section>
+<hr class="docutils" />
+<section id="testing">
+<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
+<p>You can test the local version of PyMieSim by running the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/MartinPdeS/PyMieSim.git
+<span class="nb">cd</span><span class="w"> </span>PyMieSim
+pip<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="o">[</span>testing<span class="o">]</span>
+pytest
+</pre></div>
+</div>
+<p>This will run the suite of unit tests and provide coverage details.</p>
+</section>
+<hr class="docutils" />
+<section id="google-colab">
+<h2>Google Colab<a class="headerlink" href="#google-colab" title="Link to this heading">#</a></h2>
+<p>In 2024, running code on your local machine is optional! You can leverage the power of Google Colab to run PyMieSim remotely. Use the provided
+<a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb">Colab notebook</a> for an interactive experience.</p>
+<p><a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb"><img alt="Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+</section>
+<hr class="docutils" />
+<section id="citing-pymiesim">
+<h2>Citing PyMieSim<a class="headerlink" href="#citing-pymiesim" title="Link to this heading">#</a></h2>
+<p>If PyMieSim contributes to your research, we kindly ask that you cite the following paper:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>@article{PoinsinetdeSivry-Houle:23,
+    author = {Martin Poinsinet de Sivry-Houle and Nicolas Godbout and Caroline Boudoux},
+    journal = {Opt. Continuum},
+    title = {PyMieSim: an open-source library for fast and flexible far-field Mie scattering simulations},
+    volume = {2},
+    number = {3},
+    pages = {520--534},
+    year = {2023},
+    doi = {10.1364/OPTCON.473102},
+}
+</pre></div>
+</div>
+<p>You can access the full article <a class="reference external" href="https://opg.optica.org/optcon/fulltext.cfm?uri=optcon-2-3-520&amp;id=526697">here</a></p>
+</section>
+<hr class="docutils" />
+<section id="experimental-graphical-user-interface-gui">
+<h2>Experimental Graphical User Interface (GUI)<a class="headerlink" href="#experimental-graphical-user-interface-gui" title="Link to this heading">#</a></h2>
+<p>Since version 1.7.0, PyMieSim offers an experimental GUI for users who prefer a graphical approach to simulations. While still under development, the GUI can be installed and accessed as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim
+python<span class="w"> </span>-m<span class="w">  </span>PyMieSim
+</pre></div>
+</div>
+<p>The GUI is not yet as robust as the core Python API, but it provides a simplified interface for generating simulations.</p>
+<p><a class="reference internal" href="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png"><img alt="Structure of the library" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/example_gui.png" style="width: 800px;" /></a></p>
+</section>
+<hr class="docutils" />
+<section id="contact-information">
+<h2>Contact Information<a class="headerlink" href="#contact-information" title="Link to this heading">#</a></h2>
+<p>PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle. If you’re interested in contributing or have questions, feel free to reach out.</p>
+<p>Email: <a class="reference external" href="mailto:martin&#46;poinsinet&#46;de&#46;sivry&#37;&#52;&#48;gmail&#46;ca?subject=PyMieSim">martin<span>&#46;</span>poinsinet<span>&#46;</span>de<span>&#46;</span>sivry<span>&#64;</span>gmail<span>&#46;</span>ca</a></p>
+<p>Flag_0</p>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">PyMieSim’s documentation</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#pymiesim">PyMieSim</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-submodules">Main Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting Started</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-code">Example Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-plasmonic-resonances-for-coreshell-particles">Example 1: Plasmonic Resonances for CoreShell Particles</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-scattering-efficiency-vs-diameter-for-spherical-particles">Example 2: Scattering Efficiency vs Diameter for Spherical Particles</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-building">Manual Building</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-instructions">Build Instructions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linux-macos">Linux/MacOS</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-colab">Google Colab</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citing-pymiesim">Citing PyMieSim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experimental-graphical-user-interface-gui">Experimental Graphical User Interface (GUI)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contact-information">Contact Information</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/index.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
