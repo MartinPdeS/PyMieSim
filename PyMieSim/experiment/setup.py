@@ -6,7 +6,7 @@ import pandas as pd
 from pydantic.dataclasses import dataclass
 from PyMieSim.binary.Experiment import CppExperiment
 from PyMieSim.units import AU, meter, watt
-from typing import Union, Optional
+from typing import Union, Optional, List
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
@@ -89,28 +89,33 @@ class Setup:
         # Compute the values using the binding method
         return getattr(self.binding, method_name)()
 
-    def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True) -> pd.DataFrame:
+    def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True, as_numpy: bool = False) -> pd.DataFrame:
         """
-        Executes the simulation to compute and retrieve the specified measures.
+        Run the simulation to compute specified measures and return the results.
 
         Parameters
         ----------
         measures : tuple
-            The measures to be computed in the simulation, provided as arguments by the user.
+            Variable-length tuple of measure names to compute, specified by the user.
         scale_unit : bool, optional
-            If True, scales the units of the computed values to the most appropriate units. Defaults to False.
+            If True, scales the units in the output DataFrame to the most appropriate units. Defaults to False.
         drop_unique_level : bool, optional
-            If True, drops levels from the MultiIndex where there is only one unique value, simplifying the DataFrame. Defaults to True.
+            If True, removes levels from the DataFrame's MultiIndex where only one unique value exists, simplifying the DataFrame. Defaults to True.
         add_units : bool, optional
-            If True, the resulting DataFrame will contain pint quantities with units. If False, no units will be added. Defaults to True.
+            If True, includes units in the output DataFrame using pint quantities. If False, the output will contain raw numeric values only. Defaults to True.
+        as_numpy : bool, optional
+            If True, returns the result as a NumPy array instead of a DataFrame. Defaults to False.
 
         Returns
         -------
-        pd.DataFrame
-            A DataFrame containing the computed measures.
+        pd.DataFrame or np.ndarray
+            A DataFrame containing the computed measures with optional units and simplified MultiIndex, or a NumPy array if `as_numpy` is set to True.
         """
-
         measures = set(numpy.atleast_1d(measures))
+
+        if as_numpy:
+            return self._get_measure_array(measures)
+
         is_complex = self._is_complex_measure(measures)
 
         df = self.generate_dataframe(
@@ -119,8 +124,7 @@ class Setup:
             drop_unique_level=drop_unique_level
         )
 
-        for measure in measures:
-            df = self._compute_measure(df, measure, is_complex, add_units)
+        df = self._get_measure_dataframe(df, measures, is_complex, add_units)
 
         # Optionally scale the units in the DataFrame
         if scale_unit:
@@ -145,44 +149,68 @@ class Setup:
         """
         return False
 
-    def _compute_measure(self, df: pd.DataFrame, measure: str, is_complex: bool, add_units: bool) -> pd.DataFrame:
+    def _get_measure_array(self, measures: List[str]) -> pd.DataFrame:
         """
-        Compute and set the data for a given measure in the DataFrame.
+        Retrieve data for specified measures and return them as a NumPy array.
+
+        Parameters
+        ----------
+        measures : List[str]
+            List of measure names to compute.
+
+        Returns
+        -------
+        np.ndarray
+            A NumPy array containing computed values for the specified measures.
+        """
+        output_array = []
+        for measure in measures:
+            scatterer_name = self.scatterer.__class__.__name__.lower()
+            method_name = f'get_{scatterer_name}_{measure}'
+
+            output_array.append(getattr(self.binding, method_name)())
+
+        return numpy.asarray(output_array).squeeze()
+
+    def _get_measure_dataframe(self, df: pd.DataFrame, measures: List[str], is_complex: bool, add_units: bool) -> pd.DataFrame:
+        """
+        Populate a DataFrame with computed values for specified measures.
 
         Parameters
         ----------
         df : pd.DataFrame
-            The DataFrame in which to store the results.
-        measure : str
-            The measure to compute.
+            DataFrame in which to store computed values for the specified measures.
+        measures : List[str]
+            List of measure names to compute and add to the DataFrame.
         is_complex : bool
-            Whether the measure involves complex numbers.
+            Indicates whether any of the measures involve complex values.
         add_units : bool
-            Whether to add units to the results.
+            If True, adds units to the computed values in the DataFrame.
 
         Returns
         -------
         pd.DataFrame
-            The updated DataFrame with the computed measure.
+            Updated DataFrame with computed values for the specified measures, with optional units if `add_units` is True.
         """
-        scatterer_name = self.scatterer.__class__.__name__.lower()
-        method_name = f'get_{scatterer_name}_{measure}'
+        for measure in measures:
+            scatterer_name = self.scatterer.__class__.__name__.lower()
+            method_name = f'get_{scatterer_name}_{measure}'
 
-        # Compute the values using the binding method
-        array = getattr(self.binding, method_name)()
+            # Compute the values using the binding method
+            array = getattr(self.binding, method_name)()
 
-        # Determine the unit based on the measure type
-        dtype = self._determine_dtype(measure)
+            # Determine the unit based on the measure type
+            dtype = self._determine_dtype(measure)
 
-        # Set the data in the DataFrame
-        df = self._set_data(
-            measure=measure,
-            dataframe=df,
-            array=array,
-            dtype=dtype,
-            is_complex=is_complex,
-            add_units=add_units
-        )
+            # Set the data in the DataFrame
+            df = self._set_data(
+                measure=measure,
+                dataframe=df,
+                array=array,
+                dtype=dtype,
+                is_complex=is_complex,
+                add_units=add_units
+            )
 
         return df
 
