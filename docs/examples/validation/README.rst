@@ -7,6 +7,8 @@ The Validation module in PyMieSim is designed to ensure the accuracy and reliabi
 This module contains a set of examples and tests that compare PyMieSim’s output with well-established theoretical results, such as those from *Bohren and Huffman* or *PyMieScatt*.
 By providing these validation cases, the module allows users to verify the correctness of their simulations and offers confidence in the consistency of the results produced by the library.
 
+.. _key_components_validation:
+
 Key Components
 --------------
 

@@ -7,8 +7,10 @@ The Single module in PyMieSim is designed for simulating light scattering by ind
 It provides tools for defining single scatterers, their sources, and detectors, offering a detailed analysis of optical properties at the level of a single interaction.
 This module is ideal for researchers and engineers interested in exploring the scattering behavior of individual particles in isolation.
 
+
 Key Components
 --------------
+
 
 1. **Sources**:
    The `single` module offers several types of sources to illuminate the scatterer.
