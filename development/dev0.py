@@ -1,48 +1,54 @@
-from PyMieSim.experiment.source import PlaneWave
+"""
+Sphere: Coupling vs diameter
+============================
+
+"""
+
+# %%
+# Importing the package dependencies: numpy, PyMieSim
+import numpy
+from PyMieSim.experiment.detector import Photodiode
 from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, watt, RIU
 from PyOptik import Material
-import numpy as np
-import matplotlib.pyplot as plt
-import PyMieScatt
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
-
-wavelength = np.linspace(200, 1200, 10)
-
-diameter = [50, 100, 150]
-n_medium = 1.5
-material = Material.gold
-
-#%% PyMieSim
-source = PlaneWave(
-    wavelength=wavelength * nanometer,
-    polarization=0 * degree,
-    amplitude=0 * watt,
+# %%
+# Defining the source to be employed.
+source = Gaussian(
+    wavelength=488 * nanometer,
+    polarization=90 * degree,
+    optical_power=1e-3 * watt,
+    NA=[0.1] * AU
 )
-
+# %%
+# Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=diameter * nanometer,
-    property=material,
-    medium_property=n_medium * RIU,
+    diameter=numpy.linspace(10, 200, 600) * nanometer,
+    property=1.40 * RIU,
+    medium_property=1.33 * RIU,
     source=source
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+# %%
+# Defining the detector to be employed.
+detector = Photodiode(
+    NA=1.2 * AU,
+    phi_offset=[0.0, 90] * degree,
+    gamma_offset=0.0 * degree,
+    sampling=600 * AU,
+    polarization_filter=None
+)
 
+# %%
+# Defining the experiment setup
+experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-dataframe = experiment.get('Qsca', add_units=False)
+# %%
+# Measuring the properties
+dataframe = experiment.get('coupling', drop_unique_level=True, scale_unit=True)
 
-data = dataframe.values
-
-
-data = data.reshape([10, 3])
-
-print(data.shape)
-
-
-
-# /
-# print(res)
-
-
+# %%
+# Plotting the results
+dataframe.plot_data(x='scatterer:diameter')

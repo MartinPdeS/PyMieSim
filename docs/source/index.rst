@@ -1,6 +1,3 @@
-PyMieSim's documentation
-========================
-
 **Date**: |today|, **Version**: |version|
 
 

@@ -1,60 +1,43 @@
-import io
-from flask import Flask, render_template, request, send_file
-import matplotlib.pyplot as plt
+"""
+Sphere: Qsca vs diameter
+========================
+
+"""
+
+# %%
+# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 
-app = Flask(__name__)
+from PyMieSim.experiment.scatterer import Sphere
+from PyMieSim.experiment.source import Gaussian
+from PyMieSim.experiment import Setup
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
-def plot_mie_scattering(diameter, wavelength, refractive_index):
-    """
-    Generate a plot based on diameter, wavelength, and refractive index.
+# %%
+# Defining the source to be employed.
+source = Gaussian(
+    wavelength=[500] * nanometer,
+    polarization=30 * degree,
+    optical_power=1e-3 * watt,
+    NA=0.2 * AU
+)
+# %%
+# Defining the ranging parameters for the scatterer distribution
+scatterer = Sphere(
+    diameter=np.geomspace(6.36, 1000, 1500) * nanometer,
+    medium_property=1.33 * RIU,
+    property=[1.40, 1.45, 1.50] * RIU,
+    source=source
+)
 
-    Parameters
-    ----------
-    diameter : float
-        Diameter of the particle.
-    wavelength : float
-        Wavelength of the incident light.
-    refractive_index : float
-        Refractive index of the particle.
-    """
-    # Generate x values (for simplicity, we'll use angles)
-    x = np.linspace(0, np.pi, 100)
+# %%
+# Defining the experiment setup
+experiment = Setup(scatterer=scatterer, source=source)
 
-    # Simulate a simple Mie scattering pattern (for demonstration)
-    intensity = np.abs(np.sin(diameter * x / wavelength) * np.exp(-refractive_index * x))
+# %%
+# Measuring the properties
+dataframe = experiment.get('Qsca', scale_unit=True, drop_unique_level=True)
 
-    # Plot
-    plt.figure(figsize=(8, 4))
-    plt.plot(x, intensity, label=f'Diameter={diameter}µm, Wavelength={wavelength}nm, n={refractive_index}')
-    plt.title("Simulated Mie Scattering Intensity")
-    plt.xlabel("Angle (radians)")
-    plt.ylabel("Intensity")
-    plt.legend()
-    plt.grid(True)
-
-    # Save the plot to a BytesIO object
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    img.seek(0)
-    plt.close()  # Close the plot to free memory
-    return img
-
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    """
-    Display the form and show the plot.
-    """
-    if request.method == 'POST':
-        # Get parameters from the form
-        diameter = float(request.form['diameter'])
-        wavelength = float(request.form['wavelength'])
-        refractive_index = float(request.form['refractive_index'])
-
-        # Generate the plot image
-        img = plot_mie_scattering(diameter, wavelength, refractive_index)
-        return send_file(img, mimetype='image/png')
-    return render_template('index.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# %%
+# Plotting the results
+dataframe.plot_data(x='scatterer:diameter')
