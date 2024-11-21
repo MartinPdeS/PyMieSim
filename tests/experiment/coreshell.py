@@ -44,7 +44,7 @@ def test_measure(measure, source, core_property, shell_property, medium_property
     # Setup core-shell scatterer
     scatterer = CoreShell(
         core_diameter=np.linspace(800, 1000, 10) * nanometer,
-        shell_width=300 * nanometer,
+        shell_thickness=300 * nanometer,
         source=source,
         shell_property=shell_property,
         core_property=core_property,

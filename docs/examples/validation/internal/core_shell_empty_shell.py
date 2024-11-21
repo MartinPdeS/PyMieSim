@@ -29,7 +29,7 @@ source = Gaussian(
 
 scatterer = CoreShell(
     core_diameter=300 * nanometer,
-    shell_width=np.linspace(100, 300, 100) * nanometer,
+    shell_thickness=np.linspace(100, 300, 100) * nanometer,
     core_property=1.4 * RIU,
     shell_property=1.3 * RIU,
     medium_property=1.3 * RIU,
@@ -45,7 +45,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 dataframe = experiment.get('Csca')
 
 
-ax = dataframe.plot_data(x='scatterer:shell_width', show=False)
+ax = dataframe.plot_data(x='scatterer:shell_thickness', show=False)
 
 ax.set_ylim([0, 4.0e-16])
 
@@ -57,7 +57,7 @@ plt.show()
 # the shell thickness as it's refractive index is same as the surrounding medium.
 dataframe = experiment.get('Qsca')
 
-ax = dataframe.plot_data(x='scatterer:shell_width', show=False)
+ax = dataframe.plot_data(x='scatterer:shell_thickness', show=False)
 
 plt.show()
 # Similarly the scattering decrease as the scatterer becomes technically larger but the effects of the shell is for no account.

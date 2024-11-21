@@ -265,7 +265,7 @@ Flag_0
     :alt: PyPi version
     :target: https://badge.fury.io/py/PyMieSim
 
-.. |PyPi_download| image:: https://img.shields.io/pypi/dd/PyMieSim?style=plastic&label=PyPi%20downloads&labelColor=hex&color=hex
+.. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim?style=plastic&label=PyPi%20downloads&labelColor=hex&color=hex
    :alt: PyPI - Downloads
    :target: https://pypistats.org/packages/pymiesim
 

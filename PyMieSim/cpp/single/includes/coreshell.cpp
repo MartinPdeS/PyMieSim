@@ -8,7 +8,7 @@ namespace CORESHELL
         this->core_index /= this->medium_index;
         this->shell_index /= this->medium_index;
         this->core_diameter *= this->medium_index;
-        this->shell_width *= this->medium_index;
+        this->shell_thickness *= this->medium_index;
         this->shell_diameter *= this->medium_index;
     }
 

@@ -34,7 +34,7 @@ PYBIND11_MODULE(SetsInterface, module) {
     py::class_<CORESHELL::Set>(module, "CppCoreShellSet")
         .def(py::init<const std::vector<double>&, const std::vector<double>&, const ScattererProperties&, const ScattererProperties&, const MediumProperties&>(),
             py::arg("core_diameter"),
-            py::arg("shell_width"),
+            py::arg("shell_thickness"),
             py::arg("core_properties"),
             py::arg("shell_properties"),
             py::arg("medium_properties"),

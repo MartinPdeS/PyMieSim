@@ -25,7 +25,7 @@ NA = 0.2 * AU  # Numerical aperture
 medium_index = 1.0 * RIU
 core_index = 1.5 * RIU
 shell_index = 1.4 * RIU
-shell_width = 600 * nanometer  # Shell width in meters
+shell_thickness = 600 * nanometer  # Shell width in meters
 core_diameters = np.geomspace(10, 500, 40) * nanometer  # Core diameters in meters
 
 # Setup source
@@ -39,7 +39,7 @@ source = Gaussian(
 # Setup scatterer
 scatterer = CoreShell(
     core_diameter=core_diameters,
-    shell_width=shell_width,
+    shell_thickness=shell_thickness,
     core_property=core_index,
     shell_property=shell_index,
     medium_property=medium_index,

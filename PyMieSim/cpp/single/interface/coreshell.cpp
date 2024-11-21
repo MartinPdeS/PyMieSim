@@ -12,7 +12,7 @@ PYBIND11_MODULE(CoreShellInterface, module) {
     py::class_<Scatterer>(module, "CORESHELL")
         .def(py::init<double, double, std::complex<double>, std::complex<double>, double, SOURCE::BaseSource&>(),
              py::arg("core_diameter"),
-             py::arg("shell_width"),
+             py::arg("shell_thickness"),
              py::arg("core_index"),
              py::arg("shell_index"),
              py::arg("medium_index"),

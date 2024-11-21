@@ -10,7 +10,7 @@ on:
 
 jobs:
   conda_deployment:
-    name: OS [${{ matrix.os }}]  Python [${{ matrix.python-version }}]
+    name: OS [${{ matrix.os }}] -- Python [${{ matrix.python-version }}]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -18,18 +18,28 @@ jobs:
         python-version: ["3.11", "3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Conda environment creation and activation
+      - name: Set up Conda environment
         uses: conda-incubator/setup-miniconda@v3
         with:
           channels: conda-forge, martinpdes
-          conda-remove-defaults: true
           python-version: ${{ matrix.python-version }}
 
-      - name: Conda environment creation and activation
+      - name: Install Conda tools
         run: |
           conda install anaconda-client conda-build
-          conda build . --python ${{ matrix.python-version }} --token ${{ secrets.ANACONDA_API_TOKEN }} --user martinpdes
+
+      - name: Build Conda package
+        run: |
+          conda build . --python ${{ matrix.python-version }}
+          echo "PACKAGE_PATH=$(conda build . --output --python ${{ matrix.python-version }})" >> $GITHUB_ENV
+
+      - name: Upload to Anaconda
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        env:
+          PACKAGE_PATH: ${{ env.PACKAGE_PATH }}
+        run: |
+          anaconda upload $PACKAGE_PATH --user martinpdes --token ${{ secrets.ANACONDA_API_TOKEN }}

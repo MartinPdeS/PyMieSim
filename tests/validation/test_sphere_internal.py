@@ -86,7 +86,7 @@ def test_compare_sphere_coreshell_0(gaussian_source):
     # Define a core-shell scatterer with zero shell thickness
     coreshell = CoreShell(
         core_diameter=1000 * nanometer,
-        shell_width=0 * nanometer,  # Zero shell width
+        shell_thickness=0 * nanometer,  # Zero shell width
         core_property=1.5 * RIU,
         shell_property=1.8 * RIU,
         medium_property=1.0 * RIU,

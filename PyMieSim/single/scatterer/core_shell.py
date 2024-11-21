@@ -18,9 +18,9 @@ class CoreShell(BaseScatterer):
     Parameters
     ----------
     core_diameter : Quantity
-        Diameter of the core of the scatterer, in meters.
-    shell_width : Quantity
-        Width of the shell surrounding the core, in meters.
+        Diameter of the core of the scatterer.
+    shell_thickness : Quantity
+        Thickness of the shell surrounding the core.
     core_property : Quantity | BaseMaterial
         Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer's core. Only one can be provided.
     shell_property : Quantity | BaseMaterial
@@ -29,7 +29,7 @@ class CoreShell(BaseScatterer):
     """
 
     core_diameter: Quantity
-    shell_width: Quantity
+    shell_thickness: Quantity
 
     core_property: Quantity | BaseMaterial
     shell_property: Quantity | BaseMaterial
@@ -45,7 +45,7 @@ class CoreShell(BaseScatterer):
 
         self.shell_index, self.shell_material = self._assign_index_or_material(self.core_property)
 
-        self.cross_section = numpy.pi * ((self.core_diameter / 2 + self.shell_width)) ** 2
+        self.cross_section = numpy.pi * ((self.core_diameter / 2 + self.shell_thickness)) ** 2
 
         super().__post_init__()
 
@@ -58,7 +58,7 @@ class CoreShell(BaseScatterer):
         self.binding = CORESHELL(
             shell_index=self.shell_index.to_base_units().magnitude,
             core_index=self.core_index.to_base_units().magnitude,
-            shell_width=self.shell_width.to_base_units().magnitude,
+            shell_thickness=self.shell_thickness.to_base_units().magnitude,
             core_diameter=self.core_diameter.to_base_units().magnitude,
             medium_index=self.medium_index.to_base_units().magnitude,
             source=self.source.binding

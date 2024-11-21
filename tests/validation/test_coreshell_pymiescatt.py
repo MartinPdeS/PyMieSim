@@ -53,14 +53,14 @@ def test_comparison(pymiescatt_dataframe, gaussian_source, measure: str):
     core_index = 1.4 + 0.3j * RIU
     shell_index = 1.3 * RIU
     core_diameters = np.geomspace(10, 6000, 80) * nanometer
-    shell_width = 600 * nanometer
+    shell_thickness = 600 * nanometer
     medium_indexes = [1.0] * RIU
 
     # Get data from PyMieSim
     scatterer = CoreShell(
         core_diameter=core_diameters,
         core_property=core_index,
-        shell_width=shell_width,
+        shell_thickness=shell_thickness,
         shell_property=shell_index,
         medium_property=medium_indexes,
         source=gaussian_source

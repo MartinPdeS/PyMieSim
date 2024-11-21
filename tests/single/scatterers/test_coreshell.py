@@ -44,7 +44,7 @@ def gaussian_source():
 def test_method(method, core_material, shell_material, medium_property, gaussian_source):
     scatterer = CoreShell(
         core_diameter=100 * nanometer,
-        shell_width=200 * nanometer,
+        shell_thickness=200 * nanometer,
         source=gaussian_source,
         medium_property=medium_property,
         core_property=core_material,
@@ -64,7 +64,7 @@ def test_coupling(core_material, shell_material, medium_property, gaussian_sourc
     detector = Photodiode(NA=0.2 * AU, gamma_offset=0 * degree, phi_offset=0 * degree)
     scatterer = CoreShell(
         core_diameter=100 * nanometer,
-        shell_width=200 * nanometer,
+        shell_thickness=200 * nanometer,
         source=gaussian_source,
         medium_property=medium_property,
         core_property=core_material,
@@ -84,7 +84,7 @@ def test_coupling(core_material, shell_material, medium_property, gaussian_sourc
 def test_attribute(attribute, core_material, shell_material, medium_property, gaussian_source):
     scatterer = CoreShell(
         core_diameter=100 * nanometer,
-        shell_width=200 * nanometer,
+        shell_thickness=200 * nanometer,
         source=gaussian_source,
         medium_property=medium_property,
         core_property=core_material,
@@ -106,7 +106,7 @@ def test_attribute(attribute, core_material, shell_material, medium_property, ga
 def test_plottings(mock_show_plt, mock_show_pyvista, plotting_function, core_material, shell_material, medium_property, gaussian_source):
     scatterer = CoreShell(
         core_diameter=100 * nanometer,
-        shell_width=200 * nanometer,
+        shell_thickness=200 * nanometer,
         source=gaussian_source,
         medium_property=medium_property,
         core_property=core_material,

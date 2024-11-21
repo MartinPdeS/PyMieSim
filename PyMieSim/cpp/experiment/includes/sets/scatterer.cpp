@@ -141,7 +141,7 @@ namespace CORESHELL {
     class Set : public BaseSet {
     public:
         std::vector<double> core_diameter;
-        std::vector<double> shell_width;
+        std::vector<double> shell_thickness;
         ScattererProperties core_property;
         ScattererProperties shell_property;
         MediumProperties medium_property;
@@ -150,11 +150,11 @@ namespace CORESHELL {
 
         Set(
             const std::vector<double>& core_diameter,
-            const std::vector<double>& shell_width,
+            const std::vector<double>& shell_thickness,
             const ScattererProperties& core_property,
             const ScattererProperties& shell_property,
             const MediumProperties& medium_property)
-            : core_diameter(core_diameter), shell_width(shell_width), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
+            : core_diameter(core_diameter), shell_thickness(shell_thickness), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
             {
                 update_shape();
                 total_combinations = get_vector_sigma(shape);
@@ -163,7 +163,7 @@ namespace CORESHELL {
         void update_shape() override {
             this->shape = {
                 core_diameter.size(),
-                shell_width.size(),
+                shell_thickness.size(),
                 core_property.size(),
                 shell_property.size(),
                 medium_property.size()
@@ -176,7 +176,7 @@ namespace CORESHELL {
 
             Scatterer scatterer(
                 core_diameter[indices[0]],
-                shell_width[indices[1]],
+                shell_thickness[indices[1]],
                 core_property.get(indices[2], source.wavelength_index),
                 shell_property.get(indices[3], source.wavelength_index),
                 medium_property.get(indices[4], source.wavelength_index),
@@ -193,8 +193,8 @@ namespace CORESHELL {
             if (this->core_diameter.size() != expected_size)
                 throw std::runtime_error("Error: Vector size mismatch in sequential computation. core_diameter has a different size than expected size.");
 
-            if (this->shell_width.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. shell_width has a different size than expected size.");
+            if (this->shell_thickness.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. shell_thickness has a different size than expected size.");
 
             if (this->core_property.size() != expected_size)
                 throw std::runtime_error("Error: Vector size mismatch in sequential computation. core_property has a different size than expected size.");
@@ -209,7 +209,7 @@ namespace CORESHELL {
         Scatterer get_scatterer_by_index_sequential(const size_t index, SOURCE::BaseSource& source) const {
             Scatterer scatterer(
                 core_diameter[index],
-                shell_width[index],
+                shell_thickness[index],
                 core_property.get(index, source.wavelength_index),
                 shell_property.get(index, source.wavelength_index),
                 medium_property.get(index, source.wavelength_index),

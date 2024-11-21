@@ -39,7 +39,7 @@ class BaseScatterer:
 
         self.set_binding()
 
-    @field_validator('diameter', 'core_diameter', 'shell_widths', mode='plain')
+    @field_validator('diameter', 'core_diameter', 'shell_thickness', mode='plain')
     def _validate_length(cls, value):
         """
         Ensures that diameter is Quantity objects with length units.

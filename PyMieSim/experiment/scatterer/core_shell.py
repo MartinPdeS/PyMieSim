@@ -23,9 +23,9 @@ class CoreShell(BaseScatterer):
     source : PyMieSim.experiment.source.base.BaseSource
         Light source configuration for the simulation.
     core_diameter : Quantity
-        Diameters of the core components in meters.
-    shell_width : Quantity
-        Thicknesses of the shell components in meters.
+        Diameters of the core components.
+    shell_thickness : Quantity
+        Thicknesses of the shell components.
     core_property : List[BaseMaterial] | List[Quantity]
         Refractive index or indices of the core.
     shell_property : List[BaseMaterial] | List[Quantity]
@@ -35,7 +35,7 @@ class CoreShell(BaseScatterer):
 
     """
     core_diameter: Quantity
-    shell_width: Quantity
+    shell_thickness: Quantity
 
     core_property: List[BaseMaterial] | List[Quantity]
     shell_property: List[BaseMaterial] | List[Quantity]
@@ -55,7 +55,7 @@ class CoreShell(BaseScatterer):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(core_diameter=self.core_diameter, shell_width=self.shell_width)
+        self.binding_kwargs = dict(core_diameter=self.core_diameter, shell_thickness=self.shell_thickness)
 
         self._add_properties(name='medium', properties=self.medium_property)
 

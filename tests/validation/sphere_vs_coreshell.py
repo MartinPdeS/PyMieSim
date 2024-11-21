@@ -29,7 +29,7 @@ def test_no_shell(metric, source):
 
     coreshell = CoreShell(
         core_diameter=diameter,
-        shell_width=0 * nanometer,
+        shell_thickness=0 * nanometer,
         core_property=1.5 * RIU,
         shell_property=1.6 * RIU,
         source=source,
@@ -62,7 +62,7 @@ def test_shell_equal_core(metric, source):
 
     coreshell = CoreShell(
         core_diameter=diameter_core,
-        shell_width=100 * nanometer,
+        shell_thickness=100 * nanometer,
         core_property=1.5 * RIU,
         shell_property=1.5 * RIU,
         source=source,
@@ -92,7 +92,7 @@ def test_only_shell(metric, source):
 
     coreshell = CoreShell(
         core_diameter=100 * nanometer,
-        shell_width=diameter_shell,
+        shell_thickness=diameter_shell,
         core_property=1.5 * RIU,
         shell_property=1.5 * RIU,
         source=source,
@@ -121,7 +121,7 @@ def test_shell_is_medium(metric, source):
 
     coreshell = CoreShell(
         core_diameter=diameter,
-        shell_width=500 * nanometer,
+        shell_thickness=500 * nanometer,
         core_property=1.5 * RIU,
         shell_property=1.4 * RIU,
         source=source,
