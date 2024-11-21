@@ -30,7 +30,7 @@ source = Gaussian(
 # Here, we explore core/shell scatterers with a constant shell diameter and variable core diameter.
 scatterer = CoreShell(
     core_diameter=np.geomspace(100, 600, 10) * nanometer,  # Geometrically spaced core diameters
-    shell_width=150 * nanometer,  # Shell width of 800 nm
+    shell_thickness=150 * nanometer,  # Shell width of 800 nm
     core_property=[1.4] * RIU,  # Refractive index of the core
     shell_property=[Material.BK7],  # BK7 glass material for the shell
     medium_property=1 * RIU,  # Refractive index of the surrounding medium

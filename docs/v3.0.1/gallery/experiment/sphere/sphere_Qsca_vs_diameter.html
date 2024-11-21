@@ -590,7 +590,7 @@ to download the full example code.</p>
 <p>Importing the package dependencies: numpy, PyMieSim</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">PyMieSim.experiment.scatterer</span> <span class="kn">import</span> <span class="n">CoreShell</span>
+<span class="kn">from</span> <span class="nn">PyMieSim.experiment.scatterer</span> <span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.experiment.source</span> <span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.experiment</span> <span class="kn">import</span> <span class="n">Setup</span>
 <span class="kn">from</span> <span class="nn">PyMieSim.units</span> <span class="kn">import</span> <span class="n">nanometer</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
@@ -606,12 +606,10 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <p>Defining the ranging parameters for the scatterer distribution</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShell</span><span class="p">(</span>
-    <span class="n">core_diameter</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">6.36</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
-    <span class="n">shell_width</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mf">6.36</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="n">core_property</span><span class="o">=</span><span class="mf">1.6</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="n">shell_property</span><span class="o">=</span><span class="mf">1.6</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
+    <span class="nb">property</span><span class="o">=</span><span class="mf">1.6</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span>
 <span class="p">)</span>
 </pre></div>
@@ -625,13 +623,13 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <p>Plotting the results</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;scatterer:core_diameter&#39;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;scatterer:diameter&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <img src="../../../_images/sphx_glr_sphere_Qsca_vs_diameter_001.png" srcset="../../../_images/sphx_glr_sphere_Qsca_vs_diameter_001.png" alt="sphere Qsca vs diameter" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;nanometer&#39;, ylabel=&#39;micrometer²&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.930 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.630 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-sphere-sphere-qsca-vs-diameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/4557420e7a8d93eda2b5244580b533ea/sphere_Qsca_vs_diameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere_Qsca_vs_diameter.ipynb</span></code></a></p>

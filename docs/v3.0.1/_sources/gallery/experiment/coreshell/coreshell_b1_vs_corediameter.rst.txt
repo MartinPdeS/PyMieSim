@@ -81,7 +81,7 @@ with variable core diameter
 
     scatterer = CoreShell(
         core_diameter=np.geomspace(100, 3000, 500) * nanometer,  # Geometrically spaced core diameters
-        shell_width=800 * nanometer,  # Shell width of 800 nm
+        shell_thickness=800 * nanometer,  # Shell width of 800 nm
         core_property=1.6 * RIU,  # Refractive index of the core
         shell_property=Material.BK7,  # BK7 glass material for the shell
         medium_property=1 * RIU,  # Refractive index of the surrounding medium
@@ -161,7 +161,7 @@ Visualizing how the B1 parameter varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.362 seconds)
+   **Total running time of the script:** (0 minutes 0.379 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py:

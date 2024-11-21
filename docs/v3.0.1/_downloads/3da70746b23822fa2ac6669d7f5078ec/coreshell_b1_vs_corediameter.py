@@ -31,7 +31,7 @@ source = Gaussian(
 # with variable core diameter
 scatterer = CoreShell(
     core_diameter=np.geomspace(100, 3000, 500) * nanometer,  # Geometrically spaced core diameters
-    shell_width=800 * nanometer,  # Shell width of 800 nm
+    shell_thickness=800 * nanometer,  # Shell width of 800 nm
     core_property=1.6 * RIU,  # Refractive index of the core
     shell_property=Material.BK7,  # BK7 glass material for the shell
     medium_property=1 * RIU,  # Refractive index of the surrounding medium

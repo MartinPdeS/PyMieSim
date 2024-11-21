@@ -8,7 +8,7 @@ Sphere: Qsca vs diameter
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 
-from PyMieSim.experiment.scatterer import CoreShell
+from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment import Setup
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
@@ -23,12 +23,10 @@ source = Gaussian(
 )
 # %%
 # Defining the ranging parameters for the scatterer distribution
-scatterer = CoreShell(
-    core_diameter=np.geomspace(6.36, 10000, 1500) * nanometer,
-    shell_width=200 * nanometer,
+scatterer = Sphere(
+    diameter=np.geomspace(6.36, 10000, 1500) * nanometer,
     medium_property=1 * RIU,
-    core_property=1.6 * RIU,
-    shell_property=1.6 * RIU,
+    property=1.6 * RIU,
     source=source
 )
 
@@ -42,4 +40,4 @@ dataframe = experiment.get('Csca', 'Cabs', scale_unit=True, drop_unique_level=Tr
 
 # %%
 # Plotting the results
-dataframe.plot_data(x='scatterer:core_diameter')
+dataframe.plot_data(x='scatterer:diameter')

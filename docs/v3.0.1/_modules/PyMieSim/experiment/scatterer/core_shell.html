@@ -510,9 +510,9 @@ document.write(`
 <span class="sd">    source : PyMieSim.experiment.source.base.BaseSource</span>
 <span class="sd">        Light source configuration for the simulation.</span>
 <span class="sd">    core_diameter : Quantity</span>
-<span class="sd">        Diameters of the core components in meters.</span>
-<span class="sd">    shell_width : Quantity</span>
-<span class="sd">        Thicknesses of the shell components in meters.</span>
+<span class="sd">        Diameters of the core components.</span>
+<span class="sd">    shell_thickness : Quantity</span>
+<span class="sd">        Thicknesses of the shell components.</span>
 <span class="sd">    core_property : List[BaseMaterial] | List[Quantity]</span>
 <span class="sd">        Refractive index or indices of the core.</span>
 <span class="sd">    shell_property : List[BaseMaterial] | List[Quantity]</span>
@@ -522,7 +522,7 @@ document.write(`
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">core_diameter</span><span class="p">:</span> <span class="n">Quantity</span>
-    <span class="n">shell_width</span><span class="p">:</span> <span class="n">Quantity</span>
+    <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">Quantity</span>
 
     <span class="n">core_property</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span>
     <span class="n">shell_property</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMaterial</span><span class="p">]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span>
@@ -542,7 +542,7 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{}</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="p">,</span> <span class="n">shell_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_width</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binding_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="p">,</span> <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_properties</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span><span class="p">)</span>
 

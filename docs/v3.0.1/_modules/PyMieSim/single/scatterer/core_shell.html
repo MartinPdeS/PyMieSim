@@ -505,9 +505,9 @@ document.write(`
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    core_diameter : Quantity</span>
-<span class="sd">        Diameter of the core of the scatterer, in meters.</span>
-<span class="sd">    shell_width : Quantity</span>
-<span class="sd">        Width of the shell surrounding the core, in meters.</span>
+<span class="sd">        Diameter of the core of the scatterer.</span>
+<span class="sd">    shell_thickness : Quantity</span>
+<span class="sd">        Thickness of the shell surrounding the core.</span>
 <span class="sd">    core_property : Quantity | BaseMaterial</span>
 <span class="sd">        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer&#39;s core. Only one can be provided.</span>
 <span class="sd">    shell_property : Quantity | BaseMaterial</span>
@@ -516,7 +516,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">core_diameter</span><span class="p">:</span> <span class="n">Quantity</span>
-    <span class="n">shell_width</span><span class="p">:</span> <span class="n">Quantity</span>
+    <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">Quantity</span>
 
     <span class="n">core_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
     <span class="n">shell_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
@@ -532,7 +532,7 @@ document.write(`
 
         <span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell_material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_index_or_material</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core_property</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cross_section</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell_width</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cross_section</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
 
@@ -547,7 +547,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">CORESHELL</span><span class="p">(</span>
             <span class="n">shell_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">core_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">shell_width</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_width</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">medium_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">binding</span>

@@ -611,7 +611,7 @@ In the LMT framework, the source is always considered a plane wave with a defaul
 Here, we explore core/shell scatterers with a constant shell diameter and variable core diameter.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShell</span><span class="p">(</span>
     <span class="n">core_diameter</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">geomspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Geometrically spaced core diameters</span>
-    <span class="n">shell_width</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Shell width of 800 nm</span>
+    <span class="n">shell_thickness</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Shell width of 800 nm</span>
     <span class="n">core_property</span><span class="o">=</span><span class="p">[</span><span class="mf">1.4</span><span class="p">]</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive index of the core</span>
     <span class="n">shell_property</span><span class="o">=</span><span class="p">[</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">],</span>  <span class="c1"># BK7 glass material for the shell</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive index of the surrounding medium</span>
@@ -637,7 +637,7 @@ Visualizing how the B1 (a3) parameter varies with the core diameter.</p>
 <img src="../../../_images/sphx_glr_coreshell_a1_vs_corediameter_001.png" srcset="../../../_images/sphx_glr_coreshell_a1_vs_corediameter_001.png" alt="coreshell a1 vs corediameter" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;nanometer&#39;, ylabel=&#39;dimensionless&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.286 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.301 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-a1-vs-corediameter-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/f044d30cab7e7a91e4d47aff6f3d97b8/coreshell_a1_vs_corediameter.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_a1_vs_corediameter.ipynb</span></code></a></p>
