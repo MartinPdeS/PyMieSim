@@ -1,5 +1,5 @@
-# .github/workflows/coverage.yml
-name: Coverage
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy coverage
 
 on:
   push:
@@ -9,45 +9,17 @@ on:
   pull_request:
     branches: [ "master" ]
 
+
+# Sets permissions of the  GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
-  coverage:
-    name: Run test and generate coverage data
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
-
-    steps:
-      - name: "Set-up: Python ${{ env.cp_python_version }}"
-        uses: actions/setup-python@v5
-        id: cp310
-        with:
-            python-version: "3.11"
-
-
-      - name: "Install: Dependencies for headless server"
-        shell: bash
-        run: |
-            sudo apt-get update
-            # sudo apt-get install libgl1-mesa-glx xvfb
-            sudo apt-get install xvfb
-
-      - name: "Checkout requirements and files for testing"
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: true
-
-      - name: Install everything, run the tests, produce the .coverage file
-        run: |
-          python -m pip install wheel build
-          python -m build --wheel
-          python -m pip install .[testing]
-          pytest
-
-      - name: Coverage comment
-        uses: py-cov-action/python-coverage-comment-action@v3
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MINIMUM_GREEN: 90
-          MINIMUM_ORANGE: 50
+  ManyLinux_x86_64:
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@master
+    with:
+      python-version: "3.11"
+    secrets:
+      _GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

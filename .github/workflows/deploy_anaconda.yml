@@ -1,4 +1,4 @@
-name: Deploy to Conda
+name: Deploy Conda Packages
 
 on:
   push:
@@ -8,38 +8,14 @@ on:
   pull_request:
     branches: [ "master" ]
 
+permissions:
+    contents: write
+
 jobs:
-  conda_deployment:
-    name: OS [${{ matrix.os }}] -- Python [${{ matrix.python-version }}]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        python-version: ["3.11", "3.12"]
+  ManyLinux_x86_64:
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_anaconda.yml@master
+    with:
+      python-versions: '["3.11", "3.12"]'
+    secrets:
+      ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
 
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set up Conda environment
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          channels: conda-forge, martinpdes
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Conda tools
-        run: |
-          conda install anaconda-client conda-build
-
-      - name: Build Conda package
-        run: |
-          conda build . --python ${{ matrix.python-version }}
-          echo "PACKAGE_PATH=$(conda build . --output --python ${{ matrix.python-version }})" >> $GITHUB_ENV
-
-      - name: Upload to Anaconda
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-        env:
-          PACKAGE_PATH: ${{ env.PACKAGE_PATH }}
-        run: |
-          anaconda upload $PACKAGE_PATH --user martinpdes --token ${{ secrets.ANACONDA_API_TOKEN }}
