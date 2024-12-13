@@ -85,6 +85,12 @@ documentation = [
     "pydata-sphinx-theme ==0.15.4",
 ]
 
+gui = [
+    "dash",
+    "multiprocess",
+    "selenium"
+]
+
 dev = [
     "flake8 ==7.1.1",
 ]
