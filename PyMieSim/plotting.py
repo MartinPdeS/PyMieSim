@@ -10,6 +10,7 @@ def plot_dataframe(
         x: str,
         alpha: float = 0.4,
         std: Optional[str] = None,
+        show: bool = True,
         **kwargs) -> None:
     """
     Plots a DataFrame using a specified MultiIndex level for the x-axis and
@@ -32,10 +33,10 @@ def plot_dataframe(
         _, ax = plt.subplots(1, 1)
 
     if std is not None:
-        return plot_with_std(dataframe, ax, x, std, alpha, **kwargs)
+        return plot_with_std(dataframe, ax, x, std, alpha, show=show, **kwargs)
 
     else:
-        return plot_without_std(dataframe, ax, x, **kwargs)
+        return plot_without_std(dataframe, ax, x, show=show, **kwargs)
 
     plt.show()
 
