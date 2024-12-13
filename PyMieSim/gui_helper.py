@@ -31,7 +31,7 @@ def parse_string_to_array_or_float(input_str):
         raise ValueError("Invalid input string format. Expected 'start:end:count', a comma-separated list, or a single numeric value.")
 
 
-def interface(source_kwargs: dict, scatterer_kwargs: dict, detector_kwargs: dict, measure: str):
+def interface(source_kwargs: dict, scatterer_kwargs: dict, detector_kwargs: dict, measure: str, **kwargs):
     source = Gaussian(
         wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
         polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
@@ -55,6 +55,6 @@ def interface(source_kwargs: dict, scatterer_kwargs: dict, detector_kwargs: dict
 
     setup = Setup(source=source, scatterer=scatterer, detector=detector)
 
-    dataframe = setup.get(measure)
+    dataframe = setup.get(measure, **kwargs)
 
     return dataframe

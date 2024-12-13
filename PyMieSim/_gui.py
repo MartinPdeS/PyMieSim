@@ -17,7 +17,7 @@ class OpticalSetupGUI:
         self.source_section = SourceSection(self.app)
         self.scatterer_section = ScattererSection(self.app)
         self.detector_section = DetectorSection(self.app)
-        self.measure_section = MeasureSection(self.app, self.scatterer_section)
+        self.measure_section = MeasureSection(self.app, self.scatterer_section, self.source_section, self.detector_section)
 
         self.setup_layout()
         self.setup_callbacks()
@@ -40,6 +40,18 @@ class OpticalSetupGUI:
         buf.close()
         return f"data:image/png;base64,{encoded_image}"
 
+    def save_func(self, filename: str, measure: str, xaxis: str):
+        dataframe = interface(
+            source_kwargs=self.source_section.data,
+            scatterer_kwargs=self.scatterer_section.data,
+            detector_kwargs=self.detector_section.data,
+            measure=measure,
+            add_units=False
+        )
+
+        dataframe.to_csv(filename, sep=',')
+
+
     def setup_layout(self):
         """Define the app layout."""
         self.app.layout = html.Div([
@@ -60,7 +72,7 @@ class OpticalSetupGUI:
 
     def setup_callbacks(self):
         """Set up Dash callbacks."""
-        self.measure_section.update_callbacks(self.create_plot)
+        self.measure_section.update_callbacks(self.create_plot, self.save_func)
 
     def run(self):
         """Run the Dash app."""

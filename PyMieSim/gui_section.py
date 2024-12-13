@@ -120,7 +120,7 @@ class ScattererSection(Section):
             "property": {
                 "id": f"{self.name}-property",
                 "label": "Scatterer Property",
-                "default": "1.5"
+                "default": "1.5, 1.6"
             },
             "medium_property": {
                 "id": f"{self.name}-medium-property",
@@ -212,12 +212,17 @@ class DetectorSection(Section):
             return "Data Updated"
 
 class MeasureSection:
-    def __init__(self, app, scatterer_section):
+    def __init__(self, app, scatterer_section, source_section, detector_section):
         self.app = app
         self.scatterer_section = scatterer_section
+        self.source_section = source_section
+        self.detector_section = detector_section
         self.dropdown_id = "measure-input"
         self.button_id = "generate-plot"
         self.xaxis_input_id = "xaxis-input"
+        self.filename_input_id = "filename-input"
+        self.save_button_id = "save-data"
+        self.plot_ready_store_id = "plot-ready"
         self.data = "Qsca"  # Default measure value
 
     def get_measure_dropdown(self) -> dcc.Dropdown:
@@ -240,29 +245,77 @@ class MeasureSection:
         )
 
     def get_xaxis_dropdown(self) -> dcc.Dropdown:
+        options = []
+        options.extend(
+            [{"label": "scatterer:" + k, "value": "scatterer:" + k} for k in self.scatterer_section.inputs.keys()]
+        )
+        options.extend(
+            [{"label": "source:" + k, "value": "source:" + k} for k in self.source_section.inputs.keys()]
+        )
+        options.extend(
+            [{"label": "detector:" + k, "value": "detector:" + k} for k in self.detector_section.inputs.keys()]
+        )
+
+        default_value = options[0]["value"] if options else None
+
         return dcc.Dropdown(
             id=self.xaxis_input_id,
-            options=[
-                {"label": "scatterer:" + k, "value": "scatterer:" + k} for k in self.scatterer_section.inputs.keys()],
-            value='1',  # Default value
+            options=options,
+            value=default_value,
             style={'margin-right': '10px', 'height': '36px', 'width': '300px'}
         )
 
     def create(self) -> html.Div:
         return html.Div([
+            dcc.Store(id=self.plot_ready_store_id, data=False),  # Track if plot is ready
             html.Div([
-                self.get_measure_dropdown(), self.get_xaxis_dropdown(), html.Button("Generate Plot", id=self.button_id, n_clicks=0, style={'height': '36px'})],
-                style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
+                self.get_measure_dropdown(),
+                self.get_xaxis_dropdown(),
+                html.Button("Generate Plot", id=self.button_id, n_clicks=0, style={'height': '36px'})
+            ], style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}),
+            html.Div([
+                dcc.Input(
+                    id=self.filename_input_id,
+                    type="text",
+                    placeholder="Enter filename",
+                    value="output.csv",
+                    style={'margin-right': '10px', 'height': '36px', 'width': '200px'}
+                ),
+                html.Button("Save Data", id=self.save_button_id, n_clicks=0, disabled=True, style={'height': '36px', 'background-color': 'grey', 'color': 'white'})
+            ], style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'margin-top': '20px'})
         ])
 
-    def update_callbacks(self, callback_func):
+    def update_callbacks(self, callback_func, save_func):
         @self.app.callback(
-            Output("plot-image", "src"),
+            [Output("plot-image", "src"), Output(self.plot_ready_store_id, "data")],
             Input(self.button_id, "n_clicks"),
             State(self.dropdown_id, "value"),
             State(self.xaxis_input_id, "value")
         )
         def trigger_callback(n_clicks, measure, xaxis):
             if n_clicks > 0:
-                return callback_func(measure, xaxis)
-            return None
+                plot_src = callback_func(measure, xaxis)
+                return plot_src, True
+            return None, False
+
+        @self.app.callback(
+            [Output(self.save_button_id, "disabled"), Output(self.save_button_id, "style")],
+            Input(self.plot_ready_store_id, "data")
+        )
+        def update_save_button_style(plot_ready):
+            if plot_ready:
+                return False, {'height': '36px', 'background-color': '#28a745', 'color': 'white'}  # Enabled (green button)
+            return True, {'height': '36px', 'background-color': 'grey', 'color': 'white'}  # Disabled (grey button)
+
+        @self.app.callback(
+            Output(self.filename_input_id, "value"),
+            Input(self.save_button_id, "n_clicks"),
+            State(self.plot_ready_store_id, "data"),
+            State(self.filename_input_id, "value"),
+            State(self.dropdown_id, "value"),
+            State(self.xaxis_input_id, "value")
+        )
+        def save_data(n_clicks, plot_ready, filename, measure, xaxis):
+            if n_clicks > 0 and plot_ready:
+                save_func(filename, measure, xaxis)
+            return filename
