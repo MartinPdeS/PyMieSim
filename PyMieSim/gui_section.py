@@ -1,60 +1,10 @@
 from dash import html, dcc, State, Input, Output
-from PyMieSim.experiment.source.gaussian import Gaussian
-from PyMieSim.experiment.scatterer.sphere import Sphere
-from PyMieSim.experiment.detector.photodiode import Photodiode
-from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, milliwatt, AU, RIU
-import numpy
+from PyMieSim.units import nanometer, degree, milliwatt
 
 
 length_units = nanometer
 power_units = milliwatt
 angle_units = degree
-
-
-def parse_string_to_array_or_float(input_str):
-    """
-    Parse a string to return either a numpy array or a float.
-
-    If the string is in the format 'start:end:count', return np.linspace(start, end, count).
-    If the string is a single numeric value, return it as a float.
-    """
-    try:
-        if ":" in input_str:
-            start, end, count = map(float, input_str.split(":"))
-            return numpy.linspace(start, end, int(count))
-        else:
-            return float(input_str)
-    except ValueError:
-        raise ValueError("Invalid input string format. Expected 'start:end:count' or a single numeric value.")
-
-def interface(source_kwargs: dict, scatterer_kwargs: dict, detector_kwargs: dict, measure: str):
-    source = Gaussian(
-        wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
-        polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
-        NA=parse_string_to_array_or_float(source_kwargs['NA']) * AU,
-        optical_power=parse_string_to_array_or_float(source_kwargs['optical_power']) * milliwatt
-    )
-
-    scatterer = Sphere(
-        diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
-        property=parse_string_to_array_or_float(scatterer_kwargs['property']) * RIU,
-        medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * RIU,
-        source=source
-    )
-
-    detector = Photodiode(
-        NA=parse_string_to_array_or_float(detector_kwargs['NA']) * AU,
-        gamma_offset=parse_string_to_array_or_float(detector_kwargs['gamma_offset']) * angle_units,
-        phi_offset=parse_string_to_array_or_float(detector_kwargs['phi_offset']) * angle_units,
-        sampling=parse_string_to_array_or_float(detector_kwargs['sampling']) * AU,
-    )
-
-    setup = Setup(source=source, scatterer=scatterer, detector=detector)
-
-    dataframe = setup.get(measure)
-
-    return dataframe
 
 class Section:
     def create_call_backs(self):
@@ -75,13 +25,14 @@ class Section:
             ])
         ], style={'margin-bottom': '20px'}))
 
-        for input_id, placeholder, default_value in zip(self.input_id, self.input_repr, self.inputs_default):
+
+        for input in self.inputs.values():
             layout.append(html.Div([
-                html.Label(placeholder, style={'margin-right': '10px'}),
+                html.Label(input['label'], style={'margin-right': '10px'}),
                 dcc.Input(
-                    id=input_id,
+                    id=input['id'],
                     type='text',
-                    value=default_value,
+                    value=input['default'],
                     style={'width': '200px'}
                 )
             ], style={'margin-bottom': '10px'}))
@@ -104,11 +55,32 @@ class SourceSection(Section):
         self.dropdown_id = f'{self.name}-dropdown'
         self.default_value = 'laser'
 
-        self.input_id = (f'{self.name}-wavelength', f'{self.name}-optical_power', f'{self.name}-NA', f'{self.name}-polarization')
-        self.input_repr = (f"Wavelength [{length_units}]", f"Power [{power_units}]", "Numerical aperture [NA]", f"Polarization [{angle_units}]")
-        self.inputs_default = ('650', '5', '0.2', '0')
+        self.inputs = {
+            "wavelength": {
+                "id": f"{self.name}-wavelength",
+                "label": f"Wavelength [{length_units}]",
+                "default": "650"
+            },
+            "optical_power": {
+                "id": f"{self.name}-optical_power",
+                "label": f"Power [{power_units}]",
+                "default": "5"
+            },
+            "NA": {
+                "id": f"{self.name}-NA",
+                "label": "Numerical aperture [NA]",
+                "default": "0.2"
+            },
+            "polarization": {
+                "id": f"{self.name}-polarization",
+                "label": f"Polarization [{angle_units}]",
+                "default": "0"
+            }
+        }
 
-        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [Input(id, "value") for id in self.input_id]
+        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [
+            Input(input_data["id"], "value") for input_data in self.inputs.values()
+        ]
 
         self.update_callbacks()
 
@@ -139,11 +111,28 @@ class ScattererSection(Section):
         self.dropdown_id = 'scatterer-dropdown'
         self.default_value = 'sphere'
 
-        self.input_id = (f'{self.name}-diameter', f'{self.name}-property', f'{self.name}-medium-property')
-        self.input_repr = (f"Diameter [{length_units}]", "Scatterer Property", "Medium Property")
-        self.inputs_default = ('100:20000:200', '1.5', '1.33')
+        self.inputs = {
+            "diameter": {
+                "id": f"{self.name}-diameter",
+                "label": f"Diameter [{length_units}]",
+                "default": "100:20000:200"
+            },
+            "property": {
+                "id": f"{self.name}-property",
+                "label": "Scatterer Property",
+                "default": "1.5"
+            },
+            "medium_property": {
+                "id": f"{self.name}-medium-property",
+                "label": "Medium Property",
+                "default": "1.33"
+            }
+        }
 
-        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [Input(id, "value") for id in self.input_id]
+        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [
+            Input(input_data["id"], "value") for input_data in self.inputs.values()
+        ]
+
         self.update_callbacks()
 
 
@@ -172,13 +161,39 @@ class DetectorSection(Section):
         ]
         self.dropdown_id = 'detector-dropdown'
         self.default_value = 'photodiode'
-        self.input_id = (f'{self.name}-na', f'{self.name}-phi-offset', f'{self.name}-gamma-offset', f'{self.name}-sampling', f'{self.name}-polarization_filter')
 
-        self.input_repr = ("Numerical aperture", f"Phi offset [{angle_units}]", f"Gamma offset [{angle_units}]", "Sampling", f"Polarization Filter [{angle_units}]")
+        self.inputs = {
+            "NA": {
+                "id": f"{self.name}-na",
+                "label": "Numerical aperture",
+                "default": "0.9"
+            },
+            "phi_offset": {
+                "id": f"{self.name}-phi-offset",
+                "label": f"Phi offset [{angle_units}]",
+                "default": "0"
+            },
+            "gamma_offset": {
+                "id": f"{self.name}-gamma-offset",
+                "label": f"Gamma offset [{angle_units}]",
+                "default": "0"
+            },
+            "sampling": {
+                "id": f"{self.name}-sampling",
+                "label": "Sampling",
+                "default": "1000"
+            },
+            "polarization_filter": {
+                "id": f"{self.name}-polarization_filter",
+                "label": f"Polarization Filter [{angle_units}]",
+                "default": "None"
+            }
+        }
 
-        self.inputs_default = ('0.9', '0', '0', '1000', 'None')
+        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [
+            Input(input_data["id"], "value") for input_data in self.inputs.values()
+        ]
 
-        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [Input(id, "value") for id in self.input_id]
 
         self.update_callbacks()
 
@@ -205,34 +220,39 @@ class MeasureSection:
         self.xaxis_input_id = "xaxis-input"
         self.data = "Qsca"  # Default measure value
 
-    def create(self):
+    def get_measure_dropdown(self) -> dcc.Dropdown:
+        return dcc.Dropdown(
+            id=self.dropdown_id,
+            options=[
+                {'label': 'Qsca', 'value': 'Qsca'},
+                {'label': 'Qext', 'value': 'Qext'},
+                {'label': 'Qabs', 'value': 'Qabs'},
+                {'label': 'Qpr', 'value': 'Qpr'},
+                {'label': 'Csca', 'value': 'Csca'},
+                {'label': 'Cext', 'value': 'Cext'},
+                {'label': 'Cabs', 'value': 'Cabs'},
+                {'label': 'Cpr', 'value': 'Cpr'},
+                {'label': 'g', 'value': 'g'},
+                {'label': 'Coupling', 'value': 'coupling'}
+            ],
+            value='Qsca',
+            style={'margin-right': '10px', 'margin-bottom': '0px', 'height': '36px', 'width': '200px'}
+        )
+
+    def get_xaxis_dropdown(self) -> dcc.Dropdown:
+        return dcc.Dropdown(
+            id=self.xaxis_input_id,
+            options=[
+                {"label": "scatterer:" + k, "value": "scatterer:" + k} for k in self.scatterer_section.inputs.keys()],
+            value='1',  # Default value
+            style={'margin-right': '10px', 'height': '36px', 'width': '300px'}
+        )
+
+    def create(self) -> html.Div:
         return html.Div([
             html.Div([
-                dcc.Dropdown(
-                    id=self.dropdown_id,
-                    options=[
-                        {'label': 'Qsca', 'value': 'Qsca'},
-                        {'label': 'Qext', 'value': 'Qext'},
-                        {'label': 'Qabs', 'value': 'Qabs'},
-                        {'label': 'Qpr', 'value': 'Qpr'},
-                        {'label': 'Csca', 'value': 'Csca'},
-                        {'label': 'Cext', 'value': 'Cext'},
-                        {'label': 'Cabs', 'value': 'Cabs'},
-                        {'label': 'Cpr', 'value': 'Cpr'},
-                        {'label': 'g', 'value': 'g'}
-                    ],
-                    value='Qsca',
-                    style={'margin-right': '10px', 'margin-bottom': '0px', 'height': '36px'}
-                ),
-                dcc.Input(
-                    id=self.xaxis_input_id,
-                    type="text",
-                    placeholder="Enter X-axis",
-                    value="scatterer:diameter",
-                    style={'margin-right': '10px', 'height': '36px'}
-                ),
-                html.Button("Generate Plot", id=self.button_id, n_clicks=0, style={'height': '36px'})
-            ], style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
+                self.get_measure_dropdown(), self.get_xaxis_dropdown(), html.Button("Generate Plot", id=self.button_id, n_clicks=0, style={'height': '36px'})],
+                style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center'})
         ])
 
     def update_callbacks(self, callback_func):

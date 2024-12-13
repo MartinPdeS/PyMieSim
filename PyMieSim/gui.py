@@ -1,9 +1,10 @@
-from dash import Dash, html, Input, Output, State, dcc
+from dash import Dash, html, dcc
 import matplotlib.pyplot as plt
 import io
 import base64
 import webbrowser
-from PyMieSim.gui_section import SourceSection, ScattererSection, DetectorSection, MeasureSection, interface
+from PyMieSim.gui_section import SourceSection, ScattererSection, DetectorSection, MeasureSection
+from PyMieSim.gui_helper import interface
 
 dcc_store_id = "input-store"
 
@@ -48,13 +49,13 @@ class OpticalSetupGUI:
                 *self.source_section.create(),
                 *self.scatterer_section.create(),
                 *self.detector_section.create(),
-            ], style={'width': '45%', 'float': 'left', 'padding': '10px'}),
+            ], style={'width': '40%', 'float': 'left', 'padding': '10px'}),
 
             html.Div([
                 html.H1("Visualization", style={'text-align': 'center'}),
                 self.measure_section.create(),
                 html.Img(id="plot-image", style={'width': '100%', 'height': 'auto', 'margin-top': '20px'})
-            ], style={'width': '45%', 'float': 'right', 'padding': '10px', 'border-left': '1px solid black'})
+            ], style={'width': '55%', 'float': 'right', 'padding': '10px', 'border-left': '1px solid black'})
         ])
 
     def setup_callbacks(self):
