@@ -51,6 +51,8 @@ extensions = [
     'sphinx.ext.intersphinx',
 ]
 
+autodoc_typehints = "description"
+
 # Napoleon settings for docstrings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
