@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:07.783** total execution time for 10 files **from gallery/experiment/cylinder**:
+**00:07.631** total execution time for 10 files **from gallery/experiment/cylinder**:
 
 .. container::
 
@@ -33,32 +33,32 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_coupling_vs_wavelength.py` (``cylinder_coupling_vs_wavelength.py``)
-     - 00:01.586
+     - 00:01.546
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_a11_vs_diameter.py` (``cylinder_a11_vs_diameter.py``)
-     - 00:01.209
+     - 00:01.225
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_index.py` (``cylinder_Qsca_vs_index.py``)
-     - 00:01.088
+     - 00:01.011
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_b11_vs_diameter.py` (``cylinder_b11_vs_diameter.py``)
-     - 00:00.795
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_diameter.py` (``cylinder_Qsca_vs_diameter.py``)
-     - 00:00.673
+     - 00:00.808
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength_std.py` (``cylinder_Qsca_vs_wavelength_std.py``)
-     - 00:00.631
+     - 00:00.685
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_diameter.py` (``cylinder_Qsca_vs_diameter.py``)
+     - 00:00.633
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py` (``cylinder_coupling_vs_phioffset.py``)
-     - 00:00.496
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py` (``cylinder_Qsca_vs_wavelength.py``)
-     - 00:00.444
-     - 0.0
-   * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py` (``cylinder_Qabs_vs_diameter.py``)
-     - 00:00.443
+     - 00:00.502
      - 0.0
    * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_coupling_vs_diameter.py` (``cylinder_coupling_vs_diameter.py``)
-     - 00:00.417
+     - 00:00.428
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qabs_vs_diameter.py` (``cylinder_Qabs_vs_diameter.py``)
+     - 00:00.407
+     - 0.0
+   * - :ref:`sphx_glr_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py` (``cylinder_Qsca_vs_wavelength.py``)
+     - 00:00.387
      - 0.0

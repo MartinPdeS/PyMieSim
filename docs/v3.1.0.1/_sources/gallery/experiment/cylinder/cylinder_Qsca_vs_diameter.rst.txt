@@ -153,7 +153,7 @@ Visualizing how the Qsca varies with the cylinder diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.673 seconds)
+   **Total running time of the script:** (0 minutes 0.633 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_diameter.py:
