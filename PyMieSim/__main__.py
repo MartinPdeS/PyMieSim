@@ -1,15 +1,7 @@
 
-import tkinter
-
-from PyMieSim.gui.main_window import PyMieSimGUI
+from PyMieSim._gui import OpticalSetupGUI
 
 
-def main():
-    root = tkinter.Tk()
-    root.geometry("750x600")
-    PyMieSimGUI(root)
-    root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    _gui = OpticalSetupGUI()
+    _gui.run()
