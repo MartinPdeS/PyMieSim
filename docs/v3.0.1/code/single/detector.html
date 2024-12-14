@@ -29,7 +29,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.10/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -518,7 +518,7 @@ document.write(`
 <h1>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NA:</span> <span class="pre">~pint.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">~pint.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">~pint.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=&lt;Quantity(200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter=&lt;Quantity(nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
 <p>Detector class representing a photodiode with a non-coherent light coupling mechanism.
 This means it is independent of the phase of the impinging scattered light field.</p>
@@ -531,6 +531,8 @@ This means it is independent of the phase of the impinging scattered light field
 <li><p><strong>phi_offset</strong> (<em>Quantity</em>) – Angle [Degree] offset of the detector in the direction parallel to polarization.</p></li>
 <li><p><strong>sampling</strong> (<em>Quantity</em>) – Sampling rate of the far-field distribution. Default is 200.</p></li>
 <li><p><strong>polarization_filter</strong> (<em>Optional</em><em>[</em><em>Quantity</em><em>]</em>) – Angle [Degree] of the polarization filter in front of the detector.</p></li>
+<li><p><strong>mean_coupling</strong> (<em>bool</em>)</p></li>
+<li><p><strong>coherent</strong> (<em>bool</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -551,7 +553,7 @@ This means it is independent of the phase of the impinging scattered light field
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.coupling">
-<span class="sig-name descname"><span class="pre">coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseScatterer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.coupling" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.coupling" title="Link to this definition">#</a></dt>
 <dd><p>Compute the light coupling between the detector and a scatterer.</p>
 <p>The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:</p>
 <div class="math notranslate nohighlight">
@@ -591,7 +593,7 @@ This means it is independent of the phase of the impinging scattered light field
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_energy_flow">
-<span class="sig-name descname"><span class="pre">get_energy_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer:</span> <span class="pre">~PyMieSim.single.scatterer.base.BaseScatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance:</span> <span class="pre">~pint.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_energy_flow" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_energy_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_energy_flow" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.</p>
 <p>The energy flow is computed using the following relationship between the scattered energy and the incident intensity:</p>
 <div class="math notranslate nohighlight">
@@ -631,7 +633,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_footprint">
-<span class="sig-name descname"><span class="pre">get_footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseScatterer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint"><span class="pre">Footprint</span></a></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_footprint" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_footprint" title="Link to this definition">#</a></dt>
 <dd><p>Generate the footprint of the scattered light coupling with the detector.</p>
 <div class="math notranslate nohighlight">
 \[\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\
@@ -650,11 +652,19 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 <dt>Returns:</dt><dd><p>Footprint: The scatterer footprint with this detector.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scatterer</strong> (<em>BaseScatterer</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint"><em>Footprint</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_poynting_vector">
-<span class="sig-name descname"><span class="pre">get_poynting_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer:</span> <span class="pre">~PyMieSim.single.scatterer.base.BaseScatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance:</span> <span class="pre">~pint.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_poynting_vector" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_poynting_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_poynting_vector" title="Link to this definition">#</a></dt>
 <dd><p>Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.</p>
 <p>The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:</p>
 <div class="math notranslate nohighlight">
@@ -691,7 +701,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode.get_structured_scalarfield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode.get_structured_scalarfield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
 <dd><p>Generate a structured scalar field as a numpy array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -723,7 +733,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size:</span> <span class="pre">~typing.Tuple[float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float]</span> <span class="pre">=</span> <span class="pre">(600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.plot" title="Link to this definition">#</a></dt>
 <dd><p>Plot the real and imaginary parts of the scattered fields in a 3D scene.</p>
 <p>This method creates a 3D plot of the scattered fields, displaying the real part of the field
 as colored points in the scene. It also adds a translucent sphere and a directional cone
@@ -736,7 +746,11 @@ to represent additional geometrical information.</p>
 <li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, axis labels will be shown. Default is False.</p></li>
 <li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for the scalar field. Default is ‘blue_black_red’.</p></li>
 <li><p><strong>Returns</strong> – None: This method does not return a value. It displays the 3D plot.</p></li>
+<li><p><strong>save_name</strong> (<em>str</em>)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -760,7 +774,7 @@ to represent additional geometrical information.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_number:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA:</span> <span class="pre">~pint.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset:</span> <span class="pre">~pint.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset:</span> <span class="pre">~pint.Quantity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation:</span> <span class="pre">~pint.Quantity</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coherent=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA=&lt;Quantity(0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=&lt;Quantity(200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter=&lt;Quantity(nan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation=&lt;Quantity(90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
 <p>Detector class representing a laser Hermite-Gauss mode with a coherent light coupling mechanism.
 This means it depends on the phase of the impinging scattered light field.</p>
@@ -797,7 +811,7 @@ This means it depends on the phase of the impinging scattered light field.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.coupling">
-<span class="sig-name descname"><span class="pre">coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseScatterer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.coupling" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.coupling" title="Link to this definition">#</a></dt>
 <dd><p>Compute the light coupling between the detector and a scatterer.</p>
 <p>The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:</p>
 <div class="math notranslate nohighlight">
@@ -837,7 +851,7 @@ This means it depends on the phase of the impinging scattered light field.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_energy_flow">
-<span class="sig-name descname"><span class="pre">get_energy_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer:</span> <span class="pre">~PyMieSim.single.scatterer.base.BaseScatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance:</span> <span class="pre">~pint.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_energy_flow" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_energy_flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_energy_flow" title="Link to this definition">#</a></dt>
 <dd><p>Calculate the total energy flow (or radiated power) from the scatterer based on the Poynting vector.</p>
 <p>The energy flow is computed using the following relationship between the scattered energy and the incident intensity:</p>
 <div class="math notranslate nohighlight">
@@ -877,7 +891,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_footprint">
-<span class="sig-name descname"><span class="pre">get_footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">BaseScatterer</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint"><span class="pre">Footprint</span></a></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_footprint" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_footprint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_footprint" title="Link to this definition">#</a></dt>
 <dd><p>Generate the footprint of the scattered light coupling with the detector.</p>
 <div class="math notranslate nohighlight">
 \[\big| \mathscr{F}^{-1} \big\{ \tilde{ \psi } (\xi, \nu),\
@@ -896,11 +910,19 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 <dt>Returns:</dt><dd><p>Footprint: The scatterer footprint with this detector.</p>
 </dd>
 </dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>scatterer</strong> (<em>BaseScatterer</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint"><em>Footprint</em></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_poynting_vector">
-<span class="sig-name descname"><span class="pre">get_poynting_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer:</span> <span class="pre">~PyMieSim.single.scatterer.base.BaseScatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance:</span> <span class="pre">~pint.Quantity</span> <span class="pre">=</span> <span class="pre">&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_poynting_vector" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_poynting_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_poynting_vector" title="Link to this definition">#</a></dt>
 <dd><p>Compute the Poynting vector norm, representing the energy flux density of the electromagnetic field.</p>
 <p>The Poynting vector describes the directional energy transfer per unit area for an electromagnetic wave. It is defined as:</p>
 <div class="math notranslate nohighlight">
@@ -937,7 +959,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode.get_structured_scalarfield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode.get_structured_scalarfield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
 <dd><p>Generate a structured scalar field as a numpy array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -969,7 +991,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size:</span> <span class="pre">~typing.Tuple[float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float]</span> <span class="pre">=</span> <span class="pre">(600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.plot" title="Link to this definition">#</a></dt>
 <dd><p>Plot the real and imaginary parts of the scattered fields in a 3D scene.</p>
 <p>This method creates a 3D plot of the scattered fields, displaying the real part of the field
 as colored points in the scene. It also adds a translucent sphere and a directional cone
@@ -982,7 +1004,11 @@ to represent additional geometrical information.</p>
 <li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, axis labels will be shown. Default is False.</p></li>
 <li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for the scalar field. Default is ‘blue_black_red’.</p></li>
 <li><p><strong>Returns</strong> – None: This method does not return a value. It displays the 3D plot.</p></li>
+<li><p><strong>save_name</strong> (<em>str</em>)</p></li>
 </ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
