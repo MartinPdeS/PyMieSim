@@ -125,8 +125,9 @@ class OpticalSetupGUI:
 
         This method starts the Dash server and opens the application in the default web browser.
         """
-        webbrowser.open("http://127.0.0.1:8050/", new=2)
-        self.app.run_server(debug=True)
+        # webbrowser.open("http://127.0.0.1:8050/", new=2)
+        # webbrowser.open("http://0.0.0.1:8050/", new=2)
+        self.app.run_server(debug=True, host="0.0.0.0", port=8050)
 
 
 if __name__ == '__main__':
