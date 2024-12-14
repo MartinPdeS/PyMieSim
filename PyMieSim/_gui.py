@@ -127,3 +127,8 @@ class OpticalSetupGUI:
         """
         webbrowser.open("http://127.0.0.1:8050/", new=2)
         self.app.run_server(debug=True)
+
+
+if __name__ == '__main__':
+    _gui = _gui.OpticalSetupGUI()
+    _gui.run()
