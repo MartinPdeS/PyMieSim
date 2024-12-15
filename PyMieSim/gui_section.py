@@ -526,10 +526,9 @@ class MeasureSection:
             Input(self.save_button_id, "n_clicks"),
             State(self.plot_ready_store_id, "data"),
             State(self.filename_input_id, "value"),
-            State(self.dropdown_id, "value"),
-            State(self.xaxis_input_id, "value")
+            State(self.dropdown_id, "value")
         )
-        def save_data(n_clicks: int, plot_ready: bool, filename: str, measure: str, xaxis: str) -> dict:
+        def save_data(n_clicks: int, plot_ready: bool, filename: str, measure: str) -> dict:
             """
             Trigger file download when the save button is clicked.
 
@@ -552,7 +551,7 @@ class MeasureSection:
                 File content and metadata for download, or None if conditions are not met.
             """
             if n_clicks > 0 and plot_ready:
-                dataframe = save_func(measure, xaxis)
+                dataframe = save_func(filename=filename, measure=measure)
                 content = dataframe.to_csv(index=False)
                 return {"content": content, "filename": filename, "type": "text/csv"}
             return None

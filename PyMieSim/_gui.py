@@ -66,7 +66,7 @@ class OpticalSetupGUI:
         buf.close()
         return f"data:image/png;base64,{encoded_image}"
 
-    def save_func(self, filename: str, measure: str, xaxis: str):
+    def save_func(self, filename: str, measure: str):
         """
         Save the simulation data to a CSV file.
 
@@ -79,15 +79,13 @@ class OpticalSetupGUI:
         xaxis : str
             The parameter to include on the x-axis in the saved data.
         """
-        dataframe = interface(
+        return interface(
             source_kwargs=self.source_section.data,
             scatterer_kwargs=self.scatterer_section.data,
             detector_kwargs=self.detector_section.data,
             measure=measure,
             add_units=False
         )
-
-        dataframe.to_csv(filename, sep=',')
 
     def setup_layout(self):
         """
