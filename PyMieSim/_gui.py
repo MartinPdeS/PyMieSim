@@ -119,7 +119,7 @@ class OpticalSetupGUI:
         """
         self.measure_section.update_callbacks(self.create_plot, self.save_func)
 
-    def run(self, host: str = "0.0.0.0", port: str = "8050", open_browser: bool = False):
+    def run(self, host: str = "0.0.0.0", port: str = "8050", open_browser: bool = False, debug: bool = False):
         """
         Run the Dash app.
 
@@ -127,12 +127,12 @@ class OpticalSetupGUI:
         """
         if open_browser:
             webbrowser.open(f"http://{host}:{port}/", new=2)
-            self.app.run_server(debug=True)
+            self.app.run_server(debug=debug)
 
         else:
-            self.app.run_server(debug=True, host=host, port=port)
+            self.app.run_server(debug=debug, host=host, port=port)
 
 
 if __name__ == '__main__':
     _gui = OpticalSetupGUI()
-    _gui.run()
+    _gui.run(host='0.0.0.0', port='8050', open_browser=False, debug=False)
