@@ -341,6 +341,7 @@ class MeasureSection:
         self.save_button_id = "save-data"
         self.plot_ready_store_id = "plot-ready"
         self.data = "Qsca"  # Default measure value
+        self.download_id = "download-data"
 
     def get_measure_dropdown(self) -> dcc.Dropdown:
         """
@@ -411,6 +412,7 @@ class MeasureSection:
         """
         return html.Div([
             dcc.Store(id=self.plot_ready_store_id, data=False),  # Track if plot is ready
+            dcc.Download(id=self.download_id),
             html.Div(
                 [self.get_measure_dropdown(), self.get_xaxis_dropdown(), self.get_plot_button()],
                 style={'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}
@@ -432,13 +434,48 @@ class MeasureSection:
         save_func : callable
             A function to save the data to a file when the "Save Data" button is clicked.
         """
+        def button_style(enabled: bool) -> tuple:
+            """
+            Helper function to generate button styles and states.
+
+            Parameters
+            ----------
+            enabled : bool
+                Whether the button should be enabled.
+
+            Returns
+            -------
+            tuple
+                A tuple containing (disabled, style) for the button.
+            """
+            if enabled:
+                return False, {'height': '36px', 'background-color': '#28a745', 'color': 'white'}  # Green
+            return True, {'height': '36px', 'background-color': 'grey', 'color': 'white'}  # Grey
+
         @self.app.callback(
             [Output("plot-image", "src"), Output(self.plot_ready_store_id, "data")],
             Input(self.plot_button_id, "n_clicks"),
             State(self.dropdown_id, "value"),
             State(self.xaxis_input_id, "value")
         )
-        def trigger_callback(n_clicks, measure, xaxis):
+        def trigger_callback(n_clicks: int, measure: str, xaxis: str) -> tuple:
+            """
+            Trigger the plot generation callback.
+
+            Parameters
+            ----------
+            n_clicks : int
+                Number of button clicks.
+            measure : str
+                Selected measure.
+            xaxis : str
+                Selected x-axis parameter.
+
+            Returns
+            -------
+            tuple
+                The plot source and a flag indicating plot readiness.
+            """
             if n_clicks > 0:
                 plot_src = callback_func(measure, xaxis)
                 return plot_src, True
@@ -448,32 +485,77 @@ class MeasureSection:
             [Output(self.save_button_id, "disabled"), Output(self.save_button_id, "style")],
             Input(self.plot_ready_store_id, "data")
         )
-        def update_save_button_style(plot_ready):
-            if plot_ready:
-                return False, {'height': '36px', 'background-color': '#28a745', 'color': 'white'}  # Enabled (green button)
-            return True, {'height': '36px', 'background-color': 'grey', 'color': 'white'}  # Disabled (grey button)
+        def update_save_button_style(plot_ready: bool) -> tuple:
+            """
+            Update the save button's style based on plot readiness.
+
+            Parameters
+            ----------
+            plot_ready : bool
+                Whether the plot is ready.
+
+            Returns
+            -------
+            tuple
+                Disabled state and style for the save button.
+            """
+            return button_style(plot_ready)
 
         @self.app.callback(
             [Output(self.plot_button_id, "disabled"), Output(self.plot_button_id, "style")],
             Input(self.xaxis_input_id, "value")
         )
-        def update_plot_button_style(xaxis_value):
-            if xaxis_value:
-                return False, {'height': '36px', 'background-color': '#28a745', 'color': 'white'}  # Enabled (green button)
-            return True, {'height': '36px', 'background-color': 'grey', 'color': 'white'}  # Disabled (grey button)
+        def update_plot_button_style(xaxis_value: str) -> tuple:
+            """
+            Update the plot button's style based on the x-axis selection.
+
+            Parameters
+            ----------
+            xaxis_value : str
+                The selected x-axis value.
+
+            Returns
+            -------
+            tuple
+                Disabled state and style for the plot button.
+            """
+            return button_style(bool(xaxis_value))
 
         @self.app.callback(
-            Output(self.filename_input_id, "value"),
+            Output(self.download_id, "data"),
             Input(self.save_button_id, "n_clicks"),
             State(self.plot_ready_store_id, "data"),
             State(self.filename_input_id, "value"),
             State(self.dropdown_id, "value"),
             State(self.xaxis_input_id, "value")
         )
-        def save_data(n_clicks, plot_ready, filename, measure, xaxis):
+        def save_data(n_clicks: int, plot_ready: bool, filename: str, measure: str, xaxis: str) -> dict:
+            """
+            Trigger file download when the save button is clicked.
+
+            Parameters
+            ----------
+            n_clicks : int
+                Number of times the save button has been clicked.
+            plot_ready : bool
+                Whether the plot is ready.
+            filename : str
+                The file name for the downloaded data.
+            measure : str
+                Selected measure.
+            xaxis : str
+                Selected x-axis parameter.
+
+            Returns
+            -------
+            dict or None
+                File content and metadata for download, or None if conditions are not met.
+            """
             if n_clicks > 0 and plot_ready:
-                save_func(filename, measure, xaxis)
-            return filename
+                dataframe = save_func(measure, xaxis)
+                content = dataframe.to_csv(index=False)
+                return {"content": content, "filename": filename, "type": "text/csv"}
+            return None
 
         @self.app.callback(
             Output(self.xaxis_input_id, "options"),
@@ -501,7 +583,25 @@ class MeasureSection:
             """
             options = []
 
+            # Recompute _xaxis_options for all sections dynamically
             for section in [self.scatterer_section, self.source_section, self.detector_section]:
-                options.extend([{"label": opt + f" ({size})", "value": opt} for opt, size in zip(section._xaxis_options, section._xaxis_options_length)])
+                section._xaxis_options = []  # Reset options
+                section._xaxis_options_length = []  # Reset lengths
+
+                # Parse inputs and update _xaxis_options
+                for key, value in section.data.items():
+                    try:
+                        parsed_value = parse_string_to_array_or_float(value)
+                        if isinstance(parsed_value, numpy.ndarray) and parsed_value.size > 1:
+                            section._xaxis_options.append(f"{section.name}:{key}")
+                            section._xaxis_options_length.append(parsed_value.size)
+                    except ValueError:
+                        pass  # Ignore invalid inputs
+
+                # Add the recomputed options to the x-axis dropdown
+                options.extend(
+                    [{"label": f"{opt} ({size})", "value": opt} for opt, size in zip(section._xaxis_options, section._xaxis_options_length)]
+                )
 
             return options
+

@@ -119,15 +119,18 @@ class OpticalSetupGUI:
         """
         self.measure_section.update_callbacks(self.create_plot, self.save_func)
 
-    def run(self):
+    def run(self, host: str = "0.0.0.0", port: str = "8050", open_browser: bool = False):
         """
         Run the Dash app.
 
         This method starts the Dash server and opens the application in the default web browser.
         """
-        # webbrowser.open("http://127.0.0.1:8050/", new=2)
-        # webbrowser.open("http://0.0.0.1:8050/", new=2)
-        self.app.run_server(debug=True, host="0.0.0.0", port=8050)
+        if open_browser:
+            webbrowser.open(f"http://{host}:{port}/", new=2)
+            self.app.run_server(debug=True)
+
+        else:
+            self.app.run_server(debug=True, host=host, port=port)
 
 
 if __name__ == '__main__':
