@@ -135,4 +135,4 @@ class OpticalSetupGUI:
 
 if __name__ == '__main__':
     _gui = OpticalSetupGUI()
-    _gui.run(host='0.0.0.0', port='8050', open_browser=False, debug=False)
+    _gui.run(host='0.0.0.0', port='8050', open_browser=False, debug=True)
