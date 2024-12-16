@@ -533,6 +533,8 @@ document.write(`
         <span class="s1">&#39;a2&#39;</span><span class="p">,</span> <span class="s1">&#39;a3&#39;</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">,</span> <span class="s1">&#39;b2&#39;</span><span class="p">,</span> <span class="s1">&#39;b3&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="s1">&#39;coupling&#39;</span><span class="p">,</span>
     <span class="p">]</span>
 
+    <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core_diameter&#39;</span><span class="p">,</span> <span class="s1">&#39;shell_thickness&#39;</span><span class="p">,</span> <span class="s1">&#39;core_property&#39;</span><span class="p">,</span> <span class="s1">&#39;shell_property&#39;</span><span class="p">,</span> <span class="s1">&#39;medium_property&#39;</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.</span>
