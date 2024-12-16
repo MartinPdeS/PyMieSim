@@ -34,6 +34,8 @@ class Cylinder(BaseScatterer):
         'b22', 'b13', 'b23', 'coupling',
     ]
 
+    attributes = ['diameter', 'property', 'medium_property']
+
     def __post_init__(self) -> None:
         """
         Constructs the keyword arguments necessary for the C++ binding interface, specifically tailored for spherical scatterers.

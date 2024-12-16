@@ -46,6 +46,8 @@ class CoreShell(BaseScatterer):
         'a2', 'a3', 'b1', 'b2', 'b3', 'g', 'coupling',
     ]
 
+    attributes = ['core_diameter', 'shell_thickness', 'core_property', 'shell_property', 'medium_property']
+
     def __post_init__(self) -> None:
         """
         Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.

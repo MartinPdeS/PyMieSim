@@ -12,6 +12,7 @@
 
 typedef std::complex<double> complex128;
 
+
 #define DEFINE_SCATTERER_FUNCTION(scatterer, SCATTERER, dtype, name) \
     pybind11::array_t<dtype> get_##scatterer##_##name() const { return get_scatterer_data<double, SCATTERER::Set>(scatterer##Set, &SCATTERER::Scatterer::get_##name); } \
     pybind11::array_t<dtype> get_##scatterer##_##name##_sequential() const { return get_scatterer_data_sequential<double, SCATTERER::Set>(scatterer##Set, &SCATTERER::Scatterer::get_##name); }
@@ -24,9 +25,6 @@ typedef std::complex<double> complex128;
     pybind11::array_t<double> get_##scatterer##_coupling() const { return get_scatterer_coupling<SCATTERER::Set>(scatterer##Set); } \
     pybind11::array_t<double> get_##scatterer##_coupling_sequential() const { return get_scatterer_coupling_sequential<SCATTERER::Set>(scatterer##Set); }
 
-
-
-#include <iostream>
 class Experiment
 {
     public:
@@ -117,6 +115,7 @@ class Experiment
 
             return _vector_to_numpy(output_array, {full_size});
         }
+
 
         template<typename ScattererSet>
         pybind11::array_t<double> get_scatterer_coupling(const ScattererSet& scattererSet) const {

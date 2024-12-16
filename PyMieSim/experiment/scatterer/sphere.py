@@ -38,6 +38,8 @@ class Sphere(BaseScatterer):
         'a2', 'a3', 'b1', 'b2', 'b3', 'g', 'coupling',
     ]
 
+    attributes = ['diameter', 'property', 'medium_property']
+
     def __post_init__(self) -> None:
         """
         Constructs the keyword arguments necessary for the C++ binding interface, specifically tailored for spherical scatterers.

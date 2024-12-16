@@ -5,7 +5,6 @@ from PyOptik.material.base_class import BaseMaterial
 from pydantic import field_validator
 from typing import List
 from pydantic.dataclasses import dataclass
-from dataclasses import fields
 from pydantic import ConfigDict
 from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
@@ -98,8 +97,7 @@ class BaseScatterer():
         list
             A list of visual representations for each property in the `mapping` dictionary that has been populated.
         """
-
-        for attr in [f.name for f in fields(self) if f.name != 'source']:
+        for attr in self.attributes:
             values = getattr(self, attr)
             if values is None:
                 continue
@@ -108,3 +106,4 @@ class BaseScatterer():
                 self.mapping["scatterer:" + attr] = PintArray(values.magnitude, dtype=values.units)
             else:
                 self.mapping["scatterer:" + attr] = [repr(m) for m in values]
+

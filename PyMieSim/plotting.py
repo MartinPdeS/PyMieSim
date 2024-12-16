@@ -109,18 +109,49 @@ def plot_with_std(dataframe: pd.DataFrame, ax, x: str, std: str, alpha: float = 
         plt.show()
 
 
-def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, show: bool = True, **kwargs) -> None:
+def plot_without_std(
+    dataframe: pd.DataFrame,
+    ax: plt.Axes,
+    x: str,
+    y: str = None,
+    show: bool = True,
+    log_scale_x: bool = False,
+    log_scale_y: bool = False,
+    **kwargs) -> plt.Axes:
     """
-    Plots the data without standard deviation shading. Handles real and imaginary parts if the data is complex.
+    Plots data without standard deviation shading, handling both real and imaginary parts for complex data.
 
     Parameters
     ----------
-    df_unstacked : pd.DataFrame
-        The DataFrame after unstacking.
+    dataframe : pd.DataFrame
+        The DataFrame containing the data to plot. If the DataFrame includes
+        multi-index columns, it will handle stacked levels for plotting.
     ax : plt.Axes
-        The matplotlib axis on which to plot.
+        The matplotlib axis on which to plot the data.
     x : str
-        The index level for the x-axis.
+        The column or index level to use as the x-axis.
+    y : str, optional
+        The column to use as the y-axis. If not specified, the first column is used.
+    show : bool, default=True
+        Whether to display the plot immediately.
+    log_scale_x : bool, default=False
+        Whether to apply logarithmic scaling to the x-axis.
+    log_scale_y : bool, default=False
+        Whether to apply logarithmic scaling to the y-axis.
+    **kwargs : dict, optional
+        Additional keyword arguments passed to `matplotlib.pyplot.plot`,
+        such as line styles, colors, markers, etc.
+
+    Returns
+    -------
+    plt.Axes
+        The matplotlib axis with the plotted data.
+
+    Notes
+    -----
+    - If the `dataframe` contains complex data, the function plots the real part by default.
+    - The `kwargs` can be used to customize the appearance of the plot.
+    - For multi-indexed DataFrames, groups are automatically handled and labeled.
     """
     if 'type' in dataframe.columns.names:
         dataframe = dataframe.stack('type', future_stack=True)
@@ -149,6 +180,12 @@ def plot_without_std(dataframe: pd.DataFrame, ax: plt.Axes, x: str, show: bool =
             label=label,
             **kwargs
         )
+
+    # Apply log scaling if specified
+    if log_scale_x:
+        ax.set_xscale('log')
+    if log_scale_y:
+        ax.set_yscale('log')
 
     ax.legend(title=" : ".join(groupby_levels))
 
