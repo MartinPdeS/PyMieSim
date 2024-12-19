@@ -21,3 +21,4 @@ jobs:
     uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@master
     with:
       python-version: "3.11"
+      package-name: "PyMieSim"
