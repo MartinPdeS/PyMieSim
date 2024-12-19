@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../../" >
+<html lang="en" data-content_root="../../../" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -13,8 +13,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
@@ -61,7 +61,7 @@
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
 
   
   
@@ -132,11 +132,9 @@
   
     
     
-      
     
-    
-    <img src="../../../_static/thumbnail.png" class="logo__image only-light" alt=""/>
-    <script>document.write(`<img src="../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>`);</script>
+    <img src="../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <script>document.write(`<img src="../../../_static/thumbnail.png" class="logo__image only-light" alt=""/>`);</script>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -176,7 +174,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../code/index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -234,20 +232,20 @@ document.write(`
 `);
 </script></div>
       
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -346,7 +344,7 @@ document.write(`
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../code/index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -391,20 +389,20 @@ document.write(`
 `);
 </script></div>
         
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -600,7 +598,7 @@ to download the full example code.</p>
 </div>
 <p>Defining the source</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span>
-    <span class="n">wavelength</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">950</span><span class="p">,</span> <span class="mi">1050</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Wavelengths ranging from 950 nm to 1050 nm</span>
+    <span class="n">wavelength</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">950</span><span class="p">,</span> <span class="mi">1050</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Wavelengths ranging from 950 nm to 1050 nm</span>
     <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Linear polarization angle in radians</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>  <span class="c1"># 1 milliwatt</span>
     <span class="n">NA</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">AU</span>  <span class="c1"># Numerical Aperture</span>
@@ -610,7 +608,7 @@ to download the full example code.</p>
 <p>Defining the scatterer distribution
 Here we look at cylinders with a set diameter, refractive index, and medium.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">Cylinder</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Diameters ranging from 100 nm to 8000 nm</span>
+    <span class="n">diameter</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">8000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># Diameters ranging from 100 nm to 8000 nm</span>
     <span class="nb">property</span><span class="o">=</span><span class="n">Material</span><span class="o">.</span><span class="n">BK7</span><span class="p">,</span>  <span class="c1"># Material of the cylinder</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive index of the surrounding medium</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span>
@@ -642,7 +640,7 @@ Visualizing how the coupling efficiency varies with the wavelength.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">dataframe</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;source:wavelength&quot;</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="s1">&#39;scatterer:diameter&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_cylinder_coupling_vs_wavelength_001.png" srcset="../../../_images/sphx_glr_cylinder_coupling_vs_wavelength_001.png" alt="cylinder coupling vs wavelength" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.515 seconds)</p>
+<img src="../../../_images/sphx_glr_cylinder_coupling_vs_wavelength_001.png" srcset="../../../_images/sphx_glr_cylinder_coupling_vs_wavelength_001.png" alt="cylinder coupling vs wavelength" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.533 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-cylinder-cylinder-coupling-vs-wavelength-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/cf17f92f8c29038f6476f09ee55c5e9a/cylinder_coupling_vs_wavelength.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cylinder_coupling_vs_wavelength.ipynb</span></code></a></p>

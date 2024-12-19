@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../../" >
+<html lang="en" data-content_root="../../../" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -13,8 +13,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
@@ -61,7 +61,7 @@
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
 
   
   
@@ -132,11 +132,9 @@
   
     
     
-      
     
-    
-    <img src="../../../_static/thumbnail.png" class="logo__image only-light" alt=""/>
-    <script>document.write(`<img src="../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>`);</script>
+    <img src="../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <script>document.write(`<img src="../../../_static/thumbnail.png" class="logo__image only-light" alt=""/>`);</script>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -176,7 +174,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../code/index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -234,20 +232,20 @@ document.write(`
 `);
 </script></div>
       
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -346,7 +344,7 @@ document.write(`
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../../code/index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -391,20 +389,20 @@ document.write(`
 `);
 </script></div>
         
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -621,7 +619,7 @@ to download the full example code.</p>
 <p>Defining the detector</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
     <span class="n">NA</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">]</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>  <span class="c1"># Numerical Apertures for the detector</span>
-    <span class="n">cache_NA</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
+    <span class="n">cache_NA</span><span class="o">=</span><a href="https://numpy.org/devdocs/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
     <span class="n">phi_offset</span><span class="o">=-</span><span class="mf">180.0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Phi offset in degrees</span>
     <span class="n">gamma_offset</span><span class="o">=</span><span class="mf">0.0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Gamma offset in degrees</span>
     <span class="n">sampling</span><span class="o">=</span><span class="mi">4000</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>  <span class="c1"># Number of sampling points</span>
@@ -645,7 +643,7 @@ Visualizing how the coupling efficiency varies with the core diameter.</p>
 <img src="../../../_images/sphx_glr_coreshell_coupling_vs_na_cache_001.png" srcset="../../../_images/sphx_glr_coreshell_coupling_vs_na_cache_001.png" alt="coreshell coupling vs na cache" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;dimensionless&#39;, ylabel=&#39;watt&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.582 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.593 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-experiment-coreshell-coreshell-coupling-vs-na-cache-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/621acc8601f3cf1acefaa170c5421bec/coreshell_coupling_vs_na_cache.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">coreshell_coupling_vs_na_cache.ipynb</span></code></a></p>

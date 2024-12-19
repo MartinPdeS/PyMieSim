@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="../../" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -13,8 +13,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
@@ -62,7 +62,7 @@
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
 
   
   
@@ -133,11 +133,9 @@
   
     
     
-      
     
-    
-    <img src="../../_static/thumbnail.png" class="logo__image only-light" alt=""/>
-    <script>document.write(`<img src="../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>`);</script>
+    <img src="../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <script>document.write(`<img src="../../_static/thumbnail.png" class="logo__image only-light" alt=""/>`);</script>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -177,7 +175,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -235,20 +233,20 @@ document.write(`
 `);
 </script></div>
       
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -347,7 +345,7 @@ document.write(`
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -392,20 +390,20 @@ document.write(`
 `);
 </script></div>
         
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -492,7 +490,7 @@ document.write(`
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Source Code Structures</a></li>
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API Reference</a></li>
     
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Single module</a></li>
@@ -711,7 +709,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 <dd class="field-even"><p>A 2D array representing the structured scalar field.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -969,7 +967,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 <dd class="field-even"><p>A 2D array representing the structured scalar field.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>

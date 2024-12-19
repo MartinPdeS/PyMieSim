@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="../../" >
+<html lang="en" data-content_root="../../" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -13,8 +13,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
@@ -62,7 +62,7 @@
   </head>
   
   
-  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
 
   
   
@@ -133,11 +133,9 @@
   
     
     
-      
     
-    
-    <img src="../../_static/thumbnail.png" class="logo__image only-light" alt=""/>
-    <script>document.write(`<img src="../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>`);</script>
+    <img src="../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <script>document.write(`<img src="../../_static/thumbnail.png" class="logo__image only-light" alt=""/>`);</script>
   
   
     <p class="title logo__title">PyMieSim</p>
@@ -177,7 +175,7 @@
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -235,20 +233,20 @@ document.write(`
 `);
 </script></div>
       
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+      
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -347,7 +345,7 @@ document.write(`
 
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
-    Source Code Structures
+    API Reference
   </a>
 </li>
 
@@ -392,20 +390,20 @@ document.write(`
 `);
 </script></div>
         
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script></div>
+        
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
-        <li class="nav-item">
-          
-          
-          
-          
-          
-          
-          
-          
-          <a href="https://github.com/MartinPdeS/PyMieSim" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
-            <span class="sr-only">GitHub</span></a>
-        </li>
         <li class="nav-item">
           
           
@@ -492,7 +490,7 @@ document.write(`
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Source Code Structures</a></li>
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">API Reference</a></li>
     
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Single module</a></li>
@@ -635,7 +633,7 @@ document.write(`
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(a_n\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -666,7 +664,7 @@ document.write(`
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(b_n\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -692,7 +690,7 @@ Compute <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(c_n\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -723,7 +721,7 @@ Compute <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(d_n\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -788,14 +786,14 @@ The computed far fields represent the scattered electric field components in the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phi</strong> (<em>numpy.ndarray</em>) – The phi angles in radians.</p></li>
-<li><p><strong>theta</strong> (<em>numpy.ndarray</em>) – The theta angles in radians.</p></li>
-<li><p><strong>r</strong> (<em>numpy.ndarray</em>) – The radial distances.</p></li>
+<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The phi angles in radians.</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The theta angles in radians.</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The radial distances.</p></li>
 <li><p><strong>Returns</strong> – Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Tuple</em>[<em>ndarray</em>, <em>ndarray</em>]</p>
+<dd class="field-even"><p><em>Tuple</em>[<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>ndarray</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1144,7 +1142,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(a_{1n}\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1167,7 +1165,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(a_{2n}\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1196,7 +1194,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(b_{1n}\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1219,7 +1217,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(b_{2n}\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1289,14 +1287,14 @@ The computed far fields represent the scattered electric field components in the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phi</strong> (<em>numpy.ndarray</em>) – The phi angles in radians.</p></li>
-<li><p><strong>theta</strong> (<em>numpy.ndarray</em>) – The theta angles in radians.</p></li>
-<li><p><strong>r</strong> (<em>numpy.ndarray</em>) – The radial distances.</p></li>
+<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The phi angles in radians.</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The theta angles in radians.</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The radial distances.</p></li>
 <li><p><strong>Returns</strong> – Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Tuple</em>[<em>ndarray</em>, <em>ndarray</em>]</p>
+<dd class="field-even"><p><em>Tuple</em>[<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>ndarray</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1642,7 +1640,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(a_n\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1666,7 +1664,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(b_n\)</span> coefficients.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1741,14 +1739,14 @@ The computed far fields represent the scattered electric field components in the
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>phi</strong> (<em>numpy.ndarray</em>) – The phi angles in radians.</p></li>
-<li><p><strong>theta</strong> (<em>numpy.ndarray</em>) – The theta angles in radians.</p></li>
-<li><p><strong>r</strong> (<em>numpy.ndarray</em>) – The radial distances.</p></li>
+<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The phi angles in radians.</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The theta angles in radians.</p></li>
+<li><p><strong>r</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>numpy.ndarray</em></a>) – The radial distances.</p></li>
 <li><p><strong>Returns</strong> – Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Tuple</em>[<em>ndarray</em>, <em>ndarray</em>]</p>
+<dd class="field-even"><p><em>Tuple</em>[<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)"><em>ndarray</em></a>]</p>
 </dd>
 </dl>
 </dd></dl>
