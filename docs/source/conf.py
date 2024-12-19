@@ -52,6 +52,7 @@ extensions = [
 ]
 
 autodoc_typehints = "description"
+autosummary_generate = True
 
 # Napoleon settings for docstrings
 napoleon_google_docstring = False
@@ -88,10 +89,11 @@ sphinx_gallery_conf = {
 
 
 autodoc_default_options = {
-    'members': False,
+    "members": True,
+    "undoc-members": False,
+    "show-inheritance": True,
+    "exclude-members": "__annotations__",
     'members-order': 'bysource',
-    'undoc-members': False,
-    'show-inheritance': True,
 }
 
 autosectionlabel_prefix_document = True
@@ -109,11 +111,21 @@ html_theme = "pydata_sphinx_theme"
 
 exclude_trees = []
 # default_role = "autolink"
+show_authors = True
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
 major, minor = version[:2]
 binder_branch = f"v{major}.{minor}.x"
+
+html_context = {
+    "github_url": "https://github.com", # or your GitHub Enterprise site
+    "github_user": package_name,
+    "github_repo": package_name,
+    "github_version": "master",
+    "doc_path": "doc/source",
+    "default_mode": "dark",
+}
 
 html_theme_options = dict()
 
@@ -122,11 +134,6 @@ html_theme_options["show_nav_level"] = 0
 
 html_theme_options.update({
     "icon_links": [
-        {
-            "name": "GitHub",
-            "url": f"https://github.com/MartinPdeS/{package_name}",
-            "icon": "fa-brands fa-github",
-        },
         {
             "name": "PyPI",
             "url": f"https://pypi.org/project/{package_name}/",
@@ -139,7 +146,7 @@ html_theme_options.update({
         },
     ],
     "navbar_align": "left",
-    "navbar_end": ["version-switcher", "navbar-icon-links"],
+    "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
     "show_prev_next": False,
     "show_version_warning_banner": True,
     # Footer
@@ -186,4 +193,7 @@ templates_path = ['_templates']
 html_css_files = ['default.css']
 epub_exclude_files = ['search.html']
 
-# -
+# Intersphinx to get NumPy, SciPy, and other targets
+intersphinx_mapping = {
+    'numpy': ('https://numpy.org/devdocs', None),
+}

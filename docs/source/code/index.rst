@@ -1,5 +1,5 @@
-Source Code Structures
-=======================
+API Reference
+=============
 
 This section provides an overview of the classes and components available in the PyMieSim package. Each component listed below inherits relevant attributes and methods, allowing users to build flexible and customizable scattering simulations.
 This overview serves as a guide for understanding how the package is organized and how its parts can be used to simulate different optical scattering scenarios.
