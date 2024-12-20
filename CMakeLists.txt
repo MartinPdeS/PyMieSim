@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-
 set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "Minimum OS X deployment version")
-
 project(PyMieSim LANGUAGES Fortran CXX)
 
 # CMake settings
@@ -11,24 +9,30 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 
+
 # Directories
 set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
 
+
 # Compiler and linker options
 add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
 
-# Find packages
+
+# Include directories
+include_directories("${PYMIESIM_CXX_DIR}")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    include_directories("/opt/homebrew/opt/libomp/include")   # for if compiler was installed through brew
+endif()
+
+
+# Find dependencies
 find_package(OpenMP REQUIRED)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 
-# Include directories
-include_directories(
-    "${PYMIESIM_CXX_DIR}"
-)
 
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -37,6 +41,9 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-fopenmp)
     add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lomp")
     message("AppleClang compiler detected")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("GNU compiler detected")
@@ -65,7 +72,17 @@ function(add_pymiesim_module name source)
     target_link_options(${name} PUBLIC ${STATIC_LINK_OPTIONS})
 endfunction()
 
-# Add modules
+# Function to add PyMieSim modules
+function(add_pymiesim_module name source)
+    pybind11_add_module(${name} MODULE "${PYMIESIM_CXX_DIR}/${source}")
+    set_target_properties(${name} PROPERTIES OUTPUT_NAME ${name})
+    target_link_libraries(${name} PRIVATE ZBessel OpenMP::OpenMP_CXX)
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+        target_link_options(${name} PRIVATE -lomp)
+    endif()
+endfunction()
+
+# Add PyMieSim modules
 add_pymiesim_module(DetectorInterface "single/interface/detector.cpp")
 add_pymiesim_module(SphereInterface "single/interface/sphere.cpp")
 add_pymiesim_module(CylinderInterface "single/interface/cylinder.cpp")
@@ -76,13 +93,3 @@ add_pymiesim_module(Fibonacci "single/interface/mesh.cpp")
 add_pymiesim_module(SetsInterface "experiment/interface/sets.cpp")
 add_pymiesim_module(ScattererPropertiesInterface "experiment/interface/scatterer_properties.cpp")
 add_pymiesim_module(Experiment "experiment/interface/experiment.cpp")
-
-# Special handling for Experiment module
-if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
-    add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_link_libraries(Experiment PRIVATE OpenMP::OpenMP_CXX)
-else()
-    target_link_libraries(Experiment PRIVATE "-Xpreprocessor -fopenmp")
-endif()
