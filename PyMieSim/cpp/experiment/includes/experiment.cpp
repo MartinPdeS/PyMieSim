@@ -71,7 +71,7 @@ class Experiment
             std::vector<dtype> output_array(total_iterations);
 
             #pragma omp parallel for
-            for (size_t flat_index = 0; flat_index < total_iterations; ++flat_index) {
+            for (size_t flat_index = 0; flat_index < total_iterations; ++flat_index) {git sta
                 // Map flat_index to i and j
                 size_t i = flat_index / scattererSet.total_combinations;
                 size_t j = flat_index % scattererSet.total_combinations;
