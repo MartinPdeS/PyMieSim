@@ -3,49 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation Versions</title>
-</head>
-<body>
-    <h1>Select Documentation Version</h1>
-    <p>If you are not redirected automatically, please choose a version below:</p>
-    <ul id="version-list">
-        <!-- JavaScript will populate this list dynamically -->
-    </ul>
-
+    <title>Redirecting to Latest Documentation</title>
     <script>
-        // URL for the version_switcher.json file on GitHub Pages
-        const versionJsonUrl = "https://martinpdes.github.io/PyMieSim/version_switcher.json";
-
         // Base URL for your GitHub Pages site
         const baseUrl = "https://martinpdes.github.io/PyMieSim";
 
-        // Fetch available versions from version_switcher.json
-        fetch(versionJsonUrl)
-            .then(response => response.json())
-            .then(versionsData => {
-                console.log("Available documentation versions:", versionsData);
+        // Redirect to the "latest" documentation immediately
+        const redirectToLatest = () => {
+            const latestUrl = `${baseUrl}/docs/latest/index.html`;
+            window.location.href = latestUrl;
+        };
 
-                // Automatically redirect if only one version is available
-                if (versionsData.length === 1) {
-                    window.location.href = `${baseUrl}/docs/${versionsData[0].version}/index.html`;
-                    return;  // Stop further processing if redirecting
-                }
-
-                // Display a list of all versions as links if more than one version
-                const versionList = document.getElementById('version-list');
-                versionsData.forEach(entry => {
-                    const listItem = document.createElement('li');
-                    const link = document.createElement('a');
-                    link.href = `${baseUrl}/docs/${entry.version}/index.html`;
-                    link.textContent = entry.name || `Version: ${entry.version}`;
-                    listItem.appendChild(link);
-                    versionList.appendChild(listItem);
-                });
-            })
-            .catch(error => {
-                console.error("Error loading versions from version_switcher.json:", error);
-                document.body.innerHTML += "<p>Could not load versions. Please try again later.</p>";
-            });
+        // Trigger the redirection
+        redirectToLatest();
     </script>
+</head>
+<body>
+    <noscript>
+        <p>JavaScript is required to redirect to the latest documentation. Please visit the following link manually:</p>
+        <a href="https://martinpdes.github.io/PyMieSim/docs/latest/index.html">Latest Documentation</a>
+    </noscript>
 </body>
 </html>
