@@ -44,8 +44,9 @@ class Photodiode(BaseDetector, Sequential):
     cache_NA: Quantity = (0.,) * AU
     sampling: Optional[Quantity] = (200,) * AU
     polarization_filter: Optional[Quantity | None] = (numpy.nan, ) * degree
+    mode_number: Tuple[str] = field(default_factory=lambda: ['NC00'], init=True)
+    rotation: Quantity = field(default=(0,) * degree, init=True)
 
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)
-    mode_number: Tuple[str] = field(default_factory=lambda: ['NC00'], init=False)
-    rotation: Quantity = field(default=(0,) * degree, init=False)
+
