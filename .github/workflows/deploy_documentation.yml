@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy documentation to github page
+name: Documentation
 
 on:
   push:
