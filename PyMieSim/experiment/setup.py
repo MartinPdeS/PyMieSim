@@ -10,7 +10,7 @@ from typing import Union, Optional, List
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
-from PyMieSim.plotting import plot_dataframe
+from PyMieSim.plotting import PyMieSimDataFrame
 
 
 @dataclass
@@ -337,8 +337,4 @@ class Setup:
             columns = pd.MultiIndex.from_product([measure], names=['data'])
 
         # Return an empty DataFrame with the generated MultiIndex
-        df = pd.DataFrame(columns=columns, index=row_index)
-
-        setattr(df.__class__, 'plot_data', plot_dataframe)
-
-        return df
+        return PyMieSimDataFrame(columns=columns, index=row_index)
