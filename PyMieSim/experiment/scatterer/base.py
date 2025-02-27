@@ -1,24 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyMieSim.experiment.utils import config_dict
 from PyOptik.material.base_class import BaseMaterial
 from pydantic import field_validator
-from typing import List
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
 from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
 from PyMieSim.binary.ScattererPropertiesInterface import CppScattererProperties, CppMediumProperties
-
 import numpy
-from PyMieSim.experiment.source.base import BaseSource
-
-config_dict = ConfigDict(
-    kw_only=True,
-    slots=True,
-    extra='forbid',
-    arbitrary_types_allowed=True
-)
 
 
 @dataclass(config=config_dict, kw_only=True)
@@ -28,9 +18,6 @@ class BaseScatterer():
     scatterer parameters for use in PyMieSim simulations.
 
     """
-    source: BaseSource
-    medium_property: List[BaseMaterial] | List[Quantity]
-
     mapping = None
     binding_kwargs = None
     binding = None
@@ -106,4 +93,3 @@ class BaseScatterer():
                 self.mapping["scatterer:" + attr] = PintArray(values.magnitude, dtype=values.units)
             else:
                 self.mapping["scatterer:" + attr] = [repr(m) for m in values]
-

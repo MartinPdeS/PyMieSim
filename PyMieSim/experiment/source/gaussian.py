@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from typing import Union
 from PyMieSim.single.source import Gaussian as _  # noqa:F401  # Necessary for pybind11 binding initialization
 from pydantic.dataclasses import dataclass
 from PyMieSim.units import Quantity
-from PyMieSim.experiment.source.base import BaseSource, config_dict
+from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.polarization import BasePolarization
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 
 @dataclass(config=config_dict)
-class Gaussian(BaseSource):
+class Gaussian(BaseSource, Sequential):
     """
     Represents a Gaussian light source with a specified numerical aperture and optical power.
 
@@ -27,6 +29,8 @@ class Gaussian(BaseSource):
     """
     NA: Quantity
     optical_power: Quantity
+    wavelength: Quantity
+    polarization: Union[BasePolarization, Quantity]
 
     def _generate_binding_kwargs(self) -> None:
         """

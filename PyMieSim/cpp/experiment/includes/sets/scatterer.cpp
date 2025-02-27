@@ -36,14 +36,9 @@ namespace SPHERE {
 
         void validate_sequential_data(const size_t expected_size) const {
             // Check each vector's size and throw an error with the specific vector name if sizes don't match
-            if (this->diameter.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. diameter has a different size than expected size.");
-
-            if (this->property.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. property has a different size than expected size.");
-
-            if (this->medium_property.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
+            this->check_size(this->diameter, expected_size, "diameter");
+            this->check_size(this->property, expected_size, "property");
+            this->check_size(this->medium_property, expected_size, "medium_property");
         }
 
         Scatterer get_scatterer_by_index_sequential(const size_t index, const SOURCE::BaseSource& source) const {

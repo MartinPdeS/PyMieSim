@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-from pydantic.dataclasses import dataclass
 from typing import List
+from pydantic.dataclasses import dataclass
 from PyMieSim.binary.SetsInterface import CppSphereSet
 from PyOptik.material.base_class import BaseMaterial
 from PyMieSim.units import Quantity
-from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
+from PyMieSim.experiment.scatterer.base import BaseScatterer
+from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 
 @dataclass(config=config_dict, kw_only=True)
-class Sphere(BaseScatterer):
+class Sphere(BaseScatterer, Sequential):
     """
     A data class that represents a spherical scatterer configuration used in PyMieSim simulations.
 
@@ -29,8 +30,10 @@ class Sphere(BaseScatterer):
     medium_property : List, optional
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
+    source: BaseSource
     diameter: Quantity
     property: List[BaseMaterial] | List[Quantity]
+    medium_property: List[BaseMaterial] | List[Quantity]
 
     available_measure_list = [
         'Qsca', 'Qext', 'Qabs', 'Qratio', 'Qforward', 'Qback', 'Qpr',

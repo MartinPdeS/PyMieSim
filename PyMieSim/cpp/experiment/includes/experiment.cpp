@@ -94,7 +94,6 @@ class Experiment
 
         template<typename dtype, typename ScattererSet, typename Function>
         pybind11::array_t<dtype> get_scatterer_data_sequential(const ScattererSet& scattererSet, Function function) const {
-
             std::vector<size_t> array_shape = {sourceSet.wavelength.size()};
 
             size_t full_size = sourceSet.wavelength.size();

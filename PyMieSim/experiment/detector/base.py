@@ -1,22 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import numpy as np
+import numpy
 from pint_pandas import PintArray
-from typing import Optional
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict, field_validator
+from pydantic import field_validator
 from PyMieSim.binary.SetsInterface import CppDetectorSet
-from PyMieSim.units import Quantity, radian, degree, AU
-from typing import Tuple
-
-# Configuration dictionary for the Pydantic dataclass
-config_dict = ConfigDict(
-    kw_only=True,
-    slots=True,
-    extra='forbid',
-    arbitrary_types_allowed=True
-)
+from PyMieSim.units import Quantity, radian, degree
+from PyMieSim.experiment.utils import config_dict
 
 
 @dataclass(config=config_dict)
@@ -64,22 +54,10 @@ class BaseDetector:
     _generate_mapping()
         Generates a mapping of scatterer properties to be used for visualization purposes.
     """
-
-    mode_number: Tuple[str]
-    NA: Quantity
-    gamma_offset: Quantity
-    phi_offset: Quantity
-    rotation: Quantity
-    mean_coupling: bool
-    coherent: bool
-    cache_NA: Quantity = (0.,) * AU
-    sampling: Optional[Quantity] = (200,) * AU
-    polarization_filter: Optional[Quantity | None] = (np.nan, ) * degree
-
     @field_validator('mode_number', mode='plain')
     def _validate_mode_number(cls, mode_number):
         """Ensure mode numbers are valid and belong to supported families."""
-        mode_number = np.atleast_1d(mode_number).astype(str)
+        mode_number = numpy.atleast_1d(mode_number).astype(str)
         for mode in mode_number:
             if mode[:2] not in ['LP', 'HG', 'LG', 'NC']:
                 raise ValueError(f'Invalid mode family {mode[:2]}. Must be one of: LP, HG, LG, NC')
@@ -98,16 +76,16 @@ class BaseDetector:
 
         Returns
         -------
-        np.ndarray
+        numpy.ndarray
             A NumPy array containing the validated and converted polarization filter value.
         """
         if value is None:
-            value = np.nan * degree
+            value = numpy.nan * degree
 
         if not isinstance(value, Quantity) or not value.check(degree):
             raise ValueError(f"{value} must have angle units (degree or radian).")
 
-        return np.atleast_1d(value).astype(float)
+        return numpy.atleast_1d(value).astype(float)
 
     @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='plain')
     def validate_angle_quantity(cls, value):
@@ -121,13 +99,13 @@ class BaseDetector:
 
         Returns
         -------
-        np.ndarray
+        numpy.ndarray
             A NumPy array containing the validated and converted angle value.
         """
         if not isinstance(value, Quantity) or not value.check(degree):
             raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
-        return np.atleast_1d(value)
+        return numpy.atleast_1d(value)
 
     @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
     def validate_au_quantity(cls, value):
@@ -141,14 +119,14 @@ class BaseDetector:
 
         Returns
         -------
-        np.ndarray
+        numpy.ndarray
             A NumPy array representing the validated input value.
         """
         if not isinstance(value, Quantity) or not value.check(degree):
             raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
 
-        if not isinstance(value, np.ndarray):
-            value = np.atleast_1d(value)
+        if not isinstance(value, numpy.ndarray):
+            value = numpy.atleast_1d(value)
 
         return value
 
@@ -164,14 +142,14 @@ class BaseDetector:
             "sampling": self.sampling,
             "NA": self.NA,
             "cache_NA": self.cache_NA,
-            "polarization_filter": self.polarization_filter.to(radian).magnitude if self.polarization_filter is not None else np.nan,
+            "polarization_filter": self.polarization_filter.to(radian).magnitude if self.polarization_filter is not None else numpy.nan,
             "phi_offset": self.phi_offset.to(radian).magnitude,
             "gamma_offset": self.gamma_offset.to(radian).magnitude,
             "rotation": self.rotation.to(radian).magnitude,
         }
 
         # Ensure all values are at least 1D arrays for compatibility
-        self.binding_kwargs = {k: np.atleast_1d(v) for k, v in self.binding_kwargs.items()}
+        self.binding_kwargs = {k: numpy.atleast_1d(v) for k, v in self.binding_kwargs.items()}
 
         # Additional detector settings
         self.binding_kwargs["mean_coupling"] = self.mean_coupling

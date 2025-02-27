@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dataclasses import field
+import numpy
 from pydantic.dataclasses import dataclass
 from typing import List, Union, Optional
-from PyMieSim.experiment.detector.base import BaseDetector, config_dict
-from PyMieSim.units import Quantity, degree
-
+from PyMieSim.experiment.detector.base import BaseDetector
+from PyMieSim.units import Quantity, degree, AU
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 @dataclass(config=config_dict)
-class CoherentMode(BaseDetector):
+class CoherentMode(BaseDetector, Sequential):
     """
     Coherent mode detector for Mie scattering simulations, handling coherent detection modes.
 
@@ -37,7 +37,14 @@ class CoherentMode(BaseDetector):
     coherent : bool
         Specifies if the detection is coherent. Defaults to True.
     """
-    rotation: Quantity = 900 * degree
     mode_number: Union[List[str], str]
+    NA: Quantity
+    gamma_offset: Quantity
+    phi_offset: Quantity
+    rotation: Quantity
+    mean_coupling: bool
+    coherent: bool = True
     mean_coupling: Optional[bool] = False
-    coherent: bool = field(default=True, init=False)
+    cache_NA: Quantity = (0.,) * AU
+    sampling: Optional[Quantity] = (200,) * AU
+    polarization_filter: Optional[Quantity | None] = (numpy.nan, ) * degree

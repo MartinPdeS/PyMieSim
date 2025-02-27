@@ -32,4 +32,9 @@ class BaseSet{
             return indices;
         }
 
+        template <typename Container>
+        void check_size(const Container& container, size_t expected_size, const std::string& name) const {
+            if (container.size() != expected_size)
+                throw std::runtime_error("Error: Vector size mismatch in sequential computation. " + name + " has size " + std::to_string(container.size()) + ", but wavelength size is " + std::to_string(expected_size) + ".");
+        }
 };

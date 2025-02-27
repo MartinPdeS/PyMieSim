@@ -6,11 +6,13 @@ from typing import List
 from PyMieSim.binary.SetsInterface import CppCoreShellSet
 from PyOptik.material.base_class import BaseMaterial
 from PyMieSim.units import Quantity
-from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
+from PyMieSim.experiment.scatterer.base import BaseScatterer
+from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 
 @dataclass(config=config_dict, kw_only=True)
-class CoreShell(BaseScatterer):
+class CoreShell(BaseScatterer, Sequential):
     """
     A data class representing a core-shell scatterer configuration used in PyMieSim simulations.
 
@@ -34,11 +36,12 @@ class CoreShell(BaseScatterer):
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
 
     """
+    source: BaseSource
     core_diameter: Quantity
     shell_thickness: Quantity
-
     core_property: List[BaseMaterial] | List[Quantity]
     shell_property: List[BaseMaterial] | List[Quantity]
+    medium_property: List[BaseMaterial] | List[Quantity]
 
     available_measure_list = [
         'Qsca', 'Qext', 'Qabs', 'Qratio', 'Qforward', 'Qback', 'Qpr',

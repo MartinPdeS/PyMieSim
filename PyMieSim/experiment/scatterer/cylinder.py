@@ -1,16 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pydantic.dataclasses import dataclass
 from typing import List
+from PyMieSim.units import Quantity
+from pydantic.dataclasses import dataclass
 from PyMieSim.binary.SetsInterface import CppCylinderSet
 from PyOptik.material.base_class import BaseMaterial
-from PyMieSim.units import Quantity
-from PyMieSim.experiment.scatterer.base import BaseScatterer, config_dict
+from PyMieSim.experiment.scatterer.base import BaseScatterer
+from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 
 @dataclass(config=config_dict, kw_only=True)
-class Cylinder(BaseScatterer):
+class Cylinder(BaseScatterer, Sequential):
     """
     Represents a cylindrical scatterer configuration for PyMieSim simulations.
 
@@ -25,8 +27,10 @@ class Cylinder(BaseScatterer):
     medium_property : List[BaseMaterial] | List[Quantity]
         BaseMaterial(s) defining the medium, used if `medium_index` is not provided.
     """
+    source: BaseSource
     diameter: Quantity
     property: List[BaseMaterial] | List[Quantity]
+    medium_property: List[BaseMaterial] | List[Quantity]
 
     available_measure_list = [
         'Qsca', 'Qext', 'Qabs', 'Csca', 'Cext', 'Cabs', 'a11',

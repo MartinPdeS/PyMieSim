@@ -69,26 +69,15 @@ namespace SOURCE
 
         void validate_sequential_data(const size_t expected_size) const {
             // Check each vector's size and throw an error with the specific vector name if sizes don't match
-            if (this->wavelength.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. wavelength has a different size than expected size.");
+            this->check_size(this->wavelength, expected_size, "wavelength");
+            this->check_size(this->jones_vector, expected_size, "jones_vector");
 
-            if (this->jones_vector.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. this->jones_vector has a different size than expected size.");
-
-
-            if (is_gaussian)
-            {
-                if (NA.size() != expected_size)
-                    throw std::runtime_error("Error: Vector size mismatch in sequential computation. NA has a different size than expected size.");
-
-                if (optical_power.size() != expected_size)
-                    throw std::runtime_error("Error: Vector size mismatch in sequential computation. optical_power has a different size than expected size.");
+            if (is_gaussian) {
+                this->check_size(this->NA, expected_size, "NA");
+                this->check_size(this->optical_power, expected_size, "optical_power");
             }
             else
-                if (amplitude.size() != expected_size)
-                    throw std::runtime_error("Error: Vector size mismatch in sequential computation. amplitude has a different size than expected size.");
-
-
+                this->check_size(this->amplitude, expected_size, "amplitude");
         }
 
 

@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from typing import Optional
+import numpy
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from PyMieSim.units import Quantity, degree
+from PyMieSim.units import Quantity, degree, AU
 from typing import Tuple
-from PyMieSim.experiment.detector.base import BaseDetector, config_dict
+from PyMieSim.experiment.detector.base import BaseDetector
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 
 @dataclass(config=config_dict)
-class Photodiode(BaseDetector):
+class Photodiode(BaseDetector, Sequential):
     """
     Photodiode detector tailored for Mie scattering simulations, extending BaseDetector with specific features.
 
@@ -34,6 +36,15 @@ class Photodiode(BaseDetector):
     mode_number : str
         Mode number of the detector. Defaults to 'NC00'.
     """
+    NA: Quantity
+    gamma_offset: Quantity
+    phi_offset: Quantity
+    mean_coupling: bool
+    coherent: bool
+    cache_NA: Quantity = (0.,) * AU
+    sampling: Optional[Quantity] = (200,) * AU
+    polarization_filter: Optional[Quantity | None] = (numpy.nan, ) * degree
+
     coherent: bool = field(default=False, init=False)
     mean_coupling: bool = field(default=False, init=False)
     mode_number: Tuple[str] = field(default_factory=lambda: ['NC00'], init=False)

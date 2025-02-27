@@ -56,7 +56,6 @@ namespace DETECTOR
             }
 
             Detector get_detector_by_index(size_t flat_index) const {
-
                 std::vector<size_t> indices = this->calculate_indices(flat_index);
 
                 Detector detector(
@@ -77,35 +76,20 @@ namespace DETECTOR
                 return detector;
             }
 
-        void validate_sequential_data(const size_t expected_size) const {
-            // Check each vector's size and throw an error with the specific vector name if sizes don't match
-            if (this->mode_numbers.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. mode_numbers has a different size than expected size.");
+            void validate_sequential_data(const size_t expected_size) const {
+                // Check each vector's size and throw an error with the specific vector name if sizes don't match
+                this->check_size(this->mode_numbers, expected_size, "mode_numbers");
+                this->check_size(this->sampling, expected_size, "sampling");
+                this->check_size(this->NA, expected_size, "NA");
+                this->check_size(this->cache_NA, expected_size, "cache_NA");
 
-            if (this->sampling.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. sampling has a different size than expected size.");
-
-            if (this->NA.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. NA has a different size than expected size.");
-
-            if (this->cache_NA.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. cache_NA has a different size than expected size.");
-
-            if (this->phi_offset.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. phi_offset has a different size than expected size.");
-
-            if (this->gamma_offset.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. gamma_offset has a different size than expected size.");
-
-            if (this->polarization_filter.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. polarization_filter has a different size than expected size.");
-
-            if (this->rotation.size() != expected_size)
-                throw std::runtime_error("Error: Vector size mismatch in sequential computation. rotation has a different size than expected size.");
-        }
+                this->check_size(this->phi_offset, expected_size, "phi_offset");
+                this->check_size(this->gamma_offset, expected_size, "gamma_offset");
+                this->check_size(this->polarization_filter, expected_size, "polarization_filter");
+                this->check_size(this->rotation, expected_size, "rotation");
+            }
 
             Detector get_detector_by_index_sequential(size_t index) const {
-
                 return Detector(
                     this->mode_numbers[index],
                     this->sampling[index],

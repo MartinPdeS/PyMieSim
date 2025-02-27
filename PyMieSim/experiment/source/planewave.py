@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+from typing import Union
 from PyMieSim.single.source import PlaneWave as _  # noqa:F401  # Necessary for pybind11 binding initialization
-
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from PyMieSim.units import Quantity
-from PyMieSim.experiment.source.base import BaseSource, config_dict
+from PyMieSim.experiment.source.base import BaseSource
+from PyMieSim.polarization import BasePolarization
+from PyMieSim.experiment.utils import config_dict, Sequential
 
 
 @dataclass(config=config_dict)
-class PlaneWave(BaseSource):
+class PlaneWave(BaseSource, Sequential):
     """
     Represents a Plane Wave light source with a specified amplitude.
 
@@ -27,6 +28,8 @@ class PlaneWave(BaseSource):
         The amplitude of the plane wave, in Watts.
     """
     amplitude: Quantity
+    wavelength: Quantity
+    polarization: Union[BasePolarization, Quantity]
 
     @field_validator('amplitude', mode='before')
     def _validate_array(cls, value):
