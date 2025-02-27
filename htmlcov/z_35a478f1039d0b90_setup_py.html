@@ -55,8 +55,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">102 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">99<span class="text"> run</span></button>
+            <span class="text">100 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">97<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">3<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">3<span class="text"> partial</span></button>
@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_4de2cfd94814ac66_base_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.4">coverage.py v7.6.4</a>,
-            created at 2025-02-27 13:15 +0000
+            created at 2025-02-27 13:59 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -94,7 +94,7 @@
     <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">scatterer</span> <span class="key">import</span> <span class="nam">Sphere</span><span class="op">,</span> <span class="nam">Cylinder</span><span class="op">,</span> <span class="nam">CoreShell</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">detector</span> <span class="key">import</span> <span class="nam">Photodiode</span><span class="op">,</span> <span class="nam">CoherentMode</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">experiment</span><span class="op">.</span><span class="nam">source</span> <span class="key">import</span> <span class="nam">Gaussian</span><span class="op">,</span> <span class="nam">PlaneWave</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">plotting</span> <span class="key">import</span> <span class="nam">plot_dataframe</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">plotting</span> <span class="key">import</span> <span class="nam">PyMieSimDataFrame</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t"><span class="op">@</span><span class="nam">dataclass</span>&nbsp;</span><span class="r"></span></p>
@@ -421,11 +421,7 @@
     <p class="run"><span class="n"><a id="t337" href="#t337">337</a></span><span class="t">            <span class="nam">columns</span> <span class="op">=</span> <span class="nam">pd</span><span class="op">.</span><span class="nam">MultiIndex</span><span class="op">.</span><span class="nam">from_product</span><span class="op">(</span><span class="op">[</span><span class="nam">measure</span><span class="op">]</span><span class="op">,</span> <span class="nam">names</span><span class="op">=</span><span class="op">[</span><span class="str">'data'</span><span class="op">]</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t338" href="#t338">338</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t339" href="#t339">339</a></span><span class="t">        <span class="com"># Return an empty DataFrame with the generated MultiIndex</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t340" href="#t340">340</a></span><span class="t">        <span class="nam">df</span> <span class="op">=</span> <span class="nam">pd</span><span class="op">.</span><span class="nam">DataFrame</span><span class="op">(</span><span class="nam">columns</span><span class="op">=</span><span class="nam">columns</span><span class="op">,</span> <span class="nam">index</span><span class="op">=</span><span class="nam">row_index</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t341" href="#t341">341</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t342" href="#t342">342</a></span><span class="t">        <span class="nam">setattr</span><span class="op">(</span><span class="nam">df</span><span class="op">.</span><span class="nam">__class__</span><span class="op">,</span> <span class="str">'plot_data'</span><span class="op">,</span> <span class="nam">plot_dataframe</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t343" href="#t343">343</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t344" href="#t344">344</a></span><span class="t">        <span class="key">return</span> <span class="nam">df</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t340" href="#t340">340</a></span><span class="t">        <span class="key">return</span> <span class="nam">PyMieSimDataFrame</span><span class="op">(</span><span class="nam">columns</span><span class="op">=</span><span class="nam">columns</span><span class="op">,</span> <span class="nam">index</span><span class="op">=</span><span class="nam">row_index</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -435,7 +431,7 @@
             <a class="nav" href="z_4de2cfd94814ac66_base_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.6.4">coverage.py v7.6.4</a>,
-            created at 2025-02-27 13:15 +0000
+            created at 2025-02-27 13:59 +0000
         </p>
     </div>
 </footer>
