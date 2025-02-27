@@ -48,7 +48,7 @@ experiment = Setup(scatterer=scatterer, source=source)
 comparison_measures = ['Qsca', 'Qext', 'Qabs', 'g', 'Qpr', 'Qback']
 
 # Compute PyMieSim scattering efficiency data
-pymiesim_dataframe = experiment.get(*comparison_measures).pint.dequantify().reset_index().pint.quantify()
+pymiesim_dataframe = experiment.get(*comparison_measures)
 
 pymiescatt_dataframe = pd.read_csv(validation_data_path / 'pymiescatt/example_shpere_1.csv')
 
@@ -60,7 +60,7 @@ with plt.style.context(mps):
 pymiescatt_dataframe.diameter *= 1e9
 
 pymiescatt_dataframe.plot(x='diameter', y=comparison_measures, ax=ax, linewidth=3)
-pymiesim_dataframe.plot(x='scatterer:diameter', ax=ax, color='black', linestyle='--', linewidth=1.5)
+pymiesim_dataframe.plot(x='scatterer:diameter', ax=ax, color='black', linestyle='--', linewidth=1.5, show=False)
 
 ax.set(
     xlabel=r'Diameter [$\mu$m]',

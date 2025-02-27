@@ -57,4 +57,4 @@ dataframe = experiment.get('coupling')
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the core diameter.
-dataframe.plot_data(x="detector:cache_NA")
+dataframe.plot(x="detector:cache_NA")

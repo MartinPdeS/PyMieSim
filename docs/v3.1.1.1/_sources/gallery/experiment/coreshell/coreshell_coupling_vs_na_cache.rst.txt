@@ -159,7 +159,7 @@ Visualizing how the coupling efficiency varies with the core diameter.
 
 .. code-block:: Python
 
-    dataframe.plot_data(x="detector:cache_NA")
+    dataframe.plot(x="detector:cache_NA")
 
 
 
@@ -181,7 +181,7 @@ Visualizing how the coupling efficiency varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.660 seconds)
+   **Total running time of the script:** (0 minutes 0.609 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py:

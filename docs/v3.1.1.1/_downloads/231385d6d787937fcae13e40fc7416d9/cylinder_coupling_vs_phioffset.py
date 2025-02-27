@@ -54,4 +54,4 @@ dataframe = experiment.get('coupling', scale_unit=True)
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with angular displacement.
-dataframe.plot_data(x="detector:phi_offset")
+dataframe.plot(x="detector:phi_offset")

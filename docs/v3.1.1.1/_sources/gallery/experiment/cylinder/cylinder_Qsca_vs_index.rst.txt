@@ -131,7 +131,7 @@ Visualizing how the Qsca varies with the refractive index of the cylinder.
 
 .. code-block:: Python
 
-    dataframe.plot_data(x="scatterer:property")
+    dataframe.plot(x="scatterer:property")
 
 
 
@@ -153,7 +153,7 @@ Visualizing how the Qsca varies with the refractive index of the cylinder.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.052 seconds)
+   **Total running time of the script:** (0 minutes 0.998 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_index.py:

@@ -42,4 +42,4 @@ dataframe = experiment.get('Qsca')
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with the cylinder diameter.
-dataframe.plot_data(x='scatterer:diameter')
+dataframe.plot(x='scatterer:diameter')

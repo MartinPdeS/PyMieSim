@@ -51,4 +51,4 @@ dataframe = experiment.get('coupling')
 
 # %%
 # Plotting the results
-dataframe.plot_data(x="detector:phi_offset")
+dataframe.plot(x="detector:phi_offset")

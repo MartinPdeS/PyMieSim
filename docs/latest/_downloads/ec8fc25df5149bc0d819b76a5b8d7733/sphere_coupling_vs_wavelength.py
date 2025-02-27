@@ -55,4 +55,4 @@ dataframe = experiment.get('coupling', scale_unit=True)
 
 # %%
 # Plotting the results
-dataframe.plot_data(x="source:wavelength", std='scatterer:diameter')
+dataframe.plot(x="source:wavelength", std='scatterer:diameter')

@@ -42,4 +42,4 @@ dataframe = experiment.get('Qsca', 'Qext')
 # %%
 # Plotting the results
 # Visualizing how the Qsca varies with the refractive index of the cylinder.
-dataframe.plot_data(x="scatterer:property")
+dataframe.plot(x="scatterer:property")

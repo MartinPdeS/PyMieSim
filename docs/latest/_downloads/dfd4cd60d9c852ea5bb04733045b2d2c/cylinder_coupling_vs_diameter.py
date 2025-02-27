@@ -53,4 +53,4 @@ dataframe = experiment.get('coupling')
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the cylinder diameter.
-dataframe.plot_data(x="scatterer:diameter")
+dataframe.plot(x="scatterer:diameter")

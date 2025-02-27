@@ -34,7 +34,7 @@ scatterer = experiment.scatterer.Sphere(
 # %%
 # Defining the detector to be employed.
 detector = experiment.detector.Photodiode(
-    NA=np.linspace(0.1, 1.9, 150) * AU,
+    NA=np.linspace(0.1, 1, 150) * AU,
     phi_offset=0 * degree,
     gamma_offset=[0, 10] * degree,
     polarization_filter=None,
@@ -51,7 +51,7 @@ dataframe = setup.get('coupling', drop_unique_level=True)
 
 # %%
 # Plotting the results
-dataframe.plot_data(x='detector:NA')
+dataframe.plot(x='detector:NA')
 
 single_source = single.Gaussian(
     wavelength=950 * nanometer,

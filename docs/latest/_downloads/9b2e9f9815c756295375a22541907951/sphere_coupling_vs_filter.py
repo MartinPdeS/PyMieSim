@@ -52,4 +52,4 @@ experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 # Measuring the properties
 dataframe = experiment.get('coupling')
 
-dataframe.plot_data(x='detector:polarization_filter', std='scatterer:diameter')
+dataframe.plot(x='detector:polarization_filter', std='scatterer:diameter')

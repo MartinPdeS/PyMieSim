@@ -40,4 +40,4 @@ dataframe = experiment.get('Qsca')
 
 # %%
 # Plotting the results
-dataframe.plot_data(x="scatterer:property")
+dataframe.plot(x="scatterer:property")

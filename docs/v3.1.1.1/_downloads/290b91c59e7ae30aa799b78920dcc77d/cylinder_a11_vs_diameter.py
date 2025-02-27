@@ -43,4 +43,4 @@ dataframe = experiment.get('a21')
 # %%
 # Plotting the results
 # Visualizing how the A1 scattering coefficient varies with the cylinder diameter.
-dataframe.plot_data(x='scatterer:diameter')
+dataframe.plot(x='scatterer:diameter')

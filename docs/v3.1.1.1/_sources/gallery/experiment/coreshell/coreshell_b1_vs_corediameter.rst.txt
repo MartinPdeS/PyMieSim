@@ -139,7 +139,7 @@ Visualizing how the B1 parameter varies with the core diameter.
 
 .. code-block:: Python
 
-    dataframe.plot_data(x="scatterer:core_diameter")
+    dataframe.plot(x="scatterer:core_diameter")
 
 
 
@@ -161,7 +161,7 @@ Visualizing how the B1 parameter varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.366 seconds)
+   **Total running time of the script:** (0 minutes 0.383 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_b1_vs_corediameter.py:

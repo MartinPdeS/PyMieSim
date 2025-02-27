@@ -155,7 +155,7 @@ Plotting the results
 
 .. code-block:: Python
 
-    dataframe.plot_data(x='scatterer:diameter')
+    dataframe.plot(x='scatterer:diameter')
 
 
 
@@ -177,7 +177,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.282 seconds)
+   **Total running time of the script:** (0 minutes 1.235 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coupling_vs_diameter.py:

@@ -134,7 +134,7 @@ Visualizing how the Qsca varies with wavelength for the given cylinder configura
 
 .. code-block:: Python
 
-    dataframe.plot_data(x='source:wavelength', std='scatterer:property')
+    dataframe.plot(x='source:wavelength', std='scatterer:property')
 
 
 
@@ -150,7 +150,7 @@ Visualizing how the Qsca varies with wavelength for the given cylinder configura
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.463 seconds)
+   **Total running time of the script:** (0 minutes 0.378 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_wavelength.py:

@@ -40,4 +40,4 @@ dataframe = experiment.get('Qsca', 'Qpr', scale_unit=True)
 
 # %%
 # Plotting the results
-dataframe.plot_data(x="source:wavelength")
+dataframe.plot(x="source:wavelength")

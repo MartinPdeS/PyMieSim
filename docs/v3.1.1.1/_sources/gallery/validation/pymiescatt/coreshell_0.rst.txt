@@ -85,7 +85,7 @@ Core-Shell Particles: 0
     comparison_measures = ['Qsca', 'Qext', 'Qabs', 'g', 'Qpr', 'Qback']
 
     # Simulate using PyMieSim
-    pymiesim_dataframe = experiment.get(*comparison_measures).pint.dequantify().reset_index().pint.quantify()
+    pymiesim_dataframe = experiment.get(*comparison_measures)
 
     pymiescatt_dataframe = pd.read_csv(validation_data_path / 'pymiescatt/example_coreshell_0.csv')
 
@@ -95,7 +95,7 @@ Core-Shell Particles: 0
 
 
     pymiescatt_dataframe.plot(x='core_diameter', y=comparison_measures, ax=ax, linewidth=3)
-    pymiesim_dataframe.plot(x='scatterer:core_diameter', ax=ax, color='black', linestyle='--', linewidth=1.5)
+    pymiesim_dataframe.plot(x='scatterer:core_diameter', ax=ax, color='black', linestyle='--', linewidth=1.5, show=False)
 
     ax.set(
         xlabel=r'Core Diameter [$\mu$m]',
@@ -108,7 +108,7 @@ Core-Shell Particles: 0
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.439 seconds)
+   **Total running time of the script:** (0 minutes 0.431 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_pymiescatt_coreshell_0.py:
