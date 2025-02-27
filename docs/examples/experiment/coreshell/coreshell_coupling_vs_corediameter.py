@@ -56,4 +56,4 @@ dataframe = experiment.get('coupling')
 # %%
 # Plotting the results
 # Visualizing how the coupling efficiency varies with the core diameter.
-dataframe.plot_data(x="scatterer:core_diameter")
+dataframe.plot(x="scatterer:core_diameter")
