@@ -57,7 +57,7 @@ class OpticalSetupGUI:
             measure=measure
         )
 
-        data.plot_data(x=xaxis)
+        data.plot(x=xaxis)
 
         buf = io.BytesIO()
         plt.savefig(buf, format='png')
