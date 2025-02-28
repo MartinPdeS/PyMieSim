@@ -16,7 +16,7 @@
 | PyMieSim/experiment/source/base.py             |       52 |        3 |       24 |        6 |     88% |20, 48->51, 61->64, 75, 77->exit, 92 |
 | PyMieSim/experiment/source/gaussian.py         |       15 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/source/planewave.py        |       21 |        0 |        2 |        1 |     96% |    37->40 |
-| PyMieSim/experiment/utils.py                   |       33 |        1 |       14 |        2 |     94% |52->56, 64 |
+| PyMieSim/experiment/utils.py                   |       34 |        1 |       14 |        2 |     94% |52->56, 64 |
 | PyMieSim/mesh.py                               |       94 |        8 |        8 |        2 |     90% |117, 129, 141, 153, 195->exit, 214->exit, 275-279 |
 | PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        87 |
 | PyMieSim/single/detector/base.py               |       77 |        1 |       10 |        1 |     98% |       227 |
@@ -32,7 +32,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1191** |   **37** |  **178** |   **25** | **95%** |           |
+|                                      **TOTAL** | **1192** |   **37** |  **178** |   **25** | **95%** |           |
 
 
 ## Setup coverage badge
