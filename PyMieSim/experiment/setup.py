@@ -11,7 +11,7 @@ from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.plotting import PyMieSimDataFrame
-
+import PyMieSim
 
 @dataclass
 class Setup:
@@ -54,7 +54,7 @@ class Setup:
 
         self.scatterer.source = self.source
 
-        self.binding = CppExperiment(debug_mode=False)
+        self.binding = CppExperiment(debug_mode=PyMieSim.debug_mode)
 
     def _bind_components(self):
         """Binds the experiment components to the CppExperiment instance."""
