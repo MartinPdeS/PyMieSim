@@ -54,7 +54,7 @@ class Setup:
 
         self.scatterer.source = self.source
 
-        self.binding = CppExperiment(debug_mode=True)
+        self.binding = CppExperiment(debug_mode=False)
 
     def _bind_components(self):
         """Binds the experiment components to the CppExperiment instance."""
