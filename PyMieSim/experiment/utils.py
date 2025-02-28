@@ -122,8 +122,11 @@ class Sequential:
         kwargs = broadcast_params(total_size=total_size, **kwargs)
 
         if source is not None:
-            return cls(source=source, **kwargs)
-        instance = cls(**kwargs)
+            instance = cls(source=source, **kwargs)
+        else:
+            instance = cls(**kwargs)
+
+        instance.is_sequential = True
 
         return instance
 
