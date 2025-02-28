@@ -74,6 +74,8 @@ def broadcast_params(total_size: Optional[int] = None, **kwargs: Union[T, List[T
 
 
 class Sequential:
+    is_sequential = False
+
     @classmethod
     def build_sequential(cls, total_size: Optional[int] = None, **kwargs) -> object:
         """
@@ -118,7 +120,10 @@ class Sequential:
         assert not is_material, "For the moment no Material can be defined material property for sequential computing, one should use refractive index property. See documentation online."
         source = kwargs.pop("source", None)
         kwargs = broadcast_params(total_size=total_size, **kwargs)
+
         if source is not None:
             return cls(source=source, **kwargs)
-        return cls(**kwargs)
+        instance = cls(**kwargs)
+
+        return instance
 

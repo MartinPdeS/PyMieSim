@@ -19,12 +19,9 @@ namespace SPHERE {
 
         Set() = default;
 
-        Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property)
-            : diameter(diameter), property(property), medium_property(medium_property)
-            {
-                update_shape();
-                total_combinations = get_vector_sigma(shape);
-            }
+        Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+            : BaseSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
+            {this->update_shape();}
 
         void update_shape() override {
             this->shape = {
@@ -32,6 +29,8 @@ namespace SPHERE {
                 property.size(),
                 medium_property.size()
             };
+
+            total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
         }
 
         void validate_sequential_data(const size_t expected_size) const {
@@ -77,12 +76,9 @@ namespace CYLINDER {
 
 
         Set() = default;
-        Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property)
-            : diameter(diameter), property(property), medium_property(medium_property)
-            {
-                update_shape();
-                total_combinations = get_vector_sigma(shape);
-            }
+        Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+            : BaseSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
+            {this->update_shape();}
 
         void update_shape() override {
             this->shape = {
@@ -90,6 +86,8 @@ namespace CYLINDER {
                 property.size(),
                 medium_property.size()
             };
+
+            total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
         }
 
         void validate_sequential_data(const size_t expected_size) const {
@@ -148,12 +146,10 @@ namespace CORESHELL {
             const std::vector<double>& shell_thickness,
             const ScattererProperties& core_property,
             const ScattererProperties& shell_property,
-            const MediumProperties& medium_property)
-            : core_diameter(core_diameter), shell_thickness(shell_thickness), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
-            {
-                update_shape();
-                total_combinations = get_vector_sigma(shape);
-            }
+            const MediumProperties& medium_property,
+            const bool is_sequential)
+            : BaseSet(is_sequential), core_diameter(core_diameter), shell_thickness(shell_thickness), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
+            {this->update_shape();}
 
         void update_shape() override {
             this->shape = {
@@ -163,6 +159,8 @@ namespace CORESHELL {
                 shell_property.size(),
                 medium_property.size()
             };
+
+            total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
         }
 
         Scatterer get_scatterer_by_index(const size_t flat_index, SOURCE::BaseSource& source) const {

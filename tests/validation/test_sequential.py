@@ -66,7 +66,7 @@ def sequential_detector():
 
     detector.mode_number = SIZE * ['NC:00']
 
-    detector.__post_init__()
+    detector._generate_binding()
 
     return detector
 

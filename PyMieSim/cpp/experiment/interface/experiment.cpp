@@ -26,7 +26,7 @@ PYBIND11_MODULE(Experiment, module) {
     module.doc() = "Interface for conducting Lorenz-Mie Theory (LMT) experiments within the PyMieSim package.";
 
     py::class_<Experiment>(module, "CppExperiment")
-        .def(py::init<>(), "Constructs an Experiment object.")
+        .def(py::init<bool>(), py::arg("debug_mode") = true, "Constructs an Experiment object.")
 
         // Setup methods
         .def("set_detector", &Experiment::set_detector, "Configures the detector for the experiment.")

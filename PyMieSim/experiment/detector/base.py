@@ -2,14 +2,11 @@
 # -*- coding: utf-8 -*-
 import numpy
 from pint_pandas import PintArray
-from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from PyMieSim.binary.SetsInterface import CppDetectorSet
 from PyMieSim.units import Quantity, radian, degree
-from PyMieSim.experiment.utils import config_dict
 
 
-@dataclass(config=config_dict)
 class BaseDetector:
     """
     A base class for defining detectors in Mie scattering simulations.
@@ -130,7 +127,7 @@ class BaseDetector:
 
         return value
 
-    def __post_init__(self) -> None:
+    def _generate_binding(self) -> None:
         """
         Initializes the C++ binding for the detector using the given simulation parameters. This ensures that the
         detector is correctly linked to the backend, enabling high-performance Mie scattering calculations.
@@ -146,6 +143,7 @@ class BaseDetector:
             "phi_offset": self.phi_offset.to(radian).magnitude,
             "gamma_offset": self.gamma_offset.to(radian).magnitude,
             "rotation": self.rotation.to(radian).magnitude,
+            "is_sequential": self.is_sequential
         }
 
         # Ensure all values are at least 1D arrays for compatibility

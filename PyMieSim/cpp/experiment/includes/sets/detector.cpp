@@ -4,7 +4,6 @@
 #include "experiment/includes/sets/base.cpp"
 #include "single/includes/detectors.cpp"
 
-
 using complex128 = std::complex<double>;
 
 namespace DETECTOR
@@ -34,12 +33,14 @@ namespace DETECTOR
                 const std::vector<double> &polarization_filter,
                 const std::vector<double> &rotation,
                 const bool &coherent,
-                const bool &mean_coupling)
-            : mode_numbers(mode_numbers), sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
+                const bool &mean_coupling,
+                const bool is_sequential
+            )
+            : BaseSet(is_sequential), mode_numbers(mode_numbers), sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
               {
-                update_shape();
-                total_combinations = get_vector_sigma(shape);
+                this->update_shape();
+                total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
               }
 
             void update_shape() override {

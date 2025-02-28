@@ -11,12 +11,14 @@ using complex128 = std::complex<double>;
 // Base class to reduce redundancy
 class BaseSet{
     public:
+        bool is_sequential;
         std::vector<size_t> shape;
         size_t current_index = 0;
         size_t total_combinations = 1;
         virtual void update_shape() {};
 
         BaseSet() = default;
+        BaseSet(bool is_sequential){this->is_sequential = is_sequential;}
         virtual ~BaseSet() = default;
 
         // Calculate the multi-dimensional indices for the current index

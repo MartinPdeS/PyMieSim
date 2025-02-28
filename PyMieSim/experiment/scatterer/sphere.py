@@ -43,7 +43,7 @@ class Sphere(BaseScatterer, Sequential):
 
     attributes = ['diameter', 'property', 'medium_property']
 
-    def __post_init__(self) -> None:
+    def _generate_binding(self):
         """
         Constructs the keyword arguments necessary for the C++ binding interface, specifically tailored for spherical scatterers.
         This includes processing material indices and organizing them into a structured dictionary for simulation interaction.
@@ -52,7 +52,7 @@ class Sphere(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(diameter=self.diameter)
+        self.binding_kwargs = dict(diameter=self.diameter, is_sequential=self.is_sequential)
 
         self._add_properties(name='medium', properties=self.medium_property)
 

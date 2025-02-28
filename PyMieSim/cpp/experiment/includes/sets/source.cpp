@@ -23,23 +23,25 @@ namespace SOURCE
         Set(const std::vector<double>& wavelength,
             const std::vector<std::vector<complex128>>& jones_vector,
             const std::vector<double>& NA,
-            const std::vector<double>& optical_power)
-            : wavelength(wavelength), jones_vector(jones_vector), NA(NA), optical_power(optical_power), is_gaussian(true)
+            const std::vector<double>& optical_power,
+            const bool is_sequential)
+            : BaseSet(is_sequential), wavelength(wavelength), jones_vector(jones_vector), NA(NA), optical_power(optical_power), is_gaussian(true)
         {
             shape = {wavelength.size(), jones_vector.size(), NA.size(), optical_power.size()};
 
-            total_combinations = get_vector_sigma(shape);
+            total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
 
         }
 
         // Constructor for Planewave source
         Set(const std::vector<double>& wavelength,
             const std::vector<std::vector<complex128>>& jones_vector,
-            const std::vector<double>& amplitude)
-            : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude), is_gaussian(false)
+            const std::vector<double>& amplitude,
+            const bool is_sequential)
+            : BaseSet(is_sequential), wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude), is_gaussian(false)
         {
             this->shape = {wavelength.size(), jones_vector.size(), amplitude.size()};
-            total_combinations = get_vector_sigma(shape);
+            total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
         }
 
         BaseSource get_source_by_index(const size_t flat_index) const {

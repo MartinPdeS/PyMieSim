@@ -42,5 +42,6 @@ class Gaussian(BaseSource, Sequential):
             wavelength=self.wavelength,
             jones_vector=self.polarization.element,
             NA=self.NA,
-            optical_power=self.optical_power
+            optical_power=self.optical_power,
+            is_sequential=self.is_sequential
         )

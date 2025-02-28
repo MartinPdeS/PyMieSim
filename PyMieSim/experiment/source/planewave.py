@@ -50,5 +50,6 @@ class PlaneWave(BaseSource, Sequential):
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
             jones_vector=self.polarization.element,
-            amplitude=self.amplitude
+            amplitude=self.amplitude,
+            is_sequential=self.is_sequential
         )

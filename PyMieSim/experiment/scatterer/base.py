@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyMieSim.experiment.utils import config_dict
 from PyOptik.material.base_class import BaseMaterial
 from pydantic import field_validator
-from pydantic.dataclasses import dataclass
 from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
 from PyMieSim.binary.ScattererPropertiesInterface import CppScattererProperties, CppMediumProperties
 import numpy
 
 
-@dataclass(config=config_dict, kw_only=True)
 class BaseScatterer():
     """
     Base class for scatterer objects.  This class handles the initialization and setup of

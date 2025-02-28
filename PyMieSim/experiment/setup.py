@@ -45,9 +45,16 @@ class Setup:
         """
         Initializes the experiment with necessary bindings.
         """
+        self.scatterer._generate_binding()
+
+        self.source._generate_binding()
+
+        if self.detector is not None:
+            self.detector._generate_binding()
+
         self.scatterer.source = self.source
 
-        self.binding = CppExperiment()
+        self.binding = CppExperiment(debug_mode=False)
 
     def _bind_components(self):
         """Binds the experiment components to the CppExperiment instance."""

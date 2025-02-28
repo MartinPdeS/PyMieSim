@@ -1,24 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import numpy
-from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 import pint_pandas
 from dataclasses import fields
 from PyMieSim.polarization import BasePolarization, Linear
 from PyMieSim.binary.SetsInterface import CppSourceSet
 from PyMieSim.units import Quantity, meter, watt, AU, degree
-from PyMieSim.experiment.utils import config_dict
 
 
-
-@dataclass(config=config_dict)
 class BaseSource:
     """
     Base class for light sources in PyMieSim experiments.
     """
-
-    def __post_init__(self):
+    def _generate_binding(self):
         self.mapping = {}
 
         if not isinstance(self.polarization, BasePolarization):
@@ -90,7 +85,6 @@ class BaseSource:
         Returns:
             list: A list of visual representations for each property in the `mapping` dictionary that has been populated.
         """
-
         for attr in [f.name for f in fields(self) if f.name != 'source']:
             values = getattr(self, attr)
 

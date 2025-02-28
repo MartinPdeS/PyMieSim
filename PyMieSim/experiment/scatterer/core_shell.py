@@ -51,7 +51,7 @@ class CoreShell(BaseScatterer, Sequential):
 
     attributes = ['core_diameter', 'shell_thickness', 'core_property', 'shell_property', 'medium_property']
 
-    def __post_init__(self) -> None:
+    def _generate_binding(self) -> None:
         """
         Assembles the keyword arguments necessary for C++ binding, tailored for core-shell scatterers.
         Prepares structured data from scatterer properties for efficient simulation integration.
@@ -60,7 +60,11 @@ class CoreShell(BaseScatterer, Sequential):
         """
         self.mapping = {}
 
-        self.binding_kwargs = dict(core_diameter=self.core_diameter, shell_thickness=self.shell_thickness)
+        self.binding_kwargs = dict(
+            core_diameter=self.core_diameter,
+            shell_thickness=self.shell_thickness,
+            is_sequential=self.is_sequential
+        )
 
         self._add_properties(name='medium', properties=self.medium_property)
 
