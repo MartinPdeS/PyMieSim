@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from unittest.mock import patch
 import numpy as np
-import matplotlib.pyplot as plt
 
 from PyMieSim.experiment.detector import CoherentMode
 from PyMieSim.experiment.scatterer import Sphere
@@ -40,8 +38,7 @@ sources = [gaussian_source, planewave_source]
 @pytest.mark.parametrize('source', sources, ids=[f'Source:{m.__class__.__name__}' for m in sources])
 @pytest.mark.parametrize('property', properties, ids=[f'Property:{m}' for m in properties])
 @pytest.mark.parametrize('measure', measures)
-@patch('matplotlib.pyplot.show')
-def test_get_measure(mock_show, source, measure, property, medium_property):
+def test_get_measure(source, measure, property, medium_property):
     # Configure the spherical scatterer
     scatterer = Sphere(
         diameter=np.linspace(400, 1400, 10) * nanometer,
@@ -54,9 +51,9 @@ def test_get_measure(mock_show, source, measure, property, medium_property):
     detector = CoherentMode(
         mode_number='LP01',
         rotation=0 * degree,
-        NA=0.2 * AU,
+        NA=[0.1] * AU,
         polarization_filter=None,
-        gamma_offset=0 * degree,
+        gamma_offset=[0, 1] * degree,
         phi_offset=0 * degree,
         sampling=100 * AU
     )
@@ -64,12 +61,8 @@ def test_get_measure(mock_show, source, measure, property, medium_property):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    dataframe = experiment.get(measure, drop_unique_level=False, scale_unit=True)
-
-    dataframe.plot(x='source:wavelength')
-
-    plt.close()
-
+    data = experiment.get(measure, drop_unique_level=True, scale_unit=True)
+    data.plot(x='source:wavelength', std='scatterer:diameter', show=True)
     experiment.get(measure, drop_unique_level=False, scale_unit=True, as_numpy=True)
 
 

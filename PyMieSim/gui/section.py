@@ -1,6 +1,6 @@
 from dash import html, dcc, State, Input, Output
 from PyMieSim.units import nanometer, degree, milliwatt
-from PyMieSim.gui_helper import parse_string_to_array_or_float
+from PyMieSim.gui.helper import parse_string_to_array_or_float
 import numpy
 
 length_units = nanometer

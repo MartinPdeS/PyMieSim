@@ -12,10 +12,12 @@ using complex128 = std::complex<double>;
 class BaseSet{
     public:
         bool is_sequential;
-        std::vector<size_t> shape;
+        std::vector<size_t> shape = {1};
         size_t current_index = 0;
         size_t total_combinations = 1;
+        bool is_empty = true;
         virtual void update_shape() {};
+
 
         BaseSet() = default;
         BaseSet(bool is_sequential){this->is_sequential = is_sequential;}

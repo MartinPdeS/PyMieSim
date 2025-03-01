@@ -10,6 +10,7 @@
 #include "utils/numpy_interface.cpp"
 #include "experiment/includes/scatterer_properties.cpp"
 #include "experiment/includes/sets.cpp"
+#include <iostream>
 
 typedef std::complex<double> complex128;
 
@@ -50,16 +51,17 @@ class Experiment
         SPHERE::Set sphereSet;
         CYLINDER::Set cylinderSet;
         CORESHELL::Set coreshellSet;
-        DETECTOR::Set detectorSet;
-        SOURCE::Set sourceSet;
+        DETECTOR::Set detector_set;
+        SOURCE::Set source_set;
 
-        Experiment(bool debug_mode = true) { this->debug_mode = debug_mode; }
+        explicit Experiment(bool debug_mode = true) : debug_mode(debug_mode) {}
 
+        // Setter methods
         void set_sphere(SPHERE::Set& set) { sphereSet = set; }
         void set_cylinder(CYLINDER::Set& set) { cylinderSet = set; }
         void set_coreshell(CORESHELL::Set& set) { coreshellSet = set; }
-        void set_source(SOURCE::Set &set) { sourceSet = set; }
-        void set_detector(DETECTOR::Set &set) { detectorSet = set; }
+        void set_source(SOURCE::Set &set) { source_set = set; }
+        void set_detector(DETECTOR::Set &set) { detector_set = set; }
 
         // Helper method for debugging without iostream.
         // It prints the given message only if debug_mode is true.
@@ -75,51 +77,70 @@ class Experiment
         void debug_print_state() const {
             if (!debug_mode) return;
             debug_printf("----- Experiment Debug Info -----\n");
-            debug_printf("SourceSet total combinations: %zu\n", sourceSet.total_combinations);
+            debug_printf("SourceSet total combinations: %zu\n", source_set.total_combinations);
             debug_printf("SphereSet total combinations: %zu\n", sphereSet.total_combinations);
             debug_printf("CylinderSet total combinations: %zu\n", cylinderSet.total_combinations);
             debug_printf("CoreshellSet total combinations: %zu\n", coreshellSet.total_combinations);
-            debug_printf("DetectorSet total combinations: %zu\n", detectorSet.total_combinations);
+            debug_printf("DetectorSet total combinations: %zu\n", detector_set.total_combinations);
             debug_printf("SourceSet shape: ");
-            for (size_t dim : sourceSet.shape) {
+            for (size_t dim : source_set.shape) {
                 debug_printf("%zu ", dim);
             }
             debug_printf("\n---------------------------------\n");
         }
 
+        // Flattens a multi-index into a single index.
         template <typename... MultiIndexVectors>
-        static size_t flatten_multi_index(const std::vector<size_t>& dimensions, const MultiIndexVectors&... multi_indices) {
+        static size_t flatten_multi_index(const std::vector<size_t>& dimensions,const MultiIndexVectors&... multi_indices) {
             std::vector<size_t> multi_index = concatenate_vector(multi_indices...);
             size_t flatten_index = 0;
             size_t stride = 1;
-            const size_t* multi_index_ptr = multi_index.data();
-            const size_t* dimensions_ptr = dimensions.data();
-            for (int i = dimensions.size() - 1; i >= 0; --i) {
-                flatten_index += multi_index_ptr[i] * stride;
-                stride *= dimensions_ptr[i];
+            for (int i = static_cast<int>(dimensions.size()) - 1; i >= 0; --i) {
+                flatten_index += multi_index[i] * stride;
+                stride *= dimensions[i];
             }
             return flatten_index;
         }
 
         template<typename dtype, typename ScattererSet, typename Function>
-        pybind11::array_t<dtype> get_scatterer_data(const ScattererSet& scattererSet, Function function) const {
+        pybind11::array_t<dtype> get_scatterer_data(const ScattererSet& scatterer_set, Function function) const {
 
             if (debug_mode)
                 this->debug_print_state();
 
-            std::vector<size_t> array_shape = concatenate_vector(sourceSet.shape, scattererSet.shape);
-            size_t total_iterations = sourceSet.total_combinations * scattererSet.total_combinations;
+            std::vector<size_t> array_shape;
+            size_t total_iterations;
+
+            if (detector_set.is_empty) {
+                array_shape = concatenate_vector(source_set.shape, scatterer_set.shape);
+                total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
+
+            }
+            else {
+                array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
+                total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
+            }
+
             debug_printf("get_scatterer_data: total_iterations = %zu\n", total_iterations);
 
             std::vector<dtype> output_array(total_iterations);
 
+            size_t idx;
             #pragma omp parallel for
             for (size_t flat_index = 0; flat_index < total_iterations; ++flat_index) {
-                size_t i = flat_index / scattererSet.total_combinations;
-                size_t j = flat_index % scattererSet.total_combinations;
-                SOURCE::BaseSource source = sourceSet.get_source_by_index(i);
-                auto scatterer = scattererSet.get_scatterer_by_index(j, source);
-                size_t idx = flatten_multi_index(array_shape, source.indices, scatterer.indices);
+                size_t i = flat_index / scatterer_set.total_combinations;
+                size_t j = flat_index % scatterer_set.total_combinations;
+                size_t k = flat_index % detector_set.total_combinations;
+                SOURCE::BaseSource source = source_set.get_source_by_index(i);
+                auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
+
+                if (detector_set.is_empty)
+                    idx = flatten_multi_index(array_shape, source.indices, scatterer.indices);
+                else {
+                    DETECTOR::Detector detector = detector_set.get_detector_by_index(k);
+                    idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
+                }
+
                 dtype value = (scatterer.*function)();
                 output_array[idx] = value;
             }
@@ -129,23 +150,23 @@ class Experiment
         }
 
         template<typename dtype, typename ScattererSet, typename Function>
-        pybind11::array_t<dtype> get_scatterer_data_sequential(const ScattererSet& scattererSet, Function function) const {
+        pybind11::array_t<dtype> get_scatterer_data_sequential(const ScattererSet& scatterer_set, Function function) const {
 
             if (debug_mode)
                 this->debug_print_state();
 
-            std::vector<size_t> array_shape = {sourceSet.wavelength.size()};
-            size_t full_size = sourceSet.wavelength.size();
-            scattererSet.validate_sequential_data(full_size);
-            sourceSet.validate_sequential_data(full_size);
+            std::vector<size_t> array_shape = {source_set.wavelength.size()};
+            size_t full_size = source_set.wavelength.size();
+            scatterer_set.validate_sequential_data(full_size);
+            source_set.validate_sequential_data(full_size);
             debug_printf("get_scatterer_data_sequential: full_size = %zu\n", full_size);
 
             std::vector<dtype> output_array(full_size);
 
             #pragma omp parallel for
             for (size_t idx = 0; idx < full_size; ++idx) {
-                SOURCE::BaseSource source = sourceSet.get_source_by_index_sequential(idx);
-                auto scatterer = scattererSet.get_scatterer_by_index_sequential(idx, source);
+                SOURCE::BaseSource source = source_set.get_source_by_index_sequential(idx);
+                auto scatterer = scatterer_set.get_scatterer_by_index_sequential(idx, source);
                 output_array[idx] = (scatterer.*function)();
             }
             debug_printf("get_scatterer_data_sequential: finished computation\n");
@@ -153,25 +174,25 @@ class Experiment
         }
 
         template<typename ScattererSet>
-        pybind11::array_t<double> get_scatterer_coupling(const ScattererSet& scattererSet) const {
+        pybind11::array_t<double> get_scatterer_coupling(const ScattererSet& scatterer_set) const {
 
             if (debug_mode)
                 this->debug_print_state();
 
-            std::vector<size_t> array_shape = concatenate_vector(sourceSet.shape, scattererSet.shape, detectorSet.shape);
-            size_t total_iterations = sourceSet.total_combinations * scattererSet.total_combinations * detectorSet.total_combinations;
+            std::vector<size_t> array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
+            size_t total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
             debug_printf("get_scatterer_coupling: total_iterations = %zu\n", total_iterations);
 
             std::vector<double> output_array(total_iterations);
 
             #pragma omp parallel for
             for (size_t idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
-                size_t i = idx_flat / (scattererSet.total_combinations * detectorSet.total_combinations);
-                size_t j = (idx_flat / detectorSet.total_combinations) % scattererSet.total_combinations;
-                size_t k = idx_flat % detectorSet.total_combinations;
-                SOURCE::BaseSource source = sourceSet.get_source_by_index(i);
-                auto scatterer = scattererSet.get_scatterer_by_index(j, source);
-                DETECTOR::Detector detector = detectorSet.get_detector_by_index(k);
+                size_t i = idx_flat / (scatterer_set.total_combinations * detector_set.total_combinations);
+                size_t j = (idx_flat / detector_set.total_combinations) % scatterer_set.total_combinations;
+                size_t k = idx_flat % detector_set.total_combinations;
+                SOURCE::BaseSource source = source_set.get_source_by_index(i);
+                auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
+                DETECTOR::Detector detector = detector_set.get_detector_by_index(k);
                 size_t idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
                 output_array[idx] = detector.get_coupling(scatterer);
             }
@@ -180,25 +201,25 @@ class Experiment
         }
 
         template<typename ScattererSet>
-        pybind11::array_t<double> get_scatterer_coupling_sequential(const ScattererSet& scattererSet) const {
+        pybind11::array_t<double> get_scatterer_coupling_sequential(const ScattererSet& scatterer_set) const {
 
             if (debug_mode)
                 this->debug_print_state();
 
-            std::vector<size_t> array_shape = {sourceSet.wavelength.size()};
-            size_t full_size = sourceSet.wavelength.size();
-            scattererSet.validate_sequential_data(full_size);
-            sourceSet.validate_sequential_data(full_size);
-            detectorSet.validate_sequential_data(full_size);
+            std::vector<size_t> array_shape = {source_set.wavelength.size()};
+            size_t full_size = source_set.wavelength.size();
+            scatterer_set.validate_sequential_data(full_size);
+            source_set.validate_sequential_data(full_size);
+            detector_set.validate_sequential_data(full_size);
             debug_printf("get_scatterer_coupling_sequential: full_size = %zu\n", full_size);
 
             std::vector<double> output_array(full_size);
 
             #pragma omp parallel for
             for (size_t idx = 0; idx < full_size; ++idx) {
-                SOURCE::BaseSource source = sourceSet.get_source_by_index_sequential(idx);
-                auto scatterer = scattererSet.get_scatterer_by_index_sequential(idx, source);
-                DETECTOR::Detector detector = detectorSet.get_detector_by_index_sequential(idx);
+                SOURCE::BaseSource source = source_set.get_source_by_index_sequential(idx);
+                auto scatterer = scatterer_set.get_scatterer_by_index_sequential(idx, source);
+                DETECTOR::Detector detector = detector_set.get_detector_by_index_sequential(idx);
                 output_array[idx] = detector.get_coupling(scatterer);
             }
             debug_printf("get_scatterer_coupling_sequential: finished computation\n");

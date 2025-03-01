@@ -1,5 +1,5 @@
 
-from PyMieSim._gui import OpticalSetupGUI
+from PyMieSim.gui.interface import OpticalSetupGUI
 
 
 if __name__ == '__main__':

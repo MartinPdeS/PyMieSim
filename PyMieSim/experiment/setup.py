@@ -10,7 +10,7 @@ from typing import Union, Optional, List
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
 from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
-from PyMieSim.plotting import PyMieSimDataFrame
+from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
 import PyMieSim
 
 @dataclass
@@ -119,6 +119,9 @@ class Setup:
             A DataFrame containing the computed measures with optional units and simplified MultiIndex, or a NumPy array if `as_numpy` is set to True.
         """
         measures = set(numpy.atleast_1d(measures))
+
+        if 'coupling' in measures:
+            assert self.detector is not None, "To compute the coupling power the detector has to be provided to Setup class"
 
         if as_numpy:
             return self._get_measure_array(measures)

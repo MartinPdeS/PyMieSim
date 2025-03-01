@@ -39,8 +39,8 @@ namespace DETECTOR
             : BaseSet(is_sequential), mode_numbers(mode_numbers), sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset),
               polarization_filter(polarization_filter), rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
               {
+                this->is_empty = false;
                 this->update_shape();
-                total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
               }
 
             void update_shape() override {
@@ -54,6 +54,7 @@ namespace DETECTOR
                     polarization_filter.size(),
                     rotation.size()
                 };
+                total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
             }
 
             Detector get_detector_by_index(size_t flat_index) const {

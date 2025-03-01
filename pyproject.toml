@@ -24,40 +24,39 @@ local_scheme = "no-local-version"
 name = "PyMieSim"
 dynamic = ["version"]
 description = "A package for light scattering computation."
-license = {file = "LICENSE"}
-# documentation = 'https://martinpdes.github.io/PyMieSim/'
-# platforms = ['unix', 'linux', 'osx']
+license = { file = "LICENSE" }
 readme = "README.rst"
-# url = 'https://github.com/MartinPdeS/PyMieSim'
+urls = {"Documentation" = "https://martinpdes.github.io/PyMieSim/", "Repository" = "https://github.com/MartinPdeS/PyMieSim"}
 requires-python = ">=3.10"
-authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
-classifiers = [
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.10',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: Implementation :: CPython',
-    'Development Status :: 5 - Production/Stable',
-    'Intended Audience :: Science/Research',
-    'Intended Audience :: Developers',
-    'Topic :: Scientific/Engineering :: Physics',
-    'Topic :: Scientific/Engineering :: Mathematics',
-    'Topic :: Scientific/Engineering :: Visualization',
-    'Topic :: Software Development :: Libraries :: Python Modules',
-    'License :: OSI Approved :: MIT License',
-    'Operating System :: OS Independent',
-    'Framework :: Jupyter',
-    'Framework :: Sphinx'
+authors = [
+    { name = "Martin Poinsinet de Sivry-Houle", email = "martin.poinsinet.de.sivry@gmail.com" }
 ]
-
+classifiers = [
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: Jupyter",
+    "Framework :: Sphinx"
+]
 
 dependencies = [
     "setuptools_scm[toml] ~=8.0",
     "flexparser <0.5",  # This is due to a dataclass inheritance problem coming from the pint package
     "numpy >=1.26,<3.0",
     "pydantic >=2.9.2,<2.11.0",
-    'pint-pandas ~=0.6',
+    "pint-pandas ~=0.6",
     "PyOptik ~=1.8",
     "tabulate ~=0.9",
     "dash"
@@ -69,25 +68,22 @@ keywords = [
     "phase function", "efficiency", "rayleigh", "backscattering"
 ]
 
-
 [project.optional-dependencies]
 testing = [
     "pytest>=0.6",
     "pytest-cov>=2.0",
-    "pytest-json-report ==1.5.0",
+    "pytest-json-report==1.5.0",
     "coverage==7.6.12"
 ]
-
 documentation = [
-    "numpydoc ==1.8.0",
-    "sphinx >=5.1.1",
-    "sphinx-rtd-theme ==3.0.2",
-    "sphinx-gallery ==0.19.0",
-    "pydata-sphinx-theme ==0.16.1",
+    "numpydoc==1.8.0",
+    "sphinx>=5.1.1",
+    "sphinx-rtd-theme==3.0.2",
+    "sphinx-gallery==0.19.0",
+    "pydata-sphinx-theme==0.16.1"
 ]
-
 dev = [
-    "flake8 ==7.1.2",
+    "flake8==7.1.2"
 ]
 
 [tool.pytest.ini_options]
@@ -103,7 +99,6 @@ testpaths = [
     "tests/validation/*",
     "tests/extra/*"
 ]
-
 
 [tool.cibuildwheel]
 build-frontend = "build"
@@ -126,17 +121,14 @@ repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"
 archs = ["AMD64"]
 build = ["cp310-*", "cp311-*", "cp312-*"]
 
-
 [tool.coverage.run]
-source = ['PyMieSim']
-
+source = ["PyMieSim"]
 omit = [
-    'PyMieSim/*gui*',
-    '*\__init__.py',
-    'PyMieSim/_version.py',
-    'PyMieSim/directories.py',
-    'PyMieSim/plotting.py',
-    'tests/plotting.py'
+    "PyMieSim/gui/*",
+    "*__init__.py",
+    "PyMieSim/__main__.py",
+    "PyMieSim/_version.py",
+    "PyMieSim/directories.py"
 ]
 branch = true
 relative_files = true

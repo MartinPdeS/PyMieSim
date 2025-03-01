@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import webbrowser
-from PyMieSim.gui_section import SourceSection, ScattererSection, DetectorSection, MeasureSection
-from PyMieSim.gui_helper import interface
+from PyMieSim.gui.section import SourceSection, ScattererSection, DetectorSection, MeasureSection
+from PyMieSim.gui.helper import interface
 
 dcc_store_id = "input-store"
 
