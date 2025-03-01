@@ -4,7 +4,7 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| PyMieSim/\_\_main\_\_.py                       |        4 |        4 |        2 |        0 |      0% |       2-7 |
+| PyMieSim/experiment/dataframe\_subclass.py     |       73 |       12 |       30 |       10 |     79% |22->25, 97-98, 144, 182-183, 193, 210-215, 219, 221, 226 |
 | PyMieSim/experiment/detector/base.py           |       43 |        0 |       16 |        1 |     98% |  125->128 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       19 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       22 |        0 |        0 |        0 |    100% |           |
@@ -12,7 +12,7 @@
 | PyMieSim/experiment/scatterer/core\_shell.py   |       26 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       23 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/sphere.py        |       23 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |      105 |        3 |       30 |        3 |     96% |266-267, 330->334, 339 |
+| PyMieSim/experiment/setup.py                   |      107 |        3 |       32 |        3 |     96% |269-270, 333->337, 342 |
 | PyMieSim/experiment/source/base.py             |       52 |        3 |       24 |        6 |     88% |20, 48->51, 61->64, 75, 77->exit, 92 |
 | PyMieSim/experiment/source/gaussian.py         |       15 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/source/planewave.py        |       21 |        0 |        2 |        1 |     96% |    37->40 |
@@ -32,7 +32,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1193** |   **37** |  **178** |   **25** | **95%** |           |
+|                                      **TOTAL** | **1264** |   **45** |  **208** |   **35** | **95%** |           |
 
 
 ## Setup coverage badge
