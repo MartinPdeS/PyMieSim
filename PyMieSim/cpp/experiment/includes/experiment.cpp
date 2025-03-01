@@ -10,7 +10,6 @@
 #include "utils/numpy_interface.cpp"
 #include "experiment/includes/scatterer_properties.cpp"
 #include "experiment/includes/sets.cpp"
-#include <iostream>
 
 typedef std::complex<double> complex128;
 
@@ -114,7 +113,6 @@ class Experiment
             if (detector_set.is_empty) {
                 array_shape = concatenate_vector(source_set.shape, scatterer_set.shape);
                 total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
-
             }
             else {
                 array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
@@ -125,24 +123,31 @@ class Experiment
 
             std::vector<dtype> output_array(total_iterations);
 
-            size_t idx;
             #pragma omp parallel for
             for (size_t flat_index = 0; flat_index < total_iterations; ++flat_index) {
-                size_t i = flat_index / scatterer_set.total_combinations;
-                size_t j = flat_index % scatterer_set.total_combinations;
-                size_t k = flat_index % detector_set.total_combinations;
-                SOURCE::BaseSource source = source_set.get_source_by_index(i);
-                auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
+                size_t idx; // Declare idx locally so each iteration has its own copy
 
-                if (detector_set.is_empty)
+                if (detector_set.is_empty) {
+                    // 2D case: only source and scatterer
+                    size_t i = flat_index / scatterer_set.total_combinations;
+                    size_t j = flat_index % scatterer_set.total_combinations;
+                    SOURCE::BaseSource source = source_set.get_source_by_index(i);
+                    auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
                     idx = flatten_multi_index(array_shape, source.indices, scatterer.indices);
-                else {
+                    dtype value = (scatterer.*function)();
+                    output_array[idx] = value;
+                } else {
+                    // 3D case: source, scatterer, and detector
+                    size_t i = flat_index / (scatterer_set.total_combinations * detector_set.total_combinations);
+                    size_t j = (flat_index / detector_set.total_combinations) % scatterer_set.total_combinations;
+                    size_t k = flat_index % detector_set.total_combinations;
+                    SOURCE::BaseSource source = source_set.get_source_by_index(i);
+                    auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
                     DETECTOR::Detector detector = detector_set.get_detector_by_index(k);
                     idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
+                    dtype value = (scatterer.*function)();
+                    output_array[idx] = value;
                 }
-
-                dtype value = (scatterer.*function)();
-                output_array[idx] = value;
             }
 
             debug_printf("get_scatterer_data: finished computation\n");

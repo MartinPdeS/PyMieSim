@@ -19,14 +19,14 @@ medium_properties = [Material.water, 1.1 * RIU]
 measures = Sphere.available_measure_list
 
 gaussian_source = Gaussian(
-    wavelength=np.linspace(600, 1000, 50) * nanometer,
+    wavelength=np.linspace(600, 1000, 150) * nanometer,
     polarization=0 * degree,
     optical_power=1e-3 * watt,
     NA=0.2 * AU
 )
 
 planewave_source = PlaneWave(
-    wavelength=np.linspace(600, 1000, 50) * nanometer,
+    wavelength=np.linspace(600, 1000, 150) * nanometer,
     polarization=0 * degree,
     amplitude=1 * volt / meter,
 )
@@ -61,8 +61,8 @@ def test_get_measure(source, measure, property, medium_property):
     # Set up and run the experiment
     experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
-    data = experiment.get(measure, drop_unique_level=True, scale_unit=True)
-    data.plot(x='source:wavelength', std='scatterer:diameter', show=True)
+    experiment.get(measure, drop_unique_level=True, scale_unit=True)
+
     experiment.get(measure, drop_unique_level=False, scale_unit=True, as_numpy=True)
 
 
