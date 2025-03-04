@@ -25,7 +25,7 @@ class PlaneWave(BaseSource, Sequential):
     polarization : Union[UnitPolarizationAngle, Quantity]
         Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
     amplitude : Quantity
-        The amplitude of the plane wave, in Watts.
+        The amplitude of the plane wave, in Volt/Meter.
     """
     amplitude: Quantity
     wavelength: Quantity
