@@ -1,37 +1,47 @@
+"""
+Sphere: Qsca vs diameter
+========================
+
+"""
+
+# %%
+# Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
-from PyMieSim.experiment import Setup
+
+from PyMieSim.single.scatterer import Sphere, CoreShell
+from PyMieSim.single.source import Gaussian
+
+
+from PyMieSim import units
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-import cProfile
+from PyOptik import Material
+Material.print_available()
 
-from pathlib import Path
-
+# %%
+# Defining the source to be employed.
 source = Gaussian(
-    wavelength=400 * nanometer,
-    polarization=[0] * degree,
-    optical_power=1e-6 * watt,
+    wavelength=[405] * nanometer,
+    polarization=0 * degree,
+    optical_power=1e-3 * watt,
     NA=0.2 * AU
 )
-
+# %%
+# Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
-    diameter=np.linspace(300, 1000, 1000) * nanometer,
-    property=[1.2, 1.25] * RIU,
-    medium_property=[1.0] * RIU,
+    diameter=100 * nanometer,
+    medium_property=[1.33] * RIU,
+    property=Material.polystyren,
     source=source
 )
 
-experiment = Setup(scatterer=scatterer, source=source)
+# scatterer = CoreShell(
+#     # core_diameter=np.linspace(10, 1000, 1500) * nanometer,
+#     core_diameter=160 * nanometer,
+#     shell_thickness=6 * units.nanometer,
+#     medium_property=1.33 * RIU,
+#     core_property=1.38 * units.RIU,
+#     shell_property=1.48 * units.RIU,
+#     source=source
+# )
 
-profiler = cProfile.Profile()
-
-
-profiler.enable()
-
-dataframe = experiment.get('a1')
-
-# Stop profiling
-profiler.disable()
-
-# Dump the profile data to a file
-profiler.dump_stats(Path(__file__).parent / "output_file.prof")
+scatterer.get_spf().plot()

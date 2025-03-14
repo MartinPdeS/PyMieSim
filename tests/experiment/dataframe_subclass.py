@@ -76,14 +76,5 @@ def test_plot_invalid_x():
         df.plot(x='invalid_x', std='detector:NA', show=False)
     plt.close()
 
-def test_plot_invalid_y():
-    """
-    Test that plotting (without std) with an invalid y column raises a ValueError.
-    """
-    df = get_experiment_dataframe()
-    with pytest.raises(ValueError, match="y parameter 'nonexistent' is not in the DataFrame columns"):
-        df.plot(x='source:wavelength', y='nonexistent', show=False)
-    plt.close()
-
 if __name__ == "__main__":
     pytest.main(["-W", "error", __file__])

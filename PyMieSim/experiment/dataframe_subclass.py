@@ -17,15 +17,15 @@ class PyMieSimDataFrame(pd.DataFrame):
         """
         return PyMieSimDataFrame
 
-    def _get_or_create_ax(self, ax: Optional[plt.Axes]) -> plt.Axes:
-        """Helper to get the provided Axes or create a new one using the mps style."""
-        if ax is None:
-            with plt.style.context(mps):
-                _, ax = plt.subplots()
-        return ax
-
-    def plot(self, x: str, alpha: float = 0.4, std: Optional[str] = None,
-             ax: Optional[plt.Axes] = None, show: bool = True, **kwargs) -> plt.Axes:
+    def plot(self,
+        x: str,
+        std: Optional[str] = None,
+        alpha: float = 0.4,
+        ax: Optional[plt.Axes] = None,
+        show: bool = True,
+        xscale: bool = 'linear',
+        yscale: bool = 'linear',
+        **kwargs) -> plt.Axes:
         """
         Plots the DataFrame using a specified MultiIndex level for the x-axis.
         Optionally, if a standard deviation level is provided, it will also
@@ -51,27 +51,41 @@ class PyMieSimDataFrame(pd.DataFrame):
         plt.Axes
             The matplotlib Axes with the plot.
         """
-        ax = self._get_or_create_ax(ax)
-
         # Validate that 'x' is a valid index level.
         if x not in self.index.names:
             available = ", ".join(self.index.names)
             raise ValueError(f"x parameter '{x}' is not in the DataFrame index. Available index levels: {available}")
 
+        # Validate that 'x' is a valid index level.
+        if std is not None and std not in self.index.names:
+            available = ", ".join(self.index.names)
+            raise ValueError(f"x parameter '{std}' is not in the DataFrame index. Available index levels: {available}")
+
+        if ax is None:
+            with plt.style.context(mps):
+                _, ax = plt.subplots()
+                ax.set(xscale=xscale, yscale=yscale)
+
         if std is not None:
-            self._plot_with_std(ax=ax, x=x, std=std, alpha=alpha, show=show, **kwargs)
+            self._plot_with_std(ax=ax, x=x, std=std, alpha=alpha, **kwargs)
         else:
-            self._plot_without_std(ax=ax, x=x, show=show, **kwargs)
+            self._plot_without_std(ax=ax, x=x, **kwargs)
+
+        self._format_legend(ax)
+
+        if show:
+            plt.show()
+
         return ax
 
     def _plot_with_std(
-            self,
-            ax: plt.Axes,
-            x: str,
-            std: str,
-            alpha: float = 0.5,
-            show: bool = True,
-            **kwargs) -> None:
+        self,
+        ax: plt.Axes,
+        x: str,
+        std: str,
+        alpha: float = 0.5,
+        show: bool = True,
+        **kwargs) -> None:
         """
         Plot the mean with standard deviation shading.
         Expects the DataFrame to have a MultiIndex and a 'pint' attribute.
@@ -91,11 +105,6 @@ class PyMieSimDataFrame(pd.DataFrame):
         **kwargs : dict
             Additional keyword arguments for line styling.
         """
-        # Validate that the required index levels exist
-        missing_levels = [lvl for lvl in [x, std] if lvl not in self.index.names]
-        if missing_levels:
-            available = ", ".join(self.index.names)
-            raise ValueError(f"Missing index level(s): {', '.join(missing_levels)}. Available index levels: {available}")
 
         # Determine levels to unstack
         no_std_levels = [level for level in self.index.names if level != std]
@@ -140,18 +149,18 @@ class PyMieSimDataFrame(pd.DataFrame):
             )
 
         ax.legend()
-        if show:
-            plt.show()
 
-    def _plot_without_std(
-            self,
-            ax: plt.Axes,
-            x: str,
-            y: Optional[str] = None,
-            show: bool = True,
-            log_scale_x: bool = False,
-            log_scale_y: bool = False,
-            **kwargs) -> None:
+    def _format_legend(self, ax: plt.Axes) -> None:
+        leg = ax.get_legend()  # Get the existing legend from the axes
+        for text in leg.get_texts():
+            original_label = text.get_text()
+            new_label = original_label.replace(')', '').replace('(', '').replace(', ', ' | ')
+            text.set_text(new_label)
+
+        title = leg.get_title().get_text()
+        leg.set_title(title.replace(',', ' | '))
+
+    def _plot_without_std(self, ax: plt.Axes, x: str, **kwargs) -> None:
         """
         Plots the data without standard deviation shading.
         Handles both real and imaginary parts for complex data.
@@ -177,50 +186,10 @@ class PyMieSimDataFrame(pd.DataFrame):
         -------
         None
         """
-        # Validate that 'x' is a valid index level.
-        if x not in self.index.names:
-            available = ", ".join(self.index.names)
-            raise ValueError(f"x parameter '{x}' is not in the DataFrame index. Available index levels: {available}")
+        groupby_levels = [level for level in self.index.names if level != x]
 
-        # For non-standard deviation plots, if y is provided, it should be in the DataFrame columns.
-        if y is not None and y not in self.columns:
-            available = ", ".join(map(str, self.columns))
-            raise ValueError(f"y parameter '{y}' is not in the DataFrame columns. Available columns: {available}")
+        df = self.unstack(groupby_levels)
+        super(PyMieSimDataFrame, self).plot(ax=ax, **kwargs)
 
-        # Stack levels if necessary for proper grouping
-        df_to_plot = self.copy()
-        if 'type' in self.columns.names:
-            df_to_plot = df_to_plot.stack('type', future_stack=True)
-        df_to_plot = df_to_plot.stack('data', future_stack=True)
+        ax.set_xlabel(f"{x} [{df.index.values.units}]")
 
-        groupby_levels = [level for level in df_to_plot.index.names if level != x]
-
-        if groupby_levels:
-            for name, group in df_to_plot.groupby(groupby_levels, dropna=False):
-                group = group.droplevel(groupby_levels)
-
-                label = [item for pair in zip(groupby_levels, name) for item in pair]
-
-                label = " : ".join(map(str, label))
-
-                values = group.squeeze().values
-                if hasattr(values, 'quantity'):
-                    ax.plot(group.index, values.quantity, label=label, **kwargs)
-                else:
-                    ax.plot(group.index, values, label=label, **kwargs)
-
-        else:
-            # If no groupby, determine the column to plot
-            col = y if y is not None else df_to_plot.columns[0]
-            ax.plot(df_to_plot.index, df_to_plot[col], label=str(col), **kwargs)
-
-
-        if log_scale_x:
-            ax.set_xscale('log')
-        if log_scale_y:
-            ax.set_yscale('log')
-
-        ax.legend()
-
-        if show:
-            plt.show()
