@@ -19,6 +19,7 @@ namespace DETECTOR {
 
     class Detector {
         public:
+            std::string mode_number;
             size_t sampling = 0;
             double NA = 0.0;
             double cache_NA = 0.0;
@@ -28,6 +29,7 @@ namespace DETECTOR {
             double rotation = 0.0;
             bool coherent = true;
             bool mean_coupling = true;
+            double medium_refractive_index;
             double max_angle = 0;
             double min_angle = 0;
             std::vector<complex128> scalar_field;
@@ -36,13 +38,27 @@ namespace DETECTOR {
 
             Detector() = default;
 
-            Detector(std::string mode_number, size_t sampling, double NA, double cache_NA, double phi_offset, double gamma_offset, double polarization_filter, double rotation, bool coherent, bool mean_coupling)
-            :
-                sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
-                rotation(rotation), coherent(coherent), mean_coupling(mean_coupling)
+            Detector(
+                const std::string &mode_number,
+                const size_t sampling,
+                const double NA,
+                const double cache_NA,
+                const double phi_offset,
+                const double gamma_offset,
+                const double polarization_filter,
+                const double rotation,
+                const bool coherent,
+                const bool mean_coupling,
+                const double medium_refractive_index = 1.0)
+            : mode_number(mode_number), sampling(sampling), NA(NA), cache_NA(cache_NA), phi_offset(phi_offset), gamma_offset(gamma_offset), polarization_filter(polarization_filter),
+                rotation(rotation), coherent(coherent), mean_coupling(mean_coupling), medium_refractive_index(medium_refractive_index)
             {
-                this->max_angle = NA2Angle(this->NA);
-                this->min_angle = NA2Angle(this->cache_NA);
+                this->initialize(medium_refractive_index);
+            }
+
+            void initialize(const double &medium_refractive_index) {
+                this->max_angle = NA2Angle(this->NA / medium_refractive_index);
+                this->min_angle = NA2Angle(this->cache_NA / medium_refractive_index);
 
                 if (this->max_angle < this->min_angle)
                     throw std::invalid_argument("Cache NA cannot be larger than detector NA.");

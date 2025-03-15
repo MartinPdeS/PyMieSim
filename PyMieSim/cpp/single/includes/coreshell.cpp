@@ -5,11 +5,11 @@
 namespace CORESHELL
 {
     void Scatterer::apply_medium() {
-        this->core_index /= this->medium_index;
-        this->shell_index /= this->medium_index;
-        this->core_diameter *= this->medium_index;
-        this->shell_thickness *= this->medium_index;
-        this->shell_diameter *= this->medium_index;
+        this->core_refractive_index /= this->medium_refractive_index;
+        this->shell_refractive_index /= this->medium_refractive_index;
+        this->core_diameter *= this->medium_refractive_index;
+        this->shell_thickness *= this->medium_refractive_index;
+        this->shell_diameter *= this->medium_refractive_index;
     }
 
     void Scatterer::compute_max_order(size_t max_order){
@@ -26,16 +26,16 @@ namespace CORESHELL
 
         // Calculate scaled parameters and initialize phase shift factors
         complex128
-            relative_index = this->shell_index / this->core_index,
-            u = this->core_index * this->x_core,
-            v = this->shell_index * this->x_core,
-            w = this->shell_index * this->x_shell,
+            relative_index = this->shell_refractive_index / this->core_refractive_index,
+            u = this->core_refractive_index * this->x_core,
+            v = this->shell_refractive_index * this->x_core,
+            w = this->shell_refractive_index * this->x_shell,
             sv = sqrt(0.5 * PI * v),
             sw = sqrt(0.5 * PI * w),
             sy = sqrt(0.5 * PI * this->x_shell);
 
         // Determine the necessary array size for continuity factors
-        size_t mx = static_cast<size_t>(std::max( abs( this->core_index * this->x_shell ), abs( this->shell_index*this->x_shell ) ));
+        size_t mx = static_cast<size_t>(std::max( abs( this->core_refractive_index * this->x_shell ), abs( this->shell_refractive_index*this->x_shell ) ));
         size_t nmx  = std::max( max_order, mx ) + 16  ;
 
         std::vector<complex128> pv(max_order + 1), pw(max_order + 1), py(max_order + 1), chv(max_order + 1), chw(max_order + 1), chy(max_order + 1), gsy(max_order + 1), gs1y(max_order + 1);
@@ -85,8 +85,8 @@ namespace CORESHELL
             fv[order] = pv[order] / chv[order];
             dns[order] = ((uu[order] * fv[order] / pw[order]) / (uu[order] * (pw[order] - chw[order] * fv[order]) + pw[order] / pv[order] / chv[order])) + Dw[order];
             gns[order] = ((vv[order] * fv[order] / pw[order]) / (vv[order] * (pw[order] - chw[order] * fv[order]) + pw[order] / pv[order] / chv[order])) + Dw[order];
-            a1[order] = dns[order] / shell_index + idx / x_shell;
-            b1[order] = shell_index * gns[order] + idx / x_shell;
+            a1[order] = dns[order] / shell_refractive_index + idx / x_shell;
+            b1[order] = shell_refractive_index * gns[order] + idx / x_shell;
             an[order] = (py[order] * a1[order] - p1y[order]) / (gsy[order] * a1[order] - gs1y[order]);
             bn[order] = (py[order] * b1[order] - p1y[order]) / (gsy[order] * b1[order] - gs1y[order]);
         }

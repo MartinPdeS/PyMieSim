@@ -11,11 +11,11 @@ namespace SPHERE
     {
         public:
             double diameter;
-            complex128 index;
+            complex128 refractive_index;
             std::vector<size_t> indices;
 
-            Scatterer(const double diameter, const complex128 index, const double medium_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
-                BaseSphericalScatterer(source, max_order, medium_index), diameter(diameter), index(index)
+            Scatterer(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
+                BaseSphericalScatterer(source, max_order, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
             {
                 this->compute_area();
                 this->compute_size_parameter();
@@ -24,7 +24,7 @@ namespace SPHERE
             }
 
             void compute_size_parameter() override {
-                this->size_parameter = source.wavenumber * this->diameter / 2 * this->medium_index;
+                this->size_parameter = source.wavenumber * this->diameter / 2 * this->medium_refractive_index;
                 this->size_parameter_squared = pow(this->size_parameter, 2);
             }
 

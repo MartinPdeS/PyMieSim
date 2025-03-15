@@ -13,8 +13,8 @@ PYBIND11_MODULE(CylinderInterface, module) {
         .def(
             py::init<double, complex128, double, SOURCE::BaseSource&>(),
             py::arg("diameter"),
-            py::arg("index"),
-            py::arg("medium_index"),
+            py::arg("refractive_index"),
+            py::arg("medium_refractive_index"),
             py::arg("source"),
             "Constructor for CYLINDER, initializing it with physical and optical properties.")
 

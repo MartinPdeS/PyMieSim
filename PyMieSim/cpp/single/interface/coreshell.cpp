@@ -13,9 +13,9 @@ PYBIND11_MODULE(CoreShellInterface, module) {
         .def(py::init<double, double, std::complex<double>, std::complex<double>, double, SOURCE::BaseSource&>(),
              py::arg("core_diameter"),
              py::arg("shell_thickness"),
-             py::arg("core_index"),
-             py::arg("shell_index"),
-             py::arg("medium_index"),
+             py::arg("core_refractive_index"),
+             py::arg("shell_refractive_index"),
+             py::arg("medium_refractive_index"),
              py::arg("source"),
              "Constructor for CORESHELL, initializing it with physical and optical properties.")
 

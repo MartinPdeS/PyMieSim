@@ -34,16 +34,16 @@ namespace CYLINDER
     class Scatterer: public BaseScatterer
     {
         public:
-            double diameter = 0.0;
-            complex128 index = {1.0, 0.0};
+            double diameter;
+            complex128 refractive_index;
             std::vector<size_t> indices;
             DEFINE_COEFFICIENTS(a1)
             DEFINE_COEFFICIENTS(b1)
             DEFINE_COEFFICIENTS(a2)
             DEFINE_COEFFICIENTS(b2)
 
-            Scatterer(double diameter, complex128 index, double medium_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
-            BaseScatterer(max_order, source, medium_index), diameter(diameter), index(index)
+            Scatterer(double diameter, complex128 refractive_index, double medium_refractive_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
+            BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
             {
                 this->compute_area();
                 this->compute_size_parameter();

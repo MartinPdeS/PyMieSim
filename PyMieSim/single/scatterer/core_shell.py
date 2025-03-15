@@ -56,11 +56,11 @@ class CoreShell(BaseScatterer):
         from PyMieSim.binary.CoreShellInterface import CORESHELL
 
         self.binding = CORESHELL(
-            shell_index=self.shell_index.to_base_units().magnitude,
-            core_index=self.core_index.to_base_units().magnitude,
+            shell_refractive_index=self.shell_index.to_base_units().magnitude,
+            core_refractive_index=self.core_index.to_base_units().magnitude,
             shell_thickness=self.shell_thickness.to_base_units().magnitude,
             core_diameter=self.core_diameter.to_base_units().magnitude,
-            medium_index=self.medium_index.to_base_units().magnitude,
+            medium_refractive_index=self.medium_index.to_base_units().magnitude,
             source=self.source.binding
         )
 

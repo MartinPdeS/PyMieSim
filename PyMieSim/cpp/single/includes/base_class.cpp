@@ -17,7 +17,7 @@ public:
     double size_parameter;
     double size_parameter_squared;
     double area;
-    double medium_index;
+    double medium_refractive_index;
 
     BaseScatterer() = default;
     virtual ~BaseScatterer() = default;
@@ -37,8 +37,8 @@ public:
     double get_Cpr() const {return get_Qpr() * area;};
 
 
-    BaseScatterer(const size_t max_order, const SOURCE::BaseSource &source, const double medium_index)
-     : max_order(max_order), source(source), medium_index(medium_index)
+    BaseScatterer(const size_t max_order, const SOURCE::BaseSource &source, const double medium_refractive_index)
+     : max_order(max_order), source(source), medium_refractive_index(medium_refractive_index)
      {}
 
     std::vector<double> get_prefactor() const {

@@ -17,7 +17,7 @@ namespace SPHERE
             chi_1,
             xi_n,
             xi_nm1,
-            m = this->index / this->medium_index,
+            m = this->refractive_index / this->medium_refractive_index,
             mx = m * size_parameter,
             derivative_a, derivative_b;
 
@@ -58,7 +58,7 @@ namespace SPHERE
 
         complex128
             x = size_parameter,
-            m = this->index,
+            m = this->refractive_index,
             z = m * x;
 
         size_t nmx = std::max( max_order, (size_t) std::abs(z) ) + 16;

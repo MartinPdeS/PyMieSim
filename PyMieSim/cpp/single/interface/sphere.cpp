@@ -16,8 +16,8 @@ PYBIND11_MODULE(SphereInterface, module) {
         .def(
             py::init<const double, const complex128, const double, const SOURCE::BaseSource&, size_t>(),
             py::arg("diameter"),
-            py::arg("index"),
-            py::arg("medium_index"),
+            py::arg("refractive_index"),
+            py::arg("medium_refractive_index"),
             py::arg("source"),
             py::arg("max_order") = 0,
             "Constructor for SPHERE, initializing it with physical and optical properties.")

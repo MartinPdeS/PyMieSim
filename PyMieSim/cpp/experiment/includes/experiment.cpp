@@ -198,6 +198,7 @@ class Experiment
                 SOURCE::BaseSource source = source_set.get_source_by_index(i);
                 auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
                 DETECTOR::Detector detector = detector_set.get_detector_by_index(k);
+                detector.medium_refractive_index = scatterer.medium_refractive_index;
                 size_t idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
                 output_array[idx] = detector.get_coupling(scatterer);
             }

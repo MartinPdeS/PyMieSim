@@ -46,9 +46,9 @@ class Cylinder(BaseScatterer):
         from PyMieSim.binary.CylinderInterface import CYLINDER
 
         self.binding = CYLINDER(
-            index=self.index.to_base_units().magnitude,
+            refractive_index=self.index.to_base_units().magnitude,
             diameter=self.diameter.to_base_units().magnitude,
-            medium_index=self.medium_index.to_base_units().magnitude,
+            medium_refractive_index=self.medium_index.to_base_units().magnitude,
             source=self.source.binding
         )
 

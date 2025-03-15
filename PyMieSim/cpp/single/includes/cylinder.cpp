@@ -50,7 +50,7 @@ namespace CYLINDER
 
         // Compute the arguments used in the Bessel and Hankel function calculations
         complex128
-            m = this->index / this->medium_index, // Relative refractive index
+            m = this->refractive_index / this->medium_refractive_index, // Relative refractive index
             mx = m * size_parameter; // Scaled size parameter for internal calculations
 
         // Precompute Bessel and Hankel functions up to max_order

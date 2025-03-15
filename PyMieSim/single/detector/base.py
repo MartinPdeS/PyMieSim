@@ -10,7 +10,7 @@ from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from MPSPlots.colormaps import blue_black_red
 from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt
-
+from PyMieSim import units
 from PyMieSim.single.scatterer.base import BaseScatterer
 import pyvista
 
@@ -66,7 +66,7 @@ class BaseDetector():
     rotation : Optional[Quantity], default=90 * degree
         The rotational angle of the detector, defining its orientation relative to the incoming light or
         scatterer. The default value rotates the detector by 90 degrees.
-
+    medium_refractive_index : Optional[Quantity]
     """
     mode_number: str
     NA: Quantity
@@ -74,10 +74,11 @@ class BaseDetector():
     phi_offset: Quantity
     mean_coupling: bool
     coherent: bool
-    cache_NA: Optional[Quantity] = 0. * AU
-    sampling: Optional[Quantity] = 200 * AU
-    polarization_filter: Optional[Quantity] = numpy.nan * degree
-    rotation: Optional[Quantity] = 90 * degree
+    cache_NA: Optional[Quantity] = 0. * units.AU
+    sampling: Optional[Quantity] = 200 * units.AU
+    polarization_filter: Optional[Quantity] = numpy.nan * units.degree
+    rotation: Optional[Quantity] = 90 * units.degree
+    medium_refractive_index: Optional[Quantity] = 1.0 * units.RIU
 
     @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
     def _validate_NA(cls, value):
@@ -89,6 +90,21 @@ class BaseDetector():
 
         return value
 
+    @field_validator('medium_refractive_index', mode='plain')
+    def _validate_polarization(cls, value):
+        """
+        Ensures that medium_refractive_index, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        if value is None:
+            value = numpy.nan * degree
+
+        if not isinstance(value, Quantity) or not value.check(units.RIU):
+            raise ValueError(f"{value} must be a Quantity with refractive index units [RIU].")
+
+        return value
+
+
     @field_validator('polarization_filter', mode='plain')
     def _validate_polarization(cls, value):
         """
@@ -98,7 +114,7 @@ class BaseDetector():
         if value is None:
             value = numpy.nan * degree
 
-        if not isinstance(value, Quantity) or not value.check(degree):
+        if not isinstance(value, Quantity) or not value.check(units.degree):
             raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
         return value
@@ -109,7 +125,7 @@ class BaseDetector():
         Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
         """
-        if not isinstance(value, Quantity) or not value.check(degree):
+        if not isinstance(value, Quantity) or not value.check(units.degree):
             raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
 
         return value

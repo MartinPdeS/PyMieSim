@@ -12,16 +12,16 @@
             double core_diameter;
             double shell_thickness;
             double shell_diameter;
-            complex128 core_index;
-            complex128 shell_index;
+            complex128 core_refractive_index;
+            complex128 shell_refractive_index;
             double x_core;
             double x_shell;
             std::vector<size_t> indices;
 
-            Scatterer(double core_diameter, double shell_thickness, complex128 core_index, complex128 shell_index,
-                double medium_index, SOURCE::BaseSource &source, size_t max_order = 0)
-            : BaseSphericalScatterer(source, max_order, medium_index), core_diameter(core_diameter), shell_thickness(shell_thickness),
-            core_index(core_index), shell_index(shell_index)
+            Scatterer(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index,
+                double medium_refractive_index, SOURCE::BaseSource &source, size_t max_order = 0)
+            : BaseSphericalScatterer(source, max_order, medium_refractive_index), core_diameter(core_diameter), shell_thickness(shell_thickness),
+            core_refractive_index(core_refractive_index), shell_refractive_index(shell_refractive_index)
             {
                 this->shell_diameter = this->core_diameter + this->shell_thickness;
                 this->compute_area();
@@ -32,10 +32,10 @@
             }
 
             void compute_size_parameter() override {
-                this->size_parameter = source.wavenumber * this->shell_diameter / 2 * this->medium_index;
+                this->size_parameter = source.wavenumber * this->shell_diameter / 2 * this->medium_refractive_index;
                 this->size_parameter_squared = pow(this->size_parameter, 2);
-                this->x_shell = source.wavenumber * this->shell_diameter / 2.0 * this->medium_index;
-                this->x_core = source.wavenumber * this->core_diameter / 2.0 * this->medium_index;
+                this->x_shell = source.wavenumber * this->shell_diameter / 2.0 * this->medium_refractive_index;
+                this->x_core = source.wavenumber * this->core_diameter / 2.0 * this->medium_refractive_index;
             }
             void compute_area() override {
 

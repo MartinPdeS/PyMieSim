@@ -77,7 +77,8 @@ class CoherentMode(BaseDetector):
             polarization_filter=self.polarization_filter.to(radian).magnitude,
             rotation=self.rotation.to(radian).magnitude,
             coherent=True,
-            mean_coupling=self.mean_coupling
+            mean_coupling=self.mean_coupling,
+            medium_refractive_index=self.medium_refractive_index.magnitude
         )
 
     def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
