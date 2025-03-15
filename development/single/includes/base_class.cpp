@@ -1,8 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
 #include "single/includes/sources.cpp"
 #include "utils/numpy_interface.cpp"
 #include "single/includes/fibonacci_mesh.cpp"

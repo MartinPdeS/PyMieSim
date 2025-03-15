@@ -1,6 +1,6 @@
-#pragma once
+#include "detector/detector.h"
+#include "utils/special_function.cpp"
 
-#include "single/headers/detectors.h"
 
 #define EPSILON0 (double)8.854187817620389e-12
 #define C (double)299792458.0
@@ -56,6 +56,17 @@ namespace DETECTOR {
 
         return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
     }
+
+    double Detector::NA2Angle(double NA) const {
+        if (NA <= 1.0)
+            return asin(NA);
+
+        if (NA >= 1.0)
+            return asin(NA - 1.0) + PI / 2.0;
+
+        return 1.0;
+    }
+
 
 
     template <class T> double
@@ -161,5 +172,3 @@ namespace DETECTOR {
     }
 
 } // namespace DETECTOR
-
-

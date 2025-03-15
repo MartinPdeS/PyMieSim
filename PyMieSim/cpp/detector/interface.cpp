@@ -1,11 +1,10 @@
 #include <pybind11/pybind11.h>
-#include "utils/special_function.cpp"
-#include "single/includes/detectors.cpp"
-#include "single/includes/coreshell.cpp"
-#include "single/includes/sphere.cpp"
-#include "single/includes/cylinder.cpp"
 
-namespace py = pybind11;
+#include "coreshell/coreshell.h"
+#include "sphere/sphere.h"
+#include "cylinder/cylinder.h"
+#include "detector/detector.h"
+
 using namespace DETECTOR;
 
 PYBIND11_MODULE(DetectorInterface, module) {
@@ -42,3 +41,4 @@ PYBIND11_MODULE(DetectorInterface, module) {
         .def_readonly("min_angle", &Detector::min_angle, "The Fibonacci mesh min_angle [0 if no cache is applied].")
         ;
 }
+

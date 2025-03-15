@@ -1,5 +1,3 @@
-#pragma once
-
 #include <algorithm>
 #include <vector>
 #include <complex>
@@ -7,17 +5,6 @@
 
 typedef std::complex<double> complex128;
 #define PI (double)3.14159265358979323846264338
-
-double NA2Angle(const double &NA)
-{
-    if (NA <= 1.0)
-        return asin(NA);
-
-    if (NA >= 1.0)
-        return asin(NA-1.0) + PI/2.0;
-
-    return 1.0;
-}
 
 template <typename T, typename... Ts>
 T concatenate_vector(const T& first_vector, const Ts&... other_vectors)
