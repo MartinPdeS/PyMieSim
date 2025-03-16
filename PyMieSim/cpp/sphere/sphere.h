@@ -12,9 +12,8 @@ class Sphere: public BaseSphericalScatterer
     public:
         double diameter;
         complex128 refractive_index;
-        std::vector<size_t> indices;
 
-        Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
+        Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order = 0) :
             BaseSphericalScatterer(source, max_order, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
         {
             this->compute_area();

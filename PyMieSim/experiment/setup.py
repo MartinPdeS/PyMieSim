@@ -4,7 +4,7 @@
 import numpy
 import pandas as pd
 from pydantic.dataclasses import dataclass
-from PyMieSim.binary.Experiment import CppExperiment
+from PyMieSim.binary.interface_experiment import EXPERIMENT
 from PyMieSim.units import AU, meter, watt
 from typing import Union, Optional, List
 from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
@@ -54,19 +54,19 @@ class Setup:
 
         self.scatterer.source = self.source
 
-        self.binding = CppExperiment(debug_mode=PyMieSim.debug_mode)
+        self.binding = EXPERIMENT(debug_mode=PyMieSim.debug_mode)
 
     def _bind_components(self):
-        """Binds the experiment components to the CppExperiment instance."""
+        """Binds the experiment components to the EXPERIMENT instance."""
 
-        self.binding.set_source(self.source.binding)
+        self.binding.set_Source(self.source.binding)
 
-        method_str = 'set_' + self.scatterer.__class__.__name__.lower()
+        method_str = 'set_' + self.scatterer.__class__.__name__
 
         getattr(self.binding, method_str)(self.scatterer.binding)
 
         if self.detector is not None:
-            self.binding.set_detector(self.detector.binding)
+            self.binding.set_Detector(self.detector.binding)
 
     def _generate_mapping(self) -> None:
         self.source._generate_mapping()
@@ -90,7 +90,7 @@ class Setup:
         numpy.ndarray
             An array containing the computed measures.
         """
-        scatterer_name = self.scatterer.__class__.__name__.lower()
+        scatterer_name = self.scatterer.__class__.__name__
         method_name = f'get_{scatterer_name}_{measure}_sequential'
 
         # Compute the values using the binding method
@@ -175,7 +175,7 @@ class Setup:
         """
         output_array = []
         for measure in measures:
-            scatterer_name = self.scatterer.__class__.__name__.lower()
+            scatterer_name = self.scatterer.__class__.__name__
             method_name = f'get_{scatterer_name}_{measure}'
 
             output_array.append(getattr(self.binding, method_name)())
@@ -203,7 +203,7 @@ class Setup:
             Updated DataFrame with computed values for the specified measures, with optional units if `add_units` is True.
         """
         for measure in measures:
-            scatterer_name = self.scatterer.__class__.__name__.lower()
+            scatterer_name = self.scatterer.__class__.__name__
             method_name = f'get_{scatterer_name}_{measure}'
 
             # Compute the values using the binding method

@@ -15,10 +15,9 @@ class CoreShell: public BaseSphericalScatterer
         complex128 shell_refractive_index;
         double x_core;
         double x_shell;
-        std::vector<size_t> indices;
 
         CoreShell(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index,
-            double medium_refractive_index, SOURCE::BaseSource &source, size_t max_order = 0)
+            double medium_refractive_index, BaseSource &source, size_t max_order = 0)
         : BaseSphericalScatterer(source, max_order, medium_refractive_index), core_diameter(core_diameter), shell_thickness(shell_thickness),
         core_refractive_index(core_refractive_index), shell_refractive_index(shell_refractive_index)
         {

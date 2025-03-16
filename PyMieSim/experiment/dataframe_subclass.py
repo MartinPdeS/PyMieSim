@@ -71,7 +71,7 @@ class PyMieSimDataFrame(pd.DataFrame):
         else:
             self._plot_without_std(ax=ax, x=x, **kwargs)
 
-        self._format_legend(ax)
+        # self._format_legend(ax)
 
         if show:
             plt.show()
@@ -186,10 +186,38 @@ class PyMieSimDataFrame(pd.DataFrame):
         -------
         None
         """
-        groupby_levels = [level for level in self.index.names if level != x]
+        # Stack levels if necessary for proper grouping
+        df_to_plot = self.copy()
+        if 'type' in self.columns.names:
+            df_to_plot = df_to_plot.stack('type', future_stack=True)
+        df_to_plot = df_to_plot.stack('data', future_stack=True)
 
-        df = self.unstack(groupby_levels)
-        super(PyMieSimDataFrame, self).plot(ax=ax, **kwargs)
+        groupby_levels = [level for level in df_to_plot.index.names if level != x]
 
-        ax.set_xlabel(f"{x} [{df.index.values.units}]")
+        if groupby_levels:
+            for name, group in df_to_plot.groupby(groupby_levels, dropna=False):
+                group = group.droplevel(groupby_levels)
+
+                label = [item for pair in zip(groupby_levels, name) for item in pair]
+
+                label = " : ".join(map(str, label))
+
+                values = group.squeeze().values
+                if hasattr(values, 'quantity'):
+                    ax.plot(group.index, values.quantity, label=label, **kwargs)
+                else:
+                    ax.plot(group.index, values, label=label, **kwargs)
+
+        else:
+            # If no groupby, determine the column to plot
+            col = df_to_plot.columns[0]
+            ax.plot(df_to_plot.index, df_to_plot[col], label=str(col), **kwargs)
+
+        ax.legend()
+        # groupby_levels = [level for level in self.index.names if level != x]
+
+        # df = self.unstack(groupby_levels)
+        # super(PyMieSimDataFrame, self).plot(ax=ax, **kwargs)
+
+        # ax.set_xlabel(f"{x} [{df.index.values.units}]")
 

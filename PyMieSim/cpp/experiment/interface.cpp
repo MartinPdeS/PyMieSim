@@ -22,59 +22,59 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(Experiment, module) {
+PYBIND11_MODULE(interface_experiment, module) {
     module.doc() = "Interface for conducting Lorenz-Mie Theory (LMT) experiments within the PyMieSim package.";
 
-    py::class_<Experiment>(module, "CppExperiment")
+    py::class_<Experiment>(module, "EXPERIMENT")
         .def(py::init<bool>(), py::arg("debug_mode") = true, "Constructs an Experiment object.")
 
         // Setup methods
-        .def("set_detector", &Experiment::set_detector, "Configures the detector for the experiment.")
-        .def("set_source", &Experiment::set_source, "Sets the light source for the experiment.")
-        .def("set_sphere", &Experiment::set_sphere, "Defines a spherical scatterer for the experiment.")
-        .def("set_cylinder", &Experiment::set_cylinder, "Defines a cylindrical scatterer for the experiment.")
-        .def("set_coreshell", &Experiment::set_coreshell, "Defines a core-shell scatterer for the experiment.")
+        .def("set_Detector", &Experiment::set_detector, "Configures the detector for the experiment.")
+        .def("set_Source", &Experiment::set_source, "Sets the light source for the experiment.")
+        .def("set_Sphere", &Experiment::set_sphere, "Defines a spherical scatterer for the experiment.")
+        .def("set_Cylinder", &Experiment::set_cylinder, "Defines a cylindrical scatterer for the experiment.")
+        .def("set_CoreShell", &Experiment::set_coreshell, "Defines a core-shell scatterer for the experiment.")
 
 
         // Sphere metrics
-        EFFICIENCY_PROPERTY(sphere, sca)  // Efficiencies
-        EFFICIENCY_PROPERTY(sphere, ext)
-        EFFICIENCY_PROPERTY(sphere, abs)
-        EFFICIENCY_PROPERTY(sphere, pr)
-        EFFICIENCY_PROPERTY(sphere, forward)
-        EFFICIENCY_PROPERTY(sphere, back)
-        EFFICIENCY_PROPERTY(sphere, ratio)
-        COEFFICIENT_PROPERTY(sphere, 1)   // Coefficients
-        COEFFICIENT_PROPERTY(sphere, 2)
-        COEFFICIENT_PROPERTY(sphere, 3)
-        COUPLING_AND_G(sphere)            // Coupling and g
+        EFFICIENCY_PROPERTY(Sphere, sca)  // Efficiencies
+        EFFICIENCY_PROPERTY(Sphere, ext)
+        EFFICIENCY_PROPERTY(Sphere, abs)
+        EFFICIENCY_PROPERTY(Sphere, pr)
+        EFFICIENCY_PROPERTY(Sphere, forward)
+        EFFICIENCY_PROPERTY(Sphere, back)
+        EFFICIENCY_PROPERTY(Sphere, ratio)
+        COEFFICIENT_PROPERTY(Sphere, 1)   // Coefficients
+        COEFFICIENT_PROPERTY(Sphere, 2)
+        COEFFICIENT_PROPERTY(Sphere, 3)
+        COUPLING_AND_G(Sphere)            // Coupling and g
 
 
         // Cylinder metrics
-        EFFICIENCY_PROPERTY(cylinder, sca)  // Efficiencies
-        EFFICIENCY_PROPERTY(cylinder, ext)
-        EFFICIENCY_PROPERTY(cylinder, abs)
-        COEFFICIENT_PROPERTY(cylinder, 11)  // Coefficients
-        COEFFICIENT_PROPERTY(cylinder, 21)
-        COEFFICIENT_PROPERTY(cylinder, 12)
-        COEFFICIENT_PROPERTY(cylinder, 22)
-        COEFFICIENT_PROPERTY(cylinder, 13)
-        COEFFICIENT_PROPERTY(cylinder, 23)
-        COUPLING_AND_G(cylinder)            // Coupling and g
+        EFFICIENCY_PROPERTY(Cylinder, sca)  // Efficiencies
+        EFFICIENCY_PROPERTY(Cylinder, ext)
+        EFFICIENCY_PROPERTY(Cylinder, abs)
+        COEFFICIENT_PROPERTY(Cylinder, 11)  // Coefficients
+        COEFFICIENT_PROPERTY(Cylinder, 21)
+        COEFFICIENT_PROPERTY(Cylinder, 12)
+        COEFFICIENT_PROPERTY(Cylinder, 22)
+        COEFFICIENT_PROPERTY(Cylinder, 13)
+        COEFFICIENT_PROPERTY(Cylinder, 23)
+        COUPLING_AND_G(Cylinder)            // Coupling and g
 
 
         // Coreshell metrics
-        EFFICIENCY_PROPERTY(coreshell, sca)  // Efficiencies
-        EFFICIENCY_PROPERTY(coreshell, ext)
-        EFFICIENCY_PROPERTY(coreshell, abs)
-        EFFICIENCY_PROPERTY(coreshell, pr)
-        EFFICIENCY_PROPERTY(coreshell, forward)
-        EFFICIENCY_PROPERTY(coreshell, back)
-        EFFICIENCY_PROPERTY(coreshell, ratio)
-        COEFFICIENT_PROPERTY(coreshell, 1)  // Coefficients
-        COEFFICIENT_PROPERTY(coreshell, 2)
-        COEFFICIENT_PROPERTY(coreshell, 3)
-        COUPLING_AND_G(coreshell)           // Coupling and g
+        EFFICIENCY_PROPERTY(CoreShell, sca)  // Efficiencies
+        EFFICIENCY_PROPERTY(CoreShell, ext)
+        EFFICIENCY_PROPERTY(CoreShell, abs)
+        EFFICIENCY_PROPERTY(CoreShell, pr)
+        EFFICIENCY_PROPERTY(CoreShell, forward)
+        EFFICIENCY_PROPERTY(CoreShell, back)
+        EFFICIENCY_PROPERTY(CoreShell, ratio)
+        COEFFICIENT_PROPERTY(CoreShell, 1)  // Coefficients
+        COEFFICIENT_PROPERTY(CoreShell, 2)
+        COEFFICIENT_PROPERTY(CoreShell, 3)
+        COUPLING_AND_G(CoreShell)           // Coupling and g
         ;
 }
 

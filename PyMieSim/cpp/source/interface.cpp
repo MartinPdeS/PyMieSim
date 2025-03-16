@@ -4,7 +4,6 @@
 #include "source/source.h"
 
 namespace py = pybind11;
-using namespace SOURCE;
 
 PYBIND11_MODULE(interface_source, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";

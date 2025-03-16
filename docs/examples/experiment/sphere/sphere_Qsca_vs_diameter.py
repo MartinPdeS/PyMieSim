@@ -50,7 +50,7 @@ experiment_1 = Setup(scatterer=scatterer_1, source=source_1, detector=detector_1
 dataframe_1 = experiment_1.get('coupling', scale_unit=True, drop_unique_level=True)
 
 # dataframe_1._plot(x='scatterer:diameter', std='detector:NA', show=True)
-dataframe_1._plot(x='scatterer:diameter', show=True)
+dataframe_1.plot(x='scatterer:diameter', show=True)
 
 
 

@@ -3,7 +3,7 @@
 import numpy
 from pint_pandas import PintArray
 from pydantic import field_validator
-from PyMieSim.binary.SetsInterface import CppDetectorSet
+from PyMieSim.binary.interface_sets import CppDetectorSet
 from PyMieSim.units import Quantity, radian, degree
 
 

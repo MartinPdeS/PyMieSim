@@ -3,7 +3,7 @@
 
 from pydantic.dataclasses import dataclass
 from typing import List
-from PyMieSim.binary.SetsInterface import CppCoreShellSet
+from PyMieSim.binary.interface_sets import CppCoreShellSet
 from PyOptik.material.base_class import BaseMaterial
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.scatterer.base import BaseScatterer

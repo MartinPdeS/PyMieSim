@@ -61,7 +61,7 @@ def test_plot_valid_without_std():
     df = get_experiment_dataframe()
     # We assume that the dataframe has a data column named 'coupling'
     # (or the first column should be the one to plot).
-    ax = df.plot(x='source:wavelength', y='coupling', show=False)
+    ax = df.plot(x='source:wavelength', show=False)
     assert isinstance(ax, plt.Axes)
     # Check that at least one line was drawn
     assert len(ax.get_lines()) > 0, "No line was plotted for coupling data."

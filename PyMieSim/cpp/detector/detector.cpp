@@ -1,6 +1,6 @@
 #include "detector/detector.h"
 #include "utils/special_function.cpp"
-#include <utils/base_class.cpp>
+#include <utils/base_scatterer.cpp>
 
 #define EPSILON0 (double)8.854187817620389e-12
 #define C (double)299792458.0

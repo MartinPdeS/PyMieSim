@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from typing import List
 from pydantic.dataclasses import dataclass
-from PyMieSim.binary.SetsInterface import CppSphereSet
+from PyMieSim.binary.interface_sets import CppSphereSet
 from PyOptik.material.base_class import BaseMaterial
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.scatterer.base import BaseScatterer

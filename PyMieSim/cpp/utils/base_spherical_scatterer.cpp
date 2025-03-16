@@ -28,7 +28,7 @@
 #include <cmath>
 #include <vector>
 #include <complex>
-#include <utils/base_class.cpp>
+#include <utils/base_scatterer.cpp>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
@@ -46,7 +46,7 @@ public:
     BaseSphericalScatterer() = default;
     virtual ~BaseSphericalScatterer() = default;
 
-    BaseSphericalScatterer(const SOURCE::BaseSource &source, const size_t max_order, const double medium_index) :
+    BaseSphericalScatterer(const BaseSource &source, const size_t max_order, const double medium_index) :
     BaseScatterer(max_order, source, medium_index){}
 
     double get_Qforward() const {return get_Qsca() - get_Qback();};

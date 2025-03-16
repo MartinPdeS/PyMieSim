@@ -5,7 +5,7 @@ from pydantic import field_validator
 import pint_pandas
 from dataclasses import fields
 from PyMieSim.polarization import BasePolarization, Linear
-from PyMieSim.binary.SetsInterface import CppSourceSet
+from PyMieSim.binary.interface_sets import CppSourceSet
 from PyMieSim.units import Quantity, meter, watt, AU, degree
 
 

@@ -12,7 +12,7 @@ PYBIND11_MODULE(interface_sphere, module) {
     // Binding for Sphere class
     py::class_<Sphere>(module, "SPHERE")
         .def(
-            py::init<const double, const complex128, const double, const SOURCE::BaseSource&, size_t>(),
+            py::init<const double, const complex128, const double, const BaseSource&, size_t>(),
             py::arg("diameter"),
             py::arg("refractive_index"),
             py::arg("medium_refractive_index"),

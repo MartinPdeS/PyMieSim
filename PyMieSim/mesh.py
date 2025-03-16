@@ -6,7 +6,7 @@ from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 import numpy
 
-from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh
+from PyMieSim.binary.interface_fibonacci import FibonacciMesh as CPPFibonacciMesh
 from MPSPlots.render3D import SceneList as SceneList3D
 
 config_dict = ConfigDict(

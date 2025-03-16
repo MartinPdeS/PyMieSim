@@ -7,7 +7,7 @@ PYBIND11_MODULE(interface_coreshell, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
     py::class_<CoreShell>(module, "CORESHELL")
-        .def(py::init<double, double, std::complex<double>, std::complex<double>, double, SOURCE::BaseSource&>(),
+        .def(py::init<double, double, std::complex<double>, std::complex<double>, double, BaseSource&>(),
              py::arg("core_diameter"),
              py::arg("shell_thickness"),
              py::arg("core_refractive_index"),

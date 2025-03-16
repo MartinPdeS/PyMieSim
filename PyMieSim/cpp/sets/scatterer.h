@@ -1,10 +1,10 @@
-#include "properties/properties.h"
-#include "sets/base.h"
+#pragma once
 
-using complex128 = std::complex<double>;
+#include "sets/properties.h"
+#include "sets/base_set.h"
+#include "utils/base_scatterer.cpp"
 
 // Sphere class inheriting from BaseSet
-
 class SphereSet : public BaseSet
 {
 public:
@@ -12,9 +12,9 @@ public:
     ScattererProperties property;
     MediumProperties medium_property;
 
-    Set() = default;
+    SphereSet() = default;
 
-    Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+    SphereSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
         : BaseSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {this->update_shape();}
 
@@ -35,7 +35,7 @@ public:
         this->check_size(this->medium_property, expected_size, "medium_property");
     }
 
-    Sphere get_scatterer_by_index_sequential(const size_t index, const SOURCE::BaseSource& source) const {
+    Sphere get_scatterer_by_index_sequential(const size_t index, const BaseSource& source) const {
         return Sphere(
             this->diameter[index],
             this->property.get(index, source.wavelength_index),
@@ -44,7 +44,7 @@ public:
         );
     }
 
-    Sphere get_scatterer_by_index(const size_t flat_index, const SOURCE::BaseSource& source) const {
+    Sphere get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
         Sphere scatterer(
@@ -68,8 +68,8 @@ public:
     ScattererProperties property;
     MediumProperties medium_property;
 
-    Set() = default;
-    Set(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
+    CylinderSet() = default;
+    CylinderSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
         : BaseSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {this->update_shape();}
 
@@ -95,7 +95,7 @@ public:
             throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
     }
 
-    Cylinder get_scatterer_by_index_sequential(const size_t index, const SOURCE::BaseSource& source) const {
+    Cylinder get_scatterer_by_index_sequential(const size_t index, const BaseSource& source) const {
         return Cylinder(
             this->diameter[index],
             this->property.get(index, source.wavelength_index),
@@ -104,7 +104,7 @@ public:
         );
     }
 
-    Cylinder get_scatterer_by_index(const size_t flat_index, const SOURCE::BaseSource& source) const {
+    Cylinder get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
         Cylinder scatterer(
@@ -131,9 +131,9 @@ public:
     ScattererProperties shell_property;
     MediumProperties medium_property;
 
-    Set() = default;
+    CoreShellSet() = default;
 
-    Set(
+    CoreShellSet(
         const std::vector<double>& core_diameter,
         const std::vector<double>& shell_thickness,
         const ScattererProperties& core_property,
@@ -155,7 +155,7 @@ public:
         total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
     }
 
-    CoreShell get_scatterer_by_index(const size_t flat_index, SOURCE::BaseSource& source) const {
+    CoreShell get_scatterer_by_index(const size_t flat_index, BaseSource& source) const {
 
         std::vector<size_t> indices = this->calculate_indices(flat_index);
 
@@ -191,7 +191,7 @@ public:
             throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
     }
 
-    CoreShell get_scatterer_by_index_sequential(const size_t index, SOURCE::BaseSource& source) const {
+    CoreShell get_scatterer_by_index_sequential(const size_t index, BaseSource& source) const {
         CoreShell scatterer(
             core_diameter[index],
             shell_thickness[index],

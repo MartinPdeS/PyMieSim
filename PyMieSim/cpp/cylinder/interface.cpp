@@ -10,7 +10,7 @@ PYBIND11_MODULE(interface_cylinder, module) {
 
     py::class_<Cylinder>(module, "CYLINDER")
         .def(
-            py::init<double, complex128, double, SOURCE::BaseSource&>(),
+            py::init<double, complex128, double, BaseSource&>(),
             py::arg("diameter"),
             py::arg("refractive_index"),
             py::arg("medium_refractive_index"),

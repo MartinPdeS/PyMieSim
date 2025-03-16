@@ -23,20 +23,19 @@
     pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(name##n, {_max_order}); }
 
 
-#include "utils/base_class.cpp"
+#include "utils/base_scatterer.cpp"
 
 class Cylinder: public BaseScatterer
 {
     public:
         double diameter;
         complex128 refractive_index;
-        std::vector<size_t> indices;
         DEFINE_COEFFICIENTS(a1)
         DEFINE_COEFFICIENTS(b1)
         DEFINE_COEFFICIENTS(a2)
         DEFINE_COEFFICIENTS(b2)
 
-        Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
+        Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order = 0) :
         BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
         {
             this->compute_area();

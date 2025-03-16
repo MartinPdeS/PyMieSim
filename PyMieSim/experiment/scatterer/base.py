@@ -5,7 +5,7 @@ from PyOptik.material.base_class import BaseMaterial
 from pydantic import field_validator
 from PyMieSim.units import Quantity, meter, RIU
 from pint_pandas import PintArray
-from PyMieSim.binary.ScattererPropertiesInterface import CppScattererProperties, CppMediumProperties
+from PyMieSim.binary.interface_sets import CppScattererProperties, CppMediumProperties
 import numpy
 
 
