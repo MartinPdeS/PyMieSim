@@ -147,6 +147,7 @@ add_subdirectory(PyMieSim/cpp/sphere)
 add_subdirectory(PyMieSim/cpp/cylinder)
 add_subdirectory(PyMieSim/cpp/coreshell)
 add_subdirectory(PyMieSim/cpp/detector)
+add_subdirectory(PyMieSim/cpp/sets)
 
 # add_pymiesim_library_target(_ZBessel SOURCES "utils/bessel_subroutine.cpp" TYPE SHARED)
 # add_pymiesim_library_target(CppProperties SOURCES "properties/properties.cpp" TYPE SHARED)
