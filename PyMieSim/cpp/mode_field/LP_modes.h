@@ -1,9 +1,10 @@
 #pragma once
 
-#include "utils/numpy_interface.cpp"
 #include <vector>
 #include <cmath>
 #include "utils/bessel_subroutine.cpp"
+#include "utils/numpy_interface.h"
+#include <pybind11/numpy.h>
 
 #define PI (double)3.14159265358979323846264338
 typedef std::complex<double> complex128;

@@ -3,7 +3,7 @@
 set(NAME "mode_field")
 
 # Create a shared library for functionality.
-add_library("cpp_${NAME}" SHARED "${NAME}.cpp" "../utils/numpy_interface.cpp")
+add_library("cpp_${NAME}" SHARED "${NAME}.cpp" "../utils/numpy_interface.h")
 
 target_link_libraries("cpp_${NAME}" PRIVATE pybind11::module ZBessel _ZBessel cpp_fibonacci cpp_cylinder cpp_sphere cpp_coreshell cpp_full_mesh)
 

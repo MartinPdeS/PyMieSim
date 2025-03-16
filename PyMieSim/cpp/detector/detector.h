@@ -7,7 +7,7 @@
 #include "utils/special_function.cpp"
 #include "fibonacci/fibonacci.h"
 #include "utils/utils.h"
-#include "utils/numpy_interface.cpp"
+#include "utils/numpy_interface.h"
 #include <utils/base_class.cpp>
 #include <mode_field/mode_field.cpp>
 

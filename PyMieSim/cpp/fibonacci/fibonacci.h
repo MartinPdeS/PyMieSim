@@ -7,7 +7,7 @@
 #include <vector>
 #include <cmath>
 #include "utils/coordinates.cpp"
-#include "utils/numpy_interface.cpp"
+#include "utils/numpy_interface.h"
 #include "utils/base_mesh.h"
 
 namespace py = pybind11;

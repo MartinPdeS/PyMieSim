@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "source/source.cpp"
-#include "utils/numpy_interface.cpp"
+#include "utils/numpy_interface.h"
 #include "fibonacci/fibonacci.h"
 #include "full_mesh/full_mesh.h"
 #include "utils/utils.h"
