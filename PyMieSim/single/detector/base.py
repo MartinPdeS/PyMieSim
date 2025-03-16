@@ -7,7 +7,7 @@ from pydantic import field_validator
 from typing import Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
-from PyMieSim.binary.Fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
+from PyMieSim.binary.interface_fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from MPSPlots.colormaps import blue_black_red
 from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt
 from PyMieSim import units

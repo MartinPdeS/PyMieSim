@@ -5,8 +5,8 @@
 
 FullSteradian::FullSteradian(const size_t sampling, const double radius = 1.0) : BaseMesh(sampling, radius)
 {
-    dTheta = 2.0 * PI / (sampling-1);
-    dPhi   = 1.0 * PI / (sampling-1);
+    dTheta = 2.0 * PI / (sampling - 1);
+    dPhi   = 1.0 * PI / (sampling - 1);
 
     for (size_t p=0; p<sampling; p++)
         spherical_coordinates.phi.push_back(p * dPhi - PI / 2.0);
@@ -51,5 +51,10 @@ double FullSteradian::get_integral() const
     return integral;
 }
 
+// Explicit instantiations for the types you want:
+template double FullSteradian::get_integral<double>(std::vector<double>&) const;
+template complex128 FullSteradian::get_integral<complex128>(std::vector<complex128>&) const;
 
+template double FullSteradian::get_cos_integral<double>(const std::vector<double>&) const;
+template complex128 FullSteradian::get_cos_integral<complex128>(const std::vector<complex128>&) const;
 // --

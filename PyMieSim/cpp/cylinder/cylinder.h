@@ -25,46 +25,50 @@
 
 #include "utils/base_class.cpp"
 
-namespace CYLINDER
+class Cylinder: public BaseScatterer
 {
+    public:
+        double diameter;
+        complex128 refractive_index;
+        std::vector<size_t> indices;
+        DEFINE_COEFFICIENTS(a1)
+        DEFINE_COEFFICIENTS(b1)
+        DEFINE_COEFFICIENTS(a2)
+        DEFINE_COEFFICIENTS(b2)
 
-    class Scatterer: public BaseScatterer
-    {
-        public:
-            double diameter;
-            complex128 refractive_index;
-            std::vector<size_t> indices;
-            DEFINE_COEFFICIENTS(a1)
-            DEFINE_COEFFICIENTS(b1)
-            DEFINE_COEFFICIENTS(a2)
-            DEFINE_COEFFICIENTS(b2)
+        Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
+        BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
+        {
+            this->compute_area();
+            this->compute_size_parameter();
+            this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
+            this->compute_an_bn();
+        }
 
-            Scatterer(double diameter, complex128 refractive_index, double medium_refractive_index, const SOURCE::BaseSource &source, size_t max_order = 0) :
-            BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
-            {
-                this->compute_area();
-                this->compute_size_parameter();
-                this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
-                this->compute_an_bn();
-            }
+        void compute_size_parameter() override {
+            this->size_parameter = PI * this->diameter / source.wavelength;
+            this->size_parameter_squared = pow(this->size_parameter, 2);
+        }
 
-            void compute_size_parameter() override {
-                this->size_parameter = PI * this->diameter / source.wavelength;
-                this->size_parameter_squared = pow(this->size_parameter, 2);
-            }
+        void compute_area() override {
+            this->area = this->diameter;
+        }
 
-            void compute_area() override {
-                this->area = this->diameter;
-            }
+        double get_g() const override;
+        double get_Qsca() const override;
+        double get_Qext() const override;
+        double process_polarization(const complex128 value_0, const complex128 value_1) const ;
+        void compute_an_bn();
 
-            double get_g() const override;
-            double get_Qsca() const override;
-            double get_Qext() const override;
-            double process_polarization(const complex128 value_0, const complex128 value_1) const ;
-            void compute_an_bn();
+        std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
 
-            std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
+        std::vector<complex128> compute_dn(double nmx, complex128 z) const { //Page 205 of BH
+            std::vector<complex128> Dn(nmx, 0.0);
 
-    };
-}
+            for (double n = nmx - 1; n > 0; n--)
+                Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
 
+            return Dn;
+        }
+
+};

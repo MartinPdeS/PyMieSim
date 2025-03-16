@@ -7,7 +7,6 @@
 #include <vector>
 #include <cmath>
 #include "utils/coordinates.cpp"
-#include "utils/utils.h"
 #include "utils/numpy_interface.cpp"
 #include "utils/base_mesh.h"
 

@@ -43,7 +43,7 @@ class Cylinder(BaseScatterer):
         """
         Binds the Python representation of the cylinder to its C++ counterpart using provided properties.
         """
-        from PyMieSim.binary.CylinderInterface import CYLINDER
+        from PyMieSim.binary.interface_cylinder import CYLINDER
 
         self.binding = CYLINDER(
             refractive_index=self.index.to_base_units().magnitude,

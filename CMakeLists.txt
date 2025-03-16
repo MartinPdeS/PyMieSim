@@ -57,38 +57,49 @@ message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION
 message(STATUS "Binary will be installed in location: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
 
-function(add_pymiesim_object_target name)
+function(add_pymiesim_library_target name)
     # Parse keyword arguments:
     # - SOURCES: list of source file paths (relative to ${PYMIESIM_CXX_DIR})
-    # - TARGETS: list of additional targets that this object library depends on
-    cmake_parse_arguments(ADD_PYMIESIM_OBJECT
-        ""
-        "SOURCES;TARGETS"
+    # - TARGETS: list of additional targets that this library depends on
+    # - TYPE: optional type specifier, either SHARED or STATIC (default: STATIC)
+    cmake_parse_arguments(ADD_PYMIESIM_LIB
+        "SHARED"
+        "SOURCES;TARGETS;TYPE"
         ""
         ${ARGN})
 
     # Build a list of full paths for all source files.
     set(ALL_SOURCES "")
-    foreach(src IN LISTS ADD_PYMIESIM_OBJECT_SOURCES)
+    foreach(src IN LISTS ADD_PYMIESIM_LIB_SOURCES)
         list(APPEND ALL_SOURCES "${PYMIESIM_CXX_DIR}/${src}")
     endforeach()
 
     # If no sources were provided, create a dummy source file.
     if (ALL_SOURCES STREQUAL "")
         set(dummy_source "${CMAKE_CURRENT_BINARY_DIR}/${name}_dummy.cpp")
-        file(WRITE ${dummy_source} "// Dummy source file for object library ${name}\n")
+        file(WRITE ${dummy_source} "// Dummy source file for library ${name}\n")
         set(ALL_SOURCES ${dummy_source})
     endif()
 
-    # Create the object library.
-    add_library(${name} OBJECT ${ALL_SOURCES})
+    # Determine library type: If the TYPE argument is provided, use that.
+    # Otherwise, use SHARED if the SHARED keyword was set, else default to STATIC.
+    if (ADD_PYMIESIM_LIB_TYPE)
+        set(LIB_TYPE ${ADD_PYMIESIM_LIB_TYPE})
+    elseif(ADD_PYMIESIM_LIB_SHARED)
+        set(LIB_TYPE SHARED)
+    else()
+        set(LIB_TYPE STATIC)
+    endif()
+
+    # Create the library.
+    add_library(${name} ${LIB_TYPE} ${ALL_SOURCES})
 
     # Add dependencies on the provided targets.
-    foreach(dep IN LISTS ADD_PYMIESIM_OBJECT_TARGETS)
-        add_dependencies(${name} ${dep})
+    foreach(dep IN LISTS ADD_PYMIESIM_LIB_TARGETS)
+        target_link_libraries(${name} PRIVATE ${dep} pybind11::module)
     endforeach()
 
-    target_link_libraries(${name} PRIVATE pybind11::module)
+    # Optionally, add any common include directories or compile definitions here.
 endfunction()
 
 
@@ -126,53 +137,40 @@ add_library(ZBessel STATIC
     "${CMAKE_CURRENT_SOURCE_DIR}/libraries/zbesh.for"
 )
 target_link_options(ZBessel PUBLIC ${STATIC_LINK_OPTIONS})
+add_pymiesim_library_target(_ZBessel SOURCES "utils/bessel_subroutine.cpp" TYPE SHARED)
 
-add_pymiesim_object_target(_ZBessel SOURCES "utils/bessel_subroutine.cpp")
+add_subdirectory(PyMieSim/cpp/mode_field)
+add_subdirectory(PyMieSim/cpp/full_mesh)
+add_subdirectory(PyMieSim/cpp/fibonacci)
+add_subdirectory(PyMieSim/cpp/source)
+add_subdirectory(PyMieSim/cpp/sphere)
+add_subdirectory(PyMieSim/cpp/cylinder)
+add_subdirectory(PyMieSim/cpp/coreshell)
+add_subdirectory(PyMieSim/cpp/detector)
 
-add_pymiesim_object_target(CppProperties SOURCES "properties/properties.cpp")
-add_pymiesim_object_target(CppUtils SOURCES "utils/utils.cpp")
-add_pymiesim_object_target(CppVSH SOURCES "utils/VSH.cpp")
-add_pymiesim_object_target(CppFibonacci SOURCES "fibonacci/fibonacci.cpp" TARGETS CppUtils)
-add_pymiesim_object_target(CppFullMesh SOURCES "full_mesh/full_mesh.cpp" TARGETS CppUtils)
-add_pymiesim_object_target(CppSource SOURCES "source/source.cpp" TARGETS CppUtils)
-add_pymiesim_object_target(CppSphere SOURCES "sphere/sphere.cpp" TARGETS CppUtils CppVSH)
-add_pymiesim_object_target(CppCoreShell SOURCES "coreshell/coreshell.cpp" TARGETS CppUtils CppVSH)
-add_pymiesim_object_target(CppCylinder SOURCES "cylinder/cylinder.cpp" TARGETS CppUtils CppVSH)
-
-add_pymiesim_object_target(CppDetector SOURCES "detector/detector.cpp" TARGETS CppUtils _ZBessel CppSphere CppCoreShell CppCylinder)
-
-add_pymiesim_object_target(CppBaseSet SOURCES "sets/base.cpp" TARGETS CppProperties)
-add_pymiesim_object_target(CppDetectorSet SOURCES "sets/detector.cpp" TARGETS CppBaseSet)
-add_pymiesim_object_target(CppScattererSet SOURCES "sets/scatterer.cpp" TARGETS CppBaseSet)
-add_pymiesim_object_target(CppSourceSet SOURCES "sets/source.cpp" TARGETS CppBaseSet)
+# add_pymiesim_library_target(_ZBessel SOURCES "utils/bessel_subroutine.cpp" TYPE SHARED)
+# add_pymiesim_library_target(CppProperties SOURCES "properties/properties.cpp" TYPE SHARED)
+# add_pymiesim_library_target(CppUtils SOURCES "utils/utils.cpp" TYPE SHARED)
+# add_pymiesim_library_target(CppVSH SOURCES "utils/VSH.cpp" TYPE SHARED)
+# add_pymiesim_library_target(CppFibonacci SOURCES "fibonacci/fibonacci.cpp" TARGETS CppUtils TYPE SHARED)
+# add_pymiesim_library_target(CppFullMesh SOURCES "full_mesh/full_mesh.cpp" TARGETS CppUtils TYPE SHARED)
+# add_pymiesim_library_target(CppSource SOURCES "source/source.cpp" TARGETS CppUtils TYPE SHARED)
+# add_pymiesim_library_target(CppSphere SOURCES "sphere/sphere.cpp" TARGETS CppUtils CppVSH TYPE SHARED)
+# add_pymiesim_library_target(CppCoreShell SOURCES "coreshell/coreshell.cpp" TARGETS CppUtils CppVSH TYPE SHARED)
+# add_pymiesim_library_target(CppCylinder SOURCES "cylinder/cylinder.cpp" TARGETS CppUtils CppVSH TYPE SHARED)
+# add_pymiesim_library_target(CppDetector SOURCES "detector/detector.cpp" TARGETS CppUtils _ZBessel CppSphere CppCoreShell CppCylinder TYPE SHARED)
+# add_pymiesim_library_target(CppBaseSet SOURCES "sets/base.cpp" TARGETS CppProperties TYPE SHARED)
+# add_pymiesim_library_target(CppDetectorSet SOURCES "sets/detector.cpp" TARGETS CppBaseSet TYPE SHARED)
+# add_pymiesim_library_target(CppScattererSet SOURCES "sets/scatterer.cpp" TARGETS CppBaseSet TYPE SHARED)
+# add_pymiesim_library_target(CppSourceSet SOURCES "sets/source.cpp" TARGETS CppBaseSet TYPE SHARED)
 
 
 # Add PyMieSim modules
-add_pymiesim_module(PropertiesInterface SOURCES "properties/interface.cpp" TARGETS CppProperties)
-add_pymiesim_module(FibonacciInterface SOURCES "fibonacci/interface.cpp" TARGETS CppFibonacci)
-add_pymiesim_module(SourceInterface SOURCES "source/interface.cpp" TARGETS CppSource)
-add_pymiesim_module(DetectorInterface SOURCES "detector/interface.cpp" TARGETS CppDetector)
-add_pymiesim_module(SphereInterface SOURCES "sphere/interface.cpp" TARGETS CppSphere)
-add_pymiesim_module(CylinderInterface SOURCES "cylinder/interface.cpp" TARGETS CppCylinder)
-add_pymiesim_module(CoreShellInterface SOURCES "coreshell/interface.cpp" TARGETS CppCoreShell)
-add_pymiesim_module(ExperimentInterface SOURCES "experiment/interface.cpp")
-
-
-# add_pymiesim_module(
-#     DetectorInterface
-#     TARGETS CppSphere
-#     SOURCES "single/includes/detectors.cpp"
-#             "single/includes/sphere.cpp"
-#             "single/includes/coreshell.cpp"
-#             "single/includes/cylinder.cpp"
-# )
-
-# add_pymiesim_module(SphereInterface "single/interface/sphere.cpp")
-# add_pymiesim_module(CylinderInterface "single/interface/cylinder.cpp")
-# add_pymiesim_module(CoreShellInterface "single/interface/coreshell.cpp")
-# add_pymiesim_module(ModeField "single/interface/mode_field.cpp")
-# add_pymiesim_module(SourceInterface "single/interface/source.cpp")
-# add_pymiesim_module(Fibonacci "single/interface/mesh.cpp")
-# add_pymiesim_module(SetsInterface "experiment/interface/sets.cpp")
-# add_pymiesim_module(ScattererPropertiesInterface "experiment/interface/scatterer_properties.cpp")
-# add_pymiesim_module(Experiment "experiment/interface/experiment.cpp")
+# add_pymiesim_module(PropertiesInterface SOURCES "properties/interface.cpp" TARGETS CppProperties)
+# add_pymiesim_module(FibonacciInterface SOURCES "fibonacci/interface.cpp" TARGETS CppFibonacci)
+# add_pymiesim_module(SourceInterface SOURCES "source/interface.cpp" TARGETS CppSource)
+# add_pymiesim_module(DetectorInterface SOURCES "detector/interface.cpp" TARGETS CppDetector CppUtils _ZBessel CppSphere CppCoreShell CppCylinder)
+# add_pymiesim_module(SphereInterface SOURCES "sphere/interface.cpp" TARGETS CppSphere)
+# add_pymiesim_module(CylinderInterface SOURCES "cylinder/interface.cpp" TARGETS CppCylinder)
+# add_pymiesim_module(CoreShellInterface SOURCES "coreshell/interface.cpp" TARGETS CppCoreShell)
+# add_pymiesim_module(ExperimentInterface SOURCES "experiment/interface.cpp")

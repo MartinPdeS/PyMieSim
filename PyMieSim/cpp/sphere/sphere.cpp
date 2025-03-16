@@ -3,7 +3,7 @@
 typedef std::complex<double> complex128;
 
 
-void SPHERE::Scatterer::compute_an_bn(){
+void Sphere::compute_an_bn(){
     an.resize(max_order);
     bn.resize(max_order);
 
@@ -14,7 +14,7 @@ void SPHERE::Scatterer::compute_an_bn(){
 
     size_t nmx = std::max( max_order, (size_t) std::abs(mx) ) + 16;
 
-    std::vector<complex128> Dn = VSH::SPHERICAL::compute_dn(nmx, mx);
+    std::vector<complex128> Dn = this->compute_dn(nmx, mx);
 
     psi_1  = sin(size_parameter);
     chi_1 = cos(size_parameter);
@@ -43,7 +43,7 @@ void SPHERE::Scatterer::compute_an_bn(){
     }
 }
 
-void SPHERE::Scatterer::compute_cn_dn() {
+void Sphere::compute_cn_dn() {
     cn.resize(max_order);
     dn.resize(max_order);
 

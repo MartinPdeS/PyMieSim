@@ -5,7 +5,7 @@ from typing import Union
 import numpy
 from pydantic.dataclasses import dataclass
 from PyMieSim.polarization import BasePolarization
-from PyMieSim.binary.SourceInterface import BindedPlanewave  # noqa: F401
+from PyMieSim.binary.interface_source import BindedPlanewave # type: ignore
 import pyvista
 from PyMieSim.units import Quantity
 from PyMieSim.single.source.base import BaseSource, config_dict

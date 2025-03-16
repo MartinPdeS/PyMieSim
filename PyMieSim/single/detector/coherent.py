@@ -5,8 +5,8 @@ import numpy
 import logging
 from typing import Optional
 from pydantic.dataclasses import dataclass
-from PyMieSim.binary.DetectorInterface import BindedDetector
-from PyMieSim.binary import ModeField
+from PyMieSim.binary.interface_detector import BindedDetector # type: ignore
+from PyMieSim.binary import interface_mode_field
 from PyMieSim.units import radian
 from PyMieSim.single.detector.base import BaseDetector, config_dict
 
@@ -59,13 +59,13 @@ class CoherentMode(BaseDetector):
         match self.mode_family.lower():
             case 'lp':
                 self.azimuthal_number, self.radial_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = ModeField.get_LP
+                self.cpp_mode_field_getter = interface_mode_field.get_LP
             case 'lg':
                 self.azimuthal_number, self.radial_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = ModeField.get_LG
+                self.cpp_mode_field_getter = interface_mode_field.get_LG
             case 'hg':
                 self.x_number, self.y_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = ModeField.get_HG
+                self.cpp_mode_field_getter = interface_mode_field.get_HG
 
         self.binding = BindedDetector(
             mode_number=self.mode_number,

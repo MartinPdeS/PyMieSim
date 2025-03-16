@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 from dataclasses import field
 from PyMieSim.polarization import BasePolarization
 from PyMieSim.special_functions import NA_to_angle
-from PyMieSim.binary.SourceInterface import BindedGaussian  # noqa: F401
+from PyMieSim.binary.interface_source import BindedGaussian # type: ignore
 import pyvista
 from PyMieSim.units import Quantity
 from PyMieSim.single.source.base import BaseSource, config_dict

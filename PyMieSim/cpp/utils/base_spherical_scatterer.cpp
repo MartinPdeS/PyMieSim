@@ -25,7 +25,6 @@
 
 #include "utils/utils.h"
 #include "source/source.h"
-#include "utils/VSH.h"
 #include <cmath>
 #include <vector>
 #include <complex>
@@ -117,7 +116,7 @@ public:
             mu.push_back( cos( phi - PI / 2.0 ) );
 
         for (size_t i = 0; i < phi.size(); i++){
-            auto [pin, taun] = VSH::SPHERICAL::MiePiTau(mu[i], max_order);
+            auto [pin, taun] = this->MiePiTau(mu[i], max_order);
             complex128 S1_temp = 0., S2_temp = 0.;
 
             for (size_t m = 0; m < max_order ; m++){
@@ -129,6 +128,51 @@ public:
         }
 
         return std::make_tuple(std::move(S1), std::move(S2));
+    }
+
+
+    std::tuple<std::vector<complex128>, std::vector<complex128>>
+    MiePiTau(const double& mu, const size_t& max_order) const {
+        std::vector<complex128> pin, taun;
+        pin.reserve(max_order);
+        taun.reserve(max_order);
+
+        pin.push_back( 1. );
+        pin.push_back( 3. * mu );
+
+        taun.push_back( mu );
+        taun.push_back( 3.0 * cos(2. * acos(mu) ) );
+
+        for (size_t order = 2; order < max_order; order++) {
+            pin.push_back( ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order );
+
+            taun.push_back( ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1] );
+        }
+
+        return std::make_tuple(pin, taun);
+    }
+
+    void MiePiTau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {
+      pin[0] = 1.;
+      pin[1] = 3. * mu;
+
+      taun[0] = mu;
+      taun[1] = 3.0 * cos(2. * acos(mu) );
+
+      for (size_t order = 2; order < max_order; order++) {
+        pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
+
+        taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
+        }
+    }
+
+    std::vector<complex128> compute_dn(double nmx, complex128 z)  const { //Page 127 of BH
+        std::vector<complex128> Dn(nmx, 0.0);
+
+        for (double n = nmx - 1.; n > 1.; n--)
+            Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
+
+        return Dn;
     }
 
 };

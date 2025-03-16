@@ -1,4 +1,5 @@
 #include "fibonacci/fibonacci.h"
+#include "utils/utils.h"
 
 #define PI (double)3.14159265358979323846264338
 

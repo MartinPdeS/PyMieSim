@@ -3,7 +3,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(Fibonacci, module) {
+PYBIND11_MODULE(interface_fibonacci, module) {
     module.doc() = "Generalized Lorenz-Mie Theory (GLMT) C++ binding module for light scattering from a spherical scatterer";
 
     py::class_<FibonacciMesh>(module, "FibonacciMesh")

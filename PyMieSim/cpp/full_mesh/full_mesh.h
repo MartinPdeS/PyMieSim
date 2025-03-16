@@ -1,8 +1,10 @@
 #pragma once
 
+#include <vector>
+#include <complex>
 #include "utils/base_mesh.h"
 
-#define PI (double)3.14159265358979323846264338
+typedef std::complex<double> complex128;
 
 class FullSteradian : public BaseMesh
 {

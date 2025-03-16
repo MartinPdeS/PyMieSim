@@ -5,9 +5,7 @@
 #include "cylinder/cylinder.h"
 #include "detector/detector.h"
 
-using namespace DETECTOR;
-
-PYBIND11_MODULE(DetectorInterface, module) {
+PYBIND11_MODULE(interface_detector, module) {
     module.doc() = "Lorenz-Mie Theory (LMT) C++ binding module for PyMieSim Python package.";
 
     py::class_<Detector>(module, "BindedDetector")
@@ -25,9 +23,9 @@ PYBIND11_MODULE(DetectorInterface, module) {
              py::arg("medium_refractive_index") = 1.0,
              "Constructs a Detector with given parameters. The `mean_coupling` parameter determines the coupling type (true for point, false for mean).")
 
-        .def("CouplingSphere", &Detector::get_coupling<SPHERE::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a sphere scatterer.")
-        .def("CouplingCylinder", &Detector::get_coupling<CYLINDER::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a cylinder scatterer.")
-        .def("CouplingCoreShell", &Detector::get_coupling<CORESHELL::Scatterer>, py::arg("scatterer"), "Calculates the coupling of the detector with a core-shell scatterer.")
+        .def("CouplingSphere", &Detector::get_coupling<Sphere>, py::arg("scatterer"), "Calculates the coupling of the detector with a sphere scatterer.")
+        .def("CouplingCylinder", &Detector::get_coupling<Cylinder>, py::arg("scatterer"), "Calculates the coupling of the detector with a cylinder scatterer.")
+        .def("CouplingCoreShell", &Detector::get_coupling<CoreShell>, py::arg("scatterer"), "Calculates the coupling of the detector with a core-shell scatterer.")
         .def_readwrite("scalar_field", &Detector::scalar_field, "Stores the scalar field values corresponding to the light intensity distribution detected.")
         .def_readwrite("coherent", &Detector::coherent, "Boolean flag indicating whether the detector operates in a coherent detection mode.")
         .def_readonly("NA", &Detector::NA, "Numerical Aperture (NA) of the detector which determines the angular acceptance of light.")

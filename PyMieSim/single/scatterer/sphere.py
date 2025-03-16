@@ -43,7 +43,7 @@ class Sphere(BaseScatterer):
         """
         Binds the Python representation of the sphere to its C++ counterpart using provided properties.
         """
-        from PyMieSim.binary.SphereInterface import SPHERE
+        from PyMieSim.binary.interface_sphere import SPHERE
 
         self.binding = SPHERE(
             diameter=self.diameter.to_base_units().magnitude,

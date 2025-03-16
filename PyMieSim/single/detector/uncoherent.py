@@ -5,7 +5,7 @@ import numpy
 from typing import Optional
 from dataclasses import field
 from pydantic.dataclasses import dataclass
-from PyMieSim.binary.DetectorInterface import BindedDetector
+from PyMieSim.binary.interface_detector import BindedDetector
 from PyMieSim.units import Quantity, degree, AU, radian
 from PyMieSim.single.detector.base import BaseDetector, config_dict
 

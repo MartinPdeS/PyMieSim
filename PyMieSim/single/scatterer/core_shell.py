@@ -53,7 +53,7 @@ class CoreShell(BaseScatterer):
         """
         Bind the C++ scatterer class.
         """
-        from PyMieSim.binary.CoreShellInterface import CORESHELL
+        from PyMieSim.binary.interface_coreshell import CORESHELL
 
         self.binding = CORESHELL(
             shell_refractive_index=self.shell_index.to_base_units().magnitude,
