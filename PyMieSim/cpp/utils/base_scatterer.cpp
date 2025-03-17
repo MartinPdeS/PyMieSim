@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "source/source.cpp"
+#include "source/source.h"
 #include "utils/numpy_interface.h"
 #include "fibonacci/fibonacci.h"
 #include "full_mesh/full_mesh.h"

@@ -44,12 +44,6 @@ class Gaussian: public BaseSource {
         : BaseSource(wavelength, jones_vector, compute_amplitude_from_power(wavelength, NA, optical_power)), NA(NA), optical_power(optical_power)
         {}
 
-        static double compute_amplitude_from_power(double wavelength, double NA, double optical_power)
-        {
-            double omega = 0.61 * wavelength / NA;
-            double area = 3.1415926535 * pow(omega / 2, 2);
-            double intensity = optical_power / area;
-            return sqrt(2.0 * intensity / (C_ * EPSILON0));
-        }
+        double compute_amplitude_from_power(double wavelength, double NA, double optical_power);
     };
 
