@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.471** total execution time for 7 files **from gallery/single/scatterer**:
+**00:03.485** total execution time for 7 files **from gallery/single/scatterer**:
 
 .. container::
 
@@ -33,22 +33,22 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_single_scatterer_footprint.py` (``footprint.py``)
-     - 00:01.297
+     - 00:01.318
      - 0.0
    * - :ref:`sphx_glr_gallery_single_scatterer_farfield.py` (``farfield.py``)
-     - 00:00.724
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_scatterer_s1s2.py` (``s1s2.py``)
-     - 00:00.362
+     - 00:00.699
      - 0.0
    * - :ref:`sphx_glr_gallery_single_scatterer_source.py` (``source.py``)
-     - 00:00.361
+     - 00:00.380
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_scatterer_s1s2.py` (``s1s2.py``)
+     - 00:00.360
      - 0.0
    * - :ref:`sphx_glr_gallery_single_scatterer_stokes.py` (``stokes.py``)
-     - 00:00.342
+     - 00:00.335
      - 0.0
    * - :ref:`sphx_glr_gallery_single_scatterer_spf.py` (``spf.py``)
-     - 00:00.320
+     - 00:00.328
      - 0.0
    * - :ref:`sphx_glr_gallery_single_scatterer_properties.py` (``properties.py``)
      - 00:00.065
