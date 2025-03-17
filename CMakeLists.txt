@@ -10,13 +10,40 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 
 
-# Directories
+# Set the output directory for libraries
 set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
-set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-set(CMAKE_INSTALL_RPATH "${PYMIESIM_BIN_DIR}")
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+
+# For macOS and Linux, set up the rpath to point to the same folder as the module.
+if(APPLE)
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+    # @loader_path makes the dynamic linker look in the same directory as the loaded binary.
+    set(CMAKE_INSTALL_RPATH "@loader_path")
+elseif(UNIX)
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+    # $ORIGIN makes the dynamic linker look in the binary’s directory.
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Compiler and linker options
 add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
@@ -43,6 +70,9 @@ message(STATUS "PyMieSim includes directory is: ${PYMIESIM_CXX_DIR}")
 message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION}")
 message(STATUS "Binary will be installed in location: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
+add_library(utils STATIC PyMieSim/cpp/utils/utils.cpp)
+target_include_directories(utils PUBLIC PyMieSim/cpp/utils/utils.h)
+
 # add_subdirectory(PyMieSim/cpp/_bessel)
 add_subdirectory(PyMieSim/cpp/bessel)
 add_subdirectory(PyMieSim/cpp/mode_field)
@@ -53,5 +83,5 @@ add_subdirectory(PyMieSim/cpp/sphere)
 add_subdirectory(PyMieSim/cpp/cylinder)
 add_subdirectory(PyMieSim/cpp/coreshell)
 add_subdirectory(PyMieSim/cpp/detector)
-# add_subdirectory(PyMieSim/cpp/sets)
-# add_subdirectory(PyMieSim/cpp/experiment)
+add_subdirectory(PyMieSim/cpp/sets)
+add_subdirectory(PyMieSim/cpp/experiment)

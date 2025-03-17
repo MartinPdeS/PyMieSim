@@ -1,6 +1,5 @@
 #pragma once
 
-#include "utils/special_function.cpp"
 #include "utils/numpy_interface.h"
 
 namespace py = pybind11;

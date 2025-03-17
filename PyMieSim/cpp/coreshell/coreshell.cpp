@@ -1,5 +1,5 @@
 #include "coreshell/coreshell.h"
-
+#include "utils/special_function.cpp"
 
 void CoreShell::apply_medium() {
     this->core_refractive_index /= this->medium_refractive_index;

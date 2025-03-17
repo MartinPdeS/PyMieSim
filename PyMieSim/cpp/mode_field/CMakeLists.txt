@@ -3,7 +3,7 @@
 set(NAME "mode_field")
 
 # Create a shared library for functionality.
-add_library("cpp_${NAME}" SHARED "${NAME}.cpp" "../utils/numpy_interface.h")
+add_library("cpp_${NAME}" STATIC "${NAME}.cpp")
 
 target_link_libraries("cpp_${NAME}" PRIVATE pybind11::module)
 

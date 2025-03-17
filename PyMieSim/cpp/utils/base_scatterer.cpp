@@ -208,12 +208,29 @@ public:
             radius
         );
 
-        Squared(phi_field);
-        Squared(theta_field);
+        square_vector(phi_field);
+        square_vector(theta_field);
 
-        std::vector<complex128> spf = Add(phi_field, theta_field);
+        std::vector<complex128> spf = add_vectors(phi_field, theta_field);
 
         return std::make_tuple(std::move(spf), std::move(full_mesh));
+    }
+
+    template <class T> std::vector<T> add_vectors(std::vector<T>& vector0, std::vector<T>& vector1) const
+    {
+        std::vector<T> output_vector;
+        output_vector.reserve( vector0.size() );
+
+        for (size_t iter=0; iter<vector0.size(); iter++)
+            output_vector.push_back( vector0[iter] + vector1[iter] );
+
+        return output_vector;
+    }
+
+    template <class T> void square_vector(std::vector<T>& vector) const
+    {
+        for (size_t iter=0; iter<vector.size(); iter++)
+            vector[iter] = pow(abs(vector[iter]), 2);
     }
 
 };
