@@ -16,20 +16,6 @@ set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
 
 
-# For macOS and Linux, set up the rpath to point to the same folder as the module.
-if(APPLE)
-    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-    # @loader_path makes the dynamic linker look in the same directory as the loaded binary.
-    set(CMAKE_INSTALL_RPATH "@loader_path")
-elseif(UNIX)
-    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-    # $ORIGIN makes the dynamic linker look in the binary’s directory.
-    set(CMAKE_INSTALL_RPATH "$ORIGIN")
-endif()
-
-
-
-
 # Compiler and linker options
 add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
