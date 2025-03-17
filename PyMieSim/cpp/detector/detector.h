@@ -8,7 +8,7 @@
 #include "fibonacci/fibonacci.h"
 #include "utils/numpy_interface.h"
 #include <utils/base_scatterer.cpp>
-#include <mode_field/mode_field.cpp>
+#include <mode_field/mode_field.h>
 
 
 
