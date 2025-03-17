@@ -6,6 +6,12 @@
 }
 ,
 {
+  "name": "v3.3.0.rc0",
+  "version": "v3.3.0.rc0",
+  "url": "https://martinpdes.github.io/PyMieSim/docs/v3.3.0.rc0"
+}
+,
+{
   "name": "v3.2.7",
   "version": "v3.2.7",
   "url": "https://martinpdes.github.io/PyMieSim/docs/v3.2.7"
