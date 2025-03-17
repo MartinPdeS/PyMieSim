@@ -58,9 +58,9 @@ message(STATUS "Binary will be installed in location: ${CMAKE_LIBRARY_OUTPUT_DIR
 
 # add_subdirectory(PyMieSim/cpp/_bessel)
 add_subdirectory(PyMieSim/cpp/bessel)
-# add_subdirectory(PyMieSim/cpp/mode_field)
-# add_subdirectory(PyMieSim/cpp/full_mesh)
-# add_subdirectory(PyMieSim/cpp/fibonacci)
+add_subdirectory(PyMieSim/cpp/mode_field)
+add_subdirectory(PyMieSim/cpp/full_mesh)
+add_subdirectory(PyMieSim/cpp/fibonacci)
 # add_subdirectory(PyMieSim/cpp/source)
 # add_subdirectory(PyMieSim/cpp/sphere)
 # add_subdirectory(PyMieSim/cpp/cylinder)
