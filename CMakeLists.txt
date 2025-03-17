@@ -30,21 +30,6 @@ endif()
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Compiler and linker options
 add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")

@@ -8,23 +8,7 @@
 typedef std::complex<double> complex128;
 #define PI (double)3.14159265358979323846264338
 
-template <typename T, typename... Ts>
-T concatenate_vector(const T& first_vector, const Ts&... other_vectors)
-{
-    T output_vector = first_vector;
-    (output_vector.insert(output_vector.end(), other_vectors.begin(), other_vectors.end()), ...);
-    return output_vector;
-}
 
-template <typename T>
-T get_vector_sigma(const std::vector<T> &vector)
-{
-    T sigma = 1;
-    for (auto e: vector)
-      sigma *= e;
-
-    return sigma;
-}
 
 template <class T>
 std::vector <std::vector<T>> matrix_multiply(std::vector<std::vector<T>> &a, std::vector <std::vector<T>> &b)

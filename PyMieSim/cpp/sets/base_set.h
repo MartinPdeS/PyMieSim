@@ -22,6 +22,15 @@ class BaseSet{
 
         BaseSet(bool is_sequential){this->is_sequential = is_sequential;}
 
+        size_t get_vector_sigma(const std::vector<size_t> &vector)
+        {
+            size_t sigma = 1;
+            for (auto e: vector)
+              sigma *= e;
+
+            return sigma;
+        }
+
         // Calculate the multi-dimensional indices for the current index
         std::vector<size_t> calculate_indices(size_t flat_index) const
         {

@@ -5,11 +5,7 @@ set(NAME "experiment")
 # Create a shared library for functionality.
 add_library("cpp_${NAME}" SHARED "${NAME}.cpp")
 
-# Add numpy_interface.cpp as a private source so that it’s compiled only for this target.
-target_sources("cpp_${NAME}" PRIVATE "../utils/numpy_interface.h")
-
-target_link_libraries("cpp_${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX cpp_cylinder cpp_sphere cpp_coreshell cpp_detector cpp_source cpp_full_mesh)
-
+target_link_libraries("cpp_${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX utils cpp_cylinder cpp_sphere cpp_coreshell cpp_detector cpp_source cpp_full_mesh)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")

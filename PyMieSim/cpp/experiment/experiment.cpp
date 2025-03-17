@@ -87,7 +87,7 @@ class Experiment
 
         // Flattens a multi-index into a single index.
         template <typename... MultiIndexVectors>
-        static size_t flatten_multi_index(const std::vector<size_t>& dimensions,const MultiIndexVectors&... multi_indices) {
+        size_t flatten_multi_index(const std::vector<size_t>& dimensions, const MultiIndexVectors&... multi_indices) const {
             std::vector<size_t> multi_index = concatenate_vector(multi_indices...);
             size_t flatten_index = 0;
             size_t stride = 1;
@@ -96,6 +96,14 @@ class Experiment
                 stride *= dimensions[i];
             }
             return flatten_index;
+        }
+
+        template <typename T, typename... Ts>
+        T concatenate_vector(const T& first_vector, const Ts&... other_vectors) const
+        {
+            T output_vector = first_vector;
+            (output_vector.insert(output_vector.end(), other_vectors.begin(), other_vectors.end()), ...);
+            return output_vector;
         }
 
         template<typename dtype, typename ScattererSet, typename Function>
