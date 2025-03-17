@@ -32,7 +32,7 @@ Importing the package: PyMieSim
 .. code-block:: Python
 
     from PyMieSim.single.detector import CoherentMode
-    from PyMieSim.units import AU, degree
+    from PyMieSim.units import AU, degree, RIU
 
 
 
@@ -45,16 +45,17 @@ Importing the package: PyMieSim
 
 Initializing the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-23
+.. GENERATED FROM PYTHON SOURCE LINES 15-24
 
 .. code-block:: Python
 
     detector = CoherentMode(
         mode_number="LP01",  # Specifying LP01 mode
         sampling=500 * AU,  # Number of sampling points
-        NA=0.5 * AU,  # Numerical Aperture
+        NA=1.0 * AU,  # Numerical Aperture
         gamma_offset=90 * degree,  # Gamma offset
         phi_offset=0 * degree,  # Phi offset in degrees
+        medium_refractive_index=1.3 * RIU
     )
 
 
@@ -64,11 +65,11 @@ Initializing the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Plotting the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
+.. GENERATED FROM PYTHON SOURCE LINES 26-27
 
 .. code-block:: Python
 
@@ -88,7 +89,7 @@ Plotting the detector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.184 seconds)
+   **Total running time of the script:** (0 minutes 0.183 seconds)
 
 
 .. _sphx_glr_download_gallery_single_detector_LP01.py:

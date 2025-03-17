@@ -461,8 +461,8 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.DetectorInterface</span><span class="w"> </span><span class="kn">import</span> <span class="n">BindedDetector</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModeField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">BindedDetector</span> <span class="c1"># type: ignore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary</span><span class="w"> </span><span class="kn">import</span> <span class="n">interface_mode_field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">radian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseDetector</span><span class="p">,</span> <span class="n">config_dict</span>
 
@@ -517,13 +517,13 @@
         <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
             <span class="k">case</span> <span class="s1">&#39;lp&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">ModeField</span><span class="o">.</span><span class="n">get_LP</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">interface_mode_field</span><span class="o">.</span><span class="n">get_LP</span>
             <span class="k">case</span> <span class="s1">&#39;lg&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">ModeField</span><span class="o">.</span><span class="n">get_LG</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">interface_mode_field</span><span class="o">.</span><span class="n">get_LG</span>
             <span class="k">case</span> <span class="s1">&#39;hg&#39;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">x_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">ModeField</span><span class="o">.</span><span class="n">get_HG</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">interface_mode_field</span><span class="o">.</span><span class="n">get_HG</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">BindedDetector</span><span class="p">(</span>
             <span class="n">mode_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">,</span>
@@ -535,7 +535,8 @@
             <span class="n">polarization_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">coherent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span>
+            <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="CoherentMode.get_structured_scalarfield">

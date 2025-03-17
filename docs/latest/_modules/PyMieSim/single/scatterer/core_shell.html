@@ -513,14 +513,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bind the C++ scatterer class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.CoreShellInterface</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORESHELL</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_coreshell</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORESHELL</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">CORESHELL</span><span class="p">(</span>
-            <span class="n">shell_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">core_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">shell_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">core_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">shell_thickness</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">core_diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">medium_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">binding</span>
         <span class="p">)</span></div>
 
