@@ -4,7 +4,7 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| PyMieSim/experiment/dataframe\_subclass.py     |       54 |        3 |       14 |        3 |     91% |61-62, 64->69, 77 |
+| PyMieSim/experiment/dataframe\_subclass.py     |       66 |       14 |       22 |        6 |     75% |61-62, 64->69, 77, 154-161, 192, 209-214 |
 | PyMieSim/experiment/detector/base.py           |       43 |        0 |       16 |        1 |     98% |  125->128 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       19 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       22 |        0 |        0 |        0 |    100% |           |
@@ -32,7 +32,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1254** |   **41** |  **196** |   **28** | **95%** |           |
+|                                      **TOTAL** | **1266** |   **52** |  **204** |   **31** | **94%** |           |
 
 
 ## Setup coverage badge
