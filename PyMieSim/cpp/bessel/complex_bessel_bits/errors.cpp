@@ -15,6 +15,7 @@
 #define ERRORS_H
 
 #include <string>
+#include <array>
 #include <unordered_map>
 
 // Error handling main code inspired by this:
@@ -40,111 +41,64 @@ static const std::unordered_map<std::string, std::array<BesselErrors, 6>> errorM
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{ Overflow,
-                    "Overflow             -- No computation, Im(z) too large for scale=false" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) or order large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) or order too large\n no computation because of "
-                    "complete loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } },
+      BesselErrors{ Overflow, "Overflow             -- No computation, Im(z) too large for scale=false" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) or order large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) or order too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } }
+  },
   { "besselY",
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{
-        Overflow,
-        "Overflow             -- No computation, order is too large or abs(z) is too small or both" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) or order large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) or order too large\n no computation because of "
-                    "complete loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } },
+      BesselErrors{ Overflow, "Overflow             -- No computation, order is too large or abs(z) is too small or both" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) or order large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) or order too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } }
+  },
   { "besselI",
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{ Overflow,
-                    "Overflow             -- No computation, Re(z) too large for scale=false" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) or order large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) or order too large\n no computation because of "
-                    "complete loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } },
+      BesselErrors{ Overflow, "Overflow             -- No computation, Re(z) too large for scale=false" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) or order large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) or order too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } }
+  },
   { "besselK",
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{
-        Overflow,
-        "Overflow             -- No computation, order is too large or abs(z) is too small or both" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) or order large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) or order too large\n no computation because of "
-                    "complete loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } },
+      BesselErrors{ Overflow, "Overflow             -- No computation, order is too large or abs(z) is too small or both" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) or order large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) or order too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } }
+  },
   { "hankelH",
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{
-        Overflow,
-        "Overflow             -- No computation, order is too large or abs(z) too small or both" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) or order large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) or order too large\n no computation because of "
-                    "complete loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } },
+      BesselErrors{ Overflow, "Overflow             -- No computation, order is too large or abs(z) too small or both" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) or order large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) or order too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } }
+  },
   { "airy",
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{
-        Overflow,
-        "Overflow             -- No computation, Re(2/3*z*sqrt(z)) too large for scale=false" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) too large\n no computation because of complete "
-                    "loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } },
+      BesselErrors{ Overflow, "Overflow             -- No computation, Re(2/3*z*sqrt(z)) too large for scale=false" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } }
+  },
   { "biry",
     std::array<BesselErrors, 6>{
       BesselErrors{ Success, "Normal return        -- Computation completed." },
       BesselErrors{ InputError, "Input error          -- No computation" },
-      BesselErrors{ Overflow,
-                    "Overflow             -- No computation, Re(z) too large for scale=false" },
-      BesselErrors{ PartialLossOfSignificance,
-                    "Loss of significance -- abs(z) large \n computation done but losses of "
-                    "significance by argument reduction produce less than half of machine accuracy" },
-      BesselErrors{ FullLossOfSignificance,
-                    "Loss of significance -- abs(z) too large\n no computation because of complete "
-                    "loss of significance by argument reduction" },
-      BesselErrors{
-        AlgorithmTermination,
-        "Error                -- no computation, algorithm termination condition not met" } } }
+      BesselErrors{ Overflow, "Overflow             -- No computation, Re(z) too large for scale=false" },
+      BesselErrors{ PartialLossOfSignificance, "Loss of significance -- abs(z) large \n computation done but losses of significance by argument reduction produce less than half of machine accuracy" },
+      BesselErrors{ FullLossOfSignificance, "Loss of significance -- abs(z) too large\n no computation because of complete loss of significance by argument reduction" },
+      BesselErrors{ AlgorithmTermination, "Error                -- no computation, algorithm termination condition not met" } } }
 };
 
 #endif // ERRORS_H

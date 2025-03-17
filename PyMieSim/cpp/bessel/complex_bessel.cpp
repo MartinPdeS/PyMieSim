@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef COMPLEX_BESSEL
 #define COMPLEX_BESSEL
 
