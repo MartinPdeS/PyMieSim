@@ -5,7 +5,7 @@ set(NAME "detector")
 # Create a shared library for functionality.
 add_library("cpp_${NAME}" SHARED "${NAME}.cpp" "../utils/numpy_interface.h")
 
-target_link_libraries("cpp_${NAME}" PRIVATE pybind11::module ZBessel cpp_mode_field cpp_fibonacci cpp_cylinder cpp_sphere cpp_coreshell cpp_full_mesh)
+target_link_libraries("cpp_${NAME}" PUBLIC pybind11::module ZBessel cpp_mode_field cpp_fibonacci cpp_cylinder cpp_sphere cpp_coreshell cpp_full_mesh)
 
 target_include_directories("cpp_${NAME}" PUBLIC ${CMAKE_SOURCE_DIR}/cpp)
 
