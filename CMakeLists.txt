@@ -44,13 +44,24 @@ message(STATUS "Binary will be installed in location: ${CMAKE_LIBRARY_OUTPUT_DIR
 
 # add_subdirectory(PyMieSim/cpp/_bessel)
 add_subdirectory(PyMieSim/cpp/bessel)
-add_subdirectory(PyMieSim/cpp/mode_field)
-add_subdirectory(PyMieSim/cpp/full_mesh)
+add_subdirectory(PyMieSim/cpp/mode_field)         # cpp_mode_field
+add_subdirectory(PyMieSim/cpp/full_mesh)          # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)
-add_subdirectory(PyMieSim/cpp/source)
+add_subdirectory(PyMieSim/cpp/source)             # cpp_source
 add_subdirectory(PyMieSim/cpp/sphere)
 add_subdirectory(PyMieSim/cpp/cylinder)
 add_subdirectory(PyMieSim/cpp/coreshell)
-add_subdirectory(PyMieSim/cpp/detector)
+add_subdirectory(PyMieSim/cpp/detector)           # cpp_detector
 add_subdirectory(PyMieSim/cpp/sets)
-add_subdirectory(PyMieSim/cpp/experiment)
+add_subdirectory(PyMieSim/cpp/experiment)         # cpp_experiment
+
+
+set(ALL_TARGETS cpp_source cpp_full_mesh cpp_fibonacci cpp_mode_field
+                cpp_sphere cpp_cylinder cpp_coreshell cpp_detector cpp_sets cpp_experiment
+                interface_source interface_mode_field interface_fibonacci interface_sphere
+                interface_cylinder interface_coreshell interface_detector interface_sets interface_experiment)
+
+install(TARGETS ${ALL_TARGETS}
+        LIBRARY DESTINATION ${PYMIESIM_BIN_DIR}
+        ARCHIVE DESTINATION ${PYMIESIM_BIN_DIR}
+        RUNTIME DESTINATION ${PYMIESIM_BIN_DIR})
