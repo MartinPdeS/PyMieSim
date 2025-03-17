@@ -12,7 +12,7 @@ permissions:
     contents: write
 
 jobs:
-  ManyLinux_x86_64:
+  PyPi:
     uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_PyPi.yml@master
     with:
       python-version: "3.11"
