@@ -10,8 +10,16 @@ target_sources("cpp_${NAME}" PRIVATE "../utils/numpy_interface.h")
 
 target_link_libraries("cpp_${NAME}" PUBLIC pybind11::module OpenMP::OpenMP_CXX cpp_cylinder cpp_sphere cpp_coreshell cpp_detector cpp_source cpp_full_mesh)
 
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lomp")
     target_link_options("cpp_${NAME}" PRIVATE -lomp)
+endif()
+
+if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(-fopenmp)
+    target_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
 

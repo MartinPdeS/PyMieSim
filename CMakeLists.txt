@@ -34,20 +34,20 @@ find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
 
 
-# Platform-specific settings for static linking
-if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    message("MinGW detected on Windows")
-    set(STATIC_LINK_OPTIONS "-static")
-    add_compile_options(-fopenmp)
-    # add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+# # Platform-specific settings for static linking
+# if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+#     message("MinGW detected on Windows")
+#     set(STATIC_LINK_OPTIONS "-static")
+#     # add_compile_options(-fopenmp)
+#     # add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
+# elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lomp")
-    message("AppleClang compiler detected")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    message("GNU compiler detected")
-endif()
+#     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xclang -fopenmp")
+#     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lomp")
+#     message("AppleClang compiler detected")
+# elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+#     message("GNU compiler detected")
+# endif()
 
 # Print some messages
 message(STATUS "OPENMP flags: ${OpenMP_CXX_FLAGS}")
