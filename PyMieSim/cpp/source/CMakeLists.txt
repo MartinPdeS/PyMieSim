@@ -20,10 +20,4 @@ set_target_properties("cpp_${NAME}" PROPERTIES
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "interface_${NAME}")
-target_link_libraries("interface_${NAME}" PRIVATE "cpp_${NAME}" OpenMP::OpenMP_CXX)
-
-
-
-if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    target_link_options("interface_${NAME}" PRIVATE -lomp)
-endif()
+target_link_libraries("interface_${NAME}" PRIVATE "cpp_${NAME}")

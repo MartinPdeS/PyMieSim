@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <cmath>
-#include "utils/bessel_subroutine.cpp"
+#include "_bessel/bessel_subroutine.cpp"
 #include "utils/numpy_interface.h"
 #include <pybind11/numpy.h>
 
