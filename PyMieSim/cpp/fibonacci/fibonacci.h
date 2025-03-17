@@ -65,6 +65,28 @@ class FibonacciMesh : public BaseMesh {
             return _vector_to_numpy(perpendicular_vector.data, {perpendicular_vector.sampling, 3});
         };
 
+        std::vector<std::vector<double>> get_rotation_matrix(std::vector<double> rotation_axis, double rotation_angle) const
+        {
+            double norm_rotation_axis = sqrt(pow(rotation_axis[0], 2) + pow(rotation_axis[1], 2) + pow(rotation_axis[2], 2));
+
+            for (double &x: rotation_axis)
+                x /= norm_rotation_axis;
+
+            double
+                a = cos(rotation_angle / 2.0),
+                b = -1 * sin(rotation_angle / 2.0) * rotation_axis[0],
+                c = -1 * sin(rotation_angle / 2.0) * rotation_axis[1],
+                d = -1 * sin(rotation_angle / 2.0) * rotation_axis[2];
+
+            std::vector<std::vector<double>> matrix = {
+                {a * a + b * b - c * c - d * d, 2 * (b * c + a * d), 2 * (b * d - a * c)},
+                {2 * (b * c - a * d), a * a + c * c - b * b - d * d, 2 * (c * d + a * b)},
+                {2 * (b * d + a * c), 2 * (c * d - a * b), a * a + d * d - b * b - c * c}
+            };
+
+            return matrix;
+        }
+
         DEFINE_PY_GETTER(double, horizontal_parallel_projection, horizontal_parallel_projection)
         DEFINE_PY_GETTER(double, vertical_parallel_projection, vertical_parallel_projection)
         DEFINE_PY_GETTER(double, horizontal_perpendicular_projection, horizontal_perpendicular_projection)
