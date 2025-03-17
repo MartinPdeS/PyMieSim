@@ -39,7 +39,6 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(STATIC_LINK_OPTIONS "-static")
     add_compile_options(-fopenmp)
     add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
-
 endif()
 
 
