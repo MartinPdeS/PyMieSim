@@ -19,7 +19,7 @@ endif()
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options("cpp_${NAME}" PRIVATE -fopenmp)
-    target_link_options("cpp_${NAME}" -static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
+    target_link_options("cpp_${NAME}" PRIVATE -static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
 
