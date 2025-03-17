@@ -11,7 +11,7 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 
 
 # Set the output directory for libraries
-set(PYMIESIM_CXX_DIR "PyMieSim/cpp")
+set(PYMIESIM_CXX_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/cpp")
 set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PYMIESIM_BIN_DIR}")
 
