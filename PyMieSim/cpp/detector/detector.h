@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include "utils/special_function.cpp"
 #include "fibonacci/fibonacci.h"
-#include "utils/utils.h"
 #include "utils/numpy_interface.h"
 #include <utils/base_scatterer.cpp>
 #include <mode_field/mode_field.cpp>

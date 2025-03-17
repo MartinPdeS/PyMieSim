@@ -55,8 +55,6 @@ message(STATUS "PyMieSim includes directory is: ${PYMIESIM_CXX_DIR}")
 message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION}")
 message(STATUS "Binary will be installed in location: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
-add_library(utils STATIC PyMieSim/cpp/utils/utils.cpp)
-target_include_directories(utils PUBLIC PyMieSim/cpp/utils/utils.h)
 
 # add_subdirectory(PyMieSim/cpp/_bessel)
 add_subdirectory(PyMieSim/cpp/bessel)
