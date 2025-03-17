@@ -22,14 +22,6 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_link_options("cpp_${NAME}" PRIVATE -static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
-
-target_include_directories("cpp_${NAME}" PUBLIC ${CMAKE_SOURCE_DIR}/cpp)
-
-set_target_properties("cpp_${NAME}" PROPERTIES
-    CXX_VISIBILITY_PRESET default
-    VISIBILITY_INLINES_HIDDEN OFF
-)
-
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
 set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "interface_${NAME}")
