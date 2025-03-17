@@ -18,8 +18,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
 endif()
 
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    target_compile_options(-fopenmp)
-    target_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
+    target_compile_options("cpp_${NAME}" -fopenmp)
+    # target_link_options("cpp_${NAME}" -static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
 
