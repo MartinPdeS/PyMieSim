@@ -7,7 +7,6 @@ from pydantic import ConfigDict
 import numpy
 
 from PyMieSim.binary.interface_fibonacci import FibonacciMesh as CPPFibonacciMesh
-from MPSPlots.render3D import SceneList as SceneList3D
 
 config_dict = ConfigDict(
     kw_only=True,
@@ -64,8 +63,6 @@ class FibonacciMesh:
         Computes the scalar projection of a given vector onto a base vector.
     projection_on_base_vector(vector, base_vector) -> numpy.ndarray:
         Computes the vector projection of a given vector onto a base vector.
-    plot() -> SceneList3D:
-        Plots the mesh using 3D rendering and returns a 3D scene list object.
     get_cartesian_coordinates() -> numpy.ndarray:
         Returns the Cartesian coordinates of the mesh points.
     get_axis_vector() -> numpy.ndarray:
@@ -263,20 +260,6 @@ class FibonacciMesh:
         self.omega_radian = self.binding.omega
         self.omega_degree = self.binding.omega * (180 / numpy.pi) ** 2
 
-    def plot(self) -> SceneList3D:
-        """
-        Plots the Fibonacci mesh using 3D rendering.
-
-        Returns
-        -------
-        SceneList3D
-            A 3D scene list object containing the rendered mesh plot.
-        """
-        figure = SceneList3D()
-        ax = figure.append_ax()
-        self._add_mesh_to_ax_(ax)
-
-        return figure
 
     def get_cartesian_coordinates(self) -> numpy.ndarray:
         """
