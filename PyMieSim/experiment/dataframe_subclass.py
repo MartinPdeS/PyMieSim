@@ -200,6 +200,8 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         groupby_levels = df_to_plot._get_complementary_axis(x)
 
+        print(x, groupby_levels)
+
         if groupby_levels:
             for name, group in df_to_plot.groupby(groupby_levels, dropna=False):
                 group = group.droplevel(groupby_levels)
@@ -209,15 +211,16 @@ class PyMieSimDataFrame(pd.DataFrame):
                 label = " : ".join(map(str, label))
 
                 values = group.squeeze().values
+
                 if hasattr(values, 'quantity'):
                     ax.plot(group.index, values.quantity, label=label, **kwargs)
                 else:
                     ax.plot(group.index, values, label=label, **kwargs)
 
         else:
-            # If no groupby, determine the column to plot
-            col = df_to_plot.columns[0]
-            ax.plot(df_to_plot.index, df_to_plot[col], label=str(col), **kwargs)
+            df = self.reset_index()
+
+            ax.plot(df.iloc[:,0], df.iloc[:,1], **kwargs)
 
         ax.legend()
 
