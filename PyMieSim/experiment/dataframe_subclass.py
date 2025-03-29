@@ -17,6 +17,15 @@ class PyMieSimDataFrame(pd.DataFrame):
         """
         return PyMieSimDataFrame
 
+    def _validate_axis(self, axis: str) -> None:
+        # Validate that 'x' is a valid index level.
+        if axis not in self.index.names:
+            available = ", ".join(self.index.names)
+            raise ValueError(f"x parameter '{axis}' is not in the DataFrame index. Available index levels: {available}")
+
+    def _get_complementary_axis(self, *axis) -> tuple:
+        return [level for level in self.index.names if level not in axis]
+
     def plot(self,
         x: str,
         std: Optional[str] = None,
@@ -51,15 +60,10 @@ class PyMieSimDataFrame(pd.DataFrame):
         plt.Axes
             The matplotlib Axes with the plot.
         """
-        # Validate that 'x' is a valid index level.
-        if x not in self.index.names:
-            available = ", ".join(self.index.names)
-            raise ValueError(f"x parameter '{x}' is not in the DataFrame index. Available index levels: {available}")
+        self._validate_axis(axis=x)
 
-        # Validate that 'x' is a valid index level.
-        if std is not None and std not in self.index.names:
-            available = ", ".join(self.index.names)
-            raise ValueError(f"x parameter '{std}' is not in the DataFrame index. Available index levels: {available}")
+        if std is not None:
+            self._validate_axis(axis=std)
 
         if ax is None:
             with plt.style.context(mps):
@@ -107,8 +111,8 @@ class PyMieSimDataFrame(pd.DataFrame):
         """
 
         # Determine levels to unstack
-        no_std_levels = [level for level in self.index.names if level != std]
-        no_x_levels = [level for level in self.index.names if level not in [x, std]]
+        no_std_levels = self._get_complementary_axis(std)
+        no_x_levels = self._get_complementary_axis(x, std)
 
         # Calculate standard deviation and mean, preserving pint units
         std_df = (
@@ -187,12 +191,14 @@ class PyMieSimDataFrame(pd.DataFrame):
         None
         """
         # Stack levels if necessary for proper grouping
-        df_to_plot = self.copy()
-        if 'type' in self.columns.names:
-            df_to_plot = df_to_plot.stack('type', future_stack=True)
-        df_to_plot = df_to_plot.stack('data', future_stack=True)
+        # df_to_plot = self.copy()
+        # if 'type' in self.columns.names:
+        #     df_to_plot = df_to_plot.stack('type', future_stack=True)
 
-        groupby_levels = [level for level in df_to_plot.index.names if level != x]
+        # df_to_plot = df_to_plot.stack('data', future_stack=True)
+        df_to_plot = self
+
+        groupby_levels = df_to_plot._get_complementary_axis(x)
 
         if groupby_levels:
             for name, group in df_to_plot.groupby(groupby_levels, dropna=False):
@@ -214,10 +220,25 @@ class PyMieSimDataFrame(pd.DataFrame):
             ax.plot(df_to_plot.index, df_to_plot[col], label=str(col), **kwargs)
 
         ax.legend()
-        # groupby_levels = [level for level in self.index.names if level != x]
 
-        # df = self.unstack(groupby_levels)
-        # super(PyMieSimDataFrame, self).plot(ax=ax, **kwargs)
+    def add_weight(self, weight_index: str, weight: np.ndarray) -> "PyMieSimDataFrame":
 
-        # ax.set_xlabel(f"{x} [{df.index.values.units}]")
+        self._validate_axis(axis=weight_index)
+
+        stacking_index = self._get_complementary_axis(weight_index)
+
+        return (
+            self
+            .unstack(stacking_index)
+            .multiply(weight.squeeze(), axis='index')
+            .stack(stacking_index)
+        )
+
+    def sum_over(self, axis: str) -> "PyMieSimDataFrame":
+
+        self._validate_axis(axis=axis)
+
+        stacking_index = [name for name in self.index.names if name != axis]
+
+        return self.groupby(stacking_index).sum()#.to_frame().T
 
