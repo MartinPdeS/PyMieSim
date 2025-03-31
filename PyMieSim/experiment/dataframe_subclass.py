@@ -190,37 +190,16 @@ class PyMieSimDataFrame(pd.DataFrame):
         -------
         None
         """
-        # Stack levels if necessary for proper grouping
-        # df_to_plot = self.copy()
-        # if 'type' in self.columns.names:
-        #     df_to_plot = df_to_plot.stack('type', future_stack=True)
+        df = self.copy()
 
-        # df_to_plot = df_to_plot.stack('data', future_stack=True)
-        df_to_plot = self
+        groupby_levels = df._get_complementary_axis(x)
 
-        groupby_levels = df_to_plot._get_complementary_axis(x)
+        df = df.unstack(groupby_levels)
 
-        print(x, groupby_levels)
+        if isinstance(df.index, pd.MultiIndex) and df.index.nlevels == 1:
+            df.index = df.index.get_level_values(0)
 
-        if groupby_levels:
-            for name, group in df_to_plot.groupby(groupby_levels, dropna=False):
-                group = group.droplevel(groupby_levels)
-
-                label = [item for pair in zip(groupby_levels, name) for item in pair]
-
-                label = " : ".join(map(str, label))
-
-                values = group.squeeze().values
-
-                if hasattr(values, 'quantity'):
-                    ax.plot(group.index, values.quantity, label=label, **kwargs)
-                else:
-                    ax.plot(group.index, values, label=label, **kwargs)
-
-        else:
-            df = self.reset_index()
-
-            ax.plot(df.iloc[:,0], df.iloc[:,1], **kwargs)
+        super(PyMieSimDataFrame, df).plot(ax=ax, **kwargs)
 
         ax.legend()
 

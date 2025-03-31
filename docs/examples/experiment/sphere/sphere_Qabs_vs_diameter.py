@@ -26,7 +26,7 @@ source = Gaussian(
 # Defining the ranging parameters for the scatterer distribution
 scatterer = Sphere(
     diameter=np.linspace(1, 800, 300) * nanometer,
-    property=[Material.silver, Material.gold],
+    property=[Material.silver],
     medium_property=1 * RIU,
     source=source
 )
@@ -40,8 +40,8 @@ experiment = Setup(
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('Qsca', 'Qabs')
+dataframe = experiment.get('Qsca')
 
 # %%
 # Plotting the results
-dataframe.plot(x='scatterer:diameter')
+dataframe.plot(x='scatterer:diameter', yscale='log')
