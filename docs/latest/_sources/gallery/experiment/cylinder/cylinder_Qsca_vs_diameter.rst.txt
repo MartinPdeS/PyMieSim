@@ -146,14 +146,14 @@ Visualizing how the Qsca varies with the cylinder diameter.
  .. code-block:: none
 
 
-    <Axes: xlabel='nanometer', ylabel='dimensionless'>
+    <Axes: xlabel='scatterer:diameter', ylabel='dimensionless'>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.647 seconds)
+   **Total running time of the script:** (0 minutes 0.665 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_Qsca_vs_diameter.py:

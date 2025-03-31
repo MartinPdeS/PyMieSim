@@ -77,7 +77,7 @@ Defining the scatterer distribution
 .. code-block:: Python
 
     scatterer = CoreShell(
-        core_diameter=1500 * nanometer,  # Core diameters from 100 nm to 600 nm
+        core_diameter=[1500] * nanometer,  # Core diameters from 100 nm to 600 nm
         shell_thickness=800 * nanometer,  # Shell width of 800 nm
         core_property=Material.silver,  # Core material
         shell_property=Material.BK7,  # Shell material
@@ -174,14 +174,14 @@ Visualizing how the coupling efficiency varies with the core diameter.
  .. code-block:: none
 
 
-    <Axes: xlabel='dimensionless', ylabel='watt'>
+    <Axes: xlabel='detector:cache_NA', ylabel='watt'>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.546 seconds)
+   **Total running time of the script:** (0 minutes 0.591 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_coupling_vs_na_cache.py:

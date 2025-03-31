@@ -27,7 +27,7 @@ source = Gaussian(
 # %%
 # Defining the scatterer distribution
 scatterer = CoreShell(
-    core_diameter=1500 * nanometer,  # Core diameters from 100 nm to 600 nm
+    core_diameter=[1500] * nanometer,  # Core diameters from 100 nm to 600 nm
     shell_thickness=800 * nanometer,  # Shell width of 800 nm
     core_property=Material.silver,  # Core material
     shell_property=Material.BK7,  # Shell material

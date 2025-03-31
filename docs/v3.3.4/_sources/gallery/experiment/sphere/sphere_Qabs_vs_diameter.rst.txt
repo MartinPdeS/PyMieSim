@@ -75,7 +75,7 @@ Defining the ranging parameters for the scatterer distribution
 
     scatterer = Sphere(
         diameter=np.linspace(1, 800, 300) * nanometer,
-        property=[Material.silver, Material.gold],
+        property=[Material.silver],
         medium_property=1 * RIU,
         source=source
     )
@@ -115,7 +115,7 @@ Measuring the properties
 
 .. code-block:: Python
 
-    dataframe = experiment.get('Qsca', 'Qabs')
+    dataframe = experiment.get('Qsca')
 
 
 
@@ -132,7 +132,7 @@ Plotting the results
 
 .. code-block:: Python
 
-    dataframe.plot(x='scatterer:diameter')
+    dataframe.plot(x='scatterer:diameter', yscale='log')
 
 
 
@@ -147,14 +147,14 @@ Plotting the results
  .. code-block:: none
 
 
-    <Axes: xlabel='nanometer', ylabel='dimensionless'>
+    <Axes: xlabel='scatterer:diameter', ylabel='dimensionless'>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.430 seconds)
+   **Total running time of the script:** (0 minutes 0.512 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qabs_vs_diameter.py:
