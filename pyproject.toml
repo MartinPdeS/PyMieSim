@@ -83,7 +83,7 @@ documentation = [
     "pydata-sphinx-theme==0.16.1"
 ]
 dev = [
-    "flake8==7.1.2"
+    "flake8==7.2.0"
 ]
 
 [tool.pytest.ini_options]
