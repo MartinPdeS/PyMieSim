@@ -9,34 +9,28 @@
 #include "sets/sets.cpp"
 
 
-#define DEFINE_SCATTERER_FUNCTION(scatterer, dtype, name) \
-    pybind11::array_t<dtype> get_##scatterer##_##name() const { \
-        debug_printf("Computing %s_%s\n", #scatterer, #name); \
-        return get_scatterer_data<double, scatterer##Set>(scatterer##_set, &scatterer::get_##name); \
+#define DEFINE_SCATTERER_FUNCTION(scatterer, name) \
+    pybind11::array_t<double> get_##scatterer##_##name(const BaseSourceSet& source_set, const DetectorSet& detector_set) const { \
+        return get_scatterer_data<scatterer##Set>(scatterer##_set, &scatterer::get_##name, source_set, detector_set); \
     } \
-    pybind11::array_t<dtype> get_##scatterer##_##name##_sequential() const { \
-        debug_printf("Computing %s_%s_sequential\n", #scatterer, #name); \
-        return get_scatterer_data_sequential<double, scatterer##Set>(scatterer##_set, &scatterer::get_##name); \
+    pybind11::array_t<double> get_##scatterer##_##name##_sequential(const BaseSourceSet& source_set, const DetectorSet& detector_set) const { \
+        return get_scatterer_data_sequential<scatterer##Set>(scatterer##_set, &scatterer::get_##name, source_set, detector_set); \
     }
 
 #define DEFINE_SCATTERER_COEFFICIENT(scatterer, name) \
-    pybind11::array_t<double> get_##scatterer##_##name() const { \
-        debug_printf("Computing %s_%s coefficient\n", #scatterer, #name); \
-        return get_scatterer_data<double, scatterer##Set>(scatterer##_set, &scatterer::get_##name##_abs); \
+    pybind11::array_t<double> get_##scatterer##_##name(const BaseSourceSet& source_set, const DetectorSet& detector_set) const { \
+        return get_scatterer_data<scatterer##Set>(scatterer##_set, &scatterer::get_##name##_abs, source_set, detector_set); \
     } \
-    pybind11::array_t<double> get_##scatterer##_##name##_sequential() const { \
-        debug_printf("Computing %s_%s coefficient sequentially\n", #scatterer, #name); \
-        return get_scatterer_data_sequential<double, scatterer##Set>(scatterer##_set, &scatterer::get_##name##_abs); \
+    pybind11::array_t<double> get_##scatterer##_##name##_sequential(const BaseSourceSet& source_set, const DetectorSet& detector_set) const { \
+        return get_scatterer_data_sequential<scatterer##Set>(scatterer##_set, &scatterer::get_##name##_abs, source_set, detector_set); \
     }
 
 #define DEFINE_SCATTERER_COUPLING(scatterer) \
-    pybind11::array_t<double> get_##scatterer##_coupling() const { \
-        debug_printf("Computing %s_coupling\n", #scatterer); \
-        return get_scatterer_coupling<scatterer##Set>(scatterer##_set); \
+    pybind11::array_t<double> get_##scatterer##_coupling(const BaseSourceSet& source_set, const DetectorSet& detector_set) const { \
+        return get_scatterer_coupling<scatterer##Set>(scatterer##_set, source_set, detector_set); \
     } \
-    pybind11::array_t<double> get_##scatterer##_coupling_sequential() const { \
-        debug_printf("Computing %s_coupling_sequential\n", #scatterer); \
-        return get_scatterer_coupling_sequential<scatterer##Set>(scatterer##_set); \
+    pybind11::array_t<double> get_##scatterer##_coupling_sequential(const BaseSourceSet& source_set, const DetectorSet& detector_set) const { \
+        return get_scatterer_coupling_sequential<scatterer##Set>(scatterer##_set, source_set, detector_set); \
     }
 
 class Experiment
@@ -46,8 +40,6 @@ class Experiment
         SphereSet Sphere_set;
         CylinderSet Cylinder_set;
         CoreShellSet CoreShell_set;
-        DetectorSet Detector_set;
-        SourceSet Source_set;
 
         explicit Experiment(bool debug_mode = true) : debug_mode(debug_mode) {}
 
@@ -55,8 +47,6 @@ class Experiment
         void set_sphere(SphereSet& set) { Sphere_set = set; }
         void set_cylinder(CylinderSet& set) { Cylinder_set = set; }
         void set_coreshell(CoreShellSet& set) { CoreShell_set = set; }
-        void set_source(SourceSet &set) { Source_set = set; }
-        void set_detector(DetectorSet &set) { Detector_set = set; }
 
         // Helper method for debugging without iostream.
         // It prints the given message only if debug_mode is true.
@@ -69,16 +59,16 @@ class Experiment
         }
 
         // Example: You can also add a class-wide debug_print method.
-        void debug_print_state() const {
+        void debug_print_state(const BaseSourceSet& source_set, const DetectorSet& detector_set) const {
             if (!debug_mode) return;
             debug_printf("----- Experiment Debug Info -----\n");
-            debug_printf("SourceSet total combinations: %zu\n", Source_set.total_combinations);
+            debug_printf("SourceSet total combinations: %zu\n", source_set.total_combinations);
             debug_printf("SphereSet total combinations: %zu\n", Sphere_set.total_combinations);
             debug_printf("CylinderSet total combinations: %zu\n", Cylinder_set.total_combinations);
             debug_printf("CoreshellSet total combinations: %zu\n", CoreShell_set.total_combinations);
-            debug_printf("DetectorSet total combinations: %zu\n", Detector_set.total_combinations);
+            debug_printf("DetectorSet total combinations: %zu\n", detector_set.total_combinations);
             debug_printf("SourceSet shape: ");
-            for (size_t dim : Source_set.shape) {
+            for (size_t dim : source_set.shape) {
                 debug_printf("%zu ", dim);
             }
             debug_printf("\n---------------------------------\n");
@@ -105,51 +95,56 @@ class Experiment
             return output_vector;
         }
 
-        template<typename dtype, typename ScattererSet, typename Function>
-        pybind11::array_t<dtype> get_scatterer_data(const ScattererSet& scatterer_set, Function function) const {
+        template<typename ScattererSet, typename Function>
+        pybind11::array_t<double> get_scatterer_data(
+            const ScattererSet& scatterer_set,
+            Function function,
+            const BaseSourceSet &source_set,
+            const DetectorSet &detector_set) const {
+
 
             if (debug_mode)
-                this->debug_print_state();
+                this->debug_print_state(source_set, detector_set);
 
             std::vector<size_t> array_shape;
             size_t total_iterations;
 
-            if (Detector_set.is_empty) {
-                array_shape = concatenate_vector(Source_set.shape, scatterer_set.shape);
-                total_iterations = Source_set.total_combinations * scatterer_set.total_combinations;
+            if (detector_set.is_empty) {
+                array_shape = concatenate_vector(source_set.shape, scatterer_set.shape);
+                total_iterations = source_set.total_combinations * scatterer_set.total_combinations;
             }
             else {
-                array_shape = concatenate_vector(Source_set.shape, scatterer_set.shape, Detector_set.shape);
-                total_iterations = Source_set.total_combinations * scatterer_set.total_combinations * Detector_set.total_combinations;
+                array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
+                total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
             }
 
             debug_printf("get_scatterer_data: total_iterations = %zu\n", total_iterations);
 
-            std::vector<dtype> output_array(total_iterations);
+            std::vector<double> output_array(total_iterations);
 
             #pragma omp parallel for
             for (size_t flat_index = 0; flat_index < total_iterations; ++flat_index) {
                 size_t idx; // Declare idx locally so each iteration has its own copy
 
-                if (Detector_set.is_empty) {
+                if (detector_set.is_empty) {
                     // 2D case: only source and scatterer
                     size_t i = flat_index / scatterer_set.total_combinations;
                     size_t j = flat_index % scatterer_set.total_combinations;
-                    BaseSource source = Source_set.get_source_by_index(i);
+                    BaseSource source = source_set.get_source_by_index(i);
                     auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
                     idx = flatten_multi_index(array_shape, source.indices, scatterer.indices);
-                    dtype value = (scatterer.*function)();
+                    double value = (scatterer.*function)();
                     output_array[idx] = value;
                 } else {
                     // 3D case: source, scatterer, and detector
-                    size_t i = flat_index / (scatterer_set.total_combinations * Detector_set.total_combinations);
-                    size_t j = (flat_index / Detector_set.total_combinations) % scatterer_set.total_combinations;
-                    size_t k = flat_index % Detector_set.total_combinations;
-                    BaseSource source = Source_set.get_source_by_index(i);
+                    size_t i = flat_index / (scatterer_set.total_combinations * detector_set.total_combinations);
+                    size_t j = (flat_index / detector_set.total_combinations) % scatterer_set.total_combinations;
+                    size_t k = flat_index % detector_set.total_combinations;
+                    BaseSource source = source_set.get_source_by_index(i);
                     auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
-                    Detector detector = Detector_set.get_detector_by_index(k);
+                    Detector detector = detector_set.get_detector_by_index(k);
                     idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
-                    dtype value = (scatterer.*function)();
+                    double value = (scatterer.*function)();
                     output_array[idx] = value;
                 }
             }
@@ -158,23 +153,27 @@ class Experiment
             return _vector_to_numpy(output_array, array_shape);
         }
 
-        template<typename dtype, typename ScattererSet, typename Function>
-        pybind11::array_t<dtype> get_scatterer_data_sequential(const ScattererSet& scatterer_set, Function function) const {
+        template<typename ScattererSet, typename Function>
+        pybind11::array_t<double> get_scatterer_data_sequential(
+            const ScattererSet& scatterer_set,
+            Function function,
+            const BaseSourceSet &source_set,
+            const DetectorSet &detector_set) const {
 
             if (debug_mode)
-                this->debug_print_state();
+                this->debug_print_state(source_set, detector_set);
 
-            std::vector<size_t> array_shape = {Source_set.wavelength.size()};
-            size_t full_size = Source_set.wavelength.size();
+            std::vector<size_t> array_shape = {source_set.wavelength.size()};
+            size_t full_size = source_set.wavelength.size();
             scatterer_set.validate_sequential_data(full_size);
-            Source_set.validate_sequential_data(full_size);
+            source_set.validate_sequential_data(full_size);
             debug_printf("get_scatterer_data_sequential: full_size = %zu\n", full_size);
 
-            std::vector<dtype> output_array(full_size);
+            std::vector<double> output_array(full_size);
 
             #pragma omp parallel for
             for (size_t idx = 0; idx < full_size; ++idx) {
-                BaseSource source = Source_set.get_source_by_index_sequential(idx);
+                BaseSource source = source_set.get_source_by_index_sequential(idx);
                 auto scatterer = scatterer_set.get_scatterer_by_index_sequential(idx, source);
                 output_array[idx] = (scatterer.*function)();
             }
@@ -183,25 +182,28 @@ class Experiment
         }
 
         template<typename ScattererSet>
-        pybind11::array_t<double> get_scatterer_coupling(const ScattererSet& scatterer_set) const {
+        pybind11::array_t<double> get_scatterer_coupling(
+            const ScattererSet& scatterer_set,
+            const BaseSourceSet &source_set,
+            const DetectorSet &detector_set) const {
 
             if (debug_mode)
-                this->debug_print_state();
+                this->debug_print_state(source_set, detector_set);
 
-            std::vector<size_t> array_shape = concatenate_vector(Source_set.shape, scatterer_set.shape, Detector_set.shape);
-            size_t total_iterations = Source_set.total_combinations * scatterer_set.total_combinations * Detector_set.total_combinations;
+            std::vector<size_t> array_shape = concatenate_vector(source_set.shape, scatterer_set.shape, detector_set.shape);
+            size_t total_iterations = source_set.total_combinations * scatterer_set.total_combinations * detector_set.total_combinations;
             debug_printf("get_scatterer_coupling: total_iterations = %zu\n", total_iterations);
 
             std::vector<double> output_array(total_iterations);
 
             #pragma omp parallel for
             for (size_t idx_flat = 0; idx_flat < total_iterations; ++idx_flat) {
-                size_t i = idx_flat / (scatterer_set.total_combinations * Detector_set.total_combinations);
-                size_t j = (idx_flat / Detector_set.total_combinations) % scatterer_set.total_combinations;
-                size_t k = idx_flat % Detector_set.total_combinations;
-                BaseSource source = Source_set.get_source_by_index(i);
+                size_t i = idx_flat / (scatterer_set.total_combinations * detector_set.total_combinations);
+                size_t j = (idx_flat / detector_set.total_combinations) % scatterer_set.total_combinations;
+                size_t k = idx_flat % detector_set.total_combinations;
+                BaseSource source = source_set.get_source_by_index(i);
                 auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
-                Detector detector = Detector_set.get_detector_by_index(k);
+                Detector detector = detector_set.get_detector_by_index(k);
                 detector.medium_refractive_index = scatterer.medium_refractive_index;
                 size_t idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
                 output_array[idx] = detector.get_coupling(scatterer);
@@ -211,25 +213,28 @@ class Experiment
         }
 
         template<typename ScattererSet>
-        pybind11::array_t<double> get_scatterer_coupling_sequential(const ScattererSet& scatterer_set) const {
+        pybind11::array_t<double> get_scatterer_coupling_sequential(
+            const ScattererSet& scatterer_set,
+            const BaseSourceSet &source_set,
+            const DetectorSet &detector_set) const {
 
             if (debug_mode)
-                this->debug_print_state();
+                this->debug_print_state(source_set, detector_set);
 
-            std::vector<size_t> array_shape = {Source_set.wavelength.size()};
-            size_t full_size = Source_set.wavelength.size();
+            std::vector<size_t> array_shape = {source_set.wavelength.size()};
+            size_t full_size = source_set.wavelength.size();
             scatterer_set.validate_sequential_data(full_size);
-            Source_set.validate_sequential_data(full_size);
-            Detector_set.validate_sequential_data(full_size);
+            source_set.validate_sequential_data(full_size);
+            detector_set.validate_sequential_data(full_size);
             debug_printf("get_scatterer_coupling_sequential: full_size = %zu\n", full_size);
 
             std::vector<double> output_array(full_size);
 
             #pragma omp parallel for
             for (size_t idx = 0; idx < full_size; ++idx) {
-                BaseSource source = Source_set.get_source_by_index_sequential(idx);
+                BaseSource source = source_set.get_source_by_index_sequential(idx);
                 auto scatterer = scatterer_set.get_scatterer_by_index_sequential(idx, source);
-                Detector detector = Detector_set.get_detector_by_index_sequential(idx);
+                Detector detector = detector_set.get_detector_by_index_sequential(idx);
                 output_array[idx] = detector.get_coupling(scatterer);
             }
             debug_printf("get_scatterer_coupling_sequential: finished computation\n");
@@ -244,21 +249,21 @@ class Experiment
         DEFINE_SCATTERER_COEFFICIENT(Sphere, b2)
         DEFINE_SCATTERER_COEFFICIENT(Sphere, b3)
 
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qsca)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qext)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qabs)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qpr)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qback)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qforward)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Qratio)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Csca)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Cext)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Cabs)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Cpr)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Cback)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Cratio)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, Cforward)
-        DEFINE_SCATTERER_FUNCTION(Sphere, double, g)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qsca)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qext)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qabs)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qpr)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qback)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qforward)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Qratio)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Csca)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Cext)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Cabs)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Cpr)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Cback)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Cratio)
+        DEFINE_SCATTERER_FUNCTION(Sphere, Cforward)
+        DEFINE_SCATTERER_FUNCTION(Sphere, g)
 
         DEFINE_SCATTERER_COUPLING(Sphere)
 
@@ -276,13 +281,13 @@ class Experiment
         DEFINE_SCATTERER_COEFFICIENT(Cylinder, b22)
         DEFINE_SCATTERER_COEFFICIENT(Cylinder, b23)
 
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, Qsca)
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, Qext)
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, Qabs)
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, Csca)
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, Cext)
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, Cabs)
-        DEFINE_SCATTERER_FUNCTION(Cylinder, double, g)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, Qsca)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, Qext)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, Qabs)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, Csca)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, Cext)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, Cabs)
+        DEFINE_SCATTERER_FUNCTION(Cylinder, g)
 
         DEFINE_SCATTERER_COUPLING(Cylinder)
 
@@ -294,21 +299,21 @@ class Experiment
         DEFINE_SCATTERER_COEFFICIENT(CoreShell, b2)
         DEFINE_SCATTERER_COEFFICIENT(CoreShell, b3)
 
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qsca)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qext)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qabs)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qpr)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qback)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qforward)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Qratio)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Csca)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Cext)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Cabs)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Cpr)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Cback)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Cratio)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, Cforward)
-        DEFINE_SCATTERER_FUNCTION(CoreShell, double, g)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qsca)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qext)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qabs)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qpr)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qback)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qforward)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Qratio)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Csca)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Cext)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Cabs)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Cpr)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Cback)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Cratio)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, Cforward)
+        DEFINE_SCATTERER_FUNCTION(CoreShell, g)
 
         DEFINE_SCATTERER_COUPLING(CoreShell)
 };

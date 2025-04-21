@@ -58,15 +58,10 @@ class Setup:
 
     def _bind_components(self):
         """Binds the experiment components to the EXPERIMENT instance."""
-
-        self.binding.set_Source(self.source.binding)
-
         method_str = 'set_' + self.scatterer.__class__.__name__
 
         getattr(self.binding, method_str)(self.scatterer.binding)
 
-        if self.detector is not None:
-            self.binding.set_Detector(self.detector.binding)
 
     def _generate_mapping(self) -> None:
         self.source._generate_mapping()
@@ -93,8 +88,18 @@ class Setup:
         scatterer_name = self.scatterer.__class__.__name__
         method_name = f'get_{scatterer_name}_{measure}_sequential'
 
+        if self.detector is not None:
+            detector_set = self.detector.binding
+        else:
+            from PyMieSim.binary.interface_sets import CppDetectorSet
+            detector_set = CppDetectorSet()
+
+
         # Compute the values using the binding method
-        return getattr(self.binding, method_name)()
+        return getattr(self.binding, method_name)(
+            source_set=self.source.binding,
+            detector_set=detector_set
+        )
 
     def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True, as_numpy: bool = False) -> pd.DataFrame:
         """
@@ -206,8 +211,18 @@ class Setup:
             scatterer_name = self.scatterer.__class__.__name__
             method_name = f'get_{scatterer_name}_{measure}'
 
+
+            if self.detector is not None:
+                detector_set = self.detector.binding
+            else:
+                from PyMieSim.binary.interface_sets import CppDetectorSet
+                detector_set = CppDetectorSet()
+
             # Compute the values using the binding method
-            array = getattr(self.binding, method_name)()
+            array = getattr(self.binding, method_name)(
+                source_set=self.source.binding,
+                detector_set=detector_set
+            )
 
             # Determine the unit based on the measure type
             dtype = self._determine_dtype(measure)

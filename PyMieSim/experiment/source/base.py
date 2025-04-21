@@ -5,7 +5,6 @@ from pydantic import field_validator
 import pint_pandas
 from dataclasses import fields
 from PyMieSim.polarization import BasePolarization, Linear
-from PyMieSim.binary.interface_sets import CppSourceSet
 from PyMieSim.units import Quantity, meter, watt, AU, degree
 
 
@@ -13,19 +12,6 @@ class BaseSource:
     """
     Base class for light sources in PyMieSim experiments.
     """
-    def _generate_binding(self):
-        self.mapping = {}
-
-        if not isinstance(self.polarization, BasePolarization):
-            self.polarization = Linear(self.polarization)
-
-        self._generate_binding_kwargs()
-
-        binding_kwargs = {
-            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
-        }
-
-        self.binding = CppSourceSet(**binding_kwargs)
 
     @field_validator('wavelength', mode='plain')
     def _validate_length(cls, value):

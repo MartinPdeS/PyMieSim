@@ -2,7 +2,7 @@
 #include "experiment/experiment.cpp"
 
 #define EFFICIENCY_PROPERTY(scatterer, name) \
-    .def("get_" #scatterer "_Q" #name, &Experiment::get_##scatterer##_Q##name, "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer) \
+    .def("get_" #scatterer "_Q" #name, &Experiment::get_##scatterer##_Q##name, py::arg("source_set"), py::arg("detector_set"), "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer) \
     .def("get_" #scatterer "_C" #name, &Experiment::get_##scatterer##_C##name, "Retrieves the scattering cross-section (C" #name ") for a" #scatterer) \
     .def("get_" #scatterer "_Q" #name "_sequential", &Experiment::get_##scatterer##_Q##name##_sequential, "Retrieves the scattering efficiency (Q" #name ") for a" #scatterer " in a sequential manner.") \
     .def("get_" #scatterer "_C" #name "_sequential", &Experiment::get_##scatterer##_C##name##_sequential, "Retrieves the scattering cross-section (C" #name ") for a" #scatterer " in a sequential manner.")
@@ -29,8 +29,6 @@ PYBIND11_MODULE(interface_experiment, module) {
         .def(py::init<bool>(), py::arg("debug_mode") = true, "Constructs an Experiment object.")
 
         // Setup methods
-        .def("set_Detector", &Experiment::set_detector, "Configures the detector for the experiment.")
-        .def("set_Source", &Experiment::set_source, "Sets the light source for the experiment.")
         .def("set_Sphere", &Experiment::set_sphere, "Defines a spherical scatterer for the experiment.")
         .def("set_Cylinder", &Experiment::set_cylinder, "Defines a cylindrical scatterer for the experiment.")
         .def("set_CoreShell", &Experiment::set_coreshell, "Defines a core-shell scatterer for the experiment.")

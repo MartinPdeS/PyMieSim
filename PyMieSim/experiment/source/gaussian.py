@@ -5,9 +5,9 @@ from PyMieSim.single.source import Gaussian as _  # noqa:F401  # Necessary for p
 from pydantic.dataclasses import dataclass
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.polarization import BasePolarization
 from PyMieSim.experiment.utils import config_dict, Sequential
-
+from PyMieSim.polarization import BasePolarization, Linear
+from PyMieSim.binary.interface_sets import CppGaussianSourceSet
 
 @dataclass(config=config_dict)
 class Gaussian(BaseSource, Sequential):
@@ -45,3 +45,17 @@ class Gaussian(BaseSource, Sequential):
             optical_power=self.optical_power,
             is_sequential=self.is_sequential
         )
+
+    def _generate_binding(self):
+        self.mapping = {}
+
+        if not isinstance(self.polarization, BasePolarization):
+            self.polarization = Linear(self.polarization)
+
+        self._generate_binding_kwargs()
+
+        binding_kwargs = {
+            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
+        }
+
+        self.binding = CppGaussianSourceSet(**binding_kwargs)

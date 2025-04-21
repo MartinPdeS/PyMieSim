@@ -7,8 +7,9 @@ from pydantic.dataclasses import dataclass
 from pydantic import field_validator
 from PyMieSim.units import Quantity
 from PyMieSim.experiment.source.base import BaseSource
-from PyMieSim.polarization import BasePolarization
+from PyMieSim.polarization import BasePolarization, Linear
 from PyMieSim.experiment.utils import config_dict, Sequential
+from PyMieSim.binary.interface_sets import CppPlaneWaveSourceSet
 
 
 @dataclass(config=config_dict)
@@ -53,3 +54,17 @@ class PlaneWave(BaseSource, Sequential):
             amplitude=self.amplitude,
             is_sequential=self.is_sequential
         )
+
+    def _generate_binding(self):
+        self.mapping = {}
+
+        if not isinstance(self.polarization, BasePolarization):
+            self.polarization = Linear(self.polarization)
+
+        self._generate_binding_kwargs()
+
+        binding_kwargs = {
+            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
+        }
+
+        self.binding = CppPlaneWaveSourceSet(**binding_kwargs)

@@ -65,31 +65,26 @@ class PyMieSimDataFrame(pd.DataFrame):
         if std is not None:
             self._validate_axis(axis=std)
 
-        if ax is None:
-            with plt.style.context(mps):
+
+        with plt.style.context(mps):
+            if ax is None:
                 _, ax = plt.subplots()
-                ax.set(xscale=xscale, yscale=yscale)
 
-        if std is not None:
-            self._plot_with_std(ax=ax, x=x, std=std, alpha=alpha, **kwargs)
-        else:
-            self._plot_without_std(ax=ax, x=x, **kwargs)
+            ax.set(xscale=xscale, yscale=yscale)
 
-        # self._format_legend(ax)
+            if std is not None:
+                self._plot_with_std(ax=ax, x=x, std=std, alpha=alpha, **kwargs)
+            else:
+                self._plot_without_std(ax=ax, x=x, **kwargs)
 
-        if show:
-            plt.show()
+            self._format_legend(ax)
 
-        return ax
+            if show:
+                plt.show()
 
-    def _plot_with_std(
-        self,
-        ax: plt.Axes,
-        x: str,
-        std: str,
-        alpha: float = 0.5,
-        show: bool = True,
-        **kwargs) -> None:
+            return ax
+
+    def _plot_with_std(self, ax: plt.Axes, x: str, std: str, alpha: float = 0.5, **kwargs) -> None:
         """
         Plot the mean with standard deviation shading.
         Expects the DataFrame to have a MultiIndex and a 'pint' attribute.
@@ -161,9 +156,6 @@ class PyMieSimDataFrame(pd.DataFrame):
             new_label = original_label.replace(')', '').replace('(', '').replace(', ', ' | ')
             text.set_text(new_label)
 
-        title = leg.get_title().get_text()
-        leg.set_title(title.replace(',', ' | '))
-
     def _plot_without_std(self, ax: plt.Axes, x: str, **kwargs) -> None:
         """
         Plots the data without standard deviation shading.
@@ -201,7 +193,9 @@ class PyMieSimDataFrame(pd.DataFrame):
 
         super(PyMieSimDataFrame, df).plot(ax=ax, **kwargs)
 
-        ax.legend()
+        legend = ax.legend()
+
+        legend.set_title(' | '.join(df.columns.names))
 
     def add_weight(self, weight_index: str, weight: np.ndarray) -> "PyMieSimDataFrame":
 

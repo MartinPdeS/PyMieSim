@@ -57,7 +57,9 @@ PYBIND11_MODULE(interface_sets, module) {
             ;
 
     // Binding for SOURCE::Set
-    py::class_<SourceSet>(module, "CppSourceSet")
+    py::class_<BaseSourceSet>(module, "CppBaseSourceSet");
+
+    py::class_<GaussianSourceSet, BaseSourceSet>(module, "CppGaussianSourceSet")
         .def(py::init<const std::vector<double>&, const std::vector<std::vector<complex128>>&, const std::vector<double>&, const std::vector<double>&, bool>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
@@ -65,6 +67,9 @@ PYBIND11_MODULE(interface_sets, module) {
             py::arg("optical_power"),
             py::arg("is_sequential"),
             "Initializes a gaussian source set with specific wavelengths, Jones vectors, and amplitudes.")
+        ;
+
+    py::class_<PlaneWaveSourceSet, BaseSourceSet>(module, "CppPlaneWaveSourceSet")
         .def(py::init<const std::vector<double>&, const std::vector<std::vector<complex128>>&, const std::vector<double>&, bool>(),
             py::arg("wavelength"),
             py::arg("jones_vector"),
@@ -74,6 +79,7 @@ PYBIND11_MODULE(interface_sets, module) {
 
     // Binding for DETECTOR::Set
     py::class_<DetectorSet>(module, "CppDetectorSet")
+        .def(py::init<>())
         .def(py::init<const std::vector<std::string>&, const std::vector<unsigned>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, bool, bool, bool>(),
              py::arg("mode_number"),
              py::arg("sampling"),
