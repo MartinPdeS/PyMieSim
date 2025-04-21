@@ -17,8 +17,7 @@ def source():
     )
 
 
-# @pytest.mark.parametrize('metric', ['Qsca', 'Cext', 'Qabs', 'Qpr', 'g'])
-@pytest.mark.parametrize('metric', ['Qsca'])
+@pytest.mark.parametrize('metric', ['Qsca', 'Cext', 'Qabs', 'Qpr', 'g'])
 def test_no_shell(metric, source):
     diameter = numpy.linspace(100, 1_000, 20) * nanometer
 

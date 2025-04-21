@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils/base_spherical_scatterer.cpp"
+#include "scatterer/base_spherical_scatterer.cpp"
 
 
 

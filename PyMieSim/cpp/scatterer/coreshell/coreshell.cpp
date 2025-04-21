@@ -1,4 +1,4 @@
-#include "coreshell/coreshell.h"
+#include "scatterer/coreshell/coreshell.h"
 #include "utils/special_function.cpp"
 
 void CoreShell::apply_medium() {

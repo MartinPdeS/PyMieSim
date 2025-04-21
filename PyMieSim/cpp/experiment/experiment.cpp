@@ -1,8 +1,8 @@
 #include <cstdarg>    // For va_list, va_start, va_end
 #include <cstdio>     // For printf, vprintf
-#include "sphere/sphere.h"
-#include "cylinder/cylinder.h"
-#include "coreshell/coreshell.h"
+#include "scatterer/sphere/sphere.h"
+#include "scatterer/cylinder/cylinder.h"
+#include "scatterer/coreshell/coreshell.h"
 #include "source/source.h"
 #include "detector/detector.h"
 #include "utils/numpy_interface.h"

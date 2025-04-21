@@ -12,6 +12,19 @@ from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment.source import Gaussian, PlaneWave
 from PyMieSim.experiment.dataframe_subclass import PyMieSimDataFrame
 import PyMieSim
+from PyMieSim.binary.interface_sets import CppDetectorSet
+
+
+class EmptyDetector:
+    def __init__(self):
+        self.binding = CppDetectorSet()
+        self.mapping = {}
+
+    def _generate_binding(self, *args, **kwargs):
+        pass
+
+    def _generate_mapping(self, *args, **kwargs):
+        pass
 
 @dataclass
 class Setup:
@@ -31,7 +44,7 @@ class Setup:
     """
     scatterer: Union[Sphere, Cylinder, CoreShell]
     source: Union[Gaussian, PlaneWave]
-    detector: Optional[Union[Photodiode, CoherentMode]] = None
+    detector: Optional[Union[Photodiode, CoherentMode]] = EmptyDetector()
 
     def __post_init__(self):
         """
@@ -49,8 +62,7 @@ class Setup:
 
         self.source._generate_binding()
 
-        if self.detector is not None:
-            self.detector._generate_binding()
+        self.detector._generate_binding()
 
         self.scatterer.source = self.source
 
@@ -66,9 +78,7 @@ class Setup:
     def _generate_mapping(self) -> None:
         self.source._generate_mapping()
         self.scatterer._generate_mapping()
-
-        if self.detector:
-            self.detector._generate_mapping()
+        self.detector._generate_mapping()
 
     def get_sequential(self, measure: str) -> numpy.ndarray:
         """
@@ -88,17 +98,10 @@ class Setup:
         scatterer_name = self.scatterer.__class__.__name__
         method_name = f'get_{scatterer_name}_{measure}_sequential'
 
-        if self.detector is not None:
-            detector_set = self.detector.binding
-        else:
-            from PyMieSim.binary.interface_sets import CppDetectorSet
-            detector_set = CppDetectorSet()
-
-
         # Compute the values using the binding method
         return getattr(self.binding, method_name)(
             source_set=self.source.binding,
-            detector_set=detector_set
+            detector_set=self.detector.binding
         )
 
     def get(self, *measures, scale_unit: bool = False, drop_unique_level: bool = True, add_units: bool = True, as_numpy: bool = False) -> pd.DataFrame:
@@ -179,11 +182,19 @@ class Setup:
             A NumPy array containing computed values for the specified measures.
         """
         output_array = []
+
         for measure in measures:
             scatterer_name = self.scatterer.__class__.__name__
             method_name = f'get_{scatterer_name}_{measure}'
 
-            output_array.append(getattr(self.binding, method_name)())
+            method = getattr(self.binding, method_name)
+
+            array = method(
+                source_set=self.source.binding,
+                detector_set=self.detector.binding
+            )
+
+            output_array.append(array)
 
         return numpy.asarray(output_array).squeeze()
 

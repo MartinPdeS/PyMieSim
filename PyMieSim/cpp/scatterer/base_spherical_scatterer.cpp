@@ -27,7 +27,7 @@
 #include <cmath>
 #include <vector>
 #include <complex>
-#include <utils/base_scatterer.cpp>
+#include <scatterer/base_scatterer.cpp>
 
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "sphere/sphere.h"
-#include "cylinder/cylinder.h"
-#include "coreshell/coreshell.h"
+#include "scatterer/sphere/sphere.h"
+#include "scatterer/cylinder/cylinder.h"
+#include "scatterer/coreshell/coreshell.h"
 #include "detector/detector.h"
 #include "source/source.h"
 

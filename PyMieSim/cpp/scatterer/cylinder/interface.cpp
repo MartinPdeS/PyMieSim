@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/complex.h> // Ensure complex numbers are supported
-#include "cylinder/cylinder.cpp"
+#include "scatterer/cylinder/cylinder.cpp"
 
 namespace py = pybind11;
 

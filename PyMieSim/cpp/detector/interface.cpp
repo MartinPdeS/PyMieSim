@@ -1,8 +1,8 @@
 #include <pybind11/pybind11.h>
 
-#include "coreshell/coreshell.h"
-#include "sphere/sphere.h"
-#include "cylinder/cylinder.h"
+#include "scatterer/coreshell/coreshell.h"
+#include "scatterer/sphere/sphere.h"
+#include "scatterer/cylinder/cylinder.h"
 #include "detector/detector.h"
 
 PYBIND11_MODULE(interface_detector, module) {

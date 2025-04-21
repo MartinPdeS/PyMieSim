@@ -56,9 +56,9 @@ add_subdirectory(PyMieSim/cpp/mode_field)         # cpp_mode_field
 add_subdirectory(PyMieSim/cpp/full_mesh)          # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)          # cpp_fibonacci      - interface_fibonacci
 add_subdirectory(PyMieSim/cpp/source)             # cpp_source         - interface_source
-add_subdirectory(PyMieSim/cpp/sphere)             # cpp_sphere         - interface_sphere
-add_subdirectory(PyMieSim/cpp/cylinder)           # cpp_cylinder       - interface_cylinder
-add_subdirectory(PyMieSim/cpp/coreshell)          # cpp_coreshell      - interface_coreshell
+add_subdirectory(PyMieSim/cpp/scatterer/sphere)             # cpp_sphere         - interface_sphere
+add_subdirectory(PyMieSim/cpp/scatterer/cylinder)           # cpp_cylinder       - interface_cylinder
+add_subdirectory(PyMieSim/cpp/scatterer/coreshell)          # cpp_coreshell      - interface_coreshell
 add_subdirectory(PyMieSim/cpp/detector)           # cpp_detector       - interface_detector
 add_subdirectory(PyMieSim/cpp/sets)               # cpp_sets           - interface_sets
 add_subdirectory(PyMieSim/cpp/experiment)         # cpp_experiment     - interface_experiment

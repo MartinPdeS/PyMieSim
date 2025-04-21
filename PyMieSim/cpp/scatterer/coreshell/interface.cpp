@@ -1,5 +1,7 @@
 
-#include "coreshell/coreshell.h"
+#include <pybind11/pybind11.h>
+#include <pybind11/complex.h> // Ensure complex numbers are supported
+#include "scatterer/coreshell/coreshell.h"
 
 namespace py = pybind11;
 
