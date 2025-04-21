@@ -4,7 +4,7 @@
 
 | Name                                           |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |----------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| PyMieSim/experiment/dataframe\_subclass.py     |       67 |       15 |       16 |        3 |     76% |68->73, 81, 158-165, 200, 208-212, 221-225 |
+| PyMieSim/experiment/dataframe\_subclass.py     |       67 |        8 |       16 |        3 |     87% |70->73, 83, 192, 202-206, 215-219 |
 | PyMieSim/experiment/detector/base.py           |       43 |        0 |       16 |        1 |     98% |  125->128 |
 | PyMieSim/experiment/detector/coherent\_mode.py |       19 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/detector/photodiode.py     |       22 |        0 |        0 |        0 |    100% |           |
@@ -12,10 +12,10 @@
 | PyMieSim/experiment/scatterer/core\_shell.py   |       26 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/cylinder.py      |       23 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/experiment/scatterer/sphere.py        |       23 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/setup.py                   |      107 |        3 |       32 |        3 |     96% |269-270, 333->337, 342 |
-| PyMieSim/experiment/source/base.py             |       52 |        3 |       24 |        6 |     88% |20, 48->51, 61->64, 75, 77->exit, 92 |
-| PyMieSim/experiment/source/gaussian.py         |       15 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/experiment/source/planewave.py        |       21 |        0 |        2 |        1 |     96% |    37->40 |
+| PyMieSim/experiment/setup.py                   |      117 |        5 |       28 |        5 |     93% |229-230, 295-296, 351->354, 359->363, 368 |
+| PyMieSim/experiment/source/base.py             |       44 |        2 |       22 |        5 |     89% |34->37, 47->50, 61, 63->exit, 78 |
+| PyMieSim/experiment/source/gaussian.py         |       23 |        1 |        2 |        1 |     92% |        53 |
+| PyMieSim/experiment/source/planewave.py        |       29 |        1 |        4 |        2 |     91% |38->41, 62 |
 | PyMieSim/experiment/utils.py                   |       34 |        1 |       14 |        2 |     94% |52->56, 64 |
 | PyMieSim/mesh.py                               |       88 |        4 |        8 |        2 |     94% |114, 126, 138, 150, 192->exit, 211->exit |
 | PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        87 |
@@ -32,7 +32,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1261** |   **49** |  **198** |   **28** | **94%** |           |
+|                                      **TOTAL** | **1279** |   **45** |  **196** |   **31** | **95%** |           |
 
 
 ## Setup coverage badge
