@@ -1,5 +1,14 @@
 #pragma once
 
+#include "source/source.h"
+#include <cmath>
+#include <vector>
+#include <complex>
+#include <scatterer/base_scatterer.cpp>
+
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
+
 
 #define DEFINE_COMPLEX_VECTOR(name) \
     std::vector<complex128> name##n; \
@@ -23,20 +32,14 @@
     DEFINE_GETTER_ABS(name, 4) \
     pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(name##n, {_max_order}); }
 
-#include "source/source.h"
-#include <cmath>
-#include <vector>
-#include <complex>
-#include <scatterer/base_scatterer.cpp>
 
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
 
 typedef std::complex<double> complex128;
 
 class BaseSphericalScatterer : public BaseScatterer
 {
 public:
+
     DEFINE_COEFFICIENTS(a)
     DEFINE_COEFFICIENTS(b)
     DEFINE_COEFFICIENTS(c)
@@ -115,7 +118,7 @@ public:
             mu.push_back( cos( phi - PI / 2.0 ) );
 
         for (size_t i = 0; i < phi.size(); i++){
-            auto [pin, taun] = this->MiePiTau(mu[i], max_order);
+            auto [pin, taun] = this->get_pi_tau(mu[i], max_order);
             complex128 S1_temp = 0., S2_temp = 0.;
 
             for (size_t m = 0; m < max_order ; m++){
@@ -131,7 +134,7 @@ public:
 
 
     std::tuple<std::vector<complex128>, std::vector<complex128>>
-    MiePiTau(const double& mu, const size_t& max_order) const {
+    get_pi_tau(const double& mu, const size_t& max_order) const {
         std::vector<complex128> pin, taun;
         pin.reserve(max_order);
         taun.reserve(max_order);
@@ -151,7 +154,7 @@ public:
         return std::make_tuple(pin, taun);
     }
 
-    void MiePiTau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {
+    void get_pi_tau(double mu, size_t max_order, complex128 *pin, complex128 *taun) const {
       pin[0] = 1.;
       pin[1] = 3. * mu;
 
@@ -172,6 +175,24 @@ public:
             Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
 
         return Dn;
+    }
+
+    complex128 get_coefficient(const std::string &type, const size_t order){
+        if (order > max_order)
+            throw std::invalid_argument("Coefficient number is higher than computed max value: " + std::to_string(max_order));
+
+        if (type == "a")
+            return this->an[order];
+        else if (type == "b")
+            return this->bn[order];
+        else if (type == "c")
+            return this->cn[order];
+        else if (type == "d")
+            return this->dn[order];
+
+        throw std::invalid_argument("Invalid type provided.");
+
+        return 0.;
     }
 
 };

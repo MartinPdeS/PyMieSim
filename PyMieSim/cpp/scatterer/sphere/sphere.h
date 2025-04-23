@@ -13,13 +13,16 @@ class Sphere: public BaseSphericalScatterer
         double diameter;
         complex128 refractive_index;
 
-        Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order = 0) :
+        Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order = 0, bool compute_c_d = false) :
             BaseSphericalScatterer(source, max_order, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
         {
             this->compute_area();
             this->compute_size_parameter();
             this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
             this->compute_an_bn();
+
+            if (compute_c_d)
+                this->compute_cn_dn();
         }
 
         void compute_size_parameter() override {
