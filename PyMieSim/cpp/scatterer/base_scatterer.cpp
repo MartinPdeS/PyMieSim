@@ -23,18 +23,31 @@ public:
     virtual ~BaseScatterer() = default;
 
     virtual std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const = 0;
-    virtual double get_Qsca() const = 0;
-    virtual double get_Qext() const = 0;
-    virtual double get_g() const = 0;
+    virtual double get_Qsca() const {throw std::logic_error{"Function not implementend!"};};;
+    virtual double get_Qext() const {throw std::logic_error{"Function not implementend!"};};;
+    virtual double get_Qback() const {throw std::logic_error{"Function not implementend!"};};;
+    virtual double get_g() const {throw std::logic_error{"Function not implementend!"};};;
+
     virtual void compute_size_parameter() = 0;
     virtual void compute_area() = 0;
 
+
     double get_Qabs() const {return get_Qext() - get_Qsca();};
+    double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
+    double get_Qforward() const {return get_Qsca() - get_Qback();};
+    double get_Qratio() const {return get_Qback() / get_Qsca();};
+    double get_Cback() const {return get_Qback() * area;};
+    double get_Cforward() const {return get_Qforward() * area;};
+    double get_Cratio() const {return get_Qratio() * area;};
+
     double get_Csca() const {return get_Qsca() * area;};
     double get_Cext() const {return get_Qext() * area;};
     double get_Cabs() const {return get_Qabs() * area;};
-    double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
     double get_Cpr() const {return get_Qpr() * area;};
+
+
+
+
 
 
     BaseScatterer(const size_t max_order, const BaseSource &source, const double medium_refractive_index)

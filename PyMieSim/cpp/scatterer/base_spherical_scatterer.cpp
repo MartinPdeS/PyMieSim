@@ -33,7 +33,6 @@
     pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(name##n, {_max_order}); }
 
 
-
 typedef std::complex<double> complex128;
 
 class BaseSphericalScatterer : public BaseScatterer
@@ -48,61 +47,9 @@ public:
     BaseSphericalScatterer() = default;
     virtual ~BaseSphericalScatterer() = default;
 
-    BaseSphericalScatterer(const BaseSource &source, const size_t max_order, const double medium_index) :
-    BaseScatterer(max_order, source, medium_index){}
+    BaseSphericalScatterer(const BaseSource &source, const size_t max_order, const double medium_index)
+    : BaseScatterer(max_order, source, medium_index){}
 
-    double get_Qforward() const {return get_Qsca() - get_Qback();};
-    double get_Qratio() const {return get_Qback() / get_Qsca();};
-    double get_Cback() const {return get_Qback() * area;};
-    double get_Cforward() const {return get_Qforward() * area;};
-    double get_Cratio() const {return get_Qratio() * area;};
-
-    double get_g() const {
-        double value = 0;
-
-          for(size_t it = 0; it < max_order-1; ++it) {
-             double n = (double) it + 1;
-
-              value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
-              value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
-          }
-          return value * 4. / ( get_Qsca() * size_parameter_squared );
-      }
-
-    double get_Qsca() const {
-        double value = 0;
-
-        for(size_t it = 0; it < max_order; ++it){
-            double n = (double) it + 1;
-            value += (2. * n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
-        }
-        return value * 2. / size_parameter_squared;
-    }
-
-    double get_Qext() const {
-        double value = 0;
-        for(size_t it = 0; it < max_order; ++it)
-        {
-            double n = (double) it + 1;
-            value += (2.* n + 1.) * std::real( this->an[it] + this->bn[it] );
-
-        }
-        return value * 2. / size_parameter_squared;
-    }
-
-    double get_Qback() const {
-        complex128 value = 0;
-
-        for(size_t it = 0; it < max_order-1; ++it)
-        {
-            double n = (double) it + 1;
-
-            value += (2. * n + 1) * pow(-1., n) * ( this->an[it] - this->bn[it] ) ;
-        }
-
-        value = pow( std::abs(value), 2. ) / size_parameter_squared;
-        return std::abs(value);
-    }
 
     std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const {
         std::vector<complex128> S1, S2;
@@ -162,9 +109,9 @@ public:
       taun[1] = 3.0 * cos(2. * acos(mu) );
 
       for (size_t order = 2; order < max_order; order++) {
-        pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
+            pin[order] = ( (2. * (double)order + 1.) * mu * pin[order - 1] - ((double)order + 1.) * pin[order - 2] ) / (double)order;
 
-        taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
+            taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
         }
     }
 

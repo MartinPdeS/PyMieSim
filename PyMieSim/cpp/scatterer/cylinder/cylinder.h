@@ -1,5 +1,7 @@
 #pragma once
 
+#include "scatterer/base_scatterer.cpp"
+
 #define DEFINE_COMPLEX_VECTOR(name) \
     std::vector<complex128> name##n; \
     std::vector<complex128> get_##name##n() const { return name##n; }
@@ -22,8 +24,6 @@
     DEFINE_GETTER_ABS(name, 4) \
     pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(name##n, {_max_order}); }
 
-
-#include "scatterer/base_scatterer.cpp"
 
 class Cylinder: public BaseScatterer
 {
@@ -68,6 +68,10 @@ class Cylinder: public BaseScatterer
                 Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
 
             return Dn;
+        }
+
+        double get_Qback() const override {
+            throw std::logic_error{"Function not implemented!"};
         }
 
 };

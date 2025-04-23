@@ -90,4 +90,52 @@ void CoreShell::compute_an_bn()
 }
 
 
+double CoreShell::get_Qsca() const {
+    double value = 0;
+
+    for(size_t it = 0; it < max_order; ++it){
+        double n = (double) it + 1;
+        value += (2. * n + 1.) * ( pow( std::abs(this->an[it]), 2) + pow( std::abs(this->bn[it]), 2)  );
+    }
+    return value * 2. / size_parameter_squared;
+}
+
+double CoreShell::get_Qext() const {
+    double value = 0;
+    for(size_t it = 0; it < max_order; ++it)
+    {
+        double n = (double) it + 1;
+        value += (2.* n + 1.) * std::real( this->an[it] + this->bn[it] );
+
+    }
+    return value * 2. / size_parameter_squared;
+}
+
+double CoreShell::get_Qback() const {
+    complex128 value = 0;
+
+    for(size_t it = 0; it < max_order-1; ++it)
+    {
+        double n = (double) it + 1;
+
+        value += (2. * n + 1) * pow(-1., n) * ( this->an[it] - this->bn[it] ) ;
+    }
+
+    value = pow( std::abs(value), 2. ) / size_parameter_squared;
+    return std::abs(value);
+}
+
+
+double CoreShell::get_g() const {
+    double value = 0;
+
+      for(size_t it = 0; it < max_order-1; ++it) {
+         double n = (double) it + 1;
+
+          value += ( n * (n + 2.) / (n + 1.) ) * std::real(this->an[it] * std::conj(this->an[it+1]) + this->bn[it] * std::conj(this->bn[it+1]) );
+          value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
+      }
+      return value * 4. / ( get_Qsca() * size_parameter_squared );
+}
+
 // -

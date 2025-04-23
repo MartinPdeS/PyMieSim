@@ -3,8 +3,6 @@
 #include "scatterer/base_spherical_scatterer.cpp"
 
 
-
-
 class CoreShell: public BaseSphericalScatterer
 {
     public:
@@ -35,8 +33,8 @@ class CoreShell: public BaseSphericalScatterer
             this->x_shell = source.wavenumber * this->shell_diameter / 2.0 * this->medium_refractive_index;
             this->x_core = source.wavenumber * this->core_diameter / 2.0 * this->medium_refractive_index;
         }
-        void compute_area() override {
 
+        void compute_area() override {
             this->area = PI * pow(this->shell_diameter/2.0, 2);
         }
 
@@ -44,6 +42,11 @@ class CoreShell: public BaseSphericalScatterer
         void compute_cn_dn();
         void compute_an_bn();
         void compute_max_order(size_t max_order);
+
+        double get_Qsca() const override;
+        double get_Qext() const override;
+        double get_Qback() const override;
+        double get_g() const override;
 };
 
 

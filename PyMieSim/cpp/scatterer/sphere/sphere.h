@@ -36,6 +36,12 @@ class Sphere: public BaseSphericalScatterer
 
         void compute_cn_dn();
         void compute_an_bn();
+
+        double get_Qsca() const override;
+        double get_Qext() const override;
+        double get_Qback() const override;
+        double get_g() const override;
+
 };
 
 // -
