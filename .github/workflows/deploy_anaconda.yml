@@ -3,8 +3,7 @@ name: Deploy Conda Packages
 on:
   push:
     branches: [ "master" ]
-    tags:
-      - '*'
+    tags: '*'
   pull_request:
     branches: [ "master" ]
 
