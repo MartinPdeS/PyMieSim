@@ -38,7 +38,6 @@ scatterer = Cylinder(
 experiment = Setup(
     scatterer=scatterer,
     source=source,
-    detector=None
 )
 
 dataframe = experiment.get('Csca', add_units=False)

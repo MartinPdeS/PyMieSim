@@ -25,7 +25,7 @@ Cylinder Scatterer Bohren-Huffman figure 8.7
 
 Importing the dependencies: numpy, matplotlib, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-63
+.. GENERATED FROM PYTHON SOURCE LINES 9-62
 
 .. code-block:: Python
 
@@ -61,7 +61,6 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
     experiment = Setup(
         scatterer=scatterer,
         source=source,
-        detector=None
     )
 
     dataframe = experiment.get('Csca', add_units=False)
@@ -104,7 +103,7 @@ Importing the dependencies: numpy, matplotlib, PyMieSim
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.475 seconds)
+   **Total running time of the script:** (0 minutes 0.479 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_bohren_huffman_figure_87.py:

@@ -31,7 +31,7 @@ Importing the package dependencies: numpy, PyMieSim
 
     import numpy as np
 
-    from PyMieSim.experiment.scatterer import Sphere, CoreShell
+    from PyMieSim.experiment.scatterer import Sphere
     from PyMieSim.experiment.source import Gaussian
     from PyMieSim.experiment.detector import Photodiode
 
@@ -134,7 +134,7 @@ Defining the experiment setup
 
     experiment_1 = Setup(scatterer=scatterer_1, source=source_1, detector=detector_1)
 
-    dataframe_1 = experiment_1.get('coupling', scale_unit=True, drop_unique_level=True)
+    dataframe_1 = experiment_1.get('Qsca', scale_unit=True, drop_unique_level=True)
 
     # dataframe_1._plot(x='scatterer:diameter', std='detector:NA', show=True)
     dataframe_1.plot(x='scatterer:diameter', show=True)
@@ -160,17 +160,17 @@ Defining the experiment setup
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.11/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405.0 nm to 810.0 nm which is outside the allowable range of 436.79999999999995 nm to 1.052 µm µm. [Material: polystyren]
+    /opt/hostedtoolcache/Python/3.11.12/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 405.0 nm to 810.0 nm which is outside the allowable range of 436.79999999999995 nm to 1.052 µm µm. [Material: polystyren]
       warnings.warn(
 
-    <Axes: xlabel='scatterer:diameter', ylabel='microwatt'>
+    <Axes: xlabel='scatterer:diameter', ylabel='dimensionless'>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.447 seconds)
+   **Total running time of the script:** (0 minutes 0.422 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:

@@ -8,7 +8,7 @@ Sphere: Qsca vs diameter
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
 
-from PyMieSim.experiment.scatterer import Sphere, CoreShell
+from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
 from PyMieSim.experiment.detector import Photodiode
 
@@ -47,7 +47,7 @@ detector_1 = Photodiode(
 # Defining the experiment setup
 experiment_1 = Setup(scatterer=scatterer_1, source=source_1, detector=detector_1)
 
-dataframe_1 = experiment_1.get('coupling', scale_unit=True, drop_unique_level=True)
+dataframe_1 = experiment_1.get('Qsca', scale_unit=True, drop_unique_level=True)
 
 # dataframe_1._plot(x='scatterer:diameter', std='detector:NA', show=True)
 dataframe_1.plot(x='scatterer:diameter', show=True)
