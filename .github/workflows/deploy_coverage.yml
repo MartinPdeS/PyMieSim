@@ -21,5 +21,6 @@ jobs:
     uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@master
     with:
       python-version: "3.11"
+      apt-package: xvfb
     secrets:
       _GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

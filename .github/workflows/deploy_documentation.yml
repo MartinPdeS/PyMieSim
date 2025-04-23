@@ -22,3 +22,4 @@ jobs:
     with:
       python-version: "3.11"
       package-name: "PyMieSim"
+      apt-package: xvfb jq

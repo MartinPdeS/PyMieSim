@@ -16,6 +16,7 @@ jobs:
     uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_anaconda.yml@master
     with:
       python-versions: '["3.11", "3.12"]'
+      apt-package: ""
     secrets:
       ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
 
