@@ -22,7 +22,7 @@
     DEFINE_GETTER_ABS(name, 2) \
     DEFINE_GETTER_ABS(name, 3) \
     DEFINE_GETTER_ABS(name, 4) \
-    pybind11::array_t<complex128> get_##name##n_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(name##n, {_max_order}); }
+    pybind11::array_t<complex128> get_##name##n_list_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(name##n, {_max_order}); }
 
 
 class Cylinder: public BaseScatterer

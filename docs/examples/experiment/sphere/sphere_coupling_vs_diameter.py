@@ -50,7 +50,7 @@ experiment = Setup(scatterer=scatterer, source=source, detector=detector)
 
 # %%
 # Measuring the properties
-dataframe = experiment.get('coupling', drop_unique_level=True, scale_unit=True)
+dataframe = experiment.get('a1', drop_unique_level=True, scale_unit=True)
 
 # %%
 # Plotting the results

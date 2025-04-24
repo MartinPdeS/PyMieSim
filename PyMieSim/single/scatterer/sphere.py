@@ -43,7 +43,7 @@ class Sphere(BaseScatterer):
         """
         Binds the Python representation of the sphere to its C++ counterpart using provided properties.
         """
-        from PyMieSim.binary.interface_sphere import SPHERE
+        from PyMieSim.binary.interface_scatterer import SPHERE
 
         self.binding = SPHERE(
             diameter=self.diameter.to_base_units().magnitude,
@@ -52,7 +52,7 @@ class Sphere(BaseScatterer):
             source=self.source.binding
         )
 
-    def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
+    def an(self) -> numpy.ndarray:
         r"""
         Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
@@ -65,21 +65,14 @@ class Sphere(BaseScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`a_n` coefficients.
         """
-        return self.binding.an(max_order)
+        return self.binding.an()
 
-    def bn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
+    def bn(self) -> numpy.ndarray:
         r"""
         Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
 
@@ -92,21 +85,14 @@ class Sphere(BaseScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`b_n` coefficients.
         """
-        return self.binding.bn(max_order)
+        return self.binding.bn()
 
-    def cn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
+    def cn(self) -> numpy.ndarray:
         r"""
         For future purpose only!
         Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
@@ -120,21 +106,14 @@ class Sphere(BaseScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`c_n` coefficients.
         """
-        return self.binding.cn(max_order)
+        return self.binding.cn()
 
-    def dn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
+    def dn(self) -> numpy.ndarray:
         r"""
         For future purpose only!
         Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
@@ -148,16 +127,9 @@ class Sphere(BaseScatterer):
 
         With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`d_n` coefficients.
         """
-        return self.binding.dn(max_order)
+        return self.binding.dn()

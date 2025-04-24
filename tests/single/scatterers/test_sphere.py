@@ -14,10 +14,8 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 property = [Material.BK7, 1.6 * RIU]
 medium_property = [Material.water, 1.4 * RIU]
 
-methods = ['an', 'bn']
-
 attributes = [
-    "size_parameter", "area", "g",
+    "size_parameter", "area", "g", 'an', 'bn',
     "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qforward", "Qpr",
     "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]
@@ -35,23 +33,6 @@ def gaussian_source():
         optical_power=1 * watt,
         NA=0.3 * AU
     )
-
-
-@pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('method', methods)
-def test_sphere_method(method, property, medium_property, gaussian_source):
-    # Pass only the actual configuration dictionary to the constructor
-    scatterer = Sphere(
-        diameter=100 * nanometer,
-        source=gaussian_source,
-        medium_property=medium_property,
-        property=property
-    )
-
-    _ = getattr(scatterer, method)()
-
-    _ = getattr(scatterer, method)(max_order=3)
 
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])

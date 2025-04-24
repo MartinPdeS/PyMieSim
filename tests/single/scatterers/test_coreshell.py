@@ -15,10 +15,8 @@ core_property = [Material.iron, Material.BK7, 1.0 * RIU]
 shell_property = [Material.BK7, Material.iron, 1.7 * RIU]
 medium_property = [Material.water, 1.4 * RIU]
 
-methods = ["an", "bn"]
-
 attributes = [
-    "size_parameter", "area", "g", "Qsca", "Qext", "Qabs", "Qback", "Qratio",
+    "size_parameter", "area", "g", "Qsca", "Qext", "Qabs", "Qback", "Qratio", "an", "bn",
     "Qforward", "Qpr", "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]
 
@@ -34,27 +32,6 @@ def gaussian_source():
         optical_power=1 * watt,
         NA=0.3 * AU
     )
-
-
-# Parametrized test for methods
-@pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])
-@pytest.mark.parametrize('shell_material', shell_property, ids=[f'Shell:{m}' for m in shell_property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('method', methods)
-def test_method(method, core_material, shell_material, medium_property, gaussian_source):
-    scatterer = CoreShell(
-        core_diameter=100 * nanometer,
-        shell_thickness=200 * nanometer,
-        source=gaussian_source,
-        medium_property=medium_property,
-        core_property=core_material,
-        shell_property=shell_material
-    )
-
-    # Execute the method
-    _ = getattr(scatterer, method)()
-    _ = getattr(scatterer, method)(max_order=3)
-
 
 # Parametrized test for coupling
 @pytest.mark.parametrize('core_material', core_property, ids=[f'Core:{m}' for m in core_property])

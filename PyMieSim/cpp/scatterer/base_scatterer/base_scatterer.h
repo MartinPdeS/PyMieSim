@@ -42,12 +42,6 @@ public:
     std::vector<complex128> get_dn() const { return this->dn; }
 
 
-
-    complex128 get_a() const { return this->an.back(); }
-    complex128 get_b() const { return this->bn.back(); }
-    complex128 get_c() const { return this->cn.back(); }
-    complex128 get_d() const { return this->dn.back(); }
-
     double get_a1_abs() const { return abs(this->an[0]); }
     double get_b1_abs() const { return abs(this->bn[0]); }
     double get_c1_abs() const { return abs(this->cn[0]); }
@@ -64,15 +58,10 @@ public:
     double get_d3_abs() const { return abs(this->dn[2]); }
 
 
-    double get_an_abs() const { return abs(this->an.back()); }
-    double get_bn_abs() const { return abs(this->bn.back()); }
-    double get_cn_abs() const { return abs(this->cn.back()); }
-    double get_dn_abs() const { return abs(this->dn.back()); }
-
-    pybind11::array_t<complex128> get_an_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(this->an, {_max_order}); }
-    pybind11::array_t<complex128> get_bn_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(this->bn, {_max_order}); }
-    pybind11::array_t<complex128> get_cn_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(this->cn, {_max_order}); }
-    pybind11::array_t<complex128> get_dn_py(size_t _max_order) { _max_order = (_max_order == 0 ? this->max_order : _max_order); return _vector_to_numpy(this->dn, {_max_order}); }
+    pybind11::array_t<complex128> get_an_list_py() {return _vector_to_numpy(this->an); }
+    pybind11::array_t<complex128> get_bn_list_py() {return _vector_to_numpy(this->bn); }
+    pybind11::array_t<complex128> get_cn_list_py() {return _vector_to_numpy(this->cn); }
+    pybind11::array_t<complex128> get_dn_list_py() {return _vector_to_numpy(this->dn); }
 
 
 

@@ -6,4 +6,3 @@ set(NAME "base_scatterer")
 add_library("cpp_${NAME}" STATIC "${NAME}.cpp")
 
 target_link_libraries("cpp_${NAME}" PRIVATE pybind11::module cpp_source cpp_full_mesh)
-

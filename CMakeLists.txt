@@ -56,10 +56,7 @@ add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
 add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
 add_subdirectory(PyMieSim/cpp/source)                       # cpp_source         - interface_source
-add_subdirectory(PyMieSim/cpp/scatterer/base_scatterer)     # cpp_base_scatterer
-add_subdirectory(PyMieSim/cpp/scatterer/sphere)             # cpp_sphere         - interface_sphere
-add_subdirectory(PyMieSim/cpp/scatterer/cylinder)           # cpp_cylinder       - interface_cylinder
-add_subdirectory(PyMieSim/cpp/scatterer/coreshell)          # cpp_coreshell      - interface_coreshell
+add_subdirectory(PyMieSim/cpp/scatterer)                    # cpp_scatterers
 add_subdirectory(PyMieSim/cpp/detector)                     # cpp_detector       - interface_detector
 add_subdirectory(PyMieSim/cpp/sets)                         # cpp_sets           - interface_sets
 add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
@@ -67,8 +64,8 @@ add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment    
 
 set(ALL_TARGETS ZBessel cpp_source cpp_full_mesh cpp_fibonacci cpp_mode_field
                 cpp_sphere cpp_cylinder cpp_coreshell cpp_detector cpp_sets cpp_experiment
-                interface_source interface_mode_field interface_fibonacci interface_sphere
-                interface_cylinder interface_coreshell interface_detector interface_sets interface_experiment)
+                interface_source interface_mode_field interface_fibonacci interface_scatterer
+                interface_detector interface_sets interface_experiment)
 
 install(TARGETS ${ALL_TARGETS}
         LIBRARY DESTINATION ${PYMIESIM_BIN_DIR}

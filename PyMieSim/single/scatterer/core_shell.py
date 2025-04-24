@@ -53,7 +53,7 @@ class CoreShell(BaseScatterer):
         """
         Bind the C++ scatterer class.
         """
-        from PyMieSim.binary.interface_coreshell import CORESHELL
+        from PyMieSim.binary.interface_scatterer import CORESHELL
 
         self.binding = CORESHELL(
             shell_refractive_index=self.shell_index.to_base_units().magnitude,
@@ -64,38 +64,24 @@ class CoreShell(BaseScatterer):
             source=self.source.binding
         )
 
-    def an(self, max_order: Optional[int] = 0) -> numpy.ndarray:
+    def an(self) -> numpy.ndarray:
         r"""
         Compute :math:`a_n` coefficient.
-
-        If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
 
         Returns
         -------
         numpy.ndarray
             Array of :math:`a_n` coefficients.
         """
-        return self.binding.an(max_order)
+        return self.binding.an()
 
-    def bn(self, max_order: Optional[int] = 0) -> numpy.ndarray:
+    def bn(self) -> numpy.ndarray:
         r"""
         Compute :math:`b_n` coefficient.
-
-        If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
 
         Returns
         -------
         numpy.ndarray
             Array of :math:`b_n` coefficients.
         """
-        return self.binding.bn(max_order)
+        return self.binding.bn()
