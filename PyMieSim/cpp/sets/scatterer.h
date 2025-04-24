@@ -2,7 +2,7 @@
 
 #include "sets/properties.h"
 #include "sets/base_set.h"
-#include "scatterer/base_scatterer.cpp"
+#include "scatterer/base_scatterer/base_scatterer.h"
 
 // Sphere class inheriting from BaseSet
 class SphereSet : public BaseSet

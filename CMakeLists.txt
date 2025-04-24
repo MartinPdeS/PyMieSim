@@ -51,17 +51,18 @@ message(STATUS "Binary will be installed in location: ${PYMIESIM_BIN_DIR}")
 
 
 # add_subdirectory(PyMieSim/cpp/_bessel)
-add_subdirectory(PyMieSim/cpp/bessel)             # ZBessel
-add_subdirectory(PyMieSim/cpp/mode_field)         # cpp_mode_field
-add_subdirectory(PyMieSim/cpp/full_mesh)          # cpp_full_mesh
-add_subdirectory(PyMieSim/cpp/fibonacci)          # cpp_fibonacci      - interface_fibonacci
-add_subdirectory(PyMieSim/cpp/source)             # cpp_source         - interface_source
+add_subdirectory(PyMieSim/cpp/bessel)                       # ZBessel
+add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
+add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
+add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
+add_subdirectory(PyMieSim/cpp/source)                       # cpp_source         - interface_source
+add_subdirectory(PyMieSim/cpp/scatterer/base_scatterer)     # cpp_base_scatterer
 add_subdirectory(PyMieSim/cpp/scatterer/sphere)             # cpp_sphere         - interface_sphere
 add_subdirectory(PyMieSim/cpp/scatterer/cylinder)           # cpp_cylinder       - interface_cylinder
 add_subdirectory(PyMieSim/cpp/scatterer/coreshell)          # cpp_coreshell      - interface_coreshell
-add_subdirectory(PyMieSim/cpp/detector)           # cpp_detector       - interface_detector
-add_subdirectory(PyMieSim/cpp/sets)               # cpp_sets           - interface_sets
-add_subdirectory(PyMieSim/cpp/experiment)         # cpp_experiment     - interface_experiment
+add_subdirectory(PyMieSim/cpp/detector)                     # cpp_detector       - interface_detector
+add_subdirectory(PyMieSim/cpp/sets)                         # cpp_sets           - interface_sets
+add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
 
 
 set(ALL_TARGETS ZBessel cpp_source cpp_full_mesh cpp_fibonacci cpp_mode_field

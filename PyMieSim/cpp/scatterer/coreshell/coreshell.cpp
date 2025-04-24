@@ -16,7 +16,7 @@ void CoreShell::compute_max_order(size_t max_order){
         this->max_order = max_order;
 }
 
-void CoreShell::compute_an_bn()
+void CoreShell::compute_an_bn(const size_t max_order)
 {
     an.resize(max_order);
     bn.resize(max_order);
@@ -136,6 +136,35 @@ double CoreShell::get_g() const {
           value += ( (2. * n + 1. ) / ( n * (n + 1.) ) )  * std::real( this->an[it] * std::conj(this->bn[it]) );
       }
       return value * 4. / ( get_Qsca() * size_parameter_squared );
+}
+
+std::tuple<std::vector<complex128>, std::vector<complex128>>
+CoreShell::compute_s1s2(const std::vector<double> &phi) const {
+    std::vector<complex128> S1, S2;
+
+    S1.reserve(phi.size());
+    S2.reserve(phi.size());
+
+    std::vector<double> mu, prefactor = get_prefactor();
+
+    mu.reserve(phi.size());
+
+    for (const double phi : phi)
+        mu.push_back( cos( phi - PI / 2.0 ) );
+
+    for (size_t i = 0; i < phi.size(); i++){
+        auto [pin, taun] = this->get_pi_tau(mu[i], max_order);
+        complex128 S1_temp = 0., S2_temp = 0.;
+
+        for (size_t m = 0; m < max_order ; m++){
+            S1_temp += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
+            S2_temp += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
+        }
+        S1.push_back(S1_temp);
+        S2.push_back(S2_temp);
+    }
+
+    return std::make_tuple(std::move(S1), std::move(S2));
 }
 
 // -

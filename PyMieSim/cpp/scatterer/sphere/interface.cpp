@@ -27,7 +27,7 @@ PYBIND11_MODULE(interface_sphere, module) {
         .def("bn", &Sphere::get_bn_py, py::arg("max_order") = 0, "Returns the bn coefficient.")
         .def("cn", &Sphere::get_cn_py, py::arg("max_order") = 0, "Returns the cn coefficient.")
         .def("dn", &Sphere::get_dn_py, py::arg("max_order") = 0, "Returns the dn coefficient.")
-        .def("get_coefficient", &Sphere::get_coefficient, py::arg("type"), py::arg("order"), "Returns the dn coefficient.")
+        .def("get_coefficient", &Sphere::get_coefficient_py, py::arg("type"), py::arg("order"), "Returns the dn coefficient.")
         // Note: Downward are the efficiencies
         .def_property_readonly("Qsca", &Sphere::get_Qsca, "Scattering efficiency of the sphere.")
         .def_property_readonly("Qext", &Sphere::get_Qext, "Extinction efficiency of the sphere.")

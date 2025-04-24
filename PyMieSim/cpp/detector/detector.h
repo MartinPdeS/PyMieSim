@@ -7,7 +7,7 @@
 #include "utils/special_function.cpp"
 #include "fibonacci/fibonacci.h"
 #include "utils/numpy_interface.h"
-#include <scatterer/base_scatterer.cpp>
+#include <scatterer/base_scatterer/base_scatterer.h>
 #include <mode_field/mode_field.h>
 
 

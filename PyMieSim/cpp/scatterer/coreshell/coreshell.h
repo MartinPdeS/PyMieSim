@@ -1,9 +1,9 @@
 #pragma once
 
-#include "scatterer/base_spherical_scatterer.cpp"
+#include "scatterer/base_scatterer/base_scatterer.h"
 
 
-class CoreShell: public BaseSphericalScatterer
+class CoreShell: public BaseScatterer
 {
     public:
         double core_diameter;
@@ -15,8 +15,8 @@ class CoreShell: public BaseSphericalScatterer
         double x_shell;
 
         CoreShell(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index,
-            double medium_refractive_index, BaseSource &source, size_t max_order = 0)
-        : BaseSphericalScatterer(source, max_order, medium_refractive_index), core_diameter(core_diameter), shell_thickness(shell_thickness),
+            double medium_refractive_index, BaseSource &source, size_t max_order = 0, bool compute_c_d = false)
+        : BaseScatterer(max_order, source, medium_refractive_index), core_diameter(core_diameter), shell_thickness(shell_thickness),
         core_refractive_index(core_refractive_index), shell_refractive_index(shell_refractive_index)
         {
             this->shell_diameter = this->core_diameter + this->shell_thickness;
@@ -24,7 +24,11 @@ class CoreShell: public BaseSphericalScatterer
             this->compute_size_parameter();
             this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
             this->apply_medium();
-            this->compute_an_bn();
+            this->compute_an_bn(this->max_order);
+
+            if (compute_c_d)
+                this->compute_cn_dn(this->max_order);
+
         }
 
         void compute_size_parameter() override {
@@ -39,14 +43,16 @@ class CoreShell: public BaseSphericalScatterer
         }
 
         void apply_medium();
-        void compute_cn_dn();
-        void compute_an_bn();
+        void compute_an_bn(const size_t max_order);
+        void compute_cn_dn(size_t max_order);
         void compute_max_order(size_t max_order);
 
         double get_Qsca() const override;
         double get_Qext() const override;
         double get_Qback() const override;
         double get_g() const override;
+
+        std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
 };
 
 

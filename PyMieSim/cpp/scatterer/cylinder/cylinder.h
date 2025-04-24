@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scatterer/base_scatterer.cpp"
+#include "scatterer/base_scatterer/base_scatterer.h"
 
 #define DEFINE_COMPLEX_VECTOR(name) \
     std::vector<complex128> name##n; \

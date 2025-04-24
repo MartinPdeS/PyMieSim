@@ -4,7 +4,7 @@
 typedef std::complex<double> complex128;
 
 
-void Sphere::compute_an_bn(){
+void Sphere::compute_an_bn(const size_t max_order){
     an.resize(max_order);
     bn.resize(max_order);
 
@@ -44,7 +44,7 @@ void Sphere::compute_an_bn(){
     }
 }
 
-void Sphere::compute_cn_dn() {
+void Sphere::compute_cn_dn(const size_t max_order) {
     cn.resize(max_order);
     dn.resize(max_order);
 
