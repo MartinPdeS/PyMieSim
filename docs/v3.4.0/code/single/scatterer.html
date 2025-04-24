@@ -588,7 +588,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.an">
-<span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.an"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.an" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.an"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.an" title="Link to this definition">#</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq:III.88 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[a_n = \frac{
@@ -597,16 +597,12 @@
 {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
 \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
-<p>If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_order</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>)</em>) – The maximum order of the coefficient. Default is 0.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of <span class="math notranslate nohighlight">\(a_n\)</span> coefficients.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(a_n\)</span> coefficients.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -619,7 +615,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.bn">
-<span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.bn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.bn" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.bn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.bn" title="Link to this definition">#</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq:III.89 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[b_n = \frac{
@@ -628,23 +624,19 @@
 {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
 \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
-<p>If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_order</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>)</em>) – The maximum order of the coefficient. Default is 0.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of <span class="math notranslate nohighlight">\(b_n\)</span> coefficients.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(b_n\)</span> coefficients.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.cn">
-<span class="sig-name descname"><span class="pre">cn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.cn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cn" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">cn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.cn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cn" title="Link to this definition">#</a></dt>
 <dd><p>For future purpose only!
 Compute <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as defined in Eq:III.90 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
@@ -654,16 +646,12 @@ Compute <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
 \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
-<p>If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_order</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>)</em>) – The maximum order of the coefficient. Default is 0.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of <span class="math notranslate nohighlight">\(c_n\)</span> coefficients.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(c_n\)</span> coefficients.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -675,7 +663,7 @@ Compute <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.dn">
-<span class="sig-name descname"><span class="pre">dn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.dn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.dn" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">dn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/sphere.html#Sphere.dn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.dn" title="Link to this definition">#</a></dt>
 <dd><p>For future purpose only!
 Compute <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as defined in Eq:III.91 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
@@ -685,16 +673,12 @@ Compute <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as
 {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
 \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
-<p>If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_order</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>)</em>) – The maximum order of the coefficient. Default is 0.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of <span class="math notranslate nohighlight">\(d_n\)</span> coefficients.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(d_n\)</span> coefficients.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1602,18 +1586,14 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.an">
-<span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/core_shell.html#CoreShell.an"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.an" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/core_shell.html#CoreShell.an"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.an" title="Link to this definition">#</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(a_n\)</span> coefficient.</p>
-<p>If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_order</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>)</em>) – The maximum order of the coefficient. Default is 0.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of <span class="math notranslate nohighlight">\(a_n\)</span> coefficients.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(a_n\)</span> coefficients.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1626,18 +1606,14 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.bn">
-<span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/core_shell.html#CoreShell.bn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.bn" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/scatterer/core_shell.html#CoreShell.bn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.bn" title="Link to this definition">#</a></dt>
 <dd><p>Compute <span class="math notranslate nohighlight">\(b_n\)</span> coefficient.</p>
-<p>If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>max_order</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em><em>)</em>) – The maximum order of the coefficient. Default is 0.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of <span class="math notranslate nohighlight">\(b_n\)</span> coefficients.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Array of <span class="math notranslate nohighlight">\(b_n\)</span> coefficients.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.3.dev0)">numpy.ndarray</a></p>
 </dd>
 </dl>
 </dd></dl>

@@ -513,7 +513,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Bind the C++ scatterer class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_coreshell</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORESHELL</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORESHELL</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">CORESHELL</span><span class="p">(</span>
             <span class="n">shell_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
@@ -527,44 +527,30 @@
 
 <div class="viewcode-block" id="CoreShell.an">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.CoreShell.an">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute :math:`a_n` coefficient.</span>
-
-<span class="sd">        If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        max_order : Optional[int])</span>
-<span class="sd">            The maximum order of the coefficient. Default is 0.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            Array of :math:`a_n` coefficients.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">an</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">an</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="CoreShell.bn">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.CoreShell.bn">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute :math:`b_n` coefficient.</span>
-
-<span class="sd">        If max_order is set to zero, the maximum order output is calculated using the Wiscombe criterion.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        max_order : Optional[int])</span>
-<span class="sd">            The maximum order of the coefficient. Default is 0.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            Array of :math:`b_n` coefficients.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">bn</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">bn</span><span class="p">()</span></div>
 </div>
 
 </pre></div>

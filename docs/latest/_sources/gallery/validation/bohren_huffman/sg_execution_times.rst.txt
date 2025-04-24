@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.422** total execution time for 3 files **from gallery/validation/bohren_huffman**:
+**00:01.384** total execution time for 3 files **from gallery/validation/bohren_huffman**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_88.py` (``figure_88.py``)
-     - 00:00.540
+     - 00:00.523
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_87.py` (``figure_87.py``)
-     - 00:00.482
+     - 00:00.479
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_bohren_huffman_figure_810.py` (``figure_810.py``)
-     - 00:00.400
+     - 00:00.382
      - 0.0
