@@ -24,15 +24,15 @@
 | PyMieSim/single/detector/uncoherent.py         |       26 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations.py             |      168 |        3 |       12 |        1 |     98% | 58, 62-63 |
 | PyMieSim/single/scatterer/base.py              |      101 |        1 |        8 |        1 |     98% |       451 |
-| PyMieSim/single/scatterer/core\_shell.py       |       25 |        0 |        0 |        0 |    100% |           |
+| PyMieSim/single/scatterer/core\_shell.py       |       25 |        2 |        0 |        0 |     92% |    76, 87 |
 | PyMieSim/single/scatterer/cylinder.py          |       38 |        4 |        0 |        0 |     89% |157, 161, 165, 169 |
-| PyMieSim/single/scatterer/sphere.py            |       26 |        2 |        0 |        0 |     92% |  135, 163 |
+| PyMieSim/single/scatterer/sphere.py            |       26 |        4 |        0 |        0 |     85% |73, 93, 114, 135 |
 | PyMieSim/single/source/base.py                 |       27 |        0 |       10 |        0 |    100% |           |
 | PyMieSim/single/source/gaussian.py             |       35 |        1 |        2 |        1 |     95% |        41 |
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1279** |   **45** |  **196** |   **31** | **95%** |           |
+|                                      **TOTAL** | **1279** |   **49** |  **196** |   **31** | **94%** |           |
 
 
 ## Setup coverage badge
