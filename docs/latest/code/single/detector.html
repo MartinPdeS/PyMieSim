@@ -523,9 +523,14 @@ This means it is independent of the phase of the impinging scattered light field
 <span class="sig-name descname"><span class="pre">coherent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.coherent" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.gamma_offset">
+<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.coupling">
-<span class="sig-name descname"><span class="pre">coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.coupling" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_coupling">
+<span class="sig-name descname"><span class="pre">get_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_coupling" title="Link to this definition">#</a></dt>
 <dd><p>Compute the light coupling between the detector and a scatterer.</p>
 <p>The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:</p>
 <div class="math notranslate nohighlight">
@@ -557,11 +562,6 @@ This means it is independent of the phase of the impinging scattered light field
 <p class="rubric">Example</p>
 <p>A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.gamma_offset">
-<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.gamma_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_energy_flow">
@@ -787,9 +787,14 @@ This means it depends on the phase of the impinging scattered light field.</p>
 <span class="sig-name descname"><span class="pre">coherent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.coherent" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.gamma_offset">
+<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.gamma_offset" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.coupling">
-<span class="sig-name descname"><span class="pre">coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.coupling" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_coupling">
+<span class="sig-name descname"><span class="pre">get_coupling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scatterer</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_coupling" title="Link to this definition">#</a></dt>
 <dd><p>Compute the light coupling between the detector and a scatterer.</p>
 <p>The coupling quantifies the interaction between the field captured by the detector and the scattered field produced by the scatterer. Mathematically, the coupling is calculated as:</p>
 <div class="math notranslate nohighlight">
@@ -821,11 +826,6 @@ This means it depends on the phase of the impinging scattered light field.</p>
 <p class="rubric">Example</p>
 <p>A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.gamma_offset">
-<span class="sig-name descname"><span class="pre">gamma_offset</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.gamma_offset" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_energy_flow">
@@ -1042,8 +1042,8 @@ to represent additional geometrical information.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.cache_NA"><code class="docutils literal notranslate"><span class="pre">Photodiode.cache_NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.coherent"><code class="docutils literal notranslate"><span class="pre">Photodiode.coherent</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.coupling"><code class="docutils literal notranslate"><span class="pre">Photodiode.coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">Photodiode.gamma_offset</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_coupling"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_energy_flow"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_energy_flow()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_footprint"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.get_poynting_vector"><code class="docutils literal notranslate"><span class="pre">Photodiode.get_poynting_vector()</span></code></a></li>
@@ -1062,8 +1062,8 @@ to represent additional geometrical information.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.cache_NA"><code class="docutils literal notranslate"><span class="pre">CoherentMode.cache_NA</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.coherent"><code class="docutils literal notranslate"><span class="pre">CoherentMode.coherent</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.coupling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.gamma_offset"><code class="docutils literal notranslate"><span class="pre">CoherentMode.gamma_offset</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_coupling"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_coupling()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_energy_flow"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_energy_flow()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_footprint"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.get_poynting_vector"><code class="docutils literal notranslate"><span class="pre">CoherentMode.get_poynting_vector()</span></code></a></li>

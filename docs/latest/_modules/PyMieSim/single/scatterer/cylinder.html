@@ -515,7 +515,7 @@
 
 <div class="viewcode-block" id="Cylinder.a1n">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Cylinder.a1n">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">a1n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">a1n</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute :math:`a_{1n}` coefficient as defined in ref[5]:</span>
 
@@ -526,24 +526,17 @@
 <span class="sd">        With :math:`m` being the refractive index of the medium and</span>
 <span class="sd">        :math:`m_t` being the refractive index of the scatterer.</span>
 
-<span class="sd">        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        max_order : Optional[int])</span>
-<span class="sd">            The maximum order of the coefficient. Default is 0.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            Array of :math:`a_{1n}` coefficients.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">a1n</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">a1n</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Cylinder.a2n">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Cylinder.a2n">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">a2n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">a2n</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute :math:`a_{2n}` coefficient as defined in ref[5]:</span>
 
@@ -554,24 +547,17 @@
 <span class="sd">        With :math:`m` being the refractive index of the medium and</span>
 <span class="sd">        :math:`m_t` being the refractive index of the scatterer.</span>
 
-<span class="sd">        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        max_order : Optional[int])</span>
-<span class="sd">            The maximum order of the coefficient. Default is 0.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            Array of :math:`a_{2n}` coefficients.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">a2n</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">a2n</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Cylinder.b1n">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Cylinder.b1n">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">b1n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">b1n</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute :math:`b_{1n}` coefficient as defined in ref[5]:</span>
 
@@ -582,24 +568,17 @@
 <span class="sd">        With :math:`m` being the refractive index of the medium and</span>
 <span class="sd">        :math:`m_t` being the refractive index of the scatterer.</span>
 
-<span class="sd">        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        max_order : Optional[int])</span>
-<span class="sd">            The maximum order of the coefficient. Default is 0.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            Array of :math:`b_{1n}` coefficients.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">b1n</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">b1n</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="Cylinder.b2n">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Cylinder.b2n">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">b2n</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_order</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">b2n</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute :math:`b_{2n}` coefficient as defined in ref[5]:</span>
 
@@ -610,19 +589,12 @@
 <span class="sd">        With :math:`m` being the refractive index of the medium and</span>
 <span class="sd">        :math:`m_t` being the refractive index of the scatterer.</span>
 
-<span class="sd">        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        max_order : Optional[int])</span>
-<span class="sd">            The maximum order of the coefficient. Default is 0.</span>
-
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        numpy.ndarray</span>
 <span class="sd">            Array of :math:`b_{2n}` coefficients.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">b2n</span><span class="p">(</span><span class="n">max_order</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">b2n</span><span class="p">()</span></div>
 
 
     <span class="nd">@property</span>
