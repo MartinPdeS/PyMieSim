@@ -44,6 +44,8 @@ class Sphere: public BaseScatterer
 
         std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
 
+    private:
+
 };
 
 // -

@@ -15,11 +15,10 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 property = [Material.BK7, 1.6 * RIU]
 medium_property = [Material.water, 1.4 * RIU]
 
-# Methods to be tested
-methods = ["a1n", "a2n", "b1n", "b2n"]
 
 # Attributes to check
 attributes = [
+    "a1n", "a2n", "b1n", "b2n",
     "size_parameter", "area", "g",
     "Qsca", "Qext", "Qabs",
     "Csca", "Cext", "Cabs",
@@ -42,23 +41,6 @@ def gaussian_source():
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
 @pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-@pytest.mark.parametrize('method', methods)
-def test_cylinder_methods(method, property, medium_property, gaussian_source):
-    scatterer = Cylinder(
-        diameter=100 * nanometer,
-        source=gaussian_source,
-        medium_property=medium_property,
-        property=property
-    )
-
-    # Execute method
-    _ = getattr(scatterer, method)()
-
-    _ = getattr(scatterer, method)(max_order=3)
-
-
-@pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
-@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
 def test_cylinder_coupling(property, medium_property, gaussian_source):
     detector = Photodiode(
         NA=0.2 * AU,
@@ -74,7 +56,7 @@ def test_cylinder_coupling(property, medium_property, gaussian_source):
     )
 
     # Calculate optical coupling
-    _ = detector.coupling(scatterer)
+    _ = detector.get_coupling(scatterer)
 
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])

@@ -9,13 +9,6 @@ void CoreShell::apply_medium() {
     this->shell_diameter *= this->medium_refractive_index;
 }
 
-void CoreShell::compute_max_order(size_t max_order){
-    if (max_order == 0)
-        this->max_order = (size_t) (2 + size_parameter + 4 * pow(size_parameter, 1./3.));
-    else
-        this->max_order = max_order;
-}
-
 void CoreShell::compute_an_bn(const size_t max_order)
 {
     an.resize(max_order);

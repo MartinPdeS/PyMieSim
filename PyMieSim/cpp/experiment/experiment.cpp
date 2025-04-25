@@ -41,6 +41,8 @@ class Experiment
         CylinderSet Cylinder_set;
         CoreShellSet CoreShell_set;
 
+        std::shared_ptr<BaseScatterer> scatterer_ptr;
+
         explicit Experiment(bool debug_mode = true) : debug_mode(debug_mode) {}
 
         // Setter methods
@@ -174,8 +176,8 @@ class Experiment
             #pragma omp parallel for
             for (size_t idx = 0; idx < full_size; ++idx) {
                 BaseSource source = source_set.get_source_by_index_sequential(idx);
-                auto scatterer = scatterer_set.get_scatterer_by_index_sequential(idx, source);
-                output_array[idx] = (scatterer.*function)();
+
+                output_array[idx] = (scatterer_set.get_scatterer_by_index_sequential(idx, source).*function)();
             }
             debug_printf("get_scatterer_data_sequential: finished computation\n");
             return _vector_to_numpy(output_array, {full_size});
@@ -201,10 +203,15 @@ class Experiment
                 size_t i = idx_flat / (scatterer_set.total_combinations * detector_set.total_combinations);
                 size_t j = (idx_flat / detector_set.total_combinations) % scatterer_set.total_combinations;
                 size_t k = idx_flat % detector_set.total_combinations;
+
                 BaseSource source = source_set.get_source_by_index(i);
-                auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
+
                 Detector detector = detector_set.get_detector_by_index(k);
+
+                auto scatterer = scatterer_set.get_scatterer_by_index(j, source);
+
                 detector.medium_refractive_index = scatterer.medium_refractive_index;
+
                 size_t idx = flatten_multi_index(array_shape, source.indices, scatterer.indices, detector.indices);
                 output_array[idx] = detector.get_coupling(scatterer);
             }
@@ -221,6 +228,8 @@ class Experiment
             if (debug_mode)
                 this->debug_print_state(source_set, detector_set);
 
+
+
             std::vector<size_t> array_shape = {source_set.wavelength.size()};
             size_t full_size = source_set.wavelength.size();
             scatterer_set.validate_sequential_data(full_size);
@@ -233,13 +242,38 @@ class Experiment
             #pragma omp parallel for
             for (size_t idx = 0; idx < full_size; ++idx) {
                 BaseSource source = source_set.get_source_by_index_sequential(idx);
-                auto scatterer = scatterer_set.get_scatterer_by_index_sequential(idx, source);
+
                 Detector detector = detector_set.get_detector_by_index_sequential(idx);
-                output_array[idx] = detector.get_coupling(scatterer);
+
+                output_array[idx] = detector.get_coupling(
+                    scatterer_set.get_scatterer_by_index_sequential(idx, source)
+                );
             }
             debug_printf("get_scatterer_coupling_sequential: finished computation\n");
             return _vector_to_numpy(output_array, {full_size});
         }
+
+        // pybind11::array_t<double> test(const SphereSet& scatterer_set, const BaseSourceSet &source_set, const DetectorSet &detector_set) const {
+
+        //     std::vector<size_t> array_shape = {source_set.wavelength.size()};
+        //     size_t full_size = source_set.wavelength.size();
+        //     scatterer_set.validate_sequential_data(full_size);
+        //     source_set.validate_sequential_data(full_size);
+        //     detector_set.validate_sequential_data(full_size);
+
+        //     std::vector<double> output_array(full_size);
+
+        //     #pragma omp parallel for
+        //     for (size_t idx = 0; idx < full_size; ++idx) {
+
+        //         BaseSource source = source_set.get_source_by_index_sequential(idx);
+
+        //         scatterer_ptr = scatterer_set.get_scatterer_ptr_by_index_sequential(idx, source);
+
+        //     }
+
+        //     return _vector_to_numpy(output_array, {full_size});
+        // }
 
         //--------------------------------------SPHERE------------------------------------
         DEFINE_SCATTERER_COEFFICIENT(Sphere, a1)

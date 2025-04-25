@@ -1,5 +1,6 @@
 #pragma once
 
+#include <complex>
 #include "scatterer/base_scatterer/base_scatterer.h"
 
 
@@ -15,7 +16,7 @@ class CoreShell: public BaseScatterer
         double x_shell;
 
         CoreShell(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index,
-            double medium_refractive_index, BaseSource &source, size_t max_order = 0, bool compute_c_d = false)
+            double medium_refractive_index, const BaseSource &source, size_t max_order = 0, bool compute_c_d = false)
         : BaseScatterer(max_order, source, medium_refractive_index), core_diameter(core_diameter), shell_thickness(shell_thickness),
         core_refractive_index(core_refractive_index), shell_refractive_index(shell_refractive_index)
         {
@@ -39,13 +40,11 @@ class CoreShell: public BaseScatterer
         }
 
         void compute_area() override {
-            this->area = PI * pow(this->shell_diameter/2.0, 2);
+            this->area = PI * pow(this->shell_diameter / 2.0, 2);
         }
 
-        void apply_medium();
         void compute_an_bn(const size_t max_order);
         void compute_cn_dn(size_t max_order);
-        void compute_max_order(size_t max_order);
 
         double get_Qsca() const override;
         double get_Qext() const override;
@@ -53,6 +52,9 @@ class CoreShell: public BaseScatterer
         double get_g() const override;
 
         std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
+
+    private:
+        void apply_medium();
 };
 
 

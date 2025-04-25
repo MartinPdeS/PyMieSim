@@ -52,7 +52,7 @@ class Cylinder(BaseScatterer):
             source=self.source.binding
         )
 
-    def a1n(self, max_order: Optional[int] = 0) -> numpy.array:
+    def a1n(self) -> numpy.array:
         r"""
         Compute :math:`a_{1n}` coefficient as defined in ref[5]:
 
@@ -63,21 +63,14 @@ class Cylinder(BaseScatterer):
         With :math:`m` being the refractive index of the medium and
         :math:`m_t` being the refractive index of the scatterer.
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`a_{1n}` coefficients.
         """
-        return self.binding.a1n(max_order)
+        return self.binding.a1n()
 
-    def a2n(self, max_order: Optional[int] = 0) -> numpy.array:
+    def a2n(self) -> numpy.array:
         r"""
         Compute :math:`a_{2n}` coefficient as defined in ref[5]:
 
@@ -88,21 +81,14 @@ class Cylinder(BaseScatterer):
         With :math:`m` being the refractive index of the medium and
         :math:`m_t` being the refractive index of the scatterer.
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`a_{2n}` coefficients.
         """
-        return self.binding.a2n(max_order)
+        return self.binding.a2n()
 
-    def b1n(self, max_order: Optional[int] = 0) -> numpy.array:
+    def b1n(self) -> numpy.array:
         r"""
         Compute :math:`b_{1n}` coefficient as defined in ref[5]:
 
@@ -113,21 +99,14 @@ class Cylinder(BaseScatterer):
         With :math:`m` being the refractive index of the medium and
         :math:`m_t` being the refractive index of the scatterer.
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`b_{1n}` coefficients.
         """
-        return self.binding.b1n(max_order)
+        return self.binding.b1n()
 
-    def b2n(self, max_order: Optional[int] = 0) -> numpy.array:
+    def b2n(self) -> numpy.array:
         r"""
         Compute :math:`b_{2n}` coefficient as defined in ref[5]:
 
@@ -138,19 +117,12 @@ class Cylinder(BaseScatterer):
         With :math:`m` being the refractive index of the medium and
         :math:`m_t` being the refractive index of the scatterer.
 
-        If max_order is set to zero then the maximum order output is calculated using the Wiscombe criterion.
-
-        Parameters
-        ----------
-        max_order : Optional[int])
-            The maximum order of the coefficient. Default is 0.
-
         Returns
         -------
         numpy.ndarray
             Array of :math:`b_{2n}` coefficients.
         """
-        return self.binding.b2n(max_order)
+        return self.binding.b2n()
 
     @property
     def Cback(self) -> None:

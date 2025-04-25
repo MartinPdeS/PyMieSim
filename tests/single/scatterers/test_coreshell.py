@@ -49,7 +49,7 @@ def test_coupling(core_material, shell_material, medium_property, gaussian_sourc
     )
 
     # Calculate optical coupling
-    coupling = detector.coupling(scatterer)
+    coupling = detector.get_coupling(scatterer)
     assert coupling is not None
 
 

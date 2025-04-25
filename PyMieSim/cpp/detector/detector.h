@@ -89,21 +89,22 @@ class Detector {
                 throw std::invalid_argument("Invalid mode family name");
         }
 
-        template <typename T>
-        double get_coupling(T& scatterer) {
+        double get_coupling(const BaseScatterer& scatterer) const {
             if (this->coherent)
                 return this->mean_coupling ? get_coupling_mean_coherent(scatterer) : get_coupling_point_coherent(scatterer);
             else
                 return this->mean_coupling ? get_coupling_mean_no_coherent(scatterer) : get_coupling_point_no_coherent(scatterer);
         }
 
-        double get_coupling_point_no_coherent(BaseScatterer& scatterer);
-        double get_coupling_mean_no_coherent(BaseScatterer& scatterer);
-        double get_coupling_point_coherent(BaseScatterer& scatterer);
-        double get_coupling_mean_coherent(BaseScatterer& scatterer);
+        double get_coupling_point_no_coherent(const BaseScatterer& scatterer) const;
+        double get_coupling_mean_no_coherent(const BaseScatterer& scatterer) const;
+        double get_coupling_point_coherent(const BaseScatterer& scatterer) const;
+        double get_coupling_mean_coherent(const BaseScatterer& scatterer) const;
 
     private:
-        std::tuple<std::vector<complex128>, std::vector<complex128>> get_projected_fields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
+        std::tuple<std::vector<complex128>, std::vector<complex128>>
+        get_projected_fields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
+
         void apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const;
         template <typename T> inline double get_norm1_squared(const std::vector<T>& array) const;
         template <typename T> inline double get_norm2_squared(const std::vector<T>& array) const;

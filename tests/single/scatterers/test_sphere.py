@@ -65,7 +65,7 @@ def test_sphere_coupling(property, medium_property, gaussian_source, ):
         medium_property=medium_property,
         property=property
     )
-    _ = detector.coupling(scatterer)
+    _ = detector.get_coupling(scatterer)
 
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])

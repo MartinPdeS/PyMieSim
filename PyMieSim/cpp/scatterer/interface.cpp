@@ -80,10 +80,10 @@ PYBIND11_MODULE(interface_scatterer, module) {
             py::arg("source"),
             "Constructor for CYLINDER, initializing it with physical and optical properties.")
         // Note: Downward are the scattering coeffcients
-        .def("a1n", &Cylinder::get_a1n_list_py, py::arg("max_order") = 0, "Returns the a1n coefficient.")
-        .def("b1n", &Cylinder::get_b1n_list_py, py::arg("max_order") = 0, "Returns the b1n coefficient.")
-        .def("a2n", &Cylinder::get_a2n_list_py, py::arg("max_order") = 0, "Returns the a2n coefficient.")
-        .def("b2n", &Cylinder::get_b2n_list_py, py::arg("max_order") = 0, "Returns the b2n coefficient.")
+        .def("a1n", &Cylinder::get_a1n_list_py, "Returns the a1n coefficient.")
+        .def("b1n", &Cylinder::get_b1n_list_py, "Returns the b1n coefficient.")
+        .def("a2n", &Cylinder::get_a2n_list_py, "Returns the a2n coefficient.")
+        .def("b2n", &Cylinder::get_b2n_list_py, "Returns the b2n coefficient.")
         ;
 
 

@@ -7,7 +7,7 @@
 
 using complex128 = std::complex<double>;
 
-double Detector::get_coupling_point_no_coherent(BaseScatterer &scatterer)
+double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) const
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
 
@@ -24,12 +24,12 @@ double Detector::get_coupling_point_no_coherent(BaseScatterer &scatterer)
     return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
 }
 
-double Detector::get_coupling_mean_no_coherent(BaseScatterer &scatterer)
+double Detector::get_coupling_mean_no_coherent(const BaseScatterer &scatterer) const
 {
     return get_coupling_point_no_coherent(scatterer);
 }
 
-double Detector::get_coupling_point_coherent(BaseScatterer &scatterer)
+double Detector::get_coupling_point_coherent(const BaseScatterer &scatterer) const
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
 
@@ -60,7 +60,7 @@ double Detector::NA2Angle(double NA) const {
     return 1.0;
 }
 
-double Detector::get_coupling_mean_coherent(BaseScatterer &scatterer)
+double Detector::get_coupling_mean_coherent(const BaseScatterer &scatterer) const
 {
     auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
 

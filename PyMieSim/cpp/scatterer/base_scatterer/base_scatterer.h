@@ -9,6 +9,17 @@
 typedef std::complex<double> complex128;
 
 
+#define DEFINE_COEFFICIENTS_GETTERS(name) \
+    std::vector<complex128> name##n; \
+    pybind11::array_t<complex128> get_##name##n_list_py() {return _vector_to_numpy(this->name##n); } \
+    double get_##name##1_abs() const { return abs(this->name##n[0]); } \
+    double get_##name##2_abs() const { return abs(this->name##n[1]); } \
+    double get_##name##3_abs() const { return abs(this->name##n[2]); } \
+    complex128 get_##name##1() const { return this->name##n[0]; } \
+    complex128 get_##name##2() const { return this->name##n[1]; } \
+    complex128 get_##name##3() const { return this->name##n[2]; }
+
+
 class BaseScatterer {
 public:
     size_t max_order;
@@ -18,7 +29,6 @@ public:
     double area;
     double medium_refractive_index;
     std::vector<size_t> indices;
-    std::vector<complex128> an, bn, cn, dn;  // For spherical scatterers
 
     BaseScatterer() = default;
 
@@ -35,34 +45,17 @@ public:
     virtual void compute_area() = 0;
 
 
-    // GETTERS --------------------------------------------------------
-    std::vector<complex128> get_an() const { return this->an; }
-    std::vector<complex128> get_bn() const { return this->bn; }
-    std::vector<complex128> get_cn() const { return this->cn; }
-    std::vector<complex128> get_dn() const { return this->dn; }
+    // SPHERICAL SCATTERER GETTERS --------------------------------------------------------
+    DEFINE_COEFFICIENTS_GETTERS(a)
+    DEFINE_COEFFICIENTS_GETTERS(b)
+    DEFINE_COEFFICIENTS_GETTERS(c)
+    DEFINE_COEFFICIENTS_GETTERS(d)
 
-
-    double get_a1_abs() const { return abs(this->an[0]); }
-    double get_b1_abs() const { return abs(this->bn[0]); }
-    double get_c1_abs() const { return abs(this->cn[0]); }
-    double get_d1_abs() const { return abs(this->dn[0]); }
-
-    double get_a2_abs() const { return abs(this->an[1]); }
-    double get_b2_abs() const { return abs(this->bn[1]); }
-    double get_c2_abs() const { return abs(this->cn[1]); }
-    double get_d2_abs() const { return abs(this->dn[1]); }
-
-    double get_a3_abs() const { return abs(this->an[2]); }
-    double get_b3_abs() const { return abs(this->bn[2]); }
-    double get_c3_abs() const { return abs(this->cn[2]); }
-    double get_d3_abs() const { return abs(this->dn[2]); }
-
-
-    pybind11::array_t<complex128> get_an_list_py() {return _vector_to_numpy(this->an); }
-    pybind11::array_t<complex128> get_bn_list_py() {return _vector_to_numpy(this->bn); }
-    pybind11::array_t<complex128> get_cn_list_py() {return _vector_to_numpy(this->cn); }
-    pybind11::array_t<complex128> get_dn_list_py() {return _vector_to_numpy(this->dn); }
-
+    // CYLINDRICAL SCATTERER GETTERS --------------------------------------------------------
+    DEFINE_COEFFICIENTS_GETTERS(a1)
+    DEFINE_COEFFICIENTS_GETTERS(b1)
+    DEFINE_COEFFICIENTS_GETTERS(a2)
+    DEFINE_COEFFICIENTS_GETTERS(b2)
 
 
     // COEFFICIENT ----------------------------------------------------

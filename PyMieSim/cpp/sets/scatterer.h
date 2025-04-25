@@ -4,6 +4,8 @@
 #include "sets/base_set.h"
 #include "scatterer/base_scatterer/base_scatterer.h"
 
+using ScattererPtr = std::shared_ptr<BaseScatterer>;   // const because callers must not mutate
+
 // Sphere class inheriting from BaseSet
 class SphereSet : public BaseSet
 {
@@ -44,6 +46,17 @@ public:
         );
     }
 
+    std::shared_ptr<Sphere> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const {
+        Sphere scatterer(
+            this->diameter[index],
+            this->property.get(index, source.wavelength_index),
+            this->medium_property.get(index, source.wavelength_index),
+            source
+        );
+
+        return std::make_shared<Sphere>(std::move(scatterer));
+    }
+
     Sphere get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
@@ -57,6 +70,21 @@ public:
         scatterer.indices = indices;
 
         return scatterer;
+    }
+
+    std::shared_ptr<Sphere> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const {
+        std::vector<size_t> indices = calculate_indices(flat_index);
+
+        Sphere scatterer(
+            this->diameter[indices[0]],
+            this->property.get(indices[1], source.wavelength_index),
+            this->medium_property.get(indices[2], source.wavelength_index),
+            source
+        );
+
+        scatterer.indices = indices;
+
+        return std::make_shared<Sphere>(std::move(scatterer));
     }
 };
 
@@ -104,6 +132,17 @@ public:
         );
     }
 
+    std::shared_ptr<Cylinder> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const {
+        Cylinder scatterer(
+            this->diameter[index],
+            this->property.get(index, source.wavelength_index),
+            this->medium_property.get(index, source.wavelength_index),
+            source
+        );
+
+        return std::make_shared<Cylinder>(std::move(scatterer));
+    }
+
     Cylinder get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
@@ -117,6 +156,22 @@ public:
         scatterer.indices = indices;
 
         return scatterer;
+    }
+
+
+    std::shared_ptr<Cylinder> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const {
+        std::vector<size_t> indices = calculate_indices(flat_index);
+
+        Cylinder scatterer = Cylinder(
+            diameter[indices[0]],
+            property.get(indices[1], source.wavelength_index),
+            medium_property.get(indices[2], source.wavelength_index),
+            source
+        );
+
+        scatterer.indices = indices;
+
+        return std::make_shared<Cylinder>(std::move(scatterer));
     }
 };
 
@@ -155,8 +210,7 @@ public:
         total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
     }
 
-    CoreShell get_scatterer_by_index(const size_t flat_index, BaseSource& source) const {
-
+    CoreShell get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
         std::vector<size_t> indices = this->calculate_indices(flat_index);
 
         CoreShell scatterer(
@@ -171,6 +225,23 @@ public:
         scatterer.indices = indices;
 
         return scatterer;
+    }
+
+    std::shared_ptr<CoreShell> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const {
+        std::vector<size_t> indices = this->calculate_indices(flat_index);
+
+        CoreShell scatterer(
+            core_diameter[indices[0]],
+            shell_thickness[indices[1]],
+            core_property.get(indices[2], source.wavelength_index),
+            shell_property.get(indices[3], source.wavelength_index),
+            medium_property.get(indices[4], source.wavelength_index),
+            source
+        );
+
+        scatterer.indices = indices;
+
+        return std::make_shared<CoreShell>(std::move(scatterer));
     }
 
     void validate_sequential_data(const size_t expected_size) const {
@@ -191,7 +262,7 @@ public:
             throw std::runtime_error("Error: Vector size mismatch in sequential computation. medium_property has a different size than expected size.");
     }
 
-    CoreShell get_scatterer_by_index_sequential(const size_t index, BaseSource& source) const {
+    CoreShell get_scatterer_by_index_sequential(const size_t index, const BaseSource& source) const {
         CoreShell scatterer(
             core_diameter[index],
             shell_thickness[index],
@@ -202,5 +273,18 @@ public:
         );
 
         return scatterer;
+    }
+
+    std::shared_ptr<CoreShell> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const {
+        CoreShell scatterer = CoreShell(
+            core_diameter[index],
+            shell_thickness[index],
+            core_property.get(index, source.wavelength_index),
+            shell_property.get(index, source.wavelength_index),
+            medium_property.get(index, source.wavelength_index),
+            source
+        );
+
+        return std::make_shared<CoreShell>(std::move(scatterer));
     }
 };

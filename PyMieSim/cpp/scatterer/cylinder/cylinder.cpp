@@ -38,7 +38,7 @@ double Cylinder::process_polarization(const complex128 value_0, const complex128
     return abs( value_1 ) * pow(abs(source.jones_vector[0]), 2) + abs( value_0 ) * pow(abs(source.jones_vector[1]), 2);
 }
 
-void Cylinder::compute_an_bn() {
+void Cylinder::compute_an_bn(const size_t max_order) {
     // Resize vectors to hold Mie coefficients for the specified maximum order
     this->a1n.resize(max_order);
     this->b1n.resize(max_order);
@@ -82,7 +82,8 @@ void Cylinder::compute_an_bn() {
     }
 }
 
-std::tuple<std::vector<complex128>, std::vector<complex128>> Cylinder::compute_s1s2(const std::vector<double> &phi) const{
+std::tuple<std::vector<complex128>, std::vector<complex128>>
+Cylinder::compute_s1s2(const std::vector<double> &phi) const{
     std::vector<complex128> T1(phi.size()), T2(phi.size());
 
     for (size_t i = 0; i < phi.size(); i++){
@@ -95,4 +96,15 @@ std::tuple<std::vector<complex128>, std::vector<complex128>> Cylinder::compute_s
     }
 
     return std::make_tuple(std::move(T1), std::move(T2));
+}
+
+
+std::vector<complex128>
+Cylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
+    std::vector<complex128> Dn(nmx, 0.0);
+
+    for (double n = nmx - 1; n > 0; n--)
+        Dn[n-1] = n/z - ( 1. / (Dn[n] + n/z) );
+
+    return Dn;
 }
