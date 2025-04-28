@@ -25,7 +25,7 @@ Sphere: Qsca vs diameter
 
 Importing the package dependencies: numpy, PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-23
+.. GENERATED FROM PYTHON SOURCE LINES 9-25
 
 .. code-block:: Python
 
@@ -40,6 +40,8 @@ Importing the package dependencies: numpy, PyMieSim
     from PyMieSim.units import nanometer, degree, watt, AU, RIU
     from PyOptik import Material
     Material.print_available()
+    import PyMieSim
+    PyMieSim.debug_mode = True
 
 
 
@@ -88,11 +90,11 @@ Importing the package dependencies: numpy, PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 26-27
 
 Defining the source to be employed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-46
+.. GENERATED FROM PYTHON SOURCE LINES 27-48
 
 .. code-block:: Python
 
@@ -124,17 +126,17 @@ Defining the source to be employed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
 
 Defining the experiment setup
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-63
+.. GENERATED FROM PYTHON SOURCE LINES 50-65
 
 .. code-block:: Python
 
     experiment_1 = Setup(scatterer=scatterer_1, source=source_1, detector=detector_1)
 
-    dataframe_1 = experiment_1.get('Qsca', scale_unit=True, drop_unique_level=True)
+    dataframe_1 = experiment_1.get('b1', scale_unit=True, drop_unique_level=True)
 
     # dataframe_1._plot(x='scatterer:diameter', std='detector:NA', show=True)
     dataframe_1.plot(x='scatterer:diameter', show=True)
@@ -170,7 +172,7 @@ Defining the experiment setup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.434 seconds)
+   **Total running time of the script:** (0 minutes 0.369 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:

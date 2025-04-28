@@ -17,6 +17,8 @@ from PyMieSim import units
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 from PyOptik import Material
 Material.print_available()
+import PyMieSim
+PyMieSim.debug_mode = True
 
 
 
@@ -47,7 +49,7 @@ detector_1 = Photodiode(
 # Defining the experiment setup
 experiment_1 = Setup(scatterer=scatterer_1, source=source_1, detector=detector_1)
 
-dataframe_1 = experiment_1.get('Qsca', scale_unit=True, drop_unique_level=True)
+dataframe_1 = experiment_1.get('b1', scale_unit=True, drop_unique_level=True)
 
 # dataframe_1._plot(x='scatterer:diameter', std='detector:NA', show=True)
 dataframe_1.plot(x='scatterer:diameter', show=True)
