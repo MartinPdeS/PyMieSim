@@ -4,10 +4,28 @@
 #include "sets/base_set.h"
 #include "scatterer/base_scatterer/base_scatterer.h"
 
-using ScattererPtr = std::shared_ptr<BaseScatterer>;   // const because callers must not mutate
+using ScattererPtr = std::unique_ptr<BaseScatterer>;   // const because callers must not mutate
+
+
+
+class ScattererSet: public BaseSet
+{
+public:
+    ScattererSet() = default;
+    ScattererSet(const bool is_sequential) : BaseSet(is_sequential) {}
+
+    virtual void validate_sequential_data(const size_t expected_size) const = 0;
+    virtual std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const = 0;
+    virtual std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const = 0;
+
+};
+
+
+
+
 
 // Sphere class inheriting from BaseSet
-class SphereSet : public BaseSet
+class SphereSet : public ScattererSet
 {
 public:
     std::vector<double> diameter;
@@ -17,7 +35,7 @@ public:
     SphereSet() = default;
 
     SphereSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
-        : BaseSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
+        : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {this->update_shape();}
 
     void update_shape() override {
@@ -30,7 +48,7 @@ public:
         total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
     }
 
-    void validate_sequential_data(const size_t expected_size) const {
+    void validate_sequential_data(const size_t expected_size) const override {
         // Check each vector's size and throw an error with the specific vector name if sizes don't match
         this->check_size(this->diameter, expected_size, "diameter");
         this->check_size(this->property, expected_size, "property");
@@ -46,7 +64,7 @@ public:
         );
     }
 
-    std::shared_ptr<Sphere> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const {
+    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const override {
         Sphere scatterer(
             this->diameter[index],
             this->property.get(index, source.wavelength_index),
@@ -54,7 +72,7 @@ public:
             source
         );
 
-        return std::make_shared<Sphere>(std::move(scatterer));
+        return std::make_unique<Sphere>(scatterer);
     }
 
     Sphere get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
@@ -72,7 +90,7 @@ public:
         return scatterer;
     }
 
-    std::shared_ptr<Sphere> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const {
+    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const override {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
         Sphere scatterer(
@@ -84,13 +102,13 @@ public:
 
         scatterer.indices = indices;
 
-        return std::make_shared<Sphere>(std::move(scatterer));
+        return std::make_unique<Sphere>(scatterer);
     }
 };
 
 
 // Cylinder class inheriting from BaseSet
-class CylinderSet : public BaseSet {
+class CylinderSet : public ScattererSet {
 public:
     std::vector<double> diameter;
     ScattererProperties property;
@@ -98,7 +116,7 @@ public:
 
     CylinderSet() = default;
     CylinderSet(const std::vector<double>& diameter, const ScattererProperties& property, const MediumProperties& medium_property, const bool is_sequential)
-        : BaseSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
+        : ScattererSet(is_sequential), diameter(diameter), property(property), medium_property(medium_property)
         {this->update_shape();}
 
     void update_shape() override {
@@ -111,7 +129,7 @@ public:
         total_combinations = is_sequential ? shape[0] : get_vector_sigma(shape);
     }
 
-    void validate_sequential_data(const size_t expected_size) const {
+    void validate_sequential_data(const size_t expected_size) const override {
         // Check each vector's size and throw an error with the specific vector name if sizes don't match
         if (this->diameter.size() != expected_size)
             throw std::runtime_error("Error: Vector size mismatch in sequential computation. diameter has a different size than expected size.");
@@ -132,7 +150,7 @@ public:
         );
     }
 
-    std::shared_ptr<Cylinder> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const {
+    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const override {
         Cylinder scatterer(
             this->diameter[index],
             this->property.get(index, source.wavelength_index),
@@ -140,7 +158,7 @@ public:
             source
         );
 
-        return std::make_shared<Cylinder>(std::move(scatterer));
+        return std::make_unique<Cylinder>(scatterer);
     }
 
     Cylinder get_scatterer_by_index(const size_t flat_index, const BaseSource& source) const {
@@ -159,7 +177,7 @@ public:
     }
 
 
-    std::shared_ptr<Cylinder> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const {
+    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const override {
         std::vector<size_t> indices = calculate_indices(flat_index);
 
         Cylinder scatterer = Cylinder(
@@ -171,14 +189,14 @@ public:
 
         scatterer.indices = indices;
 
-        return std::make_shared<Cylinder>(std::move(scatterer));
+        return std::make_unique<Cylinder>(scatterer);
     }
 };
 
 
 
 // Core-shell class
-class CoreShellSet : public BaseSet {
+class CoreShellSet : public ScattererSet {
 public:
     std::vector<double> core_diameter;
     std::vector<double> shell_thickness;
@@ -195,7 +213,7 @@ public:
         const ScattererProperties& shell_property,
         const MediumProperties& medium_property,
         const bool is_sequential)
-        : BaseSet(is_sequential), core_diameter(core_diameter), shell_thickness(shell_thickness), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
+        : ScattererSet(is_sequential), core_diameter(core_diameter), shell_thickness(shell_thickness), core_property(core_property), shell_property(shell_property), medium_property(medium_property)
         {this->update_shape();}
 
     void update_shape() override {
@@ -227,7 +245,7 @@ public:
         return scatterer;
     }
 
-    std::shared_ptr<CoreShell> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const {
+    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index(const size_t flat_index, const BaseSource& source) const override {
         std::vector<size_t> indices = this->calculate_indices(flat_index);
 
         CoreShell scatterer(
@@ -241,10 +259,10 @@ public:
 
         scatterer.indices = indices;
 
-        return std::make_shared<CoreShell>(std::move(scatterer));
+        return std::make_unique<CoreShell>(scatterer);
     }
 
-    void validate_sequential_data(const size_t expected_size) const {
+    void validate_sequential_data(const size_t expected_size) const override {
         // Check each vector's size and throw an error with the specific vector name if sizes don't match
         if (this->core_diameter.size() != expected_size)
             throw std::runtime_error("Error: Vector size mismatch in sequential computation. core_diameter has a different size than expected size.");
@@ -275,7 +293,7 @@ public:
         return scatterer;
     }
 
-    std::shared_ptr<CoreShell> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const {
+    std::unique_ptr<BaseScatterer> get_scatterer_ptr_by_index_sequential(const size_t index, const BaseSource& source) const override {
         CoreShell scatterer = CoreShell(
             core_diameter[index],
             shell_thickness[index],
@@ -285,6 +303,6 @@ public:
             source
         );
 
-        return std::make_shared<CoreShell>(std::move(scatterer));
+        return std::make_unique<CoreShell>(scatterer);
     }
 };

@@ -15,10 +15,25 @@
 
 #define COUPLING_AND_G(scatterer) \
      .def("get_" #scatterer "_g", &Experiment::get_##scatterer##_g, py::arg("source_set"), py::arg("detector_set"), "Retrieves the asymmetry parameter (g) for a " #scatterer) \
-     .def("get_" #scatterer "_coupling", &Experiment::get_##scatterer##_coupling, py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling efficiency for a " #scatterer) \
-     .def("get_" #scatterer "_g_sequential", &Experiment::get_##scatterer##_g_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the asymmetry parameter (g) for a " #scatterer " in a sequential manner.") \
-     .def("get_" #scatterer "_coupling_sequential", &Experiment::get_##scatterer##_coupling_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling efficiency for a " #scatterer " in a sequential manner.")
+     .def("get_" #scatterer "_g_sequential", &Experiment::get_##scatterer##_g_sequential, py::arg("source_set"), py::arg("detector_set"), "Retrieves the asymmetry parameter (g) for a " #scatterer " in a sequential manner.")
 
+
+
+#define DEFINE_GETTERS(property) \
+    .def( \
+        "get_"  #property, \
+        &Experiment::get_data<&BaseScatterer::get_##property>, \
+        py::arg("scatterer_set"), \
+        py::arg("source_set"), \
+        py::arg("detector_set"), \
+        "Retrieves the scattering property for a scatterer") \
+    .def( \
+        "get_" #property "_sequential", \
+        &Experiment::get_data_sequential<&BaseScatterer::get_##property>, \
+        py::arg("scatterer_set"), \
+        py::arg("source_set"), \
+        py::arg("detector_set"), \
+        "Retrieves the scattering property for a scatterer")
 
 namespace py = pybind11;
 
@@ -33,6 +48,29 @@ PYBIND11_MODULE(interface_experiment, module) {
         .def("set_Cylinder", &Experiment::set_cylinder, "Defines a cylindrical scatterer for the experiment.")
         .def("set_CoreShell", &Experiment::set_coreshell, "Defines a core-shell scatterer for the experiment.")
 
+        .def("get_coupling_sequential", &Experiment::get_coupling_sequential, py::arg("scatterer_set"), py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling power for a scatterer")
+        .def("get_coupling", &Experiment::get_coupling, py::arg("scatterer_set"), py::arg("source_set"), py::arg("detector_set"), "Retrieves the coupling power for a scatterer")
+
+
+        DEFINE_GETTERS(Qsca)
+        DEFINE_GETTERS(Qext)
+        DEFINE_GETTERS(Qext)
+        DEFINE_GETTERS(Qabs)
+        DEFINE_GETTERS(Qpr)
+        DEFINE_GETTERS(Qforward)
+        DEFINE_GETTERS(Qback)
+        DEFINE_GETTERS(Qratio)
+
+        DEFINE_GETTERS(Csca)
+        DEFINE_GETTERS(Cext)
+        DEFINE_GETTERS(Cext)
+        DEFINE_GETTERS(Cabs)
+        DEFINE_GETTERS(Cpr)
+        DEFINE_GETTERS(Cforward)
+        DEFINE_GETTERS(Cback)
+        DEFINE_GETTERS(Cratio)
+
+
 
         // Sphere metrics
         EFFICIENCY_PROPERTY(Sphere, sca)  // Efficiencies
@@ -45,7 +83,6 @@ PYBIND11_MODULE(interface_experiment, module) {
         COEFFICIENT_PROPERTY(Sphere, 1)   // Coefficients
         COEFFICIENT_PROPERTY(Sphere, 2)
         COEFFICIENT_PROPERTY(Sphere, 3)
-        COUPLING_AND_G(Sphere)            // Coupling and g
 
 
         // Cylinder metrics
@@ -58,7 +95,6 @@ PYBIND11_MODULE(interface_experiment, module) {
         COEFFICIENT_PROPERTY(Cylinder, 22)
         COEFFICIENT_PROPERTY(Cylinder, 13)
         COEFFICIENT_PROPERTY(Cylinder, 23)
-        COUPLING_AND_G(Cylinder)            // Coupling and g
 
 
         // Coreshell metrics
@@ -72,7 +108,6 @@ PYBIND11_MODULE(interface_experiment, module) {
         COEFFICIENT_PROPERTY(CoreShell, 1)  // Coefficients
         COEFFICIENT_PROPERTY(CoreShell, 2)
         COEFFICIENT_PROPERTY(CoreShell, 3)
-        COUPLING_AND_G(CoreShell)           // Coupling and g
         ;
 }
 

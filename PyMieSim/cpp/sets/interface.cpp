@@ -24,8 +24,14 @@ PYBIND11_MODULE(interface_sets, module) {
         .def(py::init<std::vector<std::vector<double>>>(), py::arg("material_properties"))
         ;
 
+
+
+
+
+    py::class_<ScattererSet>(module, "CppScattererSet");
+
     // Binding for SPHERE::Set
-    py::class_<SphereSet>(module, "CppSphereSet")
+    py::class_<SphereSet, ScattererSet>(module, "CppSphereSet")
         .def(py::init<const std::vector<double>&, const ScattererProperties&, const MediumProperties&, bool>(),
             py::arg("diameter"),
             py::arg("scatterer_properties"),
@@ -35,7 +41,7 @@ PYBIND11_MODULE(interface_sets, module) {
             ;
 
     // Binding for CYLINDER::Set
-    py::class_<CylinderSet>(module, "CppCylinderSet")
+    py::class_<CylinderSet, ScattererSet>(module, "CppCylinderSet")
         .def(py::init<const std::vector<double>&, const ScattererProperties&, const MediumProperties&, bool>(),
             py::arg("diameter"),
             py::arg("scatterer_properties"),
@@ -45,7 +51,7 @@ PYBIND11_MODULE(interface_sets, module) {
             ;
 
     // Binding for CORESHELL::Set
-    py::class_<CoreShellSet>(module, "CppCoreShellSet")
+    py::class_<CoreShellSet, ScattererSet>(module, "CppCoreShellSet")
         .def(py::init<const std::vector<double>&, const std::vector<double>&, const ScattererProperties&, const ScattererProperties&, const MediumProperties&, bool>(),
             py::arg("core_diameter"),
             py::arg("shell_thickness"),

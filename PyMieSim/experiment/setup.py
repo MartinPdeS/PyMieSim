@@ -220,7 +220,7 @@ class Setup:
         """
         for measure in measures:
             scatterer_name = self.scatterer.__class__.__name__
-            method_name = f'get_{scatterer_name}_{measure}'
+            method_name = f'get_{measure}'
 
 
             if self.detector is not None:
@@ -231,6 +231,7 @@ class Setup:
 
             # Compute the values using the binding method
             array = getattr(self.binding, method_name)(
+                scatterer_set=self.scatterer.binding,
                 source_set=self.source.binding,
                 detector_set=detector_set
             )
