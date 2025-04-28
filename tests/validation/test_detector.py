@@ -101,8 +101,8 @@ def test_detector_single_polarization_filter(source_single, scatterer_single):
     )
 
     # Calculate the coupling for both detectors
-    coupling_0 = detector_0.coupling(scatterer_single)
-    coupling_180 = detector_180.coupling(scatterer_single)
+    coupling_0 = detector_0.get_coupling(scatterer_single)
+    coupling_180 = detector_180.get_coupling(scatterer_single)
 
     # Assert that the coupling values for 0° and 180° polarization are nearly equal
     assert np.isclose(coupling_0, coupling_180, atol=1e-5), (
@@ -138,8 +138,8 @@ def test_detector_single_rotation(source_single, scatterer_single):
     )
 
     # Calculate the coupling for both detectors
-    coupling_0 = detector_0.coupling(scatterer_single)
-    coupling_180 = detector_180.coupling(scatterer_single)
+    coupling_0 = detector_0.get_coupling(scatterer_single)
+    coupling_180 = detector_180.get_coupling(scatterer_single)
 
     # Assert that the coupling values for 0° and 180° rotation are nearly equal
     assert np.isclose(coupling_0, coupling_180, atol=1e-5), (

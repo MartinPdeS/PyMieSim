@@ -12,12 +12,12 @@ typedef std::complex<double> complex128;
 #define DEFINE_COEFFICIENTS_GETTERS(name) \
     std::vector<complex128> name##n; \
     pybind11::array_t<complex128> get_##name##n_list_py() {return _vector_to_numpy(this->name##n); } \
-    double get_##name##1_abs() const { return abs(this->name##n[0]); } \
-    double get_##name##2_abs() const { return abs(this->name##n[1]); } \
-    double get_##name##3_abs() const { return abs(this->name##n[2]); } \
-    complex128 get_##name##1() const { return this->name##n[0]; } \
-    complex128 get_##name##2() const { return this->name##n[1]; } \
-    complex128 get_##name##3() const { return this->name##n[2]; }
+    double get_##name##1() const { return abs(this->name##n[0]); } \
+    double get_##name##2() const { return abs(this->name##n[1]); } \
+    double get_##name##3() const { return abs(this->name##n[2]); } \
+    complex128 get_##name##1_complex128() const { return this->name##n[0]; } \
+    complex128 get_##name##2_complex128() const { return this->name##n[1]; } \
+    complex128 get_##name##3_complex128() const { return this->name##n[2]; }
 
 
 class BaseScatterer {

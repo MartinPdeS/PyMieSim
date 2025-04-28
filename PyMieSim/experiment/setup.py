@@ -51,13 +51,6 @@ class Setup:
         Initializes the experiment by setting the source for the scatterer and establishing bindings
         between the components and the simulation environment.
         """
-        self._initialize_experiment()
-        self._bind_components()
-
-    def _initialize_experiment(self) -> None:
-        """
-        Initializes the experiment with necessary bindings.
-        """
         self.scatterer._generate_binding()
 
         self.source._generate_binding()
@@ -67,13 +60,6 @@ class Setup:
         self.scatterer.source = self.source
 
         self.binding = EXPERIMENT(debug_mode=PyMieSim.debug_mode)
-
-    def _bind_components(self):
-        """Binds the experiment components to the EXPERIMENT instance."""
-        method_str = 'set_' + self.scatterer.__class__.__name__
-
-        getattr(self.binding, method_str)(self.scatterer.binding)
-
 
     def _generate_mapping(self) -> None:
         self.source._generate_mapping()
@@ -95,11 +81,11 @@ class Setup:
         numpy.ndarray
             An array containing the computed measures.
         """
-        scatterer_name = self.scatterer.__class__.__name__
-        method_name = f'get_{scatterer_name}_{measure}_sequential'
+        method_name = f'get_{measure}_sequential'
 
         # Compute the values using the binding method
         return getattr(self.binding, method_name)(
+            scatterer_set=self.scatterer.binding,
             source_set=self.source.binding,
             detector_set=self.detector.binding
         )
@@ -184,12 +170,12 @@ class Setup:
         output_array = []
 
         for measure in measures:
-            scatterer_name = self.scatterer.__class__.__name__
-            method_name = f'get_{scatterer_name}_{measure}'
+            method_name = f'get_{measure}'
 
             method = getattr(self.binding, method_name)
 
             array = method(
+                scatterer_set=self.scatterer.binding,
                 source_set=self.source.binding,
                 detector_set=self.detector.binding
             )
@@ -219,21 +205,14 @@ class Setup:
             Updated DataFrame with computed values for the specified measures, with optional units if `add_units` is True.
         """
         for measure in measures:
-            scatterer_name = self.scatterer.__class__.__name__
+
             method_name = f'get_{measure}'
-
-
-            if self.detector is not None:
-                detector_set = self.detector.binding
-            else:
-                from PyMieSim.binary.interface_sets import CppDetectorSet
-                detector_set = CppDetectorSet()
 
             # Compute the values using the binding method
             array = getattr(self.binding, method_name)(
                 scatterer_set=self.scatterer.binding,
                 source_set=self.source.binding,
-                detector_set=detector_set
+                detector_set=self.detector.binding
             )
 
             # Determine the unit based on the measure type

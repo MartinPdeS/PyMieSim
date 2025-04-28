@@ -5,7 +5,7 @@ set(NAME "sets")
 # Create a shared library for functionality.
 add_library("cpp_${NAME}" STATIC "${NAME}.cpp")
 
-target_link_libraries("cpp_${NAME}" PRIVATE pybind11::module cpp_source cpp_full_mesh ZBessel)
+target_link_libraries("cpp_${NAME}" PRIVATE pybind11::module cpp_sphere cpp_cylinder cpp_coreshell cpp_source cpp_full_mesh ZBessel)
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)

@@ -41,7 +41,7 @@ def test_simulation_results(setup_simulation):
     scatterer.get_stokes(distance=2 * meter, sampling=100)
 
     # Calculate coupling and scattering efficiency (Qsca)
-    coupling = detector.coupling(scatterer=scatterer)
+    coupling = detector.get_coupling(scatterer=scatterer)
     Qsca = scatterer.Qsca
 
     # Calculate energy flow
