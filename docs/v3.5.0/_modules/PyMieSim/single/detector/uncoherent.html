@@ -459,53 +459,77 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">BindedDetector</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">radian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseDetector</span><span class="p">,</span> <span class="n">config_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">DETECTOR</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">radian</span><span class="p">,</span> <span class="n">RIU</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseDetector</span>
 
 
 <div class="viewcode-block" id="Photodiode">
 <a class="viewcode-back" href="../../../../code/single/detector.html#PyMieSim.single.detector.Photodiode">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Photodiode</span><span class="p">(</span><span class="n">BaseDetector</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Photodiode</span><span class="p">(</span><span class="n">DETECTOR</span><span class="p">,</span> <span class="n">BaseDetector</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Detector class representing a photodiode with a non-coherent light coupling mechanism.</span>
 <span class="sd">    This means it is independent of the phase of the impinging scattered light field.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    NA : Quantity</span>
-<span class="sd">        Numerical aperture of the imaging system.</span>
-<span class="sd">    cache_NA : Quantity</span>
-<span class="sd">        Numerical aperture of the detector cache.</span>
-<span class="sd">    gamma_offset : Quantity</span>
-<span class="sd">        Angle [Degree] offset of the detector in the direction perpendicular to polarization.</span>
-<span class="sd">    phi_offset : Quantity</span>
-<span class="sd">        Angle [Degree] offset of the detector in the direction parallel to polarization.</span>
-<span class="sd">    sampling : Quantity</span>
-<span class="sd">        Sampling rate of the far-field distribution. Default is 200.</span>
-<span class="sd">    polarization_filter : Optional[Quantity]</span>
-<span class="sd">        Angle [Degree] of the polarization filter in front of the detector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">coherent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">rotation</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">mode_number</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;NC00&#39;</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">BindedDetector</span><span class="p">(</span>
-            <span class="n">mode_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">,</span>
-            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">cache_NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">phi_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">),</span>
-            <span class="n">gamma_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">),</span>
-            <span class="n">polarization_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">),</span>
-            <span class="n">rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">),</span>
-            <span class="n">coherent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coherent</span><span class="p">,</span>
-            <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">NA</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">sampling</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="mi">200</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
+            <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
+            <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize the Photodiode detector with its parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+
+<span class="sd">        NA : Quantity</span>
+<span class="sd">            Numerical aperture of the imaging system.</span>
+<span class="sd">        gamma_offset : Quantity</span>
+<span class="sd">            Angle [Degree] offset of the detector in the direction perpendicular to polarization.</span>
+<span class="sd">        phi_offset : Quantity</span>
+<span class="sd">            Angle [Degree] offset of the detector in the direction parallel to polarization.</span>
+<span class="sd">        sampling : Quantity</span>
+<span class="sd">            Sampling rate of the far-field distribution. Default is 200.</span>
+<span class="sd">        polarization_filter : Optional[Quantity]</span>
+<span class="sd">            Angle [Degree] of the polarization filter in front of the detector.</span>
+<span class="sd">        cache_NA : Optional[Quantity]</span>
+<span class="sd">            Numerical aperture of the detector cache. Default is 0 AU.</span>
+<span class="sd">        mean_coupling : bool</span>
+<span class="sd">            Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.</span>
+<span class="sd">        medium_refractive_index : Quantity</span>
+<span class="sd">            The refractive index of the medium in which the detector operates. This is important for</span>
+<span class="sd">            determining the acceptance cone of light.</span>
+<span class="sd">            Default is 1.0 (vacuum or air).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_UA_units</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_UA_units</span><span class="p">(</span><span class="n">cache_NA</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_angle_units</span><span class="p">(</span><span class="n">gamma_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_angle_units</span><span class="p">(</span><span class="n">phi_offset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_UA_units</span><span class="p">(</span><span class="n">sampling</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_polarization_units</span><span class="p">(</span><span class="n">polarization_filter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span> <span class="o">=</span> <span class="n">mean_coupling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_RIU_units</span><span class="p">(</span><span class="n">medium_refractive_index</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mode_number</span><span class="o">=</span><span class="s2">&quot;NC00&quot;</span><span class="p">,</span>
+            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">cache_NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">gamma_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">phi_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">polarization_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span><span class="p">,</span>
+            <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">coherent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Photodiode.get_structured_scalarfield">
@@ -529,41 +553,34 @@
 
 
 
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">IntegratingSphere</span><span class="p">(</span><span class="n">Photodiode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Detector class representing a photodiode with a non-coherent light coupling mechanism.</span>
-<span class="sd">    This implies independence from the phase of the impinging scattered light field.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    sampling: int)</span>
-<span class="sd">        Sampling rate of the far-field distribution. Default is 200.</span>
-<span class="sd">    polarization_filter: Union[float, None])</span>
-<span class="sd">        Angle [Degree] of the polarization filter in front of the detector.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">NA</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">IntegratingSphere</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_structured_scalarfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate a structured scalar field as a numpy array.</span>
+<span class="sd">        Detector class representing a photodiode with a non-coherent light coupling mechanism.</span>
+<span class="sd">        This implies independence from the phase of the impinging scattered light field.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        sampling : int</span>
-<span class="sd">            The sampling rate for the scalar field. Default is 100.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            A 2D array representing the structured scalar field.</span>
+<span class="sd">        sampling : Quantity</span>
+<span class="sd">            Sampling rate of the far-field distribution. Default is 200.</span>
+<span class="sd">        polarization_filter : Optional[Quantity]</span>
+<span class="sd">            Angle [Degree] of the polarization filter in front of the detector.</span>
+<span class="sd">        cache_NA : Optional[Quantity]</span>
+<span class="sd">            Numerical aperture of the detector cache. Default is 0 AU.</span>
+<span class="sd">        mean_coupling : bool</span>
+<span class="sd">            Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="n">sampling</span><span class="p">,</span> <span class="n">sampling</span><span class="p">])</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="n">sampling</span><span class="p">,</span>
+            <span class="n">polarization_filter</span><span class="o">=</span><span class="n">polarization_filter</span><span class="p">,</span>
+            <span class="n">mean_coupling</span><span class="o">=</span><span class="n">mean_coupling</span><span class="p">,</span>
+            <span class="n">NA</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>  <span class="c1"># Fixed NA for IntegratingSphere</span>
+            <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Fixed gamma offset for IntegratingSphere</span>
+            <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>  <span class="c1"># Fixed phi offset for IntegratingSphere</span>
+            <span class="n">cache_NA</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>  <span class="c1"># Fixed cache NA for IntegratingSphere</span>
+        <span class="p">)</span>
 </pre></div>
 
                 </article>

@@ -592,10 +592,9 @@
 <dd><p>Returns <span class="math notranslate nohighlight">\(a_n\)</span> coefficient as defined in Eq:III.88 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[a_n = \frac{
-    \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) -
-    \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-    {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-    \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
+    \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)
+}{
+    \mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
 }\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 <dl class="field-list simple">
@@ -614,10 +613,9 @@
 <dd><p>Returns <span class="math notranslate nohighlight">\(b_n\)</span> coefficient as defined in Eq:III.89 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[b_n = \frac{
-    \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -
-    \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-    {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-    \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)
+    \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)
+}{
+    \mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)
 }\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 <dl class="field-list simple">
@@ -637,10 +635,9 @@
 Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as defined in Eq:III.90 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[c_n = \frac{
-    \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
-    \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-    {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-    \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
+    \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]
+}{
+    \mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
 }\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 <dl class="field-list simple">
@@ -671,10 +668,9 @@ Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 Returns <span class="math notranslate nohighlight">\(d_n\)</span> coefficient as defined in Eq:III.91 of B&amp;B:</p>
 <div class="math notranslate nohighlight">
 \[d_n = \frac{
-    \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
-    \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-    {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-    \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)
+    \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]
+}{
+    \mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)
 }\]</div>
 <p>With <span class="math notranslate nohighlight">\(M = \frac{k_{sp}}{k}\)</span> (Eq:I.103)</p>
 <dl class="field-list simple">
@@ -1079,8 +1075,11 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <span class="sig-name descname"><span class="pre">a1n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.a1n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(a_{1n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
-\[a_{1n} = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-    { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\]</div>
+\[a_{1n} = \frac{
+    m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x)
+}{
+    m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x)
+}\]</div>
 <p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
 <span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
 <dl class="field-list simple">
@@ -1098,8 +1097,11 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <span class="sig-name descname"><span class="pre">a2n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.a2n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(a_{2n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
-\[a_{2n} = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-    { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }\]</div>
+\[a_{2n} = \frac{
+    m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x)
+}{
+    m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x)
+}\]</div>
 <p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
 <span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
 <dl class="field-list simple">
@@ -1117,8 +1119,11 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <span class="sig-name descname"><span class="pre">b1n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.b1n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(b_{1n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
-\[b_{1n} = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-    { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\]</div>
+\[b_{1n} = \frac{
+    m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x)
+}{
+    m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x)
+}\]</div>
 <p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
 <span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
 <dl class="field-list simple">
@@ -1136,8 +1141,11 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <span class="sig-name descname"><span class="pre">b2n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CYLINDER</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.b2n" title="Link to this definition">#</a></dt>
 <dd><p>Returns <span class="math notranslate nohighlight">\(b_{2n}\)</span> coefficient as defined in ref[5]:</p>
 <div class="math notranslate nohighlight">
-\[b_{2n} = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-    { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }\]</div>
+\[b_{2n} = \frac{
+    m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x)
+}{
+    m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x)
+}\]</div>
 <p>With <span class="math notranslate nohighlight">\(m\)</span> being the refractive index of the medium and
 <span class="math notranslate nohighlight">\(m_t\)</span> being the refractive index of the scatterer.</p>
 <dl class="field-list simple">
@@ -1554,6 +1562,37 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.an">
 <span class="sig-name descname"><span class="pre">an</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CORESHELL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.an" title="Link to this definition">#</a></dt>
 <dd><p>Returns the ‘an’ scattering coefficients.</p>
+<div class="math notranslate nohighlight">
+\[a_n = \frac{
+    \Psi_n (y)
+    \left[ \dot{\Psi}_n (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\Tilde{m}_{2} y) \right]
+    -
+    \Tilde{m}_{2} \dot{\Psi}_n (y)
+    \left[ \Psi_n (\Tilde{m}_{2} y) - A_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+}{
+    \xi_n (y)
+    \left[ \dot{\Psi}_n (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\Tilde{m}_{2} y) \right]
+    -
+    \Tilde{m}_{2} \dot{\xi}_n (y)
+    \left[ \Psi_n (\Tilde{m}_{2} y) - A_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+}\]</div>
+<p>with:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A_n = \frac{
+    \Tilde{m}_{2}  \Psi_n       (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+    \Tilde{m}_{1}  \dot{\Psi}_n (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+}{
+    \Tilde{m}_{2}  \xi_n        (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+    \Tilde{m}_{1}  \dot{\xi}_n  (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+}
+\\
+B_n = \frac{
+    \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\psi}_n (\Tilde{m}_{2} x) -
+    \Tilde{m}_{1}  \psi_n  (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+}{
+    \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\xi}_n  (\Tilde{m}_{2} x) -
+    \Tilde{m}_{1}  \xi_n   (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of ‘an’ scattering coefficients used in the spherical wave expansion.</p>
@@ -1568,6 +1607,38 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.bn">
 <span class="sig-name descname"><span class="pre">bn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_scatterer.CORESHELL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.bn" title="Link to this definition">#</a></dt>
 <dd><p>Returns the ‘bn’ scattering coefficients.</p>
+<div class="math notranslate nohighlight">
+\[b_n = \frac{
+    \Tilde{m}_{2}
+    \Psi_n (y)
+    \left[ \dot{\Psi}_n  (\Tilde{m}_{2} y) - B_n (x) \dot{\xi}_n  (\Tilde{m}_{2} y) \right]
+    -
+    \dot{\Psi}_n (y)
+    \left[ \Psi_n (\Tilde{m}_{2} y) - B_n (x) \xi_n  (\Tilde{m}_{2} y) \right]
+}{
+    \Tilde{m}_{2}
+    \xi_n (y)
+    \left[ \dot{\Psi}_n  (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n  (\Tilde{m}_{2} y) \right] -
+    \dot{\xi}_n (y)
+    \left[ \Psi_n (\Tilde{m}_{2} y) - B_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+}\]</div>
+<p>with:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A_n = \frac{
+    \Tilde{m}_{2}  \Psi_n       (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+    \Tilde{m}_{1}  \dot{\Psi}_n (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+}{
+    \Tilde{m}_{2}  \xi_n        (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+    \Tilde{m}_{1}  \dot{\xi}_n  (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+}
+\\
+B_n = \frac{
+    \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\psi}_n (\Tilde{m}_{2} x) -
+    \Tilde{m}_{1}  \psi_n  (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+}{
+    \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\xi}_n  (\Tilde{m}_{2} x) -
+    \Tilde{m}_{1}  \xi_n   (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+}\end{split}\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of ‘bn’ scattering coefficients used in the spherical wave expansion.</p>
