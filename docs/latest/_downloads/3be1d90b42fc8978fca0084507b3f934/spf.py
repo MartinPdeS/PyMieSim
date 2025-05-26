@@ -7,7 +7,7 @@ This example demonstrates the computation and visualization of the Scattering Ph
 
 # %%
 # Importing the package: PyMieSim
-from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.scatterer import CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
@@ -22,10 +22,12 @@ source = Gaussian(
 
 # %%
 # Defining the scatterer
-scatterer = Sphere(
-    diameter=500 * nanometer,  # 1200 nm
+scatterer = CoreShell(
+    core_diameter=500 * nanometer,  # 500 nm
+    shell_thickness=100 * nanometer,  # 100 nm
     source=source,
-    property=1.4 * RIU,  # Refractive property of the scatterer
+    core_property=1.4 * RIU,  # Refractive property of the core
+    shell_property=1.8 * RIU,  # Refractive property of the shell
     medium_property=1.0 * RIU,  # Refractive property of the surrounding medium
 )
 

@@ -459,17 +459,16 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik.material.base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMaterial</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseScatterer</span><span class="p">,</span> <span class="n">config_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseScatterer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SPHERE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span>
 
 
+<span class="c1"># @dataclass(config=config_dict, kw_only=True)</span>
 <div class="viewcode-block" id="Sphere">
 <a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Sphere">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Sphere</span><span class="p">(</span><span class="n">BaseScatterer</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Sphere</span><span class="p">(</span><span class="n">SPHERE</span><span class="p">,</span> <span class="n">BaseScatterer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing a homogeneous spherical scatterer.</span>
 
@@ -483,129 +482,47 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">diameter</span><span class="p">:</span> <span class="n">Quantity</span>
     <span class="nb">property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
+    <span class="n">medium_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
+    <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span>
 
     <span class="n">property_names</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;size_parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;area&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;size_parameter&quot;</span><span class="p">,</span> <span class="s2">&quot;cross_section&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Qsca&quot;</span><span class="p">,</span> <span class="s2">&quot;Qext&quot;</span><span class="p">,</span> <span class="s2">&quot;Qabs&quot;</span><span class="p">,</span> <span class="s2">&quot;Qback&quot;</span><span class="p">,</span> <span class="s2">&quot;Qratio&quot;</span><span class="p">,</span> <span class="s2">&quot;Qpr&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Csca&quot;</span><span class="p">,</span> <span class="s2">&quot;Cext&quot;</span><span class="p">,</span> <span class="s2">&quot;Cabs&quot;</span><span class="p">,</span> <span class="s2">&quot;Cback&quot;</span><span class="p">,</span> <span class="s2">&quot;Cratio&quot;</span><span class="p">,</span> <span class="s2">&quot;Cpr&quot;</span>
     <span class="p">]</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_index_or_material</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">property</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">cross_section</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">()</span>
-
-<div class="viewcode-block" id="Sphere.set_binding">
-<a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Sphere.set_binding">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_binding</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diameter</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="nb">property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span> <span class="n">medium_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Binds the Python representation of the sphere to its C++ counterpart using provided properties.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SPHERE</span>
+<span class="sd">        Initialize the Sphere scatterer with its diameter and material properties.</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">SPHERE</span><span class="p">(</span>
-            <span class="n">diameter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">diameter</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diameter : Quantity</span>
+<span class="sd">            Diameter of the sphere in meters.</span>
+<span class="sd">        property : Quantity or BaseMaterial</span>
+<span class="sd">            Refractive index or material of the sphere.</span>
+<span class="sd">        medium_property : Optional[Quantity]</span>
+<span class="sd">            Refractive index of the surrounding medium.</span>
+<span class="sd">        source : Optional[Source]</span>
+<span class="sd">            Source object associated with the scatterer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diameter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_length</span><span class="p">(</span><span class="n">diameter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">property</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_property</span><span class="p">(</span><span class="nb">property</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_property</span><span class="p">(</span><span class="n">medium_property</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_index_or_material</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">property</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium_material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_index_or_material</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">diameter</span><span class="o">=</span><span class="n">diameter</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">binding</span>
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Sphere.an">
-<a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Sphere.an">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">an</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&amp;B:</span>
-
-<span class="sd">        .. math::</span>
-<span class="sd">            a_n = \frac{</span>
-<span class="sd">            \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) -</span>
-<span class="sd">            \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}</span>
-<span class="sd">            {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-</span>
-<span class="sd">            \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}</span>
-
-<span class="sd">        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            Array of :math:`a_n` coefficients.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">an</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Sphere.bn">
-<a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Sphere.bn">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">bn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&amp;B:</span>
-
-<span class="sd">        .. math::</span>
-<span class="sd">            b_n = \frac{</span>
-<span class="sd">            \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -</span>
-<span class="sd">            \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}</span>
-<span class="sd">            {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-</span>
-<span class="sd">            \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}</span>
-
-<span class="sd">        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            Array of :math:`b_n` coefficients.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">bn</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Sphere.cn">
-<a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Sphere.cn">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">cn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        For future purpose only!</span>
-<span class="sd">        Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&amp;B:</span>
-
-<span class="sd">        .. math::</span>
-<span class="sd">            c_n = \frac{</span>
-<span class="sd">            \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -</span>
-<span class="sd">            \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}</span>
-<span class="sd">            {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-</span>
-<span class="sd">            \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}</span>
-
-<span class="sd">        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            Array of :math:`c_n` coefficients.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">cn</span><span class="p">()</span></div>
-
-
-<div class="viewcode-block" id="Sphere.dn">
-<a class="viewcode-back" href="../../../../code/single/scatterer.html#PyMieSim.single.scatterer.Sphere.dn">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">dn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        For future purpose only!</span>
-<span class="sd">        Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&amp;B:</span>
-
-<span class="sd">        .. math::</span>
-<span class="sd">            d_n = \frac{</span>
-<span class="sd">            \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -</span>
-<span class="sd">            \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}</span>
-<span class="sd">            {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-</span>
-<span class="sd">            \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}</span>
-
-<span class="sd">        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            Array of :math:`d_n` coefficients.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">dn</span><span class="p">()</span></div>
-</div>
 
 </pre></div>
 

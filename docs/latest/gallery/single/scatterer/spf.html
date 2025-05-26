@@ -558,7 +558,7 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-single-scatterer-spf-py"></span><h1>SPF Computation<a class="headerlink" href="#spf-computation" title="Link to this heading">#</a></h1>
 <p>This example demonstrates the computation and visualization of the Scattering Phase Function (SPF) using PyMieSim.</p>
 <p>Importing the package: PyMieSim</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoreShell</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">nanometer</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">watt</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
 </pre></div>
@@ -573,10 +573,12 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <p>Defining the scatterer</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 1200 nm</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">scatterer</span> <span class="o">=</span> <span class="n">CoreShell</span><span class="p">(</span>
+    <span class="n">core_diameter</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 500 nm</span>
+    <span class="n">shell_thickness</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 100 nm</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive property of the scatterer</span>
+    <span class="n">core_property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive property of the core</span>
+    <span class="n">shell_property</span><span class="o">=</span><span class="mf">1.8</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive property of the shell</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>  <span class="c1"># Refractive property of the surrounding medium</span>
 <span class="p">)</span>
 </pre></div>
@@ -589,7 +591,7 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">figure</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_spf_001.png" srcset="../../../_images/sphx_glr_spf_001.png" alt="spf" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.354 seconds)</p>
+<img src="../../../_images/sphx_glr_spf_001.png" srcset="../../../_images/sphx_glr_spf_001.png" alt="spf" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.334 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-scatterer-spf-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/1204a0f79b94e959355a2279e7ddc394/spf.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">spf.ipynb</span></code></a></p>
