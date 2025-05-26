@@ -61,7 +61,7 @@ class Sphere(SPHERE, BaseScatterer):
             diameter=diameter.to_base_units().magnitude,
             refractive_index=self.index.to_base_units().magnitude,
             medium_refractive_index=self.medium_index.to_base_units().magnitude,
-            source=self.source.binding
+            source=self.source
         )
 
 

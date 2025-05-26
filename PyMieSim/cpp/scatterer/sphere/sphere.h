@@ -17,7 +17,7 @@ class Sphere: public BaseScatterer
         Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order = 0, bool compute_cn_dn = false)
         : BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
         {
-            this->compute_area();
+            this->compute_cross_section();
             this->compute_size_parameter();
             this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
             this->compute_an_bn(this->max_order);
@@ -31,8 +31,8 @@ class Sphere: public BaseScatterer
             this->size_parameter_squared = pow(this->size_parameter, 2);
         }
 
-        void compute_area() override {
-            this->area = PI * std::pow(this->diameter / 2.0, 2);
+        void compute_cross_section() override {
+            this->cross_section = PI * std::pow(this->diameter / 2.0, 2);
         }
 
         void compute_an_bn(size_t _max_order = 0);
@@ -44,9 +44,4 @@ class Sphere: public BaseScatterer
         double get_g() const override;
 
         std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
-
-    private:
-
 };
-
-// -

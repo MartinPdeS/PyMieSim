@@ -159,9 +159,9 @@ class BaseScatterer:
 
         Where:
 
-        - \( a_n \) and \( b_n \): Mie coefficients, which depend on the size, shape, and refractive index of the scatterer.
-        - \( \pi_n \) and \( \tau_n \): Angular functions related to the angular components of the incident and scattered fields.
-        - \( n_{\text{max}} \): Maximum number of terms in the series, determined by the size parameter of the scatterer.
+        - :math:`a_n` and :math:`b_n`: Mie coefficients, which depend on the size, shape, and refractive index of the scatterer.
+        - :math:`\pi_n` and :math:`\tau_n` \)`: Angular functions related to the angular components of the incident and scattered fields.
+        - :math:`n_{\text{max}}`: Maximum number of terms in the series, determined by the size parameter of the scatterer.
 
         These scattering amplitude functions are essential for calculating properties such as scattering phase functions, efficiencies, and angular distribution of scattered light.
 
@@ -208,10 +208,10 @@ class BaseScatterer:
 
         Where:
 
-        - \( I \): Total intensity of the scattered light.
-        - \( Q \): The degree of linear polarization along the x and y axes.
-        - \( U \): The degree of linear polarization at +45° and -45° to the axes.
-        - \( V \): The degree of circular polarization.
+        - :math:`I`: Total intensity of the scattered light.
+        - :math:`Q`: The degree of linear polarization along the x and y axes.
+        - :math:`U`: The degree of linear polarization at +45° and -45° to the axes.
+        - :math:`V`: The degree of circular polarization.
 
         These parameters provide a powerful way to represent the full polarization state of the scattered light.
 

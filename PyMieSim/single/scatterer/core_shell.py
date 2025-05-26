@@ -81,5 +81,5 @@ class CoreShell(CORESHELL, BaseScatterer):
             core_refractive_index=self.core_index.to_base_units().magnitude,
             shell_refractive_index=self.shell_index.to_base_units().magnitude,
             medium_refractive_index=self.medium_index.to_base_units().magnitude,
-            source=self.source.binding
+            source=self.source
         )

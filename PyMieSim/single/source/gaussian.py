@@ -3,53 +3,54 @@
 
 from typing import Union
 import numpy
-from pydantic.dataclasses import dataclass
-from dataclasses import field
+import pyvista
 from PyMieSim.polarization import BasePolarization
 from PyMieSim.special_functions import NA_to_angle
-from PyMieSim.binary.interface_source import BindedGaussian # type: ignore
-import pyvista
+from PyMieSim.binary.interface_source import GAUSSIAN
 from PyMieSim.units import Quantity
-from PyMieSim.single.source.base import BaseSource, config_dict
+from PyMieSim.single.source.base import BaseSource
 
 
-@dataclass(config=config_dict)
-class Gaussian(BaseSource):
-    """
-    Represents a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
+class Gaussian(GAUSSIAN, BaseSource):
+    amplitude: Quantity
 
-    Parameters
-    ----------
-    wavelength: Quantity
-        Wavelength of the light field in meters.
-    polarization : BasePolarization | Quantity
-        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-    optical_power: Quantity
-        Optical power of the source in Watts.
-    NA: Quantity
-        Numerical aperture of the source.
-    """
-    wavelength: Quantity
-    polarization: Union[BasePolarization, Quantity]
-    optical_power: Quantity
-    NA: Quantity
+    def __init__(self,
+            wavelength: Quantity,
+            polarization: Union[BasePolarization, Quantity],
+            optical_power: Quantity,
+            NA: Quantity) -> None:
+        """
+        Initializes a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
 
-    amplitude: Quantity = field(init=False, repr=False)
+        Parameters
+        ----------
 
-    def __post_init__(self) -> None:
-        if not isinstance(self.polarization, BasePolarization):
-            self.polarization = BasePolarization(self.polarization)
+        wavelength: Quantity
+            Wavelength of the light field in meters.
+        polarization : BasePolarization | Quantity
+            Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+        optical_power: Quantity
+            Optical power of the source in Watts.
+        NA: Quantity
+            Numerical aperture of the source.
+        """
+        self.wavelength = self._validate_length(wavelength)
+        self.polarization = self._validate_polarization(polarization)
+        self.optical_power = self._validate_watt(optical_power)
+        self.NA = self._validate_AU(NA)
 
         self.wavenumber = 2 * numpy.pi / self.wavelength
         self.waist = self.wavelength / (self.NA * numpy.pi)
         self.peak_intensity = 2 * self.optical_power / (numpy.pi * self.waist**2)
 
-        self.binding = BindedGaussian(
+
+        super().__init__(
             wavelength=self.wavelength.to_base_units().magnitude,
-            NA=self.NA.to_base_units().magnitude,
+            jones_vector=self.polarization.element[0],
             optical_power=self.optical_power.to_base_units().magnitude,
-            jones_vector=self.polarization.element[0]
+            NA=self.NA.to_base_units().magnitude,
         )
+
 
     def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:
         """

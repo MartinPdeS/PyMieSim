@@ -22,7 +22,7 @@ class CoreShell: public BaseScatterer
         core_refractive_index(core_refractive_index), shell_refractive_index(shell_refractive_index)
         {
             this->shell_diameter = this->core_diameter + this->shell_thickness;
-            this->compute_area();
+            this->compute_cross_section();
             this->compute_size_parameter();
             this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
             this->apply_medium();
@@ -40,8 +40,8 @@ class CoreShell: public BaseScatterer
             this->x_core = source.wavenumber * this->core_diameter / 2.0 * this->medium_refractive_index;
         }
 
-        void compute_area() override {
-            this->area = PI * pow(this->shell_diameter / 2.0, 2);
+        void compute_cross_section() override {
+            this->cross_section = PI * pow(this->shell_diameter / 2.0, 2);
         }
 
         void compute_an_bn(const size_t max_order);

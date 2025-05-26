@@ -4,7 +4,7 @@
 typedef std::complex<double> complex128;
 
 
-void Sphere::compute_an_bn(size_t _max_order){
+void Sphere::compute_an_bn(size_t _max_order) {
 
     _max_order = (_max_order == 0 ? this->max_order : _max_order);
 
@@ -71,8 +71,7 @@ void Sphere::compute_cn_dn(size_t _max_order) {
     for (double i = nmx; i > 1; i--)
         Cnx[i-2] = i - z * z / (Cnx[i - 1] + i);
 
-    for (size_t order = 0; order < _max_order; order++)
-    {
+    for (size_t order = 0; order < _max_order; order++) {
         Cnn.push_back(Cnx[order]);
         jnx.push_back(compute_jn(order + 1, x));
 
@@ -159,11 +158,11 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
     for (const double phi : phi)
         mu.push_back( cos( phi - PI / 2.0 ) );
 
-    for (size_t i = 0; i < phi.size(); i++){
+    for (size_t i = 0; i < phi.size(); i++) {
         auto [pin, taun] = this->get_pi_tau(mu[i], max_order);
         complex128 S1_temp = 0., S2_temp = 0.;
 
-        for (size_t m = 0; m < max_order ; m++){
+        for (size_t m = 0; m < max_order ; m++) {
             S1_temp += prefactor[m] * ( this->an[m] * pin[m] +  this->bn[m] * taun[m] );
             S2_temp += prefactor[m] * ( this->an[m] * taun[m] + this->bn[m] * pin[m]  );
         }

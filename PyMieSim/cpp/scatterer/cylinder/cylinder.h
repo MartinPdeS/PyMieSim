@@ -17,7 +17,7 @@ class Cylinder: public BaseScatterer
         Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order = 0) :
         BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
         {
-            this->compute_area();
+            this->compute_cross_section();
             this->compute_size_parameter();
             this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
             this->compute_an_bn(this->max_order);
@@ -28,8 +28,8 @@ class Cylinder: public BaseScatterer
             this->size_parameter_squared = pow(this->size_parameter, 2);
         }
 
-        void compute_area() override {
-            this->area = this->diameter;
+        void compute_cross_section() override {
+            this->cross_section = this->diameter;
         }
 
         void compute_an_bn(const size_t max_order);

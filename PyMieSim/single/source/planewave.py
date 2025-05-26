@@ -3,45 +3,40 @@
 
 from typing import Union
 import numpy
-from pydantic.dataclasses import dataclass
-from PyMieSim.polarization import BasePolarization
-from PyMieSim.binary.interface_source import BindedPlanewave # type: ignore
 import pyvista
+from PyMieSim.polarization import BasePolarization
+from PyMieSim.binary.interface_source import PLANEWAVE
 from PyMieSim.units import Quantity
-from PyMieSim.single.source.base import BaseSource, config_dict
+from PyMieSim.single.source.base import BaseSource
 
 
-@dataclass(config=config_dict)
-class PlaneWave(BaseSource):
-    """
-    Represents a plane wave light source for light scattering simulations.
+class PlaneWave(PLANEWAVE, BaseSource):
+    def __init__(self,
+            wavelength: Quantity,
+            polarization: Union[BasePolarization, Quantity],
+            amplitude: Quantity) -> None:
+        """
+        Initializes a plane wave light source for light scattering simulations.
 
-    Inherits from LightSource and specifies amplitude directly.
-
-    Parameters
-    ----------
-    wavelength : Quantity
-        Wavelength of the light field in meters.
-    polarization : BasePolarization | Quantity
-        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-    amplitude : Quantity
-        Amplitude of the electric field.
-
-    """
-    wavelength: Quantity
-    amplitude: Quantity
-    polarization: Union[BasePolarization, Quantity]
-
-    def __post_init__(self) -> None:
-        if not isinstance(self.polarization, BasePolarization):
-            self.polarization = BasePolarization(self.polarization)
+        Parameters
+        ----------
+        wavelength : Quantity
+            Wavelength of the light field in meters.
+        polarization : BasePolarization | Quantity
+            Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
+        amplitude : Quantity
+            Amplitude of the electric field.
+        """
+        self.wavelength = self._validate_length(wavelength)
+        self.polarization = self._validate_polarization(polarization)
+        self.amplitude = self._validate_watt(amplitude)
 
         self.wavenumber = 2 * numpy.pi / self.wavelength
 
-        self.binding = BindedPlanewave(
+        super().__init__(
             wavelength=self.wavelength.to_base_units().magnitude,
+            jones_vector=self.polarization.element[0],
             amplitude=self.amplitude.to_base_units().magnitude,
-            jones_vector=self.polarization.element[0]
         )
 
     def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:

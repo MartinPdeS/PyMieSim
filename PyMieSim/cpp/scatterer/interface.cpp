@@ -17,7 +17,7 @@ PYBIND11_MODULE(interface_scatterer, module) {
     )pbdoc";
 
     py::class_<BaseScatterer>(module, "BASESCATTERER")
-        .def_readonly("_cpp_cross_section", &BaseScatterer::area,
+        .def_readonly("_cpp_cross_section", &BaseScatterer::cross_section,
             R"pbdoc(
                 Cross-sectional area of the scatterer.
 
@@ -285,7 +285,7 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 float
                     The asymmetry parameter (g) value, where g = 0 represents isotropic scattering.
             )pbdoc")
-        .def_readwrite("_cpp_area", &BaseScatterer::area,
+        .def_readwrite("_cpp_cross_section", &BaseScatterer::cross_section,
             R"pbdoc(
                 Physical cross-sectional area of the scatterer.
 

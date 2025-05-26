@@ -26,7 +26,7 @@ public:
     BaseSource source;
     double size_parameter;
     double size_parameter_squared;
-    double area;
+    double cross_section;
     double medium_refractive_index;
     std::vector<size_t> indices;
 
@@ -42,7 +42,7 @@ public:
     virtual double get_g() const {throw std::logic_error{"Function not implementend!"};};
 
     virtual void compute_size_parameter() = 0;
-    virtual void compute_area() = 0;
+    virtual void compute_cross_section() = 0;
 
 
     // SPHERICAL SCATTERER GETTERS --------------------------------------------------------
@@ -64,14 +64,14 @@ public:
     double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
     double get_Qforward() const {return get_Qsca() - get_Qback();};
     double get_Qratio() const {return get_Qback() / get_Qsca();};
-    double get_Cback() const {return get_Qback() * area;};
-    double get_Cforward() const {return get_Qforward() * area;};
-    double get_Cratio() const {return get_Qratio() * area;};
+    double get_Cback() const {return get_Qback() * this->cross_section;};
+    double get_Cforward() const {return get_Qforward() * this->cross_section;};
+    double get_Cratio() const {return get_Qratio() * this->cross_section;};
 
-    double get_Csca() const {return get_Qsca() * area;};
-    double get_Cext() const {return get_Qext() * area;};
-    double get_Cabs() const {return get_Qabs() * area;};
-    double get_Cpr() const {return get_Qpr() * area;};
+    double get_Csca() const {return get_Qsca() * this->cross_section;};
+    double get_Cext() const {return get_Qext() * this->cross_section;};
+    double get_Cabs() const {return get_Qabs() * this->cross_section;};
+    double get_Cpr() const {return get_Qpr() * this->cross_section;};
 
 
     // GENERAL METHODS ----------------------------------------------------
