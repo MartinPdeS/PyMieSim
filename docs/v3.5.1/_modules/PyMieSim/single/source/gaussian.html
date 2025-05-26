@@ -459,55 +459,56 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">field</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasePolarization</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.special_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">NA_to_angle</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_source</span><span class="w"> </span><span class="kn">import</span> <span class="n">BindedGaussian</span> <span class="c1"># type: ignore</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_source</span><span class="w"> </span><span class="kn">import</span> <span class="n">GAUSSIAN</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span><span class="p">,</span> <span class="n">config_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span>
 
 
 <div class="viewcode-block" id="Gaussian">
 <a class="viewcode-back" href="../../../../code/single/source.html#PyMieSim.single.source.Gaussian">[docs]</a>
-<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">)</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">Gaussian</span><span class="p">(</span><span class="n">BaseSource</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Represents a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Gaussian</span><span class="p">(</span><span class="n">GAUSSIAN</span><span class="p">,</span> <span class="n">BaseSource</span><span class="p">):</span>
+    <span class="n">amplitude</span><span class="p">:</span> <span class="n">Quantity</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    wavelength: Quantity</span>
-<span class="sd">        Wavelength of the light field in meters.</span>
-<span class="sd">    polarization : BasePolarization | Quantity</span>
-<span class="sd">        Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.</span>
-<span class="sd">    optical_power: Quantity</span>
-<span class="sd">        Optical power of the source in Watts.</span>
-<span class="sd">    NA: Quantity</span>
-<span class="sd">        Numerical aperture of the source.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span>
-    <span class="n">polarization</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BasePolarization</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span>
-    <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span>
-    <span class="n">NA</span><span class="p">:</span> <span class="n">Quantity</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">polarization</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BasePolarization</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">],</span>
+            <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">NA</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.</span>
 
-    <span class="n">amplitude</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="p">,</span> <span class="n">BasePolarization</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">polarization</span> <span class="o">=</span> <span class="n">BasePolarization</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="p">)</span>
+<span class="sd">        wavelength: Quantity</span>
+<span class="sd">            Wavelength of the light field in meters.</span>
+<span class="sd">        polarization : BasePolarization | Quantity</span>
+<span class="sd">            Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.</span>
+<span class="sd">        optical_power: Quantity</span>
+<span class="sd">            Optical power of the source in Watts.</span>
+<span class="sd">        NA: Quantity</span>
+<span class="sd">            Numerical aperture of the source.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_length</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">polarization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_polarization</span><span class="p">(</span><span class="n">polarization</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_watt</span><span class="p">(</span><span class="n">optical_power</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_AU</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">wavenumber</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">waist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">peak_intensity</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">waist</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">BindedGaussian</span><span class="p">(</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">jones_vector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="o">.</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">optical_power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">jones_vector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization</span><span class="o">.</span><span class="n">element</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
         <span class="p">)</span>
+
 
 <div class="viewcode-block" id="Gaussian.plot">
 <a class="viewcode-back" href="../../../../code/single/source.html#PyMieSim.single.source.Gaussian.plot">[docs]</a>
