@@ -446,35 +446,35 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 .. math::
                     a_n = \frac{
                         \Psi_n (y)
-                        \left[ \dot{\Psi}_n (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\Tilde{m}_{2} y) \right]
+                        \left[ \dot{\Psi}_n (\tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\tilde{m}_{2} y) \right]
                         -
-                        \Tilde{m}_{2} \dot{\Psi}_n (y)
-                        \left[ \Psi_n (\Tilde{m}_{2} y) - A_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+                        \tilde{m}_{2} \dot{\Psi}_n (y)
+                        \left[ \Psi_n (\tilde{m}_{2} y) - A_n (x) \xi_n (\tilde{m}_{2} y) \right]
                     }{
                         \xi_n (y)
-                        \left[ \dot{\Psi}_n (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\Tilde{m}_{2} y) \right]
+                        \left[ \dot{\Psi}_n (\tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\tilde{m}_{2} y) \right]
                         -
-                        \Tilde{m}_{2} \dot{\xi}_n (y)
-                        \left[ \Psi_n (\Tilde{m}_{2} y) - A_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+                        \tilde{m}_{2} \dot{\xi}_n (y)
+                        \left[ \Psi_n (\tilde{m}_{2} y) - A_n (x) \xi_n (\tilde{m}_{2} y) \right]
                     }
 
                 with:
 
                 .. math::
                     A_n = \frac{
-                        \Tilde{m}_{2}  \Psi_n       (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
-                        \Tilde{m}_{1}  \dot{\Psi}_n (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \Psi_n       (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
+                        \tilde{m}_{1}  \dot{\Psi}_n (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
                     }{
-                        \Tilde{m}_{2}  \xi_n        (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
-                        \Tilde{m}_{1}  \dot{\xi}_n  (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \xi_n        (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
+                        \tilde{m}_{1}  \dot{\xi}_n  (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
                     }
                     \\
                     B_n = \frac{
-                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\psi}_n (\Tilde{m}_{2} x) -
-                        \Tilde{m}_{1}  \psi_n  (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\psi}_n (\tilde{m}_{2} x) -
+                        \tilde{m}_{1}  \psi_n  (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
                     }{
-                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\xi}_n  (\Tilde{m}_{2} x) -
-                        \Tilde{m}_{1}  \xi_n   (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\xi}_n  (\tilde{m}_{2} x) -
+                        \tilde{m}_{1}  \xi_n   (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
                     }
 
                 Returns
@@ -488,37 +488,37 @@ PYBIND11_MODULE(interface_scatterer, module) {
 
                 .. math::
                     b_n = \frac{
-                        \Tilde{m}_{2}
+                        \tilde{m}_{2}
                         \Psi_n (y)
-                        \left[ \dot{\Psi}_n  (\Tilde{m}_{2} y) - B_n (x) \dot{\xi}_n  (\Tilde{m}_{2} y) \right]
+                        \left[ \dot{\Psi}_n  (\tilde{m}_{2} y) - B_n (x) \dot{\xi}_n  (\tilde{m}_{2} y) \right]
                         -
                         \dot{\Psi}_n (y)
-                        \left[ \Psi_n (\Tilde{m}_{2} y) - B_n (x) \xi_n  (\Tilde{m}_{2} y) \right]
+                        \left[ \Psi_n (\tilde{m}_{2} y) - B_n (x) \xi_n  (\tilde{m}_{2} y) \right]
                     }{
-                        \Tilde{m}_{2}
+                        \tilde{m}_{2}
                         \xi_n (y)
-                        \left[ \dot{\Psi}_n  (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n  (\Tilde{m}_{2} y) \right] -
+                        \left[ \dot{\Psi}_n  (\tilde{m}_{2} y) - A_n (x) \dot{\xi}_n  (\tilde{m}_{2} y) \right] -
                         \dot{\xi}_n (y)
-                        \left[ \Psi_n (\Tilde{m}_{2} y) - B_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+                        \left[ \Psi_n (\tilde{m}_{2} y) - B_n (x) \xi_n (\tilde{m}_{2} y) \right]
                     }
 
                 with:
 
                 .. math::
                     A_n = \frac{
-                        \Tilde{m}_{2}  \Psi_n       (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
-                        \Tilde{m}_{1}  \dot{\Psi}_n (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \Psi_n       (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
+                        \tilde{m}_{1}  \dot{\Psi}_n (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
                     }{
-                        \Tilde{m}_{2}  \xi_n        (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
-                        \Tilde{m}_{1}  \dot{\xi}_n  (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \xi_n        (\tilde{m}_{2} x) \dot{\Psi}_n (\tilde{m}_{1} x) -
+                        \tilde{m}_{1}  \dot{\xi}_n  (\tilde{m}_{2} x) \Psi_n       (\tilde{m}_{1} x)
                     }
                     \\
                     B_n = \frac{
-                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\psi}_n (\Tilde{m}_{2} x) -
-                        \Tilde{m}_{1}  \psi_n  (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\psi}_n (\tilde{m}_{2} x) -
+                        \tilde{m}_{1}  \psi_n  (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
                     }{
-                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\xi}_n  (\Tilde{m}_{2} x) -
-                        \Tilde{m}_{1}  \xi_n   (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                        \tilde{m}_{2}  \psi_n  (\tilde{m}_{1} x) \dot{\xi}_n  (\tilde{m}_{2} x) -
+                        \tilde{m}_{1}  \xi_n   (\tilde{m}_{2} x) \dot{\psi}_n (\tilde{m}_{1} x)
                     }
 
                 Returns
