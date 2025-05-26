@@ -4,7 +4,7 @@
 import numpy
 from typing import Optional
 from PyMieSim.binary.interface_detector import DETECTOR
-from PyMieSim.units import Quantity, degree, AU, radian
+from PyMieSim.units import Quantity, degree, AU, radian, RIU
 from PyMieSim.single.detector.base import BaseDetector
 
 
@@ -23,6 +23,7 @@ class Photodiode(DETECTOR, BaseDetector):
             polarization_filter: Optional[Quantity] = None,
             cache_NA: Optional[Quantity] = 0 * AU,
             mean_coupling: bool = False,
+            medium_refractive_index: Quantity = 1.0 * RIU,
         ):
         """
         Initialize the Photodiode detector with its parameters.
