@@ -1,11 +1,27 @@
 #include "detector/detector.h"
-#include "utils/special_function.cpp"
+
 
 #define EPSILON0 (double)8.854187817620389e-12
 #define C (double)299792458.0
 
 
 using complex128 = std::complex<double>;
+
+
+void Detector::parse_mode(const std::string& mode_number) {
+    if (mode_number.size() < 4) {
+        throw std::invalid_argument("mode string too short, need at least 4 chars");
+    }
+
+    this->mode_id.mode_family = mode_number.substr(0, 2);
+    char c0 = mode_number[2], c1 = mode_number[3];
+    if (!std::isdigit(c0) || !std::isdigit(c1)) {
+        throw std::invalid_argument("expected digits in positions 2 and 3");
+    }
+    this->mode_id.number_0 = c0 - '0';
+    this->mode_id.number_1 = c1 - '0';
+}
+
 
 double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) const
 {

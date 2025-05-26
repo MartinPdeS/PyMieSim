@@ -87,6 +87,10 @@ PYBIND11_MODULE(interface_detector, module) {
                  See class docstring for parameter descriptions.
              )pbdoc")
 
+        .def_readonly("mode_field", &Detector::mode_field)
+        .def_readonly("mode_id", &Detector::mode_id)
+
+
         .def("_cpp_get_coupling", &Detector::get_coupling,
              py::arg("scatterer"),
              R"pbdoc(

@@ -74,22 +74,6 @@ class Photodiode(DETECTOR, BaseDetector):
             medium_refractive_index=self.medium_refractive_index.to_base_units().magnitude
         )
 
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
-        """
-        Generate a structured scalar field as a numpy array.
-
-        Parameters
-        ----------
-            sampling : int
-                The sampling rate for the scalar field. Default is 100.
-
-        Returns
-        -------
-        numpy.ndarray
-            A 2D array representing the structured scalar field.
-        """
-        return numpy.ones([sampling, sampling])
-
 
 class IntegratingSphere(Photodiode):
     def __init__(self, sampling: Quantity, polarization_filter: Optional[Quantity] = None, mean_coupling: bool = False):
@@ -114,7 +98,7 @@ class IntegratingSphere(Photodiode):
             sampling=sampling,
             polarization_filter=polarization_filter,
             mean_coupling=mean_coupling,
-            NA=2 * AU,  # Fixed NA for IntegratingSphere
+            NA=2.0 * AU,  # Fixed NA for IntegratingSphere
             gamma_offset=0 * degree,  # Fixed gamma offset for IntegratingSphere
             phi_offset=0 * degree,  # Fixed phi offset for IntegratingSphere
             cache_NA=0 * AU,  # Fixed cache NA for IntegratingSphere

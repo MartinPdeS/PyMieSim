@@ -8,7 +8,9 @@
 #include "fibonacci/fibonacci.h"
 #include "utils/numpy_interface.h"
 #include <scatterer/base_scatterer/base_scatterer.h>
-#include <mode_field/mode_field.h>
+#include "../mode_field/mode_field.h"
+#include <iostream>
+
 
 
 
@@ -33,6 +35,9 @@ class Detector {
         FibonacciMesh fibonacci_mesh;
         std::vector<size_t> indices;
 
+        ModeID mode_id;
+        ModeField mode_field;
+
         Detector() = default;
 
         Detector(
@@ -56,6 +61,9 @@ class Detector {
         double NA2Angle(double NA) const;
 
         void initialize(const double &medium_refractive_index) {
+            this->parse_mode(this->mode_number);
+            this->mode_field = ModeField(this->mode_id);
+
             this->max_angle = NA2Angle(this->NA / medium_refractive_index);
             this->min_angle = NA2Angle(this->cache_NA / medium_refractive_index);
 
@@ -72,21 +80,11 @@ class Detector {
                 this->rotation
             );
 
-            int number_0 = mode_number[2] - '0';
-            int number_1 = mode_number[3] - '0';
+            this->scalar_field = this->mode_field.get_unstructured(
+                this->fibonacci_mesh.base_cartesian_coordinates.x,
+                this->fibonacci_mesh.base_cartesian_coordinates.y
+            );
 
-            std::string mode_prefix = mode_number.substr(0, 2);
-
-            if (mode_prefix == "LG")
-                this->scalar_field = get_LG_mode_field(this->fibonacci_mesh.base_cartesian_coordinates.x, this->fibonacci_mesh.base_cartesian_coordinates.y, number_0, number_1);
-            else if (mode_prefix == "HG")
-                this->scalar_field = get_HG_mode_field(this->fibonacci_mesh.base_cartesian_coordinates.x, this->fibonacci_mesh.base_cartesian_coordinates.y, number_0, number_1);
-            else if (mode_prefix == "LP")
-                this->scalar_field = get_LP_mode_field(this->fibonacci_mesh.base_cartesian_coordinates.x, this->fibonacci_mesh.base_cartesian_coordinates.y, number_0, number_1);
-            else if (mode_prefix == "NC")
-                this->scalar_field = std::vector<complex128>(this->fibonacci_mesh.base_cartesian_coordinates.x.size(), 1.0);
-            else
-                throw std::invalid_argument("Invalid mode family name");
         }
 
         double get_coupling(const BaseScatterer& scatterer) const {
@@ -102,6 +100,8 @@ class Detector {
         double get_coupling_mean_coherent(const BaseScatterer& scatterer) const;
 
     private:
+        void parse_mode(const std::string& mode_number);
+
         std::tuple<std::vector<complex128>, std::vector<complex128>>
         get_projected_fields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
 

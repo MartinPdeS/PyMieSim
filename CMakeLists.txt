@@ -52,6 +52,7 @@ message(STATUS "Binary will be installed in location: ${PYMIESIM_BIN_DIR}")
 
 # add_subdirectory(PyMieSim/cpp/_bessel)
 add_subdirectory(PyMieSim/cpp/bessel)                       # ZBessel
+add_subdirectory(PyMieSim/cpp/_bessel)                      # _ZBessel
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
 add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
@@ -60,15 +61,3 @@ add_subdirectory(PyMieSim/cpp/scatterer)                    # cpp_scatterers
 add_subdirectory(PyMieSim/cpp/detector)                     # cpp_detector       - interface_detector
 add_subdirectory(PyMieSim/cpp/sets)                         # cpp_sets           - interface_sets
 add_subdirectory(PyMieSim/cpp/experiment)                   # cpp_experiment     - interface_experiment
-
-
-set(ALL_TARGETS ZBessel cpp_source cpp_full_mesh cpp_fibonacci cpp_mode_field
-                cpp_sphere cpp_cylinder cpp_coreshell cpp_detector cpp_sets cpp_experiment
-                interface_source interface_mode_field interface_fibonacci interface_scatterer
-                interface_detector interface_sets interface_experiment)
-
-install(TARGETS ${ALL_TARGETS}
-        LIBRARY DESTINATION ${PYMIESIM_BIN_DIR}
-        ARCHIVE DESTINATION ${PYMIESIM_BIN_DIR}
-        RUNTIME DESTINATION ${PYMIESIM_BIN_DIR}
-)

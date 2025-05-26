@@ -64,7 +64,7 @@ def sequential_detector():
 
     detector.rotation = ONES * ROTATION
 
-    detector.mode_number = SIZE * ['NC:00']
+    detector.mode_number = SIZE * ['NC00']
 
     detector._generate_binding()
 

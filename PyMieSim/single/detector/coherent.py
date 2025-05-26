@@ -94,54 +94,5 @@ class CoherentMode(DETECTOR, BaseDetector):
             medium_refractive_index=self.medium_refractive_index.to_base_units().magnitude
         )
 
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
-        """
-        Generate a structured scalar field as a numpy array.
-
-        Parameters
-        ----------
-        sampling : int
-            The sampling rate for the scalar field. Default is 100.
-
-        Returns
-        -------
-        numpy.ndarray
-            A 2D array representing the structured scalar field.
-        """
-        number_0, number_1 = self.mode_number[2:]
-        self.number_0, self.number_1 = int(number_0), int(number_1)
-
-        match self.mode_family.lower():
-            case 'lp':
-                self.azimuthal_number, self.radial_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = interface_mode_field.get_LP
-            case 'lg':
-                self.azimuthal_number, self.radial_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = interface_mode_field.get_LG
-            case 'hg':
-                self.x_number, self.y_number = self.number_0, self.number_1
-                self.cpp_mode_field_getter = interface_mode_field.get_HG
-
-
-        x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
-
-        coordinates = numpy.row_stack((
-            x_mesh.ravel(),
-            y_mesh.ravel(),
-        ))
-
-        norm = numpy.sqrt(numpy.square(coordinates).sum(axis=0)).max()
-
-        coordinates /= norm
-
-        field = self.cpp_mode_field_getter(
-            coordinates[0],
-            coordinates[1],
-            self.number_0,
-            self.number_1
-        )
-
-        return field.reshape([sampling, sampling])
-
 
 # -

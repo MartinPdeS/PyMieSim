@@ -24,4 +24,9 @@ set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "interface_${NA
 target_link_libraries("interface_${NAME}" PRIVATE "cpp_${NAME}" )
 
 
-
+install(
+    TARGETS cpp_${NAME} interface_${NAME}
+    LIBRARY DESTINATION ${PYMIESIM_BIN_DIR}
+    ARCHIVE DESTINATION ${PYMIESIM_BIN_DIR}
+    RUNTIME DESTINATION ${PYMIESIM_BIN_DIR}
+)

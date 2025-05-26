@@ -1,31 +1,19 @@
-#include <vector>
-#include <cmath>
-#include <complex>
-#include "_bessel/bessel_subroutine.cpp"
-#include "utils/numpy_interface.h"
-#include <pybind11/numpy.h>
+#include "mode_field.h"
+
 
 #define PI (double)3.14159265358979323846264338
 typedef std::complex<double> complex128;
 
 
-// ________________________________ LP ___________________________________
+// ________________________________ COMMON ___________________________________
+// ________________________________ STD ___________________________________
 
-std::vector<complex128> get_LP_mode_field(
-   std::vector<double> x_coords,
-   std::vector<double> y_coords,
-   int azimuthal_number,
-   int radial_number)
-{
-   std::vector<complex128> field(x_coords.size());
-
-   // Normalize the coordinates
+void ModeField::normalize_coordinates(std::vector<double> &x_coords, std::vector<double> &y_coords) const {
    double max_norm = 0.0;
    for (size_t i = 0; i < x_coords.size(); ++i) {
       double norm = std::sqrt(x_coords[i] * x_coords[i] + y_coords[i] * y_coords[i]);
       if (norm > max_norm)
          max_norm = norm;
-
    }
 
    if (max_norm != 0) {  // Avoid division by zero
@@ -34,15 +22,43 @@ std::vector<complex128> get_LP_mode_field(
          y_coords[i] /= max_norm;
       }
    }
+}
+
+void ModeField::normalize_fields(std::vector<complex128> &field) const {
+   double norm = 0.0;
+   for (const complex128& f : field)
+      norm += std::norm(f);
+
+   norm = std::sqrt(norm);
+
+   if (norm != 0) {  // Avoid division by zero
+      for (complex128& f : field)
+         f /= norm;
+   }
+}
+
+
+// ________________________________ LP ___________________________________
+
+[[nodiscard]] std::vector<complex128>
+ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords) {
+
+   size_t azimuthal_number = mode_id.number_0;
+   size_t radial_number = mode_id.number_1;
+
+   std::vector<complex128> field(x_coords.size());
+
+   // Normalize the coordinates
+   this->normalize_coordinates(x_coords, y_coords);
 
    std::vector<double> rj0(radial_number), rj1(radial_number), ry0(radial_number), ry1(radial_number);
 
+   // Calculate Bessel zeros for the radial and azimuthal components
    bessel_zeros(azimuthal_number, radial_number, &rj0[0], &rj1[0], &ry0[0], &ry1[0]);
 
    double x, y, r, phi, azimuthal_part;
 
-   for (size_t i = 0; i < x_coords.size(); ++i)
-   {
+   for (size_t i = 0; i < x_coords.size(); ++i) {
       x = x_coords[i];
       y = y_coords[i];
 
@@ -57,43 +73,21 @@ std::vector<complex128> get_LP_mode_field(
    }
 
    // Normalization to L2 norm of 1
-   double norm = 0.0;
-   for (const complex128& f : field)
-      norm += std::norm(f);
-
-   norm = std::sqrt(norm);
-
-   for (complex128& f : field)
-      f /= norm;
+   this->normalize_fields(field);
 
    return field;
-}
-
-pybind11::array_t<complex128> get_LP_mode_field_py(
-   std::vector<double> x_coords,
-   std::vector<double> y_coords,
-   int azimuthal_number,
-   int radial_number)
-{
-   return _vector_to_numpy(
-      get_LP_mode_field(x_coords, y_coords, azimuthal_number, radial_number),
-      {x_coords.size()}
-   );
 }
 
 
 
 // ________________________________ HG ___________________________________
 
-
-double hermite_next(unsigned n, double x, double Hn, double Hnm1)
-{
+double ModeField::hermite_next(unsigned n, double x, double Hn, double Hnm1) const {
    return (2 * x * Hn - 2 * n * Hnm1);
 }
 
 
-double hermite_imp(unsigned n, double x)
-{
+double ModeField::hermite_imp(unsigned n, double x) const {
    double p0 = 1;
    double p1 = 2 * x;
 
@@ -102,10 +96,9 @@ double hermite_imp(unsigned n, double x)
 
    unsigned c = 1;
 
-   while(c < n)
-   {
+   while(c < n) {
       std::swap(p0, p1);
-      p1 = hermite_next(c, x, p0, p1);
+      p1 = this->hermite_next(c, x, p0, p1);
       ++c;
    }
    return p1;
@@ -113,34 +106,18 @@ double hermite_imp(unsigned n, double x)
 
 
 // Helper function to calculate the Hermite-Gaussian mode field amplitude
-std::vector<complex128> get_HG_mode_field(
-   std::vector<double> x_coords,
-   std::vector<double> y_coords,
-   int x_number,
-   int y_number,
-   double wavelength = 1.55,
-   double waist_radius = 0.3,
-   double z = 0.0)
-{
+std::vector<complex128> ModeField::get_HG_unstructured(std::vector<double>& x_coords, std::vector<double>& y_coords, double wavelength, double waist_radius, double z) {
+
+   size_t x_number = this->mode_id.number_0;
+   size_t y_number = this->mode_id.number_1;
+
    double k = 2 * PI / wavelength;  // Wave number
    double w0 = waist_radius;  // Beam waist
 
    std::vector<complex128> field(x_coords.size());
 
    // Normalize the coordinates
-   double max_norm = 0.0;
-   for (size_t i = 0; i < x_coords.size(); ++i) {
-      double norm = std::sqrt(x_coords[i] * x_coords[i] + y_coords[i] * y_coords[i]);
-      if (norm > max_norm)
-         max_norm = norm;
-   }
-
-   if (max_norm != 0) {  // Avoid division by zero
-      for (size_t i = 0; i < x_coords.size(); ++i) {
-         x_coords[i] /= max_norm;
-         y_coords[i] /= max_norm;
-      }
-   }
+   this->normalize_coordinates(x_coords, y_coords);
 
    // Calculate the beam width at distance z
    double w = w0 * std::sqrt(1 + (z * wavelength / (PI * w0 * w0)) * (z * wavelength / (PI * w0 * w0)));
@@ -158,8 +135,8 @@ std::vector<complex128> get_HG_mode_field(
       double y = y_coords[i];
 
       // Hermite polynomial factors
-      double Hn = hermite_imp(x_number, std::sqrt(2) * x / w);
-      double Hm = hermite_imp(y_number, std::sqrt(2) * y / w);
+      double Hn = this->hermite_imp(x_number, std::sqrt(2) * x / w);
+      double Hm = this->hermite_imp(y_number, std::sqrt(2) * y / w);
 
       // Amplitude calculation
       double amplitude = Hn * Hm * std::exp(-((x * x + y * y) / (w * w)));
@@ -172,49 +149,31 @@ std::vector<complex128> get_HG_mode_field(
    }
 
    // Normalization to L2 norm of 1
-   double norm = 0.0;
-   for (const complex128& f : field)
-      norm += std::norm(f);
-
-   norm = std::sqrt(norm);
-
-   for (auto& f : field)
-      f /= norm;
+   this->normalize_fields(field);
 
    return field;
 }
 
 
-// Helper function to calculate the Hermite-Gaussian mode field amplitude
-pybind11::array_t<complex128> get_HG_mode_field_py(
-   std::vector<double> x_coords,
-   std::vector<double> y_coords,
-   int x_number,
-   int y_number)
-{
-   return _vector_to_numpy(
-      get_HG_mode_field(x_coords, y_coords, x_number, y_number),
-      {x_coords.size()}
-   );
-}
 
 
-// _____________________________ LG__________________________________
+
+// ________________________________ LG ___________________________________
 
 
-double laguerre_next(unsigned n, double x, double Ln, double Lnm1)
+double ModeField::laguerre_next(unsigned n, double x, double Ln, double Lnm1) const
 {
    return ((2 * n + 1 - x) * Ln - n * Lnm1) / (n + 1);
 }
 
 
-double laguerre_next(unsigned n, unsigned l, double x, double Pl, double Plm1)
+double ModeField::laguerre_next(unsigned n, unsigned l, double x, double Pl, double Plm1) const
 {
    return ((2 * n + l + 1 - x) * Pl - (n + l) * Plm1) / (n + 1);
 }
 
 
-double laguerre_imp(unsigned n, double x)
+double ModeField::laguerre_imp(unsigned n, double x) const
 {
    double p0 = 1;
    double p1 = 1 - x;
@@ -224,8 +183,7 @@ double laguerre_imp(unsigned n, double x)
 
    unsigned c = 1;
 
-   while(c < n)
-   {
+   while(c < n) {
       std::swap(p0, p1);
       p1 = laguerre_next(c, x, p0, p1);
       ++c;
@@ -234,7 +192,7 @@ double laguerre_imp(unsigned n, double x)
 }
 
 
-double laguerre_imp(unsigned n, unsigned m, double x)
+double ModeField::laguerre_imp(unsigned n, unsigned m, double x) const
 {
    // Special cases:
    if(m == 0)
@@ -249,8 +207,7 @@ double laguerre_imp(unsigned n, unsigned m, double x)
 
    unsigned c = 1;
 
-   while(c < n)
-   {
+   while(c < n) {
       std::swap(p0, p1);
       p1 = laguerre_next(c, m, x, p0, p1);
       ++c;
@@ -259,35 +216,19 @@ double laguerre_imp(unsigned n, unsigned m, double x)
 }
 
 
-std::vector<complex128> get_LG_mode_field(
-    std::vector<double> x_coords,
-    std::vector<double> y_coords,
-    int azimuthal_number,
-    int radial_number,
-    double wavelength = 1.55,
-    double waist_radius = 0.3,
-    double z = 0.0)
-{
+std::vector<complex128> ModeField::get_LG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength, double waist_radius, double z) {
+
+   size_t azimuthal_number = mode_id.number_0;
+   size_t radial_number = mode_id.number_1;
+
+
    double k = 2 * PI / wavelength;  // Wave number
    double w0 = waist_radius;  // Beam waist
 
    std::vector<complex128> field(x_coords.size());
 
    // Normalize the coordinates
-   double max_norm = 0.0;
-   for (size_t i = 0; i < x_coords.size(); ++i) {
-      double norm = std::sqrt(x_coords[i] * x_coords[i] + y_coords[i] * y_coords[i]);
-      if (norm > max_norm)
-         max_norm = norm;
-
-   }
-
-   if (max_norm != 0) {  // Avoid division by zero
-      for (size_t i = 0; i < x_coords.size(); ++i) {
-         x_coords[i] /= max_norm;
-         y_coords[i] /= max_norm;
-      }
-   }
+   this->normalize_coordinates(x_coords, y_coords);
 
    // Convert to polar coordinates and calculate field values
    for (size_t i = 0; i < x_coords.size(); ++i) {
@@ -302,41 +243,29 @@ std::vector<complex128> get_LG_mode_field(
       double gouy_phase = std::atan(z * PI / (wavelength * w0 * w0));
 
       // Laguerre polynomial
-      double L_pl = laguerre_imp(azimuthal_number, std::abs(radial_number), 2 * r * r / (w * w));
-      double amplitude = std::pow(std::sqrt(2) * r / w, std::abs(radial_number)) * L_pl * std::exp(-r * r / (w * w));
+      double L_pl = laguerre_imp(azimuthal_number, radial_number, 2 * r * r / (w * w));
+      double amplitude = std::pow(std::sqrt(2) * r / w, radial_number) * L_pl * std::exp(-r * r / (w * w));
 
       // Phase factor
-      double phase = radial_number * theta - k * r * r / (2 * R) + (2 * azimuthal_number + std::abs(radial_number) + 1) * gouy_phase;
+      double phase = radial_number * theta - k * r * r / (2 * R) + (2 * azimuthal_number + radial_number + 1) * gouy_phase;
 
       field[i] = amplitude * std::cos(phase); // store the real part of the field
     }
 
    // Normalization to L2 norm of 1
-   double norm = 0.0;
-   for (const complex128& f : field)
-       norm += std::norm(f);
-
-   norm = std::sqrt(norm);
-
-   for (complex128& f : field)
-      f /= norm;
+   this->normalize_fields(field);
 
 
    return field;
 }
 
-pybind11::array_t<complex128> get_LG_mode_field_py(
-   std::vector<double> x_coords,
-   std::vector<double> y_coords,
-   int azimuthal_number,
-   int radial_number)
-{
-   return _vector_to_numpy(
-      get_LG_mode_field(x_coords, y_coords, azimuthal_number, radial_number),
-      {x_coords.size()}
-   );
+
+// ________________________________ NC ___________________________________
+
+
+std::vector<complex128> ModeField::get_NC_unstructured(std::vector<double> &x_coords, std::vector<double> &) {
+   std::vector<complex128> output(x_coords.size(), 1.0);
+
+   return output;
 }
-
-
-
 

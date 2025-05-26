@@ -354,3 +354,21 @@ class BaseDetector():
         total_power = 0.5 * numpy.trapz(y=poynting_vector, dx=dA)
 
         return total_power
+
+    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
+        """
+        Generate a structured scalar field as a numpy array.
+
+        Parameters
+        ----------
+        sampling : int
+            The sampling rate for the scalar field. Default is 100.
+
+        Returns
+        -------
+        numpy.ndarray
+            A 2D array representing the structured scalar field.
+        """
+        x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
+
+        return self.mode_field.get_structured(x_mesh.ravel(), y_mesh.ravel()).reshape([sampling, sampling])
