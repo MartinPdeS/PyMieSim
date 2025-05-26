@@ -19,9 +19,9 @@
 | PyMieSim/experiment/utils.py                   |       34 |        1 |       14 |        2 |     94% |52->56, 64 |
 | PyMieSim/mesh.py                               |       88 |        4 |        8 |        2 |     94% |114, 126, 138, 150, 192->exit, 211->exit |
 | PyMieSim/polarization.py                       |       45 |        1 |        8 |        0 |     98% |        87 |
-| PyMieSim/single/detector/base.py               |       68 |        3 |       10 |        2 |     94% |40, 58, 180 |
-| PyMieSim/single/detector/coherent.py           |       43 |        2 |       10 |        3 |     91% |60, 65, 114->119 |
-| PyMieSim/single/detector/uncoherent.py         |       20 |        0 |        0 |        0 |    100% |           |
+| PyMieSim/single/detector/base.py               |       72 |        4 |       12 |        3 |     92% |36, 49, 67, 189 |
+| PyMieSim/single/detector/coherent.py           |       44 |        2 |       10 |        3 |     91% |65, 70, 121->126 |
+| PyMieSim/single/detector/uncoherent.py         |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations.py             |      168 |        3 |       12 |        1 |     98% | 58, 62-63 |
 | PyMieSim/single/scatterer/base.py              |       89 |        1 |        8 |        1 |     98% |       424 |
 | PyMieSim/single/scatterer/core\_shell.py       |       24 |        0 |        0 |        0 |    100% |           |
@@ -32,7 +32,7 @@
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1219** |   **38** |  **190** |   **31** | **95%** |           |
+|                                      **TOTAL** | **1225** |   **39** |  **192** |   **32** | **95%** |           |
 
 
 ## Setup coverage badge
