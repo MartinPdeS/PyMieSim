@@ -23,16 +23,16 @@
 | PyMieSim/single/detector/coherent.py           |       39 |        2 |       10 |        3 |     90% |49, 54, 66->70 |
 | PyMieSim/single/detector/uncoherent.py         |       26 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/representations.py             |      168 |        3 |       12 |        1 |     98% | 58, 62-63 |
-| PyMieSim/single/scatterer/base.py              |      101 |        1 |        8 |        1 |     98% |       451 |
-| PyMieSim/single/scatterer/core\_shell.py       |       25 |        2 |        0 |        0 |     92% |    76, 87 |
-| PyMieSim/single/scatterer/cylinder.py          |       38 |        8 |        0 |        0 |     79% |71, 89, 107, 125, 129, 133, 137, 141 |
-| PyMieSim/single/scatterer/sphere.py            |       26 |        4 |        0 |        0 |     85% |73, 93, 114, 135 |
+| PyMieSim/single/scatterer/base.py              |       89 |        1 |        8 |        1 |     98% |       424 |
+| PyMieSim/single/scatterer/core\_shell.py       |       24 |        0 |        0 |        0 |    100% |           |
+| PyMieSim/single/scatterer/cylinder.py          |       31 |        4 |        0 |        0 |     87% |66, 70, 74, 78 |
+| PyMieSim/single/scatterer/sphere.py            |       19 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/source/base.py                 |       27 |        0 |       10 |        0 |    100% |           |
 | PyMieSim/single/source/gaussian.py             |       35 |        1 |        2 |        1 |     95% |        41 |
 | PyMieSim/single/source/planewave.py            |       26 |        1 |        2 |        1 |     93% |        37 |
 | PyMieSim/special\_functions.py                 |       20 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                              |       19 |        0 |        4 |        0 |    100% |           |
-|                                      **TOTAL** | **1266** |   **51** |  **194** |   **30** | **94%** |           |
+|                                      **TOTAL** | **1239** |   **41** |  **194** |   **30** | **95%** |           |
 
 
 ## Setup coverage badge
