@@ -7,7 +7,7 @@ from typing import Optional, Tuple
 from PyMieSim.single.representations import Footprint
 from PyMieSim.binary.interface_fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from MPSPlots.colormaps import blue_black_red
-from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt
+from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt, RIU
 from PyMieSim import units
 from PyMieSim.single.scatterer.base import BaseScatterer
 import pyvista
@@ -25,6 +25,15 @@ class BaseDetector():
         """
         if not isinstance(value, Quantity) or not value.check(AU):
             raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
+
+        return value
+
+    def _validate_RIU_units(cls, value):
+        """
+        Ensures that diameter is Quantity objects with AU units.
+        """
+        if not isinstance(value, Quantity) or not value.check(RIU):
+            raise ValueError(f"{value} must be a Quantity with refractive index units [RIU].")
 
         return value
 

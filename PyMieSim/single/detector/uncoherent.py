@@ -44,6 +44,10 @@ class Photodiode(DETECTOR, BaseDetector):
             Numerical aperture of the detector cache. Default is 0 AU.
         mean_coupling : bool
             Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
+        medium_refractive_index : Quantity
+            The refractive index of the medium in which the detector operates. This is important for
+            determining the acceptance cone of light.
+            Default is 1.0 (vacuum or air).
         """
 
         self.NA = self._validate_UA_units(NA)
@@ -53,6 +57,7 @@ class Photodiode(DETECTOR, BaseDetector):
         self.sampling = self._validate_UA_units(sampling)
         self.polarization_filter = self._validate_polarization_units(polarization_filter)
         self.mean_coupling = mean_coupling
+        self.medium_refractive_index = self._validate_RIU_units(medium_refractive_index)
 
         super().__init__(
             mode_number="NC00",
@@ -65,6 +70,7 @@ class Photodiode(DETECTOR, BaseDetector):
             mean_coupling=self.mean_coupling,
             rotation=0,
             coherent=False,
+            medium_refractive_index=self.medium_refractive_index.to_base_units().magnitude
         )
 
     def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:

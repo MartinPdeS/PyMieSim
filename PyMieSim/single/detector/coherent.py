@@ -6,7 +6,7 @@ import logging
 from typing import Optional
 from PyMieSim.binary.interface_detector import DETECTOR
 from PyMieSim.binary import interface_mode_field
-from PyMieSim.units import radian, Quantity, degree, AU
+from PyMieSim.units import radian, Quantity, degree, AU, RIU
 from PyMieSim.single.detector.base import BaseDetector
 
 
@@ -21,6 +21,7 @@ class CoherentMode(DETECTOR, BaseDetector):
             cache_NA: Optional[Quantity] = 0 * AU,
             mean_coupling: bool = False,
             rotation: Quantity = 90 * degree,
+            medium_refractive_index: Quantity = 1.0 * RIU,
         ):
         """
         Initialize the CoherentMode detector with its parameters.
@@ -54,6 +55,10 @@ class CoherentMode(DETECTOR, BaseDetector):
         rotation : Quantity
             The rotational angle of the detector, defining its orientation relative to the incoming light or
             scatterer. The default value rotates the detector by 90 degrees.
+        medium_refractive_index : Quantity
+            The refractive index of the medium in which the detector operates. This is important for
+            determining the acceptance cone of light.
+            Default is 1.0 (vacuum or air).
         """
 
         if NA > 0.3 * AU or NA < 0 * AU:
@@ -73,6 +78,7 @@ class CoherentMode(DETECTOR, BaseDetector):
         self.polarization_filter = self._validate_polarization_units(polarization_filter)
         self.mean_coupling = mean_coupling
         self.rotation = self._validate_angle_units(rotation)
+        self.medium_refractive_index = self._validate_RIU_units(medium_refractive_index)
 
         super().__init__(
             mode_number=self.mode_number,
@@ -85,6 +91,7 @@ class CoherentMode(DETECTOR, BaseDetector):
             mean_coupling=self.mean_coupling,
             rotation=self.rotation.to(radian).magnitude,
             coherent=False,
+            medium_refractive_index=self.medium_refractive_index.to_base_units().magnitude
         )
 
     def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
