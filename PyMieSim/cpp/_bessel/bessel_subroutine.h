@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 // Factorial function using recursion
 unsigned long long factorial(int n);
 

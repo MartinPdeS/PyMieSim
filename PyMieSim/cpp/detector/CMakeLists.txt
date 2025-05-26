@@ -5,7 +5,7 @@ set(NAME "detector")
 # Create a shared library for functionality.
 add_library("cpp_${NAME}" STATIC "${NAME}.cpp")
 
-target_link_libraries("cpp_${NAME}" PUBLIC pybind11::module _ZBessel ZBessel cpp_mode_field cpp_fibonacci cpp_cylinder cpp_sphere cpp_coreshell cpp_full_mesh)
+target_link_libraries("cpp_${NAME}" PUBLIC pybind11::module ZBessel cpp_mode_field cpp_fibonacci cpp_cylinder cpp_sphere cpp_coreshell cpp_full_mesh)
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
