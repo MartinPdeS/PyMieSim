@@ -7,7 +7,6 @@ from PyMieSim.single.scatterer import Sphere, CoreShell
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-from PyMieSim.mesh import FibonacciMesh  # noqa: F401
 
 
 @pytest.fixture
@@ -35,7 +34,7 @@ def test_Qsca_cross_section(gaussian_source):
 
     # Calculate scattering cross-section using two different methods
     val0 = sphere.Csca
-    val1 = sphere.Qsca * sphere.area
+    val1 = sphere.Qsca * sphere.cross_section
 
     # Check if the results are consistent
     assert np.isclose(val0, val1, atol=0, rtol=1e-5), 'Mismatch between cross-section values.'

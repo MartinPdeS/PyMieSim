@@ -15,7 +15,7 @@ property = [Material.BK7, 1.6 * RIU]
 medium_property = [Material.water, 1.4 * RIU]
 
 attributes = [
-    "size_parameter", "area", "g", 'an', 'bn',
+    "size_parameter", "cross_section", "g", 'an', 'bn',
     "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qforward", "Qpr",
     "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]

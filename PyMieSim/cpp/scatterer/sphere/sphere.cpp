@@ -1,5 +1,5 @@
 #include "scatterer/sphere/sphere.h"
-#include "utils/special_function.cpp"
+
 
 typedef std::complex<double> complex128;
 

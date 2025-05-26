@@ -3,15 +3,14 @@
 
 from PyOptik.material.base_class import BaseMaterial
 
-import numpy
-from typing import Optional
-from pydantic.dataclasses import dataclass
 from PyMieSim.units import Quantity
-from PyMieSim.single.scatterer.base import BaseScatterer, config_dict
+from PyMieSim.single.scatterer.base import BaseScatterer
+from PyMieSim.binary.interface_scatterer import SPHERE
+from PyMieSim.single.source.base import BaseSource
 
 
-@dataclass(config=config_dict, kw_only=True)
-class Sphere(BaseScatterer):
+# @dataclass(config=config_dict, kw_only=True)
+class Sphere(SPHERE, BaseScatterer):
     """
     Class representing a homogeneous spherical scatterer.
 
@@ -25,111 +24,44 @@ class Sphere(BaseScatterer):
     """
     diameter: Quantity
     property: Quantity | BaseMaterial
+    medium_property: Quantity | BaseMaterial
+    source: BaseSource
 
     property_names = [
-        "size_parameter", "area", "g",
+        "size_parameter", "cross_section", "g",
         "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
         "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
     ]
 
-    def __post_init__(self):
+
+    def __init__(self, diameter: Quantity, property: Quantity | BaseMaterial, medium_property: Quantity | BaseMaterial, source: BaseSource):
+        """
+        Initialize the Sphere scatterer with its diameter and material properties.
+
+        Parameters
+        ----------
+        diameter : Quantity
+            Diameter of the sphere in meters.
+        property : Quantity or BaseMaterial
+            Refractive index or material of the sphere.
+        medium_property : Optional[Quantity]
+            Refractive index of the surrounding medium.
+        source : Optional[Source]
+            Source object associated with the scatterer.
+        """
+        self.diameter = self._validate_length(diameter)
+        self.property = self._validate_property(property)
+        self.medium_property = self._validate_property(medium_property)
+        self.source = source
+
         self.index, self.material = self._assign_index_or_material(self.property)
+        self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_property)
 
-        self.cross_section = numpy.pi * (self.diameter / 2) ** 2
-
-        super().__post_init__()
-
-    def set_binding(self) -> None:
-        """
-        Binds the Python representation of the sphere to its C++ counterpart using provided properties.
-        """
-        from PyMieSim.binary.interface_scatterer import SPHERE
-
-        self.binding = SPHERE(
-            diameter=self.diameter.to_base_units().magnitude,
+        super().__init__(
+            diameter=diameter.to_base_units().magnitude,
             refractive_index=self.index.to_base_units().magnitude,
             medium_refractive_index=self.medium_index.to_base_units().magnitude,
             source=self.source.binding
         )
 
-    def an(self) -> numpy.ndarray:
-        r"""
-        Compute :math:`a_n` coefficient as defined in Eq:III.88 of B&B:
 
-        .. math::
-            a_n = \frac{
-            \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) -
-            \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-            {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-            \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of :math:`a_n` coefficients.
-        """
-        return self.binding.an()
-
-    def bn(self) -> numpy.ndarray:
-        r"""
-        Compute :math:`b_n` coefficient as defined in Eq:III.89 of B&B:
-
-        .. math::
-            b_n = \frac{
-            \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -
-            \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-            {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-            \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of :math:`b_n` coefficients.
-        """
-        return self.binding.bn()
-
-    def cn(self) -> numpy.ndarray:
-        r"""
-        For future purpose only!
-        Compute :math:`c_n` coefficient as defined in Eq:III.90 of B&B:
-
-        .. math::
-            c_n = \frac{
-            \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
-            \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-            {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-            \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of :math:`c_n` coefficients.
-        """
-        return self.binding.cn()
-
-    def dn(self) -> numpy.ndarray:
-        r"""
-        For future purpose only!
-        Compute :math:`d_n` coefficient as defined in Eq:III.91 of B&B:
-
-        .. math::
-            d_n = \frac{
-            \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
-            \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-            {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-            \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)}
-
-        With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of :math:`d_n` coefficients.
-        """
-        return self.binding.dn()

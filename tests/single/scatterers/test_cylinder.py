@@ -19,7 +19,7 @@ medium_property = [Material.water, 1.4 * RIU]
 # Attributes to check
 attributes = [
     "a1n", "a2n", "b1n", "b2n",
-    "size_parameter", "area", "g",
+    "size_parameter", "cross_section", "g",
     "Qsca", "Qext", "Qabs",
     "Csca", "Cext", "Cabs",
 ]

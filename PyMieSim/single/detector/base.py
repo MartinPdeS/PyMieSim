@@ -168,7 +168,7 @@ class BaseDetector():
         A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.
 
         """
-        return self.binding.get_coupling(scatterer.binding) * units.watt
+        return self.binding.get_coupling(scatterer) * units.watt
 
 
     def get_footprint(self, scatterer: BaseScatterer) -> Footprint:

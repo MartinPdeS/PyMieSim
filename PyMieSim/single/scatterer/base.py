@@ -4,42 +4,16 @@
 from typing import Tuple
 import numpy
 from PyOptik.material.base_class import BaseMaterial
-from pydantic.dataclasses import dataclass
-from pydantic import field_validator
 from tabulate import tabulate
-from PyMieSim.single.source.base import BaseSource
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
 from PyMieSim.units import RIU, Quantity, meter, AU
 
-config_dict = dict(
-    arbitrary_types_allowed=True,
-    kw_only=True,
-    slots=True,
-    extra='forbid'
-)
-
-
-@dataclass(config=config_dict, kw_only=True)
 class BaseScatterer:
     """
     A generic class for a scatterer, providing properties and methods to compute various scattering-related quantities.
 
-    Parameters
-    ----------
-    source: Union[source.PlaneWave, source.Gaussian]
-        Light source object containing info on polarization and wavelength.
-    medium_property: Quantity | BaseMaterial
-        Refractive index or material of scatterer medium.
     """
-    source: BaseSource
-    medium_property: Quantity | BaseMaterial
 
-    def __post_init__(self):
-        self.medium_index, self.medium_material = self._assign_index_or_material(self.medium_property)
-
-        self.set_binding()
-
-    @field_validator('diameter', 'core_diameter', 'shell_thickness', mode='plain')
     def _validate_length(cls, value):
         """
         Ensures that diameter is Quantity objects with length units.
@@ -49,7 +23,6 @@ class BaseScatterer:
 
         return value
 
-    @field_validator('property', 'core_property', 'shell_property', 'medium_property', mode='plain')
     def _validate_property(cls, value):
         """
         Ensures that diameter is Quantity objects with RIU units.
@@ -70,87 +43,87 @@ class BaseScatterer:
     @property
     def size_parameter(self) -> Quantity:
         """Returns the size parameter of the scatterer."""
-        return self.binding.size_parameter * AU
+        return self._cpp_size_parameter * AU
 
     @property
-    def area(self) -> Quantity:
-        """Returns the area of the scatterer."""
-        return (self.binding.area * meter**2).to_compact()
+    def cross_section(self) -> Quantity:
+        """Returns the cross-section of the scatterer."""
+        return (self._cpp_cross_section * meter**2).to_compact()
 
     @property
     def Qsca(self) -> Quantity:
         """Returns the scattering efficiency."""
-        return self.binding.Qsca * AU
+        return self._cpp_Qsca * AU
 
     @property
     def Qext(self) -> Quantity:
         """Returns the extinction efficiency."""
-        return self.binding.Qext * AU
+        return self._cpp_Qext * AU
 
     @property
     def Qabs(self) -> Quantity:
         """Returns the absorption efficiency."""
-        return self.binding.Qabs * AU
+        return self._cpp_Qabs * AU
 
     @property
     def Qback(self) -> Quantity:
         """Returns the backscattering efficiency."""
-        return self.binding.Qback * AU
+        return self._cpp_Qback * AU
 
     @property
     def Qforward(self) -> Quantity:
         """Returns the forward-scattering efficiency."""
-        return self.binding.Qforward * AU
+        return self._cpp_Qforward * AU
 
     @property
     def Qratio(self) -> Quantity:
         """Returns the efficiency ratio of backscattering over total scattering."""
-        return self.binding.Qratio * AU
+        return self._cpp_Qratio * AU
 
     @property
     def g(self) -> Quantity:
         """Returns the anisotropy factor."""
-        return self.binding.g * AU
+        return self._cpp_g * AU
 
     @property
     def Qpr(self) -> Quantity:
         """Returns the radiation pressure efficiency."""
-        return self.binding.Qpr * AU
+        return self._cpp_Qpr * AU
 
     @property
     def Csca(self) -> Quantity:
         """Returns the scattering cross-section."""
-        return (self.binding.Csca * meter ** 2).to_compact()
+        return (self._cpp_Csca * meter ** 2).to_compact()
 
     @property
     def Cext(self) -> Quantity:
         """Returns the extinction cross-section."""
-        return (self.binding.Cext * meter ** 2).to_compact()
+        return (self._cpp_Cext * meter ** 2).to_compact()
 
     @property
     def Cabs(self) -> Quantity:
         """Returns the absorption cross-section."""
-        return (self.binding.Cabs * meter ** 2).to_compact()
+        return (self._cpp_Cabs * meter ** 2).to_compact()
 
     @property
     def Cpr(self) -> Quantity:
         """Returns the radiation pressure cross-section."""
-        return (self.binding.Cpr * meter ** 2).to_compact()
+        return (self._cpp_Cpr * meter ** 2).to_compact()
 
     @property
     def Cback(self) -> Quantity:
         """Returns the backscattering cross-section."""
-        return (self.binding.Cback * meter ** 2).to_compact()
+        return (self._cpp_Cback * meter ** 2).to_compact()
 
     @property
     def Cforward(self) -> Quantity:
         """Returns the forward-scattering cross-section."""
-        return (self.binding.Cforward * meter ** 2).to_compact()
+        return (self._cpp_Cforward * meter ** 2).to_compact()
 
     @property
     def Cratio(self) -> Quantity:
         """Returns the ratio of backscattering cross-section over total scattering."""
-        return (self.binding.Cratio * meter ** 2).to_compact()
+        return (self._cpp_Cratio * meter ** 2).to_compact()
 
     def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: Quantity) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """
@@ -170,7 +143,7 @@ class BaseScatterer:
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.
         """
-        return self.binding.get_fields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
+        return self._cpp_get_fields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
 
     def get_s1s2(self, sampling: int = 200, distance: Quantity = 1 * meter) -> S1S2:
         r"""
@@ -377,7 +350,7 @@ class BaseScatterer:
         Compute the footprint of the scattered light coupling with the detector.
 
         The footprint represents the spatial distribution of the scattered light as it couples with the detector.
-        This is important for understanding how the scattered light interacts with the detector’s field of view and is influenced by both the scatterer’s properties and the detector configuration.
+        This is important for understanding how the scattered light interacts with the detector's field of view and is influenced by both the scatterer's properties and the detector configuration.
 
         The footprint is computed using an inverse Fourier transform:
 
@@ -389,16 +362,16 @@ class BaseScatterer:
         Where:
 
         - \( \tilde{ \psi } (\xi, \nu) \): The Fourier transform of the scattered field.
-        - \( \tilde{ \phi}_{l,m} (\xi, \nu) \): The Fourier transform of the detector’s capturing field.
+        - \( \tilde{ \phi}_{l,m} (\xi, \nu) \): The Fourier transform of the detector's capturing field.
         - \( \mathscr{F}^{-1} \): The inverse Fourier transform operator.
         - \( (\delta_x, \delta_y) \): Spatial coordinates describing the footprint in the detector plane.
 
-        The inverse Fourier transform yields the spatial pattern of the scattered light’s interaction with the detector, which is then squared to compute the intensity of the footprint.
+        The inverse Fourier transform yields the spatial pattern of the scattered light's interaction with the detector, which is then squared to compute the intensity of the footprint.
 
         Parameters
         ----------
         detector : GenericDetector
-            The detector object that defines the capturing field and geometry. This object provides information about the detector’s configuration, including its numerical aperture, position, and sensitivity.
+            The detector object that defines the capturing field and geometry. This object provides information about the detector's configuration, including its numerical aperture, position, and sensitivity.
 
         Returns
         -------
@@ -408,7 +381,7 @@ class BaseScatterer:
         Notes
         -----
         - The footprint provides valuable information about the coupling efficiency between the scattered light and the detector. This is useful in designing experiments where precise control of light detection is important, such as in microscopy, remote sensing, or optical measurements.
-        - The interaction between the scattered field and the detector is influenced by factors such as the size, shape, and refractive index of the scatterer, as well as the detector’s aperture and positioning.
+        - The interaction between the scattered field and the detector is influenced by factors such as the size, shape, and refractive index of the scatterer, as well as the detector's aperture and positioning.
 
         Example
         -------

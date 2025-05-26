@@ -1,5 +1,5 @@
 #include "scatterer/cylinder/cylinder.h"
-#include "utils/special_function.cpp"
+
 
 double Cylinder::get_Qsca() const {
     complex128 Qsca1=0, Qsca2=0;

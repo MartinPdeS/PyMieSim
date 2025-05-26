@@ -16,7 +16,7 @@ shell_property = [Material.BK7, Material.iron, 1.7 * RIU]
 medium_property = [Material.water, 1.4 * RIU]
 
 attributes = [
-    "size_parameter", "area", "g", "Qsca", "Qext", "Qabs", "Qback", "Qratio", "an", "bn",
+    "size_parameter", "cross_section", "g", "Qsca", "Qext", "Qabs", "Qback", "Qratio", "an", "bn",
     "Qforward", "Qpr", "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]
 

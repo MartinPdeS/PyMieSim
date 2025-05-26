@@ -42,7 +42,7 @@ class BaseRepresentation():
     distance: Quantity
 
     def __post_init__(self):
-        fields = self.scatterer.binding.get_full_fields(
+        fields = self.scatterer._cpp_get_full_fields(
             sampling=self.sampling,
             r=self.distance.to_base_units().magnitude
         )
@@ -541,7 +541,7 @@ class S1S2(BaseRepresentation):
 
         The method calculates these parameters for a range of phi angles and stores them as the S1 and S2 attributes of the instance.
         """
-        self.S1, self.S2 = self.scatterer.binding.get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
+        self.S1, self.S2 = self.scatterer._cpp_get_s1s2(phi=numpy.deg2rad(self.phi) + numpy.pi / 2)
 
     def plot(self) -> None:
         """

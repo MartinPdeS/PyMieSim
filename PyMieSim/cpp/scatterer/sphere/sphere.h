@@ -2,6 +2,7 @@
 
 #include <complex>
 #include "scatterer/base_scatterer/base_scatterer.h"
+#include "utils/special_function.cpp"
 
 
 using complex128 = std::complex<double>;
