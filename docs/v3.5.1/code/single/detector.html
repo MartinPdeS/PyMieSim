@@ -659,7 +659,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode.get_structured_scalarfield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
 <dd><p>Generate a structured scalar field as a numpy array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -692,6 +692,16 @@ This is used to determine the angular coverage of the detector.</p>
 <dd><p>Returns the minimum angle of the detector in radians.
 This is used to determine the angular coverage of the detector.</p>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.mode_field">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_field</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.mode_field" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.mode_id">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_id</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.mode_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.plot">
@@ -891,7 +901,7 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode.get_structured_scalarfield"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
 <dd><p>Generate a structured scalar field as a numpy array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -924,6 +934,16 @@ This is used to determine the angular coverage of the detector.</p>
 <dd><p>Returns the minimum angle of the detector in radians.
 This is used to determine the angular coverage of the detector.</p>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.mode_field">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_field</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.mode_field" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.mode_id">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_id</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.mode_id" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.plot">
@@ -986,6 +1006,8 @@ to represent additional geometrical information.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.max_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.max_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">Photodiode.medium_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.min_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.min_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mode_field"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_field</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mode_id"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.plot"><code class="docutils literal notranslate"><span class="pre">Photodiode.plot()</span></code></a></li>
 </ul>
 </li>
@@ -999,6 +1021,8 @@ to represent additional geometrical information.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.max_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.max_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.medium_refractive_index"><code class="docutils literal notranslate"><span class="pre">CoherentMode.medium_refractive_index</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.min_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.min_angle</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mode_field"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_field</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mode_id"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.plot"><code class="docutils literal notranslate"><span class="pre">CoherentMode.plot()</span></code></a></li>
 </ul>
 </li>

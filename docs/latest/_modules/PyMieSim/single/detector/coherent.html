@@ -550,59 +550,7 @@
             <span class="n">rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">coherent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
-        <span class="p">)</span>
-
-<div class="viewcode-block" id="CoherentMode.get_structured_scalarfield">
-<a class="viewcode-back" href="../../../../code/single/detector.html#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_structured_scalarfield</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sampling</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate a structured scalar field as a numpy array.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        sampling : int</span>
-<span class="sd">            The sampling rate for the scalar field. Default is 100.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            A 2D array representing the structured scalar field.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">number_0</span><span class="p">,</span> <span class="n">number_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_0</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_1</span><span class="p">)</span>
-
-        <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
-            <span class="k">case</span> <span class="s1">&#39;lp&#39;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">interface_mode_field</span><span class="o">.</span><span class="n">get_LP</span>
-            <span class="k">case</span> <span class="s1">&#39;lg&#39;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">azimuthal_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radial_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">interface_mode_field</span><span class="o">.</span><span class="n">get_LG</span>
-            <span class="k">case</span> <span class="s1">&#39;hg&#39;</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">x_number</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_number</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span> <span class="o">=</span> <span class="n">interface_mode_field</span><span class="o">.</span><span class="n">get_HG</span>
-
-
-        <span class="n">x_mesh</span><span class="p">,</span> <span class="n">y_mesh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:</span><span class="mi">100</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">sampling</span><span class="p">),</span> <span class="o">-</span><span class="mi">100</span><span class="p">:</span><span class="mi">100</span><span class="p">:</span><span class="nb">complex</span><span class="p">(</span><span class="n">sampling</span><span class="p">)]</span>
-
-        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">row_stack</span><span class="p">((</span>
-            <span class="n">x_mesh</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
-            <span class="n">y_mesh</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
-        <span class="p">))</span>
-
-        <span class="n">norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-
-        <span class="n">coordinates</span> <span class="o">/=</span> <span class="n">norm</span>
-
-        <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cpp_mode_field_getter</span><span class="p">(</span>
-            <span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-            <span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">number_0</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">number_1</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">field</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="n">sampling</span><span class="p">,</span> <span class="n">sampling</span><span class="p">])</span></div>
-</div>
+        <span class="p">)</span></div>
 
 
 
