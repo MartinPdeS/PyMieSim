@@ -44,7 +44,7 @@ class BaseRepresentation():
     def __post_init__(self):
         fields = self.scatterer._cpp_get_full_fields(
             sampling=self.sampling,
-            r=self.distance.to_base_units().magnitude
+            distance=self.distance.to_base_units().magnitude
         )
 
         self.E_phi, self.E_theta, self.theta, self.phi = fields
@@ -625,11 +625,11 @@ class Footprint():
 
         Warning: this function do not currently take account of the cache block on the detector.
         """
-        max_angle = self.detector.binding.max_angle
+        max_angle = self.detector.max_angle
         n_point = complex(self.sampling)
 
         phi, theta = numpy.mgrid[
-            -max_angle: max_angle: n_point, 0: numpy.pi: n_point
+            -max_angle.to('radian').magnitude: max_angle.to('radian').magnitude: n_point, 0: numpy.pi: n_point
         ]
 
         max_distance_direct_space = 1 / (numpy.sin(max_angle) * self.scatterer.source.wavenumber / (2 * numpy.pi))

@@ -3,51 +3,68 @@
 
 import numpy
 from typing import Optional
-from dataclasses import field
-from pydantic.dataclasses import dataclass
-from PyMieSim.binary.interface_detector import BindedDetector
+from PyMieSim.binary.interface_detector import DETECTOR
 from PyMieSim.units import Quantity, degree, AU, radian
-from PyMieSim.single.detector.base import BaseDetector, config_dict
+from PyMieSim.single.detector.base import BaseDetector
 
 
-@dataclass(config=config_dict)
-class Photodiode(BaseDetector):
+class Photodiode(DETECTOR, BaseDetector):
     """
     Detector class representing a photodiode with a non-coherent light coupling mechanism.
     This means it is independent of the phase of the impinging scattered light field.
 
-    Parameters
-    ----------
-    NA : Quantity
-        Numerical aperture of the imaging system.
-    cache_NA : Quantity
-        Numerical aperture of the detector cache.
-    gamma_offset : Quantity
-        Angle [Degree] offset of the detector in the direction perpendicular to polarization.
-    phi_offset : Quantity
-        Angle [Degree] offset of the detector in the direction parallel to polarization.
-    sampling : Quantity
-        Sampling rate of the far-field distribution. Default is 200.
-    polarization_filter : Optional[Quantity]
-        Angle [Degree] of the polarization filter in front of the detector.
     """
-    coherent: bool = False
-    mean_coupling: bool = False
-    rotation: Quantity = field(default=0 * degree, init=False)
-    mode_number: str = field(default='NC00', init=False)
 
-    def __post_init__(self):
-        self.binding = BindedDetector(
-            mode_number=self.mode_number,
-            sampling=self.sampling.magnitude,
-            NA=self.NA.magnitude,
-            cache_NA=self.cache_NA.magnitude,
-            phi_offset=self.phi_offset.to(radian),
-            gamma_offset=self.gamma_offset.to(radian),
-            polarization_filter=self.polarization_filter.to(radian),
-            rotation=self.rotation.to(radian),
-            coherent=self.coherent,
-            mean_coupling=self.mean_coupling
+    def __init__(self,
+            NA: Quantity,
+            gamma_offset: Quantity,
+            phi_offset: Quantity,
+            sampling: Quantity = 200 * AU,
+            polarization_filter: Optional[Quantity] = None,
+            cache_NA: Optional[Quantity] = 0 * AU,
+            mean_coupling: bool = False,
+        ):
+        """
+        Initialize the Photodiode detector with its parameters.
+
+        Parameters
+        ----------
+
+        NA : Quantity
+            Numerical aperture of the imaging system.
+        gamma_offset : Quantity
+            Angle [Degree] offset of the detector in the direction perpendicular to polarization.
+        phi_offset : Quantity
+            Angle [Degree] offset of the detector in the direction parallel to polarization.
+        sampling : Quantity
+            Sampling rate of the far-field distribution. Default is 200.
+        polarization_filter : Optional[Quantity]
+            Angle [Degree] of the polarization filter in front of the detector.
+        cache_NA : Optional[Quantity]
+            Numerical aperture of the detector cache. Default is 0 AU.
+        mean_coupling : bool
+            Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
+        """
+
+        self.NA = self._validate_UA_units(NA)
+        self.cache_NA = self._validate_UA_units(cache_NA)
+        self.gamma_offset = self._validate_angle_units(gamma_offset)
+        self.phi_offset = self._validate_angle_units(phi_offset)
+        self.sampling = self._validate_UA_units(sampling)
+        self.polarization_filter = self._validate_polarization_units(polarization_filter)
+        self.mean_coupling = mean_coupling
+
+        super().__init__(
+            mode_number="NC00",
+            NA=self.NA.to_base_units().magnitude,
+            cache_NA=self.cache_NA.to_base_units().magnitude,
+            gamma_offset=self.gamma_offset.to(radian).magnitude,
+            phi_offset=self.phi_offset.to(radian).magnitude,
+            sampling=self.sampling.to_base_units().magnitude,
+            polarization_filter=self.polarization_filter.to(radian).magnitude,
+            mean_coupling=self.mean_coupling,
+            rotation=0,
+            coherent=False,
         )
 
     def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
@@ -67,38 +84,31 @@ class Photodiode(BaseDetector):
         return numpy.ones([sampling, sampling])
 
 
-@dataclass(config=config_dict)
 class IntegratingSphere(Photodiode):
-    """
-    Detector class representing a photodiode with a non-coherent light coupling mechanism.
-    This implies independence from the phase of the impinging scattered light field.
-
-    Parameters
-    ----------
-    sampling: int)
-        Sampling rate of the far-field distribution. Default is 200.
-    polarization_filter: Union[float, None])
-        Angle [Degree] of the polarization filter in front of the detector.
-    """
-    NA: Quantity = field(default=2 * AU, init=False)
-    gamma_offset: Quantity = field(default=0 * degree, init=False)
-    phi_offset: Quantity = field(default=0 * degree, init=False)
-
-    def __post_init__(self):
-        super(IntegratingSphere, self).__post_init__()
-
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
+    def __init__(self, sampling: Quantity, polarization_filter: Optional[Quantity] = None, mean_coupling: bool = False):
         """
-        Generate a structured scalar field as a numpy array.
+        Detector class representing a photodiode with a non-coherent light coupling mechanism.
+        This implies independence from the phase of the impinging scattered light field.
 
         Parameters
         ----------
-        sampling : int
-            The sampling rate for the scalar field. Default is 100.
 
-        Returns
-        -------
-        numpy.ndarray
-            A 2D array representing the structured scalar field.
+        sampling : Quantity
+            Sampling rate of the far-field distribution. Default is 200.
+        polarization_filter : Optional[Quantity]
+            Angle [Degree] of the polarization filter in front of the detector.
+        cache_NA : Optional[Quantity]
+            Numerical aperture of the detector cache. Default is 0 AU.
+        mean_coupling : bool
+            Indicates if the coupling mechanism is point-wise (True) or mean-wise (False). Default is False.
         """
-        return numpy.ones([sampling, sampling])
+
+        super().__init__(
+            sampling=sampling,
+            polarization_filter=polarization_filter,
+            mean_coupling=mean_coupling,
+            NA=2 * AU,  # Fixed NA for IntegratingSphere
+            gamma_offset=0 * degree,  # Fixed gamma offset for IntegratingSphere
+            phi_offset=0 * degree,  # Fixed phi offset for IntegratingSphere
+            cache_NA=0 * AU,  # Fixed cache NA for IntegratingSphere
+        )

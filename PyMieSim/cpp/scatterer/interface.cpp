@@ -60,7 +60,7 @@ PYBIND11_MODULE(interface_scatterer, module) {
                     A NumPy array containing the unstructured electromagnetic fields (E and H) around the scatterer.
             )pbdoc")
         .def("_cpp_get_full_fields", &BaseScatterer::get_full_structured_fields_py,
-            py::arg("sampling"), py::arg("r"),
+            py::arg("sampling"), py::arg("distance"),
             R"pbdoc(
                 Returns the full structured electromagnetic fields around the scatterer.
 
@@ -68,7 +68,7 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 ----------
                 sampling : float
                     The sampling rate used in the field calculation.
-                r : float
+                distance : float
                     The radial distance from the scatterer.
 
                 Returns
@@ -340,10 +340,9 @@ PYBIND11_MODULE(interface_scatterer, module) {
 
                 .. math::
                     a_n = \frac{
-                        \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) -
-                        \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-                        {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-                        \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
+                        \mu_{sp} \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \Psi_n^\prime(\alpha) \Psi_n(\beta)
+                    }{
+                        \mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
                     }
 
                 With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
@@ -360,10 +359,9 @@ PYBIND11_MODULE(interface_scatterer, module) {
 
                 .. math::
                     b_n = \frac{
-                        \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) -
-                        \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)}
-                        {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-                        \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)
+                        \mu M \Psi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \Psi_n^\prime(\alpha) \Psi_n(\beta)
+                    }{
+                        \mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} \xi_n^\prime (\alpha) \Psi_n(\beta)
                     }
 
                 With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
@@ -380,10 +378,9 @@ PYBIND11_MODULE(interface_scatterer, module) {
 
                 .. math::
                     c_n = \frac{
-                        \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
-                        \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-                        {\mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta)-
-                        \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
+                        \mu_{sp} M \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]
+                    }{
+                        \mu_{sp} \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu M \xi_n^\prime (\alpha) \Psi_n(\beta)
                     }
 
                 With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
@@ -400,10 +397,9 @@ PYBIND11_MODULE(interface_scatterer, module) {
 
                 .. math::
                     d_n = \frac{
-                        \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) -
-                        \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]}
-                        {\mu M \xi_n(\alpha) \Psi_n^\prime(\beta)-
-                        \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)
+                        \mu M^2 \big[ \xi_n(\alpha) \Psi_n^\prime(\alpha) - \xi_n^\prime(\alpha) \Psi_n(\alpha) \big]
+                    }{
+                        \mu M \xi_n(\alpha) \Psi_n^\prime(\beta) - \mu_{sp} M \xi_n^\prime (\alpha) \Psi_n(\beta)
                     }
 
                 With :math:`M = \frac{k_{sp}}{k}` (Eq:I.103)
@@ -447,6 +443,40 @@ PYBIND11_MODULE(interface_scatterer, module) {
             R"pbdoc(
                 Returns the 'an' scattering coefficients.
 
+                .. math::
+                    a_n = \frac{
+                        \Psi_n (y)
+                        \left[ \dot{\Psi}_n (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\Tilde{m}_{2} y) \right]
+                        -
+                        \Tilde{m}_{2} \dot{\Psi}_n (y)
+                        \left[ \Psi_n (\Tilde{m}_{2} y) - A_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+                    }{
+                        \xi_n (y)
+                        \left[ \dot{\Psi}_n (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n (\Tilde{m}_{2} y) \right]
+                        -
+                        \Tilde{m}_{2} \dot{\xi}_n (y)
+                        \left[ \Psi_n (\Tilde{m}_{2} y) - A_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+                    }
+
+                with:
+
+                .. math::
+                    A_n = \frac{
+                        \Tilde{m}_{2}  \Psi_n       (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+                        \Tilde{m}_{1}  \dot{\Psi}_n (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                    }{
+                        \Tilde{m}_{2}  \xi_n        (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+                        \Tilde{m}_{1}  \dot{\xi}_n  (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                    }
+                    \\
+                    B_n = \frac{
+                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\psi}_n (\Tilde{m}_{2} x) -
+                        \Tilde{m}_{1}  \psi_n  (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                    }{
+                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\xi}_n  (\Tilde{m}_{2} x) -
+                        \Tilde{m}_{1}  \xi_n   (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                    }
+
                 Returns
                 -------
                 list
@@ -455,6 +485,41 @@ PYBIND11_MODULE(interface_scatterer, module) {
         .def("bn", &BaseScatterer::get_bn_list_py,
             R"pbdoc(
                 Returns the 'bn' scattering coefficients.
+
+                .. math::
+                    b_n = \frac{
+                        \Tilde{m}_{2}
+                        \Psi_n (y)
+                        \left[ \dot{\Psi}_n  (\Tilde{m}_{2} y) - B_n (x) \dot{\xi}_n  (\Tilde{m}_{2} y) \right]
+                        -
+                        \dot{\Psi}_n (y)
+                        \left[ \Psi_n (\Tilde{m}_{2} y) - B_n (x) \xi_n  (\Tilde{m}_{2} y) \right]
+                    }{
+                        \Tilde{m}_{2}
+                        \xi_n (y)
+                        \left[ \dot{\Psi}_n  (\Tilde{m}_{2} y) - A_n (x) \dot{\xi}_n  (\Tilde{m}_{2} y) \right] -
+                        \dot{\xi}_n (y)
+                        \left[ \Psi_n (\Tilde{m}_{2} y) - B_n (x) \xi_n (\Tilde{m}_{2} y) \right]
+                    }
+
+                with:
+
+                .. math::
+                    A_n = \frac{
+                        \Tilde{m}_{2}  \Psi_n       (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+                        \Tilde{m}_{1}  \dot{\Psi}_n (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                    }{
+                        \Tilde{m}_{2}  \xi_n        (\Tilde{m}_{2} x) \dot{\Psi}_n (\Tilde{m}_{1} x) -
+                        \Tilde{m}_{1}  \dot{\xi}_n  (\Tilde{m}_{2} x) \Psi_n       (\Tilde{m}_{1} x)
+                    }
+                    \\
+                    B_n = \frac{
+                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\psi}_n (\Tilde{m}_{2} x) -
+                        \Tilde{m}_{1}  \psi_n  (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                    }{
+                        \Tilde{m}_{2}  \psi_n  (\Tilde{m}_{1} x) \dot{\xi}_n  (\Tilde{m}_{2} x) -
+                        \Tilde{m}_{1}  \xi_n   (\Tilde{m}_{2} x) \dot{\psi}_n (\Tilde{m}_{1} x)
+                    }
 
                 Returns
                 -------
@@ -509,8 +574,11 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 Returns :math:`a_{1n}` coefficient as defined in ref[5]:
 
                 .. math::
-                    a_{1n} = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-                        { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+                    a_{1n} = \frac{
+                        m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x)
+                    }{
+                        m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x)
+                    }
 
                 With :math:`m` being the refractive index of the medium and
                 :math:`m_t` being the refractive index of the scatterer.
@@ -526,8 +594,11 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 Returns :math:`b_{1n}` coefficient as defined in ref[5]:
 
                 .. math::
-                    b_{1n} = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-                        { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+                    b_{1n} = \frac{
+                        m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x)
+                    }{
+                        m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x)
+                    }
 
                 With :math:`m` being the refractive index of the medium and
                 :math:`m_t` being the refractive index of the scatterer.
@@ -543,8 +614,11 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 Returns :math:`a_{2n}` coefficient as defined in ref[5]:
 
                 .. math::
-                    a_{2n} = \frac{ m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x) }
-                        { m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x) }
+                    a_{2n} = \frac{
+                        m_t J_n(m_t x) J_n^\prime (m x) - m J_n^\prime (m_t x) J_n(m x)
+                    }{
+                        m_t J_n(m_t x) H_n^\prime (m x) - m J_n^\prime (m_t x) H_n(m x)
+                    }
 
                 With :math:`m` being the refractive index of the medium and
                 :math:`m_t` being the refractive index of the scatterer.
@@ -560,8 +634,11 @@ PYBIND11_MODULE(interface_scatterer, module) {
                 Returns :math:`b_{2n}` coefficient as defined in ref[5]:
 
                 .. math::
-                    b_{2n} = \frac{ m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x) }
-                        { m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x) }
+                    b_{2n} = \frac{
+                        m J_n(m_t x) J_n^\prime (m x) - m_t J_n^\prime (m_t x) J_n(m x)
+                    }{
+                        m J_n(m_t x) H_n^\prime (m x) - m_t J_n^\prime (m_t x) H_n(m x)
+                    }
 
                 With :math:`m` being the refractive index of the medium and
                 :math:`m_t` being the refractive index of the scatterer.

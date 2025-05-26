@@ -65,6 +65,8 @@ def test_energy_flow_coupling(gaussian_source):
     val0 = detector.get_energy_flow(sphere)
     val1 = detector.get_coupling(sphere)
 
+    print(val0, val1)
+
     # Check if the results are consistent
     assert np.isclose(val0, val1, atol=0, rtol=1e-2), 'Mismatch between energy flow and coupling values.'
 

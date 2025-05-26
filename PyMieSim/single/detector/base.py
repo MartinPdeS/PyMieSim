@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from pydantic.dataclasses import dataclass
-from pydantic import field_validator
 from typing import Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
@@ -17,71 +15,11 @@ import pyvista
 c = 299792458.0 * meter / second  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12 * farad / meter  #: Vacuum permittivity (F/m).
 
-config_dict = dict(
-    kw_only=True,
-    slots=True,
-    extra='forbid',
-    arbitrary_types_allowed=True
-)
 
-
-@dataclass(config=config_dict)
 class BaseDetector():
-    r"""
-    A base class representing different types of detectors, providing methods for setup, light coupling calculations,
-    rotation adjustments, and generating visual representations such as 3D plots and footprints.
-
-    The `BaseDetector` class serves as the foundational structure for various types of detectors,
-    such as integrating spheres or photodiodes. It includes parameters to define the detector's
-    configuration, such as numerical aperture (NA), rotational offsets, and the handling of coherent
-    light interactions.
-
-    Attributes
-    ----------
-    mode_number : str
-        The mode of the detector, typically used to specify the mode of operation for light collection
-        (e.g., single-mode, multimode). This defines how the detector interacts with the incoming light.
-    NA : Quantity
-        The numerical aperture of the detector, a dimensionless number that defines its light-gathering
-        ability. Higher NA values indicate a wider acceptance angle for capturing light.
-    gamma_offset : Quantity
-        The rotational offset in the gamma direction, controlling the angular positioning of the detector
-        relative to the scatterer.
-    phi_offset : Quantity
-        The rotational offset in the phi direction, specifying the azimuthal angle of the detector's
-        orientation.
-    mean_coupling : bool
-        A flag indicating whether the mean value of the coupling is used when calculating the light
-        interaction with the scatterer. This is typically set for cases where an average coupling is
-        needed over multiple angles or configurations.
-    coherent : bool
-        Specifies whether the light coupling is calculated coherently. If `True`, the phase information
-        of the light is considered, making this relevant for coherent detection systems.
-    sampling : Optional[Quantity], default=200 * AU
-        The sampling resolution of the detector, controlling how finely the detector's field is sampled
-        over the surface. A higher value increases precision but may require more computational resources.
-    polarization_filter : Optional[Quantity], default=numpy.nan * degree
-        The polarization filter applied to the detected light. If specified, it allows the detector to
-        selectively capture light with a particular polarization. If set to `nan`, no filtering is applied.
-    rotation : Optional[Quantity], default=90 * degree
-        The rotational angle of the detector, defining its orientation relative to the incoming light or
-        scatterer. The default value rotates the detector by 90 degrees.
-    medium_refractive_index : Optional[Quantity]
-    """
-    mode_number: str
-    NA: Quantity
-    gamma_offset: Quantity
-    phi_offset: Quantity
-    mean_coupling: bool
-    coherent: bool
-    cache_NA: Optional[Quantity] = 0. * units.AU
-    sampling: Optional[Quantity] = 200 * units.AU
-    polarization_filter: Optional[Quantity] = numpy.nan * units.degree
-    rotation: Optional[Quantity] = 90 * units.degree
     medium_refractive_index: Optional[Quantity] = 1.0 * units.RIU
 
-    @field_validator('NA', 'cache_NA', 'sampling', mode='plain')
-    def _validate_NA(cls, value):
+    def _validate_UA_units(cls, value):
         """
         Ensures that diameter is Quantity objects with AU units.
         """
@@ -90,8 +28,7 @@ class BaseDetector():
 
         return value
 
-    @field_validator('medium_refractive_index', mode='plain')
-    def _validate_polarization(cls, value):
+    def _validate_polarization_units(cls, value):
         """
         Ensures that medium_refractive_index, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
@@ -104,23 +41,23 @@ class BaseDetector():
 
         return value
 
-
-    @field_validator('polarization_filter', mode='plain')
-    def _validate_polarization(cls, value):
+    @property
+    def max_angle(self) -> Quantity:
         """
-        Ensures that gamma_offset, phi_offset, polarization_filter, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
+        Returns the maximum angle of the detector in radians.
+        This is used to determine the angular coverage of the detector.
         """
-        if value is None:
-            value = numpy.nan * degree
+        return self._cpp_max_angle * units.radian
 
-        if not isinstance(value, Quantity) or not value.check(units.degree):
-            raise ValueError(f"{value} must be a Quantity with angle units [degree or radian].")
+    @property
+    def min_angle(self) -> Quantity:
+        """
+        Returns the minimum angle of the detector in radians.
+        This is used to determine the angular coverage of the detector.
+        """
+        return self._cpp_min_angle * units.radian
 
-        return value
-
-    @field_validator('gamma_offset', 'phi_offset', 'rotation', mode='plain')
-    def _validate_angle_quantity(cls, value):
+    def _validate_angle_units(cls, value):
         """
         Ensures that gamma_offset, phi_offset, and rotation are Quantity objects with angle units.
         Converts them to numpy arrays after validation.
@@ -168,8 +105,7 @@ class BaseDetector():
         A common use case is to evaluate how much of the scattered light from a nanoparticle is captured by a photodiode or integrating sphere. The result can be used to estimate the efficiency of light collection for scattering measurements.
 
         """
-        return self.binding.get_coupling(scatterer) * units.watt
-
+        return self._cpp_get_coupling(scatterer) * units.watt
 
     def get_footprint(self, scatterer: BaseScatterer) -> Footprint:
         r"""
@@ -266,15 +202,15 @@ class BaseDetector():
         """
         # Stack the mesh coordinates into a single array
         coordinates = numpy.row_stack((
-            self.binding.mesh.x,
-            self.binding.mesh.y,
-            self.binding.mesh.z
+            self._cpp_mesh.x,
+            self._cpp_mesh.y,
+            self._cpp_mesh.z
         ))
 
         # Wrap the coordinates for PyVista visualization
         points = pyvista.wrap(coordinates.T)
 
-        scalar_field = numpy.asarray(self.binding.scalar_field).real
+        scalar_field = numpy.asarray(self._cpp_scalar_field).real
 
         abs_max = abs(scalar_field).max()
 
@@ -293,9 +229,9 @@ class BaseDetector():
         cone_mesh = pyvista.Cone(
             center=coordinates.mean(axis=1) / 2,
             direction=-coordinates.mean(axis=1),
-            height=numpy.cos(self.binding.max_angle),
+            height=numpy.cos(self.max_angle),
             resolution=100,
-            angle=numpy.rad2deg(self.binding.max_angle)
+            angle=numpy.rad2deg(self.max_angle)
         )
 
         # Add the cone mesh to the scene with specified color and opacity
@@ -347,8 +283,8 @@ class BaseDetector():
 
         """
         Ephi, Etheta = scatterer.get_farfields_array(
-            phi=self.binding.mesh.phi,
-            theta=self.binding.mesh.theta,
+            phi=self._cpp_mesh.phi,
+            theta=self._cpp_mesh.theta,
             r=distance
         )
 
@@ -404,7 +340,7 @@ class BaseDetector():
         """
         poynting_vector = self.get_poynting_vector(scatterer=scatterer, distance=distance)
 
-        dA = self.binding.mesh.d_omega * distance ** 2
+        dA = self._cpp_mesh.d_omega * distance ** 2
 
         total_power = 0.5 * numpy.trapz(y=poynting_vector, dx=dA)
 

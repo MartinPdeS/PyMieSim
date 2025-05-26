@@ -58,7 +58,7 @@ def test_photodiode_sampling(photodiode, setup_scatterer):
 
 
 def test_fails_initialization():
-    with pytest.raises(ValueError):
+    with pytest.raises(TypeError):
         Photodiode(NA=0.2 * AU, block_NA=0.3 * AU, gamma_offset=0 * degree, phi_offset=0 * degree)
 
 
