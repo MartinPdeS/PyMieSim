@@ -9,6 +9,7 @@ This example demonstrates the initialization and visualization of an LP02 Mode d
 # Importing the package: PyMieSim
 from PyMieSim.single.detector import CoherentMode
 from PyMieSim.units import AU, degree
+from PyMieSim.single import plot_system
 
 # %%
 # Initializing the detector
@@ -22,4 +23,4 @@ detector = CoherentMode(
 
 # %%
 # Plotting the detector
-detector.plot()
+plot_system(detector)

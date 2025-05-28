@@ -9,6 +9,7 @@ from PyOptik import Material
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
+from PyMieSim.single import plot_system
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 property = [Material.BK7, 1.6 * RIU]
@@ -26,7 +27,7 @@ plotting_functions = [
 
 
 @pytest.fixture()
-def gaussian_source():
+def source():
     return Gaussian(
         wavelength=750 * nanometer,
         polarization=0 * degree,
@@ -38,10 +39,10 @@ def gaussian_source():
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
 @pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
 @pytest.mark.parametrize('attribute', attributes)
-def test_sphere_attribute(attribute, property, medium_property, gaussian_source):
+def test_sphere_attribute(attribute, property, medium_property, source):
     scatterer = Sphere(
         diameter=100 * nanometer,
-        source=gaussian_source,
+        source=source,
         medium_property=medium_property,
         property=property
     )
@@ -52,7 +53,7 @@ def test_sphere_attribute(attribute, property, medium_property, gaussian_source)
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
 @pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-def test_sphere_coupling(property, medium_property, gaussian_source, ):
+def test_sphere_coupling(property, medium_property, source, ):
     detector = Photodiode(
         NA=0.2 * AU,
         gamma_offset=0 * degree,
@@ -61,7 +62,7 @@ def test_sphere_coupling(property, medium_property, gaussian_source, ):
 
     scatterer = Sphere(
         diameter=100 * nanometer,
-        source=gaussian_source,
+        source=source,
         medium_property=medium_property,
         property=property
     )
@@ -73,10 +74,10 @@ def test_sphere_coupling(property, medium_property, gaussian_source, ):
 @pytest.mark.parametrize('plotting_function', plotting_functions)
 @patch('pyvista.Plotter.show')
 @patch('matplotlib.pyplot.show')
-def test_sphere_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, gaussian_source):
+def test_sphere_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, source):
     scatterer = Sphere(
         diameter=100 * nanometer,
-        source=gaussian_source,
+        source=source,
         medium_property=medium_property,
         property=property
     )

@@ -83,7 +83,7 @@ class Sphere(SPHERE, BaseScatterer):
 
         """
         # Create the cone mesh
-        sphape = pyvista.Sphere(
+        shape = pyvista.Sphere(
             center=(0.0, 0.0, 0.0),
             radius=0.1,
             theta_resolution=100,
@@ -91,5 +91,5 @@ class Sphere(SPHERE, BaseScatterer):
         )
 
         # Add the cone mesh to the scene
-        scene.add_mesh(sphape, color=color, opacity=opacity)
+        scene.add_mesh(shape, color=color, opacity=opacity)
 

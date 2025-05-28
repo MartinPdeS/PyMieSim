@@ -1,21 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Optional, NoReturn
-from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
+from typing import Optional
 import numpy
 
-from PyMieSim.binary.interface_fibonacci import FibonacciMesh as CPPFibonacciMesh
+from PyMieSim.binary.interface_detector import FIBONACCIMESH
+from PyMieSim import units
 
-config_dict = ConfigDict(
-    kw_only=True,
-    extra='forbid',
-    slots=True
-)
-
-
-@dataclass(config=config_dict)
 class FibonacciMesh:
     """
     Represents an angular mesh using a Fibonacci sphere distribution, where each point
@@ -67,22 +58,52 @@ class FibonacciMesh:
         Returns the Cartesian coordinates of the mesh points.
     get_axis_vector() -> numpy.ndarray:
         Returns the axis vector corresponding to the phi and gamma offsets.
-    rotate_around_axis(rotation_angle) -> NoReturn:
+    rotate_around_axis(rotation_angle) -> None:
         Rotates the mesh around its principal axis by a specified angle.
 
     """
-
-    max_angle: float
-    sampling: int
-    phi_offset: float
-    gamma_offset: float
-    rotation_angle: Optional[float] = 0.0
-
-    def __post_init__(self):
+    def _validate_angle_units(cls, value):
         """
-        Initializes internal properties and binds the C++ implementation of the Fibonacci
-        mesh to the Python class.
+        Ensures that diameter is Quantity objects with length units.
         """
+        if not isinstance(value, units.Quantity) or not value.check(units.degree):
+            raise ValueError(f"{value} must be a Quantity with angle units [degree/radian].")
+
+        return value
+
+    def _validate_AU_units(cls, value):
+        """
+        Ensures that diameter is Quantity objects with length units.
+        """
+        if not isinstance(value, units.Quantity) or not value.check(units.AU):
+            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
+
+        return value
+
+
+    def __init__(self, max_angle: float, sampling: int, phi_offset: float, gamma_offset: float, rotation_angle: Optional[float] = 0.0):
+        """
+        Initializes the FibonacciMesh with the specified parameters.
+
+        Parameters
+        ----------
+        max_angle : float
+            The maximum angle in radians, typically defined by the numerical aperture of the imaging system.
+        sampling : int
+            The number of points distributed across the mesh. Higher values result in finer resolution.
+        phi_offset : float
+            Angle offset in the azimuthal (parallel to incident light polarization) direction in degrees.
+        gamma_offset : float
+            Angle offset in the polar (perpendicular to incident light polarization) direction in degrees.
+        rotation_angle : Optional[float], default=0.0
+            Rotation of the entire mesh around its principal axis, in degrees.
+        """
+        self.sampling = sampling
+        self.max_angle = self._validate_angle_units(max_angle)
+        self.phi_offset = self._validate_angle_units(phi_offset)
+        self.gamma_offset = self._validate_angle_units(gamma_offset)
+        self.rotation_angle = self._validate_angle_units(rotation_angle)
+
         self.structured = False
         self._para = None
         self._perp = None
@@ -90,7 +111,7 @@ class FibonacciMesh:
         self.vertical_vector = numpy.array([1, 0, 0])
         self.horizontal_vector = numpy.array([0, 1, 0])
 
-        self.binding = CPPFibonacciMesh(
+        self.binding = FIBONACCIMESH(
             sampling=self.sampling,
             max_angle=self.max_angle,
             phi_offset=numpy.deg2rad(self.phi_offset),
@@ -101,29 +122,9 @@ class FibonacciMesh:
         self.initialize_properties()
         self.binding.compute_vector_field()
 
-    @property
-    def perpendicular_vector(self):
-        """
-        Returns the vector field component perpendicular to the incident light direction.
 
-        Returns
-        -------
-        numpy.ndarray
-            Array representing the perpendicular vector field.
-        """
-        return self.binding.perpendicular_vector
 
-    @property
-    def parallel_vector(self):
-        """
-        Returns the vector field component parallel to the incident light direction.
 
-        Returns
-        -------
-        numpy.ndarray
-            Array representing the parallel vector field.
-        """
-        return self.binding.parallel_vector
 
     @property
     def horizontal_to_perpendicular(self):
@@ -288,7 +289,7 @@ class FibonacciMesh:
 
         return axis_vector / norm
 
-    def rotate_around_axis(self, rotation_angle: float) -> NoReturn:
+    def rotate_around_axis(self, rotation_angle: float) -> None:
         """
         Rotates the mesh around its principal axis by a specified angle.
 

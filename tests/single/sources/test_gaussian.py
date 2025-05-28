@@ -3,6 +3,7 @@ from unittest.mock import patch
 from PyMieSim.single.source import Gaussian
 from PyMieSim.polarization import Linear
 from PyMieSim.units import nanometer, degree, watt, AU
+from PyMieSim.single import plot_system
 
 
 def test_gaussian_initialization():
@@ -42,6 +43,18 @@ def test_gaussian_plotting(mock_show, gaussian_source):
     """Test the plot method of Gaussian to ensure it calls the show method once."""
     gaussian_source.plot()
     mock_show.assert_called_once()
+
+
+@patch('pyvista.Plotter.show')
+def test_plot_system(mock_show):
+    source = Gaussian(
+        optical_power=1 * watt,
+        NA=0.1 * AU,
+        polarization=0 * degree,
+        wavelength=1550 * nanometer
+    )
+
+    plot_system(source)
 
 
 if __name__ == "__main__":

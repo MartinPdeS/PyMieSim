@@ -99,6 +99,8 @@ class Detector {
         double get_coupling_point_coherent(const BaseScatterer& scatterer) const;
         double get_coupling_mean_coherent(const BaseScatterer& scatterer) const;
 
+        [[nodiscard]] pybind11::array_t<complex128> get_structured_scalarfield(const size_t sampling) const;
+
     private:
         void parse_mode(const std::string& mode_number);
 

@@ -4,10 +4,10 @@ from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
 from unittest.mock import patch
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
-
+from PyMieSim.single import plot_system
 
 @pytest.fixture
-def setup_source():
+def source():
     """Fixture to create a Gaussian source that can be reused in different tests."""
 
     return Gaussian(
@@ -19,12 +19,12 @@ def setup_source():
 
 
 @pytest.fixture
-def setup_scatterer(setup_source):
+def setup_scatterer(source):
     """Fixture to create a scatterer using the Gaussian source defined above."""
 
     return Sphere(
         diameter=100 * nanometer,  # Diameter of the scatterer in meters
-        source=setup_source,  # Source from setup_source fixture
+        source=source,  # Source from source fixture
         property=1.4 * RIU,  # Refractive index of the scatterer
         medium_property=1.0 * RIU  # Refractive index of the surrounding medium
     )
@@ -36,15 +36,10 @@ def photodiode():
 
     return Photodiode(
         NA=0.2 * AU,  # Numerical aperture of the detector
-        sampling=30 * AU,  # Field sampling
+        sampling=30,  # Field sampling
         gamma_offset=0 * degree,  # Gamma offset
         phi_offset=0 * degree  # Phi offset
     )
-
-
-@patch('pyvista.Plotter.show')
-def test_photodiode_plot(mock_show, photodiode):
-    photodiode.plot()
 
 
 def test_photodiode_sampling(photodiode, setup_scatterer):
@@ -61,6 +56,17 @@ def test_fails_initialization():
     with pytest.raises(TypeError):
         Photodiode(NA=0.2 * AU, block_NA=0.3 * AU, gamma_offset=0 * degree, phi_offset=0 * degree)
 
+
+@patch('pyvista.Plotter.show')
+def test_plot_system(mock_show):
+    detector = Photodiode(
+        NA=0.2 * AU,  # Numerical aperture of the detector
+        sampling=30,  # Field sampling
+        gamma_offset=0 * degree,  # Gamma offset
+        phi_offset=0 * degree  # Phi offset
+    )
+
+    plot_system(detector)
 
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

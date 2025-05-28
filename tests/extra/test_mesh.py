@@ -4,7 +4,7 @@
 import pytest
 import numpy as np
 from PyMieSim.mesh import FibonacciMesh
-
+from PyMieSim import units
 
 @pytest.fixture
 def fibonacci_mesh():
@@ -15,11 +15,11 @@ def fibonacci_mesh():
         FibonacciMesh: Instance of FibonacciMesh with fixed test parameters.
     """
     return FibonacciMesh(
-        max_angle=np.pi / 4,   # Maximum angle (45 degrees in radians)
-        sampling=1000,         # Number of sample points
-        phi_offset=30,         # Offset in the azimuthal angle (in degrees)
-        gamma_offset=45,       # Offset in the polar angle (in degrees)
-        rotation_angle=0       # Rotation angle (in degrees)
+        max_angle=np.pi / 4 * units.radian,   # Maximum angle (45 degrees in radians)
+        sampling=1000 * units.AU,             # Number of sample points
+        phi_offset=30 * units.degree,         # Offset in the azimuthal angle (in degrees)
+        gamma_offset=45 * units.degree,       # Offset in the polar angle (in degrees)
+        rotation_angle=0 * units.degree       # Rotation angle (in degrees)
     )
 
 
@@ -27,11 +27,11 @@ def test_initialization(fibonacci_mesh):
     """
     Test that the FibonacciMesh object is initialized with the correct parameters.
     """
-    assert fibonacci_mesh.max_angle == np.pi / 4
-    assert fibonacci_mesh.sampling == 1000
-    assert fibonacci_mesh.phi_offset == 30
-    assert fibonacci_mesh.gamma_offset == 45
-    assert fibonacci_mesh.rotation_angle == 0
+    assert fibonacci_mesh.max_angle == np.pi / 4  * units.radian
+    assert fibonacci_mesh.sampling == 1000 * units.AU
+    assert fibonacci_mesh.phi_offset == 30 * units.degree
+    assert fibonacci_mesh.gamma_offset == 45 * units.degree
+    assert fibonacci_mesh.rotation_angle == 0 * units.degree
 
 
 def test_get_phi(fibonacci_mesh):

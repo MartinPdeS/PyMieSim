@@ -9,6 +9,7 @@ from PyOptik import Material
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 from PyMieSim.units import nanometer, degree, watt, AU, RIU
+from PyMieSim.single import plot_system
 
 # Core configurations separated for clarity and functionality
 
@@ -30,7 +31,7 @@ plotting_functions = [
 
 
 @pytest.fixture()
-def gaussian_source():
+def source():
     return Gaussian(
         wavelength=750 * nanometer,
         polarization=0 * degree,
@@ -41,7 +42,7 @@ def gaussian_source():
 
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
 @pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
-def test_cylinder_coupling(property, medium_property, gaussian_source):
+def test_cylinder_coupling(property, medium_property, source):
     detector = Photodiode(
         NA=0.2 * AU,
         gamma_offset=0 * degree,
@@ -50,7 +51,7 @@ def test_cylinder_coupling(property, medium_property, gaussian_source):
 
     scatterer = Cylinder(
         diameter=100 * nanometer,
-        source=gaussian_source,
+        source=source,
         medium_property=medium_property,
         property=property
     )
@@ -62,10 +63,10 @@ def test_cylinder_coupling(property, medium_property, gaussian_source):
 @pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
 @pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
 @pytest.mark.parametrize('attribute', attributes)
-def test_cylinder_attributes(attribute, property, medium_property, gaussian_source):
+def test_cylinder_attributes(attribute, property, medium_property, source):
     scatterer = Cylinder(
         diameter=100 * nanometer,
-        source=gaussian_source,
+        source=source,
         medium_property=medium_property,
         property=property
     )
@@ -81,10 +82,10 @@ def test_cylinder_attributes(attribute, property, medium_property, gaussian_sour
 @pytest.mark.parametrize('plotting_function', plotting_functions)
 @patch('pyvista.Plotter.show')
 @patch('matplotlib.pyplot.show')
-def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, gaussian_source):
+def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function, property, medium_property, source):
     scatterer = Cylinder(
         diameter=100 * nanometer,
-        source=gaussian_source,
+        source=source,
         medium_property=medium_property,
         property=property
     )
@@ -97,6 +98,18 @@ def test_cylinder_plottings(mock_show_plt, mock_show_pyvista, plotting_function,
     import pyvista
 
     pyvista.close_all()
+
+
+@patch('pyvista.Plotter.show')
+def test_plot_system(mock_show, source):
+    scatterer = Cylinder(
+        diameter=100 * nanometer,
+        source=source,
+        medium_property=1.0 * RIU,
+        property=1.5 * RIU
+    )
+
+    plot_system(scatterer)
 
 
 if __name__ == "__main__":

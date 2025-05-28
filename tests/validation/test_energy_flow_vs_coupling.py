@@ -27,7 +27,7 @@ def setup_simulation():
 
     # Define the detector (integrating sphere)
     detector = IntegratingSphere(
-        sampling=1000 * AU,
+        sampling=1000,
         polarization_filter=None
     )
 

@@ -96,7 +96,7 @@ class Cylinder(CYLINDER, BaseScatterer):
 
         """
         # Create the cone mesh
-        sphape = pyvista.Cylinder(
+        shape = pyvista.Cylinder(
             center=(0.0, 0.0, 0.0),
             radius=0.1,
             height=2.0,  # Height of the cylinder
@@ -105,4 +105,4 @@ class Cylinder(CYLINDER, BaseScatterer):
         )
 
         # Add the cone mesh to the scene
-        scene.add_mesh(sphape, color=color, opacity=opacity)
+        scene.add_mesh(shape, color=color, opacity=opacity)

@@ -176,3 +176,40 @@ void Detector::apply_polarization_filter(T &coupling_theta, T &coupling_phi, dou
     coupling_theta *= theta_polarization_filtering;
     coupling_phi *= phi_polarization_filtering;
 }
+
+
+pybind11::array_t<complex128> Detector::get_structured_scalarfield(const size_t sampling) const {
+    // Define the spatial extent (adjust as needed)
+    const double xmin = -1.0;
+    const double xmax = 1.0;
+    const double ymin = -1.0;
+    const double ymax = 1.0;
+
+    std::vector<double> x_coords(sampling);
+    std::vector<double> y_coords(sampling);
+    const double dx = (xmax - xmin) / (sampling - 1);
+    const double dy = (ymax - ymin) / (sampling - 1);
+
+    for (size_t i = 0; i < sampling; ++i) {
+    x_coords[i] = xmin + i * dx;
+    y_coords[i] = ymin + i * dy;
+    }
+
+    // Generate structured meshgrid (flattened)
+    std::vector<double> X_flat, Y_flat;
+    X_flat.reserve(sampling * sampling);
+    Y_flat.reserve(sampling * sampling);
+
+    for (size_t j = 0; j < sampling; ++j) {
+    for (size_t i = 0; i < sampling; ++i) {
+            X_flat.push_back(x_coords[i]);  // column (x)
+            Y_flat.push_back(y_coords[j]);  // row (y)
+    }
+    }
+
+    // Compute unstructured field
+    std::vector<complex128> output = this->mode_field.get_unstructured(X_flat, Y_flat);
+
+    // Reshape to 2D numpy array
+    return _vector_to_numpy(output, {sampling, sampling});
+}

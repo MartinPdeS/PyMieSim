@@ -5,7 +5,6 @@ import numpy
 from typing import Optional, Tuple
 
 from PyMieSim.single.representations import Footprint
-from PyMieSim.binary.interface_fibonacci import FibonacciMesh as CPPFibonacciMesh  # has to be imported as extension  # noqa: F401
 from MPSPlots.colormaps import blue_black_red
 from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt, RIU
 from PyMieSim import units
@@ -19,18 +18,30 @@ epsilon0 = 8.854187817620389e-12 * farad / meter  #: Vacuum permittivity (F/m).
 class BaseDetector():
     medium_refractive_index: Optional[Quantity] = 1.0 * units.RIU
 
-    def _validate_UA_units(cls, value):
+    def _validate_AU_units(cls, value):
         """
-        Ensures that diameter is Quantity objects with AU units.
+        Ensures that value is Quantity objects with AU units.
         """
         if not isinstance(value, Quantity) or not value.check(AU):
             raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
 
         return value
 
+    def _validate_no_units(cls, value):
+        """
+        Ensures that values has no units.
+        """
+        if isinstance(value, Quantity) and value.check(AU):
+            value = value.to_base_units().magnitude
+
+        if isinstance(value, Quantity):
+            raise ValueError(f"{value} must be a not have any units associated.")
+
+        return value
+
     def _validate_RIU_units(cls, value):
         """
-        Ensures that diameter is Quantity objects with AU units.
+        Ensures that value is Quantity objects with AU units.
         """
         if not isinstance(value, Quantity) or not value.check(RIU):
             raise ValueError(f"{value} must be a Quantity with refractive index units [RIU].")
@@ -136,60 +147,6 @@ class BaseDetector():
             Footprint: The scatterer footprint with this detector.
         """
         return Footprint(scatterer=scatterer, detector=self)
-
-    def plot(
-            self,
-            unit_size: Tuple[float, float] = (600, 600),
-            background_color: str = 'black',
-            show_axis_label: bool = False,
-            colormap: str = blue_black_red,
-            save_name: str = None) -> None:
-        """
-        Plot the real and imaginary parts of the scattered fields in a 3D scene.
-
-        This method creates a 3D plot of the scattered fields, displaying the real part of the field
-        as colored points in the scene. It also adds a translucent sphere and a directional cone
-        to represent additional geometrical information.
-
-        Parameters
-        ----------
-        unit_size : Tuple[float, float]
-            The size of the plot window (width, height). Default is (600, 600).
-        background_color : str
-            The background color of the plot. Default is 'black'.
-        show_axis_label : bool
-            If True, axis labels will be shown. Default is False.
-        colormap : str
-            The colormap to use for the scalar field. Default is 'blue_black_red'.
-
-        Returns:
-            None: This method does not return a value. It displays the 3D plot.
-        """
-        # Create a 3D plotting scene with the specified window size and theme
-        window_size = (unit_size[1], unit_size[0])
-
-        scene = pyvista.Plotter(
-            theme=pyvista.themes.DarkTheme(),
-            window_size=window_size
-        )
-
-        # Set the background color
-        scene.set_background(background_color)
-
-        self._add_to_3d_ax(scene=scene, colormap=colormap)
-
-        # Optionally add axis labels
-        scene.add_axes_at_origin(labels_off=not show_axis_label)
-
-        # Add a translucent sphere to the scene
-        sphere = pyvista.Sphere(radius=1)
-        scene.add_mesh(sphere, opacity=0.3)
-
-        if save_name is not None:
-            scene.save_graphic(save_name)
-
-        # Display the scene
-        scene.show()
 
     def _add_to_3d_ax(self, scene: pyvista.Plotter, colormap: str = blue_black_red) -> None:
         """
@@ -355,20 +312,3 @@ class BaseDetector():
 
         return total_power
 
-    def get_structured_scalarfield(self, sampling: Optional[int] = 100) -> numpy.ndarray:
-        """
-        Generate a structured scalar field as a numpy array.
-
-        Parameters
-        ----------
-        sampling : int
-            The sampling rate for the scalar field. Default is 100.
-
-        Returns
-        -------
-        numpy.ndarray
-            A 2D array representing the structured scalar field.
-        """
-        x_mesh, y_mesh = numpy.mgrid[-100:100:complex(sampling), -100:100:complex(sampling)]
-
-        return self.mode_field.get_structured(x_mesh.ravel(), y_mesh.ravel()).reshape([sampling, sampling])

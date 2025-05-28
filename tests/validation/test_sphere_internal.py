@@ -55,7 +55,7 @@ def test_energy_flow_coupling(gaussian_source):
 
     # Define a photodiode detector
     detector = Photodiode(
-        sampling=500 * AU,    # Sampling points for the detector
+        sampling=500,    # Sampling points for the detector
         NA=2.0 * AU,          # Numerical aperture
         gamma_offset=0 * degree,  # Offset in the gamma angle
         phi_offset=0 * degree     # Offset in the phi angle

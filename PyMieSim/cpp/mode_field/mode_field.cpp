@@ -41,7 +41,7 @@ void ModeField::normalize_fields(std::vector<complex128> &field) const {
 // ________________________________ LP ___________________________________
 
 [[nodiscard]] std::vector<complex128>
-ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords) {
+ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords) const {
 
    size_t azimuthal_number = mode_id.number_0;
    size_t radial_number = mode_id.number_1;
@@ -106,7 +106,7 @@ double ModeField::hermite_imp(unsigned n, double x) const {
 
 
 // Helper function to calculate the Hermite-Gaussian mode field amplitude
-std::vector<complex128> ModeField::get_HG_unstructured(std::vector<double>& x_coords, std::vector<double>& y_coords, double wavelength, double waist_radius, double z) {
+std::vector<complex128> ModeField::get_HG_unstructured(std::vector<double>& x_coords, std::vector<double>& y_coords, double wavelength, double waist_radius, double z) const {
 
    size_t x_number = this->mode_id.number_0;
    size_t y_number = this->mode_id.number_1;
@@ -216,7 +216,7 @@ double ModeField::laguerre_imp(unsigned n, unsigned m, double x) const
 }
 
 
-std::vector<complex128> ModeField::get_LG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength, double waist_radius, double z) {
+std::vector<complex128> ModeField::get_LG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength, double waist_radius, double z) const {
 
    size_t azimuthal_number = mode_id.number_0;
    size_t radial_number = mode_id.number_1;
@@ -263,7 +263,7 @@ std::vector<complex128> ModeField::get_LG_unstructured(std::vector<double> &x_co
 // ________________________________ NC ___________________________________
 
 
-std::vector<complex128> ModeField::get_NC_unstructured(std::vector<double> &x_coords, std::vector<double> &) {
+std::vector<complex128> ModeField::get_NC_unstructured(std::vector<double> &x_coords, std::vector<double> &) const {
    std::vector<complex128> output(x_coords.size(), 1.0);
 
    return output;

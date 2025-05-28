@@ -25,7 +25,7 @@ class ModeField {
       ModeField() = default;
       ModeField(const ModeID &mode_id) : mode_id(mode_id) {}
 
-      [[nodiscard]] std::vector<complex128> get_unstructured(std::vector<double> x_coords, std::vector<double> y_coords) {
+      [[nodiscard]] std::vector<complex128> get_unstructured(std::vector<double> x_coords, std::vector<double> y_coords) const {
          if (this->mode_id.mode_family == "LP")
             return this->get_LP_unstructured(x_coords, y_coords);
          if (this->mode_id.mode_family == "HG")
@@ -38,31 +38,15 @@ class ModeField {
          throw std::runtime_error("Invalid mode family");
       };
 
-      [[nodiscard]] pybind11::array_t<complex128> get_structured_py(std::vector<double> x_coords, std::vector<double> y_coords) {
-         std::vector<complex128> output;
-
-         if (this->mode_id.mode_family == "LP")
-            output = this->get_LP_unstructured(x_coords, y_coords);
-         if (this->mode_id.mode_family == "HG")
-            output = this->get_HG_unstructured(x_coords, y_coords);
-         if (this->mode_id.mode_family == "LG")
-            output = this->get_LG_unstructured(x_coords, y_coords);
-         if (this->mode_id.mode_family == "NC")
-            output = this->get_NC_unstructured(x_coords, y_coords);
-
-         return _vector_to_numpy(output, {output.size()});
-      };
-
-
 
    private:
       void normalize_coordinates(std::vector<double> &x_coords, std::vector<double> &y_coords) const;
       void normalize_fields(std::vector<complex128> &field) const;
 
-      std::vector<complex128> get_LP_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords);
-      std::vector<complex128> get_HG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength = 1.55, double waist_radius = 0.3, double z = 0.0);
-      std::vector<complex128> get_LG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength = 1.55, double waist_radius = 0.3, double z = 0.0);
-      std::vector<complex128> get_NC_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords);
+      std::vector<complex128> get_LP_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords) const;
+      std::vector<complex128> get_HG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength = 1.55, double waist_radius = 0.3, double z = 0.0) const ;
+      std::vector<complex128> get_LG_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords, double wavelength = 1.55, double waist_radius = 0.3, double z = 0.0) const ;
+      std::vector<complex128> get_NC_unstructured(std::vector<double> &x_coords, std::vector<double> &y_coords) const;
 
       double hermite_next(unsigned n, double x, double Hn, double Hnm1) const;
       double hermite_imp(unsigned n, double x) const;
