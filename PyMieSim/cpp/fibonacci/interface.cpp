@@ -47,5 +47,6 @@ PYBIND11_MODULE(interface_fibonacci, module) {
         .def_property_readonly("H_para", &FibonacciMesh::get_horizontal_parallel_projection, "Horizontal parallel projection of the vector field.")
         .def_property_readonly("H_perp", &FibonacciMesh::get_horizontal_perpendicular_projection, "Horizontal perpendicular projection of the vector field.")
         .def_property_readonly("V_para", &FibonacciMesh::get_vertical_parallel_projection, "Vertical parallel projection of the vector field.")
-        .def_property_readonly("V_perp", &FibonacciMesh::get_vertical_perpendicular_projection, "Vertical perpendicular projection of the vector field.");
+        .def_property_readonly("V_perp", &FibonacciMesh::get_vertical_perpendicular_projection, "Vertical perpendicular projection of the vector field.")
+        ;
 }

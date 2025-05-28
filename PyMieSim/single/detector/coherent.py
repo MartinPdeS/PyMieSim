@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
 import logging
 from typing import Optional
 from PyMieSim.binary.interface_detector import DETECTOR
-from PyMieSim.binary import interface_mode_field
 from PyMieSim.units import radian, Quantity, degree, AU, RIU
 from PyMieSim.single.detector.base import BaseDetector
 

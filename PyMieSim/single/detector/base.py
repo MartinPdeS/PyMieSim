@@ -240,11 +240,11 @@ class BaseDetector():
             direction=-coordinates.mean(axis=1),
             height=numpy.cos(self.max_angle),
             resolution=100,
-            angle=numpy.rad2deg(self.max_angle)
+            angle=self.max_angle.to('degree').magnitude,
         )
 
         # Add the cone mesh to the scene with specified color and opacity
-        scene.add_mesh(cone_mesh, color='blue', opacity=0.3)
+        scene.add_mesh(cone_mesh, color='blue', opacity=0.6)
 
         # Add a scalar bar to the scene for the real part of the field
         scene.add_scalar_bar(mapper=mapping.mapper, title='Collecting Field Real Part')

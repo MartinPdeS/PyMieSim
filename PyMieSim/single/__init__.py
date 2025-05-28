@@ -23,7 +23,8 @@ def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red,
         NoReturn: This function does not return a value. It displays the 3D visualization.
     """
     # Create a PyVista plotting scene
-    scene = pyvista.Plotter(theme=pyvista.themes.DarkTheme())
+    # scene = pyvista.Plotter(theme=pyvista.themes.DarkTheme())
+    scene = pyvista.Plotter()
 
     # Add each object to the scene by calling its `_add_to_3d_ax` method
     for obj in objects:
@@ -35,6 +36,7 @@ def plot_system(*objects: Any, data: Any = None, colormap: str = blue_black_red,
         if not hasattr(data, '_add_to_3d_ax'):
             raise AttributeError(f'Data {obj} cannot be added to system plotting because it lacks a `_add_to_3d_ax` method.')
         data._add_to_3d_ax(scene=scene, colormap=colormap)
+
     # Add a translucent sphere to the scene to provide context or reference
     sphere = pyvista.Sphere(radius=1)
     scene.add_mesh(sphere, opacity=0.3)

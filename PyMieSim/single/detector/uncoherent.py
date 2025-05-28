@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
 from typing import Optional
 from PyMieSim.binary.interface_detector import DETECTOR
 from PyMieSim.units import Quantity, degree, AU, radian, RIU
@@ -14,7 +13,6 @@ class Photodiode(DETECTOR, BaseDetector):
     This means it is independent of the phase of the impinging scattered light field.
 
     """
-
     def __init__(self,
             NA: Quantity,
             gamma_offset: Quantity,

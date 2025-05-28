@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import pyvista
 from PyOptik.material.base_class import BaseMaterial
 
 from PyMieSim.units import Quantity
@@ -76,3 +77,32 @@ class Cylinder(CYLINDER, BaseScatterer):
     @property
     def Qratio(self) -> None:
         raise NotImplementedError
+
+    def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'black', opacity: float = 1.0) -> None:
+        """
+        Adds a 3D cone representation to the given PyVista plotting scene.
+
+        The cone represents the acceptance angle determined by the numerical aperture (NA) of the system.
+        The cone is positioned at the origin and points downward along the z-axis.
+
+        Parameters
+        ----------
+        scene : pyvista.Plotter
+            The 3D plotting scene to which the cone will be added.
+        color : str
+            The color of the cone mesh. Default is 'red'.
+        opacity : float
+            The opacity of the cone mesh. Default is 0.8.
+
+        """
+        # Create the cone mesh
+        sphape = pyvista.Cylinder(
+            center=(0.0, 0.0, 0.0),
+            radius=0.1,
+            height=2.0,  # Height of the cylinder
+            direction=(0, -1, 0),  # Pointing downwards along the z-axis
+            resolution=100  # Number of sides for the cylinder
+        )
+
+        # Add the cone mesh to the scene
+        scene.add_mesh(sphape, color=color, opacity=opacity)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cmath>
+
 #include "bessel_subroutine.h"
 
 // Factorial function using recursion

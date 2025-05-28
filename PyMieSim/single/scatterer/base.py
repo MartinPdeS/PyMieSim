@@ -265,8 +265,8 @@ class BaseScatterer:
 
         Where:
 
-        - \( k \): The wave number, related to the wavelength of the incident light.
-        - \( r \): The distance from the scatterer (assumed to be large in the far-field approximation).
+        - :math:`k`: The wave number, related to the wavelength of the incident light.
+        - :math:`r`: The distance from the scatterer (assumed to be large in the far-field approximation).
 
         Parameters
         ----------
@@ -310,9 +310,9 @@ class BaseScatterer:
 
         Where:
 
-        - \( E_{\parallel} \): The parallel component of the scattered electric field.
-        - \( E_{\perp} \): The perpendicular component of the scattered electric field.
-        - \( \phi \) and \( \theta \): The azimuthal and polar angles, respectively, which describe the angular position of the scattered light.
+        - :math:`E_{\parallel}`: The parallel component of the scattered electric field.
+        - :math:`E_{\perp}`: The perpendicular component of the scattered electric field.
+        - :math:`\phi` and :math:`\theta`: The azimuthal and polar angles, respectively, which describe the angular position of the scattered light.
 
         The SPF combines the intensity contributions from both polarization components to describe the total scattered intensity in different directions.
 
@@ -361,10 +361,10 @@ class BaseScatterer:
 
         Where:
 
-        - \( \tilde{ \psi } (\xi, \nu) \): The Fourier transform of the scattered field.
-        - \( \tilde{ \phi}_{l,m} (\xi, \nu) \): The Fourier transform of the detector's capturing field.
-        - \( \mathscr{F}^{-1} \): The inverse Fourier transform operator.
-        - \( (\delta_x, \delta_y) \): Spatial coordinates describing the footprint in the detector plane.
+        - :math:`\tilde{ \psi } (\xi, \nu)`: The Fourier transform of the scattered field.
+        - :math:`\tilde{ \phi}_{l,m} (\xi, \nu)`: The Fourier transform of the detector's capturing field.
+        - :math:`\mathscr{F}^{-1}`: The inverse Fourier transform operator.
+        - :math:`(\delta_x, \delta_y)`: Spatial coordinates describing the footprint in the detector plane.
 
         The inverse Fourier transform yields the spatial pattern of the scattered light's interaction with the detector, which is then squared to compute the intensity of the footprint.
 

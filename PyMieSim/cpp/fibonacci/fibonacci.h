@@ -103,5 +103,4 @@ class FibonacciMesh : public BaseMesh {
         DEFINE_PY_GETTER(double, r_py, spherical_coordinates.r)
         DEFINE_PY_GETTER(double, phi_py, spherical_coordinates.phi)
         DEFINE_PY_GETTER(double, theta_py, spherical_coordinates.theta)
-
 };
