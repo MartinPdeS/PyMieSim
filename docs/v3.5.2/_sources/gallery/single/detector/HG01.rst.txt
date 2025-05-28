@@ -27,12 +27,13 @@ This example demonstrates the initialization and visualization of HG01 Mode dete
 
 Importing the package: PyMieSim
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-13
+.. GENERATED FROM PYTHON SOURCE LINES 10-14
 
 .. code-block:: Python
 
     from PyMieSim.single.detector import CoherentMode
     from PyMieSim.units import AU, degree
+    from PyMieSim.single import plot_system
 
 
 
@@ -41,11 +42,11 @@ Importing the package: PyMieSim
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-15
+.. GENERATED FROM PYTHON SOURCE LINES 15-16
 
 Initializing the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-23
+.. GENERATED FROM PYTHON SOURCE LINES 16-24
 
 .. code-block:: Python
 
@@ -70,15 +71,15 @@ Initializing the detector
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
+.. GENERATED FROM PYTHON SOURCE LINES 25-26
 
 Plotting the detector
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-26
+.. GENERATED FROM PYTHON SOURCE LINES 26-27
 
 .. code-block:: Python
 
-    detector.plot()
+    plot_system(detector)
 
 
 
@@ -94,7 +95,7 @@ Plotting the detector
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.284 seconds)
+   **Total running time of the script:** (0 minutes 1.111 seconds)
 
 
 .. _sphx_glr_download_gallery_single_detector_HG01.py:

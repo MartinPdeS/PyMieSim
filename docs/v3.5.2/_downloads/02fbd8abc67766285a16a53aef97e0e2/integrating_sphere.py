@@ -9,6 +9,7 @@ This example demonstrates the initialization and visualization of an Integrating
 # Importing the package: PyMieSim
 from PyMieSim.single.detector import IntegratingSphere
 from PyMieSim.units import AU
+from PyMieSim.single import plot_system
 
 # %%
 # Initializing the detector
@@ -19,4 +20,4 @@ detector = IntegratingSphere(
 
 # %%
 # Plotting the detector
-detector.plot()
+plot_system(detector)

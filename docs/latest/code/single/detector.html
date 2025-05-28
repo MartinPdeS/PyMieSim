@@ -489,7 +489,7 @@
 <h1>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=&lt;Quantity(200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA=&lt;Quantity(0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'refractive_index_unit')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Photodiode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA=&lt;Quantity(0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'refractive_index_unit')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/uncoherent.html#Photodiode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.Photodiode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DETECTOR</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
 <p>Detector class representing a photodiode with a non-coherent light coupling mechanism.
 This means it is independent of the phase of the impinging scattered light field.</p>
@@ -659,19 +659,10 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
-<dd><p>Generate a structured scalar field as a numpy array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sampling</strong> (<em>int</em>) – The sampling rate for the scalar field. Default is 100.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A 2D array representing the structured scalar field.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_detector.DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
+<dd><p>Get structured mode field data.</p>
+<p>Returns a NumPy array of shape (sampling, 2) containing
+(gamma, phi) pairs for the mode field.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -703,35 +694,11 @@ This is used to determine the angular coverage of the detector.</p>
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_id</span></span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.mode_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.Photodiode.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.Photodiode.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plot the real and imaginary parts of the scattered fields in a 3D scene.</p>
-<p>This method creates a 3D plot of the scattered fields, displaying the real part of the field
-as colored points in the scene. It also adds a translucent sphere and a directional cone
-to represent additional geometrical information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>unit_size</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – The size of the plot window (width, height). Default is (600, 600).</p></li>
-<li><p><strong>background_color</strong> (<em>str</em>) – The background color of the plot. Default is ‘black’.</p></li>
-<li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, axis labels will be shown. Default is False.</p></li>
-<li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for the scalar field. Default is ‘blue_black_red’.</p></li>
-<li><p><strong>Returns</strong> – None: This method does not return a value. It displays the 3D plot.</p></li>
-<li><p><strong>save_name</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=&lt;Quantity(200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA=&lt;Quantity(0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation=&lt;Quantity(90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'refractive_index_unit')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CoherentMode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling=200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization_filter=None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_NA=&lt;Quantity(0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'dimensionless')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_coupling=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation=&lt;Quantity(90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'degree')&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium_refractive_index=&lt;Quantity(1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'refractive_index_unit')&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/PyMieSim/single/detector/coherent.html#CoherentMode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DETECTOR</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDetector</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -901,19 +868,10 @@ I &amp;= \frac{c n \epsilon_0}{2} \, |E|^2\end{split}\]</div>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.get_structured_scalarfield">
-<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
-<dd><p>Generate a structured scalar field as a numpy array.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>sampling</strong> (<em>int</em>) – The sampling rate for the scalar field. Default is 100.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A 2D array representing the structured scalar field.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a></p>
-</dd>
-</dl>
+<span class="sig-name descname"><span class="pre">get_structured_scalarfield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">PyMieSim.binary.interface_detector.DETECTOR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">numpy.complex128</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.get_structured_scalarfield" title="Link to this definition">#</a></dt>
+<dd><p>Get structured mode field data.</p>
+<p>Returns a NumPy array of shape (sampling, 2) containing
+(gamma, phi) pairs for the mode field.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -944,30 +902,6 @@ This is used to determine the angular coverage of the detector.</p>
 <dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.mode_id">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode_id</span></span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.mode_id" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="PyMieSim.single.detector.CoherentMode.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit_size=(600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">600)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color='black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_axis_label=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap=&lt;matplotlib.colors.LinearSegmentedColormap</span> <span class="pre">object&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_name=None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.detector.CoherentMode.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plot the real and imaginary parts of the scattered fields in a 3D scene.</p>
-<p>This method creates a 3D plot of the scattered fields, displaying the real part of the field
-as colored points in the scene. It also adds a translucent sphere and a directional cone
-to represent additional geometrical information.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>unit_size</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>) – The size of the plot window (width, height). Default is (600, 600).</p></li>
-<li><p><strong>background_color</strong> (<em>str</em>) – The background color of the plot. Default is ‘black’.</p></li>
-<li><p><strong>show_axis_label</strong> (<em>bool</em>) – If True, axis labels will be shown. Default is False.</p></li>
-<li><p><strong>colormap</strong> (<em>str</em>) – The colormap to use for the scalar field. Default is ‘blue_black_red’.</p></li>
-<li><p><strong>Returns</strong> – None: This method does not return a value. It displays the 3D plot.</p></li>
-<li><p><strong>save_name</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
 
 </dd></dl>
 
@@ -1008,7 +942,6 @@ to represent additional geometrical information.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.min_angle"><code class="docutils literal notranslate"><span class="pre">Photodiode.min_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mode_field"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_field</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.mode_id"><code class="docutils literal notranslate"><span class="pre">Photodiode.mode_id</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.Photodiode.plot"><code class="docutils literal notranslate"><span class="pre">Photodiode.plot()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode"><code class="docutils literal notranslate"><span class="pre">CoherentMode</span></code></a><ul class="nav section-nav flex-column">
@@ -1023,7 +956,6 @@ to represent additional geometrical information.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.min_angle"><code class="docutils literal notranslate"><span class="pre">CoherentMode.min_angle</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mode_field"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_field</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.mode_id"><code class="docutils literal notranslate"><span class="pre">CoherentMode.mode_id</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.detector.CoherentMode.plot"><code class="docutils literal notranslate"><span class="pre">CoherentMode.plot()</span></code></a></li>
 </ul>
 </li>
 </ul>
