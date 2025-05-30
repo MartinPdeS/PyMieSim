@@ -459,8 +459,8 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">DETECTOR</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">radian</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">AU</span><span class="p">,</span> <span class="n">RIU</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseDetector</span>
 
 
@@ -469,15 +469,15 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">CoherentMode</span><span class="p">(</span><span class="n">DETECTOR</span><span class="p">,</span> <span class="n">BaseDetector</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">mode_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-            <span class="n">NA</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
-            <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
-            <span class="n">phi_offset</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
-            <span class="n">sampling</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
-            <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
+            <span class="n">NA</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">gamma_offset</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">phi_offset</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+            <span class="n">sampling</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span>
+            <span class="n">polarization_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">cache_NA</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">,</span>
             <span class="n">mean_coupling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">rotation</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
-            <span class="n">medium_refractive_index</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
+            <span class="n">rotation</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mi">90</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">RIU</span><span class="p">,</span>
         <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the CoherentMode detector with its parameters.</span>
@@ -489,35 +489,35 @@
 <span class="sd">        ----------</span>
 <span class="sd">        mode_number : str</span>
 <span class="sd">            String representing the mode to be initialized (e.g., &#39;LP01&#39;, &#39;HG11&#39;, &#39;LG22&#39;).</span>
-<span class="sd">        NA : Quantity</span>
+<span class="sd">        NA : units.Quantity</span>
 <span class="sd">            The numerical aperture of the detector, a dimensionless number that defines its light-gathering</span>
 <span class="sd">            ability. Higher NA values indicate a wider acceptance angle for capturing light.</span>
-<span class="sd">        gamma_offset : Quantity</span>
+<span class="sd">        gamma_offset : units.Quantity</span>
 <span class="sd">            The rotational offset in the gamma direction, controlling the angular positioning of the detector relative to the scatterer.</span>
-<span class="sd">        phi_offset : Quantity</span>
+<span class="sd">        phi_offset : units.Quantity</span>
 <span class="sd">            The rotational offset in the phi direction, specifying the azimuthal angle of the detector&#39;s orientation.</span>
-<span class="sd">        sampling : Quantity</span>
+<span class="sd">        sampling : units.Quantity</span>
 <span class="sd">            The sampling resolution of the detector, controlling how finely the detector&#39;s field is sampled</span>
 <span class="sd">            over the surface. A higher value increases precision but may require more computational resources. Default is 200.</span>
-<span class="sd">        polarization_filter : Optional[Quantity]</span>
+<span class="sd">        polarization_filter : Optional[units.Quantity]</span>
 <span class="sd">            The polarization filter applied to the detected light. If specified, it allows the detector to</span>
 <span class="sd">            selectively capture light with a particular polarization. If set to `nan`, no filtering is applied.</span>
-<span class="sd">        cache_NA : Optional[Quantity]</span>
+<span class="sd">        cache_NA : Optional[units.Quantity]</span>
 <span class="sd">            Numerical aperture of the detector cache. Default is 0 AU.</span>
 <span class="sd">        mean_coupling : bool</span>
 <span class="sd">            A flag indicating whether the mean value of the coupling is used when calculating the light</span>
 <span class="sd">            interaction with the scatterer. This is typically set for cases where an average coupling is</span>
 <span class="sd">            needed over multiple angles or configurations.</span>
-<span class="sd">        rotation : Quantity</span>
+<span class="sd">        rotation : units.Quantity</span>
 <span class="sd">            The rotational angle of the detector, defining its orientation relative to the incoming light or</span>
 <span class="sd">            scatterer. The default value rotates the detector by 90 degrees.</span>
-<span class="sd">        medium_refractive_index : Quantity</span>
+<span class="sd">        medium_refractive_index : units.Quantity</span>
 <span class="sd">            The refractive index of the medium in which the detector operates. This is important for</span>
 <span class="sd">            determining the acceptance cone of light.</span>
 <span class="sd">            Default is 1.0 (vacuum or air).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">NA</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">AU</span> <span class="ow">or</span> <span class="n">NA</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">AU</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">NA</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">AU</span> <span class="ow">or</span> <span class="n">NA</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;High values of NA: </span><span class="si">{</span><span class="n">NA</span><span class="si">}</span><span class="s2"> do not comply with the paraxial approximation. Values under 0.3 are preferred.&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span> <span class="o">=</span> <span class="n">mode_number</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
@@ -526,28 +526,32 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid mode family: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_family</span><span class="si">}</span><span class="s1">. Options are [&quot;LP&quot;, &quot;LG&quot;, &quot;HG&quot;]&#39;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span> <span class="o">=</span> <span class="n">mode_number</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_AU_units</span><span class="p">(</span><span class="n">NA</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_AU_units</span><span class="p">(</span><span class="n">cache_NA</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_angle_units</span><span class="p">(</span><span class="n">gamma_offset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_angle_units</span><span class="p">(</span><span class="n">phi_offset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_no_units</span><span class="p">(</span><span class="n">sampling</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_polarization_units</span><span class="p">(</span><span class="n">polarization_filter</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span> <span class="o">=</span> <span class="n">mean_coupling</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_angle_units</span><span class="p">(</span><span class="n">rotation</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_RIU_units</span><span class="p">(</span><span class="n">medium_refractive_index</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">NA</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;arbitrary&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">cache_NA</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;arbitrary&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">sampling</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;arbitrary&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">gamma_offset</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">phi_offset</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">medium_refractive_index</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;refractive index&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_detector_polarization_units</span><span class="p">(</span><span class="n">polarization_filter</span><span class="p">)</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">mode_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">,</span>
-            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">cache_NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">gamma_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">phi_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span>
-            <span class="n">polarization_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span><span class="p">,</span>
-            <span class="n">rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">coherent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">mode_number</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_number</span><span class="p">,</span>
+            <span class="n">NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NA</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">cache_NA</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cache_NA</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">AU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">,</span>
+            <span class="n">mean_coupling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_coupling</span><span class="p">,</span>
+            <span class="n">gamma_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">phi_offset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">phi_offset</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">polarization_filter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">polarization_filter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">rotation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">radian</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_refractive_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="p">)</span></div>
 
 

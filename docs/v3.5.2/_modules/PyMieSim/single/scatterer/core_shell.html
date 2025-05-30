@@ -460,7 +460,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik.material.base_class</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseMaterial</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseScatterer</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.binary.interface_scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORESHELL</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSource</span>
@@ -474,22 +474,22 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    core_diameter : Quantity</span>
+<span class="sd">    core_diameter : units.Quantity</span>
 <span class="sd">        Diameter of the core of the scatterer.</span>
-<span class="sd">    shell_thickness : Quantity</span>
+<span class="sd">    shell_thickness : units.Quantity</span>
 <span class="sd">        Thickness of the shell surrounding the core.</span>
-<span class="sd">    core_property : Quantity | BaseMaterial</span>
+<span class="sd">    core_property : units.Quantity | BaseMaterial</span>
 <span class="sd">        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer&#39;s core. Only one can be provided.</span>
-<span class="sd">    shell_property : Quantity | BaseMaterial</span>
+<span class="sd">    shell_property : units.Quantity | BaseMaterial</span>
 <span class="sd">        Defines either the refractive index (`Quantity`) or material (`BaseMaterial`) of the scatterer&#39;s shell. Only one can be provided.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">core_diameter</span><span class="p">:</span> <span class="n">Quantity</span>
-    <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">Quantity</span>
-    <span class="n">core_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
-    <span class="n">shell_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
-    <span class="n">medium_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
+    <span class="n">core_diameter</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span>
+    <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span>
+    <span class="n">core_property</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
+    <span class="n">shell_property</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
+    <span class="n">medium_property</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span>
     <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span>
 
     <span class="n">property_names</span> <span class="o">=</span> <span class="p">[</span>
@@ -499,32 +499,32 @@
     <span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-        <span class="n">core_diameter</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
-        <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
-        <span class="n">core_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span>
-        <span class="n">shell_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span>
-        <span class="n">medium_property</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span>
+        <span class="n">core_diameter</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">shell_thickness</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">core_property</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span>
+        <span class="n">shell_property</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span>
+        <span class="n">medium_property</span><span class="p">:</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">|</span> <span class="n">BaseMaterial</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="n">BaseSource</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialize the CoreShell scatterer with its core and shell properties.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        core_diameter : Quantity</span>
+<span class="sd">        core_diameter : units.Quantity</span>
 <span class="sd">            Diameter of the core in meters.</span>
-<span class="sd">        shell_thickness : Quantity</span>
+<span class="sd">        shell_thickness : units.Quantity</span>
 <span class="sd">            Thickness of the shell in meters.</span>
-<span class="sd">        core_property : Quantity or BaseMaterial</span>
+<span class="sd">        core_property : units.Quantity or BaseMaterial</span>
 <span class="sd">            Refractive index or material of the core.</span>
-<span class="sd">        shell_property : Quantity or BaseMaterial</span>
+<span class="sd">        shell_property : units.Quantity or BaseMaterial</span>
 <span class="sd">            Refractive index or material of the shell.</span>
-<span class="sd">        medium_property : Quantity or BaseMaterial</span>
+<span class="sd">        medium_property : units.Quantity or BaseMaterial</span>
 <span class="sd">            Refractive index or material of the surrounding medium.</span>
 <span class="sd">        source : BaseSource</span>
 <span class="sd">            Source object associated with the scatterer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_length</span><span class="p">(</span><span class="n">core_diameter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_length</span><span class="p">(</span><span class="n">shell_thickness</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core_diameter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">core_diameter</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shell_thickness</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_units</span><span class="p">(</span><span class="n">shell_thickness</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="s1">&#39;distance&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">core_property</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_property</span><span class="p">(</span><span class="n">core_property</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">shell_property</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_property</span><span class="p">(</span><span class="n">shell_property</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_property</span><span class="p">(</span><span class="n">medium_property</span><span class="p">)</span>
@@ -535,11 +535,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium_material</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_index_or_material</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_property</span><span class="p">)</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">core_diameter</span><span class="o">=</span><span class="n">core_diameter</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">shell_thickness</span><span class="o">=</span><span class="n">shell_thickness</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">core_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">shell_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">core_diameter</span><span class="o">=</span><span class="n">core_diameter</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">shell_thickness</span><span class="o">=</span><span class="n">shell_thickness</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">core_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">core_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">shell_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shell_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+            <span class="n">medium_refractive_index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium_index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">RIU</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
             <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span>
         <span class="p">)</span>
 

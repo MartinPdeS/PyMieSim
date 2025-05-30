@@ -495,8 +495,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diameter</strong> (<em>Quantity</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
-<li><p><strong>property</strong> (<em>Quantity</em><em> or </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one can be provided.</p></li>
+<li><p><strong>diameter</strong> (<em>units.Quantity</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
+<li><p><strong>property</strong> (<em>units.Quantity</em><em> or </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one can be provided.</p></li>
 <li><p><strong>medium_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>)</p></li>
 <li><p><strong>source</strong> (<em>BaseSource</em>)</p></li>
 </ul>
@@ -711,7 +711,7 @@ The computed far fields represent the scattered electric field components in the
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -819,7 +819,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -862,7 +862,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -908,7 +908,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -979,8 +979,8 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>diameter</strong> (<em>Quantity</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
-<li><p><strong>property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.</p></li>
+<li><p><strong>diameter</strong> (<em>units.Quantity</em>) – Diameter of the cylindrical scatterer, given in meters.</p></li>
+<li><p><strong>property</strong> (<em>units.Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer. Only one of these should be provided at a time to specify the core characteristic.</p></li>
 <li><p><strong>medium_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>)</p></li>
 <li><p><strong>source</strong> (<em>BaseSource</em>)</p></li>
 </ul>
@@ -1197,7 +1197,7 @@ The computed far fields represent the scattered electric field components in the
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1305,7 +1305,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1348,7 +1348,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1394,7 +1394,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1465,10 +1465,10 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>core_diameter</strong> (<em>Quantity</em>) – Diameter of the core of the scatterer.</p></li>
-<li><p><strong>shell_thickness</strong> (<em>Quantity</em>) – Thickness of the shell surrounding the core.</p></li>
-<li><p><strong>core_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s core. Only one can be provided.</p></li>
-<li><p><strong>shell_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s shell. Only one can be provided.</p></li>
+<li><p><strong>core_diameter</strong> (<em>units.Quantity</em>) – Diameter of the core of the scatterer.</p></li>
+<li><p><strong>shell_thickness</strong> (<em>units.Quantity</em>) – Thickness of the shell surrounding the core.</p></li>
+<li><p><strong>core_property</strong> (<em>units.Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s core. Only one can be provided.</p></li>
+<li><p><strong>shell_property</strong> (<em>units.Quantity</em><em> | </em><em>BaseMaterial</em>) – Defines either the refractive index (<cite>Quantity</cite>) or material (<cite>BaseMaterial</cite>) of the scatterer’s shell. Only one can be provided.</p></li>
 <li><p><strong>medium_property</strong> (<em>Quantity</em><em> | </em><em>BaseMaterial</em>)</p></li>
 <li><p><strong>source</strong> (<em>BaseSource</em>)</p></li>
 </ul>
@@ -1721,7 +1721,7 @@ The computed far fields represent the scattered electric field components in the
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1829,7 +1829,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1872,7 +1872,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1918,7 +1918,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sampling</strong> (<em>int</em>) – The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.</p></li>
-<li><p><strong>distance</strong> (<em>Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
+<li><p><strong>distance</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
