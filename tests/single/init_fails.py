@@ -7,7 +7,6 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 
 @pytest.mark.parametrize("optical_power, NA, polarization, wavelength", [
     (1, 0.1 * AU, 0 * degree, 1550 * nanometer),
-    (1 * watt, 0.1, 0 * degree, 1550 * nanometer),
     (1 * watt, 0.1 * AU, 0, 1550 * nanometer),
     (1 * watt, 0.1 * AU, 0 * degree, 1550)
 ])
@@ -30,7 +29,6 @@ def test_invalid_sphere_initialization(medium_property, property, diameter):
 @pytest.mark.parametrize("NA, sampling, gamma_offset, phi_offset, polarization_filter", [
     (0.2 * AU, 30, 0, 0 * degree, None),
     (0.2 * AU, 30, 0 * degree, 0, None),
-    (0.2, 30 * AU, 0 * degree, 0 * degree, None)
 ])
 def test_invalid_photodiode_initialization(NA, sampling, gamma_offset, phi_offset, polarization_filter):
     with pytest.raises(ValueError):

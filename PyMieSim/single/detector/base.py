@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import numpy
-from typing import Optional, Tuple
+from typing import Optional
 
 from PyMieSim.single.representations import Footprint
 from MPSPlots.colormaps import blue_black_red
-from PyMieSim.units import Quantity, degree, AU, watt, meter, second, farad, volt, RIU
+from PyMieSim.units import Quantity, degree, watt, meter, second, farad, volt
 from PyMieSim import units
 from PyMieSim.single.scatterer.base import BaseScatterer
 import pyvista
@@ -15,51 +15,8 @@ c = 299792458.0 * meter / second  #: Speed of light in vacuum (m/s).
 epsilon0 = 8.854187817620389e-12 * farad / meter  #: Vacuum permittivity (F/m).
 
 
-class BaseDetector():
+class BaseDetector(units.UnitsValidation):
     medium_refractive_index: Optional[Quantity] = 1.0 * units.RIU
-
-    def _validate_AU_units(cls, value):
-        """
-        Ensures that value is Quantity objects with AU units.
-        """
-        if not isinstance(value, Quantity) or not value.check(AU):
-            raise ValueError(f"{value} must be a Quantity with arbitrary units [AU].")
-
-        return value
-
-    def _validate_no_units(cls, value):
-        """
-        Ensures that values has no units.
-        """
-        if isinstance(value, Quantity) and value.check(AU):
-            value = value.to_base_units().magnitude
-
-        if isinstance(value, Quantity):
-            raise ValueError(f"{value} must be a not have any units associated.")
-
-        return value
-
-    def _validate_RIU_units(cls, value):
-        """
-        Ensures that value is Quantity objects with AU units.
-        """
-        if not isinstance(value, Quantity) or not value.check(RIU):
-            raise ValueError(f"{value} must be a Quantity with refractive index units [RIU].")
-
-        return value
-
-    def _validate_polarization_units(cls, value):
-        """
-        Ensures that medium_refractive_index, and rotation are Quantity objects with angle units.
-        Converts them to numpy arrays after validation.
-        """
-        if value is None:
-            value = numpy.nan * degree
-
-        if not isinstance(value, Quantity) or not value.check(units.RIU):
-            raise ValueError(f"{value} must be a Quantity with refractive index units [RIU].")
-
-        return value
 
     @property
     def max_angle(self) -> Quantity:

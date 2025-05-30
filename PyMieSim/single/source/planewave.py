@@ -1,42 +1,41 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union
 import numpy
 import pyvista
+from PyMieSim import units
 from PyMieSim.polarization import BasePolarization
 from PyMieSim.binary.interface_source import PLANEWAVE
-from PyMieSim.units import Quantity
 from PyMieSim.single.source.base import BaseSource
 
 
 class PlaneWave(PLANEWAVE, BaseSource):
     def __init__(self,
-            wavelength: Quantity,
-            polarization: Union[BasePolarization, Quantity],
-            amplitude: Quantity) -> None:
+            wavelength: units.Quantity,
+            polarization: units.Quantity | BasePolarization,
+            amplitude: units.Quantity) -> None:
         """
         Initializes a plane wave light source for light scattering simulations.
 
         Parameters
         ----------
-        wavelength : Quantity
+        wavelength : units.Quantity
             Wavelength of the light field in meters.
-        polarization : BasePolarization | Quantity
+        polarization : BasePolarization | units.Quantity
             Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        amplitude : Quantity
+        amplitude : units.Quantity
             Amplitude of the electric field.
         """
-        self.wavelength = self._validate_length(wavelength)
-        self.polarization = self._validate_polarization(polarization)
-        self.amplitude = self._validate_watt(amplitude)
+        self.wavelength = self._validate_units(wavelength, dimension="distance", units=units.meter)
+        self.polarization = self._validate_source_polarization(polarization)
+        self.amplitude = self._validate_units(amplitude, dimension="amplitude", units=units.volt/units.meter)
 
         self.wavenumber = 2 * numpy.pi / self.wavelength
 
         super().__init__(
-            wavelength=self.wavelength.to_base_units().magnitude,
+            wavelength=self.wavelength.to(units.meter).magnitude,
             jones_vector=self.polarization.element[0],
-            amplitude=self.amplitude.to_base_units().magnitude,
+            amplitude=self.amplitude.to(units.volt / units.meter).magnitude,
         )
 
     def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:

@@ -1,43 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Union
 import numpy
 import pyvista
+from PyMieSim import units
 from PyMieSim.polarization import BasePolarization
 from PyMieSim.special_functions import NA_to_angle
 from PyMieSim.binary.interface_source import GAUSSIAN
-from PyMieSim.units import Quantity
 from PyMieSim.single.source.base import BaseSource
 
 
 class Gaussian(GAUSSIAN, BaseSource):
-    amplitude: Quantity
+    amplitude: units.Quantity
 
     def __init__(self,
-            wavelength: Quantity,
-            polarization: Union[BasePolarization, Quantity],
-            optical_power: Quantity,
-            NA: Quantity) -> None:
+            wavelength: units.Quantity,
+            polarization: units.Quantity | BasePolarization,
+            optical_power: units.Quantity,
+            NA: units.Quantity) -> None:
         """
         Initializes a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
 
         Parameters
         ----------
 
-        wavelength: Quantity
+        wavelength: units.Quantity
             Wavelength of the light field in meters.
-        polarization : BasePolarization | Quantity
+        polarization : units.Quantity | BasePolarization
             Polarization state of the light field, if float is given it is assumed Linear polarization of angle theta.
-        optical_power: Quantity
+        optical_power: units.Quantity
             Optical power of the source in Watts.
-        NA: Quantity
+        NA: units.Quantity
             Numerical aperture of the source.
         """
-        self.wavelength = self._validate_length(wavelength)
-        self.polarization = self._validate_polarization(polarization)
-        self.optical_power = self._validate_watt(optical_power)
-        self.NA = self._validate_AU(NA)
+        self.wavelength = self._validate_units(wavelength, dimension="distance", units=units.meter)
+        self.optical_power = self._validate_units(optical_power, dimension="power", units=units.watt)
+        self.NA = self._validate_units(NA, dimension="arbitrary", units=units.AU)
+        self.polarization = self._validate_source_polarization(polarization)
 
         self.wavenumber = 2 * numpy.pi / self.wavelength
         self.waist = self.wavelength / (self.NA * numpy.pi)
@@ -45,10 +44,10 @@ class Gaussian(GAUSSIAN, BaseSource):
 
 
         super().__init__(
-            wavelength=self.wavelength.to_base_units().magnitude,
+            wavelength=self.wavelength.to(units.meter).magnitude,
             jones_vector=self.polarization.element[0],
-            optical_power=self.optical_power.to_base_units().magnitude,
-            NA=self.NA.to_base_units().magnitude,
+            optical_power=self.optical_power.to(units.watt).magnitude,
+            NA=self.NA.to(units.AU).magnitude,
         )
 
 

@@ -6,32 +6,13 @@ import numpy
 from PyOptik.material.base_class import BaseMaterial
 from tabulate import tabulate
 from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
-from PyMieSim.units import RIU, Quantity, meter, AU
+from PyMieSim import units
 
-class BaseScatterer:
+class BaseScatterer(units.UnitsValidation):
     """
     A generic class for a scatterer, providing properties and methods to compute various scattering-related quantities.
 
     """
-
-    def _validate_length(cls, value):
-        """
-        Ensures that diameter is Quantity objects with length units.
-        """
-        if not isinstance(value, Quantity) or not value.check(meter):
-            raise ValueError(f"{value} must be a Quantity with meters units [meter].")
-
-        return value
-
-    def _validate_property(cls, value):
-        """
-        Ensures that diameter is Quantity objects with RIU units.
-        """
-        if not isinstance(value, Quantity | BaseMaterial):
-            raise ValueError(f"{value} must be a Quantity (RIU units) or a material (BaseMaterial from PyOptik).")
-
-        return value
-
     def print_properties(self) -> None:
         """Prints a table of the scatterer's properties and their values."""
         data = [getattr(self, name) for name in self.property_names]
@@ -41,91 +22,91 @@ class BaseScatterer:
         print(table)
 
     @property
-    def size_parameter(self) -> Quantity:
+    def size_parameter(self) -> units.Quantity:
         """Returns the size parameter of the scatterer."""
-        return self._cpp_size_parameter * AU
+        return self._cpp_size_parameter * units.AU
 
     @property
-    def cross_section(self) -> Quantity:
+    def cross_section(self) -> units.Quantity:
         """Returns the cross-section of the scatterer."""
-        return (self._cpp_cross_section * meter**2).to_compact()
+        return (self._cpp_cross_section * units.meter**2).to_compact()
 
     @property
-    def Qsca(self) -> Quantity:
+    def Qsca(self) -> units.Quantity:
         """Returns the scattering efficiency."""
-        return self._cpp_Qsca * AU
+        return self._cpp_Qsca * units.AU
 
     @property
-    def Qext(self) -> Quantity:
+    def Qext(self) -> units.Quantity:
         """Returns the extinction efficiency."""
-        return self._cpp_Qext * AU
+        return self._cpp_Qext * units.AU
 
     @property
-    def Qabs(self) -> Quantity:
+    def Qabs(self) -> units.Quantity:
         """Returns the absorption efficiency."""
-        return self._cpp_Qabs * AU
+        return self._cpp_Qabs * units.AU
 
     @property
-    def Qback(self) -> Quantity:
+    def Qback(self) -> units.Quantity:
         """Returns the backscattering efficiency."""
-        return self._cpp_Qback * AU
+        return self._cpp_Qback * units.AU
 
     @property
-    def Qforward(self) -> Quantity:
+    def Qforward(self) -> units.Quantity:
         """Returns the forward-scattering efficiency."""
-        return self._cpp_Qforward * AU
+        return self._cpp_Qforward * units.AU
 
     @property
-    def Qratio(self) -> Quantity:
+    def Qratio(self) -> units.Quantity:
         """Returns the efficiency ratio of backscattering over total scattering."""
-        return self._cpp_Qratio * AU
+        return self._cpp_Qratio * units.AU
 
     @property
-    def g(self) -> Quantity:
+    def g(self) -> units.Quantity:
         """Returns the anisotropy factor."""
-        return self._cpp_g * AU
+        return self._cpp_g * units.AU
 
     @property
-    def Qpr(self) -> Quantity:
+    def Qpr(self) -> units.Quantity:
         """Returns the radiation pressure efficiency."""
-        return self._cpp_Qpr * AU
+        return self._cpp_Qpr * units.AU
 
     @property
-    def Csca(self) -> Quantity:
+    def Csca(self) -> units.Quantity:
         """Returns the scattering cross-section."""
-        return (self._cpp_Csca * meter ** 2).to_compact()
+        return (self._cpp_Csca * units.meter ** 2).to_compact()
 
     @property
-    def Cext(self) -> Quantity:
+    def Cext(self) -> units.Quantity:
         """Returns the extinction cross-section."""
-        return (self._cpp_Cext * meter ** 2).to_compact()
+        return (self._cpp_Cext * units.meter ** 2).to_compact()
 
     @property
-    def Cabs(self) -> Quantity:
+    def Cabs(self) -> units.Quantity:
         """Returns the absorption cross-section."""
-        return (self._cpp_Cabs * meter ** 2).to_compact()
+        return (self._cpp_Cabs * units.meter ** 2).to_compact()
 
     @property
-    def Cpr(self) -> Quantity:
+    def Cpr(self) -> units.Quantity:
         """Returns the radiation pressure cross-section."""
-        return (self._cpp_Cpr * meter ** 2).to_compact()
+        return (self._cpp_Cpr * units.meter ** 2).to_compact()
 
     @property
-    def Cback(self) -> Quantity:
+    def Cback(self) -> units.Quantity:
         """Returns the backscattering cross-section."""
-        return (self._cpp_Cback * meter ** 2).to_compact()
+        return (self._cpp_Cback * units.meter ** 2).to_compact()
 
     @property
-    def Cforward(self) -> Quantity:
+    def Cforward(self) -> units.Quantity:
         """Returns the forward-scattering cross-section."""
-        return (self._cpp_Cforward * meter ** 2).to_compact()
+        return (self._cpp_Cforward * units.meter ** 2).to_compact()
 
     @property
-    def Cratio(self) -> Quantity:
+    def Cratio(self) -> units.Quantity:
         """Returns the ratio of backscattering cross-section over total scattering."""
-        return (self._cpp_Cratio * meter ** 2).to_compact()
+        return (self._cpp_Cratio * units.meter ** 2).to_compact()
 
-    def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: Quantity) -> Tuple[numpy.ndarray, numpy.ndarray]:
+    def get_farfields_array(self, phi: numpy.ndarray, theta: numpy.ndarray, r: units.Quantity) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """
         Computes the scattering far field for unstructured coordinates.
 
@@ -145,7 +126,7 @@ class BaseScatterer:
         """
         return self._cpp_get_fields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
 
-    def get_s1s2(self, sampling: int = 200, distance: Quantity = 1 * meter) -> S1S2:
+    def get_s1s2(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> S1S2:
         r"""
         Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.
 
@@ -169,7 +150,7 @@ class BaseScatterer:
         ----------
         sampling : int
             The number of angular points used to sample the S1 and S2 functions. Higher sampling improves the resolution of the scattering pattern but increases computation time.
-        distance : Quantity, optional
+        distance : units.Quantity, optional
             The distance from the scatterer at which the S1 and S2 parameters are evaluated. This is typically set to 1 meter by default, but can be adjusted for specific setups.
 
         Returns
@@ -194,7 +175,7 @@ class BaseScatterer:
         """
         return S1S2(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_stokes(self, sampling: int = 200, distance: Quantity = 1 * meter) -> Stokes:
+    def get_stokes(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> Stokes:
         r"""
         Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.
 
@@ -219,7 +200,7 @@ class BaseScatterer:
         ----------
         sampling : int
             The number of angular points used to sample the Stokes parameters. A higher sampling value increases the resolution of the computed polarization pattern.
-        distance : Quantity, optional
+        distance : units.Quantity, optional
             The distance from the scatterer at which the Stokes parameters are evaluated. The default is 1 meter, but this can be adjusted based on the experimental setup.
 
         Returns
@@ -244,7 +225,7 @@ class BaseScatterer:
         """
         return Stokes(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_far_field(self, sampling: int = 200, distance: Quantity = 1 * meter) -> FarField:
+    def get_far_field(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> FarField:
         r"""
         Compute the far-field scattering pattern for the scatterer.
 
@@ -272,7 +253,7 @@ class BaseScatterer:
         ----------
         sampling : int
             The number of angular points used to sample the far-field pattern. A higher sampling value increases the angular resolution of the computed far-field intensities.
-        distance : Quantity, optional
+        distance : units.Quantity, optional
             The distance from the scatterer at which the far fields are evaluated. By default, this is set to 1 meter, but it can be adjusted to suit the specific experimental configuration.
 
         Returns
@@ -297,7 +278,7 @@ class BaseScatterer:
         """
         return FarField(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_spf(self, sampling: int = 200, distance: Quantity = 1 * meter) -> SPF:
+    def get_spf(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> SPF:
         r"""
         Compute the scattering phase function (SPF) for the scatterer.
 
@@ -320,7 +301,7 @@ class BaseScatterer:
         ----------
         sampling : int
             The number of angular points used to sample the scattering phase function. A higher sampling value increases the angular resolution of the computed SPF.
-        distance : Quantity, optional
+        distance : units.Quantity, optional
             The distance from the scatterer at which the scattering phase function is evaluated. By default, this is set to 1 meter, but it can be adjusted depending on the specific experimental configuration.
 
         Returns
@@ -395,19 +376,19 @@ class BaseScatterer:
         """
         return Footprint(scatterer=self, detector=detector)
 
-    def _assign_index_or_material(self, property: Quantity | BaseMaterial) -> tuple[Quantity | None, BaseMaterial | None]:
+    def _assign_index_or_material(self, property: units.Quantity | BaseMaterial) -> tuple[units.Quantity | None, BaseMaterial | None]:
         """
         Determines whether the provided property is a refractive index (Quantity) or a material (BaseMaterial),
         and returns the corresponding values.
 
         Parameters:
         ----------
-        property : Quantity or BaseMaterial
+        property : units.Quantity or BaseMaterial
             The core property to be assigned, which can either be a refractive index (Quantity) or a material (BaseMaterial).
 
         Returns:
         -------
-        tuple[Quantity | None, BaseMaterial | None]
+        tuple[units.Quantity | None, BaseMaterial | None]
             A tuple where the first element is the refractive index (Quantity) if provided, otherwise None.
             The second element is the material (BaseMaterial) if provided, otherwise None.
 
@@ -416,9 +397,9 @@ class BaseScatterer:
         ValueError:
             If the provided property is neither a Quantity (refractive index) nor a BaseMaterial.
         """
-        if isinstance(property, Quantity):
+        if isinstance(property, units.Quantity):
             return property, None
         if isinstance(property, BaseMaterial):
-            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength.to_base_units().magnitude))[0] * RIU, property
+            return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength.to_base_units().magnitude))[0] * units.RIU, property
 
         raise ValueError(f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU).")

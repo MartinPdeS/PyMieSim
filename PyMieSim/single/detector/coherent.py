@@ -3,23 +3,23 @@
 
 import logging
 from typing import Optional
+from PyMieSim import units
 from PyMieSim.binary.interface_detector import DETECTOR
-from PyMieSim.units import radian, Quantity, degree, AU, RIU
 from PyMieSim.single.detector.base import BaseDetector
 
 
 class CoherentMode(DETECTOR, BaseDetector):
     def __init__(self,
             mode_number: str,
-            NA: Quantity,
-            gamma_offset: Quantity,
-            phi_offset: Quantity,
-            sampling: Quantity = 200,
-            polarization_filter: Optional[Quantity] = None,
-            cache_NA: Optional[Quantity] = 0 * AU,
+            NA: units.Quantity,
+            gamma_offset: units.Quantity,
+            phi_offset: units.Quantity,
+            sampling: units.Quantity = 200,
+            polarization_filter: Optional[units.Quantity] = None,
+            cache_NA: Optional[units.Quantity] = 0 * units.AU,
             mean_coupling: bool = False,
-            rotation: Quantity = 90 * degree,
-            medium_refractive_index: Quantity = 1.0 * RIU,
+            rotation: units.Quantity = 90 * units.degree,
+            medium_refractive_index: units.Quantity = 1.0 * units.RIU,
         ):
         """
         Initialize the CoherentMode detector with its parameters.
@@ -31,35 +31,35 @@ class CoherentMode(DETECTOR, BaseDetector):
         ----------
         mode_number : str
             String representing the mode to be initialized (e.g., 'LP01', 'HG11', 'LG22').
-        NA : Quantity
+        NA : units.Quantity
             The numerical aperture of the detector, a dimensionless number that defines its light-gathering
             ability. Higher NA values indicate a wider acceptance angle for capturing light.
-        gamma_offset : Quantity
+        gamma_offset : units.Quantity
             The rotational offset in the gamma direction, controlling the angular positioning of the detector relative to the scatterer.
-        phi_offset : Quantity
+        phi_offset : units.Quantity
             The rotational offset in the phi direction, specifying the azimuthal angle of the detector's orientation.
-        sampling : Quantity
+        sampling : units.Quantity
             The sampling resolution of the detector, controlling how finely the detector's field is sampled
             over the surface. A higher value increases precision but may require more computational resources. Default is 200.
-        polarization_filter : Optional[Quantity]
+        polarization_filter : Optional[units.Quantity]
             The polarization filter applied to the detected light. If specified, it allows the detector to
             selectively capture light with a particular polarization. If set to `nan`, no filtering is applied.
-        cache_NA : Optional[Quantity]
+        cache_NA : Optional[units.Quantity]
             Numerical aperture of the detector cache. Default is 0 AU.
         mean_coupling : bool
             A flag indicating whether the mean value of the coupling is used when calculating the light
             interaction with the scatterer. This is typically set for cases where an average coupling is
             needed over multiple angles or configurations.
-        rotation : Quantity
+        rotation : units.Quantity
             The rotational angle of the detector, defining its orientation relative to the incoming light or
             scatterer. The default value rotates the detector by 90 degrees.
-        medium_refractive_index : Quantity
+        medium_refractive_index : units.Quantity
             The refractive index of the medium in which the detector operates. This is important for
             determining the acceptance cone of light.
             Default is 1.0 (vacuum or air).
         """
 
-        if NA > 0.3 * AU or NA < 0 * AU:
+        if NA > 0.3 * units.AU or NA < 0 * units.AU:
             logging.warning(f"High values of NA: {NA} do not comply with the paraxial approximation. Values under 0.3 are preferred.")
 
         self.mode_family = mode_number[:2]
@@ -68,28 +68,32 @@ class CoherentMode(DETECTOR, BaseDetector):
             raise ValueError(f'Invalid mode family: {self.mode_family}. Options are ["LP", "LG", "HG"]')
 
         self.mode_number = mode_number
-        self.NA = self._validate_AU_units(NA)
-        self.cache_NA = self._validate_AU_units(cache_NA)
-        self.gamma_offset = self._validate_angle_units(gamma_offset)
-        self.phi_offset = self._validate_angle_units(phi_offset)
-        self.sampling = self._validate_no_units(sampling)
-        self.polarization_filter = self._validate_polarization_units(polarization_filter)
         self.mean_coupling = mean_coupling
-        self.rotation = self._validate_angle_units(rotation)
-        self.medium_refractive_index = self._validate_RIU_units(medium_refractive_index)
+
+        self.NA = self._validate_units(NA, dimension='arbitrary', units=units.AU)
+        self.cache_NA = self._validate_units(cache_NA, dimension='arbitrary', units=units.AU)
+        self.sampling = self._validate_units(sampling, dimension='arbitrary', units=units.AU)
+
+        self.gamma_offset = self._validate_units(gamma_offset, dimension='angle', units=units.degree)
+        self.phi_offset = self._validate_units(phi_offset, dimension='angle', units=units.degree)
+        self.rotation = self._validate_units(rotation, dimension='angle', units=units.degree)
+
+        self.medium_refractive_index = self._validate_units(medium_refractive_index, dimension='refractive index', units=units.RIU)
+
+        self.polarization_filter = self._validate_detector_polarization_units(polarization_filter)
 
         super().__init__(
-            mode_number=self.mode_number,
-            NA=self.NA.to_base_units().magnitude,
-            cache_NA=self.cache_NA.to_base_units().magnitude,
-            gamma_offset=self.gamma_offset.to(radian).magnitude,
-            phi_offset=self.phi_offset.to(radian).magnitude,
-            sampling=self.sampling,
-            polarization_filter=self.polarization_filter.to(radian).magnitude,
-            mean_coupling=self.mean_coupling,
-            rotation=self.rotation.to(radian).magnitude,
             coherent=False,
-            medium_refractive_index=self.medium_refractive_index.to_base_units().magnitude
+            mode_number=self.mode_number,
+            NA=self.NA.to(units.AU).magnitude,
+            cache_NA=self.cache_NA.to(units.AU).magnitude,
+            sampling=self.sampling,
+            mean_coupling=self.mean_coupling,
+            gamma_offset=self.gamma_offset.to(units.radian).magnitude,
+            phi_offset=self.phi_offset.to(units.radian).magnitude,
+            polarization_filter=self.polarization_filter.to(units.radian).magnitude,
+            rotation=self.rotation.to(units.radian).magnitude,
+            medium_refractive_index=self.medium_refractive_index.to(units.RIU).magnitude
         )
 
 

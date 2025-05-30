@@ -68,3 +68,62 @@ def initialize_registry(ureg: Optional[object] = None):
 
 
 initialize_registry()
+
+
+class UnitsValidation():
+    def _validate_units(cls, value, dimension: str, units: str):
+        """
+        Ensures that diameter is Quantity objects with power units.
+        """
+
+        if not isinstance(value, ureg.Quantity):
+            if units == ureg.dimensionless:
+                return value * ureg.dimensionless
+
+            raise ValueError(f"{value} must be a Quantity instance, use PyMieSim.units module.")
+
+        if not value.check(units):
+            raise ValueError(f"{value} must be a Quantity with {dimension} units [{units}] but has {value.units}.")
+
+        return value
+
+    def _validate_source_polarization(cls, value):
+        """
+        Ensures that polarization is well defined.
+        """
+        from PyMieSim.polarization import BasePolarization, Linear
+
+        if isinstance(value, BasePolarization):
+            return value
+
+        if isinstance(value, ureg.Quantity):
+            value = cls._validate_units(value, dimension='angle', units=ureg.degree)
+            return Linear(value)
+
+        raise ValueError(f"{value} must be a Linear or a Quantity with degree units.")
+
+    def _validate_property(cls, value):
+        """
+        Ensures that diameter is Quantity objects with RIU units.
+        """
+        from PyOptik.material.base_class import BaseMaterial
+
+        if not isinstance(value, ureg.Quantity | BaseMaterial):
+            raise ValueError(f"{value} must be a Quantity (RIU units) or a material (BaseMaterial from PyOptik).")
+
+        return value
+
+    def _validate_detector_polarization_units(cls, value):
+        """
+        Ensures that medium_refractive_index, and rotation are Quantity objects with angle units.
+        Converts them to numpy arrays after validation.
+        """
+        import numpy
+
+        if value is None:
+            value = numpy.nan * ureg.degree
+
+        if not isinstance(value, ureg.Quantity) or not value.check(ureg.refractive_index_unit):
+            raise ValueError(f"{value} must be a Quantity with refractive index units [RIU].")
+
+        return value

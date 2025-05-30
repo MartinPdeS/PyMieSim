@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch
 from PyMieSim.single.source import PlaneWave
 from PyMieSim.polarization import Linear
-from PyMieSim.units import nanometer, degree, watt
+from PyMieSim.units import nanometer, degree, watt, volt, meter
 from PyMieSim.single import plot_system
 
 
@@ -10,7 +10,7 @@ def test_planewave_initialization():
     """Test the initialization of PlaneWave source with different polarization inputs."""
     # Test with Linear
     planewave_1 = PlaneWave(
-        amplitude=1 * watt,
+        amplitude=1 * volt / meter,
         polarization=Linear(element=0 * degree),
         wavelength=1550 * nanometer
     )
@@ -18,7 +18,7 @@ def test_planewave_initialization():
 
     # Test with scalar polarization
     planewave_2 = PlaneWave(
-        amplitude=1 * watt,
+        amplitude=1 * volt / meter,
         polarization=0 * degree,
         wavelength=1550 * nanometer
     )
@@ -29,7 +29,7 @@ def test_planewave_initialization():
 def source():
     """Fixture to create a PlaneWave source with predefined parameters."""
     return PlaneWave(
-        amplitude=1 * watt,
+        amplitude=1 * volt / meter,
         polarization=0 * degree,
         wavelength=1550 * nanometer
     )
@@ -45,7 +45,7 @@ def test_plotting(mock_show, source):
 @patch('pyvista.Plotter.show')
 def test_plot_system(mock_show):
     source = PlaneWave(
-        amplitude=1 * watt,
+        amplitude=1 * volt / meter,
         polarization=0 * degree,
         wavelength=1550 * nanometer
     )
