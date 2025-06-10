@@ -24,6 +24,7 @@ requirements:
     - flexparser <0.4  # This is due to a dataclass inheritance problem coming from the pint package
     - martinpdes::pyoptik
     - martinpdes::mpsplots==1.6.3
+    - matplotlib ~=3.10.3
     - numpy ==2.2.6
     - pydantic ~=2.9.2
     - pandas ~=2.3.0
