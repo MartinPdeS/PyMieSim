@@ -106,6 +106,13 @@ Setting up the experiment
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 800.0 nm to 1.0000000000000002 µm which is outside the allowable range of 5.0 µm to 33.333 µm µm. [Material: BK7]
+      warnings.warn(
+
 
 
 
@@ -158,7 +165,7 @@ Visualizing how the backscattering efficiency varies with the core diameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.440 seconds)
+   **Total running time of the script:** (0 minutes 0.361 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_coreshell_coreshell_Qback_vs_corediameter.py:
