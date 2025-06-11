@@ -56,11 +56,11 @@ dependencies = [
     "flexparser <0.5",  # This is due to a dataclass inheritance problem coming from the pint package
     "numpy ==2.2.6",
     "matplotlib ==3.10.3",
-    "MPSPlots ==1.6.3",
+    "MPSPlots ==1.6.4",
     "pydantic >=2.9.2,<2.12.0",
     "pint-pandas ~=0.6",
     "pandas ~=2.3.0",
-    "PyOptik ~=1.9",
+    "PyOptik ==1.10.1",
     "tabulate ~=0.9",
     "pyvista ==0.45.2"
 ]
