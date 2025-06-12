@@ -154,9 +154,20 @@ PYBIND11_MODULE(interface_detector, module) {
                  See class docstring for parameter descriptions.
              )pbdoc")
 
-        .def_readonly("mode_field", &Detector::mode_field)
-        .def_readonly("mode_id", &Detector::mode_id)
-
+        .def_readonly(
+            "mode_field",
+            &Detector::mode_field,
+            R"pbdoc(
+                ModeField instance representing the detector's mode.
+                Contains methods for field computation and projections.
+            )pbdoc")
+        .def_readonly(
+            "mode_id",
+            &Detector::mode_id,
+            R"pbdoc(
+                ModeID instance representing the detector's mode identifier.
+                Contains family and number information for the mode.
+            )pbdoc")
         .def("get_structured_scalarfield",
             &Detector::get_structured_scalarfield,
             py::arg("sampling"),
@@ -199,7 +210,7 @@ PYBIND11_MODULE(interface_detector, module) {
                  True if the detector is in coherent mode; false for incoherent.
              )pbdoc")
 
-        .def_readonly("_cpp_NA", &Detector::NA,
+        .def_readonly("_cpp_NA", &Detector::numerical_aperture,
              R"pbdoc(
                  Numerical aperture of the detector.
 

@@ -1,13 +1,35 @@
 #include "detector/detector.h"
 
 
-#define EPSILON0 (double)8.854187817620389e-12
-#define C (double)299792458.0
+// ------------------------- Initialization Function -------------------------
+void Detector::initialize(const double &medium_refractive_index) {
+    this->parse_mode(this->mode_number);
+    this->mode_field = ModeField(this->mode_id);
+
+    this->max_angle = this->numercical_aperture_to_angle(this->numerical_aperture / medium_refractive_index);
+    this->min_angle = this->numercical_aperture_to_angle(this->cache_numerical_aperture / medium_refractive_index);
+
+    if (this->max_angle < this->min_angle)
+        throw std::invalid_argument("Cache NA cannot be larger than detector NA.");
 
 
-using complex128 = std::complex<double>;
+    this->fibonacci_mesh = FibonacciMesh(
+        this->sampling,
+        this->max_angle,
+        this->min_angle,
+        this->phi_offset,
+        this->gamma_offset,
+        this->rotation
+    );
 
+    this->scalar_field = this->mode_field.get_unstructured(
+        this->fibonacci_mesh.base_cartesian_coordinates.x,
+        this->fibonacci_mesh.base_cartesian_coordinates.y
+    );
 
+}
+
+// ------------------------- Utils Functions -------------------------
 void Detector::parse_mode(const std::string& mode_number) {
     if (mode_number.size() < 4) {
         throw std::invalid_argument("mode string too short, need at least 4 chars");
@@ -23,113 +45,14 @@ void Detector::parse_mode(const std::string& mode_number) {
 }
 
 
-double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) const
-{
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+double Detector::numercical_aperture_to_angle(double numerical_aperture) const {
+    if (numerical_aperture <= 1.0)
+        return asin(numerical_aperture);
 
-    double
-        coupling_theta = this->get_norm2_squared(theta_field),
-        coupling_phi = this->get_norm2_squared(phi_field);
-
-    this->apply_polarization_filter(
-        coupling_theta,
-        coupling_phi,
-        this->polarization_filter
-    );
-
-    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
-}
-
-double Detector::get_coupling_mean_no_coherent(const BaseScatterer &scatterer) const
-{
-    return get_coupling_point_no_coherent(scatterer);
-}
-
-double Detector::get_coupling_point_coherent(const BaseScatterer &scatterer) const
-{
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
-
-    auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
-
-    this->apply_scalar_field(horizontal_projection, vertical_projection);
-
-    double
-        coupling_theta = get_norm1_squared(horizontal_projection),
-        coupling_phi = get_norm1_squared(vertical_projection);
-
-    this->apply_polarization_filter(
-        coupling_theta,
-        coupling_phi,
-        this->polarization_filter
-    );
-
-    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
-}
-
-double Detector::NA2Angle(double NA) const {
-    if (NA <= 1.0)
-        return asin(NA);
-
-    if (NA >= 1.0)
-        return asin(NA - 1.0) + PI / 2.0;
+    if (numerical_aperture >= 1.0)
+        return asin(numerical_aperture - 1.0) + PI / 2.0;
 
     return 1.0;
-}
-
-double Detector::get_coupling_mean_coherent(const BaseScatterer &scatterer) const
-{
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
-
-    auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
-
-    this->apply_scalar_field(horizontal_projection, vertical_projection);
-
-    double
-        coupling_theta = this->get_norm2_squared(horizontal_projection),
-        coupling_phi = this->get_norm2_squared(vertical_projection);
-
-    this->apply_polarization_filter(
-        coupling_theta,
-        coupling_phi,
-        this->polarization_filter
-    );
-
-    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
-}
-
-std::tuple<std::vector<complex128>, std::vector<complex128>>
-Detector::get_projected_fields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
-{
-
-    std::vector<complex128>
-        horizontal_projection(theta_field.size()),
-        vertical_projection(theta_field.size());
-
-    for (size_t i=0; i<theta_field.size(); ++i)
-    {
-        vertical_projection[i] =
-            theta_field[i] * this->fibonacci_mesh.vertical_perpendicular_projection[i] +
-            phi_field[i] * this->fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
-
-
-
-        horizontal_projection[i] =
-            theta_field[i] * this->fibonacci_mesh.horizontal_perpendicular_projection[i] +
-            phi_field[i] * this->fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version
-    }
-
-    return std::make_tuple(horizontal_projection, vertical_projection);
-
-}
-
-
-void Detector::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
-{
-    for (size_t i=0; i<field0.size(); i++)
-    {
-        field0[i] *= this->scalar_field[i];
-        field1[i] *= this->scalar_field[i];
-    }
 }
 
 template <class T> inline
@@ -162,11 +85,46 @@ void Detector::square_array(std::vector<T> &array)
         v = pow( abs(v), 2);
 }
 
+
+std::tuple<std::vector<complex128>, std::vector<complex128>>
+Detector::get_projected_fields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
+{
+
+    std::vector<complex128>
+        horizontal_projection(theta_field.size()),
+        vertical_projection(theta_field.size());
+
+    for (size_t i=0; i<theta_field.size(); ++i)
+    {
+        vertical_projection[i] =
+            theta_field[i] * this->fibonacci_mesh.vertical_perpendicular_projection[i] +
+            phi_field[i] * this->fibonacci_mesh.vertical_parallel_projection[i] ;  // new_version
+
+
+
+        horizontal_projection[i] =
+            theta_field[i] * this->fibonacci_mesh.horizontal_perpendicular_projection[i] +
+            phi_field[i] * this->fibonacci_mesh.horizontal_parallel_projection[i] ; // new_version
+    }
+
+    return std::make_tuple(horizontal_projection, vertical_projection);
+
+}
+
+
+void Detector::apply_scalar_field(std::vector<complex128> &field0, std::vector<complex128> &field1) const //Theta = Para
+{
+    for (size_t i=0; i<field0.size(); i++) {
+        field0[i] *= this->scalar_field[i];
+        field1[i] *= this->scalar_field[i];
+    }
+}
+
 template <typename T> inline
 void Detector::apply_polarization_filter(T &coupling_theta, T &coupling_phi, double polarization_filter) const
 {
 
-    if (isnan(this->polarization_filter))
+    if (std::isnan(this->polarization_filter))
         return;
 
     double
@@ -191,8 +149,8 @@ pybind11::array_t<complex128> Detector::get_structured_scalarfield(const size_t 
     const double dy = (ymax - ymin) / (sampling - 1);
 
     for (size_t i = 0; i < sampling; ++i) {
-    x_coords[i] = xmin + i * dx;
-    y_coords[i] = ymin + i * dy;
+        x_coords[i] = xmin + i * dx;
+        y_coords[i] = ymin + i * dy;
     }
 
     // Generate structured meshgrid (flattened)
@@ -201,10 +159,10 @@ pybind11::array_t<complex128> Detector::get_structured_scalarfield(const size_t 
     Y_flat.reserve(sampling * sampling);
 
     for (size_t j = 0; j < sampling; ++j) {
-    for (size_t i = 0; i < sampling; ++i) {
-            X_flat.push_back(x_coords[i]);  // column (x)
-            Y_flat.push_back(y_coords[j]);  // row (y)
-    }
+        for (size_t i = 0; i < sampling; ++i) {
+                X_flat.push_back(x_coords[i]);  // column (x)
+                Y_flat.push_back(y_coords[j]);  // row (y)
+        }
     }
 
     // Compute unstructured field
@@ -212,4 +170,79 @@ pybind11::array_t<complex128> Detector::get_structured_scalarfield(const size_t 
 
     // Reshape to 2D numpy array
     return _vector_to_numpy(output, {sampling, sampling});
+}
+
+
+// ------------------------- Coupling Function -------------------------
+double Detector::get_coupling(const BaseScatterer& scatterer) const {
+    if (this->coherent)
+        return this->mean_coupling ? get_coupling_mean_coherent(scatterer) : get_coupling_point_coherent(scatterer);
+    else
+        return this->mean_coupling ? get_coupling_mean_no_coherent(scatterer) : get_coupling_point_no_coherent(scatterer);
+}
+
+
+double Detector::get_coupling_mean_coherent(const BaseScatterer &scatterer) const
+{
+    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+
+    auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
+
+    this->apply_scalar_field(horizontal_projection, vertical_projection);
+
+    double
+        coupling_theta = this->get_norm2_squared(horizontal_projection),
+        coupling_phi = this->get_norm2_squared(vertical_projection);
+
+    this->apply_polarization_filter(
+        coupling_theta,
+        coupling_phi,
+        this->polarization_filter
+    );
+
+    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega / this->fibonacci_mesh.Omega;
+}
+
+
+double Detector::get_coupling_mean_no_coherent(const BaseScatterer &scatterer) const
+{
+    return get_coupling_point_no_coherent(scatterer);
+}
+
+double Detector::get_coupling_point_coherent(const BaseScatterer &scatterer) const
+{
+    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+
+    auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
+
+    this->apply_scalar_field(horizontal_projection, vertical_projection);
+
+    double
+        coupling_theta = get_norm1_squared(horizontal_projection),
+        coupling_phi = get_norm1_squared(vertical_projection);
+
+    this->apply_polarization_filter(
+        coupling_theta,
+        coupling_phi,
+        this->polarization_filter
+    );
+
+    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
+}
+
+double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) const
+{
+    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+
+    double
+        coupling_theta = this->get_norm2_squared(theta_field),
+        coupling_phi = this->get_norm2_squared(phi_field);
+
+    this->apply_polarization_filter(
+        coupling_theta,
+        coupling_phi,
+        this->polarization_filter
+    );
+
+    return 0.5 * EPSILON0 * C * (coupling_theta + coupling_phi) * this->fibonacci_mesh.dOmega;
 }
