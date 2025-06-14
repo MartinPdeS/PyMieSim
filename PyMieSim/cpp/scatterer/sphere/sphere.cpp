@@ -1,8 +1,28 @@
 #include "scatterer/sphere/sphere.h"
 
 
-typedef std::complex<double> complex128;
+// ---------------------- Constructors ---------------------------------------
+Sphere::Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order, bool compute_cn_dn)
+: BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
+{
+    this->compute_cross_section();
+    this->compute_size_parameter();
+    this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
+    this->compute_an_bn(this->max_order);
 
+    if (compute_cn_dn)
+        this->compute_cn_dn(this->max_order);
+}
+
+// ---------------------- Methods ---------------------------------------
+void Sphere::compute_size_parameter() {
+    this->size_parameter = source.wavenumber * this->diameter / 2 * this->medium_refractive_index;
+    this->size_parameter_squared = pow(this->size_parameter, 2);
+}
+
+void Sphere::compute_cross_section() {
+    this->cross_section = PI * std::pow(this->diameter / 2.0, 2);
+}
 
 void Sphere::compute_an_bn(size_t _max_order) {
 
@@ -93,7 +113,6 @@ void Sphere::compute_cn_dn(size_t _max_order) {
         dn[order] = jnmx[order] * m * numerator[order] / d_denominator[order] ;
     }
 }
-
 
 double Sphere::get_Qsca() const {
     double value = 0;

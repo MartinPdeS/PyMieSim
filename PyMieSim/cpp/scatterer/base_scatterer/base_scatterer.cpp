@@ -1,11 +1,4 @@
-#include <vector>
-#include "source/source.h"
-#include "utils/numpy_interface.h"
-#include "fibonacci/fibonacci.h"
-#include "full_mesh/full_mesh.h"
 #include "scatterer/base_scatterer/base_scatterer.h"
-
-typedef std::complex<double> complex128;
 
 
 
