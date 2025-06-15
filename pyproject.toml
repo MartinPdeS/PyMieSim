@@ -76,7 +76,7 @@ testing = [
     "pytest>=0.6",
     "pytest-cov>=2.0",
     "pytest-json-report==1.5.0",
-    "coverage==7.8.2"
+    "coverage==7.9.1"
 ]
 documentation = [
     "numpydoc==1.8.0",
