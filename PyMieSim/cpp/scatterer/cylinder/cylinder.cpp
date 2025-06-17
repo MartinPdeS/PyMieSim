@@ -1,5 +1,25 @@
 #include "scatterer/cylinder/cylinder.h"
 
+// ---------------------- Constructors ---------------------------------------
+Cylinder::Cylinder(double diameter, complex128 refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order) :
+BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
+{
+    this->compute_cross_section();
+    this->compute_size_parameter();
+    this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
+    this->compute_an_bn(this->max_order);
+}
+
+// ---------------------- Methods ---------------------------------------
+
+void Cylinder::compute_size_parameter() {
+    this->size_parameter = source.wavenumber * this->diameter / 2 * this->medium_refractive_index;
+    this->size_parameter_squared = pow(this->size_parameter, 2);
+}
+
+void Cylinder::compute_cross_section() {
+    this->cross_section = this->diameter;
+}
 
 double Cylinder::get_Qsca() const {
     complex128 Qsca1=0, Qsca2=0;

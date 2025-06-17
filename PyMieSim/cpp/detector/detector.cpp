@@ -23,8 +23,8 @@ void Detector::initialize(const double &medium_refractive_index) {
     );
 
     this->scalar_field = this->mode_field.get_unstructured(
-        this->fibonacci_mesh.base_cartesian_coordinates.x,
-        this->fibonacci_mesh.base_cartesian_coordinates.y
+        this->fibonacci_mesh.base_cartesian.x,
+        this->fibonacci_mesh.base_cartesian.y
     );
 
 }

@@ -1,11 +1,4 @@
-#include <vector>
-#include "source/source.h"
-#include "utils/numpy_interface.h"
-#include "fibonacci/fibonacci.h"
-#include "full_mesh/full_mesh.h"
 #include "scatterer/base_scatterer/base_scatterer.h"
-
-typedef std::complex<double> complex128;
 
 
 
@@ -86,8 +79,8 @@ std::tuple<std::vector<complex128>, std::vector<complex128>>
 BaseScatterer::compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius) const
 {
     return this->compute_unstructured_fields(
-        fibonacci_mesh.spherical_coordinates.phi,
-        fibonacci_mesh.spherical_coordinates.theta,
+        fibonacci_mesh.spherical.phi,
+        fibonacci_mesh.spherical.theta,
         radius
     );
 }
@@ -97,15 +90,15 @@ BaseScatterer::compute_full_structured_fields(const size_t& sampling, const doub
 {
     FullSteradian full_mesh = FullSteradian(sampling, radius);
 
-    auto [S1, S2] = this->compute_s1s2(full_mesh.spherical_coordinates.phi);
+    auto [S1, S2] = this->compute_s1s2(full_mesh.spherical.phi);
 
-    auto [phi_field, theta_field] = this->compute_structured_fields(S1, S2, full_mesh.spherical_coordinates.theta, radius);
+    auto [phi_field, theta_field] = this->compute_structured_fields(S1, S2, full_mesh.spherical.theta, radius);
 
     return std::make_tuple(
         std::move(phi_field),
         std::move(theta_field),
-        std::move(full_mesh.spherical_coordinates.phi),
-        std::move(full_mesh.spherical_coordinates.theta)
+        std::move(full_mesh.spherical.phi),
+        std::move(full_mesh.spherical.theta)
     );
 }
 
@@ -178,8 +171,8 @@ BaseScatterer::compute_full_structured_spf(const size_t sampling, const double r
     FullSteradian full_mesh = FullSteradian(sampling, radius);
 
     auto [phi_field, theta_field] = this->compute_structured_fields(
-        full_mesh.spherical_coordinates.phi,
-        full_mesh.spherical_coordinates.theta,
+        full_mesh.spherical.phi,
+        full_mesh.spherical.theta,
         radius
     );
 
@@ -196,7 +189,7 @@ BaseScatterer::compute_full_structured_spf(const size_t sampling, const double r
 }
 
 complex128
-BaseScatterer::get_coefficient_py(const std::string &type, const size_t order){
+BaseScatterer::get_coefficient_py(const std::string &type, const size_t order) {
     if (order > max_order)
         throw std::invalid_argument("Coefficient number is higher than computed max value: " + std::to_string(max_order));
 

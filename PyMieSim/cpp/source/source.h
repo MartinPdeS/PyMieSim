@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <complex>
+#include <cmath> // For std::isnan
 
 #define PI (double)3.14159265358979323846264338
 #define EPSILON0 (double)8.854187817620389e-12
@@ -19,9 +20,7 @@ class BaseSource {
         size_t wavelength_index;
 
     BaseSource() = default;
-    BaseSource(double wavelength, std::vector<complex128> jones_vector, double amplitude)
-    : wavelength(wavelength), jones_vector(jones_vector), amplitude(amplitude), wavenumber(2 * PI / wavelength)
-    {}
+    BaseSource(double wavelength, std::vector<complex128> jones_vector, double amplitude);
 
 };
 
@@ -29,8 +28,7 @@ class Planewave: public BaseSource {
     public:
         Planewave() = default;
 
-        Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude)
-        : BaseSource(wavelength, jones_vector, amplitude){}
+        Planewave(double wavelength, std::vector<complex128> jones_vector, double amplitude);
     };
 
 class Gaussian: public BaseSource {
@@ -40,9 +38,7 @@ class Gaussian: public BaseSource {
 
         Gaussian() = default;
 
-        Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power)
-        : BaseSource(wavelength, jones_vector, compute_amplitude_from_power(wavelength, NA, optical_power)), NA(NA), optical_power(optical_power)
-        {}
+        Gaussian(double wavelength, std::vector<complex128> jones_vector, double NA, double optical_power);
 
         double compute_amplitude_from_power(double wavelength, double NA, double optical_power);
     };

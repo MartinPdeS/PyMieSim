@@ -1,12 +1,22 @@
 #include "mode_field.h"
 
 
-#define PI (double)3.14159265358979323846264338
-typedef std::complex<double> complex128;
-
-
 // ________________________________ COMMON ___________________________________
 // ________________________________ STD ___________________________________
+
+std::vector<complex128>
+ModeField::get_unstructured(std::vector<double> x_coords, std::vector<double> y_coords) const {
+   if (this->mode_id.mode_family == "LP")
+      return this->get_LP_unstructured(x_coords, y_coords);
+   if (this->mode_id.mode_family == "HG")
+      return this->get_HG_unstructured(x_coords, y_coords);
+   if (this->mode_id.mode_family == "LG")
+      return this->get_LG_unstructured(x_coords, y_coords);
+   if (this->mode_id.mode_family == "NC")
+      return this->get_NC_unstructured(x_coords, y_coords);
+
+   throw std::runtime_error("Invalid mode family");
+}
 
 void ModeField::normalize_coordinates(std::vector<double> &x_coords, std::vector<double> &y_coords) const {
    double max_norm = 0.0;

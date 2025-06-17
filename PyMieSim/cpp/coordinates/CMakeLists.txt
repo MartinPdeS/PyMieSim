@@ -1,10 +1,9 @@
-# cpp/fibonacci/CMakeLists.txt
+# cpp/coordinates/CMakeLists.txt
 
-set(NAME "fibonacci")
+set(NAME "coordinates")
 
 # Create a shared library for functionality.
 add_library("cpp_${NAME}" STATIC "${NAME}.cpp")
-target_link_libraries("cpp_${NAME}" PRIVATE cpp_coordinates)
 
 install(
     TARGETS cpp_${NAME}

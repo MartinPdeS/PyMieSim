@@ -83,18 +83,17 @@ class CoherentMode(DETECTOR, BaseDetector):
         self.polarization_filter = self._validate_detector_polarization_units(polarization_filter)
 
         super().__init__(
-            coherent=False,
             mode_number=self.mode_number,
+            sampling=self.sampling,
             NA=self.NA.to(units.AU).magnitude,
             cache_NA=self.cache_NA.to(units.AU).magnitude,
-            sampling=self.sampling,
-            mean_coupling=self.mean_coupling,
-            gamma_offset=self.gamma_offset.to(units.radian).magnitude,
             phi_offset=self.phi_offset.to(units.radian).magnitude,
+            gamma_offset=self.gamma_offset.to(units.radian).magnitude,
             polarization_filter=self.polarization_filter.to(units.radian).magnitude,
             rotation=self.rotation.to(units.radian).magnitude,
-            medium_refractive_index=self.medium_refractive_index.to(units.RIU).magnitude
+            coherent=False,
+            mean_coupling=self.mean_coupling,
+            medium_refractive_index=self.medium_refractive_index.to(units.RIU).magnitude,
         )
-
 
 # -

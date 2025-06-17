@@ -6,7 +6,7 @@ from typing import Optional
 
 from PyMieSim.single.representations import Footprint
 from MPSPlots.colormaps import blue_black_red
-from PyMieSim.units import Quantity, degree, watt, meter, second, farad, volt
+from PyMieSim.units import Quantity, watt, meter, second, farad, volt
 from PyMieSim import units
 from PyMieSim.single.scatterer.base import BaseScatterer
 import pyvista
@@ -124,10 +124,10 @@ class BaseDetector(units.UnitsValidation):
             None: This method does not return a value. It modifies the provided scene.
         """
         # Stack the mesh coordinates into a single array
-        coordinates = numpy.row_stack((
-            self._cpp_mesh.x,
-            self._cpp_mesh.y,
-            self._cpp_mesh.z
+        coordinates = numpy.vstack((
+            self._cpp_mesh.cartesian.x,
+            self._cpp_mesh.cartesian.y,
+            self._cpp_mesh.cartesian.z
         ))
 
         # Wrap the coordinates for PyVista visualization
@@ -206,8 +206,8 @@ class BaseDetector(units.UnitsValidation):
 
         """
         Ephi, Etheta = scatterer.get_farfields_array(
-            phi=self._cpp_mesh.phi,
-            theta=self._cpp_mesh.theta,
+            phi=self._cpp_mesh.spherical.phi,
+            theta=self._cpp_mesh.spherical.theta,
             r=distance
         )
 
@@ -265,7 +265,7 @@ class BaseDetector(units.UnitsValidation):
 
         dA = self._cpp_mesh.d_omega * distance ** 2
 
-        total_power = 0.5 * numpy.trapz(y=poynting_vector, dx=dA)
+        total_power = 0.5 * numpy.trapezoid(y=poynting_vector, dx=dA)
 
         return total_power
 

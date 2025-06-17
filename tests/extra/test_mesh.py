@@ -16,7 +16,7 @@ def fibonacci_mesh():
     """
     return FibonacciMesh(
         max_angle=np.pi / 4 * units.radian,   # Maximum angle (45 degrees in radians)
-        sampling=1000 * units.AU,             # Number of sample points
+        sampling=100 * units.AU,             # Number of sample points
         phi_offset=30 * units.degree,         # Offset in the azimuthal angle (in degrees)
         gamma_offset=45 * units.degree,       # Offset in the polar angle (in degrees)
         rotation_angle=0 * units.degree       # Rotation angle (in degrees)
@@ -28,33 +28,10 @@ def test_initialization(fibonacci_mesh):
     Test that the FibonacciMesh object is initialized with the correct parameters.
     """
     assert fibonacci_mesh.max_angle == np.pi / 4  * units.radian
-    assert fibonacci_mesh.sampling == 1000 * units.AU
+    assert fibonacci_mesh.sampling == 100 * units.AU
     assert fibonacci_mesh.phi_offset == 30 * units.degree
     assert fibonacci_mesh.gamma_offset == 45 * units.degree
     assert fibonacci_mesh.rotation_angle == 0 * units.degree
-
-
-def test_get_phi(fibonacci_mesh):
-    """
-    Test that the azimuthal angles (phi) are returned in both radians and degrees correctly.
-    """
-    phi_radians = fibonacci_mesh.get_phi(unit='radian')
-    phi_degrees = fibonacci_mesh.get_phi(unit='degree')
-
-    # Ensure phi values are consistent between radians and degrees
-    assert np.allclose(phi_radians, np.deg2rad(phi_degrees), atol=1e-6)
-
-
-def test_get_theta(fibonacci_mesh):
-    """
-    Test that the polar angles (theta) are returned in both radians and degrees correctly.
-    """
-    theta_radians = fibonacci_mesh.get_theta(unit='radian')
-    theta_degrees = fibonacci_mesh.get_theta(unit='degree')
-
-    # Ensure theta values are consistent between radians and degrees
-    assert np.allclose(theta_radians, np.deg2rad(theta_degrees), atol=1e-6)
-
 
 def test_projection_HV_vector(fibonacci_mesh):
     """
@@ -82,7 +59,9 @@ def test_get_cartesian_coordinates(fibonacci_mesh):
     """
     Test that Cartesian coordinates are correctly computed and returned.
     """
-    coordinates = fibonacci_mesh.get_cartesian_coordinates()
+    coordinates = np.vstack(
+        [fibonacci_mesh.cartesian.x, fibonacci_mesh.cartesian.y, fibonacci_mesh.cartesian.z]
+    )
 
     # Ensure the shape of the Cartesian coordinates is as expected
     assert coordinates.shape == (3, fibonacci_mesh.sampling)
@@ -103,15 +82,19 @@ def test_rotate_around_axis(fibonacci_mesh):
     """
     Test that the mesh is correctly rotated around its axis.
     """
-    initial_coordinates = fibonacci_mesh.get_cartesian_coordinates()
+    initial_coordinates = np.vstack(
+        [fibonacci_mesh.cartesian.x, fibonacci_mesh.cartesian.y, fibonacci_mesh.cartesian.z]
+    )
 
     # Rotate the mesh around its axis by 45 degrees
     fibonacci_mesh.rotate_around_axis(45)
 
-    rotated_coordinates = fibonacci_mesh.get_cartesian_coordinates()
+    rotate_coordinates = np.vstack(
+        [fibonacci_mesh.cartesian.x, fibonacci_mesh.cartesian.y, fibonacci_mesh.cartesian.z]
+    )
 
     # Ensure the coordinates have changed after the rotation
-    assert not np.allclose(initial_coordinates, rotated_coordinates, atol=1e-6)
+    assert not np.allclose(initial_coordinates, rotate_coordinates, atol=1e-6)
 
 
 if __name__ == "__main__":

@@ -21,8 +21,7 @@ std::vector<size_t> get_stride(const std::vector<size_t>& dimensions)
 }
 
 template<typename T>
-pybind11::array_t<T> _vector_to_numpy(const std::vector<T> input_vector, std::vector<size_t> shape = {})
-{
+pybind11::array_t<T> _vector_to_numpy(const std::vector<T> input_vector, std::vector<size_t> shape = {}) {
     // Set shape based on input_vector size if shape is empty
     if (shape.empty()) {
         shape.push_back(input_vector.size());

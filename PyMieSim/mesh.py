@@ -7,7 +7,7 @@ import numpy
 from PyMieSim.binary.interface_detector import FIBONACCIMESH
 from PyMieSim import units
 
-class FibonacciMesh:
+class FibonacciMesh(FIBONACCIMESH):
     """
     Represents an angular mesh using a Fibonacci sphere distribution, where each point
     covers an equivalent solid angle. This type of mesh is useful for simulating angular
@@ -54,8 +54,6 @@ class FibonacciMesh:
         Computes the scalar projection of a given vector onto a base vector.
     projection_on_base_vector(vector, base_vector) -> numpy.ndarray:
         Computes the vector projection of a given vector onto a base vector.
-    get_cartesian_coordinates() -> numpy.ndarray:
-        Returns the Cartesian coordinates of the mesh points.
     get_axis_vector() -> numpy.ndarray:
         Returns the axis vector corresponding to the phi and gamma offsets.
     rotate_around_axis(rotation_angle) -> None:
@@ -81,25 +79,32 @@ class FibonacciMesh:
         return value
 
 
-    def __init__(self, max_angle: float, sampling: int, phi_offset: float, gamma_offset: float, rotation_angle: Optional[float] = 0.0):
+    def __init__(self,
+        max_angle: units.Quantity,
+        sampling: int,
+        phi_offset: units.Quantity,
+        gamma_offset: units.Quantity,
+        min_angle: units.Quantity = 0 * units.degree,
+        rotation_angle: Optional[units.Quantity] = 0.0):
         """
         Initializes the FibonacciMesh with the specified parameters.
 
         Parameters
         ----------
-        max_angle : float
+        max_angle : units.Quantity
             The maximum angle in radians, typically defined by the numerical aperture of the imaging system.
         sampling : int
             The number of points distributed across the mesh. Higher values result in finer resolution.
-        phi_offset : float
+        phi_offset : units.Quantity
             Angle offset in the azimuthal (parallel to incident light polarization) direction in degrees.
-        gamma_offset : float
+        gamma_offset : units.Quantity
             Angle offset in the polar (perpendicular to incident light polarization) direction in degrees.
-        rotation_angle : Optional[float], default=0.0
+        rotation_angle : Optional[units.Quantity], default=0.0
             Rotation of the entire mesh around its principal axis, in degrees.
         """
         self.sampling = sampling
         self.max_angle = self._validate_angle_units(max_angle)
+        self.min_angle = self._validate_angle_units(min_angle)
         self.phi_offset = self._validate_angle_units(phi_offset)
         self.gamma_offset = self._validate_angle_units(gamma_offset)
         self.rotation_angle = self._validate_angle_units(rotation_angle)
@@ -108,145 +113,41 @@ class FibonacciMesh:
         self._para = None
         self._perp = None
 
-        self.vertical_vector = numpy.array([1, 0, 0])
-        self.horizontal_vector = numpy.array([0, 1, 0])
-
-        self.binding = FIBONACCIMESH(
+        super().__init__(
             sampling=self.sampling,
             max_angle=self.max_angle,
+            min_angle=self.min_angle,
+            rotation_angle=self.rotation_angle,
             phi_offset=numpy.deg2rad(self.phi_offset),
             gamma_offset=numpy.deg2rad(self.gamma_offset),
-            rotation_angle=self.rotation_angle
         )
 
         self.initialize_properties()
-        self.binding.compute_vector_field()
-
-
-
-
+        self.compute_vector_field()
 
     @property
-    def horizontal_to_perpendicular(self):
+    def theta(self) -> units.Quantity:
         """
-        Returns the projection of the horizontal base vector onto the perpendicular component.
+        Returns the polar angles (theta) of the mesh in radians.
 
         Returns
         -------
-        numpy.ndarray
-            The horizontal projection onto the perpendicular vector field.
+        units.Quantity
+            The polar angles in radians.
         """
-        return self.binding.horizontal_to_perpendicular_vector
+        return self.spherical.theta * units.radian
 
     @property
-    def horizontal_to_parallel(self):
+    def phi(self) -> units.Quantity:
         """
-        Returns the projection of the horizontal base vector onto the parallel component.
+        Returns the azimuthal angles (phi) of the mesh in radians.
 
         Returns
         -------
-        numpy.ndarray
-            The horizontal projection onto the parallel vector field.
+        units.Quantity
+            The azimuthal angles in radians.
         """
-        return self.binding.horizontal_to_parallel_vector
-
-    @property
-    def vertical_to_perpendicular(self):
-        """
-        Returns the projection of the vertical base vector onto the perpendicular component.
-
-        Returns
-        -------
-        numpy.ndarray
-            The vertical projection onto the perpendicular vector field.
-        """
-        return self.binding.perpendicular_vector
-
-    @property
-    def vertical_to_parallel(self):
-        """
-        Returns the projection of the vertical base vector onto the parallel component.
-
-        Returns
-        -------
-        numpy.ndarray
-            The vertical projection onto the parallel vector field.
-        """
-        return self.binding.parallel_vector
-
-    def get_phi(self, unit: str = 'radian'):
-        """
-        Returns the azimuthal angle (phi) of the mesh in the specified unit.
-
-        Parameters
-        ----------
-        unit : str, optional
-            The unit of the angle to return, either 'radian' or 'degree'. Default is 'radian'.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of phi values in the specified unit.
-        """
-        if unit.lower() in ['rad', 'radian']:
-            return self.binding.phi
-        elif unit.lower() in ['deg', 'degree']:
-            return numpy.rad2deg(self.binding.phi)
-
-    def get_theta(self, unit: str = 'radian'):
-        """
-        Returns the polar angle (theta) of the mesh in the specified unit.
-
-        Parameters
-        ----------
-        unit : str, optional
-            The unit of the angle to return, either 'radian' or 'degree'. Default is 'radian'.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of theta values in the specified unit.
-        """
-        if unit.lower() in ['rad', 'radian']:
-            return self.binding.theta
-        elif unit.lower() in ['deg', 'degree']:
-            return numpy.rad2deg(self.binding.theta)
-
-    @property
-    def X(self) -> numpy.ndarray:
-        """
-        Returns the X-coordinate of the mesh points.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of X-coordinates.
-        """
-        return self.binding.x
-
-    @property
-    def Y(self) -> numpy.ndarray:
-        """
-        Returns the Y-coordinate of the mesh points.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of Y-coordinates.
-        """
-        return self.binding.y
-
-    @property
-    def Z(self) -> numpy.ndarray:
-        """
-        Returns the Z-coordinate of the mesh points.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of Z-coordinates.
-        """
-        return self.binding.z
+        return self.spherical.phi * units.radian
 
     def initialize_properties(self):
         """
@@ -255,23 +156,11 @@ class FibonacciMesh:
 
         This includes calculating Cartesian coordinates and solid angles for each point on the mesh.
         """
-        self.cartesian_coordinates = numpy.column_stack((self.binding.x, self.binding.y, self.binding.z))
-        self.d_omega_radian = self.binding.d_omega
-        self.d_omega_degree = self.binding.d_omega * (180 / numpy.pi) ** 2
-        self.omega_radian = self.binding.omega
-        self.omega_degree = self.binding.omega * (180 / numpy.pi) ** 2
-
-
-    def get_cartesian_coordinates(self) -> numpy.ndarray:
-        """
-        Returns the Cartesian coordinates of the mesh points.
-
-        Returns
-        -------
-        numpy.ndarray
-            Array of Cartesian coordinates (X, Y, Z) for the mesh points.
-        """
-        return numpy.c_[self.X, self.Y, self.Z].T
+        self.cartesian_coordinates = numpy.column_stack((self.cartesian.x, self.cartesian.y, self.cartesian.z))
+        self.d_omega_radian = self.d_omega
+        self.d_omega_degree = self.d_omega * (180 / numpy.pi) ** 2
+        self.omega_radian = self.omega
+        self.omega_degree = self.omega * (180 / numpy.pi) ** 2
 
     def get_axis_vector(self) -> numpy.ndarray:
         """
@@ -282,27 +171,11 @@ class FibonacciMesh:
         numpy.ndarray
             The axis vector normalized to unit length.
         """
-        x, y, z = self.get_cartesian_coordinates()
-        axis_vector = numpy.array([x[0], y[0], z[0]])
+        axis_vector = numpy.array([self.cartesian.x[0], self.cartesian.y[0], self.cartesian.z[0]])
 
         norm = numpy.sqrt(numpy.square(axis_vector).sum())
 
         return axis_vector / norm
-
-    def rotate_around_axis(self, rotation_angle: float) -> None:
-        """
-        Rotates the mesh around its principal axis by a specified angle.
-
-        Parameters
-        ----------
-        rotation_angle : float
-            The angle in degrees by which to rotate the mesh.
-
-        Returns
-        -------
-        None
-        """
-        self.binding.rotate_around_axis(rotation_angle)
 
     def projection_HV_vector(self) -> tuple:
         """
@@ -324,16 +197,16 @@ class FibonacciMesh:
         """
         parallel_projection = [
             self.projection_on_base_vector(
-                vector=self.vertical_to_parallel,
+                vector=self.parallel,
                 base_vector=X
-            ) for X in [self.vertical_vector, self.horizontal_vector]
+            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         perpendicular_projection = [
             self.projection_on_base_vector(
-                vector=self.vertical_to_perpendicular,
+                vector=self.perpendicular,
                 base_vector=X
-            ) for X in [self.vertical_vector, self.horizontal_vector]
+            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         return numpy.array(parallel_projection), numpy.array(perpendicular_projection)
@@ -359,16 +232,16 @@ class FibonacciMesh:
         """
         parallel_projection = [
             self.projection_on_base_scalar(
-                vector=self.vertical_to_parallel,
+                vector=self.parallel,
                 base_vector=X
-            ) for X in [self.vertical_vector, self.horizontal_vector]
+            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         perpendicular_projection = [
             self.projection_on_base_scalar(
-                vector=self.vertical_to_perpendicular,
+                vector=self.perpendicular,
                 base_vector=X
-            ) for X in [self.vertical_vector, self.horizontal_vector]
+            ) for X in [self._cpp_vertical_base, self._cpp_horizontal_base]
         ]
 
         return numpy.array(parallel_projection), numpy.array(perpendicular_projection)
@@ -406,7 +279,7 @@ class FibonacciMesh:
 
         where :math:`\vec{v}` is the input vector and :math:`\vec{b}` is the base vector.
         """
-        return vector.dot(base_vector)
+        return vector._cpp_get_scalar_product(base_vector)
 
     def projection_on_base_vector(self, vector: numpy.ndarray, base_vector: numpy.ndarray) -> numpy.ndarray:
         r"""
@@ -446,6 +319,6 @@ class FibonacciMesh:
         then scales `base_vector` by this scalar to produce the projected vector.
         """
         projection = self.projection_on_base_scalar(vector, base_vector)
-        base_projection = numpy.outer(projection, base_vector)
+        base_projection = numpy.outer(projection, base_vector.data)
 
         return base_projection

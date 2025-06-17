@@ -50,7 +50,7 @@ message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION
 message(STATUS "Binary will be installed in location: ${PYMIESIM_BIN_DIR}")
 
 
-# add_subdirectory(PyMieSim/cpp/_bessel)
+add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
 add_subdirectory(PyMieSim/cpp/bessel)                       # ZBessel
 add_subdirectory(PyMieSim/cpp/_bessel)                      # _ZBessel
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field

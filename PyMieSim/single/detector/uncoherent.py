@@ -21,8 +21,7 @@ class Photodiode(DETECTOR, BaseDetector):
             polarization_filter: Optional[units.Quantity] = None,
             cache_NA: Optional[units.Quantity] = 0 * units.AU,
             mean_coupling: bool = False,
-            medium_refractive_index: units.Quantity = 1.0 * units.RIU
-        ):
+            medium_refractive_index: units.Quantity = 1.0 * units.RIU):
         """
         Initialize the Photodiode detector with its parameters.
 

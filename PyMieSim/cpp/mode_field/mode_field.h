@@ -25,18 +25,7 @@ class ModeField {
       ModeField() = default;
       ModeField(const ModeID &mode_id) : mode_id(mode_id) {}
 
-      [[nodiscard]] std::vector<complex128> get_unstructured(std::vector<double> x_coords, std::vector<double> y_coords) const {
-         if (this->mode_id.mode_family == "LP")
-            return this->get_LP_unstructured(x_coords, y_coords);
-         if (this->mode_id.mode_family == "HG")
-            return this->get_HG_unstructured(x_coords, y_coords);
-         if (this->mode_id.mode_family == "LG")
-            return this->get_LG_unstructured(x_coords, y_coords);
-         if (this->mode_id.mode_family == "NC")
-            return this->get_NC_unstructured(x_coords, y_coords);
-
-         throw std::runtime_error("Invalid mode family");
-      };
+      [[nodiscard]] std::vector<complex128> get_unstructured(std::vector<double> x_coords, std::vector<double> y_coords) const;
 
 
    private:

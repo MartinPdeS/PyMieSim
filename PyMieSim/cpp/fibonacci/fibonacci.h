@@ -1,28 +1,29 @@
 #pragma once
 
-#define DEFINE_PY_GETTER(dtype, py_name, name) \
-    py::array_t<dtype> get_##py_name() const {return _vector_to_numpy(name, {name.size()}); };
-
 
 #include <vector>
 #include <cmath>
-#include "utils/coordinates.cpp"
-#include "utils/numpy_interface.h"
+#include "../coordinates/coordinates.h"
 #include "utils/base_mesh.h"
 
-namespace py = pybind11;
 
-class FibonacciMesh : public BaseMesh {
+#define PI (double)3.14159265358979323846264338
+
+class FibonacciMesh {
     public:
-        size_t true_number_of_sample = 0;
+        size_t sampling;
+        size_t true_number_of_sample;
         double max_angle = 0.0;
         double min_angle = 0.0;
         double phi_offset = 0.0;
         double gamma_offset = 0.0;
         double dOmega = 0.0;
         double Omega = 0.0;
+        double radius;
 
-        Cartesian base_cartesian_coordinates;
+        Cartesian base_cartesian;
+        Cartesian cartesian;
+        Spherical spherical;
 
         VectorField perpendicular_vector;
         VectorField parallel_vector;
@@ -36,71 +37,65 @@ class FibonacciMesh : public BaseMesh {
 
         FibonacciMesh() = default;
 
-        FibonacciMesh(int sampling, double max_angle, double min_angle, double phi_offset, double gamma_offset, double rotation, double radius = 1.0):
-            BaseMesh(sampling, radius), max_angle(max_angle), min_angle(min_angle), phi_offset(phi_offset), gamma_offset(gamma_offset) {
+        /**
+         *  @brief Constructs a Fibonacci mesh with the specified parameters.
+         *  @param sampling The number of sampling points in the mesh.
+         *  @param max_angle The maximum angle for the mesh points (in radians).
+         *  @param min_angle The minimum angle for the mesh points (in radians).
+         *  @param phi_offset The offset for the phi angle (in radians).
+         *  @param gamma_offset The offset for the gamma angle (in radians).
+         *  @param rotation The rotation angle for the mesh (in radians).
+         *  @param radius The radius of the mesh (default is 1.0).
+         */
+        FibonacciMesh(size_t sampling, double max_angle, double min_angle, double phi_offset, double gamma_offset, double rotation, double radius = 1.0);
 
-            this->compute_mesh();
-            base_cartesian_coordinates = cartesian_coordinates;
-
-            this->rotate_around_center();
-            this->rotate_around_axis(rotation);
-
-            this->compute_vector_field();
-            this->compute_projections();
-        }
-
+        /**
+         *  @brief Rotates the mesh around its center based on the specified phi and gamma offsets.
+         *  @note This function applies rotations to the Cartesian coordinates and vector fields.
+         */
         void rotate_around_center();
+
+        /**
+         *  @brief Computes the vector field for the Fibonacci mesh.
+         *  @note This function initializes the parallel and perpendicular vector fields based on the horizontal and vertical vector fields.
+         */
         void compute_vector_field();
+
+        /**
+         *  @brief Computes the projections of the vector fields onto the parallel and perpendicular vectors.
+         *  @note This function calculates the projections based on the horizontal and vertical vector fields.
+         */
         void compute_projections();
+
+        /**
+         *  @brief Rotates the mesh around the specified axis by the given angle.
+         *  @param angle The angle by which to rotate (in radians).
+         */
         void rotate_around_axis(double angle);
+
+        /**
+         *  @brief Computes the Fibonacci mesh based on the specified parameters.
+         *  @note This function generates the mesh points in Cartesian coordinates and computes the corresponding spherical coordinates.
+         */
         void compute_mesh();
+
+        /**
+         *  @brief Computes the properties of the Fibonacci mesh, including solid angle and sampling ratio.
+         */
         void compute_properties();
 
+        /**
+         *  @brief Gets the principal axis of the Fibonacci mesh.
+         *  @return A vector containing the principal axis coordinates.
+         */
         std::vector<double> get_principal_axis() const;
 
-        py::array_t<double> get_parallel_vector() const {
-            return _vector_to_numpy(parallel_vector.data, {parallel_vector.sampling, 3});
-        };
-        py::array_t<double> get_perpendicular_vector() const {
-            return _vector_to_numpy(perpendicular_vector.data, {perpendicular_vector.sampling, 3});
-        };
+        /**
+         *  @brief Computes the rotation matrix for a given rotation axis and angle.
+         *  @param rotation_axis The axis around which to rotate.
+         *  @param rotation_angle The angle by which to rotate (in radians).
+         *  @return The rotation matrix as a 3x3 vector.
+         */
+        std::vector<std::vector<double>> get_rotation_matrix(std::vector<double> rotation_axis, double rotation_angle) const;
 
-        std::vector<std::vector<double>> get_rotation_matrix(std::vector<double> rotation_axis, double rotation_angle) const
-        {
-            double norm_rotation_axis = sqrt(pow(rotation_axis[0], 2) + pow(rotation_axis[1], 2) + pow(rotation_axis[2], 2));
-
-            for (double &x: rotation_axis)
-                x /= norm_rotation_axis;
-
-            double
-                a = cos(rotation_angle / 2.0),
-                b = -1 * sin(rotation_angle / 2.0) * rotation_axis[0],
-                c = -1 * sin(rotation_angle / 2.0) * rotation_axis[1],
-                d = -1 * sin(rotation_angle / 2.0) * rotation_axis[2];
-
-            std::vector<std::vector<double>> matrix = {
-                {a * a + b * b - c * c - d * d, 2 * (b * c + a * d), 2 * (b * d - a * c)},
-                {2 * (b * c - a * d), a * a + c * c - b * b - d * d, 2 * (c * d + a * b)},
-                {2 * (b * d + a * c), 2 * (c * d - a * b), a * a + d * d - b * b - c * c}
-            };
-
-            return matrix;
-        }
-
-        DEFINE_PY_GETTER(double, horizontal_parallel_projection, horizontal_parallel_projection)
-        DEFINE_PY_GETTER(double, vertical_parallel_projection, vertical_parallel_projection)
-        DEFINE_PY_GETTER(double, horizontal_perpendicular_projection, horizontal_perpendicular_projection)
-        DEFINE_PY_GETTER(double, vertical_perpendicular_projection, vertical_perpendicular_projection)
-
-        DEFINE_PY_GETTER(double, x_py, cartesian_coordinates.x)
-        DEFINE_PY_GETTER(double, y_py, cartesian_coordinates.y)
-        DEFINE_PY_GETTER(double, z_py, cartesian_coordinates.z)
-
-        DEFINE_PY_GETTER(double, base_x_py, base_cartesian_coordinates.x)
-        DEFINE_PY_GETTER(double, base_y_py, base_cartesian_coordinates.y)
-        DEFINE_PY_GETTER(double, base_z_py, base_cartesian_coordinates.z)
-
-        DEFINE_PY_GETTER(double, r_py, spherical_coordinates.r)
-        DEFINE_PY_GETTER(double, phi_py, spherical_coordinates.phi)
-        DEFINE_PY_GETTER(double, theta_py, spherical_coordinates.theta)
 };
