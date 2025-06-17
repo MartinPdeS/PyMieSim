@@ -4,7 +4,6 @@
 #include <vector>
 #include <cmath>
 #include "../coordinates/coordinates.h"
-#include "utils/base_mesh.h"
 
 
 #define PI (double)3.14159265358979323846264338

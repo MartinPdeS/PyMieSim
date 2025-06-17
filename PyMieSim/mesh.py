@@ -109,10 +109,6 @@ class FibonacciMesh(FIBONACCIMESH):
         self.gamma_offset = self._validate_angle_units(gamma_offset)
         self.rotation_angle = self._validate_angle_units(rotation_angle)
 
-        self.structured = False
-        self._para = None
-        self._perp = None
-
         super().__init__(
             sampling=self.sampling,
             max_angle=self.max_angle,
@@ -149,7 +145,7 @@ class FibonacciMesh(FIBONACCIMESH):
         """
         return self.spherical.phi * units.radian
 
-    def initialize_properties(self):
+    def initialize_properties(self) -> None:
         """
         Initializes additional properties of the Fibonacci mesh based on the underlying
         C++ implementation.

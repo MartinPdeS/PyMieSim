@@ -2,15 +2,18 @@
 
 #include <vector>
 #include <complex>
-#include "utils/base_mesh.h"
+#include "../coordinates/coordinates.h"
 
 #define PI (double)3.14159265358979323846264338
 
 typedef std::complex<double> complex128;
 
-class FullSteradian : public BaseMesh
+class FullSteradian
 {
     public:
+        size_t sampling;
+        double radius;
+
         double dTheta, dPhi;
         Cartesian cartesian;
         Spherical spherical;

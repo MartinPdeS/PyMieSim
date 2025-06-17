@@ -110,12 +110,12 @@ class BaseRepresentation():
         scene.add_mesh(glyphs, color=color, opacity=opacity)
 
     def add_phi_vector_to_3d_plot(
-            self,
-            scene: pyvista.Plotter,
-            n_points: int = 20,
-            opacity: float = 1.0,
-            radius: float = 1.0,
-            color: str = 'black') -> None:
+        self,
+        scene: pyvista.Plotter,
+        n_points: int = 20,
+        opacity: float = 1.0,
+        radius: float = 1.0,
+        color: str = 'black') -> None:
         """
         Adds a vector field to the 3D plot, representing vectors in the phi direction.
 
@@ -213,14 +213,14 @@ class Stokes(BaseRepresentation):
         self.V = (-2 * numpy.imag(self.E_phi * self.E_theta.conjugate())) / intensity
 
     def plot(
-            self,
-            unit_size: List[float] = (400, 400),
-            background_color: str = 'white',
-            show_edges: bool = False,
-            colormap: str = blue_black_red,
-            opacity: float = 1.0,
-            symmetric_colormap: bool = False,
-            show_axis_label: bool = False) -> None:
+        self,
+        unit_size: List[float] = (400, 400),
+        background_color: str = 'white',
+        show_edges: bool = False,
+        colormap: str = blue_black_red,
+        opacity: float = 1.0,
+        symmetric_colormap: bool = False,
+        show_axis_label: bool = False) -> None:
         """
         Visualizes the Stokes parameters (I, Q, U, V) on a 3D plot.
 

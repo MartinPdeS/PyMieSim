@@ -1,7 +1,8 @@
 #include "full_mesh/full_mesh.h"
 
 
-FullSteradian::FullSteradian(const size_t sampling, const double radius) : BaseMesh(sampling, radius)
+FullSteradian::FullSteradian(const size_t sampling, const double radius)
+ : sampling(sampling), radius(radius)
 {
     dTheta = 2.0 * PI / (sampling - 1);
     dPhi   = 1.0 * PI / (sampling - 1);

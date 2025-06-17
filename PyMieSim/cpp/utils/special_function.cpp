@@ -33,7 +33,6 @@ template<typename T, typename U> inline complex128 compute_h2_p(U order, T x)
  return sp_bessel::sph_hankelH2(order-1, x) - (order+1.0)/x * sp_bessel::sph_hankelH2(order, x);
 }
 
-
 template<typename T, typename U> inline complex128 compute_Jn(U order, T x){ return sp_bessel::besselJ(order, x); }
 template<typename T, typename U> inline complex128 compute_Yn(U order, T x){ return sp_bessel::besselY(order, x); }
 

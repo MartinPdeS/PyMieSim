@@ -5,7 +5,6 @@ import numpy
 import pyvista
 from PyMieSim import units
 from PyMieSim.polarization import BasePolarization
-from PyMieSim.special_functions import NA_to_angle
 from PyMieSim.binary.interface_source import GAUSSIAN
 from PyMieSim.single.source.base import BaseSource
 
@@ -14,10 +13,10 @@ class Gaussian(GAUSSIAN, BaseSource):
     amplitude: units.Quantity
 
     def __init__(self,
-            wavelength: units.Quantity,
-            polarization: units.Quantity | BasePolarization,
-            optical_power: units.Quantity,
-            NA: units.Quantity) -> None:
+        wavelength: units.Quantity,
+        polarization: units.Quantity | BasePolarization,
+        optical_power: units.Quantity,
+        NA: units.Quantity) -> None:
         """
         Initializes a Gaussian light source for light scattering simulations, characterized by its optical power and numerical aperture.
 
@@ -50,6 +49,21 @@ class Gaussian(GAUSSIAN, BaseSource):
             NA=self.NA.to(units.AU).magnitude,
         )
 
+    def numerical_aperture_to_angle(self, numerical_aperture: float) -> float:
+        """
+        Convert numerical aperture (NA) to angle in radians.
+
+        Parameters
+        ----------
+        NA : float
+            The numerical aperture.
+
+        Returns
+        -------
+        float
+            The angle in radians.
+        """
+        return numpy.arcsin(numerical_aperture) if numerical_aperture <= 1.0 else numpy.arcsin(numerical_aperture - 1) + numpy.pi / 2
 
     def plot(self, color: str = 'red', opacity: float = 0.8, show_axis_label: bool = False) -> None:
         """
@@ -103,7 +117,11 @@ class Gaussian(GAUSSIAN, BaseSource):
         """
         # Calculate the maximum angle from the numerical aperture (NA)
 
-        max_angle = numpy.rad2deg(NA_to_angle(NA=self.NA.magnitude))
+        numerical_aperture = self.NA.magnitude
+
+        angle = self.numerical_aperture_to_angle(numerical_aperture)
+
+        max_angle = numpy.rad2deg(angle)
 
         # Create the cone mesh
         cone_mesh = pyvista.Cone(

@@ -4,23 +4,6 @@
 import numpy
 
 
-def NA_to_angle(NA: float) -> float:
-    """
-    Convert numerical aperture (NA) to angle in radians.
-
-    Parameters
-    ----------
-    NA : float
-        The numerical aperture.
-
-    Returns
-    -------
-    float
-        The angle in radians.
-    """
-    return numpy.arcsin(NA) if NA <= 1.0 else numpy.arcsin(NA - 1) + numpy.pi / 2
-
-
 def cartesian_to_spherical(x: numpy.ndarray, y: numpy.ndarray, z: numpy.ndarray) -> tuple:
     """
     Convert Cartesian coordinates to spherical coordinates.
