@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Coverage for PyMieSim/single/detector/base.py: 88%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
-    <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
+    <link rel="stylesheet" href="style_cb_81f8c14c.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
@@ -66,8 +66,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_631d0f5aae0d4f46_coherent_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.8.2">coverage.py v7.8.2</a>,
-            created at 2025-06-14 12:12 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.9.1">coverage.py v7.9.1</a>,
+            created at 2025-06-17 16:17 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -90,7 +90,7 @@
     <p class="pln"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">single</span><span class="op">.</span><span class="nam">representations</span> <span class="key">import</span> <span class="nam">Footprint</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">from</span> <span class="nam">MPSPlots</span><span class="op">.</span><span class="nam">colormaps</span> <span class="key">import</span> <span class="nam">blue_black_red</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">units</span> <span class="key">import</span> <span class="nam">Quantity</span><span class="op">,</span> <span class="nam">degree</span><span class="op">,</span> <span class="nam">watt</span><span class="op">,</span> <span class="nam">meter</span><span class="op">,</span> <span class="nam">second</span><span class="op">,</span> <span class="nam">farad</span><span class="op">,</span> <span class="nam">volt</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">units</span> <span class="key">import</span> <span class="nam">Quantity</span><span class="op">,</span> <span class="nam">watt</span><span class="op">,</span> <span class="nam">meter</span><span class="op">,</span> <span class="nam">second</span><span class="op">,</span> <span class="nam">farad</span><span class="op">,</span> <span class="nam">volt</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span> <span class="key">import</span> <span class="nam">units</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">from</span> <span class="nam">PyMieSim</span><span class="op">.</span><span class="nam">single</span><span class="op">.</span><span class="nam">scatterer</span><span class="op">.</span><span class="nam">base</span> <span class="key">import</span> <span class="nam">BaseScatterer</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t"><span class="key">import</span> <span class="nam">pyvista</span>&nbsp;</span><span class="r"></span></p>
@@ -208,10 +208,10 @@
     <p class="pln"><span class="n"><a id="t124" href="#t124">124</a></span><span class="t"><span class="str">            None: This method does not return a value. It modifies the provided scene.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t125" href="#t125">125</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t126" href="#t126">126</a></span><span class="t">        <span class="com"># Stack the mesh coordinates into a single array</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t127" href="#t127">127</a></span><span class="t">        <span class="nam">coordinates</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">row_stack</span><span class="op">(</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t128" href="#t128">128</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">x</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t129" href="#t129">129</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">y</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">z</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t127" href="#t127">127</a></span><span class="t">        <span class="nam">coordinates</span> <span class="op">=</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">vstack</span><span class="op">(</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t128" href="#t128">128</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">cartesian</span><span class="op">.</span><span class="nam">x</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t129" href="#t129">129</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">cartesian</span><span class="op">.</span><span class="nam">y</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">cartesian</span><span class="op">.</span><span class="nam">z</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t131" href="#t131">131</a></span><span class="t">        <span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t132" href="#t132">132</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t133" href="#t133">133</a></span><span class="t">        <span class="com"># Wrap the coordinates for PyVista visualization</span>&nbsp;</span><span class="r"></span></p>
@@ -290,8 +290,8 @@
     <p class="pln"><span class="n"><a id="t206" href="#t206">206</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t207" href="#t207">207</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t208" href="#t208">208</a></span><span class="t">        <span class="nam">Ephi</span><span class="op">,</span> <span class="nam">Etheta</span> <span class="op">=</span> <span class="nam">scatterer</span><span class="op">.</span><span class="nam">get_farfields_array</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t209" href="#t209">209</a></span><span class="t">            <span class="nam">phi</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">phi</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t210" href="#t210">210</a></span><span class="t">            <span class="nam">theta</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">theta</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t209" href="#t209">209</a></span><span class="t">            <span class="nam">phi</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">spherical</span><span class="op">.</span><span class="nam">phi</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t210" href="#t210">210</a></span><span class="t">            <span class="nam">theta</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">spherical</span><span class="op">.</span><span class="nam">theta</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t211" href="#t211">211</a></span><span class="t">            <span class="nam">r</span><span class="op">=</span><span class="nam">distance</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t212" href="#t212">212</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t213" href="#t213">213</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -349,7 +349,7 @@
     <p class="pln"><span class="n"><a id="t265" href="#t265">265</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t">        <span class="nam">dA</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">d_omega</span> <span class="op">*</span> <span class="nam">distance</span> <span class="op">**</span> <span class="num">2</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t267" href="#t267">267</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t268" href="#t268">268</a></span><span class="t">        <span class="nam">total_power</span> <span class="op">=</span> <span class="num">0.5</span> <span class="op">*</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">trapz</span><span class="op">(</span><span class="nam">y</span><span class="op">=</span><span class="nam">poynting_vector</span><span class="op">,</span> <span class="nam">dx</span><span class="op">=</span><span class="nam">dA</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t268" href="#t268">268</a></span><span class="t">        <span class="nam">total_power</span> <span class="op">=</span> <span class="num">0.5</span> <span class="op">*</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">trapezoid</span><span class="op">(</span><span class="nam">y</span><span class="op">=</span><span class="nam">poynting_vector</span><span class="op">,</span> <span class="nam">dx</span><span class="op">=</span><span class="nam">dA</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t269" href="#t269">269</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t270" href="#t270">270</a></span><span class="t">        <span class="key">return</span> <span class="nam">total_power</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t271" href="#t271">271</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -361,8 +361,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_631d0f5aae0d4f46_coherent_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.8.2">coverage.py v7.8.2</a>,
-            created at 2025-06-14 12:12 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.9.1">coverage.py v7.9.1</a>,
+            created at 2025-06-17 16:17 +0000
         </p>
     </div>
 </footer>
