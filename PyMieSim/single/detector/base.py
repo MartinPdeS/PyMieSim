@@ -263,7 +263,7 @@ class BaseDetector(units.UnitsValidation):
         """
         poynting_vector = self.get_poynting_vector(scatterer=scatterer, distance=distance)
 
-        dA = self._cpp_mesh.d_omega * distance ** 2
+        dA = self._cpp_mesh._cpp_d_omega * distance ** 2
 
         total_power = 0.5 * numpy.trapezoid(y=poynting_vector, dx=dA)
 

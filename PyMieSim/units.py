@@ -53,6 +53,7 @@ def initialize_registry(ureg: Optional[object] = None):
         'refractive_index_unit': ureg.refractive_index_unit,
         'degree': ureg.degree,
         'radian': ureg.radian,
+        'steradian': ureg.steradian,
         'AU': ureg.dimensionless,
         'distance': ureg.meter.dimensionality,
         'time': ureg.second.dimensionality,

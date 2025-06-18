@@ -3,7 +3,7 @@
 
 // ------------------ Constructors ------------------
 FibonacciMesh::FibonacciMesh(size_t sampling, double max_angle, double min_angle, double phi_offset, double gamma_offset, double rotation, double radius):
-    sampling(sampling), max_angle(max_angle), min_angle(min_angle), phi_offset(phi_offset), gamma_offset(gamma_offset), radius(radius), cartesian(sampling), spherical(sampling)
+    sampling(sampling), max_angle(max_angle), min_angle(min_angle), phi_offset(phi_offset), gamma_offset(gamma_offset), radius(radius), rotation(rotation), cartesian(sampling), spherical(sampling)
 {
     this->compute_properties();
     this->compute_mesh();

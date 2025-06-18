@@ -19,6 +19,7 @@ class FibonacciMesh {
         double dOmega = 0.0;
         double Omega = 0.0;
         double radius;
+        double rotation;
 
         Cartesian base_cartesian;
         Cartesian cartesian;

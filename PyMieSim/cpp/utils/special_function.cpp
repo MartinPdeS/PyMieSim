@@ -25,7 +25,7 @@ template<typename T, typename U> inline complex128 compute_yn_p(U order, T x)
 
 template<typename T, typename U> inline complex128 compute_h1_p(U order, T x) // https://dlmf.nist.gov/10.51
 {
- return sp_bessel::sph_hankelH1(order-1, x) - (order+1.0)/x * sp_bessel::sph_hankelH1(order, x);
+return sp_bessel::sph_hankelH1(order-1, x) - (order+1.0)/x * sp_bessel::sph_hankelH1(order, x);
 }
 
 template<typename T, typename U> inline complex128 compute_h2_p(U order, T x)

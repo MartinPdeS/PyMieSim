@@ -29,9 +29,9 @@ def test_initialization(fibonacci_mesh):
     """
     assert fibonacci_mesh.max_angle == np.pi / 4  * units.radian
     assert fibonacci_mesh.sampling == 100 * units.AU
-    assert fibonacci_mesh.phi_offset == 30 * units.degree
-    assert fibonacci_mesh.gamma_offset == 45 * units.degree
-    assert fibonacci_mesh.rotation_angle == 0 * units.degree
+    assert np.isclose(fibonacci_mesh.phi_offset.to('degree'), 30 * units.degree)
+    assert np.isclose(fibonacci_mesh.gamma_offset.to('degree'), 45 * units.degree)
+    assert np.isclose(fibonacci_mesh.rotation.to('degree'), 0 * units.degree)
 
 def test_projection_HV_vector(fibonacci_mesh):
     """
@@ -98,4 +98,4 @@ def test_rotate_around_axis(fibonacci_mesh):
 
 
 if __name__ == "__main__":
-    pytest.main(["-W error", __file__])
+    pytest.main(["-W error", "-s", __file__])

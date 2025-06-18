@@ -179,13 +179,25 @@ PYBIND11_MODULE(interface_detector, module) {
             )pbdoc"
         )
         // Differential solid angle and total solid angle
-        .def_readwrite("d_omega",
+        .def_readwrite("_cpp_d_omega",
             &FibonacciMesh::dOmega,
             "Differential solid angle covered by each point."
         )
-        .def_readwrite("omega",
+        .def_readwrite("_cpp_omega",
             &FibonacciMesh::Omega,
             "Total solid angle covered by the mesh."
+        )
+        .def_readonly("_cpp_phi_offset",
+            &FibonacciMesh::phi_offset,
+            "Azimuthal angle offset (in radians) for the mesh."
+        )
+        .def_readonly("_cpp_gamma_offset",
+            &FibonacciMesh::gamma_offset,
+            "Polar angle offset (in radians) for the mesh."
+        )
+        .def_readonly("_cpp_rotation",
+            &FibonacciMesh::rotation,
+            "Rotation angle (in radians) for the mesh."
         )
         // Methods for rotation and field computation
         .def("rotate_around_axis",
