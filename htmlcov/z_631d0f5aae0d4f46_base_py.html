@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_631d0f5aae0d4f46_coherent_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.9.1">coverage.py v7.9.1</a>,
-            created at 2025-06-17 22:02 +0000
+            created at 2025-06-18 15:46 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -347,7 +347,7 @@
     <p class="pln"><span class="n"><a id="t263" href="#t263">263</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t264" href="#t264">264</a></span><span class="t">        <span class="nam">poynting_vector</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">get_poynting_vector</span><span class="op">(</span><span class="nam">scatterer</span><span class="op">=</span><span class="nam">scatterer</span><span class="op">,</span> <span class="nam">distance</span><span class="op">=</span><span class="nam">distance</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t265" href="#t265">265</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t">        <span class="nam">dA</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">d_omega</span> <span class="op">*</span> <span class="nam">distance</span> <span class="op">**</span> <span class="num">2</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t266" href="#t266">266</a></span><span class="t">        <span class="nam">dA</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_cpp_mesh</span><span class="op">.</span><span class="nam">_cpp_d_omega</span> <span class="op">*</span> <span class="nam">distance</span> <span class="op">**</span> <span class="num">2</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t267" href="#t267">267</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t268" href="#t268">268</a></span><span class="t">        <span class="nam">total_power</span> <span class="op">=</span> <span class="num">0.5</span> <span class="op">*</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">trapezoid</span><span class="op">(</span><span class="nam">y</span><span class="op">=</span><span class="nam">poynting_vector</span><span class="op">,</span> <span class="nam">dx</span><span class="op">=</span><span class="nam">dA</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t269" href="#t269">269</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -362,7 +362,7 @@
             <a class="nav" href="z_631d0f5aae0d4f46_coherent_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.9.1">coverage.py v7.9.1</a>,
-            created at 2025-06-17 22:02 +0000
+            created at 2025-06-18 15:46 +0000
         </p>
     </div>
 </footer>
