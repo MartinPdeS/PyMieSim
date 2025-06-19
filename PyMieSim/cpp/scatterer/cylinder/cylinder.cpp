@@ -13,7 +13,7 @@ BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), r
 // ---------------------- Methods ---------------------------------------
 
 void Cylinder::compute_size_parameter() {
-    this->size_parameter = source.wavenumber * this->diameter / 2 * this->medium_refractive_index;
+    this->size_parameter = source.wavenumber * this->diameter / 2;
     this->size_parameter_squared = pow(this->size_parameter, 2);
 }
 
@@ -30,8 +30,8 @@ double Cylinder::get_Qsca() const {
         Qsca2 +=  pow( std::abs(this->a2n[order]), 2 ) + pow( std::abs(this->b2n[order]), 2 ) ;
     }
 
-    Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( abs(this->b1n[0]), 2 ) );
-    Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( abs(this->a2n[0]), 2 ) );
+    Qsca1 =  2. / size_parameter * ( 2.0 * Qsca1 + pow( std::abs(this->b1n[0]), 2 ) );
+    Qsca2 =  2. / size_parameter * ( 2.0 * Qsca2 + pow( std::abs(this->a2n[0]), 2 ) );
 
     return process_polarization(Qsca1, Qsca2);
 }
@@ -55,7 +55,7 @@ double Cylinder::get_g() const {
 }
 
 double Cylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
-    return abs( value_1 ) * pow(abs(source.jones_vector[0]), 2) + abs( value_0 ) * pow(abs(source.jones_vector[1]), 2);
+    return std::abs( value_1 ) * pow(std::abs(source.jones_vector[0]), 2) + std::abs( value_0 ) * pow(std::abs(source.jones_vector[1]), 2);
 }
 
 void Cylinder::compute_an_bn(const size_t max_order) {
