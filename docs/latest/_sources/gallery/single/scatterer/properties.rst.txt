@@ -91,15 +91,15 @@ Defining the scatterer
 
     Property        Value
     --------------  ----------------------
-    size_parameter  1.6708234364769365
+    size_parameter  1.2566370614359172
     cross_section   300000.00000000006 µm²
-    g               0.6122911844808381
-    Qsca            0.03994317700025258
-    Qext            0.31158414826330205
-    Qabs            0.2716409712630495
-    Csca            11982.953100075776 µm²
-    Cext            93475.24447899064 µm²
-    Cabs            81492.29137891486 µm²
+    g               0.37557408799482683
+    Qsca            0.023186330283701
+    Qext            0.25098397196276695
+    Qabs            0.22779764167906594
+    Csca            6955.899085110302 µm²
+    Cext            75295.1915888301 µm²
+    Cabs            68339.2925037198 µm²
 
 
 
@@ -107,7 +107,7 @@ Defining the scatterer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.056 seconds)
+   **Total running time of the script:** (0 minutes 0.054 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_properties.py:
