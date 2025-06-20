@@ -11,7 +11,6 @@ build:
 
 requirements:
   host:
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - python {{ PY_VER }}*

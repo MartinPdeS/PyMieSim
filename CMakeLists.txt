@@ -9,29 +9,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build" FORCE)
 
-
 # Set the output directory for libraries
-set(PYMIESIM_CXX_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/cpp")
-set(PYMIESIM_BIN_DIR "${CMAKE_SOURCE_DIR}/PyMieSim/binary")
-
+set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
+set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/binary")
 
 # Compiler and linker options
-add_compile_options(-fPIC -Wall -Wextra -Wno-uninitialized)
 set(CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -Wno-unused-dummy-argument -Wno-compare-reals -Wno-do-subscript -Wno-intrinsic-shadow")
 
-
 # Include directories
-include_directories("${PYMIESIM_CXX_DIR}")
+include_directories("${LOCAL_CXX_DIR}")
+
+# Find dependencies
 if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     include_directories("/opt/homebrew/opt/libomp/include")   # for if compiler was installed through brew
 endif()
 
-
-# Find dependencies
 find_package(OpenMP REQUIRED)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
-
 
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -41,13 +36,15 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
+# Compiler and linker options
+add_compile_options(-Wall -Wextra -pedantic-errors)
 
 # Print some messages
 message(STATUS "OPENMP flags: ${OpenMP_CXX_FLAGS}")
 message(STATUS "PyMieSim version is: ${PYMIESIM_VERSION}")
-message(STATUS "PyMieSim includes directory is: ${PYMIESIM_CXX_DIR}")
+message(STATUS "PyMieSim includes directory is: ${LOCAL_CXX_DIR}")
 message(STATUS "Python version to be compiled against: ${PYBIND11_PYTHON_VERSION}")
-message(STATUS "Binary will be installed in location: ${PYMIESIM_BIN_DIR}")
+message(STATUS "Binary will be installed in location: ${LOCAL_BIN_DIR}")
 
 
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
