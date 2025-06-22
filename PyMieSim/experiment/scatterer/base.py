@@ -62,11 +62,17 @@ class BaseScatterer():
         CPPClass = CppMediumProperties if name == 'medium' else CppScattererProperties
 
         if all(isinstance(item, Quantity) for item in properties):
-            self.binding_kwargs[f'{name}_properties'] = CPPClass(index_properties=properties.magnitude)
+            instance = CPPClass(index_properties=properties.magnitude)
+            self.binding_kwargs[f'{name}_properties'] = instance
+
+            return instance
 
         elif all(isinstance(item, BaseMaterial) for item in properties):
             eval_index = numpy.asarray([m.compute_refractive_index(self.source.wavelength.to_base_units().magnitude) for m in properties])
-            self.binding_kwargs[f'{name}_properties'] = CPPClass(material_properties=eval_index)
+            instance = CPPClass(material_properties=eval_index)
+            self.binding_kwargs[f'{name}_properties'] = instance
+
+            return instance
 
         else:
             raise TypeError("All elements in the list must be of type 'Quantity' or 'BaseMaterial', not a mix of both.")

@@ -66,14 +66,17 @@ class CoreShell(BaseScatterer, Sequential):
             is_sequential=self.is_sequential
         )
 
-        self._add_properties(name='medium', properties=self.medium_property)
+        mediun_properties = self._add_properties(name='medium', properties=self.medium_property)
 
-        self._add_properties(name='core', properties=self.core_property)
+        core_properties = self._add_properties(name='core', properties=self.core_property)
 
-        self._add_properties(name='shell', properties=self.shell_property)
+        shell_properties = self._add_properties(name='shell', properties=self.shell_property)
 
-        binding_kwargs = {
-            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
-        }
-
-        self.binding = CppCoreShellSet(**binding_kwargs)
+        self.binding = CppCoreShellSet(
+            core_diameter=self.core_diameter.to('meter').magnitude,
+            shell_thickness=self.shell_thickness.to('meter').magnitude,
+            core_properties=core_properties,
+            shell_properties=shell_properties,
+            medium_properties=mediun_properties,
+            is_sequential=self.is_sequential,
+        )

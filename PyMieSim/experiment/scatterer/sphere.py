@@ -54,12 +54,13 @@ class Sphere(BaseScatterer, Sequential):
 
         self.binding_kwargs = dict(diameter=self.diameter, is_sequential=self.is_sequential)
 
-        self._add_properties(name='medium', properties=self.medium_property)
+        mediun_properties = self._add_properties(name='medium', properties=self.medium_property)
 
-        self._add_properties(name='scatterer', properties=self.property)
+        scatterer_properties = self._add_properties(name='scatterer', properties=self.property)
 
-        binding_kwargs = {
-            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
-        }
-
-        self.binding = CppSphereSet(**binding_kwargs)
+        self.binding = CppSphereSet(
+            diameter=self.diameter.to('meter').magnitude,
+            scatterer_properties=scatterer_properties,
+            medium_properties=mediun_properties,
+            is_sequential=self.is_sequential,
+        )

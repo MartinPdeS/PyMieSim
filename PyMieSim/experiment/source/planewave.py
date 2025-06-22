@@ -40,14 +40,20 @@ class PlaneWave(BaseSource, Sequential):
 
         return value
 
-    def _generate_binding_kwargs(self) -> None:
+    def _generate_binding(self) -> None:
         """
         Prepares the keyword arguments for the C++ binding based on the scatterer's properties. This
         involves evaluating material indices and organizing them into a dictionary for the C++ interface.
 
-        Returns:
-            None
+        Returns
+        -------
+        None
         """
+        self.mapping = {}
+
+        if not isinstance(self.polarization, BasePolarization):
+            self.polarization = Linear(self.polarization)
+
         self.binding_kwargs = dict(
             wavelength=self.wavelength,
             jones_vector=self.polarization.element,
@@ -55,16 +61,9 @@ class PlaneWave(BaseSource, Sequential):
             is_sequential=self.is_sequential
         )
 
-    def _generate_binding(self):
-        self.mapping = {}
-
-        if not isinstance(self.polarization, BasePolarization):
-            self.polarization = Linear(self.polarization)
-
-        self._generate_binding_kwargs()
-
-        binding_kwargs = {
-            k: v.to_base_units().magnitude if isinstance(v, Quantity) else v for k, v in self.binding_kwargs.items()
-        }
-
-        self.binding = CppPlaneWaveSourceSet(**binding_kwargs)
+        self.binding = CppPlaneWaveSourceSet(
+            wavelength=self.wavelength.to('meter').magnitude,
+            jones_vector=self.polarization.element,
+            amplitude=self.amplitude.to('volt/meter').magnitude,
+            is_sequential=self.is_sequential
+        )
