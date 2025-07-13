@@ -56,67 +56,67 @@ Importing the package dependencies: numpy, PyMieSim
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | argon                 | silicon               |
+    | methane               | calcium               |
     +-----------------------+-----------------------+
-    | lithium_niobate       | chromium              |
+    | cellulose             | lead                  |
     +-----------------------+-----------------------+
-    | acetone               | lead                  |
+    | ethane                | polyetylene           |
     +-----------------------+-----------------------+
-    | polystyrene           | gold                  |
+    | lithium_niobate       | aluminium             |
     +-----------------------+-----------------------+
-    | crown                 | tungsten              |
+    | acetylene             | nickel                |
     +-----------------------+-----------------------+
-    | fused_silica          | magnesium             |
+    | ZBLAN                 | tantalum              |
     +-----------------------+-----------------------+
-    | flint                 | calcium               |
+    | polycarbonate         | titanium              |
     +-----------------------+-----------------------+
-    | ethylene              | pva                   |
+    | FK51A                 | rhodium               |
     +-----------------------+-----------------------+
-    | germanium             | nickel                |
+    | BAK1                  | gold                  |
     +-----------------------+-----------------------+
-    | FK51A                 | zinc                  |
+    | polystyrene           | silver                |
     +-----------------------+-----------------------+
-    | ethanol               | titanium              |
+    | SF5                   | tungsten              |
     +-----------------------+-----------------------+
-    | LASF9                 | paladium              |
+    | polystyren            | zinc                  |
     +-----------------------+-----------------------+
-    | methanol              | copper                |
+    | crown                 | chromium              |
     +-----------------------+-----------------------+
-    | pvc                   | sodium                |
+    | argon                 | BK7                   |
     +-----------------------+-----------------------+
-    | cellulose             | bismuth               |
+    | acetone               | vanadium              |
     +-----------------------+-----------------------+
-    | acetylene             | tantalum              |
+    | germanium             | sodium                |
     +-----------------------+-----------------------+
-    | BAK1                  | polyetylene           |
+    | fused_silica          | pva                   |
     +-----------------------+-----------------------+
-    | BAF10                 | aluminium             |
+    | propanol              | silicon               |
     +-----------------------+-----------------------+
-    | SF5                   | iron                  |
+    | soda_lime_glass       | bismuth               |
     +-----------------------+-----------------------+
-    | ZBLAN                 | rhodium               |
+    | SF11                  | paladium              |
     +-----------------------+-----------------------+
-    | methane               | vanadium              |
+    | SF10                  | copper                |
     +-----------------------+-----------------------+
-    | water                 | BK7                   |
+    | glycerol              | magnesium             |
     +-----------------------+-----------------------+
-    | propanol              | silver                |
+    | air                   | iron                  |
     +-----------------------+-----------------------+
-    | SF11                  |                       |
+    | water                 |                       |
     +-----------------------+-----------------------+
-    | air                   |                       |
+    | BAF10                 |                       |
     +-----------------------+-----------------------+
-    | soda_lime_glass       |                       |
+    | methanol              |                       |
     +-----------------------+-----------------------+
-    | glycerol              |                       |
+    | flint                 |                       |
     +-----------------------+-----------------------+
-    | SF10                  |                       |
+    | ethanol               |                       |
     +-----------------------+-----------------------+
-    | polystyren            |                       |
+    | LASF9                 |                       |
     +-----------------------+-----------------------+
-    | polycarbonate         |                       |
+    | pvc                   |                       |
     +-----------------------+-----------------------+
-    | ethane                |                       |
+    | ethylene              |                       |
     +-----------------------+-----------------------+
 
 
@@ -204,7 +204,7 @@ Defining the experiment setup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.332 seconds)
+   **Total running time of the script:** (0 minutes 0.328 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:
