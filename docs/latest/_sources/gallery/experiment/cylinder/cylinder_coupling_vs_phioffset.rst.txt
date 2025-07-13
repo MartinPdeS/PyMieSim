@@ -127,13 +127,6 @@ Setting up the experiment
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 1.2000000000000002 µm to 1.2000000000000002 µm which is outside the allowable range of 5.0 µm to 33.333 µm µm. [Material: BK7]
-      warnings.warn(
-
 
 
 
@@ -185,7 +178,7 @@ Visualizing how the coupling efficiency varies with angular displacement.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.467 seconds)
+   **Total running time of the script:** (0 minutes 0.498 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_cylinder_cylinder_coupling_vs_phioffset.py:

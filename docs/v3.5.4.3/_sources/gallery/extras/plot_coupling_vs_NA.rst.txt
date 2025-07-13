@@ -124,13 +124,6 @@ Defining the experiment setup
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 500.0 nm to 500.0 nm which is outside the allowable range of 5.0 µm to 33.333 µm µm. [Material: BK7]
-      warnings.warn(
-
 
 
 
@@ -190,9 +183,7 @@ Plotting the results
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 949.9999999999999 nm to 949.9999999999999 nm which is outside the allowable range of 5.0 µm to 33.333 µm µm. [Material: BK7]
-      warnings.warn(
-    0.00057801149997312
+    0.0010531644483825241
 
 
 
@@ -200,7 +191,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.424 seconds)
+   **Total running time of the script:** (0 minutes 0.433 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_coupling_vs_NA.py:
