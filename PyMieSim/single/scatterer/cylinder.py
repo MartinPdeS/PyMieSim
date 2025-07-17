@@ -27,7 +27,7 @@ class Cylinder(CYLINDER, BaseScatterer):
     source: BaseSource
 
     property_names = [
-        "size_parameter", "cross_section", "g",
+        "size_parameter", "radius", "cross_section", "g",
         "Qsca", "Qext", "Qabs",
         "Csca", "Cext", "Cabs"
     ]
@@ -61,6 +61,11 @@ class Cylinder(CYLINDER, BaseScatterer):
             medium_refractive_index=self.medium_index.to(units.RIU).magnitude,
             source=self.source
         )
+
+    @property
+    def radius(self) -> units.Quantity:
+        """Return the radius of the cylinder."""
+        return self.diameter / 2
 
     @property
     def Cback(self) -> None:

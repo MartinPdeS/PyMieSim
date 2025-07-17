@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import numpy
 import pyvista
 from PyOptik.material.base_class import BaseMaterial
 
@@ -29,7 +30,7 @@ class Sphere(SPHERE, BaseScatterer):
     source: BaseSource
 
     property_names = [
-        "size_parameter", "cross_section", "g",
+        "size_parameter", "radius", "volume", "cross_section", "g",
         "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
         "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
     ]
@@ -65,6 +66,17 @@ class Sphere(SPHERE, BaseScatterer):
             medium_refractive_index=self.medium_index.to(units.RIU).magnitude,
             source=self.source
         )
+
+    @property
+    def radius(self) -> units.Quantity:
+        """Return the radius of the sphere."""
+        return self.diameter / 2
+
+    @property
+    def volume(self) -> units.Quantity:
+        """Return the volume of the sphere."""
+        vol = (4/3) * numpy.pi * (self.radius ** 3)
+        return vol.to(units.meter ** 3)
 
     def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'black', opacity: float = 1.0) -> None:
         """
