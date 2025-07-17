@@ -12,9 +12,9 @@
      - |ci/cd|
      - |coverage|
      - |colab|
-   * - PyPi
-     - |PyPi|
-     - |PyPi_download|
+  * - PyPI
+    - |PyPI|
+    - |PyPI_download|
      -
    * - Anaconda
      - |anaconda|
@@ -70,9 +70,9 @@ PyMieSim supports Windows, Linux, macOS (including Apple M1/M2 chips), and ARM a
 
 .. code-block:: bash
 
-    pip install PyMieSim (using pip package manager)
+    pip install PyMieSim # using pip
 
-    conda install PyMieSim (using conda environment manager)
+    conda install PyMieSim # using conda
 
 For more details, visit the `documentation <https://pymiesim.readthedocs.io/en/latest/>`_ for a comprehensive guide on how to use the package.
 
@@ -223,7 +223,7 @@ Since version 1.7.0, PyMieSim offers an experimental GUI for users who prefer a 
 .. code-block:: bash
 
     pip install PyMieSim
-    python -m  PyMieSim
+    python -m PyMieSim
 
 The GUI is not yet as robust as the core Python API, but it provides a simplified interface for generating simulations.
 
@@ -238,7 +238,6 @@ PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle
 
 Email: `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmail.ca?subject=PyMieSim>`_
 
-Flag_0
 
 ----
 
@@ -261,12 +260,12 @@ Flag_0
     :target: https://martinpdes.github.io/PyMieSim/
     :alt: Documentation Status
 
-.. |PyPi| image:: https://badge.fury.io/py/PyMieSim.svg
-    :alt: PyPi version
+.. |PyPI| image:: https://badge.fury.io/py/PyMieSim.svg
+    :alt: PyPI version
     :target: https://badge.fury.io/py/PyMieSim
 
-.. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim?style=plastic&label=PyPi%20downloads&labelColor=hex&color=hex
-   :alt: PyPI - Downloads
+.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PyMieSim?style=plastic&label=PyPI%20downloads&labelColor=hex&color=hex
+   :alt: PyPI downloads
    :target: https://pypistats.org/packages/pymiesim
 
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg
