@@ -1,4 +1,6 @@
 
+"""Entry point for launching the experimental PyMieSim GUI."""
+
 from PyMieSim.gui.interface import OpticalSetupGUI
 
 

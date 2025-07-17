@@ -56,22 +56,21 @@ def spherical_to_cartesian(phi: numpy.ndarray, theta: numpy.ndarray, r: numpy.nd
 
 
 def rotate_on_x(phi: numpy.ndarray, theta: numpy.ndarray, angle: float) -> tuple:
-    """
-    Rotate spherical coordinates around the X-axis.
+    """Rotate spherical coordinates around the X-axis.
 
     Parameters
     ----------
     phi : numpy.ndarray
-        The phi angles.
+        Azimuthal angles in radians.
     theta : numpy.ndarray
-        The theta angles.
-    r : numpy.ndarray
-        The radial distances; defaults to unit radius if None.
+        Polar angles in radians.
+    angle : float
+        Rotation angle about the X-axis, in radians.
 
     Returns
     -------
-    numpy.ndarray
-        The Cartesian coordinates (x, y, z).
+    tuple
+        The rotated spherical coordinates ``(r, phi, theta)``.
     """
     # Convert to Cartesian for rotation
     x, y, z = spherical_to_cartesian(phi, theta)
