@@ -434,37 +434,6 @@
                   
   <p><strong>Date</strong>: Jul 17, 2025, <strong>Version</strong>: 3.5.4.3</p>
 <p><img alt="PyOptik logo" src="https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png" /></p>
-<div class="pst-scrollable-table-container"><table class="table">
-<colgroup>
-<col style="width: 11.8%" />
-<col style="width: 29.4%" />
-<col style="width: 29.4%" />
-<col style="width: 29.4%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Meta</p></td>
-<td><p><a class="reference external" href="https://www.python.org/"><img alt="Python" src="https://img.shields.io/pypi/pyversions/pymiesim.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://martinpdes.github.io/PyMieSim/"><img alt="Documentation Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/deploy_documentation.yml/badge.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://doi.org/10.5281/zenodo.4556074"><img alt="Scientific article" src="https://zenodo.org/badge/DOI/10.5281/zenodo.5593704.svg" /></a></p></td>
-</tr>
-<tr class="row-even"><td><p>Testing</p></td>
-<td><p><img alt="Unittest Status" src="https://github.com/martinpdes/pymiesim/actions/workflows/deploy_coverage.yml/badge.svg" /></p></td>
-<td><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/MartinPdeS/PyMieSim/blob/python-coverage-comment-action-data/htmlcov/index.html"><img alt="Unittest coverage" src="https://raw.githubusercontent.com/MartinPdeS/PyMieSim/python-coverage-comment-action-data/badge.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/PyMieSim/blob/master/notebook.ipynb"><img alt="Google Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></td>
-</tr>
-<tr class="row-odd"><td><p>PyPi</p></td>
-<td><p><a class="reference external" href="https://badge.fury.io/py/PyMieSim"><img alt="PyPi version" src="https://badge.fury.io/py/PyMieSim.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://pypistats.org/packages/pymiesim"><img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/PyMieSim?style=plastic&amp;label=PyPi%20downloads&amp;labelColor=hex&amp;color=hex" /></a></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p>Anaconda</p></td>
-<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Anaconda version" src="https://anaconda.org/martinpdes/pymiesim/badges/version.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Anaconda downloads" src="https://anaconda.org/martinpdes/pymiesim/badges/downloads.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://anaconda.org/martinpdes/pymiesim"><img alt="Latest release date" src="https://anaconda.org/martinpdes/pymiesim/badges/latest_release_relative_date.svg" /></a></p></td>
-</tr>
-</tbody>
-</table>
-</div>
 <section id="pymiesim">
 <h1>PyMieSim<a class="headerlink" href="#pymiesim" title="Link to this heading">#</a></h1>
 <p><strong>PyMieSim</strong> is a Python library designed to provide a robust and flexible framework for performing Mie scattering simulations.
@@ -497,9 +466,9 @@ PyMieSim enables users to explore the scattering properties of particles under v
 <section id="installation">
 <h3>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h3>
 <p>PyMieSim supports Windows, Linux, macOS (including Apple M1/M2 chips), and ARM architectures. To install the package, use pip:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>pip<span class="w"> </span>package<span class="w"> </span>manager<span class="o">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w"> </span><span class="c1"># using pip</span>
 
-conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w"> </span><span class="o">(</span>using<span class="w"> </span>conda<span class="w"> </span>environment<span class="w"> </span>manager<span class="o">)</span>
+conda<span class="w"> </span>install<span class="w"> </span>PyMieSim<span class="w"> </span><span class="c1"># using conda</span>
 </pre></div>
 </div>
 <p>For more details, visit the <a class="reference external" href="https://pymiesim.readthedocs.io/en/latest/">documentation</a> for a comprehensive guide on how to use the package.</p>
@@ -620,7 +589,7 @@ pytest
 <h2>Experimental Graphical User Interface (GUI)<a class="headerlink" href="#experimental-graphical-user-interface-gui" title="Link to this heading">#</a></h2>
 <p>Since version 1.7.0, PyMieSim offers an experimental GUI for users who prefer a graphical approach to simulations. While still under development, the GUI can be installed and accessed as follows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>PyMieSim
-python<span class="w"> </span>-m<span class="w">  </span>PyMieSim
+python<span class="w"> </span>-m<span class="w"> </span>PyMieSim
 </pre></div>
 </div>
 <p>The GUI is not yet as robust as the core Python API, but it provides a simplified interface for generating simulations.</p>
@@ -631,7 +600,6 @@ python<span class="w"> </span>-m<span class="w">  </span>PyMieSim
 <h2>Contact Information<a class="headerlink" href="#contact-information" title="Link to this heading">#</a></h2>
 <p>PyMieSim is actively developed and maintained by Martin Poinsinet de Sivry-Houle. If you’re interested in contributing or have questions, feel free to reach out.</p>
 <p>Email: <a class="reference external" href="mailto:martin&#46;poinsinet&#46;de&#46;sivry&#37;&#52;&#48;gmail&#46;ca?subject=PyMieSim">martin<span>&#46;</span>poinsinet<span>&#46;</span>de<span>&#46;</span>sivry<span>&#64;</span>gmail<span>&#46;</span>ca</a></p>
-<p>Flag_0</p>
 <hr class="docutils" />
 <div class="toctree-wrapper compound">
 </div>
