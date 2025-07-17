@@ -92,6 +92,7 @@ Defining the scatterer
     Property        Value
     --------------  ----------------------
     size_parameter  1.2566370614359172
+    radius          150.0 nm
     cross_section   300000.00000000006 µm²
     g               0.37557408799482683
     Qsca            0.023186330283701
@@ -107,7 +108,7 @@ Defining the scatterer
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.056 seconds)
+   **Total running time of the script:** (0 minutes 0.057 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_properties.py:
