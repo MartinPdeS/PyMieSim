@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import numpy
 import pyvista
 from PyOptik.material.base_class import BaseMaterial
 
@@ -35,7 +36,7 @@ class CoreShell(CORESHELL, BaseScatterer):
     source: BaseSource
 
     property_names = [
-        "size_parameter", "cross_section", "g",
+        "size_parameter", "radius", "volume", "cross_section", "g",
         "Qsca", "Qext", "Qabs", "Qback", "Qratio", "Qpr",
         "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cpr"
     ]
@@ -84,6 +85,17 @@ class CoreShell(CORESHELL, BaseScatterer):
             medium_refractive_index=self.medium_index.to(units.RIU).magnitude,
             source=self.source
         )
+
+    @property
+    def radius(self) -> units.Quantity:
+        """Return the outer radius of the scatterer."""
+        return self.core_diameter / 2 + self.shell_thickness
+
+    @property
+    def volume(self) -> units.Quantity:
+        """Return the volume of the scatterer."""
+        vol = (4/3) * numpy.pi * (self.radius ** 3)
+        return vol.to(units.meter ** 3)
 
     def _add_to_3d_ax(self, scene: pyvista.Plotter, color: str = 'black', opacity: float = 1.0) -> None:
         """
