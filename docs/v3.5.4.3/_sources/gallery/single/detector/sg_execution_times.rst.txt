@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:05.129** total execution time for 8 files **from gallery/single/detector**:
+**00:04.830** total execution time for 8 files **from gallery/single/detector**:
 
 .. container::
 
@@ -33,26 +33,26 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_single_detector_HG01.py` (``HG01.py``)
-     - 00:03.019
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_detector_LP01.py` (``LP01.py``)
-     - 00:00.321
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_detector_integrating_sphere.py` (``integrating_sphere.py``)
-     - 00:00.314
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_detector_HG11.py` (``HG11.py``)
-     - 00:00.313
-     - 0.0
-   * - :ref:`sphx_glr_gallery_single_detector_LG11.py` (``LG11.py``)
-     - 00:00.304
+     - 00:02.668
      - 0.0
    * - :ref:`sphx_glr_gallery_single_detector_LP02.py` (``LP02.py``)
-     - 00:00.289
+     - 00:00.437
      - 0.0
-   * - :ref:`sphx_glr_gallery_single_detector_photodiode.py` (``photodiode.py``)
-     - 00:00.285
+   * - :ref:`sphx_glr_gallery_single_detector_LP01.py` (``LP01.py``)
+     - 00:00.318
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_detector_HG11.py` (``HG11.py``)
+     - 00:00.290
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_detector_LG11.py` (``LG11.py``)
+     - 00:00.288
      - 0.0
    * - :ref:`sphx_glr_gallery_single_detector_LP11.py` (``LP11.py``)
-     - 00:00.283
+     - 00:00.281
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_detector_photodiode.py` (``photodiode.py``)
+     - 00:00.274
+     - 0.0
+   * - :ref:`sphx_glr_gallery_single_detector_integrating_sphere.py` (``integrating_sphere.py``)
+     - 00:00.274
      - 0.0

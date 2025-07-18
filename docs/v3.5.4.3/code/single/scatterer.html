@@ -1978,8 +1978,14 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.property_names">
-<span class="sig-name descname"><span class="pre">property_names</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['size_parameter',</span> <span class="pre">'cross_section',</span> <span class="pre">'g',</span> <span class="pre">'Qsca',</span> <span class="pre">'Qext',</span> <span class="pre">'Qabs',</span> <span class="pre">'Qback',</span> <span class="pre">'Qratio',</span> <span class="pre">'Qpr',</span> <span class="pre">'Csca',</span> <span class="pre">'Cext',</span> <span class="pre">'Cabs',</span> <span class="pre">'Cback',</span> <span class="pre">'Cratio',</span> <span class="pre">'Cpr']</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.property_names" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">property_names</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['size_parameter',</span> <span class="pre">'radius',</span> <span class="pre">'volume',</span> <span class="pre">'cross_section',</span> <span class="pre">'g',</span> <span class="pre">'Qsca',</span> <span class="pre">'Qext',</span> <span class="pre">'Qabs',</span> <span class="pre">'Qback',</span> <span class="pre">'Qratio',</span> <span class="pre">'Qpr',</span> <span class="pre">'Csca',</span> <span class="pre">'Cext',</span> <span class="pre">'Cabs',</span> <span class="pre">'Cback',</span> <span class="pre">'Cratio',</span> <span class="pre">'Cpr']</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.property_names" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.radius">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.radius" title="Link to this definition">#</a></dt>
+<dd><p>Return the outer radius of the scatterer.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.shell_property">
@@ -2001,6 +2007,12 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.source">
 <span class="sig-name descname"><span class="pre">source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">BaseSource</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.source" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.volume">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.volume" title="Link to this definition">#</a></dt>
+<dd><p>Return the volume of the scatterer.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -2136,10 +2148,12 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.medium_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.medium_property</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.print_properties"><code class="docutils literal notranslate"><span class="pre">CoreShell.print_properties()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.property_names"><code class="docutils literal notranslate"><span class="pre">CoreShell.property_names</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.radius"><code class="docutils literal notranslate"><span class="pre">CoreShell.radius</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.shell_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.shell_property</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.shell_thickness"><code class="docutils literal notranslate"><span class="pre">CoreShell.shell_thickness</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.size_parameter"><code class="docutils literal notranslate"><span class="pre">CoreShell.size_parameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.source"><code class="docutils literal notranslate"><span class="pre">CoreShell.source</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.volume"><code class="docutils literal notranslate"><span class="pre">CoreShell.volume</span></code></a></li>
 </ul>
 </li>
 </ul>
