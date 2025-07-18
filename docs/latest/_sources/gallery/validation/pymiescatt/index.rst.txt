@@ -2,10 +2,10 @@
 
 .. _sphx_glr_gallery_validation_pymiescatt:
 
-
-
 Validation with PyMieScatt
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
+Comparison scripts using the PyMieScatt package.
+
 
 
 .. raw:: html

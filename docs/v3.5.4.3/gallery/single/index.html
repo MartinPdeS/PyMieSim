@@ -160,7 +160,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../validation/index.html">
-    Validation Module
+    Validation Examples
   </a>
 </li>
 
@@ -315,7 +315,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../validation/index.html">
-    Validation Module
+    Validation Examples
   </a>
 </li>
 
@@ -475,7 +475,7 @@
 </details></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../extras/index.html">Extras Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../extras/index.html">Extra Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../extras/SphereProperties.html">Samples Properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_Qsca_vs_permittivity_vs_size_parameter.html">Scattering efficiency of a sphere</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extras/plot_coupling_heatmap.html">Coupling heatmap of a sphere</a></li>
@@ -545,51 +545,20 @@
                   
   <section id="single-module">
 <span id="single-index"></span><h1>Single Module<a class="headerlink" href="#single-module" title="Link to this heading">#</a></h1>
-<p>The Single module in PyMieSim is designed for simulating light scattering by individual particles.
-It provides tools for defining single scatterers, their sources, and detectors, offering a detailed analysis of optical properties at the level of a single interaction.
-This module is ideal for researchers and engineers interested in exploring the scattering behavior of individual particles in isolation.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> package focuses on scattering from a single particle.  It exposes
+simple classes for defining a source, a scatterer and a detector so that the
+interaction can be studied in detail.</p>
 <section id="key-components">
-<h2>Key Components<a class="headerlink" href="#key-components" title="Link to this heading">#</a></h2>
-<ol class="arabic">
-<li><p><strong>Sources</strong>:
-The <cite>single</cite> module offers several types of sources to illuminate the scatterer.
-These sources can be configured to match specific experimental conditions, such as wavelength, polarization, and propagation direction.</p>
+<h2>Key components<a class="headerlink" href="#key-components" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><cite>planewave</cite>: Simulates a plane wave source, a uniform beam commonly used in scattering studies.</p></li>
-<li><p><cite>gaussian</cite>: Simulates a Gaussian beam, useful for focused light interactions with scatterers.</p></li>
+<li><p><strong>Sources</strong> – plane waves and Gaussian beams.</p></li>
+<li><p><strong>Scatterers</strong> – spheres, cylinders and core–shell particles.</p></li>
+<li><p><strong>Detectors</strong> – photodiodes as well as coherent and incoherent detectors.</p></li>
 </ul>
-</li>
-<li><p><strong>Scatterers</strong>:
-Defines the individual particles being studied.
-PyMieSim supports various geometries such as spheres, cylinders, and core-shell structures, allowing for the investigation of how shape, size, and material composition affect scattering properties.</p>
-<ul class="simple">
-<li><p><cite>sphere</cite>: A single spherical particle, modeled using Mie theory.</p></li>
-<li><p><cite>cylinder</cite>: A cylindrical scatterer, ideal for elongated particles like fibers.</p></li>
-<li><p><cite>core_shell</cite>: Defines a layered particle with different materials in the core and shell, enabling studies of multi-material systems.</p></li>
-</ul>
-</li>
-<li><p><strong>Detectors</strong>:
-Detectors capture the scattered light from the single scatterer.
-Various detector types are available, each offering different capabilities for measuring the properties of scattered light.</p>
-<ul class="simple">
-<li><p><cite>photodiode</cite>: A simple detector for measuring intensity.</p></li>
-<li><p><cite>coherent</cite>: Captures the coherence properties of the scattered field, providing insights into phase and amplitude relationships.</p></li>
-<li><p><cite>uncoherent</cite>: Measures intensity without regard to phase information.</p></li>
-</ul>
-</li>
-<li><p><strong>Single Scatterer Setup</strong>:
-The module allows for a flexible combination of source, scatterer, and detector, offering detailed simulations of how light interacts with individual particles.
-You can explore a wide range of properties, such as scattering cross-sections, phase functions, polarization effects, and more.</p>
-<p>Example configurations include:
-- A spherical scatterer illuminated by a Gaussian beam with intensity measurements at various angles.
-- Core-shell particles analyzed for extinction cross-sections as a function of shell thickness.
-- Cylindrical scatterers examined for scattering efficiencies across different wavelengths.</p>
-</li>
-</ol>
 </section>
-<section id="example-usage">
-<h2>Example Usage<a class="headerlink" href="#example-usage" title="Link to this heading">#</a></h2>
-<p>Below is an example of how to set up and run a simulation using the <cite>single</cite> module in PyMieSim:</p>
+<section id="example">
+<h2>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<p>This example computes the power coupled into a photodiode from a tiny sphere.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.scatterer</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sphere</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gaussian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.detector</span><span class="w"> </span><span class="kn">import</span> <span class="n">Photodiode</span>
@@ -599,14 +568,14 @@ You can explore a wide range of properties, such as scattering cross-sections, p
     <span class="n">wavelength</span><span class="o">=</span><span class="mi">450</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
     <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
-    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">AU</span>
+    <span class="n">NA</span><span class="o">=</span><span class="mf">0.3</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">scatterer</span> <span class="o">=</span> <span class="n">Sphere</span><span class="p">(</span>
-    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>  <span class="c1"># 6 nm</span>
+    <span class="n">diameter</span><span class="o">=</span><span class="mi">6</span> <span class="o">*</span> <span class="n">nanometer</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
     <span class="n">medium_property</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
-    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">RIU</span>
+    <span class="nb">property</span><span class="o">=</span><span class="mf">1.4</span> <span class="o">*</span> <span class="n">RIU</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">detector</span> <span class="o">=</span> <span class="n">Photodiode</span><span class="p">(</span>
@@ -614,17 +583,16 @@ You can explore a wide range of properties, such as scattering cross-sections, p
     <span class="n">phi_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
     <span class="n">gamma_offset</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">degree</span><span class="p">,</span>
     <span class="n">sampling</span><span class="o">=</span><span class="mi">200</span> <span class="o">*</span> <span class="n">AU</span><span class="p">,</span>
-    <span class="n">polarization_filter</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">polarization_filter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="n">coupling</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">coupling</span><span class="p">(</span><span class="n">scatterer</span><span class="p">)</span>
-
 <span class="nb">print</span><span class="p">(</span><span class="n">coupling</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The <cite>Single</cite> module simplifies the process of analyzing light scattering at the individual particle level, providing an intuitive interface for exploring the interaction between light and single particles.</p>
 <div class="sphx-glr-thumbnails"></div><section id="detectors">
 <h3>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h3>
+<p>Examples illustrating different detector models.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the initialization and visualization of HG01 Mode detector using PyMieSim."><img alt="" src="../../_images/sphx_glr_HG01_thumb.png" />
 <p><a class="reference internal" href="detector/HG01.html#sphx-glr-gallery-single-detector-hg01-py"><span class="std std-ref">Hermite-Gauss 01 Mode Detector</span></a></p>
   <div class="sphx-glr-thumbnail-title">Hermite-Gauss 01 Mode Detector</div>
@@ -652,6 +620,7 @@ You can explore a wide range of properties, such as scattering cross-sections, p
 </div></div></section>
 <section id="scatterers">
 <h3>Scatterers<a class="headerlink" href="#scatterers" title="Link to this heading">#</a></h3>
+<p>Examples exploring available scatterer geometries.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim."><img alt="" src="../../_images/sphx_glr_farfield_thumb.png" />
 <p><a class="reference internal" href="scatterer/farfield.html#sphx-glr-gallery-single-scatterer-farfield-py"><span class="std std-ref">Far-Fields Computation and Visualization</span></a></p>
   <div class="sphx-glr-thumbnail-title">Far-Fields Computation and Visualization</div>
@@ -703,8 +672,8 @@ You can explore a wide range of properties, such as scattering cross-sections, p
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">Key Components</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-usage">Example Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-components">Key components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#detectors">Detectors</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scatterers">Scatterers</a></li>
 </ul>

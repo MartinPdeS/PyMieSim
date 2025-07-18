@@ -4,6 +4,8 @@
 
 Detectors
 ~~~~~~~~~
+Examples illustrating different detector models.
+
 
 
 .. raw:: html

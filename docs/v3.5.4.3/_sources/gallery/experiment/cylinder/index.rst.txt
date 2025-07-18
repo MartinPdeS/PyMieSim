@@ -4,6 +4,8 @@
 
 Cylinder
 ~~~~~~~~
+Examples demonstrating infinite cylindrical scatterers.
+
 
 
 .. raw:: html
