@@ -20,7 +20,7 @@ requirements:
     - setuptools_scm[toml] ~=8.0
   run:
     - python {{PY_VER}}*
-    - flexparser <0.4  # This is due to a dataclass inheritance problem coming from the pint package
+    # - flexparser <0.4  # This is due to a dataclass inheritance problem coming from the pint package
     - martinpdes::pyoptik ==v1.10.8
     - martinpdes::mpsplots ==v1.6.4
     - matplotlib ~=3.10.3

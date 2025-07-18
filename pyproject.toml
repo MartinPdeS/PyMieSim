@@ -53,7 +53,7 @@ classifiers = [
 
 dependencies = [
     "setuptools_scm[toml] ~=8.0",
-    "flexparser <0.5",  # This is due to a dataclass inheritance problem coming from the pint package
+    # "flexparser <0.5",  # This is due to a dataclass inheritance problem coming from the pint package
     "numpy ==2.2.6",
     "matplotlib ==3.10.3",
     "MPSPlots ==1.6.4",
