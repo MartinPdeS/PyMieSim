@@ -176,7 +176,7 @@ Plotting the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.740 seconds)
+   **Total running time of the script:** (0 minutes 0.726 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_coherent_coupling_vs_sampling.py:
