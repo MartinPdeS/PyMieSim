@@ -7,64 +7,49 @@ Sphere: Qsca vs diameter
 # %%
 # Importing the package dependencies: numpy, PyMieSim
 import numpy as np
-import matplotlib.pyplot as plt
+
 from PyMieSim.experiment.scatterer import Sphere
 from PyMieSim.experiment.source import Gaussian
-from PyOptik import Material
 
 from PyMieSim.experiment import Setup
-from PyMieSim import units
-from PyMieSim.units import degree, watt, AU, RIU
-
-
+from PyMieSim.units import nanometer, degree, watt, AU, RIU
+from PyOptik import Material
+Material.print_available()
+import PyMieSim
+PyMieSim.debug_mode = True
 
 
 
 # %%
 # Defining the source to be employed.
-
-c = 2.998e+8 * units.meter / units.second  # Speed of light in vacuum
-
-start_frequency = 0.1 * units.gigahertz
-end_frequency = 6 * units.gigahertz
-
-frequencies = np.linspace(start_frequency, end_frequency, 250)
-
-wavelengths = c / frequencies
-
-
 source = Gaussian(
-    wavelength=wavelengths,
+    wavelength=[405, 810] * nanometer,
     polarization=0 * degree,
     optical_power=1e-3 * watt,
     NA=0.2 * AU
 )
 
 scatterer = Sphere(
-    diameter=14e7 * units.nanometer,
-    medium_property=[1] * RIU,
-    property=Material.silver,
+    diameter=np.linspace(10, 1000, 150) * nanometer,
+    medium_property=[1.33] * RIU,
+    property=Material.polystyren,
     source=source
 )
-
-
 
 # %%
 # Defining the experiment setup
 experiment = Setup(scatterer=scatterer, source=source)
 
-data = experiment.get('Qforward', 'Qback', scale_unit=False, drop_unique_level=True, as_numpy=True)
+dataframe = experiment.get('Qsca', scale_unit=True)
 
-q_forward, q_back = data
+dataframe.plot(x='scatterer:diameter', show=True)
 
-plt.figure(figsize=(10, 6))
-plt.plot(frequencies, q_forward, label='Qforward', color='blue')
-plt.plot(frequencies, q_back, label='Qback', color='orange')
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Scattering Efficiency')
-plt.title('Scattering Efficiency vs Wavelength')
-plt.legend()
-plt.grid()
-plt.yscale('log')
-plt.tight_layout()
-plt.show()
+
+
+
+
+
+
+
+
+# plt.show()
