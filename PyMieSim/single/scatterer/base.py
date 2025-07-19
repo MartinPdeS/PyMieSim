@@ -179,6 +179,7 @@ class BaseScatterer(units.UnitsValidation):
 
         return I, Q, U, V
 
+
     def get_far_field_array(
         self,
         phi: numpy.ndarray,

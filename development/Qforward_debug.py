@@ -16,13 +16,6 @@ from PyMieSim.experiment import Setup
 from PyMieSim import units
 from PyMieSim.units import degree, watt, AU, RIU
 
-
-
-
-
-# %%
-# Defining the source to be employed.
-
 c = 2.998e+8 * units.meter / units.second  # Speed of light in vacuum
 
 start_frequency = 0.1 * units.gigahertz
@@ -60,7 +53,7 @@ q_forward, q_back = data
 plt.figure(figsize=(10, 6))
 plt.plot(frequencies, q_forward, label='Qforward', color='blue')
 plt.plot(frequencies, q_back, label='Qback', color='orange')
-plt.xlabel('Frequency (Hz)')
+plt.xlabel('Frequency (GHz)')
 plt.ylabel('Scattering Efficiency')
 plt.title('Scattering Efficiency vs Wavelength')
 plt.legend()
