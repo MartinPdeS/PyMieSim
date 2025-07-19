@@ -112,5 +112,9 @@ def test_unstructured_array_functions(property, medium_property, source):
     assert V.shape == phi.shape
 
 
+    E_para, E_perp = scatterer.get_far_field_array(phi, theta)
+    assert E_para.shape == phi.shape
+    assert E_perp.shape == phi.shape
+
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])
