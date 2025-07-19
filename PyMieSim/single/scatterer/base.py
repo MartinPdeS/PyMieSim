@@ -126,6 +126,59 @@ class BaseScatterer(units.UnitsValidation):
         """
         return self._cpp_get_fields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
 
+    def get_s1s2_array(self, phi: numpy.ndarray) -> Tuple[numpy.ndarray, numpy.ndarray]:
+        """Return the S1 and S2 scattering amplitudes for arbitrary ``phi`` angles.
+
+        Parameters
+        ----------
+        phi : numpy.ndarray
+            Array of azimuthal angles in **radians** for which the scattering
+            amplitudes are computed.
+
+        Returns
+        -------
+        Tuple[numpy.ndarray, numpy.ndarray]
+            Arrays of ``S1`` and ``S2`` values evaluated at the supplied angles.
+        """
+
+        phi = numpy.atleast_1d(phi)
+        return self._cpp_get_s1s2(phi=phi + numpy.pi / 2)
+
+    def get_stokes_array(
+        self,
+        phi: numpy.ndarray,
+        theta: numpy.ndarray,
+        r: units.Quantity = 1 * units.meter
+    ) -> Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]:
+        """Return the Stokes parameters for arbitrary ``phi`` and ``theta`` angles.
+
+        Parameters
+        ----------
+        phi : numpy.ndarray
+            Azimuthal angles in radians.
+        theta : numpy.ndarray
+            Polar angles in radians. Must be broadcastable with ``phi``.
+        r : units.Quantity, optional
+            Radial distance from the scatterer. Defaults to ``1 * meter``.
+
+        Returns
+        -------
+        Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]
+            The ``I``, ``Q``, ``U`` and ``V`` Stokes parameters.
+        """
+
+        phi, theta = numpy.broadcast_arrays(phi, theta)
+
+        E_phi, E_theta = self.get_farfields_array(phi=phi, theta=theta, r=r)
+
+        intensity = numpy.abs(E_phi) ** 2 + numpy.abs(E_theta) ** 2
+        I = intensity / numpy.max(intensity)
+        Q = (numpy.abs(E_phi) ** 2 - numpy.abs(E_theta) ** 2) / intensity
+        U = (+2 * numpy.real(E_phi * E_theta.conjugate())) / intensity
+        V = (-2 * numpy.imag(E_phi * E_theta.conjugate())) / intensity
+
+        return I, Q, U, V
+
     def get_s1s2(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> S1S2:
         r"""
         Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.
