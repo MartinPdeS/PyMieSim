@@ -179,6 +179,33 @@ class BaseScatterer(units.UnitsValidation):
 
         return I, Q, U, V
 
+    def get_far_field_array(
+        self,
+        phi: numpy.ndarray,
+        theta: numpy.ndarray,
+        r: units.Quantity = 1 * units.meter
+    ) -> Tuple[numpy.ndarray, numpy.ndarray]:
+        """Return far-field intensities for arbitrary ``phi`` and ``theta``.
+
+        Parameters
+        ----------
+        phi : numpy.ndarray
+            Azimuthal angles in radians.
+        theta : numpy.ndarray
+            Polar angles in radians. Must be broadcastable with ``phi``.
+        r : units.Quantity, optional
+            Radial distance from the scatterer. Defaults to ``1 * meter``.
+
+        Returns
+        -------
+        Tuple[numpy.ndarray, numpy.ndarray]
+            ``E_phi`` and ``E_theta`` intensity components.
+        """
+
+        phi, theta = numpy.broadcast_arrays(phi, theta)
+        E_phi, E_theta = self.get_farfields_array(phi=phi, theta=theta, r=r)
+        return numpy.abs(E_phi) ** 2, numpy.abs(E_theta) ** 2
+
     def get_s1s2(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> S1S2:
         r"""
         Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.
