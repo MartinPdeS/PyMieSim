@@ -9,14 +9,14 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 import numpy as np
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import PlaneWave
-from PyMieSim.units import nanometer, degree, watt, RIU
+from PyMieSim.units import nanometer, degree, RIU, volt, meter
 
 # %%
 # Create a simple plane wave source
 source = PlaneWave(
     wavelength=632.8 * nanometer,
     polarization=0 * degree,
-    optical_power=1 * watt,
+    ampliutde=1 * volt / meter,
 )
 
 # %%
