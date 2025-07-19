@@ -1,54 +1,30 @@
-"""
-Sphere: Coupling vs diameter
-============================
-
-"""
-
-# %%
-# Importing the package dependencies: numpy, PyMieSim
-import numpy
-from PyMieSim.experiment.detector import Photodiode
-from PyMieSim.experiment.scatterer import Sphere
-from PyMieSim.experiment.source import Gaussian
-from PyMieSim.experiment import Setup
-from PyOptik import Material
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
+import numpy as np
+from PyMieSim.single.scatterer import Sphere
+from PyMieSim.single.source import PlaneWave
+from PyMieSim.units import nanometer, degree, watt, RIU, meter, volt
 
 # %%
-# Defining the source to be employed.
-source = Gaussian(
-    wavelength=488 * nanometer,
-    polarization=90 * degree,
-    optical_power=1e-3 * watt,
-    NA=[0.1] * AU
+# Create a simple plane wave source
+source = PlaneWave(
+    wavelength=632.8 * nanometer,
+    polarization=0 * degree,
+    amplitude=1 * volt / meter,
 )
+
 # %%
-# Defining the ranging parameters for the scatterer distribution
+# Define the scatterer
 scatterer = Sphere(
-    diameter=numpy.linspace(10, 200, 600) * nanometer,
-    property=1.40 * RIU,
-    medium_property=1.33 * RIU,
-    source=source
+    diameter=200 * nanometer,
+    property=1.5 * RIU,
+    medium_property=1.0 * RIU,
+    source=source,
 )
 
-# %%
-# Defining the detector to be employed.
-detector = Photodiode(
-    NA=1.2 * AU,
-    phi_offset=[0.0, 90] * degree,
-    gamma_offset=0.0 * degree,
-    sampling=600 * AU,
-    polarization_filter=None
-)
+# Define arbitrary angle arrays
+phi = np.linspace(0, np.pi, 8)
 
 # %%
-# Defining the experiment setup
-experiment = Setup(scatterer=scatterer, source=source, detector=detector)
+# S1 and S2 scattering amplitudes
+S1, S2 = scatterer.get_s1s2_array(phi)
 
-# %%
-# Measuring the properties
-dataframe = experiment.get('coupling', drop_unique_level=True, scale_unit=True)
-
-# %%
-# Plotting the results
-dataframe.plot_data(x='scatterer:diameter')
+print(S1)
