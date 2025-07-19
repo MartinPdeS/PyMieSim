@@ -736,6 +736,27 @@ The computed far fields represent the scattered electric field components in the
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.get_far_field_array">
+<span class="sig-name descname"><span class="pre">get_far_field_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.get_far_field_array" title="Link to this definition">#</a></dt>
+<dd><p>Return the far-field electric fields for arbitrary <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex <code class="docutils literal notranslate"><span class="pre">E_phi</span></code> and <code class="docutils literal notranslate"><span class="pre">E_theta</span></code> field components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a>, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.get_farfields_array">
 <span class="sig-name descname"><span class="pre">get_farfields_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.get_farfields_array" title="Link to this definition">#</a></dt>
 <dd><p>Computes the scattering far field for unstructured coordinates.</p>
@@ -1270,6 +1291,27 @@ The computed far fields represent the scattered electric field components in the
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">far_field</span><span class="o">.</span><span class="n">E_phi</span><span class="p">,</span> <span class="n">far_field</span><span class="o">.</span><span class="n">E_theta</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.get_far_field_array">
+<span class="sig-name descname"><span class="pre">get_far_field_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.get_far_field_array" title="Link to this definition">#</a></dt>
+<dd><p>Return the far-field electric fields for arbitrary <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex <code class="docutils literal notranslate"><span class="pre">E_phi</span></code> and <code class="docutils literal notranslate"><span class="pre">E_theta</span></code> field components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a>, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1842,6 +1884,27 @@ The computed far fields represent the scattered electric field components in the
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.get_far_field_array">
+<span class="sig-name descname"><span class="pre">get_far_field_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r=&lt;Quantity(1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">'meter')&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.get_far_field_array" title="Link to this definition">#</a></dt>
+<dd><p>Return the far-field electric fields for arbitrary <code class="docutils literal notranslate"><span class="pre">phi</span></code> and <code class="docutils literal notranslate"><span class="pre">theta</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>phi</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Azimuthal angles in radians.</p></li>
+<li><p><strong>theta</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Polar angles in radians. Must be broadcastable with <code class="docutils literal notranslate"><span class="pre">phi</span></code>.</p></li>
+<li><p><strong>r</strong> (<em>units.Quantity</em><em>, </em><em>optional</em>) – Radial distance from the scatterer. Defaults to <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">*</span> <span class="pre">meter</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex <code class="docutils literal notranslate"><span class="pre">E_phi</span></code> and <code class="docutils literal notranslate"><span class="pre">E_theta</span></code> field components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tuple[<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a>, <a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.get_farfields_array">
 <span class="sig-name descname"><span class="pre">get_farfields_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.get_farfields_array" title="Link to this definition">#</a></dt>
 <dd><p>Computes the scattering far field for unstructured coordinates.</p>
@@ -2181,6 +2244,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.dn"><code class="docutils literal notranslate"><span class="pre">Sphere.dn()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.g"><code class="docutils literal notranslate"><span class="pre">Sphere.g</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_far_field"><code class="docutils literal notranslate"><span class="pre">Sphere.get_far_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_far_field_array"><code class="docutils literal notranslate"><span class="pre">Sphere.get_far_field_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_farfields_array"><code class="docutils literal notranslate"><span class="pre">Sphere.get_farfields_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_footprint"><code class="docutils literal notranslate"><span class="pre">Sphere.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_s1s2"><code class="docutils literal notranslate"><span class="pre">Sphere.get_s1s2()</span></code></a></li>
@@ -2221,6 +2285,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.diameter"><code class="docutils literal notranslate"><span class="pre">Cylinder.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.g"><code class="docutils literal notranslate"><span class="pre">Cylinder.g</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_far_field"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_far_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_far_field_array"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_far_field_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_farfields_array"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_farfields_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_footprint"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_s1s2"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_s1s2()</span></code></a></li>
@@ -2261,6 +2326,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.dn"><code class="docutils literal notranslate"><span class="pre">CoreShell.dn()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.g"><code class="docutils literal notranslate"><span class="pre">CoreShell.g</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_far_field"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_far_field()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_far_field_array"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_far_field_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_farfields_array"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_farfields_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_footprint"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_footprint()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_s1s2"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_s1s2()</span></code></a></li>

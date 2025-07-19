@@ -14,6 +14,7 @@ Contents
 - ``plot_coupling_heatmap.py`` – visualise coupling as a function of NA and refractive index.
 - ``plot_system.py`` – draw the arrangement of sources, detectors and scatterers.
 - ``plot_Qsca_vs_permittivity_vs_size_parameter.py`` – inspect scattering as material and size vary.
+- ``array_scattering.py`` – compute fields and Stokes parameters for arbitrary angles.
 
 
 
@@ -37,6 +38,23 @@ Contents
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Samples Properties</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates how to compute far fields, S1/S2 amplitudes and Stokes parameters using arbitrary phi and theta arrays.">
+
+.. only:: html
+
+  .. image:: /gallery/extras/images/thumb/sphx_glr_array_scattering_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_extras_array_scattering.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Array-based scattering calculations</div>
     </div>
 
 
@@ -119,6 +137,7 @@ Contents
    :hidden:
 
    /gallery/extras/SphereProperties
+   /gallery/extras/array_scattering
    /gallery/extras/plot_Qsca_vs_permittivity_vs_size_parameter
    /gallery/extras/plot_coupling_heatmap
    /gallery/extras/plot_coupling_vs_NA
