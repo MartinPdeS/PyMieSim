@@ -41,6 +41,7 @@ public:
     virtual double get_Qsca() const {throw std::logic_error{"Function not implementend!"};};
     virtual double get_Qext() const {throw std::logic_error{"Function not implementend!"};};
     virtual double get_Qback() const {throw std::logic_error{"Function not implementend!"};};
+    virtual double get_Qforward() const {throw std::logic_error{"Function not implementend!"};};
     virtual double get_g() const {throw std::logic_error{"Function not implementend!"};};
 
     virtual void compute_size_parameter() = 0;
@@ -86,12 +87,12 @@ public:
      */
     double get_Qpr() const {return get_Qext() - get_g() * get_Qsca();};
 
-    /**
-     * @brief Computes the scattering efficiency Qforward.
-     * @return The scattering efficiency Qforward.
-     * @note This method computes the scattering efficiency based on the coefficients an and bn.
-     */
-    double get_Qforward() const {return get_Qsca() - get_Qback();};
+    // /**
+    //  * @brief Computes the scattering efficiency Qforward.
+    //  * @return The scattering efficiency Qforward.
+    //  * @note This method computes the scattering efficiency based on the coefficients an and bn.
+    //  */
+    // double get_Qforward() const {return get_Qsca() - get_Qback();};
 
     /**
      * @brief Computes the backscattering efficiency Qback.

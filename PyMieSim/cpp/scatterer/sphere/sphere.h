@@ -68,6 +68,12 @@ class Sphere: public BaseScatterer
         double get_Qback() const override;
 
         /**
+         * @brief Computes the forward scattering efficiency Qforward for a sphere.
+         * @return The forward scattering efficiency Qforward.
+         */
+        double get_Qforward() const override;
+
+        /**
          * @brief Computes the asymmetry factor g for a sphere.
          * @return The asymmetry factor g.
          */

@@ -12,7 +12,7 @@ BASE_UNITS = [
 ]
 
 # Define prefixes for scaling units
-SCALES = ['nano', 'micro', 'milli', '', 'kilo', 'mega']
+SCALES = ['nano', 'micro', 'milli', '', 'kilo', 'mega', 'giga', 'tera']
 
 
 def initialize_registry(ureg: Optional[object] = None):

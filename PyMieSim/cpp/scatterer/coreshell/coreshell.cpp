@@ -157,6 +157,19 @@ double CoreShell::get_Qback() const {
     return std::abs(value);
 }
 
+double CoreShell::get_Qforward() const {
+    complex128 value = 0;
+
+    for(size_t it = 0; it < max_order-1; ++it)
+    {
+        double n = (double) it + 1;
+
+        value += (2. * n + 1) * ( this->an[it] + this->bn[it] ) ;
+    }
+
+    value = pow( std::abs(value), 2. ) / size_parameter_squared;
+    return std::abs(value);
+}
 
 double CoreShell::get_g() const {
     double value = 0;
