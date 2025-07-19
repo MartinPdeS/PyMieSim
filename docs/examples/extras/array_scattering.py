@@ -16,7 +16,7 @@ from PyMieSim.units import nanometer, degree, RIU, volt, meter
 source = PlaneWave(
     wavelength=632.8 * nanometer,
     polarization=0 * degree,
-    ampliutde=1 * volt / meter,
+    amplitude=1 * volt / meter,
 )
 
 # %%
