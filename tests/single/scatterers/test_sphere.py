@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+import numpy
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 from PyMieSim.single.detector import Photodiode
@@ -86,6 +87,33 @@ def test_sphere_plottings(mock_show_plt, mock_show_pyvista, plotting_function, p
     assert data is not None, "Plotting data should not be None"
 
     plt.close()
+
+
+@pytest.mark.parametrize('property', property, ids=[f'property:{m}' for m in property])
+@pytest.mark.parametrize('medium_property', medium_property, ids=[f'Medium:{m}' for m in medium_property])
+def test_unstructured_array_functions(property, medium_property, source):
+    scatterer = Sphere(
+        diameter=100 * nanometer,
+        source=source,
+        medium_property=medium_property,
+        property=property
+    )
+
+    phi = numpy.linspace(0, numpy.pi, 5)
+    s1, s2 = scatterer.get_s1s2_array(phi)
+    assert s1.shape == phi.shape
+    assert s2.shape == phi.shape
+
+    theta = numpy.linspace(0, numpy.pi / 2, 5)
+    I, Q, U, V = scatterer.get_stokes_array(phi, theta)
+    assert I.shape == phi.shape
+    assert Q.shape == phi.shape
+    assert U.shape == phi.shape
+    assert V.shape == phi.shape
+
+    E_para, E_perp = scatterer.get_far_field_array(phi, theta)
+    assert E_para.shape == phi.shape
+    assert E_perp.shape == phi.shape
 
 
 if __name__ == "__main__":

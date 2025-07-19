@@ -12,3 +12,4 @@ Contents
 - ``plot_coupling_heatmap.py`` – visualise coupling as a function of NA and refractive index.
 - ``plot_system.py`` – draw the arrangement of sources, detectors and scatterers.
 - ``plot_Qsca_vs_permittivity_vs_size_parameter.py`` – inspect scattering as material and size vary.
+- ``array_scattering.py`` – compute fields and Stokes parameters for arbitrary angles.
