@@ -120,7 +120,7 @@ If you use PyMieSim in academic work, please cite:
 
 Contact
 -------
-For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.ca <mailto:martin.poinsinet.de.sivry@gmail.ca>`_.
+For questions or contributions, contact `martin.poinsinet.de.sivry@gmail.com <mailto:martin.poinsinet.de.sivry@gmail.com>`_.
 
 .. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
     :alt: PyOptik logo
