@@ -140,8 +140,8 @@ class BaseScatterer(units.UnitsValidation):
         Tuple[numpy.ndarray, numpy.ndarray]
             Arrays of ``S1`` and ``S2`` values evaluated at the supplied angles.
         """
+        phi = self._validate_units(phi, dimension='angle', units=units.radian)
 
-        phi = numpy.atleast_1d(phi)
         return self._cpp_get_s1s2(phi=phi + numpy.pi / 2)
 
     def get_stokes_array(
@@ -166,6 +166,9 @@ class BaseScatterer(units.UnitsValidation):
         Tuple[numpy.ndarray, numpy.ndarray, numpy.ndarray, numpy.ndarray]
             The ``I``, ``Q``, ``U`` and ``V`` Stokes parameters.
         """
+        phi = self._validate_units(phi, dimension='angle', units=units.radian)
+        theta = self._validate_units(theta, dimension='angle', units=units.radian)
+        r = self._validate_units(r, dimension='distance', units=units.meter)
 
         phi, theta = numpy.broadcast_arrays(phi, theta)
 
@@ -202,6 +205,9 @@ class BaseScatterer(units.UnitsValidation):
         Tuple[numpy.ndarray, numpy.ndarray]
             Complex ``E_phi`` and ``E_theta`` field components.
         """
+        phi = self._validate_units(phi, dimension='angle', units=units.radian)
+        theta = self._validate_units(theta, dimension='angle', units=units.radian)
+        r = self._validate_units(r, dimension='distance', units=units.meter)
 
         phi, theta = numpy.broadcast_arrays(phi, theta)
         E_phi, E_theta = self.get_farfields_array(phi=phi, theta=theta, r=r)
