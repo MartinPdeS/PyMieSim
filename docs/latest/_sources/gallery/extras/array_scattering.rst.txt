@@ -24,7 +24,7 @@ Array-based scattering calculations
 This example demonstrates how to compute far fields, S1/S2 amplitudes and
 Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-14
+.. GENERATED FROM PYTHON SOURCE LINES 8-15
 
 .. code-block:: Python
 
@@ -32,7 +32,8 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
     import numpy as np
     from PyMieSim.single.scatterer import Sphere
     from PyMieSim.single.source import PlaneWave
-    from PyMieSim.units import nanometer, degree, RIU, volt, meter
+    from PyMieSim.units import nanometer, degree, RIU, volt, meter, radian
+    import matplotlib.pyplot as plt
 
 
 
@@ -41,11 +42,11 @@ Stokes parameters using arbitrary ``phi`` and ``theta`` arrays.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-16
+.. GENERATED FROM PYTHON SOURCE LINES 16-17
 
 Create a simple plane wave source
 
-.. GENERATED FROM PYTHON SOURCE LINES 16-22
+.. GENERATED FROM PYTHON SOURCE LINES 17-23
 
 .. code-block:: Python
 
@@ -62,11 +63,11 @@ Create a simple plane wave source
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-24
+.. GENERATED FROM PYTHON SOURCE LINES 24-25
 
 Define the scatterer
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-35
+.. GENERATED FROM PYTHON SOURCE LINES 25-36
 
 .. code-block:: Python
 
@@ -78,8 +79,8 @@ Define the scatterer
     )
 
     # Define arbitrary angle arrays
-    phi = np.linspace(0, np.pi, 8)
-    theta = np.linspace(0, np.pi / 2, 8)
+    phi = np.linspace(0, np.pi, 150) * radian
+    theta = np.linspace(0, np.pi / 2, 150) * radian
 
 
 
@@ -88,73 +89,126 @@ Define the scatterer
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
+.. GENERATED FROM PYTHON SOURCE LINES 37-38
 
 Far-field complex fields
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-40
+.. GENERATED FROM PYTHON SOURCE LINES 38-56
 
 .. code-block:: Python
 
     E_para, E_perp = scatterer.get_far_field_array(phi, theta)
-    print(E_para.shape, E_perp.shape)
+
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    plt.plot(phi, np.abs(E_para), label='E_para')
+    plt.title('E_para Far Field')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Magnitude')
+    plt.legend()
+    plt.subplot(1, 2, 2)
+    plt.plot(phi, np.abs(E_perp), label='E_perp', color='orange')
+    plt.title('E_perp Far Field')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Magnitude')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image-sg:: /gallery/extras/images/sphx_glr_array_scattering_001.png
+   :alt: E_para Far Field, E_perp Far Field
+   :srcset: /gallery/extras/images/sphx_glr_array_scattering_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    (8,) (8,)
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 41-42
+.. GENERATED FROM PYTHON SOURCE LINES 57-58
 
 S1 and S2 scattering amplitudes
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-45
+.. GENERATED FROM PYTHON SOURCE LINES 58-76
 
 .. code-block:: Python
 
     S1, S2 = scatterer.get_s1s2_array(phi)
-    print(S1.shape, S2.shape)
+
+    plt.figure(figsize=(10, 5))
+    plt.subplot(1, 2, 1)
+    plt.plot(phi, np.abs(S1), label='S1')
+    plt.title('S1 Scattering Amplitude')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Magnitude')
+    plt.legend()
+    plt.subplot(1, 2, 2)
+    plt.plot(phi, np.abs(S2), label='S2', color='orange')
+    plt.title('S2 Scattering Amplitude')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Magnitude')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+
+
+
+.. image-sg:: /gallery/extras/images/sphx_glr_array_scattering_002.png
+   :alt: S1 Scattering Amplitude, S2 Scattering Amplitude
+   :srcset: /gallery/extras/images/sphx_glr_array_scattering_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    (8,) (8,)
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 46-47
+.. GENERATED FROM PYTHON SOURCE LINES 77-78
 
 Stokes parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 78-106
 
 .. code-block:: Python
 
     I, Q, U, V = scatterer.get_stokes_array(phi, theta)
-    print(I.shape, Q.shape, U.shape, V.shape)
+
+    plt.figure(figsize=(10, 5))
+    plt.subplot(2, 2, 1)
+    plt.plot(phi, I, label='I')
+    plt.title('Stokes I')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Intensity')
+    plt.legend()
+    plt.subplot(2, 2, 2)
+    plt.plot(phi, Q, label='Q', color='orange')
+    plt.title('Stokes Q')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Intensity')
+    plt.legend()
+    plt.subplot(2, 2, 3)
+    plt.plot(phi, U, label='U', color='green')
+    plt.title('Stokes U')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Intensity')
+    plt.legend()
+    plt.subplot(2, 2, 4)
+    plt.plot(phi, V, label='V', color='red')
+    plt.title('Stokes V')
+    plt.xlabel('Phi (radians)')
+    plt.ylabel('Intensity')
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
 
 
+.. image-sg:: /gallery/extras/images/sphx_glr_array_scattering_003.png
+   :alt: Stokes I, Stokes Q, Stokes U, Stokes V
+   :srcset: /gallery/extras/images/sphx_glr_array_scattering_003.png
+   :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    (8,) (8,) (8,) (8,)
 
 
 
@@ -162,7 +216,7 @@ Stokes parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.003 seconds)
+   **Total running time of the script:** (0 minutes 1.062 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_array_scattering.py:
