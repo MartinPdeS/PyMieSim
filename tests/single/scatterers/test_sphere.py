@@ -9,8 +9,7 @@ from PyMieSim.single.detector import Photodiode
 from PyOptik import Material
 from unittest.mock import patch
 import matplotlib.pyplot as plt
-from PyMieSim.units import nanometer, degree, watt, AU, RIU
-from PyMieSim.single import plot_system
+from PyMieSim.units import nanometer, degree, watt, AU, RIU, radian
 
 # Define the core configurations for testing, now separated 'id' for clarity in tests
 property = [Material.BK7, 1.6 * RIU]
@@ -99,12 +98,12 @@ def test_unstructured_array_functions(property, medium_property, source):
         property=property
     )
 
-    phi = numpy.linspace(0, numpy.pi, 5)
+    phi = numpy.linspace(0, numpy.pi, 5) * radian
     s1, s2 = scatterer.get_s1s2_array(phi)
     assert s1.shape == phi.shape
     assert s2.shape == phi.shape
 
-    theta = numpy.linspace(0, numpy.pi / 2, 5)
+    theta = numpy.linspace(0, numpy.pi / 2, 5) * radian
     I, Q, U, V = scatterer.get_stokes_array(phi, theta)
     assert I.shape == phi.shape
     assert Q.shape == phi.shape
