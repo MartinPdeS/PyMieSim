@@ -80,12 +80,12 @@ void Cylinder::compute_an_bn(const size_t max_order) {
         H_x_p(max_order + 1);
 
     for (size_t order = 0; order < max_order + 1; ++order){
-        J_z[order] = compute_Jn(order, mx);
-        J_z_p[order] = compute_Jn_p(order, mx);
-        J_x[order] = compute_Jn(order, size_parameter);
-        J_x_p[order] = compute_Jn_p(order, size_parameter);
-        H_x[order] = compute_H1(order, size_parameter);
-        H_x_p[order] = compute_H1_p(order, size_parameter);
+        J_z[order] = Cylindrical_::Jn(order, mx);
+        J_z_p[order] = Cylindrical_::Jnp(order, mx);
+        J_x[order] = Cylindrical_::Jn(order, size_parameter);
+        J_x_p[order] = Cylindrical_::Jnp(order, size_parameter);
+        H_x[order] = Cylindrical_::H1n(order, size_parameter);
+        H_x_p[order] = Cylindrical_::H1np(order, size_parameter);
     }
 
     // Compute Mie coefficients a1n, a2n, b1n, b2n for each order
@@ -126,12 +126,12 @@ void Cylinder::compute_cn_dn(const size_t max_order) {
         H_x_p(max_order + 1);
 
     for (size_t order = 0; order < max_order + 1; ++order){
-        J_z[order]  = compute_Jn(order, mx);
-        J_z_p[order]= compute_Jn_p(order, mx);
-        J_x[order]  = compute_Jn(order, size_parameter);
-        J_x_p[order]= compute_Jn_p(order, size_parameter);
-        H_x[order]  = compute_H1(order, size_parameter);
-        H_x_p[order]= compute_H1_p(order, size_parameter);
+        J_z[order]  = Cylindrical_::Jn(order, mx);
+        J_z_p[order]= Cylindrical_::Jnp(order, mx);
+        J_x[order]  = Cylindrical_::Jn(order, size_parameter);
+        J_x_p[order]= Cylindrical_::Jnp(order, size_parameter);
+        H_x[order]  = Cylindrical_::H1n(order, size_parameter);
+        H_x_p[order]= Cylindrical_::H1np(order, size_parameter);
     }
 
     // Compute internal coefficients c1n, c2n, d1n, d2n
@@ -178,7 +178,7 @@ Cylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
     return Dn;
 }
 
-std::vector<complex128> Cylinder::compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) {
+std::vector<complex128> Cylinder::compute_nearfields(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::string&) {
     throw std::runtime_error("Near-field computation is not implemented for Cylinder scatterers.");
 }
 

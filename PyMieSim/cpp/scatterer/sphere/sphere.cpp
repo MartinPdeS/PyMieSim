@@ -44,8 +44,10 @@ void Sphere::compute_an_bn(size_t _max_order) {
     {
         // Calculate psi and chi (Riccati-Bessel functions)
         double nu = order + 1;
-        psi_n = +size_parameter * compute_jn(nu, size_parameter);
-        chi_n = -size_parameter * compute_yn(nu, size_parameter);
+        // psi_n = +size_parameter * compute_jn(nu, size_parameter);
+        // chi_n = -size_parameter * compute_yn(nu, size_parameter);
+        psi_n = +size_parameter * Spherical_::jn(nu, size_parameter);
+        chi_n = -size_parameter * Spherical_::yn(nu, size_parameter);
 
         // Complex Riccati-Bessel functions
         xi_n = psi_n - 1.0 * complex128(0, 1) * chi_n;
@@ -90,10 +92,15 @@ void Sphere::compute_cn_dn(size_t _max_order) {
 
     for (size_t order = 0; order < _max_order; order++) {
         Cnn.push_back(Cnx[order]);
-        jnx.push_back(compute_jn(order + 1, x));
 
-        jnmx.push_back(1.0 / (compute_jn(order + 1, z)));
-        yx.push_back(compute_yn(order + 1, x));
+        // jnx.push_back(compute_jn(order + 1, x));
+        // jnmx.push_back(1.0 / (compute_jn(order + 1, z)));
+        // yx.push_back(compute_yn(order + 1, x));
+        // hx.push_back(jnx[order] + complex128(0, 1) * yx[order]);
+
+        jnx.push_back(Spherical_::jn(order + 1, x));
+        jnmx.push_back(1.0 / (Spherical_::jn(order + 1, z)));
+        yx.push_back(Spherical_::yn(order + 1, x));
         hx.push_back(jnx[order] + complex128(0, 1) * yx[order]);
 
         b1x.push_back(jnx[order]);

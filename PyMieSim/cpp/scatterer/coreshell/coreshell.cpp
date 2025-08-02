@@ -74,13 +74,14 @@ void CoreShell::compute_an_bn(const size_t max_order)
 
     for (size_t order = 0; order < max_order + 1; order++){
         double nu = order + 1.5 ;
-        pw[order] = sw * compute_Jn(nu, w);
-        pv[order] = sv * compute_Jn(nu, v);
-        py[order] = sy * compute_Jn(nu, this->x_shell);
 
-        chv[order] = -sv * compute_Yn(nu, v);
-        chw[order] = -sw * compute_Yn(nu, w);
-        chy[order] = -sy * compute_Yn(nu, this->x_shell);
+        pw[order] = sw * Cylindrical_::Jn(nu, (complex128) w);
+        pv[order] = sv * Cylindrical_::Jn(nu, (complex128) v);
+        py[order] = sy * Cylindrical_::Jn(nu, (complex128) this->x_shell);
+
+        chv[order] = -sv * Cylindrical_::Yn(nu, v);
+        chw[order] = -sw * Cylindrical_::Yn(nu, w);
+        chy[order] = -sy * Cylindrical_::Yn(nu, this->x_shell);
 
         p1y[order + 1] = py[order];
         ch1y[order + 1] = chy[order];
@@ -211,11 +212,11 @@ CoreShell::compute_s1s2(const std::vector<double> &phi) const {
     return std::make_tuple(std::move(S1), std::move(S2));
 }
 
-void CoreShell::compute_cn_dn(size_t _max_order) {
+void CoreShell::compute_cn_dn(size_t) {
     throw std::runtime_error("No implementation of cn and dn exists yet!");
 }
 
-std::vector<complex128> CoreShell::compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) {
+std::vector<complex128> CoreShell::compute_nearfields(const std::vector<double>&, const std::vector<double>&, const std::vector<double>&, const std::string&) {
     throw std::runtime_error("Near-field computation is not implemented for CoreShell scatterers.");
 }
 

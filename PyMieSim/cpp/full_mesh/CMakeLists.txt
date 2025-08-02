@@ -3,4 +3,4 @@
 set(NAME "full_mesh")
 
 # Create a shared library for functionality.
-add_library("cpp_${NAME}" STATIC "${NAME}.cpp")
+add_library("${NAME}" STATIC "${NAME}.cpp")

@@ -1,18 +1,4 @@
-/*! \file errors.h
- *
- * \author Joey Dumont <joey.dumont@gmail.com>
- * \author Denis Gagnon <gagnon88@gmail.com>
- *
- * \brief Definition of the functions computing the Bessel functions.
- *
- * Defines structs to hold error codes and error messages in the computation
- * of error functions.
- *
- * \copyright LGPL
- */
-
-#ifndef ERRORS_H
-#define ERRORS_H
+#pragma once
 
 #include <string>
 #include <array>
@@ -100,5 +86,3 @@ static const std::unordered_map<std::string, std::array<BesselErrors, 6>> errorM
       BesselErrors{ FullLossOfSignificance, "Loss of significance\t -- abs(z) too large\n no computation because of complete loss of significance by argument reduction" },
       BesselErrors{ AlgorithmTermination, "Error\t -- no computation, algorithm termination condition not met" } } }
 };
-
-#endif // ERRORS_H

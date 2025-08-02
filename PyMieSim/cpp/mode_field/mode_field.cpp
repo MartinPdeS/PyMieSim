@@ -64,7 +64,7 @@ ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double
    std::vector<double> rj0(radial_number), rj1(radial_number), ry0(radial_number), ry1(radial_number);
 
    // Calculate Bessel zeros for the radial and azimuthal components
-   bessel_zeros(azimuthal_number, radial_number, &rj0[0], &rj1[0], &ry0[0], &ry1[0]);
+   Special_::compute_bessel_zeros(azimuthal_number, radial_number, &rj0[0], &rj1[0], &ry0[0], &ry1[0]);
 
    double x, y, r, phi, azimuthal_part;
 
@@ -75,7 +75,7 @@ ModeField::get_LP_unstructured(std::vector<double> &x_coords, std::vector<double
       r = std::sqrt(x * x + y * y);
       phi = std::atan2(y, x);
 
-      complex128 radial_part = bessel_J(azimuthal_number, r * rj0[radial_number-1]);
+      complex128 radial_part = Cylindrical_::Jn(azimuthal_number, r * rj0[radial_number-1]);
 
       azimuthal_part = std::cos(azimuthal_number * phi);
 

@@ -1,27 +1,6 @@
-/*! \file fortranLinkage.h
- *
- * \author Joey Dumont <joey.dumont@gmail.com>
- * \author Denis Gagnon <gagnon88@gmail.com>
- *
- * \brief Specifies the linkage to the Fortran subroutines
- * for the Bessel functions of complex argument.
- *
- * We use the Fortran code developed by D.E. Amos \cite AMO86
- * to compute the Bessel, Hankel and Airy functions of complex arguments
- * and integer order. Only positive arguments are supported in Amos' code,
- * but we implement them using the reflection formulae.
- *
- * For real arguments of the Bessel functions, we recommend
- * using the Boost libraries, which are faster for double
- * return value and argument.
- *
- * \copyright LGPL
- */
+#pragma once
 
-#ifndef FORTRANLINKAGE_H
-#define FORTRANLINKAGE_H
-
-namespace sp_bessel {
+// namespace sp_bessel {
 /*! @name Fortran Linkage
  * We link the Fortran subroutines to our C++ code.
  * Since Fortran treats all variables by reference, we must
@@ -63,6 +42,4 @@ extern "C"
 }
 ///@}
 
-} // namespace sp_bessel
-
-#endif // FORTRANLINKAGE_H
+// } // namespace sp_bessel
