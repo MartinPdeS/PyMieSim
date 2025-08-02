@@ -146,7 +146,7 @@ class Detector {
          * @note This function computes the projections based on the spherical coordinates of the Fibonacci mesh.
          */
         std::tuple<std::vector<complex128>, std::vector<complex128>>
-        get_projected_fields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
+        get_projected_farfields(const std::vector<complex128>& theta_field, const std::vector<complex128>& phi_field) const;
 
 
         /**

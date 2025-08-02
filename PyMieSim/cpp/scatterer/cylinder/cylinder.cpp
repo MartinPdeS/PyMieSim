@@ -51,7 +51,7 @@ double Cylinder::get_Qext() const {
 }
 
 double Cylinder::get_g() const {
-    return this->get_g_with_fields(1000);
+    return this->get_g_with_farfields(1000);
 }
 
 double Cylinder::process_polarization(const complex128 value_0, const complex128 value_1) const {
@@ -102,6 +102,55 @@ void Cylinder::compute_an_bn(const size_t max_order) {
     }
 }
 
+void Cylinder::compute_cn_dn(const size_t max_order) {
+    // Resize vectors to hold internal field coefficients for the specified maximum order
+    this->c1n.resize(max_order);
+    this->d1n.resize(max_order);
+    this->c2n.resize(max_order);
+    this->d2n.resize(max_order);
+
+    // Compute the relative refractive index and scaled internal size parameter
+    complex128 m = this->refractive_index / this->medium_refractive_index;
+    complex128 mx = m * size_parameter;
+
+    // Impedance ratio (used in TE mode internal coefficient)
+    // complex128 m_tilde = this->medium_impedance / this->particle_impedance;
+
+    // Precompute Bessel and Hankel functions
+    std::vector<complex128>
+        J_z(max_order + 1),
+        J_z_p(max_order + 1),
+        J_x(max_order + 1),
+        J_x_p(max_order + 1),
+        H_x(max_order + 1),
+        H_x_p(max_order + 1);
+
+    for (size_t order = 0; order < max_order + 1; ++order){
+        J_z[order]  = compute_Jn(order, mx);
+        J_z_p[order]= compute_Jn_p(order, mx);
+        J_x[order]  = compute_Jn(order, size_parameter);
+        J_x_p[order]= compute_Jn_p(order, size_parameter);
+        H_x[order]  = compute_H1(order, size_parameter);
+        H_x_p[order]= compute_H1_p(order, size_parameter);
+    }
+
+    // Compute internal coefficients c1n, c2n, d1n, d2n
+    for (size_t order = 0; order < max_order; ++order) {
+        // --- TM polarization (Mode I) ---
+        complex128 num_d1 = J_z[order] * H_x_p[order] - m * J_z_p[order] * H_x[order];
+        complex128 den_d1 = J_z[order] * J_x_p[order] - m * J_z_p[order] * J_x[order];
+        this->d1n[order] = num_d1 / den_d1;
+        this->c1n[order] = 0.0;  // Not used in TM polarization
+
+        // --- TE polarization (Mode II) ---
+        complex128 num_c2 = m * J_z[order] * H_x_p[order] - J_z_p[order] * H_x[order];
+        complex128 den_c2 = m * J_z[order] * J_x_p[order] - J_z_p[order] * J_x[order];
+        this->c2n[order] = num_c2 / den_c2;
+        this->d2n[order] = 0.0;  // Not used in TE polarization
+    }
+}
+
+
 std::tuple<std::vector<complex128>, std::vector<complex128>>
 Cylinder::compute_s1s2(const std::vector<double> &phi) const{
     std::vector<complex128> T1(phi.size()), T2(phi.size());
@@ -128,3 +177,61 @@ Cylinder::compute_dn(double nmx, complex128 z) const { //Page 205 of BH
 
     return Dn;
 }
+
+std::vector<complex128> Cylinder::compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) {
+    throw std::runtime_error("Near-field computation is not implemented for Cylinder scatterers.");
+}
+
+// std::vector<complex128>
+// Cylinder::compute_near_field(const std::vector<double>& x,
+//                              const std::vector<double>& y,
+//                              const std::string& field_type)
+// {
+//     if (cn.empty() || dn.empty())
+//         throw std::runtime_error("Near-field computation requires cn and dn coefficients.");
+
+//     const size_t n_points = x.size();
+//     if (n_points != y.size())
+//         throw std::invalid_argument("x and y vectors must have the same length");
+
+//     std::vector<complex128> field_values(n_points);
+//     const double k = source.wavenumber * medium_refractive_index;
+//     const complex128 i(0.0, 1.0);
+
+//     for (size_t point_idx = 0; point_idx < n_points; ++point_idx) {
+//         const double x_pos = x[point_idx];
+//         const double y_pos = y[point_idx];
+
+//         const double r = std::hypot(x_pos, y_pos);
+//         const double phi = std::atan2(y_pos, x_pos);
+//         const bool is_inside = (r < this->radius);
+
+//         complex128 Ez = 0.0;
+
+//         for (int n = -static_cast<int>(max_order); n <= static_cast<int>(max_order); ++n) {
+//             size_t idx = std::abs(n);
+//             complex128 coeff = is_inside ? dn[idx] : bn[idx];
+
+//             double arg = k * r;
+//             complex128 radial_func;
+
+//             if (is_inside)
+//                 radial_func = cyl_bessel_j(n, arg);
+//             else
+//                 radial_func = cyl_hankel_1(n, arg);
+
+//             complex128 exp_term = std::exp(i * static_cast<double>(n) * phi);
+//             Ez += coeff * radial_func * exp_term;
+//         }
+
+//         if (field_type == "Ez") {
+//             field_values[point_idx] = Ez;
+//         } else if (field_type == "|E|") {
+//             field_values[point_idx] = std::abs(Ez); // scalar Ez only, no transverse components in this simplified TM case
+//         } else {
+//             throw std::invalid_argument("Unsupported field_type for cylinder: must be Ez or |E| (TM mode only in current implementation)");
+//         }
+//     }
+
+//     return field_values;
+// }

@@ -87,7 +87,7 @@ void Detector::square_array(std::vector<T> &array)
 
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-Detector::get_projected_fields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
+Detector::get_projected_farfields(const std::vector<complex128> &theta_field, const std::vector<complex128> &phi_field) const
 {
 
     std::vector<complex128>
@@ -184,9 +184,9 @@ double Detector::get_coupling(const BaseScatterer& scatterer) const {
 
 double Detector::get_coupling_mean_coherent(const BaseScatterer &scatterer) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
 
-    auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
+    auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
 
@@ -211,9 +211,9 @@ double Detector::get_coupling_mean_no_coherent(const BaseScatterer &scatterer) c
 
 double Detector::get_coupling_point_coherent(const BaseScatterer &scatterer) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
 
-    auto [horizontal_projection, vertical_projection] = this->get_projected_fields(theta_field, phi_field);
+    auto [horizontal_projection, vertical_projection] = this->get_projected_farfields(theta_field, phi_field);
 
     this->apply_scalar_field(horizontal_projection, vertical_projection);
 
@@ -232,7 +232,7 @@ double Detector::get_coupling_point_coherent(const BaseScatterer &scatterer) con
 
 double Detector::get_coupling_point_no_coherent(const BaseScatterer &scatterer) const
 {
-    auto [theta_field, phi_field] = scatterer.compute_unstructured_fields(this->fibonacci_mesh, 1.0);
+    auto [theta_field, phi_field] = scatterer.compute_unstructured_farfields(this->fibonacci_mesh, 1.0);
 
     double
         coupling_theta = this->get_norm2_squared(theta_field),

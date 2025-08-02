@@ -40,14 +40,14 @@ class Cylinder: public BaseScatterer
          * @brief Computes the coefficients an and bn for a sphere.
          * @param _max_order The maximum order of the coefficients to compute.
          */
-        void compute_an_bn(const size_t max_order);
+        void compute_an_bn(const size_t max_order = 0) override;
 
         /**
          * @brief Computes the coefficients cn and dn for a sphere.
          * @param _max_order The maximum order of the coefficients to compute.
          * * @note This function is not implemented in the original code, so it throws an exception.
          */
-        void compute_cn_dn(size_t) {throw std::logic_error{"Function not implemented!"};}
+        void compute_cn_dn(const size_t max_order = 0) override;
 
         /**
          * @brief Computes the scattering efficiency Qsca for a sphere.
@@ -98,4 +98,15 @@ class Cylinder: public BaseScatterer
          * @return A vector of dn coefficients.
          */
         std::vector<complex128> compute_dn(double nmx, complex128 z) const;  // Page 205 of BH
-};
+
+
+        /**
+         * @brief Computes the near-field electromagnetic fields for a cylinder.
+         * @param x A vector of x-coordinates where the fields are computed.
+         * @param y A vector of y-coordinates where the fields are computed.
+         * @param z A vector of z-coordinates where the fields are computed.
+         * @param field_type The type of field to compute (e.g., "E", "H").
+         * @return A vector of complex128 values representing the near-field electromagnetic fields.
+         */
+        std::vector<complex128> compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) override;
+    };

@@ -1,31 +1,25 @@
-
 import numpy as np
+from PyMieSim import units
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import PlaneWave
-from PyMieSim.units import nanometer, degree, RIU, volt, meter, radian
 
 source = PlaneWave(
-    wavelength=632.8 * nanometer,
-    polarization=0 * degree,
-    amplitude=1 * volt / meter,
+    wavelength=400 * units.nanometer,  # 500 nm wavelength
+    amplitude=10.0 * units.volt / units.meter,  # Relative intensity unit
+    polarization=0 * units.degree             # x-polarized
 )
-
 
 scatterer = Sphere(
-    diameter=200 * nanometer,
-    property=1.5 * RIU,
-    medium_property=1.0 * RIU,
-    source=source,
+    diameter=260 * units.nanometer,
+    property=1.9 * units.RIU,
+    medium_property=1.0 * units.RIU,
+    source=source
+)
+
+E_field = scatterer.get_near_field(
+    # resolution=1 * units.nanometer,
+    field_components=['|E|']
 )
 
 
-phi = np.linspace(-180, 180) * degree
-
-
-S1, S2 = scatterer.get_s1s2_array(phi)
-import matplotlib.pyplot as plt
-
-plt.figure()
-
-plt.plot(phi, S1, label='S1')
-plt.show()
+E_field.plot()

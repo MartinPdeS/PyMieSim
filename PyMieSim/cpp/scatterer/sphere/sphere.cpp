@@ -2,16 +2,13 @@
 
 
 // ---------------------- Constructors ---------------------------------------
-Sphere::Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order, bool compute_cn_dn)
+Sphere::Sphere(const double diameter, const complex128 refractive_index, const double medium_refractive_index, const BaseSource &source, size_t max_order)
 : BaseScatterer(max_order, source, medium_refractive_index), diameter(diameter), refractive_index(refractive_index)
 {
     this->compute_cross_section();
     this->compute_size_parameter();
     this->max_order = (max_order == 0) ? this->get_wiscombe_criterion(this->size_parameter) : max_order;
     this->compute_an_bn(this->max_order);
-
-    if (compute_cn_dn)
-        this->compute_cn_dn(this->max_order);
 }
 
 // ---------------------- Methods ---------------------------------------
@@ -203,6 +200,100 @@ Sphere::compute_s1s2(const std::vector<double> &phi) const {
     }
 
     return std::make_tuple(std::move(S1), std::move(S2));
+}
+
+std::vector<complex128>
+Sphere::compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type)
+{
+    // Validate that we have cn and dn coefficients
+    if (cn.empty() || dn.empty())
+        throw std::runtime_error("Near-field computation requires cn and dn coefficients. These are not implemented for cylinder scatterers.");
+
+    // Validate field type
+    if (field_type != "Ex" && field_type != "Ey" && field_type != "Ez" &&
+        field_type != "Hx" && field_type != "Hy" && field_type != "Hz" &&
+        field_type != "|E|" && field_type != "|H|") {
+        throw std::invalid_argument("Invalid field_type. Must be one of: Ex, Ey, Ez, Hx, Hy, Hz, |E|, |H|");
+    }
+
+    const size_t n_points = x.size();
+    if (n_points != y.size() || n_points != z.size())
+        throw std::invalid_argument("x, y, z vectors must have the same length");
+
+    std::vector<complex128> field_values(n_points);
+    const double k = source.wavenumber * medium_refractive_index;
+    const complex128 i(0.0, 1.0);
+
+    for (size_t point_idx = 0; point_idx < n_points; ++point_idx) {
+        const double x_pos = x[point_idx];
+        const double y_pos = y[point_idx];
+        const double z_pos = z[point_idx];
+
+        // Convert to spherical coordinates
+        const double r = sqrt(x_pos * x_pos + y_pos * y_pos + z_pos * z_pos);
+        const double theta = (r > 1e-12) ? acos(z_pos / r) : 0.0;
+        const double phi = atan2(y_pos, x_pos);
+
+        // Check if point is inside or outside the scatterer
+        const bool is_inside = (r < this->diameter / 2.0);
+
+        complex128 field_x(0.0), field_y(0.0), field_z(0.0);
+
+        // Compute field using multipole expansion
+        for (size_t n = 1; n <= max_order; ++n) {
+            const double n_double = static_cast<double>(n);
+            const complex128 coeff_n = is_inside ? this->cn[n-1] : this->an[n-1];
+            const complex128 coeff_m = is_inside ? this->dn[n-1] : this->bn[n-1];
+
+            // Compute spherical harmonics and their derivatives
+            // This is a simplified implementation - full vector spherical harmonics
+            // would require proper Legendre polynomials and Bessel functions
+
+            // For now, implement a basic radial dependence
+            const double kr = k * r;
+            complex128 radial_func;
+
+            if (is_inside) // Inside: use spherical Bessel functions j_n(kr)
+                radial_func = std::pow(kr, static_cast<int>(n)) / (2.0 * n_double + 1.0);
+            else // Outside: use spherical Hankel functions h_n^(1)(kr)
+                radial_func = std::pow(i, static_cast<int>(n)) / (kr * kr);
+
+
+            // Angular dependence (simplified)
+            const complex128 angular_term = std::cos(n_double * theta) * std::exp(i * n_double * phi);
+
+            // Combine coefficients with spatial functions
+            const complex128 term_n = coeff_n * radial_func * angular_term;
+            const complex128 term_m = coeff_m * radial_func * angular_term;
+
+            // Add contributions to field components
+            field_x += term_n * std::sin(theta) * std::cos(phi) + term_m * std::cos(theta) * std::cos(phi);
+            field_y += term_n * std::sin(theta) * std::sin(phi) + term_m * std::cos(theta) * std::sin(phi);
+            field_z += -term_m * std::sin(theta);
+        }
+
+        // Return requested field component
+        if (field_type == "Ex")
+            field_values[point_idx] = field_x;
+        else if (field_type == "Ey")
+            field_values[point_idx] = field_y;
+        else if (field_type == "Ez")
+            field_values[point_idx] = field_z;
+        else if (field_type == "Hx") // H = (1/iωμ) ∇ × E (simplified)
+            field_values[point_idx] = field_x / (i * source.angular_frequency);
+        else if (field_type == "Hy")
+            field_values[point_idx] = field_y / (i * source.angular_frequency);
+        else if (field_type == "Hz")
+            field_values[point_idx] = field_z / (i * source.angular_frequency);
+        else if (field_type == "|E|")
+            field_values[point_idx] = sqrt(std::norm(field_x) + std::norm(field_y) + std::norm(field_z));
+        else if (field_type == "|H|") {
+            const complex128 h_factor = 1.0 / (i * source.angular_frequency);
+            field_values[point_idx] = sqrt(std::norm(field_x * h_factor) + std::norm(field_y * h_factor) + std::norm(field_z * h_factor));
+        }
+    }
+
+    return field_values;
 }
 
 // -

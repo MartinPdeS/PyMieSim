@@ -9,8 +9,7 @@ CoreShell::CoreShell(
     complex128 shell_refractive_index,
     double medium_refractive_index,
     const BaseSource &source,
-    size_t max_order,
-    bool compute_c_d)
+    size_t max_order)
 :   BaseScatterer(max_order, source, medium_refractive_index),
     core_diameter(core_diameter),
     shell_thickness(shell_thickness),
@@ -210,6 +209,14 @@ CoreShell::compute_s1s2(const std::vector<double> &phi) const {
     }
 
     return std::make_tuple(std::move(S1), std::move(S2));
+}
+
+void CoreShell::compute_cn_dn(size_t _max_order) {
+    throw std::runtime_error("No implementation of cn and dn exists yet!");
+}
+
+std::vector<complex128> CoreShell::compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) {
+    throw std::runtime_error("Near-field computation is not implemented for CoreShell scatterers.");
 }
 
 // -

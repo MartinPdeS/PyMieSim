@@ -29,7 +29,7 @@ class CoreShell: public BaseScatterer
          * @param max_order The maximum order of the scattering coefficients (default is 0, which means it will be computed).
          * @param compute_c_d Whether to compute the cn and dn coefficients (default is false).
          */
-        CoreShell(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order = 0, bool compute_c_d = false);
+        CoreShell(double core_diameter, double shell_thickness, complex128 core_refractive_index, complex128 shell_refractive_index, double medium_refractive_index, const BaseSource &source, size_t max_order = 0);
 
         /**
          * @brief Computes the size parameter for the sphere.
@@ -47,13 +47,13 @@ class CoreShell: public BaseScatterer
          * @brief Computes the coefficients an and bn for a sphere.
          * @param _max_order The maximum order of the coefficients to compute.
          */
-        void compute_an_bn(const size_t max_order);
+        void compute_an_bn(const size_t max_order = 0) override;
 
         /**
          * @brief Computes the coefficients cn and dn for a sphere.
          * @param _max_order The maximum order of the coefficients to compute.
          */
-        void compute_cn_dn(size_t max_order);
+        void compute_cn_dn(const size_t max_order = 0) override;
 
         /**
          * @brief Computes the scattering efficiency Qsca for a sphere.
@@ -91,6 +91,20 @@ class CoreShell: public BaseScatterer
          * @return A tuple containing two vectors: S1 and S2, which are the scattering amplitudes.
          */
         std::tuple<std::vector<complex128>, std::vector<complex128>> compute_s1s2(const std::vector<double> &phi) const override;
+
+        /**
+         * @brief Computes the near-field electromagnetic fields for a sphere.
+         * @param x A vector of x-coordinates where the fields are computed.
+         * @param y A vector of y-coordinates where the fields are computed.
+         * @param z A vector of z-coordinates where the fields are computed.
+         * @param field_type The type of field to compute (e.g., "E", "H").
+         * @return A vector of complex128 values representing the near-field electromagnetic fields.
+         * @note This method uses the multipole expansion with vector spherical harmonics to compute the
+         * near-field electromagnetic fields inside and near the sphere.
+         * The internal fields (r < radius) are computed using cn and dn coefficients, while
+         * external fields (r > radius) use an and bn coefficients.
+         */
+        std::vector<complex128> compute_nearfields(const std::vector<double>& x, const std::vector<double>& y, const std::vector<double>& z, const std::string& field_type) override;
 
     private:
         /**

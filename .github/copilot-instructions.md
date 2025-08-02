@@ -82,21 +82,21 @@ n = 1.33 + 0.01j
 def compute_scattering_efficiency(self, wavelength: Quantity) -> float:
     """
     Compute the scattering efficiency (Qsca) for the particle.
-    
+
     The scattering efficiency is the ratio of the scattering cross-section
     to the geometric cross-section of the particle, providing a measure
     of how effectively the particle scatters incident light.
-    
+
     Parameters
     ----------
     wavelength : Quantity
         Incident wavelength in length units (typically nanometers).
-        
+
     Returns
     -------
     float
         Dimensionless scattering efficiency Qsca.
-        
+
     Notes
     -----
     For spherical particles, this implements the exact Mie solution.
@@ -116,18 +116,18 @@ def compute_scattering_efficiency(self, wavelength: Quantity) -> float:
 ```cpp
 /**
  * @brief Computes Mie scattering coefficients for a spherical particle.
- * 
+ *
  * This method calculates the complex scattering coefficients a_n and b_n
  * using the exact Mie theory formulation. The coefficients are computed
- * up to the specified maximum order using recurrence relations for 
+ * up to the specified maximum order using recurrence relations for
  * spherical Bessel and Hankel functions.
- * 
+ *
  * @param max_order Maximum multipole order for coefficient computation.
  *                   If 0, automatically determined from size parameter.
- * 
+ *
  * @note The computation uses the Wiscombe algorithm for numerical stability
  *       in the calculation of spherical Bessel functions for large arguments.
- * 
+ *
  * @see Bohren & Huffman, "Absorption and Scattering of Light by Small Particles"
  */
 void compute_an_bn(size_t max_order = 0);
@@ -137,7 +137,7 @@ void compute_an_bn(size_t max_order = 0);
 
 ### Test Categories
 1. **Unit Tests**: Individual component validation
-2. **Integration Tests**: Multi-component workflow validation  
+2. **Integration Tests**: Multi-component workflow validation
 3. **Physics Validation**: Comparison against analytical solutions and literature
 4. **Performance Tests**: Benchmarking computational efficiency
 5. **Cross-platform Tests**: Windows, macOS, Linux compatibility
@@ -152,7 +152,7 @@ from PyMieSim.units import nanometer, RIU
 
 class TestMieScattering:
     """Test suite for Mie scattering calculations."""
-    
+
     @pytest.fixture
     def rayleigh_sphere(self):
         """Small sphere in Rayleigh regime for analytical validation."""
@@ -161,17 +161,17 @@ class TestMieScattering:
             property=1.5 * RIU,
             medium_property=1.0 * RIU
         )
-    
+
     @pytest.mark.parametrize("size_param,expected_regime", [
         (0.1, "rayleigh"),
-        (1.0, "resonance"), 
+        (1.0, "resonance"),
         (10.0, "geometric")
     ])
     def test_scattering_regimes(self, size_param, expected_regime):
         """Test scattering behavior across different size regimes."""
         # Test implementation
         pass
-    
+
     def test_rayleigh_limit_analytical(self, rayleigh_sphere):
         """Validate against analytical Rayleigh scattering formula."""
         # Compare computed vs analytical results

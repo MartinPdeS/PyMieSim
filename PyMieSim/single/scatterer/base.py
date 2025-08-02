@@ -5,7 +5,7 @@ from typing import Tuple
 import numpy
 from PyOptik.material.base_class import BaseMaterial
 from tabulate import tabulate
-from PyMieSim.single.representations import S1S2, FarField, Stokes, SPF, Footprint
+from PyMieSim.single import representations
 from PyMieSim import units
 
 class BaseScatterer(units.UnitsValidation):
@@ -124,7 +124,7 @@ class BaseScatterer(units.UnitsValidation):
         Returns:
             Tuple[numpy.ndarray, numpy.ndarray]: The computed far fields.
         """
-        return self._cpp_get_fields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
+        return self._cpp_get_farfields(phi=phi, theta=theta, r=r.to_base_units().magnitude)
 
     def get_s1s2_array(self, phi: numpy.ndarray) -> Tuple[numpy.ndarray, numpy.ndarray]:
         """Return the S1 and S2 scattering amplitudes for arbitrary ``phi`` angles.
@@ -213,7 +213,7 @@ class BaseScatterer(units.UnitsValidation):
         E_phi, E_theta = self.get_farfields_array(phi=phi, theta=theta, r=r)
         return E_phi, E_theta
 
-    def get_s1s2(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> S1S2:
+    def get_s1s2(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> representations.S1S2:
         r"""
         Compute the S1 and S2 scattering amplitude functions for a spherical scatterer.
 
@@ -242,7 +242,7 @@ class BaseScatterer(units.UnitsValidation):
 
         Returns
         -------
-        S1S2
+        representations.S1S2
             An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.
 
         Notes
@@ -260,9 +260,9 @@ class BaseScatterer(units.UnitsValidation):
         >>> print(s1s2.S1, s1s2.S2)
 
         """
-        return S1S2(scatterer=self, sampling=sampling, distance=distance)
+        return representations.S1S2(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_stokes(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> Stokes:
+    def get_stokes(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> representations.Stokes:
         r"""
         Compute the four Stokes parameters: I, Q, U, and V, which describe the polarization state of scattered light.
 
@@ -310,9 +310,9 @@ class BaseScatterer(units.UnitsValidation):
         >>> print(stokes_params.I, stokes_params.Q, stokes_params.U, stokes_params.V)
 
         """
-        return Stokes(scatterer=self, sampling=sampling, distance=distance)
+        return representations.Stokes(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_far_field(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> FarField:
+    def get_far_field(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> representations.FarField:
         r"""
         Compute the far-field scattering pattern for the scatterer.
 
@@ -345,7 +345,7 @@ class BaseScatterer(units.UnitsValidation):
 
         Returns
         -------
-        FarField
+        representations.FarField
             An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.
 
         Notes
@@ -363,9 +363,9 @@ class BaseScatterer(units.UnitsValidation):
         >>> print(far_field.E_phi, far_field.E_theta)
 
         """
-        return FarField(scatterer=self, sampling=sampling, distance=distance)
+        return representations.FarField(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_spf(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> SPF:
+    def get_spf(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> representations.SPF:
         r"""
         Compute the scattering phase function (SPF) for the scatterer.
 
@@ -393,7 +393,7 @@ class BaseScatterer(units.UnitsValidation):
 
         Returns
         -------
-        SPF
+        representations.SPF
             An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.
 
         Notes
@@ -411,9 +411,150 @@ class BaseScatterer(units.UnitsValidation):
         >>> print(spf)
 
         """
-        return SPF(scatterer=self, sampling=sampling, distance=distance)
+        return representations.SPF(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_footprint(self, detector) -> Footprint:
+    def get_near_field(
+        self,
+        x_range: tuple[units.Quantity, units.Quantity] | str = 'auto',
+        y_range: tuple[units.Quantity, units.Quantity] | str = 'auto',
+        z_range: units.Quantity | str = 'auto',
+        resolution: units.Quantity = 'auto',
+        field_components: list[str] = None
+    ) -> representations.NearField:
+        r"""
+        Compute near-field electromagnetic fields using internal coefficients cn and dn.
+
+        This method calculates the electromagnetic fields inside and near the scatterer
+        using the multipole expansion with vector spherical harmonics. The internal fields
+        (r < radius) are computed using cn and dn coefficients, while external fields
+        (r > radius) use an and bn coefficients.
+
+        The near-field computation uses the full multipole expansion:
+
+        .. math::
+            \vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ c_n \vec{M}_{o1n}^{(1)}(k_1 r) + d_n \vec{N}_{e1n}^{(1)}(k_1 r) \right] \quad \text{(inside)}
+
+        .. math::
+            \vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ a_n \vec{M}_{o1n}^{(3)}(k r) + b_n \vec{N}_{e1n}^{(3)}(k r) \right] \quad \text{(outside)}
+
+        Where:
+
+        - :math:`c_n, d_n`: Internal field coefficients (inside the scatterer)
+        - :math:`a_n, b_n`: External field coefficients (outside the scatterer)
+        - :math:`\vec{M}, \vec{N}`: Vector spherical harmonics
+        - :math:`k_1, k`: Wave numbers inside and outside the scatterer
+
+        Parameters
+        ----------
+        x_range : tuple[units.Quantity, units.Quantity]
+            Range of x coordinates (x_min, x_max) for field computation.
+        y_range : tuple[units.Quantity, units.Quantity]
+            Range of y coordinates (y_min, y_max) for field computation.
+        z_range : tuple[units.Quantity, units.Quantity] | units.Quantity, optional
+            Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+            for 2D slice. Default is 0 (xy-plane slice).
+        resolution : int | tuple[int, int, int], optional
+            Number of points along each axis. If int, same resolution for all axes.
+            Default is 100.
+        field_components : list[str], optional
+            List of field components to compute. Options: ["Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"].
+            Default is ["Ex", "Ey", "Ez", "|E|"].
+
+        Returns
+        -------
+        representations.NearField
+            Near-field representation object with computed field distributions,
+            visualization methods, and analysis capabilities.
+
+        Raises
+        ------
+        RuntimeError
+            If cn/dn coefficients are not available for the scatterer type.
+        ValueError
+            If field components or coordinate ranges are invalid.
+
+        Notes
+        -----
+        - This method requires that cn and dn coefficients have been computed.
+          Currently supports spherical scatterers only. Cylinder support requires
+          implementation of cn/dn coefficients for infinite cylinders.
+        - For points inside the scatterer (r < radius), uses internal field coefficients.
+        - For points outside the scatterer (r >= radius), uses external field coefficients.
+        - The computation includes proper vector spherical harmonics and radial functions.
+
+        """
+        x_range = [-self.diameter, +self.diameter] if x_range == 'auto' else x_range
+        y_range = [-self.diameter, +self.diameter] if y_range == 'auto' else y_range
+        z_range = 0 * units.meter if z_range == 'auto' else z_range
+        resolution = self.diameter / 500 if resolution == 'auto' else resolution
+
+
+        # Validate and convert coordinate ranges to base units (meters)
+        if isinstance(x_range, (list, tuple)) and len(x_range) == 2:
+            x_min = self._validate_units(x_range[0], dimension='distance', units=units.meter)
+            x_max = self._validate_units(x_range[1], dimension='distance', units=units.meter)
+            x_range = (x_min, x_max)
+        else:
+            raise ValueError("x_range must be a tuple of two Quantity values (x_min, x_max)")
+
+        if isinstance(y_range, (list, tuple)) and len(y_range) == 2:
+            y_min = self._validate_units(y_range[0], dimension='distance', units=units.meter)
+            y_max = self._validate_units(y_range[1], dimension='distance', units=units.meter)
+            y_range = (y_min, y_max)
+        else:
+            raise ValueError("y_range must be a tuple of two Quantity values (y_min, y_max)")
+
+        # Handle z posiiton
+        if isinstance(z_range, units.Quantity):
+            z_val = self._validate_units(z_range, dimension='distance', units=units.meter)
+            z_range = z_val
+        else:
+            raise ValueError("z must be a single Quantity")
+
+        # Set default field components if not specified
+        if field_components is None:
+            field_components = ["Ex", "Ey", "Ez", "|E|"]
+
+        self._cpp_compute_cn_dn()
+
+        # Create and return NearField representation
+        return representations.NearField(
+            scatterer=self,
+            x_range=x_range,
+            y_range=y_range,
+            z=z_range,
+            resolution=resolution,
+            field_components=field_components
+        )
+
+    def compute_near_field_py(self, x, y, z, field_type, radius):
+        """
+        Python wrapper for C++ near-field computation.
+
+        This method bridges the gap between the C++ backend (_cpp_compute_near_field)
+        and the Python NearField representation class.
+
+        Parameters
+        ----------
+        x : numpy.ndarray
+            Array of x coordinates of observation points.
+        y : numpy.ndarray
+            Array of y coordinates of observation points.
+        z : numpy.ndarray
+            Array of z coordinates of observation points.
+        field_type : str
+            Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"
+        radius : float
+            Scatterer radius for inside/outside determination.
+
+        Returns
+        -------
+        numpy.ndarray
+            Complex array of field values at specified points.
+        """
+        return self._cpp_compute_nearfields(x, y, z, field_type, radius) * units.volt / units.meter
+
+    def get_footprint(self, detector) -> representations.Footprint:
         r"""
         Compute the footprint of the scattered light coupling with the detector.
 
@@ -443,7 +584,7 @@ class BaseScatterer(units.UnitsValidation):
 
         Returns
         -------
-        Footprint
+        representations.Footprint
             An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.
 
         Notes
@@ -461,7 +602,7 @@ class BaseScatterer(units.UnitsValidation):
         >>> print(footprint)
 
         """
-        return Footprint(scatterer=self, detector=detector)
+        return representations.Footprint(scatterer=self, detector=detector)
 
     def _assign_index_or_material(self, property: units.Quantity | BaseMaterial) -> tuple[units.Quantity | None, BaseMaterial | None]:
         """
@@ -490,3 +631,5 @@ class BaseScatterer(units.UnitsValidation):
             return numpy.atleast_1d(property.compute_refractive_index(self.source.wavelength.to_base_units().magnitude))[0] * units.RIU, property
 
         raise ValueError(f"Invalid material property: {property}. Expected a BaseMaterial or Quantity (RIU).")
+
+

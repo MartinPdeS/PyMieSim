@@ -19,7 +19,7 @@ std::vector<double> BaseScatterer::get_prefactor() const {
 
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_structured_fields(const std::vector<complex128>& S1, const std::vector<complex128>& S2, const std::vector<double>& theta, const double& radius) const {
+BaseScatterer::compute_structured_farfields(const std::vector<complex128>& S1, const std::vector<complex128>& S2, const std::vector<double>& theta, const double& radius) const {
     std::vector<complex128> phi_field, theta_field;
 
     size_t full_size = theta.size() * S1.size();
@@ -43,14 +43,14 @@ BaseScatterer::compute_structured_fields(const std::vector<complex128>& S1, cons
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_structured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
+BaseScatterer::compute_structured_farfields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const {
     auto [S1, S2] = this->compute_s1s2(phi);
 
-    return this->compute_structured_fields(S1, S2, theta, radius);
+    return this->compute_structured_farfields(S1, S2, theta, radius);
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_unstructured_fields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
+BaseScatterer::compute_unstructured_farfields(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
 {
     auto [S1, S2] = this->compute_s1s2(phi);
 
@@ -76,9 +76,9 @@ BaseScatterer::compute_unstructured_fields(const std::vector<double>& phi, const
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>>
-BaseScatterer::compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, const double radius) const
+BaseScatterer::compute_unstructured_farfields(const FibonacciMesh& fibonacci_mesh, const double radius) const
 {
-    return this->compute_unstructured_fields(
+    return this->compute_unstructured_farfields(
         fibonacci_mesh.spherical.phi,
         fibonacci_mesh.spherical.theta,
         radius
@@ -86,13 +86,13 @@ BaseScatterer::compute_unstructured_fields(const FibonacciMesh& fibonacci_mesh, 
 }
 
 std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>>
-BaseScatterer::compute_full_structured_fields(const size_t& sampling, const double& radius) const
+BaseScatterer::compute_full_structured_farfields(const size_t& sampling, const double& radius) const
 {
     FullSteradian full_mesh = FullSteradian(sampling, radius);
 
     auto [S1, S2] = this->compute_s1s2(full_mesh.spherical.phi);
 
-    auto [phi_field, theta_field] = this->compute_structured_fields(S1, S2, full_mesh.spherical.theta, radius);
+    auto [phi_field, theta_field] = this->compute_structured_farfields(S1, S2, full_mesh.spherical.theta, radius);
 
     return std::make_tuple(
         std::move(phi_field),
@@ -113,7 +113,7 @@ BaseScatterer::compute_dn(double nmx, complex128 z)  const { //Page 127 of BH
 }
 
 double
-BaseScatterer::get_g_with_fields(size_t sampling) const {
+BaseScatterer::get_g_with_farfields(size_t sampling) const {
     auto [SPF, fibonacci_mesh] = this->compute_full_structured_spf(sampling);
 
     double
@@ -126,9 +126,9 @@ BaseScatterer::get_g_with_fields(size_t sampling) const {
 //- PYTHON INTERFACE --------------------------------------------------------------------------
 
 std::tuple<py::array_t<complex128>, py::array_t<complex128>>
-BaseScatterer::get_unstructured_fields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
+BaseScatterer::get_unstructured_farfields_py(const std::vector<double>& phi, const std::vector<double>& theta, const double radius) const
 {
-    auto [theta_field, phi_field] = this->compute_unstructured_fields(phi, theta, radius);
+    auto [theta_field, phi_field] = this->compute_unstructured_farfields(phi, theta, radius);
 
     return std::make_tuple(
         _vector_to_numpy(phi_field, {phi_field.size()}),
@@ -148,8 +148,8 @@ BaseScatterer::get_s1s2_py(const std::vector<double> &phi) const
 }
 
 std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>>
-BaseScatterer::get_full_structured_fields_py(size_t &sampling, double& distance) const {
-    auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_fields(sampling, distance);
+BaseScatterer::get_full_structured_farfields_py(size_t &sampling, double& distance) const {
+    auto [phi_field, theta_field, theta, phi] = this->compute_full_structured_farfields(sampling, distance);
 
     py::array_t<complex128>
         phi_field_py = _vector_to_numpy(phi_field, {sampling, sampling}),
@@ -170,7 +170,7 @@ BaseScatterer::compute_full_structured_spf(const size_t sampling, const double r
 {
     FullSteradian full_mesh = FullSteradian(sampling, radius);
 
-    auto [phi_field, theta_field] = this->compute_structured_fields(
+    auto [phi_field, theta_field] = this->compute_structured_farfields(
         full_mesh.spherical.phi,
         full_mesh.spherical.theta,
         radius
@@ -246,4 +246,113 @@ BaseScatterer::get_pi_tau(double mu, size_t max_order, complex128 *pin, complex1
 
         taun[order] = ((double)order + 1.) * mu * pin[order] - ((double)order + 2.) * pin[order - 1];
     }
+}
+
+py::array_t<complex128>
+BaseScatterer::compute_nearfields_py(const py::array_t<double>& x_py, const py::array_t<double>& y_py, const py::array_t<double>& z_py, const std::string& field_type) {
+    // Convert NumPy arrays to std::vectors
+    auto x_buf = x_py.request();
+    auto y_buf = y_py.request();
+    auto z_buf = z_py.request();
+
+    if (x_buf.size != y_buf.size || x_buf.size != z_buf.size)
+        throw std::invalid_argument("x, y, z arrays must have the same size");
+
+    const size_t n_points = x_buf.size;
+    std::vector<double> x_vec(static_cast<double*>(x_buf.ptr), static_cast<double*>(x_buf.ptr) + n_points);
+    std::vector<double> y_vec(static_cast<double*>(y_buf.ptr), static_cast<double*>(y_buf.ptr) + n_points);
+    std::vector<double> z_vec(static_cast<double*>(z_buf.ptr), static_cast<double*>(z_buf.ptr) + n_points);
+
+    // Compute near field
+    auto field_values = this->compute_nearfields(x_vec, y_vec, z_vec, field_type);
+
+    // Convert result back to NumPy array
+    return _vector_to_numpy(field_values, {n_points});
+}
+
+std::tuple<py::array_t<complex128>, py::array_t<complex128>, py::array_t<complex128>, py::array_t<complex128>, py::array_t<double>, py::array_t<double>, py::array_t<double>>
+BaseScatterer::compute_nearfields_structured_py(
+    const py::array_t<double>& x_range_py,
+    const py::array_t<double>& y_range_py,
+    const py::array_t<double>& z_range_py,
+    const std::string& field_type
+) {
+    // Convert NumPy arrays to std::vectors
+    auto x_buf = x_range_py.request();
+    auto y_buf = y_range_py.request();
+    auto z_buf = z_range_py.request();
+
+    const size_t nx = x_buf.size;
+    const size_t ny = y_buf.size;
+    const size_t nz = z_buf.size;
+
+    std::vector<double> x_range(static_cast<double*>(x_buf.ptr), static_cast<double*>(x_buf.ptr) + nx);
+    std::vector<double> y_range(static_cast<double*>(y_buf.ptr), static_cast<double*>(y_buf.ptr) + ny);
+    std::vector<double> z_range(static_cast<double*>(z_buf.ptr), static_cast<double*>(z_buf.ptr) + nz);
+
+    // Compute structured near field
+    auto [field_values, field_x, field_y, field_z, x_coords, y_coords, z_coords] =
+        this->compute_nearfields_structured(x_range, y_range, z_range, field_type);
+
+    // Convert results back to NumPy arrays with proper 3D shape
+    const size_t total_points = nx * ny * nz;
+    std::vector<size_t> shape_3d = {nx, ny, nz};
+    std::vector<size_t> shape_1d = {total_points};
+
+    return std::make_tuple(
+        _vector_to_numpy(field_values, shape_3d),
+        _vector_to_numpy(field_x, shape_3d),
+        _vector_to_numpy(field_y, shape_3d),
+        _vector_to_numpy(field_z, shape_3d),
+        _vector_to_numpy(x_coords, shape_1d),
+        _vector_to_numpy(y_coords, shape_1d),
+        _vector_to_numpy(z_coords, shape_1d)
+    );
+}
+
+std::tuple<std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<complex128>, std::vector<double>, std::vector<double>, std::vector<double>>
+BaseScatterer::compute_nearfields_structured(
+    const std::vector<double>& x_range,
+    const std::vector<double>& y_range,
+    const std::vector<double>& z_range,
+    const std::string& field_type
+) {
+    const size_t nx = x_range.size();
+    const size_t ny = y_range.size();
+    const size_t nz = z_range.size();
+    const size_t total_points = nx * ny * nz;
+
+    // Prepare coordinate vectors for the structured grid
+    std::vector<double> x_coords, y_coords, z_coords;
+    x_coords.reserve(total_points);
+    y_coords.reserve(total_points);
+    z_coords.reserve(total_points);
+
+    #pragma omp parallel for collapse(3) // Enable OpenMP parallelization
+    for (size_t ix = 0; ix < nx; ++ix)
+        for (size_t iy = 0; iy < ny; ++iy)
+            for (size_t iz = 0; iz < nz; ++iz) {
+                x_coords.push_back(x_range[ix]);
+                y_coords.push_back(y_range[iy]);
+                z_coords.push_back(z_range[iz]);
+            }
+
+
+    // Compute the requested field component using the existing method
+    std::vector<complex128> field_values = this->compute_nearfields(x_coords, y_coords, z_coords, field_type);
+
+    // Compute all individual field components (Ex, Ey, Ez) for comprehensive analysis
+    std::vector<complex128> field_x_components = this->compute_nearfields(x_coords, y_coords, z_coords, "Ex");
+    std::vector<complex128> field_y_components = this->compute_nearfields(x_coords, y_coords, z_coords, "Ey");
+    std::vector<complex128> field_z_components = this->compute_nearfields(x_coords, y_coords, z_coords, "Ez");
+
+    return std::make_tuple(
+        std::move(field_values),
+        std::move(field_x_components),
+        std::move(field_y_components),
+        std::move(field_z_components),
+        std::move(x_coords),
+        std::move(y_coords),
+        std::move(z_coords)
+    );
 }
