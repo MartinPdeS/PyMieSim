@@ -1,0 +1,1182 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PyMieSim.single.representations.s1s2 &#8212; PyMieSim  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PyMieSim/single/representations/s1s2';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v3.6.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="../../../../_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="3.6.3" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <img src="../../../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">PyMieSim.single.representations.s1s2</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for PyMieSim.single.representations.s1s2</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MPSPlots</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.special_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">rotate_on_x</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">meter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span><span class="p">,</span> <span class="n">config_dict</span>
+
+
+<div class="viewcode-block" id="S1S2">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.S1S2">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">S1S2</span><span class="p">(</span><span class="n">BaseRepresentation</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the S1 and S2 scattering functions, which are components of the scattering matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scatterer : BaseScatterer</span>
+<span class="sd">        The scatterer object.</span>
+<span class="sd">    sampling : int</span>
+<span class="sd">        Number of points for evaluating the S1 and S2 functions.</span>
+<span class="sd">    distance : Quantity</span>
+<span class="sd">        Distance at which the fields are evaluated.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        compute_components: Computes the S1 and S2 functions based on the scatterer&#39;s properties.</span>
+<span class="sd">        plot: Visualizes the S1 and S2 functions on a polar plot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_components</span><span class="p">()</span>
+
+<div class="viewcode-block" id="S1S2.compute_components">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.S1S2.compute_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the S1 and S2 scattering parameters based on the scatterer&#39;s properties and the scattering angle phi.</span>
+
+<span class="sd">        S1 and S2 are integral parts of the scattering matrix describing the change in polarization state of light upon scattering.</span>
+
+<span class="sd">        The method calculates these parameters for a range of phi angles and stores them as the S1 and S2 attributes of the instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">S2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">_cpp_get_s1s2</span><span class="p">(</span><span class="n">phi</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="S1S2.plot">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.S1S2.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the S1 and S2 Stokes parameters on polar plots.</span>
+
+<span class="sd">        The method generates two polar plots: one for the absolute values of the S1 parameter and another</span>
+<span class="sd">        for the S2 parameter, filling the area between the radial axis and the parameter values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            This method does not return a value. It displays the polar plots.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">MPSPlots</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">mps</span><span class="p">):</span>
+            <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;polar&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+
+            <span class="c1"># Plot for S1 parameter</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;S$_1$ parameter&#39;</span><span class="p">)</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">),</span>
+                <span class="n">y1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">y2</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C0&#39;</span><span class="p">,</span>
+                <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Plot for S2 parameter</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;S$_2$ parameter&#39;</span><span class="p">)</span>
+            <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">),</span>
+                <span class="n">y1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">y2</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S2</span><span class="p">),</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">&#39;C1&#39;</span><span class="p">,</span>
+                <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span>
+            <span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Footprint</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the footprint of the scatterer as detected by various detectors.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \text{Footprint} = \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi }\</span>
+<span class="sd">        (\xi, \nu), \tilde{ \phi}_{l,m}(\xi, \nu)  \big\} \</span>
+<span class="sd">        (\delta_x, \delta_y) \big|^2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    detector : BaseDetector</span>
+<span class="sd">        The detector object.</span>
+<span class="sd">    scatterer : BaseScatterer</span>
+<span class="sd">        The scatterer object.</span>
+<span class="sd">    sampling : int</span>
+<span class="sd">        Number of points to evaluate the Stokes parameters in spherical coordinates (default is 500).</span>
+<span class="sd">    padding_factor : int</span>
+<span class="sd">        Padding factor for the Fourier transform (default is 20).</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        compute_footprint: Computes the footprint based on the far-field patterns and detector characteristics.</span>
+<span class="sd">        plot: Visualizes the computed footprint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">detector</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">padding_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_footprint</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the footprint of the scatterer as detected by the specified detector.</span>
+
+<span class="sd">        The footprint is calculated based on the far-field scattering patterns and the characteristics of the detector,</span>
+<span class="sd">        using a Fourier transform to project the far-field onto the detector plane.</span>
+
+<span class="sd">        The computed footprint and the corresponding spatial coordinates are stored as attributes of the instance.</span>
+
+<span class="sd">        Warning: this function do not currently take account of the cache block on the detector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">max_angle</span>
+        <span class="n">n_point</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
+
+        <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span>
+            <span class="o">-</span><span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;radian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span> <span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;radian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span> <span class="n">n_point</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span> <span class="n">n_point</span>
+        <span class="p">]</span>
+
+        <span class="n">max_distance_direct_space</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">max_angle</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavenumber</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">max_distance_direct_space</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_factor</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">rotate_on_x</span><span class="p">(</span><span class="n">phi</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">far_field_para</span><span class="p">,</span> <span class="n">far_field_perp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_farfields_array</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+            <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">meter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">detector_structured_farfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">get_structured_scalarfield</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
+
+        <span class="n">perpendicular_projection</span> <span class="o">=</span> <span class="n">detector_structured_farfield</span> <span class="o">*</span> <span class="n">far_field_perp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">parallel_projection</span> <span class="o">=</span> <span class="n">detector_structured_farfield</span> <span class="o">*</span> <span class="n">far_field_para</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">fourier_parallel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fourier_component</span><span class="p">(</span><span class="n">parallel_projection</span><span class="p">)</span>
+        <span class="n">fourier_perpendicular</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fourier_component</span><span class="p">(</span><span class="n">perpendicular_projection</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">(</span><span class="n">fourier_parallel</span> <span class="o">+</span> <span class="n">fourier_perpendicular</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direct_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direct_y</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_fourier_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the Fourier component of a given scalar field.</span>
+
+<span class="sd">        This method performs a two-dimensional inverse Fourier transform on the input scalar field, which represents</span>
+<span class="sd">        a projection (either parallel or perpendicular) of the far-field pattern. It then extracts a central portion</span>
+<span class="sd">        of the result, effectively applying a padding factor to increase the resolution of the Fourier transform.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        - scalar : numpy.ndarray</span>
+<span class="sd">            A two-dimensional numpy array representing the scalar field of which the Fourier component</span>
+<span class="sd">            is to be computed. This field could represent either the parallel or perpendicular projection of the far-field</span>
+<span class="sd">            pattern onto the detector plane.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            A two-dimensional numpy array representing the computed Fourier component. This array is a square</span>
+<span class="sd">            section, extracted from the center of the full Fourier transform, with dimensions determined by the original</span>
+<span class="sd">            sampling rate and the padding factor of the instance. The values in the array represent the intensity distribution</span>
+<span class="sd">            of the light in the detector plane, providing insights into the spatial characteristics of the scattering pattern.</span>
+
+<span class="sd">        The method uses numpy&#39;s fft module to perform the Fourier transform, applying a padding factor to the input to</span>
+<span class="sd">        achieve a higher resolution in the Fourier domain. The resulting Fourier transform is then squared and fftshifted</span>
+<span class="sd">        to center the zero-frequency component, and a central portion is extracted to match the intended output size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the target size based on the sampling and padding factor, and the indices for the central portion extraction.</span>
+        <span class="n">total_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_factor</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="c1"># Apply zero-padding to the scalar field to increase the resolution of the Fourier transform.</span>
+        <span class="n">padded_scalar</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="p">((</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Perform the two-dimensional inverse Fourier transform on the padded scalar field.</span>
+        <span class="n">fourier_transformed</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span><span class="n">padded_scalar</span><span class="p">)</span>
+
+        <span class="c1"># Compute the squared magnitude and center the zero-frequency component.</span>
+        <span class="n">fourier_magnitude_squared</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fourier_transformed</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="c1"># Extract the central portion corresponding to the original sampling rate adjusted by the padding factor.</span>
+        <span class="n">central_portion</span> <span class="o">=</span> <span class="n">fourier_magnitude_squared</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="o">-</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span><span class="o">-</span><span class="n">offset</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">central_portion</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the scatterer footprint using a 2D colormap.</span>
+
+<span class="sd">        The method generates a plot representing the footprint of the scatterer, with the X and Y axes showing</span>
+<span class="sd">        offset distances in micrometers, and the colormap depicting the mapping values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            The colormap to use for the plot. Default is &#39;gray&#39;.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">MPSPlots</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">mps</span><span class="p">):</span>
+            <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Scatterer Footprint&#39;</span><span class="p">,</span>
+                <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Offset distance in X-axis [$\mu$m]&#39;</span><span class="p">,</span>
+                <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Offset distance in Y-axis [$\mu$m]&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_y</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_x</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">,</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span>
+            <span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NearField</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents electromagnetic near-field distributions around a scatterer.</span>
+
+<span class="sd">    This class provides comprehensive near-field visualization capabilities for spherical</span>
+<span class="sd">    and core-shell scatterers using the internal (cn, dn) and external (an, bn)</span>
+<span class="sd">    multipole coefficients from Mie theory.</span>
+
+<span class="sd">    The electromagnetic fields are computed using vector spherical harmonics:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \mathbf{E}(r) = \begin{cases}</span>
+<span class="sd">            \sum_{n=1}^{N} [c_n \mathbf{M}_{n}^{(1)} + d_n \mathbf{N}_{n}^{(1)}] &amp; r &lt; a \\</span>
+<span class="sd">            \sum_{n=1}^{N} [a_n \mathbf{M}_{n}^{(3)} + b_n \mathbf{N}_{n}^{(3)}] &amp; r &gt; a</span>
+<span class="sd">        \end{cases}</span>
+
+<span class="sd">    Where :math:`\mathbf{M}_n` and :math:`\mathbf{N}_n` are vector spherical harmonics,</span>
+<span class="sd">    and superscripts (1) and (3) denote regular and outgoing wave solutions.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scatterer : BaseScatterer</span>
+<span class="sd">        The scatterer object with computed cn/dn coefficients.</span>
+<span class="sd">    x_range : tuple</span>
+<span class="sd">        Range of x coordinates (x_min, x_max) in meters.</span>
+<span class="sd">    y_range : tuple</span>
+<span class="sd">        Range of y coordinates (y_min, y_max) in meters.</span>
+<span class="sd">    z_range : tuple or float</span>
+<span class="sd">        Range of z coordinates (z_min, z_max) in meters, or single z value for 2D slice.</span>
+<span class="sd">    resolution : int or tuple</span>
+<span class="sd">        Number of points along each axis. If int, same resolution for all axes.</span>
+<span class="sd">    field_components : list</span>
+<span class="sd">        List of field components to compute: [&quot;Ex&quot;, &quot;Ey&quot;, &quot;Ez&quot;, &quot;Hx&quot;, &quot;Hy&quot;, &quot;Hz&quot;, &quot;|E|&quot;, &quot;|H|&quot;]</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    RuntimeError</span>
+<span class="sd">        If scatterer doesn&#39;t support near-field computation (e.g., cylinders).</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If coordinate ranges or field components are invalid.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; from PyMieSim.single.scatterer import Sphere</span>
+<span class="sd">    &gt;&gt;&gt; from PyMieSim.single.source import PlaneWave</span>
+<span class="sd">    &gt;&gt;&gt; from PyMieSim.single.representations import NearField</span>
+<span class="sd">    &gt;&gt;&gt; from PyMieSim.units import nanometer, RIU</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Create sphere with near-field capability</span>
+<span class="sd">    &gt;&gt;&gt; source = PlaneWave(wavelength=532*nanometer, polarization=0)</span>
+<span class="sd">    &gt;&gt;&gt; sphere = Sphere(diameter=200*nanometer, property=1.5*RIU, source=source)</span>
+<span class="sd">    &gt;&gt;&gt; sphere.compute_cn_dn()  # Enable near-field computation</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Compute near-field in a 2D slice</span>
+<span class="sd">    &gt;&gt;&gt; near_field = NearField(</span>
+<span class="sd">    ...     scatterer=sphere,</span>
+<span class="sd">    ...     x_range=(-200e-9, 200e-9),</span>
+<span class="sd">    ...     y_range=(-200e-9, 200e-9),</span>
+<span class="sd">    ...     z_range=0,  # 2D slice at z=0</span>
+<span class="sd">    ...     resolution=100,</span>
+<span class="sd">    ...     field_components=[&quot;Ex&quot;, &quot;Ey&quot;, &quot;|E|&quot;]</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; # Visualize the results</span>
+<span class="sd">    &gt;&gt;&gt; near_field.plot_2d()</span>
+<span class="sd">    &gt;&gt;&gt; near_field.plot_enhancement()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">x_range</span><span class="p">:</span> <span class="nb">tuple</span>
+    <span class="n">y_range</span><span class="p">:</span> <span class="nb">tuple</span>
+    <span class="n">z_range</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">|</span> <span class="nb">float</span>
+    <span class="n">resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">field_components</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Set default field components</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">field_components</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ey&quot;</span><span class="p">,</span> <span class="s2">&quot;Ez&quot;</span><span class="p">,</span> <span class="s2">&quot;|E|&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Validate scatterer compatibility</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s1">&#39;compute_near_field_py&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;Scatterer does not support near-field computation. &quot;</span>
+                <span class="s2">&quot;Currently supported: Sphere, CoreShell with computed cn/dn coefficients.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Determine if this is 2D or 3D computation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span>
+
+        <span class="c1"># Set up coordinate grids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup_coordinates</span><span class="p">()</span>
+
+        <span class="c1"># Compute all requested field components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fields</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compute_fields</span><span class="p">()</span>
+
+        <span class="c1"># Determine scatterer radius for boundary visualization</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s1">&#39;radius&#39;</span><span class="p">,</span>
+                             <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="p">,</span> <span class="s1">&#39;diameter&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up coordinate grids for field computation.&quot;&quot;&quot;</span>
+        <span class="c1"># Handle resolution</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resolution</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolution</span>
+
+        <span class="c1"># Create coordinate arrays</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">z_range</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span><span class="p">)</span>
+
+        <span class="c1"># Create coordinate meshes</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z_range</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute all requested field components.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span> <span class="s2">&quot;Ey&quot;</span><span class="p">,</span> <span class="s2">&quot;Ez&quot;</span><span class="p">,</span> <span class="s2">&quot;Hx&quot;</span><span class="p">,</span> <span class="s2">&quot;Hy&quot;</span><span class="p">,</span> <span class="s2">&quot;Hz&quot;</span><span class="p">,</span> <span class="s2">&quot;|E|&quot;</span><span class="p">,</span> <span class="s2">&quot;|H|&quot;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid field component: </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Flatten coordinates for C++ computation</span>
+            <span class="n">x_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">y_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">z_flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+            <span class="c1"># Compute field using C++ backend</span>
+            <span class="n">field_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">compute_near_field_py</span><span class="p">(</span>
+                <span class="n">x_flat</span><span class="p">,</span> <span class="n">y_flat</span><span class="p">,</span> <span class="n">z_flat</span><span class="p">,</span> <span class="n">component</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Reshape to grid</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_field_enhancement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;electric&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute field enhancement factor |E_total|/|E_incident|.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        field_type : str</span>
+<span class="sd">            &quot;electric&quot; or &quot;magnetic&quot; field enhancement.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            Field enhancement map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">field_type</span> <span class="o">==</span> <span class="s2">&quot;electric&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;|E|&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Electric field magnitude |E| not computed&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;|E|&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">field_type</span> <span class="o">==</span> <span class="s2">&quot;magnetic&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;|H|&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Magnetic field magnitude |H| not computed&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s2">&quot;|H|&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;field_type must be &#39;electric&#39; or &#39;magnetic&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;|E|&quot;</span><span class="p">,</span>
+                <span class="n">plane</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;xy&quot;</span><span class="p">,</span>
+                <span class="n">slice_position</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+                <span class="n">show_scatterer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="n">enhancement_levels</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot 2D near-field distribution.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        component : str</span>
+<span class="sd">            Field component to plot.</span>
+<span class="sd">        plane : str</span>
+<span class="sd">            Plane to plot: &quot;xy&quot;, &quot;xz&quot;, or &quot;yz&quot;.</span>
+<span class="sd">        slice_position : float</span>
+<span class="sd">            Position of slice through 3D data (ignored for 2D data).</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            Matplotlib colormap name.</span>
+<span class="sd">        show_scatterer : bool</span>
+<span class="sd">            Whether to show scatterer boundary.</span>
+<span class="sd">        enhancement_levels : list</span>
+<span class="sd">            Contour levels for field enhancement.</span>
+<span class="sd">        figsize : tuple</span>
+<span class="sd">            Figure size (width, height).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> not computed&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">MPSPlots</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">mps</span><span class="p">):</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+
+            <span class="c1"># Get field data for plotting</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span> <span class="ow">and</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+                <span class="n">field_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">component</span><span class="p">][:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">]</span>
+                <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="s2">&quot;x [nm]&quot;</span><span class="p">,</span> <span class="s2">&quot;y [nm]&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Handle 3D slicing</span>
+                <span class="n">field_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_slice_data</span><span class="p">(</span><span class="n">component</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">slice_position</span><span class="p">)</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extent</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+                <span class="n">xlabel</span><span class="p">,</span> <span class="n">ylabel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">plane</span><span class="p">)</span>
+
+            <span class="c1"># Plot field</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+                <span class="n">field_data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+                <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Add colorbar</span>
+            <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+            <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s1"> field&#39;</span><span class="p">)</span>
+
+            <span class="c1"># Show scatterer boundary</span>
+            <span class="k">if</span> <span class="n">show_scatterer</span> <span class="ow">and</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+                <span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span>
+                                  <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+            <span class="c1"># Add enhancement contours</span>
+            <span class="k">if</span> <span class="n">enhancement_levels</span> <span class="ow">and</span> <span class="s2">&quot;|E|&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+                <span class="n">enhancement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_enhancement</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span><span class="p">:</span>
+                    <span class="n">enhancement_slice</span> <span class="o">=</span> <span class="n">enhancement</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">enhancement_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_slice_data</span><span class="p">(</span><span class="s2">&quot;|E|&quot;</span><span class="p">,</span> <span class="n">plane</span><span class="p">,</span> <span class="n">slice_position</span><span class="p">)</span>
+
+                <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">extent</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">enhancement_slice</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                          <span class="n">levels</span><span class="o">=</span><span class="n">enhancement_levels</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">xlabel</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Near-field </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s1"> distribution&#39;</span><span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_enhancement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">field_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;electric&quot;</span><span class="p">,</span>
+                        <span class="n">enhancement_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+                        <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;plasma&#39;</span><span class="p">,</span>
+                        <span class="n">figsize</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot field enhancement map with hot-spots highlighted.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        field_type : str</span>
+<span class="sd">            &quot;electric&quot; or &quot;magnetic&quot; field enhancement.</span>
+<span class="sd">        enhancement_threshold : float</span>
+<span class="sd">            Threshold for highlighting hot-spots.</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            Matplotlib colormap name.</span>
+<span class="sd">        figsize : tuple</span>
+<span class="sd">            Figure size (width, height).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">enhancement</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_field_enhancement</span><span class="p">(</span><span class="n">field_type</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">MPSPlots</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">mps</span><span class="p">):</span>
+            <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span><span class="p">:</span>
+                <span class="n">enhancement_data</span> <span class="o">=</span> <span class="n">enhancement</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Take central slice for 3D data</span>
+                <span class="n">mid_z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nz</span> <span class="o">//</span> <span class="mi">2</span>
+                <span class="n">enhancement_data</span> <span class="o">=</span> <span class="n">enhancement</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">mid_z</span><span class="p">]</span>
+                <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">]</span>
+
+            <span class="c1"># Plot enhancement</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span>
+                <span class="n">enhancement_data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+                <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span>
+                <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;lower&#39;</span><span class="p">,</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;equal&#39;</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Highlight hot-spots</span>
+            <span class="n">hot_spots</span> <span class="o">=</span> <span class="n">enhancement_data</span> <span class="o">&gt;</span> <span class="n">enhancement_threshold</span>
+            <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">hot_spots</span><span class="p">):</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">enhancement_data</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="n">enhancement_threshold</span><span class="p">],</span>
+                          <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                          <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">)</span>
+
+            <span class="c1"># Show scatterer boundary</span>
+            <span class="n">circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span>
+                              <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+            <span class="c1"># Colorbar and labels</span>
+            <span class="n">cbar</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+            <span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">field_type</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1"> field enhancement&#39;</span><span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x [nm]&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y [nm]&#39;</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">field_type</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s1"> field enhancement&#39;</span><span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_3d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">component</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;|E|&quot;</span><span class="p">,</span>
+                <span class="n">threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+                <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span><span class="p">,</span>
+                <span class="n">show_scatterer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot 3D near-field isosurfaces using PyVista.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        component : str</span>
+<span class="sd">            Field component to plot.</span>
+<span class="sd">        threshold : float</span>
+<span class="sd">            Isosurface threshold value. If None, uses 50% of maximum.</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            PyVista colormap name.</span>
+<span class="sd">        opacity : float</span>
+<span class="sd">            Isosurface opacity.</span>
+<span class="sd">        show_scatterer : bool</span>
+<span class="sd">            Whether to show scatterer boundary.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_2d</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;3D plotting requires 3D field data&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">component</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Component </span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> not computed&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;PyVista required for 3D plotting: pip install pyvista&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Create structured grid</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+        <span class="n">field_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">component</span><span class="p">])</span>
+        <span class="n">grid</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="n">component</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_data</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Set threshold</span>
+        <span class="k">if</span> <span class="n">threshold</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">field_data</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+        <span class="c1"># Create plotter</span>
+        <span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
+
+        <span class="c1"># Add isosurface</span>
+        <span class="n">isosurface</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">contour</span><span class="p">([</span><span class="n">threshold</span><span class="p">])</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">isosurface</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">)</span>
+
+        <span class="c1"># Add scatterer boundary</span>
+        <span class="k">if</span> <span class="n">show_scatterer</span><span class="p">:</span>
+            <span class="n">sphere_boundary</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">sphere_boundary</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+        <span class="c1"># Customize plot</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">add_axes</span><span class="p">()</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">add_scalar_bar</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s1"> field&#39;</span><span class="p">)</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+        <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_slice_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract 2D slice from 3D field data.&quot;&quot;&quot;</span>
+        <span class="n">field_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">component</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+            <span class="c1"># Find closest z index</span>
+            <span class="n">z_idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">position</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">field_data</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">z_idx</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xz&quot;</span><span class="p">:</span>
+            <span class="n">y_idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">position</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">field_data</span><span class="p">[:,</span> <span class="n">y_idx</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;yz&quot;</span><span class="p">:</span>
+            <span class="n">x_idx</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">position</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">field_data</span><span class="p">[</span><span class="n">x_idx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;plane must be &#39;xy&#39;, &#39;xz&#39;, or &#39;yz&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_extent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get plot extent for given plane.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xz&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;yz&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">1e9</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plane</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get axis labels for given plane.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xy&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;x [nm]&quot;</span><span class="p">,</span> <span class="s2">&quot;y [nm]&quot;</span>
+        <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;xz&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;x [nm]&quot;</span><span class="p">,</span> <span class="s2">&quot;z [nm]&quot;</span>
+        <span class="k">elif</span> <span class="n">plane</span> <span class="o">==</span> <span class="s2">&quot;yz&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;y [nm]&quot;</span><span class="p">,</span> <span class="s2">&quot;z [nm]&quot;</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

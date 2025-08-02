@@ -650,6 +650,31 @@ Returns <span class="math notranslate nohighlight">\(c_n\)</span> coefficient as
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.compute_near_field_py">
+<span class="sig-name descname"><span class="pre">compute_near_field_py</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.compute_near_field_py" title="Link to this definition">#</a></dt>
+<dd><p>Python wrapper for C++ near-field computation.</p>
+<p>This method bridges the gap between the C++ backend (_cpp_compute_near_field)
+and the Python NearField representation class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id1"><span class="problematic" id="id2">|E|</span></a>”, “<a href="#id3"><span class="problematic" id="id4">|H|</span></a>”</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – Scatterer radius for inside/outside determination.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.cross_section">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.cross_section" title="Link to this definition">#</a></dt>
@@ -718,7 +743,7 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-even"><p>An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">FarField</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">representations.FarField</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -803,7 +828,7 @@ This is important for understanding how the scattered light interacts with the d
 <dd class="field-even"><p>An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">Footprint</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">representations.Footprint</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -818,6 +843,64 @@ This is important for understanding how the scattered light interacts with the d
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">footprint</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Sphere.get_near_field">
+<span class="sig-name descname"><span class="pre">get_near_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Sphere.get_near_field" title="Link to this definition">#</a></dt>
+<dd><p>Compute near-field electromagnetic fields using internal coefficients cn and dn.</p>
+<p>This method calculates the electromagnetic fields inside and near the scatterer
+using the multipole expansion with vector spherical harmonics. The internal fields
+(r &lt; radius) are computed using cn and dn coefficients, while external fields
+(r &gt; radius) use an and bn coefficients.</p>
+<p>The near-field computation uses the full multipole expansion:</p>
+<div class="math notranslate nohighlight">
+\[\vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ c_n \vec{M}_{o1n}^{(1)}(k_1 r) + d_n \vec{N}_{e1n}^{(1)}(k_1 r) \right] \quad \text{(inside)}\]</div>
+<div class="math notranslate nohighlight">
+\[\vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ a_n \vec{M}_{o1n}^{(3)}(k r) + b_n \vec{N}_{e1n}^{(3)}(k r) \right] \quad \text{(outside)}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c_n, d_n\)</span>: Internal field coefficients (inside the scatterer)</p></li>
+<li><p><span class="math notranslate nohighlight">\(a_n, b_n\)</span>: External field coefficients (outside the scatterer)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vec{M}, \vec{N}\)</span>: Vector spherical harmonics</p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1, k\)</span>: Wave numbers inside and outside the scatterer</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
+<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
+<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>] </em><em>| </em><em>units.Quantity</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+for 2D slice. Default is 0 (xy-plane slice).</p></li>
+<li><p><strong>resolution</strong> (<em>int</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Number of points along each axis. If int, same resolution for all axes.
+Default is 100.</p></li>
+<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id5"><span class="problematic" id="id6">|E|</span></a>”, “<a href="#id7"><span class="problematic" id="id8">|H|</span></a>”].
+Default is [“Ex”, “Ey”, “Ez”, “<a href="#id9"><span class="problematic" id="id10">|E|</span></a>”].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Near-field representation object with computed field distributions,
+visualization methods, and analysis capabilities.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>representations.NearField</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If cn/dn coefficients are not available for the scatterer type.</p></li>
+<li><p><strong>ValueError</strong> – If field components or coordinate ranges are invalid.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This method requires that cn and dn coefficients have been computed.
+Currently supports spherical scatterers only. Cylinder support requires
+implementation of cn/dn coefficients for infinite cylinders.</p></li>
+<li><p>For points inside the scatterer (r &lt; radius), uses internal field coefficients.</p></li>
+<li><p>For points outside the scatterer (r &gt;= radius), uses external field coefficients.</p></li>
+<li><p>The computation includes proper vector spherical harmonics and radial functions.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
@@ -847,7 +930,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dd class="field-even"><p>An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">S1S2</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">representations.S1S2</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -908,7 +991,7 @@ amplitudes are computed.</p>
 <dd class="field-even"><p>An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">SPF</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">representations.SPF</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1230,6 +1313,31 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.compute_near_field_py">
+<span class="sig-name descname"><span class="pre">compute_near_field_py</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.compute_near_field_py" title="Link to this definition">#</a></dt>
+<dd><p>Python wrapper for C++ near-field computation.</p>
+<p>This method bridges the gap between the C++ backend (_cpp_compute_near_field)
+and the Python NearField representation class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id11"><span class="problematic" id="id12">|E|</span></a>”, “<a href="#id13"><span class="problematic" id="id14">|H|</span></a>”</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – Scatterer radius for inside/outside determination.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.cross_section">
 <em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cross_section</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.cross_section" title="Link to this definition">#</a></dt>
@@ -1276,7 +1384,7 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-even"><p>An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">FarField</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">representations.FarField</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1361,7 +1469,7 @@ This is important for understanding how the scattered light interacts with the d
 <dd class="field-even"><p>An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">Footprint</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">representations.Footprint</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1376,6 +1484,64 @@ This is important for understanding how the scattered light interacts with the d
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">footprint</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.Cylinder.get_near_field">
+<span class="sig-name descname"><span class="pre">get_near_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.Cylinder.get_near_field" title="Link to this definition">#</a></dt>
+<dd><p>Compute near-field electromagnetic fields using internal coefficients cn and dn.</p>
+<p>This method calculates the electromagnetic fields inside and near the scatterer
+using the multipole expansion with vector spherical harmonics. The internal fields
+(r &lt; radius) are computed using cn and dn coefficients, while external fields
+(r &gt; radius) use an and bn coefficients.</p>
+<p>The near-field computation uses the full multipole expansion:</p>
+<div class="math notranslate nohighlight">
+\[\vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ c_n \vec{M}_{o1n}^{(1)}(k_1 r) + d_n \vec{N}_{e1n}^{(1)}(k_1 r) \right] \quad \text{(inside)}\]</div>
+<div class="math notranslate nohighlight">
+\[\vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ a_n \vec{M}_{o1n}^{(3)}(k r) + b_n \vec{N}_{e1n}^{(3)}(k r) \right] \quad \text{(outside)}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c_n, d_n\)</span>: Internal field coefficients (inside the scatterer)</p></li>
+<li><p><span class="math notranslate nohighlight">\(a_n, b_n\)</span>: External field coefficients (outside the scatterer)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vec{M}, \vec{N}\)</span>: Vector spherical harmonics</p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1, k\)</span>: Wave numbers inside and outside the scatterer</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
+<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
+<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>] </em><em>| </em><em>units.Quantity</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+for 2D slice. Default is 0 (xy-plane slice).</p></li>
+<li><p><strong>resolution</strong> (<em>int</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Number of points along each axis. If int, same resolution for all axes.
+Default is 100.</p></li>
+<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id15"><span class="problematic" id="id16">|E|</span></a>”, “<a href="#id17"><span class="problematic" id="id18">|H|</span></a>”].
+Default is [“Ex”, “Ey”, “Ez”, “<a href="#id19"><span class="problematic" id="id20">|E|</span></a>”].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Near-field representation object with computed field distributions,
+visualization methods, and analysis capabilities.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>representations.NearField</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If cn/dn coefficients are not available for the scatterer type.</p></li>
+<li><p><strong>ValueError</strong> – If field components or coordinate ranges are invalid.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This method requires that cn and dn coefficients have been computed.
+Currently supports spherical scatterers only. Cylinder support requires
+implementation of cn/dn coefficients for infinite cylinders.</p></li>
+<li><p>For points inside the scatterer (r &lt; radius), uses internal field coefficients.</p></li>
+<li><p>For points outside the scatterer (r &gt;= radius), uses external field coefficients.</p></li>
+<li><p>The computation includes proper vector spherical harmonics and radial functions.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
@@ -1405,7 +1571,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dd class="field-even"><p>An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">S1S2</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">representations.S1S2</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1466,7 +1632,7 @@ amplitudes are computed.</p>
 <dd class="field-even"><p>An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">SPF</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">representations.SPF</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1801,6 +1967,31 @@ B_n = \frac{
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.compute_near_field_py">
+<span class="sig-name descname"><span class="pre">compute_near_field_py</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.compute_near_field_py" title="Link to this definition">#</a></dt>
+<dd><p>Python wrapper for C++ near-field computation.</p>
+<p>This method bridges the gap between the C++ backend (_cpp_compute_near_field)
+and the Python NearField representation class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of x coordinates of observation points.</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of y coordinates of observation points.</p></li>
+<li><p><strong>z</strong> (<a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)"><em>numpy.ndarray</em></a>) – Array of z coordinates of observation points.</p></li>
+<li><p><strong>field_type</strong> (<em>str</em>) – Field component type: “Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id21"><span class="problematic" id="id22">|E|</span></a>”, “<a href="#id23"><span class="problematic" id="id24">|H|</span></a>”</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – Scatterer radius for inside/outside determination.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Complex array of field values at specified points.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/devdocs/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4.dev0)">numpy.ndarray</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.core_diameter">
 <span class="sig-name descname"><span class="pre">core_diameter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.core_diameter" title="Link to this definition">#</a></dt>
@@ -1866,7 +2057,7 @@ The computed far fields represent the scattered electric field components in the
 <dd class="field-even"><p>An object containing the computed far-field components (parallel and perpendicular intensities), which represent the angular distribution of the scattered light in the far field.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">FarField</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.FarField" title="PyMieSim.single.representations.FarField">representations.FarField</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1951,7 +2142,7 @@ This is important for understanding how the scattered light interacts with the d
 <dd class="field-even"><p>An object containing the computed scatterer footprint, representing the spatial distribution of the scattered light on the detector plane.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">Footprint</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.Footprint" title="PyMieSim.single.representations.Footprint">representations.Footprint</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -1966,6 +2157,64 @@ This is important for understanding how the scattered light interacts with the d
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">footprint</span><span class="p">)</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PyMieSim.single.scatterer.CoreShell.get_near_field">
+<span class="sig-name descname"><span class="pre">get_near_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#PyMieSim.single.scatterer.CoreShell.get_near_field" title="Link to this definition">#</a></dt>
+<dd><p>Compute near-field electromagnetic fields using internal coefficients cn and dn.</p>
+<p>This method calculates the electromagnetic fields inside and near the scatterer
+using the multipole expansion with vector spherical harmonics. The internal fields
+(r &lt; radius) are computed using cn and dn coefficients, while external fields
+(r &gt; radius) use an and bn coefficients.</p>
+<p>The near-field computation uses the full multipole expansion:</p>
+<div class="math notranslate nohighlight">
+\[\vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ c_n \vec{M}_{o1n}^{(1)}(k_1 r) + d_n \vec{N}_{e1n}^{(1)}(k_1 r) \right] \quad \text{(inside)}\]</div>
+<div class="math notranslate nohighlight">
+\[\vec{E}(\vec{r}) = \sum_{n=1}^{n_{\text{max}}} \left[ a_n \vec{M}_{o1n}^{(3)}(k r) + b_n \vec{N}_{e1n}^{(3)}(k r) \right] \quad \text{(outside)}\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c_n, d_n\)</span>: Internal field coefficients (inside the scatterer)</p></li>
+<li><p><span class="math notranslate nohighlight">\(a_n, b_n\)</span>: External field coefficients (outside the scatterer)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vec{M}, \vec{N}\)</span>: Vector spherical harmonics</p></li>
+<li><p><span class="math notranslate nohighlight">\(k_1, k\)</span>: Wave numbers inside and outside the scatterer</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of x coordinates (x_min, x_max) for field computation.</p></li>
+<li><p><strong>y_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>]</em>) – Range of y coordinates (y_min, y_max) for field computation.</p></li>
+<li><p><strong>z_range</strong> (<em>tuple</em><em>[</em><em>units.Quantity</em><em>, </em><em>units.Quantity</em><em>] </em><em>| </em><em>units.Quantity</em><em>, </em><em>optional</em>) – Range of z coordinates (z_min, z_max) for 3D computation, or single z value
+for 2D slice. Default is 0 (xy-plane slice).</p></li>
+<li><p><strong>resolution</strong> (<em>int</em><em> | </em><em>tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>, </em><em>int</em><em>]</em><em>, </em><em>optional</em>) – Number of points along each axis. If int, same resolution for all axes.
+Default is 100.</p></li>
+<li><p><strong>field_components</strong> (<em>list</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – List of field components to compute. Options: [“Ex”, “Ey”, “Ez”, “Hx”, “Hy”, “Hz”, “<a href="#id25"><span class="problematic" id="id26">|E|</span></a>”, “<a href="#id27"><span class="problematic" id="id28">|H|</span></a>”].
+Default is [“Ex”, “Ey”, “Ez”, “<a href="#id29"><span class="problematic" id="id30">|E|</span></a>”].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Near-field representation object with computed field distributions,
+visualization methods, and analysis capabilities.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>representations.NearField</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>RuntimeError</strong> – If cn/dn coefficients are not available for the scatterer type.</p></li>
+<li><p><strong>ValueError</strong> – If field components or coordinate ranges are invalid.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This method requires that cn and dn coefficients have been computed.
+Currently supports spherical scatterers only. Cylinder support requires
+implementation of cn/dn coefficients for infinite cylinders.</p></li>
+<li><p>For points inside the scatterer (r &lt; radius), uses internal field coefficients.</p></li>
+<li><p>For points outside the scatterer (r &gt;= radius), uses external field coefficients.</p></li>
+<li><p>The computation includes proper vector spherical harmonics and radial functions.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
@@ -1995,7 +2244,7 @@ S_2 = \sum\limits_{n=1}^{n_{\text{max}}} \frac{2n+1}{n(n+1)} \left( a_n \tau_n +
 <dd class="field-even"><p>An object containing the computed S1 and S2 parameters, representing the scattering amplitudes for the two polarization components.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">S1S2</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.S1S2" title="PyMieSim.single.representations.S1S2">representations.S1S2</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -2056,7 +2305,7 @@ amplitudes are computed.</p>
 <dd class="field-even"><p>An object containing the computed scattering phase function (SPF), representing the angular distribution of scattered light intensity.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">SPF</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="representation.html#PyMieSim.single.representations.SPF" title="PyMieSim.single.representations.SPF">representations.SPF</a></p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
@@ -2239,6 +2488,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.an"><code class="docutils literal notranslate"><span class="pre">Sphere.an()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.bn"><code class="docutils literal notranslate"><span class="pre">Sphere.bn()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cn"><code class="docutils literal notranslate"><span class="pre">Sphere.cn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.compute_near_field_py"><code class="docutils literal notranslate"><span class="pre">Sphere.compute_near_field_py()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.cross_section"><code class="docutils literal notranslate"><span class="pre">Sphere.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.diameter"><code class="docutils literal notranslate"><span class="pre">Sphere.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.dn"><code class="docutils literal notranslate"><span class="pre">Sphere.dn()</span></code></a></li>
@@ -2247,6 +2497,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_far_field_array"><code class="docutils literal notranslate"><span class="pre">Sphere.get_far_field_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_farfields_array"><code class="docutils literal notranslate"><span class="pre">Sphere.get_farfields_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_footprint"><code class="docutils literal notranslate"><span class="pre">Sphere.get_footprint()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_near_field"><code class="docutils literal notranslate"><span class="pre">Sphere.get_near_field()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_s1s2"><code class="docutils literal notranslate"><span class="pre">Sphere.get_s1s2()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_s1s2_array"><code class="docutils literal notranslate"><span class="pre">Sphere.get_s1s2_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Sphere.get_spf"><code class="docutils literal notranslate"><span class="pre">Sphere.get_spf()</span></code></a></li>
@@ -2281,6 +2532,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.a2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.a2n()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b1n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b1n()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.b2n"><code class="docutils literal notranslate"><span class="pre">Cylinder.b2n()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.compute_near_field_py"><code class="docutils literal notranslate"><span class="pre">Cylinder.compute_near_field_py()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.cross_section"><code class="docutils literal notranslate"><span class="pre">Cylinder.cross_section</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.diameter"><code class="docutils literal notranslate"><span class="pre">Cylinder.diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.g"><code class="docutils literal notranslate"><span class="pre">Cylinder.g</span></code></a></li>
@@ -2288,6 +2540,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_far_field_array"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_far_field_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_farfields_array"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_farfields_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_footprint"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_footprint()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_near_field"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_near_field()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_s1s2"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_s1s2()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_s1s2_array"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_s1s2_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.Cylinder.get_spf"><code class="docutils literal notranslate"><span class="pre">Cylinder.get_spf()</span></code></a></li>
@@ -2320,6 +2573,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.an"><code class="docutils literal notranslate"><span class="pre">CoreShell.an()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.bn"><code class="docutils literal notranslate"><span class="pre">CoreShell.bn()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cn"><code class="docutils literal notranslate"><span class="pre">CoreShell.cn()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.compute_near_field_py"><code class="docutils literal notranslate"><span class="pre">CoreShell.compute_near_field_py()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.core_diameter"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_diameter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.core_property"><code class="docutils literal notranslate"><span class="pre">CoreShell.core_property</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.cross_section"><code class="docutils literal notranslate"><span class="pre">CoreShell.cross_section</span></code></a></li>
@@ -2329,6 +2583,7 @@ V &amp;= 2 \mathcal{Im} \big\{ E_x E_y^* \big\} \quad &amp;\text{(circular polar
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_far_field_array"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_far_field_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_farfields_array"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_farfields_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_footprint"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_footprint()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_near_field"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_near_field()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_s1s2"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_s1s2()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_s1s2_array"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_s1s2_array()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PyMieSim.single.scatterer.CoreShell.get_spf"><code class="docutils literal notranslate"><span class="pre">CoreShell.get_spf()</span></code></a></li>

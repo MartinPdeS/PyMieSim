@@ -1,0 +1,679 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PyMieSim.single.representations.spf &#8212; PyMieSim  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PyMieSim/single/representations/spf';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v3.6.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="../../../../_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="3.6.3" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <img src="../../../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">PyMieSim.single.representations.spf</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for PyMieSim.single.representations.spf</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.special_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">spherical_to_cartesian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRepresentation</span><span class="p">,</span> <span class="n">config_dict</span>
+
+
+<div class="viewcode-block" id="SPF">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SPF</span><span class="p">(</span><span class="n">BaseRepresentation</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the Scattering Phase Function (SPF).</span>
+
+<span class="sd">    Inherits from BaseRepresentation and computes the SPF, which is a measure of how light is scattered by a particle at different angles.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \text{SPF} = E_{\parallel}(\phi,\theta)^2 + E_{\perp}(\phi,\theta)^2</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        compute_components: Computes the SPF based on the electric field components.</span>
+<span class="sd">        plot: Visualizes the SPF on a 3D plot.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SPF.compute_components">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF.compute_components">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_components</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the Scattering Phase Function (SPF) based on the electric field components (E_phi and E_theta).</span>
+
+<span class="sd">        The SPF is calculated as the square root of the sum of the squared magnitudes of the electric field components, representing</span>
+<span class="sd">        the total scattering intensity distribution as a function of angles.</span>
+
+<span class="sd">        The result is stored as the SPF attribute of the instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_phi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">E_theta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SPF.plot">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.SPF.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">unit_size</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">),</span>
+            <span class="n">background_color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span>
+            <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">set_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_axis_label</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Visualizes the scattering phase function on a 3D plot.</span>
+
+<span class="sd">        This method creates a 3D visualization of the scattering phase function (SPF). It allows customization</span>
+<span class="sd">        of the plot&#39;s appearance, including the colormap, mesh opacity, and whether or not to display mesh edges</span>
+<span class="sd">        and axis labels.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unit_size : List[float]</span>
+<span class="sd">            The size of the plot window in pixels (width, height). Default is (400, 400).</span>
+<span class="sd">        background_color : str</span>
+<span class="sd">            The background color of the plot. Default is &#39;white&#39;.</span>
+<span class="sd">        show_edges : bool</span>
+<span class="sd">            If True, displays the edges of the mesh. Default is False.</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            The colormap to use for scalar mapping. Default is &#39;viridis&#39;.</span>
+<span class="sd">        opacity : float</span>
+<span class="sd">            The opacity of the mesh. Default is 1.0.</span>
+<span class="sd">        set_surface : bool</span>
+<span class="sd">            If True, the surface represents the scaled SPF; if False, a unit sphere is used. Default is True.</span>
+<span class="sd">        show_axis_label : bool</span>
+<span class="sd">            If True, shows the axis labels. Default is False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define the window size based on the unit size provided</span>
+        <span class="n">window_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">unit_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">unit_size</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># One subplot</span>
+
+        <span class="c1"># Create a PyVista plotting scene with the specified theme and window size</span>
+        <span class="n">scene</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">theme</span><span class="o">=</span><span class="n">pyvista</span><span class="o">.</span><span class="n">themes</span><span class="o">.</span><span class="n">DocumentTheme</span><span class="p">(),</span> <span class="n">window_size</span><span class="o">=</span><span class="n">window_size</span><span class="p">)</span>
+
+        <span class="c1"># Set the background color of the scene</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">set_background</span><span class="p">(</span><span class="n">background_color</span><span class="p">)</span>
+
+        <span class="c1"># Add the 3D axis-aligned plot to the scene using the specified settings</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_to_3d_ax</span><span class="p">(</span>
+            <span class="n">scene</span><span class="o">=</span><span class="n">scene</span><span class="p">,</span>
+            <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
+            <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
+            <span class="n">set_surface</span><span class="o">=</span><span class="n">set_surface</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Optionally add axis labels</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">add_axes_at_origin</span><span class="p">(</span><span class="n">labels_off</span><span class="o">=</span><span class="ow">not</span> <span class="n">show_axis_label</span><span class="p">)</span>
+
+        <span class="c1"># Add a scalar bar to the scene to represent the scattering phase function</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">add_scalar_bar</span><span class="p">(</span><span class="n">mapper</span><span class="o">=</span><span class="n">mapping</span><span class="o">.</span><span class="n">mapper</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Scattering Phase Function&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Display the scene</span>
+        <span class="n">scene</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_3d_ax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene</span><span class="p">:</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Plotter</span><span class="p">,</span> <span class="n">set_surface</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">show_edges</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a 3D surface plot to the provided PyVista scene based on the scattering phase function (SPF).</span>
+
+<span class="sd">        This method generates a 3D surface plot of the SPF using spherical coordinates, and adds it to the scene.</span>
+<span class="sd">        The surface can either represent the actual SPF or a normalized unit sphere, depending on the `set_surface` flag.</span>
+<span class="sd">        The appearance of the surface can be customized using various parameters.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scene : pyvista.Plotter</span>
+<span class="sd">            The PyVista plotting scene where the surface will be added.</span>
+<span class="sd">        set_surface : bool</span>
+<span class="sd">            If True, the surface will represent the scaled SPF; if False, a unit sphere is used. Default is True.</span>
+<span class="sd">        show_edges : bool</span>
+<span class="sd">            If True, edges of the mesh will be displayed. Default is False.</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            The colormap to use for visualizing the scalar field. Default is &#39;viridis&#39;.</span>
+<span class="sd">        opacity : float</span>
+<span class="sd">            The opacity of the surface mesh. Default is 1.0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create mesh grids for phi and theta</span>
+        <span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta_mesh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="c1"># Normalize the scattering phase function (SPF) for visualization</span>
+        <span class="n">scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">SPF</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span>
+
+        <span class="c1"># Determine the coordinates based on whether the surface represents the SPF or a unit sphere</span>
+        <span class="k">if</span> <span class="n">set_surface</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">scalar</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_mesh</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">spherical_to_cartesian</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">phi_mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="n">phi_mesh</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta_mesh</span><span class="p">)</span>
+
+        <span class="c1"># Create a structured grid from the calculated coordinates</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+        <span class="c1"># Add the surface mesh to the scene</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="n">scene</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+            <span class="n">mesh</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+            <span class="n">scalars</span><span class="o">=</span><span class="n">scalar</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">),</span>
+            <span class="n">opacity</span><span class="o">=</span><span class="n">opacity</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s1">&#39;surface&#39;</span><span class="p">,</span>
+            <span class="n">show_edges</span><span class="o">=</span><span class="n">show_edges</span><span class="p">,</span>
+            <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mapping</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

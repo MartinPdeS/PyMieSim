@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PyMieSim.single.representations.footprint &#8212; PyMieSim  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/default.css?v=bf03407a" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PyMieSim/single/representations/footprint';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PyMieSim/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v3.6.3';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="../../../../_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="3.6.3" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="dark">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../../../_static/thumbnail.png" class="logo__image only-dark" alt=""/>
+    <img src="../../../../_static/thumbnail.png" class="logo__image only-light pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PyMieSim</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../theory.html">
+    Theoretical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../examples.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../gallery/validation/index.html">
+    Validation Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../code/index.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PyMieSim/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PyMieSim" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">PyMieSim.single.representations.footprint</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for PyMieSim.single.representations.footprint</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MPSPlots</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.special_functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">rotate_on_x</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">meter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyMieSim.single.representations.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">config_dict</span>
+
+
+<div class="viewcode-block" id="Footprint">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Footprint">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">kw_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Footprint</span><span class="p">():</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the footprint of the scatterer as detected by various detectors.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \text{Footprint} = \big| \mathscr{F}^{-1} \big\{ \tilde{ \psi }\</span>
+<span class="sd">        (\xi, \nu), \tilde{ \phi}_{l,m}(\xi, \nu)  \big\} \</span>
+<span class="sd">        (\delta_x, \delta_y) \big|^2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    detector : BaseDetector</span>
+<span class="sd">        The detector object.</span>
+<span class="sd">    scatterer : BaseScatterer</span>
+<span class="sd">        The scatterer object.</span>
+<span class="sd">    sampling : int</span>
+<span class="sd">        Number of points to evaluate the Stokes parameters in spherical coordinates (default is 500).</span>
+<span class="sd">    padding_factor : int</span>
+<span class="sd">        Padding factor for the Fourier transform (default is 20).</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        compute_footprint: Computes the footprint based on the far-field patterns and detector characteristics.</span>
+<span class="sd">        plot: Visualizes the computed footprint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">detector</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">scatterer</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">sampling</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>
+    <span class="n">padding_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compute_footprint</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Footprint.compute_footprint">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Footprint.compute_footprint">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_footprint</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the footprint of the scatterer as detected by the specified detector.</span>
+
+<span class="sd">        The footprint is calculated based on the far-field scattering patterns and the characteristics of the detector,</span>
+<span class="sd">        using a Fourier transform to project the far-field onto the detector plane.</span>
+
+<span class="sd">        The computed footprint and the corresponding spatial coordinates are stored as attributes of the instance.</span>
+
+<span class="sd">        Warning: this function do not currently take account of the cache block on the detector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">max_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">max_angle</span>
+        <span class="n">n_point</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
+
+        <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span>
+            <span class="o">-</span><span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;radian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span> <span class="n">max_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;radian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span> <span class="n">n_point</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span> <span class="n">n_point</span>
+        <span class="p">]</span>
+
+        <span class="n">max_distance_direct_space</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">max_angle</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavenumber</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">max_distance_direct_space</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_factor</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">rotate_on_x</span><span class="p">(</span><span class="n">phi</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">far_field_para</span><span class="p">,</span> <span class="n">far_field_perp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scatterer</span><span class="o">.</span><span class="n">get_farfields_array</span><span class="p">(</span>
+            <span class="n">phi</span><span class="o">=</span><span class="n">phi</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+            <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">meter</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">detector_structured_farfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">get_structured_scalarfield</span><span class="p">(</span><span class="n">sampling</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span>
+
+        <span class="n">perpendicular_projection</span> <span class="o">=</span> <span class="n">detector_structured_farfield</span> <span class="o">*</span> <span class="n">far_field_perp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">parallel_projection</span> <span class="o">=</span> <span class="n">detector_structured_farfield</span> <span class="o">*</span> <span class="n">far_field_para</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">fourier_parallel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fourier_component</span><span class="p">(</span><span class="n">parallel_projection</span><span class="p">)</span>
+        <span class="n">fourier_perpendicular</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_fourier_component</span><span class="p">(</span><span class="n">perpendicular_projection</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">(</span><span class="n">fourier_parallel</span> <span class="o">+</span> <span class="n">fourier_perpendicular</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direct_x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">direct_y</span> <span class="o">=</span> <span class="n">y</span></div>
+
+
+<div class="viewcode-block" id="Footprint.get_fourier_component">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Footprint.get_fourier_component">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_fourier_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Computes the Fourier component of a given scalar field.</span>
+
+<span class="sd">        This method performs a two-dimensional inverse Fourier transform on the input scalar field, which represents</span>
+<span class="sd">        a projection (either parallel or perpendicular) of the far-field pattern. It then extracts a central portion</span>
+<span class="sd">        of the result, effectively applying a padding factor to increase the resolution of the Fourier transform.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        - scalar : numpy.ndarray</span>
+<span class="sd">            A two-dimensional numpy array representing the scalar field of which the Fourier component</span>
+<span class="sd">            is to be computed. This field could represent either the parallel or perpendicular projection of the far-field</span>
+<span class="sd">            pattern onto the detector plane.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            A two-dimensional numpy array representing the computed Fourier component. This array is a square</span>
+<span class="sd">            section, extracted from the center of the full Fourier transform, with dimensions determined by the original</span>
+<span class="sd">            sampling rate and the padding factor of the instance. The values in the array represent the intensity distribution</span>
+<span class="sd">            of the light in the detector plane, providing insights into the spatial characteristics of the scattering pattern.</span>
+
+<span class="sd">        The method uses numpy&#39;s fft module to perform the Fourier transform, applying a padding factor to the input to</span>
+<span class="sd">        achieve a higher resolution in the Fourier domain. The resulting Fourier transform is then squared and fftshifted</span>
+<span class="sd">        to center the zero-frequency component, and a central portion is extracted to match the intended output size.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Calculate the target size based on the sampling and padding factor, and the indices for the central portion extraction.</span>
+        <span class="n">total_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">padding_factor</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_size</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampling</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="c1"># Apply zero-padding to the scalar field to increase the resolution of the Fourier transform.</span>
+        <span class="n">padded_scalar</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">pad_width</span><span class="o">=</span><span class="p">((</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">),</span> <span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">)),</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">constant_values</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># Perform the two-dimensional inverse Fourier transform on the padded scalar field.</span>
+        <span class="n">fourier_transformed</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft2</span><span class="p">(</span><span class="n">padded_scalar</span><span class="p">)</span>
+
+        <span class="c1"># Compute the squared magnitude and center the zero-frequency component.</span>
+        <span class="n">fourier_magnitude_squared</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">fourier_transformed</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span>
+
+        <span class="c1"># Extract the central portion corresponding to the original sampling rate adjusted by the padding factor.</span>
+        <span class="n">central_portion</span> <span class="o">=</span> <span class="n">fourier_magnitude_squared</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="o">-</span><span class="n">offset</span><span class="p">,</span> <span class="n">offset</span><span class="p">:</span><span class="o">-</span><span class="n">offset</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">central_portion</span></div>
+
+
+<div class="viewcode-block" id="Footprint.plot">
+<a class="viewcode-back" href="../../../../code/single/representation.html#PyMieSim.single.representations.Footprint.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colormap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plots the scatterer footprint using a 2D colormap.</span>
+
+<span class="sd">        The method generates a plot representing the footprint of the scatterer, with the X and Y axes showing</span>
+<span class="sd">        offset distances in micrometers, and the colormap depicting the mapping values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        colormap : str</span>
+<span class="sd">            The colormap to use for the plot. Default is &#39;gray&#39;.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="n">MPSPlots</span><span class="o">.</span><span class="n">styles</span><span class="o">.</span><span class="n">mps</span><span class="p">):</span>
+            <span class="n">figure</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Scatterer Footprint&#39;</span><span class="p">,</span>
+                <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Offset distance in X-axis [$\mu$m]&#39;</span><span class="p">,</span>
+                <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;Offset distance in Y-axis [$\mu$m]&#39;</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_y</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">direct_x</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mapping</span><span class="p">,</span>
+                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span>
+            <span class="p">)</span>
+
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+</div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
