@@ -50,6 +50,23 @@ Examples exploring available scatterer geometries.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.">
+
+.. only:: html
+
+  .. image:: /gallery/single/scatterer/images/thumb/sphx_glr_nearfield_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_single_scatterer_nearfield.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Near-Fields Computation and Visualization</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the computation of scattering properties using PyMieSim.">
 
 .. only:: html
@@ -145,6 +162,7 @@ Examples exploring available scatterer geometries.
 
    /gallery/single/scatterer/farfield
    /gallery/single/scatterer/footprint
+   /gallery/single/scatterer/nearfield
    /gallery/single/scatterer/properties
    /gallery/single/scatterer/s1s2
    /gallery/single/scatterer/source

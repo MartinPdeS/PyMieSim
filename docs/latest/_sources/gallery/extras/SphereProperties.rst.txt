@@ -98,7 +98,7 @@ Samples Properties
     )
 
 
-    farfield = scatterer.get_far_field(sampling=300)
+    farfield = scatterer.get_farfield(sampling=300)
 
     farfield.plot()
 
@@ -125,7 +125,7 @@ Samples Properties
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.267 seconds)
+   **Total running time of the script:** (0 minutes 1.298 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_SphereProperties.py:

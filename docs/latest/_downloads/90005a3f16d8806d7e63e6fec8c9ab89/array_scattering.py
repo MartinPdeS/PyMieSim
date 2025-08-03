@@ -35,7 +35,7 @@ theta = np.linspace(0, np.pi / 2, 150) * radian
 
 # %%
 # Far-field complex fields
-E_para, E_perp = scatterer.get_far_field_array(phi, theta)
+E_para, E_perp = scatterer.get_farfield_array(phi, theta)
 
 plt.figure(figsize=(10, 5))
 plt.subplot(1, 2, 1)

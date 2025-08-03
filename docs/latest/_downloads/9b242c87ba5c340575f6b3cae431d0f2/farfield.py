@@ -31,7 +31,7 @@ scatterer = Sphere(
 
 # %%
 # Computing the data
-data = scatterer.get_far_field(sampling=100)  # Specify the number of sampling points
+data = scatterer.get_farfield(sampling=100)  # Specify the number of sampling points
 
 # %%
 # Plotting the data
