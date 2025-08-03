@@ -1,5 +1,5 @@
 """
-Far-Fields Computation and Visualization
+Near-Fields Computation and Visualization
 ========================================
 
 This example demonstrates the process of computing and visualizing the far-fields of a scatterer using PyMieSim.
@@ -14,7 +14,7 @@ from PyMieSim.units import nanometer, degree, watt, AU, RIU
 # %%
 # Defining the source
 source = Gaussian(
-    wavelength=1000 * nanometer,  # 1000 nm
+    wavelength=1400 * nanometer,  # 1000 nm
     polarization=30 * degree,  # Right circular polarization
     optical_power=1 * watt,  # Arbitrary units
     NA=0.3 * AU  # Numerical Aperture
@@ -23,15 +23,15 @@ source = Gaussian(
 # %%
 # Defining the scatterer
 scatterer = Sphere(
-    diameter=1500 * nanometer,  # 1500 nm
+    diameter=1000 * nanometer,  # 1000 nm
     source=source,
-    property=1.4 * RIU,  # Refractive index of the scatterer
+    property=1.8 * RIU,  # Refractive index of the scatterer
     medium_property=1.0 * RIU  # Refractive index of the surrounding medium
 )
 
 # %%
 # Computing the data
-data = scatterer.get_farfield(sampling=100)  # Specify the number of sampling points
+data = scatterer.get_nearfield(field_components=['|E|'])
 
 # %%
 # Plotting the data

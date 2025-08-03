@@ -26,7 +26,7 @@ attributes = [
 ]
 
 plotting_functions = [
-    "get_far_field", "get_stokes", "get_spf", "get_s1s2",
+    "get_farfield", "get_stokes", "get_spf", "get_s1s2",
 ]
 
 

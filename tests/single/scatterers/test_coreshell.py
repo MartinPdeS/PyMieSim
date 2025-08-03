@@ -21,7 +21,7 @@ attributes = [
     "Qforward", "Qpr", "Csca", "Cext", "Cabs", "Cback", "Cratio", "Cforward", "Cpr"
 ]
 
-plotting_functions = ["get_far_field", "get_stokes", "get_spf", "get_s1s2"]
+plotting_functions = ["get_farfield", "get_stokes", "get_spf", "get_s1s2"]
 
 
 # Reusable fixture for Gaussian source

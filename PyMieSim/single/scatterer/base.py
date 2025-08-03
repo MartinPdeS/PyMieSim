@@ -183,7 +183,7 @@ class BaseScatterer(units.UnitsValidation):
         return I, Q, U, V
 
 
-    def get_far_field_array(
+    def get_farfield_array(
         self,
         phi: numpy.ndarray,
         theta: numpy.ndarray,
@@ -312,7 +312,7 @@ class BaseScatterer(units.UnitsValidation):
         """
         return representations.Stokes(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_far_field(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> representations.FarField:
+    def get_farfield(self, sampling: int = 200, distance: units.Quantity = 1 * units.meter) -> representations.FarField:
         r"""
         Compute the far-field scattering pattern for the scatterer.
 
@@ -359,8 +359,8 @@ class BaseScatterer(units.UnitsValidation):
 
         Example usage:
 
-        >>> far_field = scatterer.get_far_field(sampling=500)
-        >>> print(far_field.E_phi, far_field.E_theta)
+        >>> farfield = scatterer.get_farfield(sampling=500)
+        >>> print(farfield.E_phi, farfield.E_theta)
 
         """
         return representations.FarField(scatterer=self, sampling=sampling, distance=distance)
@@ -413,7 +413,7 @@ class BaseScatterer(units.UnitsValidation):
         """
         return representations.SPF(scatterer=self, sampling=sampling, distance=distance)
 
-    def get_near_field(
+    def get_nearfield(
         self,
         x_range: tuple[units.Quantity, units.Quantity] | str = 'auto',
         y_range: tuple[units.Quantity, units.Quantity] | str = 'auto',
@@ -527,7 +527,7 @@ class BaseScatterer(units.UnitsValidation):
             field_components=field_components
         )
 
-    def compute_near_field_py(self, x, y, z, field_type, radius):
+    def compute_nearfield(self, x: units.Quantity, y: units.Quantity, z: units.Quantity, radius: units.Quantity, field_type: str = "|E|"):
         """
         Python wrapper for C++ near-field computation.
 
@@ -542,17 +542,23 @@ class BaseScatterer(units.UnitsValidation):
             Array of y coordinates of observation points.
         z : numpy.ndarray
             Array of z coordinates of observation points.
-        field_type : str
-            Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"
         radius : float
             Scatterer radius for inside/outside determination.
+        field_type : str
+            Field component type: "Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"
 
         Returns
         -------
         numpy.ndarray
             Complex array of field values at specified points.
         """
-        return self._cpp_compute_nearfields(x, y, z, field_type, radius) * units.volt / units.meter
+        return self._cpp_compute_nearfields(
+            x=x.to('meter').magnitude,
+            y=y.to('meter').magnitude,
+            z=z.to('meter').magnitude,
+            field_type=field_type,
+            radius=radius.to('meter').magnitude
+        ) * units.volt / units.meter
 
     def get_footprint(self, detector) -> representations.Footprint:
         r"""

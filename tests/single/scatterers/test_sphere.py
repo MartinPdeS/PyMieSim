@@ -22,7 +22,7 @@ attributes = [
 ]
 
 plotting_functions = [
-    "get_far_field", "get_stokes", "get_spf", "get_s1s2",
+    "get_farfield", "get_nearfield", "get_stokes", "get_spf", "get_s1s2",
 ]
 
 
@@ -111,7 +111,7 @@ def test_unstructured_array_functions(property, medium_property, source):
     assert V.shape == phi.shape
 
 
-    E_para, E_perp = scatterer.get_far_field_array(phi, theta)
+    E_para, E_perp = scatterer.get_farfield_array(phi, theta)
     assert E_para.shape == phi.shape
     assert E_perp.shape == phi.shape
 

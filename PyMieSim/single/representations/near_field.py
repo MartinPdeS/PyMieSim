@@ -41,7 +41,7 @@ class NearField():
     resolution : int or tuple
         Number of points along each axis. If int, same resolution for all axes.
     field_components : list
-        List of field components to compute: ["Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "|E|", "|H|"]
+        List of field components to compute: ["Ex", "Ey", "Ez", "Hx", "Hy", "Hz", "\|E\|", "\|H\|"]
 
     Raises
     ------
@@ -142,8 +142,6 @@ class NearField():
                 cmap=colormap,
             )
 
-
-
             # Add colorbar
             cbar = plt.colorbar(im, ax=ax)
             cbar.set_label(f'{component} field')
@@ -155,8 +153,8 @@ class NearField():
             ax.set_title(f'Near-field {component} distribution')
             ax.set_aspect('equal')
 
-        plt.tight_layout()
         plt.grid(False)
+        # plt.tight_layout()
         plt.show()
 
     def plot_enhancement(self,
