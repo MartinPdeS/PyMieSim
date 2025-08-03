@@ -24,7 +24,7 @@ scatterer = Sphere(
 )
 
 
-farfield = scatterer.get_far_field(sampling=300)
+farfield = scatterer.get_farfield(sampling=300)
 
 farfield.plot()
 
