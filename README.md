@@ -26,12 +26,12 @@
 | PyMieSim/single/representations/base.py                |       41 |        3 |        2 |        1 |     91% | 53, 57-58 |
 | PyMieSim/single/representations/far\_fields.py         |       32 |        0 |        6 |        0 |    100% |           |
 | PyMieSim/single/representations/footprint.py           |       45 |        0 |        0 |        0 |    100% |           |
-| PyMieSim/single/representations/near\_field.py         |       73 |       53 |       14 |        0 |     23% |62-66, 71-81, 86-88, 109-118, 131-160, 181-222 |
+| PyMieSim/single/representations/near\_field.py         |       72 |       27 |       14 |        0 |     57% |109-118, 179-220 |
 | PyMieSim/single/representations/near\_field\_volume.py |      154 |      154 |       58 |        0 |      0% |     4-411 |
 | PyMieSim/single/representations/s1s2.py                |      213 |      163 |       62 |        0 |     18% |115, 128-158, 188-203, 218-234, 315-336, 342-362, 366-381, 397-406, 436-488, 509-553, 577-614, 618-631, 635-640, 644-649 |
 | PyMieSim/single/representations/spf.py                 |       27 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/single/representations/stokes.py              |       30 |        0 |        2 |        0 |    100% |           |
-| PyMieSim/single/scatterer/base.py                      |      128 |       24 |       12 |        1 |     76% |486-521, 555, 633 |
+| PyMieSim/single/scatterer/base.py                      |      128 |        5 |       12 |        5 |     93% |498, 505, 512, 515->518, 555, 639 |
 | PyMieSim/single/scatterer/core\_shell.py               |       36 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/single/scatterer/cylinder.py                  |       38 |        4 |        0 |        0 |     89% |72, 76, 80, 84 |
 | PyMieSim/single/scatterer/sphere.py                    |       31 |        2 |        0 |        0 |     94% |    99-107 |
@@ -40,7 +40,7 @@
 | PyMieSim/single/source/planewave.py                    |       21 |        0 |        0 |        0 |    100% |           |
 | PyMieSim/special\_functions.py                         |       18 |        0 |        2 |        0 |    100% |           |
 | PyMieSim/units.py                                      |       48 |        2 |       20 |        2 |     94% |   87, 128 |
-|                                              **TOTAL** | **1715** |  **498** |  **324** |   **27** | **67%** |           |
+|                                              **TOTAL** | **1714** |  **453** |  **324** |   **31** | **69%** |           |
 
 
 ## Setup coverage badge
