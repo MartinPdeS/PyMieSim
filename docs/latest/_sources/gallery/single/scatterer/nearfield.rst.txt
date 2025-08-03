@@ -90,11 +90,14 @@ Defining the scatterer
 
 Computing the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-36
+.. GENERATED FROM PYTHON SOURCE LINES 34-39
 
 .. code-block:: Python
 
-    data = scatterer.get_nearfield(field_components=['|E|'])
+    data = scatterer.get_nearfield(
+        sampling=200,
+        field_components=['Ex']
+    )
 
 
 
@@ -103,11 +106,11 @@ Computing the data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-38
+.. GENERATED FROM PYTHON SOURCE LINES 40-41
 
 Plotting the data
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-39
+.. GENERATED FROM PYTHON SOURCE LINES 41-42
 
 .. code-block:: Python
 
@@ -116,7 +119,7 @@ Plotting the data
 
 
 .. image-sg:: /gallery/single/scatterer/images/sphx_glr_nearfield_001.png
-   :alt: Near-field |E| distribution
+   :alt: Near-field Ex distribution
    :srcset: /gallery/single/scatterer/images/sphx_glr_nearfield_001.png
    :class: sphx-glr-single-img
 
@@ -127,7 +130,7 @@ Plotting the data
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.692 seconds)
+   **Total running time of the script:** (0 minutes 0.390 seconds)
 
 
 .. _sphx_glr_download_gallery_single_scatterer_nearfield.py:

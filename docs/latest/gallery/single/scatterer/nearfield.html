@@ -584,14 +584,17 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <p>Computing the data</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_nearfield</span><span class="p">(</span><span class="n">field_components</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;|E|&#39;</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">scatterer</span><span class="o">.</span><span class="n">get_nearfield</span><span class="p">(</span>
+    <span class="n">sampling</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">field_components</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Ex&#39;</span><span class="p">]</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>Plotting the data</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">figure</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../../_images/sphx_glr_nearfield_001.png" srcset="../../../_images/sphx_glr_nearfield_001.png" alt="Near-field |E| distribution" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.692 seconds)</p>
+<img src="../../../_images/sphx_glr_nearfield_001.png" srcset="../../../_images/sphx_glr_nearfield_001.png" alt="Near-field Ex distribution" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.390 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-single-scatterer-nearfield-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../../_downloads/345a20232f8b9ec0ee0a3f22d704cf38/nearfield.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nearfield.ipynb</span></code></a></p>
