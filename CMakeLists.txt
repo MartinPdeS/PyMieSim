@@ -49,7 +49,6 @@ message(STATUS "Binary will be installed in location: ${LOCAL_BIN_DIR}")
 
 add_subdirectory(PyMieSim/cpp/coordinates)                  # coordinates
 add_subdirectory(PyMieSim/cpp/bessel_subroutine)            # bessel_subroutine
-# add_subdirectory(PyMieSim/cpp/_bessel)                      # _ZBessel
 add_subdirectory(PyMieSim/cpp/mode_field)                   # cpp_mode_field
 add_subdirectory(PyMieSim/cpp/full_mesh)                    # cpp_full_mesh
 add_subdirectory(PyMieSim/cpp/fibonacci)                    # cpp_fibonacci      - interface_fibonacci
