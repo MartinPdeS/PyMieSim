@@ -418,7 +418,7 @@ class BaseScatterer(units.UnitsValidation):
         x_range: tuple[units.Quantity, units.Quantity] | str = 'auto',
         y_range: tuple[units.Quantity, units.Quantity] | str = 'auto',
         z_range: units.Quantity | str = 'auto',
-        resolution: units.Quantity = 'auto',
+        sampling: int = 100,
         field_components: list[str] = None
     ) -> representations.NearField:
         r"""
@@ -486,8 +486,6 @@ class BaseScatterer(units.UnitsValidation):
         x_range = [-self.diameter, +self.diameter] if x_range == 'auto' else x_range
         y_range = [-self.diameter, +self.diameter] if y_range == 'auto' else y_range
         z_range = 0 * units.meter if z_range == 'auto' else z_range
-        resolution = self.diameter / 500 if resolution == 'auto' else resolution
-
 
         # Validate and convert coordinate ranges to base units (meters)
         if isinstance(x_range, (list, tuple)) and len(x_range) == 2:
@@ -523,7 +521,7 @@ class BaseScatterer(units.UnitsValidation):
             x_range=x_range,
             y_range=y_range,
             z=z_range,
-            resolution=resolution,
+            sampling=sampling,
             field_components=field_components
         )
 

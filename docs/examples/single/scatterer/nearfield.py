@@ -31,7 +31,10 @@ scatterer = Sphere(
 
 # %%
 # Computing the data
-data = scatterer.get_nearfield(field_components=['|E|'])
+data = scatterer.get_nearfield(
+    sampling=200,
+    field_components=['Ex']
+)
 
 # %%
 # Plotting the data

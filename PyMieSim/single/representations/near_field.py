@@ -54,7 +54,7 @@ class NearField():
     x_range: tuple[units.Quantity, units.Quantity]
     y_range: tuple[units.Quantity, units.Quantity]
     z: units.Quantity
-    resolution: units.Quantity = 10 * units.nanometer
+    sampling: int
     field_components: list[str]
 
     def __post_init__(self):
@@ -68,8 +68,8 @@ class NearField():
     def _setup_coordinates(self):
         """Set up coordinate grids for field computation."""
         # Handle resolution
-        self.nx = int((abs(self.x_range[-1] - self.x_range[0]) / self.resolution).magnitude)
-        self.ny = int((abs(self.y_range[-1] - self.y_range[0]) / self.resolution).magnitude)
+        self.nx = self.sampling
+        self.ny = self.sampling
 
 
         # Create coordinate arrays
