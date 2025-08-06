@@ -3,8 +3,11 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import webbrowser
-from PyMieSim.gui.section import SourceSection, ScattererSection, DetectorSection, MeasureSection
-from PyMieSim.gui.helper import interface
+from PyMieSim.gui.section_.source import SourceSection
+from PyMieSim.gui.section_.scatterer import ScattererSection
+from PyMieSim.gui.section_.detector import DetectorSection
+from PyMieSim.gui.section_.measure import MeasureSection
+from PyMieSim.gui.helper import get_data
 
 dcc_store_id = "input-store"
 
@@ -50,7 +53,7 @@ class OpticalSetupGUI:
         str
             A base64-encoded string of the generated plot image.
         """
-        data = interface(
+        data = get_data(
             source_kwargs=self.source_section.data,
             scatterer_kwargs=self.scatterer_section.data,
             detector_kwargs=self.detector_section.data,
@@ -79,7 +82,7 @@ class OpticalSetupGUI:
         xaxis : str
             The parameter to include on the x-axis in the saved data.
         """
-        return interface(
+        return get_data(
             source_kwargs=self.source_section.data,
             scatterer_kwargs=self.scatterer_section.data,
             detector_kwargs=self.detector_section.data,
