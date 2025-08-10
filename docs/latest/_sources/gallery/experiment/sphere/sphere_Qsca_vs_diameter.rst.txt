@@ -54,35 +54,35 @@ Importing the package dependencies: numpy, PyMieSim
     +-----------------------+-----------------------+
     | Sellmeier Materials   | Tabulated Materials   |
     +=======================+=======================+
-    | lithium_niobate       | calcium               |
+    | fused_silica          | copper                |
     +-----------------------+-----------------------+
-    | ZBLAN                 | polyetylene           |
+    | polystyren            | silver                |
     +-----------------------+-----------------------+
-    | BAK1                  | aluminium             |
+    | soda_lime_glass       | sodium                |
     +-----------------------+-----------------------+
-    | SF5                   | nickel                |
+    | lithium_niobate       | polyetylene           |
     +-----------------------+-----------------------+
-    | polystyren            | gold                  |
+    | air                   | aluminium             |
     +-----------------------+-----------------------+
-    | crown                 | silver                |
+    | BAK1                  | iron                  |
     +-----------------------+-----------------------+
     | argon                 | zinc                  |
     +-----------------------+-----------------------+
-    | acetone               | sodium                |
+    | water                 | nickel                |
     +-----------------------+-----------------------+
-    | germanium             | silicon               |
+    | ZBLAN                 | silicon               |
     +-----------------------+-----------------------+
-    | fused_silica          | copper                |
+    | acetone               | calcium               |
     +-----------------------+-----------------------+
-    | soda_lime_glass       | iron                  |
-    +-----------------------+-----------------------+
-    | air                   |                       |
-    +-----------------------+-----------------------+
-    | water                 |                       |
+    | germanium             | gold                  |
     +-----------------------+-----------------------+
     | BK7                   |                       |
     +-----------------------+-----------------------+
+    | SF5                   |                       |
+    +-----------------------+-----------------------+
     | flint                 |                       |
+    +-----------------------+-----------------------+
+    | crown                 |                       |
     +-----------------------+-----------------------+
 
 
@@ -162,7 +162,7 @@ Defining the experiment setup
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.264 seconds)
+   **Total running time of the script:** (0 minutes 0.251 seconds)
 
 
 .. _sphx_glr_download_gallery_experiment_sphere_sphere_Qsca_vs_diameter.py:
