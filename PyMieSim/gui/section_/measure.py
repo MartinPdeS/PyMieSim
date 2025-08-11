@@ -245,14 +245,18 @@ class MeasureSection:
                 return {"content": content, "filename": filename, "type": "text/csv"}
             return None
 
+
         @self.app.callback(
             Output(self.xaxis_input_id, "options"),
-            Input(f"{self.scatterer_section.name}-sphere-data", "children"),
-            Input(f"{self.scatterer_section.name}-coreshell-data", "children"),
-            Input(f"{self.source_section.dropdown_id}-data", "children"),
-            Input(f"{self.detector_section.dropdown_id}-data", "children")
+            Input(f"scatterer-sphere-data", "children"),
+            Input(f"scatterer-coreshell-data", "children"),
+            Input(f"scatterer-cylinder-data", "children"),
+            Input(f"source-planewave-data", "children"),
+            Input(f"source-gaussian-data", "children"),
+            Input(f"detector-photodiode-data", "children"),
+            Input(f"detector-coherentmode-data", "children"),
         )
-        def update_xaxis_options(sphere_data, coreshell_data, source_data, detector_data):
+        def update_xaxis_options(sphere_data, coreshell_data, cylinder_data, planewave_data, gaussian_data, photodiode_data, coherent_mode_data):
             """
             Dynamically update x-axis options based on Scatterer, Source, and Detector sections.
 

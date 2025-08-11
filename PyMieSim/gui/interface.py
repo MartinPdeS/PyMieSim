@@ -60,7 +60,7 @@ class OpticalSetupGUI:
             measure=measure
         )
 
-        data.plot(x=xaxis)
+        data.plot(x=xaxis.lower())
 
         buf = io.BytesIO()
         plt.savefig(buf, format='png')

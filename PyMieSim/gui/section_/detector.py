@@ -1,74 +1,108 @@
-from dash import Input
-from PyMieSim.gui.section_.base import Section, angle_units
+from PyMieSim.gui.section_.base import Section, angle_units, BaseSubSection
 
 
-class DetectorSection(Section):
-    """
-    A class to manage the Detector section of the optical simulation interface.
+class PhotodiodeSection(BaseSubSection):
+    """Photodiode scatterer subsection."""
 
-    This class handles the inputs and callbacks related to the detector, such as numerical aperture,
-    offsets, sampling, and polarization filter.
+    name: str = 'photodiode'
 
-    Parameters
-    ----------
-    app : Dash
-        The Dash application instance.
-    """
-
-    name = 'detector'
-
-    def __init__(self, app):
-        """
-        Initialize the DetectorSection class.
-
-        Parameters
-        ----------
-        app : Dash
-            The Dash application instance.
-        """
+    def __init__(self, app, parent_section):
         self.app = app
-        self.title = "Detector"
-        self.color = "red"
-        self.dropdown_options = [
-            {'label': 'Photodiode', 'value': 'photodiode'},
-        ]
-        self.dropdown_id = 'detector-dropdown'
-        self.default_value = 'photodiode'
+        self.parent_section = parent_section
+        self.name_prefix = 'detector'
 
         self.inputs = {
-            "NA": {
-                "id": f"{self.name}-na",
+            "numerical_aperture": {
+                "id": f"photodiode-na",
                 "label": "Numerical aperture",
-                "default": "0.9"
+                "default": "0.2"
             },
             "phi_offset": {
-                "id": f"{self.name}-phi-offset",
+                "id": f"photodiode-phi-offset",
                 "label": f"Phi offset [{angle_units}]",
                 "default": "0"
             },
             "gamma_offset": {
-                "id": f"{self.name}-gamma-offset",
+                "id": f"photodiode-gamma-offset",
                 "label": f"Gamma offset [{angle_units}]",
                 "default": "0"
             },
             "sampling": {
-                "id": f"{self.name}-sampling",
+                "id": f"photodiode-sampling",
                 "label": "Sampling",
                 "default": "1000"
             },
             "polarization_filter": {
-                "id": f"{self.name}-polarization_filter",
+                "id": f"photodiode-polarization_filter",
                 "label": f"Polarization Filter [{angle_units}]",
                 "default": "None"
             }
         }
 
-        # Initialize x-axis options
-        self._xaxis_options = []
-        self._xaxis_options_length = []
+class CoherentModeSection(BaseSubSection):
+    """Coherent mode detector subsection."""
 
-        self.call_backs = [Input(f"{self.name}-dropdown", "value")] + [
-            Input(input_data["id"], "value") for input_data in self.inputs.values()
+    name: str = 'coherentmode'
+
+    def __init__(self, app, parent_section):
+        self.app = app
+        self.parent_section = parent_section
+        self.name_prefix = 'detector'
+
+        self.inputs = {
+            "mode_number": {
+                "id": f"coherentmode-field",
+                "label": "Mode field",
+                "default": "LP01, LP02"
+            },
+            "numerical_aperture": {
+                "id": f"coherentmode-numerical-aperture",
+                "label": "Numerical aperture",
+                "default": "0.2"
+            },
+            "phi_offset": {
+                "id": f"coherentmode-phi-offset",
+                "label": f"Phi offset [{angle_units}]",
+                "default": "0"
+            },
+            "gamma_offset": {
+                "id": f"coherentmode-gamma-offset",
+                "label": f"Gamma offset [{angle_units}]",
+                "default": "0"
+            },
+            "rotation": {
+                "id": f"coherentmode-rotation",
+                "label": f"Rotation [{angle_units}]",
+                "default": "0"
+            },
+            "sampling": {
+                "id": f"coherentmode-sampling",
+                "label": "Sampling",
+                "default": "1000"
+            },
+            "polarization_filter": {
+                "id": f"coherentmode-polarization_filter",
+                "label": f"Polarization Filter [{angle_units}]",
+                "default": "None"
+            }
+        }
+
+
+class DetectorSection(Section):
+    """
+    Main scatterer section that switches between sphere and core-shell subsections.
+    """
+
+    name = 'Detector'
+
+    def __init__(self, app):
+        """Initialize the DetectorSection with subsections."""
+        self.color = "blue"
+
+        # Create subsections (pass self as parent_section)
+        self.sub_sections = [
+            PhotodiodeSection(app, self),
+            CoherentModeSection(app, self)
         ]
 
-        self.update_callbacks()
+        super().__init__(app)

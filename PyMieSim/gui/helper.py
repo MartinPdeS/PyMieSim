@@ -19,26 +19,24 @@ computational engine, handling parameter parsing, validation, and experiment
 orchestration.
 """
 
-from typing import Union, Dict, Any
-from unittest import case
+from typing import Union, Dict, Any, List
 import numpy
-from PyMieSim.experiment.source.gaussian import Gaussian
-from PyMieSim.experiment.scatterer.sphere import Sphere
-from PyMieSim.experiment.scatterer.cylinder import Cylinder
-from PyMieSim.experiment.scatterer.core_shell import CoreShell
-from PyMieSim.experiment.detector.photodiode import Photodiode
+import re
+from PyMieSim.experiment.source import Gaussian, PlaneWave
+from PyMieSim.experiment.scatterer import Sphere, Cylinder, CoreShell
+from PyMieSim.experiment.detector import Photodiode, CoherentMode
 from PyMieSim.experiment import Setup
-from PyMieSim.units import nanometer, degree, milliwatt, AU, RIU
+from PyMieSim import units
 
 # Default unit definitions for consistent parameter handling
-length_units = nanometer  # Nanometers for all length measurements
-power_units = milliwatt   # Milliwatts for optical power measurements
-angle_units = degree      # Degrees for angular measurements
+length_units = units.nanometer  # Nanometers for all length measurements
+power_units = units.milliwatt   # Milliwatts for optical power measurements
+angle_units = units.degree      # Degrees for angular measurements
 
 
-def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float]:
+def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float, List[str], complex]:
     """
-    Parse a string input to return either a numpy array or a float value.
+    Parse a string input to return either a numpy array, float value, string list, or complex number.
 
     This function provides flexible parameter input parsing for the GUI interface,
     supporting multiple input formats to accommodate different use cases in
@@ -50,30 +48,38 @@ def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float
         Input string in one of the supported formats:
         - 'start:end:count' for linearly spaced arrays (e.g., '400:700:50')
         - 'value1,value2,value3' for comma-separated arrays (e.g., '1.0,1.5,2.0')
+        - 'str1,str2,str3' for comma-separated string lists (e.g., 'LP01,HG11')
+        - 'real+imagj' for complex numbers (e.g., '1.5+0.1j' or '2-0.5j')
         - 'value' for single numeric values (e.g., '1550')
 
     Returns
     -------
-    Union[numpy.ndarray, float]
-        - numpy.ndarray: For colon-separated or comma-separated inputs
+    Union[numpy.ndarray, float, List[str], complex]
+        - numpy.ndarray: For colon-separated or comma-separated numeric inputs
         - float: For single numeric value inputs
+        - List[str]: For comma-separated string inputs
+        - complex: For complex number inputs
 
     Raises
     ------
     ValueError
         If the input string format is not recognized or contains invalid
-        numeric values that cannot be converted.
+        values that cannot be converted.
 
     Notes
     -----
     Input Format Examples:
     - Wavelength sweep: '400:800:100' → 100 points from 400 to 800
     - Discrete values: '532,633,1064' → array([532, 633, 1064])
+    - Complex values: '1.5+0.1j,2.0-0.3j' → array([1.5+0.1j, 2.0-0.3j])
+    - String list: 'LP01,HG11,TM01' → ['LP01', 'HG11', 'TM01']
     - Single value: '1550' → 1550.0
+    - Complex single: '1.5+0.1j' → (1.5+0.1j)
 
     The colon format uses numpy.linspace() for uniform spacing, while
     comma format creates arrays from explicit values. This flexibility
-    supports both parametric sweeps and discrete measurement points.
+    supports both parametric sweeps, discrete measurement points, mode
+    labels, and complex refractive indices.
 
     Examples
     --------
@@ -85,11 +91,55 @@ def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float
     >>> diameters = parse_string_to_array_or_float('100,200,500,1000')
     >>> print(diameters)  # [100. 200. 500. 1000.]
     >>>
-    >>> # Single parameter value
-    >>> refractive_index = parse_string_to_array_or_float('1.33')
-    >>> print(refractive_index)  # 1.33
+    >>> # Mode labels
+    >>> modes = parse_string_to_array_or_float('LP01,HG11,TM01')
+    >>> print(modes)  # ['LP01', 'HG11', 'TM01']
+    >>>
+    >>> # Complex refractive index
+    >>> n_complex = parse_string_to_array_or_float('1.5+0.1j')
+    >>> print(n_complex)  # (1.5+0.1j)
+    >>>
+    >>> # Complex array
+    >>> n_array = parse_string_to_array_or_float('1.5+0.1j,2.0-0.3j')
+    >>> print(n_array)  # [1.5+0.1j 2.0-0.3j]
     """
+
+    def _parse_complex_or_float(value_str: str) -> Union[float, complex]:
+        """Helper function to parse a single value as complex or float."""
+        value_str = value_str.strip()
+
+        # Check if it's a complex number (contains 'j' or 'J')
+        if 'j' in value_str.lower():
+            try:
+                # Handle Python complex number format
+                return complex(value_str.replace('i', 'j').replace('I', 'j'))
+            except ValueError:
+                raise ValueError(f"Invalid complex number format: '{value_str}'")
+        else:
+            try:
+                return float(value_str)
+            except ValueError:
+                raise ValueError(f"Invalid numeric format: '{value_str}'")
+
+    def _is_numeric_value(value_str: str) -> bool:
+        """Check if a string represents a numeric value (float or complex)."""
+        value_str = value_str.strip()
+
+        # Check for complex number pattern
+        complex_pattern = r'^[+-]?(\d+\.?\d*|\.\d+)([+-]\d+\.?\d*[ji])?$'
+        if re.match(complex_pattern, value_str.lower()):
+            return True
+
+        # Check for simple float
+        try:
+            float(value_str)
+            return True
+        except ValueError:
+            return False
+
     try:
+        input_str = input_str.strip()
+
         if ":" in input_str:
             # Format: start:end:count → numpy.linspace(start, end, count)
             parts = input_str.split(":")
@@ -101,18 +151,31 @@ def parse_string_to_array_or_float(input_str: str) -> Union[numpy.ndarray, float
             return numpy.linspace(start, end, int(count))
 
         elif "," in input_str:
-            # Format: value1,value2,value3 → numpy.array([value1, value2, value3])
-            values = [float(val.strip()) for val in input_str.split(",")]
-            return numpy.array(values)
+            # Format: value1,value2,value3 → determine if numeric or string
+            values = [val.strip() for val in input_str.split(",")]
+
+            # Check if all values are numeric
+            if all(_is_numeric_value(val) for val in values):
+                # Parse as numeric values (float or complex)
+                parsed_values = [_parse_complex_or_float(val) for val in values]
+                return numpy.array(parsed_values)
+            else:
+                # Return as string list
+                return values
 
         else:
-            # Format: single value → float
-            return float(input_str.strip())
+            # Single value: determine if numeric, complex, or string
+            if _is_numeric_value(input_str):
+                return _parse_complex_or_float(input_str)
+            else:
+                # Return as single string (could be a mode label like 'LP01')
+                return input_str
 
     except (ValueError, TypeError) as e:
         raise ValueError(
             f"Invalid input string format: '{input_str}'. "
-            f"Expected 'start:end:count', comma-separated values, or single numeric value. "
+            f"Expected 'start:end:count', comma-separated values (numeric or string), "
+            f"complex numbers, or single numeric/string value. "
             f"Original error: {str(e)}"
         )
 
@@ -187,60 +250,70 @@ def get_data(
         If the computational setup fails or measurement cannot be completed.
 
     """
-    print(scatterer_kwargs)
-    try:
-        # Create Gaussian beam source with parsed parameters
-        source = Gaussian(
-            wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
-            polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
-            NA=parse_string_to_array_or_float(source_kwargs['NA']) * AU,
-            optical_power=parse_string_to_array_or_float(source_kwargs['optical_power']) * power_units
-        )
+    match source_kwargs['type']:
+        case 'planewave':
+            source = PlaneWave(
+                wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
+                polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
+                amplitude=parse_string_to_array_or_float(source_kwargs['amplitude']) * units.volt / units.meter
+            )
+        case 'gaussian':
+            source = Gaussian(
+                wavelength=parse_string_to_array_or_float(source_kwargs['wavelength']) * length_units,
+                polarization=parse_string_to_array_or_float(source_kwargs['polarization']) * angle_units,
+                NA=parse_string_to_array_or_float(source_kwargs['numerical_aperture']) * units.AU,
+                optical_power=parse_string_to_array_or_float(source_kwargs['optical_power']) * power_units
+            )
 
-        # Create spherical scatterer with parsed parameters
+    match scatterer_kwargs['type']:
+        case 'sphere':
+            scatterer = Sphere(
+                diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
+                property=parse_string_to_array_or_float(scatterer_kwargs['property']) * units.RIU,
+                medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * units.RIU,
+                source=source
+            )
+        case 'coreshell':
+            scatterer = CoreShell(
+                core_diameter=parse_string_to_array_or_float(scatterer_kwargs['core_diameter']) * length_units,
+                shell_thickness=parse_string_to_array_or_float(scatterer_kwargs['shell_thickness']) * length_units,
+                core_property=parse_string_to_array_or_float(scatterer_kwargs['core_property']) * units.RIU,
+                shell_property=parse_string_to_array_or_float(scatterer_kwargs['shell_property']) * units.RIU,
+                medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * units.RIU,
+                source=source
+            )
+        case 'cylinder':
+            scatterer = Cylinder(
+                diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
+                property=parse_string_to_array_or_float(scatterer_kwargs['property']) * units.RIU,
+                medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * units.RIU,
+                source=source
+            )
 
-        match scatterer_kwargs['type']:
-            case 'sphere':
-                scatterer = Sphere(
-                    diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
-                    property=parse_string_to_array_or_float(scatterer_kwargs['property']) * RIU,
-                    medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * RIU,
-                    source=source
-                )
-            case 'coreshell':
-                scatterer = CoreShell(
-                    core_diameter=parse_string_to_array_or_float(scatterer_kwargs['core_diameter']) * length_units,
-                    shell_thickness=parse_string_to_array_or_float(scatterer_kwargs['shell_thickness']) * length_units,
-                    core_property=parse_string_to_array_or_float(scatterer_kwargs['core_property']) * RIU,
-                    shell_property=parse_string_to_array_or_float(scatterer_kwargs['shell_property']) * RIU,
-                    medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * RIU,
-                    source=source
-                )
-            case 'cylinder':
-                scatterer = Cylinder(
-                    diameter=parse_string_to_array_or_float(scatterer_kwargs['diameter']) * length_units,
-                    property=parse_string_to_array_or_float(scatterer_kwargs['property']) * RIU,
-                    medium_property=parse_string_to_array_or_float(scatterer_kwargs['medium_property']) * RIU,
-                    source=source
-                )
+    match detector_kwargs['type']:
+        case 'photodiode':
+            detector = Photodiode(
+                NA=parse_string_to_array_or_float(detector_kwargs['numerical_aperture']) * units.AU,
+                gamma_offset=parse_string_to_array_or_float(detector_kwargs['gamma_offset']) * angle_units,
+                phi_offset=parse_string_to_array_or_float(detector_kwargs['phi_offset']) * angle_units,
+                sampling=parse_string_to_array_or_float(detector_kwargs['sampling']) * units.AU,
+            )
+        case 'coherentmode':
+            detector = CoherentMode(
+                mode_number=parse_string_to_array_or_float(detector_kwargs['mode_number']),
+                NA=parse_string_to_array_or_float(detector_kwargs['numerical_aperture']) * units.AU,
+                gamma_offset=parse_string_to_array_or_float(detector_kwargs['gamma_offset']) * angle_units,
+                phi_offset=parse_string_to_array_or_float(detector_kwargs['phi_offset']) * angle_units,
+                sampling=parse_string_to_array_or_float(detector_kwargs['sampling']) * units.AU,
+                rotation=parse_string_to_array_or_float(detector_kwargs.get('rotation', 0)) * angle_units
 
-        # Create photodiode detector with parsed parameters
-        detector = Photodiode(
-            NA=parse_string_to_array_or_float(detector_kwargs['NA']) * AU,
-            gamma_offset=parse_string_to_array_or_float(detector_kwargs['gamma_offset']) * angle_units,
-            phi_offset=parse_string_to_array_or_float(detector_kwargs['phi_offset']) * angle_units,
-            sampling=parse_string_to_array_or_float(detector_kwargs['sampling']) * AU,
-        )
+            )
 
-        # Set up the complete experiment
-        setup = Setup(source=source, scatterer=scatterer, detector=detector)
 
-        # Execute the measurement and return results
-        dataframe = setup.get(measure, **kwargs)
+    # Set up the complete experiment
+    setup = Setup(source=source, scatterer=scatterer, detector=detector)
 
-        return dataframe
+    # Execute the measurement and return results
+    dataframe = setup.get(measure, **kwargs)
 
-    except KeyError as e:
-        raise KeyError(f"Missing required parameter: {str(e)}. Check that all required keys are present in parameter dictionaries.")
-    except Exception as e:
-        raise RuntimeError(f"Failed to execute Mie scattering experiment: {str(e)}. Check parameter values and measurement type.")
+    return dataframe
