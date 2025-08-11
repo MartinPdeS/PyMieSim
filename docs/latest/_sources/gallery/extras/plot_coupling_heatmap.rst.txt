@@ -102,7 +102,7 @@ of a sphere as a function of the permittivity and the size parameter.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.197 seconds)
+   **Total running time of the script:** (0 minutes 2.256 seconds)
 
 
 .. _sphx_glr_download_gallery_extras_plot_coupling_heatmap.py:
