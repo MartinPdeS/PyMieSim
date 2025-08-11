@@ -1,4 +1,4 @@
-from PyMieSim.gui.section_.base import Section, length_units, BaseSubSection
+from PyMieSim.gui.section_.base import Section, BaseSubSection
 
 
 class PlaneWaveSection(BaseSubSection):
@@ -14,7 +14,7 @@ class PlaneWaveSection(BaseSubSection):
         self.inputs = {
             "wavelength": {
                 "id": "planewave-wavelength",
-                "label": f"Wavelength [{length_units}]",
+                "label": f"Wavelength [nm]",
                 "default": "750"
             },
             "amplitude": {
@@ -42,7 +42,7 @@ class GaussianBeamSection(BaseSubSection):
         self.inputs = {
             "wavelength": {
                 "id": "gaussian-wavelength",
-                "label": f"Wavelength [{length_units}]",
+                "label": f"Wavelength [nm]",
                 "default": "750"
             },
             "numerical_aperture": {

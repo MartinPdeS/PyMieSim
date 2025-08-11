@@ -19,12 +19,12 @@ class PhotodiodeSection(BaseSubSection):
             },
             "phi_offset": {
                 "id": f"photodiode-phi-offset",
-                "label": f"Phi offset [{angle_units}]",
+                "label": f"Phi offset [degrees]",
                 "default": "0"
             },
             "gamma_offset": {
                 "id": f"photodiode-gamma-offset",
-                "label": f"Gamma offset [{angle_units}]",
+                "label": f"Gamma offset [degrees]",
                 "default": "0"
             },
             "sampling": {
@@ -34,7 +34,7 @@ class PhotodiodeSection(BaseSubSection):
             },
             "polarization_filter": {
                 "id": f"photodiode-polarization_filter",
-                "label": f"Polarization Filter [{angle_units}]",
+                "label": f"Polarization Filter [degrees]",
                 "default": "None"
             }
         }
@@ -62,17 +62,17 @@ class CoherentModeSection(BaseSubSection):
             },
             "phi_offset": {
                 "id": f"coherentmode-phi-offset",
-                "label": f"Phi offset [{angle_units}]",
+                "label": f"Phi offset [degrees]",
                 "default": "0"
             },
             "gamma_offset": {
                 "id": f"coherentmode-gamma-offset",
-                "label": f"Gamma offset [{angle_units}]",
+                "label": f"Gamma offset [degrees]",
                 "default": "0"
             },
             "rotation": {
                 "id": f"coherentmode-rotation",
-                "label": f"Rotation [{angle_units}]",
+                "label": f"Rotation [degrees]",
                 "default": "0"
             },
             "sampling": {
@@ -82,7 +82,7 @@ class CoherentModeSection(BaseSubSection):
             },
             "polarization_filter": {
                 "id": f"coherentmode-polarization_filter",
-                "label": f"Polarization Filter [{angle_units}]",
+                "label": f"Polarization Filter [degrees]",
                 "default": "None"
             }
         }

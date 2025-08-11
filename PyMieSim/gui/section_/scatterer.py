@@ -1,4 +1,4 @@
-from PyMieSim.gui.section_.base import Section, length_units, BaseSubSection
+from PyMieSim.gui.section_.base import Section, BaseSubSection
 
 
 class SphereSection(BaseSubSection):
@@ -14,7 +14,7 @@ class SphereSection(BaseSubSection):
         self.inputs = {
             "diameter": {
                 "id": "sphere-diameter",
-                "label": f"Diameter [{length_units}]",
+                "label": f"Diameter [nm]",
                 "default": "100:20000:200"
             },
             "property": {
@@ -41,7 +41,7 @@ class CylinderSection(BaseSubSection):
         self.inputs = {
             "diameter": {
                 "id": "cylinder-diameter",
-                "label": f"Diameter [{length_units}]",
+                "label": f"Diameter [nm]",
                 "default": "100:20000:200"
             },
             "property": {
@@ -70,12 +70,12 @@ class CoreShellSection(BaseSubSection):
         self.inputs = {
             "core_diameter": {
                 "id": "coreshell-core-diameter",
-                "label": f"Core Diameter [{length_units}]",
+                "label": f"Core Diameter [nm]",
                 "default": "50:200:200"
             },
             "shell_thickness": {
                 "id": "coreshell-shell-thickness",
-                "label": f"Shell Thickness [{length_units}]",
+                "label": f"Shell Thickness [nm]",
                 "default": "200"
             },
             "core_property": {
