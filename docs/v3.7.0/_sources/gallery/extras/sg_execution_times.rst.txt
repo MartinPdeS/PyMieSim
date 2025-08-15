@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:06.950** total execution time for 6 files **from gallery/extras**:
+**00:06.960** total execution time for 6 files **from gallery/extras**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_extras_plot_coupling_heatmap.py` (``plot_coupling_heatmap.py``)
-     - 00:02.195
+     - 00:02.258
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_Qsca_vs_permittivity_vs_size_parameter.py` (``plot_Qsca_vs_permittivity_vs_size_parameter.py``)
      - 00:01.717
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_SphereProperties.py` (``SphereProperties.py``)
-     - 00:01.248
+     - 00:01.234
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_array_scattering.py` (``array_scattering.py``)
-     - 00:01.081
+     - 00:01.057
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_coupling_vs_NA.py` (``plot_coupling_vs_NA.py``)
-     - 00:00.432
+     - 00:00.426
      - 0.0
    * - :ref:`sphx_glr_gallery_extras_plot_system.py` (``plot_system.py``)
-     - 00:00.277
+     - 00:00.268
      - 0.0
