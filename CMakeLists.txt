@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "16.0" CACHE STRING "Minimum OS X deployment version")
+set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "Minimum OS X deployment version")
 project(PyMieSim LANGUAGES Fortran CXX)
 
 # CMake settings
